@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * PolicySetStatus reports the observed status of the policy set resulting from its policies.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -89,32 +92,50 @@ public class PolicySetStatus implements Editable<PolicySetStatusBuilder>, Kubern
         this.statusMessage = statusMessage;
     }
 
+    /**
+     * Compliant reports the observed status resulting from the compliance of the policies within.
+     */
     @JsonProperty("compliant")
     public String getCompliant() {
         return compliant;
     }
 
+    /**
+     * Compliant reports the observed status resulting from the compliance of the policies within.
+     */
     @JsonProperty("compliant")
     public void setCompliant(String compliant) {
         this.compliant = compliant;
     }
 
+    /**
+     * PolicySetStatus reports the observed status of the policy set resulting from its policies.
+     */
     @JsonProperty("placement")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<PolicySetStatusPlacement> getPlacement() {
         return placement;
     }
 
+    /**
+     * PolicySetStatus reports the observed status of the policy set resulting from its policies.
+     */
     @JsonProperty("placement")
     public void setPlacement(List<PolicySetStatusPlacement> placement) {
         this.placement = placement;
     }
 
+    /**
+     * StatusMessge reports the current state while determining the compliance of the policy set.
+     */
     @JsonProperty("statusMessage")
     public String getStatusMessage() {
         return statusMessage;
     }
 
+    /**
+     * StatusMessge reports the current state while determining the compliance of the policy set.
+     */
     @JsonProperty("statusMessage")
     public void setStatusMessage(String statusMessage) {
         this.statusMessage = statusMessage;

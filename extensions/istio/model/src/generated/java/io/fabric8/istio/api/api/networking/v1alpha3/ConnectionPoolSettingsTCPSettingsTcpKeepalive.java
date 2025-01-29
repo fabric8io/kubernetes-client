@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * TCP keepalive.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -86,31 +89,49 @@ public class ConnectionPoolSettingsTCPSettingsTcpKeepalive implements Editable<C
         this.time = time;
     }
 
+    /**
+     * TCP keepalive.
+     */
     @JsonProperty("interval")
     public String getInterval() {
         return interval;
     }
 
+    /**
+     * TCP keepalive.
+     */
     @JsonProperty("interval")
     public void setInterval(String interval) {
         this.interval = interval;
     }
 
+    /**
+     * Maximum number of keepalive probes to send without response before deciding the connection is dead. Default is to use the OS level configuration (unless overridden, Linux defaults to 9.)
+     */
     @JsonProperty("probes")
     public Long getProbes() {
         return probes;
     }
 
+    /**
+     * Maximum number of keepalive probes to send without response before deciding the connection is dead. Default is to use the OS level configuration (unless overridden, Linux defaults to 9.)
+     */
     @JsonProperty("probes")
     public void setProbes(Long probes) {
         this.probes = probes;
     }
 
+    /**
+     * TCP keepalive.
+     */
     @JsonProperty("time")
     public String getTime() {
         return time;
     }
 
+    /**
+     * TCP keepalive.
+     */
     @JsonProperty("time")
     public void setTime(String time) {
         this.time = time;

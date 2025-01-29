@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ImageChangeTriggerStatus tracks the latest resolved status of the associated ImageChangeTrigger policy specified in the BuildConfigSpec.Triggers struct.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -86,31 +89,49 @@ public class ImageChangeTriggerStatus implements Editable<ImageChangeTriggerStat
         this.lastTriggeredImageID = lastTriggeredImageID;
     }
 
+    /**
+     * ImageChangeTriggerStatus tracks the latest resolved status of the associated ImageChangeTrigger policy specified in the BuildConfigSpec.Triggers struct.
+     */
     @JsonProperty("from")
     public ImageStreamTagReference getFrom() {
         return from;
     }
 
+    /**
+     * ImageChangeTriggerStatus tracks the latest resolved status of the associated ImageChangeTrigger policy specified in the BuildConfigSpec.Triggers struct.
+     */
     @JsonProperty("from")
     public void setFrom(ImageStreamTagReference from) {
         this.from = from;
     }
 
+    /**
+     * ImageChangeTriggerStatus tracks the latest resolved status of the associated ImageChangeTrigger policy specified in the BuildConfigSpec.Triggers struct.
+     */
     @JsonProperty("lastTriggerTime")
     public String getLastTriggerTime() {
         return lastTriggerTime;
     }
 
+    /**
+     * ImageChangeTriggerStatus tracks the latest resolved status of the associated ImageChangeTrigger policy specified in the BuildConfigSpec.Triggers struct.
+     */
     @JsonProperty("lastTriggerTime")
     public void setLastTriggerTime(String lastTriggerTime) {
         this.lastTriggerTime = lastTriggerTime;
     }
 
+    /**
+     * lastTriggeredImageID represents the sha/id of the ImageStreamTag when a Build for this BuildConfig was started. The lastTriggeredImageID is updated each time a Build for this BuildConfig is started, even if this ImageStreamTag is not the reason the Build is started.
+     */
     @JsonProperty("lastTriggeredImageID")
     public String getLastTriggeredImageID() {
         return lastTriggeredImageID;
     }
 
+    /**
+     * lastTriggeredImageID represents the sha/id of the ImageStreamTag when a Build for this BuildConfig was started. The lastTriggeredImageID is updated each time a Build for this BuildConfig is started, even if this ImageStreamTag is not the reason the Build is started.
+     */
     @JsonProperty("lastTriggeredImageID")
     public void setLastTriggeredImageID(String lastTriggeredImageID) {
         this.lastTriggeredImageID = lastTriggeredImageID;

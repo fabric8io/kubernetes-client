@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * MachineConfigPoolStatus is the status for MachineConfigPool resource.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -119,104 +122,164 @@ public class MachineConfigPoolStatus implements Editable<MachineConfigPoolStatus
         this.updatedMachineCount = updatedMachineCount;
     }
 
+    /**
+     * certExpirys keeps track of important certificate expiration data
+     */
     @JsonProperty("certExpirys")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<CertExpiry> getCertExpirys() {
         return certExpirys;
     }
 
+    /**
+     * certExpirys keeps track of important certificate expiration data
+     */
     @JsonProperty("certExpirys")
     public void setCertExpirys(List<CertExpiry> certExpirys) {
         this.certExpirys = certExpirys;
     }
 
+    /**
+     * conditions represents the latest available observations of current state.
+     */
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<MachineConfigPoolCondition> getConditions() {
         return conditions;
     }
 
+    /**
+     * conditions represents the latest available observations of current state.
+     */
     @JsonProperty("conditions")
     public void setConditions(List<MachineConfigPoolCondition> conditions) {
         this.conditions = conditions;
     }
 
+    /**
+     * MachineConfigPoolStatus is the status for MachineConfigPool resource.
+     */
     @JsonProperty("configuration")
     public MachineConfigPoolStatusConfiguration getConfiguration() {
         return configuration;
     }
 
+    /**
+     * MachineConfigPoolStatus is the status for MachineConfigPool resource.
+     */
     @JsonProperty("configuration")
     public void setConfiguration(MachineConfigPoolStatusConfiguration configuration) {
         this.configuration = configuration;
     }
 
+    /**
+     * degradedMachineCount represents the total number of machines marked degraded (or unreconcilable). A node is marked degraded if applying a configuration failed..
+     */
     @JsonProperty("degradedMachineCount")
     public Integer getDegradedMachineCount() {
         return degradedMachineCount;
     }
 
+    /**
+     * degradedMachineCount represents the total number of machines marked degraded (or unreconcilable). A node is marked degraded if applying a configuration failed..
+     */
     @JsonProperty("degradedMachineCount")
     public void setDegradedMachineCount(Integer degradedMachineCount) {
         this.degradedMachineCount = degradedMachineCount;
     }
 
+    /**
+     * machineCount represents the total number of machines in the machine config pool.
+     */
     @JsonProperty("machineCount")
     public Integer getMachineCount() {
         return machineCount;
     }
 
+    /**
+     * machineCount represents the total number of machines in the machine config pool.
+     */
     @JsonProperty("machineCount")
     public void setMachineCount(Integer machineCount) {
         this.machineCount = machineCount;
     }
 
+    /**
+     * observedGeneration represents the generation observed by the controller.
+     */
     @JsonProperty("observedGeneration")
     public Long getObservedGeneration() {
         return observedGeneration;
     }
 
+    /**
+     * observedGeneration represents the generation observed by the controller.
+     */
     @JsonProperty("observedGeneration")
     public void setObservedGeneration(Long observedGeneration) {
         this.observedGeneration = observedGeneration;
     }
 
+    /**
+     * poolSynchronizersStatus is the status of the machines managed by the pool synchronizers.
+     */
     @JsonProperty("poolSynchronizersStatus")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<PoolSynchronizerStatus> getPoolSynchronizersStatus() {
         return poolSynchronizersStatus;
     }
 
+    /**
+     * poolSynchronizersStatus is the status of the machines managed by the pool synchronizers.
+     */
     @JsonProperty("poolSynchronizersStatus")
     public void setPoolSynchronizersStatus(List<PoolSynchronizerStatus> poolSynchronizersStatus) {
         this.poolSynchronizersStatus = poolSynchronizersStatus;
     }
 
+    /**
+     * readyMachineCount represents the total number of ready machines targeted by the pool.
+     */
     @JsonProperty("readyMachineCount")
     public Integer getReadyMachineCount() {
         return readyMachineCount;
     }
 
+    /**
+     * readyMachineCount represents the total number of ready machines targeted by the pool.
+     */
     @JsonProperty("readyMachineCount")
     public void setReadyMachineCount(Integer readyMachineCount) {
         this.readyMachineCount = readyMachineCount;
     }
 
+    /**
+     * unavailableMachineCount represents the total number of unavailable (non-ready) machines targeted by the pool. A node is marked unavailable if it is in updating state or NodeReady condition is false.
+     */
     @JsonProperty("unavailableMachineCount")
     public Integer getUnavailableMachineCount() {
         return unavailableMachineCount;
     }
 
+    /**
+     * unavailableMachineCount represents the total number of unavailable (non-ready) machines targeted by the pool. A node is marked unavailable if it is in updating state or NodeReady condition is false.
+     */
     @JsonProperty("unavailableMachineCount")
     public void setUnavailableMachineCount(Integer unavailableMachineCount) {
         this.unavailableMachineCount = unavailableMachineCount;
     }
 
+    /**
+     * updatedMachineCount represents the total number of machines targeted by the pool that have the CurrentMachineConfig as their config.
+     */
     @JsonProperty("updatedMachineCount")
     public Integer getUpdatedMachineCount() {
         return updatedMachineCount;
     }
 
+    /**
+     * updatedMachineCount represents the total number of machines targeted by the pool that have the CurrentMachineConfig as their config.
+     */
     @JsonProperty("updatedMachineCount")
     public void setUpdatedMachineCount(Integer updatedMachineCount) {
         this.updatedMachineCount = updatedMachineCount;

@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * PlatformCapabilitiesSpec defines the observability capabilities managed by the addon for platform components.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -78,11 +81,17 @@ public class PlatformCapabilitiesSpec implements Editable<PlatformCapabilitiesSp
         this.logs = logs;
     }
 
+    /**
+     * PlatformCapabilitiesSpec defines the observability capabilities managed by the addon for platform components.
+     */
     @JsonProperty("logs")
     public PlatformLogsSpec getLogs() {
         return logs;
     }
 
+    /**
+     * PlatformCapabilitiesSpec defines the observability capabilities managed by the addon for platform components.
+     */
     @JsonProperty("logs")
     public void setLogs(PlatformLogsSpec logs) {
         this.logs = logs;

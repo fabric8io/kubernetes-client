@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * BootVolume stores the configuration for an individual machine's boot volume.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -78,11 +81,17 @@ public class BootVolume implements Editable<BootVolumeBuilder>, KubernetesResour
         this.encryptionKey = encryptionKey;
     }
 
+    /**
+     * EncryptionKey is the CRN referencing a Key Protect or Hyper Protect Crypto Services key to use for volume encryption. If not specified, a provider managed encryption key will be used.
+     */
     @JsonProperty("encryptionKey")
     public String getEncryptionKey() {
         return encryptionKey;
     }
 
+    /**
+     * EncryptionKey is the CRN referencing a Key Protect or Hyper Protect Crypto Services key to use for volume encryption. If not specified, a provider managed encryption key will be used.
+     */
     @JsonProperty("encryptionKey")
     public void setEncryptionKey(String encryptionKey) {
         this.encryptionKey = encryptionKey;

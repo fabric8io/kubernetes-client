@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * JobCondition contains details for the current condition of this job.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class JobCondition implements Editable<JobConditionBuilder>, KubernetesRe
         this.status = status;
     }
 
+    /**
+     * JobCondition contains details for the current condition of this job.
+     */
     @JsonProperty("lastTransitionTime")
     public String getLastTransitionTime() {
         return lastTransitionTime;
     }
 
+    /**
+     * JobCondition contains details for the current condition of this job.
+     */
     @JsonProperty("lastTransitionTime")
     public void setLastTransitionTime(String lastTransitionTime) {
         this.lastTransitionTime = lastTransitionTime;
     }
 
+    /**
+     * Status is the new phase of job after performing the state's action.
+     */
     @JsonProperty("status")
     public String getStatus() {
         return status;
     }
 
+    /**
+     * Status is the new phase of job after performing the state's action.
+     */
     @JsonProperty("status")
     public void setStatus(String status) {
         this.status = status;

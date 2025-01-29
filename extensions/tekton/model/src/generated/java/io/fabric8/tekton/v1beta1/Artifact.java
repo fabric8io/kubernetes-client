@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * TaskRunStepArtifact represents an artifact produced or used by a step within a task run. It directly uses the Artifact type for its structure.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -89,32 +92,50 @@ public class Artifact implements Editable<ArtifactBuilder>, KubernetesResource
         this.values = values;
     }
 
+    /**
+     * Indicate if the artifact is a build output or a by-product
+     */
     @JsonProperty("buildOutput")
     public Boolean getBuildOutput() {
         return buildOutput;
     }
 
+    /**
+     * Indicate if the artifact is a build output or a by-product
+     */
     @JsonProperty("buildOutput")
     public void setBuildOutput(Boolean buildOutput) {
         this.buildOutput = buildOutput;
     }
 
+    /**
+     * The artifact's identifying category name
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * The artifact's identifying category name
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * A collection of values related to the artifact
+     */
     @JsonProperty("values")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ArtifactValue> getValues() {
         return values;
     }
 
+    /**
+     * A collection of values related to the artifact
+     */
     @JsonProperty("values")
     public void setValues(List<ArtifactValue> values) {
         this.values = values;

@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * KlusterletSpec represents the desired deployment configuration of Klusterlet agent.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -129,132 +132,210 @@ public class KlusterletSpec implements Editable<KlusterletSpecBuilder>, Kubernet
         this.workImagePullSpec = workImagePullSpec;
     }
 
+    /**
+     * ClusterName is the name of the managed cluster to be created on hub. The Klusterlet agent generates a random name if it is not set, or discovers the appropriate cluster name on OpenShift.
+     */
     @JsonProperty("clusterName")
     public String getClusterName() {
         return clusterName;
     }
 
+    /**
+     * ClusterName is the name of the managed cluster to be created on hub. The Klusterlet agent generates a random name if it is not set, or discovers the appropriate cluster name on OpenShift.
+     */
     @JsonProperty("clusterName")
     public void setClusterName(String clusterName) {
         this.clusterName = clusterName;
     }
 
+    /**
+     * KlusterletSpec represents the desired deployment configuration of Klusterlet agent.
+     */
     @JsonProperty("deployOption")
     public KlusterletDeployOption getDeployOption() {
         return deployOption;
     }
 
+    /**
+     * KlusterletSpec represents the desired deployment configuration of Klusterlet agent.
+     */
     @JsonProperty("deployOption")
     public void setDeployOption(KlusterletDeployOption deployOption) {
         this.deployOption = deployOption;
     }
 
+    /**
+     * ExternalServerURLs represents a list of apiserver urls and ca bundles that is accessible externally If it is set empty, managed cluster has no externally accessible url that hub cluster can visit.
+     */
     @JsonProperty("externalServerURLs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ServerURL> getExternalServerURLs() {
         return externalServerURLs;
     }
 
+    /**
+     * ExternalServerURLs represents a list of apiserver urls and ca bundles that is accessible externally If it is set empty, managed cluster has no externally accessible url that hub cluster can visit.
+     */
     @JsonProperty("externalServerURLs")
     public void setExternalServerURLs(List<ServerURL> externalServerURLs) {
         this.externalServerURLs = externalServerURLs;
     }
 
+    /**
+     * KlusterletSpec represents the desired deployment configuration of Klusterlet agent.
+     */
     @JsonProperty("hubApiServerHostAlias")
     public HubApiServerHostAlias getHubApiServerHostAlias() {
         return hubApiServerHostAlias;
     }
 
+    /**
+     * KlusterletSpec represents the desired deployment configuration of Klusterlet agent.
+     */
     @JsonProperty("hubApiServerHostAlias")
     public void setHubApiServerHostAlias(HubApiServerHostAlias hubApiServerHostAlias) {
         this.hubApiServerHostAlias = hubApiServerHostAlias;
     }
 
+    /**
+     * ImagePullSpec represents the desired image configuration of agent, it takes effect only when singleton mode is set. quay.io/open-cluster-management.io/registration-operator:latest will be used if unspecified
+     */
     @JsonProperty("imagePullSpec")
     public String getImagePullSpec() {
         return imagePullSpec;
     }
 
+    /**
+     * ImagePullSpec represents the desired image configuration of agent, it takes effect only when singleton mode is set. quay.io/open-cluster-management.io/registration-operator:latest will be used if unspecified
+     */
     @JsonProperty("imagePullSpec")
     public void setImagePullSpec(String imagePullSpec) {
         this.imagePullSpec = imagePullSpec;
     }
 
+    /**
+     * Namespace is the namespace to deploy the agent on the managed cluster. The namespace must have a prefix of "open-cluster-management-", and if it is not set, the namespace of "open-cluster-management-agent" is used to deploy agent. In addition, the add-ons are deployed to the namespace of "{Namespace}-addon". In the Hosted mode, this namespace still exists on the managed cluster to contain necessary resources, like service accounts, roles and rolebindings, while the agent is deployed to the namespace with the same name as klusterlet on the management cluster.
+     */
     @JsonProperty("namespace")
     public String getNamespace() {
         return namespace;
     }
 
+    /**
+     * Namespace is the namespace to deploy the agent on the managed cluster. The namespace must have a prefix of "open-cluster-management-", and if it is not set, the namespace of "open-cluster-management-agent" is used to deploy agent. In addition, the add-ons are deployed to the namespace of "{Namespace}-addon". In the Hosted mode, this namespace still exists on the managed cluster to contain necessary resources, like service accounts, roles and rolebindings, while the agent is deployed to the namespace with the same name as klusterlet on the management cluster.
+     */
     @JsonProperty("namespace")
     public void setNamespace(String namespace) {
         this.namespace = namespace;
     }
 
+    /**
+     * KlusterletSpec represents the desired deployment configuration of Klusterlet agent.
+     */
     @JsonProperty("nodePlacement")
     public NodePlacement getNodePlacement() {
         return nodePlacement;
     }
 
+    /**
+     * KlusterletSpec represents the desired deployment configuration of Klusterlet agent.
+     */
     @JsonProperty("nodePlacement")
     public void setNodePlacement(NodePlacement nodePlacement) {
         this.nodePlacement = nodePlacement;
     }
 
+    /**
+     * PriorityClassName is the name of the PriorityClass that will be used by the deployed klusterlet agent. It will be ignored when the PriorityClass/v1 API is not available on the managed cluster.
+     */
     @JsonProperty("priorityClassName")
     public String getPriorityClassName() {
         return priorityClassName;
     }
 
+    /**
+     * PriorityClassName is the name of the PriorityClass that will be used by the deployed klusterlet agent. It will be ignored when the PriorityClass/v1 API is not available on the managed cluster.
+     */
     @JsonProperty("priorityClassName")
     public void setPriorityClassName(String priorityClassName) {
         this.priorityClassName = priorityClassName;
     }
 
+    /**
+     * KlusterletSpec represents the desired deployment configuration of Klusterlet agent.
+     */
     @JsonProperty("registrationConfiguration")
     public RegistrationConfiguration getRegistrationConfiguration() {
         return registrationConfiguration;
     }
 
+    /**
+     * KlusterletSpec represents the desired deployment configuration of Klusterlet agent.
+     */
     @JsonProperty("registrationConfiguration")
     public void setRegistrationConfiguration(RegistrationConfiguration registrationConfiguration) {
         this.registrationConfiguration = registrationConfiguration;
     }
 
+    /**
+     * RegistrationImagePullSpec represents the desired image configuration of registration agent. quay.io/open-cluster-management.io/registration:latest will be used if unspecified.
+     */
     @JsonProperty("registrationImagePullSpec")
     public String getRegistrationImagePullSpec() {
         return registrationImagePullSpec;
     }
 
+    /**
+     * RegistrationImagePullSpec represents the desired image configuration of registration agent. quay.io/open-cluster-management.io/registration:latest will be used if unspecified.
+     */
     @JsonProperty("registrationImagePullSpec")
     public void setRegistrationImagePullSpec(String registrationImagePullSpec) {
         this.registrationImagePullSpec = registrationImagePullSpec;
     }
 
+    /**
+     * KlusterletSpec represents the desired deployment configuration of Klusterlet agent.
+     */
     @JsonProperty("resourceRequirement")
     public ResourceRequirement getResourceRequirement() {
         return resourceRequirement;
     }
 
+    /**
+     * KlusterletSpec represents the desired deployment configuration of Klusterlet agent.
+     */
     @JsonProperty("resourceRequirement")
     public void setResourceRequirement(ResourceRequirement resourceRequirement) {
         this.resourceRequirement = resourceRequirement;
     }
 
+    /**
+     * KlusterletSpec represents the desired deployment configuration of Klusterlet agent.
+     */
     @JsonProperty("workConfiguration")
     public WorkAgentConfiguration getWorkConfiguration() {
         return workConfiguration;
     }
 
+    /**
+     * KlusterletSpec represents the desired deployment configuration of Klusterlet agent.
+     */
     @JsonProperty("workConfiguration")
     public void setWorkConfiguration(WorkAgentConfiguration workConfiguration) {
         this.workConfiguration = workConfiguration;
     }
 
+    /**
+     * WorkImagePullSpec represents the desired image configuration of work agent. quay.io/open-cluster-management.io/work:latest will be used if unspecified.
+     */
     @JsonProperty("workImagePullSpec")
     public String getWorkImagePullSpec() {
         return workImagePullSpec;
     }
 
+    /**
+     * WorkImagePullSpec represents the desired image configuration of work agent. quay.io/open-cluster-management.io/work:latest will be used if unspecified.
+     */
     @JsonProperty("workImagePullSpec")
     public void setWorkImagePullSpec(String workImagePullSpec) {
         this.workImagePullSpec = workImagePullSpec;

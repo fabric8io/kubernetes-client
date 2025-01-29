@@ -37,6 +37,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * PodSecurityPolicySelfSubjectReview checks whether this user/SA tuple can create the PodTemplateSpec<br><p> <br><p> Compatibility level 2: Stable within a major release for a minimum of 9 months or 3 minor releases (whichever is longer).
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -76,14 +79,8 @@ import lombok.experimental.Accessors;
 public class PodSecurityPolicySelfSubjectReview implements Editable<PodSecurityPolicySelfSubjectReviewBuilder>, HasMetadata, Namespaced
 {
 
-    /**
-     * (Required)
-     */
     @JsonProperty("apiVersion")
     private String apiVersion = "security.openshift.io/v1";
-    /**
-     * (Required)
-     */
     @JsonProperty("kind")
     private String kind = "PodSecurityPolicySelfSubjectReview";
     @JsonProperty("metadata")
@@ -111,7 +108,7 @@ public class PodSecurityPolicySelfSubjectReview implements Editable<PodSecurityP
     }
 
     /**
-     * (Required)
+     * APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -119,7 +116,7 @@ public class PodSecurityPolicySelfSubjectReview implements Editable<PodSecurityP
     }
 
     /**
-     * (Required)
+     * APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -127,7 +124,7 @@ public class PodSecurityPolicySelfSubjectReview implements Editable<PodSecurityP
     }
 
     /**
-     * (Required)
+     * Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -135,38 +132,56 @@ public class PodSecurityPolicySelfSubjectReview implements Editable<PodSecurityP
     }
 
     /**
-     * (Required)
+     * Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
      */
     @JsonProperty("kind")
     public void setKind(String kind) {
         this.kind = kind;
     }
 
+    /**
+     * PodSecurityPolicySelfSubjectReview checks whether this user/SA tuple can create the PodTemplateSpec<br><p> <br><p> Compatibility level 2: Stable within a major release for a minimum of 9 months or 3 minor releases (whichever is longer).
+     */
     @JsonProperty("metadata")
     public ObjectMeta getMetadata() {
         return metadata;
     }
 
+    /**
+     * PodSecurityPolicySelfSubjectReview checks whether this user/SA tuple can create the PodTemplateSpec<br><p> <br><p> Compatibility level 2: Stable within a major release for a minimum of 9 months or 3 minor releases (whichever is longer).
+     */
     @JsonProperty("metadata")
     public void setMetadata(ObjectMeta metadata) {
         this.metadata = metadata;
     }
 
+    /**
+     * PodSecurityPolicySelfSubjectReview checks whether this user/SA tuple can create the PodTemplateSpec<br><p> <br><p> Compatibility level 2: Stable within a major release for a minimum of 9 months or 3 minor releases (whichever is longer).
+     */
     @JsonProperty("spec")
     public PodSecurityPolicySelfSubjectReviewSpec getSpec() {
         return spec;
     }
 
+    /**
+     * PodSecurityPolicySelfSubjectReview checks whether this user/SA tuple can create the PodTemplateSpec<br><p> <br><p> Compatibility level 2: Stable within a major release for a minimum of 9 months or 3 minor releases (whichever is longer).
+     */
     @JsonProperty("spec")
     public void setSpec(PodSecurityPolicySelfSubjectReviewSpec spec) {
         this.spec = spec;
     }
 
+    /**
+     * PodSecurityPolicySelfSubjectReview checks whether this user/SA tuple can create the PodTemplateSpec<br><p> <br><p> Compatibility level 2: Stable within a major release for a minimum of 9 months or 3 minor releases (whichever is longer).
+     */
     @JsonProperty("status")
     public PodSecurityPolicySubjectReviewStatus getStatus() {
         return status;
     }
 
+    /**
+     * PodSecurityPolicySelfSubjectReview checks whether this user/SA tuple can create the PodTemplateSpec<br><p> <br><p> Compatibility level 2: Stable within a major release for a minimum of 9 months or 3 minor releases (whichever is longer).
+     */
     @JsonProperty("status")
     public void setStatus(PodSecurityPolicySubjectReviewStatus status) {
         this.status = status;

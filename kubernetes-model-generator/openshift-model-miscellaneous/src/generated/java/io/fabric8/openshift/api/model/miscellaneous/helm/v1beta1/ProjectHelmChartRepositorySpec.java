@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Project Helm chart repository exposed within a namespace
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -90,41 +93,65 @@ public class ProjectHelmChartRepositorySpec implements Editable<ProjectHelmChart
         this.name = name;
     }
 
+    /**
+     * Project Helm chart repository exposed within a namespace
+     */
     @JsonProperty("connectionConfig")
     public ConnectionConfigNamespaceScoped getConnectionConfig() {
         return connectionConfig;
     }
 
+    /**
+     * Project Helm chart repository exposed within a namespace
+     */
     @JsonProperty("connectionConfig")
     public void setConnectionConfig(ConnectionConfigNamespaceScoped connectionConfig) {
         this.connectionConfig = connectionConfig;
     }
 
+    /**
+     * Optional human readable repository description, it can be used by UI for displaying purposes
+     */
     @JsonProperty("description")
     public String getDescription() {
         return description;
     }
 
+    /**
+     * Optional human readable repository description, it can be used by UI for displaying purposes
+     */
     @JsonProperty("description")
     public void setDescription(String description) {
         this.description = description;
     }
 
+    /**
+     * If set to true, disable the repo usage in the namespace
+     */
     @JsonProperty("disabled")
     public Boolean getDisabled() {
         return disabled;
     }
 
+    /**
+     * If set to true, disable the repo usage in the namespace
+     */
     @JsonProperty("disabled")
     public void setDisabled(Boolean disabled) {
         this.disabled = disabled;
     }
 
+    /**
+     * Optional associated human readable repository name, it can be used by UI for displaying purposes
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * Optional associated human readable repository name, it can be used by UI for displaying purposes
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;

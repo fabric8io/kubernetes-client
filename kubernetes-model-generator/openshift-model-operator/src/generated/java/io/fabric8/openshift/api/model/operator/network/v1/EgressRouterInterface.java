@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * EgressRouterInterface contains the configuration of interface to create/use.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -78,11 +81,17 @@ public class EgressRouterInterface implements Editable<EgressRouterInterfaceBuil
         this.macvlan = macvlan;
     }
 
+    /**
+     * EgressRouterInterface contains the configuration of interface to create/use.
+     */
     @JsonProperty("macvlan")
     public MacvlanConfig getMacvlan() {
         return macvlan;
     }
 
+    /**
+     * EgressRouterInterface contains the configuration of interface to create/use.
+     */
     @JsonProperty("macvlan")
     public void setMacvlan(MacvlanConfig macvlan) {
         this.macvlan = macvlan;

@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * OpenShiftSDNConfig was used to configure the OpenShift SDN plugin. It is no longer used.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -94,51 +97,81 @@ public class OpenShiftSDNConfig implements Editable<OpenShiftSDNConfigBuilder>, 
         this.vxlanPort = vxlanPort;
     }
 
+    /**
+     * enableUnidling controls whether or not the service proxy will support idling and unidling of services. By default, unidling is enabled.
+     */
     @JsonProperty("enableUnidling")
     public Boolean getEnableUnidling() {
         return enableUnidling;
     }
 
+    /**
+     * enableUnidling controls whether or not the service proxy will support idling and unidling of services. By default, unidling is enabled.
+     */
     @JsonProperty("enableUnidling")
     public void setEnableUnidling(Boolean enableUnidling) {
         this.enableUnidling = enableUnidling;
     }
 
+    /**
+     * mode is one of "Multitenant", "Subnet", or "NetworkPolicy"
+     */
     @JsonProperty("mode")
     public String getMode() {
         return mode;
     }
 
+    /**
+     * mode is one of "Multitenant", "Subnet", or "NetworkPolicy"
+     */
     @JsonProperty("mode")
     public void setMode(String mode) {
         this.mode = mode;
     }
 
+    /**
+     * mtu is the mtu to use for the tunnel interface. Defaults to 1450 if unset. This must be 50 bytes smaller than the machine's uplink.
+     */
     @JsonProperty("mtu")
     public Long getMtu() {
         return mtu;
     }
 
+    /**
+     * mtu is the mtu to use for the tunnel interface. Defaults to 1450 if unset. This must be 50 bytes smaller than the machine's uplink.
+     */
     @JsonProperty("mtu")
     public void setMtu(Long mtu) {
         this.mtu = mtu;
     }
 
+    /**
+     * useExternalOpenvswitch used to control whether the operator would deploy an OVS DaemonSet itself or expect someone else to start OVS. As of 4.6, OVS is always run as a system service, and this flag is ignored.
+     */
     @JsonProperty("useExternalOpenvswitch")
     public Boolean getUseExternalOpenvswitch() {
         return useExternalOpenvswitch;
     }
 
+    /**
+     * useExternalOpenvswitch used to control whether the operator would deploy an OVS DaemonSet itself or expect someone else to start OVS. As of 4.6, OVS is always run as a system service, and this flag is ignored.
+     */
     @JsonProperty("useExternalOpenvswitch")
     public void setUseExternalOpenvswitch(Boolean useExternalOpenvswitch) {
         this.useExternalOpenvswitch = useExternalOpenvswitch;
     }
 
+    /**
+     * vxlanPort is the port to use for all vxlan packets. The default is 4789.
+     */
     @JsonProperty("vxlanPort")
     public Long getVxlanPort() {
         return vxlanPort;
     }
 
+    /**
+     * vxlanPort is the port to use for all vxlan packets. The default is 4789.
+     */
     @JsonProperty("vxlanPort")
     public void setVxlanPort(Long vxlanPort) {
         this.vxlanPort = vxlanPort;

@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * PrivateServiceConnectStatus contains the observed state for PrivateServiceConnect resources.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -94,51 +97,81 @@ public class PrivateServiceConnectStatus implements Editable<PrivateServiceConne
         this.serviceAttachmentSubnet = serviceAttachmentSubnet;
     }
 
+    /**
+     * Endpoint is the selfLink of the endpoint created for the cluster.
+     */
     @JsonProperty("endpoint")
     public String getEndpoint() {
         return endpoint;
     }
 
+    /**
+     * Endpoint is the selfLink of the endpoint created for the cluster.
+     */
     @JsonProperty("endpoint")
     public void setEndpoint(String endpoint) {
         this.endpoint = endpoint;
     }
 
+    /**
+     * EndpointAddress is the selfLink of the address created for the cluster endpoint.
+     */
     @JsonProperty("endpointAddress")
     public String getEndpointAddress() {
         return endpointAddress;
     }
 
+    /**
+     * EndpointAddress is the selfLink of the address created for the cluster endpoint.
+     */
     @JsonProperty("endpointAddress")
     public void setEndpointAddress(String endpointAddress) {
         this.endpointAddress = endpointAddress;
     }
 
+    /**
+     * ServiceAttachment is the selfLink of the service attachment created for the clsuter.
+     */
     @JsonProperty("serviceAttachment")
     public String getServiceAttachment() {
         return serviceAttachment;
     }
 
+    /**
+     * ServiceAttachment is the selfLink of the service attachment created for the clsuter.
+     */
     @JsonProperty("serviceAttachment")
     public void setServiceAttachment(String serviceAttachment) {
         this.serviceAttachment = serviceAttachment;
     }
 
+    /**
+     * ServiceAttachmentFirewall is the selfLink of the firewall that allows traffic between the service attachment and the cluster's internal api load balancer.
+     */
     @JsonProperty("serviceAttachmentFirewall")
     public String getServiceAttachmentFirewall() {
         return serviceAttachmentFirewall;
     }
 
+    /**
+     * ServiceAttachmentFirewall is the selfLink of the firewall that allows traffic between the service attachment and the cluster's internal api load balancer.
+     */
     @JsonProperty("serviceAttachmentFirewall")
     public void setServiceAttachmentFirewall(String serviceAttachmentFirewall) {
         this.serviceAttachmentFirewall = serviceAttachmentFirewall;
     }
 
+    /**
+     * ServiceAttachmentSubnet is the selfLink of the subnet that will contain the service attachment.
+     */
     @JsonProperty("serviceAttachmentSubnet")
     public String getServiceAttachmentSubnet() {
         return serviceAttachmentSubnet;
     }
 
+    /**
+     * ServiceAttachmentSubnet is the selfLink of the subnet that will contain the service attachment.
+     */
     @JsonProperty("serviceAttachmentSubnet")
     public void setServiceAttachmentSubnet(String serviceAttachmentSubnet) {
         this.serviceAttachmentSubnet = serviceAttachmentSubnet;

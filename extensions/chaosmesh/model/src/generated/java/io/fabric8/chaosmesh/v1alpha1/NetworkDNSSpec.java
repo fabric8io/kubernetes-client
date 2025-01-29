@@ -86,31 +86,49 @@ public class NetworkDNSSpec implements Editable<NetworkDNSSpecBuilder>, Kubernet
         this.dnsServer = dnsServer;
     }
 
+    /**
+     * map this host to specified IP
+     */
     @JsonProperty("dns-domain-name")
     public String getDnsDomainName() {
         return dnsDomainName;
     }
 
+    /**
+     * map this host to specified IP
+     */
     @JsonProperty("dns-domain-name")
     public void setDnsDomainName(String dnsDomainName) {
         this.dnsDomainName = dnsDomainName;
     }
 
+    /**
+     * map specified host to this IP address
+     */
     @JsonProperty("dns-ip")
     public String getDnsIp() {
         return dnsIp;
     }
 
+    /**
+     * map specified host to this IP address
+     */
     @JsonProperty("dns-ip")
     public void setDnsIp(String dnsIp) {
         this.dnsIp = dnsIp;
     }
 
+    /**
+     * update the DNS server in /etc/resolv.conf with this value
+     */
     @JsonProperty("dns-server")
     public String getDnsServer() {
         return dnsServer;
     }
 
+    /**
+     * update the DNS server in /etc/resolv.conf with this value
+     */
     @JsonProperty("dns-server")
     public void setDnsServer(String dnsServer) {
         this.dnsServer = dnsServer;

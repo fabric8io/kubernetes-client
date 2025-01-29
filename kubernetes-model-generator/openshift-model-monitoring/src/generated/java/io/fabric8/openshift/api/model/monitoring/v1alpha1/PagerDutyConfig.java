@@ -35,6 +35,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * PagerDutyConfig configures notifications via PagerDuty. See https://prometheus.io/docs/alerting/latest/configuration/#pagerduty_config
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -144,164 +147,260 @@ public class PagerDutyConfig implements Editable<PagerDutyConfigBuilder>, Kubern
         this.url = url;
     }
 
+    /**
+     * The class/type of the event.
+     */
     @JsonProperty("class")
     public String getClassName() {
         return className;
     }
 
+    /**
+     * The class/type of the event.
+     */
     @JsonProperty("class")
     public void setClassName(String className) {
         this.className = className;
     }
 
+    /**
+     * Client identification.
+     */
     @JsonProperty("client")
     public String getClient() {
         return client;
     }
 
+    /**
+     * Client identification.
+     */
     @JsonProperty("client")
     public void setClient(String client) {
         this.client = client;
     }
 
+    /**
+     * Backlink to the sender of notification.
+     */
     @JsonProperty("clientURL")
     public String getClientURL() {
         return clientURL;
     }
 
+    /**
+     * Backlink to the sender of notification.
+     */
     @JsonProperty("clientURL")
     public void setClientURL(String clientURL) {
         this.clientURL = clientURL;
     }
 
+    /**
+     * The part or component of the affected system that is broken.
+     */
     @JsonProperty("component")
     public String getComponent() {
         return component;
     }
 
+    /**
+     * The part or component of the affected system that is broken.
+     */
     @JsonProperty("component")
     public void setComponent(String component) {
         this.component = component;
     }
 
+    /**
+     * Description of the incident.
+     */
     @JsonProperty("description")
     public String getDescription() {
         return description;
     }
 
+    /**
+     * Description of the incident.
+     */
     @JsonProperty("description")
     public void setDescription(String description) {
         this.description = description;
     }
 
+    /**
+     * Arbitrary key/value pairs that provide further detail about the incident.
+     */
     @JsonProperty("details")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<KeyValue> getDetails() {
         return details;
     }
 
+    /**
+     * Arbitrary key/value pairs that provide further detail about the incident.
+     */
     @JsonProperty("details")
     public void setDetails(List<KeyValue> details) {
         this.details = details;
     }
 
+    /**
+     * A cluster or grouping of sources.
+     */
     @JsonProperty("group")
     public String getGroup() {
         return group;
     }
 
+    /**
+     * A cluster or grouping of sources.
+     */
     @JsonProperty("group")
     public void setGroup(String group) {
         this.group = group;
     }
 
+    /**
+     * PagerDutyConfig configures notifications via PagerDuty. See https://prometheus.io/docs/alerting/latest/configuration/#pagerduty_config
+     */
     @JsonProperty("httpConfig")
     public HTTPConfig getHttpConfig() {
         return httpConfig;
     }
 
+    /**
+     * PagerDutyConfig configures notifications via PagerDuty. See https://prometheus.io/docs/alerting/latest/configuration/#pagerduty_config
+     */
     @JsonProperty("httpConfig")
     public void setHttpConfig(HTTPConfig httpConfig) {
         this.httpConfig = httpConfig;
     }
 
+    /**
+     * A list of image details to attach that provide further detail about an incident.
+     */
     @JsonProperty("pagerDutyImageConfigs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<PagerDutyImageConfig> getPagerDutyImageConfigs() {
         return pagerDutyImageConfigs;
     }
 
+    /**
+     * A list of image details to attach that provide further detail about an incident.
+     */
     @JsonProperty("pagerDutyImageConfigs")
     public void setPagerDutyImageConfigs(List<PagerDutyImageConfig> pagerDutyImageConfigs) {
         this.pagerDutyImageConfigs = pagerDutyImageConfigs;
     }
 
+    /**
+     * A list of link details to attach that provide further detail about an incident.
+     */
     @JsonProperty("pagerDutyLinkConfigs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<PagerDutyLinkConfig> getPagerDutyLinkConfigs() {
         return pagerDutyLinkConfigs;
     }
 
+    /**
+     * A list of link details to attach that provide further detail about an incident.
+     */
     @JsonProperty("pagerDutyLinkConfigs")
     public void setPagerDutyLinkConfigs(List<PagerDutyLinkConfig> pagerDutyLinkConfigs) {
         this.pagerDutyLinkConfigs = pagerDutyLinkConfigs;
     }
 
+    /**
+     * PagerDutyConfig configures notifications via PagerDuty. See https://prometheus.io/docs/alerting/latest/configuration/#pagerduty_config
+     */
     @JsonProperty("routingKey")
     public SecretKeySelector getRoutingKey() {
         return routingKey;
     }
 
+    /**
+     * PagerDutyConfig configures notifications via PagerDuty. See https://prometheus.io/docs/alerting/latest/configuration/#pagerduty_config
+     */
     @JsonProperty("routingKey")
     public void setRoutingKey(SecretKeySelector routingKey) {
         this.routingKey = routingKey;
     }
 
+    /**
+     * Whether or not to notify about resolved alerts.
+     */
     @JsonProperty("sendResolved")
     public Boolean getSendResolved() {
         return sendResolved;
     }
 
+    /**
+     * Whether or not to notify about resolved alerts.
+     */
     @JsonProperty("sendResolved")
     public void setSendResolved(Boolean sendResolved) {
         this.sendResolved = sendResolved;
     }
 
+    /**
+     * PagerDutyConfig configures notifications via PagerDuty. See https://prometheus.io/docs/alerting/latest/configuration/#pagerduty_config
+     */
     @JsonProperty("serviceKey")
     public SecretKeySelector getServiceKey() {
         return serviceKey;
     }
 
+    /**
+     * PagerDutyConfig configures notifications via PagerDuty. See https://prometheus.io/docs/alerting/latest/configuration/#pagerduty_config
+     */
     @JsonProperty("serviceKey")
     public void setServiceKey(SecretKeySelector serviceKey) {
         this.serviceKey = serviceKey;
     }
 
+    /**
+     * Severity of the incident.
+     */
     @JsonProperty("severity")
     public String getSeverity() {
         return severity;
     }
 
+    /**
+     * Severity of the incident.
+     */
     @JsonProperty("severity")
     public void setSeverity(String severity) {
         this.severity = severity;
     }
 
+    /**
+     * Unique location of the affected system.
+     */
     @JsonProperty("source")
     public String getSource() {
         return source;
     }
 
+    /**
+     * Unique location of the affected system.
+     */
     @JsonProperty("source")
     public void setSource(String source) {
         this.source = source;
     }
 
+    /**
+     * The URL to send requests to.
+     */
     @JsonProperty("url")
     public String getUrl() {
         return url;
     }
 
+    /**
+     * The URL to send requests to.
+     */
     @JsonProperty("url")
     public void setUrl(String url) {
         this.url = url;

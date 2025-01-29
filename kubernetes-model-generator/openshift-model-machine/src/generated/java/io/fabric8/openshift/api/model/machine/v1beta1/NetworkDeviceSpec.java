@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * NetworkDeviceSpec defines the network configuration for a virtual machine's network device.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -99,54 +102,84 @@ public class NetworkDeviceSpec implements Editable<NetworkDeviceSpecBuilder>, Ku
         this.networkName = networkName;
     }
 
+    /**
+     * addressesFromPools is a list of references to IP pool types and instances which are handled by an external controller. addressesFromPool configurations provided via addressesFromPools defer IP address assignment to an external controller. IP addresses provided via ipAddrs, however, are intended to allow explicit assignment of a machine's IP address. If both addressesFromPool and ipAddrs are empty or not defined, DHCP will assign an IP address. If both ipAddrs and addressesFromPools are defined, the IP addresses associated with ipAddrs will be applied first followed by IP addresses from addressesFromPools.
+     */
     @JsonProperty("addressesFromPools")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<AddressesFromPool> getAddressesFromPools() {
         return addressesFromPools;
     }
 
+    /**
+     * addressesFromPools is a list of references to IP pool types and instances which are handled by an external controller. addressesFromPool configurations provided via addressesFromPools defer IP address assignment to an external controller. IP addresses provided via ipAddrs, however, are intended to allow explicit assignment of a machine's IP address. If both addressesFromPool and ipAddrs are empty or not defined, DHCP will assign an IP address. If both ipAddrs and addressesFromPools are defined, the IP addresses associated with ipAddrs will be applied first followed by IP addresses from addressesFromPools.
+     */
     @JsonProperty("addressesFromPools")
     public void setAddressesFromPools(List<AddressesFromPool> addressesFromPools) {
         this.addressesFromPools = addressesFromPools;
     }
 
+    /**
+     * gateway is an IPv4 or IPv6 address which represents the subnet gateway, for example, 192.168.1.1.
+     */
     @JsonProperty("gateway")
     public String getGateway() {
         return gateway;
     }
 
+    /**
+     * gateway is an IPv4 or IPv6 address which represents the subnet gateway, for example, 192.168.1.1.
+     */
     @JsonProperty("gateway")
     public void setGateway(String gateway) {
         this.gateway = gateway;
     }
 
+    /**
+     * ipAddrs is a list of one or more IPv4 and/or IPv6 addresses and CIDR to assign to this device, for example, 192.168.1.100/24. IP addresses provided via ipAddrs are intended to allow explicit assignment of a machine's IP address. IP pool configurations provided via addressesFromPool, however, defer IP address assignment to an external controller. If both addressesFromPool and ipAddrs are empty or not defined, DHCP will be used to assign an IP address. If both ipAddrs and addressesFromPools are defined, the IP addresses associated with ipAddrs will be applied first followed by IP addresses from addressesFromPools.
+     */
     @JsonProperty("ipAddrs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getIpAddrs() {
         return ipAddrs;
     }
 
+    /**
+     * ipAddrs is a list of one or more IPv4 and/or IPv6 addresses and CIDR to assign to this device, for example, 192.168.1.100/24. IP addresses provided via ipAddrs are intended to allow explicit assignment of a machine's IP address. IP pool configurations provided via addressesFromPool, however, defer IP address assignment to an external controller. If both addressesFromPool and ipAddrs are empty or not defined, DHCP will be used to assign an IP address. If both ipAddrs and addressesFromPools are defined, the IP addresses associated with ipAddrs will be applied first followed by IP addresses from addressesFromPools.
+     */
     @JsonProperty("ipAddrs")
     public void setIpAddrs(List<String> ipAddrs) {
         this.ipAddrs = ipAddrs;
     }
 
+    /**
+     * nameservers is a list of IPv4 and/or IPv6 addresses used as DNS nameservers, for example, 8.8.8.8. a nameserver is not provided by a fulfilled IPAddressClaim. If DHCP is not the source of IP addresses for this network device, nameservers should include a valid nameserver.
+     */
     @JsonProperty("nameservers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getNameservers() {
         return nameservers;
     }
 
+    /**
+     * nameservers is a list of IPv4 and/or IPv6 addresses used as DNS nameservers, for example, 8.8.8.8. a nameserver is not provided by a fulfilled IPAddressClaim. If DHCP is not the source of IP addresses for this network device, nameservers should include a valid nameserver.
+     */
     @JsonProperty("nameservers")
     public void setNameservers(List<String> nameservers) {
         this.nameservers = nameservers;
     }
 
+    /**
+     * networkName is the name of the vSphere network or port group to which the network device will be connected, for example, port-group-1. When not provided, the vCenter API will attempt to select a default network. The available networks (port groups) can be listed using `govc ls 'network/&#42;'`
+     */
     @JsonProperty("networkName")
     public String getNetworkName() {
         return networkName;
     }
 
+    /**
+     * networkName is the name of the vSphere network or port group to which the network device will be connected, for example, port-group-1. When not provided, the vCenter API will attempt to select a default network. The available networks (port groups) can be listed using `govc ls 'network/&#42;'`
+     */
     @JsonProperty("networkName")
     public void setNetworkName(String networkName) {
         this.networkName = networkName;

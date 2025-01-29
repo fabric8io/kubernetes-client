@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * CidrAndPort represents CIDR and port pair
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class CidrAndPort implements Editable<CidrAndPortBuilder>, KubernetesReso
         this.port = port;
     }
 
+    /**
+     * CidrAndPort represents CIDR and port pair
+     */
     @JsonProperty("cidr")
     public String getCidr() {
         return cidr;
     }
 
+    /**
+     * CidrAndPort represents CIDR and port pair
+     */
     @JsonProperty("cidr")
     public void setCidr(String cidr) {
         this.cidr = cidr;
     }
 
+    /**
+     * CidrAndPort represents CIDR and port pair
+     */
     @JsonProperty("port")
     public Integer getPort() {
         return port;
     }
 
+    /**
+     * CidrAndPort represents CIDR and port pair
+     */
     @JsonProperty("port")
     public void setPort(Integer port) {
         this.port = port;

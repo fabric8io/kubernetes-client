@@ -101,62 +101,98 @@ public class HTTPAbortSpec implements Editable<HTTPAbortSpecBuilder>, Kubernetes
         this.target = target;
     }
 
+    /**
+     * Code is a rule to select target by http status code in response
+     */
     @JsonProperty("code")
     public String getCode() {
         return code;
     }
 
+    /**
+     * Code is a rule to select target by http status code in response
+     */
     @JsonProperty("code")
     public void setCode(String code) {
         this.code = code;
     }
 
+    /**
+     * HTTP method
+     */
     @JsonProperty("method")
     public String getMethod() {
         return method;
     }
 
+    /**
+     * HTTP method
+     */
     @JsonProperty("method")
     public void setMethod(String method) {
         this.method = method;
     }
 
+    /**
+     * Match path of Uri with wildcard matches
+     */
     @JsonProperty("path")
     public String getPath() {
         return path;
     }
 
+    /**
+     * Match path of Uri with wildcard matches
+     */
     @JsonProperty("path")
     public void setPath(String path) {
         this.path = path;
     }
 
+    /**
+     * The TCP port that the target service listens on
+     */
     @JsonProperty("port")
     public Integer getPort() {
         return port;
     }
 
+    /**
+     * The TCP port that the target service listens on
+     */
     @JsonProperty("port")
     public void setPort(Integer port) {
         this.port = port;
     }
 
+    /**
+     * Composed with one of the port of HTTP connection, we will only attack HTTP connection with port inside proxy_ports
+     */
     @JsonProperty("proxy_ports")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Integer> getProxyPorts() {
         return proxyPorts;
     }
 
+    /**
+     * Composed with one of the port of HTTP connection, we will only attack HTTP connection with port inside proxy_ports
+     */
     @JsonProperty("proxy_ports")
     public void setProxyPorts(List<Integer> proxyPorts) {
         this.proxyPorts = proxyPorts;
     }
 
+    /**
+     * HTTP target: Request or Response
+     */
     @JsonProperty("target")
     public String getTarget() {
         return target;
     }
 
+    /**
+     * HTTP target: Request or Response
+     */
     @JsonProperty("target")
     public void setTarget(String target) {
         this.target = target;

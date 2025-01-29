@@ -86,31 +86,49 @@ public class ClockSpec implements Editable<ClockSpecBuilder>, KubernetesResource
         this.timeOffset = timeOffset;
     }
 
+    /**
+     * the identifier of the particular clock on which to act. More clock description in linux kernel can be found in man page of clock_getres, clock_gettime, clock_settime. Muti clock ids should be split with ","
+     */
     @JsonProperty("clock-ids-slice")
     public String getClockIdsSlice() {
         return clockIdsSlice;
     }
 
+    /**
+     * the identifier of the particular clock on which to act. More clock description in linux kernel can be found in man page of clock_getres, clock_gettime, clock_settime. Muti clock ids should be split with ","
+     */
     @JsonProperty("clock-ids-slice")
     public void setClockIdsSlice(String clockIdsSlice) {
         this.clockIdsSlice = clockIdsSlice;
     }
 
+    /**
+     * the pid of target program.
+     */
     @JsonProperty("pid")
     public Integer getPid() {
         return pid;
     }
 
+    /**
+     * the pid of target program.
+     */
     @JsonProperty("pid")
     public void setPid(Integer pid) {
         this.pid = pid;
     }
 
+    /**
+     * specifies the length of time offset.
+     */
     @JsonProperty("time-offset")
     public String getTimeOffset() {
         return timeOffset;
     }
 
+    /**
+     * specifies the length of time offset.
+     */
     @JsonProperty("time-offset")
     public void setTimeOffset(String timeOffset) {
         this.timeOffset = timeOffset;

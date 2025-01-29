@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * GenericAPIServerConfig is an inline-able struct for aggregated apiservers that need to store data in etcd
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -101,62 +104,98 @@ public class GenericAPIServerConfig implements Editable<GenericAPIServerConfigBu
         this.storageConfig = storageConfig;
     }
 
+    /**
+     * GenericAPIServerConfig is an inline-able struct for aggregated apiservers that need to store data in etcd
+     */
     @JsonProperty("admission")
     public AdmissionConfig getAdmission() {
         return admission;
     }
 
+    /**
+     * GenericAPIServerConfig is an inline-able struct for aggregated apiservers that need to store data in etcd
+     */
     @JsonProperty("admission")
     public void setAdmission(AdmissionConfig admission) {
         this.admission = admission;
     }
 
+    /**
+     * GenericAPIServerConfig is an inline-able struct for aggregated apiservers that need to store data in etcd
+     */
     @JsonProperty("auditConfig")
     public AuditConfig getAuditConfig() {
         return auditConfig;
     }
 
+    /**
+     * GenericAPIServerConfig is an inline-able struct for aggregated apiservers that need to store data in etcd
+     */
     @JsonProperty("auditConfig")
     public void setAuditConfig(AuditConfig auditConfig) {
         this.auditConfig = auditConfig;
     }
 
+    /**
+     * corsAllowedOrigins
+     */
     @JsonProperty("corsAllowedOrigins")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getCorsAllowedOrigins() {
         return corsAllowedOrigins;
     }
 
+    /**
+     * corsAllowedOrigins
+     */
     @JsonProperty("corsAllowedOrigins")
     public void setCorsAllowedOrigins(List<String> corsAllowedOrigins) {
         this.corsAllowedOrigins = corsAllowedOrigins;
     }
 
+    /**
+     * GenericAPIServerConfig is an inline-able struct for aggregated apiservers that need to store data in etcd
+     */
     @JsonProperty("kubeClientConfig")
     public KubeClientConfig getKubeClientConfig() {
         return kubeClientConfig;
     }
 
+    /**
+     * GenericAPIServerConfig is an inline-able struct for aggregated apiservers that need to store data in etcd
+     */
     @JsonProperty("kubeClientConfig")
     public void setKubeClientConfig(KubeClientConfig kubeClientConfig) {
         this.kubeClientConfig = kubeClientConfig;
     }
 
+    /**
+     * GenericAPIServerConfig is an inline-able struct for aggregated apiservers that need to store data in etcd
+     */
     @JsonProperty("servingInfo")
     public HTTPServingInfo getServingInfo() {
         return servingInfo;
     }
 
+    /**
+     * GenericAPIServerConfig is an inline-able struct for aggregated apiservers that need to store data in etcd
+     */
     @JsonProperty("servingInfo")
     public void setServingInfo(HTTPServingInfo servingInfo) {
         this.servingInfo = servingInfo;
     }
 
+    /**
+     * GenericAPIServerConfig is an inline-able struct for aggregated apiservers that need to store data in etcd
+     */
     @JsonProperty("storageConfig")
     public EtcdStorageConfig getStorageConfig() {
         return storageConfig;
     }
 
+    /**
+     * GenericAPIServerConfig is an inline-able struct for aggregated apiservers that need to store data in etcd
+     */
     @JsonProperty("storageConfig")
     public void setStorageConfig(EtcdStorageConfig storageConfig) {
         this.storageConfig = storageConfig;

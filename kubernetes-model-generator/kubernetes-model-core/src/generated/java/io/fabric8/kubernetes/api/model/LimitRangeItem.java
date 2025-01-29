@@ -17,6 +17,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * LimitRangeItem defines a min/max usage limit for any resource that matches on kind.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -74,66 +77,102 @@ public class LimitRangeItem implements Editable<LimitRangeItemBuilder>, Kubernet
         this.type = type;
     }
 
+    /**
+     * Default resource requirement limit value by resource name if resource limit is omitted.
+     */
     @JsonProperty("default")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, Quantity> getDefault() {
         return _default;
     }
 
+    /**
+     * Default resource requirement limit value by resource name if resource limit is omitted.
+     */
     @JsonProperty("default")
     public void setDefault(Map<String, Quantity> _default) {
         this._default = _default;
     }
 
+    /**
+     * DefaultRequest is the default resource requirement request value by resource name if resource request is omitted.
+     */
     @JsonProperty("defaultRequest")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, Quantity> getDefaultRequest() {
         return defaultRequest;
     }
 
+    /**
+     * DefaultRequest is the default resource requirement request value by resource name if resource request is omitted.
+     */
     @JsonProperty("defaultRequest")
     public void setDefaultRequest(Map<String, Quantity> defaultRequest) {
         this.defaultRequest = defaultRequest;
     }
 
+    /**
+     * Max usage constraints on this kind by resource name.
+     */
     @JsonProperty("max")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, Quantity> getMax() {
         return max;
     }
 
+    /**
+     * Max usage constraints on this kind by resource name.
+     */
     @JsonProperty("max")
     public void setMax(Map<String, Quantity> max) {
         this.max = max;
     }
 
+    /**
+     * MaxLimitRequestRatio if specified, the named resource must have a request and limit that are both non-zero where limit divided by request is less than or equal to the enumerated value; this represents the max burst for the named resource.
+     */
     @JsonProperty("maxLimitRequestRatio")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, Quantity> getMaxLimitRequestRatio() {
         return maxLimitRequestRatio;
     }
 
+    /**
+     * MaxLimitRequestRatio if specified, the named resource must have a request and limit that are both non-zero where limit divided by request is less than or equal to the enumerated value; this represents the max burst for the named resource.
+     */
     @JsonProperty("maxLimitRequestRatio")
     public void setMaxLimitRequestRatio(Map<String, Quantity> maxLimitRequestRatio) {
         this.maxLimitRequestRatio = maxLimitRequestRatio;
     }
 
+    /**
+     * Min usage constraints on this kind by resource name.
+     */
     @JsonProperty("min")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, Quantity> getMin() {
         return min;
     }
 
+    /**
+     * Min usage constraints on this kind by resource name.
+     */
     @JsonProperty("min")
     public void setMin(Map<String, Quantity> min) {
         this.min = min;
     }
 
+    /**
+     * Type of resource that this limit applies to.
+     */
     @JsonProperty("type")
     public String getType() {
         return type;
     }
 
+    /**
+     * Type of resource that this limit applies to.
+     */
     @JsonProperty("type")
     public void setType(String type) {
         this.type = type;

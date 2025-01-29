@@ -82,21 +82,33 @@ public class RegexRewrite implements Editable<RegexRewriteBuilder>, KubernetesRe
         this.rewrite = rewrite;
     }
 
+    /**
+     * [RE2 style regex-based match](https://github.com/google/re2/wiki/Syntax).
+     */
     @JsonProperty("match")
     public String getMatch() {
         return match;
     }
 
+    /**
+     * [RE2 style regex-based match](https://github.com/google/re2/wiki/Syntax).
+     */
     @JsonProperty("match")
     public void setMatch(String match) {
         this.match = match;
     }
 
+    /**
+     * The string that should replace into matching portions of original URI. Capture groups in the pattern can be referenced in the new URI. Examples:<br><p> <br><p> Example 1: rewrite with capture groups Path pattern "/service/update/v1/api" with match "^/service/([^/]+)(/.&#42;)$" and rewrite string of "/customprefix/\2/\1" would transform into "/customprefix/v1/api/update".<br><p> <br><p> Example 2: case insensitive rewrite Path pattern "/aaa/XxX/bbb" with match "(?i)/xxx/" and a rewrite string of /yyy/ would do a case-insensitive match and transform the path to "/aaa/yyy/bbb".
+     */
     @JsonProperty("rewrite")
     public String getRewrite() {
         return rewrite;
     }
 
+    /**
+     * The string that should replace into matching portions of original URI. Capture groups in the pattern can be referenced in the new URI. Examples:<br><p> <br><p> Example 1: rewrite with capture groups Path pattern "/service/update/v1/api" with match "^/service/([^/]+)(/.&#42;)$" and rewrite string of "/customprefix/\2/\1" would transform into "/customprefix/v1/api/update".<br><p> <br><p> Example 2: case insensitive rewrite Path pattern "/aaa/XxX/bbb" with match "(?i)/xxx/" and a rewrite string of /yyy/ would do a case-insensitive match and transform the path to "/aaa/yyy/bbb".
+     */
     @JsonProperty("rewrite")
     public void setRewrite(String rewrite) {
         this.rewrite = rewrite;

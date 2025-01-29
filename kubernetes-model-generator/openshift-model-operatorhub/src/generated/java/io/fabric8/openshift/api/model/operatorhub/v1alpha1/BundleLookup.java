@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * BundleLookup is a request to pull and unpackage the content of a bundle to the cluster.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -101,62 +104,98 @@ public class BundleLookup implements Editable<BundleLookupBuilder>, KubernetesRe
         this.replaces = replaces;
     }
 
+    /**
+     * BundleLookup is a request to pull and unpackage the content of a bundle to the cluster.
+     */
     @JsonProperty("catalogSourceRef")
     public ObjectReference getCatalogSourceRef() {
         return catalogSourceRef;
     }
 
+    /**
+     * BundleLookup is a request to pull and unpackage the content of a bundle to the cluster.
+     */
     @JsonProperty("catalogSourceRef")
     public void setCatalogSourceRef(ObjectReference catalogSourceRef) {
         this.catalogSourceRef = catalogSourceRef;
     }
 
+    /**
+     * Conditions represents the overall state of a BundleLookup.
+     */
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<BundleLookupCondition> getConditions() {
         return conditions;
     }
 
+    /**
+     * Conditions represents the overall state of a BundleLookup.
+     */
     @JsonProperty("conditions")
     public void setConditions(List<BundleLookupCondition> conditions) {
         this.conditions = conditions;
     }
 
+    /**
+     * Identifier is the catalog-unique name of the operator (the name of the CSV for bundles that contain CSVs)
+     */
     @JsonProperty("identifier")
     public String getIdentifier() {
         return identifier;
     }
 
+    /**
+     * Identifier is the catalog-unique name of the operator (the name of the CSV for bundles that contain CSVs)
+     */
     @JsonProperty("identifier")
     public void setIdentifier(String identifier) {
         this.identifier = identifier;
     }
 
+    /**
+     * Path refers to the location of a bundle to pull. It's typically an image reference.
+     */
     @JsonProperty("path")
     public String getPath() {
         return path;
     }
 
+    /**
+     * Path refers to the location of a bundle to pull. It's typically an image reference.
+     */
     @JsonProperty("path")
     public void setPath(String path) {
         this.path = path;
     }
 
+    /**
+     * The effective properties of the unpacked bundle.
+     */
     @JsonProperty("properties")
     public String getProperties() {
         return properties;
     }
 
+    /**
+     * The effective properties of the unpacked bundle.
+     */
     @JsonProperty("properties")
     public void setProperties(String properties) {
         this.properties = properties;
     }
 
+    /**
+     * Replaces is the name of the bundle to replace with the one found at Path.
+     */
     @JsonProperty("replaces")
     public String getReplaces() {
         return replaces;
     }
 
+    /**
+     * Replaces is the name of the bundle to replace with the one found at Path.
+     */
     @JsonProperty("replaces")
     public void setReplaces(String replaces) {
         this.replaces = replaces;

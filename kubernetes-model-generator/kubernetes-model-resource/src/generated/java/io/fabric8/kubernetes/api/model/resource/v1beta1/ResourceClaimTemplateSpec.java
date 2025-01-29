@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ResourceClaimTemplateSpec contains the metadata and fields for a ResourceClaim.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class ResourceClaimTemplateSpec implements Editable<ResourceClaimTemplate
         this.spec = spec;
     }
 
+    /**
+     * ResourceClaimTemplateSpec contains the metadata and fields for a ResourceClaim.
+     */
     @JsonProperty("metadata")
     public ObjectMeta getMetadata() {
         return metadata;
     }
 
+    /**
+     * ResourceClaimTemplateSpec contains the metadata and fields for a ResourceClaim.
+     */
     @JsonProperty("metadata")
     public void setMetadata(ObjectMeta metadata) {
         this.metadata = metadata;
     }
 
+    /**
+     * ResourceClaimTemplateSpec contains the metadata and fields for a ResourceClaim.
+     */
     @JsonProperty("spec")
     public ResourceClaimSpec getSpec() {
         return spec;
     }
 
+    /**
+     * ResourceClaimTemplateSpec contains the metadata and fields for a ResourceClaim.
+     */
     @JsonProperty("spec")
     public void setSpec(ResourceClaimSpec spec) {
         this.spec = spec;

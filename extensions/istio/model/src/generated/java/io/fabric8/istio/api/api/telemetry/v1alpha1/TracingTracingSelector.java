@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * TracingSelector provides a coarse-grained ability to configure tracing behavior based on certain traffic metadata (such as traffic direction).
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -78,11 +81,17 @@ public class TracingTracingSelector implements Editable<TracingTracingSelectorBu
         this.mode = mode;
     }
 
+    /**
+     * TracingSelector provides a coarse-grained ability to configure tracing behavior based on certain traffic metadata (such as traffic direction).
+     */
     @JsonProperty("mode")
     public WorkloadMode getMode() {
         return mode;
     }
 
+    /**
+     * TracingSelector provides a coarse-grained ability to configure tracing behavior based on certain traffic metadata (such as traffic direction).
+     */
     @JsonProperty("mode")
     public void setMode(WorkloadMode mode) {
         this.mode = mode;

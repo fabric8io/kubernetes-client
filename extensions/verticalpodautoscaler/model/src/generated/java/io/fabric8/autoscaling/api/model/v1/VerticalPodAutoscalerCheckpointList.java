@@ -40,6 +40,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * VerticalPodAutoscalerCheckpointList is a list of VerticalPodAutoscalerCheckpoint objects.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -78,17 +81,11 @@ import lombok.experimental.Accessors;
 public class VerticalPodAutoscalerCheckpointList implements Editable<VerticalPodAutoscalerCheckpointListBuilder>, KubernetesResource, KubernetesResourceList<io.fabric8.autoscaling.api.model.v1.VerticalPodAutoscalerCheckpoint>
 {
 
-    /**
-     * (Required)
-     */
     @JsonProperty("apiVersion")
     private String apiVersion = "autoscaling.k8s.io/v1";
     @JsonProperty("items")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<io.fabric8.autoscaling.api.model.v1.VerticalPodAutoscalerCheckpoint> items = new ArrayList<>();
-    /**
-     * (Required)
-     */
     @JsonProperty("kind")
     private String kind = "VerticalPodAutoscalerCheckpointList";
     @JsonProperty("metadata")
@@ -111,7 +108,7 @@ public class VerticalPodAutoscalerCheckpointList implements Editable<VerticalPod
     }
 
     /**
-     * (Required)
+     * APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -119,26 +116,32 @@ public class VerticalPodAutoscalerCheckpointList implements Editable<VerticalPod
     }
 
     /**
-     * (Required)
+     * APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
         this.apiVersion = apiVersion;
     }
 
+    /**
+     * VerticalPodAutoscalerCheckpointList is a list of VerticalPodAutoscalerCheckpoint objects.
+     */
     @JsonProperty("items")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.autoscaling.api.model.v1.VerticalPodAutoscalerCheckpoint> getItems() {
         return items;
     }
 
+    /**
+     * VerticalPodAutoscalerCheckpointList is a list of VerticalPodAutoscalerCheckpoint objects.
+     */
     @JsonProperty("items")
     public void setItems(List<io.fabric8.autoscaling.api.model.v1.VerticalPodAutoscalerCheckpoint> items) {
         this.items = items;
     }
 
     /**
-     * (Required)
+     * Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -146,18 +149,24 @@ public class VerticalPodAutoscalerCheckpointList implements Editable<VerticalPod
     }
 
     /**
-     * (Required)
+     * Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
      */
     @JsonProperty("kind")
     public void setKind(String kind) {
         this.kind = kind;
     }
 
+    /**
+     * VerticalPodAutoscalerCheckpointList is a list of VerticalPodAutoscalerCheckpoint objects.
+     */
     @JsonProperty("metadata")
     public ListMeta getMetadata() {
         return metadata;
     }
 
+    /**
+     * VerticalPodAutoscalerCheckpointList is a list of VerticalPodAutoscalerCheckpoint objects.
+     */
     @JsonProperty("metadata")
     public void setMetadata(ListMeta metadata) {
         this.metadata = metadata;

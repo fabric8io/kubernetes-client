@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * PodHttpChaosActions defines possible actions of HttpChaos.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -90,41 +93,65 @@ public class PodHttpChaosActions implements Editable<PodHttpChaosActionsBuilder>
         this.replace = replace;
     }
 
+    /**
+     * Abort is a rule to abort a http session.
+     */
     @JsonProperty("abort")
     public Boolean getAbort() {
         return abort;
     }
 
+    /**
+     * Abort is a rule to abort a http session.
+     */
     @JsonProperty("abort")
     public void setAbort(Boolean abort) {
         this.abort = abort;
     }
 
+    /**
+     * Delay represents the delay of the target request/response. A duration string is a possibly unsigned sequence of decimal numbers, each with optional fraction and a unit suffix, such as "300ms", "2h45m". Valid time units are "ns", "us" (or "µs"), "ms", "s", "m", "h".
+     */
     @JsonProperty("delay")
     public String getDelay() {
         return delay;
     }
 
+    /**
+     * Delay represents the delay of the target request/response. A duration string is a possibly unsigned sequence of decimal numbers, each with optional fraction and a unit suffix, such as "300ms", "2h45m". Valid time units are "ns", "us" (or "µs"), "ms", "s", "m", "h".
+     */
     @JsonProperty("delay")
     public void setDelay(String delay) {
         this.delay = delay;
     }
 
+    /**
+     * PodHttpChaosActions defines possible actions of HttpChaos.
+     */
     @JsonProperty("patch")
     public PodHttpChaosPatchActions getPatch() {
         return patch;
     }
 
+    /**
+     * PodHttpChaosActions defines possible actions of HttpChaos.
+     */
     @JsonProperty("patch")
     public void setPatch(PodHttpChaosPatchActions patch) {
         this.patch = patch;
     }
 
+    /**
+     * PodHttpChaosActions defines possible actions of HttpChaos.
+     */
     @JsonProperty("replace")
     public PodHttpChaosReplaceActions getReplace() {
         return replace;
     }
 
+    /**
+     * PodHttpChaosActions defines possible actions of HttpChaos.
+     */
     @JsonProperty("replace")
     public void setReplace(PodHttpChaosReplaceActions replace) {
         this.replace = replace;

@@ -36,6 +36,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * KafkaChannelSpec defines the specification for a KafkaChannel.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -99,52 +102,82 @@ public class KafkaChannelSpec implements Editable<KafkaChannelSpecBuilder>, Kube
         this.subscribers = subscribers;
     }
 
+    /**
+     * KafkaChannelSpec defines the specification for a KafkaChannel.
+     */
     @JsonProperty("delivery")
     public DeliverySpec getDelivery() {
         return delivery;
     }
 
+    /**
+     * KafkaChannelSpec defines the specification for a KafkaChannel.
+     */
     @JsonProperty("delivery")
     public void setDelivery(DeliverySpec delivery) {
         this.delivery = delivery;
     }
 
+    /**
+     * NumPartitions is the number of partitions of a Kafka topic. By default, it is set to 1.
+     */
     @JsonProperty("numPartitions")
     public Integer getNumPartitions() {
         return numPartitions;
     }
 
+    /**
+     * NumPartitions is the number of partitions of a Kafka topic. By default, it is set to 1.
+     */
     @JsonProperty("numPartitions")
     public void setNumPartitions(Integer numPartitions) {
         this.numPartitions = numPartitions;
     }
 
+    /**
+     * ReplicationFactor is the replication factor of a Kafka topic. By default, it is set to 1.
+     */
     @JsonProperty("replicationFactor")
     public Integer getReplicationFactor() {
         return replicationFactor;
     }
 
+    /**
+     * ReplicationFactor is the replication factor of a Kafka topic. By default, it is set to 1.
+     */
     @JsonProperty("replicationFactor")
     public void setReplicationFactor(Integer replicationFactor) {
         this.replicationFactor = replicationFactor;
     }
 
+    /**
+     * RetentionDuration is the duration for which events will be retained in the Kafka Topic. By default, it is set to 168 hours, which is the precise form for 7 days. More information on Duration format:<br><p>  - https://www.iso.org/iso-8601-date-and-time-format.html<br><p>  - https://en.wikipedia.org/wiki/ISO_8601
+     */
     @JsonProperty("retentionDuration")
     public String getRetentionDuration() {
         return retentionDuration;
     }
 
+    /**
+     * RetentionDuration is the duration for which events will be retained in the Kafka Topic. By default, it is set to 168 hours, which is the precise form for 7 days. More information on Duration format:<br><p>  - https://www.iso.org/iso-8601-date-and-time-format.html<br><p>  - https://en.wikipedia.org/wiki/ISO_8601
+     */
     @JsonProperty("retentionDuration")
     public void setRetentionDuration(String retentionDuration) {
         this.retentionDuration = retentionDuration;
     }
 
+    /**
+     * This is the list of subscriptions for this subscribable.
+     */
     @JsonProperty("subscribers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<SubscriberSpec> getSubscribers() {
         return subscribers;
     }
 
+    /**
+     * This is the list of subscriptions for this subscribable.
+     */
     @JsonProperty("subscribers")
     public void setSubscribers(List<SubscriberSpec> subscribers) {
         this.subscribers = subscribers;

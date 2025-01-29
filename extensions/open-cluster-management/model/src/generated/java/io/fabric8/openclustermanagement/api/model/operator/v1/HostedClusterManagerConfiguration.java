@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * HostedClusterManagerConfiguration represents customized configurations we need to set for clustermanager in the Hosted mode.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class HostedClusterManagerConfiguration implements Editable<HostedCluster
         this.workWebhookConfiguration = workWebhookConfiguration;
     }
 
+    /**
+     * HostedClusterManagerConfiguration represents customized configurations we need to set for clustermanager in the Hosted mode.
+     */
     @JsonProperty("registrationWebhookConfiguration")
     public WebhookConfiguration getRegistrationWebhookConfiguration() {
         return registrationWebhookConfiguration;
     }
 
+    /**
+     * HostedClusterManagerConfiguration represents customized configurations we need to set for clustermanager in the Hosted mode.
+     */
     @JsonProperty("registrationWebhookConfiguration")
     public void setRegistrationWebhookConfiguration(WebhookConfiguration registrationWebhookConfiguration) {
         this.registrationWebhookConfiguration = registrationWebhookConfiguration;
     }
 
+    /**
+     * HostedClusterManagerConfiguration represents customized configurations we need to set for clustermanager in the Hosted mode.
+     */
     @JsonProperty("workWebhookConfiguration")
     public WebhookConfiguration getWorkWebhookConfiguration() {
         return workWebhookConfiguration;
     }
 
+    /**
+     * HostedClusterManagerConfiguration represents customized configurations we need to set for clustermanager in the Hosted mode.
+     */
     @JsonProperty("workWebhookConfiguration")
     public void setWorkWebhookConfiguration(WebhookConfiguration workWebhookConfiguration) {
         this.workWebhookConfiguration = workWebhookConfiguration;

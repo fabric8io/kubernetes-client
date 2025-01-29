@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * EgressServiceSpec defines the desired state of EgressService
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -86,31 +89,49 @@ public class EgressServiceSpec implements Editable<EgressServiceSpecBuilder>, Ku
         this.sourceIPBy = sourceIPBy;
     }
 
+    /**
+     * The network which this service should send egress and corresponding ingress replies to. This is typically implemented as VRF mapping, representing a numeric id or string name of a routing table which by omission uses the default host routing.
+     */
     @JsonProperty("network")
     public String getNetwork() {
         return network;
     }
 
+    /**
+     * The network which this service should send egress and corresponding ingress replies to. This is typically implemented as VRF mapping, representing a numeric id or string name of a routing table which by omission uses the default host routing.
+     */
     @JsonProperty("network")
     public void setNetwork(String network) {
         this.network = network;
     }
 
+    /**
+     * EgressServiceSpec defines the desired state of EgressService
+     */
     @JsonProperty("nodeSelector")
     public LabelSelector getNodeSelector() {
         return nodeSelector;
     }
 
+    /**
+     * EgressServiceSpec defines the desired state of EgressService
+     */
     @JsonProperty("nodeSelector")
     public void setNodeSelector(LabelSelector nodeSelector) {
         this.nodeSelector = nodeSelector;
     }
 
+    /**
+     * Determines the source IP of egress traffic originating from the pods backing the LoadBalancer Service. When `LoadBalancerIP` the source IP is set to its LoadBalancer ingress IP. When `Network` the source IP is set according to the interface of the Network, leveraging the masquerade rules that are already in place. Typically these rules specify SNAT to the IP of the outgoing interface, which means the packet will typically leave with the IP of the node.
+     */
     @JsonProperty("sourceIPBy")
     public String getSourceIPBy() {
         return sourceIPBy;
     }
 
+    /**
+     * Determines the source IP of egress traffic originating from the pods backing the LoadBalancer Service. When `LoadBalancerIP` the source IP is set to its LoadBalancer ingress IP. When `Network` the source IP is set according to the interface of the Network, leveraging the masquerade rules that are already in place. Typically these rules specify SNAT to the IP of the outgoing interface, which means the packet will typically leave with the IP of the node.
+     */
     @JsonProperty("sourceIPBy")
     public void setSourceIPBy(String sourceIPBy) {
         this.sourceIPBy = sourceIPBy;

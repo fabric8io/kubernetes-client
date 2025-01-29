@@ -35,6 +35,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ConsoleQuickStartSpec is the desired quick start configuration.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -126,116 +129,182 @@ public class ConsoleQuickStartSpec implements Editable<ConsoleQuickStartSpecBuil
         this.tasks = tasks;
     }
 
+    /**
+     * accessReviewResources contains a list of resources that the user's access will be reviewed against in order for the user to complete the Quick Start. The Quick Start will be hidden if any of the access reviews fail.
+     */
     @JsonProperty("accessReviewResources")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ResourceAttributes> getAccessReviewResources() {
         return accessReviewResources;
     }
 
+    /**
+     * accessReviewResources contains a list of resources that the user's access will be reviewed against in order for the user to complete the Quick Start. The Quick Start will be hidden if any of the access reviews fail.
+     */
     @JsonProperty("accessReviewResources")
     public void setAccessReviewResources(List<ResourceAttributes> accessReviewResources) {
         this.accessReviewResources = accessReviewResources;
     }
 
+    /**
+     * conclusion sums up the Quick Start and suggests the possible next steps. (includes markdown)
+     */
     @JsonProperty("conclusion")
     public String getConclusion() {
         return conclusion;
     }
 
+    /**
+     * conclusion sums up the Quick Start and suggests the possible next steps. (includes markdown)
+     */
     @JsonProperty("conclusion")
     public void setConclusion(String conclusion) {
         this.conclusion = conclusion;
     }
 
+    /**
+     * description is the description of the Quick Start. (includes markdown)
+     */
     @JsonProperty("description")
     public String getDescription() {
         return description;
     }
 
+    /**
+     * description is the description of the Quick Start. (includes markdown)
+     */
     @JsonProperty("description")
     public void setDescription(String description) {
         this.description = description;
     }
 
+    /**
+     * displayName is the display name of the Quick Start.
+     */
     @JsonProperty("displayName")
     public String getDisplayName() {
         return displayName;
     }
 
+    /**
+     * displayName is the display name of the Quick Start.
+     */
     @JsonProperty("displayName")
     public void setDisplayName(String displayName) {
         this.displayName = displayName;
     }
 
+    /**
+     * durationMinutes describes approximately how many minutes it will take to complete the Quick Start.
+     */
     @JsonProperty("durationMinutes")
     public Integer getDurationMinutes() {
         return durationMinutes;
     }
 
+    /**
+     * durationMinutes describes approximately how many minutes it will take to complete the Quick Start.
+     */
     @JsonProperty("durationMinutes")
     public void setDurationMinutes(Integer durationMinutes) {
         this.durationMinutes = durationMinutes;
     }
 
+    /**
+     * icon is a base64 encoded image that will be displayed beside the Quick Start display name. The icon should be an vector image for easy scaling. The size of the icon should be 40x40.
+     */
     @JsonProperty("icon")
     public String getIcon() {
         return icon;
     }
 
+    /**
+     * icon is a base64 encoded image that will be displayed beside the Quick Start display name. The icon should be an vector image for easy scaling. The size of the icon should be 40x40.
+     */
     @JsonProperty("icon")
     public void setIcon(String icon) {
         this.icon = icon;
     }
 
+    /**
+     * introduction describes the purpose of the Quick Start. (includes markdown)
+     */
     @JsonProperty("introduction")
     public String getIntroduction() {
         return introduction;
     }
 
+    /**
+     * introduction describes the purpose of the Quick Start. (includes markdown)
+     */
     @JsonProperty("introduction")
     public void setIntroduction(String introduction) {
         this.introduction = introduction;
     }
 
+    /**
+     * nextQuickStart is a list of the following Quick Starts, suggested for the user to try.
+     */
     @JsonProperty("nextQuickStart")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getNextQuickStart() {
         return nextQuickStart;
     }
 
+    /**
+     * nextQuickStart is a list of the following Quick Starts, suggested for the user to try.
+     */
     @JsonProperty("nextQuickStart")
     public void setNextQuickStart(List<String> nextQuickStart) {
         this.nextQuickStart = nextQuickStart;
     }
 
+    /**
+     * prerequisites contains all prerequisites that need to be met before taking a Quick Start. (includes markdown)
+     */
     @JsonProperty("prerequisites")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getPrerequisites() {
         return prerequisites;
     }
 
+    /**
+     * prerequisites contains all prerequisites that need to be met before taking a Quick Start. (includes markdown)
+     */
     @JsonProperty("prerequisites")
     public void setPrerequisites(List<String> prerequisites) {
         this.prerequisites = prerequisites;
     }
 
+    /**
+     * tags is a list of strings that describe the Quick Start.
+     */
     @JsonProperty("tags")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getTags() {
         return tags;
     }
 
+    /**
+     * tags is a list of strings that describe the Quick Start.
+     */
     @JsonProperty("tags")
     public void setTags(List<String> tags) {
         this.tags = tags;
     }
 
+    /**
+     * tasks is the list of steps the user has to perform to complete the Quick Start.
+     */
     @JsonProperty("tasks")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ConsoleQuickStartTask> getTasks() {
         return tasks;
     }
 
+    /**
+     * tasks is the list of steps the user has to perform to complete the Quick Start.
+     */
     @JsonProperty("tasks")
     public void setTasks(List<ConsoleQuickStartTask> tasks) {
         this.tasks = tasks;

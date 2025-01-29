@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ReplicaSetStatus represents the current status of a ReplicaSet.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -101,62 +104,98 @@ public class ReplicaSetStatus implements Editable<ReplicaSetStatusBuilder>, Kube
         this.replicas = replicas;
     }
 
+    /**
+     * The number of available replicas (ready for at least minReadySeconds) for this replica set.
+     */
     @JsonProperty("availableReplicas")
     public Integer getAvailableReplicas() {
         return availableReplicas;
     }
 
+    /**
+     * The number of available replicas (ready for at least minReadySeconds) for this replica set.
+     */
     @JsonProperty("availableReplicas")
     public void setAvailableReplicas(Integer availableReplicas) {
         this.availableReplicas = availableReplicas;
     }
 
+    /**
+     * Represents the latest available observations of a replica set's current state.
+     */
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ReplicaSetCondition> getConditions() {
         return conditions;
     }
 
+    /**
+     * Represents the latest available observations of a replica set's current state.
+     */
     @JsonProperty("conditions")
     public void setConditions(List<ReplicaSetCondition> conditions) {
         this.conditions = conditions;
     }
 
+    /**
+     * The number of pods that have labels matching the labels of the pod template of the replicaset.
+     */
     @JsonProperty("fullyLabeledReplicas")
     public Integer getFullyLabeledReplicas() {
         return fullyLabeledReplicas;
     }
 
+    /**
+     * The number of pods that have labels matching the labels of the pod template of the replicaset.
+     */
     @JsonProperty("fullyLabeledReplicas")
     public void setFullyLabeledReplicas(Integer fullyLabeledReplicas) {
         this.fullyLabeledReplicas = fullyLabeledReplicas;
     }
 
+    /**
+     * ObservedGeneration reflects the generation of the most recently observed ReplicaSet.
+     */
     @JsonProperty("observedGeneration")
     public Long getObservedGeneration() {
         return observedGeneration;
     }
 
+    /**
+     * ObservedGeneration reflects the generation of the most recently observed ReplicaSet.
+     */
     @JsonProperty("observedGeneration")
     public void setObservedGeneration(Long observedGeneration) {
         this.observedGeneration = observedGeneration;
     }
 
+    /**
+     * The number of ready replicas for this replica set.
+     */
     @JsonProperty("readyReplicas")
     public Integer getReadyReplicas() {
         return readyReplicas;
     }
 
+    /**
+     * The number of ready replicas for this replica set.
+     */
     @JsonProperty("readyReplicas")
     public void setReadyReplicas(Integer readyReplicas) {
         this.readyReplicas = readyReplicas;
     }
 
+    /**
+     * Replicas is the most recently oberved number of replicas. More info: https://kubernetes.io/docs/concepts/workloads/controllers/replicationcontroller/#what-is-a-replicationcontroller
+     */
     @JsonProperty("replicas")
     public Integer getReplicas() {
         return replicas;
     }
 
+    /**
+     * Replicas is the most recently oberved number of replicas. More info: https://kubernetes.io/docs/concepts/workloads/controllers/replicationcontroller/#what-is-a-replicationcontroller
+     */
     @JsonProperty("replicas")
     public void setReplicas(Integer replicas) {
         this.replicas = replicas;

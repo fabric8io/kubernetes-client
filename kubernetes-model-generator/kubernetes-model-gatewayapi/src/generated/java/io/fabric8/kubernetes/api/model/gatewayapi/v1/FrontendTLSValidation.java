@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * FrontendTLSValidation holds configuration information that can be used to validate the frontend initiating the TLS connection
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -81,12 +84,18 @@ public class FrontendTLSValidation implements Editable<FrontendTLSValidationBuil
         this.caCertificateRefs = caCertificateRefs;
     }
 
+    /**
+     * CACertificateRefs contains one or more references to Kubernetes objects that contain TLS certificates of the Certificate Authorities that can be used as a trust anchor to validate the certificates presented by the client.<br><p> <br><p> A single CA certificate reference to a Kubernetes ConfigMap has "Core" support. Implementations MAY choose to support attaching multiple CA certificates to a Listener, but this behavior is implementation-specific.<br><p> <br><p> Support: Core - A single reference to a Kubernetes ConfigMap with the CA certificate in a key named `ca.crt`.<br><p> <br><p> Support: Implementation-specific (More than one reference, or other kinds of resources).<br><p> <br><p> References to a resource in a different namespace are invalid UNLESS there is a ReferenceGrant in the target namespace that allows the certificate to be attached. If a ReferenceGrant does not allow this reference, the "ResolvedRefs" condition MUST be set to False for this listener with the "RefNotPermitted" reason.
+     */
     @JsonProperty("caCertificateRefs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ObjectReference> getCaCertificateRefs() {
         return caCertificateRefs;
     }
 
+    /**
+     * CACertificateRefs contains one or more references to Kubernetes objects that contain TLS certificates of the Certificate Authorities that can be used as a trust anchor to validate the certificates presented by the client.<br><p> <br><p> A single CA certificate reference to a Kubernetes ConfigMap has "Core" support. Implementations MAY choose to support attaching multiple CA certificates to a Listener, but this behavior is implementation-specific.<br><p> <br><p> Support: Core - A single reference to a Kubernetes ConfigMap with the CA certificate in a key named `ca.crt`.<br><p> <br><p> Support: Implementation-specific (More than one reference, or other kinds of resources).<br><p> <br><p> References to a resource in a different namespace are invalid UNLESS there is a ReferenceGrant in the target namespace that allows the certificate to be attached. If a ReferenceGrant does not allow this reference, the "ResolvedRefs" condition MUST be set to False for this listener with the "RefNotPermitted" reason.
+     */
     @JsonProperty("caCertificateRefs")
     public void setCaCertificateRefs(List<ObjectReference> caCertificateRefs) {
         this.caCertificateRefs = caCertificateRefs;

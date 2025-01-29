@@ -92,11 +92,17 @@ public class TokenClaimValidationRule implements Editable<TokenClaimValidationRu
         this.requiredClaim = requiredClaim;
     }
 
+    /**
+     * Type sets the type of the validation rule
+     */
     @JsonProperty("type")
     public String getType() {
         return type;
     }
 
+    /**
+     * Type sets the type of the validation rule
+     */
     @JsonProperty("type")
     public void setType(String type) {
         this.type = type;

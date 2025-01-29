@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * PodSecurityPolicySelfSubjectReviewSpec contains specification for PodSecurityPolicySelfSubjectReview.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -78,11 +81,17 @@ public class PodSecurityPolicySelfSubjectReviewSpec implements Editable<PodSecur
         this.template = template;
     }
 
+    /**
+     * PodSecurityPolicySelfSubjectReviewSpec contains specification for PodSecurityPolicySelfSubjectReview.
+     */
     @JsonProperty("template")
     public PodTemplateSpec getTemplate() {
         return template;
     }
 
+    /**
+     * PodSecurityPolicySelfSubjectReviewSpec contains specification for PodSecurityPolicySelfSubjectReview.
+     */
     @JsonProperty("template")
     public void setTemplate(PodTemplateSpec template) {
         this.template = template;

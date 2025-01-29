@@ -33,6 +33,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * RecommendedContainerResources is the recommendation of resources computed by autoscaler for a specific container. Respects the container resource policy if present in the spec. In particular the recommendation is not produced for containers with `ContainerScalingMode` set to 'Off'.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -99,55 +102,85 @@ public class RecommendedContainerResources implements Editable<RecommendedContai
         this.upperBound = upperBound;
     }
 
+    /**
+     * Name of the container.
+     */
     @JsonProperty("containerName")
     public String getContainerName() {
         return containerName;
     }
 
+    /**
+     * Name of the container.
+     */
     @JsonProperty("containerName")
     public void setContainerName(String containerName) {
         this.containerName = containerName;
     }
 
+    /**
+     * Minimum recommended amount of resources. Observes ContainerResourcePolicy. This amount is not guaranteed to be sufficient for the application to operate in a stable way, however running with less resources is likely to have significant impact on performance/availability.
+     */
     @JsonProperty("lowerBound")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, Quantity> getLowerBound() {
         return lowerBound;
     }
 
+    /**
+     * Minimum recommended amount of resources. Observes ContainerResourcePolicy. This amount is not guaranteed to be sufficient for the application to operate in a stable way, however running with less resources is likely to have significant impact on performance/availability.
+     */
     @JsonProperty("lowerBound")
     public void setLowerBound(Map<String, Quantity> lowerBound) {
         this.lowerBound = lowerBound;
     }
 
+    /**
+     * Recommended amount of resources. Observes ContainerResourcePolicy.
+     */
     @JsonProperty("target")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, Quantity> getTarget() {
         return target;
     }
 
+    /**
+     * Recommended amount of resources. Observes ContainerResourcePolicy.
+     */
     @JsonProperty("target")
     public void setTarget(Map<String, Quantity> target) {
         this.target = target;
     }
 
+    /**
+     * The most recent recommended resources target computed by the autoscaler for the controlled pods, based only on actual resource usage, not taking into account the ContainerResourcePolicy. May differ from the Recommendation if the actual resource usage causes the target to violate the ContainerResourcePolicy (lower than MinAllowed or higher that MaxAllowed). Used only as status indication, will not affect actual resource assignment.
+     */
     @JsonProperty("uncappedTarget")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, Quantity> getUncappedTarget() {
         return uncappedTarget;
     }
 
+    /**
+     * The most recent recommended resources target computed by the autoscaler for the controlled pods, based only on actual resource usage, not taking into account the ContainerResourcePolicy. May differ from the Recommendation if the actual resource usage causes the target to violate the ContainerResourcePolicy (lower than MinAllowed or higher that MaxAllowed). Used only as status indication, will not affect actual resource assignment.
+     */
     @JsonProperty("uncappedTarget")
     public void setUncappedTarget(Map<String, Quantity> uncappedTarget) {
         this.uncappedTarget = uncappedTarget;
     }
 
+    /**
+     * Maximum recommended amount of resources. Observes ContainerResourcePolicy. Any resources allocated beyond this value are likely wasted. This value may be larger than the maximum amount of application is actually capable of consuming.
+     */
     @JsonProperty("upperBound")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, Quantity> getUpperBound() {
         return upperBound;
     }
 
+    /**
+     * Maximum recommended amount of resources. Observes ContainerResourcePolicy. Any resources allocated beyond this value are likely wasted. This value may be larger than the maximum amount of application is actually capable of consuming.
+     */
     @JsonProperty("upperBound")
     public void setUpperBound(Map<String, Quantity> upperBound) {
         this.upperBound = upperBound;

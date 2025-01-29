@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * FailureDomain holds the region and zone failure domain and the vCenter topology of that failure domain.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -94,51 +97,81 @@ public class FailureDomain implements Editable<FailureDomainBuilder>, Kubernetes
         this.zone = zone;
     }
 
+    /**
+     * name defines the name of the FailureDomain This name is arbitrary but will be used in VSpherePlatformDeploymentZone for association.
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * name defines the name of the FailureDomain This name is arbitrary but will be used in VSpherePlatformDeploymentZone for association.
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * region defines a FailureDomainCoordinate which includes the name of the vCenter tag, the failure domain type and the name of the vCenter tag category.
+     */
     @JsonProperty("region")
     public String getRegion() {
         return region;
     }
 
+    /**
+     * region defines a FailureDomainCoordinate which includes the name of the vCenter tag, the failure domain type and the name of the vCenter tag category.
+     */
     @JsonProperty("region")
     public void setRegion(String region) {
         this.region = region;
     }
 
+    /**
+     * server is the fully-qualified domain name or the IP address of the vCenter server.
+     */
     @JsonProperty("server")
     public String getServer() {
         return server;
     }
 
+    /**
+     * server is the fully-qualified domain name or the IP address of the vCenter server.
+     */
     @JsonProperty("server")
     public void setServer(String server) {
         this.server = server;
     }
 
+    /**
+     * FailureDomain holds the region and zone failure domain and the vCenter topology of that failure domain.
+     */
     @JsonProperty("topology")
     public Topology getTopology() {
         return topology;
     }
 
+    /**
+     * FailureDomain holds the region and zone failure domain and the vCenter topology of that failure domain.
+     */
     @JsonProperty("topology")
     public void setTopology(Topology topology) {
         this.topology = topology;
     }
 
+    /**
+     * zone defines a VSpherePlatformFailureDomain which includes the name of the vCenter tag, the failure domain type and the name of the vCenter tag category.
+     */
     @JsonProperty("zone")
     public String getZone() {
         return zone;
     }
 
+    /**
+     * zone defines a VSpherePlatformFailureDomain which includes the name of the vCenter tag, the failure domain type and the name of the vCenter tag category.
+     */
     @JsonProperty("zone")
     public void setZone(String zone) {
         this.zone = zone;

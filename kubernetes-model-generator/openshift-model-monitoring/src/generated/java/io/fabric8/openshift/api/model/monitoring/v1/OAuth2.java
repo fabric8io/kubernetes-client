@@ -35,6 +35,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * OAuth2 configures OAuth2 settings.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -120,104 +123,164 @@ public class OAuth2 implements Editable<OAuth2Builder>, KubernetesResource
         this.tokenUrl = tokenUrl;
     }
 
+    /**
+     * OAuth2 configures OAuth2 settings.
+     */
     @JsonProperty("clientId")
     public SecretOrConfigMap getClientId() {
         return clientId;
     }
 
+    /**
+     * OAuth2 configures OAuth2 settings.
+     */
     @JsonProperty("clientId")
     public void setClientId(SecretOrConfigMap clientId) {
         this.clientId = clientId;
     }
 
+    /**
+     * OAuth2 configures OAuth2 settings.
+     */
     @JsonProperty("clientSecret")
     public SecretKeySelector getClientSecret() {
         return clientSecret;
     }
 
+    /**
+     * OAuth2 configures OAuth2 settings.
+     */
     @JsonProperty("clientSecret")
     public void setClientSecret(SecretKeySelector clientSecret) {
         this.clientSecret = clientSecret;
     }
 
+    /**
+     * `endpointParams` configures the HTTP parameters to append to the token URL.
+     */
     @JsonProperty("endpointParams")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getEndpointParams() {
         return endpointParams;
     }
 
+    /**
+     * `endpointParams` configures the HTTP parameters to append to the token URL.
+     */
     @JsonProperty("endpointParams")
     public void setEndpointParams(Map<String, String> endpointParams) {
         this.endpointParams = endpointParams;
     }
 
+    /**
+     * `noProxy` is a comma-separated string that can contain IPs, CIDR notation, domain names that should be excluded from proxying. IP and domain names can contain port numbers.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0 or Alertmanager &gt;= 0.25.0.
+     */
     @JsonProperty("noProxy")
     public String getNoProxy() {
         return noProxy;
     }
 
+    /**
+     * `noProxy` is a comma-separated string that can contain IPs, CIDR notation, domain names that should be excluded from proxying. IP and domain names can contain port numbers.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0 or Alertmanager &gt;= 0.25.0.
+     */
     @JsonProperty("noProxy")
     public void setNoProxy(String noProxy) {
         this.noProxy = noProxy;
     }
 
+    /**
+     * ProxyConnectHeader optionally specifies headers to send to proxies during CONNECT requests.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0 or Alertmanager &gt;= 0.25.0.
+     */
     @JsonProperty("proxyConnectHeader")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, List<SecretKeySelector>> getProxyConnectHeader() {
         return proxyConnectHeader;
     }
 
+    /**
+     * ProxyConnectHeader optionally specifies headers to send to proxies during CONNECT requests.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0 or Alertmanager &gt;= 0.25.0.
+     */
     @JsonProperty("proxyConnectHeader")
     public void setProxyConnectHeader(Map<String, List<SecretKeySelector>> proxyConnectHeader) {
         this.proxyConnectHeader = proxyConnectHeader;
     }
 
+    /**
+     * Whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).<br><p> <br><p> It requires Prometheus &gt;= v2.43.0 or Alertmanager &gt;= 0.25.0.
+     */
     @JsonProperty("proxyFromEnvironment")
     public Boolean getProxyFromEnvironment() {
         return proxyFromEnvironment;
     }
 
+    /**
+     * Whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).<br><p> <br><p> It requires Prometheus &gt;= v2.43.0 or Alertmanager &gt;= 0.25.0.
+     */
     @JsonProperty("proxyFromEnvironment")
     public void setProxyFromEnvironment(Boolean proxyFromEnvironment) {
         this.proxyFromEnvironment = proxyFromEnvironment;
     }
 
+    /**
+     * `proxyURL` defines the HTTP proxy server to use.
+     */
     @JsonProperty("proxyUrl")
     public String getProxyUrl() {
         return proxyUrl;
     }
 
+    /**
+     * `proxyURL` defines the HTTP proxy server to use.
+     */
     @JsonProperty("proxyUrl")
     public void setProxyUrl(String proxyUrl) {
         this.proxyUrl = proxyUrl;
     }
 
+    /**
+     * `scopes` defines the OAuth2 scopes used for the token request.
+     */
     @JsonProperty("scopes")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getScopes() {
         return scopes;
     }
 
+    /**
+     * `scopes` defines the OAuth2 scopes used for the token request.
+     */
     @JsonProperty("scopes")
     public void setScopes(List<String> scopes) {
         this.scopes = scopes;
     }
 
+    /**
+     * OAuth2 configures OAuth2 settings.
+     */
     @JsonProperty("tlsConfig")
     public SafeTLSConfig getTlsConfig() {
         return tlsConfig;
     }
 
+    /**
+     * OAuth2 configures OAuth2 settings.
+     */
     @JsonProperty("tlsConfig")
     public void setTlsConfig(SafeTLSConfig tlsConfig) {
         this.tlsConfig = tlsConfig;
     }
 
+    /**
+     * `tokenURL` configures the URL to fetch the token from.
+     */
     @JsonProperty("tokenUrl")
     public String getTokenUrl() {
         return tokenUrl;
     }
 
+    /**
+     * `tokenURL` configures the URL to fetch the token from.
+     */
     @JsonProperty("tokenUrl")
     public void setTokenUrl(String tokenUrl) {
         this.tokenUrl = tokenUrl;

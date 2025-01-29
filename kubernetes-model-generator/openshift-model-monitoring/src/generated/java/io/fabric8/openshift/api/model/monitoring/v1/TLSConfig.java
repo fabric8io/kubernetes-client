@@ -33,6 +33,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * TLSConfig extends the safe TLS configuration with file parameters.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -115,101 +118,161 @@ public class TLSConfig implements Editable<TLSConfigBuilder>, KubernetesResource
         this.serverName = serverName;
     }
 
+    /**
+     * TLSConfig extends the safe TLS configuration with file parameters.
+     */
     @JsonProperty("ca")
     public SecretOrConfigMap getCa() {
         return ca;
     }
 
+    /**
+     * TLSConfig extends the safe TLS configuration with file parameters.
+     */
     @JsonProperty("ca")
     public void setCa(SecretOrConfigMap ca) {
         this.ca = ca;
     }
 
+    /**
+     * Path to the CA cert in the Prometheus container to use for the targets.
+     */
     @JsonProperty("caFile")
     public String getCaFile() {
         return caFile;
     }
 
+    /**
+     * Path to the CA cert in the Prometheus container to use for the targets.
+     */
     @JsonProperty("caFile")
     public void setCaFile(String caFile) {
         this.caFile = caFile;
     }
 
+    /**
+     * TLSConfig extends the safe TLS configuration with file parameters.
+     */
     @JsonProperty("cert")
     public SecretOrConfigMap getCert() {
         return cert;
     }
 
+    /**
+     * TLSConfig extends the safe TLS configuration with file parameters.
+     */
     @JsonProperty("cert")
     public void setCert(SecretOrConfigMap cert) {
         this.cert = cert;
     }
 
+    /**
+     * Path to the client cert file in the Prometheus container for the targets.
+     */
     @JsonProperty("certFile")
     public String getCertFile() {
         return certFile;
     }
 
+    /**
+     * Path to the client cert file in the Prometheus container for the targets.
+     */
     @JsonProperty("certFile")
     public void setCertFile(String certFile) {
         this.certFile = certFile;
     }
 
+    /**
+     * Disable target certificate validation.
+     */
     @JsonProperty("insecureSkipVerify")
     public Boolean getInsecureSkipVerify() {
         return insecureSkipVerify;
     }
 
+    /**
+     * Disable target certificate validation.
+     */
     @JsonProperty("insecureSkipVerify")
     public void setInsecureSkipVerify(Boolean insecureSkipVerify) {
         this.insecureSkipVerify = insecureSkipVerify;
     }
 
+    /**
+     * Path to the client key file in the Prometheus container for the targets.
+     */
     @JsonProperty("keyFile")
     public String getKeyFile() {
         return keyFile;
     }
 
+    /**
+     * Path to the client key file in the Prometheus container for the targets.
+     */
     @JsonProperty("keyFile")
     public void setKeyFile(String keyFile) {
         this.keyFile = keyFile;
     }
 
+    /**
+     * TLSConfig extends the safe TLS configuration with file parameters.
+     */
     @JsonProperty("keySecret")
     public SecretKeySelector getKeySecret() {
         return keySecret;
     }
 
+    /**
+     * TLSConfig extends the safe TLS configuration with file parameters.
+     */
     @JsonProperty("keySecret")
     public void setKeySecret(SecretKeySelector keySecret) {
         this.keySecret = keySecret;
     }
 
+    /**
+     * Maximum acceptable TLS version.<br><p> <br><p> It requires Prometheus &gt;= v2.41.0.
+     */
     @JsonProperty("maxVersion")
     public String getMaxVersion() {
         return maxVersion;
     }
 
+    /**
+     * Maximum acceptable TLS version.<br><p> <br><p> It requires Prometheus &gt;= v2.41.0.
+     */
     @JsonProperty("maxVersion")
     public void setMaxVersion(String maxVersion) {
         this.maxVersion = maxVersion;
     }
 
+    /**
+     * Minimum acceptable TLS version.<br><p> <br><p> It requires Prometheus &gt;= v2.35.0.
+     */
     @JsonProperty("minVersion")
     public String getMinVersion() {
         return minVersion;
     }
 
+    /**
+     * Minimum acceptable TLS version.<br><p> <br><p> It requires Prometheus &gt;= v2.35.0.
+     */
     @JsonProperty("minVersion")
     public void setMinVersion(String minVersion) {
         this.minVersion = minVersion;
     }
 
+    /**
+     * Used to verify the hostname for the targets.
+     */
     @JsonProperty("serverName")
     public String getServerName() {
         return serverName;
     }
 
+    /**
+     * Used to verify the hostname for the targets.
+     */
     @JsonProperty("serverName")
     public void setServerName(String serverName) {
         this.serverName = serverName;

@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ImageRegistryConfigRequests defines registry limits on requests read and write.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class ImageRegistryConfigRequests implements Editable<ImageRegistryConfig
         this.write = write;
     }
 
+    /**
+     * ImageRegistryConfigRequests defines registry limits on requests read and write.
+     */
     @JsonProperty("read")
     public ImageRegistryConfigRequestsLimits getRead() {
         return read;
     }
 
+    /**
+     * ImageRegistryConfigRequests defines registry limits on requests read and write.
+     */
     @JsonProperty("read")
     public void setRead(ImageRegistryConfigRequestsLimits read) {
         this.read = read;
     }
 
+    /**
+     * ImageRegistryConfigRequests defines registry limits on requests read and write.
+     */
     @JsonProperty("write")
     public ImageRegistryConfigRequestsLimits getWrite() {
         return write;
     }
 
+    /**
+     * ImageRegistryConfigRequests defines registry limits on requests read and write.
+     */
     @JsonProperty("write")
     public void setWrite(ImageRegistryConfigRequestsLimits write) {
         this.write = write;

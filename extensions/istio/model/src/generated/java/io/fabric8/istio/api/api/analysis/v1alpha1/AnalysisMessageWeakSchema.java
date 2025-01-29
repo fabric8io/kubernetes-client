@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * AnalysisMessageWeakSchema is the set of information that's needed to define a weakly-typed schema. The purpose of this proto is to provide a mechanism for validating istio/istio/galley/pkg/config/analysis/msg/messages.yaml to make sure that we don't allow committing underspecified types.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -93,42 +96,66 @@ public class AnalysisMessageWeakSchema implements Editable<AnalysisMessageWeakSc
         this.template = template;
     }
 
+    /**
+     * A description of the arguments for a particular message type
+     */
     @JsonProperty("args")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<AnalysisMessageWeakSchemaArgType> getArgs() {
         return args;
     }
 
+    /**
+     * A description of the arguments for a particular message type
+     */
     @JsonProperty("args")
     public void setArgs(List<AnalysisMessageWeakSchemaArgType> args) {
         this.args = args;
     }
 
+    /**
+     * A human readable description of what the error means. Required.
+     */
     @JsonProperty("description")
     public String getDescription() {
         return description;
     }
 
+    /**
+     * A human readable description of what the error means. Required.
+     */
     @JsonProperty("description")
     public void setDescription(String description) {
         this.description = description;
     }
 
+    /**
+     * AnalysisMessageWeakSchema is the set of information that's needed to define a weakly-typed schema. The purpose of this proto is to provide a mechanism for validating istio/istio/galley/pkg/config/analysis/msg/messages.yaml to make sure that we don't allow committing underspecified types.
+     */
     @JsonProperty("messageBase")
     public AnalysisMessageBase getMessageBase() {
         return messageBase;
     }
 
+    /**
+     * AnalysisMessageWeakSchema is the set of information that's needed to define a weakly-typed schema. The purpose of this proto is to provide a mechanism for validating istio/istio/galley/pkg/config/analysis/msg/messages.yaml to make sure that we don't allow committing underspecified types.
+     */
     @JsonProperty("messageBase")
     public void setMessageBase(AnalysisMessageBase messageBase) {
         this.messageBase = messageBase;
     }
 
+    /**
+     * A go-style template string (https://golang.org/pkg/fmt/#hdr-Printing) defining how to combine the args for a  particular message into a log line. Required.
+     */
     @JsonProperty("template")
     public String getTemplate() {
         return template;
     }
 
+    /**
+     * A go-style template string (https://golang.org/pkg/fmt/#hdr-Printing) defining how to combine the args for a  particular message into a log line. Required.
+     */
     @JsonProperty("template")
     public void setTemplate(String template) {
         this.template = template;

@@ -94,51 +94,81 @@ public class ShardStatus implements Editable<ShardStatusBuilder>, KubernetesReso
         this.updatedReplicas = updatedReplicas;
     }
 
+    /**
+     * Total number of available pods (ready for at least minReadySeconds) targeted by this shard.
+     */
     @JsonProperty("availableReplicas")
     public Integer getAvailableReplicas() {
         return availableReplicas;
     }
 
+    /**
+     * Total number of available pods (ready for at least minReadySeconds) targeted by this shard.
+     */
     @JsonProperty("availableReplicas")
     public void setAvailableReplicas(Integer availableReplicas) {
         this.availableReplicas = availableReplicas;
     }
 
+    /**
+     * Total number of pods targeted by this shard.
+     */
     @JsonProperty("replicas")
     public Integer getReplicas() {
         return replicas;
     }
 
+    /**
+     * Total number of pods targeted by this shard.
+     */
     @JsonProperty("replicas")
     public void setReplicas(Integer replicas) {
         this.replicas = replicas;
     }
 
+    /**
+     * Identifier of the shard.
+     */
     @JsonProperty("shardID")
     public String getShardID() {
         return shardID;
     }
 
+    /**
+     * Identifier of the shard.
+     */
     @JsonProperty("shardID")
     public void setShardID(String shardID) {
         this.shardID = shardID;
     }
 
+    /**
+     * Total number of unavailable pods targeted by this shard.
+     */
     @JsonProperty("unavailableReplicas")
     public Integer getUnavailableReplicas() {
         return unavailableReplicas;
     }
 
+    /**
+     * Total number of unavailable pods targeted by this shard.
+     */
     @JsonProperty("unavailableReplicas")
     public void setUnavailableReplicas(Integer unavailableReplicas) {
         this.unavailableReplicas = unavailableReplicas;
     }
 
+    /**
+     * Total number of non-terminated pods targeted by this shard that have the desired spec.
+     */
     @JsonProperty("updatedReplicas")
     public Integer getUpdatedReplicas() {
         return updatedReplicas;
     }
 
+    /**
+     * Total number of non-terminated pods targeted by this shard that have the desired spec.
+     */
     @JsonProperty("updatedReplicas")
     public void setUpdatedReplicas(Integer updatedReplicas) {
         this.updatedReplicas = updatedReplicas;

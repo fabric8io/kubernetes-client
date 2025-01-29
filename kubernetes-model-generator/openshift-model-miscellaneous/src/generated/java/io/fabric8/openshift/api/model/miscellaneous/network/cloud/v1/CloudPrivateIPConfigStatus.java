@@ -35,6 +35,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * CloudPrivateIPConfigStatus specifies the node assignment together with its assignment condition.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -86,22 +89,34 @@ public class CloudPrivateIPConfigStatus implements Editable<CloudPrivateIPConfig
         this.node = node;
     }
 
+    /**
+     * condition is the assignment condition of the private IP and its status
+     */
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Condition> getConditions() {
         return conditions;
     }
 
+    /**
+     * condition is the assignment condition of the private IP and its status
+     */
     @JsonProperty("conditions")
     public void setConditions(List<Condition> conditions) {
         this.conditions = conditions;
     }
 
+    /**
+     * node is the node name, as specified by the Kubernetes field: node.metadata.name
+     */
     @JsonProperty("node")
     public String getNode() {
         return node;
     }
 
+    /**
+     * node is the node name, as specified by the Kubernetes field: node.metadata.name
+     */
     @JsonProperty("node")
     public void setNode(String node) {
         this.node = node;

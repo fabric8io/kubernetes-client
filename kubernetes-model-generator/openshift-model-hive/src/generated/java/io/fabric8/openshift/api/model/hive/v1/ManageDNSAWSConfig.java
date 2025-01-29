@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ManageDNSAWSConfig contains AWS-specific info to manage a given domain.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class ManageDNSAWSConfig implements Editable<ManageDNSAWSConfigBuilder>, 
         this.region = region;
     }
 
+    /**
+     * ManageDNSAWSConfig contains AWS-specific info to manage a given domain.
+     */
     @JsonProperty("credentialsSecretRef")
     public LocalObjectReference getCredentialsSecretRef() {
         return credentialsSecretRef;
     }
 
+    /**
+     * ManageDNSAWSConfig contains AWS-specific info to manage a given domain.
+     */
     @JsonProperty("credentialsSecretRef")
     public void setCredentialsSecretRef(LocalObjectReference credentialsSecretRef) {
         this.credentialsSecretRef = credentialsSecretRef;
     }
 
+    /**
+     * Region is the AWS region to use for route53 operations. This defaults to us-east-1. For AWS China, use cn-northwest-1.
+     */
     @JsonProperty("region")
     public String getRegion() {
         return region;
     }
 
+    /**
+     * Region is the AWS region to use for route53 operations. This defaults to us-east-1. For AWS China, use cn-northwest-1.
+     */
     @JsonProperty("region")
     public void setRegion(String region) {
         this.region = region;

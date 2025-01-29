@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Challenge specifies a challenge offered by the ACME server for an Order. An appropriate Challenge resource can be created to perform the ACME challenge process.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -86,31 +89,49 @@ public class ACMEChallenge implements Editable<ACMEChallengeBuilder>, Kubernetes
         this.url = url;
     }
 
+    /**
+     * Token is the token that must be presented for this challenge. This is used to compute the 'key' that must also be presented.
+     */
     @JsonProperty("token")
     public String getToken() {
         return token;
     }
 
+    /**
+     * Token is the token that must be presented for this challenge. This is used to compute the 'key' that must also be presented.
+     */
     @JsonProperty("token")
     public void setToken(String token) {
         this.token = token;
     }
 
+    /**
+     * Type is the type of challenge being offered, e.g. 'http-01', 'dns-01', 'tls-sni-01', etc. This is the raw value retrieved from the ACME server. Only 'http-01' and 'dns-01' are supported by cert-manager, other values will be ignored.
+     */
     @JsonProperty("type")
     public String getType() {
         return type;
     }
 
+    /**
+     * Type is the type of challenge being offered, e.g. 'http-01', 'dns-01', 'tls-sni-01', etc. This is the raw value retrieved from the ACME server. Only 'http-01' and 'dns-01' are supported by cert-manager, other values will be ignored.
+     */
     @JsonProperty("type")
     public void setType(String type) {
         this.type = type;
     }
 
+    /**
+     * URL is the URL of this challenge. It can be used to retrieve additional metadata about the Challenge from the ACME server.
+     */
     @JsonProperty("url")
     public String getUrl() {
         return url;
     }
 
+    /**
+     * URL is the URL of this challenge. It can be used to retrieve additional metadata about the Challenge from the ACME server.
+     */
     @JsonProperty("url")
     public void setUrl(String url) {
         this.url = url;

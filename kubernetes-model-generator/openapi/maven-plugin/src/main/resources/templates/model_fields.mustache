@@ -14,17 +14,7 @@
     limitations under the License.
 }}
 {{#fields}}
-{{#hasDescription}}
-    /**
-     * {{description}}
-     */
-{{/hasDescription}}
 {{#required}}{{/required}}
-{{#legacyRequired}}
-    /**
-     * (Required)
-     */
-{{/legacyRequired}}
     @JsonProperty("{{propertyName}}")
 {{#serializeUsing}}
     @JsonSerialize(using = {{.}})

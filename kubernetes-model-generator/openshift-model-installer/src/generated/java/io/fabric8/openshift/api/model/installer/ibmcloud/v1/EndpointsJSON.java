@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * EndpointsJSON represents the JSON format to override IBM Cloud Terraform provider utilized service endpoints. https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/guides/custom-service-endpoints#file-structure-for-endpoints-file
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -118,111 +121,177 @@ public class EndpointsJSON implements Editable<EndpointsJSONBuilder>, Kubernetes
         this.iBMCLOUDRESOURCEMANAGEMENTAPIENDPOINT = iBMCLOUDRESOURCEMANAGEMENTAPIENDPOINT;
     }
 
+    /**
+     * EndpointsJSON represents the JSON format to override IBM Cloud Terraform provider utilized service endpoints. https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/guides/custom-service-endpoints#file-structure-for-endpoints-file
+     */
     @JsonProperty("IBMCLOUD_CIS_API_ENDPOINT")
     public EndpointsVisibility getIBMCLOUDCISAPIENDPOINT() {
         return iBMCLOUDCISAPIENDPOINT;
     }
 
+    /**
+     * EndpointsJSON represents the JSON format to override IBM Cloud Terraform provider utilized service endpoints. https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/guides/custom-service-endpoints#file-structure-for-endpoints-file
+     */
     @JsonProperty("IBMCLOUD_CIS_API_ENDPOINT")
     public void setIBMCLOUDCISAPIENDPOINT(EndpointsVisibility iBMCLOUDCISAPIENDPOINT) {
         this.iBMCLOUDCISAPIENDPOINT = iBMCLOUDCISAPIENDPOINT;
     }
 
+    /**
+     * EndpointsJSON represents the JSON format to override IBM Cloud Terraform provider utilized service endpoints. https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/guides/custom-service-endpoints#file-structure-for-endpoints-file
+     */
     @JsonProperty("IBMCLOUD_COS_CONFIG_ENDPOINT")
     public EndpointsVisibility getIBMCLOUDCOSCONFIGENDPOINT() {
         return iBMCLOUDCOSCONFIGENDPOINT;
     }
 
+    /**
+     * EndpointsJSON represents the JSON format to override IBM Cloud Terraform provider utilized service endpoints. https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/guides/custom-service-endpoints#file-structure-for-endpoints-file
+     */
     @JsonProperty("IBMCLOUD_COS_CONFIG_ENDPOINT")
     public void setIBMCLOUDCOSCONFIGENDPOINT(EndpointsVisibility iBMCLOUDCOSCONFIGENDPOINT) {
         this.iBMCLOUDCOSCONFIGENDPOINT = iBMCLOUDCOSCONFIGENDPOINT;
     }
 
+    /**
+     * EndpointsJSON represents the JSON format to override IBM Cloud Terraform provider utilized service endpoints. https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/guides/custom-service-endpoints#file-structure-for-endpoints-file
+     */
     @JsonProperty("IBMCLOUD_GS_API_ENDPOINT")
     public EndpointsVisibility getIBMCLOUDGSAPIENDPOINT() {
         return iBMCLOUDGSAPIENDPOINT;
     }
 
+    /**
+     * EndpointsJSON represents the JSON format to override IBM Cloud Terraform provider utilized service endpoints. https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/guides/custom-service-endpoints#file-structure-for-endpoints-file
+     */
     @JsonProperty("IBMCLOUD_GS_API_ENDPOINT")
     public void setIBMCLOUDGSAPIENDPOINT(EndpointsVisibility iBMCLOUDGSAPIENDPOINT) {
         this.iBMCLOUDGSAPIENDPOINT = iBMCLOUDGSAPIENDPOINT;
     }
 
+    /**
+     * EndpointsJSON represents the JSON format to override IBM Cloud Terraform provider utilized service endpoints. https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/guides/custom-service-endpoints#file-structure-for-endpoints-file
+     */
     @JsonProperty("IBMCLOUD_GT_API_ENDPOINT")
     public EndpointsVisibility getIBMCLOUDGTAPIENDPOINT() {
         return iBMCLOUDGTAPIENDPOINT;
     }
 
+    /**
+     * EndpointsJSON represents the JSON format to override IBM Cloud Terraform provider utilized service endpoints. https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/guides/custom-service-endpoints#file-structure-for-endpoints-file
+     */
     @JsonProperty("IBMCLOUD_GT_API_ENDPOINT")
     public void setIBMCLOUDGTAPIENDPOINT(EndpointsVisibility iBMCLOUDGTAPIENDPOINT) {
         this.iBMCLOUDGTAPIENDPOINT = iBMCLOUDGTAPIENDPOINT;
     }
 
+    /**
+     * EndpointsJSON represents the JSON format to override IBM Cloud Terraform provider utilized service endpoints. https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/guides/custom-service-endpoints#file-structure-for-endpoints-file
+     */
     @JsonProperty("IBMCLOUD_HPCS_API_ENDPOINT")
     public EndpointsVisibility getIBMCLOUDHPCSAPIENDPOINT() {
         return iBMCLOUDHPCSAPIENDPOINT;
     }
 
+    /**
+     * EndpointsJSON represents the JSON format to override IBM Cloud Terraform provider utilized service endpoints. https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/guides/custom-service-endpoints#file-structure-for-endpoints-file
+     */
     @JsonProperty("IBMCLOUD_HPCS_API_ENDPOINT")
     public void setIBMCLOUDHPCSAPIENDPOINT(EndpointsVisibility iBMCLOUDHPCSAPIENDPOINT) {
         this.iBMCLOUDHPCSAPIENDPOINT = iBMCLOUDHPCSAPIENDPOINT;
     }
 
+    /**
+     * EndpointsJSON represents the JSON format to override IBM Cloud Terraform provider utilized service endpoints. https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/guides/custom-service-endpoints#file-structure-for-endpoints-file
+     */
     @JsonProperty("IBMCLOUD_IAM_API_ENDPOINT")
     public EndpointsVisibility getIBMCLOUDIAMAPIENDPOINT() {
         return iBMCLOUDIAMAPIENDPOINT;
     }
 
+    /**
+     * EndpointsJSON represents the JSON format to override IBM Cloud Terraform provider utilized service endpoints. https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/guides/custom-service-endpoints#file-structure-for-endpoints-file
+     */
     @JsonProperty("IBMCLOUD_IAM_API_ENDPOINT")
     public void setIBMCLOUDIAMAPIENDPOINT(EndpointsVisibility iBMCLOUDIAMAPIENDPOINT) {
         this.iBMCLOUDIAMAPIENDPOINT = iBMCLOUDIAMAPIENDPOINT;
     }
 
+    /**
+     * EndpointsJSON represents the JSON format to override IBM Cloud Terraform provider utilized service endpoints. https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/guides/custom-service-endpoints#file-structure-for-endpoints-file
+     */
     @JsonProperty("IBMCLOUD_IS_NG_API_ENDPOINT")
     public EndpointsVisibility getIBMCLOUDISNGAPIENDPOINT() {
         return iBMCLOUDISNGAPIENDPOINT;
     }
 
+    /**
+     * EndpointsJSON represents the JSON format to override IBM Cloud Terraform provider utilized service endpoints. https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/guides/custom-service-endpoints#file-structure-for-endpoints-file
+     */
     @JsonProperty("IBMCLOUD_IS_NG_API_ENDPOINT")
     public void setIBMCLOUDISNGAPIENDPOINT(EndpointsVisibility iBMCLOUDISNGAPIENDPOINT) {
         this.iBMCLOUDISNGAPIENDPOINT = iBMCLOUDISNGAPIENDPOINT;
     }
 
+    /**
+     * EndpointsJSON represents the JSON format to override IBM Cloud Terraform provider utilized service endpoints. https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/guides/custom-service-endpoints#file-structure-for-endpoints-file
+     */
     @JsonProperty("IBMCLOUD_KP_API_ENDPOINT")
     public EndpointsVisibility getIBMCLOUDKPAPIENDPOINT() {
         return iBMCLOUDKPAPIENDPOINT;
     }
 
+    /**
+     * EndpointsJSON represents the JSON format to override IBM Cloud Terraform provider utilized service endpoints. https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/guides/custom-service-endpoints#file-structure-for-endpoints-file
+     */
     @JsonProperty("IBMCLOUD_KP_API_ENDPOINT")
     public void setIBMCLOUDKPAPIENDPOINT(EndpointsVisibility iBMCLOUDKPAPIENDPOINT) {
         this.iBMCLOUDKPAPIENDPOINT = iBMCLOUDKPAPIENDPOINT;
     }
 
+    /**
+     * EndpointsJSON represents the JSON format to override IBM Cloud Terraform provider utilized service endpoints. https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/guides/custom-service-endpoints#file-structure-for-endpoints-file
+     */
     @JsonProperty("IBMCLOUD_PRIVATE_DNS_API_ENDPOINT")
     public EndpointsVisibility getIBMCLOUDPRIVATEDNSAPIENDPOINT() {
         return iBMCLOUDPRIVATEDNSAPIENDPOINT;
     }
 
+    /**
+     * EndpointsJSON represents the JSON format to override IBM Cloud Terraform provider utilized service endpoints. https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/guides/custom-service-endpoints#file-structure-for-endpoints-file
+     */
     @JsonProperty("IBMCLOUD_PRIVATE_DNS_API_ENDPOINT")
     public void setIBMCLOUDPRIVATEDNSAPIENDPOINT(EndpointsVisibility iBMCLOUDPRIVATEDNSAPIENDPOINT) {
         this.iBMCLOUDPRIVATEDNSAPIENDPOINT = iBMCLOUDPRIVATEDNSAPIENDPOINT;
     }
 
+    /**
+     * EndpointsJSON represents the JSON format to override IBM Cloud Terraform provider utilized service endpoints. https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/guides/custom-service-endpoints#file-structure-for-endpoints-file
+     */
     @JsonProperty("IBMCLOUD_RESOURCE_CONTROLLER_API_ENDPOINT")
     public EndpointsVisibility getIBMCLOUDRESOURCECONTROLLERAPIENDPOINT() {
         return iBMCLOUDRESOURCECONTROLLERAPIENDPOINT;
     }
 
+    /**
+     * EndpointsJSON represents the JSON format to override IBM Cloud Terraform provider utilized service endpoints. https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/guides/custom-service-endpoints#file-structure-for-endpoints-file
+     */
     @JsonProperty("IBMCLOUD_RESOURCE_CONTROLLER_API_ENDPOINT")
     public void setIBMCLOUDRESOURCECONTROLLERAPIENDPOINT(EndpointsVisibility iBMCLOUDRESOURCECONTROLLERAPIENDPOINT) {
         this.iBMCLOUDRESOURCECONTROLLERAPIENDPOINT = iBMCLOUDRESOURCECONTROLLERAPIENDPOINT;
     }
 
+    /**
+     * EndpointsJSON represents the JSON format to override IBM Cloud Terraform provider utilized service endpoints. https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/guides/custom-service-endpoints#file-structure-for-endpoints-file
+     */
     @JsonProperty("IBMCLOUD_RESOURCE_MANAGEMENT_API_ENDPOINT")
     public EndpointsVisibility getIBMCLOUDRESOURCEMANAGEMENTAPIENDPOINT() {
         return iBMCLOUDRESOURCEMANAGEMENTAPIENDPOINT;
     }
 
+    /**
+     * EndpointsJSON represents the JSON format to override IBM Cloud Terraform provider utilized service endpoints. https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/guides/custom-service-endpoints#file-structure-for-endpoints-file
+     */
     @JsonProperty("IBMCLOUD_RESOURCE_MANAGEMENT_API_ENDPOINT")
     public void setIBMCLOUDRESOURCEMANAGEMENTAPIENDPOINT(EndpointsVisibility iBMCLOUDRESOURCEMANAGEMENTAPIENDPOINT) {
         this.iBMCLOUDRESOURCEMANAGEMENTAPIENDPOINT = iBMCLOUDRESOURCEMANAGEMENTAPIENDPOINT;

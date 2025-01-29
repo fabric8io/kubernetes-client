@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * CPUStressor defines how to stress CPU out
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -89,32 +92,50 @@ public class CPUStressor implements Editable<CPUStressorBuilder>, KubernetesReso
         this.workers = workers;
     }
 
+    /**
+     * Load specifies P percent loading per CPU worker. 0 is effectively a sleep (no load) and 100 is full loading.
+     */
     @JsonProperty("load")
     public Integer getLoad() {
         return load;
     }
 
+    /**
+     * Load specifies P percent loading per CPU worker. 0 is effectively a sleep (no load) and 100 is full loading.
+     */
     @JsonProperty("load")
     public void setLoad(Integer load) {
         this.load = load;
     }
 
+    /**
+     * extend stress-ng options
+     */
     @JsonProperty("options")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getOptions() {
         return options;
     }
 
+    /**
+     * extend stress-ng options
+     */
     @JsonProperty("options")
     public void setOptions(List<String> options) {
         this.options = options;
     }
 
+    /**
+     * Workers specifies N workers to apply the stressor. Maximum 8192 workers can run by stress-ng
+     */
     @JsonProperty("workers")
     public Integer getWorkers() {
         return workers;
     }
 
+    /**
+     * Workers specifies N workers to apply the stressor. Maximum 8192 workers can run by stress-ng
+     */
     @JsonProperty("workers")
     public void setWorkers(Integer workers) {
         this.workers = workers;

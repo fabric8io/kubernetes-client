@@ -35,6 +35,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * WebhookInterceptor provides a webhook to intercept and pre-process events
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -90,32 +93,50 @@ public class WebhookInterceptor implements Editable<WebhookInterceptorBuilder>, 
         this.url = url;
     }
 
+    /**
+     * Header is a group of key-value pairs that can be appended to the interceptor request headers. This allows the interceptor to make decisions specific to an EventListenerTrigger.
+     */
     @JsonProperty("header")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Param> getHeader() {
         return header;
     }
 
+    /**
+     * Header is a group of key-value pairs that can be appended to the interceptor request headers. This allows the interceptor to make decisions specific to an EventListenerTrigger.
+     */
     @JsonProperty("header")
     public void setHeader(List<Param> header) {
         this.header = header;
     }
 
+    /**
+     * WebhookInterceptor provides a webhook to intercept and pre-process events
+     */
     @JsonProperty("objectRef")
     public ObjectReference getObjectRef() {
         return objectRef;
     }
 
+    /**
+     * WebhookInterceptor provides a webhook to intercept and pre-process events
+     */
     @JsonProperty("objectRef")
     public void setObjectRef(ObjectReference objectRef) {
         this.objectRef = objectRef;
     }
 
+    /**
+     * WebhookInterceptor provides a webhook to intercept and pre-process events
+     */
     @JsonProperty("url")
     public String getUrl() {
         return url;
     }
 
+    /**
+     * WebhookInterceptor provides a webhook to intercept and pre-process events
+     */
     @JsonProperty("url")
     public void setUrl(String url) {
         this.url = url;

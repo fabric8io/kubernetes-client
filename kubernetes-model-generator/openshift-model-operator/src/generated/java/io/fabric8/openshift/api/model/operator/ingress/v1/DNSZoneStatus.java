@@ -35,6 +35,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * DNSZoneStatus is the status of a record within a specific zone.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -86,22 +89,34 @@ public class DNSZoneStatus implements Editable<DNSZoneStatusBuilder>, Kubernetes
         this.dnsZone = dnsZone;
     }
 
+    /**
+     * conditions are any conditions associated with the record in the zone.<br><p> <br><p> If publishing the record succeeds, the "Published" condition will be set with status "True" and upon failure it will be set to "False" along with the reason and message describing the cause of the failure.
+     */
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<DNSZoneCondition> getConditions() {
         return conditions;
     }
 
+    /**
+     * conditions are any conditions associated with the record in the zone.<br><p> <br><p> If publishing the record succeeds, the "Published" condition will be set with status "True" and upon failure it will be set to "False" along with the reason and message describing the cause of the failure.
+     */
     @JsonProperty("conditions")
     public void setConditions(List<DNSZoneCondition> conditions) {
         this.conditions = conditions;
     }
 
+    /**
+     * DNSZoneStatus is the status of a record within a specific zone.
+     */
     @JsonProperty("dnsZone")
     public DNSZone getDnsZone() {
         return dnsZone;
     }
 
+    /**
+     * DNSZoneStatus is the status of a record within a specific zone.
+     */
     @JsonProperty("dnsZone")
     public void setDnsZone(DNSZone dnsZone) {
         this.dnsZone = dnsZone;

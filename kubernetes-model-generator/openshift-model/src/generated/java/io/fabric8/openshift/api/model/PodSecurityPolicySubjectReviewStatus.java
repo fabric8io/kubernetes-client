@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * PodSecurityPolicySubjectReviewStatus contains information/status for PodSecurityPolicySubjectReview.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -86,31 +89,49 @@ public class PodSecurityPolicySubjectReviewStatus implements Editable<PodSecurit
         this.template = template;
     }
 
+    /**
+     * PodSecurityPolicySubjectReviewStatus contains information/status for PodSecurityPolicySubjectReview.
+     */
     @JsonProperty("allowedBy")
     public ObjectReference getAllowedBy() {
         return allowedBy;
     }
 
+    /**
+     * PodSecurityPolicySubjectReviewStatus contains information/status for PodSecurityPolicySubjectReview.
+     */
     @JsonProperty("allowedBy")
     public void setAllowedBy(ObjectReference allowedBy) {
         this.allowedBy = allowedBy;
     }
 
+    /**
+     * A machine-readable description of why this operation is in the "Failure" status. If this value is empty there is no information available.
+     */
     @JsonProperty("reason")
     public String getReason() {
         return reason;
     }
 
+    /**
+     * A machine-readable description of why this operation is in the "Failure" status. If this value is empty there is no information available.
+     */
     @JsonProperty("reason")
     public void setReason(String reason) {
         this.reason = reason;
     }
 
+    /**
+     * PodSecurityPolicySubjectReviewStatus contains information/status for PodSecurityPolicySubjectReview.
+     */
     @JsonProperty("template")
     public PodTemplateSpec getTemplate() {
         return template;
     }
 
+    /**
+     * PodSecurityPolicySubjectReviewStatus contains information/status for PodSecurityPolicySubjectReview.
+     */
     @JsonProperty("template")
     public void setTemplate(PodTemplateSpec template) {
         this.template = template;

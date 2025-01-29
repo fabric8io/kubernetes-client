@@ -35,6 +35,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * GatewayClassStatus is the current status for the GatewayClass.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -87,23 +90,35 @@ public class GatewayClassStatus implements Editable<GatewayClassStatusBuilder>, 
         this.supportedFeatures = supportedFeatures;
     }
 
+    /**
+     * Conditions is the current status from the controller for this GatewayClass.<br><p> <br><p> Controllers should prefer to publish conditions using values of GatewayClassConditionType for the type of each Condition.
+     */
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Condition> getConditions() {
         return conditions;
     }
 
+    /**
+     * Conditions is the current status from the controller for this GatewayClass.<br><p> <br><p> Controllers should prefer to publish conditions using values of GatewayClassConditionType for the type of each Condition.
+     */
     @JsonProperty("conditions")
     public void setConditions(List<Condition> conditions) {
         this.conditions = conditions;
     }
 
+    /**
+     * SupportedFeatures is the set of features the GatewayClass support. It MUST be sorted in ascending alphabetical order by the Name key. &lt;gateway:experimental&gt;
+     */
     @JsonProperty("supportedFeatures")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<SupportedFeature> getSupportedFeatures() {
         return supportedFeatures;
     }
 
+    /**
+     * SupportedFeatures is the set of features the GatewayClass support. It MUST be sorted in ascending alphabetical order by the Name key. &lt;gateway:experimental&gt;
+     */
     @JsonProperty("supportedFeatures")
     public void setSupportedFeatures(List<SupportedFeature> supportedFeatures) {
         this.supportedFeatures = supportedFeatures;

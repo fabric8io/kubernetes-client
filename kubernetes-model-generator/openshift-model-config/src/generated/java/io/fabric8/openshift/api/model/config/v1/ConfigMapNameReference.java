@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ConfigMapNameReference references a config map in a specific namespace. The namespace must be specified at the point of use.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -78,11 +81,17 @@ public class ConfigMapNameReference implements Editable<ConfigMapNameReferenceBu
         this.name = name;
     }
 
+    /**
+     * name is the metadata.name of the referenced config map
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * name is the metadata.name of the referenced config map
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;

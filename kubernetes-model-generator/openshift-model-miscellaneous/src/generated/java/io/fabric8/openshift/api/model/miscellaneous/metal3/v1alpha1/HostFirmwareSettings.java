@@ -37,6 +37,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * HostFirmwareSettings is the Schema for the hostfirmwaresettings API.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -76,14 +79,8 @@ import lombok.experimental.Accessors;
 public class HostFirmwareSettings implements Editable<HostFirmwareSettingsBuilder>, HasMetadata, Namespaced
 {
 
-    /**
-     * (Required)
-     */
     @JsonProperty("apiVersion")
     private String apiVersion = "metal3.io/v1alpha1";
-    /**
-     * (Required)
-     */
     @JsonProperty("kind")
     private String kind = "HostFirmwareSettings";
     @JsonProperty("metadata")
@@ -111,7 +108,7 @@ public class HostFirmwareSettings implements Editable<HostFirmwareSettingsBuilde
     }
 
     /**
-     * (Required)
+     * APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -119,7 +116,7 @@ public class HostFirmwareSettings implements Editable<HostFirmwareSettingsBuilde
     }
 
     /**
-     * (Required)
+     * APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -127,7 +124,7 @@ public class HostFirmwareSettings implements Editable<HostFirmwareSettingsBuilde
     }
 
     /**
-     * (Required)
+     * Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -135,38 +132,56 @@ public class HostFirmwareSettings implements Editable<HostFirmwareSettingsBuilde
     }
 
     /**
-     * (Required)
+     * Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
      */
     @JsonProperty("kind")
     public void setKind(String kind) {
         this.kind = kind;
     }
 
+    /**
+     * HostFirmwareSettings is the Schema for the hostfirmwaresettings API.
+     */
     @JsonProperty("metadata")
     public ObjectMeta getMetadata() {
         return metadata;
     }
 
+    /**
+     * HostFirmwareSettings is the Schema for the hostfirmwaresettings API.
+     */
     @JsonProperty("metadata")
     public void setMetadata(ObjectMeta metadata) {
         this.metadata = metadata;
     }
 
+    /**
+     * HostFirmwareSettings is the Schema for the hostfirmwaresettings API.
+     */
     @JsonProperty("spec")
     public HostFirmwareSettingsSpec getSpec() {
         return spec;
     }
 
+    /**
+     * HostFirmwareSettings is the Schema for the hostfirmwaresettings API.
+     */
     @JsonProperty("spec")
     public void setSpec(HostFirmwareSettingsSpec spec) {
         this.spec = spec;
     }
 
+    /**
+     * HostFirmwareSettings is the Schema for the hostfirmwaresettings API.
+     */
     @JsonProperty("status")
     public HostFirmwareSettingsStatus getStatus() {
         return status;
     }
 
+    /**
+     * HostFirmwareSettings is the Schema for the hostfirmwaresettings API.
+     */
     @JsonProperty("status")
     public void setStatus(HostFirmwareSettingsStatus status) {
         this.status = status;

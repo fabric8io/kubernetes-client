@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ImageStreamStatus contains information about the state of this image stream.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -89,32 +92,50 @@ public class ImageStreamStatus implements Editable<ImageStreamStatusBuilder>, Ku
         this.tags = tags;
     }
 
+    /**
+     * DockerImageRepository represents the effective location this stream may be accessed at. May be empty until the server determines where the repository is located
+     */
     @JsonProperty("dockerImageRepository")
     public String getDockerImageRepository() {
         return dockerImageRepository;
     }
 
+    /**
+     * DockerImageRepository represents the effective location this stream may be accessed at. May be empty until the server determines where the repository is located
+     */
     @JsonProperty("dockerImageRepository")
     public void setDockerImageRepository(String dockerImageRepository) {
         this.dockerImageRepository = dockerImageRepository;
     }
 
+    /**
+     * PublicDockerImageRepository represents the public location from where the image can be pulled outside the cluster. This field may be empty if the administrator has not exposed the integrated registry externally.
+     */
     @JsonProperty("publicDockerImageRepository")
     public String getPublicDockerImageRepository() {
         return publicDockerImageRepository;
     }
 
+    /**
+     * PublicDockerImageRepository represents the public location from where the image can be pulled outside the cluster. This field may be empty if the administrator has not exposed the integrated registry externally.
+     */
     @JsonProperty("publicDockerImageRepository")
     public void setPublicDockerImageRepository(String publicDockerImageRepository) {
         this.publicDockerImageRepository = publicDockerImageRepository;
     }
 
+    /**
+     * Tags are a historical record of images associated with each tag. The first entry in the TagEvent array is the currently tagged image.
+     */
     @JsonProperty("tags")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<NamedTagEventList> getTags() {
         return tags;
     }
 
+    /**
+     * Tags are a historical record of images associated with each tag. The first entry in the TagEvent array is the currently tagged image.
+     */
     @JsonProperty("tags")
     public void setTags(List<NamedTagEventList> tags) {
         this.tags = tags;

@@ -35,6 +35,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * PipelineTaskRunSpec  can be used to configure specific specs for a concrete Task
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -107,73 +110,115 @@ public class PipelineTaskRunSpec implements Editable<PipelineTaskRunSpecBuilder>
         this.stepSpecs = stepSpecs;
     }
 
+    /**
+     * PipelineTaskRunSpec  can be used to configure specific specs for a concrete Task
+     */
     @JsonProperty("computeResources")
     public ResourceRequirements getComputeResources() {
         return computeResources;
     }
 
+    /**
+     * PipelineTaskRunSpec  can be used to configure specific specs for a concrete Task
+     */
     @JsonProperty("computeResources")
     public void setComputeResources(ResourceRequirements computeResources) {
         this.computeResources = computeResources;
     }
 
+    /**
+     * PipelineTaskRunSpec  can be used to configure specific specs for a concrete Task
+     */
     @JsonProperty("metadata")
     public PipelineTaskMetadata getMetadata() {
         return metadata;
     }
 
+    /**
+     * PipelineTaskRunSpec  can be used to configure specific specs for a concrete Task
+     */
     @JsonProperty("metadata")
     public void setMetadata(PipelineTaskMetadata metadata) {
         this.metadata = metadata;
     }
 
+    /**
+     * PipelineTaskRunSpec  can be used to configure specific specs for a concrete Task
+     */
     @JsonProperty("pipelineTaskName")
     public String getPipelineTaskName() {
         return pipelineTaskName;
     }
 
+    /**
+     * PipelineTaskRunSpec  can be used to configure specific specs for a concrete Task
+     */
     @JsonProperty("pipelineTaskName")
     public void setPipelineTaskName(String pipelineTaskName) {
         this.pipelineTaskName = pipelineTaskName;
     }
 
+    /**
+     * PipelineTaskRunSpec  can be used to configure specific specs for a concrete Task
+     */
     @JsonProperty("podTemplate")
     public Template getPodTemplate() {
         return podTemplate;
     }
 
+    /**
+     * PipelineTaskRunSpec  can be used to configure specific specs for a concrete Task
+     */
     @JsonProperty("podTemplate")
     public void setPodTemplate(Template podTemplate) {
         this.podTemplate = podTemplate;
     }
 
+    /**
+     * PipelineTaskRunSpec  can be used to configure specific specs for a concrete Task
+     */
     @JsonProperty("serviceAccountName")
     public String getServiceAccountName() {
         return serviceAccountName;
     }
 
+    /**
+     * PipelineTaskRunSpec  can be used to configure specific specs for a concrete Task
+     */
     @JsonProperty("serviceAccountName")
     public void setServiceAccountName(String serviceAccountName) {
         this.serviceAccountName = serviceAccountName;
     }
 
+    /**
+     * PipelineTaskRunSpec  can be used to configure specific specs for a concrete Task
+     */
     @JsonProperty("sidecarSpecs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<TaskRunSidecarSpec> getSidecarSpecs() {
         return sidecarSpecs;
     }
 
+    /**
+     * PipelineTaskRunSpec  can be used to configure specific specs for a concrete Task
+     */
     @JsonProperty("sidecarSpecs")
     public void setSidecarSpecs(List<TaskRunSidecarSpec> sidecarSpecs) {
         this.sidecarSpecs = sidecarSpecs;
     }
 
+    /**
+     * PipelineTaskRunSpec  can be used to configure specific specs for a concrete Task
+     */
     @JsonProperty("stepSpecs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<TaskRunStepSpec> getStepSpecs() {
         return stepSpecs;
     }
 
+    /**
+     * PipelineTaskRunSpec  can be used to configure specific specs for a concrete Task
+     */
     @JsonProperty("stepSpecs")
     public void setStepSpecs(List<TaskRunStepSpec> stepSpecs) {
         this.stepSpecs = stepSpecs;

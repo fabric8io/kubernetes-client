@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ProfileStatus is the status for a Profile resource; the status is for internal use only and its fields may be changed/removed in the future.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -85,22 +88,34 @@ public class ProfileStatus implements Editable<ProfileStatusBuilder>, Kubernetes
         this.tunedProfile = tunedProfile;
     }
 
+    /**
+     * conditions represents the state of the per-node Profile application
+     */
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ProfileStatusCondition> getConditions() {
         return conditions;
     }
 
+    /**
+     * conditions represents the state of the per-node Profile application
+     */
     @JsonProperty("conditions")
     public void setConditions(List<ProfileStatusCondition> conditions) {
         this.conditions = conditions;
     }
 
+    /**
+     * the current profile in use by the Tuned daemon
+     */
     @JsonProperty("tunedProfile")
     public String getTunedProfile() {
         return tunedProfile;
     }
 
+    /**
+     * the current profile in use by the Tuned daemon
+     */
     @JsonProperty("tunedProfile")
     public void setTunedProfile(String tunedProfile) {
         this.tunedProfile = tunedProfile;

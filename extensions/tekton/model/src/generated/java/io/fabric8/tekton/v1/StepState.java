@@ -37,6 +37,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * StepState reports the results of running a step in a Task.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -126,114 +129,180 @@ public class StepState implements Editable<StepStateBuilder>, KubernetesResource
         this.waiting = waiting;
     }
 
+    /**
+     * StepState reports the results of running a step in a Task.
+     */
     @JsonProperty("container")
     public String getContainer() {
         return container;
     }
 
+    /**
+     * StepState reports the results of running a step in a Task.
+     */
     @JsonProperty("container")
     public void setContainer(String container) {
         this.container = container;
     }
 
+    /**
+     * StepState reports the results of running a step in a Task.
+     */
     @JsonProperty("imageID")
     public String getImageID() {
         return imageID;
     }
 
+    /**
+     * StepState reports the results of running a step in a Task.
+     */
     @JsonProperty("imageID")
     public void setImageID(String imageID) {
         this.imageID = imageID;
     }
 
+    /**
+     * StepState reports the results of running a step in a Task.
+     */
     @JsonProperty("inputs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Artifact> getInputs() {
         return inputs;
     }
 
+    /**
+     * StepState reports the results of running a step in a Task.
+     */
     @JsonProperty("inputs")
     public void setInputs(List<Artifact> inputs) {
         this.inputs = inputs;
     }
 
+    /**
+     * StepState reports the results of running a step in a Task.
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * StepState reports the results of running a step in a Task.
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * StepState reports the results of running a step in a Task.
+     */
     @JsonProperty("outputs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Artifact> getOutputs() {
         return outputs;
     }
 
+    /**
+     * StepState reports the results of running a step in a Task.
+     */
     @JsonProperty("outputs")
     public void setOutputs(List<Artifact> outputs) {
         this.outputs = outputs;
     }
 
+    /**
+     * StepState reports the results of running a step in a Task.
+     */
     @JsonProperty("provenance")
     public Provenance getProvenance() {
         return provenance;
     }
 
+    /**
+     * StepState reports the results of running a step in a Task.
+     */
     @JsonProperty("provenance")
     public void setProvenance(Provenance provenance) {
         this.provenance = provenance;
     }
 
+    /**
+     * StepState reports the results of running a step in a Task.
+     */
     @JsonProperty("results")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<TaskRunResult> getResults() {
         return results;
     }
 
+    /**
+     * StepState reports the results of running a step in a Task.
+     */
     @JsonProperty("results")
     public void setResults(List<TaskRunResult> results) {
         this.results = results;
     }
 
+    /**
+     * StepState reports the results of running a step in a Task.
+     */
     @JsonProperty("running")
     public ContainerStateRunning getRunning() {
         return running;
     }
 
+    /**
+     * StepState reports the results of running a step in a Task.
+     */
     @JsonProperty("running")
     public void setRunning(ContainerStateRunning running) {
         this.running = running;
     }
 
+    /**
+     * StepState reports the results of running a step in a Task.
+     */
     @JsonProperty("terminated")
     public ContainerStateTerminated getTerminated() {
         return terminated;
     }
 
+    /**
+     * StepState reports the results of running a step in a Task.
+     */
     @JsonProperty("terminated")
     public void setTerminated(ContainerStateTerminated terminated) {
         this.terminated = terminated;
     }
 
+    /**
+     * StepState reports the results of running a step in a Task.
+     */
     @JsonProperty("terminationReason")
     public String getTerminationReason() {
         return terminationReason;
     }
 
+    /**
+     * StepState reports the results of running a step in a Task.
+     */
     @JsonProperty("terminationReason")
     public void setTerminationReason(String terminationReason) {
         this.terminationReason = terminationReason;
     }
 
+    /**
+     * StepState reports the results of running a step in a Task.
+     */
     @JsonProperty("waiting")
     public ContainerStateWaiting getWaiting() {
         return waiting;
     }
 
+    /**
+     * StepState reports the results of running a step in a Task.
+     */
     @JsonProperty("waiting")
     public void setWaiting(ContainerStateWaiting waiting) {
         this.waiting = waiting;

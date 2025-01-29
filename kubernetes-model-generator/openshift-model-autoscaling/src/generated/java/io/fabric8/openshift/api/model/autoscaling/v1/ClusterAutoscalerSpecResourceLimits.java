@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Constraints of autoscaling resources
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -93,42 +96,66 @@ public class ClusterAutoscalerSpecResourceLimits implements Editable<ClusterAuto
         this.memory = memory;
     }
 
+    /**
+     * Constraints of autoscaling resources
+     */
     @JsonProperty("cores")
     public ClusterAutoscalerSpecRLCores getCores() {
         return cores;
     }
 
+    /**
+     * Constraints of autoscaling resources
+     */
     @JsonProperty("cores")
     public void setCores(ClusterAutoscalerSpecRLCores cores) {
         this.cores = cores;
     }
 
+    /**
+     * Minimum and maximum number of different GPUs in cluster, in the format &lt;gpu_type&gt;:&lt;min&gt;:&lt;max&gt;. Cluster autoscaler will not scale the cluster beyond these numbers. Can be passed multiple times.
+     */
     @JsonProperty("gpus")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ClusterAutoscalerSpecRLGpus> getGpus() {
         return gpus;
     }
 
+    /**
+     * Minimum and maximum number of different GPUs in cluster, in the format &lt;gpu_type&gt;:&lt;min&gt;:&lt;max&gt;. Cluster autoscaler will not scale the cluster beyond these numbers. Can be passed multiple times.
+     */
     @JsonProperty("gpus")
     public void setGpus(List<ClusterAutoscalerSpecRLGpus> gpus) {
         this.gpus = gpus;
     }
 
+    /**
+     * Maximum number of nodes in all node groups. Cluster autoscaler will not grow the cluster beyond this number.
+     */
     @JsonProperty("maxNodesTotal")
     public Integer getMaxNodesTotal() {
         return maxNodesTotal;
     }
 
+    /**
+     * Maximum number of nodes in all node groups. Cluster autoscaler will not grow the cluster beyond this number.
+     */
     @JsonProperty("maxNodesTotal")
     public void setMaxNodesTotal(Integer maxNodesTotal) {
         this.maxNodesTotal = maxNodesTotal;
     }
 
+    /**
+     * Constraints of autoscaling resources
+     */
     @JsonProperty("memory")
     public ClusterAutoscalerSpecRLMemory getMemory() {
         return memory;
     }
 
+    /**
+     * Constraints of autoscaling resources
+     */
     @JsonProperty("memory")
     public void setMemory(ClusterAutoscalerSpecRLMemory memory) {
         this.memory = memory;

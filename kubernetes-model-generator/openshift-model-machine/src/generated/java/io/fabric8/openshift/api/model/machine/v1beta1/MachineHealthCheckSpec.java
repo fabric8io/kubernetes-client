@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * MachineHealthCheckSpec defines the desired state of MachineHealthCheck
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -97,52 +100,82 @@ public class MachineHealthCheckSpec implements Editable<MachineHealthCheckSpecBu
         this.unhealthyConditions = unhealthyConditions;
     }
 
+    /**
+     * MachineHealthCheckSpec defines the desired state of MachineHealthCheck
+     */
     @JsonProperty("maxUnhealthy")
     public IntOrString getMaxUnhealthy() {
         return maxUnhealthy;
     }
 
+    /**
+     * MachineHealthCheckSpec defines the desired state of MachineHealthCheck
+     */
     @JsonProperty("maxUnhealthy")
     public void setMaxUnhealthy(IntOrString maxUnhealthy) {
         this.maxUnhealthy = maxUnhealthy;
     }
 
+    /**
+     * MachineHealthCheckSpec defines the desired state of MachineHealthCheck
+     */
     @JsonProperty("nodeStartupTimeout")
     public String getNodeStartupTimeout() {
         return nodeStartupTimeout;
     }
 
+    /**
+     * MachineHealthCheckSpec defines the desired state of MachineHealthCheck
+     */
     @JsonProperty("nodeStartupTimeout")
     public void setNodeStartupTimeout(String nodeStartupTimeout) {
         this.nodeStartupTimeout = nodeStartupTimeout;
     }
 
+    /**
+     * MachineHealthCheckSpec defines the desired state of MachineHealthCheck
+     */
     @JsonProperty("remediationTemplate")
     public ObjectReference getRemediationTemplate() {
         return remediationTemplate;
     }
 
+    /**
+     * MachineHealthCheckSpec defines the desired state of MachineHealthCheck
+     */
     @JsonProperty("remediationTemplate")
     public void setRemediationTemplate(ObjectReference remediationTemplate) {
         this.remediationTemplate = remediationTemplate;
     }
 
+    /**
+     * MachineHealthCheckSpec defines the desired state of MachineHealthCheck
+     */
     @JsonProperty("selector")
     public LabelSelector getSelector() {
         return selector;
     }
 
+    /**
+     * MachineHealthCheckSpec defines the desired state of MachineHealthCheck
+     */
     @JsonProperty("selector")
     public void setSelector(LabelSelector selector) {
         this.selector = selector;
     }
 
+    /**
+     * UnhealthyConditions contains a list of the conditions that determine whether a node is considered unhealthy.  The conditions are combined in a logical OR, i.e. if any of the conditions is met, the node is unhealthy.
+     */
     @JsonProperty("unhealthyConditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<UnhealthyCondition> getUnhealthyConditions() {
         return unhealthyConditions;
     }
 
+    /**
+     * UnhealthyConditions contains a list of the conditions that determine whether a node is considered unhealthy.  The conditions are combined in a logical OR, i.e. if any of the conditions is met, the node is unhealthy.
+     */
     @JsonProperty("unhealthyConditions")
     public void setUnhealthyConditions(List<UnhealthyCondition> unhealthyConditions) {
         this.unhealthyConditions = unhealthyConditions;

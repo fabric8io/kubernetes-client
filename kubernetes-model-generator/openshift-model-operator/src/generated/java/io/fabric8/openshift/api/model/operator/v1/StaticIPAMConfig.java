@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * StaticIPAMConfig contains configurations for static IPAM (IP Address Management)
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -90,33 +93,51 @@ public class StaticIPAMConfig implements Editable<StaticIPAMConfigBuilder>, Kube
         this.routes = routes;
     }
 
+    /**
+     * Addresses configures IP address for the interface
+     */
     @JsonProperty("addresses")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<StaticIPAMAddresses> getAddresses() {
         return addresses;
     }
 
+    /**
+     * Addresses configures IP address for the interface
+     */
     @JsonProperty("addresses")
     public void setAddresses(List<StaticIPAMAddresses> addresses) {
         this.addresses = addresses;
     }
 
+    /**
+     * StaticIPAMConfig contains configurations for static IPAM (IP Address Management)
+     */
     @JsonProperty("dns")
     public StaticIPAMDNS getDns() {
         return dns;
     }
 
+    /**
+     * StaticIPAMConfig contains configurations for static IPAM (IP Address Management)
+     */
     @JsonProperty("dns")
     public void setDns(StaticIPAMDNS dns) {
         this.dns = dns;
     }
 
+    /**
+     * Routes configures IP routes for the interface
+     */
     @JsonProperty("routes")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<StaticIPAMRoutes> getRoutes() {
         return routes;
     }
 
+    /**
+     * Routes configures IP routes for the interface
+     */
     @JsonProperty("routes")
     public void setRoutes(List<StaticIPAMRoutes> routes) {
         this.routes = routes;

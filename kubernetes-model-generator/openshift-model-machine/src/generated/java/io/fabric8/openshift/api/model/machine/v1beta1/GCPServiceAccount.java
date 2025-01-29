@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * GCPServiceAccount describes service accounts for GCP.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -85,22 +88,34 @@ public class GCPServiceAccount implements Editable<GCPServiceAccountBuilder>, Ku
         this.scopes = scopes;
     }
 
+    /**
+     * Email is the service account email.
+     */
     @JsonProperty("email")
     public String getEmail() {
         return email;
     }
 
+    /**
+     * Email is the service account email.
+     */
     @JsonProperty("email")
     public void setEmail(String email) {
         this.email = email;
     }
 
+    /**
+     * Scopes list of scopes to be assigned to the service account.
+     */
     @JsonProperty("scopes")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getScopes() {
         return scopes;
     }
 
+    /**
+     * Scopes list of scopes to be assigned to the service account.
+     */
     @JsonProperty("scopes")
     public void setScopes(List<String> scopes) {
         this.scopes = scopes;

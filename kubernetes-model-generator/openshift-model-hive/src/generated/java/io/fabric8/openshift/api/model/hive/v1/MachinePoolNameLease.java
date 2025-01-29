@@ -37,6 +37,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * MachinePoolNameLease is the Schema for the MachinePoolNameLeases API. This resource is mostly empty as we're primarily relying on the name to determine if a lease is available. Note that not all cloud providers require the use of a lease for naming, at present this is only required for GCP where we're extremely restricted on name lengths.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -76,14 +79,8 @@ import lombok.experimental.Accessors;
 public class MachinePoolNameLease implements Editable<MachinePoolNameLeaseBuilder>, HasMetadata, Namespaced
 {
 
-    /**
-     * (Required)
-     */
     @JsonProperty("apiVersion")
     private String apiVersion = "hive.openshift.io/v1";
-    /**
-     * (Required)
-     */
     @JsonProperty("kind")
     private String kind = "MachinePoolNameLease";
     @JsonProperty("metadata")
@@ -111,7 +108,7 @@ public class MachinePoolNameLease implements Editable<MachinePoolNameLeaseBuilde
     }
 
     /**
-     * (Required)
+     * APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -119,7 +116,7 @@ public class MachinePoolNameLease implements Editable<MachinePoolNameLeaseBuilde
     }
 
     /**
-     * (Required)
+     * APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -127,7 +124,7 @@ public class MachinePoolNameLease implements Editable<MachinePoolNameLeaseBuilde
     }
 
     /**
-     * (Required)
+     * Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -135,38 +132,56 @@ public class MachinePoolNameLease implements Editable<MachinePoolNameLeaseBuilde
     }
 
     /**
-     * (Required)
+     * Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
      */
     @JsonProperty("kind")
     public void setKind(String kind) {
         this.kind = kind;
     }
 
+    /**
+     * MachinePoolNameLease is the Schema for the MachinePoolNameLeases API. This resource is mostly empty as we're primarily relying on the name to determine if a lease is available. Note that not all cloud providers require the use of a lease for naming, at present this is only required for GCP where we're extremely restricted on name lengths.
+     */
     @JsonProperty("metadata")
     public ObjectMeta getMetadata() {
         return metadata;
     }
 
+    /**
+     * MachinePoolNameLease is the Schema for the MachinePoolNameLeases API. This resource is mostly empty as we're primarily relying on the name to determine if a lease is available. Note that not all cloud providers require the use of a lease for naming, at present this is only required for GCP where we're extremely restricted on name lengths.
+     */
     @JsonProperty("metadata")
     public void setMetadata(ObjectMeta metadata) {
         this.metadata = metadata;
     }
 
+    /**
+     * MachinePoolNameLease is the Schema for the MachinePoolNameLeases API. This resource is mostly empty as we're primarily relying on the name to determine if a lease is available. Note that not all cloud providers require the use of a lease for naming, at present this is only required for GCP where we're extremely restricted on name lengths.
+     */
     @JsonProperty("spec")
     public MachinePoolNameLeaseSpec getSpec() {
         return spec;
     }
 
+    /**
+     * MachinePoolNameLease is the Schema for the MachinePoolNameLeases API. This resource is mostly empty as we're primarily relying on the name to determine if a lease is available. Note that not all cloud providers require the use of a lease for naming, at present this is only required for GCP where we're extremely restricted on name lengths.
+     */
     @JsonProperty("spec")
     public void setSpec(MachinePoolNameLeaseSpec spec) {
         this.spec = spec;
     }
 
+    /**
+     * MachinePoolNameLease is the Schema for the MachinePoolNameLeases API. This resource is mostly empty as we're primarily relying on the name to determine if a lease is available. Note that not all cloud providers require the use of a lease for naming, at present this is only required for GCP where we're extremely restricted on name lengths.
+     */
     @JsonProperty("status")
     public MachinePoolNameLeaseStatus getStatus() {
         return status;
     }
 
+    /**
+     * MachinePoolNameLease is the Schema for the MachinePoolNameLeases API. This resource is mostly empty as we're primarily relying on the name to determine if a lease is available. Note that not all cloud providers require the use of a lease for naming, at present this is only required for GCP where we're extremely restricted on name lengths.
+     */
     @JsonProperty("status")
     public void setStatus(MachinePoolNameLeaseStatus status) {
         this.status = status;

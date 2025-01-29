@@ -17,6 +17,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Event represents a single event to a watched resource.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -54,22 +57,34 @@ public class WatchEvent implements Editable<WatchEventBuilder>, KubernetesResour
         this.type = type;
     }
 
+    /**
+     * Event represents a single event to a watched resource.
+     */
     @JsonProperty("object")
     public Object getObject() {
         return object;
     }
 
+    /**
+     * Event represents a single event to a watched resource.
+     */
     @JsonProperty("object")
     @JsonDeserialize(using = io.fabric8.kubernetes.internal.KubernetesDeserializer.class)
     public void setObject(Object object) {
         this.object = object;
     }
 
+    /**
+     * Event represents a single event to a watched resource.
+     */
     @JsonProperty("type")
     public String getType() {
         return type;
     }
 
+    /**
+     * Event represents a single event to a watched resource.
+     */
     @JsonProperty("type")
     public void setType(String type) {
         this.type = type;

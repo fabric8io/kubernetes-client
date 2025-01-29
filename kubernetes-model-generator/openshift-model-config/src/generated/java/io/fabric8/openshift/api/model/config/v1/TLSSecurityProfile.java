@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * TLSSecurityProfile defines the schema for a TLS security profile. This object is used by operators to apply TLS security settings to operands.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -94,51 +97,81 @@ public class TLSSecurityProfile implements Editable<TLSSecurityProfileBuilder>, 
         this.type = type;
     }
 
+    /**
+     * TLSSecurityProfile defines the schema for a TLS security profile. This object is used by operators to apply TLS security settings to operands.
+     */
     @JsonProperty("custom")
     public CustomTLSProfile getCustom() {
         return custom;
     }
 
+    /**
+     * TLSSecurityProfile defines the schema for a TLS security profile. This object is used by operators to apply TLS security settings to operands.
+     */
     @JsonProperty("custom")
     public void setCustom(CustomTLSProfile custom) {
         this.custom = custom;
     }
 
+    /**
+     * TLSSecurityProfile defines the schema for a TLS security profile. This object is used by operators to apply TLS security settings to operands.
+     */
     @JsonProperty("intermediate")
     public IntermediateTLSProfile getIntermediate() {
         return intermediate;
     }
 
+    /**
+     * TLSSecurityProfile defines the schema for a TLS security profile. This object is used by operators to apply TLS security settings to operands.
+     */
     @JsonProperty("intermediate")
     public void setIntermediate(IntermediateTLSProfile intermediate) {
         this.intermediate = intermediate;
     }
 
+    /**
+     * TLSSecurityProfile defines the schema for a TLS security profile. This object is used by operators to apply TLS security settings to operands.
+     */
     @JsonProperty("modern")
     public ModernTLSProfile getModern() {
         return modern;
     }
 
+    /**
+     * TLSSecurityProfile defines the schema for a TLS security profile. This object is used by operators to apply TLS security settings to operands.
+     */
     @JsonProperty("modern")
     public void setModern(ModernTLSProfile modern) {
         this.modern = modern;
     }
 
+    /**
+     * TLSSecurityProfile defines the schema for a TLS security profile. This object is used by operators to apply TLS security settings to operands.
+     */
     @JsonProperty("old")
     public OldTLSProfile getOld() {
         return old;
     }
 
+    /**
+     * TLSSecurityProfile defines the schema for a TLS security profile. This object is used by operators to apply TLS security settings to operands.
+     */
     @JsonProperty("old")
     public void setOld(OldTLSProfile old) {
         this.old = old;
     }
 
+    /**
+     * type is one of Old, Intermediate, Modern or Custom. Custom provides the ability to specify individual TLS security profile parameters. Old, Intermediate and Modern are TLS security profiles based on:<br><p> <br><p> https://wiki.mozilla.org/Security/Server_Side_TLS#Recommended_configurations<br><p> <br><p> The profiles are intent based, so they may change over time as new ciphers are developed and existing ciphers are found to be insecure.  Depending on precisely which ciphers are available to a process, the list may be reduced.<br><p> <br><p> Note that the Modern profile is currently not supported because it is not yet well adopted by common software libraries.
+     */
     @JsonProperty("type")
     public String getType() {
         return type;
     }
 
+    /**
+     * type is one of Old, Intermediate, Modern or Custom. Custom provides the ability to specify individual TLS security profile parameters. Old, Intermediate and Modern are TLS security profiles based on:<br><p> <br><p> https://wiki.mozilla.org/Security/Server_Side_TLS#Recommended_configurations<br><p> <br><p> The profiles are intent based, so they may change over time as new ciphers are developed and existing ciphers are found to be insecure.  Depending on precisely which ciphers are available to a process, the list may be reduced.<br><p> <br><p> Note that the Modern profile is currently not supported because it is not yet well adopted by common software libraries.
+     */
     @JsonProperty("type")
     public void setType(String type) {
         this.type = type;

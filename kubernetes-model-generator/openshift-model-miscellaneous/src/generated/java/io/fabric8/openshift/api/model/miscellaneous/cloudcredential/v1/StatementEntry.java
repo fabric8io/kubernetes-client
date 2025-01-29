@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * StatementEntry models an AWS policy statement entry.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -94,43 +97,67 @@ public class StatementEntry implements Editable<StatementEntryBuilder>, Kubernet
         this.resource = resource;
     }
 
+    /**
+     * Action describes the particular AWS service actions that should be allowed or denied. (i.e. ec2:StartInstances, iam:ChangePassword)
+     */
     @JsonProperty("action")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getAction() {
         return action;
     }
 
+    /**
+     * Action describes the particular AWS service actions that should be allowed or denied. (i.e. ec2:StartInstances, iam:ChangePassword)
+     */
     @JsonProperty("action")
     public void setAction(List<String> action) {
         this.action = action;
     }
 
+    /**
+     * Effect indicates if this policy statement is to Allow or Deny.
+     */
     @JsonProperty("effect")
     public String getEffect() {
         return effect;
     }
 
+    /**
+     * Effect indicates if this policy statement is to Allow or Deny.
+     */
     @JsonProperty("effect")
     public void setEffect(String effect) {
         this.effect = effect;
     }
 
+    /**
+     * PolicyCondition specifies under which condition StatementEntry will apply
+     */
     @JsonProperty("policyCondition")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, Map<String, Object>> getPolicyCondition() {
         return policyCondition;
     }
 
+    /**
+     * PolicyCondition specifies under which condition StatementEntry will apply
+     */
     @JsonProperty("policyCondition")
     public void setPolicyCondition(Map<String, Map<String, Object>> policyCondition) {
         this.policyCondition = policyCondition;
     }
 
+    /**
+     * Resource specifies the object(s) this statement should apply to. (or "&#42;" for all)
+     */
     @JsonProperty("resource")
     public String getResource() {
         return resource;
     }
 
+    /**
+     * Resource specifies the object(s) this statement should apply to. (or "&#42;" for all)
+     */
     @JsonProperty("resource")
     public void setResource(String resource) {
         this.resource = resource;

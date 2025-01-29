@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * SyslogLoggingDestinationParameters describes parameters for the Syslog logging destination type.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -90,41 +93,65 @@ public class SyslogLoggingDestinationParameters implements Editable<SyslogLoggin
         this.port = port;
     }
 
+    /**
+     * address is the IP address of the syslog endpoint that receives log messages.
+     */
     @JsonProperty("address")
     public String getAddress() {
         return address;
     }
 
+    /**
+     * address is the IP address of the syslog endpoint that receives log messages.
+     */
     @JsonProperty("address")
     public void setAddress(String address) {
         this.address = address;
     }
 
+    /**
+     * facility specifies the syslog facility of log messages.<br><p> <br><p> If this field is empty, the facility is "local1".
+     */
     @JsonProperty("facility")
     public String getFacility() {
         return facility;
     }
 
+    /**
+     * facility specifies the syslog facility of log messages.<br><p> <br><p> If this field is empty, the facility is "local1".
+     */
     @JsonProperty("facility")
     public void setFacility(String facility) {
         this.facility = facility;
     }
 
+    /**
+     * maxLength is the maximum length of the log message.<br><p> <br><p> Valid values are integers in the range 480 to 4096, inclusive.<br><p> <br><p> When omitted, the default value is 1024.
+     */
     @JsonProperty("maxLength")
     public Long getMaxLength() {
         return maxLength;
     }
 
+    /**
+     * maxLength is the maximum length of the log message.<br><p> <br><p> Valid values are integers in the range 480 to 4096, inclusive.<br><p> <br><p> When omitted, the default value is 1024.
+     */
     @JsonProperty("maxLength")
     public void setMaxLength(Long maxLength) {
         this.maxLength = maxLength;
     }
 
+    /**
+     * port is the UDP port number of the syslog endpoint that receives log messages.
+     */
     @JsonProperty("port")
     public Long getPort() {
         return port;
     }
 
+    /**
+     * port is the UDP port number of the syslog endpoint that receives log messages.
+     */
     @JsonProperty("port")
     public void setPort(Long port) {
         this.port = port;

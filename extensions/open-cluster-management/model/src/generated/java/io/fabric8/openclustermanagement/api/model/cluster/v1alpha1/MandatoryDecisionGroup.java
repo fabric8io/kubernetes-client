@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * MandatoryDecisionGroup set the decision group name or group index. GroupName is considered first to select the decisionGroups then GroupIndex.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class MandatoryDecisionGroup implements Editable<MandatoryDecisionGroupBu
         this.groupName = groupName;
     }
 
+    /**
+     * GroupIndex of the decision group should match the placementDecisions label value with label key cluster.open-cluster-management.io/decision-group-index
+     */
     @JsonProperty("groupIndex")
     public Integer getGroupIndex() {
         return groupIndex;
     }
 
+    /**
+     * GroupIndex of the decision group should match the placementDecisions label value with label key cluster.open-cluster-management.io/decision-group-index
+     */
     @JsonProperty("groupIndex")
     public void setGroupIndex(Integer groupIndex) {
         this.groupIndex = groupIndex;
     }
 
+    /**
+     * GroupName of the decision group should match the placementDecisions label value with label key cluster.open-cluster-management.io/decision-group-name
+     */
     @JsonProperty("groupName")
     public String getGroupName() {
         return groupName;
     }
 
+    /**
+     * GroupName of the decision group should match the placementDecisions label value with label key cluster.open-cluster-management.io/decision-group-name
+     */
     @JsonProperty("groupName")
     public void setGroupName(String groupName) {
         this.groupName = groupName;

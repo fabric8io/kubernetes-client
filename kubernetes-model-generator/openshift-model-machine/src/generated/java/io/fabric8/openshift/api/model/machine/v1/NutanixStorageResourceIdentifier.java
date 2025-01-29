@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * NutanixStorageResourceIdentifier holds the identity of a Nutanix storage resource (storage_container, etc.)
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class NutanixStorageResourceIdentifier implements Editable<NutanixStorage
         this.uuid = uuid;
     }
 
+    /**
+     * type is the identifier type to use for this resource. The valid value is "uuid".
+     */
     @JsonProperty("type")
     public String getType() {
         return type;
     }
 
+    /**
+     * type is the identifier type to use for this resource. The valid value is "uuid".
+     */
     @JsonProperty("type")
     public void setType(String type) {
         this.type = type;
     }
 
+    /**
+     * uuid is the UUID of the storage resource in the PC.
+     */
     @JsonProperty("uuid")
     public String getUuid() {
         return uuid;
     }
 
+    /**
+     * uuid is the UUID of the storage resource in the PC.
+     */
     @JsonProperty("uuid")
     public void setUuid(String uuid) {
         this.uuid = uuid;

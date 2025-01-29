@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * SelfSubjectRulesReviewSpec adds information about how to conduct the check
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -81,12 +84,18 @@ public class SelfSubjectRulesReviewSpec implements Editable<SelfSubjectRulesRevi
         this.scopes = scopes;
     }
 
+    /**
+     * Scopes to use for the evaluation.  Empty means "use the unscoped (full) permissions of the user/groups". Nil means "use the scopes on this request".
+     */
     @JsonProperty("scopes")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getScopes() {
         return scopes;
     }
 
+    /**
+     * Scopes to use for the evaluation.  Empty means "use the unscoped (full) permissions of the user/groups". Nil means "use the scopes on this request".
+     */
     @JsonProperty("scopes")
     public void setScopes(List<String> scopes) {
         this.scopes = scopes;

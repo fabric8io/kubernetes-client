@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ManagedClusterVersion represents version information about the managed cluster.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -78,11 +81,17 @@ public class ManagedClusterVersion implements Editable<ManagedClusterVersionBuil
         this.kubernetes = kubernetes;
     }
 
+    /**
+     * Kubernetes is the kubernetes version of managed cluster.
+     */
     @JsonProperty("kubernetes")
     public String getKubernetes() {
         return kubernetes;
     }
 
+    /**
+     * Kubernetes is the kubernetes version of managed cluster.
+     */
     @JsonProperty("kubernetes")
     public void setKubernetes(String kubernetes) {
         this.kubernetes = kubernetes;

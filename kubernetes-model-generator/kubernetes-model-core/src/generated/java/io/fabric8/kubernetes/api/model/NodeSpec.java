@@ -19,6 +19,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * NodeSpec describes the attributes that a node is created with.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -77,73 +80,115 @@ public class NodeSpec implements Editable<NodeSpecBuilder>, KubernetesResource
         this.unschedulable = unschedulable;
     }
 
+    /**
+     * NodeSpec describes the attributes that a node is created with.
+     */
     @JsonProperty("configSource")
     public NodeConfigSource getConfigSource() {
         return configSource;
     }
 
+    /**
+     * NodeSpec describes the attributes that a node is created with.
+     */
     @JsonProperty("configSource")
     public void setConfigSource(NodeConfigSource configSource) {
         this.configSource = configSource;
     }
 
+    /**
+     * Deprecated. Not all kubelets will set this field. Remove field after 1.13. see: https://issues.k8s.io/61966
+     */
     @JsonProperty("externalID")
     public String getExternalID() {
         return externalID;
     }
 
+    /**
+     * Deprecated. Not all kubelets will set this field. Remove field after 1.13. see: https://issues.k8s.io/61966
+     */
     @JsonProperty("externalID")
     public void setExternalID(String externalID) {
         this.externalID = externalID;
     }
 
+    /**
+     * PodCIDR represents the pod IP range assigned to the node.
+     */
     @JsonProperty("podCIDR")
     public String getPodCIDR() {
         return podCIDR;
     }
 
+    /**
+     * PodCIDR represents the pod IP range assigned to the node.
+     */
     @JsonProperty("podCIDR")
     public void setPodCIDR(String podCIDR) {
         this.podCIDR = podCIDR;
     }
 
+    /**
+     * podCIDRs represents the IP ranges assigned to the node for usage by Pods on that node. If this field is specified, the 0th entry must match the podCIDR field. It may contain at most 1 value for each of IPv4 and IPv6.
+     */
     @JsonProperty("podCIDRs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getPodCIDRs() {
         return podCIDRs;
     }
 
+    /**
+     * podCIDRs represents the IP ranges assigned to the node for usage by Pods on that node. If this field is specified, the 0th entry must match the podCIDR field. It may contain at most 1 value for each of IPv4 and IPv6.
+     */
     @JsonProperty("podCIDRs")
     public void setPodCIDRs(List<String> podCIDRs) {
         this.podCIDRs = podCIDRs;
     }
 
+    /**
+     * ID of the node assigned by the cloud provider in the format: &lt;ProviderName&gt;://&lt;ProviderSpecificNodeID&gt;
+     */
     @JsonProperty("providerID")
     public String getProviderID() {
         return providerID;
     }
 
+    /**
+     * ID of the node assigned by the cloud provider in the format: &lt;ProviderName&gt;://&lt;ProviderSpecificNodeID&gt;
+     */
     @JsonProperty("providerID")
     public void setProviderID(String providerID) {
         this.providerID = providerID;
     }
 
+    /**
+     * If specified, the node's taints.
+     */
     @JsonProperty("taints")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Taint> getTaints() {
         return taints;
     }
 
+    /**
+     * If specified, the node's taints.
+     */
     @JsonProperty("taints")
     public void setTaints(List<Taint> taints) {
         this.taints = taints;
     }
 
+    /**
+     * Unschedulable controls node schedulability of new pods. By default, node is schedulable. More info: https://kubernetes.io/docs/concepts/nodes/node/#manual-node-administration
+     */
     @JsonProperty("unschedulable")
     public Boolean getUnschedulable() {
         return unschedulable;
     }
 
+    /**
+     * Unschedulable controls node schedulability of new pods. By default, node is schedulable. More info: https://kubernetes.io/docs/concepts/nodes/node/#manual-node-administration
+     */
     @JsonProperty("unschedulable")
     public void setUnschedulable(Boolean unschedulable) {
         this.unschedulable = unschedulable;

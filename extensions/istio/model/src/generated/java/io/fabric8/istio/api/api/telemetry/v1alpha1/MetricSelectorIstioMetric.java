@@ -4,6 +4,9 @@ package io.fabric8.istio.api.api.telemetry.v1alpha1;
 import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonCreator;
 
+/**
+ * Curated list of known metric types that is supported by Istio metric providers. See also: https://istio.io/latest/docs/reference/config/metrics/#metrics
+ */
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
 public enum MetricSelectorIstioMetric 
 {

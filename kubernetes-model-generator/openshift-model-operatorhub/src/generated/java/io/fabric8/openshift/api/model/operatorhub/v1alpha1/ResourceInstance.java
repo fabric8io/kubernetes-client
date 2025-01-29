@@ -92,11 +92,17 @@ public class ResourceInstance implements Editable<ResourceInstanceBuilder>, Kube
         this.name = name;
     }
 
+    /**
+     * Namespace can be empty for cluster-scoped resources
+     */
     @JsonProperty("namespace")
     public String getNamespace() {
         return namespace;
     }
 
+    /**
+     * Namespace can be empty for cluster-scoped resources
+     */
     @JsonProperty("namespace")
     public void setNamespace(String namespace) {
         this.namespace = namespace;

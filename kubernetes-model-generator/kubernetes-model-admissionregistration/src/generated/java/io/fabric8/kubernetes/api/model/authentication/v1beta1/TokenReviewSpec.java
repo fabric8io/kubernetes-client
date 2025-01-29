@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * TokenReviewSpec is a description of the token authentication request.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -85,22 +88,34 @@ public class TokenReviewSpec implements Editable<TokenReviewSpecBuilder>, Kubern
         this.token = token;
     }
 
+    /**
+     * Audiences is a list of the identifiers that the resource server presented with the token identifies as. Audience-aware token authenticators will verify that the token was intended for at least one of the audiences in this list. If no audiences are provided, the audience will default to the audience of the Kubernetes apiserver.
+     */
     @JsonProperty("audiences")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getAudiences() {
         return audiences;
     }
 
+    /**
+     * Audiences is a list of the identifiers that the resource server presented with the token identifies as. Audience-aware token authenticators will verify that the token was intended for at least one of the audiences in this list. If no audiences are provided, the audience will default to the audience of the Kubernetes apiserver.
+     */
     @JsonProperty("audiences")
     public void setAudiences(List<String> audiences) {
         this.audiences = audiences;
     }
 
+    /**
+     * Token is the opaque bearer token.
+     */
     @JsonProperty("token")
     public String getToken() {
         return token;
     }
 
+    /**
+     * Token is the opaque bearer token.
+     */
     @JsonProperty("token")
     public void setToken(String token) {
         this.token = token;

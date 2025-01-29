@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * OAuthRemoteConnectionInfo holds information necessary for establishing a remote connection
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -90,41 +93,65 @@ public class OAuthRemoteConnectionInfo implements Editable<OAuthRemoteConnection
         this.url = url;
     }
 
+    /**
+     * OAuthRemoteConnectionInfo holds information necessary for establishing a remote connection
+     */
     @JsonProperty("ca")
     public ConfigMapNameReference getCa() {
         return ca;
     }
 
+    /**
+     * OAuthRemoteConnectionInfo holds information necessary for establishing a remote connection
+     */
     @JsonProperty("ca")
     public void setCa(ConfigMapNameReference ca) {
         this.ca = ca;
     }
 
+    /**
+     * OAuthRemoteConnectionInfo holds information necessary for establishing a remote connection
+     */
     @JsonProperty("tlsClientCert")
     public SecretNameReference getTlsClientCert() {
         return tlsClientCert;
     }
 
+    /**
+     * OAuthRemoteConnectionInfo holds information necessary for establishing a remote connection
+     */
     @JsonProperty("tlsClientCert")
     public void setTlsClientCert(SecretNameReference tlsClientCert) {
         this.tlsClientCert = tlsClientCert;
     }
 
+    /**
+     * OAuthRemoteConnectionInfo holds information necessary for establishing a remote connection
+     */
     @JsonProperty("tlsClientKey")
     public SecretNameReference getTlsClientKey() {
         return tlsClientKey;
     }
 
+    /**
+     * OAuthRemoteConnectionInfo holds information necessary for establishing a remote connection
+     */
     @JsonProperty("tlsClientKey")
     public void setTlsClientKey(SecretNameReference tlsClientKey) {
         this.tlsClientKey = tlsClientKey;
     }
 
+    /**
+     * url is the remote URL to connect to
+     */
     @JsonProperty("url")
     public String getUrl() {
         return url;
     }
 
+    /**
+     * url is the remote URL to connect to
+     */
     @JsonProperty("url")
     public void setUrl(String url) {
         this.url = url;

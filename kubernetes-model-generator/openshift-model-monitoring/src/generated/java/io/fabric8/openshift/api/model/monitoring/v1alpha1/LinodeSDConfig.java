@@ -37,6 +37,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * LinodeSDConfig configurations allow retrieving scrape targets from Linode's Linode APIv4. See https://prometheus.io/docs/prometheus/latest/configuration/configuration/#linode_sd_config
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -132,132 +135,210 @@ public class LinodeSDConfig implements Editable<LinodeSDConfigBuilder>, Kubernet
         this.tlsConfig = tlsConfig;
     }
 
+    /**
+     * LinodeSDConfig configurations allow retrieving scrape targets from Linode's Linode APIv4. See https://prometheus.io/docs/prometheus/latest/configuration/configuration/#linode_sd_config
+     */
     @JsonProperty("authorization")
     public SafeAuthorization getAuthorization() {
         return authorization;
     }
 
+    /**
+     * LinodeSDConfig configurations allow retrieving scrape targets from Linode's Linode APIv4. See https://prometheus.io/docs/prometheus/latest/configuration/configuration/#linode_sd_config
+     */
     @JsonProperty("authorization")
     public void setAuthorization(SafeAuthorization authorization) {
         this.authorization = authorization;
     }
 
+    /**
+     * Whether to enable HTTP2.
+     */
     @JsonProperty("enableHTTP2")
     public Boolean getEnableHTTP2() {
         return enableHTTP2;
     }
 
+    /**
+     * Whether to enable HTTP2.
+     */
     @JsonProperty("enableHTTP2")
     public void setEnableHTTP2(Boolean enableHTTP2) {
         this.enableHTTP2 = enableHTTP2;
     }
 
+    /**
+     * Configure whether HTTP requests follow HTTP 3xx redirects.
+     */
     @JsonProperty("followRedirects")
     public Boolean getFollowRedirects() {
         return followRedirects;
     }
 
+    /**
+     * Configure whether HTTP requests follow HTTP 3xx redirects.
+     */
     @JsonProperty("followRedirects")
     public void setFollowRedirects(Boolean followRedirects) {
         this.followRedirects = followRedirects;
     }
 
+    /**
+     * `noProxy` is a comma-separated string that can contain IPs, CIDR notation, domain names that should be excluded from proxying. IP and domain names can contain port numbers.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0 or Alertmanager &gt;= 0.25.0.
+     */
     @JsonProperty("noProxy")
     public String getNoProxy() {
         return noProxy;
     }
 
+    /**
+     * `noProxy` is a comma-separated string that can contain IPs, CIDR notation, domain names that should be excluded from proxying. IP and domain names can contain port numbers.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0 or Alertmanager &gt;= 0.25.0.
+     */
     @JsonProperty("noProxy")
     public void setNoProxy(String noProxy) {
         this.noProxy = noProxy;
     }
 
+    /**
+     * LinodeSDConfig configurations allow retrieving scrape targets from Linode's Linode APIv4. See https://prometheus.io/docs/prometheus/latest/configuration/configuration/#linode_sd_config
+     */
     @JsonProperty("oauth2")
     public OAuth2 getOauth2() {
         return oauth2;
     }
 
+    /**
+     * LinodeSDConfig configurations allow retrieving scrape targets from Linode's Linode APIv4. See https://prometheus.io/docs/prometheus/latest/configuration/configuration/#linode_sd_config
+     */
     @JsonProperty("oauth2")
     public void setOauth2(OAuth2 oauth2) {
         this.oauth2 = oauth2;
     }
 
+    /**
+     * Default port to scrape metrics from.
+     */
     @JsonProperty("port")
     public Integer getPort() {
         return port;
     }
 
+    /**
+     * Default port to scrape metrics from.
+     */
     @JsonProperty("port")
     public void setPort(Integer port) {
         this.port = port;
     }
 
+    /**
+     * ProxyConnectHeader optionally specifies headers to send to proxies during CONNECT requests.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0 or Alertmanager &gt;= 0.25.0.
+     */
     @JsonProperty("proxyConnectHeader")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, List<SecretKeySelector>> getProxyConnectHeader() {
         return proxyConnectHeader;
     }
 
+    /**
+     * ProxyConnectHeader optionally specifies headers to send to proxies during CONNECT requests.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0 or Alertmanager &gt;= 0.25.0.
+     */
     @JsonProperty("proxyConnectHeader")
     public void setProxyConnectHeader(Map<String, List<SecretKeySelector>> proxyConnectHeader) {
         this.proxyConnectHeader = proxyConnectHeader;
     }
 
+    /**
+     * Whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).<br><p> <br><p> It requires Prometheus &gt;= v2.43.0 or Alertmanager &gt;= 0.25.0.
+     */
     @JsonProperty("proxyFromEnvironment")
     public Boolean getProxyFromEnvironment() {
         return proxyFromEnvironment;
     }
 
+    /**
+     * Whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).<br><p> <br><p> It requires Prometheus &gt;= v2.43.0 or Alertmanager &gt;= 0.25.0.
+     */
     @JsonProperty("proxyFromEnvironment")
     public void setProxyFromEnvironment(Boolean proxyFromEnvironment) {
         this.proxyFromEnvironment = proxyFromEnvironment;
     }
 
+    /**
+     * `proxyURL` defines the HTTP proxy server to use.
+     */
     @JsonProperty("proxyUrl")
     public String getProxyUrl() {
         return proxyUrl;
     }
 
+    /**
+     * `proxyURL` defines the HTTP proxy server to use.
+     */
     @JsonProperty("proxyUrl")
     public void setProxyUrl(String proxyUrl) {
         this.proxyUrl = proxyUrl;
     }
 
+    /**
+     * Time after which the linode instances are refreshed.
+     */
     @JsonProperty("refreshInterval")
     public String getRefreshInterval() {
         return refreshInterval;
     }
 
+    /**
+     * Time after which the linode instances are refreshed.
+     */
     @JsonProperty("refreshInterval")
     public void setRefreshInterval(String refreshInterval) {
         this.refreshInterval = refreshInterval;
     }
 
+    /**
+     * Optional region to filter on.
+     */
     @JsonProperty("region")
     public String getRegion() {
         return region;
     }
 
+    /**
+     * Optional region to filter on.
+     */
     @JsonProperty("region")
     public void setRegion(String region) {
         this.region = region;
     }
 
+    /**
+     * The string by which Linode Instance tags are joined into the tag label.
+     */
     @JsonProperty("tagSeparator")
     public String getTagSeparator() {
         return tagSeparator;
     }
 
+    /**
+     * The string by which Linode Instance tags are joined into the tag label.
+     */
     @JsonProperty("tagSeparator")
     public void setTagSeparator(String tagSeparator) {
         this.tagSeparator = tagSeparator;
     }
 
+    /**
+     * LinodeSDConfig configurations allow retrieving scrape targets from Linode's Linode APIv4. See https://prometheus.io/docs/prometheus/latest/configuration/configuration/#linode_sd_config
+     */
     @JsonProperty("tlsConfig")
     public SafeTLSConfig getTlsConfig() {
         return tlsConfig;
     }
 
+    /**
+     * LinodeSDConfig configurations allow retrieving scrape targets from Linode's Linode APIv4. See https://prometheus.io/docs/prometheus/latest/configuration/configuration/#linode_sd_config
+     */
     @JsonProperty("tlsConfig")
     public void setTlsConfig(SafeTLSConfig tlsConfig) {
         this.tlsConfig = tlsConfig;

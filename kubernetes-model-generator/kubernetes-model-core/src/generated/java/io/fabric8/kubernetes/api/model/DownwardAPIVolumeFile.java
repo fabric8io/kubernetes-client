@@ -17,6 +17,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * DownwardAPIVolumeFile represents information to create the file containing the pod field
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -61,41 +64,65 @@ public class DownwardAPIVolumeFile implements Editable<DownwardAPIVolumeFileBuil
         this.resourceFieldRef = resourceFieldRef;
     }
 
+    /**
+     * DownwardAPIVolumeFile represents information to create the file containing the pod field
+     */
     @JsonProperty("fieldRef")
     public ObjectFieldSelector getFieldRef() {
         return fieldRef;
     }
 
+    /**
+     * DownwardAPIVolumeFile represents information to create the file containing the pod field
+     */
     @JsonProperty("fieldRef")
     public void setFieldRef(ObjectFieldSelector fieldRef) {
         this.fieldRef = fieldRef;
     }
 
+    /**
+     * Optional: mode bits used to set permissions on this file, must be an octal value between 0000 and 0777 or a decimal value between 0 and 511. YAML accepts both octal and decimal values, JSON requires decimal values for mode bits. If not specified, the volume defaultMode will be used. This might be in conflict with other options that affect the file mode, like fsGroup, and the result can be other mode bits set.
+     */
     @JsonProperty("mode")
     public Integer getMode() {
         return mode;
     }
 
+    /**
+     * Optional: mode bits used to set permissions on this file, must be an octal value between 0000 and 0777 or a decimal value between 0 and 511. YAML accepts both octal and decimal values, JSON requires decimal values for mode bits. If not specified, the volume defaultMode will be used. This might be in conflict with other options that affect the file mode, like fsGroup, and the result can be other mode bits set.
+     */
     @JsonProperty("mode")
     public void setMode(Integer mode) {
         this.mode = mode;
     }
 
+    /**
+     * Required: Path is  the relative path name of the file to be created. Must not be absolute or contain the '..' path. Must be utf-8 encoded. The first item of the relative path must not start with '..'
+     */
     @JsonProperty("path")
     public String getPath() {
         return path;
     }
 
+    /**
+     * Required: Path is  the relative path name of the file to be created. Must not be absolute or contain the '..' path. Must be utf-8 encoded. The first item of the relative path must not start with '..'
+     */
     @JsonProperty("path")
     public void setPath(String path) {
         this.path = path;
     }
 
+    /**
+     * DownwardAPIVolumeFile represents information to create the file containing the pod field
+     */
     @JsonProperty("resourceFieldRef")
     public ResourceFieldSelector getResourceFieldRef() {
         return resourceFieldRef;
     }
 
+    /**
+     * DownwardAPIVolumeFile represents information to create the file containing the pod field
+     */
     @JsonProperty("resourceFieldRef")
     public void setResourceFieldRef(ResourceFieldSelector resourceFieldRef) {
         this.resourceFieldRef = resourceFieldRef;

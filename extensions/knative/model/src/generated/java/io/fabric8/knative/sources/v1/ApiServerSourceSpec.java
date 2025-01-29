@@ -37,6 +37,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ApiServerSourceSpec defines the desired state of ApiServerSource
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -113,83 +116,131 @@ public class ApiServerSourceSpec implements Editable<ApiServerSourceSpecBuilder>
         this.sink = sink;
     }
 
+    /**
+     * ApiServerSourceSpec defines the desired state of ApiServerSource
+     */
     @JsonProperty("ceOverrides")
     public CloudEventOverrides getCeOverrides() {
         return ceOverrides;
     }
 
+    /**
+     * ApiServerSourceSpec defines the desired state of ApiServerSource
+     */
     @JsonProperty("ceOverrides")
     public void setCeOverrides(CloudEventOverrides ceOverrides) {
         this.ceOverrides = ceOverrides;
     }
 
+    /**
+     * Filters is an experimental field that conforms to the CNCF CloudEvents Subscriptions API. It's an array of filter expressions that evaluate to true or false. If any filter expression in the array evaluates to false, the event MUST NOT be sent to the Sink. If all the filter expressions in the array evaluate to true, the event MUST be attempted to be delivered. Absence of a filter or empty array implies a value of true.
+     */
     @JsonProperty("filters")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<SubscriptionsAPIFilter> getFilters() {
         return filters;
     }
 
+    /**
+     * Filters is an experimental field that conforms to the CNCF CloudEvents Subscriptions API. It's an array of filter expressions that evaluate to true or false. If any filter expression in the array evaluates to false, the event MUST NOT be sent to the Sink. If all the filter expressions in the array evaluate to true, the event MUST be attempted to be delivered. Absence of a filter or empty array implies a value of true.
+     */
     @JsonProperty("filters")
     public void setFilters(List<SubscriptionsAPIFilter> filters) {
         this.filters = filters;
     }
 
+    /**
+     * EventMode controls the format of the event. `Reference` sends a dataref event type for the resource under watch. `Resource` send the full resource lifecycle event. Defaults to `Reference`
+     */
     @JsonProperty("mode")
     public String getMode() {
         return mode;
     }
 
+    /**
+     * EventMode controls the format of the event. `Reference` sends a dataref event type for the resource under watch. `Resource` send the full resource lifecycle event. Defaults to `Reference`
+     */
     @JsonProperty("mode")
     public void setMode(String mode) {
         this.mode = mode;
     }
 
+    /**
+     * ApiServerSourceSpec defines the desired state of ApiServerSource
+     */
     @JsonProperty("namespaceSelector")
     public LabelSelector getNamespaceSelector() {
         return namespaceSelector;
     }
 
+    /**
+     * ApiServerSourceSpec defines the desired state of ApiServerSource
+     */
     @JsonProperty("namespaceSelector")
     public void setNamespaceSelector(LabelSelector namespaceSelector) {
         this.namespaceSelector = namespaceSelector;
     }
 
+    /**
+     * ApiServerSourceSpec defines the desired state of ApiServerSource
+     */
     @JsonProperty("owner")
     public APIVersionKind getOwner() {
         return owner;
     }
 
+    /**
+     * ApiServerSourceSpec defines the desired state of ApiServerSource
+     */
     @JsonProperty("owner")
     public void setOwner(APIVersionKind owner) {
         this.owner = owner;
     }
 
+    /**
+     * Resource are the resources this source will track and send related lifecycle events from the Kubernetes ApiServer, with an optional label selector to help filter.
+     */
     @JsonProperty("resources")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<APIVersionKindSelector> getResources() {
         return resources;
     }
 
+    /**
+     * Resource are the resources this source will track and send related lifecycle events from the Kubernetes ApiServer, with an optional label selector to help filter.
+     */
     @JsonProperty("resources")
     public void setResources(List<APIVersionKindSelector> resources) {
         this.resources = resources;
     }
 
+    /**
+     * ServiceAccountName is the name of the ServiceAccount to use to run this source. Defaults to default if not set.
+     */
     @JsonProperty("serviceAccountName")
     public String getServiceAccountName() {
         return serviceAccountName;
     }
 
+    /**
+     * ServiceAccountName is the name of the ServiceAccount to use to run this source. Defaults to default if not set.
+     */
     @JsonProperty("serviceAccountName")
     public void setServiceAccountName(String serviceAccountName) {
         this.serviceAccountName = serviceAccountName;
     }
 
+    /**
+     * ApiServerSourceSpec defines the desired state of ApiServerSource
+     */
     @JsonProperty("sink")
     public Destination getSink() {
         return sink;
     }
 
+    /**
+     * ApiServerSourceSpec defines the desired state of ApiServerSource
+     */
     @JsonProperty("sink")
     public void setSink(Destination sink) {
         this.sink = sink;

@@ -78,11 +78,17 @@ public class OAuthAPIServerStatus implements Editable<OAuthAPIServerStatusBuilde
         this.latestAvailableRevision = latestAvailableRevision;
     }
 
+    /**
+     * LatestAvailableRevision is the latest revision used as suffix of revisioned secrets like encryption-config. A new revision causes a new deployment of pods.
+     */
     @JsonProperty("latestAvailableRevision")
     public Integer getLatestAvailableRevision() {
         return latestAvailableRevision;
     }
 
+    /**
+     * LatestAvailableRevision is the latest revision used as suffix of revisioned secrets like encryption-config. A new revision causes a new deployment of pods.
+     */
     @JsonProperty("latestAvailableRevision")
     public void setLatestAvailableRevision(Integer latestAvailableRevision) {
         this.latestAvailableRevision = latestAvailableRevision;

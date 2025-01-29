@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * CompliancePerClusterStatus reports the name of a managed cluster and its compliance state for this policy.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -86,31 +89,49 @@ public class CompliancePerClusterStatus implements Editable<CompliancePerCluster
         this.compliant = compliant;
     }
 
+    /**
+     * CompliancePerClusterStatus reports the name of a managed cluster and its compliance state for this policy.
+     */
     @JsonProperty("clustername")
     public String getClustername() {
         return clustername;
     }
 
+    /**
+     * CompliancePerClusterStatus reports the name of a managed cluster and its compliance state for this policy.
+     */
     @JsonProperty("clustername")
     public void setClustername(String clustername) {
         this.clustername = clustername;
     }
 
+    /**
+     * CompliancePerClusterStatus reports the name of a managed cluster and its compliance state for this policy.
+     */
     @JsonProperty("clusternamespace")
     public String getClusternamespace() {
         return clusternamespace;
     }
 
+    /**
+     * CompliancePerClusterStatus reports the name of a managed cluster and its compliance state for this policy.
+     */
     @JsonProperty("clusternamespace")
     public void setClusternamespace(String clusternamespace) {
         this.clusternamespace = clusternamespace;
     }
 
+    /**
+     * CompliancePerClusterStatus reports the name of a managed cluster and its compliance state for this policy.
+     */
     @JsonProperty("compliant")
     public String getCompliant() {
         return compliant;
     }
 
+    /**
+     * CompliancePerClusterStatus reports the name of a managed cluster and its compliance state for this policy.
+     */
     @JsonProperty("compliant")
     public void setCompliant(String compliant) {
         this.compliant = compliant;

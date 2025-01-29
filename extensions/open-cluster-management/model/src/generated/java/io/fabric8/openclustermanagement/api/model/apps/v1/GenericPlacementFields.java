@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * GenericPlacementFields - in alignment with kubefed
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -85,22 +88,34 @@ public class GenericPlacementFields implements Editable<GenericPlacementFieldsBu
         this.clusters = clusters;
     }
 
+    /**
+     * GenericPlacementFields - in alignment with kubefed
+     */
     @JsonProperty("clusterSelector")
     public LabelSelector getClusterSelector() {
         return clusterSelector;
     }
 
+    /**
+     * GenericPlacementFields - in alignment with kubefed
+     */
     @JsonProperty("clusterSelector")
     public void setClusterSelector(LabelSelector clusterSelector) {
         this.clusterSelector = clusterSelector;
     }
 
+    /**
+     * GenericPlacementFields - in alignment with kubefed
+     */
     @JsonProperty("clusters")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<GenericClusterReference> getClusters() {
         return clusters;
     }
 
+    /**
+     * GenericPlacementFields - in alignment with kubefed
+     */
     @JsonProperty("clusters")
     public void setClusters(List<GenericClusterReference> clusters) {
         this.clusters = clusters;

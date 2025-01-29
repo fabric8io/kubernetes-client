@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * BasicAuthPasswordIdentityProvider provides identities for users authenticating using HTTP basic auth credentials
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -90,41 +93,65 @@ public class BasicAuthIdentityProvider implements Editable<BasicAuthIdentityProv
         this.url = url;
     }
 
+    /**
+     * BasicAuthPasswordIdentityProvider provides identities for users authenticating using HTTP basic auth credentials
+     */
     @JsonProperty("ca")
     public ConfigMapNameReference getCa() {
         return ca;
     }
 
+    /**
+     * BasicAuthPasswordIdentityProvider provides identities for users authenticating using HTTP basic auth credentials
+     */
     @JsonProperty("ca")
     public void setCa(ConfigMapNameReference ca) {
         this.ca = ca;
     }
 
+    /**
+     * BasicAuthPasswordIdentityProvider provides identities for users authenticating using HTTP basic auth credentials
+     */
     @JsonProperty("tlsClientCert")
     public SecretNameReference getTlsClientCert() {
         return tlsClientCert;
     }
 
+    /**
+     * BasicAuthPasswordIdentityProvider provides identities for users authenticating using HTTP basic auth credentials
+     */
     @JsonProperty("tlsClientCert")
     public void setTlsClientCert(SecretNameReference tlsClientCert) {
         this.tlsClientCert = tlsClientCert;
     }
 
+    /**
+     * BasicAuthPasswordIdentityProvider provides identities for users authenticating using HTTP basic auth credentials
+     */
     @JsonProperty("tlsClientKey")
     public SecretNameReference getTlsClientKey() {
         return tlsClientKey;
     }
 
+    /**
+     * BasicAuthPasswordIdentityProvider provides identities for users authenticating using HTTP basic auth credentials
+     */
     @JsonProperty("tlsClientKey")
     public void setTlsClientKey(SecretNameReference tlsClientKey) {
         this.tlsClientKey = tlsClientKey;
     }
 
+    /**
+     * url is the remote URL to connect to
+     */
     @JsonProperty("url")
     public String getUrl() {
         return url;
     }
 
+    /**
+     * url is the remote URL to connect to
+     */
     @JsonProperty("url")
     public void setUrl(String url) {
         this.url = url;

@@ -33,6 +33,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ResolutionRequestStatusFields are the ResolutionRequest-specific fields for the status subresource.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -83,21 +86,33 @@ public class ResolutionRequestStatusFields implements Editable<ResolutionRequest
         this.refSource = refSource;
     }
 
+    /**
+     * Data is a string representation of the resolved content of the requested resource in-lined into the ResolutionRequest object.
+     */
     @JsonProperty("data")
     public String getData() {
         return data;
     }
 
+    /**
+     * Data is a string representation of the resolved content of the requested resource in-lined into the ResolutionRequest object.
+     */
     @JsonProperty("data")
     public void setData(String data) {
         this.data = data;
     }
 
+    /**
+     * ResolutionRequestStatusFields are the ResolutionRequest-specific fields for the status subresource.
+     */
     @JsonProperty("refSource")
     public RefSource getRefSource() {
         return refSource;
     }
 
+    /**
+     * ResolutionRequestStatusFields are the ResolutionRequest-specific fields for the status subresource.
+     */
     @JsonProperty("refSource")
     public void setRefSource(RefSource refSource) {
         this.refSource = refSource;

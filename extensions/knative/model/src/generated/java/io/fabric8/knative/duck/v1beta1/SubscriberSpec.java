@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * SubscriberSpec defines a single subscriber to a Subscribable.<br><p> <br><p> At least one of SubscriberURI and ReplyURI must be present
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -94,51 +97,81 @@ public class SubscriberSpec implements Editable<SubscriberSpecBuilder>, Kubernet
         this.uid = uid;
     }
 
+    /**
+     * SubscriberSpec defines a single subscriber to a Subscribable.<br><p> <br><p> At least one of SubscriberURI and ReplyURI must be present
+     */
     @JsonProperty("delivery")
     public DeliverySpec getDelivery() {
         return delivery;
     }
 
+    /**
+     * SubscriberSpec defines a single subscriber to a Subscribable.<br><p> <br><p> At least one of SubscriberURI and ReplyURI must be present
+     */
     @JsonProperty("delivery")
     public void setDelivery(DeliverySpec delivery) {
         this.delivery = delivery;
     }
 
+    /**
+     * Generation of the origin of the subscriber with uid:UID.
+     */
     @JsonProperty("generation")
     public Long getGeneration() {
         return generation;
     }
 
+    /**
+     * Generation of the origin of the subscriber with uid:UID.
+     */
     @JsonProperty("generation")
     public void setGeneration(Long generation) {
         this.generation = generation;
     }
 
+    /**
+     * SubscriberSpec defines a single subscriber to a Subscribable.<br><p> <br><p> At least one of SubscriberURI and ReplyURI must be present
+     */
     @JsonProperty("replyUri")
     public String getReplyUri() {
         return replyUri;
     }
 
+    /**
+     * SubscriberSpec defines a single subscriber to a Subscribable.<br><p> <br><p> At least one of SubscriberURI and ReplyURI must be present
+     */
     @JsonProperty("replyUri")
     public void setReplyUri(String replyUri) {
         this.replyUri = replyUri;
     }
 
+    /**
+     * SubscriberSpec defines a single subscriber to a Subscribable.<br><p> <br><p> At least one of SubscriberURI and ReplyURI must be present
+     */
     @JsonProperty("subscriberUri")
     public String getSubscriberUri() {
         return subscriberUri;
     }
 
+    /**
+     * SubscriberSpec defines a single subscriber to a Subscribable.<br><p> <br><p> At least one of SubscriberURI and ReplyURI must be present
+     */
     @JsonProperty("subscriberUri")
     public void setSubscriberUri(String subscriberUri) {
         this.subscriberUri = subscriberUri;
     }
 
+    /**
+     * UID is used to understand the origin of the subscriber.
+     */
     @JsonProperty("uid")
     public String getUid() {
         return uid;
     }
 
+    /**
+     * UID is used to understand the origin of the subscriber.
+     */
     @JsonProperty("uid")
     public void setUid(String uid) {
         this.uid = uid;

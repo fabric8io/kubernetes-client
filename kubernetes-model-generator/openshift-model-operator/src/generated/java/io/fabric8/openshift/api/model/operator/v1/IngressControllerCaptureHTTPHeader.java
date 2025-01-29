@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * IngressControllerCaptureHTTPHeader describes an HTTP header that should be captured.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class IngressControllerCaptureHTTPHeader implements Editable<IngressContr
         this.name = name;
     }
 
+    /**
+     * maxLength specifies a maximum length for the header value.  If a header value exceeds this length, the value will be truncated in the log message.  Note that the ingress controller may impose a separate bound on the total length of HTTP headers in a request.
+     */
     @JsonProperty("maxLength")
     public Integer getMaxLength() {
         return maxLength;
     }
 
+    /**
+     * maxLength specifies a maximum length for the header value.  If a header value exceeds this length, the value will be truncated in the log message.  Note that the ingress controller may impose a separate bound on the total length of HTTP headers in a request.
+     */
     @JsonProperty("maxLength")
     public void setMaxLength(Integer maxLength) {
         this.maxLength = maxLength;
     }
 
+    /**
+     * name specifies a header name.  Its value must be a valid HTTP header name as defined in RFC 2616 section 4.2.
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * name specifies a header name.  Its value must be a valid HTTP header name as defined in RFC 2616 section 4.2.
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;

@@ -17,6 +17,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * NodeRuntimeHandler is a set of runtime handler information.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -53,21 +56,33 @@ public class NodeRuntimeHandler implements Editable<NodeRuntimeHandlerBuilder>, 
         this.name = name;
     }
 
+    /**
+     * NodeRuntimeHandler is a set of runtime handler information.
+     */
     @JsonProperty("features")
     public NodeRuntimeHandlerFeatures getFeatures() {
         return features;
     }
 
+    /**
+     * NodeRuntimeHandler is a set of runtime handler information.
+     */
     @JsonProperty("features")
     public void setFeatures(NodeRuntimeHandlerFeatures features) {
         this.features = features;
     }
 
+    /**
+     * Runtime handler name. Empty for the default runtime handler.
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * Runtime handler name. Empty for the default runtime handler.
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;

@@ -17,6 +17,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Represents a Flocker volume mounted by the Flocker agent. One and only one of datasetName and datasetUUID should be set. Flocker volumes do not support ownership management or SELinux relabeling.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -53,21 +56,33 @@ public class FlockerVolumeSource implements Editable<FlockerVolumeSourceBuilder>
         this.datasetUUID = datasetUUID;
     }
 
+    /**
+     * datasetName is Name of the dataset stored as metadata -&gt; name on the dataset for Flocker should be considered as deprecated
+     */
     @JsonProperty("datasetName")
     public String getDatasetName() {
         return datasetName;
     }
 
+    /**
+     * datasetName is Name of the dataset stored as metadata -&gt; name on the dataset for Flocker should be considered as deprecated
+     */
     @JsonProperty("datasetName")
     public void setDatasetName(String datasetName) {
         this.datasetName = datasetName;
     }
 
+    /**
+     * datasetUUID is the UUID of the dataset. This is unique identifier of a Flocker dataset
+     */
     @JsonProperty("datasetUUID")
     public String getDatasetUUID() {
         return datasetUUID;
     }
 
+    /**
+     * datasetUUID is the UUID of the dataset. This is unique identifier of a Flocker dataset
+     */
     @JsonProperty("datasetUUID")
     public void setDatasetUUID(String datasetUUID) {
         this.datasetUUID = datasetUUID;

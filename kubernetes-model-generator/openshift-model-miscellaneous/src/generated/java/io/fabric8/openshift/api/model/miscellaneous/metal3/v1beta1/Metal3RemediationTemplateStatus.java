@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Metal3RemediationTemplateStatus defines the observed state of Metal3RemediationTemplate.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -78,11 +81,17 @@ public class Metal3RemediationTemplateStatus implements Editable<Metal3Remediati
         this.status = status;
     }
 
+    /**
+     * Metal3RemediationTemplateStatus defines the observed state of Metal3RemediationTemplate.
+     */
     @JsonProperty("status")
     public Metal3RemediationStatus getStatus() {
         return status;
     }
 
+    /**
+     * Metal3RemediationTemplateStatus defines the observed state of Metal3RemediationTemplate.
+     */
     @JsonProperty("status")
     public void setStatus(Metal3RemediationStatus status) {
         this.status = status;

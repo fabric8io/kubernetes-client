@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * AzureClusterDeprovision contains Azure-specific configuration for a ClusterDeprovision
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -86,31 +89,49 @@ public class AzureClusterDeprovision implements Editable<AzureClusterDeprovision
         this.resourceGroupName = resourceGroupName;
     }
 
+    /**
+     * cloudName is the name of the Azure cloud environment which can be used to configure the Azure SDK with the appropriate Azure API endpoints. If empty, the value is equal to "AzurePublicCloud".
+     */
     @JsonProperty("cloudName")
     public String getCloudName() {
         return cloudName;
     }
 
+    /**
+     * cloudName is the name of the Azure cloud environment which can be used to configure the Azure SDK with the appropriate Azure API endpoints. If empty, the value is equal to "AzurePublicCloud".
+     */
     @JsonProperty("cloudName")
     public void setCloudName(String cloudName) {
         this.cloudName = cloudName;
     }
 
+    /**
+     * AzureClusterDeprovision contains Azure-specific configuration for a ClusterDeprovision
+     */
     @JsonProperty("credentialsSecretRef")
     public LocalObjectReference getCredentialsSecretRef() {
         return credentialsSecretRef;
     }
 
+    /**
+     * AzureClusterDeprovision contains Azure-specific configuration for a ClusterDeprovision
+     */
     @JsonProperty("credentialsSecretRef")
     public void setCredentialsSecretRef(LocalObjectReference credentialsSecretRef) {
         this.credentialsSecretRef = credentialsSecretRef;
     }
 
+    /**
+     * ResourceGroupName is the name of the resource group where the cluster was installed. Required for new deprovisions (schema notwithstanding).
+     */
     @JsonProperty("resourceGroupName")
     public String getResourceGroupName() {
         return resourceGroupName;
     }
 
+    /**
+     * ResourceGroupName is the name of the resource group where the cluster was installed. Required for new deprovisions (schema notwithstanding).
+     */
     @JsonProperty("resourceGroupName")
     public void setResourceGroupName(String resourceGroupName) {
         this.resourceGroupName = resourceGroupName;

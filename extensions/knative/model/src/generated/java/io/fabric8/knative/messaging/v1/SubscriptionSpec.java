@@ -35,6 +35,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * SubscriptionSpec specifies the Channel for incoming events, a Subscriber target for processing those events and where to put the result of the processing. Only From (where the events are coming from) is always required. You can optionally only Process the events (results in no output events) by leaving out the Reply. You can also perform an identity transformation on the incoming events by leaving out the Subscriber and only specifying Reply.<br><p> <br><p> The following are all valid specifications: channel --[subscriber]--&gt; reply Sink, no outgoing events: channel -- subscriber no-op function (identity transformation): channel --&gt; reply
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -93,41 +96,65 @@ public class SubscriptionSpec implements Editable<SubscriptionSpecBuilder>, Kube
         this.subscriber = subscriber;
     }
 
+    /**
+     * SubscriptionSpec specifies the Channel for incoming events, a Subscriber target for processing those events and where to put the result of the processing. Only From (where the events are coming from) is always required. You can optionally only Process the events (results in no output events) by leaving out the Reply. You can also perform an identity transformation on the incoming events by leaving out the Subscriber and only specifying Reply.<br><p> <br><p> The following are all valid specifications: channel --[subscriber]--&gt; reply Sink, no outgoing events: channel -- subscriber no-op function (identity transformation): channel --&gt; reply
+     */
     @JsonProperty("channel")
     public KReference getChannel() {
         return channel;
     }
 
+    /**
+     * SubscriptionSpec specifies the Channel for incoming events, a Subscriber target for processing those events and where to put the result of the processing. Only From (where the events are coming from) is always required. You can optionally only Process the events (results in no output events) by leaving out the Reply. You can also perform an identity transformation on the incoming events by leaving out the Subscriber and only specifying Reply.<br><p> <br><p> The following are all valid specifications: channel --[subscriber]--&gt; reply Sink, no outgoing events: channel -- subscriber no-op function (identity transformation): channel --&gt; reply
+     */
     @JsonProperty("channel")
     public void setChannel(KReference channel) {
         this.channel = channel;
     }
 
+    /**
+     * SubscriptionSpec specifies the Channel for incoming events, a Subscriber target for processing those events and where to put the result of the processing. Only From (where the events are coming from) is always required. You can optionally only Process the events (results in no output events) by leaving out the Reply. You can also perform an identity transformation on the incoming events by leaving out the Subscriber and only specifying Reply.<br><p> <br><p> The following are all valid specifications: channel --[subscriber]--&gt; reply Sink, no outgoing events: channel -- subscriber no-op function (identity transformation): channel --&gt; reply
+     */
     @JsonProperty("delivery")
     public DeliverySpec getDelivery() {
         return delivery;
     }
 
+    /**
+     * SubscriptionSpec specifies the Channel for incoming events, a Subscriber target for processing those events and where to put the result of the processing. Only From (where the events are coming from) is always required. You can optionally only Process the events (results in no output events) by leaving out the Reply. You can also perform an identity transformation on the incoming events by leaving out the Subscriber and only specifying Reply.<br><p> <br><p> The following are all valid specifications: channel --[subscriber]--&gt; reply Sink, no outgoing events: channel -- subscriber no-op function (identity transformation): channel --&gt; reply
+     */
     @JsonProperty("delivery")
     public void setDelivery(DeliverySpec delivery) {
         this.delivery = delivery;
     }
 
+    /**
+     * SubscriptionSpec specifies the Channel for incoming events, a Subscriber target for processing those events and where to put the result of the processing. Only From (where the events are coming from) is always required. You can optionally only Process the events (results in no output events) by leaving out the Reply. You can also perform an identity transformation on the incoming events by leaving out the Subscriber and only specifying Reply.<br><p> <br><p> The following are all valid specifications: channel --[subscriber]--&gt; reply Sink, no outgoing events: channel -- subscriber no-op function (identity transformation): channel --&gt; reply
+     */
     @JsonProperty("reply")
     public Destination getReply() {
         return reply;
     }
 
+    /**
+     * SubscriptionSpec specifies the Channel for incoming events, a Subscriber target for processing those events and where to put the result of the processing. Only From (where the events are coming from) is always required. You can optionally only Process the events (results in no output events) by leaving out the Reply. You can also perform an identity transformation on the incoming events by leaving out the Subscriber and only specifying Reply.<br><p> <br><p> The following are all valid specifications: channel --[subscriber]--&gt; reply Sink, no outgoing events: channel -- subscriber no-op function (identity transformation): channel --&gt; reply
+     */
     @JsonProperty("reply")
     public void setReply(Destination reply) {
         this.reply = reply;
     }
 
+    /**
+     * SubscriptionSpec specifies the Channel for incoming events, a Subscriber target for processing those events and where to put the result of the processing. Only From (where the events are coming from) is always required. You can optionally only Process the events (results in no output events) by leaving out the Reply. You can also perform an identity transformation on the incoming events by leaving out the Subscriber and only specifying Reply.<br><p> <br><p> The following are all valid specifications: channel --[subscriber]--&gt; reply Sink, no outgoing events: channel -- subscriber no-op function (identity transformation): channel --&gt; reply
+     */
     @JsonProperty("subscriber")
     public Destination getSubscriber() {
         return subscriber;
     }
 
+    /**
+     * SubscriptionSpec specifies the Channel for incoming events, a Subscriber target for processing those events and where to put the result of the processing. Only From (where the events are coming from) is always required. You can optionally only Process the events (results in no output events) by leaving out the Reply. You can also perform an identity transformation on the incoming events by leaving out the Subscriber and only specifying Reply.<br><p> <br><p> The following are all valid specifications: channel --[subscriber]--&gt; reply Sink, no outgoing events: channel -- subscriber no-op function (identity transformation): channel --&gt; reply
+     */
     @JsonProperty("subscriber")
     public void setSubscriber(Destination subscriber) {
         this.subscriber = subscriber;

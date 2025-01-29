@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * FeatureGatesEnabled is list of feature gates that must be enabled.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -81,12 +84,18 @@ public class FeatureGatesEnabled implements Editable<FeatureGatesEnabledBuilder>
         this.enabled = enabled;
     }
 
+    /**
+     * enabled is a list of all feature gates that you want to force on
+     */
     @JsonProperty("enabled")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getEnabled() {
         return enabled;
     }
 
+    /**
+     * enabled is a list of all feature gates that you want to force on
+     */
     @JsonProperty("enabled")
     public void setEnabled(List<String> enabled) {
         this.enabled = enabled;

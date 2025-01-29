@@ -37,6 +37,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * SubscriptionConfig contains configuration specified for a subscription.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -126,108 +129,168 @@ public class SubscriptionConfig implements Editable<SubscriptionConfigBuilder>, 
         this.volumes = volumes;
     }
 
+    /**
+     * SubscriptionConfig contains configuration specified for a subscription.
+     */
     @JsonProperty("affinity")
     public Affinity getAffinity() {
         return affinity;
     }
 
+    /**
+     * SubscriptionConfig contains configuration specified for a subscription.
+     */
     @JsonProperty("affinity")
     public void setAffinity(Affinity affinity) {
         this.affinity = affinity;
     }
 
+    /**
+     * Annotations is an unstructured key value map stored with each Deployment, Pod, APIService in the Operator. Typically, annotations may be set by external tools to store and retrieve arbitrary metadata. Use this field to pre-define annotations that OLM should add to each of the Subscription's deployments, pods, and apiservices.
+     */
     @JsonProperty("annotations")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getAnnotations() {
         return annotations;
     }
 
+    /**
+     * Annotations is an unstructured key value map stored with each Deployment, Pod, APIService in the Operator. Typically, annotations may be set by external tools to store and retrieve arbitrary metadata. Use this field to pre-define annotations that OLM should add to each of the Subscription's deployments, pods, and apiservices.
+     */
     @JsonProperty("annotations")
     public void setAnnotations(Map<String, String> annotations) {
         this.annotations = annotations;
     }
 
+    /**
+     * Env is a list of environment variables to set in the container. Cannot be updated.
+     */
     @JsonProperty("env")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<EnvVar> getEnv() {
         return env;
     }
 
+    /**
+     * Env is a list of environment variables to set in the container. Cannot be updated.
+     */
     @JsonProperty("env")
     public void setEnv(List<EnvVar> env) {
         this.env = env;
     }
 
+    /**
+     * EnvFrom is a list of sources to populate environment variables in the container. The keys defined within a source must be a C_IDENTIFIER. All invalid keys will be reported as an event when the container is starting. When a key exists in multiple sources, the value associated with the last source will take precedence. Values defined by an Env with a duplicate key will take precedence. Immutable.
+     */
     @JsonProperty("envFrom")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<EnvFromSource> getEnvFrom() {
         return envFrom;
     }
 
+    /**
+     * EnvFrom is a list of sources to populate environment variables in the container. The keys defined within a source must be a C_IDENTIFIER. All invalid keys will be reported as an event when the container is starting. When a key exists in multiple sources, the value associated with the last source will take precedence. Values defined by an Env with a duplicate key will take precedence. Immutable.
+     */
     @JsonProperty("envFrom")
     public void setEnvFrom(List<EnvFromSource> envFrom) {
         this.envFrom = envFrom;
     }
 
+    /**
+     * NodeSelector is a selector which must be true for the pod to fit on a node. Selector which must match a node's labels for the pod to be scheduled on that node. More info: https://kubernetes.io/docs/concepts/configuration/assign-pod-node/
+     */
     @JsonProperty("nodeSelector")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getNodeSelector() {
         return nodeSelector;
     }
 
+    /**
+     * NodeSelector is a selector which must be true for the pod to fit on a node. Selector which must match a node's labels for the pod to be scheduled on that node. More info: https://kubernetes.io/docs/concepts/configuration/assign-pod-node/
+     */
     @JsonProperty("nodeSelector")
     public void setNodeSelector(Map<String, String> nodeSelector) {
         this.nodeSelector = nodeSelector;
     }
 
+    /**
+     * SubscriptionConfig contains configuration specified for a subscription.
+     */
     @JsonProperty("resources")
     public ResourceRequirements getResources() {
         return resources;
     }
 
+    /**
+     * SubscriptionConfig contains configuration specified for a subscription.
+     */
     @JsonProperty("resources")
     public void setResources(ResourceRequirements resources) {
         this.resources = resources;
     }
 
+    /**
+     * SubscriptionConfig contains configuration specified for a subscription.
+     */
     @JsonProperty("selector")
     public LabelSelector getSelector() {
         return selector;
     }
 
+    /**
+     * SubscriptionConfig contains configuration specified for a subscription.
+     */
     @JsonProperty("selector")
     public void setSelector(LabelSelector selector) {
         this.selector = selector;
     }
 
+    /**
+     * Tolerations are the pod's tolerations.
+     */
     @JsonProperty("tolerations")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Toleration> getTolerations() {
         return tolerations;
     }
 
+    /**
+     * Tolerations are the pod's tolerations.
+     */
     @JsonProperty("tolerations")
     public void setTolerations(List<Toleration> tolerations) {
         this.tolerations = tolerations;
     }
 
+    /**
+     * List of VolumeMounts to set in the container.
+     */
     @JsonProperty("volumeMounts")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<VolumeMount> getVolumeMounts() {
         return volumeMounts;
     }
 
+    /**
+     * List of VolumeMounts to set in the container.
+     */
     @JsonProperty("volumeMounts")
     public void setVolumeMounts(List<VolumeMount> volumeMounts) {
         this.volumeMounts = volumeMounts;
     }
 
+    /**
+     * List of Volumes to set in the podSpec.
+     */
     @JsonProperty("volumes")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Volume> getVolumes() {
         return volumes;
     }
 
+    /**
+     * List of Volumes to set in the podSpec.
+     */
     @JsonProperty("volumes")
     public void setVolumes(List<Volume> volumes) {
         this.volumes = volumes;

@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * StaticIPAMDNS provides DNS related information for static IPAM
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -90,33 +93,51 @@ public class StaticIPAMDNS implements Editable<StaticIPAMDNSBuilder>, Kubernetes
         this.search = search;
     }
 
+    /**
+     * Domain configures the domainname the local domain used for short hostname lookups
+     */
     @JsonProperty("domain")
     public String getDomain() {
         return domain;
     }
 
+    /**
+     * Domain configures the domainname the local domain used for short hostname lookups
+     */
     @JsonProperty("domain")
     public void setDomain(String domain) {
         this.domain = domain;
     }
 
+    /**
+     * Nameservers points DNS servers for IP lookup
+     */
     @JsonProperty("nameservers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getNameservers() {
         return nameservers;
     }
 
+    /**
+     * Nameservers points DNS servers for IP lookup
+     */
     @JsonProperty("nameservers")
     public void setNameservers(List<String> nameservers) {
         this.nameservers = nameservers;
     }
 
+    /**
+     * Search configures priority ordered search domains for short hostname lookups
+     */
     @JsonProperty("search")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getSearch() {
         return search;
     }
 
+    /**
+     * Search configures priority ordered search domains for short hostname lookups
+     */
     @JsonProperty("search")
     public void setSearch(List<String> search) {
         this.search = search;

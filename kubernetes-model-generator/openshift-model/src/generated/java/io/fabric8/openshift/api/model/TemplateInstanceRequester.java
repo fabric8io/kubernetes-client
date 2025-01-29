@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * TemplateInstanceRequester holds the identity of an agent requesting a template instantiation.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -94,43 +97,67 @@ public class TemplateInstanceRequester implements Editable<TemplateInstanceReque
         this.username = username;
     }
 
+    /**
+     * extra holds additional information provided by the authenticator.
+     */
     @JsonProperty("extra")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, List<String>> getExtra() {
         return extra;
     }
 
+    /**
+     * extra holds additional information provided by the authenticator.
+     */
     @JsonProperty("extra")
     public void setExtra(Map<String, List<String>> extra) {
         this.extra = extra;
     }
 
+    /**
+     * groups represent the groups this user is a part of.
+     */
     @JsonProperty("groups")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getGroups() {
         return groups;
     }
 
+    /**
+     * groups represent the groups this user is a part of.
+     */
     @JsonProperty("groups")
     public void setGroups(List<String> groups) {
         this.groups = groups;
     }
 
+    /**
+     * uid is a unique value that identifies this user across time; if this user is deleted and another user by the same name is added, they will have different UIDs.
+     */
     @JsonProperty("uid")
     public String getUid() {
         return uid;
     }
 
+    /**
+     * uid is a unique value that identifies this user across time; if this user is deleted and another user by the same name is added, they will have different UIDs.
+     */
     @JsonProperty("uid")
     public void setUid(String uid) {
         this.uid = uid;
     }
 
+    /**
+     * username uniquely identifies this user among all active users.
+     */
     @JsonProperty("username")
     public String getUsername() {
         return username;
     }
 
+    /**
+     * username uniquely identifies this user among all active users.
+     */
     @JsonProperty("username")
     public void setUsername(String username) {
         this.username = username;

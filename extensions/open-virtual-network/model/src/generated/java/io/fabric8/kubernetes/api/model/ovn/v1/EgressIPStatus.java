@@ -81,12 +81,18 @@ public class EgressIPStatus implements Editable<EgressIPStatusBuilder>, Kubernet
         this.items = items;
     }
 
+    /**
+     * The list of assigned egress IPs and their corresponding node assignment.
+     */
     @JsonProperty("items")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<EgressIPStatusItem> getItems() {
         return items;
     }
 
+    /**
+     * The list of assigned egress IPs and their corresponding node assignment.
+     */
     @JsonProperty("items")
     public void setItems(List<EgressIPStatusItem> items) {
         this.items = items;

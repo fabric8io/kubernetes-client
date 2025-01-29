@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * AWSResourceFilter is a filter used to identify an AWS resource
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -85,22 +88,34 @@ public class AWSResourceFilter implements Editable<AWSResourceFilterBuilder>, Ku
         this.values = values;
     }
 
+    /**
+     * Name of the filter. Filter names are case-sensitive.
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * Name of the filter. Filter names are case-sensitive.
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * Values includes one or more filter values. Filter values are case-sensitive.
+     */
     @JsonProperty("values")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getValues() {
         return values;
     }
 
+    /**
+     * Values includes one or more filter values. Filter values are case-sensitive.
+     */
     @JsonProperty("values")
     public void setValues(List<String> values) {
         this.values = values;

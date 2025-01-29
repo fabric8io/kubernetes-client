@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * DriverAllocationResult contains vendor parameters and the allocation result for one request.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -83,21 +86,33 @@ public class DriverAllocationResult implements Editable<DriverAllocationResultBu
         this.vendorRequestParameters = vendorRequestParameters;
     }
 
+    /**
+     * DriverAllocationResult contains vendor parameters and the allocation result for one request.
+     */
     @JsonProperty("namedResources")
     public NamedResourcesAllocationResult getNamedResources() {
         return namedResources;
     }
 
+    /**
+     * DriverAllocationResult contains vendor parameters and the allocation result for one request.
+     */
     @JsonProperty("namedResources")
     public void setNamedResources(NamedResourcesAllocationResult namedResources) {
         this.namedResources = namedResources;
     }
 
+    /**
+     * DriverAllocationResult contains vendor parameters and the allocation result for one request.
+     */
     @JsonProperty("vendorRequestParameters")
     public Object getVendorRequestParameters() {
         return vendorRequestParameters;
     }
 
+    /**
+     * DriverAllocationResult contains vendor parameters and the allocation result for one request.
+     */
     @JsonProperty("vendorRequestParameters")
     @JsonDeserialize(using = io.fabric8.kubernetes.internal.KubernetesDeserializer.class)
     public void setVendorRequestParameters(Object vendorRequestParameters) {

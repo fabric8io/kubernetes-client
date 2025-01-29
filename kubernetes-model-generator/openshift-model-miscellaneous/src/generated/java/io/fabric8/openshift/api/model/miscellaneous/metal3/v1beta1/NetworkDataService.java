@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * NetworkDataService represents a service object.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -85,22 +88,34 @@ public class NetworkDataService implements Editable<NetworkDataServiceBuilder>, 
         this.dnsFromIPPool = dnsFromIPPool;
     }
 
+    /**
+     * DNS is a list of DNS services
+     */
     @JsonProperty("dns")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getDns() {
         return dns;
     }
 
+    /**
+     * DNS is a list of DNS services
+     */
     @JsonProperty("dns")
     public void setDns(List<String> dns) {
         this.dns = dns;
     }
 
+    /**
+     * DNSFromIPPool is the name of the IPPool from which to get the DNS servers
+     */
     @JsonProperty("dnsFromIPPool")
     public String getDnsFromIPPool() {
         return dnsFromIPPool;
     }
 
+    /**
+     * DNSFromIPPool is the name of the IPPool from which to get the DNS servers
+     */
     @JsonProperty("dnsFromIPPool")
     public void setDnsFromIPPool(String dnsFromIPPool) {
         this.dnsFromIPPool = dnsFromIPPool;

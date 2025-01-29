@@ -39,6 +39,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * GCPMachineProviderSpec is the type that will be embedded in a Machine.Spec.ProviderSpec field for an GCP virtual machine. It is used by the GCP machine actuator to create a single Machine. Compatibility level 2: Stable within a major release for a minimum of 9 months or 3 minor releases (whichever is longer).
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -98,9 +101,6 @@ import lombok.experimental.Accessors;
 public class GCPMachineProviderSpec implements Editable<GCPMachineProviderSpecBuilder>, HasMetadata, Namespaced
 {
 
-    /**
-     * (Required)
-     */
     @JsonProperty("apiVersion")
     private String apiVersion = "machine.openshift.io/v1beta1";
     @JsonProperty("canIPForward")
@@ -120,9 +120,6 @@ public class GCPMachineProviderSpec implements Editable<GCPMachineProviderSpecBu
     @JsonProperty("gpus")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<GCPGPUConfig> gpus = new ArrayList<>();
-    /**
-     * (Required)
-     */
     @JsonProperty("kind")
     private String kind = "GCPMachineProviderSpec";
     @JsonProperty("labels")
@@ -202,7 +199,7 @@ public class GCPMachineProviderSpec implements Editable<GCPMachineProviderSpecBu
     }
 
     /**
-     * (Required)
+     * APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -210,88 +207,130 @@ public class GCPMachineProviderSpec implements Editable<GCPMachineProviderSpecBu
     }
 
     /**
-     * (Required)
+     * APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
         this.apiVersion = apiVersion;
     }
 
+    /**
+     * CanIPForward Allows this instance to send and receive packets with non-matching destination or source IPs. This is required if you plan to use this instance to forward routes.
+     */
     @JsonProperty("canIPForward")
     public Boolean getCanIPForward() {
         return canIPForward;
     }
 
+    /**
+     * CanIPForward Allows this instance to send and receive packets with non-matching destination or source IPs. This is required if you plan to use this instance to forward routes.
+     */
     @JsonProperty("canIPForward")
     public void setCanIPForward(Boolean canIPForward) {
         this.canIPForward = canIPForward;
     }
 
+    /**
+     * confidentialCompute Defines whether the instance should have confidential compute enabled. If enabled OnHostMaintenance is required to be set to "Terminate". If omitted, the platform chooses a default, which is subject to change over time, currently that default is false.
+     */
     @JsonProperty("confidentialCompute")
     public String getConfidentialCompute() {
         return confidentialCompute;
     }
 
+    /**
+     * confidentialCompute Defines whether the instance should have confidential compute enabled. If enabled OnHostMaintenance is required to be set to "Terminate". If omitted, the platform chooses a default, which is subject to change over time, currently that default is false.
+     */
     @JsonProperty("confidentialCompute")
     public void setConfidentialCompute(String confidentialCompute) {
         this.confidentialCompute = confidentialCompute;
     }
 
+    /**
+     * GCPMachineProviderSpec is the type that will be embedded in a Machine.Spec.ProviderSpec field for an GCP virtual machine. It is used by the GCP machine actuator to create a single Machine. Compatibility level 2: Stable within a major release for a minimum of 9 months or 3 minor releases (whichever is longer).
+     */
     @JsonProperty("credentialsSecret")
     public LocalObjectReference getCredentialsSecret() {
         return credentialsSecret;
     }
 
+    /**
+     * GCPMachineProviderSpec is the type that will be embedded in a Machine.Spec.ProviderSpec field for an GCP virtual machine. It is used by the GCP machine actuator to create a single Machine. Compatibility level 2: Stable within a major release for a minimum of 9 months or 3 minor releases (whichever is longer).
+     */
     @JsonProperty("credentialsSecret")
     public void setCredentialsSecret(LocalObjectReference credentialsSecret) {
         this.credentialsSecret = credentialsSecret;
     }
 
+    /**
+     * DeletionProtection whether the resource should be protected against deletion.
+     */
     @JsonProperty("deletionProtection")
     public Boolean getDeletionProtection() {
         return deletionProtection;
     }
 
+    /**
+     * DeletionProtection whether the resource should be protected against deletion.
+     */
     @JsonProperty("deletionProtection")
     public void setDeletionProtection(Boolean deletionProtection) {
         this.deletionProtection = deletionProtection;
     }
 
+    /**
+     * Disks is a list of disks to be attached to the VM.
+     */
     @JsonProperty("disks")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<GCPDisk> getDisks() {
         return disks;
     }
 
+    /**
+     * Disks is a list of disks to be attached to the VM.
+     */
     @JsonProperty("disks")
     public void setDisks(List<GCPDisk> disks) {
         this.disks = disks;
     }
 
+    /**
+     * Metadata key/value pairs to apply to the VM.
+     */
     @JsonProperty("gcpMetadata")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<GCPMetadata> getGcpMetadata() {
         return gcpMetadata;
     }
 
+    /**
+     * Metadata key/value pairs to apply to the VM.
+     */
     @JsonProperty("gcpMetadata")
     public void setGcpMetadata(List<GCPMetadata> gcpMetadata) {
         this.gcpMetadata = gcpMetadata;
     }
 
+    /**
+     * GPUs is a list of GPUs to be attached to the VM.
+     */
     @JsonProperty("gpus")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<GCPGPUConfig> getGpus() {
         return gpus;
     }
 
+    /**
+     * GPUs is a list of GPUs to be attached to the VM.
+     */
     @JsonProperty("gpus")
     public void setGpus(List<GCPGPUConfig> gpus) {
         this.gpus = gpus;
     }
 
     /**
-     * (Required)
+     * Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -299,174 +338,270 @@ public class GCPMachineProviderSpec implements Editable<GCPMachineProviderSpecBu
     }
 
     /**
-     * (Required)
+     * Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
      */
     @JsonProperty("kind")
     public void setKind(String kind) {
         this.kind = kind;
     }
 
+    /**
+     * Labels list of labels to apply to the VM.
+     */
     @JsonProperty("labels")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getLabels() {
         return labels;
     }
 
+    /**
+     * Labels list of labels to apply to the VM.
+     */
     @JsonProperty("labels")
     public void setLabels(Map<String, String> labels) {
         this.labels = labels;
     }
 
+    /**
+     * MachineType is the machine type to use for the VM.
+     */
     @JsonProperty("machineType")
     public String getMachineType() {
         return machineType;
     }
 
+    /**
+     * MachineType is the machine type to use for the VM.
+     */
     @JsonProperty("machineType")
     public void setMachineType(String machineType) {
         this.machineType = machineType;
     }
 
+    /**
+     * GCPMachineProviderSpec is the type that will be embedded in a Machine.Spec.ProviderSpec field for an GCP virtual machine. It is used by the GCP machine actuator to create a single Machine. Compatibility level 2: Stable within a major release for a minimum of 9 months or 3 minor releases (whichever is longer).
+     */
     @JsonProperty("metadata")
     public ObjectMeta getMetadata() {
         return metadata;
     }
 
+    /**
+     * GCPMachineProviderSpec is the type that will be embedded in a Machine.Spec.ProviderSpec field for an GCP virtual machine. It is used by the GCP machine actuator to create a single Machine. Compatibility level 2: Stable within a major release for a minimum of 9 months or 3 minor releases (whichever is longer).
+     */
     @JsonProperty("metadata")
     public void setMetadata(ObjectMeta metadata) {
         this.metadata = metadata;
     }
 
+    /**
+     * NetworkInterfaces is a list of network interfaces to be attached to the VM.
+     */
     @JsonProperty("networkInterfaces")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<GCPNetworkInterface> getNetworkInterfaces() {
         return networkInterfaces;
     }
 
+    /**
+     * NetworkInterfaces is a list of network interfaces to be attached to the VM.
+     */
     @JsonProperty("networkInterfaces")
     public void setNetworkInterfaces(List<GCPNetworkInterface> networkInterfaces) {
         this.networkInterfaces = networkInterfaces;
     }
 
+    /**
+     * OnHostMaintenance determines the behavior when a maintenance event occurs that might cause the instance to reboot. This is required to be set to "Terminate" if you want to provision machine with attached GPUs. Otherwise, allowed values are "Migrate" and "Terminate". If omitted, the platform chooses a default, which is subject to change over time, currently that default is "Migrate".
+     */
     @JsonProperty("onHostMaintenance")
     public String getOnHostMaintenance() {
         return onHostMaintenance;
     }
 
+    /**
+     * OnHostMaintenance determines the behavior when a maintenance event occurs that might cause the instance to reboot. This is required to be set to "Terminate" if you want to provision machine with attached GPUs. Otherwise, allowed values are "Migrate" and "Terminate". If omitted, the platform chooses a default, which is subject to change over time, currently that default is "Migrate".
+     */
     @JsonProperty("onHostMaintenance")
     public void setOnHostMaintenance(String onHostMaintenance) {
         this.onHostMaintenance = onHostMaintenance;
     }
 
+    /**
+     * Preemptible indicates if created instance is preemptible.
+     */
     @JsonProperty("preemptible")
     public Boolean getPreemptible() {
         return preemptible;
     }
 
+    /**
+     * Preemptible indicates if created instance is preemptible.
+     */
     @JsonProperty("preemptible")
     public void setPreemptible(Boolean preemptible) {
         this.preemptible = preemptible;
     }
 
+    /**
+     * ProjectID is the project in which the GCP machine provider will create the VM.
+     */
     @JsonProperty("projectID")
     public String getProjectID() {
         return projectID;
     }
 
+    /**
+     * ProjectID is the project in which the GCP machine provider will create the VM.
+     */
     @JsonProperty("projectID")
     public void setProjectID(String projectID) {
         this.projectID = projectID;
     }
 
+    /**
+     * Region is the region in which the GCP machine provider will create the VM.
+     */
     @JsonProperty("region")
     public String getRegion() {
         return region;
     }
 
+    /**
+     * Region is the region in which the GCP machine provider will create the VM.
+     */
     @JsonProperty("region")
     public void setRegion(String region) {
         this.region = region;
     }
 
+    /**
+     * resourceManagerTags is an optional list of tags to apply to the GCP resources created for the cluster. See https://cloud.google.com/resource-manager/docs/tags/tags-overview for information on tagging GCP resources. GCP supports a maximum of 50 tags per resource.
+     */
     @JsonProperty("resourceManagerTags")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ResourceManagerTag> getResourceManagerTags() {
         return resourceManagerTags;
     }
 
+    /**
+     * resourceManagerTags is an optional list of tags to apply to the GCP resources created for the cluster. See https://cloud.google.com/resource-manager/docs/tags/tags-overview for information on tagging GCP resources. GCP supports a maximum of 50 tags per resource.
+     */
     @JsonProperty("resourceManagerTags")
     public void setResourceManagerTags(List<ResourceManagerTag> resourceManagerTags) {
         this.resourceManagerTags = resourceManagerTags;
     }
 
+    /**
+     * RestartPolicy determines the behavior when an instance crashes or the underlying infrastructure provider stops the instance as part of a maintenance event (default "Always"). Cannot be "Always" with preemptible instances. Otherwise, allowed values are "Always" and "Never". If omitted, the platform chooses a default, which is subject to change over time, currently that default is "Always". RestartPolicy represents AutomaticRestart in GCP compute api
+     */
     @JsonProperty("restartPolicy")
     public String getRestartPolicy() {
         return restartPolicy;
     }
 
+    /**
+     * RestartPolicy determines the behavior when an instance crashes or the underlying infrastructure provider stops the instance as part of a maintenance event (default "Always"). Cannot be "Always" with preemptible instances. Otherwise, allowed values are "Always" and "Never". If omitted, the platform chooses a default, which is subject to change over time, currently that default is "Always". RestartPolicy represents AutomaticRestart in GCP compute api
+     */
     @JsonProperty("restartPolicy")
     public void setRestartPolicy(String restartPolicy) {
         this.restartPolicy = restartPolicy;
     }
 
+    /**
+     * ServiceAccounts is a list of GCP service accounts to be used by the VM.
+     */
     @JsonProperty("serviceAccounts")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<GCPServiceAccount> getServiceAccounts() {
         return serviceAccounts;
     }
 
+    /**
+     * ServiceAccounts is a list of GCP service accounts to be used by the VM.
+     */
     @JsonProperty("serviceAccounts")
     public void setServiceAccounts(List<GCPServiceAccount> serviceAccounts) {
         this.serviceAccounts = serviceAccounts;
     }
 
+    /**
+     * GCPMachineProviderSpec is the type that will be embedded in a Machine.Spec.ProviderSpec field for an GCP virtual machine. It is used by the GCP machine actuator to create a single Machine. Compatibility level 2: Stable within a major release for a minimum of 9 months or 3 minor releases (whichever is longer).
+     */
     @JsonProperty("shieldedInstanceConfig")
     public GCPShieldedInstanceConfig getShieldedInstanceConfig() {
         return shieldedInstanceConfig;
     }
 
+    /**
+     * GCPMachineProviderSpec is the type that will be embedded in a Machine.Spec.ProviderSpec field for an GCP virtual machine. It is used by the GCP machine actuator to create a single Machine. Compatibility level 2: Stable within a major release for a minimum of 9 months or 3 minor releases (whichever is longer).
+     */
     @JsonProperty("shieldedInstanceConfig")
     public void setShieldedInstanceConfig(GCPShieldedInstanceConfig shieldedInstanceConfig) {
         this.shieldedInstanceConfig = shieldedInstanceConfig;
     }
 
+    /**
+     * Tags list of network tags to apply to the VM.
+     */
     @JsonProperty("tags")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getTags() {
         return tags;
     }
 
+    /**
+     * Tags list of network tags to apply to the VM.
+     */
     @JsonProperty("tags")
     public void setTags(List<String> tags) {
         this.tags = tags;
     }
 
+    /**
+     * TargetPools are used for network TCP/UDP load balancing. A target pool references member instances, an associated legacy HttpHealthCheck resource, and, optionally, a backup target pool
+     */
     @JsonProperty("targetPools")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getTargetPools() {
         return targetPools;
     }
 
+    /**
+     * TargetPools are used for network TCP/UDP load balancing. A target pool references member instances, an associated legacy HttpHealthCheck resource, and, optionally, a backup target pool
+     */
     @JsonProperty("targetPools")
     public void setTargetPools(List<String> targetPools) {
         this.targetPools = targetPools;
     }
 
+    /**
+     * GCPMachineProviderSpec is the type that will be embedded in a Machine.Spec.ProviderSpec field for an GCP virtual machine. It is used by the GCP machine actuator to create a single Machine. Compatibility level 2: Stable within a major release for a minimum of 9 months or 3 minor releases (whichever is longer).
+     */
     @JsonProperty("userDataSecret")
     public LocalObjectReference getUserDataSecret() {
         return userDataSecret;
     }
 
+    /**
+     * GCPMachineProviderSpec is the type that will be embedded in a Machine.Spec.ProviderSpec field for an GCP virtual machine. It is used by the GCP machine actuator to create a single Machine. Compatibility level 2: Stable within a major release for a minimum of 9 months or 3 minor releases (whichever is longer).
+     */
     @JsonProperty("userDataSecret")
     public void setUserDataSecret(LocalObjectReference userDataSecret) {
         this.userDataSecret = userDataSecret;
     }
 
+    /**
+     * Zone is the zone in which the GCP machine provider will create the VM.
+     */
     @JsonProperty("zone")
     public String getZone() {
         return zone;
     }
 
+    /**
+     * Zone is the zone in which the GCP machine provider will create the VM.
+     */
     @JsonProperty("zone")
     public void setZone(String zone) {
         this.zone = zone;

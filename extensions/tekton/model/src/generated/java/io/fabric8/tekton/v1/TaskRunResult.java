@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * TaskRunStepResult is a type alias of TaskRunResult
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -86,31 +89,49 @@ public class TaskRunResult implements Editable<TaskRunResultBuilder>, Kubernetes
         this.value = value;
     }
 
+    /**
+     * Name the given name
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * Name the given name
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * Type is the user-specified type of the result. The possible type is currently "string" and will support "array" in following work.
+     */
     @JsonProperty("type")
     public String getType() {
         return type;
     }
 
+    /**
+     * Type is the user-specified type of the result. The possible type is currently "string" and will support "array" in following work.
+     */
     @JsonProperty("type")
     public void setType(String type) {
         this.type = type;
     }
 
+    /**
+     * TaskRunStepResult is a type alias of TaskRunResult
+     */
     @JsonProperty("value")
     public ParamValue getValue() {
         return value;
     }
 
+    /**
+     * TaskRunStepResult is a type alias of TaskRunResult
+     */
     @JsonProperty("value")
     public void setValue(ParamValue value) {
         this.value = value;

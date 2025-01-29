@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * StatusDescriptor describes a field in a status block of a CRD so that OLM can consume it
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -97,52 +100,82 @@ public class StatusDescriptor implements Editable<StatusDescriptorBuilder>, Kube
         this.xDescriptors = xDescriptors;
     }
 
+    /**
+     * StatusDescriptor describes a field in a status block of a CRD so that OLM can consume it
+     */
     @JsonProperty("description")
     public String getDescription() {
         return description;
     }
 
+    /**
+     * StatusDescriptor describes a field in a status block of a CRD so that OLM can consume it
+     */
     @JsonProperty("description")
     public void setDescription(String description) {
         this.description = description;
     }
 
+    /**
+     * StatusDescriptor describes a field in a status block of a CRD so that OLM can consume it
+     */
     @JsonProperty("displayName")
     public String getDisplayName() {
         return displayName;
     }
 
+    /**
+     * StatusDescriptor describes a field in a status block of a CRD so that OLM can consume it
+     */
     @JsonProperty("displayName")
     public void setDisplayName(String displayName) {
         this.displayName = displayName;
     }
 
+    /**
+     * StatusDescriptor describes a field in a status block of a CRD so that OLM can consume it
+     */
     @JsonProperty("path")
     public String getPath() {
         return path;
     }
 
+    /**
+     * StatusDescriptor describes a field in a status block of a CRD so that OLM can consume it
+     */
     @JsonProperty("path")
     public void setPath(String path) {
         this.path = path;
     }
 
+    /**
+     * StatusDescriptor describes a field in a status block of a CRD so that OLM can consume it
+     */
     @JsonProperty("value")
     public String getValue() {
         return value;
     }
 
+    /**
+     * StatusDescriptor describes a field in a status block of a CRD so that OLM can consume it
+     */
     @JsonProperty("value")
     public void setValue(String value) {
         this.value = value;
     }
 
+    /**
+     * StatusDescriptor describes a field in a status block of a CRD so that OLM can consume it
+     */
     @JsonProperty("x-descriptors")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getXDescriptors() {
         return xDescriptors;
     }
 
+    /**
+     * StatusDescriptor describes a field in a status block of a CRD so that OLM can consume it
+     */
     @JsonProperty("x-descriptors")
     public void setXDescriptors(List<String> xDescriptors) {
         this.xDescriptors = xDescriptors;

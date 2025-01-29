@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * UpdateHistory is a single attempted update to the cluster.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -102,71 +105,113 @@ public class UpdateHistory implements Editable<UpdateHistoryBuilder>, Kubernetes
         this.version = version;
     }
 
+    /**
+     * acceptedRisks records risks which were accepted to initiate the update. For example, it may menition an Upgradeable=False or missing signature that was overriden via desiredUpdate.force, or an update that was initiated despite not being in the availableUpdates set of recommended update targets.
+     */
     @JsonProperty("acceptedRisks")
     public String getAcceptedRisks() {
         return acceptedRisks;
     }
 
+    /**
+     * acceptedRisks records risks which were accepted to initiate the update. For example, it may menition an Upgradeable=False or missing signature that was overriden via desiredUpdate.force, or an update that was initiated despite not being in the availableUpdates set of recommended update targets.
+     */
     @JsonProperty("acceptedRisks")
     public void setAcceptedRisks(String acceptedRisks) {
         this.acceptedRisks = acceptedRisks;
     }
 
+    /**
+     * UpdateHistory is a single attempted update to the cluster.
+     */
     @JsonProperty("completionTime")
     public String getCompletionTime() {
         return completionTime;
     }
 
+    /**
+     * UpdateHistory is a single attempted update to the cluster.
+     */
     @JsonProperty("completionTime")
     public void setCompletionTime(String completionTime) {
         this.completionTime = completionTime;
     }
 
+    /**
+     * image is a container image location that contains the update. This value is always populated.
+     */
     @JsonProperty("image")
     public String getImage() {
         return image;
     }
 
+    /**
+     * image is a container image location that contains the update. This value is always populated.
+     */
     @JsonProperty("image")
     public void setImage(String image) {
         this.image = image;
     }
 
+    /**
+     * UpdateHistory is a single attempted update to the cluster.
+     */
     @JsonProperty("startedTime")
     public String getStartedTime() {
         return startedTime;
     }
 
+    /**
+     * UpdateHistory is a single attempted update to the cluster.
+     */
     @JsonProperty("startedTime")
     public void setStartedTime(String startedTime) {
         this.startedTime = startedTime;
     }
 
+    /**
+     * state reflects whether the update was fully applied. The Partial state indicates the update is not fully applied, while the Completed state indicates the update was successfully rolled out at least once (all parts of the update successfully applied).
+     */
     @JsonProperty("state")
     public String getState() {
         return state;
     }
 
+    /**
+     * state reflects whether the update was fully applied. The Partial state indicates the update is not fully applied, while the Completed state indicates the update was successfully rolled out at least once (all parts of the update successfully applied).
+     */
     @JsonProperty("state")
     public void setState(String state) {
         this.state = state;
     }
 
+    /**
+     * verified indicates whether the provided update was properly verified before it was installed. If this is false the cluster may not be trusted. Verified does not cover upgradeable checks that depend on the cluster state at the time when the update target was accepted.
+     */
     @JsonProperty("verified")
     public Boolean getVerified() {
         return verified;
     }
 
+    /**
+     * verified indicates whether the provided update was properly verified before it was installed. If this is false the cluster may not be trusted. Verified does not cover upgradeable checks that depend on the cluster state at the time when the update target was accepted.
+     */
     @JsonProperty("verified")
     public void setVerified(Boolean verified) {
         this.verified = verified;
     }
 
+    /**
+     * version is a semantic version identifying the update version. If the requested image does not define a version, or if a failure occurs retrieving the image, this value may be empty.
+     */
     @JsonProperty("version")
     public String getVersion() {
         return version;
     }
 
+    /**
+     * version is a semantic version identifying the update version. If the requested image does not define a version, or if a failure occurs retrieving the image, this value may be empty.
+     */
     @JsonProperty("version")
     public void setVersion(String version) {
         this.version = version;

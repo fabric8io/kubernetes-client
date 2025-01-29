@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * TypeChecking contains results of type checking the expressions in the ValidatingAdmissionPolicy
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -81,12 +84,18 @@ public class TypeChecking implements Editable<TypeCheckingBuilder>, KubernetesRe
         this.expressionWarnings = expressionWarnings;
     }
 
+    /**
+     * The type checking warnings for each expression.
+     */
     @JsonProperty("expressionWarnings")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ExpressionWarning> getExpressionWarnings() {
         return expressionWarnings;
     }
 
+    /**
+     * The type checking warnings for each expression.
+     */
     @JsonProperty("expressionWarnings")
     public void setExpressionWarnings(List<ExpressionWarning> expressionWarnings) {
         this.expressionWarnings = expressionWarnings;

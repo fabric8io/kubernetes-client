@@ -33,6 +33,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ClusterProvisionSpec defines the results of provisioning a cluster.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -132,142 +135,226 @@ public class ClusterProvisionSpec implements Editable<ClusterProvisionSpecBuilde
         this.stage = stage;
     }
 
+    /**
+     * ClusterProvisionSpec defines the results of provisioning a cluster.
+     */
     @JsonProperty("adminKubeconfigSecretRef")
     public LocalObjectReference getAdminKubeconfigSecretRef() {
         return adminKubeconfigSecretRef;
     }
 
+    /**
+     * ClusterProvisionSpec defines the results of provisioning a cluster.
+     */
     @JsonProperty("adminKubeconfigSecretRef")
     public void setAdminKubeconfigSecretRef(LocalObjectReference adminKubeconfigSecretRef) {
         this.adminKubeconfigSecretRef = adminKubeconfigSecretRef;
     }
 
+    /**
+     * ClusterProvisionSpec defines the results of provisioning a cluster.
+     */
     @JsonProperty("adminPasswordSecretRef")
     public LocalObjectReference getAdminPasswordSecretRef() {
         return adminPasswordSecretRef;
     }
 
+    /**
+     * ClusterProvisionSpec defines the results of provisioning a cluster.
+     */
     @JsonProperty("adminPasswordSecretRef")
     public void setAdminPasswordSecretRef(LocalObjectReference adminPasswordSecretRef) {
         this.adminPasswordSecretRef = adminPasswordSecretRef;
     }
 
+    /**
+     * Attempt is which attempt number of the cluster deployment that this ClusterProvision is
+     */
     @JsonProperty("attempt")
     public Integer getAttempt() {
         return attempt;
     }
 
+    /**
+     * Attempt is which attempt number of the cluster deployment that this ClusterProvision is
+     */
     @JsonProperty("attempt")
     public void setAttempt(Integer attempt) {
         this.attempt = attempt;
     }
 
+    /**
+     * ClusterProvisionSpec defines the results of provisioning a cluster.
+     */
     @JsonProperty("clusterDeploymentRef")
     public LocalObjectReference getClusterDeploymentRef() {
         return clusterDeploymentRef;
     }
 
+    /**
+     * ClusterProvisionSpec defines the results of provisioning a cluster.
+     */
     @JsonProperty("clusterDeploymentRef")
     public void setClusterDeploymentRef(LocalObjectReference clusterDeploymentRef) {
         this.clusterDeploymentRef = clusterDeploymentRef;
     }
 
+    /**
+     * ClusterID is a globally unique identifier for this cluster generated during installation. Used for reporting metrics among other places.
+     */
     @JsonProperty("clusterID")
     public String getClusterID() {
         return clusterID;
     }
 
+    /**
+     * ClusterID is a globally unique identifier for this cluster generated during installation. Used for reporting metrics among other places.
+     */
     @JsonProperty("clusterID")
     public void setClusterID(String clusterID) {
         this.clusterID = clusterID;
     }
 
+    /**
+     * InfraID is an identifier for this cluster generated during installation and used for tagging/naming resources in cloud providers.
+     */
     @JsonProperty("infraID")
     public String getInfraID() {
         return infraID;
     }
 
+    /**
+     * InfraID is an identifier for this cluster generated during installation and used for tagging/naming resources in cloud providers.
+     */
     @JsonProperty("infraID")
     public void setInfraID(String infraID) {
         this.infraID = infraID;
     }
 
+    /**
+     * InstallLog is the log from the installer.
+     */
     @JsonProperty("installLog")
     public String getInstallLog() {
         return installLog;
     }
 
+    /**
+     * InstallLog is the log from the installer.
+     */
     @JsonProperty("installLog")
     public void setInstallLog(String installLog) {
         this.installLog = installLog;
     }
 
+    /**
+     * ClusterProvisionSpec defines the results of provisioning a cluster.
+     */
     @JsonProperty("metadata")
     public Object getMetadata() {
         return metadata;
     }
 
+    /**
+     * ClusterProvisionSpec defines the results of provisioning a cluster.
+     */
     @JsonProperty("metadata")
     @JsonDeserialize(using = io.fabric8.kubernetes.internal.KubernetesDeserializer.class)
     public void setMetadata(Object metadata) {
         this.metadata = metadata;
     }
 
+    /**
+     * MetadataJSON is a JSON representation of the ClusterMetadata produced by the installer. We don't use a runtime.RawExtension because ClusterMetadata isn't a runtime.Object. We don't use ClusterMetadata itself because we don't want our API consumers to need to pull in the installer code and its dependencies.
+     */
     @JsonProperty("metadataJSON")
     public String getMetadataJSON() {
         return metadataJSON;
     }
 
+    /**
+     * MetadataJSON is a JSON representation of the ClusterMetadata produced by the installer. We don't use a runtime.RawExtension because ClusterMetadata isn't a runtime.Object. We don't use ClusterMetadata itself because we don't want our API consumers to need to pull in the installer code and its dependencies.
+     */
     @JsonProperty("metadataJSON")
     public void setMetadataJSON(String metadataJSON) {
         this.metadataJSON = metadataJSON;
     }
 
+    /**
+     * ClusterProvisionSpec defines the results of provisioning a cluster.
+     */
     @JsonProperty("podSpec")
     public PodSpec getPodSpec() {
         return podSpec;
     }
 
+    /**
+     * ClusterProvisionSpec defines the results of provisioning a cluster.
+     */
     @JsonProperty("podSpec")
     public void setPodSpec(PodSpec podSpec) {
         this.podSpec = podSpec;
     }
 
+    /**
+     * PrevClusterID is the cluster ID of the previous failed provision attempt.
+     */
     @JsonProperty("prevClusterID")
     public String getPrevClusterID() {
         return prevClusterID;
     }
 
+    /**
+     * PrevClusterID is the cluster ID of the previous failed provision attempt.
+     */
     @JsonProperty("prevClusterID")
     public void setPrevClusterID(String prevClusterID) {
         this.prevClusterID = prevClusterID;
     }
 
+    /**
+     * PrevInfraID is the infra ID of the previous failed provision attempt.
+     */
     @JsonProperty("prevInfraID")
     public String getPrevInfraID() {
         return prevInfraID;
     }
 
+    /**
+     * PrevInfraID is the infra ID of the previous failed provision attempt.
+     */
     @JsonProperty("prevInfraID")
     public void setPrevInfraID(String prevInfraID) {
         this.prevInfraID = prevInfraID;
     }
 
+    /**
+     * PrevProvisionName is the name of the previous failed provision attempt.
+     */
     @JsonProperty("prevProvisionName")
     public String getPrevProvisionName() {
         return prevProvisionName;
     }
 
+    /**
+     * PrevProvisionName is the name of the previous failed provision attempt.
+     */
     @JsonProperty("prevProvisionName")
     public void setPrevProvisionName(String prevProvisionName) {
         this.prevProvisionName = prevProvisionName;
     }
 
+    /**
+     * Stage is the stage of provisioning that the cluster deployment has reached.
+     */
     @JsonProperty("stage")
     public String getStage() {
         return stage;
     }
 
+    /**
+     * Stage is the stage of provisioning that the cluster deployment has reached.
+     */
     @JsonProperty("stage")
     public void setStage(String stage) {
         this.stage = stage;

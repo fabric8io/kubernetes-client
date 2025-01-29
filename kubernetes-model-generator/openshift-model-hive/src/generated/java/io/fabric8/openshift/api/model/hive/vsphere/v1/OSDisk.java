@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * OSDisk defines the disk for a virtual machine.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -78,11 +81,17 @@ public class OSDisk implements Editable<OSDiskBuilder>, KubernetesResource
         this.diskSizeGB = diskSizeGB;
     }
 
+    /**
+     * DiskSizeGB defines the size of disk in GB.
+     */
     @JsonProperty("diskSizeGB")
     public Integer getDiskSizeGB() {
         return diskSizeGB;
     }
 
+    /**
+     * DiskSizeGB defines the size of disk in GB.
+     */
     @JsonProperty("diskSizeGB")
     public void setDiskSizeGB(Integer diskSizeGB) {
         this.diskSizeGB = diskSizeGB;

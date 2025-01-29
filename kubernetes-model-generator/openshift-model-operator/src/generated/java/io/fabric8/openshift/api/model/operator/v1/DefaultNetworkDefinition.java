@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * DefaultNetworkDefinition represents a single network plugin's configuration. type must be specified, along with exactly one "Config" that matches the type.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -86,31 +89,49 @@ public class DefaultNetworkDefinition implements Editable<DefaultNetworkDefiniti
         this.type = type;
     }
 
+    /**
+     * DefaultNetworkDefinition represents a single network plugin's configuration. type must be specified, along with exactly one "Config" that matches the type.
+     */
     @JsonProperty("openshiftSDNConfig")
     public OpenShiftSDNConfig getOpenshiftSDNConfig() {
         return openshiftSDNConfig;
     }
 
+    /**
+     * DefaultNetworkDefinition represents a single network plugin's configuration. type must be specified, along with exactly one "Config" that matches the type.
+     */
     @JsonProperty("openshiftSDNConfig")
     public void setOpenshiftSDNConfig(OpenShiftSDNConfig openshiftSDNConfig) {
         this.openshiftSDNConfig = openshiftSDNConfig;
     }
 
+    /**
+     * DefaultNetworkDefinition represents a single network plugin's configuration. type must be specified, along with exactly one "Config" that matches the type.
+     */
     @JsonProperty("ovnKubernetesConfig")
     public OVNKubernetesConfig getOvnKubernetesConfig() {
         return ovnKubernetesConfig;
     }
 
+    /**
+     * DefaultNetworkDefinition represents a single network plugin's configuration. type must be specified, along with exactly one "Config" that matches the type.
+     */
     @JsonProperty("ovnKubernetesConfig")
     public void setOvnKubernetesConfig(OVNKubernetesConfig ovnKubernetesConfig) {
         this.ovnKubernetesConfig = ovnKubernetesConfig;
     }
 
+    /**
+     * type is the type of network All NetworkTypes are supported except for NetworkTypeRaw
+     */
     @JsonProperty("type")
     public String getType() {
         return type;
     }
 
+    /**
+     * type is the type of network All NetworkTypes are supported except for NetworkTypeRaw
+     */
     @JsonProperty("type")
     public void setType(String type) {
         this.type = type;

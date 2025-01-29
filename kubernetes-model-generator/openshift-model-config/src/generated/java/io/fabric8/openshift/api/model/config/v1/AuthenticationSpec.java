@@ -112,32 +112,50 @@ public class AuthenticationSpec implements Editable<AuthenticationSpecBuilder>, 
         this.oauthMetadata = oauthMetadata;
     }
 
+    /**
+     * OIDCProviders are OIDC identity providers that can issue tokens for this cluster Can only be set if "Type" is set to "OIDC".<br><p> <br><p> At most one provider can be configured.
+     */
     @JsonProperty("oidcProviders")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<OIDCProvider> getOidcProviders() {
         return oidcProviders;
     }
 
+    /**
+     * OIDCProviders are OIDC identity providers that can issue tokens for this cluster Can only be set if "Type" is set to "OIDC".<br><p> <br><p> At most one provider can be configured.
+     */
     @JsonProperty("oidcProviders")
     public void setOidcProviders(List<OIDCProvider> oidcProviders) {
         this.oidcProviders = oidcProviders;
     }
 
+    /**
+     * serviceAccountIssuer is the identifier of the bound service account token issuer. The default is https://kubernetes.default.svc WARNING: Updating this field will not result in immediate invalidation of all bound tokens with the previous issuer value. Instead, the tokens issued by previous service account issuer will continue to be trusted for a time period chosen by the platform (currently set to 24h). This time period is subject to change over time. This allows internal components to transition to use new service account issuer without service distruption.
+     */
     @JsonProperty("serviceAccountIssuer")
     public String getServiceAccountIssuer() {
         return serviceAccountIssuer;
     }
 
+    /**
+     * serviceAccountIssuer is the identifier of the bound service account token issuer. The default is https://kubernetes.default.svc WARNING: Updating this field will not result in immediate invalidation of all bound tokens with the previous issuer value. Instead, the tokens issued by previous service account issuer will continue to be trusted for a time period chosen by the platform (currently set to 24h). This time period is subject to change over time. This allows internal components to transition to use new service account issuer without service distruption.
+     */
     @JsonProperty("serviceAccountIssuer")
     public void setServiceAccountIssuer(String serviceAccountIssuer) {
         this.serviceAccountIssuer = serviceAccountIssuer;
     }
 
+    /**
+     * type identifies the cluster managed, user facing authentication mode in use. Specifically, it manages the component that responds to login attempts. The default is IntegratedOAuth.
+     */
     @JsonProperty("type")
     public String getType() {
         return type;
     }
 
+    /**
+     * type identifies the cluster managed, user facing authentication mode in use. Specifically, it manages the component that responds to login attempts. The default is IntegratedOAuth.
+     */
     @JsonProperty("type")
     public void setType(String type) {
         this.type = type;
@@ -153,12 +171,18 @@ public class AuthenticationSpec implements Editable<AuthenticationSpecBuilder>, 
         this.webhookTokenAuthenticator = webhookTokenAuthenticator;
     }
 
+    /**
+     * webhookTokenAuthenticators is DEPRECATED, setting it has no effect.
+     */
     @JsonProperty("webhookTokenAuthenticators")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<DeprecatedWebhookTokenAuthenticator> getWebhookTokenAuthenticators() {
         return webhookTokenAuthenticators;
     }
 
+    /**
+     * webhookTokenAuthenticators is DEPRECATED, setting it has no effect.
+     */
     @JsonProperty("webhookTokenAuthenticators")
     public void setWebhookTokenAuthenticators(List<DeprecatedWebhookTokenAuthenticator> webhookTokenAuthenticators) {
         this.webhookTokenAuthenticators = webhookTokenAuthenticators;

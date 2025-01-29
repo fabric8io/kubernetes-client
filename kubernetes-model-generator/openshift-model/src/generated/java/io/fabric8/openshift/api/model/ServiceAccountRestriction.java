@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ServiceAccountRestriction matches a service account by a string match on either the service-account name or the name of the service account's namespace.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -86,23 +89,35 @@ public class ServiceAccountRestriction implements Editable<ServiceAccountRestric
         this.serviceaccounts = serviceaccounts;
     }
 
+    /**
+     * Namespaces specifies a list of literal namespace names.
+     */
     @JsonProperty("namespaces")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getNamespaces() {
         return namespaces;
     }
 
+    /**
+     * Namespaces specifies a list of literal namespace names.
+     */
     @JsonProperty("namespaces")
     public void setNamespaces(List<String> namespaces) {
         this.namespaces = namespaces;
     }
 
+    /**
+     * ServiceAccounts specifies a list of literal service-account names.
+     */
     @JsonProperty("serviceaccounts")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ServiceAccountReference> getServiceaccounts() {
         return serviceaccounts;
     }
 
+    /**
+     * ServiceAccounts specifies a list of literal service-account names.
+     */
     @JsonProperty("serviceaccounts")
     public void setServiceaccounts(List<ServiceAccountReference> serviceaccounts) {
         this.serviceaccounts = serviceaccounts;

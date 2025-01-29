@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * HistogramCheckpoint contains data needed to reconstruct the histogram.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -87,32 +90,50 @@ public class HistogramCheckpoint implements Editable<HistogramCheckpointBuilder>
         this.totalWeight = totalWeight;
     }
 
+    /**
+     * Map from bucket index to bucket weight.
+     */
     @JsonProperty("bucketWeights")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, Long> getBucketWeights() {
         return bucketWeights;
     }
 
+    /**
+     * Map from bucket index to bucket weight.
+     */
     @JsonProperty("bucketWeights")
     public void setBucketWeights(Map<String, Long> bucketWeights) {
         this.bucketWeights = bucketWeights;
     }
 
+    /**
+     * HistogramCheckpoint contains data needed to reconstruct the histogram.
+     */
     @JsonProperty("referenceTimestamp")
     public String getReferenceTimestamp() {
         return referenceTimestamp;
     }
 
+    /**
+     * HistogramCheckpoint contains data needed to reconstruct the histogram.
+     */
     @JsonProperty("referenceTimestamp")
     public void setReferenceTimestamp(String referenceTimestamp) {
         this.referenceTimestamp = referenceTimestamp;
     }
 
+    /**
+     * Sum of samples to be used as denominator for weights from BucketWeights.
+     */
     @JsonProperty("totalWeight")
     public Double getTotalWeight() {
         return totalWeight;
     }
 
+    /**
+     * Sum of samples to be used as denominator for weights from BucketWeights.
+     */
     @JsonProperty("totalWeight")
     public void setTotalWeight(Double totalWeight) {
         this.totalWeight = totalWeight;

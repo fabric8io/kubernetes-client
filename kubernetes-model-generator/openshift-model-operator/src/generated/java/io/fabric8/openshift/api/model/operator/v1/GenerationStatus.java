@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * GenerationStatus keeps track of the generation for a given resource so that decisions about forced updates can be made.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -98,61 +101,97 @@ public class GenerationStatus implements Editable<GenerationStatusBuilder>, Kube
         this.resource = resource;
     }
 
+    /**
+     * group is the group of the thing you're tracking
+     */
     @JsonProperty("group")
     public String getGroup() {
         return group;
     }
 
+    /**
+     * group is the group of the thing you're tracking
+     */
     @JsonProperty("group")
     public void setGroup(String group) {
         this.group = group;
     }
 
+    /**
+     * hash is an optional field set for resources without generation that are content sensitive like secrets and configmaps
+     */
     @JsonProperty("hash")
     public String getHash() {
         return hash;
     }
 
+    /**
+     * hash is an optional field set for resources without generation that are content sensitive like secrets and configmaps
+     */
     @JsonProperty("hash")
     public void setHash(String hash) {
         this.hash = hash;
     }
 
+    /**
+     * lastGeneration is the last generation of the workload controller involved
+     */
     @JsonProperty("lastGeneration")
     public Long getLastGeneration() {
         return lastGeneration;
     }
 
+    /**
+     * lastGeneration is the last generation of the workload controller involved
+     */
     @JsonProperty("lastGeneration")
     public void setLastGeneration(Long lastGeneration) {
         this.lastGeneration = lastGeneration;
     }
 
+    /**
+     * name is the name of the thing you're tracking
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * name is the name of the thing you're tracking
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * namespace is where the thing you're tracking is
+     */
     @JsonProperty("namespace")
     public String getNamespace() {
         return namespace;
     }
 
+    /**
+     * namespace is where the thing you're tracking is
+     */
     @JsonProperty("namespace")
     public void setNamespace(String namespace) {
         this.namespace = namespace;
     }
 
+    /**
+     * resource is the resource type of the thing you're tracking
+     */
     @JsonProperty("resource")
     public String getResource() {
         return resource;
     }
 
+    /**
+     * resource is the resource type of the thing you're tracking
+     */
     @JsonProperty("resource")
     public void setResource(String resource) {
         this.resource = resource;

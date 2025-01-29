@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * PrometheusRuleExcludeConfig enables users to configure excluded PrometheusRule names and their namespaces to be ignored while enforcing namespace label for alerts and metrics.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class PrometheusRuleExcludeConfig implements Editable<PrometheusRuleExclu
         this.ruleNamespace = ruleNamespace;
     }
 
+    /**
+     * Name of the excluded PrometheusRule object.
+     */
     @JsonProperty("ruleName")
     public String getRuleName() {
         return ruleName;
     }
 
+    /**
+     * Name of the excluded PrometheusRule object.
+     */
     @JsonProperty("ruleName")
     public void setRuleName(String ruleName) {
         this.ruleName = ruleName;
     }
 
+    /**
+     * Namespace of the excluded PrometheusRule object.
+     */
     @JsonProperty("ruleNamespace")
     public String getRuleNamespace() {
         return ruleNamespace;
     }
 
+    /**
+     * Namespace of the excluded PrometheusRule object.
+     */
     @JsonProperty("ruleNamespace")
     public void setRuleNamespace(String ruleNamespace) {
         this.ruleNamespace = ruleNamespace;

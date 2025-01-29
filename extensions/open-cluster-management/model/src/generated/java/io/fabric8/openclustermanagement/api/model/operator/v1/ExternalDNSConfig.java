@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ExternalDNSConfig contains settings for running external-dns in a Hive environment.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class ExternalDNSConfig implements Editable<ExternalDNSConfigBuilder>, Ku
         this.gcp = gcp;
     }
 
+    /**
+     * ExternalDNSConfig contains settings for running external-dns in a Hive environment.
+     */
     @JsonProperty("aws")
     public ExternalDNSAWSConfig getAws() {
         return aws;
     }
 
+    /**
+     * ExternalDNSConfig contains settings for running external-dns in a Hive environment.
+     */
     @JsonProperty("aws")
     public void setAws(ExternalDNSAWSConfig aws) {
         this.aws = aws;
     }
 
+    /**
+     * ExternalDNSConfig contains settings for running external-dns in a Hive environment.
+     */
     @JsonProperty("gcp")
     public ExternalDNSGCPConfig getGcp() {
         return gcp;
     }
 
+    /**
+     * ExternalDNSConfig contains settings for running external-dns in a Hive environment.
+     */
     @JsonProperty("gcp")
     public void setGcp(ExternalDNSGCPConfig gcp) {
         this.gcp = gcp;

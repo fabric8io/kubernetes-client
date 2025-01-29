@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * CustomBuildStrategy defines input parameters specific to Custom build.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -106,73 +109,115 @@ public class CustomBuildStrategy implements Editable<CustomBuildStrategyBuilder>
         this.secrets = secrets;
     }
 
+    /**
+     * buildAPIVersion is the requested API version for the Build object serialized and passed to the custom builder
+     */
     @JsonProperty("buildAPIVersion")
     public String getBuildAPIVersion() {
         return buildAPIVersion;
     }
 
+    /**
+     * buildAPIVersion is the requested API version for the Build object serialized and passed to the custom builder
+     */
     @JsonProperty("buildAPIVersion")
     public void setBuildAPIVersion(String buildAPIVersion) {
         this.buildAPIVersion = buildAPIVersion;
     }
 
+    /**
+     * env contains additional environment variables you want to pass into a builder container.
+     */
     @JsonProperty("env")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<EnvVar> getEnv() {
         return env;
     }
 
+    /**
+     * env contains additional environment variables you want to pass into a builder container.
+     */
     @JsonProperty("env")
     public void setEnv(List<EnvVar> env) {
         this.env = env;
     }
 
+    /**
+     * exposeDockerSocket will allow running Docker commands (and build container images) from inside the container.
+     */
     @JsonProperty("exposeDockerSocket")
     public Boolean getExposeDockerSocket() {
         return exposeDockerSocket;
     }
 
+    /**
+     * exposeDockerSocket will allow running Docker commands (and build container images) from inside the container.
+     */
     @JsonProperty("exposeDockerSocket")
     public void setExposeDockerSocket(Boolean exposeDockerSocket) {
         this.exposeDockerSocket = exposeDockerSocket;
     }
 
+    /**
+     * forcePull describes if the controller should configure the build pod to always pull the images for the builder or only pull if it is not present locally
+     */
     @JsonProperty("forcePull")
     public Boolean getForcePull() {
         return forcePull;
     }
 
+    /**
+     * forcePull describes if the controller should configure the build pod to always pull the images for the builder or only pull if it is not present locally
+     */
     @JsonProperty("forcePull")
     public void setForcePull(Boolean forcePull) {
         this.forcePull = forcePull;
     }
 
+    /**
+     * CustomBuildStrategy defines input parameters specific to Custom build.
+     */
     @JsonProperty("from")
     public ObjectReference getFrom() {
         return from;
     }
 
+    /**
+     * CustomBuildStrategy defines input parameters specific to Custom build.
+     */
     @JsonProperty("from")
     public void setFrom(ObjectReference from) {
         this.from = from;
     }
 
+    /**
+     * CustomBuildStrategy defines input parameters specific to Custom build.
+     */
     @JsonProperty("pullSecret")
     public LocalObjectReference getPullSecret() {
         return pullSecret;
     }
 
+    /**
+     * CustomBuildStrategy defines input parameters specific to Custom build.
+     */
     @JsonProperty("pullSecret")
     public void setPullSecret(LocalObjectReference pullSecret) {
         this.pullSecret = pullSecret;
     }
 
+    /**
+     * secrets is a list of additional secrets that will be included in the build pod
+     */
     @JsonProperty("secrets")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<SecretSpec> getSecrets() {
         return secrets;
     }
 
+    /**
+     * secrets is a list of additional secrets that will be included in the build pod
+     */
     @JsonProperty("secrets")
     public void setSecrets(List<SecretSpec> secrets) {
         this.secrets = secrets;

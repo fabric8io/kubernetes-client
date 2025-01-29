@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Tracing configures tracing behavior for workloads within a mesh. It can be used to enable/disable tracing, as well as to set sampling rates and custom tag extraction.<br><p> <br><p> Tracing configuration support overrides of the fields `providers`, `random_sampling_percentage`, `disable_span_reporting`, and `custom_tags` at each level in the configuration hierarchy, with missing values filled in from parent resources. However, when specified, `custom_tags` will fully replace any values provided by parent configuration.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -102,63 +105,99 @@ public class Tracing implements Editable<TracingBuilder>, KubernetesResource
         this.useRequestIdForTraceSampling = useRequestIdForTraceSampling;
     }
 
+    /**
+     * Optional. Configures additional custom tags to the generated trace spans.
+     */
     @JsonProperty("customTags")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, TracingCustomTag> getCustomTags() {
         return customTags;
     }
 
+    /**
+     * Optional. Configures additional custom tags to the generated trace spans.
+     */
     @JsonProperty("customTags")
     public void setCustomTags(Map<String, TracingCustomTag> customTags) {
         this.customTags = customTags;
     }
 
+    /**
+     * Tracing configures tracing behavior for workloads within a mesh. It can be used to enable/disable tracing, as well as to set sampling rates and custom tag extraction.<br><p> <br><p> Tracing configuration support overrides of the fields `providers`, `random_sampling_percentage`, `disable_span_reporting`, and `custom_tags` at each level in the configuration hierarchy, with missing values filled in from parent resources. However, when specified, `custom_tags` will fully replace any values provided by parent configuration.
+     */
     @JsonProperty("disableSpanReporting")
     public Boolean getDisableSpanReporting() {
         return disableSpanReporting;
     }
 
+    /**
+     * Tracing configures tracing behavior for workloads within a mesh. It can be used to enable/disable tracing, as well as to set sampling rates and custom tag extraction.<br><p> <br><p> Tracing configuration support overrides of the fields `providers`, `random_sampling_percentage`, `disable_span_reporting`, and `custom_tags` at each level in the configuration hierarchy, with missing values filled in from parent resources. However, when specified, `custom_tags` will fully replace any values provided by parent configuration.
+     */
     @JsonProperty("disableSpanReporting")
     public void setDisableSpanReporting(Boolean disableSpanReporting) {
         this.disableSpanReporting = disableSpanReporting;
     }
 
+    /**
+     * Tracing configures tracing behavior for workloads within a mesh. It can be used to enable/disable tracing, as well as to set sampling rates and custom tag extraction.<br><p> <br><p> Tracing configuration support overrides of the fields `providers`, `random_sampling_percentage`, `disable_span_reporting`, and `custom_tags` at each level in the configuration hierarchy, with missing values filled in from parent resources. However, when specified, `custom_tags` will fully replace any values provided by parent configuration.
+     */
     @JsonProperty("match")
     public TracingTracingSelector getMatch() {
         return match;
     }
 
+    /**
+     * Tracing configures tracing behavior for workloads within a mesh. It can be used to enable/disable tracing, as well as to set sampling rates and custom tag extraction.<br><p> <br><p> Tracing configuration support overrides of the fields `providers`, `random_sampling_percentage`, `disable_span_reporting`, and `custom_tags` at each level in the configuration hierarchy, with missing values filled in from parent resources. However, when specified, `custom_tags` will fully replace any values provided by parent configuration.
+     */
     @JsonProperty("match")
     public void setMatch(TracingTracingSelector match) {
         this.match = match;
     }
 
+    /**
+     * Optional. Name of provider(s) to use for span reporting. If a provider is not specified, the [default tracing provider](https://istio.io/docs/reference/config/istio.mesh.v1alpha1/#MeshConfig-DefaultProviders) will be used. NOTE: At the moment, only a single provider can be specified in a given Tracing rule.
+     */
     @JsonProperty("providers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ProviderRef> getProviders() {
         return providers;
     }
 
+    /**
+     * Optional. Name of provider(s) to use for span reporting. If a provider is not specified, the [default tracing provider](https://istio.io/docs/reference/config/istio.mesh.v1alpha1/#MeshConfig-DefaultProviders) will be used. NOTE: At the moment, only a single provider can be specified in a given Tracing rule.
+     */
     @JsonProperty("providers")
     public void setProviders(List<ProviderRef> providers) {
         this.providers = providers;
     }
 
+    /**
+     * Tracing configures tracing behavior for workloads within a mesh. It can be used to enable/disable tracing, as well as to set sampling rates and custom tag extraction.<br><p> <br><p> Tracing configuration support overrides of the fields `providers`, `random_sampling_percentage`, `disable_span_reporting`, and `custom_tags` at each level in the configuration hierarchy, with missing values filled in from parent resources. However, when specified, `custom_tags` will fully replace any values provided by parent configuration.
+     */
     @JsonProperty("randomSamplingPercentage")
     public Double getRandomSamplingPercentage() {
         return randomSamplingPercentage;
     }
 
+    /**
+     * Tracing configures tracing behavior for workloads within a mesh. It can be used to enable/disable tracing, as well as to set sampling rates and custom tag extraction.<br><p> <br><p> Tracing configuration support overrides of the fields `providers`, `random_sampling_percentage`, `disable_span_reporting`, and `custom_tags` at each level in the configuration hierarchy, with missing values filled in from parent resources. However, when specified, `custom_tags` will fully replace any values provided by parent configuration.
+     */
     @JsonProperty("randomSamplingPercentage")
     public void setRandomSamplingPercentage(Double randomSamplingPercentage) {
         this.randomSamplingPercentage = randomSamplingPercentage;
     }
 
+    /**
+     * Tracing configures tracing behavior for workloads within a mesh. It can be used to enable/disable tracing, as well as to set sampling rates and custom tag extraction.<br><p> <br><p> Tracing configuration support overrides of the fields `providers`, `random_sampling_percentage`, `disable_span_reporting`, and `custom_tags` at each level in the configuration hierarchy, with missing values filled in from parent resources. However, when specified, `custom_tags` will fully replace any values provided by parent configuration.
+     */
     @JsonProperty("useRequestIdForTraceSampling")
     public Boolean getUseRequestIdForTraceSampling() {
         return useRequestIdForTraceSampling;
     }
 
+    /**
+     * Tracing configures tracing behavior for workloads within a mesh. It can be used to enable/disable tracing, as well as to set sampling rates and custom tag extraction.<br><p> <br><p> Tracing configuration support overrides of the fields `providers`, `random_sampling_percentage`, `disable_span_reporting`, and `custom_tags` at each level in the configuration hierarchy, with missing values filled in from parent resources. However, when specified, `custom_tags` will fully replace any values provided by parent configuration.
+     */
     @JsonProperty("useRequestIdForTraceSampling")
     public void setUseRequestIdForTraceSampling(Boolean useRequestIdForTraceSampling) {
         this.useRequestIdForTraceSampling = useRequestIdForTraceSampling;

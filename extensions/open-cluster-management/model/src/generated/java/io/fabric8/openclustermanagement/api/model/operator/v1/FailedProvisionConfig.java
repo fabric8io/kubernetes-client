@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * FailedProvisionConfig contains settings to control behavior undertaken by Hive when an installation attempt fails.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -78,11 +81,17 @@ public class FailedProvisionConfig implements Editable<FailedProvisionConfigBuil
         this.skipGatherLogs = skipGatherLogs;
     }
 
+    /**
+     * (Deprecated) SkipGatherLogs disables functionality that attempts to gather full logs from the cluster if an installation fails for any reason. The logs will be stored in a persistent volume for up to 7 days.
+     */
     @JsonProperty("skipGatherLogs")
     public Boolean getSkipGatherLogs() {
         return skipGatherLogs;
     }
 
+    /**
+     * (Deprecated) SkipGatherLogs disables functionality that attempts to gather full logs from the cluster if an installation fails for any reason. The logs will be stored in a persistent volume for up to 7 days.
+     */
     @JsonProperty("skipGatherLogs")
     public void setSkipGatherLogs(Boolean skipGatherLogs) {
         this.skipGatherLogs = skipGatherLogs;

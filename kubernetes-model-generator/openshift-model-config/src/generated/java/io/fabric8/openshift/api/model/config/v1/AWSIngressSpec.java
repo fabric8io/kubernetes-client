@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * AWSIngressSpec holds the desired state of the Ingress for Amazon Web Services infrastructure provider. This only includes fields that can be modified in the cluster.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -78,11 +81,17 @@ public class AWSIngressSpec implements Editable<AWSIngressSpecBuilder>, Kubernet
         this.type = type;
     }
 
+    /**
+     * type allows user to set a load balancer type. When this field is set the default ingresscontroller will get created using the specified LBType. If this field is not set then the default ingress controller of LBType Classic will be created. Valid values are:<br><p> <br><p> &#42; "Classic": A Classic Load Balancer that makes routing decisions at either<br><p>   the transport layer (TCP/SSL) or the application layer (HTTP/HTTPS). See<br><p>   the following for additional details:<br><p> <br><p>     https://docs.aws.amazon.com/AmazonECS/latest/developerguide/load-balancer-types.html#clb<br><p> <br><p> &#42; "NLB": A Network Load Balancer that makes routing decisions at the<br><p>   transport layer (TCP/SSL). See the following for additional details:<br><p> <br><p>     https://docs.aws.amazon.com/AmazonECS/latest/developerguide/load-balancer-types.html#nlb
+     */
     @JsonProperty("type")
     public String getType() {
         return type;
     }
 
+    /**
+     * type allows user to set a load balancer type. When this field is set the default ingresscontroller will get created using the specified LBType. If this field is not set then the default ingress controller of LBType Classic will be created. Valid values are:<br><p> <br><p> &#42; "Classic": A Classic Load Balancer that makes routing decisions at either<br><p>   the transport layer (TCP/SSL) or the application layer (HTTP/HTTPS). See<br><p>   the following for additional details:<br><p> <br><p>     https://docs.aws.amazon.com/AmazonECS/latest/developerguide/load-balancer-types.html#clb<br><p> <br><p> &#42; "NLB": A Network Load Balancer that makes routing decisions at the<br><p>   transport layer (TCP/SSL). See the following for additional details:<br><p> <br><p>     https://docs.aws.amazon.com/AmazonECS/latest/developerguide/load-balancer-types.html#nlb
+     */
     @JsonProperty("type")
     public void setType(String type) {
         this.type = type;

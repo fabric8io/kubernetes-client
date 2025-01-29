@@ -35,6 +35,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * BuildVolumeSource represents the source of a volume to mount Only one of its supported types may be specified at any given time.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -93,41 +96,65 @@ public class BuildVolumeSource implements Editable<BuildVolumeSourceBuilder>, Ku
         this.type = type;
     }
 
+    /**
+     * BuildVolumeSource represents the source of a volume to mount Only one of its supported types may be specified at any given time.
+     */
     @JsonProperty("configMap")
     public ConfigMapVolumeSource getConfigMap() {
         return configMap;
     }
 
+    /**
+     * BuildVolumeSource represents the source of a volume to mount Only one of its supported types may be specified at any given time.
+     */
     @JsonProperty("configMap")
     public void setConfigMap(ConfigMapVolumeSource configMap) {
         this.configMap = configMap;
     }
 
+    /**
+     * BuildVolumeSource represents the source of a volume to mount Only one of its supported types may be specified at any given time.
+     */
     @JsonProperty("csi")
     public CSIVolumeSource getCsi() {
         return csi;
     }
 
+    /**
+     * BuildVolumeSource represents the source of a volume to mount Only one of its supported types may be specified at any given time.
+     */
     @JsonProperty("csi")
     public void setCsi(CSIVolumeSource csi) {
         this.csi = csi;
     }
 
+    /**
+     * BuildVolumeSource represents the source of a volume to mount Only one of its supported types may be specified at any given time.
+     */
     @JsonProperty("secret")
     public SecretVolumeSource getSecret() {
         return secret;
     }
 
+    /**
+     * BuildVolumeSource represents the source of a volume to mount Only one of its supported types may be specified at any given time.
+     */
     @JsonProperty("secret")
     public void setSecret(SecretVolumeSource secret) {
         this.secret = secret;
     }
 
+    /**
+     * type is the BuildVolumeSourceType for the volume source. Type must match the populated volume source. Valid types are: Secret, ConfigMap
+     */
     @JsonProperty("type")
     public String getType() {
         return type;
     }
 
+    /**
+     * type is the BuildVolumeSourceType for the volume source. Type must match the populated volume source. Valid types are: Secret, ConfigMap
+     */
     @JsonProperty("type")
     public void setType(String type) {
         this.type = type;

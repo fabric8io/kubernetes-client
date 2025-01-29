@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * NamedRoleBinding relates a role binding with a name
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class NamedRoleBinding implements Editable<NamedRoleBindingBuilder>, Kube
         this.roleBinding = roleBinding;
     }
 
+    /**
+     * Name is the name of the role binding
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * Name is the name of the role binding
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * NamedRoleBinding relates a role binding with a name
+     */
     @JsonProperty("roleBinding")
     public RoleBinding getRoleBinding() {
         return roleBinding;
     }
 
+    /**
+     * NamedRoleBinding relates a role binding with a name
+     */
     @JsonProperty("roleBinding")
     public void setRoleBinding(RoleBinding roleBinding) {
         this.roleBinding = roleBinding;

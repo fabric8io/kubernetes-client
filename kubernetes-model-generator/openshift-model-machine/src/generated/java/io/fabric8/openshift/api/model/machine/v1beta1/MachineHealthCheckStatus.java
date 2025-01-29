@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * MachineHealthCheckStatus defines the observed state of MachineHealthCheck
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -93,42 +96,66 @@ public class MachineHealthCheckStatus implements Editable<MachineHealthCheckStat
         this.remediationsAllowed = remediationsAllowed;
     }
 
+    /**
+     * Conditions defines the current state of the MachineHealthCheck
+     */
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Condition> getConditions() {
         return conditions;
     }
 
+    /**
+     * Conditions defines the current state of the MachineHealthCheck
+     */
     @JsonProperty("conditions")
     public void setConditions(List<Condition> conditions) {
         this.conditions = conditions;
     }
 
+    /**
+     * total number of machines counted by this machine health check
+     */
     @JsonProperty("currentHealthy")
     public Integer getCurrentHealthy() {
         return currentHealthy;
     }
 
+    /**
+     * total number of machines counted by this machine health check
+     */
     @JsonProperty("currentHealthy")
     public void setCurrentHealthy(Integer currentHealthy) {
         this.currentHealthy = currentHealthy;
     }
 
+    /**
+     * total number of machines counted by this machine health check
+     */
     @JsonProperty("expectedMachines")
     public Integer getExpectedMachines() {
         return expectedMachines;
     }
 
+    /**
+     * total number of machines counted by this machine health check
+     */
     @JsonProperty("expectedMachines")
     public void setExpectedMachines(Integer expectedMachines) {
         this.expectedMachines = expectedMachines;
     }
 
+    /**
+     * RemediationsAllowed is the number of further remediations allowed by this machine health check before maxUnhealthy short circuiting will be applied
+     */
     @JsonProperty("remediationsAllowed")
     public Integer getRemediationsAllowed() {
         return remediationsAllowed;
     }
 
+    /**
+     * RemediationsAllowed is the number of further remediations allowed by this machine health check before maxUnhealthy short circuiting will be applied
+     */
     @JsonProperty("remediationsAllowed")
     public void setRemediationsAllowed(Integer remediationsAllowed) {
         this.remediationsAllowed = remediationsAllowed;

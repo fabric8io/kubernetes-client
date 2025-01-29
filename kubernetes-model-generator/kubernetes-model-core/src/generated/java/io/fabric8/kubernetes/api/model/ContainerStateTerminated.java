@@ -17,6 +17,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ContainerStateTerminated is a terminated state of a container.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -73,71 +76,113 @@ public class ContainerStateTerminated implements Editable<ContainerStateTerminat
         this.startedAt = startedAt;
     }
 
+    /**
+     * Container's ID in the format '&lt;type&gt;://&lt;container_id&gt;'
+     */
     @JsonProperty("containerID")
     public String getContainerID() {
         return containerID;
     }
 
+    /**
+     * Container's ID in the format '&lt;type&gt;://&lt;container_id&gt;'
+     */
     @JsonProperty("containerID")
     public void setContainerID(String containerID) {
         this.containerID = containerID;
     }
 
+    /**
+     * Exit status from the last termination of the container
+     */
     @JsonProperty("exitCode")
     public Integer getExitCode() {
         return exitCode;
     }
 
+    /**
+     * Exit status from the last termination of the container
+     */
     @JsonProperty("exitCode")
     public void setExitCode(Integer exitCode) {
         this.exitCode = exitCode;
     }
 
+    /**
+     * ContainerStateTerminated is a terminated state of a container.
+     */
     @JsonProperty("finishedAt")
     public String getFinishedAt() {
         return finishedAt;
     }
 
+    /**
+     * ContainerStateTerminated is a terminated state of a container.
+     */
     @JsonProperty("finishedAt")
     public void setFinishedAt(String finishedAt) {
         this.finishedAt = finishedAt;
     }
 
+    /**
+     * Message regarding the last termination of the container
+     */
     @JsonProperty("message")
     public String getMessage() {
         return message;
     }
 
+    /**
+     * Message regarding the last termination of the container
+     */
     @JsonProperty("message")
     public void setMessage(String message) {
         this.message = message;
     }
 
+    /**
+     * (brief) reason from the last termination of the container
+     */
     @JsonProperty("reason")
     public String getReason() {
         return reason;
     }
 
+    /**
+     * (brief) reason from the last termination of the container
+     */
     @JsonProperty("reason")
     public void setReason(String reason) {
         this.reason = reason;
     }
 
+    /**
+     * Signal from the last termination of the container
+     */
     @JsonProperty("signal")
     public Integer getSignal() {
         return signal;
     }
 
+    /**
+     * Signal from the last termination of the container
+     */
     @JsonProperty("signal")
     public void setSignal(Integer signal) {
         this.signal = signal;
     }
 
+    /**
+     * ContainerStateTerminated is a terminated state of a container.
+     */
     @JsonProperty("startedAt")
     public String getStartedAt() {
         return startedAt;
     }
 
+    /**
+     * ContainerStateTerminated is a terminated state of a container.
+     */
     @JsonProperty("startedAt")
     public void setStartedAt(String startedAt) {
         this.startedAt = startedAt;

@@ -37,6 +37,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * PackageManifest holds information about a package, which is a reference to one (or more) channels under a single package.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -76,14 +79,8 @@ import lombok.experimental.Accessors;
 public class PackageManifest implements Editable<PackageManifestBuilder>, HasMetadata, Namespaced
 {
 
-    /**
-     * (Required)
-     */
     @JsonProperty("apiVersion")
     private String apiVersion = "packages.operators.coreos.com/v1";
-    /**
-     * (Required)
-     */
     @JsonProperty("kind")
     private String kind = "PackageManifest";
     @JsonProperty("metadata")
@@ -111,7 +108,7 @@ public class PackageManifest implements Editable<PackageManifestBuilder>, HasMet
     }
 
     /**
-     * (Required)
+     * APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -119,7 +116,7 @@ public class PackageManifest implements Editable<PackageManifestBuilder>, HasMet
     }
 
     /**
-     * (Required)
+     * APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -127,7 +124,7 @@ public class PackageManifest implements Editable<PackageManifestBuilder>, HasMet
     }
 
     /**
-     * (Required)
+     * Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -135,38 +132,56 @@ public class PackageManifest implements Editable<PackageManifestBuilder>, HasMet
     }
 
     /**
-     * (Required)
+     * Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
      */
     @JsonProperty("kind")
     public void setKind(String kind) {
         this.kind = kind;
     }
 
+    /**
+     * PackageManifest holds information about a package, which is a reference to one (or more) channels under a single package.
+     */
     @JsonProperty("metadata")
     public ObjectMeta getMetadata() {
         return metadata;
     }
 
+    /**
+     * PackageManifest holds information about a package, which is a reference to one (or more) channels under a single package.
+     */
     @JsonProperty("metadata")
     public void setMetadata(ObjectMeta metadata) {
         this.metadata = metadata;
     }
 
+    /**
+     * PackageManifest holds information about a package, which is a reference to one (or more) channels under a single package.
+     */
     @JsonProperty("spec")
     public PackageManifestSpec getSpec() {
         return spec;
     }
 
+    /**
+     * PackageManifest holds information about a package, which is a reference to one (or more) channels under a single package.
+     */
     @JsonProperty("spec")
     public void setSpec(PackageManifestSpec spec) {
         this.spec = spec;
     }
 
+    /**
+     * PackageManifest holds information about a package, which is a reference to one (or more) channels under a single package.
+     */
     @JsonProperty("status")
     public PackageManifestStatus getStatus() {
         return status;
     }
 
+    /**
+     * PackageManifest holds information about a package, which is a reference to one (or more) channels under a single package.
+     */
     @JsonProperty("status")
     public void setStatus(PackageManifestStatus status) {
         this.status = status;

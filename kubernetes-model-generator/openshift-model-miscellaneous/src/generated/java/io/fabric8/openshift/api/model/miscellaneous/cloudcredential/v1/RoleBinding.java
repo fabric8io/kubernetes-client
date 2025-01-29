@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * RoleBinding models part of the Azure RBAC Role Binding
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -78,11 +81,17 @@ public class RoleBinding implements Editable<RoleBindingBuilder>, KubernetesReso
         this.role = role;
     }
 
+    /**
+     * Role defines a set of permissions that should be associated with the minted credential.
+     */
     @JsonProperty("role")
     public String getRole() {
         return role;
     }
 
+    /**
+     * Role defines a set of permissions that should be associated with the minted credential.
+     */
     @JsonProperty("role")
     public void setRole(String role) {
         this.role = role;

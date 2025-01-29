@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * UpdateStrategy holds all the different types of catalog source update strategies Currently only registry polling strategy is implemented
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -78,11 +81,17 @@ public class UpdateStrategy implements Editable<UpdateStrategyBuilder>, Kubernet
         this.registryPoll = registryPoll;
     }
 
+    /**
+     * UpdateStrategy holds all the different types of catalog source update strategies Currently only registry polling strategy is implemented
+     */
     @JsonProperty("registryPoll")
     public RegistryPoll getRegistryPoll() {
         return registryPoll;
     }
 
+    /**
+     * UpdateStrategy holds all the different types of catalog source update strategies Currently only registry polling strategy is implemented
+     */
     @JsonProperty("registryPoll")
     public void setRegistryPoll(RegistryPoll registryPoll) {
         this.registryPoll = registryPoll;

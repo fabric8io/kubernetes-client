@@ -17,6 +17,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * SessionAffinityConfig represents the configurations of session affinity.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -49,11 +52,17 @@ public class SessionAffinityConfig implements Editable<SessionAffinityConfigBuil
         this.clientIP = clientIP;
     }
 
+    /**
+     * SessionAffinityConfig represents the configurations of session affinity.
+     */
     @JsonProperty("clientIP")
     public ClientIPConfig getClientIP() {
         return clientIP;
     }
 
+    /**
+     * SessionAffinityConfig represents the configurations of session affinity.
+     */
     @JsonProperty("clientIP")
     public void setClientIP(ClientIPConfig clientIP) {
         this.clientIP = clientIP;

@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * TimePeriod describes periods of time.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -101,56 +104,86 @@ public class TimePeriod implements Editable<TimePeriodBuilder>, KubernetesResour
         this.years = years;
     }
 
+    /**
+     * DaysOfMonth is a list of DayOfMonthRange
+     */
     @JsonProperty("daysOfMonth")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<DayOfMonthRange> getDaysOfMonth() {
         return daysOfMonth;
     }
 
+    /**
+     * DaysOfMonth is a list of DayOfMonthRange
+     */
     @JsonProperty("daysOfMonth")
     public void setDaysOfMonth(List<DayOfMonthRange> daysOfMonth) {
         this.daysOfMonth = daysOfMonth;
     }
 
+    /**
+     * Months is a list of MonthRange
+     */
     @JsonProperty("months")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getMonths() {
         return months;
     }
 
+    /**
+     * Months is a list of MonthRange
+     */
     @JsonProperty("months")
     public void setMonths(List<String> months) {
         this.months = months;
     }
 
+    /**
+     * Times is a list of TimeRange
+     */
     @JsonProperty("times")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<TimeRange> getTimes() {
         return times;
     }
 
+    /**
+     * Times is a list of TimeRange
+     */
     @JsonProperty("times")
     public void setTimes(List<TimeRange> times) {
         this.times = times;
     }
 
+    /**
+     * Weekdays is a list of WeekdayRange
+     */
     @JsonProperty("weekdays")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getWeekdays() {
         return weekdays;
     }
 
+    /**
+     * Weekdays is a list of WeekdayRange
+     */
     @JsonProperty("weekdays")
     public void setWeekdays(List<String> weekdays) {
         this.weekdays = weekdays;
     }
 
+    /**
+     * Years is a list of YearRange
+     */
     @JsonProperty("years")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getYears() {
         return years;
     }
 
+    /**
+     * Years is a list of YearRange
+     */
     @JsonProperty("years")
     public void setYears(List<String> years) {
         this.years = years;

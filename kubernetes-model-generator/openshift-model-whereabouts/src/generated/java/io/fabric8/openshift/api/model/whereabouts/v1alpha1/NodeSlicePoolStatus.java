@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * NodeSlicePoolStatus defines the desired state of NodeSlicePool
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -81,12 +84,18 @@ public class NodeSlicePoolStatus implements Editable<NodeSlicePoolStatusBuilder>
         this.allocations = allocations;
     }
 
+    /**
+     * Allocations holds the allocations of nodes to slices
+     */
     @JsonProperty("allocations")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<NodeSlicePoolStatusAllocations> getAllocations() {
         return allocations;
     }
 
+    /**
+     * Allocations holds the allocations of nodes to slices
+     */
     @JsonProperty("allocations")
     public void setAllocations(List<NodeSlicePoolStatusAllocations> allocations) {
         this.allocations = allocations;

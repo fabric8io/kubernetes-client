@@ -37,6 +37,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * StepActionSpec contains the actionable components of a step.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -129,117 +132,183 @@ public class StepActionSpec implements Editable<StepActionSpecBuilder>, Kubernet
         this.workingDir = workingDir;
     }
 
+    /**
+     * Arguments to the entrypoint. The image's CMD is used if this is not provided. Variable references $(VAR_NAME) are expanded using the container's environment. If a variable cannot be resolved, the reference in the input string will be unchanged. Double $$ are reduced to a single $, which allows for escaping the $(VAR_NAME) syntax: i.e. "$$(VAR_NAME)" will produce the string literal "$(VAR_NAME)". Escaped references will never be expanded, regardless of whether the variable exists or not. Cannot be updated. More info: https://kubernetes.io/docs/tasks/inject-data-application/define-command-argument-container/#running-a-command-in-a-shell
+     */
     @JsonProperty("args")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getArgs() {
         return args;
     }
 
+    /**
+     * Arguments to the entrypoint. The image's CMD is used if this is not provided. Variable references $(VAR_NAME) are expanded using the container's environment. If a variable cannot be resolved, the reference in the input string will be unchanged. Double $$ are reduced to a single $, which allows for escaping the $(VAR_NAME) syntax: i.e. "$$(VAR_NAME)" will produce the string literal "$(VAR_NAME)". Escaped references will never be expanded, regardless of whether the variable exists or not. Cannot be updated. More info: https://kubernetes.io/docs/tasks/inject-data-application/define-command-argument-container/#running-a-command-in-a-shell
+     */
     @JsonProperty("args")
     public void setArgs(List<String> args) {
         this.args = args;
     }
 
+    /**
+     * Entrypoint array. Not executed within a shell. The image's ENTRYPOINT is used if this is not provided. Variable references $(VAR_NAME) are expanded using the container's environment. If a variable cannot be resolved, the reference in the input string will be unchanged. Double $$ are reduced to a single $, which allows for escaping the $(VAR_NAME) syntax: i.e. "$$(VAR_NAME)" will produce the string literal "$(VAR_NAME)". Escaped references will never be expanded, regardless of whether the variable exists or not. Cannot be updated. More info: https://kubernetes.io/docs/tasks/inject-data-application/define-command-argument-container/#running-a-command-in-a-shell
+     */
     @JsonProperty("command")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getCommand() {
         return command;
     }
 
+    /**
+     * Entrypoint array. Not executed within a shell. The image's ENTRYPOINT is used if this is not provided. Variable references $(VAR_NAME) are expanded using the container's environment. If a variable cannot be resolved, the reference in the input string will be unchanged. Double $$ are reduced to a single $, which allows for escaping the $(VAR_NAME) syntax: i.e. "$$(VAR_NAME)" will produce the string literal "$(VAR_NAME)". Escaped references will never be expanded, regardless of whether the variable exists or not. Cannot be updated. More info: https://kubernetes.io/docs/tasks/inject-data-application/define-command-argument-container/#running-a-command-in-a-shell
+     */
     @JsonProperty("command")
     public void setCommand(List<String> command) {
         this.command = command;
     }
 
+    /**
+     * Description is a user-facing description of the stepaction that may be used to populate a UI.
+     */
     @JsonProperty("description")
     public String getDescription() {
         return description;
     }
 
+    /**
+     * Description is a user-facing description of the stepaction that may be used to populate a UI.
+     */
     @JsonProperty("description")
     public void setDescription(String description) {
         this.description = description;
     }
 
+    /**
+     * List of environment variables to set in the container. Cannot be updated.
+     */
     @JsonProperty("env")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<EnvVar> getEnv() {
         return env;
     }
 
+    /**
+     * List of environment variables to set in the container. Cannot be updated.
+     */
     @JsonProperty("env")
     public void setEnv(List<EnvVar> env) {
         this.env = env;
     }
 
+    /**
+     * Image reference name to run for this StepAction. More info: https://kubernetes.io/docs/concepts/containers/images
+     */
     @JsonProperty("image")
     public String getImage() {
         return image;
     }
 
+    /**
+     * Image reference name to run for this StepAction. More info: https://kubernetes.io/docs/concepts/containers/images
+     */
     @JsonProperty("image")
     public void setImage(String image) {
         this.image = image;
     }
 
+    /**
+     * Params is a list of input parameters required to run the stepAction. Params must be supplied as inputs in Steps unless they declare a defaultvalue.
+     */
     @JsonProperty("params")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ParamSpec> getParams() {
         return params;
     }
 
+    /**
+     * Params is a list of input parameters required to run the stepAction. Params must be supplied as inputs in Steps unless they declare a defaultvalue.
+     */
     @JsonProperty("params")
     public void setParams(List<ParamSpec> params) {
         this.params = params;
     }
 
+    /**
+     * Results are values that this StepAction can output
+     */
     @JsonProperty("results")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<StepResult> getResults() {
         return results;
     }
 
+    /**
+     * Results are values that this StepAction can output
+     */
     @JsonProperty("results")
     public void setResults(List<StepResult> results) {
         this.results = results;
     }
 
+    /**
+     * Script is the contents of an executable file to execute.<br><p> <br><p> If Script is not empty, the Step cannot have an Command and the Args will be passed to the Script.
+     */
     @JsonProperty("script")
     public String getScript() {
         return script;
     }
 
+    /**
+     * Script is the contents of an executable file to execute.<br><p> <br><p> If Script is not empty, the Step cannot have an Command and the Args will be passed to the Script.
+     */
     @JsonProperty("script")
     public void setScript(String script) {
         this.script = script;
     }
 
+    /**
+     * StepActionSpec contains the actionable components of a step.
+     */
     @JsonProperty("securityContext")
     public SecurityContext getSecurityContext() {
         return securityContext;
     }
 
+    /**
+     * StepActionSpec contains the actionable components of a step.
+     */
     @JsonProperty("securityContext")
     public void setSecurityContext(SecurityContext securityContext) {
         this.securityContext = securityContext;
     }
 
+    /**
+     * Volumes to mount into the Step's filesystem. Cannot be updated.
+     */
     @JsonProperty("volumeMounts")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<VolumeMount> getVolumeMounts() {
         return volumeMounts;
     }
 
+    /**
+     * Volumes to mount into the Step's filesystem. Cannot be updated.
+     */
     @JsonProperty("volumeMounts")
     public void setVolumeMounts(List<VolumeMount> volumeMounts) {
         this.volumeMounts = volumeMounts;
     }
 
+    /**
+     * Step's working directory. If not specified, the container runtime's default will be used, which might be configured in the container image. Cannot be updated.
+     */
     @JsonProperty("workingDir")
     public String getWorkingDir() {
         return workingDir;
     }
 
+    /**
+     * Step's working directory. If not specified, the container runtime's default will be used, which might be configured in the container image. Cannot be updated.
+     */
     @JsonProperty("workingDir")
     public void setWorkingDir(String workingDir) {
         this.workingDir = workingDir;

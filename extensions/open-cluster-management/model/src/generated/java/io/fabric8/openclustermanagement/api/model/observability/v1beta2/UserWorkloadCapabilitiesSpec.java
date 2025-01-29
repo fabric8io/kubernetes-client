@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * UserWorkloadCapabilitiesSpec defines the spec for user workload observability capabilities managed by the addon.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class UserWorkloadCapabilitiesSpec implements Editable<UserWorkloadCapabi
         this.traces = traces;
     }
 
+    /**
+     * UserWorkloadCapabilitiesSpec defines the spec for user workload observability capabilities managed by the addon.
+     */
     @JsonProperty("logs")
     public UserWorkloadLogsSpec getLogs() {
         return logs;
     }
 
+    /**
+     * UserWorkloadCapabilitiesSpec defines the spec for user workload observability capabilities managed by the addon.
+     */
     @JsonProperty("logs")
     public void setLogs(UserWorkloadLogsSpec logs) {
         this.logs = logs;
     }
 
+    /**
+     * UserWorkloadCapabilitiesSpec defines the spec for user workload observability capabilities managed by the addon.
+     */
     @JsonProperty("traces")
     public UserWorkloadTracesSpec getTraces() {
         return traces;
     }
 
+    /**
+     * UserWorkloadCapabilitiesSpec defines the spec for user workload observability capabilities managed by the addon.
+     */
     @JsonProperty("traces")
     public void setTraces(UserWorkloadTracesSpec traces) {
         this.traces = traces;

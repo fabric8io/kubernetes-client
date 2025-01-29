@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * OperationMetric contains metadata about an operation (inspection, provisioning, etc.) used for tracking metrics.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class OperationMetric implements Editable<OperationMetricBuilder>, Kubern
         this.start = start;
     }
 
+    /**
+     * OperationMetric contains metadata about an operation (inspection, provisioning, etc.) used for tracking metrics.
+     */
     @JsonProperty("end")
     public String getEnd() {
         return end;
     }
 
+    /**
+     * OperationMetric contains metadata about an operation (inspection, provisioning, etc.) used for tracking metrics.
+     */
     @JsonProperty("end")
     public void setEnd(String end) {
         this.end = end;
     }
 
+    /**
+     * OperationMetric contains metadata about an operation (inspection, provisioning, etc.) used for tracking metrics.
+     */
     @JsonProperty("start")
     public String getStart() {
         return start;
     }
 
+    /**
+     * OperationMetric contains metadata about an operation (inspection, provisioning, etc.) used for tracking metrics.
+     */
     @JsonProperty("start")
     public void setStart(String start) {
         this.start = start;

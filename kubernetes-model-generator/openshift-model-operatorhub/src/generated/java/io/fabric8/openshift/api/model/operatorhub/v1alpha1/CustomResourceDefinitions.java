@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * CustomResourceDefinitions declares all of the CRDs managed or required by an operator being ran by ClusterServiceVersion.<br><p> <br><p> If the CRD is present in the Owned list, it is implicitly required.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -86,23 +89,35 @@ public class CustomResourceDefinitions implements Editable<CustomResourceDefinit
         this.required = required;
     }
 
+    /**
+     * CustomResourceDefinitions declares all of the CRDs managed or required by an operator being ran by ClusterServiceVersion.<br><p> <br><p> If the CRD is present in the Owned list, it is implicitly required.
+     */
     @JsonProperty("owned")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<CRDDescription> getOwned() {
         return owned;
     }
 
+    /**
+     * CustomResourceDefinitions declares all of the CRDs managed or required by an operator being ran by ClusterServiceVersion.<br><p> <br><p> If the CRD is present in the Owned list, it is implicitly required.
+     */
     @JsonProperty("owned")
     public void setOwned(List<CRDDescription> owned) {
         this.owned = owned;
     }
 
+    /**
+     * CustomResourceDefinitions declares all of the CRDs managed or required by an operator being ran by ClusterServiceVersion.<br><p> <br><p> If the CRD is present in the Owned list, it is implicitly required.
+     */
     @JsonProperty("required")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<CRDDescription> getRequired() {
         return required;
     }
 
+    /**
+     * CustomResourceDefinitions declares all of the CRDs managed or required by an operator being ran by ClusterServiceVersion.<br><p> <br><p> If the CRD is present in the Owned list, it is implicitly required.
+     */
     @JsonProperty("required")
     public void setRequired(List<CRDDescription> required) {
         this.required = required;

@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Affinity is a group of affinity scheduling rules.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class Affinity implements Editable<AffinityBuilder>, KubernetesResource
         this.nodeGroupAntiAffinity = nodeGroupAntiAffinity;
     }
 
+    /**
+     * Affinity is a group of affinity scheduling rules.
+     */
     @JsonProperty("nodeGroupAffinity")
     public NodeGroupAffinity getNodeGroupAffinity() {
         return nodeGroupAffinity;
     }
 
+    /**
+     * Affinity is a group of affinity scheduling rules.
+     */
     @JsonProperty("nodeGroupAffinity")
     public void setNodeGroupAffinity(NodeGroupAffinity nodeGroupAffinity) {
         this.nodeGroupAffinity = nodeGroupAffinity;
     }
 
+    /**
+     * Affinity is a group of affinity scheduling rules.
+     */
     @JsonProperty("nodeGroupAntiAffinity")
     public NodeGroupAntiAffinity getNodeGroupAntiAffinity() {
         return nodeGroupAntiAffinity;
     }
 
+    /**
+     * Affinity is a group of affinity scheduling rules.
+     */
     @JsonProperty("nodeGroupAntiAffinity")
     public void setNodeGroupAntiAffinity(NodeGroupAntiAffinity nodeGroupAntiAffinity) {
         this.nodeGroupAntiAffinity = nodeGroupAntiAffinity;

@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * NutanixGPU holds the identity of a Nutanix GPU resource in the Prism Central
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -86,31 +89,49 @@ public class NutanixGPU implements Editable<NutanixGPUBuilder>, KubernetesResour
         this.type = type;
     }
 
+    /**
+     * deviceID is the GPU device ID with the integer value.
+     */
     @JsonProperty("deviceID")
     public Integer getDeviceID() {
         return deviceID;
     }
 
+    /**
+     * deviceID is the GPU device ID with the integer value.
+     */
     @JsonProperty("deviceID")
     public void setDeviceID(Integer deviceID) {
         this.deviceID = deviceID;
     }
 
+    /**
+     * name is the GPU device name
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * name is the GPU device name
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * type is the identifier type of the GPU device. Valid values are Name and DeviceID.
+     */
     @JsonProperty("type")
     public String getType() {
         return type;
     }
 
+    /**
+     * type is the identifier type of the GPU device. Valid values are Name and DeviceID.
+     */
     @JsonProperty("type")
     public void setType(String type) {
         this.type = type;

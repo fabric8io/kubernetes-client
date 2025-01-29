@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * EvictionRequirement defines a single condition which needs to be true in order to evict a Pod
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -85,22 +88,34 @@ public class EvictionRequirement implements Editable<EvictionRequirementBuilder>
         this.resources = resources;
     }
 
+    /**
+     * EvictionRequirement defines a single condition which needs to be true in order to evict a Pod
+     */
     @JsonProperty("changeRequirement")
     public String getChangeRequirement() {
         return changeRequirement;
     }
 
+    /**
+     * EvictionRequirement defines a single condition which needs to be true in order to evict a Pod
+     */
     @JsonProperty("changeRequirement")
     public void setChangeRequirement(String changeRequirement) {
         this.changeRequirement = changeRequirement;
     }
 
+    /**
+     * Resources is a list of one or more resources that the condition applies to. If more than one resource is given, the EvictionRequirement is fulfilled if at least one resource meets `changeRequirement`.
+     */
     @JsonProperty("resources")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getResources() {
         return resources;
     }
 
+    /**
+     * Resources is a list of one or more resources that the condition applies to. If more than one resource is given, the EvictionRequirement is fulfilled if at least one resource meets `changeRequirement`.
+     */
     @JsonProperty("resources")
     public void setResources(List<String> resources) {
         this.resources = resources;

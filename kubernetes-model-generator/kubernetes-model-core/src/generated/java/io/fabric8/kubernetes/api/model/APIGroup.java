@@ -23,6 +23,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * APIGroup contains the name, the supported versions, and the preferred version of a group.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -49,14 +52,8 @@ import lombok.experimental.Accessors;
 public class APIGroup implements Editable<APIGroupBuilder>, KubernetesResource
 {
 
-    /**
-     * (Required)
-     */
     @JsonProperty("apiVersion")
     private String apiVersion = "v1";
-    /**
-     * (Required)
-     */
     @JsonProperty("kind")
     private String kind = "APIGroup";
     @JsonProperty("name")
@@ -89,7 +86,7 @@ public class APIGroup implements Editable<APIGroupBuilder>, KubernetesResource
     }
 
     /**
-     * (Required)
+     * APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -97,7 +94,7 @@ public class APIGroup implements Editable<APIGroupBuilder>, KubernetesResource
     }
 
     /**
-     * (Required)
+     * APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -105,7 +102,7 @@ public class APIGroup implements Editable<APIGroupBuilder>, KubernetesResource
     }
 
     /**
-     * (Required)
+     * Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -113,50 +110,74 @@ public class APIGroup implements Editable<APIGroupBuilder>, KubernetesResource
     }
 
     /**
-     * (Required)
+     * Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
      */
     @JsonProperty("kind")
     public void setKind(String kind) {
         this.kind = kind;
     }
 
+    /**
+     * name is the name of the group.
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * name is the name of the group.
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * APIGroup contains the name, the supported versions, and the preferred version of a group.
+     */
     @JsonProperty("preferredVersion")
     public GroupVersionForDiscovery getPreferredVersion() {
         return preferredVersion;
     }
 
+    /**
+     * APIGroup contains the name, the supported versions, and the preferred version of a group.
+     */
     @JsonProperty("preferredVersion")
     public void setPreferredVersion(GroupVersionForDiscovery preferredVersion) {
         this.preferredVersion = preferredVersion;
     }
 
+    /**
+     * a map of client CIDR to server address that is serving this group. This is to help clients reach servers in the most network-efficient way possible. Clients can use the appropriate server address as per the CIDR that they match. In case of multiple matches, clients should use the longest matching CIDR. The server returns only those CIDRs that it thinks that the client can match. For example: the master will return an internal IP CIDR only, if the client reaches the server using an internal IP. Server looks at X-Forwarded-For header or X-Real-Ip header or request.RemoteAddr (in that order) to get the client IP.
+     */
     @JsonProperty("serverAddressByClientCIDRs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ServerAddressByClientCIDR> getServerAddressByClientCIDRs() {
         return serverAddressByClientCIDRs;
     }
 
+    /**
+     * a map of client CIDR to server address that is serving this group. This is to help clients reach servers in the most network-efficient way possible. Clients can use the appropriate server address as per the CIDR that they match. In case of multiple matches, clients should use the longest matching CIDR. The server returns only those CIDRs that it thinks that the client can match. For example: the master will return an internal IP CIDR only, if the client reaches the server using an internal IP. Server looks at X-Forwarded-For header or X-Real-Ip header or request.RemoteAddr (in that order) to get the client IP.
+     */
     @JsonProperty("serverAddressByClientCIDRs")
     public void setServerAddressByClientCIDRs(List<ServerAddressByClientCIDR> serverAddressByClientCIDRs) {
         this.serverAddressByClientCIDRs = serverAddressByClientCIDRs;
     }
 
+    /**
+     * versions are the versions supported in this group.
+     */
     @JsonProperty("versions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<GroupVersionForDiscovery> getVersions() {
         return versions;
     }
 
+    /**
+     * versions are the versions supported in this group.
+     */
     @JsonProperty("versions")
     public void setVersions(List<GroupVersionForDiscovery> versions) {
         this.versions = versions;

@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ResourcePattern defines the pattern of the resource source
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -78,11 +81,17 @@ public class ResourcePattern implements Editable<ResourcePatternBuilder>, Kubern
         this.pattern = pattern;
     }
 
+    /**
+     * Pattern defines a resource pattern. Regex is created to filter resources based on `Pattern` Example patterns: GitHub resource: https://github.com/tektoncd/catalog.git, https://github.com/tektoncd/&#42; Bundle resource: gcr.io/tekton-releases/catalog/upstream/git-clone, gcr.io/tekton-releases/catalog/upstream/&#42; Hub resource: https://artifacthub.io/&#42;,
+     */
     @JsonProperty("pattern")
     public String getPattern() {
         return pattern;
     }
 
+    /**
+     * Pattern defines a resource pattern. Regex is created to filter resources based on `Pattern` Example patterns: GitHub resource: https://github.com/tektoncd/catalog.git, https://github.com/tektoncd/&#42; Bundle resource: gcr.io/tekton-releases/catalog/upstream/git-clone, gcr.io/tekton-releases/catalog/upstream/&#42; Hub resource: https://artifacthub.io/&#42;,
+     */
     @JsonProperty("pattern")
     public void setPattern(String pattern) {
         this.pattern = pattern;

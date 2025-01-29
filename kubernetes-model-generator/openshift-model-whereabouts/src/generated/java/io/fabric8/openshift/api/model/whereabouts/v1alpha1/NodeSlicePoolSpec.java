@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * NodeSlicePoolSpec defines the desired state of NodeSlicePool
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class NodeSlicePoolSpec implements Editable<NodeSlicePoolSpecBuilder>, Ku
         this.sliceSize = sliceSize;
     }
 
+    /**
+     * Range is a RFC 4632/4291-style string that represents an IP address and prefix length in CIDR notation<br><p> this refers to the entire range where the node is allocated a subset
+     */
     @JsonProperty("range")
     public String getRange() {
         return range;
     }
 
+    /**
+     * Range is a RFC 4632/4291-style string that represents an IP address and prefix length in CIDR notation<br><p> this refers to the entire range where the node is allocated a subset
+     */
     @JsonProperty("range")
     public void setRange(String range) {
         this.range = range;
     }
 
+    /**
+     * SliceSize is the size of subnets or slices of the range that each node will be assigned
+     */
     @JsonProperty("sliceSize")
     public String getSliceSize() {
         return sliceSize;
     }
 
+    /**
+     * SliceSize is the size of subnets or slices of the range that each node will be assigned
+     */
     @JsonProperty("sliceSize")
     public void setSliceSize(String sliceSize) {
         this.sliceSize = sliceSize;

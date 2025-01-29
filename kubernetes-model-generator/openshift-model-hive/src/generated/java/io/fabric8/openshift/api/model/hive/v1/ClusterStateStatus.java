@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ClusterStateStatus defines the observed state of ClusterState
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -85,22 +88,34 @@ public class ClusterStateStatus implements Editable<ClusterStateStatusBuilder>, 
         this.lastUpdated = lastUpdated;
     }
 
+    /**
+     * ClusterOperators contains the state for every cluster operator in the target cluster
+     */
     @JsonProperty("clusterOperators")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ClusterOperatorState> getClusterOperators() {
         return clusterOperators;
     }
 
+    /**
+     * ClusterOperators contains the state for every cluster operator in the target cluster
+     */
     @JsonProperty("clusterOperators")
     public void setClusterOperators(List<ClusterOperatorState> clusterOperators) {
         this.clusterOperators = clusterOperators;
     }
 
+    /**
+     * ClusterStateStatus defines the observed state of ClusterState
+     */
     @JsonProperty("lastUpdated")
     public String getLastUpdated() {
         return lastUpdated;
     }
 
+    /**
+     * ClusterStateStatus defines the observed state of ClusterState
+     */
     @JsonProperty("lastUpdated")
     public void setLastUpdated(String lastUpdated) {
         this.lastUpdated = lastUpdated;

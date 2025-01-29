@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * PodAutoscalerSpec holds the desired state of the PodAutoscaler (from the client).
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -90,41 +93,65 @@ public class PodAutoscalerSpec implements Editable<PodAutoscalerSpecBuilder>, Ku
         this.scaleTargetRef = scaleTargetRef;
     }
 
+    /**
+     * ContainerConcurrency specifies the maximum allowed in-flight (concurrent) requests per container of the Revision. Defaults to `0` which means unlimited concurrency.
+     */
     @JsonProperty("containerConcurrency")
     public Long getContainerConcurrency() {
         return containerConcurrency;
     }
 
+    /**
+     * ContainerConcurrency specifies the maximum allowed in-flight (concurrent) requests per container of the Revision. Defaults to `0` which means unlimited concurrency.
+     */
     @JsonProperty("containerConcurrency")
     public void setContainerConcurrency(Long containerConcurrency) {
         this.containerConcurrency = containerConcurrency;
     }
 
+    /**
+     * The application-layer protocol. Matches `ProtocolType` inferred from the revision spec.
+     */
     @JsonProperty("protocolType")
     public String getProtocolType() {
         return protocolType;
     }
 
+    /**
+     * The application-layer protocol. Matches `ProtocolType` inferred from the revision spec.
+     */
     @JsonProperty("protocolType")
     public void setProtocolType(String protocolType) {
         this.protocolType = protocolType;
     }
 
+    /**
+     * Reachability specifies whether or not the `ScaleTargetRef` can be reached (ie. has a route). Defaults to `ReachabilityUnknown`
+     */
     @JsonProperty("reachability")
     public String getReachability() {
         return reachability;
     }
 
+    /**
+     * Reachability specifies whether or not the `ScaleTargetRef` can be reached (ie. has a route). Defaults to `ReachabilityUnknown`
+     */
     @JsonProperty("reachability")
     public void setReachability(String reachability) {
         this.reachability = reachability;
     }
 
+    /**
+     * PodAutoscalerSpec holds the desired state of the PodAutoscaler (from the client).
+     */
     @JsonProperty("scaleTargetRef")
     public ObjectReference getScaleTargetRef() {
         return scaleTargetRef;
     }
 
+    /**
+     * PodAutoscalerSpec holds the desired state of the PodAutoscaler (from the client).
+     */
     @JsonProperty("scaleTargetRef")
     public void setScaleTargetRef(ObjectReference scaleTargetRef) {
         this.scaleTargetRef = scaleTargetRef;

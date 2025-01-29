@@ -82,21 +82,33 @@ public class TokenRequiredClaim implements Editable<TokenRequiredClaimBuilder>, 
         this.requiredValue = requiredValue;
     }
 
+    /**
+     * Claim is a name of a required claim. Only claims with string values are supported.
+     */
     @JsonProperty("claim")
     public String getClaim() {
         return claim;
     }
 
+    /**
+     * Claim is a name of a required claim. Only claims with string values are supported.
+     */
     @JsonProperty("claim")
     public void setClaim(String claim) {
         this.claim = claim;
     }
 
+    /**
+     * RequiredValue is the required value for the claim.
+     */
     @JsonProperty("requiredValue")
     public String getRequiredValue() {
         return requiredValue;
     }
 
+    /**
+     * RequiredValue is the required value for the claim.
+     */
     @JsonProperty("requiredValue")
     public void setRequiredValue(String requiredValue) {
         this.requiredValue = requiredValue;

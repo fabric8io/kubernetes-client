@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * CertificateSigningRequestStatus contains conditions used to indicate approved/denied/failed status of the request, and the issued certificate.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -85,22 +88,34 @@ public class CertificateSigningRequestStatus implements Editable<CertificateSign
         this.conditions = conditions;
     }
 
+    /**
+     * certificate is populated with an issued certificate by the signer after an Approved condition is present. This field is set via the /status subresource. Once populated, this field is immutable.<br><p> <br><p> If the certificate signing request is denied, a condition of type "Denied" is added and this field remains empty. If the signer cannot issue the certificate, a condition of type "Failed" is added and this field remains empty.<br><p> <br><p> Validation requirements:<br><p>  1. certificate must contain one or more PEM blocks.<br><p>  2. All PEM blocks must have the "CERTIFICATE" label, contain no headers, and the encoded data<br><p>   must be a BER-encoded ASN.1 Certificate structure as described in section 4 of RFC5280.<br><p>  3. Non-PEM content may appear before or after the "CERTIFICATE" PEM blocks and is unvalidated,<br><p>   to allow for explanatory text as described in section 5.2 of RFC7468.<br><p> <br><p> If more than one PEM block is present, and the definition of the requested spec.signerName does not indicate otherwise, the first block is the issued certificate, and subsequent blocks should be treated as intermediate certificates and presented in TLS handshakes.<br><p> <br><p> The certificate is encoded in PEM format.<br><p> <br><p> When serialized as JSON or YAML, the data is additionally base64-encoded, so it consists of:<br><p> <br><p>     base64(<br><p>     -----BEGIN CERTIFICATE-----<br><p>     ...<br><p>     -----END CERTIFICATE-----<br><p>     )
+     */
     @JsonProperty("certificate")
     public String getCertificate() {
         return certificate;
     }
 
+    /**
+     * certificate is populated with an issued certificate by the signer after an Approved condition is present. This field is set via the /status subresource. Once populated, this field is immutable.<br><p> <br><p> If the certificate signing request is denied, a condition of type "Denied" is added and this field remains empty. If the signer cannot issue the certificate, a condition of type "Failed" is added and this field remains empty.<br><p> <br><p> Validation requirements:<br><p>  1. certificate must contain one or more PEM blocks.<br><p>  2. All PEM blocks must have the "CERTIFICATE" label, contain no headers, and the encoded data<br><p>   must be a BER-encoded ASN.1 Certificate structure as described in section 4 of RFC5280.<br><p>  3. Non-PEM content may appear before or after the "CERTIFICATE" PEM blocks and is unvalidated,<br><p>   to allow for explanatory text as described in section 5.2 of RFC7468.<br><p> <br><p> If more than one PEM block is present, and the definition of the requested spec.signerName does not indicate otherwise, the first block is the issued certificate, and subsequent blocks should be treated as intermediate certificates and presented in TLS handshakes.<br><p> <br><p> The certificate is encoded in PEM format.<br><p> <br><p> When serialized as JSON or YAML, the data is additionally base64-encoded, so it consists of:<br><p> <br><p>     base64(<br><p>     -----BEGIN CERTIFICATE-----<br><p>     ...<br><p>     -----END CERTIFICATE-----<br><p>     )
+     */
     @JsonProperty("certificate")
     public void setCertificate(String certificate) {
         this.certificate = certificate;
     }
 
+    /**
+     * conditions applied to the request. Known conditions are "Approved", "Denied", and "Failed".
+     */
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<CertificateSigningRequestCondition> getConditions() {
         return conditions;
     }
 
+    /**
+     * conditions applied to the request. Known conditions are "Approved", "Denied", and "Failed".
+     */
     @JsonProperty("conditions")
     public void setConditions(List<CertificateSigningRequestCondition> conditions) {
         this.conditions = conditions;

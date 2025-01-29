@@ -78,11 +78,17 @@ public class TSDBSpec implements Editable<TSDBSpecBuilder>, KubernetesResource
         this.outOfOrderTimeWindow = outOfOrderTimeWindow;
     }
 
+    /**
+     * Configures how old an out-of-order/out-of-bounds sample can be with respect to the TSDB max time.<br><p> <br><p> An out-of-order/out-of-bounds sample is ingested into the TSDB as long as the timestamp of the sample is &gt;= (TSDB.MaxTime - outOfOrderTimeWindow).<br><p> <br><p> This is an &#42;experimental feature&#42;, it may change in any upcoming release in a breaking way.<br><p> <br><p> It requires Prometheus &gt;= v2.39.0 or PrometheusAgent &gt;= v2.54.0.
+     */
     @JsonProperty("outOfOrderTimeWindow")
     public String getOutOfOrderTimeWindow() {
         return outOfOrderTimeWindow;
     }
 
+    /**
+     * Configures how old an out-of-order/out-of-bounds sample can be with respect to the TSDB max time.<br><p> <br><p> An out-of-order/out-of-bounds sample is ingested into the TSDB as long as the timestamp of the sample is &gt;= (TSDB.MaxTime - outOfOrderTimeWindow).<br><p> <br><p> This is an &#42;experimental feature&#42;, it may change in any upcoming release in a breaking way.<br><p> <br><p> It requires Prometheus &gt;= v2.39.0 or PrometheusAgent &gt;= v2.54.0.
+     */
     @JsonProperty("outOfOrderTimeWindow")
     public void setOutOfOrderTimeWindow(String outOfOrderTimeWindow) {
         this.outOfOrderTimeWindow = outOfOrderTimeWindow;

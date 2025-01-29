@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * The Maglev load balancer implements consistent hashing to backend hosts.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -78,11 +81,17 @@ public class LoadBalancerSettingsConsistentHashLBMaglev implements IsLoadBalance
         this.maglev = maglev;
     }
 
+    /**
+     * The Maglev load balancer implements consistent hashing to backend hosts.
+     */
     @JsonProperty("maglev")
     public LoadBalancerSettingsConsistentHashLBMagLev_ getMaglev() {
         return maglev;
     }
 
+    /**
+     * The Maglev load balancer implements consistent hashing to backend hosts.
+     */
     @JsonProperty("maglev")
     public void setMaglev(LoadBalancerSettingsConsistentHashLBMagLev_ maglev) {
         this.maglev = maglev;

@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * AzureCSIDriverConfigSpec defines properties that can be configured for the Azure CSI driver.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -78,11 +81,17 @@ public class AzureCSIDriverConfigSpec implements Editable<AzureCSIDriverConfigSp
         this.diskEncryptionSet = diskEncryptionSet;
     }
 
+    /**
+     * AzureCSIDriverConfigSpec defines properties that can be configured for the Azure CSI driver.
+     */
     @JsonProperty("diskEncryptionSet")
     public AzureDiskEncryptionSet getDiskEncryptionSet() {
         return diskEncryptionSet;
     }
 
+    /**
+     * AzureCSIDriverConfigSpec defines properties that can be configured for the Azure CSI driver.
+     */
     @JsonProperty("diskEncryptionSet")
     public void setDiskEncryptionSet(AzureDiskEncryptionSet diskEncryptionSet) {
         this.diskEncryptionSet = diskEncryptionSet;

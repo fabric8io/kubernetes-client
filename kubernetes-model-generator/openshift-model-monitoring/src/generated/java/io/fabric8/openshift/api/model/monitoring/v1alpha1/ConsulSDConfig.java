@@ -39,6 +39,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ConsulSDConfig defines a Consul service discovery configuration See https://prometheus.io/docs/prometheus/latest/configuration/configuration/#consul_sd_config
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -181,245 +184,389 @@ public class ConsulSDConfig implements Editable<ConsulSDConfigBuilder>, Kubernet
         this.tokenRef = tokenRef;
     }
 
+    /**
+     * Allow stale Consul results (see https://www.consul.io/api/features/consistency.html). Will reduce load on Consul. If unset, Prometheus uses its default value.
+     */
     @JsonProperty("allowStale")
     public Boolean getAllowStale() {
         return allowStale;
     }
 
+    /**
+     * Allow stale Consul results (see https://www.consul.io/api/features/consistency.html). Will reduce load on Consul. If unset, Prometheus uses its default value.
+     */
     @JsonProperty("allowStale")
     public void setAllowStale(Boolean allowStale) {
         this.allowStale = allowStale;
     }
 
+    /**
+     * ConsulSDConfig defines a Consul service discovery configuration See https://prometheus.io/docs/prometheus/latest/configuration/configuration/#consul_sd_config
+     */
     @JsonProperty("authorization")
     public SafeAuthorization getAuthorization() {
         return authorization;
     }
 
+    /**
+     * ConsulSDConfig defines a Consul service discovery configuration See https://prometheus.io/docs/prometheus/latest/configuration/configuration/#consul_sd_config
+     */
     @JsonProperty("authorization")
     public void setAuthorization(SafeAuthorization authorization) {
         this.authorization = authorization;
     }
 
+    /**
+     * ConsulSDConfig defines a Consul service discovery configuration See https://prometheus.io/docs/prometheus/latest/configuration/configuration/#consul_sd_config
+     */
     @JsonProperty("basicAuth")
     public BasicAuth getBasicAuth() {
         return basicAuth;
     }
 
+    /**
+     * ConsulSDConfig defines a Consul service discovery configuration See https://prometheus.io/docs/prometheus/latest/configuration/configuration/#consul_sd_config
+     */
     @JsonProperty("basicAuth")
     public void setBasicAuth(BasicAuth basicAuth) {
         this.basicAuth = basicAuth;
     }
 
+    /**
+     * Consul Datacenter name, if not provided it will use the local Consul Agent Datacenter.
+     */
     @JsonProperty("datacenter")
     public String getDatacenter() {
         return datacenter;
     }
 
+    /**
+     * Consul Datacenter name, if not provided it will use the local Consul Agent Datacenter.
+     */
     @JsonProperty("datacenter")
     public void setDatacenter(String datacenter) {
         this.datacenter = datacenter;
     }
 
+    /**
+     * Whether to enable HTTP2. If unset, Prometheus uses its default value.
+     */
     @JsonProperty("enableHTTP2")
     public Boolean getEnableHTTP2() {
         return enableHTTP2;
     }
 
+    /**
+     * Whether to enable HTTP2. If unset, Prometheus uses its default value.
+     */
     @JsonProperty("enableHTTP2")
     public void setEnableHTTP2(Boolean enableHTTP2) {
         this.enableHTTP2 = enableHTTP2;
     }
 
+    /**
+     * Filter expression used to filter the catalog results. See https://www.consul.io/api-docs/catalog#list-services It requires Prometheus &gt;= 3.0.0.
+     */
     @JsonProperty("filter")
     public String getFilter() {
         return filter;
     }
 
+    /**
+     * Filter expression used to filter the catalog results. See https://www.consul.io/api-docs/catalog#list-services It requires Prometheus &gt;= 3.0.0.
+     */
     @JsonProperty("filter")
     public void setFilter(String filter) {
         this.filter = filter;
     }
 
+    /**
+     * Configure whether HTTP requests follow HTTP 3xx redirects. If unset, Prometheus uses its default value.
+     */
     @JsonProperty("followRedirects")
     public Boolean getFollowRedirects() {
         return followRedirects;
     }
 
+    /**
+     * Configure whether HTTP requests follow HTTP 3xx redirects. If unset, Prometheus uses its default value.
+     */
     @JsonProperty("followRedirects")
     public void setFollowRedirects(Boolean followRedirects) {
         this.followRedirects = followRedirects;
     }
 
+    /**
+     * Namespaces are only supported in Consul Enterprise.<br><p> <br><p> It requires Prometheus &gt;= 2.28.0.
+     */
     @JsonProperty("namespace")
     public String getNamespace() {
         return namespace;
     }
 
+    /**
+     * Namespaces are only supported in Consul Enterprise.<br><p> <br><p> It requires Prometheus &gt;= 2.28.0.
+     */
     @JsonProperty("namespace")
     public void setNamespace(String namespace) {
         this.namespace = namespace;
     }
 
+    /**
+     * `noProxy` is a comma-separated string that can contain IPs, CIDR notation, domain names that should be excluded from proxying. IP and domain names can contain port numbers.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0 or Alertmanager &gt;= 0.25.0.
+     */
     @JsonProperty("noProxy")
     public String getNoProxy() {
         return noProxy;
     }
 
+    /**
+     * `noProxy` is a comma-separated string that can contain IPs, CIDR notation, domain names that should be excluded from proxying. IP and domain names can contain port numbers.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0 or Alertmanager &gt;= 0.25.0.
+     */
     @JsonProperty("noProxy")
     public void setNoProxy(String noProxy) {
         this.noProxy = noProxy;
     }
 
+    /**
+     * Node metadata key/value pairs to filter nodes for a given service. Starting with Consul 1.14, it is recommended to use `filter` with the `NodeMeta` selector instead.
+     */
     @JsonProperty("nodeMeta")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getNodeMeta() {
         return nodeMeta;
     }
 
+    /**
+     * Node metadata key/value pairs to filter nodes for a given service. Starting with Consul 1.14, it is recommended to use `filter` with the `NodeMeta` selector instead.
+     */
     @JsonProperty("nodeMeta")
     public void setNodeMeta(Map<String, String> nodeMeta) {
         this.nodeMeta = nodeMeta;
     }
 
+    /**
+     * ConsulSDConfig defines a Consul service discovery configuration See https://prometheus.io/docs/prometheus/latest/configuration/configuration/#consul_sd_config
+     */
     @JsonProperty("oauth2")
     public OAuth2 getOauth2() {
         return oauth2;
     }
 
+    /**
+     * ConsulSDConfig defines a Consul service discovery configuration See https://prometheus.io/docs/prometheus/latest/configuration/configuration/#consul_sd_config
+     */
     @JsonProperty("oauth2")
     public void setOauth2(OAuth2 oauth2) {
         this.oauth2 = oauth2;
     }
 
+    /**
+     * Admin Partitions are only supported in Consul Enterprise.
+     */
     @JsonProperty("partition")
     public String getPartition() {
         return partition;
     }
 
+    /**
+     * Admin Partitions are only supported in Consul Enterprise.
+     */
     @JsonProperty("partition")
     public void setPartition(String partition) {
         this.partition = partition;
     }
 
+    /**
+     * Prefix for URIs for when consul is behind an API gateway (reverse proxy).<br><p> <br><p> It requires Prometheus &gt;= 2.45.0.
+     */
     @JsonProperty("pathPrefix")
     public String getPathPrefix() {
         return pathPrefix;
     }
 
+    /**
+     * Prefix for URIs for when consul is behind an API gateway (reverse proxy).<br><p> <br><p> It requires Prometheus &gt;= 2.45.0.
+     */
     @JsonProperty("pathPrefix")
     public void setPathPrefix(String pathPrefix) {
         this.pathPrefix = pathPrefix;
     }
 
+    /**
+     * ProxyConnectHeader optionally specifies headers to send to proxies during CONNECT requests.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0 or Alertmanager &gt;= 0.25.0.
+     */
     @JsonProperty("proxyConnectHeader")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, List<SecretKeySelector>> getProxyConnectHeader() {
         return proxyConnectHeader;
     }
 
+    /**
+     * ProxyConnectHeader optionally specifies headers to send to proxies during CONNECT requests.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0 or Alertmanager &gt;= 0.25.0.
+     */
     @JsonProperty("proxyConnectHeader")
     public void setProxyConnectHeader(Map<String, List<SecretKeySelector>> proxyConnectHeader) {
         this.proxyConnectHeader = proxyConnectHeader;
     }
 
+    /**
+     * Whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).<br><p> <br><p> It requires Prometheus &gt;= v2.43.0 or Alertmanager &gt;= 0.25.0.
+     */
     @JsonProperty("proxyFromEnvironment")
     public Boolean getProxyFromEnvironment() {
         return proxyFromEnvironment;
     }
 
+    /**
+     * Whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).<br><p> <br><p> It requires Prometheus &gt;= v2.43.0 or Alertmanager &gt;= 0.25.0.
+     */
     @JsonProperty("proxyFromEnvironment")
     public void setProxyFromEnvironment(Boolean proxyFromEnvironment) {
         this.proxyFromEnvironment = proxyFromEnvironment;
     }
 
+    /**
+     * `proxyURL` defines the HTTP proxy server to use.
+     */
     @JsonProperty("proxyUrl")
     public String getProxyUrl() {
         return proxyUrl;
     }
 
+    /**
+     * `proxyURL` defines the HTTP proxy server to use.
+     */
     @JsonProperty("proxyUrl")
     public void setProxyUrl(String proxyUrl) {
         this.proxyUrl = proxyUrl;
     }
 
+    /**
+     * The time after which the provided names are refreshed. On large setup it might be a good idea to increase this value because the catalog will change all the time. If unset, Prometheus uses its default value.
+     */
     @JsonProperty("refreshInterval")
     public String getRefreshInterval() {
         return refreshInterval;
     }
 
+    /**
+     * The time after which the provided names are refreshed. On large setup it might be a good idea to increase this value because the catalog will change all the time. If unset, Prometheus uses its default value.
+     */
     @JsonProperty("refreshInterval")
     public void setRefreshInterval(String refreshInterval) {
         this.refreshInterval = refreshInterval;
     }
 
+    /**
+     * HTTP Scheme default "http"
+     */
     @JsonProperty("scheme")
     public String getScheme() {
         return scheme;
     }
 
+    /**
+     * HTTP Scheme default "http"
+     */
     @JsonProperty("scheme")
     public void setScheme(String scheme) {
         this.scheme = scheme;
     }
 
+    /**
+     * Consul server address. A valid string consisting of a hostname or IP followed by an optional port number.
+     */
     @JsonProperty("server")
     public String getServer() {
         return server;
     }
 
+    /**
+     * Consul server address. A valid string consisting of a hostname or IP followed by an optional port number.
+     */
     @JsonProperty("server")
     public void setServer(String server) {
         this.server = server;
     }
 
+    /**
+     * A list of services for which targets are retrieved. If omitted, all services are scraped.
+     */
     @JsonProperty("services")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getServices() {
         return services;
     }
 
+    /**
+     * A list of services for which targets are retrieved. If omitted, all services are scraped.
+     */
     @JsonProperty("services")
     public void setServices(List<String> services) {
         this.services = services;
     }
 
+    /**
+     * The string by which Consul tags are joined into the tag label. If unset, Prometheus uses its default value.
+     */
     @JsonProperty("tagSeparator")
     public String getTagSeparator() {
         return tagSeparator;
     }
 
+    /**
+     * The string by which Consul tags are joined into the tag label. If unset, Prometheus uses its default value.
+     */
     @JsonProperty("tagSeparator")
     public void setTagSeparator(String tagSeparator) {
         this.tagSeparator = tagSeparator;
     }
 
+    /**
+     * An optional list of tags used to filter nodes for a given service. Services must contain all tags in the list. Starting with Consul 1.14, it is recommended to use `filter` with the `ServiceTags` selector instead.
+     */
     @JsonProperty("tags")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getTags() {
         return tags;
     }
 
+    /**
+     * An optional list of tags used to filter nodes for a given service. Services must contain all tags in the list. Starting with Consul 1.14, it is recommended to use `filter` with the `ServiceTags` selector instead.
+     */
     @JsonProperty("tags")
     public void setTags(List<String> tags) {
         this.tags = tags;
     }
 
+    /**
+     * ConsulSDConfig defines a Consul service discovery configuration See https://prometheus.io/docs/prometheus/latest/configuration/configuration/#consul_sd_config
+     */
     @JsonProperty("tlsConfig")
     public SafeTLSConfig getTlsConfig() {
         return tlsConfig;
     }
 
+    /**
+     * ConsulSDConfig defines a Consul service discovery configuration See https://prometheus.io/docs/prometheus/latest/configuration/configuration/#consul_sd_config
+     */
     @JsonProperty("tlsConfig")
     public void setTlsConfig(SafeTLSConfig tlsConfig) {
         this.tlsConfig = tlsConfig;
     }
 
+    /**
+     * ConsulSDConfig defines a Consul service discovery configuration See https://prometheus.io/docs/prometheus/latest/configuration/configuration/#consul_sd_config
+     */
     @JsonProperty("tokenRef")
     public SecretKeySelector getTokenRef() {
         return tokenRef;
     }
 
+    /**
+     * ConsulSDConfig defines a Consul service discovery configuration See https://prometheus.io/docs/prometheus/latest/configuration/configuration/#consul_sd_config
+     */
     @JsonProperty("tokenRef")
     public void setTokenRef(SecretKeySelector tokenRef) {
         this.tokenRef = tokenRef;

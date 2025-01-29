@@ -90,33 +90,51 @@ public class TunedSpec implements Editable<TunedSpecBuilder>, KubernetesResource
         this.recommend = recommend;
     }
 
+    /**
+     * managementState indicates whether the registry instance represented by this config instance is under operator management or not.  Valid values are Force, Managed, Unmanaged, and Removed.
+     */
     @JsonProperty("managementState")
     public String getManagementState() {
         return managementState;
     }
 
+    /**
+     * managementState indicates whether the registry instance represented by this config instance is under operator management or not.  Valid values are Force, Managed, Unmanaged, and Removed.
+     */
     @JsonProperty("managementState")
     public void setManagementState(String managementState) {
         this.managementState = managementState;
     }
 
+    /**
+     * Tuned profiles.
+     */
     @JsonProperty("profile")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<TunedProfile> getProfile() {
         return profile;
     }
 
+    /**
+     * Tuned profiles.
+     */
     @JsonProperty("profile")
     public void setProfile(List<TunedProfile> profile) {
         this.profile = profile;
     }
 
+    /**
+     * Selection logic for all Tuned profiles.
+     */
     @JsonProperty("recommend")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<TunedRecommend> getRecommend() {
         return recommend;
     }
 
+    /**
+     * Selection logic for all Tuned profiles.
+     */
     @JsonProperty("recommend")
     public void setRecommend(List<TunedRecommend> recommend) {
         this.recommend = recommend;

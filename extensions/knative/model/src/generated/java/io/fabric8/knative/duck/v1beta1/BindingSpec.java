@@ -33,6 +33,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * BindingSpec specifies the spec portion of the Binding partial-schema.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -79,11 +82,17 @@ public class BindingSpec implements Editable<BindingSpecBuilder>, KubernetesReso
         this.subject = subject;
     }
 
+    /**
+     * BindingSpec specifies the spec portion of the Binding partial-schema.
+     */
     @JsonProperty("subject")
     public Reference getSubject() {
         return subject;
     }
 
+    /**
+     * BindingSpec specifies the spec portion of the Binding partial-schema.
+     */
     @JsonProperty("subject")
     public void setSubject(Reference subject) {
         this.subject = subject;

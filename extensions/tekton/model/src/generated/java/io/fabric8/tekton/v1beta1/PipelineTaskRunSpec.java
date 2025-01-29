@@ -35,6 +35,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * PipelineTaskRunSpec  can be used to configure specific specs for a concrete Task
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -107,73 +110,115 @@ public class PipelineTaskRunSpec implements Editable<PipelineTaskRunSpecBuilder>
         this.taskServiceAccountName = taskServiceAccountName;
     }
 
+    /**
+     * PipelineTaskRunSpec  can be used to configure specific specs for a concrete Task
+     */
     @JsonProperty("computeResources")
     public ResourceRequirements getComputeResources() {
         return computeResources;
     }
 
+    /**
+     * PipelineTaskRunSpec  can be used to configure specific specs for a concrete Task
+     */
     @JsonProperty("computeResources")
     public void setComputeResources(ResourceRequirements computeResources) {
         this.computeResources = computeResources;
     }
 
+    /**
+     * PipelineTaskRunSpec  can be used to configure specific specs for a concrete Task
+     */
     @JsonProperty("metadata")
     public PipelineTaskMetadata getMetadata() {
         return metadata;
     }
 
+    /**
+     * PipelineTaskRunSpec  can be used to configure specific specs for a concrete Task
+     */
     @JsonProperty("metadata")
     public void setMetadata(PipelineTaskMetadata metadata) {
         this.metadata = metadata;
     }
 
+    /**
+     * PipelineTaskRunSpec  can be used to configure specific specs for a concrete Task
+     */
     @JsonProperty("pipelineTaskName")
     public String getPipelineTaskName() {
         return pipelineTaskName;
     }
 
+    /**
+     * PipelineTaskRunSpec  can be used to configure specific specs for a concrete Task
+     */
     @JsonProperty("pipelineTaskName")
     public void setPipelineTaskName(String pipelineTaskName) {
         this.pipelineTaskName = pipelineTaskName;
     }
 
+    /**
+     * PipelineTaskRunSpec  can be used to configure specific specs for a concrete Task
+     */
     @JsonProperty("sidecarOverrides")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<TaskRunSidecarOverride> getSidecarOverrides() {
         return sidecarOverrides;
     }
 
+    /**
+     * PipelineTaskRunSpec  can be used to configure specific specs for a concrete Task
+     */
     @JsonProperty("sidecarOverrides")
     public void setSidecarOverrides(List<TaskRunSidecarOverride> sidecarOverrides) {
         this.sidecarOverrides = sidecarOverrides;
     }
 
+    /**
+     * PipelineTaskRunSpec  can be used to configure specific specs for a concrete Task
+     */
     @JsonProperty("stepOverrides")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<TaskRunStepOverride> getStepOverrides() {
         return stepOverrides;
     }
 
+    /**
+     * PipelineTaskRunSpec  can be used to configure specific specs for a concrete Task
+     */
     @JsonProperty("stepOverrides")
     public void setStepOverrides(List<TaskRunStepOverride> stepOverrides) {
         this.stepOverrides = stepOverrides;
     }
 
+    /**
+     * PipelineTaskRunSpec  can be used to configure specific specs for a concrete Task
+     */
     @JsonProperty("taskPodTemplate")
     public Template getTaskPodTemplate() {
         return taskPodTemplate;
     }
 
+    /**
+     * PipelineTaskRunSpec  can be used to configure specific specs for a concrete Task
+     */
     @JsonProperty("taskPodTemplate")
     public void setTaskPodTemplate(Template taskPodTemplate) {
         this.taskPodTemplate = taskPodTemplate;
     }
 
+    /**
+     * PipelineTaskRunSpec  can be used to configure specific specs for a concrete Task
+     */
     @JsonProperty("taskServiceAccountName")
     public String getTaskServiceAccountName() {
         return taskServiceAccountName;
     }
 
+    /**
+     * PipelineTaskRunSpec  can be used to configure specific specs for a concrete Task
+     */
     @JsonProperty("taskServiceAccountName")
     public void setTaskServiceAccountName(String taskServiceAccountName) {
         this.taskServiceAccountName = taskServiceAccountName;

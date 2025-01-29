@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Metadata contains Azure metadata (e.g. for uninstalling the cluster).
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -78,11 +81,17 @@ public class Metadata implements Editable<MetadataBuilder>, KubernetesResource
         this.resourceGroupName = resourceGroupName;
     }
 
+    /**
+     * ResourceGroupName is the name of the resource group in which the cluster resources were created.
+     */
     @JsonProperty("resourceGroupName")
     public String getResourceGroupName() {
         return resourceGroupName;
     }
 
+    /**
+     * ResourceGroupName is the name of the resource group in which the cluster resources were created.
+     */
     @JsonProperty("resourceGroupName")
     public void setResourceGroupName(String resourceGroupName) {
         this.resourceGroupName = resourceGroupName;

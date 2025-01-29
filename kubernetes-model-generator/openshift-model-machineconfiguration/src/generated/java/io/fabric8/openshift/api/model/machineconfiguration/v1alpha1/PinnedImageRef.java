@@ -78,11 +78,17 @@ public class PinnedImageRef implements Editable<PinnedImageRefBuilder>, Kubernet
         this.name = name;
     }
 
+    /**
+     * name is an OCI Image referenced by digest.<br><p> <br><p> The format of the image ref is: host[:port][/namespace]/name@sha256:&lt;digest&gt;
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * name is an OCI Image referenced by digest.<br><p> <br><p> The format of the image ref is: host[:port][/namespace]/name@sha256:&lt;digest&gt;
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;

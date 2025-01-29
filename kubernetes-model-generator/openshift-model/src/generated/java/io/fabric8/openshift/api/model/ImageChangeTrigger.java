@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ImageChangeTrigger allows builds to be triggered when an ImageStream changes
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -86,31 +89,49 @@ public class ImageChangeTrigger implements Editable<ImageChangeTriggerBuilder>, 
         this.paused = paused;
     }
 
+    /**
+     * ImageChangeTrigger allows builds to be triggered when an ImageStream changes
+     */
     @JsonProperty("from")
     public ObjectReference getFrom() {
         return from;
     }
 
+    /**
+     * ImageChangeTrigger allows builds to be triggered when an ImageStream changes
+     */
     @JsonProperty("from")
     public void setFrom(ObjectReference from) {
         this.from = from;
     }
 
+    /**
+     * lastTriggeredImageID is used internally by the ImageChangeController to save last used image ID for build This field is deprecated and will be removed in a future release. Deprecated
+     */
     @JsonProperty("lastTriggeredImageID")
     public String getLastTriggeredImageID() {
         return lastTriggeredImageID;
     }
 
+    /**
+     * lastTriggeredImageID is used internally by the ImageChangeController to save last used image ID for build This field is deprecated and will be removed in a future release. Deprecated
+     */
     @JsonProperty("lastTriggeredImageID")
     public void setLastTriggeredImageID(String lastTriggeredImageID) {
         this.lastTriggeredImageID = lastTriggeredImageID;
     }
 
+    /**
+     * paused is true if this trigger is temporarily disabled. Optional.
+     */
     @JsonProperty("paused")
     public Boolean getPaused() {
         return paused;
     }
 
+    /**
+     * paused is true if this trigger is temporarily disabled. Optional.
+     */
     @JsonProperty("paused")
     public void setPaused(Boolean paused) {
         this.paused = paused;

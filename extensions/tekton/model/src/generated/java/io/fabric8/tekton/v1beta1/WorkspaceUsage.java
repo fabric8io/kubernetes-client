@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * WorkspaceUsage is used by a Step or Sidecar to declare that it wants isolated access to a Workspace defined in a Task.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class WorkspaceUsage implements Editable<WorkspaceUsageBuilder>, Kubernet
         this.name = name;
     }
 
+    /**
+     * MountPath is the path that the workspace should be mounted to inside the Step or Sidecar, overriding any MountPath specified in the Task's WorkspaceDeclaration.
+     */
     @JsonProperty("mountPath")
     public String getMountPath() {
         return mountPath;
     }
 
+    /**
+     * MountPath is the path that the workspace should be mounted to inside the Step or Sidecar, overriding any MountPath specified in the Task's WorkspaceDeclaration.
+     */
     @JsonProperty("mountPath")
     public void setMountPath(String mountPath) {
         this.mountPath = mountPath;
     }
 
+    /**
+     * Name is the name of the workspace this Step or Sidecar wants access to.
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * Name is the name of the workspace this Step or Sidecar wants access to.
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;

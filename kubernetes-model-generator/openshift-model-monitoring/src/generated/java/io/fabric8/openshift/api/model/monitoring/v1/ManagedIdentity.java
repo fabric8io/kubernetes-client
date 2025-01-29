@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ManagedIdentity defines the Azure User-assigned Managed identity.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -78,11 +81,17 @@ public class ManagedIdentity implements Editable<ManagedIdentityBuilder>, Kubern
         this.clientId = clientId;
     }
 
+    /**
+     * The client id
+     */
     @JsonProperty("clientId")
     public String getClientId() {
         return clientId;
     }
 
+    /**
+     * The client id
+     */
     @JsonProperty("clientId")
     public void setClientId(String clientId) {
         this.clientId = clientId;

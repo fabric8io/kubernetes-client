@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Metadata contains OpenStack metadata (e.g. for uninstalling the cluster).
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -83,22 +86,34 @@ public class Metadata implements Editable<MetadataBuilder>, KubernetesResource
         this.identifier = identifier;
     }
 
+    /**
+     * Metadata contains OpenStack metadata (e.g. for uninstalling the cluster).
+     */
     @JsonProperty("cloud")
     public String getCloud() {
         return cloud;
     }
 
+    /**
+     * Metadata contains OpenStack metadata (e.g. for uninstalling the cluster).
+     */
     @JsonProperty("cloud")
     public void setCloud(String cloud) {
         this.cloud = cloud;
     }
 
+    /**
+     * Most OpenStack resources are tagged with these tags as identifier.
+     */
     @JsonProperty("identifier")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getIdentifier() {
         return identifier;
     }
 
+    /**
+     * Most OpenStack resources are tagged with these tags as identifier.
+     */
     @JsonProperty("identifier")
     public void setIdentifier(Map<String, String> identifier) {
         this.identifier = identifier;

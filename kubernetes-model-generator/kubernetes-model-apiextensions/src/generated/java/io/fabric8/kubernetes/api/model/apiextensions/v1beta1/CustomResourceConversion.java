@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * CustomResourceConversion describes how to convert different versions of a CR.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -89,32 +92,50 @@ public class CustomResourceConversion implements Editable<CustomResourceConversi
         this.webhookClientConfig = webhookClientConfig;
     }
 
+    /**
+     * conversionReviewVersions is an ordered list of preferred `ConversionReview` versions the Webhook expects. The API server will use the first version in the list which it supports. If none of the versions specified in this list are supported by API server, conversion will fail for the custom resource. If a persisted Webhook configuration specifies allowed versions and does not include any versions known to the API Server, calls to the webhook will fail. Defaults to `["v1beta1"]`.
+     */
     @JsonProperty("conversionReviewVersions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getConversionReviewVersions() {
         return conversionReviewVersions;
     }
 
+    /**
+     * conversionReviewVersions is an ordered list of preferred `ConversionReview` versions the Webhook expects. The API server will use the first version in the list which it supports. If none of the versions specified in this list are supported by API server, conversion will fail for the custom resource. If a persisted Webhook configuration specifies allowed versions and does not include any versions known to the API Server, calls to the webhook will fail. Defaults to `["v1beta1"]`.
+     */
     @JsonProperty("conversionReviewVersions")
     public void setConversionReviewVersions(List<String> conversionReviewVersions) {
         this.conversionReviewVersions = conversionReviewVersions;
     }
 
+    /**
+     * strategy specifies how custom resources are converted between versions. Allowed values are: - `None`: The converter only change the apiVersion and would not touch any other field in the custom resource. - `Webhook`: API Server will call to an external webhook to do the conversion. Additional information<br><p>   is needed for this option. This requires spec.preserveUnknownFields to be false, and spec.conversion.webhookClientConfig to be set.
+     */
     @JsonProperty("strategy")
     public String getStrategy() {
         return strategy;
     }
 
+    /**
+     * strategy specifies how custom resources are converted between versions. Allowed values are: - `None`: The converter only change the apiVersion and would not touch any other field in the custom resource. - `Webhook`: API Server will call to an external webhook to do the conversion. Additional information<br><p>   is needed for this option. This requires spec.preserveUnknownFields to be false, and spec.conversion.webhookClientConfig to be set.
+     */
     @JsonProperty("strategy")
     public void setStrategy(String strategy) {
         this.strategy = strategy;
     }
 
+    /**
+     * CustomResourceConversion describes how to convert different versions of a CR.
+     */
     @JsonProperty("webhookClientConfig")
     public WebhookClientConfig getWebhookClientConfig() {
         return webhookClientConfig;
     }
 
+    /**
+     * CustomResourceConversion describes how to convert different versions of a CR.
+     */
     @JsonProperty("webhookClientConfig")
     public void setWebhookClientConfig(WebhookClientConfig webhookClientConfig) {
         this.webhookClientConfig = webhookClientConfig;

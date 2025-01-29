@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * NutanixVMStorageConfig specifies the storage configuration parameters for VM disks.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class NutanixVMStorageConfig implements Editable<NutanixVMStorageConfigBu
         this.storageContainer = storageContainer;
     }
 
+    /**
+     * diskMode specifies the disk mode. The valid values are Standard and Flash, and the default is Standard.
+     */
     @JsonProperty("diskMode")
     public String getDiskMode() {
         return diskMode;
     }
 
+    /**
+     * diskMode specifies the disk mode. The valid values are Standard and Flash, and the default is Standard.
+     */
     @JsonProperty("diskMode")
     public void setDiskMode(String diskMode) {
         this.diskMode = diskMode;
     }
 
+    /**
+     * NutanixVMStorageConfig specifies the storage configuration parameters for VM disks.
+     */
     @JsonProperty("storageContainer")
     public NutanixStorageResourceIdentifier getStorageContainer() {
         return storageContainer;
     }
 
+    /**
+     * NutanixVMStorageConfig specifies the storage configuration parameters for VM disks.
+     */
     @JsonProperty("storageContainer")
     public void setStorageContainer(NutanixStorageResourceIdentifier storageContainer) {
         this.storageContainer = storageContainer;

@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ResourceClaimSchedulingStatus contains information about one particular ResourceClaim with "WaitForFirstConsumer" allocation mode.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -85,22 +88,34 @@ public class ResourceClaimSchedulingStatus implements Editable<ResourceClaimSche
         this.unsuitableNodes = unsuitableNodes;
     }
 
+    /**
+     * Name matches the pod.spec.resourceClaims[&#42;].Name field.
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * Name matches the pod.spec.resourceClaims[&#42;].Name field.
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * UnsuitableNodes lists nodes that the ResourceClaim cannot be allocated for.<br><p> <br><p> The size of this field is limited to 128, the same as for PodSchedulingSpec.PotentialNodes. This may get increased in the future, but not reduced.
+     */
     @JsonProperty("unsuitableNodes")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getUnsuitableNodes() {
         return unsuitableNodes;
     }
 
+    /**
+     * UnsuitableNodes lists nodes that the ResourceClaim cannot be allocated for.<br><p> <br><p> The size of this field is limited to 128, the same as for PodSchedulingSpec.PotentialNodes. This may get increased in the future, but not reduced.
+     */
     @JsonProperty("unsuitableNodes")
     public void setUnsuitableNodes(List<String> unsuitableNodes) {
         this.unsuitableNodes = unsuitableNodes;

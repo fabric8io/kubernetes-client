@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * RawIPSet represents an ipset on specific pod
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -103,64 +106,100 @@ public class RawIPSet implements Editable<RawIPSetBuilder>, KubernetesResource
         this.source = source;
     }
 
+    /**
+     * The contents of ipset. Only available when IPSetType is NetPortIPSet.
+     */
     @JsonProperty("cidrAndPorts")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<CidrAndPort> getCidrAndPorts() {
         return cidrAndPorts;
     }
 
+    /**
+     * The contents of ipset. Only available when IPSetType is NetPortIPSet.
+     */
     @JsonProperty("cidrAndPorts")
     public void setCidrAndPorts(List<CidrAndPort> cidrAndPorts) {
         this.cidrAndPorts = cidrAndPorts;
     }
 
+    /**
+     * The contents of ipset. Only available when IPSetType is NetIPSet.
+     */
     @JsonProperty("cidrs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getCidrs() {
         return cidrs;
     }
 
+    /**
+     * The contents of ipset. Only available when IPSetType is NetIPSet.
+     */
     @JsonProperty("cidrs")
     public void setCidrs(List<String> cidrs) {
         this.cidrs = cidrs;
     }
 
+    /**
+     * RawIPSet represents an ipset on specific pod
+     */
     @JsonProperty("ipsetType")
     public String getIpsetType() {
         return ipsetType;
     }
 
+    /**
+     * RawIPSet represents an ipset on specific pod
+     */
     @JsonProperty("ipsetType")
     public void setIpsetType(String ipsetType) {
         this.ipsetType = ipsetType;
     }
 
+    /**
+     * The name of ipset
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * The name of ipset
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * The contents of ipset. Only available when IPSetType is SetIPSet.
+     */
     @JsonProperty("setNames")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getSetNames() {
         return setNames;
     }
 
+    /**
+     * The contents of ipset. Only available when IPSetType is SetIPSet.
+     */
     @JsonProperty("setNames")
     public void setSetNames(List<String> setNames) {
         this.setNames = setNames;
     }
 
+    /**
+     * RawIPSet represents an ipset on specific pod
+     */
     @JsonProperty("source")
     public String getSource() {
         return source;
     }
 
+    /**
+     * RawIPSet represents an ipset on specific pod
+     */
     @JsonProperty("source")
     public void setSource(String source) {
         this.source = source;

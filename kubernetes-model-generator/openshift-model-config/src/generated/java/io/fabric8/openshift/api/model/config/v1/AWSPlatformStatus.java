@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * AWSPlatformStatus holds the current status of the Amazon Web Services infrastructure provider.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -90,33 +93,51 @@ public class AWSPlatformStatus implements Editable<AWSPlatformStatusBuilder>, Ku
         this.serviceEndpoints = serviceEndpoints;
     }
 
+    /**
+     * region holds the default AWS region for new AWS resources created by the cluster.
+     */
     @JsonProperty("region")
     public String getRegion() {
         return region;
     }
 
+    /**
+     * region holds the default AWS region for new AWS resources created by the cluster.
+     */
     @JsonProperty("region")
     public void setRegion(String region) {
         this.region = region;
     }
 
+    /**
+     * resourceTags is a list of additional tags to apply to AWS resources created for the cluster. See https://docs.aws.amazon.com/general/latest/gr/aws_tagging.html for information on tagging AWS resources. AWS supports a maximum of 50 tags per resource. OpenShift reserves 25 tags for its use, leaving 25 tags available for the user.
+     */
     @JsonProperty("resourceTags")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<AWSResourceTag> getResourceTags() {
         return resourceTags;
     }
 
+    /**
+     * resourceTags is a list of additional tags to apply to AWS resources created for the cluster. See https://docs.aws.amazon.com/general/latest/gr/aws_tagging.html for information on tagging AWS resources. AWS supports a maximum of 50 tags per resource. OpenShift reserves 25 tags for its use, leaving 25 tags available for the user.
+     */
     @JsonProperty("resourceTags")
     public void setResourceTags(List<AWSResourceTag> resourceTags) {
         this.resourceTags = resourceTags;
     }
 
+    /**
+     * ServiceEndpoints list contains custom endpoints which will override default service endpoint of AWS Services. There must be only one ServiceEndpoint for a service.
+     */
     @JsonProperty("serviceEndpoints")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<AWSServiceEndpoint> getServiceEndpoints() {
         return serviceEndpoints;
     }
 
+    /**
+     * ServiceEndpoints list contains custom endpoints which will override default service endpoint of AWS Services. There must be only one ServiceEndpoint for a service.
+     */
     @JsonProperty("serviceEndpoints")
     public void setServiceEndpoints(List<AWSServiceEndpoint> serviceEndpoints) {
         this.serviceEndpoints = serviceEndpoints;

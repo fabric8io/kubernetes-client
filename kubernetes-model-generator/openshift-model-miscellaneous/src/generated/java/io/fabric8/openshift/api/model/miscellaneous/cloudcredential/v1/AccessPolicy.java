@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * AccessPolicy is a definition of an IAM access policy
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -86,23 +89,35 @@ public class AccessPolicy implements Editable<AccessPolicyBuilder>, KubernetesRe
         this.roles = roles;
     }
 
+    /**
+     * Attributes identify the resources to which this policy applies
+     */
     @JsonProperty("attributes")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ResourceAttribute> getAttributes() {
         return attributes;
     }
 
+    /**
+     * Attributes identify the resources to which this policy applies
+     */
     @JsonProperty("attributes")
     public void setAttributes(List<ResourceAttribute> attributes) {
         this.attributes = attributes;
     }
 
+    /**
+     * Roles are the IAM roles assigned to this policy
+     */
     @JsonProperty("roles")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getRoles() {
         return roles;
     }
 
+    /**
+     * Roles are the IAM roles assigned to this policy
+     */
     @JsonProperty("roles")
     public void setRoles(List<String> roles) {
         this.roles = roles;

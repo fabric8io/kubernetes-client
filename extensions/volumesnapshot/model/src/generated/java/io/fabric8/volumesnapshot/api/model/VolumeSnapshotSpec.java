@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * VolumeSnapshotSpec describes the common attributes of a volume snapshot.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class VolumeSnapshotSpec implements Editable<VolumeSnapshotSpecBuilder>, 
         this.volumeSnapshotClassName = volumeSnapshotClassName;
     }
 
+    /**
+     * VolumeSnapshotSpec describes the common attributes of a volume snapshot.
+     */
     @JsonProperty("source")
     public VolumeSnapshotSource getSource() {
         return source;
     }
 
+    /**
+     * VolumeSnapshotSpec describes the common attributes of a volume snapshot.
+     */
     @JsonProperty("source")
     public void setSource(VolumeSnapshotSource source) {
         this.source = source;
     }
 
+    /**
+     * VolumeSnapshotClassName is the name of the VolumeSnapshotClass requested by the VolumeSnapshot. VolumeSnapshotClassName may be left nil to indicate that the default SnapshotClass should be used. A given cluster may have multiple default Volume SnapshotClasses: one default per CSI Driver. If a VolumeSnapshot does not specify a SnapshotClass, VolumeSnapshotSource will be checked to figure out what the associated CSI Driver is, and the default VolumeSnapshotClass associated with that CSI Driver will be used. If more than one VolumeSnapshotClass exist for a given CSI Driver and more than one have been marked as default, CreateSnapshot will fail and generate an event. Empty string is not allowed for this field.
+     */
     @JsonProperty("volumeSnapshotClassName")
     public String getVolumeSnapshotClassName() {
         return volumeSnapshotClassName;
     }
 
+    /**
+     * VolumeSnapshotClassName is the name of the VolumeSnapshotClass requested by the VolumeSnapshot. VolumeSnapshotClassName may be left nil to indicate that the default SnapshotClass should be used. A given cluster may have multiple default Volume SnapshotClasses: one default per CSI Driver. If a VolumeSnapshot does not specify a SnapshotClass, VolumeSnapshotSource will be checked to figure out what the associated CSI Driver is, and the default VolumeSnapshotClass associated with that CSI Driver will be used. If more than one VolumeSnapshotClass exist for a given CSI Driver and more than one have been marked as default, CreateSnapshot will fail and generate an event. Empty string is not allowed for this field.
+     */
     @JsonProperty("volumeSnapshotClassName")
     public void setVolumeSnapshotClassName(String volumeSnapshotClassName) {
         this.volumeSnapshotClassName = volumeSnapshotClassName;

@@ -82,21 +82,33 @@ public class AwsIrsa implements Editable<AwsIrsaBuilder>, KubernetesResource
         this.managedClusterArn = managedClusterArn;
     }
 
+    /**
+     * The arn of the hub cluster (ie: an EKS cluster). This will be required to pass information to hub, which hub will use to create IAM identities for this klusterlet. Example - arn:eks:us-west-2:12345678910:cluster/hub-cluster1.
+     */
     @JsonProperty("hubClusterArn")
     public String getHubClusterArn() {
         return hubClusterArn;
     }
 
+    /**
+     * The arn of the hub cluster (ie: an EKS cluster). This will be required to pass information to hub, which hub will use to create IAM identities for this klusterlet. Example - arn:eks:us-west-2:12345678910:cluster/hub-cluster1.
+     */
     @JsonProperty("hubClusterArn")
     public void setHubClusterArn(String hubClusterArn) {
         this.hubClusterArn = hubClusterArn;
     }
 
+    /**
+     * The arn of the managed cluster (ie: an EKS cluster). This will be required to generate the md5hash which will be used as a suffix to create IAM role on hub as well as used by kluslerlet-agent, to assume role suffixed with the md5hash, on startup. Example - arn:eks:us-west-2:12345678910:cluster/managed-cluster1.
+     */
     @JsonProperty("managedClusterArn")
     public String getManagedClusterArn() {
         return managedClusterArn;
     }
 
+    /**
+     * The arn of the managed cluster (ie: an EKS cluster). This will be required to generate the md5hash which will be used as a suffix to create IAM role on hub as well as used by kluslerlet-agent, to assume role suffixed with the md5hash, on startup. Example - arn:eks:us-west-2:12345678910:cluster/managed-cluster1.
+     */
     @JsonProperty("managedClusterArn")
     public void setManagedClusterArn(String managedClusterArn) {
         this.managedClusterArn = managedClusterArn;

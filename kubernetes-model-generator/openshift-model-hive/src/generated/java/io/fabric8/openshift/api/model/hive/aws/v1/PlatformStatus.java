@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * PlatformStatus contains the observed state on AWS platform.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -78,11 +81,17 @@ public class PlatformStatus implements Editable<PlatformStatusBuilder>, Kubernet
         this.privateLink = privateLink;
     }
 
+    /**
+     * PlatformStatus contains the observed state on AWS platform.
+     */
     @JsonProperty("privateLink")
     public PrivateLinkAccessStatus getPrivateLink() {
         return privateLink;
     }
 
+    /**
+     * PlatformStatus contains the observed state on AWS platform.
+     */
     @JsonProperty("privateLink")
     public void setPrivateLink(PrivateLinkAccessStatus privateLink) {
         this.privateLink = privateLink;

@@ -103,32 +103,50 @@ public class SubnetParam implements Editable<SubnetParamBuilder>, KubernetesReso
         this.filter = filter;
     }
 
+    /**
+     * PortSecurity optionally enables or disables security on ports managed by OpenStack
+     */
     @JsonProperty("portSecurity")
     public Boolean getPortSecurity() {
         return portSecurity;
     }
 
+    /**
+     * PortSecurity optionally enables or disables security on ports managed by OpenStack
+     */
     @JsonProperty("portSecurity")
     public void setPortSecurity(Boolean portSecurity) {
         this.portSecurity = portSecurity;
     }
 
+    /**
+     * PortTags are tags that are added to ports created on this subnet
+     */
     @JsonProperty("portTags")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getPortTags() {
         return portTags;
     }
 
+    /**
+     * PortTags are tags that are added to ports created on this subnet
+     */
     @JsonProperty("portTags")
     public void setPortTags(List<String> portTags) {
         this.portTags = portTags;
     }
 
+    /**
+     * The UUID of the network. Required if you omit the port attribute.
+     */
     @JsonProperty("uuid")
     public String getUuid() {
         return uuid;
     }
 
+    /**
+     * The UUID of the network. Required if you omit the port attribute.
+     */
     @JsonProperty("uuid")
     public void setUuid(String uuid) {
         this.uuid = uuid;

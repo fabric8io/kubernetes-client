@@ -33,6 +33,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ContainerResourceMetricStatus indicates the current value of a resource metric known to Kubernetes, as specified in requests and limits, describing a single container in each pod in the current scale target (e.g. CPU or memory).  Such metrics are built in to Kubernetes, and have special scaling options on top of those available to normal per-pod metrics using the "pods" source.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -91,41 +94,65 @@ public class ContainerResourceMetricStatus implements Editable<ContainerResource
         this.name = name;
     }
 
+    /**
+     * container is the name of the container in the pods of the scaling target
+     */
     @JsonProperty("container")
     public String getContainer() {
         return container;
     }
 
+    /**
+     * container is the name of the container in the pods of the scaling target
+     */
     @JsonProperty("container")
     public void setContainer(String container) {
         this.container = container;
     }
 
+    /**
+     * currentAverageUtilization is the current value of the average of the resource metric across all relevant pods, represented as a percentage of the requested value of the resource for the pods.  It will only be present if `targetAverageValue` was set in the corresponding metric specification.
+     */
     @JsonProperty("currentAverageUtilization")
     public Integer getCurrentAverageUtilization() {
         return currentAverageUtilization;
     }
 
+    /**
+     * currentAverageUtilization is the current value of the average of the resource metric across all relevant pods, represented as a percentage of the requested value of the resource for the pods.  It will only be present if `targetAverageValue` was set in the corresponding metric specification.
+     */
     @JsonProperty("currentAverageUtilization")
     public void setCurrentAverageUtilization(Integer currentAverageUtilization) {
         this.currentAverageUtilization = currentAverageUtilization;
     }
 
+    /**
+     * ContainerResourceMetricStatus indicates the current value of a resource metric known to Kubernetes, as specified in requests and limits, describing a single container in each pod in the current scale target (e.g. CPU or memory).  Such metrics are built in to Kubernetes, and have special scaling options on top of those available to normal per-pod metrics using the "pods" source.
+     */
     @JsonProperty("currentAverageValue")
     public Quantity getCurrentAverageValue() {
         return currentAverageValue;
     }
 
+    /**
+     * ContainerResourceMetricStatus indicates the current value of a resource metric known to Kubernetes, as specified in requests and limits, describing a single container in each pod in the current scale target (e.g. CPU or memory).  Such metrics are built in to Kubernetes, and have special scaling options on top of those available to normal per-pod metrics using the "pods" source.
+     */
     @JsonProperty("currentAverageValue")
     public void setCurrentAverageValue(Quantity currentAverageValue) {
         this.currentAverageValue = currentAverageValue;
     }
 
+    /**
+     * name is the name of the resource in question.
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * name is the name of the resource in question.
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;

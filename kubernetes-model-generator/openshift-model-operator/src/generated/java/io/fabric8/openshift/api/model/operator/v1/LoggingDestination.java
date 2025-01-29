@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * LoggingDestination describes a destination for log messages.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -86,31 +89,49 @@ public class LoggingDestination implements Editable<LoggingDestinationBuilder>, 
         this.type = type;
     }
 
+    /**
+     * LoggingDestination describes a destination for log messages.
+     */
     @JsonProperty("container")
     public ContainerLoggingDestinationParameters getContainer() {
         return container;
     }
 
+    /**
+     * LoggingDestination describes a destination for log messages.
+     */
     @JsonProperty("container")
     public void setContainer(ContainerLoggingDestinationParameters container) {
         this.container = container;
     }
 
+    /**
+     * LoggingDestination describes a destination for log messages.
+     */
     @JsonProperty("syslog")
     public SyslogLoggingDestinationParameters getSyslog() {
         return syslog;
     }
 
+    /**
+     * LoggingDestination describes a destination for log messages.
+     */
     @JsonProperty("syslog")
     public void setSyslog(SyslogLoggingDestinationParameters syslog) {
         this.syslog = syslog;
     }
 
+    /**
+     * type is the type of destination for logs.  It must be one of the following:<br><p> <br><p> &#42; Container<br><p> <br><p> The ingress operator configures the sidecar container named "logs" on the ingress controller pod and configures the ingress controller to write logs to the sidecar.  The logs are then available as container logs.  The expectation is that the administrator configures a custom logging solution that reads logs from this sidecar.  Note that using container logs means that logs may be dropped if the rate of logs exceeds the container runtime's or the custom logging solution's capacity.<br><p> <br><p> &#42; Syslog<br><p> <br><p> Logs are sent to a syslog endpoint.  The administrator must specify an endpoint that can receive syslog messages.  The expectation is that the administrator has configured a custom syslog instance.
+     */
     @JsonProperty("type")
     public String getType() {
         return type;
     }
 
+    /**
+     * type is the type of destination for logs.  It must be one of the following:<br><p> <br><p> &#42; Container<br><p> <br><p> The ingress operator configures the sidecar container named "logs" on the ingress controller pod and configures the ingress controller to write logs to the sidecar.  The logs are then available as container logs.  The expectation is that the administrator configures a custom logging solution that reads logs from this sidecar.  Note that using container logs means that logs may be dropped if the rate of logs exceeds the container runtime's or the custom logging solution's capacity.<br><p> <br><p> &#42; Syslog<br><p> <br><p> Logs are sent to a syslog endpoint.  The administrator must specify an endpoint that can receive syslog messages.  The expectation is that the administrator has configured a custom syslog instance.
+     */
     @JsonProperty("type")
     public void setType(String type) {
         this.type = type;

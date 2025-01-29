@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * CELOverlay provides a way to modify the request body using DeprecatedCEL expressions
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class CELOverlay implements Editable<CELOverlayBuilder>, KubernetesResour
         this.key = key;
     }
 
+    /**
+     * CELOverlay provides a way to modify the request body using DeprecatedCEL expressions
+     */
     @JsonProperty("expression")
     public String getExpression() {
         return expression;
     }
 
+    /**
+     * CELOverlay provides a way to modify the request body using DeprecatedCEL expressions
+     */
     @JsonProperty("expression")
     public void setExpression(String expression) {
         this.expression = expression;
     }
 
+    /**
+     * CELOverlay provides a way to modify the request body using DeprecatedCEL expressions
+     */
     @JsonProperty("key")
     public String getKey() {
         return key;
     }
 
+    /**
+     * CELOverlay provides a way to modify the request body using DeprecatedCEL expressions
+     */
     @JsonProperty("key")
     public void setKey(String key) {
         this.key = key;

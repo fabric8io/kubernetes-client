@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * OperatorGroupStatus is the status for an OperatorGroupResource.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -89,32 +92,50 @@ public class OperatorGroupStatus implements Editable<OperatorGroupStatusBuilder>
         this.serviceAccountRef = serviceAccountRef;
     }
 
+    /**
+     * OperatorGroupStatus is the status for an OperatorGroupResource.
+     */
     @JsonProperty("lastUpdated")
     public String getLastUpdated() {
         return lastUpdated;
     }
 
+    /**
+     * OperatorGroupStatus is the status for an OperatorGroupResource.
+     */
     @JsonProperty("lastUpdated")
     public void setLastUpdated(String lastUpdated) {
         this.lastUpdated = lastUpdated;
     }
 
+    /**
+     * Namespaces is the set of target namespaces for the OperatorGroup.
+     */
     @JsonProperty("namespaces")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getNamespaces() {
         return namespaces;
     }
 
+    /**
+     * Namespaces is the set of target namespaces for the OperatorGroup.
+     */
     @JsonProperty("namespaces")
     public void setNamespaces(List<String> namespaces) {
         this.namespaces = namespaces;
     }
 
+    /**
+     * OperatorGroupStatus is the status for an OperatorGroupResource.
+     */
     @JsonProperty("serviceAccountRef")
     public ObjectReference getServiceAccountRef() {
         return serviceAccountRef;
     }
 
+    /**
+     * OperatorGroupStatus is the status for an OperatorGroupResource.
+     */
     @JsonProperty("serviceAccountRef")
     public void setServiceAccountRef(ObjectReference serviceAccountRef) {
         this.serviceAccountRef = serviceAccountRef;

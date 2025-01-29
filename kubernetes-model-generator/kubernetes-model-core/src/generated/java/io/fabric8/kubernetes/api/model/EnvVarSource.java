@@ -17,6 +17,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * EnvVarSource represents a source for the value of an EnvVar.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -61,41 +64,65 @@ public class EnvVarSource implements Editable<EnvVarSourceBuilder>, KubernetesRe
         this.secretKeyRef = secretKeyRef;
     }
 
+    /**
+     * EnvVarSource represents a source for the value of an EnvVar.
+     */
     @JsonProperty("configMapKeyRef")
     public ConfigMapKeySelector getConfigMapKeyRef() {
         return configMapKeyRef;
     }
 
+    /**
+     * EnvVarSource represents a source for the value of an EnvVar.
+     */
     @JsonProperty("configMapKeyRef")
     public void setConfigMapKeyRef(ConfigMapKeySelector configMapKeyRef) {
         this.configMapKeyRef = configMapKeyRef;
     }
 
+    /**
+     * EnvVarSource represents a source for the value of an EnvVar.
+     */
     @JsonProperty("fieldRef")
     public ObjectFieldSelector getFieldRef() {
         return fieldRef;
     }
 
+    /**
+     * EnvVarSource represents a source for the value of an EnvVar.
+     */
     @JsonProperty("fieldRef")
     public void setFieldRef(ObjectFieldSelector fieldRef) {
         this.fieldRef = fieldRef;
     }
 
+    /**
+     * EnvVarSource represents a source for the value of an EnvVar.
+     */
     @JsonProperty("resourceFieldRef")
     public ResourceFieldSelector getResourceFieldRef() {
         return resourceFieldRef;
     }
 
+    /**
+     * EnvVarSource represents a source for the value of an EnvVar.
+     */
     @JsonProperty("resourceFieldRef")
     public void setResourceFieldRef(ResourceFieldSelector resourceFieldRef) {
         this.resourceFieldRef = resourceFieldRef;
     }
 
+    /**
+     * EnvVarSource represents a source for the value of an EnvVar.
+     */
     @JsonProperty("secretKeyRef")
     public SecretKeySelector getSecretKeyRef() {
         return secretKeyRef;
     }
 
+    /**
+     * EnvVarSource represents a source for the value of an EnvVar.
+     */
     @JsonProperty("secretKeyRef")
     public void setSecretKeyRef(SecretKeySelector secretKeyRef) {
         this.secretKeyRef = secretKeyRef;

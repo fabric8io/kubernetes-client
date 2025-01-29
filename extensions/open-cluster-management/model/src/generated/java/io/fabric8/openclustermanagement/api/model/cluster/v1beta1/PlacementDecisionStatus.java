@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * PlacementDecisionStatus represents the current status of the PlacementDecision.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -81,12 +84,18 @@ public class PlacementDecisionStatus implements Editable<PlacementDecisionStatus
         this.decisions = decisions;
     }
 
+    /**
+     * Decisions is a slice of decisions according to a placement The number of decisions should not be larger than 100
+     */
     @JsonProperty("decisions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ClusterDecision> getDecisions() {
         return decisions;
     }
 
+    /**
+     * Decisions is a slice of decisions according to a placement The number of decisions should not be larger than 100
+     */
     @JsonProperty("decisions")
     public void setDecisions(List<ClusterDecision> decisions) {
         this.decisions = decisions;

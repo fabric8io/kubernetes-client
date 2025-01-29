@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * EtcdConnectionInfo holds information necessary for connecting to an etcd server
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -93,42 +96,66 @@ public class EtcdConnectionInfo implements Editable<EtcdConnectionInfoBuilder>, 
         this.urls = urls;
     }
 
+    /**
+     * CA is a file containing trusted roots for the etcd server certificates
+     */
     @JsonProperty("ca")
     public String getCa() {
         return ca;
     }
 
+    /**
+     * CA is a file containing trusted roots for the etcd server certificates
+     */
     @JsonProperty("ca")
     public void setCa(String ca) {
         this.ca = ca;
     }
 
+    /**
+     * CertFile is a file containing a PEM-encoded certificate
+     */
     @JsonProperty("certFile")
     public String getCertFile() {
         return certFile;
     }
 
+    /**
+     * CertFile is a file containing a PEM-encoded certificate
+     */
     @JsonProperty("certFile")
     public void setCertFile(String certFile) {
         this.certFile = certFile;
     }
 
+    /**
+     * KeyFile is a file containing a PEM-encoded private key for the certificate specified by CertFile
+     */
     @JsonProperty("keyFile")
     public String getKeyFile() {
         return keyFile;
     }
 
+    /**
+     * KeyFile is a file containing a PEM-encoded private key for the certificate specified by CertFile
+     */
     @JsonProperty("keyFile")
     public void setKeyFile(String keyFile) {
         this.keyFile = keyFile;
     }
 
+    /**
+     * URLs are the URLs for etcd
+     */
     @JsonProperty("urls")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getUrls() {
         return urls;
     }
 
+    /**
+     * URLs are the URLs for etcd
+     */
     @JsonProperty("urls")
     public void setUrls(List<String> urls) {
         this.urls = urls;

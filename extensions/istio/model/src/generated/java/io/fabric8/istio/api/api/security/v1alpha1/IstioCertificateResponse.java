@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Certificate response message.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -81,12 +84,18 @@ public class IstioCertificateResponse implements Editable<IstioCertificateRespon
         this.certChain = certChain;
     }
 
+    /**
+     * PEM-encoded certificate chain. The leaf cert is the first element, and the root cert is the last element.
+     */
     @JsonProperty("certChain")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getCertChain() {
         return certChain;
     }
 
+    /**
+     * PEM-encoded certificate chain. The leaf cert is the first element, and the root cert is the last element.
+     */
     @JsonProperty("certChain")
     public void setCertChain(List<String> certChain) {
         this.certChain = certChain;

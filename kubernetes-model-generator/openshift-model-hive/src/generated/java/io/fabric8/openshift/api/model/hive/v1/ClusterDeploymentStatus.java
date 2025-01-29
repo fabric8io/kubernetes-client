@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ClusterDeploymentStatus defines the observed state of ClusterDeployment
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -130,133 +133,211 @@ public class ClusterDeploymentStatus implements Editable<ClusterDeploymentStatus
         this.webConsoleURL = webConsoleURL;
     }
 
+    /**
+     * APIURL is the URL where the cluster's API can be accessed.
+     */
     @JsonProperty("apiURL")
     public String getApiURL() {
         return apiURL;
     }
 
+    /**
+     * APIURL is the URL where the cluster's API can be accessed.
+     */
     @JsonProperty("apiURL")
     public void setApiURL(String apiURL) {
         this.apiURL = apiURL;
     }
 
+    /**
+     * CertificateBundles contains of the status of the certificate bundles associated with this cluster deployment.
+     */
     @JsonProperty("certificateBundles")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<CertificateBundleStatus> getCertificateBundles() {
         return certificateBundles;
     }
 
+    /**
+     * CertificateBundles contains of the status of the certificate bundles associated with this cluster deployment.
+     */
     @JsonProperty("certificateBundles")
     public void setCertificateBundles(List<CertificateBundleStatus> certificateBundles) {
         this.certificateBundles = certificateBundles;
     }
 
+    /**
+     * CLIImage is the name of the oc cli image to use when installing the target cluster
+     */
     @JsonProperty("cliImage")
     public String getCliImage() {
         return cliImage;
     }
 
+    /**
+     * CLIImage is the name of the oc cli image to use when installing the target cluster
+     */
     @JsonProperty("cliImage")
     public void setCliImage(String cliImage) {
         this.cliImage = cliImage;
     }
 
+    /**
+     * Conditions includes more detailed status for the cluster deployment
+     */
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ClusterDeploymentCondition> getConditions() {
         return conditions;
     }
 
+    /**
+     * Conditions includes more detailed status for the cluster deployment
+     */
     @JsonProperty("conditions")
     public void setConditions(List<ClusterDeploymentCondition> conditions) {
         this.conditions = conditions;
     }
 
+    /**
+     * InstallRestarts is the total count of container restarts on the clusters install job.
+     */
     @JsonProperty("installRestarts")
     public Integer getInstallRestarts() {
         return installRestarts;
     }
 
+    /**
+     * InstallRestarts is the total count of container restarts on the clusters install job.
+     */
     @JsonProperty("installRestarts")
     public void setInstallRestarts(Integer installRestarts) {
         this.installRestarts = installRestarts;
     }
 
+    /**
+     * ClusterDeploymentStatus defines the observed state of ClusterDeployment
+     */
     @JsonProperty("installStartedTimestamp")
     public String getInstallStartedTimestamp() {
         return installStartedTimestamp;
     }
 
+    /**
+     * ClusterDeploymentStatus defines the observed state of ClusterDeployment
+     */
     @JsonProperty("installStartedTimestamp")
     public void setInstallStartedTimestamp(String installStartedTimestamp) {
         this.installStartedTimestamp = installStartedTimestamp;
     }
 
+    /**
+     * InstallVersion is the version of OpenShift as reported by the release image resolved for the installation.
+     */
     @JsonProperty("installVersion")
     public String getInstallVersion() {
         return installVersion;
     }
 
+    /**
+     * InstallVersion is the version of OpenShift as reported by the release image resolved for the installation.
+     */
     @JsonProperty("installVersion")
     public void setInstallVersion(String installVersion) {
         this.installVersion = installVersion;
     }
 
+    /**
+     * ClusterDeploymentStatus defines the observed state of ClusterDeployment
+     */
     @JsonProperty("installedTimestamp")
     public String getInstalledTimestamp() {
         return installedTimestamp;
     }
 
+    /**
+     * ClusterDeploymentStatus defines the observed state of ClusterDeployment
+     */
     @JsonProperty("installedTimestamp")
     public void setInstalledTimestamp(String installedTimestamp) {
         this.installedTimestamp = installedTimestamp;
     }
 
+    /**
+     * InstallerImage is the name of the installer image to use when installing the target cluster
+     */
     @JsonProperty("installerImage")
     public String getInstallerImage() {
         return installerImage;
     }
 
+    /**
+     * InstallerImage is the name of the installer image to use when installing the target cluster
+     */
     @JsonProperty("installerImage")
     public void setInstallerImage(String installerImage) {
         this.installerImage = installerImage;
     }
 
+    /**
+     * ClusterDeploymentStatus defines the observed state of ClusterDeployment
+     */
     @JsonProperty("platformStatus")
     public PlatformStatus getPlatformStatus() {
         return platformStatus;
     }
 
+    /**
+     * ClusterDeploymentStatus defines the observed state of ClusterDeployment
+     */
     @JsonProperty("platformStatus")
     public void setPlatformStatus(PlatformStatus platformStatus) {
         this.platformStatus = platformStatus;
     }
 
+    /**
+     * PowerState indicates the powerstate of cluster
+     */
     @JsonProperty("powerState")
     public String getPowerState() {
         return powerState;
     }
 
+    /**
+     * PowerState indicates the powerstate of cluster
+     */
     @JsonProperty("powerState")
     public void setPowerState(String powerState) {
         this.powerState = powerState;
     }
 
+    /**
+     * ClusterDeploymentStatus defines the observed state of ClusterDeployment
+     */
     @JsonProperty("provisionRef")
     public LocalObjectReference getProvisionRef() {
         return provisionRef;
     }
 
+    /**
+     * ClusterDeploymentStatus defines the observed state of ClusterDeployment
+     */
     @JsonProperty("provisionRef")
     public void setProvisionRef(LocalObjectReference provisionRef) {
         this.provisionRef = provisionRef;
     }
 
+    /**
+     * WebConsoleURL is the URL for the cluster's web console UI.
+     */
     @JsonProperty("webConsoleURL")
     public String getWebConsoleURL() {
         return webConsoleURL;
     }
 
+    /**
+     * WebConsoleURL is the URL for the cluster's web console UI.
+     */
     @JsonProperty("webConsoleURL")
     public void setWebConsoleURL(String webConsoleURL) {
         this.webConsoleURL = webConsoleURL;

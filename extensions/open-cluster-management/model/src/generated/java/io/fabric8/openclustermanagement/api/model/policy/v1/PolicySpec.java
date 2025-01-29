@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * PolicySpec defines the configurations of the policy engine resources to deliver to the managed clusters.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -102,63 +105,99 @@ public class PolicySpec implements Editable<PolicySpecBuilder>, KubernetesResour
         this.remediationAction = remediationAction;
     }
 
+    /**
+     * CopyPolicyMetadata specifies whether the labels and annotations of a policy should be copied when replicating the policy to a managed cluster. If set to "true", all of the labels and annotations of the policy are copied to the replicated policy. If set to "false", only the policy framework-specific policy labels and annotations are copied to the replicated policy. This setting is useful if there is tracking for metadata that should only exist on the root policy. It is recommended to set this to "false" when using Argo CD to deploy the policy definition since Argo CD uses metadata for tracking that should not be replicated. The default value is "true".
+     */
     @JsonProperty("copyPolicyMetadata")
     public Boolean getCopyPolicyMetadata() {
         return copyPolicyMetadata;
     }
 
+    /**
+     * CopyPolicyMetadata specifies whether the labels and annotations of a policy should be copied when replicating the policy to a managed cluster. If set to "true", all of the labels and annotations of the policy are copied to the replicated policy. If set to "false", only the policy framework-specific policy labels and annotations are copied to the replicated policy. This setting is useful if there is tracking for metadata that should only exist on the root policy. It is recommended to set this to "false" when using Argo CD to deploy the policy definition since Argo CD uses metadata for tracking that should not be replicated. The default value is "true".
+     */
     @JsonProperty("copyPolicyMetadata")
     public void setCopyPolicyMetadata(Boolean copyPolicyMetadata) {
         this.copyPolicyMetadata = copyPolicyMetadata;
     }
 
+    /**
+     * PolicyDependencies is a list of dependency objects detailed with extra considerations for compliance that should be fulfilled before applying the policies to the managed clusters.
+     */
     @JsonProperty("dependencies")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<PolicyDependency> getDependencies() {
         return dependencies;
     }
 
+    /**
+     * PolicyDependencies is a list of dependency objects detailed with extra considerations for compliance that should be fulfilled before applying the policies to the managed clusters.
+     */
     @JsonProperty("dependencies")
     public void setDependencies(List<PolicyDependency> dependencies) {
         this.dependencies = dependencies;
     }
 
+    /**
+     * Disabled is a boolean parameter you can use to enable and disable the policy. When disabled, the policy is removed from managed clusters.
+     */
     @JsonProperty("disabled")
     public Boolean getDisabled() {
         return disabled;
     }
 
+    /**
+     * Disabled is a boolean parameter you can use to enable and disable the policy. When disabled, the policy is removed from managed clusters.
+     */
     @JsonProperty("disabled")
     public void setDisabled(Boolean disabled) {
         this.disabled = disabled;
     }
 
+    /**
+     * PolicySpec defines the configurations of the policy engine resources to deliver to the managed clusters.
+     */
     @JsonProperty("hubTemplateOptions")
     public HubTemplateOptions getHubTemplateOptions() {
         return hubTemplateOptions;
     }
 
+    /**
+     * PolicySpec defines the configurations of the policy engine resources to deliver to the managed clusters.
+     */
     @JsonProperty("hubTemplateOptions")
     public void setHubTemplateOptions(HubTemplateOptions hubTemplateOptions) {
         this.hubTemplateOptions = hubTemplateOptions;
     }
 
+    /**
+     * PolicyTemplates is a list of definitions of policy engine resources to apply to managed clusters along with configurations on how it should be applied.
+     */
     @JsonProperty("policy-templates")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<PolicyTemplate> getPolicyTemplates() {
         return policyTemplates;
     }
 
+    /**
+     * PolicyTemplates is a list of definitions of policy engine resources to apply to managed clusters along with configurations on how it should be applied.
+     */
     @JsonProperty("policy-templates")
     public void setPolicyTemplates(List<PolicyTemplate> policyTemplates) {
         this.policyTemplates = policyTemplates;
     }
 
+    /**
+     * RemediationAction specifies the remediation of the policy. The parameter values are "enforce" and "inform". If specified, the value that is defined overrides any remediationAction parameter defined in the child policies in the "policy-templates" section. Important: Not all policy engine kinds support the enforce feature.
+     */
     @JsonProperty("remediationAction")
     public String getRemediationAction() {
         return remediationAction;
     }
 
+    /**
+     * RemediationAction specifies the remediation of the policy. The parameter values are "enforce" and "inform". If specified, the value that is defined overrides any remediationAction parameter defined in the child policies in the "policy-templates" section. Important: Not all policy engine kinds support the enforce feature.
+     */
     @JsonProperty("remediationAction")
     public void setRemediationAction(String remediationAction) {
         this.remediationAction = remediationAction;

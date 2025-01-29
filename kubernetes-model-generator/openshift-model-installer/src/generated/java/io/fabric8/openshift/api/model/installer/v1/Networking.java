@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Networking defines the pod network provider in the cluster.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -116,95 +119,149 @@ public class Networking implements Editable<NetworkingBuilder>, KubernetesResour
         this.type = type;
     }
 
+    /**
+     * ClusterNetwork is the list of IP address pools for pods. Default is 10.128.0.0/14 and a host prefix of /23.
+     */
     @JsonProperty("clusterNetwork")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ClusterNetworkEntry> getClusterNetwork() {
         return clusterNetwork;
     }
 
+    /**
+     * ClusterNetwork is the list of IP address pools for pods. Default is 10.128.0.0/14 and a host prefix of /23.
+     */
     @JsonProperty("clusterNetwork")
     public void setClusterNetwork(List<ClusterNetworkEntry> clusterNetwork) {
         this.clusterNetwork = clusterNetwork;
     }
 
+    /**
+     * ClusterNetworkMTU is the Maximum Transmit (MTU) Unit size in bytes to allocate to the cluster network. For example, 1200 would set the MTU of the entire overlay network. If the deployment does not require changes in the network plugin, leave it unset and the MTU will be calculated automatically based on the host network MTU.
+     */
     @JsonProperty("clusterNetworkMTU")
     public Long getClusterNetworkMTU() {
         return clusterNetworkMTU;
     }
 
+    /**
+     * ClusterNetworkMTU is the Maximum Transmit (MTU) Unit size in bytes to allocate to the cluster network. For example, 1200 would set the MTU of the entire overlay network. If the deployment does not require changes in the network plugin, leave it unset and the MTU will be calculated automatically based on the host network MTU.
+     */
     @JsonProperty("clusterNetworkMTU")
     public void setClusterNetworkMTU(Long clusterNetworkMTU) {
         this.clusterNetworkMTU = clusterNetworkMTU;
     }
 
+    /**
+     * Deprecated name for ClusterNetwork
+     */
     @JsonProperty("clusterNetworks")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ClusterNetworkEntry> getClusterNetworks() {
         return clusterNetworkList;
     }
 
+    /**
+     * Deprecated name for ClusterNetwork
+     */
     @JsonProperty("clusterNetworks")
     public void setClusterNetworks(List<ClusterNetworkEntry> clusterNetworkList) {
         this.clusterNetworkList = clusterNetworkList;
     }
 
+    /**
+     * Networking defines the pod network provider in the cluster.
+     */
     @JsonProperty("machineCIDR")
     public String getMachineCIDR() {
         return machineCIDR;
     }
 
+    /**
+     * Networking defines the pod network provider in the cluster.
+     */
     @JsonProperty("machineCIDR")
     public void setMachineCIDR(String machineCIDR) {
         this.machineCIDR = machineCIDR;
     }
 
+    /**
+     * MachineNetwork is the list of IP address pools for machines. This field replaces MachineCIDR, and if set MachineCIDR must be empty or match the first entry in the list. Default is 10.0.0.0/16 for all platforms other than Power VS. For Power VS, the default is 192.168.0.0/24.
+     */
     @JsonProperty("machineNetwork")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<MachineNetworkEntry> getMachineNetwork() {
         return machineNetwork;
     }
 
+    /**
+     * MachineNetwork is the list of IP address pools for machines. This field replaces MachineCIDR, and if set MachineCIDR must be empty or match the first entry in the list. Default is 10.0.0.0/16 for all platforms other than Power VS. For Power VS, the default is 192.168.0.0/24.
+     */
     @JsonProperty("machineNetwork")
     public void setMachineNetwork(List<MachineNetworkEntry> machineNetwork) {
         this.machineNetwork = machineNetwork;
     }
 
+    /**
+     * NetworkType is the type of network to install. The default value is OVNKubernetes.
+     */
     @JsonProperty("networkType")
     public String getNetworkType() {
         return networkType;
     }
 
+    /**
+     * NetworkType is the type of network to install. The default value is OVNKubernetes.
+     */
     @JsonProperty("networkType")
     public void setNetworkType(String networkType) {
         this.networkType = networkType;
     }
 
+    /**
+     * Networking defines the pod network provider in the cluster.
+     */
     @JsonProperty("serviceCIDR")
     public String getServiceCIDR() {
         return serviceCIDR;
     }
 
+    /**
+     * Networking defines the pod network provider in the cluster.
+     */
     @JsonProperty("serviceCIDR")
     public void setServiceCIDR(String serviceCIDR) {
         this.serviceCIDR = serviceCIDR;
     }
 
+    /**
+     * ServiceNetwork is the list of IP address pools for services. Default is 172.30.0.0/16. NOTE: currently only one entry is supported.
+     */
     @JsonProperty("serviceNetwork")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getServiceNetwork() {
         return serviceNetwork;
     }
 
+    /**
+     * ServiceNetwork is the list of IP address pools for services. Default is 172.30.0.0/16. NOTE: currently only one entry is supported.
+     */
     @JsonProperty("serviceNetwork")
     public void setServiceNetwork(List<String> serviceNetwork) {
         this.serviceNetwork = serviceNetwork;
     }
 
+    /**
+     * Deprecated name for NetworkType
+     */
     @JsonProperty("type")
     public String getType() {
         return type;
     }
 
+    /**
+     * Deprecated name for NetworkType
+     */
     @JsonProperty("type")
     public void setType(String type) {
         this.type = type;

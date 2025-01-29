@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * PodFailurePolicy describes how failed pods influence the backoffLimit.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -81,12 +84,18 @@ public class PodFailurePolicy implements Editable<PodFailurePolicyBuilder>, Kube
         this.rules = rules;
     }
 
+    /**
+     * A list of pod failure policy rules. The rules are evaluated in order. Once a rule matches a Pod failure, the remaining of the rules are ignored. When no rule matches the Pod failure, the default handling applies - the counter of pod failures is incremented and it is checked against the backoffLimit. At most 20 elements are allowed.
+     */
     @JsonProperty("rules")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<PodFailurePolicyRule> getRules() {
         return rules;
     }
 
+    /**
+     * A list of pod failure policy rules. The rules are evaluated in order. Once a rule matches a Pod failure, the remaining of the rules are ignored. When no rule matches the Pod failure, the default handling applies - the counter of pod failures is incremented and it is checked against the backoffLimit. At most 20 elements are allowed.
+     */
     @JsonProperty("rules")
     public void setRules(List<PodFailurePolicyRule> rules) {
         this.rules = rules;

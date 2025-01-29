@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * VerticalPodAutoscalerCheckpointSpec is the specification of the checkpoint object.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class VerticalPodAutoscalerCheckpointSpec implements Editable<VerticalPod
         this.vpaObjectName = vpaObjectName;
     }
 
+    /**
+     * Name of the checkpointed container.
+     */
     @JsonProperty("containerName")
     public String getContainerName() {
         return containerName;
     }
 
+    /**
+     * Name of the checkpointed container.
+     */
     @JsonProperty("containerName")
     public void setContainerName(String containerName) {
         this.containerName = containerName;
     }
 
+    /**
+     * Name of the VPA object that stored VerticalPodAutoscalerCheckpoint object.
+     */
     @JsonProperty("vpaObjectName")
     public String getVpaObjectName() {
         return vpaObjectName;
     }
 
+    /**
+     * Name of the VPA object that stored VerticalPodAutoscalerCheckpoint object.
+     */
     @JsonProperty("vpaObjectName")
     public void setVpaObjectName(String vpaObjectName) {
         this.vpaObjectName = vpaObjectName;

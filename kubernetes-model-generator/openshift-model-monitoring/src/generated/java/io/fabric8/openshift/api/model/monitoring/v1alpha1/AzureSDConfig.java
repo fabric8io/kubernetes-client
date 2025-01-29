@@ -33,6 +33,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * AzureSDConfig allow retrieving scrape targets from Azure VMs. See https://prometheus.io/docs/prometheus/latest/configuration/configuration/#azure_sd_config
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -111,91 +114,145 @@ public class AzureSDConfig implements Editable<AzureSDConfigBuilder>, Kubernetes
         this.tenantID = tenantID;
     }
 
+    /**
+     * # The authentication method, either `OAuth` or `ManagedIdentity` or `SDK`. See https://docs.microsoft.com/en-us/azure/active-directory/managed-identities-azure-resources/overview SDK authentication method uses environment variables by default. See https://learn.microsoft.com/en-us/azure/developer/go/azure-sdk-authentication
+     */
     @JsonProperty("authenticationMethod")
     public String getAuthenticationMethod() {
         return authenticationMethod;
     }
 
+    /**
+     * # The authentication method, either `OAuth` or `ManagedIdentity` or `SDK`. See https://docs.microsoft.com/en-us/azure/active-directory/managed-identities-azure-resources/overview SDK authentication method uses environment variables by default. See https://learn.microsoft.com/en-us/azure/developer/go/azure-sdk-authentication
+     */
     @JsonProperty("authenticationMethod")
     public void setAuthenticationMethod(String authenticationMethod) {
         this.authenticationMethod = authenticationMethod;
     }
 
+    /**
+     * Optional client ID. Only required with the OAuth authentication method.
+     */
     @JsonProperty("clientID")
     public String getClientID() {
         return clientID;
     }
 
+    /**
+     * Optional client ID. Only required with the OAuth authentication method.
+     */
     @JsonProperty("clientID")
     public void setClientID(String clientID) {
         this.clientID = clientID;
     }
 
+    /**
+     * AzureSDConfig allow retrieving scrape targets from Azure VMs. See https://prometheus.io/docs/prometheus/latest/configuration/configuration/#azure_sd_config
+     */
     @JsonProperty("clientSecret")
     public SecretKeySelector getClientSecret() {
         return clientSecret;
     }
 
+    /**
+     * AzureSDConfig allow retrieving scrape targets from Azure VMs. See https://prometheus.io/docs/prometheus/latest/configuration/configuration/#azure_sd_config
+     */
     @JsonProperty("clientSecret")
     public void setClientSecret(SecretKeySelector clientSecret) {
         this.clientSecret = clientSecret;
     }
 
+    /**
+     * The Azure environment.
+     */
     @JsonProperty("environment")
     public String getEnvironment() {
         return environment;
     }
 
+    /**
+     * The Azure environment.
+     */
     @JsonProperty("environment")
     public void setEnvironment(String environment) {
         this.environment = environment;
     }
 
+    /**
+     * The port to scrape metrics from. If using the public IP address, this must instead be specified in the relabeling rule.
+     */
     @JsonProperty("port")
     public Integer getPort() {
         return port;
     }
 
+    /**
+     * The port to scrape metrics from. If using the public IP address, this must instead be specified in the relabeling rule.
+     */
     @JsonProperty("port")
     public void setPort(Integer port) {
         this.port = port;
     }
 
+    /**
+     * RefreshInterval configures the refresh interval at which Prometheus will re-read the instance list.
+     */
     @JsonProperty("refreshInterval")
     public String getRefreshInterval() {
         return refreshInterval;
     }
 
+    /**
+     * RefreshInterval configures the refresh interval at which Prometheus will re-read the instance list.
+     */
     @JsonProperty("refreshInterval")
     public void setRefreshInterval(String refreshInterval) {
         this.refreshInterval = refreshInterval;
     }
 
+    /**
+     * Optional resource group name. Limits discovery to this resource group.
+     */
     @JsonProperty("resourceGroup")
     public String getResourceGroup() {
         return resourceGroup;
     }
 
+    /**
+     * Optional resource group name. Limits discovery to this resource group.
+     */
     @JsonProperty("resourceGroup")
     public void setResourceGroup(String resourceGroup) {
         this.resourceGroup = resourceGroup;
     }
 
+    /**
+     * The subscription ID. Always required.
+     */
     @JsonProperty("subscriptionID")
     public String getSubscriptionID() {
         return subscriptionID;
     }
 
+    /**
+     * The subscription ID. Always required.
+     */
     @JsonProperty("subscriptionID")
     public void setSubscriptionID(String subscriptionID) {
         this.subscriptionID = subscriptionID;
     }
 
+    /**
+     * Optional tenant ID. Only required with the OAuth authentication method.
+     */
     @JsonProperty("tenantID")
     public String getTenantID() {
         return tenantID;
     }
 
+    /**
+     * Optional tenant ID. Only required with the OAuth authentication method.
+     */
     @JsonProperty("tenantID")
     public void setTenantID(String tenantID) {
         this.tenantID = tenantID;

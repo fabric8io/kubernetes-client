@@ -35,6 +35,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ClientTLS specifies TLS configuration to enable client-to-server authentication, which can be used for mutual TLS.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -90,32 +93,50 @@ public class ClientTLS implements Editable<ClientTLSBuilder>, KubernetesResource
         this.clientCertificatePolicy = clientCertificatePolicy;
     }
 
+    /**
+     * allowedSubjectPatterns specifies a list of regular expressions that should be matched against the distinguished name on a valid client certificate to filter requests.  The regular expressions must use PCRE syntax.  If this list is empty, no filtering is performed.  If the list is nonempty, then at least one pattern must match a client certificate's distinguished name or else the ingress controller rejects the certificate and denies the connection.
+     */
     @JsonProperty("allowedSubjectPatterns")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getAllowedSubjectPatterns() {
         return allowedSubjectPatterns;
     }
 
+    /**
+     * allowedSubjectPatterns specifies a list of regular expressions that should be matched against the distinguished name on a valid client certificate to filter requests.  The regular expressions must use PCRE syntax.  If this list is empty, no filtering is performed.  If the list is nonempty, then at least one pattern must match a client certificate's distinguished name or else the ingress controller rejects the certificate and denies the connection.
+     */
     @JsonProperty("allowedSubjectPatterns")
     public void setAllowedSubjectPatterns(List<String> allowedSubjectPatterns) {
         this.allowedSubjectPatterns = allowedSubjectPatterns;
     }
 
+    /**
+     * ClientTLS specifies TLS configuration to enable client-to-server authentication, which can be used for mutual TLS.
+     */
     @JsonProperty("clientCA")
     public ConfigMapNameReference getClientCA() {
         return clientCA;
     }
 
+    /**
+     * ClientTLS specifies TLS configuration to enable client-to-server authentication, which can be used for mutual TLS.
+     */
     @JsonProperty("clientCA")
     public void setClientCA(ConfigMapNameReference clientCA) {
         this.clientCA = clientCA;
     }
 
+    /**
+     * clientCertificatePolicy specifies whether the ingress controller requires clients to provide certificates.  This field accepts the values "Required" or "Optional".<br><p> <br><p> Note that the ingress controller only checks client certificates for edge-terminated and reencrypt TLS routes; it cannot check certificates for cleartext HTTP or passthrough TLS routes.
+     */
     @JsonProperty("clientCertificatePolicy")
     public String getClientCertificatePolicy() {
         return clientCertificatePolicy;
     }
 
+    /**
+     * clientCertificatePolicy specifies whether the ingress controller requires clients to provide certificates.  This field accepts the values "Required" or "Optional".<br><p> <br><p> Note that the ingress controller only checks client certificates for edge-terminated and reencrypt TLS routes; it cannot check certificates for cleartext HTTP or passthrough TLS routes.
+     */
     @JsonProperty("clientCertificatePolicy")
     public void setClientCertificatePolicy(String clientCertificatePolicy) {
         this.clientCertificatePolicy = clientCertificatePolicy;

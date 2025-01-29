@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Settings applicable to HTTP1.1/HTTP2/GRPC connections.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -106,81 +109,129 @@ public class ConnectionPoolSettingsHTTPSettings implements Editable<ConnectionPo
         this.useClientProtocol = useClientProtocol;
     }
 
+    /**
+     * Settings applicable to HTTP1.1/HTTP2/GRPC connections.
+     */
     @JsonProperty("h2UpgradePolicy")
     public ConnectionPoolSettingsHTTPSettingsH2UpgradePolicy getH2UpgradePolicy() {
         return h2UpgradePolicy;
     }
 
+    /**
+     * Settings applicable to HTTP1.1/HTTP2/GRPC connections.
+     */
     @JsonProperty("h2UpgradePolicy")
     public void setH2UpgradePolicy(ConnectionPoolSettingsHTTPSettingsH2UpgradePolicy h2UpgradePolicy) {
         this.h2UpgradePolicy = h2UpgradePolicy;
     }
 
+    /**
+     * Maximum number of requests that will be queued while waiting for a ready connection pool connection. Default 2^32-1. Refer to https://www.envoyproxy.io/docs/envoy/latest/intro/arch_overview/upstream/circuit_breaking under which conditions a new connection is created for HTTP2. Please note that this is applicable to both HTTP/1.1 and HTTP2.
+     */
     @JsonProperty("http1MaxPendingRequests")
     public Integer getHttp1MaxPendingRequests() {
         return http1MaxPendingRequests;
     }
 
+    /**
+     * Maximum number of requests that will be queued while waiting for a ready connection pool connection. Default 2^32-1. Refer to https://www.envoyproxy.io/docs/envoy/latest/intro/arch_overview/upstream/circuit_breaking under which conditions a new connection is created for HTTP2. Please note that this is applicable to both HTTP/1.1 and HTTP2.
+     */
     @JsonProperty("http1MaxPendingRequests")
     public void setHttp1MaxPendingRequests(Integer http1MaxPendingRequests) {
         this.http1MaxPendingRequests = http1MaxPendingRequests;
     }
 
+    /**
+     * Maximum number of active requests to a destination. Default 2^32-1. Please note that this is applicable to both HTTP/1.1 and HTTP2.
+     */
     @JsonProperty("http2MaxRequests")
     public Integer getHttp2MaxRequests() {
         return http2MaxRequests;
     }
 
+    /**
+     * Maximum number of active requests to a destination. Default 2^32-1. Please note that this is applicable to both HTTP/1.1 and HTTP2.
+     */
     @JsonProperty("http2MaxRequests")
     public void setHttp2MaxRequests(Integer http2MaxRequests) {
         this.http2MaxRequests = http2MaxRequests;
     }
 
+    /**
+     * Settings applicable to HTTP1.1/HTTP2/GRPC connections.
+     */
     @JsonProperty("idleTimeout")
     public String getIdleTimeout() {
         return idleTimeout;
     }
 
+    /**
+     * Settings applicable to HTTP1.1/HTTP2/GRPC connections.
+     */
     @JsonProperty("idleTimeout")
     public void setIdleTimeout(String idleTimeout) {
         this.idleTimeout = idleTimeout;
     }
 
+    /**
+     * The maximum number of concurrent streams allowed for a peer on one HTTP/2 connection. Defaults to 2^31-1.
+     */
     @JsonProperty("maxConcurrentStreams")
     public Integer getMaxConcurrentStreams() {
         return maxConcurrentStreams;
     }
 
+    /**
+     * The maximum number of concurrent streams allowed for a peer on one HTTP/2 connection. Defaults to 2^31-1.
+     */
     @JsonProperty("maxConcurrentStreams")
     public void setMaxConcurrentStreams(Integer maxConcurrentStreams) {
         this.maxConcurrentStreams = maxConcurrentStreams;
     }
 
+    /**
+     * Maximum number of requests per connection to a backend. Setting this parameter to 1 disables keep alive. Default 0, meaning "unlimited", up to 2^29.
+     */
     @JsonProperty("maxRequestsPerConnection")
     public Integer getMaxRequestsPerConnection() {
         return maxRequestsPerConnection;
     }
 
+    /**
+     * Maximum number of requests per connection to a backend. Setting this parameter to 1 disables keep alive. Default 0, meaning "unlimited", up to 2^29.
+     */
     @JsonProperty("maxRequestsPerConnection")
     public void setMaxRequestsPerConnection(Integer maxRequestsPerConnection) {
         this.maxRequestsPerConnection = maxRequestsPerConnection;
     }
 
+    /**
+     * Maximum number of retries that can be outstanding to all hosts in a cluster at a given time. Defaults to 2^32-1.
+     */
     @JsonProperty("maxRetries")
     public Integer getMaxRetries() {
         return maxRetries;
     }
 
+    /**
+     * Maximum number of retries that can be outstanding to all hosts in a cluster at a given time. Defaults to 2^32-1.
+     */
     @JsonProperty("maxRetries")
     public void setMaxRetries(Integer maxRetries) {
         this.maxRetries = maxRetries;
     }
 
+    /**
+     * If set to true, client protocol will be preserved while initiating connection to backend. Note that when this is set to true, h2_upgrade_policy will be ineffective i.e. the client connections will not be upgraded to http2.
+     */
     @JsonProperty("useClientProtocol")
     public Boolean getUseClientProtocol() {
         return useClientProtocol;
     }
 
+    /**
+     * If set to true, client protocol will be preserved while initiating connection to backend. Note that when this is set to true, h2_upgrade_policy will be ineffective i.e. the client connections will not be upgraded to http2.
+     */
     @JsonProperty("useClientProtocol")
     public void setUseClientProtocol(Boolean useClientProtocol) {
         this.useClientProtocol = useClientProtocol;

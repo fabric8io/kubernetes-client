@@ -37,6 +37,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ResourceClass is used by administrators to influence how resources are allocated.<br><p> <br><p> This is an alpha type and requires enabling the DynamicResourceAllocation feature gate.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -78,16 +81,10 @@ import lombok.experimental.Accessors;
 public class ResourceClass implements Editable<ResourceClassBuilder>, HasMetadata
 {
 
-    /**
-     * (Required)
-     */
     @JsonProperty("apiVersion")
     private String apiVersion = "resource.k8s.io/v1alpha2";
     @JsonProperty("driverName")
     private String driverName;
-    /**
-     * (Required)
-     */
     @JsonProperty("kind")
     private String kind = "ResourceClass";
     @JsonProperty("metadata")
@@ -119,7 +116,7 @@ public class ResourceClass implements Editable<ResourceClassBuilder>, HasMetadat
     }
 
     /**
-     * (Required)
+     * APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -127,25 +124,31 @@ public class ResourceClass implements Editable<ResourceClassBuilder>, HasMetadat
     }
 
     /**
-     * (Required)
+     * APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
         this.apiVersion = apiVersion;
     }
 
+    /**
+     * DriverName defines the name of the dynamic resource driver that is used for allocation of a ResourceClaim that uses this class.<br><p> <br><p> Resource drivers have a unique name in forward domain order (acme.example.com).
+     */
     @JsonProperty("driverName")
     public String getDriverName() {
         return driverName;
     }
 
+    /**
+     * DriverName defines the name of the dynamic resource driver that is used for allocation of a ResourceClaim that uses this class.<br><p> <br><p> Resource drivers have a unique name in forward domain order (acme.example.com).
+     */
     @JsonProperty("driverName")
     public void setDriverName(String driverName) {
         this.driverName = driverName;
     }
 
     /**
-     * (Required)
+     * Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -153,48 +156,72 @@ public class ResourceClass implements Editable<ResourceClassBuilder>, HasMetadat
     }
 
     /**
-     * (Required)
+     * Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
      */
     @JsonProperty("kind")
     public void setKind(String kind) {
         this.kind = kind;
     }
 
+    /**
+     * ResourceClass is used by administrators to influence how resources are allocated.<br><p> <br><p> This is an alpha type and requires enabling the DynamicResourceAllocation feature gate.
+     */
     @JsonProperty("metadata")
     public ObjectMeta getMetadata() {
         return metadata;
     }
 
+    /**
+     * ResourceClass is used by administrators to influence how resources are allocated.<br><p> <br><p> This is an alpha type and requires enabling the DynamicResourceAllocation feature gate.
+     */
     @JsonProperty("metadata")
     public void setMetadata(ObjectMeta metadata) {
         this.metadata = metadata;
     }
 
+    /**
+     * ResourceClass is used by administrators to influence how resources are allocated.<br><p> <br><p> This is an alpha type and requires enabling the DynamicResourceAllocation feature gate.
+     */
     @JsonProperty("parametersRef")
     public ResourceClassParametersReference getParametersRef() {
         return parametersRef;
     }
 
+    /**
+     * ResourceClass is used by administrators to influence how resources are allocated.<br><p> <br><p> This is an alpha type and requires enabling the DynamicResourceAllocation feature gate.
+     */
     @JsonProperty("parametersRef")
     public void setParametersRef(ResourceClassParametersReference parametersRef) {
         this.parametersRef = parametersRef;
     }
 
+    /**
+     * If and only if allocation of claims using this class is handled via structured parameters, then StructuredParameters must be set to true.
+     */
     @JsonProperty("structuredParameters")
     public Boolean getStructuredParameters() {
         return structuredParameters;
     }
 
+    /**
+     * If and only if allocation of claims using this class is handled via structured parameters, then StructuredParameters must be set to true.
+     */
     @JsonProperty("structuredParameters")
     public void setStructuredParameters(Boolean structuredParameters) {
         this.structuredParameters = structuredParameters;
     }
 
+    /**
+     * ResourceClass is used by administrators to influence how resources are allocated.<br><p> <br><p> This is an alpha type and requires enabling the DynamicResourceAllocation feature gate.
+     */
     @JsonProperty("suitableNodes")
     public NodeSelector getSuitableNodes() {
         return suitableNodes;
     }
 
+    /**
+     * ResourceClass is used by administrators to influence how resources are allocated.<br><p> <br><p> This is an alpha type and requires enabling the DynamicResourceAllocation feature gate.
+     */
     @JsonProperty("suitableNodes")
     public void setSuitableNodes(NodeSelector suitableNodes) {
         this.suitableNodes = suitableNodes;

@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * DockerStrategyOptions contains extra strategy options for container image builds
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -85,22 +88,34 @@ public class DockerStrategyOptions implements Editable<DockerStrategyOptionsBuil
         this.noCache = noCache;
     }
 
+    /**
+     * Args contains any build arguments that are to be passed to Docker.  See https://docs.docker.com/engine/reference/builder/#/arg for more details
+     */
     @JsonProperty("buildArgs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<EnvVar> getBuildArgs() {
         return buildArgs;
     }
 
+    /**
+     * Args contains any build arguments that are to be passed to Docker.  See https://docs.docker.com/engine/reference/builder/#/arg for more details
+     */
     @JsonProperty("buildArgs")
     public void setBuildArgs(List<EnvVar> buildArgs) {
         this.buildArgs = buildArgs;
     }
 
+    /**
+     * noCache overrides the docker-strategy noCache option in the build config
+     */
     @JsonProperty("noCache")
     public Boolean getNoCache() {
         return noCache;
     }
 
+    /**
+     * noCache overrides the docker-strategy noCache option in the build config
+     */
     @JsonProperty("noCache")
     public void setNoCache(Boolean noCache) {
         this.noCache = noCache;

@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * EndpointsVisibility contains region mapped endpoint for a service.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -84,23 +87,35 @@ public class EndpointsVisibility implements Editable<EndpointsVisibilityBuilder>
         this._public = _public;
     }
 
+    /**
+     * Private is a string-string map of a region name to endpoint URL To prevent maintaining a list of supported regions here, we simply use a map instead of a struct
+     */
     @JsonProperty("private")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getPrivate() {
         return _private;
     }
 
+    /**
+     * Private is a string-string map of a region name to endpoint URL To prevent maintaining a list of supported regions here, we simply use a map instead of a struct
+     */
     @JsonProperty("private")
     public void setPrivate(Map<String, String> _private) {
         this._private = _private;
     }
 
+    /**
+     * Public is a string-string map of a region name to endpoint URL To prevent maintaining a list of supported regions here, we simply use a map instead of a struct
+     */
     @JsonProperty("public")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getPublic() {
         return _public;
     }
 
+    /**
+     * Public is a string-string map of a region name to endpoint URL To prevent maintaining a list of supported regions here, we simply use a map instead of a struct
+     */
     @JsonProperty("public")
     public void setPublic(Map<String, String> _public) {
         this._public = _public;

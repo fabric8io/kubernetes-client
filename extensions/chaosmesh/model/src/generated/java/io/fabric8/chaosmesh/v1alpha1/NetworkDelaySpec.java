@@ -114,101 +114,161 @@ public class NetworkDelaySpec implements Editable<NetworkDelaySpecBuilder>, Kube
         this.sourcePort = sourcePort;
     }
 
+    /**
+     * only the packet which match the tcp flag can be accepted, others will be dropped. only set when the IPProtocol is tcp, used for partition.
+     */
     @JsonProperty("accept-tcp-flags")
     public String getAcceptTcpFlags() {
         return acceptTcpFlags;
     }
 
+    /**
+     * only the packet which match the tcp flag can be accepted, others will be dropped. only set when the IPProtocol is tcp, used for partition.
+     */
     @JsonProperty("accept-tcp-flags")
     public void setAcceptTcpFlags(String acceptTcpFlags) {
         this.acceptTcpFlags = acceptTcpFlags;
     }
 
+    /**
+     * correlation is percentage (10 is 10%)
+     */
     @JsonProperty("correlation")
     public String getCorrelation() {
         return correlation;
     }
 
+    /**
+     * correlation is percentage (10 is 10%)
+     */
     @JsonProperty("correlation")
     public void setCorrelation(String correlation) {
         this.correlation = correlation;
     }
 
+    /**
+     * the network interface to impact
+     */
     @JsonProperty("device")
     public String getDevice() {
         return device;
     }
 
+    /**
+     * the network interface to impact
+     */
     @JsonProperty("device")
     public void setDevice(String device) {
         this.device = device;
     }
 
+    /**
+     * only impact egress traffic to these destination ports, use a ',' to separate or to indicate the range, such as 80, 8001:8010. it can only be used in conjunction with -p tcp or -p udp
+     */
     @JsonProperty("egress-port")
     public String getEgressPort() {
         return egressPort;
     }
 
+    /**
+     * only impact egress traffic to these destination ports, use a ',' to separate or to indicate the range, such as 80, 8001:8010. it can only be used in conjunction with -p tcp or -p udp
+     */
     @JsonProperty("egress-port")
     public void setEgressPort(String egressPort) {
         this.egressPort = egressPort;
     }
 
+    /**
+     * only impact traffic to these hostnames
+     */
     @JsonProperty("hostname")
     public String getHostname() {
         return hostname;
     }
 
+    /**
+     * only impact traffic to these hostnames
+     */
     @JsonProperty("hostname")
     public void setHostname(String hostname) {
         this.hostname = hostname;
     }
 
+    /**
+     * only impact egress traffic to these IP addresses
+     */
     @JsonProperty("ip-address")
     public String getIpAddress() {
         return ipAddress;
     }
 
+    /**
+     * only impact egress traffic to these IP addresses
+     */
     @JsonProperty("ip-address")
     public void setIpAddress(String ipAddress) {
         this.ipAddress = ipAddress;
     }
 
+    /**
+     * only impact traffic using this IP protocol, supported: tcp, udp, icmp, all
+     */
     @JsonProperty("ip-protocol")
     public String getIpProtocol() {
         return ipProtocol;
     }
 
+    /**
+     * only impact traffic using this IP protocol, supported: tcp, udp, icmp, all
+     */
     @JsonProperty("ip-protocol")
     public void setIpProtocol(String ipProtocol) {
         this.ipProtocol = ipProtocol;
     }
 
+    /**
+     * jitter time, time units: ns, us (or µs), ms, s, m, h.
+     */
     @JsonProperty("jitter")
     public String getJitter() {
         return jitter;
     }
 
+    /**
+     * jitter time, time units: ns, us (or µs), ms, s, m, h.
+     */
     @JsonProperty("jitter")
     public void setJitter(String jitter) {
         this.jitter = jitter;
     }
 
+    /**
+     * delay egress time, time units: ns, us (or µs), ms, s, m, h.
+     */
     @JsonProperty("latency")
     public String getLatency() {
         return latency;
     }
 
+    /**
+     * delay egress time, time units: ns, us (or µs), ms, s, m, h.
+     */
     @JsonProperty("latency")
     public void setLatency(String latency) {
         this.latency = latency;
     }
 
+    /**
+     * only impact egress traffic from these source ports, use a ',' to separate or to indicate the range, such as 80, 8001:8010. it can only be used in conjunction with -p tcp or -p udp
+     */
     @JsonProperty("source-port")
     public String getSourcePort() {
         return sourcePort;
     }
 
+    /**
+     * only impact egress traffic from these source ports, use a ',' to separate or to indicate the range, such as 80, 8001:8010. it can only be used in conjunction with -p tcp or -p udp
+     */
     @JsonProperty("source-port")
     public void setSourcePort(String sourcePort) {
         this.sourcePort = sourcePort;

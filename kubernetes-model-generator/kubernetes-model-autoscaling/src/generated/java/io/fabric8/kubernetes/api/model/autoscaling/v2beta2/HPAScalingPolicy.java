@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * HPAScalingPolicy is a single policy which must hold true for a specified past interval.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -86,31 +89,49 @@ public class HPAScalingPolicy implements Editable<HPAScalingPolicyBuilder>, Kube
         this.value = value;
     }
 
+    /**
+     * PeriodSeconds specifies the window of time for which the policy should hold true. PeriodSeconds must be greater than zero and less than or equal to 1800 (30 min).
+     */
     @JsonProperty("periodSeconds")
     public Integer getPeriodSeconds() {
         return periodSeconds;
     }
 
+    /**
+     * PeriodSeconds specifies the window of time for which the policy should hold true. PeriodSeconds must be greater than zero and less than or equal to 1800 (30 min).
+     */
     @JsonProperty("periodSeconds")
     public void setPeriodSeconds(Integer periodSeconds) {
         this.periodSeconds = periodSeconds;
     }
 
+    /**
+     * Type is used to specify the scaling policy.
+     */
     @JsonProperty("type")
     public String getType() {
         return type;
     }
 
+    /**
+     * Type is used to specify the scaling policy.
+     */
     @JsonProperty("type")
     public void setType(String type) {
         this.type = type;
     }
 
+    /**
+     * Value contains the amount of change which is permitted by the policy. It must be greater than zero
+     */
     @JsonProperty("value")
     public Integer getValue() {
         return value;
     }
 
+    /**
+     * Value contains the amount of change which is permitted by the policy. It must be greater than zero
+     */
     @JsonProperty("value")
     public void setValue(Integer value) {
         this.value = value;

@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * BuildConfigSpec describes when and how builds are created
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -134,143 +137,227 @@ public class BuildConfigSpec implements Editable<BuildConfigSpecBuilder>, Kubern
         this.triggers = triggers;
     }
 
+    /**
+     * completionDeadlineSeconds is an optional duration in seconds, counted from the time when a build pod gets scheduled in the system, that the build may be active on a node before the system actively tries to terminate the build; value must be positive integer
+     */
     @JsonProperty("completionDeadlineSeconds")
     public Long getCompletionDeadlineSeconds() {
         return completionDeadlineSeconds;
     }
 
+    /**
+     * completionDeadlineSeconds is an optional duration in seconds, counted from the time when a build pod gets scheduled in the system, that the build may be active on a node before the system actively tries to terminate the build; value must be positive integer
+     */
     @JsonProperty("completionDeadlineSeconds")
     public void setCompletionDeadlineSeconds(Long completionDeadlineSeconds) {
         this.completionDeadlineSeconds = completionDeadlineSeconds;
     }
 
+    /**
+     * failedBuildsHistoryLimit is the number of old failed builds to retain. When a BuildConfig is created, the 5 most recent failed builds are retained unless this value is set. If removed after the BuildConfig has been created, all failed builds are retained.
+     */
     @JsonProperty("failedBuildsHistoryLimit")
     public Integer getFailedBuildsHistoryLimit() {
         return failedBuildsHistoryLimit;
     }
 
+    /**
+     * failedBuildsHistoryLimit is the number of old failed builds to retain. When a BuildConfig is created, the 5 most recent failed builds are retained unless this value is set. If removed after the BuildConfig has been created, all failed builds are retained.
+     */
     @JsonProperty("failedBuildsHistoryLimit")
     public void setFailedBuildsHistoryLimit(Integer failedBuildsHistoryLimit) {
         this.failedBuildsHistoryLimit = failedBuildsHistoryLimit;
     }
 
+    /**
+     * mountTrustedCA bind mounts the cluster's trusted certificate authorities, as defined in the cluster's proxy configuration, into the build. This lets processes within a build trust components signed by custom PKI certificate authorities, such as private artifact repositories and HTTPS proxies.<br><p> <br><p> When this field is set to true, the contents of `/etc/pki/ca-trust` within the build are managed by the build container, and any changes to this directory or its subdirectories (for example - within a Dockerfile `RUN` instruction) are not persisted in the build's output image.
+     */
     @JsonProperty("mountTrustedCA")
     public Boolean getMountTrustedCA() {
         return mountTrustedCA;
     }
 
+    /**
+     * mountTrustedCA bind mounts the cluster's trusted certificate authorities, as defined in the cluster's proxy configuration, into the build. This lets processes within a build trust components signed by custom PKI certificate authorities, such as private artifact repositories and HTTPS proxies.<br><p> <br><p> When this field is set to true, the contents of `/etc/pki/ca-trust` within the build are managed by the build container, and any changes to this directory or its subdirectories (for example - within a Dockerfile `RUN` instruction) are not persisted in the build's output image.
+     */
     @JsonProperty("mountTrustedCA")
     public void setMountTrustedCA(Boolean mountTrustedCA) {
         this.mountTrustedCA = mountTrustedCA;
     }
 
+    /**
+     * nodeSelector is a selector which must be true for the build pod to fit on a node If nil, it can be overridden by default build nodeselector values for the cluster. If set to an empty map or a map with any values, default build nodeselector values are ignored.
+     */
     @JsonProperty("nodeSelector")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getNodeSelector() {
         return nodeSelector;
     }
 
+    /**
+     * nodeSelector is a selector which must be true for the build pod to fit on a node If nil, it can be overridden by default build nodeselector values for the cluster. If set to an empty map or a map with any values, default build nodeselector values are ignored.
+     */
     @JsonProperty("nodeSelector")
     public void setNodeSelector(Map<String, String> nodeSelector) {
         this.nodeSelector = nodeSelector;
     }
 
+    /**
+     * BuildConfigSpec describes when and how builds are created
+     */
     @JsonProperty("output")
     public BuildOutput getOutput() {
         return output;
     }
 
+    /**
+     * BuildConfigSpec describes when and how builds are created
+     */
     @JsonProperty("output")
     public void setOutput(BuildOutput output) {
         this.output = output;
     }
 
+    /**
+     * BuildConfigSpec describes when and how builds are created
+     */
     @JsonProperty("postCommit")
     public BuildPostCommitSpec getPostCommit() {
         return postCommit;
     }
 
+    /**
+     * BuildConfigSpec describes when and how builds are created
+     */
     @JsonProperty("postCommit")
     public void setPostCommit(BuildPostCommitSpec postCommit) {
         this.postCommit = postCommit;
     }
 
+    /**
+     * BuildConfigSpec describes when and how builds are created
+     */
     @JsonProperty("resources")
     public ResourceRequirements getResources() {
         return resources;
     }
 
+    /**
+     * BuildConfigSpec describes when and how builds are created
+     */
     @JsonProperty("resources")
     public void setResources(ResourceRequirements resources) {
         this.resources = resources;
     }
 
+    /**
+     * BuildConfigSpec describes when and how builds are created
+     */
     @JsonProperty("revision")
     public SourceRevision getRevision() {
         return revision;
     }
 
+    /**
+     * BuildConfigSpec describes when and how builds are created
+     */
     @JsonProperty("revision")
     public void setRevision(SourceRevision revision) {
         this.revision = revision;
     }
 
+    /**
+     * RunPolicy describes how the new build created from this build configuration will be scheduled for execution. This is optional, if not specified we default to "Serial".
+     */
     @JsonProperty("runPolicy")
     public String getRunPolicy() {
         return runPolicy;
     }
 
+    /**
+     * RunPolicy describes how the new build created from this build configuration will be scheduled for execution. This is optional, if not specified we default to "Serial".
+     */
     @JsonProperty("runPolicy")
     public void setRunPolicy(String runPolicy) {
         this.runPolicy = runPolicy;
     }
 
+    /**
+     * serviceAccount is the name of the ServiceAccount to use to run the pod created by this build. The pod will be allowed to use secrets referenced by the ServiceAccount
+     */
     @JsonProperty("serviceAccount")
     public String getServiceAccount() {
         return serviceAccount;
     }
 
+    /**
+     * serviceAccount is the name of the ServiceAccount to use to run the pod created by this build. The pod will be allowed to use secrets referenced by the ServiceAccount
+     */
     @JsonProperty("serviceAccount")
     public void setServiceAccount(String serviceAccount) {
         this.serviceAccount = serviceAccount;
     }
 
+    /**
+     * BuildConfigSpec describes when and how builds are created
+     */
     @JsonProperty("source")
     public BuildSource getSource() {
         return source;
     }
 
+    /**
+     * BuildConfigSpec describes when and how builds are created
+     */
     @JsonProperty("source")
     public void setSource(BuildSource source) {
         this.source = source;
     }
 
+    /**
+     * BuildConfigSpec describes when and how builds are created
+     */
     @JsonProperty("strategy")
     public BuildStrategy getStrategy() {
         return strategy;
     }
 
+    /**
+     * BuildConfigSpec describes when and how builds are created
+     */
     @JsonProperty("strategy")
     public void setStrategy(BuildStrategy strategy) {
         this.strategy = strategy;
     }
 
+    /**
+     * successfulBuildsHistoryLimit is the number of old successful builds to retain. When a BuildConfig is created, the 5 most recent successful builds are retained unless this value is set. If removed after the BuildConfig has been created, all successful builds are retained.
+     */
     @JsonProperty("successfulBuildsHistoryLimit")
     public Integer getSuccessfulBuildsHistoryLimit() {
         return successfulBuildsHistoryLimit;
     }
 
+    /**
+     * successfulBuildsHistoryLimit is the number of old successful builds to retain. When a BuildConfig is created, the 5 most recent successful builds are retained unless this value is set. If removed after the BuildConfig has been created, all successful builds are retained.
+     */
     @JsonProperty("successfulBuildsHistoryLimit")
     public void setSuccessfulBuildsHistoryLimit(Integer successfulBuildsHistoryLimit) {
         this.successfulBuildsHistoryLimit = successfulBuildsHistoryLimit;
     }
 
+    /**
+     * triggers determine how new Builds can be launched from a BuildConfig. If no triggers are defined, a new build can only occur as a result of an explicit client build creation.
+     */
     @JsonProperty("triggers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<BuildTriggerPolicy> getTriggers() {
         return triggers;
     }
 
+    /**
+     * triggers determine how new Builds can be launched from a BuildConfig. If no triggers are defined, a new build can only occur as a result of an explicit client build creation.
+     */
     @JsonProperty("triggers")
     public void setTriggers(List<BuildTriggerPolicy> triggers) {
         this.triggers = triggers;

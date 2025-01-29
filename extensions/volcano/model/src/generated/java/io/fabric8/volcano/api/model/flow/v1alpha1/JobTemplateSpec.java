@@ -33,6 +33,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * JobTemplateSpec defines the desired state of JobTemplate
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -79,11 +82,17 @@ public class JobTemplateSpec implements Editable<JobTemplateSpecBuilder>, Kubern
         this.jobSpec = jobSpec;
     }
 
+    /**
+     * JobTemplateSpec defines the desired state of JobTemplate
+     */
     @JsonProperty("JobSpec")
     public JobSpec getJobSpec() {
         return jobSpec;
     }
 
+    /**
+     * JobTemplateSpec defines the desired state of JobTemplate
+     */
     @JsonProperty("JobSpec")
     public void setJobSpec(JobSpec jobSpec) {
         this.jobSpec = jobSpec;

@@ -78,11 +78,17 @@ public class AlertmanagerConfigMatcherStrategy implements Editable<AlertmanagerC
         this.type = type;
     }
 
+    /**
+     * AlertmanagerConfigMatcherStrategyType defines the strategy used by AlertmanagerConfig objects to match alerts in the routes and inhibition rules.<br><p> <br><p> The default value is `OnNamespace`.
+     */
     @JsonProperty("type")
     public String getType() {
         return type;
     }
 
+    /**
+     * AlertmanagerConfigMatcherStrategyType defines the strategy used by AlertmanagerConfig objects to match alerts in the routes and inhibition rules.<br><p> <br><p> The default value is `OnNamespace`.
+     */
     @JsonProperty("type")
     public void setType(String type) {
         this.type = type;

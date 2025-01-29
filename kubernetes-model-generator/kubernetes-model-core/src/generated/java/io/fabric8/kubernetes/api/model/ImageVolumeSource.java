@@ -17,6 +17,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ImageVolumeSource represents a image volume resource.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -53,21 +56,33 @@ public class ImageVolumeSource implements Editable<ImageVolumeSourceBuilder>, Ku
         this.reference = reference;
     }
 
+    /**
+     * Policy for pulling OCI objects. Possible values are: Always: the kubelet always attempts to pull the reference. Container creation will fail If the pull fails. Never: the kubelet never pulls the reference and only uses a local image or artifact. Container creation will fail if the reference isn't present. IfNotPresent: the kubelet pulls if the reference isn't already present on disk. Container creation will fail if the reference isn't present and the pull fails. Defaults to Always if :latest tag is specified, or IfNotPresent otherwise.
+     */
     @JsonProperty("pullPolicy")
     public String getPullPolicy() {
         return pullPolicy;
     }
 
+    /**
+     * Policy for pulling OCI objects. Possible values are: Always: the kubelet always attempts to pull the reference. Container creation will fail If the pull fails. Never: the kubelet never pulls the reference and only uses a local image or artifact. Container creation will fail if the reference isn't present. IfNotPresent: the kubelet pulls if the reference isn't already present on disk. Container creation will fail if the reference isn't present and the pull fails. Defaults to Always if :latest tag is specified, or IfNotPresent otherwise.
+     */
     @JsonProperty("pullPolicy")
     public void setPullPolicy(String pullPolicy) {
         this.pullPolicy = pullPolicy;
     }
 
+    /**
+     * Required: Image or artifact reference to be used. Behaves in the same way as pod.spec.containers[&#42;].image. Pull secrets will be assembled in the same way as for the container image by looking up node credentials, SA image pull secrets, and pod spec image pull secrets. More info: https://kubernetes.io/docs/concepts/containers/images This field is optional to allow higher level config management to default or override container images in workload controllers like Deployments and StatefulSets.
+     */
     @JsonProperty("reference")
     public String getReference() {
         return reference;
     }
 
+    /**
+     * Required: Image or artifact reference to be used. Behaves in the same way as pod.spec.containers[&#42;].image. Pull secrets will be assembled in the same way as for the container image by looking up node credentials, SA image pull secrets, and pod spec image pull secrets. More info: https://kubernetes.io/docs/concepts/containers/images This field is optional to allow higher level config management to default or override container images in workload controllers like Deployments and StatefulSets.
+     */
     @JsonProperty("reference")
     public void setReference(String reference) {
         this.reference = reference;

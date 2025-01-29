@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * GatewayClassSpec reflects the configuration of a class of Gateways.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -86,31 +89,49 @@ public class GatewayClassSpec implements Editable<GatewayClassSpecBuilder>, Kube
         this.parametersRef = parametersRef;
     }
 
+    /**
+     * ControllerName is the name of the controller that is managing Gateways of this class. The value of this field MUST be a domain prefixed path.<br><p> <br><p> Example: "example.net/gateway-controller".<br><p> <br><p> This field is not mutable and cannot be empty.<br><p> <br><p> Support: Core
+     */
     @JsonProperty("controllerName")
     public String getControllerName() {
         return controllerName;
     }
 
+    /**
+     * ControllerName is the name of the controller that is managing Gateways of this class. The value of this field MUST be a domain prefixed path.<br><p> <br><p> Example: "example.net/gateway-controller".<br><p> <br><p> This field is not mutable and cannot be empty.<br><p> <br><p> Support: Core
+     */
     @JsonProperty("controllerName")
     public void setControllerName(String controllerName) {
         this.controllerName = controllerName;
     }
 
+    /**
+     * Description helps describe a GatewayClass with more details.
+     */
     @JsonProperty("description")
     public String getDescription() {
         return description;
     }
 
+    /**
+     * Description helps describe a GatewayClass with more details.
+     */
     @JsonProperty("description")
     public void setDescription(String description) {
         this.description = description;
     }
 
+    /**
+     * GatewayClassSpec reflects the configuration of a class of Gateways.
+     */
     @JsonProperty("parametersRef")
     public ParametersReference getParametersRef() {
         return parametersRef;
     }
 
+    /**
+     * GatewayClassSpec reflects the configuration of a class of Gateways.
+     */
     @JsonProperty("parametersRef")
     public void setParametersRef(ParametersReference parametersRef) {
         this.parametersRef = parametersRef;

@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * TimeRange defines a start and end time in 24hr format
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class TimeRange implements Editable<TimeRangeBuilder>, KubernetesResource
         this.startTime = startTime;
     }
 
+    /**
+     * EndTime is the end time in 24hr format.
+     */
     @JsonProperty("endTime")
     public String getEndTime() {
         return endTime;
     }
 
+    /**
+     * EndTime is the end time in 24hr format.
+     */
     @JsonProperty("endTime")
     public void setEndTime(String endTime) {
         this.endTime = endTime;
     }
 
+    /**
+     * StartTime is the start time in 24hr format.
+     */
     @JsonProperty("startTime")
     public String getStartTime() {
         return startTime;
     }
 
+    /**
+     * StartTime is the start time in 24hr format.
+     */
     @JsonProperty("startTime")
     public void setStartTime(String startTime) {
         this.startTime = startTime;

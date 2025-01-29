@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * NutanixPrismElementEndpoint holds the name and endpoint data for a Prism Element (cluster)
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class NutanixPrismElementEndpoint implements Editable<NutanixPrismElement
         this.name = name;
     }
 
+    /**
+     * NutanixPrismElementEndpoint holds the name and endpoint data for a Prism Element (cluster)
+     */
     @JsonProperty("endpoint")
     public NutanixPrismEndpoint getEndpoint() {
         return endpoint;
     }
 
+    /**
+     * NutanixPrismElementEndpoint holds the name and endpoint data for a Prism Element (cluster)
+     */
     @JsonProperty("endpoint")
     public void setEndpoint(NutanixPrismEndpoint endpoint) {
         this.endpoint = endpoint;
     }
 
+    /**
+     * name is the name of the Prism Element (cluster). This value will correspond with the cluster field configured on other resources (eg Machines, PVCs, etc).
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * name is the name of the Prism Element (cluster). This value will correspond with the cluster field configured on other resources (eg Machines, PVCs, etc).
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;

@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * VSpherePlatformSpec holds the desired state of the vSphere infrastructure provider. In the future the cloud provider operator, storage operator and machine operator will use these fields for configuration.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -105,66 +108,102 @@ public class VSpherePlatformSpec implements Editable<VSpherePlatformSpecBuilder>
         this.vcenters = vcenters;
     }
 
+    /**
+     * apiServerInternalIPs are the IP addresses to contact the Kubernetes API server that can be used by components inside the cluster, like kubelets using the infrastructure rather than Kubernetes networking. These are the IPs for a self-hosted load balancer in front of the API servers. In dual stack clusters this list contains two IP addresses, one from IPv4 family and one from IPv6. In single stack clusters a single IP address is expected. When omitted, values from the status.apiServerInternalIPs will be used. Once set, the list cannot be completely removed (but its second entry can).
+     */
     @JsonProperty("apiServerInternalIPs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getApiServerInternalIPs() {
         return apiServerInternalIPs;
     }
 
+    /**
+     * apiServerInternalIPs are the IP addresses to contact the Kubernetes API server that can be used by components inside the cluster, like kubelets using the infrastructure rather than Kubernetes networking. These are the IPs for a self-hosted load balancer in front of the API servers. In dual stack clusters this list contains two IP addresses, one from IPv4 family and one from IPv6. In single stack clusters a single IP address is expected. When omitted, values from the status.apiServerInternalIPs will be used. Once set, the list cannot be completely removed (but its second entry can).
+     */
     @JsonProperty("apiServerInternalIPs")
     public void setApiServerInternalIPs(List<String> apiServerInternalIPs) {
         this.apiServerInternalIPs = apiServerInternalIPs;
     }
 
+    /**
+     * failureDomains contains the definition of region, zone and the vCenter topology. If this is omitted failure domains (regions and zones) will not be used.
+     */
     @JsonProperty("failureDomains")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<VSpherePlatformFailureDomainSpec> getFailureDomains() {
         return failureDomains;
     }
 
+    /**
+     * failureDomains contains the definition of region, zone and the vCenter topology. If this is omitted failure domains (regions and zones) will not be used.
+     */
     @JsonProperty("failureDomains")
     public void setFailureDomains(List<VSpherePlatformFailureDomainSpec> failureDomains) {
         this.failureDomains = failureDomains;
     }
 
+    /**
+     * ingressIPs are the external IPs which route to the default ingress controller. The IPs are suitable targets of a wildcard DNS record used to resolve default route host names. In dual stack clusters this list contains two IP addresses, one from IPv4 family and one from IPv6. In single stack clusters a single IP address is expected. When omitted, values from the status.ingressIPs will be used. Once set, the list cannot be completely removed (but its second entry can).
+     */
     @JsonProperty("ingressIPs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getIngressIPs() {
         return ingressIPs;
     }
 
+    /**
+     * ingressIPs are the external IPs which route to the default ingress controller. The IPs are suitable targets of a wildcard DNS record used to resolve default route host names. In dual stack clusters this list contains two IP addresses, one from IPv4 family and one from IPv6. In single stack clusters a single IP address is expected. When omitted, values from the status.ingressIPs will be used. Once set, the list cannot be completely removed (but its second entry can).
+     */
     @JsonProperty("ingressIPs")
     public void setIngressIPs(List<String> ingressIPs) {
         this.ingressIPs = ingressIPs;
     }
 
+    /**
+     * machineNetworks are IP networks used to connect all the OpenShift cluster nodes. Each network is provided in the CIDR format and should be IPv4 or IPv6, for example "10.0.0.0/8" or "fd00::/8".
+     */
     @JsonProperty("machineNetworks")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getMachineNetworks() {
         return machineNetworks;
     }
 
+    /**
+     * machineNetworks are IP networks used to connect all the OpenShift cluster nodes. Each network is provided in the CIDR format and should be IPv4 or IPv6, for example "10.0.0.0/8" or "fd00::/8".
+     */
     @JsonProperty("machineNetworks")
     public void setMachineNetworks(List<String> machineNetworks) {
         this.machineNetworks = machineNetworks;
     }
 
+    /**
+     * VSpherePlatformSpec holds the desired state of the vSphere infrastructure provider. In the future the cloud provider operator, storage operator and machine operator will use these fields for configuration.
+     */
     @JsonProperty("nodeNetworking")
     public VSpherePlatformNodeNetworking getNodeNetworking() {
         return nodeNetworking;
     }
 
+    /**
+     * VSpherePlatformSpec holds the desired state of the vSphere infrastructure provider. In the future the cloud provider operator, storage operator and machine operator will use these fields for configuration.
+     */
     @JsonProperty("nodeNetworking")
     public void setNodeNetworking(VSpherePlatformNodeNetworking nodeNetworking) {
         this.nodeNetworking = nodeNetworking;
     }
 
+    /**
+     * vcenters holds the connection details for services to communicate with vCenter. Currently, only a single vCenter is supported, but in tech preview 3 vCenters are supported. Once the cluster has been installed, you are unable to change the current number of defined vCenters except in the case where the cluster has been upgraded from a version of OpenShift where the vsphere platform spec was not present.  You may make modifications to the existing vCenters that are defined in the vcenters list in order to match with any added or modified failure domains.
+     */
     @JsonProperty("vcenters")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<VSpherePlatformVCenterSpec> getVcenters() {
         return vcenters;
     }
 
+    /**
+     * vcenters holds the connection details for services to communicate with vCenter. Currently, only a single vCenter is supported, but in tech preview 3 vCenters are supported. Once the cluster has been installed, you are unable to change the current number of defined vCenters except in the case where the cluster has been upgraded from a version of OpenShift where the vsphere platform spec was not present.  You may make modifications to the existing vCenters that are defined in the vcenters list in order to match with any added or modified failure domains.
+     */
     @JsonProperty("vcenters")
     public void setVcenters(List<VSpherePlatformVCenterSpec> vcenters) {
         this.vcenters = vcenters;

@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * InternalErrorAnalysisMessage is a strongly-typed message representing some error in Istio code that prevented us from performing analysis at all.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class InternalErrorAnalysisMessage implements Editable<InternalErrorAnaly
         this.messageBase = messageBase;
     }
 
+    /**
+     * Any detail regarding specifics of the error. Should be human-readable.
+     */
     @JsonProperty("detail")
     public String getDetail() {
         return detail;
     }
 
+    /**
+     * Any detail regarding specifics of the error. Should be human-readable.
+     */
     @JsonProperty("detail")
     public void setDetail(String detail) {
         this.detail = detail;
     }
 
+    /**
+     * InternalErrorAnalysisMessage is a strongly-typed message representing some error in Istio code that prevented us from performing analysis at all.
+     */
     @JsonProperty("messageBase")
     public AnalysisMessageBase getMessageBase() {
         return messageBase;
     }
 
+    /**
+     * InternalErrorAnalysisMessage is a strongly-typed message representing some error in Istio code that prevented us from performing analysis at all.
+     */
     @JsonProperty("messageBase")
     public void setMessageBase(AnalysisMessageBase messageBase) {
         this.messageBase = messageBase;

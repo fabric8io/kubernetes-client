@@ -37,6 +37,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * EgressRouter is a feature allowing the user to define an egress router that acts as a bridge between pods and external systems. The egress router runs a service that redirects egress traffic originating from a pod or a group of pods to a remote external system or multiple destinations as per configuration.<br><p> <br><p> It is consumed by the cluster-network-operator. More specifically, given an EgressRouter CR with &lt;name&gt;, the CNO will create and manage: - A service called &lt;name&gt; - An egress pod called &lt;name&gt; - A NAD called &lt;name&gt;<br><p> <br><p> Compatibility level 1: Stable within a major release for a minimum of 12 months or 3 minor releases (whichever is longer).<br><p> <br><p> EgressRouter is a single egressrouter pod configuration object.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -76,14 +79,8 @@ import lombok.experimental.Accessors;
 public class EgressRouter implements Editable<EgressRouterBuilder>, HasMetadata, Namespaced
 {
 
-    /**
-     * (Required)
-     */
     @JsonProperty("apiVersion")
     private String apiVersion = "network.operator.openshift.io/v1";
-    /**
-     * (Required)
-     */
     @JsonProperty("kind")
     private String kind = "EgressRouter";
     @JsonProperty("metadata")
@@ -111,7 +108,7 @@ public class EgressRouter implements Editable<EgressRouterBuilder>, HasMetadata,
     }
 
     /**
-     * (Required)
+     * APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -119,7 +116,7 @@ public class EgressRouter implements Editable<EgressRouterBuilder>, HasMetadata,
     }
 
     /**
-     * (Required)
+     * APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -127,7 +124,7 @@ public class EgressRouter implements Editable<EgressRouterBuilder>, HasMetadata,
     }
 
     /**
-     * (Required)
+     * Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -135,38 +132,56 @@ public class EgressRouter implements Editable<EgressRouterBuilder>, HasMetadata,
     }
 
     /**
-     * (Required)
+     * Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
      */
     @JsonProperty("kind")
     public void setKind(String kind) {
         this.kind = kind;
     }
 
+    /**
+     * EgressRouter is a feature allowing the user to define an egress router that acts as a bridge between pods and external systems. The egress router runs a service that redirects egress traffic originating from a pod or a group of pods to a remote external system or multiple destinations as per configuration.<br><p> <br><p> It is consumed by the cluster-network-operator. More specifically, given an EgressRouter CR with &lt;name&gt;, the CNO will create and manage: - A service called &lt;name&gt; - An egress pod called &lt;name&gt; - A NAD called &lt;name&gt;<br><p> <br><p> Compatibility level 1: Stable within a major release for a minimum of 12 months or 3 minor releases (whichever is longer).<br><p> <br><p> EgressRouter is a single egressrouter pod configuration object.
+     */
     @JsonProperty("metadata")
     public ObjectMeta getMetadata() {
         return metadata;
     }
 
+    /**
+     * EgressRouter is a feature allowing the user to define an egress router that acts as a bridge between pods and external systems. The egress router runs a service that redirects egress traffic originating from a pod or a group of pods to a remote external system or multiple destinations as per configuration.<br><p> <br><p> It is consumed by the cluster-network-operator. More specifically, given an EgressRouter CR with &lt;name&gt;, the CNO will create and manage: - A service called &lt;name&gt; - An egress pod called &lt;name&gt; - A NAD called &lt;name&gt;<br><p> <br><p> Compatibility level 1: Stable within a major release for a minimum of 12 months or 3 minor releases (whichever is longer).<br><p> <br><p> EgressRouter is a single egressrouter pod configuration object.
+     */
     @JsonProperty("metadata")
     public void setMetadata(ObjectMeta metadata) {
         this.metadata = metadata;
     }
 
+    /**
+     * EgressRouter is a feature allowing the user to define an egress router that acts as a bridge between pods and external systems. The egress router runs a service that redirects egress traffic originating from a pod or a group of pods to a remote external system or multiple destinations as per configuration.<br><p> <br><p> It is consumed by the cluster-network-operator. More specifically, given an EgressRouter CR with &lt;name&gt;, the CNO will create and manage: - A service called &lt;name&gt; - An egress pod called &lt;name&gt; - A NAD called &lt;name&gt;<br><p> <br><p> Compatibility level 1: Stable within a major release for a minimum of 12 months or 3 minor releases (whichever is longer).<br><p> <br><p> EgressRouter is a single egressrouter pod configuration object.
+     */
     @JsonProperty("spec")
     public EgressRouterSpec getSpec() {
         return spec;
     }
 
+    /**
+     * EgressRouter is a feature allowing the user to define an egress router that acts as a bridge between pods and external systems. The egress router runs a service that redirects egress traffic originating from a pod or a group of pods to a remote external system or multiple destinations as per configuration.<br><p> <br><p> It is consumed by the cluster-network-operator. More specifically, given an EgressRouter CR with &lt;name&gt;, the CNO will create and manage: - A service called &lt;name&gt; - An egress pod called &lt;name&gt; - A NAD called &lt;name&gt;<br><p> <br><p> Compatibility level 1: Stable within a major release for a minimum of 12 months or 3 minor releases (whichever is longer).<br><p> <br><p> EgressRouter is a single egressrouter pod configuration object.
+     */
     @JsonProperty("spec")
     public void setSpec(EgressRouterSpec spec) {
         this.spec = spec;
     }
 
+    /**
+     * EgressRouter is a feature allowing the user to define an egress router that acts as a bridge between pods and external systems. The egress router runs a service that redirects egress traffic originating from a pod or a group of pods to a remote external system or multiple destinations as per configuration.<br><p> <br><p> It is consumed by the cluster-network-operator. More specifically, given an EgressRouter CR with &lt;name&gt;, the CNO will create and manage: - A service called &lt;name&gt; - An egress pod called &lt;name&gt; - A NAD called &lt;name&gt;<br><p> <br><p> Compatibility level 1: Stable within a major release for a minimum of 12 months or 3 minor releases (whichever is longer).<br><p> <br><p> EgressRouter is a single egressrouter pod configuration object.
+     */
     @JsonProperty("status")
     public EgressRouterStatus getStatus() {
         return status;
     }
 
+    /**
+     * EgressRouter is a feature allowing the user to define an egress router that acts as a bridge between pods and external systems. The egress router runs a service that redirects egress traffic originating from a pod or a group of pods to a remote external system or multiple destinations as per configuration.<br><p> <br><p> It is consumed by the cluster-network-operator. More specifically, given an EgressRouter CR with &lt;name&gt;, the CNO will create and manage: - A service called &lt;name&gt; - An egress pod called &lt;name&gt; - A NAD called &lt;name&gt;<br><p> <br><p> Compatibility level 1: Stable within a major release for a minimum of 12 months or 3 minor releases (whichever is longer).<br><p> <br><p> EgressRouter is a single egressrouter pod configuration object.
+     */
     @JsonProperty("status")
     public void setStatus(EgressRouterStatus status) {
         this.status = status;

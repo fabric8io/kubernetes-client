@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ClusterNetworkEntry is a single IP address block for pod IP blocks. IP blocks are allocated with size 2^HostSubnetLength.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -86,31 +89,49 @@ public class ClusterNetworkEntry implements Editable<ClusterNetworkEntryBuilder>
         this.hostSubnetLength = hostSubnetLength;
     }
 
+    /**
+     * ClusterNetworkEntry is a single IP address block for pod IP blocks. IP blocks are allocated with size 2^HostSubnetLength.
+     */
     @JsonProperty("cidr")
     public String getCidr() {
         return cidr;
     }
 
+    /**
+     * ClusterNetworkEntry is a single IP address block for pod IP blocks. IP blocks are allocated with size 2^HostSubnetLength.
+     */
     @JsonProperty("cidr")
     public void setCidr(String cidr) {
         this.cidr = cidr;
     }
 
+    /**
+     * HostPrefix is the prefix size to allocate to each node from the CIDR. For example, 24 would allocate 2^8=256 adresses to each node. If this field is not used by the plugin, it can be left unset.
+     */
     @JsonProperty("hostPrefix")
     public Integer getHostPrefix() {
         return hostPrefix;
     }
 
+    /**
+     * HostPrefix is the prefix size to allocate to each node from the CIDR. For example, 24 would allocate 2^8=256 adresses to each node. If this field is not used by the plugin, it can be left unset.
+     */
     @JsonProperty("hostPrefix")
     public void setHostPrefix(Integer hostPrefix) {
         this.hostPrefix = hostPrefix;
     }
 
+    /**
+     * The size of blocks to allocate from the larger pool. This is the length in bits - so a 9 here will allocate a /23.
+     */
     @JsonProperty("hostSubnetLength")
     public Integer getHostSubnetLength() {
         return hostSubnetLength;
     }
 
+    /**
+     * The size of blocks to allocate from the larger pool. This is the length in bits - so a 9 here will allocate a /23.
+     */
     @JsonProperty("hostSubnetLength")
     public void setHostSubnetLength(Integer hostSubnetLength) {
         this.hostSubnetLength = hostSubnetLength;

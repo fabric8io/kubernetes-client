@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * AWSDNSSpec contains DNS configuration specific to the Amazon Web Services cloud provider.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -78,11 +81,17 @@ public class AWSDNSSpec implements Editable<AWSDNSSpecBuilder>, KubernetesResour
         this.privateZoneIAMRole = privateZoneIAMRole;
     }
 
+    /**
+     * privateZoneIAMRole contains the ARN of an IAM role that should be assumed when performing operations on the cluster's private hosted zone specified in the cluster DNS config. When left empty, no role should be assumed.
+     */
     @JsonProperty("privateZoneIAMRole")
     public String getPrivateZoneIAMRole() {
         return privateZoneIAMRole;
     }
 
+    /**
+     * privateZoneIAMRole contains the ARN of an IAM role that should be assumed when performing operations on the cluster's private hosted zone specified in the cluster DNS config. When left empty, no role should be assumed.
+     */
     @JsonProperty("privateZoneIAMRole")
     public void setPrivateZoneIAMRole(String privateZoneIAMRole) {
         this.privateZoneIAMRole = privateZoneIAMRole;

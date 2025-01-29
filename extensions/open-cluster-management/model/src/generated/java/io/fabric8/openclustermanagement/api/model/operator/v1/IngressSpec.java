@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * IngressSpec specifies configuration options for ingress management
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -81,12 +84,18 @@ public class IngressSpec implements Editable<IngressSpecBuilder>, KubernetesReso
         this.sslCiphers = sslCiphers;
     }
 
+    /**
+     * List of SSL ciphers enabled for management ingress. Defaults to full list of supported ciphers
+     */
     @JsonProperty("sslCiphers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getSslCiphers() {
         return sslCiphers;
     }
 
+    /**
+     * List of SSL ciphers enabled for management ingress. Defaults to full list of supported ciphers
+     */
     @JsonProperty("sslCiphers")
     public void setSslCiphers(List<String> sslCiphers) {
         this.sslCiphers = sslCiphers;

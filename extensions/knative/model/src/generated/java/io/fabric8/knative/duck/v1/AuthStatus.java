@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * AuthStatus is meant to provide the generated service account name in the resource status.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -85,22 +88,34 @@ public class AuthStatus implements Editable<AuthStatusBuilder>, KubernetesResour
         this.serviceAccountNames = serviceAccountNames;
     }
 
+    /**
+     * ServiceAccountName is the name of the generated service account used for this components OIDC authentication.
+     */
     @JsonProperty("serviceAccountName")
     public String getServiceAccountName() {
         return serviceAccountName;
     }
 
+    /**
+     * ServiceAccountName is the name of the generated service account used for this components OIDC authentication.
+     */
     @JsonProperty("serviceAccountName")
     public void setServiceAccountName(String serviceAccountName) {
         this.serviceAccountName = serviceAccountName;
     }
 
+    /**
+     * ServiceAccountNames is the list of names of the generated service accounts used for this components OIDC authentication. This list can have len() &gt; 1, when the component uses multiple identities (e.g. in case of a Parallel).
+     */
     @JsonProperty("serviceAccountNames")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getServiceAccountNames() {
         return serviceAccountNames;
     }
 
+    /**
+     * ServiceAccountNames is the list of names of the generated service accounts used for this components OIDC authentication. This list can have len() &gt; 1, when the component uses multiple identities (e.g. in case of a Parallel).
+     */
     @JsonProperty("serviceAccountNames")
     public void setServiceAccountNames(List<String> serviceAccountNames) {
         this.serviceAccountNames = serviceAccountNames;

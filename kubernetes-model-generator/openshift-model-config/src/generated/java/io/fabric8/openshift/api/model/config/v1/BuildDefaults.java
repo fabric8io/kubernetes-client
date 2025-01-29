@@ -108,12 +108,18 @@ public class BuildDefaults implements Editable<BuildDefaultsBuilder>, Kubernetes
         this.defaultProxy = defaultProxy;
     }
 
+    /**
+     * Env is a set of default environment variables that will be applied to the build if the specified variables do not exist on the build
+     */
     @JsonProperty("env")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<EnvVar> getEnv() {
         return env;
     }
 
+    /**
+     * Env is a set of default environment variables that will be applied to the build if the specified variables do not exist on the build
+     */
     @JsonProperty("env")
     public void setEnv(List<EnvVar> env) {
         this.env = env;
@@ -129,12 +135,18 @@ public class BuildDefaults implements Editable<BuildDefaultsBuilder>, Kubernetes
         this.gitProxy = gitProxy;
     }
 
+    /**
+     * ImageLabels is a list of docker labels that are applied to the resulting image. User can override a default label by providing a label with the same name in their Build/BuildConfig.
+     */
     @JsonProperty("imageLabels")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ImageLabel> getImageLabels() {
         return imageLabels;
     }
 
+    /**
+     * ImageLabels is a list of docker labels that are applied to the resulting image. User can override a default label by providing a label with the same name in their Build/BuildConfig.
+     */
     @JsonProperty("imageLabels")
     public void setImageLabels(List<ImageLabel> imageLabels) {
         this.imageLabels = imageLabels;

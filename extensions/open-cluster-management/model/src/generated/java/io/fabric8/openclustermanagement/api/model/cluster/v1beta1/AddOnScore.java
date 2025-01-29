@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * AddOnScore represents the configuration of the addon score source.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class AddOnScore implements Editable<AddOnScoreBuilder>, KubernetesResour
         this.scoreName = scoreName;
     }
 
+    /**
+     * ResourceName defines the resource name of the AddOnPlacementScore. The placement prioritizer selects AddOnPlacementScore CR by this name.
+     */
     @JsonProperty("resourceName")
     public String getResourceName() {
         return resourceName;
     }
 
+    /**
+     * ResourceName defines the resource name of the AddOnPlacementScore. The placement prioritizer selects AddOnPlacementScore CR by this name.
+     */
     @JsonProperty("resourceName")
     public void setResourceName(String resourceName) {
         this.resourceName = resourceName;
     }
 
+    /**
+     * ScoreName defines the score name inside AddOnPlacementScore. AddOnPlacementScore contains a list of score name and score value, ScoreName specify the score to be used by the prioritizer.
+     */
     @JsonProperty("scoreName")
     public String getScoreName() {
         return scoreName;
     }
 
+    /**
+     * ScoreName defines the score name inside AddOnPlacementScore. AddOnPlacementScore contains a list of score name and score value, ScoreName specify the score to be used by the prioritizer.
+     */
     @JsonProperty("scoreName")
     public void setScoreName(String scoreName) {
         this.scoreName = scoreName;

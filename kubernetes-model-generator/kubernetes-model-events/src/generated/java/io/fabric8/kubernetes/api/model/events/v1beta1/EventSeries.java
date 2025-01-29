@@ -33,6 +33,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * EventSeries contain information on series of events, i.e. thing that was/is happening continuously for some time.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -83,21 +86,33 @@ public class EventSeries implements Editable<EventSeriesBuilder>, KubernetesReso
         this.lastObservedTime = lastObservedTime;
     }
 
+    /**
+     * count is the number of occurrences in this series up to the last heartbeat time.
+     */
     @JsonProperty("count")
     public Integer getCount() {
         return count;
     }
 
+    /**
+     * count is the number of occurrences in this series up to the last heartbeat time.
+     */
     @JsonProperty("count")
     public void setCount(Integer count) {
         this.count = count;
     }
 
+    /**
+     * EventSeries contain information on series of events, i.e. thing that was/is happening continuously for some time.
+     */
     @JsonProperty("lastObservedTime")
     public MicroTime getLastObservedTime() {
         return lastObservedTime;
     }
 
+    /**
+     * EventSeries contain information on series of events, i.e. thing that was/is happening continuously for some time.
+     */
     @JsonProperty("lastObservedTime")
     public void setLastObservedTime(MicroTime lastObservedTime) {
         this.lastObservedTime = lastObservedTime;

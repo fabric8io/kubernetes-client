@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Step represents the status of an individual step in an InstallPlan.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -90,41 +93,65 @@ public class Step implements Editable<StepBuilder>, KubernetesResource
         this.status = status;
     }
 
+    /**
+     * Step represents the status of an individual step in an InstallPlan.
+     */
     @JsonProperty("optional")
     public Boolean getOptional() {
         return optional;
     }
 
+    /**
+     * Step represents the status of an individual step in an InstallPlan.
+     */
     @JsonProperty("optional")
     public void setOptional(Boolean optional) {
         this.optional = optional;
     }
 
+    /**
+     * Step represents the status of an individual step in an InstallPlan.
+     */
     @JsonProperty("resolving")
     public String getResolving() {
         return resolving;
     }
 
+    /**
+     * Step represents the status of an individual step in an InstallPlan.
+     */
     @JsonProperty("resolving")
     public void setResolving(String resolving) {
         this.resolving = resolving;
     }
 
+    /**
+     * Step represents the status of an individual step in an InstallPlan.
+     */
     @JsonProperty("resource")
     public StepResource getResource() {
         return resource;
     }
 
+    /**
+     * Step represents the status of an individual step in an InstallPlan.
+     */
     @JsonProperty("resource")
     public void setResource(StepResource resource) {
         this.resource = resource;
     }
 
+    /**
+     * Step represents the status of an individual step in an InstallPlan.
+     */
     @JsonProperty("status")
     public String getStatus() {
         return status;
     }
 
+    /**
+     * Step represents the status of an individual step in an InstallPlan.
+     */
     @JsonProperty("status")
     public void setStatus(String status) {
         this.status = status;

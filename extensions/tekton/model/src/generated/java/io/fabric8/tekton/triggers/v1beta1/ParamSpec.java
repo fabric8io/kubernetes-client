@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ParamSpec defines an arbitrary named  input whose value can be supplied by a `Param`.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -86,31 +89,49 @@ public class ParamSpec implements Editable<ParamSpecBuilder>, KubernetesResource
         this.name = name;
     }
 
+    /**
+     * Default is the value a parameter takes if no input value via a Param is supplied.
+     */
     @JsonProperty("default")
     public String getDefault() {
         return _default;
     }
 
+    /**
+     * Default is the value a parameter takes if no input value via a Param is supplied.
+     */
     @JsonProperty("default")
     public void setDefault(String _default) {
         this._default = _default;
     }
 
+    /**
+     * Description is a user-facing description of the parameter that may be used to populate a UI.
+     */
     @JsonProperty("description")
     public String getDescription() {
         return description;
     }
 
+    /**
+     * Description is a user-facing description of the parameter that may be used to populate a UI.
+     */
     @JsonProperty("description")
     public void setDescription(String description) {
         this.description = description;
     }
 
+    /**
+     * Name declares the name by which a parameter is referenced.
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * Name declares the name by which a parameter is referenced.
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;

@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * DeviceSelector must have exactly one field set.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -78,11 +81,17 @@ public class DeviceSelector implements Editable<DeviceSelectorBuilder>, Kubernet
         this.cel = cel;
     }
 
+    /**
+     * DeviceSelector must have exactly one field set.
+     */
     @JsonProperty("cel")
     public CELDeviceSelector getCel() {
         return cel;
     }
 
+    /**
+     * DeviceSelector must have exactly one field set.
+     */
     @JsonProperty("cel")
     public void setCel(CELDeviceSelector cel) {
         this.cel = cel;

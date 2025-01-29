@@ -78,11 +78,17 @@ public class TestDetails implements Editable<TestDetailsBuilder>, KubernetesReso
         this.testName = testName;
     }
 
+    /**
+     * TestName is the name of the test as it appears in junit XMLs. It does not include the suite name since the same test can be executed in many suites.
+     */
     @JsonProperty("testName")
     public String getTestName() {
         return testName;
     }
 
+    /**
+     * TestName is the name of the test as it appears in junit XMLs. It does not include the suite name since the same test can be executed in many suites.
+     */
     @JsonProperty("testName")
     public void setTestName(String testName) {
         this.testName = testName;

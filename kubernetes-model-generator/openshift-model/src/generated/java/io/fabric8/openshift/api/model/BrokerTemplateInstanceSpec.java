@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * BrokerTemplateInstanceSpec describes the state of a BrokerTemplateInstance.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -89,32 +92,50 @@ public class BrokerTemplateInstanceSpec implements Editable<BrokerTemplateInstan
         this.templateInstance = templateInstance;
     }
 
+    /**
+     * bindingids is a list of 'binding_id's provided during successive bind calls to the template service broker.
+     */
     @JsonProperty("bindingIDs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getBindingIDs() {
         return bindingIDs;
     }
 
+    /**
+     * bindingids is a list of 'binding_id's provided during successive bind calls to the template service broker.
+     */
     @JsonProperty("bindingIDs")
     public void setBindingIDs(List<String> bindingIDs) {
         this.bindingIDs = bindingIDs;
     }
 
+    /**
+     * BrokerTemplateInstanceSpec describes the state of a BrokerTemplateInstance.
+     */
     @JsonProperty("secret")
     public ObjectReference getSecret() {
         return secret;
     }
 
+    /**
+     * BrokerTemplateInstanceSpec describes the state of a BrokerTemplateInstance.
+     */
     @JsonProperty("secret")
     public void setSecret(ObjectReference secret) {
         this.secret = secret;
     }
 
+    /**
+     * BrokerTemplateInstanceSpec describes the state of a BrokerTemplateInstance.
+     */
     @JsonProperty("templateInstance")
     public ObjectReference getTemplateInstance() {
         return templateInstance;
     }
 
+    /**
+     * BrokerTemplateInstanceSpec describes the state of a BrokerTemplateInstance.
+     */
     @JsonProperty("templateInstance")
     public void setTemplateInstance(ObjectReference templateInstance) {
         this.templateInstance = templateInstance;

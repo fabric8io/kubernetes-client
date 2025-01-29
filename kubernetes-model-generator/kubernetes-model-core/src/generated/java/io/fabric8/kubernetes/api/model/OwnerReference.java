@@ -21,6 +21,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * OwnerReference contains enough information to let you identify an owning object. An owning object must be in the same namespace as the dependent, or be cluster-scoped, so there is no namespace field.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -47,18 +50,12 @@ import lombok.experimental.Accessors;
 public class OwnerReference implements Editable<OwnerReferenceBuilder>, KubernetesResource
 {
 
-    /**
-     * (Required)
-     */
     @JsonProperty("apiVersion")
     private String apiVersion = "v1";
     @JsonProperty("blockOwnerDeletion")
     private Boolean blockOwnerDeletion;
     @JsonProperty("controller")
     private Boolean controller;
-    /**
-     * (Required)
-     */
     @JsonProperty("kind")
     private String kind = "OwnerReference";
     @JsonProperty("name")
@@ -85,7 +82,7 @@ public class OwnerReference implements Editable<OwnerReferenceBuilder>, Kubernet
     }
 
     /**
-     * (Required)
+     * API version of the referent.
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -93,35 +90,47 @@ public class OwnerReference implements Editable<OwnerReferenceBuilder>, Kubernet
     }
 
     /**
-     * (Required)
+     * API version of the referent.
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
         this.apiVersion = apiVersion;
     }
 
+    /**
+     * If true, AND if the owner has the "foregroundDeletion" finalizer, then the owner cannot be deleted from the key-value store until this reference is removed. See https://kubernetes.io/docs/concepts/architecture/garbage-collection/#foreground-deletion for how the garbage collector interacts with this field and enforces the foreground deletion. Defaults to false. To set this field, a user needs "delete" permission of the owner, otherwise 422 (Unprocessable Entity) will be returned.
+     */
     @JsonProperty("blockOwnerDeletion")
     public Boolean getBlockOwnerDeletion() {
         return blockOwnerDeletion;
     }
 
+    /**
+     * If true, AND if the owner has the "foregroundDeletion" finalizer, then the owner cannot be deleted from the key-value store until this reference is removed. See https://kubernetes.io/docs/concepts/architecture/garbage-collection/#foreground-deletion for how the garbage collector interacts with this field and enforces the foreground deletion. Defaults to false. To set this field, a user needs "delete" permission of the owner, otherwise 422 (Unprocessable Entity) will be returned.
+     */
     @JsonProperty("blockOwnerDeletion")
     public void setBlockOwnerDeletion(Boolean blockOwnerDeletion) {
         this.blockOwnerDeletion = blockOwnerDeletion;
     }
 
+    /**
+     * If true, this reference points to the managing controller.
+     */
     @JsonProperty("controller")
     public Boolean getController() {
         return controller;
     }
 
+    /**
+     * If true, this reference points to the managing controller.
+     */
     @JsonProperty("controller")
     public void setController(Boolean controller) {
         this.controller = controller;
     }
 
     /**
-     * (Required)
+     * Kind of the referent. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -129,28 +138,40 @@ public class OwnerReference implements Editable<OwnerReferenceBuilder>, Kubernet
     }
 
     /**
-     * (Required)
+     * Kind of the referent. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
      */
     @JsonProperty("kind")
     public void setKind(String kind) {
         this.kind = kind;
     }
 
+    /**
+     * Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names#names
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names#names
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * UID of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names#uids
+     */
     @JsonProperty("uid")
     public String getUid() {
         return uid;
     }
 
+    /**
+     * UID of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names#uids
+     */
     @JsonProperty("uid")
     public void setUid(String uid) {
         this.uid = uid;

@@ -23,6 +23,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * APIResourceList is a list of APIResource, it is used to expose the name of the resources supported in a specific group and version, and if the resource is namespaced.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -47,16 +50,10 @@ import lombok.experimental.Accessors;
 public class APIResourceList implements Editable<APIResourceListBuilder>, KubernetesResource
 {
 
-    /**
-     * (Required)
-     */
     @JsonProperty("apiVersion")
     private String apiVersion = "v1";
     @JsonProperty("groupVersion")
     private String groupVersion;
-    /**
-     * (Required)
-     */
     @JsonProperty("kind")
     private String kind = "APIResourceList";
     @JsonProperty("resources")
@@ -80,7 +77,7 @@ public class APIResourceList implements Editable<APIResourceListBuilder>, Kubern
     }
 
     /**
-     * (Required)
+     * APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -88,25 +85,31 @@ public class APIResourceList implements Editable<APIResourceListBuilder>, Kubern
     }
 
     /**
-     * (Required)
+     * APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
         this.apiVersion = apiVersion;
     }
 
+    /**
+     * groupVersion is the group and version this APIResourceList is for.
+     */
     @JsonProperty("groupVersion")
     public String getGroupVersion() {
         return groupVersion;
     }
 
+    /**
+     * groupVersion is the group and version this APIResourceList is for.
+     */
     @JsonProperty("groupVersion")
     public void setGroupVersion(String groupVersion) {
         this.groupVersion = groupVersion;
     }
 
     /**
-     * (Required)
+     * Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -114,19 +117,25 @@ public class APIResourceList implements Editable<APIResourceListBuilder>, Kubern
     }
 
     /**
-     * (Required)
+     * Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
      */
     @JsonProperty("kind")
     public void setKind(String kind) {
         this.kind = kind;
     }
 
+    /**
+     * resources contains the name of the resources and if they are namespaced.
+     */
     @JsonProperty("resources")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<APIResource> getResources() {
         return resources;
     }
 
+    /**
+     * resources contains the name of the resources and if they are namespaced.
+     */
     @JsonProperty("resources")
     public void setResources(List<APIResource> resources) {
         this.resources = resources;

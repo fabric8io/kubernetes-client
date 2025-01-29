@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * RoutePort defines a port mapping from a router to an endpoint in the service endpoints.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -78,11 +81,17 @@ public class RoutePort implements Editable<RoutePortBuilder>, KubernetesResource
         this.targetPort = targetPort;
     }
 
+    /**
+     * RoutePort defines a port mapping from a router to an endpoint in the service endpoints.
+     */
     @JsonProperty("targetPort")
     public IntOrString getTargetPort() {
         return targetPort;
     }
 
+    /**
+     * RoutePort defines a port mapping from a router to an endpoint in the service endpoints.
+     */
     @JsonProperty("targetPort")
     public void setTargetPort(IntOrString targetPort) {
         this.targetPort = targetPort;

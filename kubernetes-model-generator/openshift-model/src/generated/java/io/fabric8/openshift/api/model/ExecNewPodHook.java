@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ExecNewPodHook is a hook implementation which runs a command in a new pod based on the specified container which is assumed to be part of the deployment template.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -95,44 +98,68 @@ public class ExecNewPodHook implements Editable<ExecNewPodHookBuilder>, Kubernet
         this.volumes = volumes;
     }
 
+    /**
+     * Command is the action command and its arguments.
+     */
     @JsonProperty("command")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getCommand() {
         return command;
     }
 
+    /**
+     * Command is the action command and its arguments.
+     */
     @JsonProperty("command")
     public void setCommand(List<String> command) {
         this.command = command;
     }
 
+    /**
+     * ContainerName is the name of a container in the deployment pod template whose container image will be used for the hook pod's container.
+     */
     @JsonProperty("containerName")
     public String getContainerName() {
         return containerName;
     }
 
+    /**
+     * ContainerName is the name of a container in the deployment pod template whose container image will be used for the hook pod's container.
+     */
     @JsonProperty("containerName")
     public void setContainerName(String containerName) {
         this.containerName = containerName;
     }
 
+    /**
+     * Env is a set of environment variables to supply to the hook pod's container.
+     */
     @JsonProperty("env")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<EnvVar> getEnv() {
         return env;
     }
 
+    /**
+     * Env is a set of environment variables to supply to the hook pod's container.
+     */
     @JsonProperty("env")
     public void setEnv(List<EnvVar> env) {
         this.env = env;
     }
 
+    /**
+     * Volumes is a list of named volumes from the pod template which should be copied to the hook pod. Volumes names not found in pod spec are ignored. An empty list means no volumes will be copied.
+     */
     @JsonProperty("volumes")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getVolumes() {
         return volumes;
     }
 
+    /**
+     * Volumes is a list of named volumes from the pod template which should be copied to the hook pod. Volumes names not found in pod spec are ignored. An empty list means no volumes will be copied.
+     */
     @JsonProperty("volumes")
     public void setVolumes(List<String> volumes) {
         this.volumes = volumes;

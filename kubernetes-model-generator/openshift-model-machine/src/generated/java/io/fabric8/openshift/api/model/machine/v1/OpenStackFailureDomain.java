@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * OpenStackFailureDomain configures failure domain information for the OpenStack platform.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class OpenStackFailureDomain implements Editable<OpenStackFailureDomainBu
         this.rootVolume = rootVolume;
     }
 
+    /**
+     * availabilityZone is the nova availability zone in which the OpenStack machine provider will create the VM. If not specified, the VM will be created in the default availability zone specified in the nova configuration. Availability zone names must NOT contain : since it is used by admin users to specify hosts where instances are launched in server creation. Also, it must not contain spaces otherwise it will lead to node that belongs to this availability zone register failure, see kubernetes/cloud-provider-openstack#1379 for further information. The maximum length of availability zone name is 63 as per labels limits.
+     */
     @JsonProperty("availabilityZone")
     public String getAvailabilityZone() {
         return availabilityZone;
     }
 
+    /**
+     * availabilityZone is the nova availability zone in which the OpenStack machine provider will create the VM. If not specified, the VM will be created in the default availability zone specified in the nova configuration. Availability zone names must NOT contain : since it is used by admin users to specify hosts where instances are launched in server creation. Also, it must not contain spaces otherwise it will lead to node that belongs to this availability zone register failure, see kubernetes/cloud-provider-openstack#1379 for further information. The maximum length of availability zone name is 63 as per labels limits.
+     */
     @JsonProperty("availabilityZone")
     public void setAvailabilityZone(String availabilityZone) {
         this.availabilityZone = availabilityZone;
     }
 
+    /**
+     * OpenStackFailureDomain configures failure domain information for the OpenStack platform.
+     */
     @JsonProperty("rootVolume")
     public RootVolume getRootVolume() {
         return rootVolume;
     }
 
+    /**
+     * OpenStackFailureDomain configures failure domain information for the OpenStack platform.
+     */
     @JsonProperty("rootVolume")
     public void setRootVolume(RootVolume rootVolume) {
         this.rootVolume = rootVolume;

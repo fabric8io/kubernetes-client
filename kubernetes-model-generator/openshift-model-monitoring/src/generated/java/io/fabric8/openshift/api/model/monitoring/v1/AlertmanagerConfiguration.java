@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * AlertmanagerConfiguration defines the Alertmanager configuration.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -89,32 +92,50 @@ public class AlertmanagerConfiguration implements Editable<AlertmanagerConfigura
         this.templates = templates;
     }
 
+    /**
+     * AlertmanagerConfiguration defines the Alertmanager configuration.
+     */
     @JsonProperty("global")
     public AlertmanagerGlobalConfig getGlobal() {
         return global;
     }
 
+    /**
+     * AlertmanagerConfiguration defines the Alertmanager configuration.
+     */
     @JsonProperty("global")
     public void setGlobal(AlertmanagerGlobalConfig global) {
         this.global = global;
     }
 
+    /**
+     * The name of the AlertmanagerConfig resource which is used to generate the Alertmanager configuration. It must be defined in the same namespace as the Alertmanager object. The operator will not enforce a `namespace` label for routes and inhibition rules.
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * The name of the AlertmanagerConfig resource which is used to generate the Alertmanager configuration. It must be defined in the same namespace as the Alertmanager object. The operator will not enforce a `namespace` label for routes and inhibition rules.
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * Custom notification templates.
+     */
     @JsonProperty("templates")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<SecretOrConfigMap> getTemplates() {
         return templates;
     }
 
+    /**
+     * Custom notification templates.
+     */
     @JsonProperty("templates")
     public void setTemplates(List<SecretOrConfigMap> templates) {
         this.templates = templates;

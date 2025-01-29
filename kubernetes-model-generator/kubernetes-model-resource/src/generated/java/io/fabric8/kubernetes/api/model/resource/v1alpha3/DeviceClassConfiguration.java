@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * DeviceClassConfiguration is used in DeviceClass.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -78,11 +81,17 @@ public class DeviceClassConfiguration implements Editable<DeviceClassConfigurati
         this.opaque = opaque;
     }
 
+    /**
+     * DeviceClassConfiguration is used in DeviceClass.
+     */
     @JsonProperty("opaque")
     public OpaqueDeviceConfiguration getOpaque() {
         return opaque;
     }
 
+    /**
+     * DeviceClassConfiguration is used in DeviceClass.
+     */
     @JsonProperty("opaque")
     public void setOpaque(OpaqueDeviceConfiguration opaque) {
         this.opaque = opaque;

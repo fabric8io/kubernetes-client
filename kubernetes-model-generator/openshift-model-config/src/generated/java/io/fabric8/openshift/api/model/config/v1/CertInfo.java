@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * CertInfo relates a certificate with a private key
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class CertInfo implements Editable<CertInfoBuilder>, KubernetesResource
         this.keyFile = keyFile;
     }
 
+    /**
+     * CertFile is a file containing a PEM-encoded certificate
+     */
     @JsonProperty("certFile")
     public String getCertFile() {
         return certFile;
     }
 
+    /**
+     * CertFile is a file containing a PEM-encoded certificate
+     */
     @JsonProperty("certFile")
     public void setCertFile(String certFile) {
         this.certFile = certFile;
     }
 
+    /**
+     * KeyFile is a file containing a PEM-encoded private key for the certificate specified by CertFile
+     */
     @JsonProperty("keyFile")
     public String getKeyFile() {
         return keyFile;
     }
 
+    /**
+     * KeyFile is a file containing a PEM-encoded private key for the certificate specified by CertFile
+     */
     @JsonProperty("keyFile")
     public void setKeyFile(String keyFile) {
         this.keyFile = keyFile;

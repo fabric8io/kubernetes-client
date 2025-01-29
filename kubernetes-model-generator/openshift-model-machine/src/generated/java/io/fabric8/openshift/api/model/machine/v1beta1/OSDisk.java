@@ -94,11 +94,17 @@ public class OSDisk implements Editable<OSDiskBuilder>, KubernetesResource
         this.osType = osType;
     }
 
+    /**
+     * CachingType specifies the caching requirements. Possible values include: 'None', 'ReadOnly', 'ReadWrite'. Empty value means no opinion and the platform chooses a default, which is subject to change over time. Currently the default is `None`.
+     */
     @JsonProperty("cachingType")
     public String getCachingType() {
         return cachingType;
     }
 
+    /**
+     * CachingType specifies the caching requirements. Possible values include: 'None', 'ReadOnly', 'ReadWrite'. Empty value means no opinion and the platform chooses a default, which is subject to change over time. Currently the default is `None`.
+     */
     @JsonProperty("cachingType")
     public void setCachingType(String cachingType) {
         this.cachingType = cachingType;
@@ -114,11 +120,17 @@ public class OSDisk implements Editable<OSDiskBuilder>, KubernetesResource
         this.diskSettings = diskSettings;
     }
 
+    /**
+     * DiskSizeGB is the size in GB to assign to the data disk.
+     */
     @JsonProperty("diskSizeGB")
     public Integer getDiskSizeGB() {
         return diskSizeGB;
     }
 
+    /**
+     * DiskSizeGB is the size in GB to assign to the data disk.
+     */
     @JsonProperty("diskSizeGB")
     public void setDiskSizeGB(Integer diskSizeGB) {
         this.diskSizeGB = diskSizeGB;
@@ -134,11 +146,17 @@ public class OSDisk implements Editable<OSDiskBuilder>, KubernetesResource
         this.managedDisk = managedDisk;
     }
 
+    /**
+     * OSType is the operating system type of the OS disk. Possible values include "Linux" and "Windows".
+     */
     @JsonProperty("osType")
     public String getOsType() {
         return osType;
     }
 
+    /**
+     * OSType is the operating system type of the OS disk. Possible values include "Linux" and "Windows".
+     */
     @JsonProperty("osType")
     public void setOsType(String osType) {
         this.osType = osType;

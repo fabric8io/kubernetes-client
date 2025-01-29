@@ -97,11 +97,17 @@ public class OIDCClientConfig implements Editable<OIDCClientConfigBuilder>, Kube
         this.extraScopes = extraScopes;
     }
 
+    /**
+     * ClientID is the identifier of the OIDC client from the OIDC provider
+     */
     @JsonProperty("clientID")
     public String getClientID() {
         return clientID;
     }
 
+    /**
+     * ClientID is the identifier of the OIDC client from the OIDC provider
+     */
     @JsonProperty("clientID")
     public void setClientID(String clientID) {
         this.clientID = clientID;
@@ -117,32 +123,50 @@ public class OIDCClientConfig implements Editable<OIDCClientConfigBuilder>, Kube
         this.clientSecret = clientSecret;
     }
 
+    /**
+     * ComponentName is the name of the component that is supposed to consume this client configuration
+     */
     @JsonProperty("componentName")
     public String getComponentName() {
         return componentName;
     }
 
+    /**
+     * ComponentName is the name of the component that is supposed to consume this client configuration
+     */
     @JsonProperty("componentName")
     public void setComponentName(String componentName) {
         this.componentName = componentName;
     }
 
+    /**
+     * ComponentNamespace is the namespace of the component that is supposed to consume this client configuration
+     */
     @JsonProperty("componentNamespace")
     public String getComponentNamespace() {
         return componentNamespace;
     }
 
+    /**
+     * ComponentNamespace is the namespace of the component that is supposed to consume this client configuration
+     */
     @JsonProperty("componentNamespace")
     public void setComponentNamespace(String componentNamespace) {
         this.componentNamespace = componentNamespace;
     }
 
+    /**
+     * ExtraScopes is an optional set of scopes to request tokens with.
+     */
     @JsonProperty("extraScopes")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getExtraScopes() {
         return extraScopes;
     }
 
+    /**
+     * ExtraScopes is an optional set of scopes to request tokens with.
+     */
     @JsonProperty("extraScopes")
     public void setExtraScopes(List<String> extraScopes) {
         this.extraScopes = extraScopes;

@@ -86,31 +86,49 @@ public class RedisPenetrationSpec implements Editable<RedisPenetrationSpecBuilde
         this.requestNum = requestNum;
     }
 
+    /**
+     * The adress of Redis server
+     */
     @JsonProperty("addr")
     public String getAddr() {
         return addr;
     }
 
+    /**
+     * The adress of Redis server
+     */
     @JsonProperty("addr")
     public void setAddr(String addr) {
         this.addr = addr;
     }
 
+    /**
+     * The password of Redis server
+     */
     @JsonProperty("password")
     public String getPassword() {
         return password;
     }
 
+    /**
+     * The password of Redis server
+     */
     @JsonProperty("password")
     public void setPassword(String password) {
         this.password = password;
     }
 
+    /**
+     * The number of requests to be sent
+     */
     @JsonProperty("requestNum")
     public Integer getRequestNum() {
         return requestNum;
     }
 
+    /**
+     * The number of requests to be sent
+     */
     @JsonProperty("requestNum")
     public void setRequestNum(Integer requestNum) {
         this.requestNum = requestNum;

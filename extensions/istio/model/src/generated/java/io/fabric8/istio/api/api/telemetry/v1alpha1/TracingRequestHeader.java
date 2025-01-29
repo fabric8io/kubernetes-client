@@ -82,21 +82,33 @@ public class TracingRequestHeader implements Editable<TracingRequestHeaderBuilde
         this.name = name;
     }
 
+    /**
+     * Optional. If the header is not found, this value will be used instead.
+     */
     @JsonProperty("defaultValue")
     public String getDefaultValue() {
         return defaultValue;
     }
 
+    /**
+     * Optional. If the header is not found, this value will be used instead.
+     */
     @JsonProperty("defaultValue")
     public void setDefaultValue(String defaultValue) {
         this.defaultValue = defaultValue;
     }
 
+    /**
+     * Name of the header from which to extract the tag value.
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * Name of the header from which to extract the tag value.
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;

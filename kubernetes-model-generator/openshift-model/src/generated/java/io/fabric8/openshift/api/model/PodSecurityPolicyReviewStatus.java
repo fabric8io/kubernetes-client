@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * PodSecurityPolicyReviewStatus represents the status of PodSecurityPolicyReview.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -81,12 +84,18 @@ public class PodSecurityPolicyReviewStatus implements Editable<PodSecurityPolicy
         this.allowedServiceAccounts = allowedServiceAccounts;
     }
 
+    /**
+     * allowedServiceAccounts returns the list of service accounts in &#42;this&#42; namespace that have the power to create the PodTemplateSpec.
+     */
     @JsonProperty("allowedServiceAccounts")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ServiceAccountPodSecurityPolicyReviewStatus> getAllowedServiceAccounts() {
         return allowedServiceAccounts;
     }
 
+    /**
+     * allowedServiceAccounts returns the list of service accounts in &#42;this&#42; namespace that have the power to create the PodTemplateSpec.
+     */
     @JsonProperty("allowedServiceAccounts")
     public void setAllowedServiceAccounts(List<ServiceAccountPodSecurityPolicyReviewStatus> allowedServiceAccounts) {
         this.allowedServiceAccounts = allowedServiceAccounts;

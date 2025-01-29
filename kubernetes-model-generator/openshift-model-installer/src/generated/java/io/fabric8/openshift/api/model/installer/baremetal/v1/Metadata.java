@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Metadata contains baremetal metadata (e.g. for uninstalling the cluster).
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -86,31 +89,49 @@ public class Metadata implements Editable<MetadataBuilder>, KubernetesResource
         this.provisioningHostIP = provisioningHostIP;
     }
 
+    /**
+     * Metadata contains baremetal metadata (e.g. for uninstalling the cluster).
+     */
     @JsonProperty("bootstrapProvisioningIP")
     public String getBootstrapProvisioningIP() {
         return bootstrapProvisioningIP;
     }
 
+    /**
+     * Metadata contains baremetal metadata (e.g. for uninstalling the cluster).
+     */
     @JsonProperty("bootstrapProvisioningIP")
     public void setBootstrapProvisioningIP(String bootstrapProvisioningIP) {
         this.bootstrapProvisioningIP = bootstrapProvisioningIP;
     }
 
+    /**
+     * Metadata contains baremetal metadata (e.g. for uninstalling the cluster).
+     */
     @JsonProperty("libvirtURI")
     public String getLibvirtURI() {
         return libvirtURI;
     }
 
+    /**
+     * Metadata contains baremetal metadata (e.g. for uninstalling the cluster).
+     */
     @JsonProperty("libvirtURI")
     public void setLibvirtURI(String libvirtURI) {
         this.libvirtURI = libvirtURI;
     }
 
+    /**
+     * Metadata contains baremetal metadata (e.g. for uninstalling the cluster).
+     */
     @JsonProperty("provisioningHostIP")
     public String getProvisioningHostIP() {
         return provisioningHostIP;
     }
 
+    /**
+     * Metadata contains baremetal metadata (e.g. for uninstalling the cluster).
+     */
     @JsonProperty("provisioningHostIP")
     public void setProvisioningHostIP(String provisioningHostIP) {
         this.provisioningHostIP = provisioningHostIP;

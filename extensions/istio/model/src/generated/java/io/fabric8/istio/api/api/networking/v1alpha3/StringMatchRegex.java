@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * [RE2 style regex-based match](https://github.com/google/re2/wiki/Syntax).<br><p> <br><p> Example: `(?i)^aaa$` can be used to case-insensitive match a string consisting of three a's.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -78,11 +81,17 @@ public class StringMatchRegex implements IsStringMatchMatchType, Editable<String
         this.regex = regex;
     }
 
+    /**
+     * [RE2 style regex-based match](https://github.com/google/re2/wiki/Syntax).<br><p> <br><p> Example: `(?i)^aaa$` can be used to case-insensitive match a string consisting of three a's.
+     */
     @JsonProperty("regex")
     public String getRegex() {
         return regex;
     }
 
+    /**
+     * [RE2 style regex-based match](https://github.com/google/re2/wiki/Syntax).<br><p> <br><p> Example: `(?i)^aaa$` can be used to case-insensitive match a string consisting of three a's.
+     */
     @JsonProperty("regex")
     public void setRegex(String regex) {
         this.regex = regex;

@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ClusterProvisionStatus defines the observed state of ClusterProvision.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -85,22 +88,34 @@ public class ClusterProvisionStatus implements Editable<ClusterProvisionStatusBu
         this.jobRef = jobRef;
     }
 
+    /**
+     * Conditions includes more detailed status for the cluster provision
+     */
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ClusterProvisionCondition> getConditions() {
         return conditions;
     }
 
+    /**
+     * Conditions includes more detailed status for the cluster provision
+     */
     @JsonProperty("conditions")
     public void setConditions(List<ClusterProvisionCondition> conditions) {
         this.conditions = conditions;
     }
 
+    /**
+     * ClusterProvisionStatus defines the observed state of ClusterProvision.
+     */
     @JsonProperty("jobRef")
     public LocalObjectReference getJobRef() {
         return jobRef;
     }
 
+    /**
+     * ClusterProvisionStatus defines the observed state of ClusterProvision.
+     */
     @JsonProperty("jobRef")
     public void setJobRef(LocalObjectReference jobRef) {
         this.jobRef = jobRef;

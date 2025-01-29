@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * DataDisk defines a data disk for a Machine VM.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -92,41 +95,65 @@ public class DataDisk implements Editable<DataDiskBuilder>, KubernetesResource
         this.storageConfig = storageConfig;
     }
 
+    /**
+     * DataDisk defines a data disk for a Machine VM.
+     */
     @JsonProperty("dataSourceImage")
     public StorageResourceReference getDataSourceImage() {
         return dataSourceImage;
     }
 
+    /**
+     * DataDisk defines a data disk for a Machine VM.
+     */
     @JsonProperty("dataSourceImage")
     public void setDataSourceImage(StorageResourceReference dataSourceImage) {
         this.dataSourceImage = dataSourceImage;
     }
 
+    /**
+     * DataDisk defines a data disk for a Machine VM.
+     */
     @JsonProperty("deviceProperties")
     public NutanixVMDiskDeviceProperties getDeviceProperties() {
         return deviceProperties;
     }
 
+    /**
+     * DataDisk defines a data disk for a Machine VM.
+     */
     @JsonProperty("deviceProperties")
     public void setDeviceProperties(NutanixVMDiskDeviceProperties deviceProperties) {
         this.deviceProperties = deviceProperties;
     }
 
+    /**
+     * DataDisk defines a data disk for a Machine VM.
+     */
     @JsonProperty("diskSize")
     public Quantity getDiskSize() {
         return diskSize;
     }
 
+    /**
+     * DataDisk defines a data disk for a Machine VM.
+     */
     @JsonProperty("diskSize")
     public void setDiskSize(Quantity diskSize) {
         this.diskSize = diskSize;
     }
 
+    /**
+     * DataDisk defines a data disk for a Machine VM.
+     */
     @JsonProperty("storageConfig")
     public StorageConfig getStorageConfig() {
         return storageConfig;
     }
 
+    /**
+     * DataDisk defines a data disk for a Machine VM.
+     */
     @JsonProperty("storageConfig")
     public void setStorageConfig(StorageConfig storageConfig) {
         this.storageConfig = storageConfig;

@@ -92,11 +92,17 @@ public class KubeClientConfig implements Editable<KubeClientConfigBuilder>, Kube
         this.connectionOverrides = connectionOverrides;
     }
 
+    /**
+     * kubeConfig is a .kubeconfig filename for going to the owning kube-apiserver.  Empty uses an in-cluster-config
+     */
     @JsonProperty("kubeConfig")
     public String getKubeConfig() {
         return kubeConfig;
     }
 
+    /**
+     * kubeConfig is a .kubeconfig filename for going to the owning kube-apiserver.  Empty uses an in-cluster-config
+     */
     @JsonProperty("kubeConfig")
     public void setKubeConfig(String kubeConfig) {
         this.kubeConfig = kubeConfig;

@@ -19,6 +19,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Represents downward API info for projecting into a projected volume. Note that this is identical to a downwardAPI volume source without the default mode.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -52,12 +55,18 @@ public class DownwardAPIProjection implements Editable<DownwardAPIProjectionBuil
         this.items = items;
     }
 
+    /**
+     * Items is a list of DownwardAPIVolume file
+     */
     @JsonProperty("items")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<DownwardAPIVolumeFile> getItems() {
         return items;
     }
 
+    /**
+     * Items is a list of DownwardAPIVolume file
+     */
     @JsonProperty("items")
     public void setItems(List<DownwardAPIVolumeFile> items) {
         this.items = items;

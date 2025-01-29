@@ -103,21 +103,33 @@ public class EventTypeSpec implements Editable<EventTypeSpecBuilder>, Kubernetes
         this.type = type;
     }
 
+    /**
+     * Broker refers to the Broker that can provide the EventType. Deprecated: This field is deprecated and will be removed in a future release.
+     */
     @JsonProperty("broker")
     public String getBroker() {
         return broker;
     }
 
+    /**
+     * Broker refers to the Broker that can provide the EventType. Deprecated: This field is deprecated and will be removed in a future release.
+     */
     @JsonProperty("broker")
     public void setBroker(String broker) {
         this.broker = broker;
     }
 
+    /**
+     * Description is an optional field used to describe the EventType, in any meaningful way.
+     */
     @JsonProperty("description")
     public String getDescription() {
         return description;
     }
 
+    /**
+     * Description is an optional field used to describe the EventType, in any meaningful way.
+     */
     @JsonProperty("description")
     public void setDescription(String description) {
         this.description = description;
@@ -143,11 +155,17 @@ public class EventTypeSpec implements Editable<EventTypeSpecBuilder>, Kubernetes
         this.schema = schema;
     }
 
+    /**
+     * SchemaData allows the CloudEvents schema to be stored directly in the EventType. Content is dependent on the encoding. Optional attribute. The contents are not validated or manipulated by the system.
+     */
     @JsonProperty("schemaData")
     public String getSchemaData() {
         return schemaData;
     }
 
+    /**
+     * SchemaData allows the CloudEvents schema to be stored directly in the EventType. Content is dependent on the encoding. Optional attribute. The contents are not validated or manipulated by the system.
+     */
     @JsonProperty("schemaData")
     public void setSchemaData(String schemaData) {
         this.schemaData = schemaData;
@@ -163,11 +181,17 @@ public class EventTypeSpec implements Editable<EventTypeSpecBuilder>, Kubernetes
         this.source = source;
     }
 
+    /**
+     * Type represents the CloudEvents type. It is authoritative.
+     */
     @JsonProperty("type")
     public String getType() {
         return type;
     }
 
+    /**
+     * Type represents the CloudEvents type. It is authoritative.
+     */
     @JsonProperty("type")
     public void setType(String type) {
         this.type = type;

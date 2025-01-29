@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Server defines the schema for a server that runs per instance of CoreDNS.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -89,32 +92,50 @@ public class Server implements Editable<ServerBuilder>, KubernetesResource
         this.zones = zones;
     }
 
+    /**
+     * Server defines the schema for a server that runs per instance of CoreDNS.
+     */
     @JsonProperty("forwardPlugin")
     public ForwardPlugin getForwardPlugin() {
         return forwardPlugin;
     }
 
+    /**
+     * Server defines the schema for a server that runs per instance of CoreDNS.
+     */
     @JsonProperty("forwardPlugin")
     public void setForwardPlugin(ForwardPlugin forwardPlugin) {
         this.forwardPlugin = forwardPlugin;
     }
 
+    /**
+     * name is required and specifies a unique name for the server. Name must comply with the Service Name Syntax of rfc6335.
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * name is required and specifies a unique name for the server. Name must comply with the Service Name Syntax of rfc6335.
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * zones is required and specifies the subdomains that Server is authoritative for. Zones must conform to the rfc1123 definition of a subdomain. Specifying the cluster domain (i.e., "cluster.local") is invalid.
+     */
     @JsonProperty("zones")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getZones() {
         return zones;
     }
 
+    /**
+     * zones is required and specifies the subdomains that Server is authoritative for. Zones must conform to the rfc1123 definition of a subdomain. Specifying the cluster domain (i.e., "cluster.local") is invalid.
+     */
     @JsonProperty("zones")
     public void setZones(List<String> zones) {
         this.zones = zones;

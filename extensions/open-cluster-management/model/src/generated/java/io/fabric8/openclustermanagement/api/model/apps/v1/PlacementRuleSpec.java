@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * PlacementRuleSpec defines the desired state of PlacementRule
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -107,74 +110,116 @@ public class PlacementRuleSpec implements Editable<PlacementRuleSpecBuilder>, Ku
         this.schedulerName = schedulerName;
     }
 
+    /**
+     * PlacementRuleSpec defines the desired state of PlacementRule
+     */
     @JsonProperty("clusterConditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ClusterConditionFilter> getClusterConditions() {
         return clusterConditions;
     }
 
+    /**
+     * PlacementRuleSpec defines the desired state of PlacementRule
+     */
     @JsonProperty("clusterConditions")
     public void setClusterConditions(List<ClusterConditionFilter> clusterConditions) {
         this.clusterConditions = clusterConditions;
     }
 
+    /**
+     * number of replicas Application wants to
+     */
     @JsonProperty("clusterReplicas")
     public Integer getClusterReplicas() {
         return clusterReplicas;
     }
 
+    /**
+     * number of replicas Application wants to
+     */
     @JsonProperty("clusterReplicas")
     public void setClusterReplicas(Integer clusterReplicas) {
         this.clusterReplicas = clusterReplicas;
     }
 
+    /**
+     * PlacementRuleSpec defines the desired state of PlacementRule
+     */
     @JsonProperty("clusterSelector")
     public LabelSelector getClusterSelector() {
         return clusterSelector;
     }
 
+    /**
+     * PlacementRuleSpec defines the desired state of PlacementRule
+     */
     @JsonProperty("clusterSelector")
     public void setClusterSelector(LabelSelector clusterSelector) {
         this.clusterSelector = clusterSelector;
     }
 
+    /**
+     * PlacementRuleSpec defines the desired state of PlacementRule
+     */
     @JsonProperty("clusters")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<GenericClusterReference> getClusters() {
         return clusters;
     }
 
+    /**
+     * PlacementRuleSpec defines the desired state of PlacementRule
+     */
     @JsonProperty("clusters")
     public void setClusters(List<GenericClusterReference> clusters) {
         this.clusters = clusters;
     }
 
+    /**
+     * Set Policy Filters
+     */
     @JsonProperty("policies")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ObjectReference> getPolicies() {
         return policies;
     }
 
+    /**
+     * Set Policy Filters
+     */
     @JsonProperty("policies")
     public void setPolicies(List<ObjectReference> policies) {
         this.policies = policies;
     }
 
+    /**
+     * PlacementRuleSpec defines the desired state of PlacementRule
+     */
     @JsonProperty("resourceHint")
     public ResourceHint getResourceHint() {
         return resourceHint;
     }
 
+    /**
+     * PlacementRuleSpec defines the desired state of PlacementRule
+     */
     @JsonProperty("resourceHint")
     public void setResourceHint(ResourceHint resourceHint) {
         this.resourceHint = resourceHint;
     }
 
+    /**
+     * INSERT ADDITIONAL SPEC FIELDS - desired state of cluster Important: Run "make" to regenerate code after modifying this file schedulerName, default to use mcm controller
+     */
     @JsonProperty("schedulerName")
     public String getSchedulerName() {
         return schedulerName;
     }
 
+    /**
+     * INSERT ADDITIONAL SPEC FIELDS - desired state of cluster Important: Run "make" to regenerate code after modifying this file schedulerName, default to use mcm controller
+     */
     @JsonProperty("schedulerName")
     public void setSchedulerName(String schedulerName) {
         this.schedulerName = schedulerName;

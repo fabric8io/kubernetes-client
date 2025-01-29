@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * GCESDConfig configures scrape targets from GCP GCE instances. The private IP address is used by default, but may be changed to the public IP address with relabeling. See https://prometheus.io/docs/prometheus/latest/configuration/configuration/#gce_sd_config<br><p> <br><p> The GCE service discovery will load the Google Cloud credentials from the file specified by the GOOGLE_APPLICATION_CREDENTIALS environment variable. See https://cloud.google.com/kubernetes-engine/docs/tutorials/authenticating-to-cloud-platform<br><p> <br><p> A pre-requisite for using GCESDConfig is that a Secret containing valid Google Cloud credentials is mounted into the Prometheus or PrometheusAgent pod via the `.spec.secrets` field and that the GOOGLE_APPLICATION_CREDENTIALS environment variable is set to /etc/prometheus/secrets/&lt;secret-name&gt;/&lt;credentials-filename.json&gt;.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -98,61 +101,97 @@ public class GCESDConfig implements Editable<GCESDConfigBuilder>, KubernetesReso
         this.zone = zone;
     }
 
+    /**
+     * Filter can be used optionally to filter the instance list by other criteria Syntax of this filter is described in the filter query parameter section: https://cloud.google.com/compute/docs/reference/latest/instances/list
+     */
     @JsonProperty("filter")
     public String getFilter() {
         return filter;
     }
 
+    /**
+     * Filter can be used optionally to filter the instance list by other criteria Syntax of this filter is described in the filter query parameter section: https://cloud.google.com/compute/docs/reference/latest/instances/list
+     */
     @JsonProperty("filter")
     public void setFilter(String filter) {
         this.filter = filter;
     }
 
+    /**
+     * The port to scrape metrics from. If using the public IP address, this must instead be specified in the relabeling rule.
+     */
     @JsonProperty("port")
     public Integer getPort() {
         return port;
     }
 
+    /**
+     * The port to scrape metrics from. If using the public IP address, this must instead be specified in the relabeling rule.
+     */
     @JsonProperty("port")
     public void setPort(Integer port) {
         this.port = port;
     }
 
+    /**
+     * The Google Cloud Project ID
+     */
     @JsonProperty("project")
     public String getProject() {
         return project;
     }
 
+    /**
+     * The Google Cloud Project ID
+     */
     @JsonProperty("project")
     public void setProject(String project) {
         this.project = project;
     }
 
+    /**
+     * RefreshInterval configures the refresh interval at which Prometheus will re-read the instance list.
+     */
     @JsonProperty("refreshInterval")
     public String getRefreshInterval() {
         return refreshInterval;
     }
 
+    /**
+     * RefreshInterval configures the refresh interval at which Prometheus will re-read the instance list.
+     */
     @JsonProperty("refreshInterval")
     public void setRefreshInterval(String refreshInterval) {
         this.refreshInterval = refreshInterval;
     }
 
+    /**
+     * The tag separator is used to separate the tags on concatenation
+     */
     @JsonProperty("tagSeparator")
     public String getTagSeparator() {
         return tagSeparator;
     }
 
+    /**
+     * The tag separator is used to separate the tags on concatenation
+     */
     @JsonProperty("tagSeparator")
     public void setTagSeparator(String tagSeparator) {
         this.tagSeparator = tagSeparator;
     }
 
+    /**
+     * The zone of the scrape targets. If you need multiple zones use multiple GCESDConfigs.
+     */
     @JsonProperty("zone")
     public String getZone() {
         return zone;
     }
 
+    /**
+     * The zone of the scrape targets. If you need multiple zones use multiple GCESDConfigs.
+     */
     @JsonProperty("zone")
     public void setZone(String zone) {
         this.zone = zone;

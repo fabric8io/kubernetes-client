@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * OAuthTemplates allow for customization of pages like the login page
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -86,31 +89,49 @@ public class OAuthTemplates implements Editable<OAuthTemplatesBuilder>, Kubernet
         this.providerSelection = providerSelection;
     }
 
+    /**
+     * OAuthTemplates allow for customization of pages like the login page
+     */
     @JsonProperty("error")
     public SecretNameReference getError() {
         return error;
     }
 
+    /**
+     * OAuthTemplates allow for customization of pages like the login page
+     */
     @JsonProperty("error")
     public void setError(SecretNameReference error) {
         this.error = error;
     }
 
+    /**
+     * OAuthTemplates allow for customization of pages like the login page
+     */
     @JsonProperty("login")
     public SecretNameReference getLogin() {
         return login;
     }
 
+    /**
+     * OAuthTemplates allow for customization of pages like the login page
+     */
     @JsonProperty("login")
     public void setLogin(SecretNameReference login) {
         this.login = login;
     }
 
+    /**
+     * OAuthTemplates allow for customization of pages like the login page
+     */
     @JsonProperty("providerSelection")
     public SecretNameReference getProviderSelection() {
         return providerSelection;
     }
 
+    /**
+     * OAuthTemplates allow for customization of pages like the login page
+     */
     @JsonProperty("providerSelection")
     public void setProviderSelection(SecretNameReference providerSelection) {
         this.providerSelection = providerSelection;

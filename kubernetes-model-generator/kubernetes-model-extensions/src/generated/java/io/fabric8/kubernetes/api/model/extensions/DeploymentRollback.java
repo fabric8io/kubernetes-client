@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * DEPRECATED. DeploymentRollback stores the information required to rollback a deployment.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -95,52 +98,82 @@ public class DeploymentRollback implements Editable<DeploymentRollbackBuilder>, 
         this.updatedAnnotations = updatedAnnotations;
     }
 
+    /**
+     * APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+     */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
         return apiVersion;
     }
 
+    /**
+     * APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+     */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
         this.apiVersion = apiVersion;
     }
 
+    /**
+     * Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+     */
     @JsonProperty("kind")
     public String getKind() {
         return kind;
     }
 
+    /**
+     * Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+     */
     @JsonProperty("kind")
     public void setKind(String kind) {
         this.kind = kind;
     }
 
+    /**
+     * Required: This must match the Name of a deployment.
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * Required: This must match the Name of a deployment.
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * DEPRECATED. DeploymentRollback stores the information required to rollback a deployment.
+     */
     @JsonProperty("rollbackTo")
     public RollbackConfig getRollbackTo() {
         return rollbackTo;
     }
 
+    /**
+     * DEPRECATED. DeploymentRollback stores the information required to rollback a deployment.
+     */
     @JsonProperty("rollbackTo")
     public void setRollbackTo(RollbackConfig rollbackTo) {
         this.rollbackTo = rollbackTo;
     }
 
+    /**
+     * The annotations to be updated to a deployment
+     */
     @JsonProperty("updatedAnnotations")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getUpdatedAnnotations() {
         return updatedAnnotations;
     }
 
+    /**
+     * The annotations to be updated to a deployment
+     */
     @JsonProperty("updatedAnnotations")
     public void setUpdatedAnnotations(Map<String, String> updatedAnnotations) {
         this.updatedAnnotations = updatedAnnotations;

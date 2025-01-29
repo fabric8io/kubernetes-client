@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * NetworkSpec defines the virtual machine's network configuration.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -81,12 +84,18 @@ public class NetworkSpec implements Editable<NetworkSpecBuilder>, KubernetesReso
         this.devices = devices;
     }
 
+    /**
+     * Devices defines the virtual machine's network interfaces.
+     */
     @JsonProperty("devices")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<NetworkDeviceSpec> getDevices() {
         return devices;
     }
 
+    /**
+     * Devices defines the virtual machine's network interfaces.
+     */
     @JsonProperty("devices")
     public void setDevices(List<NetworkDeviceSpec> devices) {
         this.devices = devices;

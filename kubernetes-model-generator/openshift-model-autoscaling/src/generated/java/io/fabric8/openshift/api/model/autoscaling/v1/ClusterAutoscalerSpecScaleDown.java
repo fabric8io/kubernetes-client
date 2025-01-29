@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Configuration of scale down operation
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -98,61 +101,97 @@ public class ClusterAutoscalerSpecScaleDown implements Editable<ClusterAutoscale
         this.utilizationThreshold = utilizationThreshold;
     }
 
+    /**
+     * How long after scale up that scale down evaluation resumes
+     */
     @JsonProperty("delayAfterAdd")
     public String getDelayAfterAdd() {
         return delayAfterAdd;
     }
 
+    /**
+     * How long after scale up that scale down evaluation resumes
+     */
     @JsonProperty("delayAfterAdd")
     public void setDelayAfterAdd(String delayAfterAdd) {
         this.delayAfterAdd = delayAfterAdd;
     }
 
+    /**
+     * How long after node deletion that scale down evaluation resumes, defaults to scan-interval
+     */
     @JsonProperty("delayAfterDelete")
     public String getDelayAfterDelete() {
         return delayAfterDelete;
     }
 
+    /**
+     * How long after node deletion that scale down evaluation resumes, defaults to scan-interval
+     */
     @JsonProperty("delayAfterDelete")
     public void setDelayAfterDelete(String delayAfterDelete) {
         this.delayAfterDelete = delayAfterDelete;
     }
 
+    /**
+     * How long after scale down failure that scale down evaluation resumes
+     */
     @JsonProperty("delayAfterFailure")
     public String getDelayAfterFailure() {
         return delayAfterFailure;
     }
 
+    /**
+     * How long after scale down failure that scale down evaluation resumes
+     */
     @JsonProperty("delayAfterFailure")
     public void setDelayAfterFailure(String delayAfterFailure) {
         this.delayAfterFailure = delayAfterFailure;
     }
 
+    /**
+     * Should CA scale down the cluster
+     */
     @JsonProperty("enabled")
     public Boolean getEnabled() {
         return enabled;
     }
 
+    /**
+     * Should CA scale down the cluster
+     */
     @JsonProperty("enabled")
     public void setEnabled(Boolean enabled) {
         this.enabled = enabled;
     }
 
+    /**
+     * How long a node should be unneeded before it is eligible for scale down
+     */
     @JsonProperty("unneededTime")
     public String getUnneededTime() {
         return unneededTime;
     }
 
+    /**
+     * How long a node should be unneeded before it is eligible for scale down
+     */
     @JsonProperty("unneededTime")
     public void setUnneededTime(String unneededTime) {
         this.unneededTime = unneededTime;
     }
 
+    /**
+     * Node utilization level, defined as sum of requested resources divided by capacity, below which a node can be considered for scale down
+     */
     @JsonProperty("utilizationThreshold")
     public String getUtilizationThreshold() {
         return utilizationThreshold;
     }
 
+    /**
+     * Node utilization level, defined as sum of requested resources divided by capacity, below which a node can be considered for scale down
+     */
     @JsonProperty("utilizationThreshold")
     public void setUtilizationThreshold(String utilizationThreshold) {
         this.utilizationThreshold = utilizationThreshold;

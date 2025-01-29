@@ -37,6 +37,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * UserDefinedNetwork describe network request for a Namespace.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -76,14 +79,8 @@ import lombok.experimental.Accessors;
 public class UserDefinedNetwork implements Editable<UserDefinedNetworkBuilder>, HasMetadata, Namespaced
 {
 
-    /**
-     * (Required)
-     */
     @JsonProperty("apiVersion")
     private String apiVersion = "k8s.ovn.org/v1";
-    /**
-     * (Required)
-     */
     @JsonProperty("kind")
     private String kind = "UserDefinedNetwork";
     @JsonProperty("metadata")
@@ -111,7 +108,7 @@ public class UserDefinedNetwork implements Editable<UserDefinedNetworkBuilder>, 
     }
 
     /**
-     * (Required)
+     * APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -119,7 +116,7 @@ public class UserDefinedNetwork implements Editable<UserDefinedNetworkBuilder>, 
     }
 
     /**
-     * (Required)
+     * APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -127,7 +124,7 @@ public class UserDefinedNetwork implements Editable<UserDefinedNetworkBuilder>, 
     }
 
     /**
-     * (Required)
+     * Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -135,38 +132,56 @@ public class UserDefinedNetwork implements Editable<UserDefinedNetworkBuilder>, 
     }
 
     /**
-     * (Required)
+     * Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
      */
     @JsonProperty("kind")
     public void setKind(String kind) {
         this.kind = kind;
     }
 
+    /**
+     * UserDefinedNetwork describe network request for a Namespace.
+     */
     @JsonProperty("metadata")
     public ObjectMeta getMetadata() {
         return metadata;
     }
 
+    /**
+     * UserDefinedNetwork describe network request for a Namespace.
+     */
     @JsonProperty("metadata")
     public void setMetadata(ObjectMeta metadata) {
         this.metadata = metadata;
     }
 
+    /**
+     * UserDefinedNetwork describe network request for a Namespace.
+     */
     @JsonProperty("spec")
     public UserDefinedNetworkSpec getSpec() {
         return spec;
     }
 
+    /**
+     * UserDefinedNetwork describe network request for a Namespace.
+     */
     @JsonProperty("spec")
     public void setSpec(UserDefinedNetworkSpec spec) {
         this.spec = spec;
     }
 
+    /**
+     * UserDefinedNetwork describe network request for a Namespace.
+     */
     @JsonProperty("status")
     public UserDefinedNetworkStatus getStatus() {
         return status;
     }
 
+    /**
+     * UserDefinedNetwork describe network request for a Namespace.
+     */
     @JsonProperty("status")
     public void setStatus(UserDefinedNetworkStatus status) {
         this.status = status;

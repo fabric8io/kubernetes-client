@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Features contains the list of configurable OLM features.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class Features implements Editable<FeaturesBuilder>, KubernetesResource
         this.packageServerSyncInterval = packageServerSyncInterval;
     }
 
+    /**
+     * DisableCopiedCSVs is used to disable OLM's "Copied CSV" feature for operators installed at the cluster scope, where a cluster scoped operator is one that has been installed in an OperatorGroup that targets all namespaces. When reenabled, OLM will recreate the "Copied CSVs" for each cluster scoped operator.
+     */
     @JsonProperty("disableCopiedCSVs")
     public Boolean getDisableCopiedCSVs() {
         return disableCopiedCSVs;
     }
 
+    /**
+     * DisableCopiedCSVs is used to disable OLM's "Copied CSV" feature for operators installed at the cluster scope, where a cluster scoped operator is one that has been installed in an OperatorGroup that targets all namespaces. When reenabled, OLM will recreate the "Copied CSVs" for each cluster scoped operator.
+     */
     @JsonProperty("disableCopiedCSVs")
     public void setDisableCopiedCSVs(Boolean disableCopiedCSVs) {
         this.disableCopiedCSVs = disableCopiedCSVs;
     }
 
+    /**
+     * Features contains the list of configurable OLM features.
+     */
     @JsonProperty("packageServerSyncInterval")
     public String getPackageServerSyncInterval() {
         return packageServerSyncInterval;
     }
 
+    /**
+     * Features contains the list of configurable OLM features.
+     */
     @JsonProperty("packageServerSyncInterval")
     public void setPackageServerSyncInterval(String packageServerSyncInterval) {
         this.packageServerSyncInterval = packageServerSyncInterval;

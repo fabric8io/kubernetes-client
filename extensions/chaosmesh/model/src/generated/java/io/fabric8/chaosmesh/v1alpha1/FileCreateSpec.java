@@ -82,21 +82,33 @@ public class FileCreateSpec implements Editable<FileCreateSpecBuilder>, Kubernet
         this.fileName = fileName;
     }
 
+    /**
+     * DirName is the directory name to create or delete.
+     */
     @JsonProperty("dir-name")
     public String getDirName() {
         return dirName;
     }
 
+    /**
+     * DirName is the directory name to create or delete.
+     */
     @JsonProperty("dir-name")
     public void setDirName(String dirName) {
         this.dirName = dirName;
     }
 
+    /**
+     * FileName is the name of the file to be created, modified, deleted, renamed, or appended.
+     */
     @JsonProperty("file-name")
     public String getFileName() {
         return fileName;
     }
 
+    /**
+     * FileName is the name of the file to be created, modified, deleted, renamed, or appended.
+     */
     @JsonProperty("file-name")
     public void setFileName(String fileName) {
         this.fileName = fileName;

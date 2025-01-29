@@ -39,6 +39,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * AWSMachineProviderConfig is the Schema for the awsmachineproviderconfigs API Compatibility level 2: Stable within a major release for a minimum of 9 months or 3 minor releases (whichever is longer).
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -98,9 +101,6 @@ public class AWSMachineProviderConfig implements Editable<AWSMachineProviderConf
 
     @JsonProperty("ami")
     private AWSResourceReference ami;
-    /**
-     * (Required)
-     */
     @JsonProperty("apiVersion")
     private String apiVersion = "machine.openshift.io/v1beta1";
     @JsonProperty("blockDevices")
@@ -118,9 +118,6 @@ public class AWSMachineProviderConfig implements Editable<AWSMachineProviderConf
     private String instanceType;
     @JsonProperty("keyName")
     private String keyName;
-    /**
-     * (Required)
-     */
     @JsonProperty("kind")
     private String kind = "AWSMachineProviderConfig";
     @JsonProperty("loadBalancers")
@@ -188,18 +185,24 @@ public class AWSMachineProviderConfig implements Editable<AWSMachineProviderConf
         this.userDataSecret = userDataSecret;
     }
 
+    /**
+     * AWSMachineProviderConfig is the Schema for the awsmachineproviderconfigs API Compatibility level 2: Stable within a major release for a minimum of 9 months or 3 minor releases (whichever is longer).
+     */
     @JsonProperty("ami")
     public AWSResourceReference getAmi() {
         return ami;
     }
 
+    /**
+     * AWSMachineProviderConfig is the Schema for the awsmachineproviderconfigs API Compatibility level 2: Stable within a major release for a minimum of 9 months or 3 minor releases (whichever is longer).
+     */
     @JsonProperty("ami")
     public void setAmi(AWSResourceReference ami) {
         this.ami = ami;
     }
 
     /**
-     * (Required)
+     * APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -207,86 +210,128 @@ public class AWSMachineProviderConfig implements Editable<AWSMachineProviderConf
     }
 
     /**
-     * (Required)
+     * APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
         this.apiVersion = apiVersion;
     }
 
+    /**
+     * BlockDevices is the set of block device mapping associated to this instance, block device without a name will be used as a root device and only one device without a name is allowed https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/block-device-mapping-concepts.html
+     */
     @JsonProperty("blockDevices")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<BlockDeviceMappingSpec> getBlockDevices() {
         return blockDevices;
     }
 
+    /**
+     * BlockDevices is the set of block device mapping associated to this instance, block device without a name will be used as a root device and only one device without a name is allowed https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/block-device-mapping-concepts.html
+     */
     @JsonProperty("blockDevices")
     public void setBlockDevices(List<BlockDeviceMappingSpec> blockDevices) {
         this.blockDevices = blockDevices;
     }
 
+    /**
+     * capacityReservationId specifies the target Capacity Reservation into which the instance should be launched. The field size should be greater than 0 and the field input must start with cr-&#42;&#42;&#42;
+     */
     @JsonProperty("capacityReservationId")
     public String getCapacityReservationId() {
         return capacityReservationId;
     }
 
+    /**
+     * capacityReservationId specifies the target Capacity Reservation into which the instance should be launched. The field size should be greater than 0 and the field input must start with cr-&#42;&#42;&#42;
+     */
     @JsonProperty("capacityReservationId")
     public void setCapacityReservationId(String capacityReservationId) {
         this.capacityReservationId = capacityReservationId;
     }
 
+    /**
+     * AWSMachineProviderConfig is the Schema for the awsmachineproviderconfigs API Compatibility level 2: Stable within a major release for a minimum of 9 months or 3 minor releases (whichever is longer).
+     */
     @JsonProperty("credentialsSecret")
     public LocalObjectReference getCredentialsSecret() {
         return credentialsSecret;
     }
 
+    /**
+     * AWSMachineProviderConfig is the Schema for the awsmachineproviderconfigs API Compatibility level 2: Stable within a major release for a minimum of 9 months or 3 minor releases (whichever is longer).
+     */
     @JsonProperty("credentialsSecret")
     public void setCredentialsSecret(LocalObjectReference credentialsSecret) {
         this.credentialsSecret = credentialsSecret;
     }
 
+    /**
+     * DeviceIndex is the index of the device on the instance for the network interface attachment. Defaults to 0.
+     */
     @JsonProperty("deviceIndex")
     public Long getDeviceIndex() {
         return deviceIndex;
     }
 
+    /**
+     * DeviceIndex is the index of the device on the instance for the network interface attachment. Defaults to 0.
+     */
     @JsonProperty("deviceIndex")
     public void setDeviceIndex(Long deviceIndex) {
         this.deviceIndex = deviceIndex;
     }
 
+    /**
+     * AWSMachineProviderConfig is the Schema for the awsmachineproviderconfigs API Compatibility level 2: Stable within a major release for a minimum of 9 months or 3 minor releases (whichever is longer).
+     */
     @JsonProperty("iamInstanceProfile")
     public AWSResourceReference getIamInstanceProfile() {
         return iamInstanceProfile;
     }
 
+    /**
+     * AWSMachineProviderConfig is the Schema for the awsmachineproviderconfigs API Compatibility level 2: Stable within a major release for a minimum of 9 months or 3 minor releases (whichever is longer).
+     */
     @JsonProperty("iamInstanceProfile")
     public void setIamInstanceProfile(AWSResourceReference iamInstanceProfile) {
         this.iamInstanceProfile = iamInstanceProfile;
     }
 
+    /**
+     * InstanceType is the type of instance to create. Example: m4.xlarge
+     */
     @JsonProperty("instanceType")
     public String getInstanceType() {
         return instanceType;
     }
 
+    /**
+     * InstanceType is the type of instance to create. Example: m4.xlarge
+     */
     @JsonProperty("instanceType")
     public void setInstanceType(String instanceType) {
         this.instanceType = instanceType;
     }
 
+    /**
+     * KeyName is the name of the KeyPair to use for SSH
+     */
     @JsonProperty("keyName")
     public String getKeyName() {
         return keyName;
     }
 
+    /**
+     * KeyName is the name of the KeyPair to use for SSH
+     */
     @JsonProperty("keyName")
     public void setKeyName(String keyName) {
         this.keyName = keyName;
     }
 
     /**
-     * (Required)
+     * Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -294,141 +339,219 @@ public class AWSMachineProviderConfig implements Editable<AWSMachineProviderConf
     }
 
     /**
-     * (Required)
+     * Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
      */
     @JsonProperty("kind")
     public void setKind(String kind) {
         this.kind = kind;
     }
 
+    /**
+     * LoadBalancers is the set of load balancers to which the new instance should be added once it is created.
+     */
     @JsonProperty("loadBalancers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<LoadBalancerReference> getLoadBalancers() {
         return loadBalancers;
     }
 
+    /**
+     * LoadBalancers is the set of load balancers to which the new instance should be added once it is created.
+     */
     @JsonProperty("loadBalancers")
     public void setLoadBalancers(List<LoadBalancerReference> loadBalancers) {
         this.loadBalancers = loadBalancers;
     }
 
+    /**
+     * AWSMachineProviderConfig is the Schema for the awsmachineproviderconfigs API Compatibility level 2: Stable within a major release for a minimum of 9 months or 3 minor releases (whichever is longer).
+     */
     @JsonProperty("metadata")
     public ObjectMeta getMetadata() {
         return metadata;
     }
 
+    /**
+     * AWSMachineProviderConfig is the Schema for the awsmachineproviderconfigs API Compatibility level 2: Stable within a major release for a minimum of 9 months or 3 minor releases (whichever is longer).
+     */
     @JsonProperty("metadata")
     public void setMetadata(ObjectMeta metadata) {
         this.metadata = metadata;
     }
 
+    /**
+     * AWSMachineProviderConfig is the Schema for the awsmachineproviderconfigs API Compatibility level 2: Stable within a major release for a minimum of 9 months or 3 minor releases (whichever is longer).
+     */
     @JsonProperty("metadataServiceOptions")
     public MetadataServiceOptions getMetadataServiceOptions() {
         return metadataServiceOptions;
     }
 
+    /**
+     * AWSMachineProviderConfig is the Schema for the awsmachineproviderconfigs API Compatibility level 2: Stable within a major release for a minimum of 9 months or 3 minor releases (whichever is longer).
+     */
     @JsonProperty("metadataServiceOptions")
     public void setMetadataServiceOptions(MetadataServiceOptions metadataServiceOptions) {
         this.metadataServiceOptions = metadataServiceOptions;
     }
 
+    /**
+     * NetworkInterfaceType specifies the type of network interface to be used for the primary network interface. Valid values are "ENA", "EFA", and omitted, which means no opinion and the platform chooses a good default which may change over time. The current default value is "ENA". Please visit https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/efa.html to learn more about the AWS Elastic Fabric Adapter interface option.
+     */
     @JsonProperty("networkInterfaceType")
     public String getNetworkInterfaceType() {
         return networkInterfaceType;
     }
 
+    /**
+     * NetworkInterfaceType specifies the type of network interface to be used for the primary network interface. Valid values are "ENA", "EFA", and omitted, which means no opinion and the platform chooses a good default which may change over time. The current default value is "ENA". Please visit https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/efa.html to learn more about the AWS Elastic Fabric Adapter interface option.
+     */
     @JsonProperty("networkInterfaceType")
     public void setNetworkInterfaceType(String networkInterfaceType) {
         this.networkInterfaceType = networkInterfaceType;
     }
 
+    /**
+     * AWSMachineProviderConfig is the Schema for the awsmachineproviderconfigs API Compatibility level 2: Stable within a major release for a minimum of 9 months or 3 minor releases (whichever is longer).
+     */
     @JsonProperty("placement")
     public Placement getPlacement() {
         return placement;
     }
 
+    /**
+     * AWSMachineProviderConfig is the Schema for the awsmachineproviderconfigs API Compatibility level 2: Stable within a major release for a minimum of 9 months or 3 minor releases (whichever is longer).
+     */
     @JsonProperty("placement")
     public void setPlacement(Placement placement) {
         this.placement = placement;
     }
 
+    /**
+     * PlacementGroupName specifies the name of the placement group in which to launch the instance. The placement group must already be created and may use any placement strategy. When omitted, no placement group is used when creating the EC2 instance.
+     */
     @JsonProperty("placementGroupName")
     public String getPlacementGroupName() {
         return placementGroupName;
     }
 
+    /**
+     * PlacementGroupName specifies the name of the placement group in which to launch the instance. The placement group must already be created and may use any placement strategy. When omitted, no placement group is used when creating the EC2 instance.
+     */
     @JsonProperty("placementGroupName")
     public void setPlacementGroupName(String placementGroupName) {
         this.placementGroupName = placementGroupName;
     }
 
+    /**
+     * placementGroupPartition is the partition number within the placement group in which to launch the instance. This must be an integer value between 1 and 7. It is only valid if the placement group, referred in `PlacementGroupName` was created with strategy set to partition.
+     */
     @JsonProperty("placementGroupPartition")
     public Integer getPlacementGroupPartition() {
         return placementGroupPartition;
     }
 
+    /**
+     * placementGroupPartition is the partition number within the placement group in which to launch the instance. This must be an integer value between 1 and 7. It is only valid if the placement group, referred in `PlacementGroupName` was created with strategy set to partition.
+     */
     @JsonProperty("placementGroupPartition")
     public void setPlacementGroupPartition(Integer placementGroupPartition) {
         this.placementGroupPartition = placementGroupPartition;
     }
 
+    /**
+     * PublicIP specifies whether the instance should get a public IP. If not present, it should use the default of its subnet.
+     */
     @JsonProperty("publicIp")
     public Boolean getPublicIp() {
         return publicIp;
     }
 
+    /**
+     * PublicIP specifies whether the instance should get a public IP. If not present, it should use the default of its subnet.
+     */
     @JsonProperty("publicIp")
     public void setPublicIp(Boolean publicIp) {
         this.publicIp = publicIp;
     }
 
+    /**
+     * SecurityGroups is an array of references to security groups that should be applied to the instance.
+     */
     @JsonProperty("securityGroups")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<AWSResourceReference> getSecurityGroups() {
         return securityGroups;
     }
 
+    /**
+     * SecurityGroups is an array of references to security groups that should be applied to the instance.
+     */
     @JsonProperty("securityGroups")
     public void setSecurityGroups(List<AWSResourceReference> securityGroups) {
         this.securityGroups = securityGroups;
     }
 
+    /**
+     * AWSMachineProviderConfig is the Schema for the awsmachineproviderconfigs API Compatibility level 2: Stable within a major release for a minimum of 9 months or 3 minor releases (whichever is longer).
+     */
     @JsonProperty("spotMarketOptions")
     public SpotMarketOptions getSpotMarketOptions() {
         return spotMarketOptions;
     }
 
+    /**
+     * AWSMachineProviderConfig is the Schema for the awsmachineproviderconfigs API Compatibility level 2: Stable within a major release for a minimum of 9 months or 3 minor releases (whichever is longer).
+     */
     @JsonProperty("spotMarketOptions")
     public void setSpotMarketOptions(SpotMarketOptions spotMarketOptions) {
         this.spotMarketOptions = spotMarketOptions;
     }
 
+    /**
+     * AWSMachineProviderConfig is the Schema for the awsmachineproviderconfigs API Compatibility level 2: Stable within a major release for a minimum of 9 months or 3 minor releases (whichever is longer).
+     */
     @JsonProperty("subnet")
     public AWSResourceReference getSubnet() {
         return subnet;
     }
 
+    /**
+     * AWSMachineProviderConfig is the Schema for the awsmachineproviderconfigs API Compatibility level 2: Stable within a major release for a minimum of 9 months or 3 minor releases (whichever is longer).
+     */
     @JsonProperty("subnet")
     public void setSubnet(AWSResourceReference subnet) {
         this.subnet = subnet;
     }
 
+    /**
+     * Tags is the set of tags to add to apply to an instance, in addition to the ones added by default by the actuator. These tags are additive. The actuator will ensure these tags are present, but will not remove any other tags that may exist on the instance.
+     */
     @JsonProperty("tags")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<TagSpecification> getTags() {
         return tags;
     }
 
+    /**
+     * Tags is the set of tags to add to apply to an instance, in addition to the ones added by default by the actuator. These tags are additive. The actuator will ensure these tags are present, but will not remove any other tags that may exist on the instance.
+     */
     @JsonProperty("tags")
     public void setTags(List<TagSpecification> tags) {
         this.tags = tags;
     }
 
+    /**
+     * AWSMachineProviderConfig is the Schema for the awsmachineproviderconfigs API Compatibility level 2: Stable within a major release for a minimum of 9 months or 3 minor releases (whichever is longer).
+     */
     @JsonProperty("userDataSecret")
     public LocalObjectReference getUserDataSecret() {
         return userDataSecret;
     }
 
+    /**
+     * AWSMachineProviderConfig is the Schema for the awsmachineproviderconfigs API Compatibility level 2: Stable within a major release for a minimum of 9 months or 3 minor releases (whichever is longer).
+     */
     @JsonProperty("userDataSecret")
     public void setUserDataSecret(LocalObjectReference userDataSecret) {
         this.userDataSecret = userDataSecret;

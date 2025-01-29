@@ -92,11 +92,17 @@ public class EventPolicySpecFrom implements Editable<EventPolicySpecFromBuilder>
         this.ref = ref;
     }
 
+    /**
+     * Sub sets the OIDC identity name to be allowed to send events to the target. It is also possible to set a glob-like pattern to match any suffix.
+     */
     @JsonProperty("sub")
     public String getSub() {
         return sub;
     }
 
+    /**
+     * Sub sets the OIDC identity name to be allowed to send events to the target. It is also possible to set a glob-like pattern to match any suffix.
+     */
     @JsonProperty("sub")
     public void setSub(String sub) {
         this.sub = sub;

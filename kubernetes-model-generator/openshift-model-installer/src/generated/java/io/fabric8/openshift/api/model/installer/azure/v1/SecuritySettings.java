@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * SecuritySettings define the security type and the UEFI settings of the virtual machine.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -86,31 +89,49 @@ public class SecuritySettings implements Editable<SecuritySettingsBuilder>, Kube
         this.trustedLaunch = trustedLaunch;
     }
 
+    /**
+     * SecuritySettings define the security type and the UEFI settings of the virtual machine.
+     */
     @JsonProperty("confidentialVM")
     public ConfidentialVM getConfidentialVM() {
         return confidentialVM;
     }
 
+    /**
+     * SecuritySettings define the security type and the UEFI settings of the virtual machine.
+     */
     @JsonProperty("confidentialVM")
     public void setConfidentialVM(ConfidentialVM confidentialVM) {
         this.confidentialVM = confidentialVM;
     }
 
+    /**
+     * SecurityType specifies the SecurityType of the virtual machine. It has to be set to any specified value to enable secure boot and vTPM. The default behavior is: secure boot and vTPM will not be enabled unless this property is set.
+     */
     @JsonProperty("securityType")
     public String getSecurityType() {
         return securityType;
     }
 
+    /**
+     * SecurityType specifies the SecurityType of the virtual machine. It has to be set to any specified value to enable secure boot and vTPM. The default behavior is: secure boot and vTPM will not be enabled unless this property is set.
+     */
     @JsonProperty("securityType")
     public void setSecurityType(String securityType) {
         this.securityType = securityType;
     }
 
+    /**
+     * SecuritySettings define the security type and the UEFI settings of the virtual machine.
+     */
     @JsonProperty("trustedLaunch")
     public TrustedLaunch getTrustedLaunch() {
         return trustedLaunch;
     }
 
+    /**
+     * SecuritySettings define the security type and the UEFI settings of the virtual machine.
+     */
     @JsonProperty("trustedLaunch")
     public void setTrustedLaunch(TrustedLaunch trustedLaunch) {
         this.trustedLaunch = trustedLaunch;

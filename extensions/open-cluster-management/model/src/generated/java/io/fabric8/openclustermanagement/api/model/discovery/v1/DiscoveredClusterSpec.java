@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * DiscoveredClusterSpec defines the desired state of DiscoveredCluster
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -142,171 +145,273 @@ public class DiscoveredClusterSpec implements Editable<DiscoveredClusterSpecBuil
         this.type = type;
     }
 
+    /**
+     * DiscoveredClusterSpec defines the desired state of DiscoveredCluster
+     */
     @JsonProperty("activityTimestamp")
     public String getActivityTimestamp() {
         return activityTimestamp;
     }
 
+    /**
+     * DiscoveredClusterSpec defines the desired state of DiscoveredCluster
+     */
     @JsonProperty("activityTimestamp")
     public void setActivityTimestamp(String activityTimestamp) {
         this.activityTimestamp = activityTimestamp;
     }
 
+    /**
+     * APIURL ...
+     */
     @JsonProperty("apiUrl")
     public String getApiUrl() {
         return apiUrl;
     }
 
+    /**
+     * APIURL ...
+     */
     @JsonProperty("apiUrl")
     public void setApiUrl(String apiUrl) {
         this.apiUrl = apiUrl;
     }
 
+    /**
+     * CloudProvider ...
+     */
     @JsonProperty("cloudProvider")
     public String getCloudProvider() {
         return cloudProvider;
     }
 
+    /**
+     * CloudProvider ...
+     */
     @JsonProperty("cloudProvider")
     public void setCloudProvider(String cloudProvider) {
         this.cloudProvider = cloudProvider;
     }
 
+    /**
+     * Console ...
+     */
     @JsonProperty("console")
     public String getConsole() {
         return console;
     }
 
+    /**
+     * Console ...
+     */
     @JsonProperty("console")
     public void setConsole(String console) {
         this.console = console;
     }
 
+    /**
+     * DiscoveredClusterSpec defines the desired state of DiscoveredCluster
+     */
     @JsonProperty("creationTimestamp")
     public String getCreationTimestamp() {
         return creationTimestamp;
     }
 
+    /**
+     * DiscoveredClusterSpec defines the desired state of DiscoveredCluster
+     */
     @JsonProperty("creationTimestamp")
     public void setCreationTimestamp(String creationTimestamp) {
         this.creationTimestamp = creationTimestamp;
     }
 
+    /**
+     * DiscoveredClusterSpec defines the desired state of DiscoveredCluster
+     */
     @JsonProperty("credential")
     public ObjectReference getCredential() {
         return credential;
     }
 
+    /**
+     * DiscoveredClusterSpec defines the desired state of DiscoveredCluster
+     */
     @JsonProperty("credential")
     public void setCredential(ObjectReference credential) {
         this.credential = credential;
     }
 
+    /**
+     * DisplayName ...
+     */
     @JsonProperty("displayName")
     public String getDisplayName() {
         return displayName;
     }
 
+    /**
+     * DisplayName ...
+     */
     @JsonProperty("displayName")
     public void setDisplayName(String displayName) {
         this.displayName = displayName;
     }
 
+    /**
+     * ImportAsManagedCluster ...
+     */
     @JsonProperty("importAsManagedCluster")
     public Boolean getImportAsManagedCluster() {
         return importAsManagedCluster;
     }
 
+    /**
+     * ImportAsManagedCluster ...
+     */
     @JsonProperty("importAsManagedCluster")
     public void setImportAsManagedCluster(Boolean importAsManagedCluster) {
         this.importAsManagedCluster = importAsManagedCluster;
     }
 
+    /**
+     * IsManagedCluster ...
+     */
     @JsonProperty("isManagedCluster")
     public Boolean getIsManagedCluster() {
         return isManagedCluster;
     }
 
+    /**
+     * IsManagedCluster ...
+     */
     @JsonProperty("isManagedCluster")
     public void setIsManagedCluster(Boolean isManagedCluster) {
         this.isManagedCluster = isManagedCluster;
     }
 
+    /**
+     * Name ...
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * Name ...
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * OCPClusterID ...
+     */
     @JsonProperty("ocpClusterId")
     public String getOcpClusterId() {
         return ocpClusterId;
     }
 
+    /**
+     * OCPClusterID ...
+     */
     @JsonProperty("ocpClusterId")
     public void setOcpClusterId(String ocpClusterId) {
         this.ocpClusterId = ocpClusterId;
     }
 
+    /**
+     * OpenshiftVersion ...
+     */
     @JsonProperty("openshiftVersion")
     public String getOpenshiftVersion() {
         return openshiftVersion;
     }
 
+    /**
+     * OpenshiftVersion ...
+     */
     @JsonProperty("openshiftVersion")
     public void setOpenshiftVersion(String openshiftVersion) {
         this.openshiftVersion = openshiftVersion;
     }
 
+    /**
+     * Owner ...
+     */
     @JsonProperty("owner")
     public String getOwner() {
         return owner;
     }
 
+    /**
+     * Owner ...
+     */
     @JsonProperty("owner")
     public void setOwner(String owner) {
         this.owner = owner;
     }
 
+    /**
+     * Region ...
+     */
     @JsonProperty("region")
     public String getRegion() {
         return region;
     }
 
+    /**
+     * Region ...
+     */
     @JsonProperty("region")
     public void setRegion(String region) {
         this.region = region;
     }
 
+    /**
+     * RHOCMClusterID ...
+     */
     @JsonProperty("rhocmClusterId")
     public String getRhocmClusterId() {
         return rhocmClusterId;
     }
 
+    /**
+     * RHOCMClusterID ...
+     */
     @JsonProperty("rhocmClusterId")
     public void setRhocmClusterId(String rhocmClusterId) {
         this.rhocmClusterId = rhocmClusterId;
     }
 
+    /**
+     * Status ...
+     */
     @JsonProperty("status")
     public String getStatus() {
         return status;
     }
 
+    /**
+     * Status ...
+     */
     @JsonProperty("status")
     public void setStatus(String status) {
         this.status = status;
     }
 
+    /**
+     * Type ...
+     */
     @JsonProperty("type")
     public String getType() {
         return type;
     }
 
+    /**
+     * Type ...
+     */
     @JsonProperty("type")
     public void setType(String type) {
         this.type = type;

@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Metal3MachineTemplateSpec defines the desired state of Metal3MachineTemplate.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class Metal3MachineTemplateSpec implements Editable<Metal3MachineTemplate
         this.template = template;
     }
 
+    /**
+     * When set to True, CAPM3 Machine controller will pick the same pool of BMHs' that were released during the upgrade operation.
+     */
     @JsonProperty("nodeReuse")
     public Boolean getNodeReuse() {
         return nodeReuse;
     }
 
+    /**
+     * When set to True, CAPM3 Machine controller will pick the same pool of BMHs' that were released during the upgrade operation.
+     */
     @JsonProperty("nodeReuse")
     public void setNodeReuse(Boolean nodeReuse) {
         this.nodeReuse = nodeReuse;
     }
 
+    /**
+     * Metal3MachineTemplateSpec defines the desired state of Metal3MachineTemplate.
+     */
     @JsonProperty("template")
     public Metal3MachineTemplateResource getTemplate() {
         return template;
     }
 
+    /**
+     * Metal3MachineTemplateSpec defines the desired state of Metal3MachineTemplate.
+     */
     @JsonProperty("template")
     public void setTemplate(Metal3MachineTemplateResource template) {
         this.template = template;

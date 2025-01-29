@@ -106,11 +106,17 @@ public class NodeDisruptionPolicySpecAction implements Editable<NodeDisruptionPo
         this.restart = restart;
     }
 
+    /**
+     * type represents the commands that will be carried out if this NodeDisruptionPolicySpecActionType is executed Valid values are Reboot, Drain, Reload, Restart, DaemonReload and None. reload/restart requires a corresponding service target specified in the reload/restart field. Other values require no further configuration
+     */
     @JsonProperty("type")
     public String getType() {
         return type;
     }
 
+    /**
+     * type represents the commands that will be carried out if this NodeDisruptionPolicySpecActionType is executed Valid values are Reboot, Drain, Reload, Restart, DaemonReload and None. reload/restart requires a corresponding service target specified in the reload/restart field. Other values require no further configuration
+     */
     @JsonProperty("type")
     public void setType(String type) {
         this.type = type;

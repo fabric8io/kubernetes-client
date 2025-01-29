@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * TemplateInstanceObject references an object created by a TemplateInstance.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -78,11 +81,17 @@ public class TemplateInstanceObject implements Editable<TemplateInstanceObjectBu
         this.ref = ref;
     }
 
+    /**
+     * TemplateInstanceObject references an object created by a TemplateInstance.
+     */
     @JsonProperty("ref")
     public ObjectReference getRef() {
         return ref;
     }
 
+    /**
+     * TemplateInstanceObject references an object created by a TemplateInstance.
+     */
     @JsonProperty("ref")
     public void setRef(ObjectReference ref) {
         this.ref = ref;

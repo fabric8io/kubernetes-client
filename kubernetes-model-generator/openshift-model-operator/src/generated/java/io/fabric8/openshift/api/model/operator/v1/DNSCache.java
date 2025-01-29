@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * DNSCache defines the fields for configuring DNS caching.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class DNSCache implements Editable<DNSCacheBuilder>, KubernetesResource
         this.positiveTTL = positiveTTL;
     }
 
+    /**
+     * DNSCache defines the fields for configuring DNS caching.
+     */
     @JsonProperty("negativeTTL")
     public String getNegativeTTL() {
         return negativeTTL;
     }
 
+    /**
+     * DNSCache defines the fields for configuring DNS caching.
+     */
     @JsonProperty("negativeTTL")
     public void setNegativeTTL(String negativeTTL) {
         this.negativeTTL = negativeTTL;
     }
 
+    /**
+     * DNSCache defines the fields for configuring DNS caching.
+     */
     @JsonProperty("positiveTTL")
     public String getPositiveTTL() {
         return positiveTTL;
     }
 
+    /**
+     * DNSCache defines the fields for configuring DNS caching.
+     */
     @JsonProperty("positiveTTL")
     public void setPositiveTTL(String positiveTTL) {
         this.positiveTTL = positiveTTL;

@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * StatusCondition contains condition information for an observability addon
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -94,51 +97,81 @@ public class StatusCondition implements Editable<StatusConditionBuilder>, Kubern
         this.type = type;
     }
 
+    /**
+     * StatusCondition contains condition information for an observability addon
+     */
     @JsonProperty("lastTransitionTime")
     public String getLastTransitionTime() {
         return lastTransitionTime;
     }
 
+    /**
+     * StatusCondition contains condition information for an observability addon
+     */
     @JsonProperty("lastTransitionTime")
     public void setLastTransitionTime(String lastTransitionTime) {
         this.lastTransitionTime = lastTransitionTime;
     }
 
+    /**
+     * StatusCondition contains condition information for an observability addon
+     */
     @JsonProperty("message")
     public String getMessage() {
         return message;
     }
 
+    /**
+     * StatusCondition contains condition information for an observability addon
+     */
     @JsonProperty("message")
     public void setMessage(String message) {
         this.message = message;
     }
 
+    /**
+     * StatusCondition contains condition information for an observability addon
+     */
     @JsonProperty("reason")
     public String getReason() {
         return reason;
     }
 
+    /**
+     * StatusCondition contains condition information for an observability addon
+     */
     @JsonProperty("reason")
     public void setReason(String reason) {
         this.reason = reason;
     }
 
+    /**
+     * StatusCondition contains condition information for an observability addon
+     */
     @JsonProperty("status")
     public String getStatus() {
         return status;
     }
 
+    /**
+     * StatusCondition contains condition information for an observability addon
+     */
     @JsonProperty("status")
     public void setStatus(String status) {
         this.status = status;
     }
 
+    /**
+     * StatusCondition contains condition information for an observability addon
+     */
     @JsonProperty("type")
     public String getType() {
         return type;
     }
 
+    /**
+     * StatusCondition contains condition information for an observability addon
+     */
     @JsonProperty("type")
     public void setType(String type) {
         this.type = type;

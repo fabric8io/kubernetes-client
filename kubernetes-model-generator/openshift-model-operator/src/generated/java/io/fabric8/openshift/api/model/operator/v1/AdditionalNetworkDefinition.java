@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * AdditionalNetworkDefinition configures an extra network that is available but not created by default. Instead, pods must request them by name. type must be specified, along with exactly one "Config" that matches the type.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -94,51 +97,81 @@ public class AdditionalNetworkDefinition implements Editable<AdditionalNetworkDe
         this.type = type;
     }
 
+    /**
+     * name is the name of the network. This will be populated in the resulting CRD This must be unique.
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * name is the name of the network. This will be populated in the resulting CRD This must be unique.
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * namespace is the namespace of the network. This will be populated in the resulting CRD If not given the network will be created in the default namespace.
+     */
     @JsonProperty("namespace")
     public String getNamespace() {
         return namespace;
     }
 
+    /**
+     * namespace is the namespace of the network. This will be populated in the resulting CRD If not given the network will be created in the default namespace.
+     */
     @JsonProperty("namespace")
     public void setNamespace(String namespace) {
         this.namespace = namespace;
     }
 
+    /**
+     * rawCNIConfig is the raw CNI configuration json to create in the NetworkAttachmentDefinition CRD
+     */
     @JsonProperty("rawCNIConfig")
     public String getRawCNIConfig() {
         return rawCNIConfig;
     }
 
+    /**
+     * rawCNIConfig is the raw CNI configuration json to create in the NetworkAttachmentDefinition CRD
+     */
     @JsonProperty("rawCNIConfig")
     public void setRawCNIConfig(String rawCNIConfig) {
         this.rawCNIConfig = rawCNIConfig;
     }
 
+    /**
+     * AdditionalNetworkDefinition configures an extra network that is available but not created by default. Instead, pods must request them by name. type must be specified, along with exactly one "Config" that matches the type.
+     */
     @JsonProperty("simpleMacvlanConfig")
     public SimpleMacvlanConfig getSimpleMacvlanConfig() {
         return simpleMacvlanConfig;
     }
 
+    /**
+     * AdditionalNetworkDefinition configures an extra network that is available but not created by default. Instead, pods must request them by name. type must be specified, along with exactly one "Config" that matches the type.
+     */
     @JsonProperty("simpleMacvlanConfig")
     public void setSimpleMacvlanConfig(SimpleMacvlanConfig simpleMacvlanConfig) {
         this.simpleMacvlanConfig = simpleMacvlanConfig;
     }
 
+    /**
+     * type is the type of network The supported values are NetworkTypeRaw, NetworkTypeSimpleMacvlan
+     */
     @JsonProperty("type")
     public String getType() {
         return type;
     }
 
+    /**
+     * type is the type of network The supported values are NetworkTypeRaw, NetworkTypeSimpleMacvlan
+     */
     @JsonProperty("type")
     public void setType(String type) {
         this.type = type;

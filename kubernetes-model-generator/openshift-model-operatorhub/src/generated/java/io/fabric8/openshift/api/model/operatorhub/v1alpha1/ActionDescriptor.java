@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ActionDescriptor describes a declarative action that can be performed on a custom resource instance
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -97,52 +100,82 @@ public class ActionDescriptor implements Editable<ActionDescriptorBuilder>, Kube
         this.xDescriptors = xDescriptors;
     }
 
+    /**
+     * ActionDescriptor describes a declarative action that can be performed on a custom resource instance
+     */
     @JsonProperty("description")
     public String getDescription() {
         return description;
     }
 
+    /**
+     * ActionDescriptor describes a declarative action that can be performed on a custom resource instance
+     */
     @JsonProperty("description")
     public void setDescription(String description) {
         this.description = description;
     }
 
+    /**
+     * ActionDescriptor describes a declarative action that can be performed on a custom resource instance
+     */
     @JsonProperty("displayName")
     public String getDisplayName() {
         return displayName;
     }
 
+    /**
+     * ActionDescriptor describes a declarative action that can be performed on a custom resource instance
+     */
     @JsonProperty("displayName")
     public void setDisplayName(String displayName) {
         this.displayName = displayName;
     }
 
+    /**
+     * ActionDescriptor describes a declarative action that can be performed on a custom resource instance
+     */
     @JsonProperty("path")
     public String getPath() {
         return path;
     }
 
+    /**
+     * ActionDescriptor describes a declarative action that can be performed on a custom resource instance
+     */
     @JsonProperty("path")
     public void setPath(String path) {
         this.path = path;
     }
 
+    /**
+     * ActionDescriptor describes a declarative action that can be performed on a custom resource instance
+     */
     @JsonProperty("value")
     public String getValue() {
         return value;
     }
 
+    /**
+     * ActionDescriptor describes a declarative action that can be performed on a custom resource instance
+     */
     @JsonProperty("value")
     public void setValue(String value) {
         this.value = value;
     }
 
+    /**
+     * ActionDescriptor describes a declarative action that can be performed on a custom resource instance
+     */
     @JsonProperty("x-descriptors")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getXDescriptors() {
         return xDescriptors;
     }
 
+    /**
+     * ActionDescriptor describes a declarative action that can be performed on a custom resource instance
+     */
     @JsonProperty("x-descriptors")
     public void setXDescriptors(List<String> xDescriptors) {
         this.xDescriptors = xDescriptors;

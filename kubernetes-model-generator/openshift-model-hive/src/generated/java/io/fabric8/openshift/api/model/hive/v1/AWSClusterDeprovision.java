@@ -33,6 +33,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * AWSClusterDeprovision contains AWS-specific configuration for a ClusterDeprovision
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -91,41 +94,65 @@ public class AWSClusterDeprovision implements Editable<AWSClusterDeprovisionBuil
         this.region = region;
     }
 
+    /**
+     * AWSClusterDeprovision contains AWS-specific configuration for a ClusterDeprovision
+     */
     @JsonProperty("credentialsAssumeRole")
     public AssumeRole getCredentialsAssumeRole() {
         return credentialsAssumeRole;
     }
 
+    /**
+     * AWSClusterDeprovision contains AWS-specific configuration for a ClusterDeprovision
+     */
     @JsonProperty("credentialsAssumeRole")
     public void setCredentialsAssumeRole(AssumeRole credentialsAssumeRole) {
         this.credentialsAssumeRole = credentialsAssumeRole;
     }
 
+    /**
+     * AWSClusterDeprovision contains AWS-specific configuration for a ClusterDeprovision
+     */
     @JsonProperty("credentialsSecretRef")
     public LocalObjectReference getCredentialsSecretRef() {
         return credentialsSecretRef;
     }
 
+    /**
+     * AWSClusterDeprovision contains AWS-specific configuration for a ClusterDeprovision
+     */
     @JsonProperty("credentialsSecretRef")
     public void setCredentialsSecretRef(LocalObjectReference credentialsSecretRef) {
         this.credentialsSecretRef = credentialsSecretRef;
     }
 
+    /**
+     * HostedZoneRole is the role to assume when performing operations on a hosted zone owned by another account.
+     */
     @JsonProperty("hostedZoneRole")
     public String getHostedZoneRole() {
         return hostedZoneRole;
     }
 
+    /**
+     * HostedZoneRole is the role to assume when performing operations on a hosted zone owned by another account.
+     */
     @JsonProperty("hostedZoneRole")
     public void setHostedZoneRole(String hostedZoneRole) {
         this.hostedZoneRole = hostedZoneRole;
     }
 
+    /**
+     * Region is the AWS region for this deprovisioning
+     */
     @JsonProperty("region")
     public String getRegion() {
         return region;
     }
 
+    /**
+     * Region is the AWS region for this deprovisioning
+     */
     @JsonProperty("region")
     public void setRegion(String region) {
         this.region = region;

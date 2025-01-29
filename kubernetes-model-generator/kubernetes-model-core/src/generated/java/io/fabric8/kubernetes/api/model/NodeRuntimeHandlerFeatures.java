@@ -17,6 +17,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * NodeRuntimeHandlerFeatures is a set of features implemented by the runtime handler.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -53,21 +56,33 @@ public class NodeRuntimeHandlerFeatures implements Editable<NodeRuntimeHandlerFe
         this.userNamespaces = userNamespaces;
     }
 
+    /**
+     * RecursiveReadOnlyMounts is set to true if the runtime handler supports RecursiveReadOnlyMounts.
+     */
     @JsonProperty("recursiveReadOnlyMounts")
     public Boolean getRecursiveReadOnlyMounts() {
         return recursiveReadOnlyMounts;
     }
 
+    /**
+     * RecursiveReadOnlyMounts is set to true if the runtime handler supports RecursiveReadOnlyMounts.
+     */
     @JsonProperty("recursiveReadOnlyMounts")
     public void setRecursiveReadOnlyMounts(Boolean recursiveReadOnlyMounts) {
         this.recursiveReadOnlyMounts = recursiveReadOnlyMounts;
     }
 
+    /**
+     * UserNamespaces is set to true if the runtime handler supports UserNamespaces, including for volumes.
+     */
     @JsonProperty("userNamespaces")
     public Boolean getUserNamespaces() {
         return userNamespaces;
     }
 
+    /**
+     * UserNamespaces is set to true if the runtime handler supports UserNamespaces, including for volumes.
+     */
     @JsonProperty("userNamespaces")
     public void setUserNamespaces(Boolean userNamespaces) {
         this.userNamespaces = userNamespaces;

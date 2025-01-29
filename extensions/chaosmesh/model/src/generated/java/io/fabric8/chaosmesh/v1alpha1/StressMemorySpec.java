@@ -85,22 +85,34 @@ public class StressMemorySpec implements Editable<StressMemorySpecBuilder>, Kube
         this.size = size;
     }
 
+    /**
+     * extend stress-ng options
+     */
     @JsonProperty("options")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getOptions() {
         return options;
     }
 
+    /**
+     * extend stress-ng options
+     */
     @JsonProperty("options")
     public void setOptions(List<String> options) {
         this.options = options;
     }
 
+    /**
+     * specifies N bytes consumed per vm worker, default is the total available memory. One can specify the size as % of total available memory or in units of B, KB/KiB, MB/MiB, GB/GiB, TB/TiB..
+     */
     @JsonProperty("size")
     public String getSize() {
         return size;
     }
 
+    /**
+     * specifies N bytes consumed per vm worker, default is the total available memory. One can specify the size as % of total available memory or in units of B, KB/KiB, MB/MiB, GB/GiB, TB/TiB..
+     */
     @JsonProperty("size")
     public void setSize(String size) {
         this.size = size;

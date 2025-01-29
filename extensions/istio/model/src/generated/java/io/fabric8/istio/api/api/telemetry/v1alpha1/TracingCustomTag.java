@@ -33,6 +33,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * CustomTag defines a tag to be added to a trace span that is based on an operator-supplied value. This value can either be a hard-coded value, a value taken from an environment variable known to the sidecar proxy, or from a request header.<br><p> <br><p> NOTE: when specified, `custom_tags` will fully replace any values provided by parent configuration.
+ */
 @JsonDeserialize(using = io.fabric8.kubernetes.model.jackson.JsonUnwrappedDeserializer.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -80,12 +83,18 @@ public class TracingCustomTag implements Editable<TracingCustomTagBuilder>, Kube
         this.type = type;
     }
 
+    /**
+     * CustomTag defines a tag to be added to a trace span that is based on an operator-supplied value. This value can either be a hard-coded value, a value taken from an environment variable known to the sidecar proxy, or from a request header.<br><p> <br><p> NOTE: when specified, `custom_tags` will fully replace any values provided by parent configuration.
+     */
     @JsonProperty("Type")
     @JsonUnwrapped
     public IsTracingCustomTagType getType() {
         return type;
     }
 
+    /**
+     * CustomTag defines a tag to be added to a trace span that is based on an operator-supplied value. This value can either be a hard-coded value, a value taken from an environment variable known to the sidecar proxy, or from a request header.<br><p> <br><p> NOTE: when specified, `custom_tags` will fully replace any values provided by parent configuration.
+     */
     @JsonProperty("Type")
     public void setType(IsTracingCustomTagType type) {
         this.type = type;

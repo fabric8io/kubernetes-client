@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * InterceptorSpec describes the Spec for an Interceptor
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -78,11 +81,17 @@ public class InterceptorSpec implements Editable<InterceptorSpecBuilder>, Kubern
         this.clientConfig = clientConfig;
     }
 
+    /**
+     * InterceptorSpec describes the Spec for an Interceptor
+     */
     @JsonProperty("clientConfig")
     public ClientConfig getClientConfig() {
         return clientConfig;
     }
 
+    /**
+     * InterceptorSpec describes the Spec for an Interceptor
+     */
     @JsonProperty("clientConfig")
     public void setClientConfig(ClientConfig clientConfig) {
         this.clientConfig = clientConfig;

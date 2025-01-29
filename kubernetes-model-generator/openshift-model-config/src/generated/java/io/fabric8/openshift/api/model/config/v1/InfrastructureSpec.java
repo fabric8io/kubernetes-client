@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * InfrastructureSpec contains settings that apply to the cluster infrastructure.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class InfrastructureSpec implements Editable<InfrastructureSpecBuilder>, 
         this.platformSpec = platformSpec;
     }
 
+    /**
+     * InfrastructureSpec contains settings that apply to the cluster infrastructure.
+     */
     @JsonProperty("cloudConfig")
     public ConfigMapFileReference getCloudConfig() {
         return cloudConfig;
     }
 
+    /**
+     * InfrastructureSpec contains settings that apply to the cluster infrastructure.
+     */
     @JsonProperty("cloudConfig")
     public void setCloudConfig(ConfigMapFileReference cloudConfig) {
         this.cloudConfig = cloudConfig;
     }
 
+    /**
+     * InfrastructureSpec contains settings that apply to the cluster infrastructure.
+     */
     @JsonProperty("platformSpec")
     public PlatformSpec getPlatformSpec() {
         return platformSpec;
     }
 
+    /**
+     * InfrastructureSpec contains settings that apply to the cluster infrastructure.
+     */
     @JsonProperty("platformSpec")
     public void setPlatformSpec(PlatformSpec platformSpec) {
         this.platformSpec = platformSpec;

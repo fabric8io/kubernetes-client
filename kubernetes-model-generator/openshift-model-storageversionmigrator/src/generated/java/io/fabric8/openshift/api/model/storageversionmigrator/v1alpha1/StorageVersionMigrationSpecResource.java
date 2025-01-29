@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * The resource that is being migrated. The migrator sends requests to the endpoint serving the resource. Immutable.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -86,31 +89,49 @@ public class StorageVersionMigrationSpecResource implements Editable<StorageVers
         this.version = version;
     }
 
+    /**
+     * The name of the group.
+     */
     @JsonProperty("group")
     public String getGroup() {
         return group;
     }
 
+    /**
+     * The name of the group.
+     */
     @JsonProperty("group")
     public void setGroup(String group) {
         this.group = group;
     }
 
+    /**
+     * The name of the resource.
+     */
     @JsonProperty("resource")
     public String getResource() {
         return resource;
     }
 
+    /**
+     * The name of the resource.
+     */
     @JsonProperty("resource")
     public void setResource(String resource) {
         this.resource = resource;
     }
 
+    /**
+     * The name of the version.
+     */
     @JsonProperty("version")
     public String getVersion() {
         return version;
     }
 
+    /**
+     * The name of the version.
+     */
     @JsonProperty("version")
     public void setVersion(String version) {
         this.version = version;

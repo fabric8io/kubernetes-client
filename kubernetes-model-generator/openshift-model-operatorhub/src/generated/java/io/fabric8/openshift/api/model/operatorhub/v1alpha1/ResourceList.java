@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ResourceList represents a list of resources which are of the same Group/Kind
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -89,32 +92,50 @@ public class ResourceList implements Editable<ResourceListBuilder>, KubernetesRe
         this.kind = kind;
     }
 
+    /**
+     * ResourceList represents a list of resources which are of the same Group/Kind
+     */
     @JsonProperty("group")
     public String getGroup() {
         return group;
     }
 
+    /**
+     * ResourceList represents a list of resources which are of the same Group/Kind
+     */
     @JsonProperty("group")
     public void setGroup(String group) {
         this.group = group;
     }
 
+    /**
+     * ResourceList represents a list of resources which are of the same Group/Kind
+     */
     @JsonProperty("instances")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ResourceInstance> getInstances() {
         return instances;
     }
 
+    /**
+     * ResourceList represents a list of resources which are of the same Group/Kind
+     */
     @JsonProperty("instances")
     public void setInstances(List<ResourceInstance> instances) {
         this.instances = instances;
     }
 
+    /**
+     * ResourceList represents a list of resources which are of the same Group/Kind
+     */
     @JsonProperty("kind")
     public String getKind() {
         return kind;
     }
 
+    /**
+     * ResourceList represents a list of resources which are of the same Group/Kind
+     */
     @JsonProperty("kind")
     public void setKind(String kind) {
         this.kind = kind;

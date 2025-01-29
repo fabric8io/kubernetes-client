@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * DiskSettings describe ephemeral disk settings for the os disk.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -78,11 +81,17 @@ public class DiskSettings implements Editable<DiskSettingsBuilder>, KubernetesRe
         this.ephemeralStorageLocation = ephemeralStorageLocation;
     }
 
+    /**
+     * EphemeralStorageLocation enables ephemeral OS when set to 'Local'. Possible values include: 'Local'. See https://docs.microsoft.com/en-us/azure/virtual-machines/ephemeral-os-disks for full details. Empty value means no opinion and the platform chooses a default, which is subject to change over time. Currently the default is that disks are saved to remote Azure storage.
+     */
     @JsonProperty("ephemeralStorageLocation")
     public String getEphemeralStorageLocation() {
         return ephemeralStorageLocation;
     }
 
+    /**
+     * EphemeralStorageLocation enables ephemeral OS when set to 'Local'. Possible values include: 'Local'. See https://docs.microsoft.com/en-us/azure/virtual-machines/ephemeral-os-disks for full details. Empty value means no opinion and the platform chooses a default, which is subject to change over time. Currently the default is that disks are saved to remote Azure storage.
+     */
     @JsonProperty("ephemeralStorageLocation")
     public void setEphemeralStorageLocation(String ephemeralStorageLocation) {
         this.ephemeralStorageLocation = ephemeralStorageLocation;

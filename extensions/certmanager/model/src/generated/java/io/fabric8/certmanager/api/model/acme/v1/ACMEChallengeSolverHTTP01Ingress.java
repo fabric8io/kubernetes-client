@@ -98,21 +98,33 @@ public class ACMEChallengeSolverHTTP01Ingress implements Editable<ACMEChallengeS
         this.serviceType = serviceType;
     }
 
+    /**
+     * This field configures the annotation `kubernetes.io/ingress.class` when creating Ingress resources to solve ACME challenges that use this challenge solver. Only one of `class`, `name` or `ingressClassName` may be specified.
+     */
     @JsonProperty("class")
     public String getClassName() {
         return className;
     }
 
+    /**
+     * This field configures the annotation `kubernetes.io/ingress.class` when creating Ingress resources to solve ACME challenges that use this challenge solver. Only one of `class`, `name` or `ingressClassName` may be specified.
+     */
     @JsonProperty("class")
     public void setClassName(String className) {
         this.className = className;
     }
 
+    /**
+     * This field configures the field `ingressClassName` on the created Ingress resources used to solve ACME challenges that use this challenge solver. This is the recommended way of configuring the ingress class. Only one of `class`, `name` or `ingressClassName` may be specified.
+     */
     @JsonProperty("ingressClassName")
     public String getIngressClassName() {
         return ingressClassName;
     }
 
+    /**
+     * This field configures the field `ingressClassName` on the created Ingress resources used to solve ACME challenges that use this challenge solver. This is the recommended way of configuring the ingress class. Only one of `class`, `name` or `ingressClassName` may be specified.
+     */
     @JsonProperty("ingressClassName")
     public void setIngressClassName(String ingressClassName) {
         this.ingressClassName = ingressClassName;
@@ -128,11 +140,17 @@ public class ACMEChallengeSolverHTTP01Ingress implements Editable<ACMEChallengeS
         this.ingressTemplate = ingressTemplate;
     }
 
+    /**
+     * The name of the ingress resource that should have ACME challenge solving routes inserted into it in order to solve HTTP01 challenges. This is typically used in conjunction with ingress controllers like ingress-gce, which maintains a 1:1 mapping between external IPs and ingress resources. Only one of `class`, `name` or `ingressClassName` may be specified.
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * The name of the ingress resource that should have ACME challenge solving routes inserted into it in order to solve HTTP01 challenges. This is typically used in conjunction with ingress controllers like ingress-gce, which maintains a 1:1 mapping between external IPs and ingress resources. Only one of `class`, `name` or `ingressClassName` may be specified.
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;
@@ -148,11 +166,17 @@ public class ACMEChallengeSolverHTTP01Ingress implements Editable<ACMEChallengeS
         this.podTemplate = podTemplate;
     }
 
+    /**
+     * Optional service type for Kubernetes solver service. Supported values are NodePort or ClusterIP. If unset, defaults to NodePort.
+     */
     @JsonProperty("serviceType")
     public String getServiceType() {
         return serviceType;
     }
 
+    /**
+     * Optional service type for Kubernetes solver service. Supported values are NodePort or ClusterIP. If unset, defaults to NodePort.
+     */
     @JsonProperty("serviceType")
     public void setServiceType(String serviceType) {
         this.serviceType = serviceType;

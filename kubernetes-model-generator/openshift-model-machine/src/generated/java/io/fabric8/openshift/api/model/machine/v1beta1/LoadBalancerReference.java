@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * LoadBalancerReference is a reference to a load balancer on AWS.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class LoadBalancerReference implements Editable<LoadBalancerReferenceBuil
         this.type = type;
     }
 
+    /**
+     * LoadBalancerReference is a reference to a load balancer on AWS.
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * LoadBalancerReference is a reference to a load balancer on AWS.
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * LoadBalancerReference is a reference to a load balancer on AWS.
+     */
     @JsonProperty("type")
     public String getType() {
         return type;
     }
 
+    /**
+     * LoadBalancerReference is a reference to a load balancer on AWS.
+     */
     @JsonProperty("type")
     public void setType(String type) {
         this.type = type;

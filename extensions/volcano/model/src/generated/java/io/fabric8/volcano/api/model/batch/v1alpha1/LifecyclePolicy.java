@@ -35,6 +35,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * LifecyclePolicy specifies the lifecycle and error handling of task and job.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -98,52 +101,82 @@ public class LifecyclePolicy implements Editable<LifecyclePolicyBuilder>, Kubern
         this.timeout = timeout;
     }
 
+    /**
+     * The action that will be taken to the PodGroup according to Event. One of "Restart", "None". Default to None.
+     */
     @JsonProperty("action")
     public String getAction() {
         return action;
     }
 
+    /**
+     * The action that will be taken to the PodGroup according to Event. One of "Restart", "None". Default to None.
+     */
     @JsonProperty("action")
     public void setAction(String action) {
         this.action = action;
     }
 
+    /**
+     * The Event recorded by scheduler; the controller takes actions according to this Event.
+     */
     @JsonProperty("event")
     public String getEvent() {
         return event;
     }
 
+    /**
+     * The Event recorded by scheduler; the controller takes actions according to this Event.
+     */
     @JsonProperty("event")
     public void setEvent(String event) {
         this.event = event;
     }
 
+    /**
+     * The Events recorded by scheduler; the controller takes actions according to this Events.
+     */
     @JsonProperty("events")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getEvents() {
         return events;
     }
 
+    /**
+     * The Events recorded by scheduler; the controller takes actions according to this Events.
+     */
     @JsonProperty("events")
     public void setEvents(List<String> events) {
         this.events = events;
     }
 
+    /**
+     * The exit code of the pod container, controller will take action according to this code. Note: only one of `Event` or `ExitCode` can be specified.
+     */
     @JsonProperty("exitCode")
     public Integer getExitCode() {
         return exitCode;
     }
 
+    /**
+     * The exit code of the pod container, controller will take action according to this code. Note: only one of `Event` or `ExitCode` can be specified.
+     */
     @JsonProperty("exitCode")
     public void setExitCode(Integer exitCode) {
         this.exitCode = exitCode;
     }
 
+    /**
+     * LifecyclePolicy specifies the lifecycle and error handling of task and job.
+     */
     @JsonProperty("timeout")
     public Duration getTimeout() {
         return timeout;
     }
 
+    /**
+     * LifecyclePolicy specifies the lifecycle and error handling of task and job.
+     */
     @JsonProperty("timeout")
     public void setTimeout(Duration timeout) {
         this.timeout = timeout;

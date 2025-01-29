@@ -92,34 +92,52 @@ public class EventPolicySpec implements Editable<EventPolicySpecBuilder>, Kubern
         this.to = to;
     }
 
+    /**
+     * Filters is the list of SubscriptoinsApi filters which determine whether or not the event is accepted. It is an array of filter expressions that evaluate to true or false. If any filter expression in the array evaluates to false, the event will not pass the target resource's ingress. Absence of any filters implies that the filters always evaluate to true.
+     */
     @JsonProperty("filters")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<SubscriptionsAPIFilter> getFilters() {
         return filters;
     }
 
+    /**
+     * Filters is the list of SubscriptoinsApi filters which determine whether or not the event is accepted. It is an array of filter expressions that evaluate to true or false. If any filter expression in the array evaluates to false, the event will not pass the target resource's ingress. Absence of any filters implies that the filters always evaluate to true.
+     */
     @JsonProperty("filters")
     public void setFilters(List<SubscriptionsAPIFilter> filters) {
         this.filters = filters;
     }
 
+    /**
+     * From is the list of sources or oidc identities, which are allowed to send events to the targets (.spec.to).
+     */
     @JsonProperty("from")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<EventPolicySpecFrom> getFrom() {
         return from;
     }
 
+    /**
+     * From is the list of sources or oidc identities, which are allowed to send events to the targets (.spec.to).
+     */
     @JsonProperty("from")
     public void setFrom(List<EventPolicySpecFrom> from) {
         this.from = from;
     }
 
+    /**
+     * To lists all resources for which this policy applies. Resources in this list must act like an ingress and have an audience. The resources are part of the same namespace as the EventPolicy. An empty list means it applies to all resources in the EventPolicies namespace
+     */
     @JsonProperty("to")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<EventPolicySpecTo> getTo() {
         return to;
     }
 
+    /**
+     * To lists all resources for which this policy applies. Resources in this list must act like an ingress and have an audience. The resources are part of the same namespace as the EventPolicy. An empty list means it applies to all resources in the EventPolicies namespace
+     */
     @JsonProperty("to")
     public void setTo(List<EventPolicySpecTo> to) {
         this.to = to;

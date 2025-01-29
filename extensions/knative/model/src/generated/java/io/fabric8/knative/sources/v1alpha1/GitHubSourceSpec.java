@@ -36,6 +36,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * GitHubSourceSpec defines the desired state of GitHubSource
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -115,92 +118,146 @@ public class GitHubSourceSpec implements Editable<GitHubSourceSpecBuilder>, Kube
         this.sink = sink;
     }
 
+    /**
+     * GitHubSourceSpec defines the desired state of GitHubSource
+     */
     @JsonProperty("accessToken")
     public SecretValueFromSource getAccessToken() {
         return accessToken;
     }
 
+    /**
+     * GitHubSourceSpec defines the desired state of GitHubSource
+     */
     @JsonProperty("accessToken")
     public void setAccessToken(SecretValueFromSource accessToken) {
         this.accessToken = accessToken;
     }
 
+    /**
+     * GitHubSourceSpec defines the desired state of GitHubSource
+     */
     @JsonProperty("ceOverrides")
     public CloudEventOverrides getCeOverrides() {
         return ceOverrides;
     }
 
+    /**
+     * GitHubSourceSpec defines the desired state of GitHubSource
+     */
     @JsonProperty("ceOverrides")
     public void setCeOverrides(CloudEventOverrides ceOverrides) {
         this.ceOverrides = ceOverrides;
     }
 
+    /**
+     * EventType is the type of event to receive from GitHub. These correspond to the "Webhook event name" values listed at https://developer.github.com/v3/activity/events/types/ - ie "pull_request"
+     */
     @JsonProperty("eventTypes")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getEventTypes() {
         return eventTypes;
     }
 
+    /**
+     * EventType is the type of event to receive from GitHub. These correspond to the "Webhook event name" values listed at https://developer.github.com/v3/activity/events/types/ - ie "pull_request"
+     */
     @JsonProperty("eventTypes")
     public void setEventTypes(List<String> eventTypes) {
         this.eventTypes = eventTypes;
     }
 
+    /**
+     * API URL if using github enterprise (default https://api.github.com)
+     */
     @JsonProperty("githubAPIURL")
     public String getGithubAPIURL() {
         return githubAPIURL;
     }
 
+    /**
+     * API URL if using github enterprise (default https://api.github.com)
+     */
     @JsonProperty("githubAPIURL")
     public void setGithubAPIURL(String githubAPIURL) {
         this.githubAPIURL = githubAPIURL;
     }
 
+    /**
+     * OwnerAndRepository is the GitHub owner/org and repository to receive events from. The repository may be left off to receive events from an entire organization. Examples:<br><p>  myuser/project<br><p>  myorganization
+     */
     @JsonProperty("ownerAndRepository")
     public String getOwnerAndRepository() {
         return ownerAndRepository;
     }
 
+    /**
+     * OwnerAndRepository is the GitHub owner/org and repository to receive events from. The repository may be left off to receive events from an entire organization. Examples:<br><p>  myuser/project<br><p>  myorganization
+     */
     @JsonProperty("ownerAndRepository")
     public void setOwnerAndRepository(String ownerAndRepository) {
         this.ownerAndRepository = ownerAndRepository;
     }
 
+    /**
+     * GitHubSourceSpec defines the desired state of GitHubSource
+     */
     @JsonProperty("secretToken")
     public SecretValueFromSource getSecretToken() {
         return secretToken;
     }
 
+    /**
+     * GitHubSourceSpec defines the desired state of GitHubSource
+     */
     @JsonProperty("secretToken")
     public void setSecretToken(SecretValueFromSource secretToken) {
         this.secretToken = secretToken;
     }
 
+    /**
+     * Secure can be set to true to configure the webhook to use https, or false to use http.  Omitting it relies on the scheme of the Knative Service created (e.g. if auto-TLS is enabled it should do the right thing).
+     */
     @JsonProperty("secure")
     public Boolean getSecure() {
         return secure;
     }
 
+    /**
+     * Secure can be set to true to configure the webhook to use https, or false to use http.  Omitting it relies on the scheme of the Knative Service created (e.g. if auto-TLS is enabled it should do the right thing).
+     */
     @JsonProperty("secure")
     public void setSecure(Boolean secure) {
         this.secure = secure;
     }
 
+    /**
+     * ServiceAccountName holds the name of the Kubernetes service account as which the underlying K8s resources should be run. If unspecified this will default to the "default" service account for the namespace in which the GitHubSource exists.
+     */
     @JsonProperty("serviceAccountName")
     public String getServiceAccountName() {
         return serviceAccountName;
     }
 
+    /**
+     * ServiceAccountName holds the name of the Kubernetes service account as which the underlying K8s resources should be run. If unspecified this will default to the "default" service account for the namespace in which the GitHubSource exists.
+     */
     @JsonProperty("serviceAccountName")
     public void setServiceAccountName(String serviceAccountName) {
         this.serviceAccountName = serviceAccountName;
     }
 
+    /**
+     * GitHubSourceSpec defines the desired state of GitHubSource
+     */
     @JsonProperty("sink")
     public Destination getSink() {
         return sink;
     }
 
+    /**
+     * GitHubSourceSpec defines the desired state of GitHubSource
+     */
     @JsonProperty("sink")
     public void setSink(Destination sink) {
         this.sink = sink;

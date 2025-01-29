@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * PodScalableStatus is the observed state of a PodScalable (or at least our shared portion).
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -78,11 +81,17 @@ public class PodScalableStatus implements Editable<PodScalableStatusBuilder>, Ku
         this.replicas = replicas;
     }
 
+    /**
+     * PodScalableStatus is the observed state of a PodScalable (or at least our shared portion).
+     */
     @JsonProperty("replicas")
     public Integer getReplicas() {
         return replicas;
     }
 
+    /**
+     * PodScalableStatus is the observed state of a PodScalable (or at least our shared portion).
+     */
     @JsonProperty("replicas")
     public void setReplicas(Integer replicas) {
         this.replicas = replicas;

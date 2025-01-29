@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * PrometheusWebSpec defines the configuration of the Prometheus web server.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -90,41 +93,65 @@ public class PrometheusWebSpec implements Editable<PrometheusWebSpecBuilder>, Ku
         this.tlsConfig = tlsConfig;
     }
 
+    /**
+     * PrometheusWebSpec defines the configuration of the Prometheus web server.
+     */
     @JsonProperty("httpConfig")
     public WebHTTPConfig getHttpConfig() {
         return httpConfig;
     }
 
+    /**
+     * PrometheusWebSpec defines the configuration of the Prometheus web server.
+     */
     @JsonProperty("httpConfig")
     public void setHttpConfig(WebHTTPConfig httpConfig) {
         this.httpConfig = httpConfig;
     }
 
+    /**
+     * Defines the maximum number of simultaneous connections A zero value means that Prometheus doesn't accept any incoming connection.
+     */
     @JsonProperty("maxConnections")
     public Integer getMaxConnections() {
         return maxConnections;
     }
 
+    /**
+     * Defines the maximum number of simultaneous connections A zero value means that Prometheus doesn't accept any incoming connection.
+     */
     @JsonProperty("maxConnections")
     public void setMaxConnections(Integer maxConnections) {
         this.maxConnections = maxConnections;
     }
 
+    /**
+     * The prometheus web page title.
+     */
     @JsonProperty("pageTitle")
     public String getPageTitle() {
         return pageTitle;
     }
 
+    /**
+     * The prometheus web page title.
+     */
     @JsonProperty("pageTitle")
     public void setPageTitle(String pageTitle) {
         this.pageTitle = pageTitle;
     }
 
+    /**
+     * PrometheusWebSpec defines the configuration of the Prometheus web server.
+     */
     @JsonProperty("tlsConfig")
     public WebTLSConfig getTlsConfig() {
         return tlsConfig;
     }
 
+    /**
+     * PrometheusWebSpec defines the configuration of the Prometheus web server.
+     */
     @JsonProperty("tlsConfig")
     public void setTlsConfig(WebTLSConfig tlsConfig) {
         this.tlsConfig = tlsConfig;

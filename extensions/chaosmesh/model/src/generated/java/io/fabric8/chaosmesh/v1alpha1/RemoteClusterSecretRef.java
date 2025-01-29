@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * RemoteClusterSecretRef refers to a secret in any namespaces
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -86,31 +89,49 @@ public class RemoteClusterSecretRef implements Editable<RemoteClusterSecretRefBu
         this.namespace = namespace;
     }
 
+    /**
+     * RemoteClusterSecretRef refers to a secret in any namespaces
+     */
     @JsonProperty("key")
     public String getKey() {
         return key;
     }
 
+    /**
+     * RemoteClusterSecretRef refers to a secret in any namespaces
+     */
     @JsonProperty("key")
     public void setKey(String key) {
         this.key = key;
     }
 
+    /**
+     * RemoteClusterSecretRef refers to a secret in any namespaces
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * RemoteClusterSecretRef refers to a secret in any namespaces
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * RemoteClusterSecretRef refers to a secret in any namespaces
+     */
     @JsonProperty("namespace")
     public String getNamespace() {
         return namespace;
     }
 
+    /**
+     * RemoteClusterSecretRef refers to a secret in any namespaces
+     */
     @JsonProperty("namespace")
     public void setNamespace(String namespace) {
         this.namespace = namespace;

@@ -78,11 +78,17 @@ public class HTTPConfigSpec implements Editable<HTTPConfigSpecBuilder>, Kubernet
         this.filePath = filePath;
     }
 
+    /**
+     * The config file path
+     */
     @JsonProperty("file_path")
     public String getFilePath() {
         return filePath;
     }
 
+    /**
+     * The config file path
+     */
     @JsonProperty("file_path")
     public void setFilePath(String filePath) {
         this.filePath = filePath;

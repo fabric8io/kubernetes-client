@@ -78,11 +78,17 @@ public class SelfSubjectRulesReviewSpec implements Editable<SelfSubjectRulesRevi
         this.namespace = namespace;
     }
 
+    /**
+     * Namespace to evaluate rules for. Required.
+     */
     @JsonProperty("namespace")
     public String getNamespace() {
         return namespace;
     }
 
+    /**
+     * Namespace to evaluate rules for. Required.
+     */
     @JsonProperty("namespace")
     public void setNamespace(String namespace) {
         this.namespace = namespace;

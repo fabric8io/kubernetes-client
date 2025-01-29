@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Thanos QueryFrontend Spec.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -89,32 +92,50 @@ public class QueryFrontendSpec implements Editable<QueryFrontendSpecBuilder>, Ku
         this.resources = resources;
     }
 
+    /**
+     * WARNING: Use only with guidance from Red Hat Support. Using this feature incorrectly can lead to an unrecoverable state, data loss, or both, which is not covered by Red Hat Support.
+     */
     @JsonProperty("containers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Container> getContainers() {
         return containers;
     }
 
+    /**
+     * WARNING: Use only with guidance from Red Hat Support. Using this feature incorrectly can lead to an unrecoverable state, data loss, or both, which is not covered by Red Hat Support.
+     */
     @JsonProperty("containers")
     public void setContainers(List<Container> containers) {
         this.containers = containers;
     }
 
+    /**
+     * Replicas for this component.
+     */
     @JsonProperty("replicas")
     public Integer getReplicas() {
         return replicas;
     }
 
+    /**
+     * Replicas for this component.
+     */
     @JsonProperty("replicas")
     public void setReplicas(Integer replicas) {
         this.replicas = replicas;
     }
 
+    /**
+     * Thanos QueryFrontend Spec.
+     */
     @JsonProperty("resources")
     public ResourceRequirements getResources() {
         return resources;
     }
 
+    /**
+     * Thanos QueryFrontend Spec.
+     */
     @JsonProperty("resources")
     public void setResources(ResourceRequirements resources) {
         this.resources = resources;

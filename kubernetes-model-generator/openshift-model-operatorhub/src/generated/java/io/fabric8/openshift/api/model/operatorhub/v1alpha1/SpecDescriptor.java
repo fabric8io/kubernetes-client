@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * SpecDescriptor describes a field in a spec block of a CRD so that OLM can consume it
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -97,52 +100,82 @@ public class SpecDescriptor implements Editable<SpecDescriptorBuilder>, Kubernet
         this.xDescriptors = xDescriptors;
     }
 
+    /**
+     * SpecDescriptor describes a field in a spec block of a CRD so that OLM can consume it
+     */
     @JsonProperty("description")
     public String getDescription() {
         return description;
     }
 
+    /**
+     * SpecDescriptor describes a field in a spec block of a CRD so that OLM can consume it
+     */
     @JsonProperty("description")
     public void setDescription(String description) {
         this.description = description;
     }
 
+    /**
+     * SpecDescriptor describes a field in a spec block of a CRD so that OLM can consume it
+     */
     @JsonProperty("displayName")
     public String getDisplayName() {
         return displayName;
     }
 
+    /**
+     * SpecDescriptor describes a field in a spec block of a CRD so that OLM can consume it
+     */
     @JsonProperty("displayName")
     public void setDisplayName(String displayName) {
         this.displayName = displayName;
     }
 
+    /**
+     * SpecDescriptor describes a field in a spec block of a CRD so that OLM can consume it
+     */
     @JsonProperty("path")
     public String getPath() {
         return path;
     }
 
+    /**
+     * SpecDescriptor describes a field in a spec block of a CRD so that OLM can consume it
+     */
     @JsonProperty("path")
     public void setPath(String path) {
         this.path = path;
     }
 
+    /**
+     * SpecDescriptor describes a field in a spec block of a CRD so that OLM can consume it
+     */
     @JsonProperty("value")
     public String getValue() {
         return value;
     }
 
+    /**
+     * SpecDescriptor describes a field in a spec block of a CRD so that OLM can consume it
+     */
     @JsonProperty("value")
     public void setValue(String value) {
         this.value = value;
     }
 
+    /**
+     * SpecDescriptor describes a field in a spec block of a CRD so that OLM can consume it
+     */
     @JsonProperty("x-descriptors")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getXDescriptors() {
         return xDescriptors;
     }
 
+    /**
+     * SpecDescriptor describes a field in a spec block of a CRD so that OLM can consume it
+     */
     @JsonProperty("x-descriptors")
     public void setXDescriptors(List<String> xDescriptors) {
         this.xDescriptors = xDescriptors;

@@ -90,41 +90,65 @@ public class ClientConnectionOverrides implements Editable<ClientConnectionOverr
         this.qps = qps;
     }
 
+    /**
+     * acceptContentTypes defines the Accept header sent by clients when connecting to a server, overriding the default value of 'application/json'. This field will control all connections to the server used by a particular client.
+     */
     @JsonProperty("acceptContentTypes")
     public String getAcceptContentTypes() {
         return acceptContentTypes;
     }
 
+    /**
+     * acceptContentTypes defines the Accept header sent by clients when connecting to a server, overriding the default value of 'application/json'. This field will control all connections to the server used by a particular client.
+     */
     @JsonProperty("acceptContentTypes")
     public void setAcceptContentTypes(String acceptContentTypes) {
         this.acceptContentTypes = acceptContentTypes;
     }
 
+    /**
+     * burst allows extra queries to accumulate when a client is exceeding its rate.
+     */
     @JsonProperty("burst")
     public Integer getBurst() {
         return burst;
     }
 
+    /**
+     * burst allows extra queries to accumulate when a client is exceeding its rate.
+     */
     @JsonProperty("burst")
     public void setBurst(Integer burst) {
         this.burst = burst;
     }
 
+    /**
+     * contentType is the content type used when sending data to the server from this client.
+     */
     @JsonProperty("contentType")
     public String getContentType() {
         return contentType;
     }
 
+    /**
+     * contentType is the content type used when sending data to the server from this client.
+     */
     @JsonProperty("contentType")
     public void setContentType(String contentType) {
         this.contentType = contentType;
     }
 
+    /**
+     * qps controls the number of queries per second allowed for this connection.
+     */
     @JsonProperty("qps")
     public Float getQps() {
         return qps;
     }
 
+    /**
+     * qps controls the number of queries per second allowed for this connection.
+     */
     @JsonProperty("qps")
     public void setQps(Float qps) {
         this.qps = qps;

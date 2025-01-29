@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * NodeDisruptionPolicySpecFile is a file entry and corresponding actions to take and is used in the NodeDisruptionPolicyConfig object
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -85,22 +88,34 @@ public class NodeDisruptionPolicySpecFile implements Editable<NodeDisruptionPoli
         this.path = path;
     }
 
+    /**
+     * actions represents the series of commands to be executed on changes to the file at the corresponding file path. Actions will be applied in the order that they are set in this list. If there are other incoming changes to other MachineConfig entries in the same update that require a reboot, the reboot will supercede these actions. Valid actions are Reboot, Drain, Reload, DaemonReload and None. The Reboot action and the None action cannot be used in conjunction with any of the other actions. This list supports a maximum of 10 entries.
+     */
     @JsonProperty("actions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<NodeDisruptionPolicySpecAction> getActions() {
         return actions;
     }
 
+    /**
+     * actions represents the series of commands to be executed on changes to the file at the corresponding file path. Actions will be applied in the order that they are set in this list. If there are other incoming changes to other MachineConfig entries in the same update that require a reboot, the reboot will supercede these actions. Valid actions are Reboot, Drain, Reload, DaemonReload and None. The Reboot action and the None action cannot be used in conjunction with any of the other actions. This list supports a maximum of 10 entries.
+     */
     @JsonProperty("actions")
     public void setActions(List<NodeDisruptionPolicySpecAction> actions) {
         this.actions = actions;
     }
 
+    /**
+     * path is the location of a file being managed through a MachineConfig. The Actions in the policy will apply to changes to the file at this path.
+     */
     @JsonProperty("path")
     public String getPath() {
         return path;
     }
 
+    /**
+     * path is the location of a file being managed through a MachineConfig. The Actions in the policy will apply to changes to the file at this path.
+     */
     @JsonProperty("path")
     public void setPath(String path) {
         this.path = path;

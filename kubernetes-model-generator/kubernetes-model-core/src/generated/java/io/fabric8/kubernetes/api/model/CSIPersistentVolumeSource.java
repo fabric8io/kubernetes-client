@@ -17,6 +17,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Represents storage that is managed by an external CSI volume driver
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -86,102 +89,162 @@ public class CSIPersistentVolumeSource implements Editable<CSIPersistentVolumeSo
         this.volumeHandle = volumeHandle;
     }
 
+    /**
+     * Represents storage that is managed by an external CSI volume driver
+     */
     @JsonProperty("controllerExpandSecretRef")
     public SecretReference getControllerExpandSecretRef() {
         return controllerExpandSecretRef;
     }
 
+    /**
+     * Represents storage that is managed by an external CSI volume driver
+     */
     @JsonProperty("controllerExpandSecretRef")
     public void setControllerExpandSecretRef(SecretReference controllerExpandSecretRef) {
         this.controllerExpandSecretRef = controllerExpandSecretRef;
     }
 
+    /**
+     * Represents storage that is managed by an external CSI volume driver
+     */
     @JsonProperty("controllerPublishSecretRef")
     public SecretReference getControllerPublishSecretRef() {
         return controllerPublishSecretRef;
     }
 
+    /**
+     * Represents storage that is managed by an external CSI volume driver
+     */
     @JsonProperty("controllerPublishSecretRef")
     public void setControllerPublishSecretRef(SecretReference controllerPublishSecretRef) {
         this.controllerPublishSecretRef = controllerPublishSecretRef;
     }
 
+    /**
+     * driver is the name of the driver to use for this volume. Required.
+     */
     @JsonProperty("driver")
     public String getDriver() {
         return driver;
     }
 
+    /**
+     * driver is the name of the driver to use for this volume. Required.
+     */
     @JsonProperty("driver")
     public void setDriver(String driver) {
         this.driver = driver;
     }
 
+    /**
+     * fsType to mount. Must be a filesystem type supported by the host operating system. Ex. "ext4", "xfs", "ntfs".
+     */
     @JsonProperty("fsType")
     public String getFsType() {
         return fsType;
     }
 
+    /**
+     * fsType to mount. Must be a filesystem type supported by the host operating system. Ex. "ext4", "xfs", "ntfs".
+     */
     @JsonProperty("fsType")
     public void setFsType(String fsType) {
         this.fsType = fsType;
     }
 
+    /**
+     * Represents storage that is managed by an external CSI volume driver
+     */
     @JsonProperty("nodeExpandSecretRef")
     public SecretReference getNodeExpandSecretRef() {
         return nodeExpandSecretRef;
     }
 
+    /**
+     * Represents storage that is managed by an external CSI volume driver
+     */
     @JsonProperty("nodeExpandSecretRef")
     public void setNodeExpandSecretRef(SecretReference nodeExpandSecretRef) {
         this.nodeExpandSecretRef = nodeExpandSecretRef;
     }
 
+    /**
+     * Represents storage that is managed by an external CSI volume driver
+     */
     @JsonProperty("nodePublishSecretRef")
     public SecretReference getNodePublishSecretRef() {
         return nodePublishSecretRef;
     }
 
+    /**
+     * Represents storage that is managed by an external CSI volume driver
+     */
     @JsonProperty("nodePublishSecretRef")
     public void setNodePublishSecretRef(SecretReference nodePublishSecretRef) {
         this.nodePublishSecretRef = nodePublishSecretRef;
     }
 
+    /**
+     * Represents storage that is managed by an external CSI volume driver
+     */
     @JsonProperty("nodeStageSecretRef")
     public SecretReference getNodeStageSecretRef() {
         return nodeStageSecretRef;
     }
 
+    /**
+     * Represents storage that is managed by an external CSI volume driver
+     */
     @JsonProperty("nodeStageSecretRef")
     public void setNodeStageSecretRef(SecretReference nodeStageSecretRef) {
         this.nodeStageSecretRef = nodeStageSecretRef;
     }
 
+    /**
+     * readOnly value to pass to ControllerPublishVolumeRequest. Defaults to false (read/write).
+     */
     @JsonProperty("readOnly")
     public Boolean getReadOnly() {
         return readOnly;
     }
 
+    /**
+     * readOnly value to pass to ControllerPublishVolumeRequest. Defaults to false (read/write).
+     */
     @JsonProperty("readOnly")
     public void setReadOnly(Boolean readOnly) {
         this.readOnly = readOnly;
     }
 
+    /**
+     * volumeAttributes of the volume to publish.
+     */
     @JsonProperty("volumeAttributes")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getVolumeAttributes() {
         return volumeAttributes;
     }
 
+    /**
+     * volumeAttributes of the volume to publish.
+     */
     @JsonProperty("volumeAttributes")
     public void setVolumeAttributes(Map<String, String> volumeAttributes) {
         this.volumeAttributes = volumeAttributes;
     }
 
+    /**
+     * volumeHandle is the unique volume name returned by the CSI volume plugin’s CreateVolume to refer to the volume on all subsequent calls. Required.
+     */
     @JsonProperty("volumeHandle")
     public String getVolumeHandle() {
         return volumeHandle;
     }
 
+    /**
+     * volumeHandle is the unique volume name returned by the CSI volume plugin’s CreateVolume to refer to the volume on all subsequent calls. Required.
+     */
     @JsonProperty("volumeHandle")
     public void setVolumeHandle(String volumeHandle) {
         this.volumeHandle = volumeHandle;

@@ -90,21 +90,33 @@ public class RecordEvent implements Editable<RecordEventBuilder>, KubernetesReso
         this.type = type;
     }
 
+    /**
+     * Message is the detail message, e.g. the reason why we failed to inject the chaos
+     */
     @JsonProperty("message")
     public String getMessage() {
         return message;
     }
 
+    /**
+     * Message is the detail message, e.g. the reason why we failed to inject the chaos
+     */
     @JsonProperty("message")
     public void setMessage(String message) {
         this.message = message;
     }
 
+    /**
+     * Operation represents the operation we are doing, when we crate this event
+     */
     @JsonProperty("operation")
     public String getOperation() {
         return operation;
     }
 
+    /**
+     * Operation represents the operation we are doing, when we crate this event
+     */
     @JsonProperty("operation")
     public void setOperation(String operation) {
         this.operation = operation;
@@ -120,11 +132,17 @@ public class RecordEvent implements Editable<RecordEventBuilder>, KubernetesReso
         this.timestamp = timestamp;
     }
 
+    /**
+     * Type means the stage of this event
+     */
     @JsonProperty("type")
     public String getType() {
         return type;
     }
 
+    /**
+     * Type means the stage of this event
+     */
     @JsonProperty("type")
     public void setType(String type) {
         this.type = type;

@@ -86,31 +86,49 @@ public class ProcessSpec implements Editable<ProcessSpecBuilder>, KubernetesReso
         this.signal = signal;
     }
 
+    /**
+     * the process name or the process ID
+     */
     @JsonProperty("process")
     public String getProcess() {
         return process;
     }
 
+    /**
+     * the process name or the process ID
+     */
     @JsonProperty("process")
     public void setProcess(String process) {
         this.process = process;
     }
 
+    /**
+     * the command to be run when recovering experiment
+     */
     @JsonProperty("recoverCmd")
     public String getRecoverCmd() {
         return recoverCmd;
     }
 
+    /**
+     * the command to be run when recovering experiment
+     */
     @JsonProperty("recoverCmd")
     public void setRecoverCmd(String recoverCmd) {
         this.recoverCmd = recoverCmd;
     }
 
+    /**
+     * the signal number to send
+     */
     @JsonProperty("signal")
     public Integer getSignal() {
         return signal;
     }
 
+    /**
+     * the signal number to send
+     */
     @JsonProperty("signal")
     public void setSignal(Integer signal) {
         this.signal = signal;

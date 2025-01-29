@@ -110,21 +110,33 @@ public class PodIOChaosStatus implements Editable<PodIOChaosStatusBuilder>, Kube
         this.observedGeneration = observedGeneration;
     }
 
+    /**
+     * Pid represents a running toda process id
+     */
     @JsonProperty("pid")
     public Long getPid() {
         return pid;
     }
 
+    /**
+     * Pid represents a running toda process id
+     */
     @JsonProperty("pid")
     public void setPid(Long pid) {
         this.pid = pid;
     }
 
+    /**
+     * StartTime represents the start time of a toda process
+     */
     @JsonProperty("startTime")
     public Long getStartTime() {
         return startTime;
     }
 
+    /**
+     * StartTime represents the start time of a toda process
+     */
     @JsonProperty("startTime")
     public void setStartTime(Long startTime) {
         this.startTime = startTime;

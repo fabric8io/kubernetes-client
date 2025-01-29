@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * gatherStatus provides information about the last known gather event.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -89,32 +92,50 @@ public class GatherStatus implements Editable<GatherStatusBuilder>, KubernetesRe
         this.lastGatherTime = lastGatherTime;
     }
 
+    /**
+     * gatherers is a list of active gatherers (and their statuses) in the last gathering.
+     */
     @JsonProperty("gatherers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<GathererStatus> getGatherers() {
         return gatherers;
     }
 
+    /**
+     * gatherers is a list of active gatherers (and their statuses) in the last gathering.
+     */
     @JsonProperty("gatherers")
     public void setGatherers(List<GathererStatus> gatherers) {
         this.gatherers = gatherers;
     }
 
+    /**
+     * gatherStatus provides information about the last known gather event.
+     */
     @JsonProperty("lastGatherDuration")
     public String getLastGatherDuration() {
         return lastGatherDuration;
     }
 
+    /**
+     * gatherStatus provides information about the last known gather event.
+     */
     @JsonProperty("lastGatherDuration")
     public void setLastGatherDuration(String lastGatherDuration) {
         this.lastGatherDuration = lastGatherDuration;
     }
 
+    /**
+     * gatherStatus provides information about the last known gather event.
+     */
     @JsonProperty("lastGatherTime")
     public String getLastGatherTime() {
         return lastGatherTime;
     }
 
+    /**
+     * gatherStatus provides information about the last known gather event.
+     */
     @JsonProperty("lastGatherTime")
     public void setLastGatherTime(String lastGatherTime) {
         this.lastGatherTime = lastGatherTime;

@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Metal3MachineTemplateResource describes the data needed to create a Metal3Machine from a template.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -78,11 +81,17 @@ public class Metal3MachineTemplateResource implements Editable<Metal3MachineTemp
         this.spec = spec;
     }
 
+    /**
+     * Metal3MachineTemplateResource describes the data needed to create a Metal3Machine from a template.
+     */
     @JsonProperty("spec")
     public Metal3MachineSpec getSpec() {
         return spec;
     }
 
+    /**
+     * Metal3MachineTemplateResource describes the data needed to create a Metal3Machine from a template.
+     */
     @JsonProperty("spec")
     public void setSpec(Metal3MachineSpec spec) {
         this.spec = spec;

@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * DataDisk specifies the parameters that are used to add one or more data disks to the machine. A Data Disk is a managed disk that's attached to a virtual machine to store application data. It differs from an OS Disk as it doesn't come with a pre-installed OS, and it cannot contain the boot volume. It is registered as SCSI drive and labeled with the chosen `lun`. e.g. for `lun: 0` the raw disk device will be available at `/dev/disk/azure/scsi1/lun0`.<br><p> <br><p> As the Data Disk disk device is attached raw to the virtual machine, it will need to be partitioned, formatted with a filesystem and mounted, in order for it to be usable. This can be done by creating a custom userdata Secret with custom Ignition configuration to achieve the desired initialization. At this stage the previously defined `lun` is to be used as the "device" key for referencing the raw disk device to be initialized. Once the custom userdata Secret has been created, it can be referenced in the Machine's `.providerSpec.userDataSecret`. For further guidance and examples, please refer to the official OpenShift docs.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -98,61 +101,97 @@ public class DataDisk implements Editable<DataDiskBuilder>, KubernetesResource
         this.nameSuffix = nameSuffix;
     }
 
+    /**
+     * CachingType specifies the caching requirements. Empty value means no opinion and the platform chooses a default, which is subject to change over time. Currently the default is CachingTypeNone.
+     */
     @JsonProperty("cachingType")
     public String getCachingType() {
         return cachingType;
     }
 
+    /**
+     * CachingType specifies the caching requirements. Empty value means no opinion and the platform chooses a default, which is subject to change over time. Currently the default is CachingTypeNone.
+     */
     @JsonProperty("cachingType")
     public void setCachingType(String cachingType) {
         this.cachingType = cachingType;
     }
 
+    /**
+     * DeletionPolicy specifies the data disk deletion policy upon Machine deletion. Possible values are "Delete","Detach". When "Delete" is used the data disk is deleted when the Machine is deleted. When "Detach" is used the data disk is detached from the Machine and retained when the Machine is deleted.
+     */
     @JsonProperty("deletionPolicy")
     public String getDeletionPolicy() {
         return deletionPolicy;
     }
 
+    /**
+     * DeletionPolicy specifies the data disk deletion policy upon Machine deletion. Possible values are "Delete","Detach". When "Delete" is used the data disk is deleted when the Machine is deleted. When "Detach" is used the data disk is detached from the Machine and retained when the Machine is deleted.
+     */
     @JsonProperty("deletionPolicy")
     public void setDeletionPolicy(String deletionPolicy) {
         this.deletionPolicy = deletionPolicy;
     }
 
+    /**
+     * DiskSizeGB is the size in GB to assign to the data disk.
+     */
     @JsonProperty("diskSizeGB")
     public Integer getDiskSizeGB() {
         return diskSizeGB;
     }
 
+    /**
+     * DiskSizeGB is the size in GB to assign to the data disk.
+     */
     @JsonProperty("diskSizeGB")
     public void setDiskSizeGB(Integer diskSizeGB) {
         this.diskSizeGB = diskSizeGB;
     }
 
+    /**
+     * Lun Specifies the logical unit number of the data disk. This value is used to identify data disks within the VM and therefore must be unique for each data disk attached to a VM. This value is also needed for referencing the data disks devices within userdata to perform disk initialization through Ignition (e.g. partition/format/mount). The value must be between 0 and 63.
+     */
     @JsonProperty("lun")
     public Integer getLun() {
         return lun;
     }
 
+    /**
+     * Lun Specifies the logical unit number of the data disk. This value is used to identify data disks within the VM and therefore must be unique for each data disk attached to a VM. This value is also needed for referencing the data disks devices within userdata to perform disk initialization through Ignition (e.g. partition/format/mount). The value must be between 0 and 63.
+     */
     @JsonProperty("lun")
     public void setLun(Integer lun) {
         this.lun = lun;
     }
 
+    /**
+     * DataDisk specifies the parameters that are used to add one or more data disks to the machine. A Data Disk is a managed disk that's attached to a virtual machine to store application data. It differs from an OS Disk as it doesn't come with a pre-installed OS, and it cannot contain the boot volume. It is registered as SCSI drive and labeled with the chosen `lun`. e.g. for `lun: 0` the raw disk device will be available at `/dev/disk/azure/scsi1/lun0`.<br><p> <br><p> As the Data Disk disk device is attached raw to the virtual machine, it will need to be partitioned, formatted with a filesystem and mounted, in order for it to be usable. This can be done by creating a custom userdata Secret with custom Ignition configuration to achieve the desired initialization. At this stage the previously defined `lun` is to be used as the "device" key for referencing the raw disk device to be initialized. Once the custom userdata Secret has been created, it can be referenced in the Machine's `.providerSpec.userDataSecret`. For further guidance and examples, please refer to the official OpenShift docs.
+     */
     @JsonProperty("managedDisk")
     public DataDiskManagedDiskParameters getManagedDisk() {
         return managedDisk;
     }
 
+    /**
+     * DataDisk specifies the parameters that are used to add one or more data disks to the machine. A Data Disk is a managed disk that's attached to a virtual machine to store application data. It differs from an OS Disk as it doesn't come with a pre-installed OS, and it cannot contain the boot volume. It is registered as SCSI drive and labeled with the chosen `lun`. e.g. for `lun: 0` the raw disk device will be available at `/dev/disk/azure/scsi1/lun0`.<br><p> <br><p> As the Data Disk disk device is attached raw to the virtual machine, it will need to be partitioned, formatted with a filesystem and mounted, in order for it to be usable. This can be done by creating a custom userdata Secret with custom Ignition configuration to achieve the desired initialization. At this stage the previously defined `lun` is to be used as the "device" key for referencing the raw disk device to be initialized. Once the custom userdata Secret has been created, it can be referenced in the Machine's `.providerSpec.userDataSecret`. For further guidance and examples, please refer to the official OpenShift docs.
+     */
     @JsonProperty("managedDisk")
     public void setManagedDisk(DataDiskManagedDiskParameters managedDisk) {
         this.managedDisk = managedDisk;
     }
 
+    /**
+     * NameSuffix is the suffix to be appended to the machine name to generate the disk name. Each disk name will be in format &lt;machineName&gt;_&lt;nameSuffix&gt;. NameSuffix name must start and finish with an alphanumeric character and can only contain letters, numbers, underscores, periods or hyphens. The overall disk name must not exceed 80 chars in length.
+     */
     @JsonProperty("nameSuffix")
     public String getNameSuffix() {
         return nameSuffix;
     }
 
+    /**
+     * NameSuffix is the suffix to be appended to the machine name to generate the disk name. Each disk name will be in format &lt;machineName&gt;_&lt;nameSuffix&gt;. NameSuffix name must start and finish with an alphanumeric character and can only contain letters, numbers, underscores, periods or hyphens. The overall disk name must not exceed 80 chars in length.
+     */
     @JsonProperty("nameSuffix")
     public void setNameSuffix(String nameSuffix) {
         this.nameSuffix = nameSuffix;

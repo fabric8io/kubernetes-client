@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Metadata contains GCP metadata (e.g. for uninstalling the cluster).
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -90,41 +93,65 @@ public class Metadata implements Editable<MetadataBuilder>, KubernetesResource
         this.region = region;
     }
 
+    /**
+     * Metadata contains GCP metadata (e.g. for uninstalling the cluster).
+     */
     @JsonProperty("networkProjectID")
     public String getNetworkProjectID() {
         return networkProjectID;
     }
 
+    /**
+     * Metadata contains GCP metadata (e.g. for uninstalling the cluster).
+     */
     @JsonProperty("networkProjectID")
     public void setNetworkProjectID(String networkProjectID) {
         this.networkProjectID = networkProjectID;
     }
 
+    /**
+     * Metadata contains GCP metadata (e.g. for uninstalling the cluster).
+     */
     @JsonProperty("privateZoneDomain")
     public String getPrivateZoneDomain() {
         return privateZoneDomain;
     }
 
+    /**
+     * Metadata contains GCP metadata (e.g. for uninstalling the cluster).
+     */
     @JsonProperty("privateZoneDomain")
     public void setPrivateZoneDomain(String privateZoneDomain) {
         this.privateZoneDomain = privateZoneDomain;
     }
 
+    /**
+     * Metadata contains GCP metadata (e.g. for uninstalling the cluster).
+     */
     @JsonProperty("projectID")
     public String getProjectID() {
         return projectID;
     }
 
+    /**
+     * Metadata contains GCP metadata (e.g. for uninstalling the cluster).
+     */
     @JsonProperty("projectID")
     public void setProjectID(String projectID) {
         this.projectID = projectID;
     }
 
+    /**
+     * Metadata contains GCP metadata (e.g. for uninstalling the cluster).
+     */
     @JsonProperty("region")
     public String getRegion() {
         return region;
     }
 
+    /**
+     * Metadata contains GCP metadata (e.g. for uninstalling the cluster).
+     */
     @JsonProperty("region")
     public void setRegion(String region) {
         this.region = region;

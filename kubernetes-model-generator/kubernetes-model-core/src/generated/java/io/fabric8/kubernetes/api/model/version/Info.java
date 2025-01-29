@@ -18,6 +18,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Info contains versioning information. how we'll want to distribute that information.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,91 +85,145 @@ public class Info implements Editable<InfoBuilder>, KubernetesResource
         this.platform = platform;
     }
 
+    /**
+     * Info contains versioning information. how we'll want to distribute that information.
+     */
     @JsonProperty("buildDate")
     public String getBuildDate() {
         return buildDate;
     }
 
+    /**
+     * Info contains versioning information. how we'll want to distribute that information.
+     */
     @JsonProperty("buildDate")
     public void setBuildDate(String buildDate) {
         this.buildDate = buildDate;
     }
 
+    /**
+     * Info contains versioning information. how we'll want to distribute that information.
+     */
     @JsonProperty("compiler")
     public String getCompiler() {
         return compiler;
     }
 
+    /**
+     * Info contains versioning information. how we'll want to distribute that information.
+     */
     @JsonProperty("compiler")
     public void setCompiler(String compiler) {
         this.compiler = compiler;
     }
 
+    /**
+     * Info contains versioning information. how we'll want to distribute that information.
+     */
     @JsonProperty("gitCommit")
     public String getGitCommit() {
         return gitCommit;
     }
 
+    /**
+     * Info contains versioning information. how we'll want to distribute that information.
+     */
     @JsonProperty("gitCommit")
     public void setGitCommit(String gitCommit) {
         this.gitCommit = gitCommit;
     }
 
+    /**
+     * Info contains versioning information. how we'll want to distribute that information.
+     */
     @JsonProperty("gitTreeState")
     public String getGitTreeState() {
         return gitTreeState;
     }
 
+    /**
+     * Info contains versioning information. how we'll want to distribute that information.
+     */
     @JsonProperty("gitTreeState")
     public void setGitTreeState(String gitTreeState) {
         this.gitTreeState = gitTreeState;
     }
 
+    /**
+     * Info contains versioning information. how we'll want to distribute that information.
+     */
     @JsonProperty("gitVersion")
     public String getGitVersion() {
         return gitVersion;
     }
 
+    /**
+     * Info contains versioning information. how we'll want to distribute that information.
+     */
     @JsonProperty("gitVersion")
     public void setGitVersion(String gitVersion) {
         this.gitVersion = gitVersion;
     }
 
+    /**
+     * Info contains versioning information. how we'll want to distribute that information.
+     */
     @JsonProperty("goVersion")
     public String getGoVersion() {
         return goVersion;
     }
 
+    /**
+     * Info contains versioning information. how we'll want to distribute that information.
+     */
     @JsonProperty("goVersion")
     public void setGoVersion(String goVersion) {
         this.goVersion = goVersion;
     }
 
+    /**
+     * Info contains versioning information. how we'll want to distribute that information.
+     */
     @JsonProperty("major")
     public String getMajor() {
         return major;
     }
 
+    /**
+     * Info contains versioning information. how we'll want to distribute that information.
+     */
     @JsonProperty("major")
     public void setMajor(String major) {
         this.major = major;
     }
 
+    /**
+     * Info contains versioning information. how we'll want to distribute that information.
+     */
     @JsonProperty("minor")
     public String getMinor() {
         return minor;
     }
 
+    /**
+     * Info contains versioning information. how we'll want to distribute that information.
+     */
     @JsonProperty("minor")
     public void setMinor(String minor) {
         this.minor = minor;
     }
 
+    /**
+     * Info contains versioning information. how we'll want to distribute that information.
+     */
     @JsonProperty("platform")
     public String getPlatform() {
         return platform;
     }
 
+    /**
+     * Info contains versioning information. how we'll want to distribute that information.
+     */
     @JsonProperty("platform")
     public void setPlatform(String platform) {
         this.platform = platform;

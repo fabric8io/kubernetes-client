@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * AzureDiagnostics is used to configure the diagnostic settings of the virtual machine.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -78,11 +81,17 @@ public class AzureDiagnostics implements Editable<AzureDiagnosticsBuilder>, Kube
         this.boot = boot;
     }
 
+    /**
+     * AzureDiagnostics is used to configure the diagnostic settings of the virtual machine.
+     */
     @JsonProperty("boot")
     public AzureBootDiagnostics getBoot() {
         return boot;
     }
 
+    /**
+     * AzureDiagnostics is used to configure the diagnostic settings of the virtual machine.
+     */
     @JsonProperty("boot")
     public void setBoot(AzureBootDiagnostics boot) {
         this.boot = boot;

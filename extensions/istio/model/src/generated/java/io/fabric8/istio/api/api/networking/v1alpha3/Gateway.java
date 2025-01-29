@@ -39,6 +39,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Gateway describes a load balancer operating at the edge of the mesh receiving incoming or outgoing HTTP/TCP connections.<br><p> <br><p> &lt;!-- crd generation tags --&gt;<br><p> <br><p> &lt;!-- go code generation tags --&gt;
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -96,23 +99,35 @@ public class Gateway implements Editable<GatewayBuilder>, KubernetesResource, Na
         this.servers = servers;
     }
 
+    /**
+     * One or more labels that indicate a specific set of pods/VMs on which this gateway configuration should be applied. By default workloads are searched across all namespaces based on label selectors. This implies that a gateway resource in the namespace "foo" can select pods in the namespace "bar" based on labels. This behavior can be controlled via the `PILOT_SCOPE_GATEWAY_TO_NAMESPACE` environment variable in istiod. If this variable is set to true, the scope of label search is restricted to the configuration namespace in which the the resource is present. In other words, the Gateway resource must reside in the same namespace as the gateway workload instance. If selector is nil, the Gateway will be applied to all workloads.
+     */
     @JsonProperty("selector")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getSelector() {
         return selector;
     }
 
+    /**
+     * One or more labels that indicate a specific set of pods/VMs on which this gateway configuration should be applied. By default workloads are searched across all namespaces based on label selectors. This implies that a gateway resource in the namespace "foo" can select pods in the namespace "bar" based on labels. This behavior can be controlled via the `PILOT_SCOPE_GATEWAY_TO_NAMESPACE` environment variable in istiod. If this variable is set to true, the scope of label search is restricted to the configuration namespace in which the the resource is present. In other words, the Gateway resource must reside in the same namespace as the gateway workload instance. If selector is nil, the Gateway will be applied to all workloads.
+     */
     @JsonProperty("selector")
     public void setSelector(Map<String, String> selector) {
         this.selector = selector;
     }
 
+    /**
+     * A list of server specifications.
+     */
     @JsonProperty("servers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Server> getServers() {
         return servers;
     }
 
+    /**
+     * A list of server specifications.
+     */
     @JsonProperty("servers")
     public void setServers(List<Server> servers) {
         this.servers = servers;

@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * HostFirmwareSettingsSpec defines the desired state of HostFirmwareSettings.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -79,12 +82,18 @@ public class HostFirmwareSettingsSpec implements Editable<HostFirmwareSettingsSp
         this.settings = settings;
     }
 
+    /**
+     * Settings are the desired firmware settings stored as name/value pairs.
+     */
     @JsonProperty("settings")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, IntOrString> getSettings() {
         return settings;
     }
 
+    /**
+     * Settings are the desired firmware settings stored as name/value pairs.
+     */
     @JsonProperty("settings")
     public void setSettings(Map<String, IntOrString> settings) {
         this.settings = settings;

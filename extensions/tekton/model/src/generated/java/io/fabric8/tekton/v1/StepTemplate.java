@@ -37,6 +37,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * StepTemplate is a template for a Step
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -129,117 +132,183 @@ public class StepTemplate implements Editable<StepTemplateBuilder>, KubernetesRe
         this.workingDir = workingDir;
     }
 
+    /**
+     * Arguments to the entrypoint. The image's CMD is used if this is not provided. Variable references $(VAR_NAME) are expanded using the Step's environment. If a variable cannot be resolved, the reference in the input string will be unchanged. Double $$ are reduced to a single $, which allows for escaping the $(VAR_NAME) syntax: i.e. "$$(VAR_NAME)" will produce the string literal "$(VAR_NAME)". Escaped references will never be expanded, regardless of whether the variable exists or not. Cannot be updated. More info: https://kubernetes.io/docs/tasks/inject-data-application/define-command-argument-container/#running-a-command-in-a-shell
+     */
     @JsonProperty("args")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getArgs() {
         return args;
     }
 
+    /**
+     * Arguments to the entrypoint. The image's CMD is used if this is not provided. Variable references $(VAR_NAME) are expanded using the Step's environment. If a variable cannot be resolved, the reference in the input string will be unchanged. Double $$ are reduced to a single $, which allows for escaping the $(VAR_NAME) syntax: i.e. "$$(VAR_NAME)" will produce the string literal "$(VAR_NAME)". Escaped references will never be expanded, regardless of whether the variable exists or not. Cannot be updated. More info: https://kubernetes.io/docs/tasks/inject-data-application/define-command-argument-container/#running-a-command-in-a-shell
+     */
     @JsonProperty("args")
     public void setArgs(List<String> args) {
         this.args = args;
     }
 
+    /**
+     * Entrypoint array. Not executed within a shell. The image's ENTRYPOINT is used if this is not provided. Variable references $(VAR_NAME) are expanded using the Step's environment. If a variable cannot be resolved, the reference in the input string will be unchanged. Double $$ are reduced to a single $, which allows for escaping the $(VAR_NAME) syntax: i.e. "$$(VAR_NAME)" will produce the string literal "$(VAR_NAME)". Escaped references will never be expanded, regardless of whether the variable exists or not. Cannot be updated. More info: https://kubernetes.io/docs/tasks/inject-data-application/define-command-argument-container/#running-a-command-in-a-shell
+     */
     @JsonProperty("command")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getCommand() {
         return command;
     }
 
+    /**
+     * Entrypoint array. Not executed within a shell. The image's ENTRYPOINT is used if this is not provided. Variable references $(VAR_NAME) are expanded using the Step's environment. If a variable cannot be resolved, the reference in the input string will be unchanged. Double $$ are reduced to a single $, which allows for escaping the $(VAR_NAME) syntax: i.e. "$$(VAR_NAME)" will produce the string literal "$(VAR_NAME)". Escaped references will never be expanded, regardless of whether the variable exists or not. Cannot be updated. More info: https://kubernetes.io/docs/tasks/inject-data-application/define-command-argument-container/#running-a-command-in-a-shell
+     */
     @JsonProperty("command")
     public void setCommand(List<String> command) {
         this.command = command;
     }
 
+    /**
+     * StepTemplate is a template for a Step
+     */
     @JsonProperty("computeResources")
     public ResourceRequirements getComputeResources() {
         return computeResources;
     }
 
+    /**
+     * StepTemplate is a template for a Step
+     */
     @JsonProperty("computeResources")
     public void setComputeResources(ResourceRequirements computeResources) {
         this.computeResources = computeResources;
     }
 
+    /**
+     * List of environment variables to set in the Step. Cannot be updated.
+     */
     @JsonProperty("env")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<EnvVar> getEnv() {
         return env;
     }
 
+    /**
+     * List of environment variables to set in the Step. Cannot be updated.
+     */
     @JsonProperty("env")
     public void setEnv(List<EnvVar> env) {
         this.env = env;
     }
 
+    /**
+     * List of sources to populate environment variables in the Step. The keys defined within a source must be a C_IDENTIFIER. All invalid keys will be reported as an event when the Step is starting. When a key exists in multiple sources, the value associated with the last source will take precedence. Values defined by an Env with a duplicate key will take precedence. Cannot be updated.
+     */
     @JsonProperty("envFrom")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<EnvFromSource> getEnvFrom() {
         return envFrom;
     }
 
+    /**
+     * List of sources to populate environment variables in the Step. The keys defined within a source must be a C_IDENTIFIER. All invalid keys will be reported as an event when the Step is starting. When a key exists in multiple sources, the value associated with the last source will take precedence. Values defined by an Env with a duplicate key will take precedence. Cannot be updated.
+     */
     @JsonProperty("envFrom")
     public void setEnvFrom(List<EnvFromSource> envFrom) {
         this.envFrom = envFrom;
     }
 
+    /**
+     * Image reference name. More info: https://kubernetes.io/docs/concepts/containers/images
+     */
     @JsonProperty("image")
     public String getImage() {
         return image;
     }
 
+    /**
+     * Image reference name. More info: https://kubernetes.io/docs/concepts/containers/images
+     */
     @JsonProperty("image")
     public void setImage(String image) {
         this.image = image;
     }
 
+    /**
+     * Image pull policy. One of Always, Never, IfNotPresent. Defaults to Always if :latest tag is specified, or IfNotPresent otherwise. Cannot be updated. More info: https://kubernetes.io/docs/concepts/containers/images#updating-images
+     */
     @JsonProperty("imagePullPolicy")
     public String getImagePullPolicy() {
         return imagePullPolicy;
     }
 
+    /**
+     * Image pull policy. One of Always, Never, IfNotPresent. Defaults to Always if :latest tag is specified, or IfNotPresent otherwise. Cannot be updated. More info: https://kubernetes.io/docs/concepts/containers/images#updating-images
+     */
     @JsonProperty("imagePullPolicy")
     public void setImagePullPolicy(String imagePullPolicy) {
         this.imagePullPolicy = imagePullPolicy;
     }
 
+    /**
+     * StepTemplate is a template for a Step
+     */
     @JsonProperty("securityContext")
     public SecurityContext getSecurityContext() {
         return securityContext;
     }
 
+    /**
+     * StepTemplate is a template for a Step
+     */
     @JsonProperty("securityContext")
     public void setSecurityContext(SecurityContext securityContext) {
         this.securityContext = securityContext;
     }
 
+    /**
+     * volumeDevices is the list of block devices to be used by the Step.
+     */
     @JsonProperty("volumeDevices")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<VolumeDevice> getVolumeDevices() {
         return volumeDevices;
     }
 
+    /**
+     * volumeDevices is the list of block devices to be used by the Step.
+     */
     @JsonProperty("volumeDevices")
     public void setVolumeDevices(List<VolumeDevice> volumeDevices) {
         this.volumeDevices = volumeDevices;
     }
 
+    /**
+     * Volumes to mount into the Step's filesystem. Cannot be updated.
+     */
     @JsonProperty("volumeMounts")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<VolumeMount> getVolumeMounts() {
         return volumeMounts;
     }
 
+    /**
+     * Volumes to mount into the Step's filesystem. Cannot be updated.
+     */
     @JsonProperty("volumeMounts")
     public void setVolumeMounts(List<VolumeMount> volumeMounts) {
         this.volumeMounts = volumeMounts;
     }
 
+    /**
+     * Step's working directory. If not specified, the container runtime's default will be used, which might be configured in the container image. Cannot be updated.
+     */
     @JsonProperty("workingDir")
     public String getWorkingDir() {
         return workingDir;
     }
 
+    /**
+     * Step's working directory. If not specified, the container runtime's default will be used, which might be configured in the container image. Cannot be updated.
+     */
     @JsonProperty("workingDir")
     public void setWorkingDir(String workingDir) {
         this.workingDir = workingDir;

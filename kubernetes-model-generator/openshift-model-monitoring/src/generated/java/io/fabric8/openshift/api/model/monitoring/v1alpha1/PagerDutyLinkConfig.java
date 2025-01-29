@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * PagerDutyLinkConfig attaches text links to an incident
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class PagerDutyLinkConfig implements Editable<PagerDutyLinkConfigBuilder>
         this.href = href;
     }
 
+    /**
+     * Text that describes the purpose of the link, and can be used as the link's text.
+     */
     @JsonProperty("alt")
     public String getAlt() {
         return alt;
     }
 
+    /**
+     * Text that describes the purpose of the link, and can be used as the link's text.
+     */
     @JsonProperty("alt")
     public void setAlt(String alt) {
         this.alt = alt;
     }
 
+    /**
+     * Href is the URL of the link to be attached
+     */
     @JsonProperty("href")
     public String getHref() {
         return href;
     }
 
+    /**
+     * Href is the URL of the link to be attached
+     */
     @JsonProperty("href")
     public void setHref(String href) {
         this.href = href;

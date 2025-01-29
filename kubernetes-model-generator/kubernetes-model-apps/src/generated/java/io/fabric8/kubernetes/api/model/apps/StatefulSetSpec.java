@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * A StatefulSetSpec is the specification of a StatefulSet.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -121,112 +124,178 @@ public class StatefulSetSpec implements Editable<StatefulSetSpecBuilder>, Kubern
         this.volumeClaimTemplates = volumeClaimTemplates;
     }
 
+    /**
+     * Minimum number of seconds for which a newly created pod should be ready without any of its container crashing for it to be considered available. Defaults to 0 (pod will be considered available as soon as it is ready)
+     */
     @JsonProperty("minReadySeconds")
     public Integer getMinReadySeconds() {
         return minReadySeconds;
     }
 
+    /**
+     * Minimum number of seconds for which a newly created pod should be ready without any of its container crashing for it to be considered available. Defaults to 0 (pod will be considered available as soon as it is ready)
+     */
     @JsonProperty("minReadySeconds")
     public void setMinReadySeconds(Integer minReadySeconds) {
         this.minReadySeconds = minReadySeconds;
     }
 
+    /**
+     * A StatefulSetSpec is the specification of a StatefulSet.
+     */
     @JsonProperty("ordinals")
     public StatefulSetOrdinals getOrdinals() {
         return ordinals;
     }
 
+    /**
+     * A StatefulSetSpec is the specification of a StatefulSet.
+     */
     @JsonProperty("ordinals")
     public void setOrdinals(StatefulSetOrdinals ordinals) {
         this.ordinals = ordinals;
     }
 
+    /**
+     * A StatefulSetSpec is the specification of a StatefulSet.
+     */
     @JsonProperty("persistentVolumeClaimRetentionPolicy")
     public StatefulSetPersistentVolumeClaimRetentionPolicy getPersistentVolumeClaimRetentionPolicy() {
         return persistentVolumeClaimRetentionPolicy;
     }
 
+    /**
+     * A StatefulSetSpec is the specification of a StatefulSet.
+     */
     @JsonProperty("persistentVolumeClaimRetentionPolicy")
     public void setPersistentVolumeClaimRetentionPolicy(StatefulSetPersistentVolumeClaimRetentionPolicy persistentVolumeClaimRetentionPolicy) {
         this.persistentVolumeClaimRetentionPolicy = persistentVolumeClaimRetentionPolicy;
     }
 
+    /**
+     * podManagementPolicy controls how pods are created during initial scale up, when replacing pods on nodes, or when scaling down. The default policy is `OrderedReady`, where pods are created in increasing order (pod-0, then pod-1, etc) and the controller will wait until each pod is ready before continuing. When scaling down, the pods are removed in the opposite order. The alternative policy is `Parallel` which will create pods in parallel to match the desired scale without waiting, and on scale down will delete all pods at once.
+     */
     @JsonProperty("podManagementPolicy")
     public String getPodManagementPolicy() {
         return podManagementPolicy;
     }
 
+    /**
+     * podManagementPolicy controls how pods are created during initial scale up, when replacing pods on nodes, or when scaling down. The default policy is `OrderedReady`, where pods are created in increasing order (pod-0, then pod-1, etc) and the controller will wait until each pod is ready before continuing. When scaling down, the pods are removed in the opposite order. The alternative policy is `Parallel` which will create pods in parallel to match the desired scale without waiting, and on scale down will delete all pods at once.
+     */
     @JsonProperty("podManagementPolicy")
     public void setPodManagementPolicy(String podManagementPolicy) {
         this.podManagementPolicy = podManagementPolicy;
     }
 
+    /**
+     * replicas is the desired number of replicas of the given Template. These are replicas in the sense that they are instantiations of the same Template, but individual replicas also have a consistent identity. If unspecified, defaults to 1.
+     */
     @JsonProperty("replicas")
     public Integer getReplicas() {
         return replicas;
     }
 
+    /**
+     * replicas is the desired number of replicas of the given Template. These are replicas in the sense that they are instantiations of the same Template, but individual replicas also have a consistent identity. If unspecified, defaults to 1.
+     */
     @JsonProperty("replicas")
     public void setReplicas(Integer replicas) {
         this.replicas = replicas;
     }
 
+    /**
+     * revisionHistoryLimit is the maximum number of revisions that will be maintained in the StatefulSet's revision history. The revision history consists of all revisions not represented by a currently applied StatefulSetSpec version. The default value is 10.
+     */
     @JsonProperty("revisionHistoryLimit")
     public Integer getRevisionHistoryLimit() {
         return revisionHistoryLimit;
     }
 
+    /**
+     * revisionHistoryLimit is the maximum number of revisions that will be maintained in the StatefulSet's revision history. The revision history consists of all revisions not represented by a currently applied StatefulSetSpec version. The default value is 10.
+     */
     @JsonProperty("revisionHistoryLimit")
     public void setRevisionHistoryLimit(Integer revisionHistoryLimit) {
         this.revisionHistoryLimit = revisionHistoryLimit;
     }
 
+    /**
+     * A StatefulSetSpec is the specification of a StatefulSet.
+     */
     @JsonProperty("selector")
     public LabelSelector getSelector() {
         return selector;
     }
 
+    /**
+     * A StatefulSetSpec is the specification of a StatefulSet.
+     */
     @JsonProperty("selector")
     public void setSelector(LabelSelector selector) {
         this.selector = selector;
     }
 
+    /**
+     * serviceName is the name of the service that governs this StatefulSet. This service must exist before the StatefulSet, and is responsible for the network identity of the set. Pods get DNS/hostnames that follow the pattern: pod-specific-string.serviceName.default.svc.cluster.local where "pod-specific-string" is managed by the StatefulSet controller.
+     */
     @JsonProperty("serviceName")
     public String getServiceName() {
         return serviceName;
     }
 
+    /**
+     * serviceName is the name of the service that governs this StatefulSet. This service must exist before the StatefulSet, and is responsible for the network identity of the set. Pods get DNS/hostnames that follow the pattern: pod-specific-string.serviceName.default.svc.cluster.local where "pod-specific-string" is managed by the StatefulSet controller.
+     */
     @JsonProperty("serviceName")
     public void setServiceName(String serviceName) {
         this.serviceName = serviceName;
     }
 
+    /**
+     * A StatefulSetSpec is the specification of a StatefulSet.
+     */
     @JsonProperty("template")
     public PodTemplateSpec getTemplate() {
         return template;
     }
 
+    /**
+     * A StatefulSetSpec is the specification of a StatefulSet.
+     */
     @JsonProperty("template")
     public void setTemplate(PodTemplateSpec template) {
         this.template = template;
     }
 
+    /**
+     * A StatefulSetSpec is the specification of a StatefulSet.
+     */
     @JsonProperty("updateStrategy")
     public StatefulSetUpdateStrategy getUpdateStrategy() {
         return updateStrategy;
     }
 
+    /**
+     * A StatefulSetSpec is the specification of a StatefulSet.
+     */
     @JsonProperty("updateStrategy")
     public void setUpdateStrategy(StatefulSetUpdateStrategy updateStrategy) {
         this.updateStrategy = updateStrategy;
     }
 
+    /**
+     * volumeClaimTemplates is a list of claims that pods are allowed to reference. The StatefulSet controller is responsible for mapping network identities to claims in a way that maintains the identity of a pod. Every claim in this list must have at least one matching (by name) volumeMount in one container in the template. A claim in this list takes precedence over any volumes in the template, with the same name.
+     */
     @JsonProperty("volumeClaimTemplates")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<PersistentVolumeClaim> getVolumeClaimTemplates() {
         return volumeClaimTemplates;
     }
 
+    /**
+     * volumeClaimTemplates is a list of claims that pods are allowed to reference. The StatefulSet controller is responsible for mapping network identities to claims in a way that maintains the identity of a pod. Every claim in this list must have at least one matching (by name) volumeMount in one container in the template. A claim in this list takes precedence over any volumes in the template, with the same name.
+     */
     @JsonProperty("volumeClaimTemplates")
     public void setVolumeClaimTemplates(List<PersistentVolumeClaim> volumeClaimTemplates) {
         this.volumeClaimTemplates = volumeClaimTemplates;

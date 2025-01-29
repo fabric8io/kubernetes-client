@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * NetworkDataLinkEthernet represents an ethernet link object.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -90,41 +93,65 @@ public class NetworkDataLinkEthernet implements Editable<NetworkDataLinkEthernet
         this.type = type;
     }
 
+    /**
+     * Id is the ID of the interface (used for naming)
+     */
     @JsonProperty("id")
     public String getId() {
         return id;
     }
 
+    /**
+     * Id is the ID of the interface (used for naming)
+     */
     @JsonProperty("id")
     public void setId(String id) {
         this.id = id;
     }
 
+    /**
+     * NetworkDataLinkEthernet represents an ethernet link object.
+     */
     @JsonProperty("macAddress")
     public NetworkLinkEthernetMac getMacAddress() {
         return macAddress;
     }
 
+    /**
+     * NetworkDataLinkEthernet represents an ethernet link object.
+     */
     @JsonProperty("macAddress")
     public void setMacAddress(NetworkLinkEthernetMac macAddress) {
         this.macAddress = macAddress;
     }
 
+    /**
+     * MTU is the MTU of the interface
+     */
     @JsonProperty("mtu")
     public Integer getMtu() {
         return mtu;
     }
 
+    /**
+     * MTU is the MTU of the interface
+     */
     @JsonProperty("mtu")
     public void setMtu(Integer mtu) {
         this.mtu = mtu;
     }
 
+    /**
+     * Type is the type of the ethernet link. It can be one of: bridge, dvs, hw_veb, hyperv, ovs, tap, vhostuser, vif, phy
+     */
     @JsonProperty("type")
     public String getType() {
         return type;
     }
 
+    /**
+     * Type is the type of the ethernet link. It can be one of: bridge, dvs, hw_veb, hyperv, ovs, tap, vhostuser, vif, phy
+     */
     @JsonProperty("type")
     public void setType(String type) {
         this.type = type;

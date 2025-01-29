@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ControlPlaneMachineSetTemplate is a template used by the ControlPlaneMachineSet to create the Machines that it will manage in the future.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class ControlPlaneMachineSetTemplate implements Editable<ControlPlaneMach
         this.machinesV1beta1MachineOpenshiftIo = machinesV1beta1MachineOpenshiftIo;
     }
 
+    /**
+     * MachineType determines the type of Machines that should be managed by the ControlPlaneMachineSet. Currently, the only valid value is machines_v1beta1_machine_openshift_io.
+     */
     @JsonProperty("machineType")
     public String getMachineType() {
         return machineType;
     }
 
+    /**
+     * MachineType determines the type of Machines that should be managed by the ControlPlaneMachineSet. Currently, the only valid value is machines_v1beta1_machine_openshift_io.
+     */
     @JsonProperty("machineType")
     public void setMachineType(String machineType) {
         this.machineType = machineType;
     }
 
+    /**
+     * ControlPlaneMachineSetTemplate is a template used by the ControlPlaneMachineSet to create the Machines that it will manage in the future.
+     */
     @JsonProperty("machines_v1beta1_machine_openshift_io")
     public OpenShiftMachineV1Beta1MachineTemplate getMachinesV1beta1MachineOpenshiftIo() {
         return machinesV1beta1MachineOpenshiftIo;
     }
 
+    /**
+     * ControlPlaneMachineSetTemplate is a template used by the ControlPlaneMachineSet to create the Machines that it will manage in the future.
+     */
     @JsonProperty("machines_v1beta1_machine_openshift_io")
     public void setMachinesV1beta1MachineOpenshiftIo(OpenShiftMachineV1Beta1MachineTemplate machinesV1beta1MachineOpenshiftIo) {
         this.machinesV1beta1MachineOpenshiftIo = machinesV1beta1MachineOpenshiftIo;

@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * The following values are used to construct proxy image url. format: `${hub}/${image_name}/${tag}-${image_type}`, example: `docker.io/istio/proxyv2:1.11.1` or `docker.io/istio/proxyv2:1.11.1-distroless`. This information was previously part of the Values API.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -78,11 +81,17 @@ public class ProxyImage implements Editable<ProxyImageBuilder>, KubernetesResour
         this.imageType = imageType;
     }
 
+    /**
+     * The image type of the image. Istio publishes default, debug, and distroless images. Other values are allowed if those image types (example: centos) are published to the specified hub. supported values: default, debug, distroless.
+     */
     @JsonProperty("imageType")
     public String getImageType() {
         return imageType;
     }
 
+    /**
+     * The image type of the image. Istio publishes default, debug, and distroless images. Other values are allowed if those image types (example: centos) are published to the specified hub. supported values: default, debug, distroless.
+     */
     @JsonProperty("imageType")
     public void setImageType(String imageType) {
         this.imageType = imageType;

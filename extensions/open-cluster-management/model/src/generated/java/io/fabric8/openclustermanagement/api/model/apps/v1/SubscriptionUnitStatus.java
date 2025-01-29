@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * SubscriptionUnitStatus defines status of each package in a subscription
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -95,51 +98,81 @@ public class SubscriptionUnitStatus implements Editable<SubscriptionUnitStatusBu
         this.resourceStatus = resourceStatus;
     }
 
+    /**
+     * SubscriptionUnitStatus defines status of each package in a subscription
+     */
     @JsonProperty("lastUpdateTime")
     public String getLastUpdateTime() {
         return lastUpdateTime;
     }
 
+    /**
+     * SubscriptionUnitStatus defines status of each package in a subscription
+     */
     @JsonProperty("lastUpdateTime")
     public void setLastUpdateTime(String lastUpdateTime) {
         this.lastUpdateTime = lastUpdateTime;
     }
 
+    /**
+     * Informational message from the deployment of the package.
+     */
     @JsonProperty("message")
     public String getMessage() {
         return message;
     }
 
+    /**
+     * Informational message from the deployment of the package.
+     */
     @JsonProperty("message")
     public void setMessage(String message) {
         this.message = message;
     }
 
+    /**
+     * Phase of the deployment package (Propagated/Subscribed/Failed/PropagationFailed/PreHookSucessful).
+     */
     @JsonProperty("phase")
     public String getPhase() {
         return phase;
     }
 
+    /**
+     * Phase of the deployment package (Propagated/Subscribed/Failed/PropagationFailed/PreHookSucessful).
+     */
     @JsonProperty("phase")
     public void setPhase(String phase) {
         this.phase = phase;
     }
 
+    /**
+     * additional error output from the deployment of the package.
+     */
     @JsonProperty("reason")
     public String getReason() {
         return reason;
     }
 
+    /**
+     * additional error output from the deployment of the package.
+     */
     @JsonProperty("reason")
     public void setReason(String reason) {
         this.reason = reason;
     }
 
+    /**
+     * SubscriptionUnitStatus defines status of each package in a subscription
+     */
     @JsonProperty("resourceStatus")
     public Object getResourceStatus() {
         return resourceStatus;
     }
 
+    /**
+     * SubscriptionUnitStatus defines status of each package in a subscription
+     */
     @JsonProperty("resourceStatus")
     @JsonDeserialize(using = io.fabric8.kubernetes.internal.KubernetesDeserializer.class)
     public void setResourceStatus(Object resourceStatus) {

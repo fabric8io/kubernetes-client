@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * CloudEventDeliveryState reports the state of a cloud event to be sent.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -90,41 +93,65 @@ public class CloudEventDeliveryState implements Editable<CloudEventDeliveryState
         this.sentAt = sentAt;
     }
 
+    /**
+     * Current status
+     */
     @JsonProperty("condition")
     public String getCondition() {
         return condition;
     }
 
+    /**
+     * Current status
+     */
     @JsonProperty("condition")
     public void setCondition(String condition) {
         this.condition = condition;
     }
 
+    /**
+     * Error is the text of error (if any)
+     */
     @JsonProperty("message")
     public String getMessage() {
         return message;
     }
 
+    /**
+     * Error is the text of error (if any)
+     */
     @JsonProperty("message")
     public void setMessage(String message) {
         this.message = message;
     }
 
+    /**
+     * RetryCount is the number of attempts of sending the cloud event
+     */
     @JsonProperty("retryCount")
     public Integer getRetryCount() {
         return retryCount;
     }
 
+    /**
+     * RetryCount is the number of attempts of sending the cloud event
+     */
     @JsonProperty("retryCount")
     public void setRetryCount(Integer retryCount) {
         this.retryCount = retryCount;
     }
 
+    /**
+     * CloudEventDeliveryState reports the state of a cloud event to be sent.
+     */
     @JsonProperty("sentAt")
     public String getSentAt() {
         return sentAt;
     }
 
+    /**
+     * CloudEventDeliveryState reports the state of a cloud event to be sent.
+     */
     @JsonProperty("sentAt")
     public void setSentAt(String sentAt) {
         this.sentAt = sentAt;

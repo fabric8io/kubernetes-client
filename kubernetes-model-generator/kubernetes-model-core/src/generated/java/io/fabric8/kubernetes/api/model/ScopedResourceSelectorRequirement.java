@@ -19,6 +19,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * A scoped-resource selector requirement is a selector that contains values, a scope name, and an operator that relates the scope name and values.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -60,32 +63,50 @@ public class ScopedResourceSelectorRequirement implements Editable<ScopedResourc
         this.values = values;
     }
 
+    /**
+     * Represents a scope's relationship to a set of values. Valid operators are In, NotIn, Exists, DoesNotExist.
+     */
     @JsonProperty("operator")
     public String getOperator() {
         return operator;
     }
 
+    /**
+     * Represents a scope's relationship to a set of values. Valid operators are In, NotIn, Exists, DoesNotExist.
+     */
     @JsonProperty("operator")
     public void setOperator(String operator) {
         this.operator = operator;
     }
 
+    /**
+     * The name of the scope that the selector applies to.
+     */
     @JsonProperty("scopeName")
     public String getScopeName() {
         return scopeName;
     }
 
+    /**
+     * The name of the scope that the selector applies to.
+     */
     @JsonProperty("scopeName")
     public void setScopeName(String scopeName) {
         this.scopeName = scopeName;
     }
 
+    /**
+     * An array of string values. If the operator is In or NotIn, the values array must be non-empty. If the operator is Exists or DoesNotExist, the values array must be empty. This array is replaced during a strategic merge patch.
+     */
     @JsonProperty("values")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getValues() {
         return values;
     }
 
+    /**
+     * An array of string values. If the operator is In or NotIn, the values array must be non-empty. If the operator is Exists or DoesNotExist, the values array must be empty. This array is replaced during a strategic merge patch.
+     */
     @JsonProperty("values")
     public void setValues(List<String> values) {
         this.values = values;

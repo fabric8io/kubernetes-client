@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Tag  The tags of ECS Instance
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class Tag implements Editable<TagBuilder>, KubernetesResource
         this.value = value;
     }
 
+    /**
+     * Key is the name of the key pair
+     */
     @JsonProperty("Key")
     public String getKey() {
         return key;
     }
 
+    /**
+     * Key is the name of the key pair
+     */
     @JsonProperty("Key")
     public void setKey(String key) {
         this.key = key;
     }
 
+    /**
+     * Value is the value or data of the key pair
+     */
     @JsonProperty("Value")
     public String getValue() {
         return value;
     }
 
+    /**
+     * Value is the value or data of the key pair
+     */
     @JsonProperty("Value")
     public void setValue(String value) {
         this.value = value;

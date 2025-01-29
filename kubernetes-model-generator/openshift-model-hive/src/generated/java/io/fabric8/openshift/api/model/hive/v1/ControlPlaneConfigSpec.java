@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ControlPlaneConfigSpec contains additional configuration settings for a target cluster's control plane.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -86,31 +89,49 @@ public class ControlPlaneConfigSpec implements Editable<ControlPlaneConfigSpecBu
         this.servingCertificates = servingCertificates;
     }
 
+    /**
+     * APIServerIPOverride is the optional override of the API server IP address. Hive will use this IP address for creating TCP connections. Port from the original API server URL will be used. This field can be used when repointing the APIServer's DNS is not viable option.
+     */
     @JsonProperty("apiServerIPOverride")
     public String getApiServerIPOverride() {
         return apiServerIPOverride;
     }
 
+    /**
+     * APIServerIPOverride is the optional override of the API server IP address. Hive will use this IP address for creating TCP connections. Port from the original API server URL will be used. This field can be used when repointing the APIServer's DNS is not viable option.
+     */
     @JsonProperty("apiServerIPOverride")
     public void setApiServerIPOverride(String apiServerIPOverride) {
         this.apiServerIPOverride = apiServerIPOverride;
     }
 
+    /**
+     * APIURLOverride is the optional URL override to which Hive will transition for communication with the API server of the remote cluster. When a remote cluster is created, Hive will initially communicate using the API URL established during installation. If an API URL Override is specified, Hive will periodically attempt to connect to the remote cluster using the override URL. Once Hive has determined that the override URL is active, Hive will use the override URL for further communications with the API server of the remote cluster.
+     */
     @JsonProperty("apiURLOverride")
     public String getApiURLOverride() {
         return apiURLOverride;
     }
 
+    /**
+     * APIURLOverride is the optional URL override to which Hive will transition for communication with the API server of the remote cluster. When a remote cluster is created, Hive will initially communicate using the API URL established during installation. If an API URL Override is specified, Hive will periodically attempt to connect to the remote cluster using the override URL. Once Hive has determined that the override URL is active, Hive will use the override URL for further communications with the API server of the remote cluster.
+     */
     @JsonProperty("apiURLOverride")
     public void setApiURLOverride(String apiURLOverride) {
         this.apiURLOverride = apiURLOverride;
     }
 
+    /**
+     * ControlPlaneConfigSpec contains additional configuration settings for a target cluster's control plane.
+     */
     @JsonProperty("servingCertificates")
     public ControlPlaneServingCertificateSpec getServingCertificates() {
         return servingCertificates;
     }
 
+    /**
+     * ControlPlaneConfigSpec contains additional configuration settings for a target cluster's control plane.
+     */
     @JsonProperty("servingCertificates")
     public void setServingCertificates(ControlPlaneServingCertificateSpec servingCertificates) {
         this.servingCertificates = servingCertificates;

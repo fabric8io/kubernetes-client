@@ -35,6 +35,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * MachineOSBuildStatus describes the state of a build and other helpful information.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -103,63 +106,99 @@ public class MachineOSBuildStatus implements Editable<MachineOSBuildStatusBuilde
         this.relatedObjects = relatedObjects;
     }
 
+    /**
+     * MachineOSBuildStatus describes the state of a build and other helpful information.
+     */
     @JsonProperty("buildEnd")
     public String getBuildEnd() {
         return buildEnd;
     }
 
+    /**
+     * MachineOSBuildStatus describes the state of a build and other helpful information.
+     */
     @JsonProperty("buildEnd")
     public void setBuildEnd(String buildEnd) {
         this.buildEnd = buildEnd;
     }
 
+    /**
+     * MachineOSBuildStatus describes the state of a build and other helpful information.
+     */
     @JsonProperty("buildStart")
     public String getBuildStart() {
         return buildStart;
     }
 
+    /**
+     * MachineOSBuildStatus describes the state of a build and other helpful information.
+     */
     @JsonProperty("buildStart")
     public void setBuildStart(String buildStart) {
         this.buildStart = buildStart;
     }
 
+    /**
+     * MachineOSBuildStatus describes the state of a build and other helpful information.
+     */
     @JsonProperty("builderReference")
     public MachineOSBuilderReference getBuilderReference() {
         return builderReference;
     }
 
+    /**
+     * MachineOSBuildStatus describes the state of a build and other helpful information.
+     */
     @JsonProperty("builderReference")
     public void setBuilderReference(MachineOSBuilderReference builderReference) {
         this.builderReference = builderReference;
     }
 
+    /**
+     * conditions are state related conditions for the build. Valid types are: Prepared, Building, Failed, Interrupted, and Succeeded once a Build is marked as Failed, no future conditions can be set. This is enforced by the MCO.
+     */
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Condition> getConditions() {
         return conditions;
     }
 
+    /**
+     * conditions are state related conditions for the build. Valid types are: Prepared, Building, Failed, Interrupted, and Succeeded once a Build is marked as Failed, no future conditions can be set. This is enforced by the MCO.
+     */
     @JsonProperty("conditions")
     public void setConditions(List<Condition> conditions) {
         this.conditions = conditions;
     }
 
+    /**
+     * finalImagePushSpec describes the fully qualified pushspec produced by this build that the final image can be. Must be in sha format.
+     */
     @JsonProperty("finalImagePullspec")
     public String getFinalImagePullspec() {
         return finalImagePullspec;
     }
 
+    /**
+     * finalImagePushSpec describes the fully qualified pushspec produced by this build that the final image can be. Must be in sha format.
+     */
     @JsonProperty("finalImagePullspec")
     public void setFinalImagePullspec(String finalImagePullspec) {
         this.finalImagePullspec = finalImagePullspec;
     }
 
+    /**
+     * relatedObjects is a list of objects that are related to the build process.
+     */
     @JsonProperty("relatedObjects")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ObjectReference> getRelatedObjects() {
         return relatedObjects;
     }
 
+    /**
+     * relatedObjects is a list of objects that are related to the build process.
+     */
     @JsonProperty("relatedObjects")
     public void setRelatedObjects(List<ObjectReference> relatedObjects) {
         this.relatedObjects = relatedObjects;

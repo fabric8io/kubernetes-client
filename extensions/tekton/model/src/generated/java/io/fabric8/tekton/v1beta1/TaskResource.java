@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * TaskResource defines an input or output Resource declared as a requirement by a Task. The Name field will be used to refer to these Resources within the Task definition, and when provided as an Input, the Name will be the path to the volume mounted containing this Resource as an input (e.g. an input Resource named `workspace` will be mounted at `/workspace`).<br><p> <br><p> Deprecated: Unused, preserved only for backwards compatibility
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -94,51 +97,81 @@ public class TaskResource implements Editable<TaskResourceBuilder>, KubernetesRe
         this.type = type;
     }
 
+    /**
+     * Description is a user-facing description of the declared resource that may be used to populate a UI.
+     */
     @JsonProperty("description")
     public String getDescription() {
         return description;
     }
 
+    /**
+     * Description is a user-facing description of the declared resource that may be used to populate a UI.
+     */
     @JsonProperty("description")
     public void setDescription(String description) {
         this.description = description;
     }
 
+    /**
+     * Name declares the name by which a resource is referenced in the definition. Resources may be referenced by name in the definition of a Task's steps.
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * Name declares the name by which a resource is referenced in the definition. Resources may be referenced by name in the definition of a Task's steps.
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * Optional declares the resource as optional. By default optional is set to false which makes a resource required. optional: true - the resource is considered optional optional: false - the resource is considered required (equivalent of not specifying it)
+     */
     @JsonProperty("optional")
     public Boolean getOptional() {
         return optional;
     }
 
+    /**
+     * Optional declares the resource as optional. By default optional is set to false which makes a resource required. optional: true - the resource is considered optional optional: false - the resource is considered required (equivalent of not specifying it)
+     */
     @JsonProperty("optional")
     public void setOptional(Boolean optional) {
         this.optional = optional;
     }
 
+    /**
+     * TargetPath is the path in workspace directory where the resource will be copied.
+     */
     @JsonProperty("targetPath")
     public String getTargetPath() {
         return targetPath;
     }
 
+    /**
+     * TargetPath is the path in workspace directory where the resource will be copied.
+     */
     @JsonProperty("targetPath")
     public void setTargetPath(String targetPath) {
         this.targetPath = targetPath;
     }
 
+    /**
+     * Type is the type of this resource;
+     */
     @JsonProperty("type")
     public String getType() {
         return type;
     }
 
+    /**
+     * Type is the type of this resource;
+     */
     @JsonProperty("type")
     public void setType(String type) {
         this.type = type;

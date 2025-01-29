@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * GCPChaosStatus represents the status of a GCPChaos
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -90,33 +93,51 @@ public class GCPChaosStatus implements Editable<GCPChaosStatusBuilder>, Kubernet
         this.experiment = experiment;
     }
 
+    /**
+     * The attached disk info strings. Needed in disk-loss.
+     */
     @JsonProperty("attachedDiskStrings")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getAttachedDiskStrings() {
         return attachedDiskStrings;
     }
 
+    /**
+     * The attached disk info strings. Needed in disk-loss.
+     */
     @JsonProperty("attachedDiskStrings")
     public void setAttachedDiskStrings(List<String> attachedDiskStrings) {
         this.attachedDiskStrings = attachedDiskStrings;
     }
 
+    /**
+     * Conditions represents the current global condition of the chaos
+     */
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ChaosCondition> getConditions() {
         return conditions;
     }
 
+    /**
+     * Conditions represents the current global condition of the chaos
+     */
     @JsonProperty("conditions")
     public void setConditions(List<ChaosCondition> conditions) {
         this.conditions = conditions;
     }
 
+    /**
+     * GCPChaosStatus represents the status of a GCPChaos
+     */
     @JsonProperty("experiment")
     public ExperimentStatus getExperiment() {
         return experiment;
     }
 
+    /**
+     * GCPChaosStatus represents the status of a GCPChaos
+     */
     @JsonProperty("experiment")
     public void setExperiment(ExperimentStatus experiment) {
         this.experiment = experiment;

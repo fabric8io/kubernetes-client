@@ -82,21 +82,33 @@ public class Placement implements Editable<PlacementBuilder>, KubernetesResource
         this.vreplicas = vreplicas;
     }
 
+    /**
+     * PodName is the name of the pod where the resource is placed
+     */
     @JsonProperty("podName")
     public String getPodName() {
         return podName;
     }
 
+    /**
+     * PodName is the name of the pod where the resource is placed
+     */
     @JsonProperty("podName")
     public void setPodName(String podName) {
         this.podName = podName;
     }
 
+    /**
+     * VReplicas is the number of virtual replicas assigned to in the pod
+     */
     @JsonProperty("vreplicas")
     public Integer getVreplicas() {
         return vreplicas;
     }
 
+    /**
+     * VReplicas is the number of virtual replicas assigned to in the pod
+     */
     @JsonProperty("vreplicas")
     public void setVreplicas(Integer vreplicas) {
         this.vreplicas = vreplicas;

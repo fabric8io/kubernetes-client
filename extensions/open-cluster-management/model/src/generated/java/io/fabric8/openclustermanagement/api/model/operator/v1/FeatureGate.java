@@ -82,21 +82,33 @@ public class FeatureGate implements Editable<FeatureGateBuilder>, KubernetesReso
         this.mode = mode;
     }
 
+    /**
+     * Feature is the key of feature gate. e.g. featuregate/Foo.
+     */
     @JsonProperty("feature")
     public String getFeature() {
         return feature;
     }
 
+    /**
+     * Feature is the key of feature gate. e.g. featuregate/Foo.
+     */
     @JsonProperty("feature")
     public void setFeature(String feature) {
         this.feature = feature;
     }
 
+    /**
+     * Mode is either Enable, Disable, "" where "" is Disable by default. In Enable mode, a valid feature gate `featuregate/Foo` will be set to "--featuregate/Foo=true". In Disable mode, a valid feature gate `featuregate/Foo` will be set to "--featuregate/Foo=false".
+     */
     @JsonProperty("mode")
     public String getMode() {
         return mode;
     }
 
+    /**
+     * Mode is either Enable, Disable, "" where "" is Disable by default. In Enable mode, a valid feature gate `featuregate/Foo` will be set to "--featuregate/Foo=true". In Disable mode, a valid feature gate `featuregate/Foo` will be set to "--featuregate/Foo=false".
+     */
     @JsonProperty("mode")
     public void setMode(String mode) {
         this.mode = mode;

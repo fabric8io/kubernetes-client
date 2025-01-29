@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * OAuthSpec contains desired cluster auth configuration
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -89,32 +92,50 @@ public class OAuthSpec implements Editable<OAuthSpecBuilder>, KubernetesResource
         this.tokenConfig = tokenConfig;
     }
 
+    /**
+     * identityProviders is an ordered list of ways for a user to identify themselves. When this list is empty, no identities are provisioned for users.
+     */
     @JsonProperty("identityProviders")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<IdentityProvider> getIdentityProviders() {
         return identityProviders;
     }
 
+    /**
+     * identityProviders is an ordered list of ways for a user to identify themselves. When this list is empty, no identities are provisioned for users.
+     */
     @JsonProperty("identityProviders")
     public void setIdentityProviders(List<IdentityProvider> identityProviders) {
         this.identityProviders = identityProviders;
     }
 
+    /**
+     * OAuthSpec contains desired cluster auth configuration
+     */
     @JsonProperty("templates")
     public OAuthTemplates getTemplates() {
         return templates;
     }
 
+    /**
+     * OAuthSpec contains desired cluster auth configuration
+     */
     @JsonProperty("templates")
     public void setTemplates(OAuthTemplates templates) {
         this.templates = templates;
     }
 
+    /**
+     * OAuthSpec contains desired cluster auth configuration
+     */
     @JsonProperty("tokenConfig")
     public TokenConfig getTokenConfig() {
         return tokenConfig;
     }
 
+    /**
+     * OAuthSpec contains desired cluster auth configuration
+     */
     @JsonProperty("tokenConfig")
     public void setTokenConfig(TokenConfig tokenConfig) {
         this.tokenConfig = tokenConfig;

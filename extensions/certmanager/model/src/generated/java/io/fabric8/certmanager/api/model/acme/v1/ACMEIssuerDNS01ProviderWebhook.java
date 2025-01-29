@@ -33,6 +33,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ACMEIssuerDNS01ProviderWebhook specifies configuration for a webhook DNS01 provider, including where to POST ChallengePayload resources.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -87,31 +90,49 @@ public class ACMEIssuerDNS01ProviderWebhook implements Editable<ACMEIssuerDNS01P
         this.solverName = solverName;
     }
 
+    /**
+     * ACMEIssuerDNS01ProviderWebhook specifies configuration for a webhook DNS01 provider, including where to POST ChallengePayload resources.
+     */
     @JsonProperty("config")
     public JsonNode getConfig() {
         return config;
     }
 
+    /**
+     * ACMEIssuerDNS01ProviderWebhook specifies configuration for a webhook DNS01 provider, including where to POST ChallengePayload resources.
+     */
     @JsonProperty("config")
     public void setConfig(JsonNode config) {
         this.config = config;
     }
 
+    /**
+     * The API group name that should be used when POSTing ChallengePayload resources to the webhook apiserver. This should be the same as the GroupName specified in the webhook provider implementation.
+     */
     @JsonProperty("groupName")
     public String getGroupName() {
         return groupName;
     }
 
+    /**
+     * The API group name that should be used when POSTing ChallengePayload resources to the webhook apiserver. This should be the same as the GroupName specified in the webhook provider implementation.
+     */
     @JsonProperty("groupName")
     public void setGroupName(String groupName) {
         this.groupName = groupName;
     }
 
+    /**
+     * The name of the solver to use, as defined in the webhook provider implementation. This will typically be the name of the provider, e.g. 'cloudflare'.
+     */
     @JsonProperty("solverName")
     public String getSolverName() {
         return solverName;
     }
 
+    /**
+     * The name of the solver to use, as defined in the webhook provider implementation. This will typically be the name of the provider, e.g. 'cloudflare'.
+     */
     @JsonProperty("solverName")
     public void setSolverName(String solverName) {
         this.solverName = solverName;

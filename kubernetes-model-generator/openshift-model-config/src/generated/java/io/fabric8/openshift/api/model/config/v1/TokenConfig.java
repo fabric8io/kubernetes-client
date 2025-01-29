@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * TokenConfig holds the necessary configuration options for authorization and access tokens
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -86,31 +89,49 @@ public class TokenConfig implements Editable<TokenConfigBuilder>, KubernetesReso
         this.accessTokenMaxAgeSeconds = accessTokenMaxAgeSeconds;
     }
 
+    /**
+     * TokenConfig holds the necessary configuration options for authorization and access tokens
+     */
     @JsonProperty("accessTokenInactivityTimeout")
     public String getAccessTokenInactivityTimeout() {
         return accessTokenInactivityTimeout;
     }
 
+    /**
+     * TokenConfig holds the necessary configuration options for authorization and access tokens
+     */
     @JsonProperty("accessTokenInactivityTimeout")
     public void setAccessTokenInactivityTimeout(String accessTokenInactivityTimeout) {
         this.accessTokenInactivityTimeout = accessTokenInactivityTimeout;
     }
 
+    /**
+     * accessTokenInactivityTimeoutSeconds - DEPRECATED: setting this field has no effect.
+     */
     @JsonProperty("accessTokenInactivityTimeoutSeconds")
     public Integer getAccessTokenInactivityTimeoutSeconds() {
         return accessTokenInactivityTimeoutSeconds;
     }
 
+    /**
+     * accessTokenInactivityTimeoutSeconds - DEPRECATED: setting this field has no effect.
+     */
     @JsonProperty("accessTokenInactivityTimeoutSeconds")
     public void setAccessTokenInactivityTimeoutSeconds(Integer accessTokenInactivityTimeoutSeconds) {
         this.accessTokenInactivityTimeoutSeconds = accessTokenInactivityTimeoutSeconds;
     }
 
+    /**
+     * accessTokenMaxAgeSeconds defines the maximum age of access tokens
+     */
     @JsonProperty("accessTokenMaxAgeSeconds")
     public Integer getAccessTokenMaxAgeSeconds() {
         return accessTokenMaxAgeSeconds;
     }
 
+    /**
+     * accessTokenMaxAgeSeconds defines the maximum age of access tokens
+     */
     @JsonProperty("accessTokenMaxAgeSeconds")
     public void setAccessTokenMaxAgeSeconds(Integer accessTokenMaxAgeSeconds) {
         this.accessTokenMaxAgeSeconds = accessTokenMaxAgeSeconds;

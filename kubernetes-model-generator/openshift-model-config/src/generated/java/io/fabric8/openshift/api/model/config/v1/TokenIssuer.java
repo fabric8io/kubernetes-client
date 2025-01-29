@@ -89,12 +89,18 @@ public class TokenIssuer implements Editable<TokenIssuerBuilder>, KubernetesReso
         this.issuerURL = issuerURL;
     }
 
+    /**
+     * Audiences is an array of audiences that the token was issued for. Valid tokens must include at least one of these values in their "aud" claim. Must be set to exactly one value.
+     */
     @JsonProperty("audiences")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getAudiences() {
         return audiences;
     }
 
+    /**
+     * Audiences is an array of audiences that the token was issued for. Valid tokens must include at least one of these values in their "aud" claim. Must be set to exactly one value.
+     */
     @JsonProperty("audiences")
     public void setAudiences(List<String> audiences) {
         this.audiences = audiences;
@@ -110,11 +116,17 @@ public class TokenIssuer implements Editable<TokenIssuerBuilder>, KubernetesReso
         this.issuerCertificateAuthority = issuerCertificateAuthority;
     }
 
+    /**
+     * URL is the serving URL of the token issuer. Must use the https:// scheme.
+     */
     @JsonProperty("issuerURL")
     public String getIssuerURL() {
         return issuerURL;
     }
 
+    /**
+     * URL is the serving URL of the token issuer. Must use the https:// scheme.
+     */
     @JsonProperty("issuerURL")
     public void setIssuerURL(String issuerURL) {
         this.issuerURL = issuerURL;

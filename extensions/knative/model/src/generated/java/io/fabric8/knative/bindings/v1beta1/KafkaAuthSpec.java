@@ -85,12 +85,18 @@ public class KafkaAuthSpec implements Editable<KafkaAuthSpecBuilder>, Kubernetes
         this.net = net;
     }
 
+    /**
+     * Bootstrap servers are the Kafka servers the consumer will connect to.
+     */
     @JsonProperty("bootstrapServers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getBootstrapServers() {
         return bootstrapServers;
     }
 
+    /**
+     * Bootstrap servers are the Kafka servers the consumer will connect to.
+     */
     @JsonProperty("bootstrapServers")
     public void setBootstrapServers(List<String> bootstrapServers) {
         this.bootstrapServers = bootstrapServers;

@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * NodeDisruptionPolicyConfig is the overall spec definition for files/units/sshkeys
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -90,33 +93,51 @@ public class NodeDisruptionPolicyConfig implements Editable<NodeDisruptionPolicy
         this.units = units;
     }
 
+    /**
+     * files is a list of MachineConfig file definitions and actions to take to changes on those paths This list supports a maximum of 50 entries.
+     */
     @JsonProperty("files")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<NodeDisruptionPolicySpecFile> getFiles() {
         return files;
     }
 
+    /**
+     * files is a list of MachineConfig file definitions and actions to take to changes on those paths This list supports a maximum of 50 entries.
+     */
     @JsonProperty("files")
     public void setFiles(List<NodeDisruptionPolicySpecFile> files) {
         this.files = files;
     }
 
+    /**
+     * NodeDisruptionPolicyConfig is the overall spec definition for files/units/sshkeys
+     */
     @JsonProperty("sshkey")
     public NodeDisruptionPolicySpecSSHKey getSshkey() {
         return sshkey;
     }
 
+    /**
+     * NodeDisruptionPolicyConfig is the overall spec definition for files/units/sshkeys
+     */
     @JsonProperty("sshkey")
     public void setSshkey(NodeDisruptionPolicySpecSSHKey sshkey) {
         this.sshkey = sshkey;
     }
 
+    /**
+     * units is a list MachineConfig unit definitions and actions to take on changes to those services This list supports a maximum of 50 entries.
+     */
     @JsonProperty("units")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<NodeDisruptionPolicySpecUnit> getUnits() {
         return units;
     }
 
+    /**
+     * units is a list MachineConfig unit definitions and actions to take on changes to those services This list supports a maximum of 50 entries.
+     */
     @JsonProperty("units")
     public void setUnits(List<NodeDisruptionPolicySpecUnit> units) {
         this.units = units;

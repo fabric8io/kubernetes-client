@@ -33,6 +33,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Sigv4 optionally configures AWS's Signature Verification 4 signing process to sign requests.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -95,51 +98,81 @@ public class Sigv4 implements Editable<Sigv4Builder>, KubernetesResource
         this.secretKey = secretKey;
     }
 
+    /**
+     * Sigv4 optionally configures AWS's Signature Verification 4 signing process to sign requests.
+     */
     @JsonProperty("accessKey")
     public SecretKeySelector getAccessKey() {
         return accessKey;
     }
 
+    /**
+     * Sigv4 optionally configures AWS's Signature Verification 4 signing process to sign requests.
+     */
     @JsonProperty("accessKey")
     public void setAccessKey(SecretKeySelector accessKey) {
         this.accessKey = accessKey;
     }
 
+    /**
+     * Profile is the named AWS profile used to authenticate.
+     */
     @JsonProperty("profile")
     public String getProfile() {
         return profile;
     }
 
+    /**
+     * Profile is the named AWS profile used to authenticate.
+     */
     @JsonProperty("profile")
     public void setProfile(String profile) {
         this.profile = profile;
     }
 
+    /**
+     * Region is the AWS region. If blank, the region from the default credentials chain used.
+     */
     @JsonProperty("region")
     public String getRegion() {
         return region;
     }
 
+    /**
+     * Region is the AWS region. If blank, the region from the default credentials chain used.
+     */
     @JsonProperty("region")
     public void setRegion(String region) {
         this.region = region;
     }
 
+    /**
+     * RoleArn is the named AWS profile used to authenticate.
+     */
     @JsonProperty("roleArn")
     public String getRoleArn() {
         return roleArn;
     }
 
+    /**
+     * RoleArn is the named AWS profile used to authenticate.
+     */
     @JsonProperty("roleArn")
     public void setRoleArn(String roleArn) {
         this.roleArn = roleArn;
     }
 
+    /**
+     * Sigv4 optionally configures AWS's Signature Verification 4 signing process to sign requests.
+     */
     @JsonProperty("secretKey")
     public SecretKeySelector getSecretKey() {
         return secretKey;
     }
 
+    /**
+     * Sigv4 optionally configures AWS's Signature Verification 4 signing process to sign requests.
+     */
     @JsonProperty("secretKey")
     public void setSecretKey(SecretKeySelector secretKey) {
         this.secretKey = secretKey;

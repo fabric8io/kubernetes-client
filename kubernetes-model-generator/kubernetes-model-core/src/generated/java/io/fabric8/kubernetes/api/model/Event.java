@@ -21,6 +21,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Event is a report of an event somewhere in the cluster.  Events have a limited retention time and triggers and messages may evolve with time.  Event consumers should not rely on the timing of an event with a given Reason reflecting a consistent underlying trigger, or the continued existence of events with that Reason.  Events should be treated as informative, best-effort, supplemental data.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -60,9 +63,6 @@ public class Event implements Editable<EventBuilder>, HasMetadata, Namespaced
 
     @JsonProperty("action")
     private String action;
-    /**
-     * (Required)
-     */
     @JsonProperty("apiVersion")
     private String apiVersion = "v1";
     @JsonProperty("count")
@@ -73,9 +73,6 @@ public class Event implements Editable<EventBuilder>, HasMetadata, Namespaced
     private String firstTimestamp;
     @JsonProperty("involvedObject")
     private ObjectReference involvedObject;
-    /**
-     * (Required)
-     */
     @JsonProperty("kind")
     private String kind = "Event";
     @JsonProperty("lastTimestamp")
@@ -128,18 +125,24 @@ public class Event implements Editable<EventBuilder>, HasMetadata, Namespaced
         this.type = type;
     }
 
+    /**
+     * What action was taken/failed regarding to the Regarding object.
+     */
     @JsonProperty("action")
     public String getAction() {
         return action;
     }
 
+    /**
+     * What action was taken/failed regarding to the Regarding object.
+     */
     @JsonProperty("action")
     public void setAction(String action) {
         this.action = action;
     }
 
     /**
-     * (Required)
+     * APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -147,55 +150,79 @@ public class Event implements Editable<EventBuilder>, HasMetadata, Namespaced
     }
 
     /**
-     * (Required)
+     * APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
         this.apiVersion = apiVersion;
     }
 
+    /**
+     * The number of times this event has occurred.
+     */
     @JsonProperty("count")
     public Integer getCount() {
         return count;
     }
 
+    /**
+     * The number of times this event has occurred.
+     */
     @JsonProperty("count")
     public void setCount(Integer count) {
         this.count = count;
     }
 
+    /**
+     * Event is a report of an event somewhere in the cluster.  Events have a limited retention time and triggers and messages may evolve with time.  Event consumers should not rely on the timing of an event with a given Reason reflecting a consistent underlying trigger, or the continued existence of events with that Reason.  Events should be treated as informative, best-effort, supplemental data.
+     */
     @JsonProperty("eventTime")
     public MicroTime getEventTime() {
         return eventTime;
     }
 
+    /**
+     * Event is a report of an event somewhere in the cluster.  Events have a limited retention time and triggers and messages may evolve with time.  Event consumers should not rely on the timing of an event with a given Reason reflecting a consistent underlying trigger, or the continued existence of events with that Reason.  Events should be treated as informative, best-effort, supplemental data.
+     */
     @JsonProperty("eventTime")
     public void setEventTime(MicroTime eventTime) {
         this.eventTime = eventTime;
     }
 
+    /**
+     * Event is a report of an event somewhere in the cluster.  Events have a limited retention time and triggers and messages may evolve with time.  Event consumers should not rely on the timing of an event with a given Reason reflecting a consistent underlying trigger, or the continued existence of events with that Reason.  Events should be treated as informative, best-effort, supplemental data.
+     */
     @JsonProperty("firstTimestamp")
     public String getFirstTimestamp() {
         return firstTimestamp;
     }
 
+    /**
+     * Event is a report of an event somewhere in the cluster.  Events have a limited retention time and triggers and messages may evolve with time.  Event consumers should not rely on the timing of an event with a given Reason reflecting a consistent underlying trigger, or the continued existence of events with that Reason.  Events should be treated as informative, best-effort, supplemental data.
+     */
     @JsonProperty("firstTimestamp")
     public void setFirstTimestamp(String firstTimestamp) {
         this.firstTimestamp = firstTimestamp;
     }
 
+    /**
+     * Event is a report of an event somewhere in the cluster.  Events have a limited retention time and triggers and messages may evolve with time.  Event consumers should not rely on the timing of an event with a given Reason reflecting a consistent underlying trigger, or the continued existence of events with that Reason.  Events should be treated as informative, best-effort, supplemental data.
+     */
     @JsonProperty("involvedObject")
     public ObjectReference getInvolvedObject() {
         return involvedObject;
     }
 
+    /**
+     * Event is a report of an event somewhere in the cluster.  Events have a limited retention time and triggers and messages may evolve with time.  Event consumers should not rely on the timing of an event with a given Reason reflecting a consistent underlying trigger, or the continued existence of events with that Reason.  Events should be treated as informative, best-effort, supplemental data.
+     */
     @JsonProperty("involvedObject")
     public void setInvolvedObject(ObjectReference involvedObject) {
         this.involvedObject = involvedObject;
     }
 
     /**
-     * (Required)
+     * Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -203,108 +230,168 @@ public class Event implements Editable<EventBuilder>, HasMetadata, Namespaced
     }
 
     /**
-     * (Required)
+     * Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
      */
     @JsonProperty("kind")
     public void setKind(String kind) {
         this.kind = kind;
     }
 
+    /**
+     * Event is a report of an event somewhere in the cluster.  Events have a limited retention time and triggers and messages may evolve with time.  Event consumers should not rely on the timing of an event with a given Reason reflecting a consistent underlying trigger, or the continued existence of events with that Reason.  Events should be treated as informative, best-effort, supplemental data.
+     */
     @JsonProperty("lastTimestamp")
     public String getLastTimestamp() {
         return lastTimestamp;
     }
 
+    /**
+     * Event is a report of an event somewhere in the cluster.  Events have a limited retention time and triggers and messages may evolve with time.  Event consumers should not rely on the timing of an event with a given Reason reflecting a consistent underlying trigger, or the continued existence of events with that Reason.  Events should be treated as informative, best-effort, supplemental data.
+     */
     @JsonProperty("lastTimestamp")
     public void setLastTimestamp(String lastTimestamp) {
         this.lastTimestamp = lastTimestamp;
     }
 
+    /**
+     * A human-readable description of the status of this operation.
+     */
     @JsonProperty("message")
     public String getMessage() {
         return message;
     }
 
+    /**
+     * A human-readable description of the status of this operation.
+     */
     @JsonProperty("message")
     public void setMessage(String message) {
         this.message = message;
     }
 
+    /**
+     * Event is a report of an event somewhere in the cluster.  Events have a limited retention time and triggers and messages may evolve with time.  Event consumers should not rely on the timing of an event with a given Reason reflecting a consistent underlying trigger, or the continued existence of events with that Reason.  Events should be treated as informative, best-effort, supplemental data.
+     */
     @JsonProperty("metadata")
     public ObjectMeta getMetadata() {
         return metadata;
     }
 
+    /**
+     * Event is a report of an event somewhere in the cluster.  Events have a limited retention time and triggers and messages may evolve with time.  Event consumers should not rely on the timing of an event with a given Reason reflecting a consistent underlying trigger, or the continued existence of events with that Reason.  Events should be treated as informative, best-effort, supplemental data.
+     */
     @JsonProperty("metadata")
     public void setMetadata(ObjectMeta metadata) {
         this.metadata = metadata;
     }
 
+    /**
+     * This should be a short, machine understandable string that gives the reason for the transition into the object's current status.
+     */
     @JsonProperty("reason")
     public String getReason() {
         return reason;
     }
 
+    /**
+     * This should be a short, machine understandable string that gives the reason for the transition into the object's current status.
+     */
     @JsonProperty("reason")
     public void setReason(String reason) {
         this.reason = reason;
     }
 
+    /**
+     * Event is a report of an event somewhere in the cluster.  Events have a limited retention time and triggers and messages may evolve with time.  Event consumers should not rely on the timing of an event with a given Reason reflecting a consistent underlying trigger, or the continued existence of events with that Reason.  Events should be treated as informative, best-effort, supplemental data.
+     */
     @JsonProperty("related")
     public ObjectReference getRelated() {
         return related;
     }
 
+    /**
+     * Event is a report of an event somewhere in the cluster.  Events have a limited retention time and triggers and messages may evolve with time.  Event consumers should not rely on the timing of an event with a given Reason reflecting a consistent underlying trigger, or the continued existence of events with that Reason.  Events should be treated as informative, best-effort, supplemental data.
+     */
     @JsonProperty("related")
     public void setRelated(ObjectReference related) {
         this.related = related;
     }
 
+    /**
+     * Name of the controller that emitted this Event, e.g. `kubernetes.io/kubelet`.
+     */
     @JsonProperty("reportingComponent")
     public String getReportingComponent() {
         return reportingComponent;
     }
 
+    /**
+     * Name of the controller that emitted this Event, e.g. `kubernetes.io/kubelet`.
+     */
     @JsonProperty("reportingComponent")
     public void setReportingComponent(String reportingComponent) {
         this.reportingComponent = reportingComponent;
     }
 
+    /**
+     * ID of the controller instance, e.g. `kubelet-xyzf`.
+     */
     @JsonProperty("reportingInstance")
     public String getReportingInstance() {
         return reportingInstance;
     }
 
+    /**
+     * ID of the controller instance, e.g. `kubelet-xyzf`.
+     */
     @JsonProperty("reportingInstance")
     public void setReportingInstance(String reportingInstance) {
         this.reportingInstance = reportingInstance;
     }
 
+    /**
+     * Event is a report of an event somewhere in the cluster.  Events have a limited retention time and triggers and messages may evolve with time.  Event consumers should not rely on the timing of an event with a given Reason reflecting a consistent underlying trigger, or the continued existence of events with that Reason.  Events should be treated as informative, best-effort, supplemental data.
+     */
     @JsonProperty("series")
     public EventSeries getSeries() {
         return series;
     }
 
+    /**
+     * Event is a report of an event somewhere in the cluster.  Events have a limited retention time and triggers and messages may evolve with time.  Event consumers should not rely on the timing of an event with a given Reason reflecting a consistent underlying trigger, or the continued existence of events with that Reason.  Events should be treated as informative, best-effort, supplemental data.
+     */
     @JsonProperty("series")
     public void setSeries(EventSeries series) {
         this.series = series;
     }
 
+    /**
+     * Event is a report of an event somewhere in the cluster.  Events have a limited retention time and triggers and messages may evolve with time.  Event consumers should not rely on the timing of an event with a given Reason reflecting a consistent underlying trigger, or the continued existence of events with that Reason.  Events should be treated as informative, best-effort, supplemental data.
+     */
     @JsonProperty("source")
     public EventSource getSource() {
         return source;
     }
 
+    /**
+     * Event is a report of an event somewhere in the cluster.  Events have a limited retention time and triggers and messages may evolve with time.  Event consumers should not rely on the timing of an event with a given Reason reflecting a consistent underlying trigger, or the continued existence of events with that Reason.  Events should be treated as informative, best-effort, supplemental data.
+     */
     @JsonProperty("source")
     public void setSource(EventSource source) {
         this.source = source;
     }
 
+    /**
+     * Type of this event (Normal, Warning), new types could be added in the future
+     */
     @JsonProperty("type")
     public String getType() {
         return type;
     }
 
+    /**
+     * Type of this event (Normal, Warning), new types could be added in the future
+     */
     @JsonProperty("type")
     public void setType(String type) {
         this.type = type;

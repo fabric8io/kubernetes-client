@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * AWSClassicLoadBalancerParameters holds configuration parameters for an AWS Classic load balancer.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class AWSClassicLoadBalancerParameters implements Editable<AWSClassicLoad
         this.subnets = subnets;
     }
 
+    /**
+     * AWSClassicLoadBalancerParameters holds configuration parameters for an AWS Classic load balancer.
+     */
     @JsonProperty("connectionIdleTimeout")
     public String getConnectionIdleTimeout() {
         return connectionIdleTimeout;
     }
 
+    /**
+     * AWSClassicLoadBalancerParameters holds configuration parameters for an AWS Classic load balancer.
+     */
     @JsonProperty("connectionIdleTimeout")
     public void setConnectionIdleTimeout(String connectionIdleTimeout) {
         this.connectionIdleTimeout = connectionIdleTimeout;
     }
 
+    /**
+     * AWSClassicLoadBalancerParameters holds configuration parameters for an AWS Classic load balancer.
+     */
     @JsonProperty("subnets")
     public AWSSubnets getSubnets() {
         return subnets;
     }
 
+    /**
+     * AWSClassicLoadBalancerParameters holds configuration parameters for an AWS Classic load balancer.
+     */
     @JsonProperty("subnets")
     public void setSubnets(AWSSubnets subnets) {
         this.subnets = subnets;

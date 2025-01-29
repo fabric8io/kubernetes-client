@@ -95,12 +95,18 @@ public class AuthenticationStatus implements Editable<AuthenticationStatusBuilde
         this.integratedOAuthMetadata = integratedOAuthMetadata;
     }
 
+    /**
+     * OIDCClients is where participating operators place the current OIDC client status for OIDC clients that can be customized by the cluster-admin.
+     */
     @JsonProperty("oidcClients")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<OIDCClientStatus> getOidcClients() {
         return oidcClients;
     }
 
+    /**
+     * OIDCClients is where participating operators place the current OIDC client status for OIDC clients that can be customized by the cluster-admin.
+     */
     @JsonProperty("oidcClients")
     public void setOidcClients(List<OIDCClientStatus> oidcClients) {
         this.oidcClients = oidcClients;

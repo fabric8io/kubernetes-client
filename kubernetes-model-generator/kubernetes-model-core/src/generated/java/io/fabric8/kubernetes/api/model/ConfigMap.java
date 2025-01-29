@@ -21,6 +21,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ConfigMap holds configuration data for pods to consume.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -47,9 +50,6 @@ import lombok.experimental.Accessors;
 public class ConfigMap implements Editable<ConfigMapBuilder>, HasMetadata, Namespaced
 {
 
-    /**
-     * (Required)
-     */
     @JsonProperty("apiVersion")
     private String apiVersion = "v1";
     @JsonProperty("binaryData")
@@ -60,9 +60,6 @@ public class ConfigMap implements Editable<ConfigMapBuilder>, HasMetadata, Names
     private Map<String, String> data = new LinkedHashMap<>();
     @JsonProperty("immutable")
     private Boolean immutable;
-    /**
-     * (Required)
-     */
     @JsonProperty("kind")
     private String kind = "ConfigMap";
     @JsonProperty("metadata")
@@ -87,7 +84,7 @@ public class ConfigMap implements Editable<ConfigMapBuilder>, HasMetadata, Names
     }
 
     /**
-     * (Required)
+     * APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -95,47 +92,65 @@ public class ConfigMap implements Editable<ConfigMapBuilder>, HasMetadata, Names
     }
 
     /**
-     * (Required)
+     * APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
         this.apiVersion = apiVersion;
     }
 
+    /**
+     * BinaryData contains the binary data. Each key must consist of alphanumeric characters, '-', '_' or '.'. BinaryData can contain byte sequences that are not in the UTF-8 range. The keys stored in BinaryData must not overlap with the ones in the Data field, this is enforced during validation process. Using this field will require 1.10+ apiserver and kubelet.
+     */
     @JsonProperty("binaryData")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getBinaryData() {
         return binaryData;
     }
 
+    /**
+     * BinaryData contains the binary data. Each key must consist of alphanumeric characters, '-', '_' or '.'. BinaryData can contain byte sequences that are not in the UTF-8 range. The keys stored in BinaryData must not overlap with the ones in the Data field, this is enforced during validation process. Using this field will require 1.10+ apiserver and kubelet.
+     */
     @JsonProperty("binaryData")
     public void setBinaryData(Map<String, String> binaryData) {
         this.binaryData = binaryData;
     }
 
+    /**
+     * Data contains the configuration data. Each key must consist of alphanumeric characters, '-', '_' or '.'. Values with non-UTF-8 byte sequences must use the BinaryData field. The keys stored in Data must not overlap with the keys in the BinaryData field, this is enforced during validation process.
+     */
     @JsonProperty("data")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getData() {
         return data;
     }
 
+    /**
+     * Data contains the configuration data. Each key must consist of alphanumeric characters, '-', '_' or '.'. Values with non-UTF-8 byte sequences must use the BinaryData field. The keys stored in Data must not overlap with the keys in the BinaryData field, this is enforced during validation process.
+     */
     @JsonProperty("data")
     public void setData(Map<String, String> data) {
         this.data = data;
     }
 
+    /**
+     * Immutable, if set to true, ensures that data stored in the ConfigMap cannot be updated (only object metadata can be modified). If not set to true, the field can be modified at any time. Defaulted to nil.
+     */
     @JsonProperty("immutable")
     public Boolean getImmutable() {
         return immutable;
     }
 
+    /**
+     * Immutable, if set to true, ensures that data stored in the ConfigMap cannot be updated (only object metadata can be modified). If not set to true, the field can be modified at any time. Defaulted to nil.
+     */
     @JsonProperty("immutable")
     public void setImmutable(Boolean immutable) {
         this.immutable = immutable;
     }
 
     /**
-     * (Required)
+     * Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -143,18 +158,24 @@ public class ConfigMap implements Editable<ConfigMapBuilder>, HasMetadata, Names
     }
 
     /**
-     * (Required)
+     * Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
      */
     @JsonProperty("kind")
     public void setKind(String kind) {
         this.kind = kind;
     }
 
+    /**
+     * ConfigMap holds configuration data for pods to consume.
+     */
     @JsonProperty("metadata")
     public ObjectMeta getMetadata() {
         return metadata;
     }
 
+    /**
+     * ConfigMap holds configuration data for pods to consume.
+     */
     @JsonProperty("metadata")
     public void setMetadata(ObjectMeta metadata) {
         this.metadata = metadata;

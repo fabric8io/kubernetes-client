@@ -17,6 +17,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * PersistentVolumeStatus is the current status of a persistent volume.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -61,41 +64,65 @@ public class PersistentVolumeStatus implements Editable<PersistentVolumeStatusBu
         this.reason = reason;
     }
 
+    /**
+     * PersistentVolumeStatus is the current status of a persistent volume.
+     */
     @JsonProperty("lastPhaseTransitionTime")
     public String getLastPhaseTransitionTime() {
         return lastPhaseTransitionTime;
     }
 
+    /**
+     * PersistentVolumeStatus is the current status of a persistent volume.
+     */
     @JsonProperty("lastPhaseTransitionTime")
     public void setLastPhaseTransitionTime(String lastPhaseTransitionTime) {
         this.lastPhaseTransitionTime = lastPhaseTransitionTime;
     }
 
+    /**
+     * message is a human-readable message indicating details about why the volume is in this state.
+     */
     @JsonProperty("message")
     public String getMessage() {
         return message;
     }
 
+    /**
+     * message is a human-readable message indicating details about why the volume is in this state.
+     */
     @JsonProperty("message")
     public void setMessage(String message) {
         this.message = message;
     }
 
+    /**
+     * phase indicates if a volume is available, bound to a claim, or released by a claim. More info: https://kubernetes.io/docs/concepts/storage/persistent-volumes#phase
+     */
     @JsonProperty("phase")
     public String getPhase() {
         return phase;
     }
 
+    /**
+     * phase indicates if a volume is available, bound to a claim, or released by a claim. More info: https://kubernetes.io/docs/concepts/storage/persistent-volumes#phase
+     */
     @JsonProperty("phase")
     public void setPhase(String phase) {
         this.phase = phase;
     }
 
+    /**
+     * reason is a brief CamelCase string that describes any failure and is meant for machine parsing and tidy display in the CLI.
+     */
     @JsonProperty("reason")
     public String getReason() {
         return reason;
     }
 
+    /**
+     * reason is a brief CamelCase string that describes any failure and is meant for machine parsing and tidy display in the CLI.
+     */
     @JsonProperty("reason")
     public void setReason(String reason) {
         this.reason = reason;

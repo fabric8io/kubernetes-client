@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * VolumeSnapshotContentSource represents the CSI source of a snapshot. Exactly one of its members must be set. Members in VolumeSnapshotContentSource are immutable.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class VolumeSnapshotContentSource implements Editable<VolumeSnapshotConte
         this.volumeHandle = volumeHandle;
     }
 
+    /**
+     * snapshotHandle specifies the CSI "snapshot_id" of a pre-existing snapshot on the underlying storage system for which a Kubernetes object representation was (or should be) created. This field is immutable.
+     */
     @JsonProperty("snapshotHandle")
     public String getSnapshotHandle() {
         return snapshotHandle;
     }
 
+    /**
+     * snapshotHandle specifies the CSI "snapshot_id" of a pre-existing snapshot on the underlying storage system for which a Kubernetes object representation was (or should be) created. This field is immutable.
+     */
     @JsonProperty("snapshotHandle")
     public void setSnapshotHandle(String snapshotHandle) {
         this.snapshotHandle = snapshotHandle;
     }
 
+    /**
+     * volumeHandle specifies the CSI "volume_id" of the volume from which a snapshot should be dynamically taken from. This field is immutable.
+     */
     @JsonProperty("volumeHandle")
     public String getVolumeHandle() {
         return volumeHandle;
     }
 
+    /**
+     * volumeHandle specifies the CSI "volume_id" of the volume from which a snapshot should be dynamically taken from. This field is immutable.
+     */
     @JsonProperty("volumeHandle")
     public void setVolumeHandle(String volumeHandle) {
         this.volumeHandle = volumeHandle;

@@ -78,17 +78,11 @@ import lombok.experimental.Accessors;
 public class NodeSlicePoolList implements Editable<NodeSlicePoolListBuilder>, KubernetesResource, KubernetesResourceList<io.fabric8.openshift.api.model.whereabouts.v1alpha1.NodeSlicePool>
 {
 
-    /**
-     * (Required)
-     */
     @JsonProperty("apiVersion")
     private String apiVersion = "whereabouts.cni.cncf.io/v1alpha1";
     @JsonProperty("items")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<io.fabric8.openshift.api.model.whereabouts.v1alpha1.NodeSlicePool> items = new ArrayList<>();
-    /**
-     * (Required)
-     */
     @JsonProperty("kind")
     private String kind = "NodeSlicePoolList";
     @JsonProperty("metadata")
@@ -110,17 +104,11 @@ public class NodeSlicePoolList implements Editable<NodeSlicePoolListBuilder>, Ku
         this.metadata = metadata;
     }
 
-    /**
-     * (Required)
-     */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
         return apiVersion;
     }
 
-    /**
-     * (Required)
-     */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
         this.apiVersion = apiVersion;
@@ -137,17 +125,11 @@ public class NodeSlicePoolList implements Editable<NodeSlicePoolListBuilder>, Ku
         this.items = items;
     }
 
-    /**
-     * (Required)
-     */
     @JsonProperty("kind")
     public String getKind() {
         return kind;
     }
 
-    /**
-     * (Required)
-     */
     @JsonProperty("kind")
     public void setKind(String kind) {
         this.kind = kind;

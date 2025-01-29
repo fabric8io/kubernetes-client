@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ParsedRange is an integer representation of a range
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class ParsedRange implements Editable<ParsedRangeBuilder>, KubernetesReso
         this.start = start;
     }
 
+    /**
+     * End of the range
+     */
     @JsonProperty("end")
     public Integer getEnd() {
         return end;
     }
 
+    /**
+     * End of the range
+     */
     @JsonProperty("end")
     public void setEnd(Integer end) {
         this.end = end;
     }
 
+    /**
+     * Start is the beginning of the range
+     */
     @JsonProperty("start")
     public Integer getStart() {
         return start;
     }
 
+    /**
+     * Start is the beginning of the range
+     */
     @JsonProperty("start")
     public void setStart(Integer start) {
         this.start = start;

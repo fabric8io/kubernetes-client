@@ -39,6 +39,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ThanosRulerSpec is a specification of the desired behavior of the ThanosRuler. More info: https://github.com/kubernetes/community/blob/master/contributors/devel/sig-architecture/api-conventions.md#spec-and-status
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -309,547 +312,865 @@ public class ThanosRulerSpec implements Editable<ThanosRulerSpecBuilder>, Kubern
         this.web = web;
     }
 
+    /**
+     * AdditionalArgs allows setting additional arguments for the ThanosRuler container. It is intended for e.g. activating hidden flags which are not supported by the dedicated configuration options yet. The arguments are passed as-is to the ThanosRuler container which may cause issues if they are invalid or not supported by the given ThanosRuler version. In case of an argument conflict (e.g. an argument which is already set by the operator itself) or when providing an invalid argument the reconciliation will fail and an error will be logged.
+     */
     @JsonProperty("additionalArgs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Argument> getAdditionalArgs() {
         return additionalArgs;
     }
 
+    /**
+     * AdditionalArgs allows setting additional arguments for the ThanosRuler container. It is intended for e.g. activating hidden flags which are not supported by the dedicated configuration options yet. The arguments are passed as-is to the ThanosRuler container which may cause issues if they are invalid or not supported by the given ThanosRuler version. In case of an argument conflict (e.g. an argument which is already set by the operator itself) or when providing an invalid argument the reconciliation will fail and an error will be logged.
+     */
     @JsonProperty("additionalArgs")
     public void setAdditionalArgs(List<Argument> additionalArgs) {
         this.additionalArgs = additionalArgs;
     }
 
+    /**
+     * ThanosRulerSpec is a specification of the desired behavior of the ThanosRuler. More info: https://github.com/kubernetes/community/blob/master/contributors/devel/sig-architecture/api-conventions.md#spec-and-status
+     */
     @JsonProperty("affinity")
     public Affinity getAffinity() {
         return affinity;
     }
 
+    /**
+     * ThanosRulerSpec is a specification of the desired behavior of the ThanosRuler. More info: https://github.com/kubernetes/community/blob/master/contributors/devel/sig-architecture/api-conventions.md#spec-and-status
+     */
     @JsonProperty("affinity")
     public void setAffinity(Affinity affinity) {
         this.affinity = affinity;
     }
 
+    /**
+     * Configures the label names which should be dropped in Thanos Ruler alerts.<br><p> <br><p> The replica label `thanos_ruler_replica` will always be dropped from the alerts.
+     */
     @JsonProperty("alertDropLabels")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getAlertDropLabels() {
         return alertDropLabels;
     }
 
+    /**
+     * Configures the label names which should be dropped in Thanos Ruler alerts.<br><p> <br><p> The replica label `thanos_ruler_replica` will always be dropped from the alerts.
+     */
     @JsonProperty("alertDropLabels")
     public void setAlertDropLabels(List<String> alertDropLabels) {
         this.alertDropLabels = alertDropLabels;
     }
 
+    /**
+     * The external Query URL the Thanos Ruler will set in the 'Source' field of all alerts. Maps to the '--alert.query-url' CLI arg.
+     */
     @JsonProperty("alertQueryUrl")
     public String getAlertQueryUrl() {
         return alertQueryUrl;
     }
 
+    /**
+     * The external Query URL the Thanos Ruler will set in the 'Source' field of all alerts. Maps to the '--alert.query-url' CLI arg.
+     */
     @JsonProperty("alertQueryUrl")
     public void setAlertQueryUrl(String alertQueryUrl) {
         this.alertQueryUrl = alertQueryUrl;
     }
 
+    /**
+     * Configures the path to the alert relabeling configuration file.<br><p> <br><p> Alert relabel configuration must have the form as specified in the official Prometheus documentation: https://prometheus.io/docs/prometheus/latest/configuration/configuration/#alert_relabel_configs<br><p> <br><p> The operator performs no validation of the configuration file.<br><p> <br><p> This field takes precedence over `alertRelabelConfig`.
+     */
     @JsonProperty("alertRelabelConfigFile")
     public String getAlertRelabelConfigFile() {
         return alertRelabelConfigFile;
     }
 
+    /**
+     * Configures the path to the alert relabeling configuration file.<br><p> <br><p> Alert relabel configuration must have the form as specified in the official Prometheus documentation: https://prometheus.io/docs/prometheus/latest/configuration/configuration/#alert_relabel_configs<br><p> <br><p> The operator performs no validation of the configuration file.<br><p> <br><p> This field takes precedence over `alertRelabelConfig`.
+     */
     @JsonProperty("alertRelabelConfigFile")
     public void setAlertRelabelConfigFile(String alertRelabelConfigFile) {
         this.alertRelabelConfigFile = alertRelabelConfigFile;
     }
 
+    /**
+     * ThanosRulerSpec is a specification of the desired behavior of the ThanosRuler. More info: https://github.com/kubernetes/community/blob/master/contributors/devel/sig-architecture/api-conventions.md#spec-and-status
+     */
     @JsonProperty("alertRelabelConfigs")
     public SecretKeySelector getAlertRelabelConfigs() {
         return alertRelabelConfigs;
     }
 
+    /**
+     * ThanosRulerSpec is a specification of the desired behavior of the ThanosRuler. More info: https://github.com/kubernetes/community/blob/master/contributors/devel/sig-architecture/api-conventions.md#spec-and-status
+     */
     @JsonProperty("alertRelabelConfigs")
     public void setAlertRelabelConfigs(SecretKeySelector alertRelabelConfigs) {
         this.alertRelabelConfigs = alertRelabelConfigs;
     }
 
+    /**
+     * ThanosRulerSpec is a specification of the desired behavior of the ThanosRuler. More info: https://github.com/kubernetes/community/blob/master/contributors/devel/sig-architecture/api-conventions.md#spec-and-status
+     */
     @JsonProperty("alertmanagersConfig")
     public SecretKeySelector getAlertmanagersConfig() {
         return alertmanagersConfig;
     }
 
+    /**
+     * ThanosRulerSpec is a specification of the desired behavior of the ThanosRuler. More info: https://github.com/kubernetes/community/blob/master/contributors/devel/sig-architecture/api-conventions.md#spec-and-status
+     */
     @JsonProperty("alertmanagersConfig")
     public void setAlertmanagersConfig(SecretKeySelector alertmanagersConfig) {
         this.alertmanagersConfig = alertmanagersConfig;
     }
 
+    /**
+     * Configures the list of Alertmanager endpoints to send alerts to.<br><p> <br><p> For Thanos &gt;= v0.10.0, it is recommended to use `alertmanagersConfig` instead.<br><p> <br><p> `alertmanagersConfig` takes precedence over this field.
+     */
     @JsonProperty("alertmanagersUrl")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getAlertmanagersUrl() {
         return alertmanagersUrl;
     }
 
+    /**
+     * Configures the list of Alertmanager endpoints to send alerts to.<br><p> <br><p> For Thanos &gt;= v0.10.0, it is recommended to use `alertmanagersConfig` instead.<br><p> <br><p> `alertmanagersConfig` takes precedence over this field.
+     */
     @JsonProperty("alertmanagersUrl")
     public void setAlertmanagersUrl(List<String> alertmanagersUrl) {
         this.alertmanagersUrl = alertmanagersUrl;
     }
 
+    /**
+     * Containers allows injecting additional containers or modifying operator generated containers. This can be used to allow adding an authentication proxy to a ThanosRuler pod or to change the behavior of an operator generated container. Containers described here modify an operator generated container if they share the same name and modifications are done via a strategic merge patch. The current container names are: `thanos-ruler` and `config-reloader`. Overriding containers is entirely outside the scope of what the maintainers will support and by doing so, you accept that this behaviour may break at any time without notice.
+     */
     @JsonProperty("containers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Container> getContainers() {
         return containers;
     }
 
+    /**
+     * Containers allows injecting additional containers or modifying operator generated containers. This can be used to allow adding an authentication proxy to a ThanosRuler pod or to change the behavior of an operator generated container. Containers described here modify an operator generated container if they share the same name and modifications are done via a strategic merge patch. The current container names are: `thanos-ruler` and `config-reloader`. Overriding containers is entirely outside the scope of what the maintainers will support and by doing so, you accept that this behaviour may break at any time without notice.
+     */
     @JsonProperty("containers")
     public void setContainers(List<Container> containers) {
         this.containers = containers;
     }
 
+    /**
+     * ThanosRulerSpec is a specification of the desired behavior of the ThanosRuler. More info: https://github.com/kubernetes/community/blob/master/contributors/devel/sig-architecture/api-conventions.md#spec-and-status
+     */
     @JsonProperty("dnsConfig")
     public PodDNSConfig getDnsConfig() {
         return dnsConfig;
     }
 
+    /**
+     * ThanosRulerSpec is a specification of the desired behavior of the ThanosRuler. More info: https://github.com/kubernetes/community/blob/master/contributors/devel/sig-architecture/api-conventions.md#spec-and-status
+     */
     @JsonProperty("dnsConfig")
     public void setDnsConfig(PodDNSConfig dnsConfig) {
         this.dnsConfig = dnsConfig;
     }
 
+    /**
+     * Defines the DNS policy for the pods.
+     */
     @JsonProperty("dnsPolicy")
     public String getDnsPolicy() {
         return dnsPolicy;
     }
 
+    /**
+     * Defines the DNS policy for the pods.
+     */
     @JsonProperty("dnsPolicy")
     public void setDnsPolicy(String dnsPolicy) {
         this.dnsPolicy = dnsPolicy;
     }
 
+    /**
+     * EnforcedNamespaceLabel enforces adding a namespace label of origin for each alert and metric that is user created. The label value will always be the namespace of the object that is being created.
+     */
     @JsonProperty("enforcedNamespaceLabel")
     public String getEnforcedNamespaceLabel() {
         return enforcedNamespaceLabel;
     }
 
+    /**
+     * EnforcedNamespaceLabel enforces adding a namespace label of origin for each alert and metric that is user created. The label value will always be the namespace of the object that is being created.
+     */
     @JsonProperty("enforcedNamespaceLabel")
     public void setEnforcedNamespaceLabel(String enforcedNamespaceLabel) {
         this.enforcedNamespaceLabel = enforcedNamespaceLabel;
     }
 
+    /**
+     * Interval between consecutive evaluations.
+     */
     @JsonProperty("evaluationInterval")
     public String getEvaluationInterval() {
         return evaluationInterval;
     }
 
+    /**
+     * Interval between consecutive evaluations.
+     */
     @JsonProperty("evaluationInterval")
     public void setEvaluationInterval(String evaluationInterval) {
         this.evaluationInterval = evaluationInterval;
     }
 
+    /**
+     * List of references to PrometheusRule objects to be excluded from enforcing a namespace label of origin. Applies only if enforcedNamespaceLabel set to true.
+     */
     @JsonProperty("excludedFromEnforcement")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ObjectReference> getExcludedFromEnforcement() {
         return excludedFromEnforcement;
     }
 
+    /**
+     * List of references to PrometheusRule objects to be excluded from enforcing a namespace label of origin. Applies only if enforcedNamespaceLabel set to true.
+     */
     @JsonProperty("excludedFromEnforcement")
     public void setExcludedFromEnforcement(List<ObjectReference> excludedFromEnforcement) {
         this.excludedFromEnforcement = excludedFromEnforcement;
     }
 
+    /**
+     * The external URL the Thanos Ruler instances will be available under. This is necessary to generate correct URLs. This is necessary if Thanos Ruler is not served from root of a DNS name.
+     */
     @JsonProperty("externalPrefix")
     public String getExternalPrefix() {
         return externalPrefix;
     }
 
+    /**
+     * The external URL the Thanos Ruler instances will be available under. This is necessary to generate correct URLs. This is necessary if Thanos Ruler is not served from root of a DNS name.
+     */
     @JsonProperty("externalPrefix")
     public void setExternalPrefix(String externalPrefix) {
         this.externalPrefix = externalPrefix;
     }
 
+    /**
+     * ThanosRulerSpec is a specification of the desired behavior of the ThanosRuler. More info: https://github.com/kubernetes/community/blob/master/contributors/devel/sig-architecture/api-conventions.md#spec-and-status
+     */
     @JsonProperty("grpcServerTlsConfig")
     public TLSConfig getGrpcServerTlsConfig() {
         return grpcServerTlsConfig;
     }
 
+    /**
+     * ThanosRulerSpec is a specification of the desired behavior of the ThanosRuler. More info: https://github.com/kubernetes/community/blob/master/contributors/devel/sig-architecture/api-conventions.md#spec-and-status
+     */
     @JsonProperty("grpcServerTlsConfig")
     public void setGrpcServerTlsConfig(TLSConfig grpcServerTlsConfig) {
         this.grpcServerTlsConfig = grpcServerTlsConfig;
     }
 
+    /**
+     * Pods' hostAliases configuration
+     */
     @JsonProperty("hostAliases")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<HostAlias> getHostAliases() {
         return hostAliases;
     }
 
+    /**
+     * Pods' hostAliases configuration
+     */
     @JsonProperty("hostAliases")
     public void setHostAliases(List<HostAlias> hostAliases) {
         this.hostAliases = hostAliases;
     }
 
+    /**
+     * Thanos container image URL.
+     */
     @JsonProperty("image")
     public String getImage() {
         return image;
     }
 
+    /**
+     * Thanos container image URL.
+     */
     @JsonProperty("image")
     public void setImage(String image) {
         this.image = image;
     }
 
+    /**
+     * Image pull policy for the 'thanos', 'init-config-reloader' and 'config-reloader' containers. See https://kubernetes.io/docs/concepts/containers/images/#image-pull-policy for more details.<br><p> <br><p> Possible enum values:<br><p>  - `"Always"` means that kubelet always attempts to pull the latest image. Container will fail If the pull fails.<br><p>  - `"IfNotPresent"` means that kubelet pulls if the image isn't present on disk. Container will fail if the image isn't present and the pull fails.<br><p>  - `"Never"` means that kubelet never pulls an image, but only uses a local image. Container will fail if the image isn't present
+     */
     @JsonProperty("imagePullPolicy")
     public String getImagePullPolicy() {
         return imagePullPolicy;
     }
 
+    /**
+     * Image pull policy for the 'thanos', 'init-config-reloader' and 'config-reloader' containers. See https://kubernetes.io/docs/concepts/containers/images/#image-pull-policy for more details.<br><p> <br><p> Possible enum values:<br><p>  - `"Always"` means that kubelet always attempts to pull the latest image. Container will fail If the pull fails.<br><p>  - `"IfNotPresent"` means that kubelet pulls if the image isn't present on disk. Container will fail if the image isn't present and the pull fails.<br><p>  - `"Never"` means that kubelet never pulls an image, but only uses a local image. Container will fail if the image isn't present
+     */
     @JsonProperty("imagePullPolicy")
     public void setImagePullPolicy(String imagePullPolicy) {
         this.imagePullPolicy = imagePullPolicy;
     }
 
+    /**
+     * An optional list of references to secrets in the same namespace to use for pulling thanos images from registries see http://kubernetes.io/docs/user-guide/images#specifying-imagepullsecrets-on-a-pod
+     */
     @JsonProperty("imagePullSecrets")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<LocalObjectReference> getImagePullSecrets() {
         return imagePullSecrets;
     }
 
+    /**
+     * An optional list of references to secrets in the same namespace to use for pulling thanos images from registries see http://kubernetes.io/docs/user-guide/images#specifying-imagepullsecrets-on-a-pod
+     */
     @JsonProperty("imagePullSecrets")
     public void setImagePullSecrets(List<LocalObjectReference> imagePullSecrets) {
         this.imagePullSecrets = imagePullSecrets;
     }
 
+    /**
+     * InitContainers allows adding initContainers to the pod definition. Those can be used to e.g. fetch secrets for injection into the ThanosRuler configuration from external sources. Any errors during the execution of an initContainer will lead to a restart of the Pod. More info: https://kubernetes.io/docs/concepts/workloads/pods/init-containers/ Using initContainers for any use case other then secret fetching is entirely outside the scope of what the maintainers will support and by doing so, you accept that this behaviour may break at any time without notice.
+     */
     @JsonProperty("initContainers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Container> getInitContainers() {
         return initContainers;
     }
 
+    /**
+     * InitContainers allows adding initContainers to the pod definition. Those can be used to e.g. fetch secrets for injection into the ThanosRuler configuration from external sources. Any errors during the execution of an initContainer will lead to a restart of the Pod. More info: https://kubernetes.io/docs/concepts/workloads/pods/init-containers/ Using initContainers for any use case other then secret fetching is entirely outside the scope of what the maintainers will support and by doing so, you accept that this behaviour may break at any time without notice.
+     */
     @JsonProperty("initContainers")
     public void setInitContainers(List<Container> initContainers) {
         this.initContainers = initContainers;
     }
 
+    /**
+     * Configures the external label pairs of the ThanosRuler resource.<br><p> <br><p> A default replica label `thanos_ruler_replica` will be always added as a label with the value of the pod's name.
+     */
     @JsonProperty("labels")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getLabels() {
         return labels;
     }
 
+    /**
+     * Configures the external label pairs of the ThanosRuler resource.<br><p> <br><p> A default replica label `thanos_ruler_replica` will be always added as a label with the value of the pod's name.
+     */
     @JsonProperty("labels")
     public void setLabels(Map<String, String> labels) {
         this.labels = labels;
     }
 
+    /**
+     * ListenLocal makes the Thanos ruler listen on loopback, so that it does not bind against the Pod IP.
+     */
     @JsonProperty("listenLocal")
     public Boolean getListenLocal() {
         return listenLocal;
     }
 
+    /**
+     * ListenLocal makes the Thanos ruler listen on loopback, so that it does not bind against the Pod IP.
+     */
     @JsonProperty("listenLocal")
     public void setListenLocal(Boolean listenLocal) {
         this.listenLocal = listenLocal;
     }
 
+    /**
+     * Log format for ThanosRuler to be configured with.
+     */
     @JsonProperty("logFormat")
     public String getLogFormat() {
         return logFormat;
     }
 
+    /**
+     * Log format for ThanosRuler to be configured with.
+     */
     @JsonProperty("logFormat")
     public void setLogFormat(String logFormat) {
         this.logFormat = logFormat;
     }
 
+    /**
+     * Log level for ThanosRuler to be configured with.
+     */
     @JsonProperty("logLevel")
     public String getLogLevel() {
         return logLevel;
     }
 
+    /**
+     * Log level for ThanosRuler to be configured with.
+     */
     @JsonProperty("logLevel")
     public void setLogLevel(String logLevel) {
         this.logLevel = logLevel;
     }
 
+    /**
+     * Minimum number of seconds for which a newly created pod should be ready without any of its container crashing for it to be considered available. Defaults to 0 (pod will be considered available as soon as it is ready) This is an alpha field from kubernetes 1.22 until 1.24 which requires enabling the StatefulSetMinReadySeconds feature gate.
+     */
     @JsonProperty("minReadySeconds")
     public Long getMinReadySeconds() {
         return minReadySeconds;
     }
 
+    /**
+     * Minimum number of seconds for which a newly created pod should be ready without any of its container crashing for it to be considered available. Defaults to 0 (pod will be considered available as soon as it is ready) This is an alpha field from kubernetes 1.22 until 1.24 which requires enabling the StatefulSetMinReadySeconds feature gate.
+     */
     @JsonProperty("minReadySeconds")
     public void setMinReadySeconds(Long minReadySeconds) {
         this.minReadySeconds = minReadySeconds;
     }
 
+    /**
+     * Define which Nodes the Pods are scheduled on.
+     */
     @JsonProperty("nodeSelector")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getNodeSelector() {
         return nodeSelector;
     }
 
+    /**
+     * Define which Nodes the Pods are scheduled on.
+     */
     @JsonProperty("nodeSelector")
     public void setNodeSelector(Map<String, String> nodeSelector) {
         this.nodeSelector = nodeSelector;
     }
 
+    /**
+     * ThanosRulerSpec is a specification of the desired behavior of the ThanosRuler. More info: https://github.com/kubernetes/community/blob/master/contributors/devel/sig-architecture/api-conventions.md#spec-and-status
+     */
     @JsonProperty("objectStorageConfig")
     public SecretKeySelector getObjectStorageConfig() {
         return objectStorageConfig;
     }
 
+    /**
+     * ThanosRulerSpec is a specification of the desired behavior of the ThanosRuler. More info: https://github.com/kubernetes/community/blob/master/contributors/devel/sig-architecture/api-conventions.md#spec-and-status
+     */
     @JsonProperty("objectStorageConfig")
     public void setObjectStorageConfig(SecretKeySelector objectStorageConfig) {
         this.objectStorageConfig = objectStorageConfig;
     }
 
+    /**
+     * Configures the path of the object storage configuration file.<br><p> <br><p> The configuration format is defined at https://thanos.io/tip/thanos/storage.md/#configuring-access-to-object-storage<br><p> <br><p> The operator performs no validation of the configuration file.<br><p> <br><p> This field takes precedence over `objectStorageConfig`.
+     */
     @JsonProperty("objectStorageConfigFile")
     public String getObjectStorageConfigFile() {
         return objectStorageConfigFile;
     }
 
+    /**
+     * Configures the path of the object storage configuration file.<br><p> <br><p> The configuration format is defined at https://thanos.io/tip/thanos/storage.md/#configuring-access-to-object-storage<br><p> <br><p> The operator performs no validation of the configuration file.<br><p> <br><p> This field takes precedence over `objectStorageConfig`.
+     */
     @JsonProperty("objectStorageConfigFile")
     public void setObjectStorageConfigFile(String objectStorageConfigFile) {
         this.objectStorageConfigFile = objectStorageConfigFile;
     }
 
+    /**
+     * When a ThanosRuler deployment is paused, no actions except for deletion will be performed on the underlying objects.
+     */
     @JsonProperty("paused")
     public Boolean getPaused() {
         return paused;
     }
 
+    /**
+     * When a ThanosRuler deployment is paused, no actions except for deletion will be performed on the underlying objects.
+     */
     @JsonProperty("paused")
     public void setPaused(Boolean paused) {
         this.paused = paused;
     }
 
+    /**
+     * ThanosRulerSpec is a specification of the desired behavior of the ThanosRuler. More info: https://github.com/kubernetes/community/blob/master/contributors/devel/sig-architecture/api-conventions.md#spec-and-status
+     */
     @JsonProperty("podMetadata")
     public EmbeddedObjectMetadata getPodMetadata() {
         return podMetadata;
     }
 
+    /**
+     * ThanosRulerSpec is a specification of the desired behavior of the ThanosRuler. More info: https://github.com/kubernetes/community/blob/master/contributors/devel/sig-architecture/api-conventions.md#spec-and-status
+     */
     @JsonProperty("podMetadata")
     public void setPodMetadata(EmbeddedObjectMetadata podMetadata) {
         this.podMetadata = podMetadata;
     }
 
+    /**
+     * Port name used for the pods and governing service. Defaults to `web`.
+     */
     @JsonProperty("portName")
     public String getPortName() {
         return portName;
     }
 
+    /**
+     * Port name used for the pods and governing service. Defaults to `web`.
+     */
     @JsonProperty("portName")
     public void setPortName(String portName) {
         this.portName = portName;
     }
 
+    /**
+     * Priority class assigned to the Pods
+     */
     @JsonProperty("priorityClassName")
     public String getPriorityClassName() {
         return priorityClassName;
     }
 
+    /**
+     * Priority class assigned to the Pods
+     */
     @JsonProperty("priorityClassName")
     public void setPriorityClassName(String priorityClassName) {
         this.priorityClassName = priorityClassName;
     }
 
+    /**
+     * PrometheusRulesExcludedFromEnforce - list of Prometheus rules to be excluded from enforcing of adding namespace labels. Works only if enforcedNamespaceLabel set to true. Make sure both ruleNamespace and ruleName are set for each pair Deprecated: use excludedFromEnforcement instead.
+     */
     @JsonProperty("prometheusRulesExcludedFromEnforce")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<PrometheusRuleExcludeConfig> getPrometheusRulesExcludedFromEnforce() {
         return prometheusRulesExcludedFromEnforce;
     }
 
+    /**
+     * PrometheusRulesExcludedFromEnforce - list of Prometheus rules to be excluded from enforcing of adding namespace labels. Works only if enforcedNamespaceLabel set to true. Make sure both ruleNamespace and ruleName are set for each pair Deprecated: use excludedFromEnforcement instead.
+     */
     @JsonProperty("prometheusRulesExcludedFromEnforce")
     public void setPrometheusRulesExcludedFromEnforce(List<PrometheusRuleExcludeConfig> prometheusRulesExcludedFromEnforce) {
         this.prometheusRulesExcludedFromEnforce = prometheusRulesExcludedFromEnforce;
     }
 
+    /**
+     * ThanosRulerSpec is a specification of the desired behavior of the ThanosRuler. More info: https://github.com/kubernetes/community/blob/master/contributors/devel/sig-architecture/api-conventions.md#spec-and-status
+     */
     @JsonProperty("queryConfig")
     public SecretKeySelector getQueryConfig() {
         return queryConfig;
     }
 
+    /**
+     * ThanosRulerSpec is a specification of the desired behavior of the ThanosRuler. More info: https://github.com/kubernetes/community/blob/master/contributors/devel/sig-architecture/api-conventions.md#spec-and-status
+     */
     @JsonProperty("queryConfig")
     public void setQueryConfig(SecretKeySelector queryConfig) {
         this.queryConfig = queryConfig;
     }
 
+    /**
+     * Configures the list of Thanos Query endpoints from which to query metrics.<br><p> <br><p> For Thanos &gt;= v0.11.0, it is recommended to use `queryConfig` instead.<br><p> <br><p> `queryConfig` takes precedence over this field.
+     */
     @JsonProperty("queryEndpoints")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getQueryEndpoints() {
         return queryEndpoints;
     }
 
+    /**
+     * Configures the list of Thanos Query endpoints from which to query metrics.<br><p> <br><p> For Thanos &gt;= v0.11.0, it is recommended to use `queryConfig` instead.<br><p> <br><p> `queryConfig` takes precedence over this field.
+     */
     @JsonProperty("queryEndpoints")
     public void setQueryEndpoints(List<String> queryEndpoints) {
         this.queryEndpoints = queryEndpoints;
     }
 
+    /**
+     * Number of thanos ruler instances to deploy.
+     */
     @JsonProperty("replicas")
     public Integer getReplicas() {
         return replicas;
     }
 
+    /**
+     * Number of thanos ruler instances to deploy.
+     */
     @JsonProperty("replicas")
     public void setReplicas(Integer replicas) {
         this.replicas = replicas;
     }
 
+    /**
+     * ThanosRulerSpec is a specification of the desired behavior of the ThanosRuler. More info: https://github.com/kubernetes/community/blob/master/contributors/devel/sig-architecture/api-conventions.md#spec-and-status
+     */
     @JsonProperty("resources")
     public ResourceRequirements getResources() {
         return resources;
     }
 
+    /**
+     * ThanosRulerSpec is a specification of the desired behavior of the ThanosRuler. More info: https://github.com/kubernetes/community/blob/master/contributors/devel/sig-architecture/api-conventions.md#spec-and-status
+     */
     @JsonProperty("resources")
     public void setResources(ResourceRequirements resources) {
         this.resources = resources;
     }
 
+    /**
+     * Time duration ThanosRuler shall retain data for. Default is '24h', and must match the regular expression `[0-9]+(ms|s|m|h|d|w|y)` (milliseconds seconds minutes hours days weeks years).
+     */
     @JsonProperty("retention")
     public String getRetention() {
         return retention;
     }
 
+    /**
+     * Time duration ThanosRuler shall retain data for. Default is '24h', and must match the regular expression `[0-9]+(ms|s|m|h|d|w|y)` (milliseconds seconds minutes hours days weeks years).
+     */
     @JsonProperty("retention")
     public void setRetention(String retention) {
         this.retention = retention;
     }
 
+    /**
+     * The route prefix ThanosRuler registers HTTP handlers for. This allows thanos UI to be served on a sub-path.
+     */
     @JsonProperty("routePrefix")
     public String getRoutePrefix() {
         return routePrefix;
     }
 
+    /**
+     * The route prefix ThanosRuler registers HTTP handlers for. This allows thanos UI to be served on a sub-path.
+     */
     @JsonProperty("routePrefix")
     public void setRoutePrefix(String routePrefix) {
         this.routePrefix = routePrefix;
     }
 
+    /**
+     * ThanosRulerSpec is a specification of the desired behavior of the ThanosRuler. More info: https://github.com/kubernetes/community/blob/master/contributors/devel/sig-architecture/api-conventions.md#spec-and-status
+     */
     @JsonProperty("ruleNamespaceSelector")
     public LabelSelector getRuleNamespaceSelector() {
         return ruleNamespaceSelector;
     }
 
+    /**
+     * ThanosRulerSpec is a specification of the desired behavior of the ThanosRuler. More info: https://github.com/kubernetes/community/blob/master/contributors/devel/sig-architecture/api-conventions.md#spec-and-status
+     */
     @JsonProperty("ruleNamespaceSelector")
     public void setRuleNamespaceSelector(LabelSelector ruleNamespaceSelector) {
         this.ruleNamespaceSelector = ruleNamespaceSelector;
     }
 
+    /**
+     * ThanosRulerSpec is a specification of the desired behavior of the ThanosRuler. More info: https://github.com/kubernetes/community/blob/master/contributors/devel/sig-architecture/api-conventions.md#spec-and-status
+     */
     @JsonProperty("ruleSelector")
     public LabelSelector getRuleSelector() {
         return ruleSelector;
     }
 
+    /**
+     * ThanosRulerSpec is a specification of the desired behavior of the ThanosRuler. More info: https://github.com/kubernetes/community/blob/master/contributors/devel/sig-architecture/api-conventions.md#spec-and-status
+     */
     @JsonProperty("ruleSelector")
     public void setRuleSelector(LabelSelector ruleSelector) {
         this.ruleSelector = ruleSelector;
     }
 
+    /**
+     * ThanosRulerSpec is a specification of the desired behavior of the ThanosRuler. More info: https://github.com/kubernetes/community/blob/master/contributors/devel/sig-architecture/api-conventions.md#spec-and-status
+     */
     @JsonProperty("securityContext")
     public PodSecurityContext getSecurityContext() {
         return securityContext;
     }
 
+    /**
+     * ThanosRulerSpec is a specification of the desired behavior of the ThanosRuler. More info: https://github.com/kubernetes/community/blob/master/contributors/devel/sig-architecture/api-conventions.md#spec-and-status
+     */
     @JsonProperty("securityContext")
     public void setSecurityContext(PodSecurityContext securityContext) {
         this.securityContext = securityContext;
     }
 
+    /**
+     * ServiceAccountName is the name of the ServiceAccount to use to run the Thanos Ruler Pods.
+     */
     @JsonProperty("serviceAccountName")
     public String getServiceAccountName() {
         return serviceAccountName;
     }
 
+    /**
+     * ServiceAccountName is the name of the ServiceAccount to use to run the Thanos Ruler Pods.
+     */
     @JsonProperty("serviceAccountName")
     public void setServiceAccountName(String serviceAccountName) {
         this.serviceAccountName = serviceAccountName;
     }
 
+    /**
+     * ThanosRulerSpec is a specification of the desired behavior of the ThanosRuler. More info: https://github.com/kubernetes/community/blob/master/contributors/devel/sig-architecture/api-conventions.md#spec-and-status
+     */
     @JsonProperty("storage")
     public StorageSpec getStorage() {
         return storage;
     }
 
+    /**
+     * ThanosRulerSpec is a specification of the desired behavior of the ThanosRuler. More info: https://github.com/kubernetes/community/blob/master/contributors/devel/sig-architecture/api-conventions.md#spec-and-status
+     */
     @JsonProperty("storage")
     public void setStorage(StorageSpec storage) {
         this.storage = storage;
     }
 
+    /**
+     * If specified, the pod's tolerations.
+     */
     @JsonProperty("tolerations")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Toleration> getTolerations() {
         return tolerations;
     }
 
+    /**
+     * If specified, the pod's tolerations.
+     */
     @JsonProperty("tolerations")
     public void setTolerations(List<Toleration> tolerations) {
         this.tolerations = tolerations;
     }
 
+    /**
+     * If specified, the pod's topology spread constraints.
+     */
     @JsonProperty("topologySpreadConstraints")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<TopologySpreadConstraint> getTopologySpreadConstraints() {
         return topologySpreadConstraints;
     }
 
+    /**
+     * If specified, the pod's topology spread constraints.
+     */
     @JsonProperty("topologySpreadConstraints")
     public void setTopologySpreadConstraints(List<TopologySpreadConstraint> topologySpreadConstraints) {
         this.topologySpreadConstraints = topologySpreadConstraints;
     }
 
+    /**
+     * ThanosRulerSpec is a specification of the desired behavior of the ThanosRuler. More info: https://github.com/kubernetes/community/blob/master/contributors/devel/sig-architecture/api-conventions.md#spec-and-status
+     */
     @JsonProperty("tracingConfig")
     public SecretKeySelector getTracingConfig() {
         return tracingConfig;
     }
 
+    /**
+     * ThanosRulerSpec is a specification of the desired behavior of the ThanosRuler. More info: https://github.com/kubernetes/community/blob/master/contributors/devel/sig-architecture/api-conventions.md#spec-and-status
+     */
     @JsonProperty("tracingConfig")
     public void setTracingConfig(SecretKeySelector tracingConfig) {
         this.tracingConfig = tracingConfig;
     }
 
+    /**
+     * Configures the path of the tracing configuration file.<br><p> <br><p> The configuration format is defined at https://thanos.io/tip/thanos/tracing.md/#configuration<br><p> <br><p> This is an &#42;experimental feature&#42;, it may change in any upcoming release in a breaking way.<br><p> <br><p> The operator performs no validation of the configuration file.<br><p> <br><p> This field takes precedence over `tracingConfig`.
+     */
     @JsonProperty("tracingConfigFile")
     public String getTracingConfigFile() {
         return tracingConfigFile;
     }
 
+    /**
+     * Configures the path of the tracing configuration file.<br><p> <br><p> The configuration format is defined at https://thanos.io/tip/thanos/tracing.md/#configuration<br><p> <br><p> This is an &#42;experimental feature&#42;, it may change in any upcoming release in a breaking way.<br><p> <br><p> The operator performs no validation of the configuration file.<br><p> <br><p> This field takes precedence over `tracingConfig`.
+     */
     @JsonProperty("tracingConfigFile")
     public void setTracingConfigFile(String tracingConfigFile) {
         this.tracingConfigFile = tracingConfigFile;
     }
 
+    /**
+     * Version of Thanos to be deployed.
+     */
     @JsonProperty("version")
     public String getVersion() {
         return version;
     }
 
+    /**
+     * Version of Thanos to be deployed.
+     */
     @JsonProperty("version")
     public void setVersion(String version) {
         this.version = version;
     }
 
+    /**
+     * VolumeMounts allows configuration of additional VolumeMounts on the output StatefulSet definition. VolumeMounts specified will be appended to other VolumeMounts in the ruler container, that are generated as a result of StorageSpec objects.
+     */
     @JsonProperty("volumeMounts")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<VolumeMount> getVolumeMounts() {
         return volumeMounts;
     }
 
+    /**
+     * VolumeMounts allows configuration of additional VolumeMounts on the output StatefulSet definition. VolumeMounts specified will be appended to other VolumeMounts in the ruler container, that are generated as a result of StorageSpec objects.
+     */
     @JsonProperty("volumeMounts")
     public void setVolumeMounts(List<VolumeMount> volumeMounts) {
         this.volumeMounts = volumeMounts;
     }
 
+    /**
+     * Volumes allows configuration of additional volumes on the output StatefulSet definition. Volumes specified will be appended to other volumes that are generated as a result of StorageSpec objects.
+     */
     @JsonProperty("volumes")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Volume> getVolumes() {
         return volumes;
     }
 
+    /**
+     * Volumes allows configuration of additional volumes on the output StatefulSet definition. Volumes specified will be appended to other volumes that are generated as a result of StorageSpec objects.
+     */
     @JsonProperty("volumes")
     public void setVolumes(List<Volume> volumes) {
         this.volumes = volumes;
     }
 
+    /**
+     * ThanosRulerSpec is a specification of the desired behavior of the ThanosRuler. More info: https://github.com/kubernetes/community/blob/master/contributors/devel/sig-architecture/api-conventions.md#spec-and-status
+     */
     @JsonProperty("web")
     public ThanosRulerWebSpec getWeb() {
         return web;
     }
 
+    /**
+     * ThanosRulerSpec is a specification of the desired behavior of the ThanosRuler. More info: https://github.com/kubernetes/community/blob/master/contributors/devel/sig-architecture/api-conventions.md#spec-and-status
+     */
     @JsonProperty("web")
     public void setWeb(ThanosRulerWebSpec web) {
         this.web = web;

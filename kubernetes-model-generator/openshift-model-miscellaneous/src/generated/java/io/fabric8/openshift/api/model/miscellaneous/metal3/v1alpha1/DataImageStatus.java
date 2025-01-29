@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * DataImageStatus defines the observed state of DataImage.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -86,31 +89,49 @@ public class DataImageStatus implements Editable<DataImageStatusBuilder>, Kubern
         this.lastReconciled = lastReconciled;
     }
 
+    /**
+     * DataImageStatus defines the observed state of DataImage.
+     */
     @JsonProperty("attachedImage")
     public AttachedImageReference getAttachedImage() {
         return attachedImage;
     }
 
+    /**
+     * DataImageStatus defines the observed state of DataImage.
+     */
     @JsonProperty("attachedImage")
     public void setAttachedImage(AttachedImageReference attachedImage) {
         this.attachedImage = attachedImage;
     }
 
+    /**
+     * DataImageStatus defines the observed state of DataImage.
+     */
     @JsonProperty("error")
     public DataImageError getError() {
         return error;
     }
 
+    /**
+     * DataImageStatus defines the observed state of DataImage.
+     */
     @JsonProperty("error")
     public void setError(DataImageError error) {
         this.error = error;
     }
 
+    /**
+     * DataImageStatus defines the observed state of DataImage.
+     */
     @JsonProperty("lastReconciled")
     public String getLastReconciled() {
         return lastReconciled;
     }
 
+    /**
+     * DataImageStatus defines the observed state of DataImage.
+     */
     @JsonProperty("lastReconciled")
     public void setLastReconciled(String lastReconciled) {
         this.lastReconciled = lastReconciled;

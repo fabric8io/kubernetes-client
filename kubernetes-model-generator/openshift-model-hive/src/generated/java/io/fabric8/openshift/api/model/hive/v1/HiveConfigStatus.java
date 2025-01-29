@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * HiveConfigStatus defines the observed state of Hive
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -93,42 +96,66 @@ public class HiveConfigStatus implements Editable<HiveConfigStatusBuilder>, Kube
         this.observedGeneration = observedGeneration;
     }
 
+    /**
+     * AggregatorClientCAHash keeps an md5 hash of the aggregator client CA configmap data from the openshift-config-managed namespace. When the configmap changes, admission is redeployed.
+     */
     @JsonProperty("aggregatorClientCAHash")
     public String getAggregatorClientCAHash() {
         return aggregatorClientCAHash;
     }
 
+    /**
+     * AggregatorClientCAHash keeps an md5 hash of the aggregator client CA configmap data from the openshift-config-managed namespace. When the configmap changes, admission is redeployed.
+     */
     @JsonProperty("aggregatorClientCAHash")
     public void setAggregatorClientCAHash(String aggregatorClientCAHash) {
         this.aggregatorClientCAHash = aggregatorClientCAHash;
     }
 
+    /**
+     * Conditions includes more detailed status for the HiveConfig
+     */
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<HiveConfigCondition> getConditions() {
         return conditions;
     }
 
+    /**
+     * Conditions includes more detailed status for the HiveConfig
+     */
     @JsonProperty("conditions")
     public void setConditions(List<HiveConfigCondition> conditions) {
         this.conditions = conditions;
     }
 
+    /**
+     * ConfigApplied will be set by the hive operator to indicate whether or not the LastGenerationObserved was successfully reconciled.
+     */
     @JsonProperty("configApplied")
     public Boolean getConfigApplied() {
         return configApplied;
     }
 
+    /**
+     * ConfigApplied will be set by the hive operator to indicate whether or not the LastGenerationObserved was successfully reconciled.
+     */
     @JsonProperty("configApplied")
     public void setConfigApplied(Boolean configApplied) {
         this.configApplied = configApplied;
     }
 
+    /**
+     * ObservedGeneration will record the most recently processed HiveConfig object's generation.
+     */
     @JsonProperty("observedGeneration")
     public Long getObservedGeneration() {
         return observedGeneration;
     }
 
+    /**
+     * ObservedGeneration will record the most recently processed HiveConfig object's generation.
+     */
     @JsonProperty("observedGeneration")
     public void setObservedGeneration(Long observedGeneration) {
         this.observedGeneration = observedGeneration;

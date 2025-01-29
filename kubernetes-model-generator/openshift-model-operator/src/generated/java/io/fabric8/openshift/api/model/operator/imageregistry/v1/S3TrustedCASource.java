@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * S3TrustedCASource references a config map with a CA certificate bundle in the "openshift-config" namespace. The key for the bundle in the config map is "ca-bundle.crt".
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -78,11 +81,17 @@ public class S3TrustedCASource implements Editable<S3TrustedCASourceBuilder>, Ku
         this.name = name;
     }
 
+    /**
+     * name is the metadata.name of the referenced config map. This field must adhere to standard config map naming restrictions. The name must consist solely of alphanumeric characters, hyphens (-) and periods (.). It has a maximum length of 253 characters. If this field is not specified or is empty string, the default trust bundle will be used.
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * name is the metadata.name of the referenced config map. This field must adhere to standard config map naming restrictions. The name must consist solely of alphanumeric characters, hyphens (-) and periods (.). It has a maximum length of 253 characters. If this field is not specified or is empty string, the default trust bundle will be used.
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;

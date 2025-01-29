@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * IOChaosAction defines a possible action of IOChaos
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -158,203 +161,323 @@ public class IOChaosAction implements Editable<IOChaosActionBuilder>, Kubernetes
         this.uid = uid;
     }
 
+    /**
+     * IOChaosAction defines a possible action of IOChaos
+     */
     @JsonProperty("atime")
     public Timespec getAtime() {
         return atime;
     }
 
+    /**
+     * IOChaosAction defines a possible action of IOChaos
+     */
     @JsonProperty("atime")
     public void setAtime(Timespec atime) {
         this.atime = atime;
     }
 
+    /**
+     * IOChaosAction defines a possible action of IOChaos
+     */
     @JsonProperty("blocks")
     public Long getBlocks() {
         return blocks;
     }
 
+    /**
+     * IOChaosAction defines a possible action of IOChaos
+     */
     @JsonProperty("blocks")
     public void setBlocks(Long blocks) {
         this.blocks = blocks;
     }
 
+    /**
+     * IOChaosAction defines a possible action of IOChaos
+     */
     @JsonProperty("ctime")
     public Timespec getCtime() {
         return ctime;
     }
 
+    /**
+     * IOChaosAction defines a possible action of IOChaos
+     */
     @JsonProperty("ctime")
     public void setCtime(Timespec ctime) {
         this.ctime = ctime;
     }
 
+    /**
+     * Faults represents the fault to inject
+     */
     @JsonProperty("faults")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<IoFault> getFaults() {
         return faults;
     }
 
+    /**
+     * Faults represents the fault to inject
+     */
     @JsonProperty("faults")
     public void setFaults(List<IoFault> faults) {
         this.faults = faults;
     }
 
+    /**
+     * IOChaosAction defines a possible action of IOChaos
+     */
     @JsonProperty("gid")
     public Long getGid() {
         return gid;
     }
 
+    /**
+     * IOChaosAction defines a possible action of IOChaos
+     */
     @JsonProperty("gid")
     public void setGid(Long gid) {
         this.gid = gid;
     }
 
+    /**
+     * IOChaosAction defines a possible action of IOChaos
+     */
     @JsonProperty("ino")
     public Long getIno() {
         return ino;
     }
 
+    /**
+     * IOChaosAction defines a possible action of IOChaos
+     */
     @JsonProperty("ino")
     public void setIno(Long ino) {
         this.ino = ino;
     }
 
+    /**
+     * IOChaosAction defines a possible action of IOChaos
+     */
     @JsonProperty("kind")
     public String getKind() {
         return kind;
     }
 
+    /**
+     * IOChaosAction defines a possible action of IOChaos
+     */
     @JsonProperty("kind")
     public void setKind(String kind) {
         this.kind = kind;
     }
 
+    /**
+     * Latency represents the latency to inject
+     */
     @JsonProperty("latency")
     public String getLatency() {
         return latency;
     }
 
+    /**
+     * Latency represents the latency to inject
+     */
     @JsonProperty("latency")
     public void setLatency(String latency) {
         this.latency = latency;
     }
 
+    /**
+     * Methods represents the method that the action will inject in
+     */
     @JsonProperty("methods")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getMethods() {
         return methods;
     }
 
+    /**
+     * Methods represents the method that the action will inject in
+     */
     @JsonProperty("methods")
     public void setMethods(List<String> methods) {
         this.methods = methods;
     }
 
+    /**
+     * IOChaosAction defines a possible action of IOChaos
+     */
     @JsonProperty("mistake")
     public MistakeSpec getMistake() {
         return mistake;
     }
 
+    /**
+     * IOChaosAction defines a possible action of IOChaos
+     */
     @JsonProperty("mistake")
     public void setMistake(MistakeSpec mistake) {
         this.mistake = mistake;
     }
 
+    /**
+     * IOChaosAction defines a possible action of IOChaos
+     */
     @JsonProperty("mtime")
     public Timespec getMtime() {
         return mtime;
     }
 
+    /**
+     * IOChaosAction defines a possible action of IOChaos
+     */
     @JsonProperty("mtime")
     public void setMtime(Timespec mtime) {
         this.mtime = mtime;
     }
 
+    /**
+     * IOChaosAction defines a possible action of IOChaos
+     */
     @JsonProperty("nlink")
     public Long getNlink() {
         return nlink;
     }
 
+    /**
+     * IOChaosAction defines a possible action of IOChaos
+     */
     @JsonProperty("nlink")
     public void setNlink(Long nlink) {
         this.nlink = nlink;
     }
 
+    /**
+     * Path represents a glob of injecting path
+     */
     @JsonProperty("path")
     public String getPath() {
         return path;
     }
 
+    /**
+     * Path represents a glob of injecting path
+     */
     @JsonProperty("path")
     public void setPath(String path) {
         this.path = path;
     }
 
+    /**
+     * Percent represents the percent probability of injecting this action
+     */
     @JsonProperty("percent")
     public Integer getPercent() {
         return percent;
     }
 
+    /**
+     * Percent represents the percent probability of injecting this action
+     */
     @JsonProperty("percent")
     public void setPercent(Integer percent) {
         this.percent = percent;
     }
 
+    /**
+     * IOChaosAction defines a possible action of IOChaos
+     */
     @JsonProperty("perm")
     public Integer getPerm() {
         return perm;
     }
 
+    /**
+     * IOChaosAction defines a possible action of IOChaos
+     */
     @JsonProperty("perm")
     public void setPerm(Integer perm) {
         this.perm = perm;
     }
 
+    /**
+     * IOChaosAction defines a possible action of IOChaos
+     */
     @JsonProperty("rdev")
     public Long getRdev() {
         return rdev;
     }
 
+    /**
+     * IOChaosAction defines a possible action of IOChaos
+     */
     @JsonProperty("rdev")
     public void setRdev(Long rdev) {
         this.rdev = rdev;
     }
 
+    /**
+     * IOChaosAction defines a possible action of IOChaos
+     */
     @JsonProperty("size")
     public Long getSize() {
         return size;
     }
 
+    /**
+     * IOChaosAction defines a possible action of IOChaos
+     */
     @JsonProperty("size")
     public void setSize(Long size) {
         this.size = size;
     }
 
+    /**
+     * Source represents the source of current rules
+     */
     @JsonProperty("source")
     public String getSource() {
         return source;
     }
 
+    /**
+     * Source represents the source of current rules
+     */
     @JsonProperty("source")
     public void setSource(String source) {
         this.source = source;
     }
 
+    /**
+     * IOChaosAction defines a possible action of IOChaos
+     */
     @JsonProperty("type")
     public String getType() {
         return type;
     }
 
+    /**
+     * IOChaosAction defines a possible action of IOChaos
+     */
     @JsonProperty("type")
     public void setType(String type) {
         this.type = type;
     }
 
+    /**
+     * IOChaosAction defines a possible action of IOChaos
+     */
     @JsonProperty("uid")
     public Long getUid() {
         return uid;
     }
 
+    /**
+     * IOChaosAction defines a possible action of IOChaos
+     */
     @JsonProperty("uid")
     public void setUid(Long uid) {
         this.uid = uid;

@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * response body as a string
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -78,11 +81,17 @@ public class HTTPBodyString implements IsHTTPBodySpecifier, Editable<HTTPBodyStr
         this.string = string;
     }
 
+    /**
+     * response body as a string
+     */
     @JsonProperty("string")
     public String getString() {
         return string;
     }
 
+    /**
+     * response body as a string
+     */
     @JsonProperty("string")
     public void setString(String string) {
         this.string = string;

@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * GenericWebHookEvent is the payload expected for a generic webhook post
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -93,42 +96,66 @@ public class GenericWebHookEvent implements Editable<GenericWebHookEventBuilder>
         this.type = type;
     }
 
+    /**
+     * GenericWebHookEvent is the payload expected for a generic webhook post
+     */
     @JsonProperty("dockerStrategyOptions")
     public DockerStrategyOptions getDockerStrategyOptions() {
         return dockerStrategyOptions;
     }
 
+    /**
+     * GenericWebHookEvent is the payload expected for a generic webhook post
+     */
     @JsonProperty("dockerStrategyOptions")
     public void setDockerStrategyOptions(DockerStrategyOptions dockerStrategyOptions) {
         this.dockerStrategyOptions = dockerStrategyOptions;
     }
 
+    /**
+     * env contains additional environment variables you want to pass into a builder container. ValueFrom is not supported.
+     */
     @JsonProperty("env")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<EnvVar> getEnv() {
         return env;
     }
 
+    /**
+     * env contains additional environment variables you want to pass into a builder container. ValueFrom is not supported.
+     */
     @JsonProperty("env")
     public void setEnv(List<EnvVar> env) {
         this.env = env;
     }
 
+    /**
+     * GenericWebHookEvent is the payload expected for a generic webhook post
+     */
     @JsonProperty("git")
     public GitInfo getGit() {
         return git;
     }
 
+    /**
+     * GenericWebHookEvent is the payload expected for a generic webhook post
+     */
     @JsonProperty("git")
     public void setGit(GitInfo git) {
         this.git = git;
     }
 
+    /**
+     * type is the type of source repository
+     */
     @JsonProperty("type")
     public String getType() {
         return type;
     }
 
+    /**
+     * type is the type of source repository
+     */
     @JsonProperty("type")
     public void setType(String type) {
         this.type = type;

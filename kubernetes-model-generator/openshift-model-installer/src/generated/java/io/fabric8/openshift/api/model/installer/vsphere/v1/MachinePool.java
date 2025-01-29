@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * MachinePool stores the configuration for a machine pool installed on vSphere.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -97,52 +100,82 @@ public class MachinePool implements Editable<MachinePoolBuilder>, KubernetesReso
         this.zones = zones;
     }
 
+    /**
+     * NumCoresPerSocket is the number of cores per socket in a vm. The number of vCPUs on the vm will be NumCPUs/NumCoresPerSocket.
+     */
     @JsonProperty("coresPerSocket")
     public Integer getCoresPerSocket() {
         return coresPerSocket;
     }
 
+    /**
+     * NumCoresPerSocket is the number of cores per socket in a vm. The number of vCPUs on the vm will be NumCPUs/NumCoresPerSocket.
+     */
     @JsonProperty("coresPerSocket")
     public void setCoresPerSocket(Integer coresPerSocket) {
         this.coresPerSocket = coresPerSocket;
     }
 
+    /**
+     * NumCPUs is the total number of virtual processor cores to assign a vm.
+     */
     @JsonProperty("cpus")
     public Integer getCpus() {
         return cpus;
     }
 
+    /**
+     * NumCPUs is the total number of virtual processor cores to assign a vm.
+     */
     @JsonProperty("cpus")
     public void setCpus(Integer cpus) {
         this.cpus = cpus;
     }
 
+    /**
+     * Memory is the size of a VM's memory in MB.
+     */
     @JsonProperty("memoryMB")
     public Long getMemoryMB() {
         return memoryMB;
     }
 
+    /**
+     * Memory is the size of a VM's memory in MB.
+     */
     @JsonProperty("memoryMB")
     public void setMemoryMB(Long memoryMB) {
         this.memoryMB = memoryMB;
     }
 
+    /**
+     * MachinePool stores the configuration for a machine pool installed on vSphere.
+     */
     @JsonProperty("osDisk")
     public OSDisk getOsDisk() {
         return osDisk;
     }
 
+    /**
+     * MachinePool stores the configuration for a machine pool installed on vSphere.
+     */
     @JsonProperty("osDisk")
     public void setOsDisk(OSDisk osDisk) {
         this.osDisk = osDisk;
     }
 
+    /**
+     * Zones defines available zones Zones is available in TechPreview.
+     */
     @JsonProperty("zones")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getZones() {
         return zones;
     }
 
+    /**
+     * Zones defines available zones Zones is available in TechPreview.
+     */
     @JsonProperty("zones")
     public void setZones(List<String> zones) {
         this.zones = zones;

@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Metadata contains Azure metadata (e.g. for uninstalling the cluster).
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -94,51 +97,81 @@ public class Metadata implements Editable<MetadataBuilder>, KubernetesResource
         this.resourceGroupName = resourceGroupName;
     }
 
+    /**
+     * Metadata contains Azure metadata (e.g. for uninstalling the cluster).
+     */
     @JsonProperty("armEndpoint")
     public String getArmEndpoint() {
         return armEndpoint;
     }
 
+    /**
+     * Metadata contains Azure metadata (e.g. for uninstalling the cluster).
+     */
     @JsonProperty("armEndpoint")
     public void setArmEndpoint(String armEndpoint) {
         this.armEndpoint = armEndpoint;
     }
 
+    /**
+     * Metadata contains Azure metadata (e.g. for uninstalling the cluster).
+     */
     @JsonProperty("baseDomainResourceGroupName")
     public String getBaseDomainResourceGroupName() {
         return baseDomainResourceGroupName;
     }
 
+    /**
+     * Metadata contains Azure metadata (e.g. for uninstalling the cluster).
+     */
     @JsonProperty("baseDomainResourceGroupName")
     public void setBaseDomainResourceGroupName(String baseDomainResourceGroupName) {
         this.baseDomainResourceGroupName = baseDomainResourceGroupName;
     }
 
+    /**
+     * Metadata contains Azure metadata (e.g. for uninstalling the cluster).
+     */
     @JsonProperty("cloudName")
     public String getCloudName() {
         return cloudName;
     }
 
+    /**
+     * Metadata contains Azure metadata (e.g. for uninstalling the cluster).
+     */
     @JsonProperty("cloudName")
     public void setCloudName(String cloudName) {
         this.cloudName = cloudName;
     }
 
+    /**
+     * Metadata contains Azure metadata (e.g. for uninstalling the cluster).
+     */
     @JsonProperty("region")
     public String getRegion() {
         return region;
     }
 
+    /**
+     * Metadata contains Azure metadata (e.g. for uninstalling the cluster).
+     */
     @JsonProperty("region")
     public void setRegion(String region) {
         this.region = region;
     }
 
+    /**
+     * Metadata contains Azure metadata (e.g. for uninstalling the cluster).
+     */
     @JsonProperty("resourceGroupName")
     public String getResourceGroupName() {
         return resourceGroupName;
     }
 
+    /**
+     * Metadata contains Azure metadata (e.g. for uninstalling the cluster).
+     */
     @JsonProperty("resourceGroupName")
     public void setResourceGroupName(String resourceGroupName) {
         this.resourceGroupName = resourceGroupName;

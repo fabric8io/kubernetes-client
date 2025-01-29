@@ -35,6 +35,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ClusterQuota contains the size, in cloud quota, of the cluster that was created by installer.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,12 +85,18 @@ public class ClusterQuota implements Editable<ClusterQuotaBuilder>, KubernetesRe
         this.gcp = gcp;
     }
 
+    /**
+     * ClusterQuota contains the size, in cloud quota, of the cluster that was created by installer.
+     */
     @JsonProperty("gcp")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<QuotaUsage> getGcp() {
         return gcp;
     }
 
+    /**
+     * ClusterQuota contains the size, in cloud quota, of the cluster that was created by installer.
+     */
     @JsonProperty("gcp")
     public void setGcp(List<QuotaUsage> gcp) {
         this.gcp = gcp;

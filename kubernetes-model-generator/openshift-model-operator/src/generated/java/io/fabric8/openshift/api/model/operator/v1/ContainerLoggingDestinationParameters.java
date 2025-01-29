@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ContainerLoggingDestinationParameters describes parameters for the Container logging destination type.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -78,11 +81,17 @@ public class ContainerLoggingDestinationParameters implements Editable<Container
         this.maxLength = maxLength;
     }
 
+    /**
+     * maxLength is the maximum length of the log message.<br><p> <br><p> Valid values are integers in the range 480 to 8192, inclusive.<br><p> <br><p> When omitted, the default value is 1024.
+     */
     @JsonProperty("maxLength")
     public Integer getMaxLength() {
         return maxLength;
     }
 
+    /**
+     * maxLength is the maximum length of the log message.<br><p> <br><p> Valid values are integers in the range 480 to 8192, inclusive.<br><p> <br><p> When omitted, the default value is 1024.
+     */
     @JsonProperty("maxLength")
     public void setMaxLength(Integer maxLength) {
         this.maxLength = maxLength;

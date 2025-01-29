@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ConfigSource contains the information that can uniquely identify where a remote built definition came from i.e. Git repositories, Tekton Bundles in OCI registry and hub.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -87,32 +90,50 @@ public class ConfigSource implements Editable<ConfigSourceBuilder>, KubernetesRe
         this.uri = uri;
     }
 
+    /**
+     * Digest is a collection of cryptographic digests for the contents of the artifact specified by URI. Example: {"sha1": "f99d13e554ffcb696dee719fa85b695cb5b0f428"}
+     */
     @JsonProperty("digest")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getDigest() {
         return digest;
     }
 
+    /**
+     * Digest is a collection of cryptographic digests for the contents of the artifact specified by URI. Example: {"sha1": "f99d13e554ffcb696dee719fa85b695cb5b0f428"}
+     */
     @JsonProperty("digest")
     public void setDigest(Map<String, String> digest) {
         this.digest = digest;
     }
 
+    /**
+     * EntryPoint identifies the entry point into the build. This is often a path to a build definition file and/or a target label within that file. Example: "task/git-clone/0.8/git-clone.yaml"
+     */
     @JsonProperty("entryPoint")
     public String getEntryPoint() {
         return entryPoint;
     }
 
+    /**
+     * EntryPoint identifies the entry point into the build. This is often a path to a build definition file and/or a target label within that file. Example: "task/git-clone/0.8/git-clone.yaml"
+     */
     @JsonProperty("entryPoint")
     public void setEntryPoint(String entryPoint) {
         this.entryPoint = entryPoint;
     }
 
+    /**
+     * URI indicates the identity of the source of the build definition. Example: "https://github.com/tektoncd/catalog"
+     */
     @JsonProperty("uri")
     public String getUri() {
         return uri;
     }
 
+    /**
+     * URI indicates the identity of the source of the build definition. Example: "https://github.com/tektoncd/catalog"
+     */
     @JsonProperty("uri")
     public void setUri(String uri) {
         this.uri = uri;

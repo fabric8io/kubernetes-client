@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * SubjectRulesReviewStatus is contains the result of a rules check
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -85,22 +88,34 @@ public class SubjectRulesReviewStatus implements Editable<SubjectRulesReviewStat
         this.rules = rules;
     }
 
+    /**
+     * EvaluationError can appear in combination with Rules.  It means some error happened during evaluation that may have prevented additional rules from being populated.
+     */
     @JsonProperty("evaluationError")
     public String getEvaluationError() {
         return evaluationError;
     }
 
+    /**
+     * EvaluationError can appear in combination with Rules.  It means some error happened during evaluation that may have prevented additional rules from being populated.
+     */
     @JsonProperty("evaluationError")
     public void setEvaluationError(String evaluationError) {
         this.evaluationError = evaluationError;
     }
 
+    /**
+     * Rules is the list of rules (no particular sort) that are allowed for the subject
+     */
     @JsonProperty("rules")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<PolicyRule> getRules() {
         return rules;
     }
 
+    /**
+     * Rules is the list of rules (no particular sort) that are allowed for the subject
+     */
     @JsonProperty("rules")
     public void setRules(List<PolicyRule> rules) {
         this.rules = rules;

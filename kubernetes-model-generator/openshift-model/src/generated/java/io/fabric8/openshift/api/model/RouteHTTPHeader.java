@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * RouteHTTPHeader specifies configuration for setting or deleting an HTTP header.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class RouteHTTPHeader implements Editable<RouteHTTPHeaderBuilder>, Kubern
         this.name = name;
     }
 
+    /**
+     * RouteHTTPHeader specifies configuration for setting or deleting an HTTP header.
+     */
     @JsonProperty("action")
     public RouteHTTPHeaderActionUnion getAction() {
         return action;
     }
 
+    /**
+     * RouteHTTPHeader specifies configuration for setting or deleting an HTTP header.
+     */
     @JsonProperty("action")
     public void setAction(RouteHTTPHeaderActionUnion action) {
         this.action = action;
     }
 
+    /**
+     * name specifies the name of a header on which to perform an action. Its value must be a valid HTTP header name as defined in RFC 2616 section 4.2. The name must consist only of alphanumeric and the following special characters, "-!#$%&amp;'&#42;+.^_`". The following header names are reserved and may not be modified via this API: Strict-Transport-Security, Proxy, Cookie, Set-Cookie. It must be no more than 255 characters in length. Header name must be unique.
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * name specifies the name of a header on which to perform an action. Its value must be a valid HTTP header name as defined in RFC 2616 section 4.2. The name must consist only of alphanumeric and the following special characters, "-!#$%&amp;'&#42;+.^_`". The following header names are reserved and may not be modified via this API: Strict-Transport-Security, Proxy, Cookie, Set-Cookie. It must be no more than 255 characters in length. Header name must be unique.
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;

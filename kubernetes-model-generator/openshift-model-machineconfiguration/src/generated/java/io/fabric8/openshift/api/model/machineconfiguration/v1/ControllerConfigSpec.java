@@ -37,6 +37,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ControllerConfigSpec is the spec for ControllerConfig resource.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -174,234 +177,372 @@ public class ControllerConfigSpec implements Editable<ControllerConfigSpecBuilde
         this.rootCAData = rootCAData;
     }
 
+    /**
+     * additionalTrustBundle is a certificate bundle that will be added to the nodes trusted certificate store.
+     */
     @JsonProperty("additionalTrustBundle")
     public String getAdditionalTrustBundle() {
         return additionalTrustBundle;
     }
 
+    /**
+     * additionalTrustBundle is a certificate bundle that will be added to the nodes trusted certificate store.
+     */
     @JsonProperty("additionalTrustBundle")
     public void setAdditionalTrustBundle(String additionalTrustBundle) {
         this.additionalTrustBundle = additionalTrustBundle;
     }
 
+    /**
+     * BaseOSContainerImage is the new-format container image for operating system updates.
+     */
     @JsonProperty("baseOSContainerImage")
     public String getBaseOSContainerImage() {
         return baseOSContainerImage;
     }
 
+    /**
+     * BaseOSContainerImage is the new-format container image for operating system updates.
+     */
     @JsonProperty("baseOSContainerImage")
     public void setBaseOSContainerImage(String baseOSContainerImage) {
         this.baseOSContainerImage = baseOSContainerImage;
     }
 
+    /**
+     * BaseOSExtensionsContainerImage is the matching extensions container for the new-format container
+     */
     @JsonProperty("baseOSExtensionsContainerImage")
     public String getBaseOSExtensionsContainerImage() {
         return baseOSExtensionsContainerImage;
     }
 
+    /**
+     * BaseOSExtensionsContainerImage is the matching extensions container for the new-format container
+     */
     @JsonProperty("baseOSExtensionsContainerImage")
     public void setBaseOSExtensionsContainerImage(String baseOSExtensionsContainerImage) {
         this.baseOSExtensionsContainerImage = baseOSExtensionsContainerImage;
     }
 
+    /**
+     * cloudProvider specifies the cloud provider CA data
+     */
     @JsonProperty("cloudProviderCAData")
     public String getCloudProviderCAData() {
         return cloudProviderCAData;
     }
 
+    /**
+     * cloudProvider specifies the cloud provider CA data
+     */
     @JsonProperty("cloudProviderCAData")
     public void setCloudProviderCAData(String cloudProviderCAData) {
         this.cloudProviderCAData = cloudProviderCAData;
     }
 
+    /**
+     * cloudProviderConfig is the configuration for the given cloud provider
+     */
     @JsonProperty("cloudProviderConfig")
     public String getCloudProviderConfig() {
         return cloudProviderConfig;
     }
 
+    /**
+     * cloudProviderConfig is the configuration for the given cloud provider
+     */
     @JsonProperty("cloudProviderConfig")
     public void setCloudProviderConfig(String cloudProviderConfig) {
         this.cloudProviderConfig = cloudProviderConfig;
     }
 
+    /**
+     * clusterDNSIP is the cluster DNS IP address
+     */
     @JsonProperty("clusterDNSIP")
     public String getClusterDNSIP() {
         return clusterDNSIP;
     }
 
+    /**
+     * clusterDNSIP is the cluster DNS IP address
+     */
     @JsonProperty("clusterDNSIP")
     public void setClusterDNSIP(String clusterDNSIP) {
         this.clusterDNSIP = clusterDNSIP;
     }
 
+    /**
+     * ControllerConfigSpec is the spec for ControllerConfig resource.
+     */
     @JsonProperty("dns")
     public DNS getDns() {
         return dns;
     }
 
+    /**
+     * ControllerConfigSpec is the spec for ControllerConfig resource.
+     */
     @JsonProperty("dns")
     public void setDns(DNS dns) {
         this.dns = dns;
     }
 
+    /**
+     * etcdDiscoveryDomain is deprecated, use Infra.Status.EtcdDiscoveryDomain instead
+     */
     @JsonProperty("etcdDiscoveryDomain")
     public String getEtcdDiscoveryDomain() {
         return etcdDiscoveryDomain;
     }
 
+    /**
+     * etcdDiscoveryDomain is deprecated, use Infra.Status.EtcdDiscoveryDomain instead
+     */
     @JsonProperty("etcdDiscoveryDomain")
     public void setEtcdDiscoveryDomain(String etcdDiscoveryDomain) {
         this.etcdDiscoveryDomain = etcdDiscoveryDomain;
     }
 
+    /**
+     * imageRegistryBundleData is the ImageRegistryData
+     */
     @JsonProperty("imageRegistryBundleData")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ImageRegistryBundle> getImageRegistryBundleData() {
         return imageRegistryBundleData;
     }
 
+    /**
+     * imageRegistryBundleData is the ImageRegistryData
+     */
     @JsonProperty("imageRegistryBundleData")
     public void setImageRegistryBundleData(List<ImageRegistryBundle> imageRegistryBundleData) {
         this.imageRegistryBundleData = imageRegistryBundleData;
     }
 
+    /**
+     * imageRegistryBundleUserData is Image Registry Data provided by the user
+     */
     @JsonProperty("imageRegistryBundleUserData")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ImageRegistryBundle> getImageRegistryBundleUserData() {
         return imageRegistryBundleUserData;
     }
 
+    /**
+     * imageRegistryBundleUserData is Image Registry Data provided by the user
+     */
     @JsonProperty("imageRegistryBundleUserData")
     public void setImageRegistryBundleUserData(List<ImageRegistryBundle> imageRegistryBundleUserData) {
         this.imageRegistryBundleUserData = imageRegistryBundleUserData;
     }
 
+    /**
+     * images is map of images that are used by the controller to render templates under ./templates/
+     */
     @JsonProperty("images")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getImages() {
         return images;
     }
 
+    /**
+     * images is map of images that are used by the controller to render templates under ./templates/
+     */
     @JsonProperty("images")
     public void setImages(Map<String, String> images) {
         this.images = images;
     }
 
+    /**
+     * ControllerConfigSpec is the spec for ControllerConfig resource.
+     */
     @JsonProperty("infra")
     public Infrastructure getInfra() {
         return infra;
     }
 
+    /**
+     * ControllerConfigSpec is the spec for ControllerConfig resource.
+     */
     @JsonProperty("infra")
     public void setInfra(Infrastructure infra) {
         this.infra = infra;
     }
 
+    /**
+     * internalRegistryPullSecret is the pull secret for the internal registry, used by rpm-ostree to pull images from the internal registry if present
+     */
     @JsonProperty("internalRegistryPullSecret")
     public String getInternalRegistryPullSecret() {
         return internalRegistryPullSecret;
     }
 
+    /**
+     * internalRegistryPullSecret is the pull secret for the internal registry, used by rpm-ostree to pull images from the internal registry if present
+     */
     @JsonProperty("internalRegistryPullSecret")
     public void setInternalRegistryPullSecret(String internalRegistryPullSecret) {
         this.internalRegistryPullSecret = internalRegistryPullSecret;
     }
 
+    /**
+     * ipFamilies indicates the IP families in use by the cluster network
+     */
     @JsonProperty("ipFamilies")
     public String getIpFamilies() {
         return ipFamilies;
     }
 
+    /**
+     * ipFamilies indicates the IP families in use by the cluster network
+     */
     @JsonProperty("ipFamilies")
     public void setIpFamilies(String ipFamilies) {
         this.ipFamilies = ipFamilies;
     }
 
+    /**
+     * kubeAPIServerServingCAData managed Kubelet to API Server Cert... Rotated automatically
+     */
     @JsonProperty("kubeAPIServerServingCAData")
     public String getKubeAPIServerServingCAData() {
         return kubeAPIServerServingCAData;
     }
 
+    /**
+     * kubeAPIServerServingCAData managed Kubelet to API Server Cert... Rotated automatically
+     */
     @JsonProperty("kubeAPIServerServingCAData")
     public void setKubeAPIServerServingCAData(String kubeAPIServerServingCAData) {
         this.kubeAPIServerServingCAData = kubeAPIServerServingCAData;
     }
 
+    /**
+     * ControllerConfigSpec is the spec for ControllerConfig resource.
+     */
     @JsonProperty("network")
     public NetworkInfo getNetwork() {
         return network;
     }
 
+    /**
+     * ControllerConfigSpec is the spec for ControllerConfig resource.
+     */
     @JsonProperty("network")
     public void setNetwork(NetworkInfo network) {
         this.network = network;
     }
 
+    /**
+     * networkType holds the type of network the cluster is using XXX: this is temporary and will be dropped as soon as possible in favor of a better support to start network related services the proper way. Nobody is also changing this once the cluster is up and running the first time, so, disallow regeneration if this changes.
+     */
     @JsonProperty("networkType")
     public String getNetworkType() {
         return networkType;
     }
 
+    /**
+     * networkType holds the type of network the cluster is using XXX: this is temporary and will be dropped as soon as possible in favor of a better support to start network related services the proper way. Nobody is also changing this once the cluster is up and running the first time, so, disallow regeneration if this changes.
+     */
     @JsonProperty("networkType")
     public void setNetworkType(String networkType) {
         this.networkType = networkType;
     }
 
+    /**
+     * OSImageURL is the old-format container image that contains the OS update payload.
+     */
     @JsonProperty("osImageURL")
     public String getOsImageURL() {
         return osImageURL;
     }
 
+    /**
+     * OSImageURL is the old-format container image that contains the OS update payload.
+     */
     @JsonProperty("osImageURL")
     public void setOsImageURL(String osImageURL) {
         this.osImageURL = osImageURL;
     }
 
+    /**
+     * platform is deprecated, use Infra.Status.PlatformStatus.Type instead
+     */
     @JsonProperty("platform")
     public String getPlatform() {
         return platform;
     }
 
+    /**
+     * platform is deprecated, use Infra.Status.PlatformStatus.Type instead
+     */
     @JsonProperty("platform")
     public void setPlatform(String platform) {
         this.platform = platform;
     }
 
+    /**
+     * ControllerConfigSpec is the spec for ControllerConfig resource.
+     */
     @JsonProperty("proxy")
     public ProxyStatus getProxy() {
         return proxy;
     }
 
+    /**
+     * ControllerConfigSpec is the spec for ControllerConfig resource.
+     */
     @JsonProperty("proxy")
     public void setProxy(ProxyStatus proxy) {
         this.proxy = proxy;
     }
 
+    /**
+     * ControllerConfigSpec is the spec for ControllerConfig resource.
+     */
     @JsonProperty("pullSecret")
     public ObjectReference getPullSecret() {
         return pullSecret;
     }
 
+    /**
+     * ControllerConfigSpec is the spec for ControllerConfig resource.
+     */
     @JsonProperty("pullSecret")
     public void setPullSecret(ObjectReference pullSecret) {
         this.pullSecret = pullSecret;
     }
 
+    /**
+     * releaseImage is the image used when installing the cluster
+     */
     @JsonProperty("releaseImage")
     public String getReleaseImage() {
         return releaseImage;
     }
 
+    /**
+     * releaseImage is the image used when installing the cluster
+     */
     @JsonProperty("releaseImage")
     public void setReleaseImage(String releaseImage) {
         this.releaseImage = releaseImage;
     }
 
+    /**
+     * rootCAData specifies the root CA data
+     */
     @JsonProperty("rootCAData")
     public String getRootCAData() {
         return rootCAData;
     }
 
+    /**
+     * rootCAData specifies the root CA data
+     */
     @JsonProperty("rootCAData")
     public void setRootCAData(String rootCAData) {
         this.rootCAData = rootCAData;

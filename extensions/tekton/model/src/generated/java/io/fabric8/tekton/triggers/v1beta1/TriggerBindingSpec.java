@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * TriggerBindingSpec defines the desired state of the TriggerBinding.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -81,12 +84,18 @@ public class TriggerBindingSpec implements Editable<TriggerBindingSpecBuilder>, 
         this.params = params;
     }
 
+    /**
+     * Params defines the parameter mapping from the given input event.
+     */
     @JsonProperty("params")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Param> getParams() {
         return params;
     }
 
+    /**
+     * Params defines the parameter mapping from the given input event.
+     */
     @JsonProperty("params")
     public void setParams(List<Param> params) {
         this.params = params;

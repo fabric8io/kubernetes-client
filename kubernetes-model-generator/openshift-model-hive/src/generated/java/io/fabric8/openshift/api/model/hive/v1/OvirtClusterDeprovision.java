@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * OvirtClusterDeprovision contains oVirt-specific configuration for a ClusterDeprovision
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -86,31 +89,49 @@ public class OvirtClusterDeprovision implements Editable<OvirtClusterDeprovision
         this.credentialsSecretRef = credentialsSecretRef;
     }
 
+    /**
+     * OvirtClusterDeprovision contains oVirt-specific configuration for a ClusterDeprovision
+     */
     @JsonProperty("certificatesSecretRef")
     public LocalObjectReference getCertificatesSecretRef() {
         return certificatesSecretRef;
     }
 
+    /**
+     * OvirtClusterDeprovision contains oVirt-specific configuration for a ClusterDeprovision
+     */
     @JsonProperty("certificatesSecretRef")
     public void setCertificatesSecretRef(LocalObjectReference certificatesSecretRef) {
         this.certificatesSecretRef = certificatesSecretRef;
     }
 
+    /**
+     * The oVirt cluster ID
+     */
     @JsonProperty("clusterID")
     public String getClusterID() {
         return clusterID;
     }
 
+    /**
+     * The oVirt cluster ID
+     */
     @JsonProperty("clusterID")
     public void setClusterID(String clusterID) {
         this.clusterID = clusterID;
     }
 
+    /**
+     * OvirtClusterDeprovision contains oVirt-specific configuration for a ClusterDeprovision
+     */
     @JsonProperty("credentialsSecretRef")
     public LocalObjectReference getCredentialsSecretRef() {
         return credentialsSecretRef;
     }
 
+    /**
+     * OvirtClusterDeprovision contains oVirt-specific configuration for a ClusterDeprovision
+     */
     @JsonProperty("credentialsSecretRef")
     public void setCredentialsSecretRef(LocalObjectReference credentialsSecretRef) {
         this.credentialsSecretRef = credentialsSecretRef;

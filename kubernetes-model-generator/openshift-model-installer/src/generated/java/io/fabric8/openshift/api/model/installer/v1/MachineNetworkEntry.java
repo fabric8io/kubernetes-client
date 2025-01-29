@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * MachineNetworkEntry is a single IP address block for node IP blocks.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -78,11 +81,17 @@ public class MachineNetworkEntry implements Editable<MachineNetworkEntryBuilder>
         this.cidr = cidr;
     }
 
+    /**
+     * MachineNetworkEntry is a single IP address block for node IP blocks.
+     */
     @JsonProperty("cidr")
     public String getCidr() {
         return cidr;
     }
 
+    /**
+     * MachineNetworkEntry is a single IP address block for node IP blocks.
+     */
     @JsonProperty("cidr")
     public void setCidr(String cidr) {
         this.cidr = cidr;

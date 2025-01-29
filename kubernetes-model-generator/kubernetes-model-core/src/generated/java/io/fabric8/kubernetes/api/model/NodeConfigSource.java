@@ -17,6 +17,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * NodeConfigSource specifies a source of node configuration. Exactly one subfield (excluding metadata) must be non-nil. This API is deprecated since 1.22
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -49,11 +52,17 @@ public class NodeConfigSource implements Editable<NodeConfigSourceBuilder>, Kube
         this.configMap = configMap;
     }
 
+    /**
+     * NodeConfigSource specifies a source of node configuration. Exactly one subfield (excluding metadata) must be non-nil. This API is deprecated since 1.22
+     */
     @JsonProperty("configMap")
     public ConfigMapNodeConfigSource getConfigMap() {
         return configMap;
     }
 
+    /**
+     * NodeConfigSource specifies a source of node configuration. Exactly one subfield (excluding metadata) must be non-nil. This API is deprecated since 1.22
+     */
     @JsonProperty("configMap")
     public void setConfigMap(ConfigMapNodeConfigSource configMap) {
         this.configMap = configMap;

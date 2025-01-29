@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * DNSNameResolverSpec is a desired state description of DNSNameResolver.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -78,11 +81,17 @@ public class DNSNameResolverSpec implements Editable<DNSNameResolverSpecBuilder>
         this.name = name;
     }
 
+    /**
+     * name is the DNS name for which the DNS name resolution information will be stored. For a regular DNS name, only the DNS name resolution information of the regular DNS name will be stored. For a wildcard DNS name, the DNS name resolution information of all the DNS names that match the wildcard DNS name will be stored. For a wildcard DNS name, the '&#42;' will match only one label. Additionally, only a single '&#42;' can be used at the beginning of the wildcard DNS name. For example, '&#42;.example.com.' will match 'sub1.example.com.' but won't match 'sub2.sub1.example.com.'
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * name is the DNS name for which the DNS name resolution information will be stored. For a regular DNS name, only the DNS name resolution information of the regular DNS name will be stored. For a wildcard DNS name, the DNS name resolution information of all the DNS names that match the wildcard DNS name will be stored. For a wildcard DNS name, the '&#42;' will match only one label. Additionally, only a single '&#42;' can be used at the beginning of the wildcard DNS name. For example, '&#42;.example.com.' will match 'sub1.example.com.' but won't match 'sub2.sub1.example.com.'
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;

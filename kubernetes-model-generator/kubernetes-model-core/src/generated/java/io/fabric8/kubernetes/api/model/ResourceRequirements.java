@@ -19,6 +19,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ResourceRequirements describes the compute resource requirements.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -62,34 +65,52 @@ public class ResourceRequirements implements Editable<ResourceRequirementsBuilde
         this.requests = requests;
     }
 
+    /**
+     * Claims lists the names of resources, defined in spec.resourceClaims, that are used by this container.<br><p> <br><p> This is an alpha field and requires enabling the DynamicResourceAllocation feature gate.<br><p> <br><p> This field is immutable. It can only be set for containers.
+     */
     @JsonProperty("claims")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ResourceClaim> getClaims() {
         return claims;
     }
 
+    /**
+     * Claims lists the names of resources, defined in spec.resourceClaims, that are used by this container.<br><p> <br><p> This is an alpha field and requires enabling the DynamicResourceAllocation feature gate.<br><p> <br><p> This field is immutable. It can only be set for containers.
+     */
     @JsonProperty("claims")
     public void setClaims(List<ResourceClaim> claims) {
         this.claims = claims;
     }
 
+    /**
+     * Limits describes the maximum amount of compute resources allowed. More info: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/
+     */
     @JsonProperty("limits")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, Quantity> getLimits() {
         return limits;
     }
 
+    /**
+     * Limits describes the maximum amount of compute resources allowed. More info: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/
+     */
     @JsonProperty("limits")
     public void setLimits(Map<String, Quantity> limits) {
         this.limits = limits;
     }
 
+    /**
+     * Requests describes the minimum amount of compute resources required. If Requests is omitted for a container, it defaults to Limits if that is explicitly specified, otherwise to an implementation-defined value. Requests cannot exceed Limits. More info: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/
+     */
     @JsonProperty("requests")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, Quantity> getRequests() {
         return requests;
     }
 
+    /**
+     * Requests describes the minimum amount of compute resources required. If Requests is omitted for a container, it defaults to Limits if that is explicitly specified, otherwise to an implementation-defined value. Requests cannot exceed Limits. More info: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/
+     */
     @JsonProperty("requests")
     public void setRequests(Map<String, Quantity> requests) {
         this.requests = requests;

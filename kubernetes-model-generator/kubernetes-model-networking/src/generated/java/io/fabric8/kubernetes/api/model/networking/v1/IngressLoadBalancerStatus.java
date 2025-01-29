@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * IngressLoadBalancerStatus represents the status of a load-balancer.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -81,12 +84,18 @@ public class IngressLoadBalancerStatus implements Editable<IngressLoadBalancerSt
         this.ingress = ingress;
     }
 
+    /**
+     * ingress is a list containing ingress points for the load-balancer.
+     */
     @JsonProperty("ingress")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<IngressLoadBalancerIngress> getIngress() {
         return ingress;
     }
 
+    /**
+     * ingress is a list containing ingress points for the load-balancer.
+     */
     @JsonProperty("ingress")
     public void setIngress(List<IngressLoadBalancerIngress> ingress) {
         this.ingress = ingress;

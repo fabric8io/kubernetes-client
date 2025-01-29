@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Hash based on the source IP address. This is applicable for both TCP and HTTP connections.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -78,11 +81,17 @@ public class LoadBalancerSettingsConsistentHashLBUseSourceIp implements IsLoadBa
         this.useSourceIp = useSourceIp;
     }
 
+    /**
+     * Hash based on the source IP address. This is applicable for both TCP and HTTP connections.
+     */
     @JsonProperty("useSourceIp")
     public Boolean getUseSourceIp() {
         return useSourceIp;
     }
 
+    /**
+     * Hash based on the source IP address. This is applicable for both TCP and HTTP connections.
+     */
     @JsonProperty("useSourceIp")
     public void setUseSourceIp(Boolean useSourceIp) {
         this.useSourceIp = useSourceIp;

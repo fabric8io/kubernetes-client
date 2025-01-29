@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * VSphereCSIDriverConfigSpec defines properties that can be configured for vsphere CSI driver.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -93,42 +96,66 @@ public class VSphereCSIDriverConfigSpec implements Editable<VSphereCSIDriverConf
         this.topologyCategories = topologyCategories;
     }
 
+    /**
+     * globalMaxSnapshotsPerBlockVolume is a global configuration parameter that applies to volumes on all kinds of datastores. If omitted, the platform chooses a default, which is subject to change over time, currently that default is 3. Snapshots can not be disabled using this parameter. Increasing number of snapshots above 3 can have negative impact on performance, for more details see: https://kb.vmware.com/s/article/1025279 Volume snapshot documentation: https://docs.vmware.com/en/VMware-vSphere-Container-Storage-Plug-in/3.0/vmware-vsphere-csp-getting-started/GUID-E0B41C69-7EEB-450F-A73D-5FD2FF39E891.html
+     */
     @JsonProperty("globalMaxSnapshotsPerBlockVolume")
     public Long getGlobalMaxSnapshotsPerBlockVolume() {
         return globalMaxSnapshotsPerBlockVolume;
     }
 
+    /**
+     * globalMaxSnapshotsPerBlockVolume is a global configuration parameter that applies to volumes on all kinds of datastores. If omitted, the platform chooses a default, which is subject to change over time, currently that default is 3. Snapshots can not be disabled using this parameter. Increasing number of snapshots above 3 can have negative impact on performance, for more details see: https://kb.vmware.com/s/article/1025279 Volume snapshot documentation: https://docs.vmware.com/en/VMware-vSphere-Container-Storage-Plug-in/3.0/vmware-vsphere-csp-getting-started/GUID-E0B41C69-7EEB-450F-A73D-5FD2FF39E891.html
+     */
     @JsonProperty("globalMaxSnapshotsPerBlockVolume")
     public void setGlobalMaxSnapshotsPerBlockVolume(Long globalMaxSnapshotsPerBlockVolume) {
         this.globalMaxSnapshotsPerBlockVolume = globalMaxSnapshotsPerBlockVolume;
     }
 
+    /**
+     * granularMaxSnapshotsPerBlockVolumeInVSAN is a granular configuration parameter on vSAN datastore only. It overrides GlobalMaxSnapshotsPerBlockVolume if set, while it falls back to the global constraint if unset. Snapshots for VSAN can not be disabled using this parameter.
+     */
     @JsonProperty("granularMaxSnapshotsPerBlockVolumeInVSAN")
     public Long getGranularMaxSnapshotsPerBlockVolumeInVSAN() {
         return granularMaxSnapshotsPerBlockVolumeInVSAN;
     }
 
+    /**
+     * granularMaxSnapshotsPerBlockVolumeInVSAN is a granular configuration parameter on vSAN datastore only. It overrides GlobalMaxSnapshotsPerBlockVolume if set, while it falls back to the global constraint if unset. Snapshots for VSAN can not be disabled using this parameter.
+     */
     @JsonProperty("granularMaxSnapshotsPerBlockVolumeInVSAN")
     public void setGranularMaxSnapshotsPerBlockVolumeInVSAN(Long granularMaxSnapshotsPerBlockVolumeInVSAN) {
         this.granularMaxSnapshotsPerBlockVolumeInVSAN = granularMaxSnapshotsPerBlockVolumeInVSAN;
     }
 
+    /**
+     * granularMaxSnapshotsPerBlockVolumeInVVOL is a granular configuration parameter on Virtual Volumes datastore only. It overrides GlobalMaxSnapshotsPerBlockVolume if set, while it falls back to the global constraint if unset. Snapshots for VVOL can not be disabled using this parameter.
+     */
     @JsonProperty("granularMaxSnapshotsPerBlockVolumeInVVOL")
     public Long getGranularMaxSnapshotsPerBlockVolumeInVVOL() {
         return granularMaxSnapshotsPerBlockVolumeInVVOL;
     }
 
+    /**
+     * granularMaxSnapshotsPerBlockVolumeInVVOL is a granular configuration parameter on Virtual Volumes datastore only. It overrides GlobalMaxSnapshotsPerBlockVolume if set, while it falls back to the global constraint if unset. Snapshots for VVOL can not be disabled using this parameter.
+     */
     @JsonProperty("granularMaxSnapshotsPerBlockVolumeInVVOL")
     public void setGranularMaxSnapshotsPerBlockVolumeInVVOL(Long granularMaxSnapshotsPerBlockVolumeInVVOL) {
         this.granularMaxSnapshotsPerBlockVolumeInVVOL = granularMaxSnapshotsPerBlockVolumeInVVOL;
     }
 
+    /**
+     * topologyCategories indicates tag categories with which vcenter resources such as hostcluster or datacenter were tagged with. If cluster Infrastructure object has a topology, values specified in Infrastructure object will be used and modifications to topologyCategories will be rejected.
+     */
     @JsonProperty("topologyCategories")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getTopologyCategories() {
         return topologyCategories;
     }
 
+    /**
+     * topologyCategories indicates tag categories with which vcenter resources such as hostcluster or datacenter were tagged with. If cluster Infrastructure object has a topology, values specified in Infrastructure object will be used and modifications to topologyCategories will be rejected.
+     */
     @JsonProperty("topologyCategories")
     public void setTopologyCategories(List<String> topologyCategories) {
         this.topologyCategories = topologyCategories;

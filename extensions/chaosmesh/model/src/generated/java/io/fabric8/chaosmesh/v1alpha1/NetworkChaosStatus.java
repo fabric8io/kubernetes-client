@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * NetworkChaosStatus defines the observed state of NetworkChaos
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -90,33 +93,51 @@ public class NetworkChaosStatus implements Editable<NetworkChaosStatusBuilder>, 
         this.instances = instances;
     }
 
+    /**
+     * Conditions represents the current global condition of the chaos
+     */
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ChaosCondition> getConditions() {
         return conditions;
     }
 
+    /**
+     * Conditions represents the current global condition of the chaos
+     */
     @JsonProperty("conditions")
     public void setConditions(List<ChaosCondition> conditions) {
         this.conditions = conditions;
     }
 
+    /**
+     * NetworkChaosStatus defines the observed state of NetworkChaos
+     */
     @JsonProperty("experiment")
     public ExperimentStatus getExperiment() {
         return experiment;
     }
 
+    /**
+     * NetworkChaosStatus defines the observed state of NetworkChaos
+     */
     @JsonProperty("experiment")
     public void setExperiment(ExperimentStatus experiment) {
         this.experiment = experiment;
     }
 
+    /**
+     * Instances always specifies podnetworkchaos generation or empty
+     */
     @JsonProperty("instances")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, Long> getInstances() {
         return instances;
     }
 
+    /**
+     * Instances always specifies podnetworkchaos generation or empty
+     */
     @JsonProperty("instances")
     public void setInstances(Map<String, Long> instances) {
         this.instances = instances;

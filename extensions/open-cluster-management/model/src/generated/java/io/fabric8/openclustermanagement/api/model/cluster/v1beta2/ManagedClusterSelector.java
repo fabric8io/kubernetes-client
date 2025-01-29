@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ManagedClusterSelector represents a selector of ManagedClusters
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class ManagedClusterSelector implements Editable<ManagedClusterSelectorBu
         this.selectorType = selectorType;
     }
 
+    /**
+     * ManagedClusterSelector represents a selector of ManagedClusters
+     */
     @JsonProperty("labelSelector")
     public LabelSelector getLabelSelector() {
         return labelSelector;
     }
 
+    /**
+     * ManagedClusterSelector represents a selector of ManagedClusters
+     */
     @JsonProperty("labelSelector")
     public void setLabelSelector(LabelSelector labelSelector) {
         this.labelSelector = labelSelector;
     }
 
+    /**
+     * SelectorType could only be "ExclusiveClusterSetLabel" or "LabelSelector" "ExclusiveClusterSetLabel" means to use label "cluster.open-cluster-management.io/clusterset:&lt;ManagedClusterSet Name&gt;"" to select target clusters. "LabelSelector" means use labelSelector to select target managedClusters
+     */
     @JsonProperty("selectorType")
     public String getSelectorType() {
         return selectorType;
     }
 
+    /**
+     * SelectorType could only be "ExclusiveClusterSetLabel" or "LabelSelector" "ExclusiveClusterSetLabel" means to use label "cluster.open-cluster-management.io/clusterset:&lt;ManagedClusterSet Name&gt;"" to select target clusters. "LabelSelector" means use labelSelector to select target managedClusters
+     */
     @JsonProperty("selectorType")
     public void setSelectorType(String selectorType) {
         this.selectorType = selectorType;

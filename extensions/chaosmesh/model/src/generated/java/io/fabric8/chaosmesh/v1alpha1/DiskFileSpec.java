@@ -82,21 +82,33 @@ public class DiskFileSpec implements Editable<DiskFileSpecBuilder>, KubernetesRe
         this.size = size;
     }
 
+    /**
+     * specifies the location to fill data in. if path not provided, payload will read/write from/into a temp file, temp file will be deleted after writing
+     */
     @JsonProperty("path")
     public String getPath() {
         return path;
     }
 
+    /**
+     * specifies the location to fill data in. if path not provided, payload will read/write from/into a temp file, temp file will be deleted after writing
+     */
     @JsonProperty("path")
     public void setPath(String path) {
         this.path = path;
     }
 
+    /**
+     * specifies how many units of data will write into the file path. support unit: c=1, w=2, b=512, kB=1000, K=1024, MB=1000&#42;1000, M=1024&#42;1024, GB=1000&#42;1000&#42;1000, G=1024&#42;1024&#42;1024 BYTES. example : 1M | 512kB
+     */
     @JsonProperty("size")
     public String getSize() {
         return size;
     }
 
+    /**
+     * specifies how many units of data will write into the file path. support unit: c=1, w=2, b=512, kB=1000, K=1024, MB=1000&#42;1000, M=1024&#42;1024, GB=1000&#42;1000&#42;1000, G=1024&#42;1024&#42;1024 BYTES. example : 1M | 512kB
+     */
     @JsonProperty("size")
     public void setSize(String size) {
         this.size = size;

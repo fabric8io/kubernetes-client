@@ -119,33 +119,51 @@ public class ACMEChallengeSolverHTTP01IngressPodSpec implements Editable<ACMECha
         this.affinity = affinity;
     }
 
+    /**
+     * If specified, the pod's imagePullSecrets
+     */
     @JsonProperty("imagePullSecrets")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<LocalObjectReference> getImagePullSecrets() {
         return imagePullSecrets;
     }
 
+    /**
+     * If specified, the pod's imagePullSecrets
+     */
     @JsonProperty("imagePullSecrets")
     public void setImagePullSecrets(List<LocalObjectReference> imagePullSecrets) {
         this.imagePullSecrets = imagePullSecrets;
     }
 
+    /**
+     * NodeSelector is a selector which must be true for the pod to fit on a node. Selector which must match a node's labels for the pod to be scheduled on that node. More info: https://kubernetes.io/docs/concepts/configuration/assign-pod-node/
+     */
     @JsonProperty("nodeSelector")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getNodeSelector() {
         return nodeSelector;
     }
 
+    /**
+     * NodeSelector is a selector which must be true for the pod to fit on a node. Selector which must match a node's labels for the pod to be scheduled on that node. More info: https://kubernetes.io/docs/concepts/configuration/assign-pod-node/
+     */
     @JsonProperty("nodeSelector")
     public void setNodeSelector(Map<String, String> nodeSelector) {
         this.nodeSelector = nodeSelector;
     }
 
+    /**
+     * If specified, the pod's priorityClassName.
+     */
     @JsonProperty("priorityClassName")
     public String getPriorityClassName() {
         return priorityClassName;
     }
 
+    /**
+     * If specified, the pod's priorityClassName.
+     */
     @JsonProperty("priorityClassName")
     public void setPriorityClassName(String priorityClassName) {
         this.priorityClassName = priorityClassName;
@@ -161,22 +179,34 @@ public class ACMEChallengeSolverHTTP01IngressPodSpec implements Editable<ACMECha
         this.securityContext = securityContext;
     }
 
+    /**
+     * If specified, the pod's service account
+     */
     @JsonProperty("serviceAccountName")
     public String getServiceAccountName() {
         return serviceAccountName;
     }
 
+    /**
+     * If specified, the pod's service account
+     */
     @JsonProperty("serviceAccountName")
     public void setServiceAccountName(String serviceAccountName) {
         this.serviceAccountName = serviceAccountName;
     }
 
+    /**
+     * If specified, the pod's tolerations.
+     */
     @JsonProperty("tolerations")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Toleration> getTolerations() {
         return tolerations;
     }
 
+    /**
+     * If specified, the pod's tolerations.
+     */
     @JsonProperty("tolerations")
     public void setTolerations(List<Toleration> tolerations) {
         this.tolerations = tolerations;

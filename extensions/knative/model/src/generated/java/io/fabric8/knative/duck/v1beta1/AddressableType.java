@@ -37,6 +37,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * AddressableType is a skeleton type wrapping Addressable in the manner we expect resource writers defining compatible resources to embed it.  We will typically use this type to deserialize Addressable ObjectReferences and access the Addressable data.  This is not a real resource.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -75,14 +78,8 @@ import lombok.experimental.Accessors;
 public class AddressableType implements Editable<AddressableTypeBuilder>, HasMetadata, Namespaced
 {
 
-    /**
-     * (Required)
-     */
     @JsonProperty("apiVersion")
     private String apiVersion = "duck.knative.dev/v1beta1";
-    /**
-     * (Required)
-     */
     @JsonProperty("kind")
     private String kind = "AddressableType";
     @JsonProperty("metadata")
@@ -107,7 +104,7 @@ public class AddressableType implements Editable<AddressableTypeBuilder>, HasMet
     }
 
     /**
-     * (Required)
+     * APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -115,7 +112,7 @@ public class AddressableType implements Editable<AddressableTypeBuilder>, HasMet
     }
 
     /**
-     * (Required)
+     * APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -123,7 +120,7 @@ public class AddressableType implements Editable<AddressableTypeBuilder>, HasMet
     }
 
     /**
-     * (Required)
+     * Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -131,28 +128,40 @@ public class AddressableType implements Editable<AddressableTypeBuilder>, HasMet
     }
 
     /**
-     * (Required)
+     * Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
      */
     @JsonProperty("kind")
     public void setKind(String kind) {
         this.kind = kind;
     }
 
+    /**
+     * AddressableType is a skeleton type wrapping Addressable in the manner we expect resource writers defining compatible resources to embed it.  We will typically use this type to deserialize Addressable ObjectReferences and access the Addressable data.  This is not a real resource.
+     */
     @JsonProperty("metadata")
     public ObjectMeta getMetadata() {
         return metadata;
     }
 
+    /**
+     * AddressableType is a skeleton type wrapping Addressable in the manner we expect resource writers defining compatible resources to embed it.  We will typically use this type to deserialize Addressable ObjectReferences and access the Addressable data.  This is not a real resource.
+     */
     @JsonProperty("metadata")
     public void setMetadata(ObjectMeta metadata) {
         this.metadata = metadata;
     }
 
+    /**
+     * AddressableType is a skeleton type wrapping Addressable in the manner we expect resource writers defining compatible resources to embed it.  We will typically use this type to deserialize Addressable ObjectReferences and access the Addressable data.  This is not a real resource.
+     */
     @JsonProperty("status")
     public AddressStatus getStatus() {
         return status;
     }
 
+    /**
+     * AddressableType is a skeleton type wrapping Addressable in the manner we expect resource writers defining compatible resources to embed it.  We will typically use this type to deserialize Addressable ObjectReferences and access the Addressable data.  This is not a real resource.
+     */
     @JsonProperty("status")
     public void setStatus(AddressStatus status) {
         this.status = status;

@@ -36,6 +36,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * AffinityAssistantTemplate holds pod specific configuration and is a subset of the generic pod Template
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -101,54 +104,84 @@ public class AffinityAssistantTemplate implements Editable<AffinityAssistantTemp
         this.tolerations = tolerations;
     }
 
+    /**
+     * ImagePullSecrets gives the name of the secret used by the pod to pull the image if specified
+     */
     @JsonProperty("imagePullSecrets")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<LocalObjectReference> getImagePullSecrets() {
         return imagePullSecrets;
     }
 
+    /**
+     * ImagePullSecrets gives the name of the secret used by the pod to pull the image if specified
+     */
     @JsonProperty("imagePullSecrets")
     public void setImagePullSecrets(List<LocalObjectReference> imagePullSecrets) {
         this.imagePullSecrets = imagePullSecrets;
     }
 
+    /**
+     * NodeSelector is a selector which must be true for the pod to fit on a node. Selector which must match a node's labels for the pod to be scheduled on that node. More info: https://kubernetes.io/docs/concepts/configuration/assign-pod-node/
+     */
     @JsonProperty("nodeSelector")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getNodeSelector() {
         return nodeSelector;
     }
 
+    /**
+     * NodeSelector is a selector which must be true for the pod to fit on a node. Selector which must match a node's labels for the pod to be scheduled on that node. More info: https://kubernetes.io/docs/concepts/configuration/assign-pod-node/
+     */
     @JsonProperty("nodeSelector")
     public void setNodeSelector(Map<String, String> nodeSelector) {
         this.nodeSelector = nodeSelector;
     }
 
+    /**
+     * If specified, indicates the pod's priority. "system-node-critical" and "system-cluster-critical" are two special keywords which indicate the highest priorities with the former being the highest priority. Any other name must be defined by creating a PriorityClass object with that name. If not specified, the pod priority will be default or zero if there is no default.
+     */
     @JsonProperty("priorityClassName")
     public String getPriorityClassName() {
         return priorityClassName;
     }
 
+    /**
+     * If specified, indicates the pod's priority. "system-node-critical" and "system-cluster-critical" are two special keywords which indicate the highest priorities with the former being the highest priority. Any other name must be defined by creating a PriorityClass object with that name. If not specified, the pod priority will be default or zero if there is no default.
+     */
     @JsonProperty("priorityClassName")
     public void setPriorityClassName(String priorityClassName) {
         this.priorityClassName = priorityClassName;
     }
 
+    /**
+     * AffinityAssistantTemplate holds pod specific configuration and is a subset of the generic pod Template
+     */
     @JsonProperty("securityContext")
     public PodSecurityContext getSecurityContext() {
         return securityContext;
     }
 
+    /**
+     * AffinityAssistantTemplate holds pod specific configuration and is a subset of the generic pod Template
+     */
     @JsonProperty("securityContext")
     public void setSecurityContext(PodSecurityContext securityContext) {
         this.securityContext = securityContext;
     }
 
+    /**
+     * If specified, the pod's tolerations.
+     */
     @JsonProperty("tolerations")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Toleration> getTolerations() {
         return tolerations;
     }
 
+    /**
+     * If specified, the pod's tolerations.
+     */
     @JsonProperty("tolerations")
     public void setTolerations(List<Toleration> tolerations) {
         this.tolerations = tolerations;

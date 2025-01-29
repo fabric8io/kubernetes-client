@@ -78,11 +78,17 @@ public class TracingLiteral implements Editable<TracingLiteralBuilder>, Kubernet
         this.value = value;
     }
 
+    /**
+     * The tag value to use.
+     */
     @JsonProperty("value")
     public String getValue() {
         return value;
     }
 
+    /**
+     * The tag value to use.
+     */
     @JsonProperty("value")
     public void setValue(String value) {
         this.value = value;

@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * PodFailurePolicyRule describes how a pod failure is handled when the requirements are met. One of onExitCodes and onPodConditions, but not both, can be used in each rule.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -89,32 +92,50 @@ public class PodFailurePolicyRule implements Editable<PodFailurePolicyRuleBuilde
         this.onPodConditions = onPodConditions;
     }
 
+    /**
+     * Specifies the action taken on a pod failure when the requirements are satisfied. Possible values are:<br><p> <br><p> - FailJob: indicates that the pod's job is marked as Failed and all<br><p>   running pods are terminated.<br><p> - FailIndex: indicates that the pod's index is marked as Failed and will<br><p>   not be restarted.<br><p>   This value is beta-level. It can be used when the<br><p>   `JobBackoffLimitPerIndex` feature gate is enabled (enabled by default).<br><p> - Ignore: indicates that the counter towards the .backoffLimit is not<br><p>   incremented and a replacement pod is created.<br><p> - Count: indicates that the pod is handled in the default way - the<br><p>   counter towards the .backoffLimit is incremented.<br><p> Additional values are considered to be added in the future. Clients should react to an unknown action by skipping the rule.
+     */
     @JsonProperty("action")
     public String getAction() {
         return action;
     }
 
+    /**
+     * Specifies the action taken on a pod failure when the requirements are satisfied. Possible values are:<br><p> <br><p> - FailJob: indicates that the pod's job is marked as Failed and all<br><p>   running pods are terminated.<br><p> - FailIndex: indicates that the pod's index is marked as Failed and will<br><p>   not be restarted.<br><p>   This value is beta-level. It can be used when the<br><p>   `JobBackoffLimitPerIndex` feature gate is enabled (enabled by default).<br><p> - Ignore: indicates that the counter towards the .backoffLimit is not<br><p>   incremented and a replacement pod is created.<br><p> - Count: indicates that the pod is handled in the default way - the<br><p>   counter towards the .backoffLimit is incremented.<br><p> Additional values are considered to be added in the future. Clients should react to an unknown action by skipping the rule.
+     */
     @JsonProperty("action")
     public void setAction(String action) {
         this.action = action;
     }
 
+    /**
+     * PodFailurePolicyRule describes how a pod failure is handled when the requirements are met. One of onExitCodes and onPodConditions, but not both, can be used in each rule.
+     */
     @JsonProperty("onExitCodes")
     public PodFailurePolicyOnExitCodesRequirement getOnExitCodes() {
         return onExitCodes;
     }
 
+    /**
+     * PodFailurePolicyRule describes how a pod failure is handled when the requirements are met. One of onExitCodes and onPodConditions, but not both, can be used in each rule.
+     */
     @JsonProperty("onExitCodes")
     public void setOnExitCodes(PodFailurePolicyOnExitCodesRequirement onExitCodes) {
         this.onExitCodes = onExitCodes;
     }
 
+    /**
+     * Represents the requirement on the pod conditions. The requirement is represented as a list of pod condition patterns. The requirement is satisfied if at least one pattern matches an actual pod condition. At most 20 elements are allowed.
+     */
     @JsonProperty("onPodConditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<PodFailurePolicyOnPodConditionsPattern> getOnPodConditions() {
         return onPodConditions;
     }
 
+    /**
+     * Represents the requirement on the pod conditions. The requirement is represented as a list of pod condition patterns. The requirement is satisfied if at least one pattern matches an actual pod condition. At most 20 elements are allowed.
+     */
     @JsonProperty("onPodConditions")
     public void setOnPodConditions(List<PodFailurePolicyOnPodConditionsPattern> onPodConditions) {
         this.onPodConditions = onPodConditions;

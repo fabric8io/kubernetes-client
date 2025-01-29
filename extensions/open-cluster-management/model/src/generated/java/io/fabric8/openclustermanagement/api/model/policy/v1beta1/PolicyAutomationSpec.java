@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * PolicyAutomationSpec defines how and when automation is initiated for the referenced policy.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -98,61 +101,97 @@ public class PolicyAutomationSpec implements Editable<PolicyAutomationSpecBuilde
         this.rescanAfter = rescanAfter;
     }
 
+    /**
+     * PolicyAutomationSpec defines how and when automation is initiated for the referenced policy.
+     */
     @JsonProperty("automationDef")
     public AutomationDef getAutomationDef() {
         return automationDef;
     }
 
+    /**
+     * PolicyAutomationSpec defines how and when automation is initiated for the referenced policy.
+     */
     @JsonProperty("automationDef")
     public void setAutomationDef(AutomationDef automationDef) {
         this.automationDef = automationDef;
     }
 
+    /**
+     * DelayAfterRunSeconds sets the minimum number of seconds before an automation can run again due to a new violation on the same managed cluster. This only applies to the EveryEvent mode. The default value is "0".
+     */
     @JsonProperty("delayAfterRunSeconds")
     public Integer getDelayAfterRunSeconds() {
         return delayAfterRunSeconds;
     }
 
+    /**
+     * DelayAfterRunSeconds sets the minimum number of seconds before an automation can run again due to a new violation on the same managed cluster. This only applies to the EveryEvent mode. The default value is "0".
+     */
     @JsonProperty("delayAfterRunSeconds")
     public void setDelayAfterRunSeconds(Integer delayAfterRunSeconds) {
         this.delayAfterRunSeconds = delayAfterRunSeconds;
     }
 
+    /**
+     * EventHook specifies the compliance state that initiates automation. This must be set to "noncompliant".
+     */
     @JsonProperty("eventHook")
     public String getEventHook() {
         return eventHook;
     }
 
+    /**
+     * EventHook specifies the compliance state that initiates automation. This must be set to "noncompliant".
+     */
     @JsonProperty("eventHook")
     public void setEventHook(String eventHook) {
         this.eventHook = eventHook;
     }
 
+    /**
+     * PolicyAutomationSpec defines how and when automation is initiated for the referenced policy.
+     */
     @JsonProperty("mode")
     public String getMode() {
         return mode;
     }
 
+    /**
+     * PolicyAutomationSpec defines how and when automation is initiated for the referenced policy.
+     */
     @JsonProperty("mode")
     public void setMode(String mode) {
         this.mode = mode;
     }
 
+    /**
+     * PolicyRef is the name of the policy that this automation resource is bound to.
+     */
     @JsonProperty("policyRef")
     public String getPolicyRef() {
         return policyRef;
     }
 
+    /**
+     * PolicyRef is the name of the policy that this automation resource is bound to.
+     */
     @JsonProperty("policyRef")
     public void setPolicyRef(String policyRef) {
         this.policyRef = policyRef;
     }
 
+    /**
+     * RescanAfter is reserved for future use and should not be set.
+     */
     @JsonProperty("rescanAfter")
     public String getRescanAfter() {
         return rescanAfter;
     }
 
+    /**
+     * RescanAfter is reserved for future use and should not be set.
+     */
     @JsonProperty("rescanAfter")
     public void setRescanAfter(String rescanAfter) {
         this.rescanAfter = rescanAfter;

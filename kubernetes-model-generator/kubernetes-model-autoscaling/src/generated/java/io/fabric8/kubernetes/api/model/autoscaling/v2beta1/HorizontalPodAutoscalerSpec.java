@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * HorizontalPodAutoscalerSpec describes the desired functionality of the HorizontalPodAutoscaler.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -93,42 +96,66 @@ public class HorizontalPodAutoscalerSpec implements Editable<HorizontalPodAutosc
         this.scaleTargetRef = scaleTargetRef;
     }
 
+    /**
+     * maxReplicas is the upper limit for the number of replicas to which the autoscaler can scale up. It cannot be less that minReplicas.
+     */
     @JsonProperty("maxReplicas")
     public Integer getMaxReplicas() {
         return maxReplicas;
     }
 
+    /**
+     * maxReplicas is the upper limit for the number of replicas to which the autoscaler can scale up. It cannot be less that minReplicas.
+     */
     @JsonProperty("maxReplicas")
     public void setMaxReplicas(Integer maxReplicas) {
         this.maxReplicas = maxReplicas;
     }
 
+    /**
+     * metrics contains the specifications for which to use to calculate the desired replica count (the maximum replica count across all metrics will be used).  The desired replica count is calculated multiplying the ratio between the target value and the current value by the current number of pods.  Ergo, metrics used must decrease as the pod count is increased, and vice-versa.  See the individual metric source types for more information about how each type of metric must respond.
+     */
     @JsonProperty("metrics")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<MetricSpec> getMetrics() {
         return metrics;
     }
 
+    /**
+     * metrics contains the specifications for which to use to calculate the desired replica count (the maximum replica count across all metrics will be used).  The desired replica count is calculated multiplying the ratio between the target value and the current value by the current number of pods.  Ergo, metrics used must decrease as the pod count is increased, and vice-versa.  See the individual metric source types for more information about how each type of metric must respond.
+     */
     @JsonProperty("metrics")
     public void setMetrics(List<MetricSpec> metrics) {
         this.metrics = metrics;
     }
 
+    /**
+     * minReplicas is the lower limit for the number of replicas to which the autoscaler can scale down.  It defaults to 1 pod.  minReplicas is allowed to be 0 if the alpha feature gate HPAScaleToZero is enabled and at least one Object or External metric is configured.  Scaling is active as long as at least one metric value is available.
+     */
     @JsonProperty("minReplicas")
     public Integer getMinReplicas() {
         return minReplicas;
     }
 
+    /**
+     * minReplicas is the lower limit for the number of replicas to which the autoscaler can scale down.  It defaults to 1 pod.  minReplicas is allowed to be 0 if the alpha feature gate HPAScaleToZero is enabled and at least one Object or External metric is configured.  Scaling is active as long as at least one metric value is available.
+     */
     @JsonProperty("minReplicas")
     public void setMinReplicas(Integer minReplicas) {
         this.minReplicas = minReplicas;
     }
 
+    /**
+     * HorizontalPodAutoscalerSpec describes the desired functionality of the HorizontalPodAutoscaler.
+     */
     @JsonProperty("scaleTargetRef")
     public CrossVersionObjectReference getScaleTargetRef() {
         return scaleTargetRef;
     }
 
+    /**
+     * HorizontalPodAutoscalerSpec describes the desired functionality of the HorizontalPodAutoscaler.
+     */
     @JsonProperty("scaleTargetRef")
     public void setScaleTargetRef(CrossVersionObjectReference scaleTargetRef) {
         this.scaleTargetRef = scaleTargetRef;

@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * NamedResourcesIntSlice contains a slice of 64-bit integers.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -81,12 +84,18 @@ public class NamedResourcesIntSlice implements Editable<NamedResourcesIntSliceBu
         this.ints = ints;
     }
 
+    /**
+     * Ints is the slice of 64-bit integers.
+     */
     @JsonProperty("ints")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Long> getInts() {
         return ints;
     }
 
+    /**
+     * Ints is the slice of 64-bit integers.
+     */
     @JsonProperty("ints")
     public void setInts(List<Long> ints) {
         this.ints = ints;

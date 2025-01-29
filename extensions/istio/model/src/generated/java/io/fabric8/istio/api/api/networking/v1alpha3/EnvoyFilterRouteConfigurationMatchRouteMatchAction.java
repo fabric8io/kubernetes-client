@@ -4,6 +4,9 @@ package io.fabric8.istio.api.api.networking.v1alpha3;
 import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonCreator;
 
+/**
+ * Action refers to the route action taken by Envoy when a http route matches.
+ */
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
 public enum EnvoyFilterRouteConfigurationMatchRouteMatchAction 
 {

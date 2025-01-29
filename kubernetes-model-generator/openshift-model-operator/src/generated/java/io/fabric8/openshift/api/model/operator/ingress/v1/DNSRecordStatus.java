@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * DNSRecordStatus is the most recently observed status of each record.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -85,22 +88,34 @@ public class DNSRecordStatus implements Editable<DNSRecordStatusBuilder>, Kubern
         this.zones = zones;
     }
 
+    /**
+     * observedGeneration is the most recently observed generation of the DNSRecord.  When the DNSRecord is updated, the controller updates the corresponding record in each managed zone.  If an update for a particular zone fails, that failure is recorded in the status condition for the zone so that the controller can determine that it needs to retry the update for that specific zone.
+     */
     @JsonProperty("observedGeneration")
     public Long getObservedGeneration() {
         return observedGeneration;
     }
 
+    /**
+     * observedGeneration is the most recently observed generation of the DNSRecord.  When the DNSRecord is updated, the controller updates the corresponding record in each managed zone.  If an update for a particular zone fails, that failure is recorded in the status condition for the zone so that the controller can determine that it needs to retry the update for that specific zone.
+     */
     @JsonProperty("observedGeneration")
     public void setObservedGeneration(Long observedGeneration) {
         this.observedGeneration = observedGeneration;
     }
 
+    /**
+     * zones are the status of the record in each zone.
+     */
     @JsonProperty("zones")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<DNSZoneStatus> getZones() {
         return zones;
     }
 
+    /**
+     * zones are the status of the record in each zone.
+     */
     @JsonProperty("zones")
     public void setZones(List<DNSZoneStatus> zones) {
         this.zones = zones;

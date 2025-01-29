@@ -35,6 +35,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * AllocatedDeviceStatus contains the status of an allocated device, if the driver chooses to report it. This may include driver-specific information.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -103,63 +106,99 @@ public class AllocatedDeviceStatus implements Editable<AllocatedDeviceStatusBuil
         this.pool = pool;
     }
 
+    /**
+     * Conditions contains the latest observation of the device's state. If the device has been configured according to the class and claim config references, the `Ready` condition should be True.
+     */
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Condition> getConditions() {
         return conditions;
     }
 
+    /**
+     * Conditions contains the latest observation of the device's state. If the device has been configured according to the class and claim config references, the `Ready` condition should be True.
+     */
     @JsonProperty("conditions")
     public void setConditions(List<Condition> conditions) {
         this.conditions = conditions;
     }
 
+    /**
+     * AllocatedDeviceStatus contains the status of an allocated device, if the driver chooses to report it. This may include driver-specific information.
+     */
     @JsonProperty("data")
     public Object getData() {
         return data;
     }
 
+    /**
+     * AllocatedDeviceStatus contains the status of an allocated device, if the driver chooses to report it. This may include driver-specific information.
+     */
     @JsonProperty("data")
     @JsonDeserialize(using = io.fabric8.kubernetes.internal.KubernetesDeserializer.class)
     public void setData(Object data) {
         this.data = data;
     }
 
+    /**
+     * Device references one device instance via its name in the driver's resource pool. It must be a DNS label.
+     */
     @JsonProperty("device")
     public String getDevice() {
         return device;
     }
 
+    /**
+     * Device references one device instance via its name in the driver's resource pool. It must be a DNS label.
+     */
     @JsonProperty("device")
     public void setDevice(String device) {
         this.device = device;
     }
 
+    /**
+     * Driver specifies the name of the DRA driver whose kubelet plugin should be invoked to process the allocation once the claim is needed on a node.<br><p> <br><p> Must be a DNS subdomain and should end with a DNS domain owned by the vendor of the driver.
+     */
     @JsonProperty("driver")
     public String getDriver() {
         return driver;
     }
 
+    /**
+     * Driver specifies the name of the DRA driver whose kubelet plugin should be invoked to process the allocation once the claim is needed on a node.<br><p> <br><p> Must be a DNS subdomain and should end with a DNS domain owned by the vendor of the driver.
+     */
     @JsonProperty("driver")
     public void setDriver(String driver) {
         this.driver = driver;
     }
 
+    /**
+     * AllocatedDeviceStatus contains the status of an allocated device, if the driver chooses to report it. This may include driver-specific information.
+     */
     @JsonProperty("networkData")
     public NetworkDeviceData getNetworkData() {
         return networkData;
     }
 
+    /**
+     * AllocatedDeviceStatus contains the status of an allocated device, if the driver chooses to report it. This may include driver-specific information.
+     */
     @JsonProperty("networkData")
     public void setNetworkData(NetworkDeviceData networkData) {
         this.networkData = networkData;
     }
 
+    /**
+     * This name together with the driver name and the device name field identify which device was allocated (`&lt;driver name&gt;/&lt;pool name&gt;/&lt;device name&gt;`).<br><p> <br><p> Must not be longer than 253 characters and may contain one or more DNS sub-domains separated by slashes.
+     */
     @JsonProperty("pool")
     public String getPool() {
         return pool;
     }
 
+    /**
+     * This name together with the driver name and the device name field identify which device was allocated (`&lt;driver name&gt;/&lt;pool name&gt;/&lt;device name&gt;`).<br><p> <br><p> Must not be longer than 253 characters and may contain one or more DNS sub-domains separated by slashes.
+     */
     @JsonProperty("pool")
     public void setPool(String pool) {
         this.pool = pool;

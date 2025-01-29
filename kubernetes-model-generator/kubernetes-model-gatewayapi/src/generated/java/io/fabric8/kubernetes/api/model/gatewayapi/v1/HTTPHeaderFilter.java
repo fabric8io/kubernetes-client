@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * HTTPHeaderFilter defines a filter that modifies the headers of an HTTP request or response.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -91,34 +94,52 @@ public class HTTPHeaderFilter implements Editable<HTTPHeaderFilterBuilder>, Kube
         this.set = set;
     }
 
+    /**
+     * Add adds the given header(s) (name, value) to the request before the action. It appends to any existing values associated with the header name.<br><p> <br><p> Input:<br><p>   GET /foo HTTP/1.1<br><p>   my-header: foo<br><p> <br><p> Config:<br><p>   add:<br><p>   - name: "my-header"<br><p>     value: "bar,baz"<br><p> <br><p> Output:<br><p>   GET /foo HTTP/1.1<br><p>   my-header: foo,bar,baz
+     */
     @JsonProperty("add")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<HTTPHeader> getAdd() {
         return add;
     }
 
+    /**
+     * Add adds the given header(s) (name, value) to the request before the action. It appends to any existing values associated with the header name.<br><p> <br><p> Input:<br><p>   GET /foo HTTP/1.1<br><p>   my-header: foo<br><p> <br><p> Config:<br><p>   add:<br><p>   - name: "my-header"<br><p>     value: "bar,baz"<br><p> <br><p> Output:<br><p>   GET /foo HTTP/1.1<br><p>   my-header: foo,bar,baz
+     */
     @JsonProperty("add")
     public void setAdd(List<HTTPHeader> add) {
         this.add = add;
     }
 
+    /**
+     * Remove the given header(s) from the HTTP request before the action. The value of Remove is a list of HTTP header names. Note that the header names are case-insensitive (see https://datatracker.ietf.org/doc/html/rfc2616#section-4.2).<br><p> <br><p> Input:<br><p>   GET /foo HTTP/1.1<br><p>   my-header1: foo<br><p>   my-header2: bar<br><p>   my-header3: baz<br><p> <br><p> Config:<br><p>   remove: ["my-header1", "my-header3"]<br><p> <br><p> Output:<br><p>   GET /foo HTTP/1.1<br><p>   my-header2: bar
+     */
     @JsonProperty("remove")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getRemove() {
         return remove;
     }
 
+    /**
+     * Remove the given header(s) from the HTTP request before the action. The value of Remove is a list of HTTP header names. Note that the header names are case-insensitive (see https://datatracker.ietf.org/doc/html/rfc2616#section-4.2).<br><p> <br><p> Input:<br><p>   GET /foo HTTP/1.1<br><p>   my-header1: foo<br><p>   my-header2: bar<br><p>   my-header3: baz<br><p> <br><p> Config:<br><p>   remove: ["my-header1", "my-header3"]<br><p> <br><p> Output:<br><p>   GET /foo HTTP/1.1<br><p>   my-header2: bar
+     */
     @JsonProperty("remove")
     public void setRemove(List<String> remove) {
         this.remove = remove;
     }
 
+    /**
+     * Set overwrites the request with the given header (name, value) before the action.<br><p> <br><p> Input:<br><p>   GET /foo HTTP/1.1<br><p>   my-header: foo<br><p> <br><p> Config:<br><p>   set:<br><p>   - name: "my-header"<br><p>     value: "bar"<br><p> <br><p> Output:<br><p>   GET /foo HTTP/1.1<br><p>   my-header: bar
+     */
     @JsonProperty("set")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<HTTPHeader> getSet() {
         return set;
     }
 
+    /**
+     * Set overwrites the request with the given header (name, value) before the action.<br><p> <br><p> Input:<br><p>   GET /foo HTTP/1.1<br><p>   my-header: foo<br><p> <br><p> Config:<br><p>   set:<br><p>   - name: "my-header"<br><p>     value: "bar"<br><p> <br><p> Output:<br><p>   GET /foo HTTP/1.1<br><p>   my-header: bar
+     */
     @JsonProperty("set")
     public void setSet(List<HTTPHeader> set) {
         this.set = set;

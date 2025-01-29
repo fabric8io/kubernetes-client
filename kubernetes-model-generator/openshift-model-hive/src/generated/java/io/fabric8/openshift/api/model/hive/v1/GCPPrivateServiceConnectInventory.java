@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * GCPPrivateServiceConnectInventory is a VPC and its corresponding subnets. This VPC will be used to create a GCP Endpoint whenever there is a Private Service Connect service created for a ClusterDeployment.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -85,22 +88,34 @@ public class GCPPrivateServiceConnectInventory implements Editable<GCPPrivateSer
         this.subnets = subnets;
     }
 
+    /**
+     * GCPPrivateServiceConnectInventory is a VPC and its corresponding subnets. This VPC will be used to create a GCP Endpoint whenever there is a Private Service Connect service created for a ClusterDeployment.
+     */
     @JsonProperty("network")
     public String getNetwork() {
         return network;
     }
 
+    /**
+     * GCPPrivateServiceConnectInventory is a VPC and its corresponding subnets. This VPC will be used to create a GCP Endpoint whenever there is a Private Service Connect service created for a ClusterDeployment.
+     */
     @JsonProperty("network")
     public void setNetwork(String network) {
         this.network = network;
     }
 
+    /**
+     * GCPPrivateServiceConnectInventory is a VPC and its corresponding subnets. This VPC will be used to create a GCP Endpoint whenever there is a Private Service Connect service created for a ClusterDeployment.
+     */
     @JsonProperty("subnets")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<GCPPrivateServiceConnectSubnet> getSubnets() {
         return subnets;
     }
 
+    /**
+     * GCPPrivateServiceConnectInventory is a VPC and its corresponding subnets. This VPC will be used to create a GCP Endpoint whenever there is a Private Service Connect service created for a ClusterDeployment.
+     */
     @JsonProperty("subnets")
     public void setSubnets(List<GCPPrivateServiceConnectSubnet> subnets) {
         this.subnets = subnets;

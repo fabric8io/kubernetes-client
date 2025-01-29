@@ -149,8 +149,7 @@ class ModelGenerator {
       ret.put("lombokAccessors", true);
     }
     ret.put("package", ret.getPackageName());
-    if (settings.isGenerateJavadoc()) {
-      ret.put("hasDescription", !sanitizeDescription(ret.getClassSchema().getDescription()).trim().isEmpty());
+    if (settings.isGenerateJavadoc() && !sanitizeDescription(ret.getClassSchema().getDescription()).trim().isEmpty()) {
       ret.put("description", sanitizeDescription(ret.getClassSchema().getDescription()));
     }
     final List<Map<String, Object>> templateFields = templateFields(ret);
@@ -195,10 +194,9 @@ class ModelGenerator {
       templateProp.put("setterName", setterName(property.getKey()));
       if (Optional.ofNullable(templateContext.getClassSchema().getRequired()).orElse(Collections.emptyList())
           .contains(property.getKey())) {
-        templateProp.put("required", true);
+        // templateProp.put("required", true); // TODO: enable when we can use a standard @Required annotation
       }
-      if (settings.isGenerateJavadoc()) {
-        templateProp.put("hasDescription", !sanitizeDescription(propertySchema.getDescription()).trim().isEmpty());
+      if (settings.isGenerateJavadoc() && !sanitizeDescription(propertySchema.getDescription()).trim().isEmpty()) {
         templateProp.put("description", sanitizeDescription(propertySchema.getDescription()));
       }
       final String serializeUsing = serializerForSchema(propertySchema);
@@ -228,12 +226,10 @@ class ModelGenerator {
       } else if (Objects.equals(property.getKey(), "kind")
           && Objects.equals(type, "String")
           && templateContext.getApiVersion() != null) {
-        templateProp.put("legacyRequired", true); // TODO: remove after generator migration
         templateProp.put("defaultValue", String.format("\"%s\"", templateContext.getClassInformation().getClassSimpleName()));
       } else if (Objects.equals(property.getKey(), "apiVersion")
           && Objects.equals(type, "String")
           && templateContext.getApiVersion() != null) {
-        templateProp.put("legacyRequired", true); // TODO: remove after generator migration
         templateProp.put("defaultValue", String.format("\"%s\"", templateContext.getApiVersion()));
       }
       // TODO: remove after generator migration, match jsonschema2pojo generation for items

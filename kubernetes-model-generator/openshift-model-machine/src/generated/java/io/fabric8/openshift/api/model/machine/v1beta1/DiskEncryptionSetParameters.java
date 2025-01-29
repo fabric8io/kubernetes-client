@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * DiskEncryptionSetParameters is the disk encryption set properties
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -78,11 +81,17 @@ public class DiskEncryptionSetParameters implements Editable<DiskEncryptionSetPa
         this.id = id;
     }
 
+    /**
+     * ID is the disk encryption set ID Empty value means no opinion and the platform chooses a default, which is subject to change over time. Currently the default is: "Default".
+     */
     @JsonProperty("id")
     public String getId() {
         return id;
     }
 
+    /**
+     * ID is the disk encryption set ID Empty value means no opinion and the platform chooses a default, which is subject to change over time. Currently the default is: "Default".
+     */
     @JsonProperty("id")
     public void setId(String id) {
         this.id = id;

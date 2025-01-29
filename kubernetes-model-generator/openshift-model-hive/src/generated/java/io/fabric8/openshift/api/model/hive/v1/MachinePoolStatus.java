@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * MachinePoolStatus defines the observed state of MachinePool
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -109,76 +112,118 @@ public class MachinePoolStatus implements Editable<MachinePoolStatusBuilder>, Ku
         this.replicas = replicas;
     }
 
+    /**
+     * Conditions includes more detailed status for the cluster deployment
+     */
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<MachinePoolCondition> getConditions() {
         return conditions;
     }
 
+    /**
+     * Conditions includes more detailed status for the cluster deployment
+     */
     @JsonProperty("conditions")
     public void setConditions(List<MachinePoolCondition> conditions) {
         this.conditions = conditions;
     }
 
+    /**
+     * ControlledByReplica indicates which replica of the hive-machinepool StatefulSet is responsible for this MachinePool. Note that this value indicates the replica that most recently handled the MachinePool. If the hive-machinepool statefulset is scaled up or down, the controlling replica can change, potentially causing logs to be spread across multiple pods.
+     */
     @JsonProperty("controlledByReplica")
     public Long getControlledByReplica() {
         return controlledByReplica;
     }
 
+    /**
+     * ControlledByReplica indicates which replica of the hive-machinepool StatefulSet is responsible for this MachinePool. Note that this value indicates the replica that most recently handled the MachinePool. If the hive-machinepool statefulset is scaled up or down, the controlling replica can change, potentially causing logs to be spread across multiple pods.
+     */
     @JsonProperty("controlledByReplica")
     public void setControlledByReplica(Long controlledByReplica) {
         this.controlledByReplica = controlledByReplica;
     }
 
+    /**
+     * MachineSets is the status of the machine sets for the machine pool on the remote cluster.
+     */
     @JsonProperty("machineSets")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<MachineSetStatus> getMachineSets() {
         return machineSets;
     }
 
+    /**
+     * MachineSets is the status of the machine sets for the machine pool on the remote cluster.
+     */
     @JsonProperty("machineSets")
     public void setMachineSets(List<MachineSetStatus> machineSets) {
         this.machineSets = machineSets;
     }
 
+    /**
+     * OwnedLabels lists the keys of labels this MachinePool created on the remote MachineSet's MachineSpec. (In contrast with OwnedMachineLabels.) Used to identify labels to remove from the remote MachineSet when they are absent from the MachinePool's spec.labels.
+     */
     @JsonProperty("ownedLabels")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getOwnedLabels() {
         return ownedLabels;
     }
 
+    /**
+     * OwnedLabels lists the keys of labels this MachinePool created on the remote MachineSet's MachineSpec. (In contrast with OwnedMachineLabels.) Used to identify labels to remove from the remote MachineSet when they are absent from the MachinePool's spec.labels.
+     */
     @JsonProperty("ownedLabels")
     public void setOwnedLabels(List<String> ownedLabels) {
         this.ownedLabels = ownedLabels;
     }
 
+    /**
+     * OwnedMachineLabels lists the keys of labels this MachinePool created on the remote MachineSet's MachineTemplateSpec. (In contrast with OwnedLabels.) Used to identify labels to remove from the remote MachineSet when they are absent from the MachinePool's spec.machineLabels.
+     */
     @JsonProperty("ownedMachineLabels")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getOwnedMachineLabels() {
         return ownedMachineLabels;
     }
 
+    /**
+     * OwnedMachineLabels lists the keys of labels this MachinePool created on the remote MachineSet's MachineTemplateSpec. (In contrast with OwnedLabels.) Used to identify labels to remove from the remote MachineSet when they are absent from the MachinePool's spec.machineLabels.
+     */
     @JsonProperty("ownedMachineLabels")
     public void setOwnedMachineLabels(List<String> ownedMachineLabels) {
         this.ownedMachineLabels = ownedMachineLabels;
     }
 
+    /**
+     * OwnedTaints lists identifiers of taints this MachinePool created on the remote MachineSet. Used to identify taints to remove from the remote MachineSet when they are absent from the MachinePool's spec.taints.
+     */
     @JsonProperty("ownedTaints")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<TaintIdentifier> getOwnedTaints() {
         return ownedTaints;
     }
 
+    /**
+     * OwnedTaints lists identifiers of taints this MachinePool created on the remote MachineSet. Used to identify taints to remove from the remote MachineSet when they are absent from the MachinePool's spec.taints.
+     */
     @JsonProperty("ownedTaints")
     public void setOwnedTaints(List<TaintIdentifier> ownedTaints) {
         this.ownedTaints = ownedTaints;
     }
 
+    /**
+     * Replicas is the current number of replicas for the machine pool.
+     */
     @JsonProperty("replicas")
     public Integer getReplicas() {
         return replicas;
     }
 
+    /**
+     * Replicas is the current number of replicas for the machine pool.
+     */
     @JsonProperty("replicas")
     public void setReplicas(Integer replicas) {
         this.replicas = replicas;

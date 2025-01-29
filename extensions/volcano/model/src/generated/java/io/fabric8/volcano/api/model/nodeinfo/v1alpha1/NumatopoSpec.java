@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * NumatopoSpec defines the desired state of Numatopology
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -94,45 +97,69 @@ public class NumatopoSpec implements Editable<NumatopoSpecBuilder>, KubernetesRe
         this.resReserved = resReserved;
     }
 
+    /**
+     * Specifies the cpu topology info Key is cpu id
+     */
     @JsonProperty("cpuDetail")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, CPUInfo> getCpuDetail() {
         return cpuDetail;
     }
 
+    /**
+     * Specifies the cpu topology info Key is cpu id
+     */
     @JsonProperty("cpuDetail")
     public void setCpuDetail(Map<String, CPUInfo> cpuDetail) {
         this.cpuDetail = cpuDetail;
     }
 
+    /**
+     * Specifies the numa info for the resource Key is resource name
+     */
     @JsonProperty("numares")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, ResourceInfo> getNumares() {
         return numares;
     }
 
+    /**
+     * Specifies the numa info for the resource Key is resource name
+     */
     @JsonProperty("numares")
     public void setNumares(Map<String, ResourceInfo> numares) {
         this.numares = numares;
     }
 
+    /**
+     * Specifies the policy of the manager
+     */
     @JsonProperty("policies")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getPolicies() {
         return policies;
     }
 
+    /**
+     * Specifies the policy of the manager
+     */
     @JsonProperty("policies")
     public void setPolicies(Map<String, String> policies) {
         this.policies = policies;
     }
 
+    /**
+     * Specifies the reserved resource of the node Key is resource name
+     */
     @JsonProperty("resReserved")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getResReserved() {
         return resReserved;
     }
 
+    /**
+     * Specifies the reserved resource of the node Key is resource name
+     */
     @JsonProperty("resReserved")
     public void setResReserved(Map<String, String> resReserved) {
         this.resReserved = resReserved;

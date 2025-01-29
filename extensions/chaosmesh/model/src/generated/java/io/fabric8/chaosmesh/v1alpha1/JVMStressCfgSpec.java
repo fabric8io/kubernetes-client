@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * JVMStressSpec is the specification for stress
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class JVMStressCfgSpec implements Editable<JVMStressCfgSpecBuilder>, Kube
         this.memType = memType;
     }
 
+    /**
+     * the CPU core number needs to use, only set it when action is stress
+     */
     @JsonProperty("cpuCount")
     public Integer getCpuCount() {
         return cpuCount;
     }
 
+    /**
+     * the CPU core number needs to use, only set it when action is stress
+     */
     @JsonProperty("cpuCount")
     public void setCpuCount(Integer cpuCount) {
         this.cpuCount = cpuCount;
     }
 
+    /**
+     * the memory type needs to locate, only set it when action is stress, the value can be 'stack' or 'heap'
+     */
     @JsonProperty("memType")
     public String getMemType() {
         return memType;
     }
 
+    /**
+     * the memory type needs to locate, only set it when action is stress, the value can be 'stack' or 'heap'
+     */
     @JsonProperty("memType")
     public void setMemType(String memType) {
         this.memType = memType;

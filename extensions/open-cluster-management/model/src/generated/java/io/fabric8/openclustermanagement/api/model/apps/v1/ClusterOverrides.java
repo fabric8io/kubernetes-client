@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ClusterOverrides defines a list of contents that will be overridden to a given cluster
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -85,22 +88,34 @@ public class ClusterOverrides implements Editable<ClusterOverridesBuilder>, Kube
         this.clusterOverrides = clusterOverrides;
     }
 
+    /**
+     * Cluster name
+     */
     @JsonProperty("clusterName")
     public String getClusterName() {
         return clusterName;
     }
 
+    /**
+     * Cluster name
+     */
     @JsonProperty("clusterName")
     public void setClusterName(String clusterName) {
         this.clusterName = clusterName;
     }
 
+    /**
+     * ClusterOverrides defines a list of content for override
+     */
     @JsonProperty("clusterOverrides")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ClusterOverride> getClusterOverrides() {
         return clusterOverrides;
     }
 
+    /**
+     * ClusterOverrides defines a list of content for override
+     */
     @JsonProperty("clusterOverrides")
     public void setClusterOverrides(List<ClusterOverride> clusterOverrides) {
         this.clusterOverrides = clusterOverrides;

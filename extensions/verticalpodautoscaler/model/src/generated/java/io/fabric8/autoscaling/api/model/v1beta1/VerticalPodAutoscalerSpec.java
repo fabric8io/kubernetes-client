@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * VerticalPodAutoscalerSpec is the specification of the behavior of the autoscaler.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -86,31 +89,49 @@ public class VerticalPodAutoscalerSpec implements Editable<VerticalPodAutoscaler
         this.updatePolicy = updatePolicy;
     }
 
+    /**
+     * VerticalPodAutoscalerSpec is the specification of the behavior of the autoscaler.
+     */
     @JsonProperty("resourcePolicy")
     public PodResourcePolicy getResourcePolicy() {
         return resourcePolicy;
     }
 
+    /**
+     * VerticalPodAutoscalerSpec is the specification of the behavior of the autoscaler.
+     */
     @JsonProperty("resourcePolicy")
     public void setResourcePolicy(PodResourcePolicy resourcePolicy) {
         this.resourcePolicy = resourcePolicy;
     }
 
+    /**
+     * VerticalPodAutoscalerSpec is the specification of the behavior of the autoscaler.
+     */
     @JsonProperty("selector")
     public LabelSelector getSelector() {
         return selector;
     }
 
+    /**
+     * VerticalPodAutoscalerSpec is the specification of the behavior of the autoscaler.
+     */
     @JsonProperty("selector")
     public void setSelector(LabelSelector selector) {
         this.selector = selector;
     }
 
+    /**
+     * VerticalPodAutoscalerSpec is the specification of the behavior of the autoscaler.
+     */
     @JsonProperty("updatePolicy")
     public PodUpdatePolicy getUpdatePolicy() {
         return updatePolicy;
     }
 
+    /**
+     * VerticalPodAutoscalerSpec is the specification of the behavior of the autoscaler.
+     */
     @JsonProperty("updatePolicy")
     public void setUpdatePolicy(PodUpdatePolicy updatePolicy) {
         this.updatePolicy = updatePolicy;

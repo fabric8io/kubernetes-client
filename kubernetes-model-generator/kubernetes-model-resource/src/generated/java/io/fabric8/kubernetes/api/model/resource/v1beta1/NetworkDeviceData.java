@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * NetworkDeviceData provides network-related details for the allocated device. This information may be filled by drivers or other components to configure or identify the device within a network context.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -89,32 +92,50 @@ public class NetworkDeviceData implements Editable<NetworkDeviceDataBuilder>, Ku
         this.ips = ips;
     }
 
+    /**
+     * HardwareAddress represents the hardware address (e.g. MAC Address) of the device's network interface.<br><p> <br><p> Must not be longer than 128 characters.
+     */
     @JsonProperty("hardwareAddress")
     public String getHardwareAddress() {
         return hardwareAddress;
     }
 
+    /**
+     * HardwareAddress represents the hardware address (e.g. MAC Address) of the device's network interface.<br><p> <br><p> Must not be longer than 128 characters.
+     */
     @JsonProperty("hardwareAddress")
     public void setHardwareAddress(String hardwareAddress) {
         this.hardwareAddress = hardwareAddress;
     }
 
+    /**
+     * InterfaceName specifies the name of the network interface associated with the allocated device. This might be the name of a physical or virtual network interface being configured in the pod.<br><p> <br><p> Must not be longer than 256 characters.
+     */
     @JsonProperty("interfaceName")
     public String getInterfaceName() {
         return interfaceName;
     }
 
+    /**
+     * InterfaceName specifies the name of the network interface associated with the allocated device. This might be the name of a physical or virtual network interface being configured in the pod.<br><p> <br><p> Must not be longer than 256 characters.
+     */
     @JsonProperty("interfaceName")
     public void setInterfaceName(String interfaceName) {
         this.interfaceName = interfaceName;
     }
 
+    /**
+     * IPs lists the network addresses assigned to the device's network interface. This can include both IPv4 and IPv6 addresses. The IPs are in the CIDR notation, which includes both the address and the associated subnet mask. e.g.: "192.0.2.5/24" for IPv4 and "2001:db8::5/64" for IPv6.
+     */
     @JsonProperty("ips")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getIps() {
         return ips;
     }
 
+    /**
+     * IPs lists the network addresses assigned to the device's network interface. This can include both IPv4 and IPv6 addresses. The IPs are in the CIDR notation, which includes both the address and the associated subnet mask. e.g.: "192.0.2.5/24" for IPv4 and "2001:db8::5/64" for IPv6.
+     */
     @JsonProperty("ips")
     public void setIps(List<String> ips) {
         this.ips = ips;

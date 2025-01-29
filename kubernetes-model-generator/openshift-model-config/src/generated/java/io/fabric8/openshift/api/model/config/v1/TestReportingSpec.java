@@ -81,12 +81,18 @@ public class TestReportingSpec implements Editable<TestReportingSpecBuilder>, Ku
         this.testsForFeatureGates = testsForFeatureGates;
     }
 
+    /**
+     * TestsForFeatureGates is a list, indexed by FeatureGate and includes information about testing.
+     */
     @JsonProperty("testsForFeatureGates")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<FeatureGateTests> getTestsForFeatureGates() {
         return testsForFeatureGates;
     }
 
+    /**
+     * TestsForFeatureGates is a list, indexed by FeatureGate and includes information about testing.
+     */
     @JsonProperty("testsForFeatureGates")
     public void setTestsForFeatureGates(List<FeatureGateTests> testsForFeatureGates) {
         this.testsForFeatureGates = testsForFeatureGates;

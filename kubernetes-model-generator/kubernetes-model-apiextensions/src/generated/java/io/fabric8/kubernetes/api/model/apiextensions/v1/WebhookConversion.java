@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * WebhookConversion describes how to call a conversion webhook
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -85,22 +88,34 @@ public class WebhookConversion implements Editable<WebhookConversionBuilder>, Ku
         this.conversionReviewVersions = conversionReviewVersions;
     }
 
+    /**
+     * WebhookConversion describes how to call a conversion webhook
+     */
     @JsonProperty("clientConfig")
     public WebhookClientConfig getClientConfig() {
         return clientConfig;
     }
 
+    /**
+     * WebhookConversion describes how to call a conversion webhook
+     */
     @JsonProperty("clientConfig")
     public void setClientConfig(WebhookClientConfig clientConfig) {
         this.clientConfig = clientConfig;
     }
 
+    /**
+     * conversionReviewVersions is an ordered list of preferred `ConversionReview` versions the Webhook expects. The API server will use the first version in the list which it supports. If none of the versions specified in this list are supported by API server, conversion will fail for the custom resource. If a persisted Webhook configuration specifies allowed versions and does not include any versions known to the API Server, calls to the webhook will fail.
+     */
     @JsonProperty("conversionReviewVersions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getConversionReviewVersions() {
         return conversionReviewVersions;
     }
 
+    /**
+     * conversionReviewVersions is an ordered list of preferred `ConversionReview` versions the Webhook expects. The API server will use the first version in the list which it supports. If none of the versions specified in this list are supported by API server, conversion will fail for the custom resource. If a persisted Webhook configuration specifies allowed versions and does not include any versions known to the API Server, calls to the webhook will fail.
+     */
     @JsonProperty("conversionReviewVersions")
     public void setConversionReviewVersions(List<String> conversionReviewVersions) {
         this.conversionReviewVersions = conversionReviewVersions;

@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ServingInfo holds information about serving web pages
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -110,83 +113,131 @@ public class ServingInfo implements Editable<ServingInfoBuilder>, KubernetesReso
         this.namedCertificates = namedCertificates;
     }
 
+    /**
+     * BindAddress is the ip:port to serve on
+     */
     @JsonProperty("bindAddress")
     public String getBindAddress() {
         return bindAddress;
     }
 
+    /**
+     * BindAddress is the ip:port to serve on
+     */
     @JsonProperty("bindAddress")
     public void setBindAddress(String bindAddress) {
         this.bindAddress = bindAddress;
     }
 
+    /**
+     * BindNetwork is the type of network to bind to - defaults to "tcp4", accepts "tcp", "tcp4", and "tcp6"
+     */
     @JsonProperty("bindNetwork")
     public String getBindNetwork() {
         return bindNetwork;
     }
 
+    /**
+     * BindNetwork is the type of network to bind to - defaults to "tcp4", accepts "tcp", "tcp4", and "tcp6"
+     */
     @JsonProperty("bindNetwork")
     public void setBindNetwork(String bindNetwork) {
         this.bindNetwork = bindNetwork;
     }
 
+    /**
+     * CertFile is a file containing a PEM-encoded certificate
+     */
     @JsonProperty("certFile")
     public String getCertFile() {
         return certFile;
     }
 
+    /**
+     * CertFile is a file containing a PEM-encoded certificate
+     */
     @JsonProperty("certFile")
     public void setCertFile(String certFile) {
         this.certFile = certFile;
     }
 
+    /**
+     * CipherSuites contains an overridden list of ciphers for the server to support. Values must match cipher suite IDs from https://golang.org/pkg/crypto/tls/#pkg-constants
+     */
     @JsonProperty("cipherSuites")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getCipherSuites() {
         return cipherSuites;
     }
 
+    /**
+     * CipherSuites contains an overridden list of ciphers for the server to support. Values must match cipher suite IDs from https://golang.org/pkg/crypto/tls/#pkg-constants
+     */
     @JsonProperty("cipherSuites")
     public void setCipherSuites(List<String> cipherSuites) {
         this.cipherSuites = cipherSuites;
     }
 
+    /**
+     * ClientCA is the certificate bundle for all the signers that you'll recognize for incoming client certificates
+     */
     @JsonProperty("clientCA")
     public String getClientCA() {
         return clientCA;
     }
 
+    /**
+     * ClientCA is the certificate bundle for all the signers that you'll recognize for incoming client certificates
+     */
     @JsonProperty("clientCA")
     public void setClientCA(String clientCA) {
         this.clientCA = clientCA;
     }
 
+    /**
+     * KeyFile is a file containing a PEM-encoded private key for the certificate specified by CertFile
+     */
     @JsonProperty("keyFile")
     public String getKeyFile() {
         return keyFile;
     }
 
+    /**
+     * KeyFile is a file containing a PEM-encoded private key for the certificate specified by CertFile
+     */
     @JsonProperty("keyFile")
     public void setKeyFile(String keyFile) {
         this.keyFile = keyFile;
     }
 
+    /**
+     * MinTLSVersion is the minimum TLS version supported. Values must match version names from https://golang.org/pkg/crypto/tls/#pkg-constants
+     */
     @JsonProperty("minTLSVersion")
     public String getMinTLSVersion() {
         return minTLSVersion;
     }
 
+    /**
+     * MinTLSVersion is the minimum TLS version supported. Values must match version names from https://golang.org/pkg/crypto/tls/#pkg-constants
+     */
     @JsonProperty("minTLSVersion")
     public void setMinTLSVersion(String minTLSVersion) {
         this.minTLSVersion = minTLSVersion;
     }
 
+    /**
+     * NamedCertificates is a list of certificates to use to secure requests to specific hostnames
+     */
     @JsonProperty("namedCertificates")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<NamedCertificate> getNamedCertificates() {
         return namedCertificates;
     }
 
+    /**
+     * NamedCertificates is a list of certificates to use to secure requests to specific hostnames
+     */
     @JsonProperty("namedCertificates")
     public void setNamedCertificates(List<NamedCertificate> namedCertificates) {
         this.namedCertificates = namedCertificates;

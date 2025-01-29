@@ -33,6 +33,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ACMEIssuerDNS01ProviderAzureDNS is a structure containing the configuration for Azure DNS
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -107,81 +110,129 @@ public class ACMEIssuerDNS01ProviderAzureDNS implements Editable<ACMEIssuerDNS01
         this.tenantID = tenantID;
     }
 
+    /**
+     * Auth: Azure Service Principal: The ClientID of the Azure Service Principal used to authenticate with Azure DNS. If set, ClientSecret and TenantID must also be set.
+     */
     @JsonProperty("clientID")
     public String getClientID() {
         return clientID;
     }
 
+    /**
+     * Auth: Azure Service Principal: The ClientID of the Azure Service Principal used to authenticate with Azure DNS. If set, ClientSecret and TenantID must also be set.
+     */
     @JsonProperty("clientID")
     public void setClientID(String clientID) {
         this.clientID = clientID;
     }
 
+    /**
+     * ACMEIssuerDNS01ProviderAzureDNS is a structure containing the configuration for Azure DNS
+     */
     @JsonProperty("clientSecretSecretRef")
     public SecretKeySelector getClientSecretSecretRef() {
         return clientSecretSecretRef;
     }
 
+    /**
+     * ACMEIssuerDNS01ProviderAzureDNS is a structure containing the configuration for Azure DNS
+     */
     @JsonProperty("clientSecretSecretRef")
     public void setClientSecretSecretRef(SecretKeySelector clientSecretSecretRef) {
         this.clientSecretSecretRef = clientSecretSecretRef;
     }
 
+    /**
+     * name of the Azure environment (default AzurePublicCloud)
+     */
     @JsonProperty("environment")
     public String getEnvironment() {
         return environment;
     }
 
+    /**
+     * name of the Azure environment (default AzurePublicCloud)
+     */
     @JsonProperty("environment")
     public void setEnvironment(String environment) {
         this.environment = environment;
     }
 
+    /**
+     * name of the DNS zone that should be used
+     */
     @JsonProperty("hostedZoneName")
     public String getHostedZoneName() {
         return hostedZoneName;
     }
 
+    /**
+     * name of the DNS zone that should be used
+     */
     @JsonProperty("hostedZoneName")
     public void setHostedZoneName(String hostedZoneName) {
         this.hostedZoneName = hostedZoneName;
     }
 
+    /**
+     * ACMEIssuerDNS01ProviderAzureDNS is a structure containing the configuration for Azure DNS
+     */
     @JsonProperty("managedIdentity")
     public AzureManagedIdentity getManagedIdentity() {
         return managedIdentity;
     }
 
+    /**
+     * ACMEIssuerDNS01ProviderAzureDNS is a structure containing the configuration for Azure DNS
+     */
     @JsonProperty("managedIdentity")
     public void setManagedIdentity(AzureManagedIdentity managedIdentity) {
         this.managedIdentity = managedIdentity;
     }
 
+    /**
+     * resource group the DNS zone is located in
+     */
     @JsonProperty("resourceGroupName")
     public String getResourceGroupName() {
         return resourceGroupName;
     }
 
+    /**
+     * resource group the DNS zone is located in
+     */
     @JsonProperty("resourceGroupName")
     public void setResourceGroupName(String resourceGroupName) {
         this.resourceGroupName = resourceGroupName;
     }
 
+    /**
+     * ID of the Azure subscription
+     */
     @JsonProperty("subscriptionID")
     public String getSubscriptionID() {
         return subscriptionID;
     }
 
+    /**
+     * ID of the Azure subscription
+     */
     @JsonProperty("subscriptionID")
     public void setSubscriptionID(String subscriptionID) {
         this.subscriptionID = subscriptionID;
     }
 
+    /**
+     * Auth: Azure Service Principal: The TenantID of the Azure Service Principal used to authenticate with Azure DNS. If set, ClientID and ClientSecret must also be set.
+     */
     @JsonProperty("tenantID")
     public String getTenantID() {
         return tenantID;
     }
 
+    /**
+     * Auth: Azure Service Principal: The TenantID of the Azure Service Principal used to authenticate with Azure DNS. If set, ClientID and ClientSecret must also be set.
+     */
     @JsonProperty("tenantID")
     public void setTenantID(String tenantID) {
         this.tenantID = tenantID;

@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * RouteAdmissionPolicy is an admission policy for allowing new route claims.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class RouteAdmissionPolicy implements Editable<RouteAdmissionPolicyBuilde
         this.wildcardPolicy = wildcardPolicy;
     }
 
+    /**
+     * namespaceOwnership describes how host name claims across namespaces should be handled.<br><p> <br><p> Value must be one of:<br><p> <br><p> - Strict: Do not allow routes in different namespaces to claim the same host.<br><p> <br><p> - InterNamespaceAllowed: Allow routes to claim different paths of the same<br><p>   host name across namespaces.<br><p> <br><p> If empty, the default is Strict.
+     */
     @JsonProperty("namespaceOwnership")
     public String getNamespaceOwnership() {
         return namespaceOwnership;
     }
 
+    /**
+     * namespaceOwnership describes how host name claims across namespaces should be handled.<br><p> <br><p> Value must be one of:<br><p> <br><p> - Strict: Do not allow routes in different namespaces to claim the same host.<br><p> <br><p> - InterNamespaceAllowed: Allow routes to claim different paths of the same<br><p>   host name across namespaces.<br><p> <br><p> If empty, the default is Strict.
+     */
     @JsonProperty("namespaceOwnership")
     public void setNamespaceOwnership(String namespaceOwnership) {
         this.namespaceOwnership = namespaceOwnership;
     }
 
+    /**
+     * wildcardPolicy describes how routes with wildcard policies should be handled for the ingress controller. WildcardPolicy controls use of routes [1] exposed by the ingress controller based on the route's wildcard policy.<br><p> <br><p> [1] https://github.com/openshift/api/blob/master/route/v1/types.go<br><p> <br><p> Note: Updating WildcardPolicy from WildcardsAllowed to WildcardsDisallowed will cause admitted routes with a wildcard policy of Subdomain to stop working. These routes must be updated to a wildcard policy of None to be readmitted by the ingress controller.<br><p> <br><p> WildcardPolicy supports WildcardsAllowed and WildcardsDisallowed values.<br><p> <br><p> If empty, defaults to "WildcardsDisallowed".
+     */
     @JsonProperty("wildcardPolicy")
     public String getWildcardPolicy() {
         return wildcardPolicy;
     }
 
+    /**
+     * wildcardPolicy describes how routes with wildcard policies should be handled for the ingress controller. WildcardPolicy controls use of routes [1] exposed by the ingress controller based on the route's wildcard policy.<br><p> <br><p> [1] https://github.com/openshift/api/blob/master/route/v1/types.go<br><p> <br><p> Note: Updating WildcardPolicy from WildcardsAllowed to WildcardsDisallowed will cause admitted routes with a wildcard policy of Subdomain to stop working. These routes must be updated to a wildcard policy of None to be readmitted by the ingress controller.<br><p> <br><p> WildcardPolicy supports WildcardsAllowed and WildcardsDisallowed values.<br><p> <br><p> If empty, defaults to "WildcardsDisallowed".
+     */
     @JsonProperty("wildcardPolicy")
     public void setWildcardPolicy(String wildcardPolicy) {
         this.wildcardPolicy = wildcardPolicy;

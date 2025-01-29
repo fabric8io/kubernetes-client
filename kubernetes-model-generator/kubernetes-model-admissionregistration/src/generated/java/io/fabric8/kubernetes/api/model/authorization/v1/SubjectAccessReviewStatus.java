@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * SubjectAccessReviewStatus
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -90,41 +93,65 @@ public class SubjectAccessReviewStatus implements Editable<SubjectAccessReviewSt
         this.reason = reason;
     }
 
+    /**
+     * Allowed is required. True if the action would be allowed, false otherwise.
+     */
     @JsonProperty("allowed")
     public Boolean getAllowed() {
         return allowed;
     }
 
+    /**
+     * Allowed is required. True if the action would be allowed, false otherwise.
+     */
     @JsonProperty("allowed")
     public void setAllowed(Boolean allowed) {
         this.allowed = allowed;
     }
 
+    /**
+     * Denied is optional. True if the action would be denied, otherwise false. If both allowed is false and denied is false, then the authorizer has no opinion on whether to authorize the action. Denied may not be true if Allowed is true.
+     */
     @JsonProperty("denied")
     public Boolean getDenied() {
         return denied;
     }
 
+    /**
+     * Denied is optional. True if the action would be denied, otherwise false. If both allowed is false and denied is false, then the authorizer has no opinion on whether to authorize the action. Denied may not be true if Allowed is true.
+     */
     @JsonProperty("denied")
     public void setDenied(Boolean denied) {
         this.denied = denied;
     }
 
+    /**
+     * EvaluationError is an indication that some error occurred during the authorization check. It is entirely possible to get an error and be able to continue determine authorization status in spite of it. For instance, RBAC can be missing a role, but enough roles are still present and bound to reason about the request.
+     */
     @JsonProperty("evaluationError")
     public String getEvaluationError() {
         return evaluationError;
     }
 
+    /**
+     * EvaluationError is an indication that some error occurred during the authorization check. It is entirely possible to get an error and be able to continue determine authorization status in spite of it. For instance, RBAC can be missing a role, but enough roles are still present and bound to reason about the request.
+     */
     @JsonProperty("evaluationError")
     public void setEvaluationError(String evaluationError) {
         this.evaluationError = evaluationError;
     }
 
+    /**
+     * Reason is optional.  It indicates why a request was allowed or denied.
+     */
     @JsonProperty("reason")
     public String getReason() {
         return reason;
     }
 
+    /**
+     * Reason is optional.  It indicates why a request was allowed or denied.
+     */
     @JsonProperty("reason")
     public void setReason(String reason) {
         this.reason = reason;

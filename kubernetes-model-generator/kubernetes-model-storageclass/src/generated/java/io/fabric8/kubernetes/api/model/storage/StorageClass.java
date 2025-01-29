@@ -39,6 +39,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * StorageClass describes the parameters for a class of storage for which PersistentVolumes can be dynamically provisioned.<br><p> <br><p> StorageClasses are non-namespaced; the name of the storage class according to etcd is in ObjectMeta.Name.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -88,14 +91,8 @@ public class StorageClass implements Editable<StorageClassBuilder>, HasMetadata
     @JsonProperty("allowedTopologies")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<TopologySelectorTerm> allowedTopologies = new ArrayList<>();
-    /**
-     * (Required)
-     */
     @JsonProperty("apiVersion")
     private String apiVersion = "storage.k8s.io/v1";
-    /**
-     * (Required)
-     */
     @JsonProperty("kind")
     private String kind = "StorageClass";
     @JsonProperty("metadata")
@@ -135,29 +132,41 @@ public class StorageClass implements Editable<StorageClassBuilder>, HasMetadata
         this.volumeBindingMode = volumeBindingMode;
     }
 
+    /**
+     * allowVolumeExpansion shows whether the storage class allow volume expand.
+     */
     @JsonProperty("allowVolumeExpansion")
     public Boolean getAllowVolumeExpansion() {
         return allowVolumeExpansion;
     }
 
+    /**
+     * allowVolumeExpansion shows whether the storage class allow volume expand.
+     */
     @JsonProperty("allowVolumeExpansion")
     public void setAllowVolumeExpansion(Boolean allowVolumeExpansion) {
         this.allowVolumeExpansion = allowVolumeExpansion;
     }
 
+    /**
+     * allowedTopologies restrict the node topologies where volumes can be dynamically provisioned. Each volume plugin defines its own supported topology specifications. An empty TopologySelectorTerm list means there is no topology restriction. This field is only honored by servers that enable the VolumeScheduling feature.
+     */
     @JsonProperty("allowedTopologies")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<TopologySelectorTerm> getAllowedTopologies() {
         return allowedTopologies;
     }
 
+    /**
+     * allowedTopologies restrict the node topologies where volumes can be dynamically provisioned. Each volume plugin defines its own supported topology specifications. An empty TopologySelectorTerm list means there is no topology restriction. This field is only honored by servers that enable the VolumeScheduling feature.
+     */
     @JsonProperty("allowedTopologies")
     public void setAllowedTopologies(List<TopologySelectorTerm> allowedTopologies) {
         this.allowedTopologies = allowedTopologies;
     }
 
     /**
-     * (Required)
+     * APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -165,7 +174,7 @@ public class StorageClass implements Editable<StorageClassBuilder>, HasMetadata
     }
 
     /**
-     * (Required)
+     * APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -173,7 +182,7 @@ public class StorageClass implements Editable<StorageClassBuilder>, HasMetadata
     }
 
     /**
-     * (Required)
+     * Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -181,70 +190,106 @@ public class StorageClass implements Editable<StorageClassBuilder>, HasMetadata
     }
 
     /**
-     * (Required)
+     * Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
      */
     @JsonProperty("kind")
     public void setKind(String kind) {
         this.kind = kind;
     }
 
+    /**
+     * StorageClass describes the parameters for a class of storage for which PersistentVolumes can be dynamically provisioned.<br><p> <br><p> StorageClasses are non-namespaced; the name of the storage class according to etcd is in ObjectMeta.Name.
+     */
     @JsonProperty("metadata")
     public ObjectMeta getMetadata() {
         return metadata;
     }
 
+    /**
+     * StorageClass describes the parameters for a class of storage for which PersistentVolumes can be dynamically provisioned.<br><p> <br><p> StorageClasses are non-namespaced; the name of the storage class according to etcd is in ObjectMeta.Name.
+     */
     @JsonProperty("metadata")
     public void setMetadata(ObjectMeta metadata) {
         this.metadata = metadata;
     }
 
+    /**
+     * mountOptions controls the mountOptions for dynamically provisioned PersistentVolumes of this storage class. e.g. ["ro", "soft"]. Not validated - mount of the PVs will simply fail if one is invalid.
+     */
     @JsonProperty("mountOptions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getMountOptions() {
         return mountOptions;
     }
 
+    /**
+     * mountOptions controls the mountOptions for dynamically provisioned PersistentVolumes of this storage class. e.g. ["ro", "soft"]. Not validated - mount of the PVs will simply fail if one is invalid.
+     */
     @JsonProperty("mountOptions")
     public void setMountOptions(List<String> mountOptions) {
         this.mountOptions = mountOptions;
     }
 
+    /**
+     * parameters holds the parameters for the provisioner that should create volumes of this storage class.
+     */
     @JsonProperty("parameters")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getParameters() {
         return parameters;
     }
 
+    /**
+     * parameters holds the parameters for the provisioner that should create volumes of this storage class.
+     */
     @JsonProperty("parameters")
     public void setParameters(Map<String, String> parameters) {
         this.parameters = parameters;
     }
 
+    /**
+     * provisioner indicates the type of the provisioner.
+     */
     @JsonProperty("provisioner")
     public String getProvisioner() {
         return provisioner;
     }
 
+    /**
+     * provisioner indicates the type of the provisioner.
+     */
     @JsonProperty("provisioner")
     public void setProvisioner(String provisioner) {
         this.provisioner = provisioner;
     }
 
+    /**
+     * reclaimPolicy controls the reclaimPolicy for dynamically provisioned PersistentVolumes of this storage class. Defaults to Delete.
+     */
     @JsonProperty("reclaimPolicy")
     public String getReclaimPolicy() {
         return reclaimPolicy;
     }
 
+    /**
+     * reclaimPolicy controls the reclaimPolicy for dynamically provisioned PersistentVolumes of this storage class. Defaults to Delete.
+     */
     @JsonProperty("reclaimPolicy")
     public void setReclaimPolicy(String reclaimPolicy) {
         this.reclaimPolicy = reclaimPolicy;
     }
 
+    /**
+     * volumeBindingMode indicates how PersistentVolumeClaims should be provisioned and bound.  When unset, VolumeBindingImmediate is used. This field is only honored by servers that enable the VolumeScheduling feature.
+     */
     @JsonProperty("volumeBindingMode")
     public String getVolumeBindingMode() {
         return volumeBindingMode;
     }
 
+    /**
+     * volumeBindingMode indicates how PersistentVolumeClaims should be provisioned and bound.  When unset, VolumeBindingImmediate is used. This field is only honored by servers that enable the VolumeScheduling feature.
+     */
     @JsonProperty("volumeBindingMode")
     public void setVolumeBindingMode(String volumeBindingMode) {
         this.volumeBindingMode = volumeBindingMode;

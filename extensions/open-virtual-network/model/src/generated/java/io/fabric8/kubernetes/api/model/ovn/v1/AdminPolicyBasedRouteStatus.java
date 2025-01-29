@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * AdminPolicyBasedRouteStatus contains the observed status of the AdminPolicyBased route types.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -89,32 +92,50 @@ public class AdminPolicyBasedRouteStatus implements Editable<AdminPolicyBasedRou
         this.status = status;
     }
 
+    /**
+     * AdminPolicyBasedRouteStatus contains the observed status of the AdminPolicyBased route types.
+     */
     @JsonProperty("lastTransitionTime")
     public String getLastTransitionTime() {
         return lastTransitionTime;
     }
 
+    /**
+     * AdminPolicyBasedRouteStatus contains the observed status of the AdminPolicyBased route types.
+     */
     @JsonProperty("lastTransitionTime")
     public void setLastTransitionTime(String lastTransitionTime) {
         this.lastTransitionTime = lastTransitionTime;
     }
 
+    /**
+     * An array of Human-readable messages indicating details about the status of the object.
+     */
     @JsonProperty("messages")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getMessages() {
         return messages;
     }
 
+    /**
+     * An array of Human-readable messages indicating details about the status of the object.
+     */
     @JsonProperty("messages")
     public void setMessages(List<String> messages) {
         this.messages = messages;
     }
 
+    /**
+     * A concise indication of whether the AdminPolicyBasedRoute resource is applied with success
+     */
     @JsonProperty("status")
     public String getStatus() {
         return status;
     }
 
+    /**
+     * A concise indication of whether the AdminPolicyBasedRoute resource is applied with success
+     */
     @JsonProperty("status")
     public void setStatus(String status) {
         this.status = status;

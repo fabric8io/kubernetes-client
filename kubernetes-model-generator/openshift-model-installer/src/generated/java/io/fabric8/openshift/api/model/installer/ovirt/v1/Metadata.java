@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Metadata contains ovirt metadata (e.g. for uninstalling the cluster).
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class Metadata implements Editable<MetadataBuilder>, KubernetesResource
         this.removeTemplate = removeTemplate;
     }
 
+    /**
+     * Metadata contains ovirt metadata (e.g. for uninstalling the cluster).
+     */
     @JsonProperty("cluster_id")
     public String getClusterId() {
         return clusterId;
     }
 
+    /**
+     * Metadata contains ovirt metadata (e.g. for uninstalling the cluster).
+     */
     @JsonProperty("cluster_id")
     public void setClusterId(String clusterId) {
         this.clusterId = clusterId;
     }
 
+    /**
+     * Metadata contains ovirt metadata (e.g. for uninstalling the cluster).
+     */
     @JsonProperty("remove_template")
     public Boolean getRemoveTemplate() {
         return removeTemplate;
     }
 
+    /**
+     * Metadata contains ovirt metadata (e.g. for uninstalling the cluster).
+     */
     @JsonProperty("remove_template")
     public void setRemoveTemplate(Boolean removeTemplate) {
         this.removeTemplate = removeTemplate;

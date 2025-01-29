@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * current status of a horizontal pod autoscaler
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -94,51 +97,81 @@ public class HorizontalPodAutoscalerStatus implements Editable<HorizontalPodAuto
         this.observedGeneration = observedGeneration;
     }
 
+    /**
+     * currentCPUUtilizationPercentage is the current average CPU utilization over all pods, represented as a percentage of requested CPU, e.g. 70 means that an average pod is using now 70% of its requested CPU.
+     */
     @JsonProperty("currentCPUUtilizationPercentage")
     public Integer getCurrentCPUUtilizationPercentage() {
         return currentCPUUtilizationPercentage;
     }
 
+    /**
+     * currentCPUUtilizationPercentage is the current average CPU utilization over all pods, represented as a percentage of requested CPU, e.g. 70 means that an average pod is using now 70% of its requested CPU.
+     */
     @JsonProperty("currentCPUUtilizationPercentage")
     public void setCurrentCPUUtilizationPercentage(Integer currentCPUUtilizationPercentage) {
         this.currentCPUUtilizationPercentage = currentCPUUtilizationPercentage;
     }
 
+    /**
+     * currentReplicas is the current number of replicas of pods managed by this autoscaler.
+     */
     @JsonProperty("currentReplicas")
     public Integer getCurrentReplicas() {
         return currentReplicas;
     }
 
+    /**
+     * currentReplicas is the current number of replicas of pods managed by this autoscaler.
+     */
     @JsonProperty("currentReplicas")
     public void setCurrentReplicas(Integer currentReplicas) {
         this.currentReplicas = currentReplicas;
     }
 
+    /**
+     * desiredReplicas is the  desired number of replicas of pods managed by this autoscaler.
+     */
     @JsonProperty("desiredReplicas")
     public Integer getDesiredReplicas() {
         return desiredReplicas;
     }
 
+    /**
+     * desiredReplicas is the  desired number of replicas of pods managed by this autoscaler.
+     */
     @JsonProperty("desiredReplicas")
     public void setDesiredReplicas(Integer desiredReplicas) {
         this.desiredReplicas = desiredReplicas;
     }
 
+    /**
+     * current status of a horizontal pod autoscaler
+     */
     @JsonProperty("lastScaleTime")
     public String getLastScaleTime() {
         return lastScaleTime;
     }
 
+    /**
+     * current status of a horizontal pod autoscaler
+     */
     @JsonProperty("lastScaleTime")
     public void setLastScaleTime(String lastScaleTime) {
         this.lastScaleTime = lastScaleTime;
     }
 
+    /**
+     * observedGeneration is the most recent generation observed by this autoscaler.
+     */
     @JsonProperty("observedGeneration")
     public Long getObservedGeneration() {
         return observedGeneration;
     }
 
+    /**
+     * observedGeneration is the most recent generation observed by this autoscaler.
+     */
     @JsonProperty("observedGeneration")
     public void setObservedGeneration(Long observedGeneration) {
         this.observedGeneration = observedGeneration;

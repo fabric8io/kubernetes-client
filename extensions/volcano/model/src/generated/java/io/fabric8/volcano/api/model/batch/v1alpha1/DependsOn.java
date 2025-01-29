@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * DependsOn represents the tasks that this task depends on and their dependencies
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -85,22 +88,34 @@ public class DependsOn implements Editable<DependsOnBuilder>, KubernetesResource
         this.name = name;
     }
 
+    /**
+     * This field specifies that when there are multiple dependent tasks, as long as one task becomes the specified state, the task scheduling is triggered or all tasks must be changed to the specified state to trigger the task scheduling
+     */
     @JsonProperty("iteration")
     public String getIteration() {
         return iteration;
     }
 
+    /**
+     * This field specifies that when there are multiple dependent tasks, as long as one task becomes the specified state, the task scheduling is triggered or all tasks must be changed to the specified state to trigger the task scheduling
+     */
     @JsonProperty("iteration")
     public void setIteration(String iteration) {
         this.iteration = iteration;
     }
 
+    /**
+     * Indicates the name of the tasks that this task depends on, which can depend on multiple tasks
+     */
     @JsonProperty("name")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getName() {
         return name;
     }
 
+    /**
+     * Indicates the name of the tasks that this task depends on, which can depend on multiple tasks
+     */
     @JsonProperty("name")
     public void setName(List<String> name) {
         this.name = name;

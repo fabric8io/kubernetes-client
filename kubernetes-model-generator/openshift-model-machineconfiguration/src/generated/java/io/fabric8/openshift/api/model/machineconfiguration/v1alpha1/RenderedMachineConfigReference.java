@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Refers to the name of a rendered MachineConfig (e.g., "rendered-worker-ec40d2965ff81bce7cd7a7e82a680739", etc.): the build targets this MachineConfig, this is often used to tell us whether we need an update.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -78,11 +81,17 @@ public class RenderedMachineConfigReference implements Editable<RenderedMachineC
         this.name = name;
     }
 
+    /**
+     * name is the name of the rendered MachineConfig object.
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * name is the name of the rendered MachineConfig object.
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;

@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * TokenReviewStatus is the result of the token authentication request.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -93,42 +96,66 @@ public class TokenReviewStatus implements Editable<TokenReviewStatusBuilder>, Ku
         this.user = user;
     }
 
+    /**
+     * Audiences are audience identifiers chosen by the authenticator that are compatible with both the TokenReview and token. An identifier is any identifier in the intersection of the TokenReviewSpec audiences and the token's audiences. A client of the TokenReview API that sets the spec.audiences field should validate that a compatible audience identifier is returned in the status.audiences field to ensure that the TokenReview server is audience aware. If a TokenReview returns an empty status.audience field where status.authenticated is "true", the token is valid against the audience of the Kubernetes API server.
+     */
     @JsonProperty("audiences")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getAudiences() {
         return audiences;
     }
 
+    /**
+     * Audiences are audience identifiers chosen by the authenticator that are compatible with both the TokenReview and token. An identifier is any identifier in the intersection of the TokenReviewSpec audiences and the token's audiences. A client of the TokenReview API that sets the spec.audiences field should validate that a compatible audience identifier is returned in the status.audiences field to ensure that the TokenReview server is audience aware. If a TokenReview returns an empty status.audience field where status.authenticated is "true", the token is valid against the audience of the Kubernetes API server.
+     */
     @JsonProperty("audiences")
     public void setAudiences(List<String> audiences) {
         this.audiences = audiences;
     }
 
+    /**
+     * Authenticated indicates that the token was associated with a known user.
+     */
     @JsonProperty("authenticated")
     public Boolean getAuthenticated() {
         return authenticated;
     }
 
+    /**
+     * Authenticated indicates that the token was associated with a known user.
+     */
     @JsonProperty("authenticated")
     public void setAuthenticated(Boolean authenticated) {
         this.authenticated = authenticated;
     }
 
+    /**
+     * Error indicates that the token couldn't be checked
+     */
     @JsonProperty("error")
     public String getError() {
         return error;
     }
 
+    /**
+     * Error indicates that the token couldn't be checked
+     */
     @JsonProperty("error")
     public void setError(String error) {
         this.error = error;
     }
 
+    /**
+     * TokenReviewStatus is the result of the token authentication request.
+     */
     @JsonProperty("user")
     public UserInfo getUser() {
         return user;
     }
 
+    /**
+     * TokenReviewStatus is the result of the token authentication request.
+     */
     @JsonProperty("user")
     public void setUser(UserInfo user) {
         this.user = user;

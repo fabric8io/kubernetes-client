@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * RemediationStrategy describes how to remediate machines.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -86,31 +89,49 @@ public class RemediationStrategy implements Editable<RemediationStrategyBuilder>
         this.type = type;
     }
 
+    /**
+     * Sets maximum number of remediation retries.
+     */
     @JsonProperty("retryLimit")
     public Integer getRetryLimit() {
         return retryLimit;
     }
 
+    /**
+     * Sets maximum number of remediation retries.
+     */
     @JsonProperty("retryLimit")
     public void setRetryLimit(Integer retryLimit) {
         this.retryLimit = retryLimit;
     }
 
+    /**
+     * RemediationStrategy describes how to remediate machines.
+     */
     @JsonProperty("timeout")
     public String getTimeout() {
         return timeout;
     }
 
+    /**
+     * RemediationStrategy describes how to remediate machines.
+     */
     @JsonProperty("timeout")
     public void setTimeout(String timeout) {
         this.timeout = timeout;
     }
 
+    /**
+     * Type of remediation.
+     */
     @JsonProperty("type")
     public String getType() {
         return type;
     }
 
+    /**
+     * Type of remediation.
+     */
     @JsonProperty("type")
     public void setType(String type) {
         this.type = type;

@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * NetworkMigration represents the network migration status.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class NetworkMigration implements Editable<NetworkMigrationBuilder>, Kube
         this.networkType = networkType;
     }
 
+    /**
+     * NetworkMigration represents the network migration status.
+     */
     @JsonProperty("mtu")
     public MTUMigration getMtu() {
         return mtu;
     }
 
+    /**
+     * NetworkMigration represents the network migration status.
+     */
     @JsonProperty("mtu")
     public void setMtu(MTUMigration mtu) {
         this.mtu = mtu;
     }
 
+    /**
+     * NetworkType is the target plugin that is being deployed. DEPRECATED: network type migration is no longer supported, so this should always be unset.
+     */
     @JsonProperty("networkType")
     public String getNetworkType() {
         return networkType;
     }
 
+    /**
+     * NetworkType is the target plugin that is being deployed. DEPRECATED: network type migration is no longer supported, so this should always be unset.
+     */
     @JsonProperty("networkType")
     public void setNetworkType(String networkType) {
         this.networkType = networkType;

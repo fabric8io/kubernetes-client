@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * CPU defines the VM cpu, made of (Sockets &#42; Cores).
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -86,31 +89,49 @@ public class CPU implements Editable<CPUBuilder>, KubernetesResource
         this.threads = threads;
     }
 
+    /**
+     * Cores is the number of cores per socket. Total CPUs is (Sockets &#42; Cores)
+     */
     @JsonProperty("cores")
     public Integer getCores() {
         return cores;
     }
 
+    /**
+     * Cores is the number of cores per socket. Total CPUs is (Sockets &#42; Cores)
+     */
     @JsonProperty("cores")
     public void setCores(Integer cores) {
         this.cores = cores;
     }
 
+    /**
+     * Sockets is the number of sockets for a VM. Total CPUs is (Sockets &#42; Cores)
+     */
     @JsonProperty("sockets")
     public Integer getSockets() {
         return sockets;
     }
 
+    /**
+     * Sockets is the number of sockets for a VM. Total CPUs is (Sockets &#42; Cores)
+     */
     @JsonProperty("sockets")
     public void setSockets(Integer sockets) {
         this.sockets = sockets;
     }
 
+    /**
+     * Threads is the number of CPU threads.
+     */
     @JsonProperty("threads")
     public Integer getThreads() {
         return threads;
     }
 
+    /**
+     * Threads is the number of CPU threads.
+     */
     @JsonProperty("threads")
     public void setThreads(Integer threads) {
         this.threads = threads;

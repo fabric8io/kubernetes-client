@@ -37,6 +37,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * DomainMapping is a mapping from a custom hostname to an Addressable.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -76,14 +79,8 @@ import lombok.experimental.Accessors;
 public class DomainMapping implements Editable<DomainMappingBuilder>, HasMetadata, Namespaced
 {
 
-    /**
-     * (Required)
-     */
     @JsonProperty("apiVersion")
     private String apiVersion = "serving.knative.dev/v1beta1";
-    /**
-     * (Required)
-     */
     @JsonProperty("kind")
     private String kind = "DomainMapping";
     @JsonProperty("metadata")
@@ -111,7 +108,7 @@ public class DomainMapping implements Editable<DomainMappingBuilder>, HasMetadat
     }
 
     /**
-     * (Required)
+     * APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -119,7 +116,7 @@ public class DomainMapping implements Editable<DomainMappingBuilder>, HasMetadat
     }
 
     /**
-     * (Required)
+     * APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -127,7 +124,7 @@ public class DomainMapping implements Editable<DomainMappingBuilder>, HasMetadat
     }
 
     /**
-     * (Required)
+     * Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -135,38 +132,56 @@ public class DomainMapping implements Editable<DomainMappingBuilder>, HasMetadat
     }
 
     /**
-     * (Required)
+     * Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
      */
     @JsonProperty("kind")
     public void setKind(String kind) {
         this.kind = kind;
     }
 
+    /**
+     * DomainMapping is a mapping from a custom hostname to an Addressable.
+     */
     @JsonProperty("metadata")
     public ObjectMeta getMetadata() {
         return metadata;
     }
 
+    /**
+     * DomainMapping is a mapping from a custom hostname to an Addressable.
+     */
     @JsonProperty("metadata")
     public void setMetadata(ObjectMeta metadata) {
         this.metadata = metadata;
     }
 
+    /**
+     * DomainMapping is a mapping from a custom hostname to an Addressable.
+     */
     @JsonProperty("spec")
     public DomainMappingSpec getSpec() {
         return spec;
     }
 
+    /**
+     * DomainMapping is a mapping from a custom hostname to an Addressable.
+     */
     @JsonProperty("spec")
     public void setSpec(DomainMappingSpec spec) {
         this.spec = spec;
     }
 
+    /**
+     * DomainMapping is a mapping from a custom hostname to an Addressable.
+     */
     @JsonProperty("status")
     public DomainMappingStatus getStatus() {
         return status;
     }
 
+    /**
+     * DomainMapping is a mapping from a custom hostname to an Addressable.
+     */
     @JsonProperty("status")
     public void setStatus(DomainMappingStatus status) {
         this.status = status;

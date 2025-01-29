@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * WorkspaceConfig defines a workspace configuration for the vSphere cloud provider.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -94,51 +97,81 @@ public class Workspace implements Editable<WorkspaceBuilder>, KubernetesResource
         this.server = server;
     }
 
+    /**
+     * Datacenter is the datacenter in which VMs are created/located.
+     */
     @JsonProperty("datacenter")
     public String getDatacenter() {
         return datacenter;
     }
 
+    /**
+     * Datacenter is the datacenter in which VMs are created/located.
+     */
     @JsonProperty("datacenter")
     public void setDatacenter(String datacenter) {
         this.datacenter = datacenter;
     }
 
+    /**
+     * Datastore is the datastore in which VMs are created/located.
+     */
     @JsonProperty("datastore")
     public String getDatastore() {
         return datastore;
     }
 
+    /**
+     * Datastore is the datastore in which VMs are created/located.
+     */
     @JsonProperty("datastore")
     public void setDatastore(String datastore) {
         this.datastore = datastore;
     }
 
+    /**
+     * Folder is the folder in which VMs are created/located.
+     */
     @JsonProperty("folder")
     public String getFolder() {
         return folder;
     }
 
+    /**
+     * Folder is the folder in which VMs are created/located.
+     */
     @JsonProperty("folder")
     public void setFolder(String folder) {
         this.folder = folder;
     }
 
+    /**
+     * ResourcePool is the resource pool in which VMs are created/located.
+     */
     @JsonProperty("resourcePool")
     public String getResourcePool() {
         return resourcePool;
     }
 
+    /**
+     * ResourcePool is the resource pool in which VMs are created/located.
+     */
     @JsonProperty("resourcePool")
     public void setResourcePool(String resourcePool) {
         this.resourcePool = resourcePool;
     }
 
+    /**
+     * Server is the IP address or FQDN of the vSphere endpoint.
+     */
     @JsonProperty("server")
     public String getServer() {
         return server;
     }
 
+    /**
+     * Server is the IP address or FQDN of the vSphere endpoint.
+     */
     @JsonProperty("server")
     public void setServer(String server) {
         this.server = server;

@@ -33,6 +33,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * StrategyDeploymentSpec contains the name, spec and labels for the deployment ALM should create
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -88,32 +91,50 @@ public class StrategyDeploymentSpec implements Editable<StrategyDeploymentSpecBu
         this.spec = spec;
     }
 
+    /**
+     * StrategyDeploymentSpec contains the name, spec and labels for the deployment ALM should create
+     */
     @JsonProperty("label")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getLabel() {
         return label;
     }
 
+    /**
+     * StrategyDeploymentSpec contains the name, spec and labels for the deployment ALM should create
+     */
     @JsonProperty("label")
     public void setLabel(Map<String, String> label) {
         this.label = label;
     }
 
+    /**
+     * StrategyDeploymentSpec contains the name, spec and labels for the deployment ALM should create
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * StrategyDeploymentSpec contains the name, spec and labels for the deployment ALM should create
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * StrategyDeploymentSpec contains the name, spec and labels for the deployment ALM should create
+     */
     @JsonProperty("spec")
     public DeploymentSpec getSpec() {
         return spec;
     }
 
+    /**
+     * StrategyDeploymentSpec contains the name, spec and labels for the deployment ALM should create
+     */
     @JsonProperty("spec")
     public void setSpec(DeploymentSpec spec) {
         this.spec = spec;

@@ -106,12 +106,18 @@ public class CatalogSourceStatus implements Editable<CatalogSourceStatusBuilder>
         this.registryService = registryService;
     }
 
+    /**
+     * Represents the state of a CatalogSource. Note that Message and Reason represent the original status information, which may be migrated to be conditions based in the future. Any new features introduced will use conditions.
+     */
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Condition> getConditions() {
         return conditions;
     }
 
+    /**
+     * Represents the state of a CatalogSource. Note that Message and Reason represent the original status information, which may be migrated to be conditions based in the future. Any new features introduced will use conditions.
+     */
     @JsonProperty("conditions")
     public void setConditions(List<Condition> conditions) {
         this.conditions = conditions;
@@ -147,21 +153,33 @@ public class CatalogSourceStatus implements Editable<CatalogSourceStatusBuilder>
         this.latestImageRegistryPoll = latestImageRegistryPoll;
     }
 
+    /**
+     * A human readable message indicating details about why the CatalogSource is in this condition.
+     */
     @JsonProperty("message")
     public String getMessage() {
         return message;
     }
 
+    /**
+     * A human readable message indicating details about why the CatalogSource is in this condition.
+     */
     @JsonProperty("message")
     public void setMessage(String message) {
         this.message = message;
     }
 
+    /**
+     * Reason is the reason the CatalogSource was transitioned to its current state.
+     */
     @JsonProperty("reason")
     public String getReason() {
         return reason;
     }
 
+    /**
+     * Reason is the reason the CatalogSource was transitioned to its current state.
+     */
     @JsonProperty("reason")
     public void setReason(String reason) {
         this.reason = reason;

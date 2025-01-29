@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * L4 routing rule weighted destination.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class RouteDestination implements Editable<RouteDestinationBuilder>, Kube
         this.weight = weight;
     }
 
+    /**
+     * L4 routing rule weighted destination.
+     */
     @JsonProperty("destination")
     public Destination getDestination() {
         return destination;
     }
 
+    /**
+     * L4 routing rule weighted destination.
+     */
     @JsonProperty("destination")
     public void setDestination(Destination destination) {
         this.destination = destination;
     }
 
+    /**
+     * Weight specifies the relative proportion of traffic to be forwarded to the destination. A destination will receive `weight/(sum of all weights)` requests. If there is only one destination in a rule, it will receive all traffic. Otherwise, if weight is `0`, the destination will not receive any traffic.
+     */
     @JsonProperty("weight")
     public Integer getWeight() {
         return weight;
     }
 
+    /**
+     * Weight specifies the relative proportion of traffic to be forwarded to the destination. A destination will receive `weight/(sum of all weights)` requests. If there is only one destination in a rule, it will receive all traffic. Otherwise, if weight is `0`, the destination will not receive any traffic.
+     */
     @JsonProperty("weight")
     public void setWeight(Integer weight) {
         this.weight = weight;

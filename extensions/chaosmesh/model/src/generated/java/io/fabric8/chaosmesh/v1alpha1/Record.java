@@ -101,12 +101,18 @@ public class Record implements Editable<RecordBuilder>, KubernetesResource
         this.selectorKey = selectorKey;
     }
 
+    /**
+     * Events are the essential details about the injections and recoveries
+     */
     @JsonProperty("events")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<RecordEvent> getEvents() {
         return events;
     }
 
+    /**
+     * Events are the essential details about the injections and recoveries
+     */
     @JsonProperty("events")
     public void setEvents(List<RecordEvent> events) {
         this.events = events;
@@ -122,11 +128,17 @@ public class Record implements Editable<RecordBuilder>, KubernetesResource
         this.id = id;
     }
 
+    /**
+     * InjectedCount is a counter to record the sum of successful injections
+     */
     @JsonProperty("injectedCount")
     public Integer getInjectedCount() {
         return injectedCount;
     }
 
+    /**
+     * InjectedCount is a counter to record the sum of successful injections
+     */
     @JsonProperty("injectedCount")
     public void setInjectedCount(Integer injectedCount) {
         this.injectedCount = injectedCount;
@@ -142,11 +154,17 @@ public class Record implements Editable<RecordBuilder>, KubernetesResource
         this.phase = phase;
     }
 
+    /**
+     * RecoveredCount is a counter to record the sum of successful recoveries
+     */
     @JsonProperty("recoveredCount")
     public Integer getRecoveredCount() {
         return recoveredCount;
     }
 
+    /**
+     * RecoveredCount is a counter to record the sum of successful recoveries
+     */
     @JsonProperty("recoveredCount")
     public void setRecoveredCount(Integer recoveredCount) {
         this.recoveredCount = recoveredCount;

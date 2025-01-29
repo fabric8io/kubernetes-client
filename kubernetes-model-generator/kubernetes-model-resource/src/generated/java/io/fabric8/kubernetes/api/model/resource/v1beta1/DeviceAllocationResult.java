@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * DeviceAllocationResult is the result of allocating devices.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -86,23 +89,35 @@ public class DeviceAllocationResult implements Editable<DeviceAllocationResultBu
         this.results = results;
     }
 
+    /**
+     * This field is a combination of all the claim and class configuration parameters. Drivers can distinguish between those based on a flag.<br><p> <br><p> This includes configuration parameters for drivers which have no allocated devices in the result because it is up to the drivers which configuration parameters they support. They can silently ignore unknown configuration parameters.
+     */
     @JsonProperty("config")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<DeviceAllocationConfiguration> getConfig() {
         return config;
     }
 
+    /**
+     * This field is a combination of all the claim and class configuration parameters. Drivers can distinguish between those based on a flag.<br><p> <br><p> This includes configuration parameters for drivers which have no allocated devices in the result because it is up to the drivers which configuration parameters they support. They can silently ignore unknown configuration parameters.
+     */
     @JsonProperty("config")
     public void setConfig(List<DeviceAllocationConfiguration> config) {
         this.config = config;
     }
 
+    /**
+     * Results lists all allocated devices.
+     */
     @JsonProperty("results")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<DeviceRequestAllocationResult> getResults() {
         return results;
     }
 
+    /**
+     * Results lists all allocated devices.
+     */
     @JsonProperty("results")
     public void setResults(List<DeviceRequestAllocationResult> results) {
         this.results = results;

@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * $hide_from_docs
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -78,11 +81,17 @@ public class HTTPFaultInjectionAbortHttp2Error implements IsHTTPFaultInjectionAb
         this.http2Error = http2Error;
     }
 
+    /**
+     * $hide_from_docs
+     */
     @JsonProperty("http2Error")
     public String getHttp2Error() {
         return http2Error;
     }
 
+    /**
+     * $hide_from_docs
+     */
     @JsonProperty("http2Error")
     public void setHttp2Error(String http2Error) {
         this.http2Error = http2Error;

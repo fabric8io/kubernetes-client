@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ClusterDeprovisionSpec defines the desired state of ClusterDeprovision
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -94,51 +97,81 @@ public class ClusterDeprovisionSpec implements Editable<ClusterDeprovisionSpecBu
         this.platform = platform;
     }
 
+    /**
+     * BaseDomain is the DNS base domain.
+     */
     @JsonProperty("baseDomain")
     public String getBaseDomain() {
         return baseDomain;
     }
 
+    /**
+     * BaseDomain is the DNS base domain.
+     */
     @JsonProperty("baseDomain")
     public void setBaseDomain(String baseDomain) {
         this.baseDomain = baseDomain;
     }
 
+    /**
+     * ClusterID is a globally unique identifier for the cluster to deprovision. It will be used if specified.
+     */
     @JsonProperty("clusterID")
     public String getClusterID() {
         return clusterID;
     }
 
+    /**
+     * ClusterID is a globally unique identifier for the cluster to deprovision. It will be used if specified.
+     */
     @JsonProperty("clusterID")
     public void setClusterID(String clusterID) {
         this.clusterID = clusterID;
     }
 
+    /**
+     * ClusterName is the friendly name of the cluster. It is used for subdomains, some resource tagging, and other instances where a friendly name for the cluster is useful.
+     */
     @JsonProperty("clusterName")
     public String getClusterName() {
         return clusterName;
     }
 
+    /**
+     * ClusterName is the friendly name of the cluster. It is used for subdomains, some resource tagging, and other instances where a friendly name for the cluster is useful.
+     */
     @JsonProperty("clusterName")
     public void setClusterName(String clusterName) {
         this.clusterName = clusterName;
     }
 
+    /**
+     * InfraID is the identifier generated during installation for a cluster. It is used for tagging/naming resources in cloud providers.
+     */
     @JsonProperty("infraID")
     public String getInfraID() {
         return infraID;
     }
 
+    /**
+     * InfraID is the identifier generated during installation for a cluster. It is used for tagging/naming resources in cloud providers.
+     */
     @JsonProperty("infraID")
     public void setInfraID(String infraID) {
         this.infraID = infraID;
     }
 
+    /**
+     * ClusterDeprovisionSpec defines the desired state of ClusterDeprovision
+     */
     @JsonProperty("platform")
     public ClusterDeprovisionPlatform getPlatform() {
         return platform;
     }
 
+    /**
+     * ClusterDeprovisionSpec defines the desired state of ClusterDeprovision
+     */
     @JsonProperty("platform")
     public void setPlatform(ClusterDeprovisionPlatform platform) {
         this.platform = platform;

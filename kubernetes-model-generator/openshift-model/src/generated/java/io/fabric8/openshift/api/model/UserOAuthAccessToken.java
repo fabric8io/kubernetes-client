@@ -38,6 +38,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * UserOAuthAccessToken is a virtual resource to mirror OAuthAccessTokens to the user the access token was issued for
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -84,9 +87,6 @@ import lombok.experimental.Accessors;
 public class UserOAuthAccessToken implements Editable<UserOAuthAccessTokenBuilder>, HasMetadata
 {
 
-    /**
-     * (Required)
-     */
     @JsonProperty("apiVersion")
     private String apiVersion = "oauth.openshift.io/v1";
     @JsonProperty("authorizeToken")
@@ -97,9 +97,6 @@ public class UserOAuthAccessToken implements Editable<UserOAuthAccessTokenBuilde
     private Long expiresIn;
     @JsonProperty("inactivityTimeoutSeconds")
     private Integer inactivityTimeoutSeconds;
-    /**
-     * (Required)
-     */
     @JsonProperty("kind")
     private String kind = "UserOAuthAccessToken";
     @JsonProperty("metadata")
@@ -141,7 +138,7 @@ public class UserOAuthAccessToken implements Editable<UserOAuthAccessTokenBuilde
     }
 
     /**
-     * (Required)
+     * APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -149,55 +146,79 @@ public class UserOAuthAccessToken implements Editable<UserOAuthAccessTokenBuilde
     }
 
     /**
-     * (Required)
+     * APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
         this.apiVersion = apiVersion;
     }
 
+    /**
+     * AuthorizeToken contains the token that authorized this token
+     */
     @JsonProperty("authorizeToken")
     public String getAuthorizeToken() {
         return authorizeToken;
     }
 
+    /**
+     * AuthorizeToken contains the token that authorized this token
+     */
     @JsonProperty("authorizeToken")
     public void setAuthorizeToken(String authorizeToken) {
         this.authorizeToken = authorizeToken;
     }
 
+    /**
+     * ClientName references the client that created this token.
+     */
     @JsonProperty("clientName")
     public String getClientName() {
         return clientName;
     }
 
+    /**
+     * ClientName references the client that created this token.
+     */
     @JsonProperty("clientName")
     public void setClientName(String clientName) {
         this.clientName = clientName;
     }
 
+    /**
+     * ExpiresIn is the seconds from CreationTime before this token expires.
+     */
     @JsonProperty("expiresIn")
     public Long getExpiresIn() {
         return expiresIn;
     }
 
+    /**
+     * ExpiresIn is the seconds from CreationTime before this token expires.
+     */
     @JsonProperty("expiresIn")
     public void setExpiresIn(Long expiresIn) {
         this.expiresIn = expiresIn;
     }
 
+    /**
+     * InactivityTimeoutSeconds is the value in seconds, from the CreationTimestamp, after which this token can no longer be used. The value is automatically incremented when the token is used.
+     */
     @JsonProperty("inactivityTimeoutSeconds")
     public Integer getInactivityTimeoutSeconds() {
         return inactivityTimeoutSeconds;
     }
 
+    /**
+     * InactivityTimeoutSeconds is the value in seconds, from the CreationTimestamp, after which this token can no longer be used. The value is automatically incremented when the token is used.
+     */
     @JsonProperty("inactivityTimeoutSeconds")
     public void setInactivityTimeoutSeconds(Integer inactivityTimeoutSeconds) {
         this.inactivityTimeoutSeconds = inactivityTimeoutSeconds;
     }
 
     /**
-     * (Required)
+     * Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -205,69 +226,105 @@ public class UserOAuthAccessToken implements Editable<UserOAuthAccessTokenBuilde
     }
 
     /**
-     * (Required)
+     * Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
      */
     @JsonProperty("kind")
     public void setKind(String kind) {
         this.kind = kind;
     }
 
+    /**
+     * UserOAuthAccessToken is a virtual resource to mirror OAuthAccessTokens to the user the access token was issued for
+     */
     @JsonProperty("metadata")
     public ObjectMeta getMetadata() {
         return metadata;
     }
 
+    /**
+     * UserOAuthAccessToken is a virtual resource to mirror OAuthAccessTokens to the user the access token was issued for
+     */
     @JsonProperty("metadata")
     public void setMetadata(ObjectMeta metadata) {
         this.metadata = metadata;
     }
 
+    /**
+     * RedirectURI is the redirection associated with the token.
+     */
     @JsonProperty("redirectURI")
     public String getRedirectURI() {
         return redirectURI;
     }
 
+    /**
+     * RedirectURI is the redirection associated with the token.
+     */
     @JsonProperty("redirectURI")
     public void setRedirectURI(String redirectURI) {
         this.redirectURI = redirectURI;
     }
 
+    /**
+     * RefreshToken is the value by which this token can be renewed. Can be blank.
+     */
     @JsonProperty("refreshToken")
     public String getRefreshToken() {
         return refreshToken;
     }
 
+    /**
+     * RefreshToken is the value by which this token can be renewed. Can be blank.
+     */
     @JsonProperty("refreshToken")
     public void setRefreshToken(String refreshToken) {
         this.refreshToken = refreshToken;
     }
 
+    /**
+     * Scopes is an array of the requested scopes.
+     */
     @JsonProperty("scopes")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getScopes() {
         return scopes;
     }
 
+    /**
+     * Scopes is an array of the requested scopes.
+     */
     @JsonProperty("scopes")
     public void setScopes(List<String> scopes) {
         this.scopes = scopes;
     }
 
+    /**
+     * UserName is the user name associated with this token
+     */
     @JsonProperty("userName")
     public String getUserName() {
         return userName;
     }
 
+    /**
+     * UserName is the user name associated with this token
+     */
     @JsonProperty("userName")
     public void setUserName(String userName) {
         this.userName = userName;
     }
 
+    /**
+     * UserUID is the unique UID associated with this token
+     */
     @JsonProperty("userUID")
     public String getUserUID() {
         return userUID;
     }
 
+    /**
+     * UserUID is the unique UID associated with this token
+     */
     @JsonProperty("userUID")
     public void setUserUID(String userUID) {
         this.userUID = userUID;

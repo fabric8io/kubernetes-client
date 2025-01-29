@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * LoadBalancerStrategy holds parameters for a load balancer.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -93,42 +96,66 @@ public class LoadBalancerStrategy implements Editable<LoadBalancerStrategyBuilde
         this.scope = scope;
     }
 
+    /**
+     * allowedSourceRanges specifies an allowlist of IP address ranges to which access to the load balancer should be restricted.  Each range must be specified using CIDR notation (e.g. "10.0.0.0/8" or "fd00::/8"). If no range is specified, "0.0.0.0/0" for IPv4 and "::/0" for IPv6 are used by default, which allows all source addresses.<br><p> <br><p> To facilitate migration from earlier versions of OpenShift that did not have the allowedSourceRanges field, you may set the service.beta.kubernetes.io/load-balancer-source-ranges annotation on the "router-&lt;ingresscontroller name&gt;" service in the "openshift-ingress" namespace, and this annotation will take effect if allowedSourceRanges is empty on OpenShift 4.12.
+     */
     @JsonProperty("allowedSourceRanges")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getAllowedSourceRanges() {
         return allowedSourceRanges;
     }
 
+    /**
+     * allowedSourceRanges specifies an allowlist of IP address ranges to which access to the load balancer should be restricted.  Each range must be specified using CIDR notation (e.g. "10.0.0.0/8" or "fd00::/8"). If no range is specified, "0.0.0.0/0" for IPv4 and "::/0" for IPv6 are used by default, which allows all source addresses.<br><p> <br><p> To facilitate migration from earlier versions of OpenShift that did not have the allowedSourceRanges field, you may set the service.beta.kubernetes.io/load-balancer-source-ranges annotation on the "router-&lt;ingresscontroller name&gt;" service in the "openshift-ingress" namespace, and this annotation will take effect if allowedSourceRanges is empty on OpenShift 4.12.
+     */
     @JsonProperty("allowedSourceRanges")
     public void setAllowedSourceRanges(List<String> allowedSourceRanges) {
         this.allowedSourceRanges = allowedSourceRanges;
     }
 
+    /**
+     * dnsManagementPolicy indicates if the lifecycle of the wildcard DNS record associated with the load balancer service will be managed by the ingress operator. It defaults to Managed. Valid values are: Managed and Unmanaged.
+     */
     @JsonProperty("dnsManagementPolicy")
     public String getDnsManagementPolicy() {
         return dnsManagementPolicy;
     }
 
+    /**
+     * dnsManagementPolicy indicates if the lifecycle of the wildcard DNS record associated with the load balancer service will be managed by the ingress operator. It defaults to Managed. Valid values are: Managed and Unmanaged.
+     */
     @JsonProperty("dnsManagementPolicy")
     public void setDnsManagementPolicy(String dnsManagementPolicy) {
         this.dnsManagementPolicy = dnsManagementPolicy;
     }
 
+    /**
+     * LoadBalancerStrategy holds parameters for a load balancer.
+     */
     @JsonProperty("providerParameters")
     public ProviderLoadBalancerParameters getProviderParameters() {
         return providerParameters;
     }
 
+    /**
+     * LoadBalancerStrategy holds parameters for a load balancer.
+     */
     @JsonProperty("providerParameters")
     public void setProviderParameters(ProviderLoadBalancerParameters providerParameters) {
         this.providerParameters = providerParameters;
     }
 
+    /**
+     * scope indicates the scope at which the load balancer is exposed. Possible values are "External" and "Internal".
+     */
     @JsonProperty("scope")
     public String getScope() {
         return scope;
     }
 
+    /**
+     * scope indicates the scope at which the load balancer is exposed. Possible values are "External" and "Internal".
+     */
     @JsonProperty("scope")
     public void setScope(String scope) {
         this.scope = scope;

@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * NutanixCategory identifies a pair of prism category key and value
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class NutanixCategory implements Editable<NutanixCategoryBuilder>, Kubern
         this.value = value;
     }
 
+    /**
+     * key is the prism category key name
+     */
     @JsonProperty("key")
     public String getKey() {
         return key;
     }
 
+    /**
+     * key is the prism category key name
+     */
     @JsonProperty("key")
     public void setKey(String key) {
         this.key = key;
     }
 
+    /**
+     * value is the prism category value associated with the key
+     */
     @JsonProperty("value")
     public String getValue() {
         return value;
     }
 
+    /**
+     * value is the prism category value associated with the key
+     */
     @JsonProperty("value")
     public void setValue(String value) {
         this.value = value;

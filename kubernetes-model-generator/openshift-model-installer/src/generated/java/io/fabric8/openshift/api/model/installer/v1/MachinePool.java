@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * MachinePool is a pool of machines to be installed.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -94,51 +97,81 @@ public class MachinePool implements Editable<MachinePoolBuilder>, KubernetesReso
         this.replicas = replicas;
     }
 
+    /**
+     * Architecture is the instruction set architecture of the machine pool. Defaults to amd64.
+     */
     @JsonProperty("architecture")
     public String getArchitecture() {
         return architecture;
     }
 
+    /**
+     * Architecture is the instruction set architecture of the machine pool. Defaults to amd64.
+     */
     @JsonProperty("architecture")
     public void setArchitecture(String architecture) {
         this.architecture = architecture;
     }
 
+    /**
+     * Hyperthreading determines the mode of hyperthreading that machines in the pool will utilize. Default is for hyperthreading to be enabled.
+     */
     @JsonProperty("hyperthreading")
     public String getHyperthreading() {
         return hyperthreading;
     }
 
+    /**
+     * Hyperthreading determines the mode of hyperthreading that machines in the pool will utilize. Default is for hyperthreading to be enabled.
+     */
     @JsonProperty("hyperthreading")
     public void setHyperthreading(String hyperthreading) {
         this.hyperthreading = hyperthreading;
     }
 
+    /**
+     * Name is the name of the machine pool. For the control plane machine pool, the name will always be "master". For the compute machine pools, the only valid name is "worker".
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * Name is the name of the machine pool. For the control plane machine pool, the name will always be "master". For the compute machine pools, the only valid name is "worker".
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * MachinePool is a pool of machines to be installed.
+     */
     @JsonProperty("platform")
     public MachinePoolPlatform getPlatform() {
         return platform;
     }
 
+    /**
+     * MachinePool is a pool of machines to be installed.
+     */
     @JsonProperty("platform")
     public void setPlatform(MachinePoolPlatform platform) {
         this.platform = platform;
     }
 
+    /**
+     * Replicas is the machine count for the machine pool.
+     */
     @JsonProperty("replicas")
     public Long getReplicas() {
         return replicas;
     }
 
+    /**
+     * Replicas is the machine count for the machine pool.
+     */
     @JsonProperty("replicas")
     public void setReplicas(Long replicas) {
         this.replicas = replicas;

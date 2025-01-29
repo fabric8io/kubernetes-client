@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * prefix-based match
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -78,11 +81,17 @@ public class StringMatchPrefix implements IsStringMatchMatchType, Editable<Strin
         this.prefix = prefix;
     }
 
+    /**
+     * prefix-based match
+     */
     @JsonProperty("prefix")
     public String getPrefix() {
         return prefix;
     }
 
+    /**
+     * prefix-based match
+     */
     @JsonProperty("prefix")
     public void setPrefix(String prefix) {
         this.prefix = prefix;

@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * AlertingSpec defines parameters for alerting configuration of Prometheus servers.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -81,12 +84,18 @@ public class AlertingSpec implements Editable<AlertingSpecBuilder>, KubernetesRe
         this.alertmanagers = alertmanagers;
     }
 
+    /**
+     * Alertmanager endpoints where Prometheus should send alerts to.
+     */
     @JsonProperty("alertmanagers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<AlertmanagerEndpoints> getAlertmanagers() {
         return alertmanagers;
     }
 
+    /**
+     * Alertmanager endpoints where Prometheus should send alerts to.
+     */
     @JsonProperty("alertmanagers")
     public void setAlertmanagers(List<AlertmanagerEndpoints> alertmanagers) {
         this.alertmanagers = alertmanagers;

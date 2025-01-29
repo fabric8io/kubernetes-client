@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * DNSPlatformSpec holds cloud-provider-specific configuration for DNS administration.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class DNSPlatformSpec implements Editable<DNSPlatformSpecBuilder>, Kubern
         this.type = type;
     }
 
+    /**
+     * DNSPlatformSpec holds cloud-provider-specific configuration for DNS administration.
+     */
     @JsonProperty("aws")
     public AWSDNSSpec getAws() {
         return aws;
     }
 
+    /**
+     * DNSPlatformSpec holds cloud-provider-specific configuration for DNS administration.
+     */
     @JsonProperty("aws")
     public void setAws(AWSDNSSpec aws) {
         this.aws = aws;
     }
 
+    /**
+     * type is the underlying infrastructure provider for the cluster. Allowed values: "", "AWS".<br><p> <br><p> Individual components may not support all platforms, and must handle unrecognized platforms with best-effort defaults.
+     */
     @JsonProperty("type")
     public String getType() {
         return type;
     }
 
+    /**
+     * type is the underlying infrastructure provider for the cluster. Allowed values: "", "AWS".<br><p> <br><p> Individual components may not support all platforms, and must handle unrecognized platforms with best-effort defaults.
+     */
     @JsonProperty("type")
     public void setType(String type) {
         this.type = type;

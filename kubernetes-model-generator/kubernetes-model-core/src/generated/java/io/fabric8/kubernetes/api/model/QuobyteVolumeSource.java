@@ -17,6 +17,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Represents a Quobyte mount that lasts the lifetime of a pod. Quobyte volumes do not support ownership management or SELinux relabeling.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -69,61 +72,97 @@ public class QuobyteVolumeSource implements Editable<QuobyteVolumeSourceBuilder>
         this.volume = volume;
     }
 
+    /**
+     * group to map volume access to Default is no group
+     */
     @JsonProperty("group")
     public String getGroup() {
         return group;
     }
 
+    /**
+     * group to map volume access to Default is no group
+     */
     @JsonProperty("group")
     public void setGroup(String group) {
         this.group = group;
     }
 
+    /**
+     * readOnly here will force the Quobyte volume to be mounted with read-only permissions. Defaults to false.
+     */
     @JsonProperty("readOnly")
     public Boolean getReadOnly() {
         return readOnly;
     }
 
+    /**
+     * readOnly here will force the Quobyte volume to be mounted with read-only permissions. Defaults to false.
+     */
     @JsonProperty("readOnly")
     public void setReadOnly(Boolean readOnly) {
         this.readOnly = readOnly;
     }
 
+    /**
+     * registry represents a single or multiple Quobyte Registry services specified as a string as host:port pair (multiple entries are separated with commas) which acts as the central registry for volumes
+     */
     @JsonProperty("registry")
     public String getRegistry() {
         return registry;
     }
 
+    /**
+     * registry represents a single or multiple Quobyte Registry services specified as a string as host:port pair (multiple entries are separated with commas) which acts as the central registry for volumes
+     */
     @JsonProperty("registry")
     public void setRegistry(String registry) {
         this.registry = registry;
     }
 
+    /**
+     * tenant owning the given Quobyte volume in the Backend Used with dynamically provisioned Quobyte volumes, value is set by the plugin
+     */
     @JsonProperty("tenant")
     public String getTenant() {
         return tenant;
     }
 
+    /**
+     * tenant owning the given Quobyte volume in the Backend Used with dynamically provisioned Quobyte volumes, value is set by the plugin
+     */
     @JsonProperty("tenant")
     public void setTenant(String tenant) {
         this.tenant = tenant;
     }
 
+    /**
+     * user to map volume access to Defaults to serivceaccount user
+     */
     @JsonProperty("user")
     public String getUser() {
         return user;
     }
 
+    /**
+     * user to map volume access to Defaults to serivceaccount user
+     */
     @JsonProperty("user")
     public void setUser(String user) {
         this.user = user;
     }
 
+    /**
+     * volume is a string that references an already created Quobyte volume by name.
+     */
     @JsonProperty("volume")
     public String getVolume() {
         return volume;
     }
 
+    /**
+     * volume is a string that references an already created Quobyte volume by name.
+     */
     @JsonProperty("volume")
     public void setVolume(String volume) {
         this.volume = volume;

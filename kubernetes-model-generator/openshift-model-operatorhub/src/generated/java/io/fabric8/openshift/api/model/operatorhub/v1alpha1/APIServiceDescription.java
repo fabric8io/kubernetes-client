@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * APIServiceDescription provides details to OLM about apis provided via aggregation
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -128,125 +131,197 @@ public class APIServiceDescription implements Editable<APIServiceDescriptionBuil
         this.version = version;
     }
 
+    /**
+     * APIServiceDescription provides details to OLM about apis provided via aggregation
+     */
     @JsonProperty("actionDescriptors")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ActionDescriptor> getActionDescriptors() {
         return actionDescriptors;
     }
 
+    /**
+     * APIServiceDescription provides details to OLM about apis provided via aggregation
+     */
     @JsonProperty("actionDescriptors")
     public void setActionDescriptors(List<ActionDescriptor> actionDescriptors) {
         this.actionDescriptors = actionDescriptors;
     }
 
+    /**
+     * APIServiceDescription provides details to OLM about apis provided via aggregation
+     */
     @JsonProperty("containerPort")
     public Integer getContainerPort() {
         return containerPort;
     }
 
+    /**
+     * APIServiceDescription provides details to OLM about apis provided via aggregation
+     */
     @JsonProperty("containerPort")
     public void setContainerPort(Integer containerPort) {
         this.containerPort = containerPort;
     }
 
+    /**
+     * APIServiceDescription provides details to OLM about apis provided via aggregation
+     */
     @JsonProperty("deploymentName")
     public String getDeploymentName() {
         return deploymentName;
     }
 
+    /**
+     * APIServiceDescription provides details to OLM about apis provided via aggregation
+     */
     @JsonProperty("deploymentName")
     public void setDeploymentName(String deploymentName) {
         this.deploymentName = deploymentName;
     }
 
+    /**
+     * APIServiceDescription provides details to OLM about apis provided via aggregation
+     */
     @JsonProperty("description")
     public String getDescription() {
         return description;
     }
 
+    /**
+     * APIServiceDescription provides details to OLM about apis provided via aggregation
+     */
     @JsonProperty("description")
     public void setDescription(String description) {
         this.description = description;
     }
 
+    /**
+     * APIServiceDescription provides details to OLM about apis provided via aggregation
+     */
     @JsonProperty("displayName")
     public String getDisplayName() {
         return displayName;
     }
 
+    /**
+     * APIServiceDescription provides details to OLM about apis provided via aggregation
+     */
     @JsonProperty("displayName")
     public void setDisplayName(String displayName) {
         this.displayName = displayName;
     }
 
+    /**
+     * APIServiceDescription provides details to OLM about apis provided via aggregation
+     */
     @JsonProperty("group")
     public String getGroup() {
         return group;
     }
 
+    /**
+     * APIServiceDescription provides details to OLM about apis provided via aggregation
+     */
     @JsonProperty("group")
     public void setGroup(String group) {
         this.group = group;
     }
 
+    /**
+     * APIServiceDescription provides details to OLM about apis provided via aggregation
+     */
     @JsonProperty("kind")
     public String getKind() {
         return kind;
     }
 
+    /**
+     * APIServiceDescription provides details to OLM about apis provided via aggregation
+     */
     @JsonProperty("kind")
     public void setKind(String kind) {
         this.kind = kind;
     }
 
+    /**
+     * APIServiceDescription provides details to OLM about apis provided via aggregation
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * APIServiceDescription provides details to OLM about apis provided via aggregation
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * APIServiceDescription provides details to OLM about apis provided via aggregation
+     */
     @JsonProperty("resources")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<APIResourceReference> getResources() {
         return resources;
     }
 
+    /**
+     * APIServiceDescription provides details to OLM about apis provided via aggregation
+     */
     @JsonProperty("resources")
     public void setResources(List<APIResourceReference> resources) {
         this.resources = resources;
     }
 
+    /**
+     * APIServiceDescription provides details to OLM about apis provided via aggregation
+     */
     @JsonProperty("specDescriptors")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<SpecDescriptor> getSpecDescriptors() {
         return specDescriptors;
     }
 
+    /**
+     * APIServiceDescription provides details to OLM about apis provided via aggregation
+     */
     @JsonProperty("specDescriptors")
     public void setSpecDescriptors(List<SpecDescriptor> specDescriptors) {
         this.specDescriptors = specDescriptors;
     }
 
+    /**
+     * APIServiceDescription provides details to OLM about apis provided via aggregation
+     */
     @JsonProperty("statusDescriptors")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<StatusDescriptor> getStatusDescriptors() {
         return statusDescriptors;
     }
 
+    /**
+     * APIServiceDescription provides details to OLM about apis provided via aggregation
+     */
     @JsonProperty("statusDescriptors")
     public void setStatusDescriptors(List<StatusDescriptor> statusDescriptors) {
         this.statusDescriptors = statusDescriptors;
     }
 
+    /**
+     * APIServiceDescription provides details to OLM about apis provided via aggregation
+     */
     @JsonProperty("version")
     public String getVersion() {
         return version;
     }
 
+    /**
+     * APIServiceDescription provides details to OLM about apis provided via aggregation
+     */
     @JsonProperty("version")
     public void setVersion(String version) {
         this.version = version;

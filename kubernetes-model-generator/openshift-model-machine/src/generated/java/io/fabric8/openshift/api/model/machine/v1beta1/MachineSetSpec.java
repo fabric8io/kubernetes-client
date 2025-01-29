@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * MachineSetSpec defines the desired state of MachineSet
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -98,61 +101,97 @@ public class MachineSetSpec implements Editable<MachineSetSpecBuilder>, Kubernet
         this.template = template;
     }
 
+    /**
+     * authoritativeAPI is the API that is authoritative for this resource. Valid values are MachineAPI and ClusterAPI. When set to MachineAPI, writes to the spec of the machine.openshift.io copy of this resource will be reflected into the cluster.x-k8s.io copy. When set to ClusterAPI, writes to the spec of the cluster.x-k8s.io copy of this resource will be reflected into the machine.openshift.io copy. Updates to the status will be reflected in both copies of the resource, based on the controller implementing the functionality of the API. Currently the authoritative API determines which controller will manage the resource, this will change in a future release. To ensure the change has been accepted, please verify that the `status.authoritativeAPI` field has been updated to the desired value and that the `Synchronized` condition is present and set to `True`.
+     */
     @JsonProperty("authoritativeAPI")
     public String getAuthoritativeAPI() {
         return authoritativeAPI;
     }
 
+    /**
+     * authoritativeAPI is the API that is authoritative for this resource. Valid values are MachineAPI and ClusterAPI. When set to MachineAPI, writes to the spec of the machine.openshift.io copy of this resource will be reflected into the cluster.x-k8s.io copy. When set to ClusterAPI, writes to the spec of the cluster.x-k8s.io copy of this resource will be reflected into the machine.openshift.io copy. Updates to the status will be reflected in both copies of the resource, based on the controller implementing the functionality of the API. Currently the authoritative API determines which controller will manage the resource, this will change in a future release. To ensure the change has been accepted, please verify that the `status.authoritativeAPI` field has been updated to the desired value and that the `Synchronized` condition is present and set to `True`.
+     */
     @JsonProperty("authoritativeAPI")
     public void setAuthoritativeAPI(String authoritativeAPI) {
         this.authoritativeAPI = authoritativeAPI;
     }
 
+    /**
+     * DeletePolicy defines the policy used to identify nodes to delete when downscaling. Defaults to "Random".  Valid values are "Random, "Newest", "Oldest"
+     */
     @JsonProperty("deletePolicy")
     public String getDeletePolicy() {
         return deletePolicy;
     }
 
+    /**
+     * DeletePolicy defines the policy used to identify nodes to delete when downscaling. Defaults to "Random".  Valid values are "Random, "Newest", "Oldest"
+     */
     @JsonProperty("deletePolicy")
     public void setDeletePolicy(String deletePolicy) {
         this.deletePolicy = deletePolicy;
     }
 
+    /**
+     * MinReadySeconds is the minimum number of seconds for which a newly created machine should be ready. Defaults to 0 (machine will be considered available as soon as it is ready)
+     */
     @JsonProperty("minReadySeconds")
     public Integer getMinReadySeconds() {
         return minReadySeconds;
     }
 
+    /**
+     * MinReadySeconds is the minimum number of seconds for which a newly created machine should be ready. Defaults to 0 (machine will be considered available as soon as it is ready)
+     */
     @JsonProperty("minReadySeconds")
     public void setMinReadySeconds(Integer minReadySeconds) {
         this.minReadySeconds = minReadySeconds;
     }
 
+    /**
+     * Replicas is the number of desired replicas. This is a pointer to distinguish between explicit zero and unspecified. Defaults to 1.
+     */
     @JsonProperty("replicas")
     public Integer getReplicas() {
         return replicas;
     }
 
+    /**
+     * Replicas is the number of desired replicas. This is a pointer to distinguish between explicit zero and unspecified. Defaults to 1.
+     */
     @JsonProperty("replicas")
     public void setReplicas(Integer replicas) {
         this.replicas = replicas;
     }
 
+    /**
+     * MachineSetSpec defines the desired state of MachineSet
+     */
     @JsonProperty("selector")
     public LabelSelector getSelector() {
         return selector;
     }
 
+    /**
+     * MachineSetSpec defines the desired state of MachineSet
+     */
     @JsonProperty("selector")
     public void setSelector(LabelSelector selector) {
         this.selector = selector;
     }
 
+    /**
+     * MachineSetSpec defines the desired state of MachineSet
+     */
     @JsonProperty("template")
     public MachineTemplateSpec getTemplate() {
         return template;
     }
 
+    /**
+     * MachineSetSpec defines the desired state of MachineSet
+     */
     @JsonProperty("template")
     public void setTemplate(MachineTemplateSpec template) {
         this.template = template;

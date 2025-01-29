@@ -94,51 +94,81 @@ public class JVMExceptionSpec implements Editable<JVMExceptionSpecBuilder>, Kube
         this.port = port;
     }
 
+    /**
+     * Java class
+     */
     @JsonProperty("class")
     public String getClassName() {
         return className;
     }
 
+    /**
+     * Java class
+     */
     @JsonProperty("class")
     public void setClassName(String className) {
         this.className = className;
     }
 
+    /**
+     * the exception which needs to throw for action `exception`
+     */
     @JsonProperty("exception")
     public String getException() {
         return exception;
     }
 
+    /**
+     * the exception which needs to throw for action `exception`
+     */
     @JsonProperty("exception")
     public void setException(String exception) {
         this.exception = exception;
     }
 
+    /**
+     * the method in Java class
+     */
     @JsonProperty("method")
     public String getMethod() {
         return method;
     }
 
+    /**
+     * the method in Java class
+     */
     @JsonProperty("method")
     public void setMethod(String method) {
         this.method = method;
     }
 
+    /**
+     * the pid of Java process which needs to attach
+     */
     @JsonProperty("pid")
     public Integer getPid() {
         return pid;
     }
 
+    /**
+     * the pid of Java process which needs to attach
+     */
     @JsonProperty("pid")
     public void setPid(Integer pid) {
         this.pid = pid;
     }
 
+    /**
+     * the port of agent server, default 9277
+     */
     @JsonProperty("port")
     public Integer getPort() {
         return port;
     }
 
+    /**
+     * the port of agent server, default 9277
+     */
     @JsonProperty("port")
     public void setPort(Integer port) {
         this.port = port;

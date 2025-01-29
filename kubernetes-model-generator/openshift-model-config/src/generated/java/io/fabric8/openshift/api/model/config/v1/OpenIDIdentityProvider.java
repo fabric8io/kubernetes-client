@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * OpenIDIdentityProvider provides identities for users authenticating using OpenID credentials
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -106,73 +109,115 @@ public class OpenIDIdentityProvider implements Editable<OpenIDIdentityProviderBu
         this.issuer = issuer;
     }
 
+    /**
+     * OpenIDIdentityProvider provides identities for users authenticating using OpenID credentials
+     */
     @JsonProperty("ca")
     public ConfigMapNameReference getCa() {
         return ca;
     }
 
+    /**
+     * OpenIDIdentityProvider provides identities for users authenticating using OpenID credentials
+     */
     @JsonProperty("ca")
     public void setCa(ConfigMapNameReference ca) {
         this.ca = ca;
     }
 
+    /**
+     * OpenIDIdentityProvider provides identities for users authenticating using OpenID credentials
+     */
     @JsonProperty("claims")
     public OpenIDClaims getClaims() {
         return claims;
     }
 
+    /**
+     * OpenIDIdentityProvider provides identities for users authenticating using OpenID credentials
+     */
     @JsonProperty("claims")
     public void setClaims(OpenIDClaims claims) {
         this.claims = claims;
     }
 
+    /**
+     * clientID is the oauth client ID
+     */
     @JsonProperty("clientID")
     public String getClientID() {
         return clientID;
     }
 
+    /**
+     * clientID is the oauth client ID
+     */
     @JsonProperty("clientID")
     public void setClientID(String clientID) {
         this.clientID = clientID;
     }
 
+    /**
+     * OpenIDIdentityProvider provides identities for users authenticating using OpenID credentials
+     */
     @JsonProperty("clientSecret")
     public SecretNameReference getClientSecret() {
         return clientSecret;
     }
 
+    /**
+     * OpenIDIdentityProvider provides identities for users authenticating using OpenID credentials
+     */
     @JsonProperty("clientSecret")
     public void setClientSecret(SecretNameReference clientSecret) {
         this.clientSecret = clientSecret;
     }
 
+    /**
+     * extraAuthorizeParameters are any custom parameters to add to the authorize request.
+     */
     @JsonProperty("extraAuthorizeParameters")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getExtraAuthorizeParameters() {
         return extraAuthorizeParameters;
     }
 
+    /**
+     * extraAuthorizeParameters are any custom parameters to add to the authorize request.
+     */
     @JsonProperty("extraAuthorizeParameters")
     public void setExtraAuthorizeParameters(Map<String, String> extraAuthorizeParameters) {
         this.extraAuthorizeParameters = extraAuthorizeParameters;
     }
 
+    /**
+     * extraScopes are any scopes to request in addition to the standard "openid" scope.
+     */
     @JsonProperty("extraScopes")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getExtraScopes() {
         return extraScopes;
     }
 
+    /**
+     * extraScopes are any scopes to request in addition to the standard "openid" scope.
+     */
     @JsonProperty("extraScopes")
     public void setExtraScopes(List<String> extraScopes) {
         this.extraScopes = extraScopes;
     }
 
+    /**
+     * issuer is the URL that the OpenID Provider asserts as its Issuer Identifier. It must use the https scheme with no query or fragment component.
+     */
     @JsonProperty("issuer")
     public String getIssuer() {
         return issuer;
     }
 
+    /**
+     * issuer is the URL that the OpenID Provider asserts as its Issuer Identifier. It must use the https scheme with no query or fragment component.
+     */
     @JsonProperty("issuer")
     public void setIssuer(String issuer) {
         this.issuer = issuer;

@@ -40,6 +40,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * NutanixMachineProviderConfig is the Schema for the nutanixmachineproviderconfigs API Compatibility level 1: Stable within a major release for a minimum of 12 months or 3 minor releases (whichever is longer).
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -92,9 +95,6 @@ import lombok.experimental.Accessors;
 public class NutanixMachineProviderConfig implements Editable<NutanixMachineProviderConfigBuilder>, HasMetadata, Namespaced
 {
 
-    /**
-     * (Required)
-     */
     @JsonProperty("apiVersion")
     private String apiVersion = "machine.openshift.io/v1";
     @JsonProperty("bootType")
@@ -116,9 +116,6 @@ public class NutanixMachineProviderConfig implements Editable<NutanixMachineProv
     private List<NutanixGPU> gpus = new ArrayList<>();
     @JsonProperty("image")
     private NutanixResourceIdentifier image;
-    /**
-     * (Required)
-     */
     @JsonProperty("kind")
     private String kind = "NutanixMachineProviderConfig";
     @JsonProperty("memorySize")
@@ -170,7 +167,7 @@ public class NutanixMachineProviderConfig implements Editable<NutanixMachineProv
     }
 
     /**
-     * (Required)
+     * APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -178,98 +175,146 @@ public class NutanixMachineProviderConfig implements Editable<NutanixMachineProv
     }
 
     /**
-     * (Required)
+     * APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
         this.apiVersion = apiVersion;
     }
 
+    /**
+     * bootType indicates the boot type (Legacy, UEFI or SecureBoot) the Machine's VM uses to boot. If this field is empty or omitted, the VM will use the default boot type "Legacy" to boot. "SecureBoot" depends on "UEFI" boot, i.e., enabling "SecureBoot" means that "UEFI" boot is also enabled.
+     */
     @JsonProperty("bootType")
     public String getBootType() {
         return bootType;
     }
 
+    /**
+     * bootType indicates the boot type (Legacy, UEFI or SecureBoot) the Machine's VM uses to boot. If this field is empty or omitted, the VM will use the default boot type "Legacy" to boot. "SecureBoot" depends on "UEFI" boot, i.e., enabling "SecureBoot" means that "UEFI" boot is also enabled.
+     */
     @JsonProperty("bootType")
     public void setBootType(String bootType) {
         this.bootType = bootType;
     }
 
+    /**
+     * categories optionally adds one or more prism categories (each with key and value) for the Machine's VM to associate with. All the category key and value pairs specified must already exist in the prism central.
+     */
     @JsonProperty("categories")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<NutanixCategory> getCategories() {
         return categories;
     }
 
+    /**
+     * categories optionally adds one or more prism categories (each with key and value) for the Machine's VM to associate with. All the category key and value pairs specified must already exist in the prism central.
+     */
     @JsonProperty("categories")
     public void setCategories(List<NutanixCategory> categories) {
         this.categories = categories;
     }
 
+    /**
+     * NutanixMachineProviderConfig is the Schema for the nutanixmachineproviderconfigs API Compatibility level 1: Stable within a major release for a minimum of 12 months or 3 minor releases (whichever is longer).
+     */
     @JsonProperty("cluster")
     public NutanixResourceIdentifier getCluster() {
         return cluster;
     }
 
+    /**
+     * NutanixMachineProviderConfig is the Schema for the nutanixmachineproviderconfigs API Compatibility level 1: Stable within a major release for a minimum of 12 months or 3 minor releases (whichever is longer).
+     */
     @JsonProperty("cluster")
     public void setCluster(NutanixResourceIdentifier cluster) {
         this.cluster = cluster;
     }
 
+    /**
+     * NutanixMachineProviderConfig is the Schema for the nutanixmachineproviderconfigs API Compatibility level 1: Stable within a major release for a minimum of 12 months or 3 minor releases (whichever is longer).
+     */
     @JsonProperty("credentialsSecret")
     public LocalObjectReference getCredentialsSecret() {
         return credentialsSecret;
     }
 
+    /**
+     * NutanixMachineProviderConfig is the Schema for the nutanixmachineproviderconfigs API Compatibility level 1: Stable within a major release for a minimum of 12 months or 3 minor releases (whichever is longer).
+     */
     @JsonProperty("credentialsSecret")
     public void setCredentialsSecret(LocalObjectReference credentialsSecret) {
         this.credentialsSecret = credentialsSecret;
     }
 
+    /**
+     * dataDisks holds information of the data disks to attach to the Machine's VM
+     */
     @JsonProperty("dataDisks")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<NutanixVMDisk> getDataDisks() {
         return dataDisks;
     }
 
+    /**
+     * dataDisks holds information of the data disks to attach to the Machine's VM
+     */
     @JsonProperty("dataDisks")
     public void setDataDisks(List<NutanixVMDisk> dataDisks) {
         this.dataDisks = dataDisks;
     }
 
+    /**
+     * NutanixMachineProviderConfig is the Schema for the nutanixmachineproviderconfigs API Compatibility level 1: Stable within a major release for a minimum of 12 months or 3 minor releases (whichever is longer).
+     */
     @JsonProperty("failureDomain")
     public NutanixFailureDomainReference getFailureDomain() {
         return failureDomain;
     }
 
+    /**
+     * NutanixMachineProviderConfig is the Schema for the nutanixmachineproviderconfigs API Compatibility level 1: Stable within a major release for a minimum of 12 months or 3 minor releases (whichever is longer).
+     */
     @JsonProperty("failureDomain")
     public void setFailureDomain(NutanixFailureDomainReference failureDomain) {
         this.failureDomain = failureDomain;
     }
 
+    /**
+     * gpus is a list of GPU devices to attach to the machine's VM. The GPU devices should already exist in Prism Central and associated with one of the Prism Element's hosts and available for the VM to attach (in "UNUSED" status).
+     */
     @JsonProperty("gpus")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<NutanixGPU> getGpus() {
         return gpus;
     }
 
+    /**
+     * gpus is a list of GPU devices to attach to the machine's VM. The GPU devices should already exist in Prism Central and associated with one of the Prism Element's hosts and available for the VM to attach (in "UNUSED" status).
+     */
     @JsonProperty("gpus")
     public void setGpus(List<NutanixGPU> gpus) {
         this.gpus = gpus;
     }
 
+    /**
+     * NutanixMachineProviderConfig is the Schema for the nutanixmachineproviderconfigs API Compatibility level 1: Stable within a major release for a minimum of 12 months or 3 minor releases (whichever is longer).
+     */
     @JsonProperty("image")
     public NutanixResourceIdentifier getImage() {
         return image;
     }
 
+    /**
+     * NutanixMachineProviderConfig is the Schema for the nutanixmachineproviderconfigs API Compatibility level 1: Stable within a major release for a minimum of 12 months or 3 minor releases (whichever is longer).
+     */
     @JsonProperty("image")
     public void setImage(NutanixResourceIdentifier image) {
         this.image = image;
     }
 
     /**
-     * (Required)
+     * Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -277,89 +322,137 @@ public class NutanixMachineProviderConfig implements Editable<NutanixMachineProv
     }
 
     /**
-     * (Required)
+     * Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
      */
     @JsonProperty("kind")
     public void setKind(String kind) {
         this.kind = kind;
     }
 
+    /**
+     * NutanixMachineProviderConfig is the Schema for the nutanixmachineproviderconfigs API Compatibility level 1: Stable within a major release for a minimum of 12 months or 3 minor releases (whichever is longer).
+     */
     @JsonProperty("memorySize")
     public Quantity getMemorySize() {
         return memorySize;
     }
 
+    /**
+     * NutanixMachineProviderConfig is the Schema for the nutanixmachineproviderconfigs API Compatibility level 1: Stable within a major release for a minimum of 12 months or 3 minor releases (whichever is longer).
+     */
     @JsonProperty("memorySize")
     public void setMemorySize(Quantity memorySize) {
         this.memorySize = memorySize;
     }
 
+    /**
+     * NutanixMachineProviderConfig is the Schema for the nutanixmachineproviderconfigs API Compatibility level 1: Stable within a major release for a minimum of 12 months or 3 minor releases (whichever is longer).
+     */
     @JsonProperty("metadata")
     public ObjectMeta getMetadata() {
         return metadata;
     }
 
+    /**
+     * NutanixMachineProviderConfig is the Schema for the nutanixmachineproviderconfigs API Compatibility level 1: Stable within a major release for a minimum of 12 months or 3 minor releases (whichever is longer).
+     */
     @JsonProperty("metadata")
     public void setMetadata(ObjectMeta metadata) {
         this.metadata = metadata;
     }
 
+    /**
+     * NutanixMachineProviderConfig is the Schema for the nutanixmachineproviderconfigs API Compatibility level 1: Stable within a major release for a minimum of 12 months or 3 minor releases (whichever is longer).
+     */
     @JsonProperty("project")
     public NutanixResourceIdentifier getProject() {
         return project;
     }
 
+    /**
+     * NutanixMachineProviderConfig is the Schema for the nutanixmachineproviderconfigs API Compatibility level 1: Stable within a major release for a minimum of 12 months or 3 minor releases (whichever is longer).
+     */
     @JsonProperty("project")
     public void setProject(NutanixResourceIdentifier project) {
         this.project = project;
     }
 
+    /**
+     * subnets holds a list of identifiers (one or more) of the cluster's network subnets for the Machine's VM to connect to. The subnet identifiers (uuid or name) can be obtained from the Prism Central console or using the prism_central API.
+     */
     @JsonProperty("subnets")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<NutanixResourceIdentifier> getSubnets() {
         return subnets;
     }
 
+    /**
+     * subnets holds a list of identifiers (one or more) of the cluster's network subnets for the Machine's VM to connect to. The subnet identifiers (uuid or name) can be obtained from the Prism Central console or using the prism_central API.
+     */
     @JsonProperty("subnets")
     public void setSubnets(List<NutanixResourceIdentifier> subnets) {
         this.subnets = subnets;
     }
 
+    /**
+     * NutanixMachineProviderConfig is the Schema for the nutanixmachineproviderconfigs API Compatibility level 1: Stable within a major release for a minimum of 12 months or 3 minor releases (whichever is longer).
+     */
     @JsonProperty("systemDiskSize")
     public Quantity getSystemDiskSize() {
         return systemDiskSize;
     }
 
+    /**
+     * NutanixMachineProviderConfig is the Schema for the nutanixmachineproviderconfigs API Compatibility level 1: Stable within a major release for a minimum of 12 months or 3 minor releases (whichever is longer).
+     */
     @JsonProperty("systemDiskSize")
     public void setSystemDiskSize(Quantity systemDiskSize) {
         this.systemDiskSize = systemDiskSize;
     }
 
+    /**
+     * NutanixMachineProviderConfig is the Schema for the nutanixmachineproviderconfigs API Compatibility level 1: Stable within a major release for a minimum of 12 months or 3 minor releases (whichever is longer).
+     */
     @JsonProperty("userDataSecret")
     public LocalObjectReference getUserDataSecret() {
         return userDataSecret;
     }
 
+    /**
+     * NutanixMachineProviderConfig is the Schema for the nutanixmachineproviderconfigs API Compatibility level 1: Stable within a major release for a minimum of 12 months or 3 minor releases (whichever is longer).
+     */
     @JsonProperty("userDataSecret")
     public void setUserDataSecret(LocalObjectReference userDataSecret) {
         this.userDataSecret = userDataSecret;
     }
 
+    /**
+     * vcpuSockets is the number of vCPU sockets of the VM
+     */
     @JsonProperty("vcpuSockets")
     public Integer getVcpuSockets() {
         return vcpuSockets;
     }
 
+    /**
+     * vcpuSockets is the number of vCPU sockets of the VM
+     */
     @JsonProperty("vcpuSockets")
     public void setVcpuSockets(Integer vcpuSockets) {
         this.vcpuSockets = vcpuSockets;
     }
 
+    /**
+     * vcpusPerSocket is the number of vCPUs per socket of the VM
+     */
     @JsonProperty("vcpusPerSocket")
     public Integer getVcpusPerSocket() {
         return vcpusPerSocket;
     }
 
+    /**
+     * vcpusPerSocket is the number of vCPUs per socket of the VM
+     */
     @JsonProperty("vcpusPerSocket")
     public void setVcpusPerSocket(Integer vcpusPerSocket) {
         this.vcpusPerSocket = vcpusPerSocket;

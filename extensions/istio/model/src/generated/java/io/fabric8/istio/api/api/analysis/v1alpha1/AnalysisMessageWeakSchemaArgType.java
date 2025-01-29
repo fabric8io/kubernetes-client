@@ -82,21 +82,33 @@ public class AnalysisMessageWeakSchemaArgType implements Editable<AnalysisMessag
         this.name = name;
     }
 
+    /**
+     * Required. Should be a golang type, used in code generation. Ideally this will change to a less language-pinned type before this gets out of alpha, but for compatibility with current istio/istio code it's go_type for now.
+     */
     @JsonProperty("goType")
     public String getGoType() {
         return goType;
     }
 
+    /**
+     * Required. Should be a golang type, used in code generation. Ideally this will change to a less language-pinned type before this gets out of alpha, but for compatibility with current istio/istio code it's go_type for now.
+     */
     @JsonProperty("goType")
     public void setGoType(String goType) {
         this.goType = goType;
     }
 
+    /**
+     * Required
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * Required
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;

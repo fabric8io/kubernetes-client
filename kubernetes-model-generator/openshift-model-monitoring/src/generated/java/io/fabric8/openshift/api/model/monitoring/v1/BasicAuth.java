@@ -33,6 +33,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * BasicAuth configures HTTP Basic Authentication settings.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -83,21 +86,33 @@ public class BasicAuth implements Editable<BasicAuthBuilder>, KubernetesResource
         this.username = username;
     }
 
+    /**
+     * BasicAuth configures HTTP Basic Authentication settings.
+     */
     @JsonProperty("password")
     public SecretKeySelector getPassword() {
         return password;
     }
 
+    /**
+     * BasicAuth configures HTTP Basic Authentication settings.
+     */
     @JsonProperty("password")
     public void setPassword(SecretKeySelector password) {
         this.password = password;
     }
 
+    /**
+     * BasicAuth configures HTTP Basic Authentication settings.
+     */
     @JsonProperty("username")
     public SecretKeySelector getUsername() {
         return username;
     }
 
+    /**
+     * BasicAuth configures HTTP Basic Authentication settings.
+     */
     @JsonProperty("username")
     public void setUsername(SecretKeySelector username) {
         this.username = username;

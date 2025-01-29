@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * InstallMode associates an InstallModeType with a flag representing if the CSV supports it
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class InstallMode implements Editable<InstallModeBuilder>, KubernetesReso
         this.type = type;
     }
 
+    /**
+     * InstallMode associates an InstallModeType with a flag representing if the CSV supports it
+     */
     @JsonProperty("supported")
     public Boolean getSupported() {
         return supported;
     }
 
+    /**
+     * InstallMode associates an InstallModeType with a flag representing if the CSV supports it
+     */
     @JsonProperty("supported")
     public void setSupported(Boolean supported) {
         this.supported = supported;
     }
 
+    /**
+     * InstallMode associates an InstallModeType with a flag representing if the CSV supports it
+     */
     @JsonProperty("type")
     public String getType() {
         return type;
     }
 
+    /**
+     * InstallMode associates an InstallModeType with a flag representing if the CSV supports it
+     */
     @JsonProperty("type")
     public void setType(String type) {
         this.type = type;

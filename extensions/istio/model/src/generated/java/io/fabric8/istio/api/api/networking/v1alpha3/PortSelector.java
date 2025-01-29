@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * PortSelector specifies the number of a port to be used for matching or selection for final routing.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -78,11 +81,17 @@ public class PortSelector implements Editable<PortSelectorBuilder>, KubernetesRe
         this.number = number;
     }
 
+    /**
+     * Valid port number
+     */
     @JsonProperty("number")
     public Long getNumber() {
         return number;
     }
 
+    /**
+     * Valid port number
+     */
     @JsonProperty("number")
     public void setNumber(Long number) {
         this.number = number;

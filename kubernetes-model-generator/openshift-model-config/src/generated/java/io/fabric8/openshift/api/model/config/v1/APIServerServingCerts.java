@@ -81,12 +81,18 @@ public class APIServerServingCerts implements Editable<APIServerServingCertsBuil
         this.namedCertificates = namedCertificates;
     }
 
+    /**
+     * namedCertificates references secrets containing the TLS cert info for serving secure traffic to specific hostnames. If no named certificates are provided, or no named certificates match the server name as understood by a client, the defaultServingCertificate will be used.
+     */
     @JsonProperty("namedCertificates")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<APIServerNamedServingCert> getNamedCertificates() {
         return namedCertificates;
     }
 
+    /**
+     * namedCertificates references secrets containing the TLS cert info for serving secure traffic to specific hostnames. If no named certificates are provided, or no named certificates match the server name as understood by a client, the defaultServingCertificate will be used.
+     */
     @JsonProperty("namedCertificates")
     public void setNamedCertificates(List<APIServerNamedServingCert> namedCertificates) {
         this.namedCertificates = namedCertificates;

@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * GitRefInfo is a single ref
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -110,91 +113,145 @@ public class GitRefInfo implements Editable<GitRefInfoBuilder>, KubernetesResour
         this.uri = uri;
     }
 
+    /**
+     * GitRefInfo is a single ref
+     */
     @JsonProperty("author")
     public SourceControlUser getAuthor() {
         return author;
     }
 
+    /**
+     * GitRefInfo is a single ref
+     */
     @JsonProperty("author")
     public void setAuthor(SourceControlUser author) {
         this.author = author;
     }
 
+    /**
+     * commit is the commit hash identifying a specific commit
+     */
     @JsonProperty("commit")
     public String getCommit() {
         return commit;
     }
 
+    /**
+     * commit is the commit hash identifying a specific commit
+     */
     @JsonProperty("commit")
     public void setCommit(String commit) {
         this.commit = commit;
     }
 
+    /**
+     * GitRefInfo is a single ref
+     */
     @JsonProperty("committer")
     public SourceControlUser getCommitter() {
         return committer;
     }
 
+    /**
+     * GitRefInfo is a single ref
+     */
     @JsonProperty("committer")
     public void setCommitter(SourceControlUser committer) {
         this.committer = committer;
     }
 
+    /**
+     * httpProxy is a proxy used to reach the git repository over http
+     */
     @JsonProperty("httpProxy")
     public String getHttpProxy() {
         return httpProxy;
     }
 
+    /**
+     * httpProxy is a proxy used to reach the git repository over http
+     */
     @JsonProperty("httpProxy")
     public void setHttpProxy(String httpProxy) {
         this.httpProxy = httpProxy;
     }
 
+    /**
+     * httpsProxy is a proxy used to reach the git repository over https
+     */
     @JsonProperty("httpsProxy")
     public String getHttpsProxy() {
         return httpsProxy;
     }
 
+    /**
+     * httpsProxy is a proxy used to reach the git repository over https
+     */
     @JsonProperty("httpsProxy")
     public void setHttpsProxy(String httpsProxy) {
         this.httpsProxy = httpsProxy;
     }
 
+    /**
+     * message is the description of a specific commit
+     */
     @JsonProperty("message")
     public String getMessage() {
         return message;
     }
 
+    /**
+     * message is the description of a specific commit
+     */
     @JsonProperty("message")
     public void setMessage(String message) {
         this.message = message;
     }
 
+    /**
+     * noProxy is the list of domains for which the proxy should not be used
+     */
     @JsonProperty("noProxy")
     public String getNoProxy() {
         return noProxy;
     }
 
+    /**
+     * noProxy is the list of domains for which the proxy should not be used
+     */
     @JsonProperty("noProxy")
     public void setNoProxy(String noProxy) {
         this.noProxy = noProxy;
     }
 
+    /**
+     * ref is the branch/tag/ref to build.
+     */
     @JsonProperty("ref")
     public String getRef() {
         return ref;
     }
 
+    /**
+     * ref is the branch/tag/ref to build.
+     */
     @JsonProperty("ref")
     public void setRef(String ref) {
         this.ref = ref;
     }
 
+    /**
+     * uri points to the source that will be built. The structure of the source will depend on the type of build to run
+     */
     @JsonProperty("uri")
     public String getUri() {
         return uri;
     }
 
+    /**
+     * uri points to the source that will be built. The structure of the source will depend on the type of build to run
+     */
     @JsonProperty("uri")
     public void setUri(String uri) {
         this.uri = uri;

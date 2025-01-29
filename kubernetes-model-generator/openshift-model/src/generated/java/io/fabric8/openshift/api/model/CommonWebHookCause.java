@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * CommonWebHookCause factors out the identical format of these webhook causes into struct so we can share it in the specific causes;  it is too late for GitHub and Generic but we can leverage this pattern with GitLab and Bitbucket.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class CommonWebHookCause implements Editable<CommonWebHookCauseBuilder>, 
         this.secret = secret;
     }
 
+    /**
+     * CommonWebHookCause factors out the identical format of these webhook causes into struct so we can share it in the specific causes;  it is too late for GitHub and Generic but we can leverage this pattern with GitLab and Bitbucket.
+     */
     @JsonProperty("revision")
     public SourceRevision getRevision() {
         return revision;
     }
 
+    /**
+     * CommonWebHookCause factors out the identical format of these webhook causes into struct so we can share it in the specific causes;  it is too late for GitHub and Generic but we can leverage this pattern with GitLab and Bitbucket.
+     */
     @JsonProperty("revision")
     public void setRevision(SourceRevision revision) {
         this.revision = revision;
     }
 
+    /**
+     * Secret is the obfuscated webhook secret that triggered a build.
+     */
     @JsonProperty("secret")
     public String getSecret() {
         return secret;
     }
 
+    /**
+     * Secret is the obfuscated webhook secret that triggered a build.
+     */
     @JsonProperty("secret")
     public void setSecret(String secret) {
         this.secret = secret;

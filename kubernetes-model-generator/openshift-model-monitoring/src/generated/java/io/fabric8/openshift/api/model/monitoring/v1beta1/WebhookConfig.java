@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * WebhookConfig configures notifications via a generic receiver supporting the webhook payload. See https://prometheus.io/docs/alerting/latest/configuration/#webhook_config
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -94,51 +97,81 @@ public class WebhookConfig implements Editable<WebhookConfigBuilder>, Kubernetes
         this.urlSecret = urlSecret;
     }
 
+    /**
+     * WebhookConfig configures notifications via a generic receiver supporting the webhook payload. See https://prometheus.io/docs/alerting/latest/configuration/#webhook_config
+     */
     @JsonProperty("httpConfig")
     public HTTPConfig getHttpConfig() {
         return httpConfig;
     }
 
+    /**
+     * WebhookConfig configures notifications via a generic receiver supporting the webhook payload. See https://prometheus.io/docs/alerting/latest/configuration/#webhook_config
+     */
     @JsonProperty("httpConfig")
     public void setHttpConfig(HTTPConfig httpConfig) {
         this.httpConfig = httpConfig;
     }
 
+    /**
+     * Maximum number of alerts to be sent per webhook message. When 0, all alerts are included.
+     */
     @JsonProperty("maxAlerts")
     public Integer getMaxAlerts() {
         return maxAlerts;
     }
 
+    /**
+     * Maximum number of alerts to be sent per webhook message. When 0, all alerts are included.
+     */
     @JsonProperty("maxAlerts")
     public void setMaxAlerts(Integer maxAlerts) {
         this.maxAlerts = maxAlerts;
     }
 
+    /**
+     * Whether or not to notify about resolved alerts.
+     */
     @JsonProperty("sendResolved")
     public Boolean getSendResolved() {
         return sendResolved;
     }
 
+    /**
+     * Whether or not to notify about resolved alerts.
+     */
     @JsonProperty("sendResolved")
     public void setSendResolved(Boolean sendResolved) {
         this.sendResolved = sendResolved;
     }
 
+    /**
+     * The URL to send HTTP POST requests to. `urlSecret` takes precedence over `url`. One of `urlSecret` and `url` should be defined.
+     */
     @JsonProperty("url")
     public String getUrl() {
         return url;
     }
 
+    /**
+     * The URL to send HTTP POST requests to. `urlSecret` takes precedence over `url`. One of `urlSecret` and `url` should be defined.
+     */
     @JsonProperty("url")
     public void setUrl(String url) {
         this.url = url;
     }
 
+    /**
+     * WebhookConfig configures notifications via a generic receiver supporting the webhook payload. See https://prometheus.io/docs/alerting/latest/configuration/#webhook_config
+     */
     @JsonProperty("urlSecret")
     public SecretKeySelector getUrlSecret() {
         return urlSecret;
     }
 
+    /**
+     * WebhookConfig configures notifications via a generic receiver supporting the webhook payload. See https://prometheus.io/docs/alerting/latest/configuration/#webhook_config
+     */
     @JsonProperty("urlSecret")
     public void setUrlSecret(SecretKeySelector urlSecret) {
         this.urlSecret = urlSecret;

@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Ref can be used to refer to a specific instance of a StepAction.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -78,11 +81,17 @@ public class Ref implements Editable<RefBuilder>, KubernetesResource
         this.name = name;
     }
 
+    /**
+     * Name of the referenced step
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * Name of the referenced step
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;

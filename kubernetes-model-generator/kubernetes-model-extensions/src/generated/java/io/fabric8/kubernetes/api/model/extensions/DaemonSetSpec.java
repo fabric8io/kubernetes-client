@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * DaemonSetSpec is the specification of a daemon set.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -98,61 +101,97 @@ public class DaemonSetSpec implements Editable<DaemonSetSpecBuilder>, Kubernetes
         this.updateStrategy = updateStrategy;
     }
 
+    /**
+     * The minimum number of seconds for which a newly created DaemonSet pod should be ready without any of its container crashing, for it to be considered available. Defaults to 0 (pod will be considered available as soon as it is ready).
+     */
     @JsonProperty("minReadySeconds")
     public Integer getMinReadySeconds() {
         return minReadySeconds;
     }
 
+    /**
+     * The minimum number of seconds for which a newly created DaemonSet pod should be ready without any of its container crashing, for it to be considered available. Defaults to 0 (pod will be considered available as soon as it is ready).
+     */
     @JsonProperty("minReadySeconds")
     public void setMinReadySeconds(Integer minReadySeconds) {
         this.minReadySeconds = minReadySeconds;
     }
 
+    /**
+     * The number of old history to retain to allow rollback. This is a pointer to distinguish between explicit zero and not specified. Defaults to 10.
+     */
     @JsonProperty("revisionHistoryLimit")
     public Integer getRevisionHistoryLimit() {
         return revisionHistoryLimit;
     }
 
+    /**
+     * The number of old history to retain to allow rollback. This is a pointer to distinguish between explicit zero and not specified. Defaults to 10.
+     */
     @JsonProperty("revisionHistoryLimit")
     public void setRevisionHistoryLimit(Integer revisionHistoryLimit) {
         this.revisionHistoryLimit = revisionHistoryLimit;
     }
 
+    /**
+     * DaemonSetSpec is the specification of a daemon set.
+     */
     @JsonProperty("selector")
     public LabelSelector getSelector() {
         return selector;
     }
 
+    /**
+     * DaemonSetSpec is the specification of a daemon set.
+     */
     @JsonProperty("selector")
     public void setSelector(LabelSelector selector) {
         this.selector = selector;
     }
 
+    /**
+     * DaemonSetSpec is the specification of a daemon set.
+     */
     @JsonProperty("template")
     public PodTemplateSpec getTemplate() {
         return template;
     }
 
+    /**
+     * DaemonSetSpec is the specification of a daemon set.
+     */
     @JsonProperty("template")
     public void setTemplate(PodTemplateSpec template) {
         this.template = template;
     }
 
+    /**
+     * DEPRECATED. A sequence number representing a specific generation of the template. Populated by the system. It can be set only during the creation.
+     */
     @JsonProperty("templateGeneration")
     public Long getTemplateGeneration() {
         return templateGeneration;
     }
 
+    /**
+     * DEPRECATED. A sequence number representing a specific generation of the template. Populated by the system. It can be set only during the creation.
+     */
     @JsonProperty("templateGeneration")
     public void setTemplateGeneration(Long templateGeneration) {
         this.templateGeneration = templateGeneration;
     }
 
+    /**
+     * DaemonSetSpec is the specification of a daemon set.
+     */
     @JsonProperty("updateStrategy")
     public DaemonSetUpdateStrategy getUpdateStrategy() {
         return updateStrategy;
     }
 
+    /**
+     * DaemonSetSpec is the specification of a daemon set.
+     */
     @JsonProperty("updateStrategy")
     public void setUpdateStrategy(DaemonSetUpdateStrategy updateStrategy) {
         this.updateStrategy = updateStrategy;

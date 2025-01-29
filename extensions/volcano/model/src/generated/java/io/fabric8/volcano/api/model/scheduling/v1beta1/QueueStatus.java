@@ -33,6 +33,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * QueueStatus represents the status of Queue.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -108,82 +111,130 @@ public class QueueStatus implements Editable<QueueStatusBuilder>, KubernetesReso
         this.unknown = unknown;
     }
 
+    /**
+     * Allocated is allocated resources in queue
+     */
     @JsonProperty("allocated")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, Quantity> getAllocated() {
         return allocated;
     }
 
+    /**
+     * Allocated is allocated resources in queue
+     */
     @JsonProperty("allocated")
     public void setAllocated(Map<String, Quantity> allocated) {
         this.allocated = allocated;
     }
 
+    /**
+     * The number of `Completed` PodGroup in this queue.
+     */
     @JsonProperty("completed")
     public Integer getCompleted() {
         return completed;
     }
 
+    /**
+     * The number of `Completed` PodGroup in this queue.
+     */
     @JsonProperty("completed")
     public void setCompleted(Integer completed) {
         this.completed = completed;
     }
 
+    /**
+     * The number of `Inqueue` PodGroup in this queue.
+     */
     @JsonProperty("inqueue")
     public Integer getInqueue() {
         return inqueue;
     }
 
+    /**
+     * The number of `Inqueue` PodGroup in this queue.
+     */
     @JsonProperty("inqueue")
     public void setInqueue(Integer inqueue) {
         this.inqueue = inqueue;
     }
 
+    /**
+     * The number of 'Pending' PodGroup in this queue.
+     */
     @JsonProperty("pending")
     public Integer getPending() {
         return pending;
     }
 
+    /**
+     * The number of 'Pending' PodGroup in this queue.
+     */
     @JsonProperty("pending")
     public void setPending(Integer pending) {
         this.pending = pending;
     }
 
+    /**
+     * QueueStatus represents the status of Queue.
+     */
     @JsonProperty("reservation")
     public Reservation getReservation() {
         return reservation;
     }
 
+    /**
+     * QueueStatus represents the status of Queue.
+     */
     @JsonProperty("reservation")
     public void setReservation(Reservation reservation) {
         this.reservation = reservation;
     }
 
+    /**
+     * The number of 'Running' PodGroup in this queue.
+     */
     @JsonProperty("running")
     public Integer getRunning() {
         return running;
     }
 
+    /**
+     * The number of 'Running' PodGroup in this queue.
+     */
     @JsonProperty("running")
     public void setRunning(Integer running) {
         this.running = running;
     }
 
+    /**
+     * State is state of queue
+     */
     @JsonProperty("state")
     public String getState() {
         return state;
     }
 
+    /**
+     * State is state of queue
+     */
     @JsonProperty("state")
     public void setState(String state) {
         this.state = state;
     }
 
+    /**
+     * The number of 'Unknown' PodGroup in this queue.
+     */
     @JsonProperty("unknown")
     public Integer getUnknown() {
         return unknown;
     }
 
+    /**
+     * The number of 'Unknown' PodGroup in this queue.
+     */
     @JsonProperty("unknown")
     public void setUnknown(Integer unknown) {
         this.unknown = unknown;

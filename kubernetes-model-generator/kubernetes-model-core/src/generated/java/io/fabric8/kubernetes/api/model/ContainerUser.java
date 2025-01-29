@@ -17,6 +17,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ContainerUser represents user identity information
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -49,11 +52,17 @@ public class ContainerUser implements Editable<ContainerUserBuilder>, Kubernetes
         this.linux = linux;
     }
 
+    /**
+     * ContainerUser represents user identity information
+     */
     @JsonProperty("linux")
     public LinuxContainerUser getLinux() {
         return linux;
     }
 
+    /**
+     * ContainerUser represents user identity information
+     */
     @JsonProperty("linux")
     public void setLinux(LinuxContainerUser linux) {
         this.linux = linux;

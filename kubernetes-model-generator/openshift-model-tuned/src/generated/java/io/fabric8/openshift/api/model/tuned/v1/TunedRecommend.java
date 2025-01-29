@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Selection logic for a single Tuned profile.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -98,53 +101,83 @@ public class TunedRecommend implements Editable<TunedRecommendBuilder>, Kubernet
         this.profile = profile;
     }
 
+    /**
+     * MachineConfigLabels specifies the labels for a MachineConfig. The MachineConfig is created automatically to apply additional host settings (e.g. kernel boot parameters) profile 'Profile' needs and can only be applied by creating a MachineConfig. This involves finding all MachineConfigPools with machineConfigSelector matching the MachineConfigLabels and setting the profile 'Profile' on all nodes that match the MachineConfigPools' nodeSelectors.
+     */
     @JsonProperty("machineConfigLabels")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getMachineConfigLabels() {
         return machineConfigLabels;
     }
 
+    /**
+     * MachineConfigLabels specifies the labels for a MachineConfig. The MachineConfig is created automatically to apply additional host settings (e.g. kernel boot parameters) profile 'Profile' needs and can only be applied by creating a MachineConfig. This involves finding all MachineConfigPools with machineConfigSelector matching the MachineConfigLabels and setting the profile 'Profile' on all nodes that match the MachineConfigPools' nodeSelectors.
+     */
     @JsonProperty("machineConfigLabels")
     public void setMachineConfigLabels(Map<String, String> machineConfigLabels) {
         this.machineConfigLabels = machineConfigLabels;
     }
 
+    /**
+     * Rules governing application of a Tuned profile connected by logical OR operator.
+     */
     @JsonProperty("match")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<TunedMatch> getMatch() {
         return match;
     }
 
+    /**
+     * Rules governing application of a Tuned profile connected by logical OR operator.
+     */
     @JsonProperty("match")
     public void setMatch(List<TunedMatch> match) {
         this.match = match;
     }
 
+    /**
+     * Selection logic for a single Tuned profile.
+     */
     @JsonProperty("operand")
     public OperandConfig getOperand() {
         return operand;
     }
 
+    /**
+     * Selection logic for a single Tuned profile.
+     */
     @JsonProperty("operand")
     public void setOperand(OperandConfig operand) {
         this.operand = operand;
     }
 
+    /**
+     * Tuned profile priority. Highest priority is 0.
+     */
     @JsonProperty("priority")
     public Long getPriority() {
         return priority;
     }
 
+    /**
+     * Tuned profile priority. Highest priority is 0.
+     */
     @JsonProperty("priority")
     public void setPriority(Long priority) {
         this.priority = priority;
     }
 
+    /**
+     * Name of the Tuned profile to recommend.
+     */
     @JsonProperty("profile")
     public String getProfile() {
         return profile;
     }
 
+    /**
+     * Name of the Tuned profile to recommend.
+     */
     @JsonProperty("profile")
     public void setProfile(String profile) {
         this.profile = profile;

@@ -103,22 +103,34 @@ public class OrderSpec implements Editable<OrderSpecBuilder>, KubernetesResource
         this.request = request;
     }
 
+    /**
+     * CommonName is the common name as specified on the DER encoded CSR. If specified, this value must also be present in `dnsNames` or `ipAddresses`. This field must match the corresponding field on the DER encoded CSR.
+     */
     @JsonProperty("commonName")
     public String getCommonName() {
         return commonName;
     }
 
+    /**
+     * CommonName is the common name as specified on the DER encoded CSR. If specified, this value must also be present in `dnsNames` or `ipAddresses`. This field must match the corresponding field on the DER encoded CSR.
+     */
     @JsonProperty("commonName")
     public void setCommonName(String commonName) {
         this.commonName = commonName;
     }
 
+    /**
+     * DNSNames is a list of DNS names that should be included as part of the Order validation process. This field must match the corresponding field on the DER encoded CSR.
+     */
     @JsonProperty("dnsNames")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getDnsNames() {
         return dnsNames;
     }
 
+    /**
+     * DNSNames is a list of DNS names that should be included as part of the Order validation process. This field must match the corresponding field on the DER encoded CSR.
+     */
     @JsonProperty("dnsNames")
     public void setDnsNames(List<String> dnsNames) {
         this.dnsNames = dnsNames;
@@ -134,12 +146,18 @@ public class OrderSpec implements Editable<OrderSpecBuilder>, KubernetesResource
         this.duration = duration;
     }
 
+    /**
+     * IPAddresses is a list of IP addresses that should be included as part of the Order validation process. This field must match the corresponding field on the DER encoded CSR.
+     */
     @JsonProperty("ipAddresses")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getIpAddresses() {
         return ipAddresses;
     }
 
+    /**
+     * IPAddresses is a list of IP addresses that should be included as part of the Order validation process. This field must match the corresponding field on the DER encoded CSR.
+     */
     @JsonProperty("ipAddresses")
     public void setIpAddresses(List<String> ipAddresses) {
         this.ipAddresses = ipAddresses;
@@ -155,11 +173,17 @@ public class OrderSpec implements Editable<OrderSpecBuilder>, KubernetesResource
         this.issuerRef = issuerRef;
     }
 
+    /**
+     * Certificate signing request bytes in DER encoding. This will be used when finalizing the order. This field must be set on the order.
+     */
     @JsonProperty("request")
     public String getRequest() {
         return request;
     }
 
+    /**
+     * Certificate signing request bytes in DER encoding. This will be used when finalizing the order. This field must be set on the order.
+     */
     @JsonProperty("request")
     public void setRequest(String request) {
         this.request = request;

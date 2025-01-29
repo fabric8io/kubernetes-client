@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * DNSZoneSpec defines the desired state of DNSZone
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -98,61 +101,97 @@ public class DNSZoneSpec implements Editable<DNSZoneSpecBuilder>, KubernetesReso
         this.zone = zone;
     }
 
+    /**
+     * DNSZoneSpec defines the desired state of DNSZone
+     */
     @JsonProperty("aws")
     public AWSDNSZoneSpec getAws() {
         return aws;
     }
 
+    /**
+     * DNSZoneSpec defines the desired state of DNSZone
+     */
     @JsonProperty("aws")
     public void setAws(AWSDNSZoneSpec aws) {
         this.aws = aws;
     }
 
+    /**
+     * DNSZoneSpec defines the desired state of DNSZone
+     */
     @JsonProperty("azure")
     public AzureDNSZoneSpec getAzure() {
         return azure;
     }
 
+    /**
+     * DNSZoneSpec defines the desired state of DNSZone
+     */
     @JsonProperty("azure")
     public void setAzure(AzureDNSZoneSpec azure) {
         this.azure = azure;
     }
 
+    /**
+     * DNSZoneSpec defines the desired state of DNSZone
+     */
     @JsonProperty("gcp")
     public GCPDNSZoneSpec getGcp() {
         return gcp;
     }
 
+    /**
+     * DNSZoneSpec defines the desired state of DNSZone
+     */
     @JsonProperty("gcp")
     public void setGcp(GCPDNSZoneSpec gcp) {
         this.gcp = gcp;
     }
 
+    /**
+     * LinkToParentDomain specifies whether DNS records should be automatically created to link this DNSZone with a parent domain.
+     */
     @JsonProperty("linkToParentDomain")
     public Boolean getLinkToParentDomain() {
         return linkToParentDomain;
     }
 
+    /**
+     * LinkToParentDomain specifies whether DNS records should be automatically created to link this DNSZone with a parent domain.
+     */
     @JsonProperty("linkToParentDomain")
     public void setLinkToParentDomain(Boolean linkToParentDomain) {
         this.linkToParentDomain = linkToParentDomain;
     }
 
+    /**
+     * PreserveOnDelete allows the user to disconnect a DNSZone from Hive without deprovisioning it. This can also be used to abandon ongoing DNSZone deprovision. Typically set automatically due to PreserveOnDelete being set on a ClusterDeployment.
+     */
     @JsonProperty("preserveOnDelete")
     public Boolean getPreserveOnDelete() {
         return preserveOnDelete;
     }
 
+    /**
+     * PreserveOnDelete allows the user to disconnect a DNSZone from Hive without deprovisioning it. This can also be used to abandon ongoing DNSZone deprovision. Typically set automatically due to PreserveOnDelete being set on a ClusterDeployment.
+     */
     @JsonProperty("preserveOnDelete")
     public void setPreserveOnDelete(Boolean preserveOnDelete) {
         this.preserveOnDelete = preserveOnDelete;
     }
 
+    /**
+     * Zone is the DNS zone to host
+     */
     @JsonProperty("zone")
     public String getZone() {
         return zone;
     }
 
+    /**
+     * Zone is the DNS zone to host
+     */
     @JsonProperty("zone")
     public void setZone(String zone) {
         this.zone = zone;

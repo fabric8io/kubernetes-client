@@ -78,11 +78,17 @@ public class APIServerEncryption implements Editable<APIServerEncryptionBuilder>
         this.type = type;
     }
 
+    /**
+     * type defines what encryption type should be used to encrypt resources at the datastore layer. When this field is unset (i.e. when it is set to the empty string), identity is implied. The behavior of unset can and will change over time.  Even if encryption is enabled by default, the meaning of unset may change to a different encryption type based on changes in best practices.<br><p> <br><p> When encryption is enabled, all sensitive resources shipped with the platform are encrypted. This list of sensitive resources can and will change over time.  The current authoritative list is:<br><p> <br><p>   1. secrets<br><p>   2. configmaps<br><p>   3. routes.route.openshift.io<br><p>   4. oauthaccesstokens.oauth.openshift.io<br><p>   5. oauthauthorizetokens.oauth.openshift.io
+     */
     @JsonProperty("type")
     public String getType() {
         return type;
     }
 
+    /**
+     * type defines what encryption type should be used to encrypt resources at the datastore layer. When this field is unset (i.e. when it is set to the empty string), identity is implied. The behavior of unset can and will change over time.  Even if encryption is enabled by default, the meaning of unset may change to a different encryption type based on changes in best practices.<br><p> <br><p> When encryption is enabled, all sensitive resources shipped with the platform are encrypted. This list of sensitive resources can and will change over time.  The current authoritative list is:<br><p> <br><p>   1. secrets<br><p>   2. configmaps<br><p>   3. routes.route.openshift.io<br><p>   4. oauthaccesstokens.oauth.openshift.io<br><p>   5. oauthauthorizetokens.oauth.openshift.io
+     */
     @JsonProperty("type")
     public void setType(String type) {
         this.type = type;

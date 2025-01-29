@@ -86,21 +86,33 @@ public class EgressQoSRule implements Editable<EgressQoSRuleBuilder>, Kubernetes
         this.podSelector = podSelector;
     }
 
+    /**
+     * DSCP marking value for matching pods' traffic.
+     */
     @JsonProperty("dscp")
     public Integer getDscp() {
         return dscp;
     }
 
+    /**
+     * DSCP marking value for matching pods' traffic.
+     */
     @JsonProperty("dscp")
     public void setDscp(Integer dscp) {
         this.dscp = dscp;
     }
 
+    /**
+     * DstCIDR specifies the destination's CIDR. Only traffic heading to this CIDR will be marked with the DSCP value. This field is optional, and in case it is not set the rule is applied to all egress traffic regardless of the destination.
+     */
     @JsonProperty("dstCIDR")
     public String getDstCIDR() {
         return dstCIDR;
     }
 
+    /**
+     * DstCIDR specifies the destination's CIDR. Only traffic heading to this CIDR will be marked with the DSCP value. This field is optional, and in case it is not set the rule is applied to all egress traffic regardless of the destination.
+     */
     @JsonProperty("dstCIDR")
     public void setDstCIDR(String dstCIDR) {
         this.dstCIDR = dstCIDR;

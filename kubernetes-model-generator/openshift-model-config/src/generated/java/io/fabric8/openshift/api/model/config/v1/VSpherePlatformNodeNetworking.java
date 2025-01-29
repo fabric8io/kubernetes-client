@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * VSpherePlatformNodeNetworking holds the external and internal node networking spec.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class VSpherePlatformNodeNetworking implements Editable<VSpherePlatformNo
         this.internal = internal;
     }
 
+    /**
+     * VSpherePlatformNodeNetworking holds the external and internal node networking spec.
+     */
     @JsonProperty("external")
     public VSpherePlatformNodeNetworkingSpec getExternal() {
         return external;
     }
 
+    /**
+     * VSpherePlatformNodeNetworking holds the external and internal node networking spec.
+     */
     @JsonProperty("external")
     public void setExternal(VSpherePlatformNodeNetworkingSpec external) {
         this.external = external;
     }
 
+    /**
+     * VSpherePlatformNodeNetworking holds the external and internal node networking spec.
+     */
     @JsonProperty("internal")
     public VSpherePlatformNodeNetworkingSpec getInternal() {
         return internal;
     }
 
+    /**
+     * VSpherePlatformNodeNetworking holds the external and internal node networking spec.
+     */
     @JsonProperty("internal")
     public void setInternal(VSpherePlatformNodeNetworkingSpec internal) {
         this.internal = internal;

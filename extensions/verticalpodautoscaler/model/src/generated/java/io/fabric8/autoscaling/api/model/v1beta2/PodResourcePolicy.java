@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * PodResourcePolicy controls how autoscaler computes the recommended resources for containers belonging to the pod. There can be at most one entry for every named container and optionally a single wildcard entry with `containerName` = '&#42;', which handles all containers that don't have individual policies.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -81,12 +84,18 @@ public class PodResourcePolicy implements Editable<PodResourcePolicyBuilder>, Ku
         this.containerPolicies = containerPolicies;
     }
 
+    /**
+     * Per-container resource policies.
+     */
     @JsonProperty("containerPolicies")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ContainerResourcePolicy> getContainerPolicies() {
         return containerPolicies;
     }
 
+    /**
+     * Per-container resource policies.
+     */
     @JsonProperty("containerPolicies")
     public void setContainerPolicies(List<ContainerResourcePolicy> containerPolicies) {
         this.containerPolicies = containerPolicies;

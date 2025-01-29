@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * OpenTelemetryCollectionSpec defines the spec for the addon to collect and forward observability signals from user workloads hosted on fleet managed clusters using the OpenTelemetryCollector with or without instrumentation.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class OpenTelemetryCollectionSpec implements Editable<OpenTelemetryCollec
         this.instrumentation = instrumentation;
     }
 
+    /**
+     * OpenTelemetryCollectionSpec defines the spec for the addon to collect and forward observability signals from user workloads hosted on fleet managed clusters using the OpenTelemetryCollector with or without instrumentation.
+     */
     @JsonProperty("collector")
     public OpenTelemetryCollectorSpec getCollector() {
         return collector;
     }
 
+    /**
+     * OpenTelemetryCollectionSpec defines the spec for the addon to collect and forward observability signals from user workloads hosted on fleet managed clusters using the OpenTelemetryCollector with or without instrumentation.
+     */
     @JsonProperty("collector")
     public void setCollector(OpenTelemetryCollectorSpec collector) {
         this.collector = collector;
     }
 
+    /**
+     * OpenTelemetryCollectionSpec defines the spec for the addon to collect and forward observability signals from user workloads hosted on fleet managed clusters using the OpenTelemetryCollector with or without instrumentation.
+     */
     @JsonProperty("instrumentation")
     public InstrumentationSpec getInstrumentation() {
         return instrumentation;
     }
 
+    /**
+     * OpenTelemetryCollectionSpec defines the spec for the addon to collect and forward observability signals from user workloads hosted on fleet managed clusters using the OpenTelemetryCollector with or without instrumentation.
+     */
     @JsonProperty("instrumentation")
     public void setInstrumentation(InstrumentationSpec instrumentation) {
         this.instrumentation = instrumentation;

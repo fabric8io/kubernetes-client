@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ServiceAccountSubject holds detailed information for service-account-kind subject.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class ServiceAccountSubject implements Editable<ServiceAccountSubjectBuil
         this.namespace = namespace;
     }
 
+    /**
+     * `name` is the name of matching ServiceAccount objects, or "&#42;" to match regardless of name. Required.
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * `name` is the name of matching ServiceAccount objects, or "&#42;" to match regardless of name. Required.
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * `namespace` is the namespace of matching ServiceAccount objects. Required.
+     */
     @JsonProperty("namespace")
     public String getNamespace() {
         return namespace;
     }
 
+    /**
+     * `namespace` is the namespace of matching ServiceAccount objects. Required.
+     */
     @JsonProperty("namespace")
     public void setNamespace(String namespace) {
         this.namespace = namespace;

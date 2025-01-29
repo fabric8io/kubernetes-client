@@ -90,41 +90,65 @@ public class RedisCacheLimitSpec implements Editable<RedisCacheLimitSpecBuilder>
         this.percent = percent;
     }
 
+    /**
+     * The adress of Redis server
+     */
     @JsonProperty("addr")
     public String getAddr() {
         return addr;
     }
 
+    /**
+     * The adress of Redis server
+     */
     @JsonProperty("addr")
     public void setAddr(String addr) {
         this.addr = addr;
     }
 
+    /**
+     * The size of `maxmemory`
+     */
     @JsonProperty("cacheSize")
     public String getCacheSize() {
         return cacheSize;
     }
 
+    /**
+     * The size of `maxmemory`
+     */
     @JsonProperty("cacheSize")
     public void setCacheSize(String cacheSize) {
         this.cacheSize = cacheSize;
     }
 
+    /**
+     * The password of Redis server
+     */
     @JsonProperty("password")
     public String getPassword() {
         return password;
     }
 
+    /**
+     * The password of Redis server
+     */
     @JsonProperty("password")
     public void setPassword(String password) {
         this.password = password;
     }
 
+    /**
+     * Specifies maxmemory as a percentage of the original value
+     */
     @JsonProperty("percent")
     public String getPercent() {
         return percent;
     }
 
+    /**
+     * Specifies maxmemory as a percentage of the original value
+     */
     @JsonProperty("percent")
     public void setPercent(String percent) {
         this.percent = percent;

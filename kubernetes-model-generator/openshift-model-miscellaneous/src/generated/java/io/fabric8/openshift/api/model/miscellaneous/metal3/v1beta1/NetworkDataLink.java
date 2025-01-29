@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * NetworkDataLink contains list of different link objects.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -91,34 +94,52 @@ public class NetworkDataLink implements Editable<NetworkDataLinkBuilder>, Kubern
         this.vlans = vlans;
     }
 
+    /**
+     * Bonds contains a list of Bond links
+     */
     @JsonProperty("bonds")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<NetworkDataLinkBond> getBonds() {
         return bonds;
     }
 
+    /**
+     * Bonds contains a list of Bond links
+     */
     @JsonProperty("bonds")
     public void setBonds(List<NetworkDataLinkBond> bonds) {
         this.bonds = bonds;
     }
 
+    /**
+     * Ethernets contains a list of Ethernet links
+     */
     @JsonProperty("ethernets")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<NetworkDataLinkEthernet> getEthernets() {
         return ethernets;
     }
 
+    /**
+     * Ethernets contains a list of Ethernet links
+     */
     @JsonProperty("ethernets")
     public void setEthernets(List<NetworkDataLinkEthernet> ethernets) {
         this.ethernets = ethernets;
     }
 
+    /**
+     * Vlans contains a list of Vlan links
+     */
     @JsonProperty("vlans")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<NetworkDataLinkVlan> getVlans() {
         return vlans;
     }
 
+    /**
+     * Vlans contains a list of Vlan links
+     */
     @JsonProperty("vlans")
     public void setVlans(List<NetworkDataLinkVlan> vlans) {
         this.vlans = vlans;

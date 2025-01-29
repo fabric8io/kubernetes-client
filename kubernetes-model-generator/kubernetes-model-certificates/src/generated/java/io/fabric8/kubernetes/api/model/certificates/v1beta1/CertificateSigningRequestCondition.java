@@ -118,41 +118,65 @@ public class CertificateSigningRequestCondition implements Editable<CertificateS
         this.lastUpdateTime = lastUpdateTime;
     }
 
+    /**
+     * human readable message with details about the request state
+     */
     @JsonProperty("message")
     public String getMessage() {
         return message;
     }
 
+    /**
+     * human readable message with details about the request state
+     */
     @JsonProperty("message")
     public void setMessage(String message) {
         this.message = message;
     }
 
+    /**
+     * brief reason for the request state
+     */
     @JsonProperty("reason")
     public String getReason() {
         return reason;
     }
 
+    /**
+     * brief reason for the request state
+     */
     @JsonProperty("reason")
     public void setReason(String reason) {
         this.reason = reason;
     }
 
+    /**
+     * Status of the condition, one of True, False, Unknown. Approved, Denied, and Failed conditions may not be "False" or "Unknown". Defaults to "True". If unset, should be treated as "True".
+     */
     @JsonProperty("status")
     public String getStatus() {
         return status;
     }
 
+    /**
+     * Status of the condition, one of True, False, Unknown. Approved, Denied, and Failed conditions may not be "False" or "Unknown". Defaults to "True". If unset, should be treated as "True".
+     */
     @JsonProperty("status")
     public void setStatus(String status) {
         this.status = status;
     }
 
+    /**
+     * type of the condition. Known conditions include "Approved", "Denied", and "Failed".
+     */
     @JsonProperty("type")
     public String getType() {
         return type;
     }
 
+    /**
+     * type of the condition. Known conditions include "Approved", "Denied", and "Failed".
+     */
     @JsonProperty("type")
     public void setType(String type) {
         this.type = type;

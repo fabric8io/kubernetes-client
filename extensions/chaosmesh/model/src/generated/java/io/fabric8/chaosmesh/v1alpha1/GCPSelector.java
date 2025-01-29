@@ -93,42 +93,66 @@ public class GCPSelector implements Editable<GCPSelectorBuilder>, KubernetesReso
         this.zone = zone;
     }
 
+    /**
+     * The device name of disks to detach. Needed in disk-loss.
+     */
     @JsonProperty("deviceNames")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getDeviceNames() {
         return deviceNames;
     }
 
+    /**
+     * The device name of disks to detach. Needed in disk-loss.
+     */
     @JsonProperty("deviceNames")
     public void setDeviceNames(List<String> deviceNames) {
         this.deviceNames = deviceNames;
     }
 
+    /**
+     * Instance defines the name of the instance
+     */
     @JsonProperty("instance")
     public String getInstance() {
         return instance;
     }
 
+    /**
+     * Instance defines the name of the instance
+     */
     @JsonProperty("instance")
     public void setInstance(String instance) {
         this.instance = instance;
     }
 
+    /**
+     * Project defines the ID of gcp project.
+     */
     @JsonProperty("project")
     public String getProject() {
         return project;
     }
 
+    /**
+     * Project defines the ID of gcp project.
+     */
     @JsonProperty("project")
     public void setProject(String project) {
         this.project = project;
     }
 
+    /**
+     * Zone defines the zone of gcp project.
+     */
     @JsonProperty("zone")
     public String getZone() {
         return zone;
     }
 
+    /**
+     * Zone defines the zone of gcp project.
+     */
     @JsonProperty("zone")
     public void setZone(String zone) {
         this.zone = zone;

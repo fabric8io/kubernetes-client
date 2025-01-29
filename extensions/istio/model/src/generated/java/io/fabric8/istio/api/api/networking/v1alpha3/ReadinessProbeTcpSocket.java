@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Health is determined by if the proxy is able to connect.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -78,11 +81,17 @@ public class ReadinessProbeTcpSocket implements IsReadinessProbeHealthCheckMetho
         this.tcpSocket = tcpSocket;
     }
 
+    /**
+     * Health is determined by if the proxy is able to connect.
+     */
     @JsonProperty("tcpSocket")
     public TCPHealthCheckConfig getTcpSocket() {
         return tcpSocket;
     }
 
+    /**
+     * Health is determined by if the proxy is able to connect.
+     */
     @JsonProperty("tcpSocket")
     public void setTcpSocket(TCPHealthCheckConfig tcpSocket) {
         this.tcpSocket = tcpSocket;

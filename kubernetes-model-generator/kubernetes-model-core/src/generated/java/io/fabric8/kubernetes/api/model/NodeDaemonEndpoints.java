@@ -17,6 +17,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * NodeDaemonEndpoints lists ports opened by daemons running on the Node.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -49,11 +52,17 @@ public class NodeDaemonEndpoints implements Editable<NodeDaemonEndpointsBuilder>
         this.kubeletEndpoint = kubeletEndpoint;
     }
 
+    /**
+     * NodeDaemonEndpoints lists ports opened by daemons running on the Node.
+     */
     @JsonProperty("kubeletEndpoint")
     public DaemonEndpoint getKubeletEndpoint() {
         return kubeletEndpoint;
     }
 
+    /**
+     * NodeDaemonEndpoints lists ports opened by daemons running on the Node.
+     */
     @JsonProperty("kubeletEndpoint")
     public void setKubeletEndpoint(DaemonEndpoint kubeletEndpoint) {
         this.kubeletEndpoint = kubeletEndpoint;

@@ -93,22 +93,34 @@ public class ContainerSelector implements Editable<ContainerSelectorBuilder>, Ku
         this.value = value;
     }
 
+    /**
+     * ContainerNames indicates list of the name of affected container. If not set, the first container will be injected
+     */
     @JsonProperty("containerNames")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getContainerNames() {
         return containerNames;
     }
 
+    /**
+     * ContainerNames indicates list of the name of affected container. If not set, the first container will be injected
+     */
     @JsonProperty("containerNames")
     public void setContainerNames(List<String> containerNames) {
         this.containerNames = containerNames;
     }
 
+    /**
+     * Mode defines the mode to run chaos action. Supported mode: one / all / fixed / fixed-percent / random-max-percent
+     */
     @JsonProperty("mode")
     public String getMode() {
         return mode;
     }
 
+    /**
+     * Mode defines the mode to run chaos action. Supported mode: one / all / fixed / fixed-percent / random-max-percent
+     */
     @JsonProperty("mode")
     public void setMode(String mode) {
         this.mode = mode;
@@ -124,11 +136,17 @@ public class ContainerSelector implements Editable<ContainerSelectorBuilder>, Ku
         this.selector = selector;
     }
 
+    /**
+     * Value is required when the mode is set to `FixedMode` / `FixedPercentMode` / `RandomMaxPercentMode`. If `FixedMode`, provide an integer of pods to do chaos action. If `FixedPercentMode`, provide a number from 0-100 to specify the percent of pods the server can do chaos action. IF `RandomMaxPercentMode`,  provide a number from 0-100 to specify the max percent of pods to do chaos action
+     */
     @JsonProperty("value")
     public String getValue() {
         return value;
     }
 
+    /**
+     * Value is required when the mode is set to `FixedMode` / `FixedPercentMode` / `RandomMaxPercentMode`. If `FixedMode`, provide an integer of pods to do chaos action. If `FixedPercentMode`, provide a number from 0-100 to specify the percent of pods the server can do chaos action. IF `RandomMaxPercentMode`,  provide a number from 0-100 to specify the max percent of pods to do chaos action
+     */
     @JsonProperty("value")
     public void setValue(String value) {
         this.value = value;

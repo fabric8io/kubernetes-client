@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ServiceAttachmentSubnetExisting describes the existing subnet.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class ServiceAttachmentSubnetExisting implements Editable<ServiceAttachme
         this.project = project;
     }
 
+    /**
+     * Name specifies the name of the existing subnet.
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * Name specifies the name of the existing subnet.
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * Project specifies the project the subnet exists in. This is required for Shared VPC.
+     */
     @JsonProperty("project")
     public String getProject() {
         return project;
     }
 
+    /**
+     * Project specifies the project the subnet exists in. This is required for Shared VPC.
+     */
     @JsonProperty("project")
     public void setProject(String project) {
         this.project = project;

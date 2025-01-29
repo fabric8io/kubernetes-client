@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * DeploymentStrategy describes how to perform a deployment.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -108,83 +111,131 @@ public class DeploymentStrategy implements Editable<DeploymentStrategyBuilder>, 
         this.type = type;
     }
 
+    /**
+     * ActiveDeadlineSeconds is the duration in seconds that the deployer pods for this deployment config may be active on a node before the system actively tries to terminate them.
+     */
     @JsonProperty("activeDeadlineSeconds")
     public Long getActiveDeadlineSeconds() {
         return activeDeadlineSeconds;
     }
 
+    /**
+     * ActiveDeadlineSeconds is the duration in seconds that the deployer pods for this deployment config may be active on a node before the system actively tries to terminate them.
+     */
     @JsonProperty("activeDeadlineSeconds")
     public void setActiveDeadlineSeconds(Long activeDeadlineSeconds) {
         this.activeDeadlineSeconds = activeDeadlineSeconds;
     }
 
+    /**
+     * Annotations is a set of key, value pairs added to custom deployer and lifecycle pre/post hook pods.
+     */
     @JsonProperty("annotations")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getAnnotations() {
         return annotations;
     }
 
+    /**
+     * Annotations is a set of key, value pairs added to custom deployer and lifecycle pre/post hook pods.
+     */
     @JsonProperty("annotations")
     public void setAnnotations(Map<String, String> annotations) {
         this.annotations = annotations;
     }
 
+    /**
+     * DeploymentStrategy describes how to perform a deployment.
+     */
     @JsonProperty("customParams")
     public CustomDeploymentStrategyParams getCustomParams() {
         return customParams;
     }
 
+    /**
+     * DeploymentStrategy describes how to perform a deployment.
+     */
     @JsonProperty("customParams")
     public void setCustomParams(CustomDeploymentStrategyParams customParams) {
         this.customParams = customParams;
     }
 
+    /**
+     * Labels is a set of key, value pairs added to custom deployer and lifecycle pre/post hook pods.
+     */
     @JsonProperty("labels")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getLabels() {
         return labels;
     }
 
+    /**
+     * Labels is a set of key, value pairs added to custom deployer and lifecycle pre/post hook pods.
+     */
     @JsonProperty("labels")
     public void setLabels(Map<String, String> labels) {
         this.labels = labels;
     }
 
+    /**
+     * DeploymentStrategy describes how to perform a deployment.
+     */
     @JsonProperty("recreateParams")
     public RecreateDeploymentStrategyParams getRecreateParams() {
         return recreateParams;
     }
 
+    /**
+     * DeploymentStrategy describes how to perform a deployment.
+     */
     @JsonProperty("recreateParams")
     public void setRecreateParams(RecreateDeploymentStrategyParams recreateParams) {
         this.recreateParams = recreateParams;
     }
 
+    /**
+     * DeploymentStrategy describes how to perform a deployment.
+     */
     @JsonProperty("resources")
     public ResourceRequirements getResources() {
         return resources;
     }
 
+    /**
+     * DeploymentStrategy describes how to perform a deployment.
+     */
     @JsonProperty("resources")
     public void setResources(ResourceRequirements resources) {
         this.resources = resources;
     }
 
+    /**
+     * DeploymentStrategy describes how to perform a deployment.
+     */
     @JsonProperty("rollingParams")
     public RollingDeploymentStrategyParams getRollingParams() {
         return rollingParams;
     }
 
+    /**
+     * DeploymentStrategy describes how to perform a deployment.
+     */
     @JsonProperty("rollingParams")
     public void setRollingParams(RollingDeploymentStrategyParams rollingParams) {
         this.rollingParams = rollingParams;
     }
 
+    /**
+     * Type is the name of a deployment strategy.
+     */
     @JsonProperty("type")
     public String getType() {
         return type;
     }
 
+    /**
+     * Type is the name of a deployment strategy.
+     */
     @JsonProperty("type")
     public void setType(String type) {
         this.type = type;

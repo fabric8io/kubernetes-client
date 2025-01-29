@@ -17,6 +17,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * PodResourceClaim references exactly one ResourceClaim, either directly or by naming a ResourceClaimTemplate which is then turned into a ResourceClaim for the pod.<br><p> <br><p> It adds a name to it that uniquely identifies the ResourceClaim inside the Pod. Containers that need access to the ResourceClaim reference it with this name.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -57,31 +60,49 @@ public class PodResourceClaim implements Editable<PodResourceClaimBuilder>, Kube
         this.resourceClaimTemplateName = resourceClaimTemplateName;
     }
 
+    /**
+     * Name uniquely identifies this resource claim inside the pod. This must be a DNS_LABEL.
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * Name uniquely identifies this resource claim inside the pod. This must be a DNS_LABEL.
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * ResourceClaimName is the name of a ResourceClaim object in the same namespace as this pod.<br><p> <br><p> Exactly one of ResourceClaimName and ResourceClaimTemplateName must be set.
+     */
     @JsonProperty("resourceClaimName")
     public String getResourceClaimName() {
         return resourceClaimName;
     }
 
+    /**
+     * ResourceClaimName is the name of a ResourceClaim object in the same namespace as this pod.<br><p> <br><p> Exactly one of ResourceClaimName and ResourceClaimTemplateName must be set.
+     */
     @JsonProperty("resourceClaimName")
     public void setResourceClaimName(String resourceClaimName) {
         this.resourceClaimName = resourceClaimName;
     }
 
+    /**
+     * ResourceClaimTemplateName is the name of a ResourceClaimTemplate object in the same namespace as this pod.<br><p> <br><p> The template will be used to create a new ResourceClaim, which will be bound to this pod. When this pod is deleted, the ResourceClaim will also be deleted. The pod name and resource name, along with a generated component, will be used to form a unique name for the ResourceClaim, which will be recorded in pod.status.resourceClaimStatuses.<br><p> <br><p> This field is immutable and no changes will be made to the corresponding ResourceClaim by the control plane after creating the ResourceClaim.<br><p> <br><p> Exactly one of ResourceClaimName and ResourceClaimTemplateName must be set.
+     */
     @JsonProperty("resourceClaimTemplateName")
     public String getResourceClaimTemplateName() {
         return resourceClaimTemplateName;
     }
 
+    /**
+     * ResourceClaimTemplateName is the name of a ResourceClaimTemplate object in the same namespace as this pod.<br><p> <br><p> The template will be used to create a new ResourceClaim, which will be bound to this pod. When this pod is deleted, the ResourceClaim will also be deleted. The pod name and resource name, along with a generated component, will be used to form a unique name for the ResourceClaim, which will be recorded in pod.status.resourceClaimStatuses.<br><p> <br><p> This field is immutable and no changes will be made to the corresponding ResourceClaim by the control plane after creating the ResourceClaim.<br><p> <br><p> Exactly one of ResourceClaimName and ResourceClaimTemplateName must be set.
+     */
     @JsonProperty("resourceClaimTemplateName")
     public void setResourceClaimTemplateName(String resourceClaimTemplateName) {
         this.resourceClaimTemplateName = resourceClaimTemplateName;

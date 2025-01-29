@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ResourceClaimStatus tracks whether the resource has been allocated and what the result of that was.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -90,33 +93,51 @@ public class ResourceClaimStatus implements Editable<ResourceClaimStatusBuilder>
         this.reservedFor = reservedFor;
     }
 
+    /**
+     * ResourceClaimStatus tracks whether the resource has been allocated and what the result of that was.
+     */
     @JsonProperty("allocation")
     public AllocationResult getAllocation() {
         return allocation;
     }
 
+    /**
+     * ResourceClaimStatus tracks whether the resource has been allocated and what the result of that was.
+     */
     @JsonProperty("allocation")
     public void setAllocation(AllocationResult allocation) {
         this.allocation = allocation;
     }
 
+    /**
+     * Devices contains the status of each device allocated for this claim, as reported by the driver. This can include driver-specific information. Entries are owned by their respective drivers.
+     */
     @JsonProperty("devices")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<AllocatedDeviceStatus> getDevices() {
         return devices;
     }
 
+    /**
+     * Devices contains the status of each device allocated for this claim, as reported by the driver. This can include driver-specific information. Entries are owned by their respective drivers.
+     */
     @JsonProperty("devices")
     public void setDevices(List<AllocatedDeviceStatus> devices) {
         this.devices = devices;
     }
 
+    /**
+     * ReservedFor indicates which entities are currently allowed to use the claim. A Pod which references a ResourceClaim which is not reserved for that Pod will not be started. A claim that is in use or might be in use because it has been reserved must not get deallocated.<br><p> <br><p> In a cluster with multiple scheduler instances, two pods might get scheduled concurrently by different schedulers. When they reference the same ResourceClaim which already has reached its maximum number of consumers, only one pod can be scheduled.<br><p> <br><p> Both schedulers try to add their pod to the claim.status.reservedFor field, but only the update that reaches the API server first gets stored. The other one fails with an error and the scheduler which issued it knows that it must put the pod back into the queue, waiting for the ResourceClaim to become usable again.<br><p> <br><p> There can be at most 256 such reservations. This may get increased in the future, but not reduced.
+     */
     @JsonProperty("reservedFor")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ResourceClaimConsumerReference> getReservedFor() {
         return reservedFor;
     }
 
+    /**
+     * ReservedFor indicates which entities are currently allowed to use the claim. A Pod which references a ResourceClaim which is not reserved for that Pod will not be started. A claim that is in use or might be in use because it has been reserved must not get deallocated.<br><p> <br><p> In a cluster with multiple scheduler instances, two pods might get scheduled concurrently by different schedulers. When they reference the same ResourceClaim which already has reached its maximum number of consumers, only one pod can be scheduled.<br><p> <br><p> Both schedulers try to add their pod to the claim.status.reservedFor field, but only the update that reaches the API server first gets stored. The other one fails with an error and the scheduler which issued it knows that it must put the pod back into the queue, waiting for the ResourceClaim to become usable again.<br><p> <br><p> There can be at most 256 such reservations. This may get increased in the future, but not reduced.
+     */
     @JsonProperty("reservedFor")
     public void setReservedFor(List<ResourceClaimConsumerReference> reservedFor) {
         this.reservedFor = reservedFor;

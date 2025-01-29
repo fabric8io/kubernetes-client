@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * TaskRef can be used to refer to a specific instance of a task.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -90,41 +93,65 @@ public class TaskRef implements Editable<TaskRefBuilder>, KubernetesResource
         this.name = name;
     }
 
+    /**
+     * API version of the referent Note: A Task with non-empty APIVersion and Kind is considered a Custom Task
+     */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
         return apiVersion;
     }
 
+    /**
+     * API version of the referent Note: A Task with non-empty APIVersion and Kind is considered a Custom Task
+     */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
         this.apiVersion = apiVersion;
     }
 
+    /**
+     * Bundle url reference to a Tekton Bundle.<br><p> <br><p> Deprecated: Please use ResolverRef with the bundles resolver instead. The field is staying there for go client backward compatibility, but is not used/allowed anymore.
+     */
     @JsonProperty("bundle")
     public String getBundle() {
         return bundle;
     }
 
+    /**
+     * Bundle url reference to a Tekton Bundle.<br><p> <br><p> Deprecated: Please use ResolverRef with the bundles resolver instead. The field is staying there for go client backward compatibility, but is not used/allowed anymore.
+     */
     @JsonProperty("bundle")
     public void setBundle(String bundle) {
         this.bundle = bundle;
     }
 
+    /**
+     * TaskKind indicates the Kind of the Task: 1. Namespaced Task when Kind is set to "Task". If Kind is "", it defaults to "Task". 2. Cluster-Scoped Task when Kind is set to "ClusterTask" 3. Custom Task when Kind is non-empty and APIVersion is non-empty
+     */
     @JsonProperty("kind")
     public String getKind() {
         return kind;
     }
 
+    /**
+     * TaskKind indicates the Kind of the Task: 1. Namespaced Task when Kind is set to "Task". If Kind is "", it defaults to "Task". 2. Cluster-Scoped Task when Kind is set to "ClusterTask" 3. Custom Task when Kind is non-empty and APIVersion is non-empty
+     */
     @JsonProperty("kind")
     public void setKind(String kind) {
         this.kind = kind;
     }
 
+    /**
+     * Name of the referent; More info: http://kubernetes.io/docs/user-guide/identifiers#names
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * Name of the referent; More info: http://kubernetes.io/docs/user-guide/identifiers#names
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;

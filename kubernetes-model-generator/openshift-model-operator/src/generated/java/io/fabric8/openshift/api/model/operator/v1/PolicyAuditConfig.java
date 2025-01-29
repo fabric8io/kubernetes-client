@@ -94,51 +94,81 @@ public class PolicyAuditConfig implements Editable<PolicyAuditConfigBuilder>, Ku
         this.syslogFacility = syslogFacility;
     }
 
+    /**
+     * destination is the location for policy log messages. Regardless of this config, persistent logs will always be dumped to the host at /var/log/ovn/ however Additionally syslog output may be configured as follows. Valid values are: - "libc" -&gt; to use the libc syslog() function of the host node's journdald process - "udp:host:port" -&gt; for sending syslog over UDP - "unix:file" -&gt; for using the UNIX domain socket directly - "null" -&gt; to discard all messages logged to syslog The default is "null"
+     */
     @JsonProperty("destination")
     public String getDestination() {
         return destination;
     }
 
+    /**
+     * destination is the location for policy log messages. Regardless of this config, persistent logs will always be dumped to the host at /var/log/ovn/ however Additionally syslog output may be configured as follows. Valid values are: - "libc" -&gt; to use the libc syslog() function of the host node's journdald process - "udp:host:port" -&gt; for sending syslog over UDP - "unix:file" -&gt; for using the UNIX domain socket directly - "null" -&gt; to discard all messages logged to syslog The default is "null"
+     */
     @JsonProperty("destination")
     public void setDestination(String destination) {
         this.destination = destination;
     }
 
+    /**
+     * maxFilesSize is the max size an ACL_audit log file is allowed to reach before rotation occurs Units are in MB and the Default is 50MB
+     */
     @JsonProperty("maxFileSize")
     public Long getMaxFileSize() {
         return maxFileSize;
     }
 
+    /**
+     * maxFilesSize is the max size an ACL_audit log file is allowed to reach before rotation occurs Units are in MB and the Default is 50MB
+     */
     @JsonProperty("maxFileSize")
     public void setMaxFileSize(Long maxFileSize) {
         this.maxFileSize = maxFileSize;
     }
 
+    /**
+     * maxLogFiles specifies the maximum number of ACL_audit log files that can be present.
+     */
     @JsonProperty("maxLogFiles")
     public Integer getMaxLogFiles() {
         return maxLogFiles;
     }
 
+    /**
+     * maxLogFiles specifies the maximum number of ACL_audit log files that can be present.
+     */
     @JsonProperty("maxLogFiles")
     public void setMaxLogFiles(Integer maxLogFiles) {
         this.maxLogFiles = maxLogFiles;
     }
 
+    /**
+     * rateLimit is the approximate maximum number of messages to generate per-second per-node. If unset the default of 20 msg/sec is used.
+     */
     @JsonProperty("rateLimit")
     public Long getRateLimit() {
         return rateLimit;
     }
 
+    /**
+     * rateLimit is the approximate maximum number of messages to generate per-second per-node. If unset the default of 20 msg/sec is used.
+     */
     @JsonProperty("rateLimit")
     public void setRateLimit(Long rateLimit) {
         this.rateLimit = rateLimit;
     }
 
+    /**
+     * syslogFacility the RFC5424 facility for generated messages, e.g. "kern". Default is "local0"
+     */
     @JsonProperty("syslogFacility")
     public String getSyslogFacility() {
         return syslogFacility;
     }
 
+    /**
+     * syslogFacility the RFC5424 facility for generated messages, e.g. "kern". Default is "local0"
+     */
     @JsonProperty("syslogFacility")
     public void setSyslogFacility(String syslogFacility) {
         this.syslogFacility = syslogFacility;

@@ -33,6 +33,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * LeaseCandidateSpec is a specification of a Lease.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -99,61 +102,97 @@ public class LeaseCandidateSpec implements Editable<LeaseCandidateSpecBuilder>, 
         this.strategy = strategy;
     }
 
+    /**
+     * BinaryVersion is the binary version. It must be in a semver format without leading `v`. This field is required.
+     */
     @JsonProperty("binaryVersion")
     public String getBinaryVersion() {
         return binaryVersion;
     }
 
+    /**
+     * BinaryVersion is the binary version. It must be in a semver format without leading `v`. This field is required.
+     */
     @JsonProperty("binaryVersion")
     public void setBinaryVersion(String binaryVersion) {
         this.binaryVersion = binaryVersion;
     }
 
+    /**
+     * EmulationVersion is the emulation version. It must be in a semver format without leading `v`. EmulationVersion must be less than or equal to BinaryVersion. This field is required when strategy is "OldestEmulationVersion"
+     */
     @JsonProperty("emulationVersion")
     public String getEmulationVersion() {
         return emulationVersion;
     }
 
+    /**
+     * EmulationVersion is the emulation version. It must be in a semver format without leading `v`. EmulationVersion must be less than or equal to BinaryVersion. This field is required when strategy is "OldestEmulationVersion"
+     */
     @JsonProperty("emulationVersion")
     public void setEmulationVersion(String emulationVersion) {
         this.emulationVersion = emulationVersion;
     }
 
+    /**
+     * LeaseName is the name of the lease for which this candidate is contending. This field is immutable.
+     */
     @JsonProperty("leaseName")
     public String getLeaseName() {
         return leaseName;
     }
 
+    /**
+     * LeaseName is the name of the lease for which this candidate is contending. This field is immutable.
+     */
     @JsonProperty("leaseName")
     public void setLeaseName(String leaseName) {
         this.leaseName = leaseName;
     }
 
+    /**
+     * LeaseCandidateSpec is a specification of a Lease.
+     */
     @JsonProperty("pingTime")
     public MicroTime getPingTime() {
         return pingTime;
     }
 
+    /**
+     * LeaseCandidateSpec is a specification of a Lease.
+     */
     @JsonProperty("pingTime")
     public void setPingTime(MicroTime pingTime) {
         this.pingTime = pingTime;
     }
 
+    /**
+     * LeaseCandidateSpec is a specification of a Lease.
+     */
     @JsonProperty("renewTime")
     public MicroTime getRenewTime() {
         return renewTime;
     }
 
+    /**
+     * LeaseCandidateSpec is a specification of a Lease.
+     */
     @JsonProperty("renewTime")
     public void setRenewTime(MicroTime renewTime) {
         this.renewTime = renewTime;
     }
 
+    /**
+     * Strategy is the strategy that coordinated leader election will use for picking the leader. If multiple candidates for the same Lease return different strategies, the strategy provided by the candidate with the latest BinaryVersion will be used. If there is still conflict, this is a user error and coordinated leader election will not operate the Lease until resolved. (Alpha) Using this field requires the CoordinatedLeaderElection feature gate to be enabled.
+     */
     @JsonProperty("strategy")
     public String getStrategy() {
         return strategy;
     }
 
+    /**
+     * Strategy is the strategy that coordinated leader election will use for picking the leader. If multiple candidates for the same Lease return different strategies, the strategy provided by the candidate with the latest BinaryVersion will be used. If there is still conflict, this is a user error and coordinated leader election will not operate the Lease until resolved. (Alpha) Using this field requires the CoordinatedLeaderElection feature gate to be enabled.
+     */
     @JsonProperty("strategy")
     public void setStrategy(String strategy) {
         this.strategy = strategy;

@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ConsoleSpec is the specification of the desired behavior of the Console.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -119,103 +122,163 @@ public class ConsoleSpec implements Editable<ConsoleSpecBuilder>, KubernetesReso
         this.unsupportedConfigOverrides = unsupportedConfigOverrides;
     }
 
+    /**
+     * ConsoleSpec is the specification of the desired behavior of the Console.
+     */
     @JsonProperty("customization")
     public ConsoleCustomization getCustomization() {
         return customization;
     }
 
+    /**
+     * ConsoleSpec is the specification of the desired behavior of the Console.
+     */
     @JsonProperty("customization")
     public void setCustomization(ConsoleCustomization customization) {
         this.customization = customization;
     }
 
+    /**
+     * ConsoleSpec is the specification of the desired behavior of the Console.
+     */
     @JsonProperty("ingress")
     public Ingress getIngress() {
         return ingress;
     }
 
+    /**
+     * ConsoleSpec is the specification of the desired behavior of the Console.
+     */
     @JsonProperty("ingress")
     public void setIngress(Ingress ingress) {
         this.ingress = ingress;
     }
 
+    /**
+     * logLevel is an intent based logging for an overall component.  It does not give fine grained control, but it is a simple way to manage coarse grained logging choices that operators have to interpret for their operands.<br><p> <br><p> Valid values are: "Normal", "Debug", "Trace", "TraceAll". Defaults to "Normal".
+     */
     @JsonProperty("logLevel")
     public String getLogLevel() {
         return logLevel;
     }
 
+    /**
+     * logLevel is an intent based logging for an overall component.  It does not give fine grained control, but it is a simple way to manage coarse grained logging choices that operators have to interpret for their operands.<br><p> <br><p> Valid values are: "Normal", "Debug", "Trace", "TraceAll". Defaults to "Normal".
+     */
     @JsonProperty("logLevel")
     public void setLogLevel(String logLevel) {
         this.logLevel = logLevel;
     }
 
+    /**
+     * managementState indicates whether and how the operator should manage the component
+     */
     @JsonProperty("managementState")
     public String getManagementState() {
         return managementState;
     }
 
+    /**
+     * managementState indicates whether and how the operator should manage the component
+     */
     @JsonProperty("managementState")
     public void setManagementState(String managementState) {
         this.managementState = managementState;
     }
 
+    /**
+     * ConsoleSpec is the specification of the desired behavior of the Console.
+     */
     @JsonProperty("observedConfig")
     public Object getObservedConfig() {
         return observedConfig;
     }
 
+    /**
+     * ConsoleSpec is the specification of the desired behavior of the Console.
+     */
     @JsonProperty("observedConfig")
     @JsonDeserialize(using = io.fabric8.kubernetes.internal.KubernetesDeserializer.class)
     public void setObservedConfig(Object observedConfig) {
         this.observedConfig = observedConfig;
     }
 
+    /**
+     * operatorLogLevel is an intent based logging for the operator itself.  It does not give fine grained control, but it is a simple way to manage coarse grained logging choices that operators have to interpret for themselves.<br><p> <br><p> Valid values are: "Normal", "Debug", "Trace", "TraceAll". Defaults to "Normal".
+     */
     @JsonProperty("operatorLogLevel")
     public String getOperatorLogLevel() {
         return operatorLogLevel;
     }
 
+    /**
+     * operatorLogLevel is an intent based logging for the operator itself.  It does not give fine grained control, but it is a simple way to manage coarse grained logging choices that operators have to interpret for themselves.<br><p> <br><p> Valid values are: "Normal", "Debug", "Trace", "TraceAll". Defaults to "Normal".
+     */
     @JsonProperty("operatorLogLevel")
     public void setOperatorLogLevel(String operatorLogLevel) {
         this.operatorLogLevel = operatorLogLevel;
     }
 
+    /**
+     * plugins defines a list of enabled console plugin names.
+     */
     @JsonProperty("plugins")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getPlugins() {
         return plugins;
     }
 
+    /**
+     * plugins defines a list of enabled console plugin names.
+     */
     @JsonProperty("plugins")
     public void setPlugins(List<String> plugins) {
         this.plugins = plugins;
     }
 
+    /**
+     * ConsoleSpec is the specification of the desired behavior of the Console.
+     */
     @JsonProperty("providers")
     public ConsoleProviders getProviders() {
         return providers;
     }
 
+    /**
+     * ConsoleSpec is the specification of the desired behavior of the Console.
+     */
     @JsonProperty("providers")
     public void setProviders(ConsoleProviders providers) {
         this.providers = providers;
     }
 
+    /**
+     * ConsoleSpec is the specification of the desired behavior of the Console.
+     */
     @JsonProperty("route")
     public ConsoleConfigRoute getRoute() {
         return route;
     }
 
+    /**
+     * ConsoleSpec is the specification of the desired behavior of the Console.
+     */
     @JsonProperty("route")
     public void setRoute(ConsoleConfigRoute route) {
         this.route = route;
     }
 
+    /**
+     * ConsoleSpec is the specification of the desired behavior of the Console.
+     */
     @JsonProperty("unsupportedConfigOverrides")
     public Object getUnsupportedConfigOverrides() {
         return unsupportedConfigOverrides;
     }
 
+    /**
+     * ConsoleSpec is the specification of the desired behavior of the Console.
+     */
     @JsonProperty("unsupportedConfigOverrides")
     @JsonDeserialize(using = io.fabric8.kubernetes.internal.KubernetesDeserializer.class)
     public void setUnsupportedConfigOverrides(Object unsupportedConfigOverrides) {

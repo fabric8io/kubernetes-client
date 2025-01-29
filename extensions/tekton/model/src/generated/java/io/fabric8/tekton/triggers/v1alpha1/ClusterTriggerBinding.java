@@ -36,6 +36,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ClusterTriggerBinding is a TriggerBinding with a cluster scope. ClusterTriggerBindings are used to represent TriggerBindings that should be publicly addressable from any namespace in the cluster.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -75,14 +78,8 @@ import lombok.experimental.Accessors;
 public class ClusterTriggerBinding implements Editable<ClusterTriggerBindingBuilder>, HasMetadata
 {
 
-    /**
-     * (Required)
-     */
     @JsonProperty("apiVersion")
     private String apiVersion = "triggers.tekton.dev/v1alpha1";
-    /**
-     * (Required)
-     */
     @JsonProperty("kind")
     private String kind = "ClusterTriggerBinding";
     @JsonProperty("metadata")
@@ -110,7 +107,7 @@ public class ClusterTriggerBinding implements Editable<ClusterTriggerBindingBuil
     }
 
     /**
-     * (Required)
+     * APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -118,7 +115,7 @@ public class ClusterTriggerBinding implements Editable<ClusterTriggerBindingBuil
     }
 
     /**
-     * (Required)
+     * APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -126,7 +123,7 @@ public class ClusterTriggerBinding implements Editable<ClusterTriggerBindingBuil
     }
 
     /**
-     * (Required)
+     * Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -134,38 +131,56 @@ public class ClusterTriggerBinding implements Editable<ClusterTriggerBindingBuil
     }
 
     /**
-     * (Required)
+     * Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
      */
     @JsonProperty("kind")
     public void setKind(String kind) {
         this.kind = kind;
     }
 
+    /**
+     * ClusterTriggerBinding is a TriggerBinding with a cluster scope. ClusterTriggerBindings are used to represent TriggerBindings that should be publicly addressable from any namespace in the cluster.
+     */
     @JsonProperty("metadata")
     public ObjectMeta getMetadata() {
         return metadata;
     }
 
+    /**
+     * ClusterTriggerBinding is a TriggerBinding with a cluster scope. ClusterTriggerBindings are used to represent TriggerBindings that should be publicly addressable from any namespace in the cluster.
+     */
     @JsonProperty("metadata")
     public void setMetadata(ObjectMeta metadata) {
         this.metadata = metadata;
     }
 
+    /**
+     * ClusterTriggerBinding is a TriggerBinding with a cluster scope. ClusterTriggerBindings are used to represent TriggerBindings that should be publicly addressable from any namespace in the cluster.
+     */
     @JsonProperty("spec")
     public TriggerBindingSpec getSpec() {
         return spec;
     }
 
+    /**
+     * ClusterTriggerBinding is a TriggerBinding with a cluster scope. ClusterTriggerBindings are used to represent TriggerBindings that should be publicly addressable from any namespace in the cluster.
+     */
     @JsonProperty("spec")
     public void setSpec(TriggerBindingSpec spec) {
         this.spec = spec;
     }
 
+    /**
+     * ClusterTriggerBinding is a TriggerBinding with a cluster scope. ClusterTriggerBindings are used to represent TriggerBindings that should be publicly addressable from any namespace in the cluster.
+     */
     @JsonProperty("status")
     public TriggerBindingStatus getStatus() {
         return status;
     }
 
+    /**
+     * ClusterTriggerBinding is a TriggerBinding with a cluster scope. ClusterTriggerBindings are used to represent TriggerBindings that should be publicly addressable from any namespace in the cluster.
+     */
     @JsonProperty("status")
     public void setStatus(TriggerBindingStatus status) {
         this.status = status;

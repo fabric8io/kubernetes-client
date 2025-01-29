@@ -33,6 +33,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * DomainMappingSpec describes the DomainMapping the user wishes to exist.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -83,21 +86,33 @@ public class DomainMappingSpec implements Editable<DomainMappingSpecBuilder>, Ku
         this.tls = tls;
     }
 
+    /**
+     * DomainMappingSpec describes the DomainMapping the user wishes to exist.
+     */
     @JsonProperty("ref")
     public KReference getRef() {
         return ref;
     }
 
+    /**
+     * DomainMappingSpec describes the DomainMapping the user wishes to exist.
+     */
     @JsonProperty("ref")
     public void setRef(KReference ref) {
         this.ref = ref;
     }
 
+    /**
+     * DomainMappingSpec describes the DomainMapping the user wishes to exist.
+     */
     @JsonProperty("tls")
     public SecretTLS getTls() {
         return tls;
     }
 
+    /**
+     * DomainMappingSpec describes the DomainMapping the user wishes to exist.
+     */
     @JsonProperty("tls")
     public void setTls(SecretTLS tls) {
         this.tls = tls;

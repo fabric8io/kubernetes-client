@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ExemptPriorityLevelConfiguration describes the configurable aspects of the handling of exempt requests. In the mandatory exempt configuration object the values in the fields here can be modified by authorized users, unlike the rest of the `spec`.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class ExemptPriorityLevelConfiguration implements Editable<ExemptPriority
         this.nominalConcurrencyShares = nominalConcurrencyShares;
     }
 
+    /**
+     * `lendablePercent` prescribes the fraction of the level's NominalCL that can be borrowed by other priority levels.  This value of this field must be between 0 and 100, inclusive, and it defaults to 0. The number of seats that other levels can borrow from this level, known as this level's LendableConcurrencyLimit (LendableCL), is defined as follows.<br><p> <br><p> LendableCL(i) = round( NominalCL(i) &#42; lendablePercent(i)/100.0 )
+     */
     @JsonProperty("lendablePercent")
     public Integer getLendablePercent() {
         return lendablePercent;
     }
 
+    /**
+     * `lendablePercent` prescribes the fraction of the level's NominalCL that can be borrowed by other priority levels.  This value of this field must be between 0 and 100, inclusive, and it defaults to 0. The number of seats that other levels can borrow from this level, known as this level's LendableConcurrencyLimit (LendableCL), is defined as follows.<br><p> <br><p> LendableCL(i) = round( NominalCL(i) &#42; lendablePercent(i)/100.0 )
+     */
     @JsonProperty("lendablePercent")
     public void setLendablePercent(Integer lendablePercent) {
         this.lendablePercent = lendablePercent;
     }
 
+    /**
+     * `nominalConcurrencyShares` (NCS) contributes to the computation of the NominalConcurrencyLimit (NominalCL) of this level. This is the number of execution seats nominally reserved for this priority level. This DOES NOT limit the dispatching from this priority level but affects the other priority levels through the borrowing mechanism. The server's concurrency limit (ServerCL) is divided among all the priority levels in proportion to their NCS values:<br><p> <br><p> NominalCL(i)  = ceil( ServerCL &#42; NCS(i) / sum_ncs ) sum_ncs = sum[priority level k] NCS(k)<br><p> <br><p> Bigger numbers mean a larger nominal concurrency limit, at the expense of every other priority level. This field has a default value of zero.
+     */
     @JsonProperty("nominalConcurrencyShares")
     public Integer getNominalConcurrencyShares() {
         return nominalConcurrencyShares;
     }
 
+    /**
+     * `nominalConcurrencyShares` (NCS) contributes to the computation of the NominalConcurrencyLimit (NominalCL) of this level. This is the number of execution seats nominally reserved for this priority level. This DOES NOT limit the dispatching from this priority level but affects the other priority levels through the borrowing mechanism. The server's concurrency limit (ServerCL) is divided among all the priority levels in proportion to their NCS values:<br><p> <br><p> NominalCL(i)  = ceil( ServerCL &#42; NCS(i) / sum_ncs ) sum_ncs = sum[priority level k] NCS(k)<br><p> <br><p> Bigger numbers mean a larger nominal concurrency limit, at the expense of every other priority level. This field has a default value of zero.
+     */
     @JsonProperty("nominalConcurrencyShares")
     public void setNominalConcurrencyShares(Integer nominalConcurrencyShares) {
         this.nominalConcurrencyShares = nominalConcurrencyShares;

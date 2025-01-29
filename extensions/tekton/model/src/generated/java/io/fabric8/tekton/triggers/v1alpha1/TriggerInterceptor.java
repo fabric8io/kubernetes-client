@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * TriggerInterceptor provides a hook to intercept and pre-process events
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -109,82 +112,130 @@ public class TriggerInterceptor implements Editable<TriggerInterceptorBuilder>, 
         this.webhook = webhook;
     }
 
+    /**
+     * TriggerInterceptor provides a hook to intercept and pre-process events
+     */
     @JsonProperty("bitbucket")
     public BitbucketInterceptor getBitbucket() {
         return bitbucket;
     }
 
+    /**
+     * TriggerInterceptor provides a hook to intercept and pre-process events
+     */
     @JsonProperty("bitbucket")
     public void setBitbucket(BitbucketInterceptor bitbucket) {
         this.bitbucket = bitbucket;
     }
 
+    /**
+     * TriggerInterceptor provides a hook to intercept and pre-process events
+     */
     @JsonProperty("cel")
     public CELInterceptor getCel() {
         return cel;
     }
 
+    /**
+     * TriggerInterceptor provides a hook to intercept and pre-process events
+     */
     @JsonProperty("cel")
     public void setCel(CELInterceptor cel) {
         this.cel = cel;
     }
 
+    /**
+     * TriggerInterceptor provides a hook to intercept and pre-process events
+     */
     @JsonProperty("github")
     public GitHubInterceptor getGithub() {
         return github;
     }
 
+    /**
+     * TriggerInterceptor provides a hook to intercept and pre-process events
+     */
     @JsonProperty("github")
     public void setGithub(GitHubInterceptor github) {
         this.github = github;
     }
 
+    /**
+     * TriggerInterceptor provides a hook to intercept and pre-process events
+     */
     @JsonProperty("gitlab")
     public GitLabInterceptor getGitlab() {
         return gitlab;
     }
 
+    /**
+     * TriggerInterceptor provides a hook to intercept and pre-process events
+     */
     @JsonProperty("gitlab")
     public void setGitlab(GitLabInterceptor gitlab) {
         this.gitlab = gitlab;
     }
 
+    /**
+     * Optional name to identify the current interceptor configuration
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * Optional name to identify the current interceptor configuration
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * Params are the params to send to the interceptor
+     */
     @JsonProperty("params")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<InterceptorParams> getParams() {
         return params;
     }
 
+    /**
+     * Params are the params to send to the interceptor
+     */
     @JsonProperty("params")
     public void setParams(List<InterceptorParams> params) {
         this.params = params;
     }
 
+    /**
+     * TriggerInterceptor provides a hook to intercept and pre-process events
+     */
     @JsonProperty("ref")
     public InterceptorRef getRef() {
         return ref;
     }
 
+    /**
+     * TriggerInterceptor provides a hook to intercept and pre-process events
+     */
     @JsonProperty("ref")
     public void setRef(InterceptorRef ref) {
         this.ref = ref;
     }
 
+    /**
+     * TriggerInterceptor provides a hook to intercept and pre-process events
+     */
     @JsonProperty("webhook")
     public WebhookInterceptor getWebhook() {
         return webhook;
     }
 
+    /**
+     * TriggerInterceptor provides a hook to intercept and pre-process events
+     */
     @JsonProperty("webhook")
     public void setWebhook(WebhookInterceptor webhook) {
         this.webhook = webhook;

@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * SubscriberStatus defines the status of a single subscriber to a Channel.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -90,41 +93,65 @@ public class SubscriberStatus implements Editable<SubscriberStatusBuilder>, Kube
         this.uid = uid;
     }
 
+    /**
+     * A human readable message indicating details of Ready status.
+     */
     @JsonProperty("message")
     public String getMessage() {
         return message;
     }
 
+    /**
+     * A human readable message indicating details of Ready status.
+     */
     @JsonProperty("message")
     public void setMessage(String message) {
         this.message = message;
     }
 
+    /**
+     * Generation of the origin of the subscriber with uid:UID.
+     */
     @JsonProperty("observedGeneration")
     public Long getObservedGeneration() {
         return observedGeneration;
     }
 
+    /**
+     * Generation of the origin of the subscriber with uid:UID.
+     */
     @JsonProperty("observedGeneration")
     public void setObservedGeneration(Long observedGeneration) {
         this.observedGeneration = observedGeneration;
     }
 
+    /**
+     * Status of the subscriber.
+     */
     @JsonProperty("ready")
     public String getReady() {
         return ready;
     }
 
+    /**
+     * Status of the subscriber.
+     */
     @JsonProperty("ready")
     public void setReady(String ready) {
         this.ready = ready;
     }
 
+    /**
+     * UID is used to understand the origin of the subscriber.
+     */
     @JsonProperty("uid")
     public String getUid() {
         return uid;
     }
 
+    /**
+     * UID is used to understand the origin of the subscriber.
+     */
     @JsonProperty("uid")
     public void setUid(String uid) {
         this.uid = uid;

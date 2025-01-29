@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * SourceStrategyOptions contains extra strategy options for Source builds
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -78,11 +81,17 @@ public class SourceStrategyOptions implements Editable<SourceStrategyOptionsBuil
         this.incremental = incremental;
     }
 
+    /**
+     * incremental overrides the source-strategy incremental option in the build config
+     */
     @JsonProperty("incremental")
     public Boolean getIncremental() {
         return incremental;
     }
 
+    /**
+     * incremental overrides the source-strategy incremental option in the build config
+     */
     @JsonProperty("incremental")
     public void setIncremental(Boolean incremental) {
         this.incremental = incremental;

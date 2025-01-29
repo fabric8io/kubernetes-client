@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Firmware describes the firmware on the host.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -78,11 +81,17 @@ public class Firmware implements Editable<FirmwareBuilder>, KubernetesResource
         this.bios = bios;
     }
 
+    /**
+     * Firmware describes the firmware on the host.
+     */
     @JsonProperty("bios")
     public BIOS getBios() {
         return bios;
     }
 
+    /**
+     * Firmware describes the firmware on the host.
+     */
     @JsonProperty("bios")
     public void setBios(BIOS bios) {
         this.bios = bios;

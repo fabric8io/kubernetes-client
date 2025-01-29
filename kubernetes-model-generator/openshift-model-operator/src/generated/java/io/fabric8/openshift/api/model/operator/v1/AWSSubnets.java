@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * AWSSubnets contains a list of references to AWS subnets by ID or name.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -86,23 +89,35 @@ public class AWSSubnets implements Editable<AWSSubnetsBuilder>, KubernetesResour
         this.names = names;
     }
 
+    /**
+     * ids specifies a list of AWS subnets by subnet ID. Subnet IDs must start with "subnet-", consist only of alphanumeric characters, must be exactly 24 characters long, must be unique, and the total number of subnets specified by ids and names must not exceed 10.
+     */
     @JsonProperty("ids")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getIds() {
         return ids;
     }
 
+    /**
+     * ids specifies a list of AWS subnets by subnet ID. Subnet IDs must start with "subnet-", consist only of alphanumeric characters, must be exactly 24 characters long, must be unique, and the total number of subnets specified by ids and names must not exceed 10.
+     */
     @JsonProperty("ids")
     public void setIds(List<String> ids) {
         this.ids = ids;
     }
 
+    /**
+     * names specifies a list of AWS subnets by subnet name. Subnet names must not start with "subnet-", must not include commas, must be under 256 characters in length, must be unique, and the total number of subnets specified by ids and names must not exceed 10.
+     */
     @JsonProperty("names")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getNames() {
         return names;
     }
 
+    /**
+     * names specifies a list of AWS subnets by subnet name. Subnet names must not start with "subnet-", must not include commas, must be under 256 characters in length, must be unique, and the total number of subnets specified by ids and names must not exceed 10.
+     */
     @JsonProperty("names")
     public void setNames(List<String> names) {
         this.names = names;

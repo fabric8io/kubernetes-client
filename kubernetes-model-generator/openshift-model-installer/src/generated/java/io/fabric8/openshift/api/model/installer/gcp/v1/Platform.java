@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Platform stores all the global configuration that all machinesets use.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -118,103 +121,163 @@ public class Platform implements Editable<PlatformBuilder>, KubernetesResource
         this.userTags = userTags;
     }
 
+    /**
+     * ComputeSubnet is an existing subnet where the compute nodes will be deployed. The value should be the name of the subnet.
+     */
     @JsonProperty("computeSubnet")
     public String getComputeSubnet() {
         return computeSubnet;
     }
 
+    /**
+     * ComputeSubnet is an existing subnet where the compute nodes will be deployed. The value should be the name of the subnet.
+     */
     @JsonProperty("computeSubnet")
     public void setComputeSubnet(String computeSubnet) {
         this.computeSubnet = computeSubnet;
     }
 
+    /**
+     * ControlPlaneSubnet is an existing subnet where the control plane will be deployed. The value should be the name of the subnet.
+     */
     @JsonProperty("controlPlaneSubnet")
     public String getControlPlaneSubnet() {
         return controlPlaneSubnet;
     }
 
+    /**
+     * ControlPlaneSubnet is an existing subnet where the control plane will be deployed. The value should be the name of the subnet.
+     */
     @JsonProperty("controlPlaneSubnet")
     public void setControlPlaneSubnet(String controlPlaneSubnet) {
         this.controlPlaneSubnet = controlPlaneSubnet;
     }
 
+    /**
+     * Platform stores all the global configuration that all machinesets use.
+     */
     @JsonProperty("defaultMachinePlatform")
     public MachinePool getDefaultMachinePlatform() {
         return defaultMachinePlatform;
     }
 
+    /**
+     * Platform stores all the global configuration that all machinesets use.
+     */
     @JsonProperty("defaultMachinePlatform")
     public void setDefaultMachinePlatform(MachinePool defaultMachinePlatform) {
         this.defaultMachinePlatform = defaultMachinePlatform;
     }
 
+    /**
+     * Network specifies an existing VPC where the cluster should be created rather than provisioning a new one.
+     */
     @JsonProperty("network")
     public String getNetwork() {
         return network;
     }
 
+    /**
+     * Network specifies an existing VPC where the cluster should be created rather than provisioning a new one.
+     */
     @JsonProperty("network")
     public void setNetwork(String network) {
         this.network = network;
     }
 
+    /**
+     * NetworkProjectID specifies which project the network and subnets exist in when they are not in the main ProjectID.
+     */
     @JsonProperty("networkProjectID")
     public String getNetworkProjectID() {
         return networkProjectID;
     }
 
+    /**
+     * NetworkProjectID specifies which project the network and subnets exist in when they are not in the main ProjectID.
+     */
     @JsonProperty("networkProjectID")
     public void setNetworkProjectID(String networkProjectID) {
         this.networkProjectID = networkProjectID;
     }
 
+    /**
+     * ProjectID is the the project that will be used for the cluster.
+     */
     @JsonProperty("projectID")
     public String getProjectID() {
         return projectID;
     }
 
+    /**
+     * ProjectID is the the project that will be used for the cluster.
+     */
     @JsonProperty("projectID")
     public void setProjectID(String projectID) {
         this.projectID = projectID;
     }
 
+    /**
+     * Region specifies the GCP region where the cluster will be created.
+     */
     @JsonProperty("region")
     public String getRegion() {
         return region;
     }
 
+    /**
+     * Region specifies the GCP region where the cluster will be created.
+     */
     @JsonProperty("region")
     public void setRegion(String region) {
         this.region = region;
     }
 
+    /**
+     * userLabels has additional keys and values that the installer will add as labels to all resources that it creates on GCP. Resources created by the cluster itself may not include these labels.
+     */
     @JsonProperty("userLabels")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<UserLabel> getUserLabels() {
         return userLabels;
     }
 
+    /**
+     * userLabels has additional keys and values that the installer will add as labels to all resources that it creates on GCP. Resources created by the cluster itself may not include these labels.
+     */
     @JsonProperty("userLabels")
     public void setUserLabels(List<UserLabel> userLabels) {
         this.userLabels = userLabels;
     }
 
+    /**
+     * UserProvisionedDNS indicates if the customer is providing their own DNS solution in place of the default provisioned by the Installer.
+     */
     @JsonProperty("userProvisionedDNS")
     public String getUserProvisionedDNS() {
         return userProvisionedDNS;
     }
 
+    /**
+     * UserProvisionedDNS indicates if the customer is providing their own DNS solution in place of the default provisioned by the Installer.
+     */
     @JsonProperty("userProvisionedDNS")
     public void setUserProvisionedDNS(String userProvisionedDNS) {
         this.userProvisionedDNS = userProvisionedDNS;
     }
 
+    /**
+     * userTags has additional keys and values that the installer will add as tags to all resources that it creates on GCP. Resources created by the cluster itself may not include these tags. Tag key and tag value should be the shortnames of the tag key and tag value resource.
+     */
     @JsonProperty("userTags")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<UserTag> getUserTags() {
         return userTags;
     }
 
+    /**
+     * userTags has additional keys and values that the installer will add as tags to all resources that it creates on GCP. Resources created by the cluster itself may not include these tags. Tag key and tag value should be the shortnames of the tag key and tag value resource.
+     */
     @JsonProperty("userTags")
     public void setUserTags(List<UserTag> userTags) {
         this.userTags = userTags;

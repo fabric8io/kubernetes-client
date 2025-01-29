@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Parameter defines a name/value variable that is to be processed during the Template to Config transformation.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -102,71 +105,113 @@ public class Parameter implements Editable<ParameterBuilder>, KubernetesResource
         this.value = value;
     }
 
+    /**
+     * Description of a parameter. Optional.
+     */
     @JsonProperty("description")
     public String getDescription() {
         return description;
     }
 
+    /**
+     * Description of a parameter. Optional.
+     */
     @JsonProperty("description")
     public void setDescription(String description) {
         this.description = description;
     }
 
+    /**
+     * Optional: The name that will show in UI instead of parameter 'Name'
+     */
     @JsonProperty("displayName")
     public String getDisplayName() {
         return displayName;
     }
 
+    /**
+     * Optional: The name that will show in UI instead of parameter 'Name'
+     */
     @JsonProperty("displayName")
     public void setDisplayName(String displayName) {
         this.displayName = displayName;
     }
 
+    /**
+     * From is an input value for the generator. Optional.
+     */
     @JsonProperty("from")
     public String getFrom() {
         return from;
     }
 
+    /**
+     * From is an input value for the generator. Optional.
+     */
     @JsonProperty("from")
     public void setFrom(String from) {
         this.from = from;
     }
 
+    /**
+     * generate specifies the generator to be used to generate random string from an input value specified by From field. The result string is stored into Value field. If empty, no generator is being used, leaving the result Value untouched. Optional.<br><p> <br><p> The only supported generator is "expression", which accepts a "from" value in the form of a simple regular expression containing the range expression "[a-zA-Z0-9]", and the length expression "a{length}".<br><p> <br><p> Examples:<br><p> <br><p> from             | value ----------------------------- "test[0-9]{1}x"  | "test7x" "[0-1]{8}"       | "01001100" "0x[A-F0-9]{4}"  | "0xB3AF" "[a-zA-Z0-9]{8}" | "hW4yQU5i"
+     */
     @JsonProperty("generate")
     public String getGenerate() {
         return generate;
     }
 
+    /**
+     * generate specifies the generator to be used to generate random string from an input value specified by From field. The result string is stored into Value field. If empty, no generator is being used, leaving the result Value untouched. Optional.<br><p> <br><p> The only supported generator is "expression", which accepts a "from" value in the form of a simple regular expression containing the range expression "[a-zA-Z0-9]", and the length expression "a{length}".<br><p> <br><p> Examples:<br><p> <br><p> from             | value ----------------------------- "test[0-9]{1}x"  | "test7x" "[0-1]{8}"       | "01001100" "0x[A-F0-9]{4}"  | "0xB3AF" "[a-zA-Z0-9]{8}" | "hW4yQU5i"
+     */
     @JsonProperty("generate")
     public void setGenerate(String generate) {
         this.generate = generate;
     }
 
+    /**
+     * Name must be set and it can be referenced in Template Items using ${PARAMETER_NAME}. Required.
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * Name must be set and it can be referenced in Template Items using ${PARAMETER_NAME}. Required.
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * Optional: Indicates the parameter must have a value.  Defaults to false.
+     */
     @JsonProperty("required")
     public Boolean getRequired() {
         return required;
     }
 
+    /**
+     * Optional: Indicates the parameter must have a value.  Defaults to false.
+     */
     @JsonProperty("required")
     public void setRequired(Boolean required) {
         this.required = required;
     }
 
+    /**
+     * Value holds the Parameter data. If specified, the generator will be ignored. The value replaces all occurrences of the Parameter ${Name} expression during the Template to Config transformation. Optional.
+     */
     @JsonProperty("value")
     public String getValue() {
         return value;
     }
 
+    /**
+     * Value holds the Parameter data. If specified, the generator will be ignored. The value replaces all occurrences of the Parameter ${Name} expression during the Template to Config transformation. Optional.
+     */
     @JsonProperty("value")
     public void setValue(String value) {
         this.value = value;

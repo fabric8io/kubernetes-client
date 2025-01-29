@@ -36,6 +36,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * EmailConfig configures notifications via Email.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -135,142 +138,226 @@ public class EmailConfig implements Editable<EmailConfigBuilder>, KubernetesReso
         this.to = to;
     }
 
+    /**
+     * The identity to use for authentication.
+     */
     @JsonProperty("authIdentity")
     public String getAuthIdentity() {
         return authIdentity;
     }
 
+    /**
+     * The identity to use for authentication.
+     */
     @JsonProperty("authIdentity")
     public void setAuthIdentity(String authIdentity) {
         this.authIdentity = authIdentity;
     }
 
+    /**
+     * EmailConfig configures notifications via Email.
+     */
     @JsonProperty("authPassword")
     public SecretKeySelector getAuthPassword() {
         return authPassword;
     }
 
+    /**
+     * EmailConfig configures notifications via Email.
+     */
     @JsonProperty("authPassword")
     public void setAuthPassword(SecretKeySelector authPassword) {
         this.authPassword = authPassword;
     }
 
+    /**
+     * EmailConfig configures notifications via Email.
+     */
     @JsonProperty("authSecret")
     public SecretKeySelector getAuthSecret() {
         return authSecret;
     }
 
+    /**
+     * EmailConfig configures notifications via Email.
+     */
     @JsonProperty("authSecret")
     public void setAuthSecret(SecretKeySelector authSecret) {
         this.authSecret = authSecret;
     }
 
+    /**
+     * The username to use for authentication.
+     */
     @JsonProperty("authUsername")
     public String getAuthUsername() {
         return authUsername;
     }
 
+    /**
+     * The username to use for authentication.
+     */
     @JsonProperty("authUsername")
     public void setAuthUsername(String authUsername) {
         this.authUsername = authUsername;
     }
 
+    /**
+     * The sender address.
+     */
     @JsonProperty("from")
     public String getFrom() {
         return from;
     }
 
+    /**
+     * The sender address.
+     */
     @JsonProperty("from")
     public void setFrom(String from) {
         this.from = from;
     }
 
+    /**
+     * Further headers email header key/value pairs. Overrides any headers previously set by the notification implementation.
+     */
     @JsonProperty("headers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<KeyValue> getHeaders() {
         return headers;
     }
 
+    /**
+     * Further headers email header key/value pairs. Overrides any headers previously set by the notification implementation.
+     */
     @JsonProperty("headers")
     public void setHeaders(List<KeyValue> headers) {
         this.headers = headers;
     }
 
+    /**
+     * The hostname to identify to the SMTP server.
+     */
     @JsonProperty("hello")
     public String getHello() {
         return hello;
     }
 
+    /**
+     * The hostname to identify to the SMTP server.
+     */
     @JsonProperty("hello")
     public void setHello(String hello) {
         this.hello = hello;
     }
 
+    /**
+     * The HTML body of the email notification.
+     */
     @JsonProperty("html")
     public String getHtml() {
         return html;
     }
 
+    /**
+     * The HTML body of the email notification.
+     */
     @JsonProperty("html")
     public void setHtml(String html) {
         this.html = html;
     }
 
+    /**
+     * The SMTP TLS requirement. Note that Go does not support unencrypted connections to remote SMTP endpoints.
+     */
     @JsonProperty("requireTLS")
     public Boolean getRequireTLS() {
         return requireTLS;
     }
 
+    /**
+     * The SMTP TLS requirement. Note that Go does not support unencrypted connections to remote SMTP endpoints.
+     */
     @JsonProperty("requireTLS")
     public void setRequireTLS(Boolean requireTLS) {
         this.requireTLS = requireTLS;
     }
 
+    /**
+     * Whether or not to notify about resolved alerts.
+     */
     @JsonProperty("sendResolved")
     public Boolean getSendResolved() {
         return sendResolved;
     }
 
+    /**
+     * Whether or not to notify about resolved alerts.
+     */
     @JsonProperty("sendResolved")
     public void setSendResolved(Boolean sendResolved) {
         this.sendResolved = sendResolved;
     }
 
+    /**
+     * The SMTP host and port through which emails are sent. E.g. example.com:25
+     */
     @JsonProperty("smarthost")
     public String getSmarthost() {
         return smarthost;
     }
 
+    /**
+     * The SMTP host and port through which emails are sent. E.g. example.com:25
+     */
     @JsonProperty("smarthost")
     public void setSmarthost(String smarthost) {
         this.smarthost = smarthost;
     }
 
+    /**
+     * The text body of the email notification.
+     */
     @JsonProperty("text")
     public String getText() {
         return text;
     }
 
+    /**
+     * The text body of the email notification.
+     */
     @JsonProperty("text")
     public void setText(String text) {
         this.text = text;
     }
 
+    /**
+     * EmailConfig configures notifications via Email.
+     */
     @JsonProperty("tlsConfig")
     public SafeTLSConfig getTlsConfig() {
         return tlsConfig;
     }
 
+    /**
+     * EmailConfig configures notifications via Email.
+     */
     @JsonProperty("tlsConfig")
     public void setTlsConfig(SafeTLSConfig tlsConfig) {
         this.tlsConfig = tlsConfig;
     }
 
+    /**
+     * The email address to send notifications to.
+     */
     @JsonProperty("to")
     public String getTo() {
         return to;
     }
 
+    /**
+     * The email address to send notifications to.
+     */
     @JsonProperty("to")
     public void setTo(String to) {
         this.to = to;

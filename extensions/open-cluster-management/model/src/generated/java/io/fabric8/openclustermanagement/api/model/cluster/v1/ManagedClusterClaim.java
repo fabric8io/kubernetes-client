@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ManagedClusterClaim represents a ClusterClaim collected from a managed cluster.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class ManagedClusterClaim implements Editable<ManagedClusterClaimBuilder>
         this.value = value;
     }
 
+    /**
+     * Name is the name of a ClusterClaim resource on managed cluster. It's a well known or customized name to identify the claim.
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * Name is the name of a ClusterClaim resource on managed cluster. It's a well known or customized name to identify the claim.
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * Value is a claim-dependent string
+     */
     @JsonProperty("value")
     public String getValue() {
         return value;
     }
 
+    /**
+     * Value is a claim-dependent string
+     */
     @JsonProperty("value")
     public void setValue(String value) {
         this.value = value;

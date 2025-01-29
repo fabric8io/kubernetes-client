@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Timespec represents a time
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class Timespec implements Editable<TimespecBuilder>, KubernetesResource
         this.sec = sec;
     }
 
+    /**
+     * Timespec represents a time
+     */
     @JsonProperty("nsec")
     public Long getNsec() {
         return nsec;
     }
 
+    /**
+     * Timespec represents a time
+     */
     @JsonProperty("nsec")
     public void setNsec(Long nsec) {
         this.nsec = nsec;
     }
 
+    /**
+     * Timespec represents a time
+     */
     @JsonProperty("sec")
     public Long getSec() {
         return sec;
     }
 
+    /**
+     * Timespec represents a time
+     */
     @JsonProperty("sec")
     public void setSec(Long sec) {
         this.sec = sec;

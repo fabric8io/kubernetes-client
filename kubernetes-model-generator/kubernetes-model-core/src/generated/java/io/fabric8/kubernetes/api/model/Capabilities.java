@@ -19,6 +19,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Adds and removes POSIX capabilities from running containers.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -57,23 +60,35 @@ public class Capabilities implements Editable<CapabilitiesBuilder>, KubernetesRe
         this.drop = drop;
     }
 
+    /**
+     * Added capabilities
+     */
     @JsonProperty("add")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getAdd() {
         return add;
     }
 
+    /**
+     * Added capabilities
+     */
     @JsonProperty("add")
     public void setAdd(List<String> add) {
         this.add = add;
     }
 
+    /**
+     * Removed capabilities
+     */
     @JsonProperty("drop")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getDrop() {
         return drop;
     }
 
+    /**
+     * Removed capabilities
+     */
     @JsonProperty("drop")
     public void setDrop(List<String> drop) {
         this.drop = drop;

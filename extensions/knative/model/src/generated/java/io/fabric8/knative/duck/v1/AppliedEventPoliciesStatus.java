@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * AppliedEventPoliciesStatus contains the list of policies which apply to a resource. This type is intended to be embedded into a status struct.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -81,12 +84,18 @@ public class AppliedEventPoliciesStatus implements Editable<AppliedEventPolicies
         this.policies = policies;
     }
 
+    /**
+     * Policies holds the list of applied EventPolicies
+     */
     @JsonProperty("policies")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<AppliedEventPolicyRef> getPolicies() {
         return policies;
     }
 
+    /**
+     * Policies holds the list of applied EventPolicies
+     */
     @JsonProperty("policies")
     public void setPolicies(List<AppliedEventPolicyRef> policies) {
         this.policies = policies;

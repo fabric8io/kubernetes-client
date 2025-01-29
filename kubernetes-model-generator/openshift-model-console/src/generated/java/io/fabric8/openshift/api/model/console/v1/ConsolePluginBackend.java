@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ConsolePluginBackend holds information about the endpoint which serves the console's plugin
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class ConsolePluginBackend implements Editable<ConsolePluginBackendBuilde
         this.type = type;
     }
 
+    /**
+     * ConsolePluginBackend holds information about the endpoint which serves the console's plugin
+     */
     @JsonProperty("service")
     public ConsolePluginService getService() {
         return service;
     }
 
+    /**
+     * ConsolePluginBackend holds information about the endpoint which serves the console's plugin
+     */
     @JsonProperty("service")
     public void setService(ConsolePluginService service) {
         this.service = service;
     }
 
+    /**
+     * type is the backend type which servers the console's plugin. Currently only "Service" is supported.
+     */
     @JsonProperty("type")
     public String getType() {
         return type;
     }
 
+    /**
+     * type is the backend type which servers the console's plugin. Currently only "Service" is supported.
+     */
     @JsonProperty("type")
     public void setType(String type) {
         this.type = type;

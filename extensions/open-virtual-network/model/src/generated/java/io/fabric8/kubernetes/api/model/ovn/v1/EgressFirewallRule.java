@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * EgressFirewallRule is a single egressfirewall rule object
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -89,32 +92,50 @@ public class EgressFirewallRule implements Editable<EgressFirewallRuleBuilder>, 
         this.type = type;
     }
 
+    /**
+     * ports specify what ports and protocols the rule applies to
+     */
     @JsonProperty("ports")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<EgressFirewallPort> getPorts() {
         return ports;
     }
 
+    /**
+     * ports specify what ports and protocols the rule applies to
+     */
     @JsonProperty("ports")
     public void setPorts(List<EgressFirewallPort> ports) {
         this.ports = ports;
     }
 
+    /**
+     * EgressFirewallRule is a single egressfirewall rule object
+     */
     @JsonProperty("to")
     public EgressFirewallDestination getTo() {
         return to;
     }
 
+    /**
+     * EgressFirewallRule is a single egressfirewall rule object
+     */
     @JsonProperty("to")
     public void setTo(EgressFirewallDestination to) {
         this.to = to;
     }
 
+    /**
+     * type marks this as an "Allow" or "Deny" rule
+     */
     @JsonProperty("type")
     public String getType() {
         return type;
     }
 
+    /**
+     * type marks this as an "Allow" or "Deny" rule
+     */
     @JsonProperty("type")
     public void setType(String type) {
         this.type = type;

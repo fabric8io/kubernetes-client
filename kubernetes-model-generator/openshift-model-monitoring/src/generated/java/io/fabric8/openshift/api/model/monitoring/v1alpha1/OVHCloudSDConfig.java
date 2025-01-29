@@ -33,6 +33,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * OVHCloudSDConfig configurations allow retrieving scrape targets from OVHcloud's dedicated servers and VPS using their API. See https://prometheus.io/docs/prometheus/latest/configuration/configuration/#ovhcloud_sd_config
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -99,61 +102,97 @@ public class OVHCloudSDConfig implements Editable<OVHCloudSDConfigBuilder>, Kube
         this.service = service;
     }
 
+    /**
+     * Access key to use. https://api.ovh.com.
+     */
     @JsonProperty("applicationKey")
     public String getApplicationKey() {
         return applicationKey;
     }
 
+    /**
+     * Access key to use. https://api.ovh.com.
+     */
     @JsonProperty("applicationKey")
     public void setApplicationKey(String applicationKey) {
         this.applicationKey = applicationKey;
     }
 
+    /**
+     * OVHCloudSDConfig configurations allow retrieving scrape targets from OVHcloud's dedicated servers and VPS using their API. See https://prometheus.io/docs/prometheus/latest/configuration/configuration/#ovhcloud_sd_config
+     */
     @JsonProperty("applicationSecret")
     public SecretKeySelector getApplicationSecret() {
         return applicationSecret;
     }
 
+    /**
+     * OVHCloudSDConfig configurations allow retrieving scrape targets from OVHcloud's dedicated servers and VPS using their API. See https://prometheus.io/docs/prometheus/latest/configuration/configuration/#ovhcloud_sd_config
+     */
     @JsonProperty("applicationSecret")
     public void setApplicationSecret(SecretKeySelector applicationSecret) {
         this.applicationSecret = applicationSecret;
     }
 
+    /**
+     * OVHCloudSDConfig configurations allow retrieving scrape targets from OVHcloud's dedicated servers and VPS using their API. See https://prometheus.io/docs/prometheus/latest/configuration/configuration/#ovhcloud_sd_config
+     */
     @JsonProperty("consumerKey")
     public SecretKeySelector getConsumerKey() {
         return consumerKey;
     }
 
+    /**
+     * OVHCloudSDConfig configurations allow retrieving scrape targets from OVHcloud's dedicated servers and VPS using their API. See https://prometheus.io/docs/prometheus/latest/configuration/configuration/#ovhcloud_sd_config
+     */
     @JsonProperty("consumerKey")
     public void setConsumerKey(SecretKeySelector consumerKey) {
         this.consumerKey = consumerKey;
     }
 
+    /**
+     * Custom endpoint to be used.
+     */
     @JsonProperty("endpoint")
     public String getEndpoint() {
         return endpoint;
     }
 
+    /**
+     * Custom endpoint to be used.
+     */
     @JsonProperty("endpoint")
     public void setEndpoint(String endpoint) {
         this.endpoint = endpoint;
     }
 
+    /**
+     * Refresh interval to re-read the resources list.
+     */
     @JsonProperty("refreshInterval")
     public String getRefreshInterval() {
         return refreshInterval;
     }
 
+    /**
+     * Refresh interval to re-read the resources list.
+     */
     @JsonProperty("refreshInterval")
     public void setRefreshInterval(String refreshInterval) {
         this.refreshInterval = refreshInterval;
     }
 
+    /**
+     * Service of the targets to retrieve. Must be `VPS` or `DedicatedServer`.
+     */
     @JsonProperty("service")
     public String getService() {
         return service;
     }
 
+    /**
+     * Service of the targets to retrieve. Must be `VPS` or `DedicatedServer`.
+     */
     @JsonProperty("service")
     public void setService(String service) {
         this.service = service;

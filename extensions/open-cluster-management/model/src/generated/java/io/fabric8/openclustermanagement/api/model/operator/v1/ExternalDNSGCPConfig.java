@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ExternalDNSGCPConfig contains GCP-specific settings for external DNS
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -78,11 +81,17 @@ public class ExternalDNSGCPConfig implements Editable<ExternalDNSGCPConfigBuilde
         this.credentials = credentials;
     }
 
+    /**
+     * ExternalDNSGCPConfig contains GCP-specific settings for external DNS
+     */
     @JsonProperty("credentials")
     public LocalObjectReference getCredentials() {
         return credentials;
     }
 
+    /**
+     * ExternalDNSGCPConfig contains GCP-specific settings for external DNS
+     */
     @JsonProperty("credentials")
     public void setCredentials(LocalObjectReference credentials) {
         this.credentials = credentials;

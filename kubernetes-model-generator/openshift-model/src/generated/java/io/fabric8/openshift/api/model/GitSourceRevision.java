@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * GitSourceRevision is the commit information from a git source for a build
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -90,41 +93,65 @@ public class GitSourceRevision implements Editable<GitSourceRevisionBuilder>, Ku
         this.message = message;
     }
 
+    /**
+     * GitSourceRevision is the commit information from a git source for a build
+     */
     @JsonProperty("author")
     public SourceControlUser getAuthor() {
         return author;
     }
 
+    /**
+     * GitSourceRevision is the commit information from a git source for a build
+     */
     @JsonProperty("author")
     public void setAuthor(SourceControlUser author) {
         this.author = author;
     }
 
+    /**
+     * commit is the commit hash identifying a specific commit
+     */
     @JsonProperty("commit")
     public String getCommit() {
         return commit;
     }
 
+    /**
+     * commit is the commit hash identifying a specific commit
+     */
     @JsonProperty("commit")
     public void setCommit(String commit) {
         this.commit = commit;
     }
 
+    /**
+     * GitSourceRevision is the commit information from a git source for a build
+     */
     @JsonProperty("committer")
     public SourceControlUser getCommitter() {
         return committer;
     }
 
+    /**
+     * GitSourceRevision is the commit information from a git source for a build
+     */
     @JsonProperty("committer")
     public void setCommitter(SourceControlUser committer) {
         this.committer = committer;
     }
 
+    /**
+     * message is the description of a specific commit
+     */
     @JsonProperty("message")
     public String getMessage() {
         return message;
     }
 
+    /**
+     * message is the description of a specific commit
+     */
     @JsonProperty("message")
     public void setMessage(String message) {
         this.message = message;

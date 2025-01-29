@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * EC2RootVolume defines the storage for an ec2 instance.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -90,41 +93,65 @@ public class EC2RootVolume implements Editable<EC2RootVolumeBuilder>, Kubernetes
         this.type = type;
     }
 
+    /**
+     * IOPS defines the iops for the storage.
+     */
     @JsonProperty("iops")
     public Integer getIops() {
         return iops;
     }
 
+    /**
+     * IOPS defines the iops for the storage.
+     */
     @JsonProperty("iops")
     public void setIops(Integer iops) {
         this.iops = iops;
     }
 
+    /**
+     * The KMS key that will be used to encrypt the EBS volume. If no key is provided the default KMS key for the account will be used. https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_GetEbsDefaultKmsKeyId.html
+     */
     @JsonProperty("kmsKeyARN")
     public String getKmsKeyARN() {
         return kmsKeyARN;
     }
 
+    /**
+     * The KMS key that will be used to encrypt the EBS volume. If no key is provided the default KMS key for the account will be used. https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_GetEbsDefaultKmsKeyId.html
+     */
     @JsonProperty("kmsKeyARN")
     public void setKmsKeyARN(String kmsKeyARN) {
         this.kmsKeyARN = kmsKeyARN;
     }
 
+    /**
+     * Size defines the size of the storage.
+     */
     @JsonProperty("size")
     public Integer getSize() {
         return size;
     }
 
+    /**
+     * Size defines the size of the storage.
+     */
     @JsonProperty("size")
     public void setSize(Integer size) {
         this.size = size;
     }
 
+    /**
+     * Type defines the type of the storage.
+     */
     @JsonProperty("type")
     public String getType() {
         return type;
     }
 
+    /**
+     * Type defines the type of the storage.
+     */
     @JsonProperty("type")
     public void setType(String type) {
         this.type = type;

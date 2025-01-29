@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ClusterClaimStatus defines the observed state of ClusterClaim.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -85,22 +88,34 @@ public class ClusterClaimStatus implements Editable<ClusterClaimStatusBuilder>, 
         this.lifetime = lifetime;
     }
 
+    /**
+     * Conditions includes more detailed status for the cluster pool.
+     */
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ClusterClaimCondition> getConditions() {
         return conditions;
     }
 
+    /**
+     * Conditions includes more detailed status for the cluster pool.
+     */
     @JsonProperty("conditions")
     public void setConditions(List<ClusterClaimCondition> conditions) {
         this.conditions = conditions;
     }
 
+    /**
+     * ClusterClaimStatus defines the observed state of ClusterClaim.
+     */
     @JsonProperty("lifetime")
     public String getLifetime() {
         return lifetime;
     }
 
+    /**
+     * ClusterClaimStatus defines the observed state of ClusterClaim.
+     */
     @JsonProperty("lifetime")
     public void setLifetime(String lifetime) {
         this.lifetime = lifetime;

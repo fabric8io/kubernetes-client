@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * PackageFilter defines various types of filters for selecting resources
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -91,42 +94,66 @@ public class PackageFilter implements Editable<PackageFilterBuilder>, Kubernetes
         this.version = version;
     }
 
+    /**
+     * Annotations defines a type of filter for selecting resources by annotations
+     */
     @JsonProperty("annotations")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getAnnotations() {
         return annotations;
     }
 
+    /**
+     * Annotations defines a type of filter for selecting resources by annotations
+     */
     @JsonProperty("annotations")
     public void setAnnotations(Map<String, String> annotations) {
         this.annotations = annotations;
     }
 
+    /**
+     * PackageFilter defines various types of filters for selecting resources
+     */
     @JsonProperty("filterRef")
     public LocalObjectReference getFilterRef() {
         return filterRef;
     }
 
+    /**
+     * PackageFilter defines various types of filters for selecting resources
+     */
     @JsonProperty("filterRef")
     public void setFilterRef(LocalObjectReference filterRef) {
         this.filterRef = filterRef;
     }
 
+    /**
+     * PackageFilter defines various types of filters for selecting resources
+     */
     @JsonProperty("labelSelector")
     public LabelSelector getLabelSelector() {
         return labelSelector;
     }
 
+    /**
+     * PackageFilter defines various types of filters for selecting resources
+     */
     @JsonProperty("labelSelector")
     public void setLabelSelector(LabelSelector labelSelector) {
         this.labelSelector = labelSelector;
     }
 
+    /**
+     * Version defines a type of filter for selecting resources by version
+     */
     @JsonProperty("version")
     public String getVersion() {
         return version;
     }
 
+    /**
+     * Version defines a type of filter for selecting resources by version
+     */
     @JsonProperty("version")
     public void setVersion(String version) {
         this.version = version;

@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * MachinePool stores the configuration for a machine pool installed on Azure.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -109,82 +112,130 @@ public class MachinePool implements Editable<MachinePoolBuilder>, KubernetesReso
         this.zones = zones;
     }
 
+    /**
+     * ComputeSubnet specifies an existing subnet for use by compute nodes. If omitted, the default (${infraID}-worker-subnet) will be used.
+     */
     @JsonProperty("computeSubnet")
     public String getComputeSubnet() {
         return computeSubnet;
     }
 
+    /**
+     * ComputeSubnet specifies an existing subnet for use by compute nodes. If omitted, the default (${infraID}-worker-subnet) will be used.
+     */
     @JsonProperty("computeSubnet")
     public void setComputeSubnet(String computeSubnet) {
         this.computeSubnet = computeSubnet;
     }
 
+    /**
+     * NetworkResourceGroupName specifies the network resource group that contains an existing VNet. Ignored unless VirtualNetwork is also specified.
+     */
     @JsonProperty("networkResourceGroupName")
     public String getNetworkResourceGroupName() {
         return networkResourceGroupName;
     }
 
+    /**
+     * NetworkResourceGroupName specifies the network resource group that contains an existing VNet. Ignored unless VirtualNetwork is also specified.
+     */
     @JsonProperty("networkResourceGroupName")
     public void setNetworkResourceGroupName(String networkResourceGroupName) {
         this.networkResourceGroupName = networkResourceGroupName;
     }
 
+    /**
+     * MachinePool stores the configuration for a machine pool installed on Azure.
+     */
     @JsonProperty("osDisk")
     public OSDisk getOsDisk() {
         return osDisk;
     }
 
+    /**
+     * MachinePool stores the configuration for a machine pool installed on Azure.
+     */
     @JsonProperty("osDisk")
     public void setOsDisk(OSDisk osDisk) {
         this.osDisk = osDisk;
     }
 
+    /**
+     * MachinePool stores the configuration for a machine pool installed on Azure.
+     */
     @JsonProperty("osImage")
     public OSImage getOsImage() {
         return osImage;
     }
 
+    /**
+     * MachinePool stores the configuration for a machine pool installed on Azure.
+     */
     @JsonProperty("osImage")
     public void setOsImage(OSImage osImage) {
         this.osImage = osImage;
     }
 
+    /**
+     * InstanceType defines the azure instance type. eg. Standard_DS_V2
+     */
     @JsonProperty("type")
     public String getType() {
         return type;
     }
 
+    /**
+     * InstanceType defines the azure instance type. eg. Standard_DS_V2
+     */
     @JsonProperty("type")
     public void setType(String type) {
         this.type = type;
     }
 
+    /**
+     * VirtualNetwork specifies the name of an existing VNet for the Machines to use If omitted, the default (${infraID}-vnet) will be used.
+     */
     @JsonProperty("virtualNetwork")
     public String getVirtualNetwork() {
         return virtualNetwork;
     }
 
+    /**
+     * VirtualNetwork specifies the name of an existing VNet for the Machines to use If omitted, the default (${infraID}-vnet) will be used.
+     */
     @JsonProperty("virtualNetwork")
     public void setVirtualNetwork(String virtualNetwork) {
         this.virtualNetwork = virtualNetwork;
     }
 
+    /**
+     * VMNetworkingType specifies whether to enable accelerated networking. Accelerated networking enables single root I/O virtualization (SR-IOV) to a VM, greatly improving its networking performance. eg. values: "Accelerated", "Basic"
+     */
     @JsonProperty("vmNetworkingType")
     public String getVmNetworkingType() {
         return vmNetworkingType;
     }
 
+    /**
+     * VMNetworkingType specifies whether to enable accelerated networking. Accelerated networking enables single root I/O virtualization (SR-IOV) to a VM, greatly improving its networking performance. eg. values: "Accelerated", "Basic"
+     */
     @JsonProperty("vmNetworkingType")
     public void setVmNetworkingType(String vmNetworkingType) {
         this.vmNetworkingType = vmNetworkingType;
     }
 
+    /**
+     * Zones is list of availability zones that can be used. eg. ["1", "2", "3"]
+     */
     @JsonProperty("zones")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getZones() {
         return zones;
     }
 
+    /**
+     * Zones is list of availability zones that can be used. eg. ["1", "2", "3"]
+     */
     @JsonProperty("zones")
     public void setZones(List<String> zones) {
         this.zones = zones;

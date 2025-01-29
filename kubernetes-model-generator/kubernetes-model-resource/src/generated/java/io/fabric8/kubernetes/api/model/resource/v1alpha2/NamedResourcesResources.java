@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * NamedResourcesResources is used in ResourceModel.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -81,12 +84,18 @@ public class NamedResourcesResources implements Editable<NamedResourcesResources
         this.instances = instances;
     }
 
+    /**
+     * The list of all individual resources instances currently available.
+     */
     @JsonProperty("instances")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<NamedResourcesInstance> getInstances() {
         return instances;
     }
 
+    /**
+     * The list of all individual resources instances currently available.
+     */
     @JsonProperty("instances")
     public void setInstances(List<NamedResourcesInstance> instances) {
         this.instances = instances;

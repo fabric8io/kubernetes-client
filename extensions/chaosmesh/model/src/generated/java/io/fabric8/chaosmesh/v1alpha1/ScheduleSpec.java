@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ScheduleSpec is the specification of a schedule object
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -154,201 +157,321 @@ public class ScheduleSpec implements Editable<ScheduleSpecBuilder>, KubernetesRe
         this.workflow = workflow;
     }
 
+    /**
+     * ScheduleSpec is the specification of a schedule object
+     */
     @JsonProperty("awsChaos")
     public AWSChaosSpec getAwsChaos() {
         return awsChaos;
     }
 
+    /**
+     * ScheduleSpec is the specification of a schedule object
+     */
     @JsonProperty("awsChaos")
     public void setAwsChaos(AWSChaosSpec awsChaos) {
         this.awsChaos = awsChaos;
     }
 
+    /**
+     * ScheduleSpec is the specification of a schedule object
+     */
     @JsonProperty("azureChaos")
     public AzureChaosSpec getAzureChaos() {
         return azureChaos;
     }
 
+    /**
+     * ScheduleSpec is the specification of a schedule object
+     */
     @JsonProperty("azureChaos")
     public void setAzureChaos(AzureChaosSpec azureChaos) {
         this.azureChaos = azureChaos;
     }
 
+    /**
+     * ScheduleSpec is the specification of a schedule object
+     */
     @JsonProperty("blockChaos")
     public BlockChaosSpec getBlockChaos() {
         return blockChaos;
     }
 
+    /**
+     * ScheduleSpec is the specification of a schedule object
+     */
     @JsonProperty("blockChaos")
     public void setBlockChaos(BlockChaosSpec blockChaos) {
         this.blockChaos = blockChaos;
     }
 
+    /**
+     * ScheduleSpec is the specification of a schedule object
+     */
     @JsonProperty("concurrencyPolicy")
     public String getConcurrencyPolicy() {
         return concurrencyPolicy;
     }
 
+    /**
+     * ScheduleSpec is the specification of a schedule object
+     */
     @JsonProperty("concurrencyPolicy")
     public void setConcurrencyPolicy(String concurrencyPolicy) {
         this.concurrencyPolicy = concurrencyPolicy;
     }
 
+    /**
+     * ScheduleSpec is the specification of a schedule object
+     */
     @JsonProperty("dnsChaos")
     public DNSChaosSpec getDnsChaos() {
         return dnsChaos;
     }
 
+    /**
+     * ScheduleSpec is the specification of a schedule object
+     */
     @JsonProperty("dnsChaos")
     public void setDnsChaos(DNSChaosSpec dnsChaos) {
         this.dnsChaos = dnsChaos;
     }
 
+    /**
+     * ScheduleSpec is the specification of a schedule object
+     */
     @JsonProperty("gcpChaos")
     public GCPChaosSpec getGcpChaos() {
         return gcpChaos;
     }
 
+    /**
+     * ScheduleSpec is the specification of a schedule object
+     */
     @JsonProperty("gcpChaos")
     public void setGcpChaos(GCPChaosSpec gcpChaos) {
         this.gcpChaos = gcpChaos;
     }
 
+    /**
+     * ScheduleSpec is the specification of a schedule object
+     */
     @JsonProperty("historyLimit")
     public Integer getHistoryLimit() {
         return historyLimit;
     }
 
+    /**
+     * ScheduleSpec is the specification of a schedule object
+     */
     @JsonProperty("historyLimit")
     public void setHistoryLimit(Integer historyLimit) {
         this.historyLimit = historyLimit;
     }
 
+    /**
+     * ScheduleSpec is the specification of a schedule object
+     */
     @JsonProperty("httpChaos")
     public HTTPChaosSpec getHttpChaos() {
         return httpChaos;
     }
 
+    /**
+     * ScheduleSpec is the specification of a schedule object
+     */
     @JsonProperty("httpChaos")
     public void setHttpChaos(HTTPChaosSpec httpChaos) {
         this.httpChaos = httpChaos;
     }
 
+    /**
+     * ScheduleSpec is the specification of a schedule object
+     */
     @JsonProperty("ioChaos")
     public IOChaosSpec getIoChaos() {
         return ioChaos;
     }
 
+    /**
+     * ScheduleSpec is the specification of a schedule object
+     */
     @JsonProperty("ioChaos")
     public void setIoChaos(IOChaosSpec ioChaos) {
         this.ioChaos = ioChaos;
     }
 
+    /**
+     * ScheduleSpec is the specification of a schedule object
+     */
     @JsonProperty("jvmChaos")
     public JVMChaosSpec getJvmChaos() {
         return jvmChaos;
     }
 
+    /**
+     * ScheduleSpec is the specification of a schedule object
+     */
     @JsonProperty("jvmChaos")
     public void setJvmChaos(JVMChaosSpec jvmChaos) {
         this.jvmChaos = jvmChaos;
     }
 
+    /**
+     * ScheduleSpec is the specification of a schedule object
+     */
     @JsonProperty("kernelChaos")
     public KernelChaosSpec getKernelChaos() {
         return kernelChaos;
     }
 
+    /**
+     * ScheduleSpec is the specification of a schedule object
+     */
     @JsonProperty("kernelChaos")
     public void setKernelChaos(KernelChaosSpec kernelChaos) {
         this.kernelChaos = kernelChaos;
     }
 
+    /**
+     * ScheduleSpec is the specification of a schedule object
+     */
     @JsonProperty("networkChaos")
     public NetworkChaosSpec getNetworkChaos() {
         return networkChaos;
     }
 
+    /**
+     * ScheduleSpec is the specification of a schedule object
+     */
     @JsonProperty("networkChaos")
     public void setNetworkChaos(NetworkChaosSpec networkChaos) {
         this.networkChaos = networkChaos;
     }
 
+    /**
+     * ScheduleSpec is the specification of a schedule object
+     */
     @JsonProperty("physicalmachineChaos")
     public PhysicalMachineChaosSpec getPhysicalmachineChaos() {
         return physicalmachineChaos;
     }
 
+    /**
+     * ScheduleSpec is the specification of a schedule object
+     */
     @JsonProperty("physicalmachineChaos")
     public void setPhysicalmachineChaos(PhysicalMachineChaosSpec physicalmachineChaos) {
         this.physicalmachineChaos = physicalmachineChaos;
     }
 
+    /**
+     * ScheduleSpec is the specification of a schedule object
+     */
     @JsonProperty("podChaos")
     public PodChaosSpec getPodChaos() {
         return podChaos;
     }
 
+    /**
+     * ScheduleSpec is the specification of a schedule object
+     */
     @JsonProperty("podChaos")
     public void setPodChaos(PodChaosSpec podChaos) {
         this.podChaos = podChaos;
     }
 
+    /**
+     * ScheduleSpec is the specification of a schedule object
+     */
     @JsonProperty("schedule")
     public String getSchedule() {
         return schedule;
     }
 
+    /**
+     * ScheduleSpec is the specification of a schedule object
+     */
     @JsonProperty("schedule")
     public void setSchedule(String schedule) {
         this.schedule = schedule;
     }
 
+    /**
+     * ScheduleSpec is the specification of a schedule object
+     */
     @JsonProperty("startingDeadlineSeconds")
     public Long getStartingDeadlineSeconds() {
         return startingDeadlineSeconds;
     }
 
+    /**
+     * ScheduleSpec is the specification of a schedule object
+     */
     @JsonProperty("startingDeadlineSeconds")
     public void setStartingDeadlineSeconds(Long startingDeadlineSeconds) {
         this.startingDeadlineSeconds = startingDeadlineSeconds;
     }
 
+    /**
+     * ScheduleSpec is the specification of a schedule object
+     */
     @JsonProperty("stressChaos")
     public StressChaosSpec getStressChaos() {
         return stressChaos;
     }
 
+    /**
+     * ScheduleSpec is the specification of a schedule object
+     */
     @JsonProperty("stressChaos")
     public void setStressChaos(StressChaosSpec stressChaos) {
         this.stressChaos = stressChaos;
     }
 
+    /**
+     * ScheduleSpec is the specification of a schedule object
+     */
     @JsonProperty("timeChaos")
     public TimeChaosSpec getTimeChaos() {
         return timeChaos;
     }
 
+    /**
+     * ScheduleSpec is the specification of a schedule object
+     */
     @JsonProperty("timeChaos")
     public void setTimeChaos(TimeChaosSpec timeChaos) {
         this.timeChaos = timeChaos;
     }
 
+    /**
+     * ScheduleSpec is the specification of a schedule object
+     */
     @JsonProperty("type")
     public String getType() {
         return type;
     }
 
+    /**
+     * ScheduleSpec is the specification of a schedule object
+     */
     @JsonProperty("type")
     public void setType(String type) {
         this.type = type;
     }
 
+    /**
+     * ScheduleSpec is the specification of a schedule object
+     */
     @JsonProperty("workflow")
     public WorkflowSpec getWorkflow() {
         return workflow;
     }
 
+    /**
+     * ScheduleSpec is the specification of a schedule object
+     */
     @JsonProperty("workflow")
     public void setWorkflow(WorkflowSpec workflow) {
         this.workflow = workflow;

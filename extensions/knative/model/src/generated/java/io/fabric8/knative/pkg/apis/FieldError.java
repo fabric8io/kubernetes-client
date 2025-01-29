@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * FieldError is used to propagate the context of errors pertaining to specific fields in a manner suitable for use in a recursive walk, so that errors contain the appropriate field context. FieldError methods are non-mutating.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -93,42 +96,66 @@ public class FieldError implements Editable<FieldErrorBuilder>, KubernetesResour
         this.paths = paths;
     }
 
+    /**
+     * Details contains an optional longer payload.
+     */
     @JsonProperty("Details")
     public String getDetails() {
         return details;
     }
 
+    /**
+     * Details contains an optional longer payload.
+     */
     @JsonProperty("Details")
     public void setDetails(String details) {
         this.details = details;
     }
 
+    /**
+     * Level holds the severity of the diagnostic. If empty, this defaults to ErrorLevel.
+     */
     @JsonProperty("Level")
     public Integer getLevel() {
         return level;
     }
 
+    /**
+     * Level holds the severity of the diagnostic. If empty, this defaults to ErrorLevel.
+     */
     @JsonProperty("Level")
     public void setLevel(Integer level) {
         this.level = level;
     }
 
+    /**
+     * Message holds the main diagnostic message carried by this FieldError
+     */
     @JsonProperty("Message")
     public String getMessage() {
         return message;
     }
 
+    /**
+     * Message holds the main diagnostic message carried by this FieldError
+     */
     @JsonProperty("Message")
     public void setMessage(String message) {
         this.message = message;
     }
 
+    /**
+     * Paths holds a list of paths to which this diagnostic pertains
+     */
     @JsonProperty("Paths")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getPaths() {
         return paths;
     }
 
+    /**
+     * Paths holds a list of paths to which this diagnostic pertains
+     */
     @JsonProperty("Paths")
     public void setPaths(List<String> paths) {
         this.paths = paths;

@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * AWSAssociatedVPC defines a VPC that should be able to resolve the DNS addresses setup for Private Link.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -86,31 +89,49 @@ public class AWSAssociatedVPC implements Editable<AWSAssociatedVPCBuilder>, Kube
         this.vpcID = vpcID;
     }
 
+    /**
+     * AWSAssociatedVPC defines a VPC that should be able to resolve the DNS addresses setup for Private Link.
+     */
     @JsonProperty("credentialsSecretRef")
     public LocalObjectReference getCredentialsSecretRef() {
         return credentialsSecretRef;
     }
 
+    /**
+     * AWSAssociatedVPC defines a VPC that should be able to resolve the DNS addresses setup for Private Link.
+     */
     @JsonProperty("credentialsSecretRef")
     public void setCredentialsSecretRef(LocalObjectReference credentialsSecretRef) {
         this.credentialsSecretRef = credentialsSecretRef;
     }
 
+    /**
+     * AWSAssociatedVPC defines a VPC that should be able to resolve the DNS addresses setup for Private Link.
+     */
     @JsonProperty("region")
     public String getRegion() {
         return region;
     }
 
+    /**
+     * AWSAssociatedVPC defines a VPC that should be able to resolve the DNS addresses setup for Private Link.
+     */
     @JsonProperty("region")
     public void setRegion(String region) {
         this.region = region;
     }
 
+    /**
+     * AWSAssociatedVPC defines a VPC that should be able to resolve the DNS addresses setup for Private Link.
+     */
     @JsonProperty("vpcID")
     public String getVpcID() {
         return vpcID;
     }
 
+    /**
+     * AWSAssociatedVPC defines a VPC that should be able to resolve the DNS addresses setup for Private Link.
+     */
     @JsonProperty("vpcID")
     public void setVpcID(String vpcID) {
         this.vpcID = vpcID;

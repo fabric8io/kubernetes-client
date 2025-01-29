@@ -33,6 +33,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * RolloutAll is a RolloutStrategy Type
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -87,31 +90,49 @@ public class RolloutAll implements Editable<RolloutAllBuilder>, KubernetesResour
         this.progressDeadline = progressDeadline;
     }
 
+    /**
+     * RolloutAll is a RolloutStrategy Type
+     */
     @JsonProperty("maxFailures")
     public IntOrString getMaxFailures() {
         return maxFailures;
     }
 
+    /**
+     * RolloutAll is a RolloutStrategy Type
+     */
     @JsonProperty("maxFailures")
     public void setMaxFailures(IntOrString maxFailures) {
         this.maxFailures = maxFailures;
     }
 
+    /**
+     * RolloutAll is a RolloutStrategy Type
+     */
     @JsonProperty("minSuccessTime")
     public Duration getMinSuccessTime() {
         return minSuccessTime;
     }
 
+    /**
+     * RolloutAll is a RolloutStrategy Type
+     */
     @JsonProperty("minSuccessTime")
     public void setMinSuccessTime(Duration minSuccessTime) {
         this.minSuccessTime = minSuccessTime;
     }
 
+    /**
+     * ProgressDeadline defines how long workload applier controller will wait for the workload to reach a successful state in the cluster. If the workload does not reach a successful state after ProgressDeadline, will stop waiting and workload will be treated as "timeout" and be counted into MaxFailures. Once the MaxFailures is breached, the rollout will stop. ProgressDeadline default value is "None", meaning the workload applier will wait for a successful state indefinitely. ProgressDeadline must be defined in [0-9h]|[0-9m]|[0-9s] format examples; 2h , 90m , 360s
+     */
     @JsonProperty("progressDeadline")
     public String getProgressDeadline() {
         return progressDeadline;
     }
 
+    /**
+     * ProgressDeadline defines how long workload applier controller will wait for the workload to reach a successful state in the cluster. If the workload does not reach a successful state after ProgressDeadline, will stop waiting and workload will be treated as "timeout" and be counted into MaxFailures. Once the MaxFailures is breached, the rollout will stop. ProgressDeadline default value is "None", meaning the workload applier will wait for a successful state indefinitely. ProgressDeadline must be defined in [0-9h]|[0-9m]|[0-9s] format examples; 2h , 90m , 360s
+     */
     @JsonProperty("progressDeadline")
     public void setProgressDeadline(String progressDeadline) {
         this.progressDeadline = progressDeadline;

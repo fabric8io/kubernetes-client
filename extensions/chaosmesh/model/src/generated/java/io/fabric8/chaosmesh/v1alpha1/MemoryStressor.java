@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * MemoryStressor defines how to stress memory out
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -93,42 +96,66 @@ public class MemoryStressor implements Editable<MemoryStressorBuilder>, Kubernet
         this.workers = workers;
     }
 
+    /**
+     * OOMScoreAdj sets the oom_score_adj of the stress process. See `man 5 proc` to know more about this option.
+     */
     @JsonProperty("oomScoreAdj")
     public Integer getOomScoreAdj() {
         return oomScoreAdj;
     }
 
+    /**
+     * OOMScoreAdj sets the oom_score_adj of the stress process. See `man 5 proc` to know more about this option.
+     */
     @JsonProperty("oomScoreAdj")
     public void setOomScoreAdj(Integer oomScoreAdj) {
         this.oomScoreAdj = oomScoreAdj;
     }
 
+    /**
+     * extend stress-ng options
+     */
     @JsonProperty("options")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getOptions() {
         return options;
     }
 
+    /**
+     * extend stress-ng options
+     */
     @JsonProperty("options")
     public void setOptions(List<String> options) {
         this.options = options;
     }
 
+    /**
+     * Size specifies N bytes consumed per vm worker, default is the total available memory. One can specify the size as % of total available memory or in units of B, KB/KiB, MB/MiB, GB/GiB, TB/TiB.
+     */
     @JsonProperty("size")
     public String getSize() {
         return size;
     }
 
+    /**
+     * Size specifies N bytes consumed per vm worker, default is the total available memory. One can specify the size as % of total available memory or in units of B, KB/KiB, MB/MiB, GB/GiB, TB/TiB.
+     */
     @JsonProperty("size")
     public void setSize(String size) {
         this.size = size;
     }
 
+    /**
+     * Workers specifies N workers to apply the stressor. Maximum 8192 workers can run by stress-ng
+     */
     @JsonProperty("workers")
     public Integer getWorkers() {
         return workers;
     }
 
+    /**
+     * Workers specifies N workers to apply the stressor. Maximum 8192 workers can run by stress-ng
+     */
     @JsonProperty("workers")
     public void setWorkers(Integer workers) {
         this.workers = workers;

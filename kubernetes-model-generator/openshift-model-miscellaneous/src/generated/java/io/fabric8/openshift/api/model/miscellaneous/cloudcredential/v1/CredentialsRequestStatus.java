@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * CredentialsRequestStatus defines the observed state of CredentialsRequest
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -102,63 +105,99 @@ public class CredentialsRequestStatus implements Editable<CredentialsRequestStat
         this.provisioned = provisioned;
     }
 
+    /**
+     * Conditions includes detailed status for the CredentialsRequest
+     */
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<CredentialsRequestCondition> getConditions() {
         return conditions;
     }
 
+    /**
+     * Conditions includes detailed status for the CredentialsRequest
+     */
     @JsonProperty("conditions")
     public void setConditions(List<CredentialsRequestCondition> conditions) {
         this.conditions = conditions;
     }
 
+    /**
+     * LastSyncCloudCredsSecretResourceVersion is the resource version of the cloud credentials secret resource when the credentials request resource was last synced. Used to determine if the cloud credentials have been updated since the last sync.
+     */
     @JsonProperty("lastSyncCloudCredsSecretResourceVersion")
     public String getLastSyncCloudCredsSecretResourceVersion() {
         return lastSyncCloudCredsSecretResourceVersion;
     }
 
+    /**
+     * LastSyncCloudCredsSecretResourceVersion is the resource version of the cloud credentials secret resource when the credentials request resource was last synced. Used to determine if the cloud credentials have been updated since the last sync.
+     */
     @JsonProperty("lastSyncCloudCredsSecretResourceVersion")
     public void setLastSyncCloudCredsSecretResourceVersion(String lastSyncCloudCredsSecretResourceVersion) {
         this.lastSyncCloudCredsSecretResourceVersion = lastSyncCloudCredsSecretResourceVersion;
     }
 
+    /**
+     * LastSyncGeneration is the generation of the credentials request resource that was last synced. Used to determine if the object has changed and requires a sync.
+     */
     @JsonProperty("lastSyncGeneration")
     public Long getLastSyncGeneration() {
         return lastSyncGeneration;
     }
 
+    /**
+     * LastSyncGeneration is the generation of the credentials request resource that was last synced. Used to determine if the object has changed and requires a sync.
+     */
     @JsonProperty("lastSyncGeneration")
     public void setLastSyncGeneration(Long lastSyncGeneration) {
         this.lastSyncGeneration = lastSyncGeneration;
     }
 
+    /**
+     * CredentialsRequestStatus defines the observed state of CredentialsRequest
+     */
     @JsonProperty("lastSyncTimestamp")
     public String getLastSyncTimestamp() {
         return lastSyncTimestamp;
     }
 
+    /**
+     * CredentialsRequestStatus defines the observed state of CredentialsRequest
+     */
     @JsonProperty("lastSyncTimestamp")
     public void setLastSyncTimestamp(String lastSyncTimestamp) {
         this.lastSyncTimestamp = lastSyncTimestamp;
     }
 
+    /**
+     * CredentialsRequestStatus defines the observed state of CredentialsRequest
+     */
     @JsonProperty("providerStatus")
     public Object getProviderStatus() {
         return providerStatus;
     }
 
+    /**
+     * CredentialsRequestStatus defines the observed state of CredentialsRequest
+     */
     @JsonProperty("providerStatus")
     @JsonDeserialize(using = io.fabric8.kubernetes.internal.KubernetesDeserializer.class)
     public void setProviderStatus(Object providerStatus) {
         this.providerStatus = providerStatus;
     }
 
+    /**
+     * Provisioned is true once the credentials have been initially provisioned.
+     */
     @JsonProperty("provisioned")
     public Boolean getProvisioned() {
         return provisioned;
     }
 
+    /**
+     * Provisioned is true once the credentials have been initially provisioned.
+     */
     @JsonProperty("provisioned")
     public void setProvisioned(Boolean provisioned) {
         this.provisioned = provisioned;

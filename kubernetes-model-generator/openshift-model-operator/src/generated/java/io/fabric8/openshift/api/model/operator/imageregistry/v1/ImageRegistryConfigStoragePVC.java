@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ImageRegistryConfigStoragePVC holds Persistent Volume Claims data to be used by the registry.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -78,11 +81,17 @@ public class ImageRegistryConfigStoragePVC implements Editable<ImageRegistryConf
         this.claim = claim;
     }
 
+    /**
+     * claim defines the Persisent Volume Claim's name to be used.
+     */
     @JsonProperty("claim")
     public String getClaim() {
         return claim;
     }
 
+    /**
+     * claim defines the Persisent Volume Claim's name to be used.
+     */
     @JsonProperty("claim")
     public void setClaim(String claim) {
         this.claim = claim;

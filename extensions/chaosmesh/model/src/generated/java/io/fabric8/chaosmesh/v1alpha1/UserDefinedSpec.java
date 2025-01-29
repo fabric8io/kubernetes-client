@@ -82,21 +82,33 @@ public class UserDefinedSpec implements Editable<UserDefinedSpecBuilder>, Kubern
         this.recoverCmd = recoverCmd;
     }
 
+    /**
+     * The command to be executed when attack
+     */
     @JsonProperty("attackCmd")
     public String getAttackCmd() {
         return attackCmd;
     }
 
+    /**
+     * The command to be executed when attack
+     */
     @JsonProperty("attackCmd")
     public void setAttackCmd(String attackCmd) {
         this.attackCmd = attackCmd;
     }
 
+    /**
+     * The command to be executed when recover
+     */
     @JsonProperty("recoverCmd")
     public String getRecoverCmd() {
         return recoverCmd;
     }
 
+    /**
+     * The command to be executed when recover
+     */
     @JsonProperty("recoverCmd")
     public void setRecoverCmd(String recoverCmd) {
         this.recoverCmd = recoverCmd;

@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * On a redirect, overwrite the port portion of the URL with this value.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -78,11 +81,17 @@ public class HTTPRedirectPort implements IsHTTPRedirectRedirectPort, Editable<HT
         this.port = port;
     }
 
+    /**
+     * On a redirect, overwrite the port portion of the URL with this value.
+     */
     @JsonProperty("port")
     public Long getPort() {
         return port;
     }
 
+    /**
+     * On a redirect, overwrite the port portion of the URL with this value.
+     */
     @JsonProperty("port")
     public void setPort(Long port) {
         this.port = port;

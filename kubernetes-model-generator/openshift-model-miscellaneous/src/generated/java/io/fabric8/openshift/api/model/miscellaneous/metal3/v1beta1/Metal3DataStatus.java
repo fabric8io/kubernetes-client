@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Metal3DataStatus defines the observed state of Metal3Data.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class Metal3DataStatus implements Editable<Metal3DataStatusBuilder>, Kube
         this.ready = ready;
     }
 
+    /**
+     * ErrorMessage contains the error message
+     */
     @JsonProperty("errorMessage")
     public String getErrorMessage() {
         return errorMessage;
     }
 
+    /**
+     * ErrorMessage contains the error message
+     */
     @JsonProperty("errorMessage")
     public void setErrorMessage(String errorMessage) {
         this.errorMessage = errorMessage;
     }
 
+    /**
+     * Ready is a flag set to True if the secrets were rendered properly
+     */
     @JsonProperty("ready")
     public Boolean getReady() {
         return ready;
     }
 
+    /**
+     * Ready is a flag set to True if the secrets were rendered properly
+     */
     @JsonProperty("ready")
     public void setReady(Boolean ready) {
         this.ready = ready;

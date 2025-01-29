@@ -86,31 +86,49 @@ public class ACMEIssuerStatus implements Editable<ACMEIssuerStatusBuilder>, Kube
         this.uri = uri;
     }
 
+    /**
+     * LastPrivateKeyHash is a hash of the private key associated with the latest registered ACME account, in order to track changes made to registered account associated with the Issuer
+     */
     @JsonProperty("lastPrivateKeyHash")
     public String getLastPrivateKeyHash() {
         return lastPrivateKeyHash;
     }
 
+    /**
+     * LastPrivateKeyHash is a hash of the private key associated with the latest registered ACME account, in order to track changes made to registered account associated with the Issuer
+     */
     @JsonProperty("lastPrivateKeyHash")
     public void setLastPrivateKeyHash(String lastPrivateKeyHash) {
         this.lastPrivateKeyHash = lastPrivateKeyHash;
     }
 
+    /**
+     * LastRegisteredEmail is the email associated with the latest registered ACME account, in order to track changes made to registered account associated with the  Issuer
+     */
     @JsonProperty("lastRegisteredEmail")
     public String getLastRegisteredEmail() {
         return lastRegisteredEmail;
     }
 
+    /**
+     * LastRegisteredEmail is the email associated with the latest registered ACME account, in order to track changes made to registered account associated with the  Issuer
+     */
     @JsonProperty("lastRegisteredEmail")
     public void setLastRegisteredEmail(String lastRegisteredEmail) {
         this.lastRegisteredEmail = lastRegisteredEmail;
     }
 
+    /**
+     * URI is the unique account identifier, which can also be used to retrieve account details from the CA
+     */
     @JsonProperty("uri")
     public String getUri() {
         return uri;
     }
 
+    /**
+     * URI is the unique account identifier, which can also be used to retrieve account details from the CA
+     */
     @JsonProperty("uri")
     public void setUri(String uri) {
         this.uri = uri;

@@ -17,6 +17,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * EventSource contains information for an event.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -53,21 +56,33 @@ public class EventSource implements Editable<EventSourceBuilder>, KubernetesReso
         this.host = host;
     }
 
+    /**
+     * Component from which the event is generated.
+     */
     @JsonProperty("component")
     public String getComponent() {
         return component;
     }
 
+    /**
+     * Component from which the event is generated.
+     */
     @JsonProperty("component")
     public void setComponent(String component) {
         this.component = component;
     }
 
+    /**
+     * Node name on which the event is generated.
+     */
     @JsonProperty("host")
     public String getHost() {
         return host;
     }
 
+    /**
+     * Node name on which the event is generated.
+     */
     @JsonProperty("host")
     public void setHost(String host) {
         this.host = host;

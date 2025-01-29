@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * FirmwareComponentStatus defines the status of a firmware component.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -94,51 +97,81 @@ public class FirmwareComponentStatus implements Editable<FirmwareComponentStatus
         this.updatedAt = updatedAt;
     }
 
+    /**
+     * FirmwareComponentStatus defines the status of a firmware component.
+     */
     @JsonProperty("component")
     public String getComponent() {
         return component;
     }
 
+    /**
+     * FirmwareComponentStatus defines the status of a firmware component.
+     */
     @JsonProperty("component")
     public void setComponent(String component) {
         this.component = component;
     }
 
+    /**
+     * FirmwareComponentStatus defines the status of a firmware component.
+     */
     @JsonProperty("currentVersion")
     public String getCurrentVersion() {
         return currentVersion;
     }
 
+    /**
+     * FirmwareComponentStatus defines the status of a firmware component.
+     */
     @JsonProperty("currentVersion")
     public void setCurrentVersion(String currentVersion) {
         this.currentVersion = currentVersion;
     }
 
+    /**
+     * FirmwareComponentStatus defines the status of a firmware component.
+     */
     @JsonProperty("initialVersion")
     public String getInitialVersion() {
         return initialVersion;
     }
 
+    /**
+     * FirmwareComponentStatus defines the status of a firmware component.
+     */
     @JsonProperty("initialVersion")
     public void setInitialVersion(String initialVersion) {
         this.initialVersion = initialVersion;
     }
 
+    /**
+     * FirmwareComponentStatus defines the status of a firmware component.
+     */
     @JsonProperty("lastVersionFlashed")
     public String getLastVersionFlashed() {
         return lastVersionFlashed;
     }
 
+    /**
+     * FirmwareComponentStatus defines the status of a firmware component.
+     */
     @JsonProperty("lastVersionFlashed")
     public void setLastVersionFlashed(String lastVersionFlashed) {
         this.lastVersionFlashed = lastVersionFlashed;
     }
 
+    /**
+     * FirmwareComponentStatus defines the status of a firmware component.
+     */
     @JsonProperty("updatedAt")
     public String getUpdatedAt() {
         return updatedAt;
     }
 
+    /**
+     * FirmwareComponentStatus defines the status of a firmware component.
+     */
     @JsonProperty("updatedAt")
     public void setUpdatedAt(String updatedAt) {
         this.updatedAt = updatedAt;

@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * CustomerManagedKey defines the customer managed key settings for encryption of the Azure storage account.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class CustomerManagedKey implements Editable<CustomerManagedKeyBuilder>, 
         this.userAssignedIdentityKey = userAssignedIdentityKey;
     }
 
+    /**
+     * CustomerManagedKey defines the customer managed key settings for encryption of the Azure storage account.
+     */
     @JsonProperty("keyVault")
     public KeyVault getKeyVault() {
         return keyVault;
     }
 
+    /**
+     * CustomerManagedKey defines the customer managed key settings for encryption of the Azure storage account.
+     */
     @JsonProperty("keyVault")
     public void setKeyVault(KeyVault keyVault) {
         this.keyVault = keyVault;
     }
 
+    /**
+     * UserAssignedIdentityKey is the name of the user identity that has access to the managed key.
+     */
     @JsonProperty("userAssignedIdentityKey")
     public String getUserAssignedIdentityKey() {
         return userAssignedIdentityKey;
     }
 
+    /**
+     * UserAssignedIdentityKey is the name of the user identity that has access to the managed key.
+     */
     @JsonProperty("userAssignedIdentityKey")
     public void setUserAssignedIdentityKey(String userAssignedIdentityKey) {
         this.userAssignedIdentityKey = userAssignedIdentityKey;

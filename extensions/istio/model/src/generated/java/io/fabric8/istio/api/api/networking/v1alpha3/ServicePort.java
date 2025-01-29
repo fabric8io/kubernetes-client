@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ServicePort describes the properties of a specific port of a service.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -90,41 +93,65 @@ public class ServicePort implements Editable<ServicePortBuilder>, KubernetesReso
         this.targetPort = targetPort;
     }
 
+    /**
+     * Label assigned to the port.
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * Label assigned to the port.
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * A valid non-negative integer port number.
+     */
     @JsonProperty("number")
     public Long getNumber() {
         return number;
     }
 
+    /**
+     * A valid non-negative integer port number.
+     */
     @JsonProperty("number")
     public void setNumber(Long number) {
         this.number = number;
     }
 
+    /**
+     * The protocol exposed on the port. MUST BE one of HTTP|HTTPS|GRPC|HTTP2|MONGO|TCP|TLS. TLS implies the connection will be routed based on the SNI header to the destination without terminating the TLS connection.
+     */
     @JsonProperty("protocol")
     public String getProtocol() {
         return protocol;
     }
 
+    /**
+     * The protocol exposed on the port. MUST BE one of HTTP|HTTPS|GRPC|HTTP2|MONGO|TCP|TLS. TLS implies the connection will be routed based on the SNI header to the destination without terminating the TLS connection.
+     */
     @JsonProperty("protocol")
     public void setProtocol(String protocol) {
         this.protocol = protocol;
     }
 
+    /**
+     * The port number on the endpoint where the traffic will be received. If unset, default to `number`.
+     */
     @JsonProperty("targetPort")
     public Long getTargetPort() {
         return targetPort;
     }
 
+    /**
+     * The port number on the endpoint where the traffic will be received. If unset, default to `number`.
+     */
     @JsonProperty("targetPort")
     public void setTargetPort(Long targetPort) {
         this.targetPort = targetPort;

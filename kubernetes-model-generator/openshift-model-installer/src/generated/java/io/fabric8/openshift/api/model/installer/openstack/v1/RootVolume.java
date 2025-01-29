@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * RootVolume defines the storage for an instance.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -94,43 +97,67 @@ public class RootVolume implements Editable<RootVolumeBuilder>, KubernetesResour
         this.zones = zones;
     }
 
+    /**
+     * Size defines the size of the volume in gibibytes (GiB). Required
+     */
     @JsonProperty("size")
     public Integer getSize() {
         return size;
     }
 
+    /**
+     * Size defines the size of the volume in gibibytes (GiB). Required
+     */
     @JsonProperty("size")
     public void setSize(Integer size) {
         this.size = size;
     }
 
+    /**
+     * Type defines the type of the volume. Deprecated: Use Types instead.
+     */
     @JsonProperty("type")
     public String getType() {
         return type;
     }
 
+    /**
+     * Type defines the type of the volume. Deprecated: Use Types instead.
+     */
     @JsonProperty("type")
     public void setType(String type) {
         this.type = type;
     }
 
+    /**
+     * Types is the list of the volume types of the root volumes. This is mutually exclusive with Type.
+     */
     @JsonProperty("types")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getTypes() {
         return types;
     }
 
+    /**
+     * Types is the list of the volume types of the root volumes. This is mutually exclusive with Type.
+     */
     @JsonProperty("types")
     public void setTypes(List<String> types) {
         this.types = types;
     }
 
+    /**
+     * Zones is the list of availability zones where the root volumes should be deployed. If no zones are provided, all instances will be deployed on OpenStack Cinder default availability zone
+     */
     @JsonProperty("zones")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getZones() {
         return zones;
     }
 
+    /**
+     * Zones is the list of availability zones where the root volumes should be deployed. If no zones are provided, all instances will be deployed on OpenStack Cinder default availability zone
+     */
     @JsonProperty("zones")
     public void setZones(List<String> zones) {
         this.zones = zones;

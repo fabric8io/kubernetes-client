@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * StatefulSetStatus represents the current state of a StatefulSet.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -117,102 +120,162 @@ public class StatefulSetStatus implements Editable<StatefulSetStatusBuilder>, Ku
         this.updatedReplicas = updatedReplicas;
     }
 
+    /**
+     * Total number of available pods (ready for at least minReadySeconds) targeted by this statefulset.
+     */
     @JsonProperty("availableReplicas")
     public Integer getAvailableReplicas() {
         return availableReplicas;
     }
 
+    /**
+     * Total number of available pods (ready for at least minReadySeconds) targeted by this statefulset.
+     */
     @JsonProperty("availableReplicas")
     public void setAvailableReplicas(Integer availableReplicas) {
         this.availableReplicas = availableReplicas;
     }
 
+    /**
+     * collisionCount is the count of hash collisions for the StatefulSet. The StatefulSet controller uses this field as a collision avoidance mechanism when it needs to create the name for the newest ControllerRevision.
+     */
     @JsonProperty("collisionCount")
     public Integer getCollisionCount() {
         return collisionCount;
     }
 
+    /**
+     * collisionCount is the count of hash collisions for the StatefulSet. The StatefulSet controller uses this field as a collision avoidance mechanism when it needs to create the name for the newest ControllerRevision.
+     */
     @JsonProperty("collisionCount")
     public void setCollisionCount(Integer collisionCount) {
         this.collisionCount = collisionCount;
     }
 
+    /**
+     * Represents the latest available observations of a statefulset's current state.
+     */
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<StatefulSetCondition> getConditions() {
         return conditions;
     }
 
+    /**
+     * Represents the latest available observations of a statefulset's current state.
+     */
     @JsonProperty("conditions")
     public void setConditions(List<StatefulSetCondition> conditions) {
         this.conditions = conditions;
     }
 
+    /**
+     * currentReplicas is the number of Pods created by the StatefulSet controller from the StatefulSet version indicated by currentRevision.
+     */
     @JsonProperty("currentReplicas")
     public Integer getCurrentReplicas() {
         return currentReplicas;
     }
 
+    /**
+     * currentReplicas is the number of Pods created by the StatefulSet controller from the StatefulSet version indicated by currentRevision.
+     */
     @JsonProperty("currentReplicas")
     public void setCurrentReplicas(Integer currentReplicas) {
         this.currentReplicas = currentReplicas;
     }
 
+    /**
+     * currentRevision, if not empty, indicates the version of the StatefulSet used to generate Pods in the sequence [0,currentReplicas).
+     */
     @JsonProperty("currentRevision")
     public String getCurrentRevision() {
         return currentRevision;
     }
 
+    /**
+     * currentRevision, if not empty, indicates the version of the StatefulSet used to generate Pods in the sequence [0,currentReplicas).
+     */
     @JsonProperty("currentRevision")
     public void setCurrentRevision(String currentRevision) {
         this.currentRevision = currentRevision;
     }
 
+    /**
+     * observedGeneration is the most recent generation observed for this StatefulSet. It corresponds to the StatefulSet's generation, which is updated on mutation by the API Server.
+     */
     @JsonProperty("observedGeneration")
     public Long getObservedGeneration() {
         return observedGeneration;
     }
 
+    /**
+     * observedGeneration is the most recent generation observed for this StatefulSet. It corresponds to the StatefulSet's generation, which is updated on mutation by the API Server.
+     */
     @JsonProperty("observedGeneration")
     public void setObservedGeneration(Long observedGeneration) {
         this.observedGeneration = observedGeneration;
     }
 
+    /**
+     * readyReplicas is the number of pods created for this StatefulSet with a Ready Condition.
+     */
     @JsonProperty("readyReplicas")
     public Integer getReadyReplicas() {
         return readyReplicas;
     }
 
+    /**
+     * readyReplicas is the number of pods created for this StatefulSet with a Ready Condition.
+     */
     @JsonProperty("readyReplicas")
     public void setReadyReplicas(Integer readyReplicas) {
         this.readyReplicas = readyReplicas;
     }
 
+    /**
+     * replicas is the number of Pods created by the StatefulSet controller.
+     */
     @JsonProperty("replicas")
     public Integer getReplicas() {
         return replicas;
     }
 
+    /**
+     * replicas is the number of Pods created by the StatefulSet controller.
+     */
     @JsonProperty("replicas")
     public void setReplicas(Integer replicas) {
         this.replicas = replicas;
     }
 
+    /**
+     * updateRevision, if not empty, indicates the version of the StatefulSet used to generate Pods in the sequence [replicas-updatedReplicas,replicas)
+     */
     @JsonProperty("updateRevision")
     public String getUpdateRevision() {
         return updateRevision;
     }
 
+    /**
+     * updateRevision, if not empty, indicates the version of the StatefulSet used to generate Pods in the sequence [replicas-updatedReplicas,replicas)
+     */
     @JsonProperty("updateRevision")
     public void setUpdateRevision(String updateRevision) {
         this.updateRevision = updateRevision;
     }
 
+    /**
+     * updatedReplicas is the number of Pods created by the StatefulSet controller from the StatefulSet version indicated by updateRevision.
+     */
     @JsonProperty("updatedReplicas")
     public Integer getUpdatedReplicas() {
         return updatedReplicas;
     }
 
+    /**
+     * updatedReplicas is the number of Pods created by the StatefulSet controller from the StatefulSet version indicated by updateRevision.
+     */
     @JsonProperty("updatedReplicas")
     public void setUpdatedReplicas(Integer updatedReplicas) {
         this.updatedReplicas = updatedReplicas;

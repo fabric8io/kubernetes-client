@@ -33,6 +33,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * NamedResourcesAttribute is a combination of an attribute name and its value.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -107,81 +110,129 @@ public class NamedResourcesAttribute implements Editable<NamedResourcesAttribute
         this.version = version;
     }
 
+    /**
+     * BoolValue is a true/false value.
+     */
     @JsonProperty("bool")
     public Boolean getBool() {
         return bool;
     }
 
+    /**
+     * BoolValue is a true/false value.
+     */
     @JsonProperty("bool")
     public void setBool(Boolean bool) {
         this.bool = bool;
     }
 
+    /**
+     * IntValue is a 64-bit integer.
+     */
     @JsonProperty("int")
     public Long getInt() {
         return _int;
     }
 
+    /**
+     * IntValue is a 64-bit integer.
+     */
     @JsonProperty("int")
     public void setInt(Long _int) {
         this._int = _int;
     }
 
+    /**
+     * NamedResourcesAttribute is a combination of an attribute name and its value.
+     */
     @JsonProperty("intSlice")
     public NamedResourcesIntSlice getIntSlice() {
         return intSlice;
     }
 
+    /**
+     * NamedResourcesAttribute is a combination of an attribute name and its value.
+     */
     @JsonProperty("intSlice")
     public void setIntSlice(NamedResourcesIntSlice intSlice) {
         this.intSlice = intSlice;
     }
 
+    /**
+     * Name is unique identifier among all resource instances managed by the driver on the node. It must be a DNS subdomain.
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * Name is unique identifier among all resource instances managed by the driver on the node. It must be a DNS subdomain.
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * NamedResourcesAttribute is a combination of an attribute name and its value.
+     */
     @JsonProperty("quantity")
     public Quantity getQuantity() {
         return quantity;
     }
 
+    /**
+     * NamedResourcesAttribute is a combination of an attribute name and its value.
+     */
     @JsonProperty("quantity")
     public void setQuantity(Quantity quantity) {
         this.quantity = quantity;
     }
 
+    /**
+     * StringValue is a string.
+     */
     @JsonProperty("string")
     public String getString() {
         return string;
     }
 
+    /**
+     * StringValue is a string.
+     */
     @JsonProperty("string")
     public void setString(String string) {
         this.string = string;
     }
 
+    /**
+     * NamedResourcesAttribute is a combination of an attribute name and its value.
+     */
     @JsonProperty("stringSlice")
     public NamedResourcesStringSlice getStringSlice() {
         return stringSlice;
     }
 
+    /**
+     * NamedResourcesAttribute is a combination of an attribute name and its value.
+     */
     @JsonProperty("stringSlice")
     public void setStringSlice(NamedResourcesStringSlice stringSlice) {
         this.stringSlice = stringSlice;
     }
 
+    /**
+     * VersionValue is a semantic version according to semver.org spec 2.0.0.
+     */
     @JsonProperty("version")
     public String getVersion() {
         return version;
     }
 
+    /**
+     * VersionValue is a semantic version according to semver.org spec 2.0.0.
+     */
     @JsonProperty("version")
     public void setVersion(String version) {
         this.version = version;

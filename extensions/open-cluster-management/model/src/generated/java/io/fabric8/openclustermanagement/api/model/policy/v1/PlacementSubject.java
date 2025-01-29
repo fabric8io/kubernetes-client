@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * PlacementSubject defines the placement resource that is being bound to the subjects defined in the placement binding.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -86,31 +89,49 @@ public class PlacementSubject implements Editable<PlacementSubjectBuilder>, Kube
         this.name = name;
     }
 
+    /**
+     * APIGroup is the API group to which the kind belongs. Must be set to "cluster.open-cluster-management.io" for Placement or "apps.open-cluster-management.io" for PlacementRule (deprecated).
+     */
     @JsonProperty("apiGroup")
     public String getApiGroup() {
         return apiGroup;
     }
 
+    /**
+     * APIGroup is the API group to which the kind belongs. Must be set to "cluster.open-cluster-management.io" for Placement or "apps.open-cluster-management.io" for PlacementRule (deprecated).
+     */
     @JsonProperty("apiGroup")
     public void setApiGroup(String apiGroup) {
         this.apiGroup = apiGroup;
     }
 
+    /**
+     * Kind is the kind of the placement resource. Must be set to either "Placement" or "PlacementRule" (deprecated).
+     */
     @JsonProperty("kind")
     public String getKind() {
         return kind;
     }
 
+    /**
+     * Kind is the kind of the placement resource. Must be set to either "Placement" or "PlacementRule" (deprecated).
+     */
     @JsonProperty("kind")
     public void setKind(String kind) {
         this.kind = kind;
     }
 
+    /**
+     * Name is the name of the placement resource being bound.
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * Name is the name of the placement resource being bound.
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;

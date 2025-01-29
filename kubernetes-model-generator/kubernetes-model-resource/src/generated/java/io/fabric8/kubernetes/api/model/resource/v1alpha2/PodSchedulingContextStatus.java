@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * PodSchedulingContextStatus describes where resources for the Pod can be allocated.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -81,12 +84,18 @@ public class PodSchedulingContextStatus implements Editable<PodSchedulingContext
         this.resourceClaims = resourceClaims;
     }
 
+    /**
+     * ResourceClaims describes resource availability for each pod.spec.resourceClaim entry where the corresponding ResourceClaim uses "WaitForFirstConsumer" allocation mode.
+     */
     @JsonProperty("resourceClaims")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ResourceClaimSchedulingStatus> getResourceClaims() {
         return resourceClaims;
     }
 
+    /**
+     * ResourceClaims describes resource availability for each pod.spec.resourceClaim entry where the corresponding ResourceClaim uses "WaitForFirstConsumer" allocation mode.
+     */
     @JsonProperty("resourceClaims")
     public void setResourceClaims(List<ResourceClaimSchedulingStatus> resourceClaims) {
         this.resourceClaims = resourceClaims;

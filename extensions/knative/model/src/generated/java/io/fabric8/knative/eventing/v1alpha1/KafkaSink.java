@@ -37,6 +37,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * KafkaSink is an addressable resource that represent a Kafka topic.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -76,14 +79,8 @@ import lombok.experimental.Accessors;
 public class KafkaSink implements Editable<KafkaSinkBuilder>, HasMetadata, Namespaced
 {
 
-    /**
-     * (Required)
-     */
     @JsonProperty("apiVersion")
     private String apiVersion = "eventing.knative.dev/v1alpha1";
-    /**
-     * (Required)
-     */
     @JsonProperty("kind")
     private String kind = "KafkaSink";
     @JsonProperty("metadata")
@@ -111,7 +108,7 @@ public class KafkaSink implements Editable<KafkaSinkBuilder>, HasMetadata, Names
     }
 
     /**
-     * (Required)
+     * APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -119,7 +116,7 @@ public class KafkaSink implements Editable<KafkaSinkBuilder>, HasMetadata, Names
     }
 
     /**
-     * (Required)
+     * APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -127,7 +124,7 @@ public class KafkaSink implements Editable<KafkaSinkBuilder>, HasMetadata, Names
     }
 
     /**
-     * (Required)
+     * Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -135,38 +132,56 @@ public class KafkaSink implements Editable<KafkaSinkBuilder>, HasMetadata, Names
     }
 
     /**
-     * (Required)
+     * Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
      */
     @JsonProperty("kind")
     public void setKind(String kind) {
         this.kind = kind;
     }
 
+    /**
+     * KafkaSink is an addressable resource that represent a Kafka topic.
+     */
     @JsonProperty("metadata")
     public ObjectMeta getMetadata() {
         return metadata;
     }
 
+    /**
+     * KafkaSink is an addressable resource that represent a Kafka topic.
+     */
     @JsonProperty("metadata")
     public void setMetadata(ObjectMeta metadata) {
         this.metadata = metadata;
     }
 
+    /**
+     * KafkaSink is an addressable resource that represent a Kafka topic.
+     */
     @JsonProperty("spec")
     public KafkaSinkSpec getSpec() {
         return spec;
     }
 
+    /**
+     * KafkaSink is an addressable resource that represent a Kafka topic.
+     */
     @JsonProperty("spec")
     public void setSpec(KafkaSinkSpec spec) {
         this.spec = spec;
     }
 
+    /**
+     * KafkaSink is an addressable resource that represent a Kafka topic.
+     */
     @JsonProperty("status")
     public KafkaSinkStatus getStatus() {
         return status;
     }
 
+    /**
+     * KafkaSink is an addressable resource that represent a Kafka topic.
+     */
     @JsonProperty("status")
     public void setStatus(KafkaSinkStatus status) {
         this.status = status;

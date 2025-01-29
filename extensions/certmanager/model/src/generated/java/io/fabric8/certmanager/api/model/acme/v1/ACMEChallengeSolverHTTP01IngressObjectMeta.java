@@ -84,23 +84,35 @@ public class ACMEChallengeSolverHTTP01IngressObjectMeta implements Editable<ACME
         this.labels = labels;
     }
 
+    /**
+     * Annotations that should be added to the created ACME HTTP01 solver ingress.
+     */
     @JsonProperty("annotations")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getAnnotations() {
         return annotations;
     }
 
+    /**
+     * Annotations that should be added to the created ACME HTTP01 solver ingress.
+     */
     @JsonProperty("annotations")
     public void setAnnotations(Map<String, String> annotations) {
         this.annotations = annotations;
     }
 
+    /**
+     * Labels that should be added to the created ACME HTTP01 solver ingress.
+     */
     @JsonProperty("labels")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getLabels() {
         return labels;
     }
 
+    /**
+     * Labels that should be added to the created ACME HTTP01 solver ingress.
+     */
     @JsonProperty("labels")
     public void setLabels(Map<String, String> labels) {
         this.labels = labels;

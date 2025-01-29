@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * UserDefinedNetworkSpec defines the desired state of UserDefinedNetworkSpec.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -86,31 +89,49 @@ public class UserDefinedNetworkSpec implements Editable<UserDefinedNetworkSpecBu
         this.topology = topology;
     }
 
+    /**
+     * UserDefinedNetworkSpec defines the desired state of UserDefinedNetworkSpec.
+     */
     @JsonProperty("layer2")
     public Layer2Config getLayer2() {
         return layer2;
     }
 
+    /**
+     * UserDefinedNetworkSpec defines the desired state of UserDefinedNetworkSpec.
+     */
     @JsonProperty("layer2")
     public void setLayer2(Layer2Config layer2) {
         this.layer2 = layer2;
     }
 
+    /**
+     * UserDefinedNetworkSpec defines the desired state of UserDefinedNetworkSpec.
+     */
     @JsonProperty("layer3")
     public Layer3Config getLayer3() {
         return layer3;
     }
 
+    /**
+     * UserDefinedNetworkSpec defines the desired state of UserDefinedNetworkSpec.
+     */
     @JsonProperty("layer3")
     public void setLayer3(Layer3Config layer3) {
         this.layer3 = layer3;
     }
 
+    /**
+     * Topology describes network configuration.<br><p> <br><p> Allowed values are "Layer3", "Layer2". Layer3 topology creates a layer 2 segment per node, each with a different subnet. Layer 3 routing is used to interconnect node subnets. Layer2 topology creates one logical switch shared by all nodes.
+     */
     @JsonProperty("topology")
     public String getTopology() {
         return topology;
     }
 
+    /**
+     * Topology describes network configuration.<br><p> <br><p> Allowed values are "Layer3", "Layer2". Layer3 topology creates a layer 2 segment per node, each with a different subnet. Layer 3 routing is used to interconnect node subnets. Layer2 topology creates one logical switch shared by all nodes.
+     */
     @JsonProperty("topology")
     public void setTopology(String topology) {
         this.topology = topology;

@@ -85,21 +85,33 @@ public class EnvVar implements Editable<EnvVarBuilder>, KubernetesResource
         this.valueFrom = valueFrom;
     }
 
+    /**
+     * Name of the environment variable. Must be a C_IDENTIFIER.
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * Name of the environment variable. Must be a C_IDENTIFIER.
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * Value for the environment variable. Only applicable if `valueFrom` is `HOST`. Defaults to "".
+     */
     @JsonProperty("value")
     public String getValue() {
         return value;
     }
 
+    /**
+     * Value for the environment variable. Only applicable if `valueFrom` is `HOST`. Defaults to "".
+     */
     @JsonProperty("value")
     public void setValue(String value) {
         this.value = value;

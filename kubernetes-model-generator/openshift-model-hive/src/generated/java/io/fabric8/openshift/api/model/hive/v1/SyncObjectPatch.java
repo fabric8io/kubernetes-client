@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * SyncObjectPatch represents a patch to be applied to a specific object
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -98,61 +101,97 @@ public class SyncObjectPatch implements Editable<SyncObjectPatchBuilder>, Kubern
         this.patchType = patchType;
     }
 
+    /**
+     * APIVersion is the Group and Version of the object to be patched.
+     */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
         return apiVersion;
     }
 
+    /**
+     * APIVersion is the Group and Version of the object to be patched.
+     */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
         this.apiVersion = apiVersion;
     }
 
+    /**
+     * Kind is the Kind of the object to be patched.
+     */
     @JsonProperty("kind")
     public String getKind() {
         return kind;
     }
 
+    /**
+     * Kind is the Kind of the object to be patched.
+     */
     @JsonProperty("kind")
     public void setKind(String kind) {
         this.kind = kind;
     }
 
+    /**
+     * Name is the name of the object to be patched.
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * Name is the name of the object to be patched.
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * Namespace is the Namespace in which the object to patch exists. Defaults to the SyncSet's Namespace.
+     */
     @JsonProperty("namespace")
     public String getNamespace() {
         return namespace;
     }
 
+    /**
+     * Namespace is the Namespace in which the object to patch exists. Defaults to the SyncSet's Namespace.
+     */
     @JsonProperty("namespace")
     public void setNamespace(String namespace) {
         this.namespace = namespace;
     }
 
+    /**
+     * Patch is the patch to apply.
+     */
     @JsonProperty("patch")
     public String getPatch() {
         return patch;
     }
 
+    /**
+     * Patch is the patch to apply.
+     */
     @JsonProperty("patch")
     public void setPatch(String patch) {
         this.patch = patch;
     }
 
+    /**
+     * PatchType indicates the PatchType as "strategic" (default), "json", or "merge".
+     */
     @JsonProperty("patchType")
     public String getPatchType() {
         return patchType;
     }
 
+    /**
+     * PatchType indicates the PatchType as "strategic" (default), "json", or "merge".
+     */
     @JsonProperty("patchType")
     public void setPatchType(String patchType) {
         this.patchType = patchType;

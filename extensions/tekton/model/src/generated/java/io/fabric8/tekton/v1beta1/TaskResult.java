@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * TaskResult used to describe the results of a task
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -95,52 +98,82 @@ public class TaskResult implements Editable<TaskResultBuilder>, KubernetesResour
         this.value = value;
     }
 
+    /**
+     * Description is a human-readable description of the result
+     */
     @JsonProperty("description")
     public String getDescription() {
         return description;
     }
 
+    /**
+     * Description is a human-readable description of the result
+     */
     @JsonProperty("description")
     public void setDescription(String description) {
         this.description = description;
     }
 
+    /**
+     * Name the given name
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * Name the given name
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * Properties is the JSON Schema properties to support key-value pairs results.
+     */
     @JsonProperty("properties")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, PropertySpec> getProperties() {
         return properties;
     }
 
+    /**
+     * Properties is the JSON Schema properties to support key-value pairs results.
+     */
     @JsonProperty("properties")
     public void setProperties(Map<String, PropertySpec> properties) {
         this.properties = properties;
     }
 
+    /**
+     * Type is the user-specified type of the result. The possible type is currently "string" and will support "array" in following work.
+     */
     @JsonProperty("type")
     public String getType() {
         return type;
     }
 
+    /**
+     * Type is the user-specified type of the result. The possible type is currently "string" and will support "array" in following work.
+     */
     @JsonProperty("type")
     public void setType(String type) {
         this.type = type;
     }
 
+    /**
+     * TaskResult used to describe the results of a task
+     */
     @JsonProperty("value")
     public ParamValue getValue() {
         return value;
     }
 
+    /**
+     * TaskResult used to describe the results of a task
+     */
     @JsonProperty("value")
     public void setValue(ParamValue value) {
         this.value = value;

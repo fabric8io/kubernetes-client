@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * CapabilitiesSpec defines the platform and user workload observabilities capabilities managed exclusively by the multicluster-observability-addon. Enabling any of these capabilities will result in deploying the following resources:<br><p>   - The addon Deployment, ServiceAccount and RBAC.<br><p>   - A ClusterManagementAddon managing placement for capability related custom resources.<br><p>   - An AddonDeploymentConfig managing the addon feature gates for activated capabilities.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class CapabilitiesSpec implements Editable<CapabilitiesSpecBuilder>, Kube
         this.userWorkloads = userWorkloads;
     }
 
+    /**
+     * CapabilitiesSpec defines the platform and user workload observabilities capabilities managed exclusively by the multicluster-observability-addon. Enabling any of these capabilities will result in deploying the following resources:<br><p>   - The addon Deployment, ServiceAccount and RBAC.<br><p>   - A ClusterManagementAddon managing placement for capability related custom resources.<br><p>   - An AddonDeploymentConfig managing the addon feature gates for activated capabilities.
+     */
     @JsonProperty("platform")
     public PlatformCapabilitiesSpec getPlatform() {
         return platform;
     }
 
+    /**
+     * CapabilitiesSpec defines the platform and user workload observabilities capabilities managed exclusively by the multicluster-observability-addon. Enabling any of these capabilities will result in deploying the following resources:<br><p>   - The addon Deployment, ServiceAccount and RBAC.<br><p>   - A ClusterManagementAddon managing placement for capability related custom resources.<br><p>   - An AddonDeploymentConfig managing the addon feature gates for activated capabilities.
+     */
     @JsonProperty("platform")
     public void setPlatform(PlatformCapabilitiesSpec platform) {
         this.platform = platform;
     }
 
+    /**
+     * CapabilitiesSpec defines the platform and user workload observabilities capabilities managed exclusively by the multicluster-observability-addon. Enabling any of these capabilities will result in deploying the following resources:<br><p>   - The addon Deployment, ServiceAccount and RBAC.<br><p>   - A ClusterManagementAddon managing placement for capability related custom resources.<br><p>   - An AddonDeploymentConfig managing the addon feature gates for activated capabilities.
+     */
     @JsonProperty("userWorkloads")
     public UserWorkloadCapabilitiesSpec getUserWorkloads() {
         return userWorkloads;
     }
 
+    /**
+     * CapabilitiesSpec defines the platform and user workload observabilities capabilities managed exclusively by the multicluster-observability-addon. Enabling any of these capabilities will result in deploying the following resources:<br><p>   - The addon Deployment, ServiceAccount and RBAC.<br><p>   - A ClusterManagementAddon managing placement for capability related custom resources.<br><p>   - An AddonDeploymentConfig managing the addon feature gates for activated capabilities.
+     */
     @JsonProperty("userWorkloads")
     public void setUserWorkloads(UserWorkloadCapabilitiesSpec userWorkloads) {
         this.userWorkloads = userWorkloads;

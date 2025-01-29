@@ -35,6 +35,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * NodePlacement describes node scheduling configuration for an ingress controller.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -86,22 +89,34 @@ public class NodePlacement implements Editable<NodePlacementBuilder>, Kubernetes
         this.tolerations = tolerations;
     }
 
+    /**
+     * NodePlacement describes node scheduling configuration for an ingress controller.
+     */
     @JsonProperty("nodeSelector")
     public LabelSelector getNodeSelector() {
         return nodeSelector;
     }
 
+    /**
+     * NodePlacement describes node scheduling configuration for an ingress controller.
+     */
     @JsonProperty("nodeSelector")
     public void setNodeSelector(LabelSelector nodeSelector) {
         this.nodeSelector = nodeSelector;
     }
 
+    /**
+     * tolerations is a list of tolerations applied to ingress controller deployments.<br><p> <br><p> The default is an empty list.<br><p> <br><p> See https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/
+     */
     @JsonProperty("tolerations")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Toleration> getTolerations() {
         return tolerations;
     }
 
+    /**
+     * tolerations is a list of tolerations applied to ingress controller deployments.<br><p> <br><p> The default is an empty list.<br><p> <br><p> See https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/
+     */
     @JsonProperty("tolerations")
     public void setTolerations(List<Toleration> tolerations) {
         this.tolerations = tolerations;

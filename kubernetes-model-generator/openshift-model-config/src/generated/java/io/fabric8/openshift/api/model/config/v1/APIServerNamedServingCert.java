@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * APIServerNamedServingCert maps a server DNS name, as understood by a client, to a certificate.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -85,22 +88,34 @@ public class APIServerNamedServingCert implements Editable<APIServerNamedServing
         this.servingCertificate = servingCertificate;
     }
 
+    /**
+     * names is a optional list of explicit DNS names (leading wildcards allowed) that should use this certificate to serve secure traffic. If no names are provided, the implicit names will be extracted from the certificates. Exact names trump over wildcard names. Explicit names defined here trump over extracted implicit names.
+     */
     @JsonProperty("names")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getNames() {
         return names;
     }
 
+    /**
+     * names is a optional list of explicit DNS names (leading wildcards allowed) that should use this certificate to serve secure traffic. If no names are provided, the implicit names will be extracted from the certificates. Exact names trump over wildcard names. Explicit names defined here trump over extracted implicit names.
+     */
     @JsonProperty("names")
     public void setNames(List<String> names) {
         this.names = names;
     }
 
+    /**
+     * APIServerNamedServingCert maps a server DNS name, as understood by a client, to a certificate.
+     */
     @JsonProperty("servingCertificate")
     public SecretNameReference getServingCertificate() {
         return servingCertificate;
     }
 
+    /**
+     * APIServerNamedServingCert maps a server DNS name, as understood by a client, to a certificate.
+     */
     @JsonProperty("servingCertificate")
     public void setServingCertificate(SecretNameReference servingCertificate) {
         this.servingCertificate = servingCertificate;

@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * IntegrationSourceSpec defines the desired state of IntegrationSource
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -92,41 +95,65 @@ public class IntegrationSourceSpec implements Editable<IntegrationSourceSpecBuil
         this.timer = timer;
     }
 
+    /**
+     * IntegrationSourceSpec defines the desired state of IntegrationSource
+     */
     @JsonProperty("aws")
     public Aws getAws() {
         return aws;
     }
 
+    /**
+     * IntegrationSourceSpec defines the desired state of IntegrationSource
+     */
     @JsonProperty("aws")
     public void setAws(Aws aws) {
         this.aws = aws;
     }
 
+    /**
+     * IntegrationSourceSpec defines the desired state of IntegrationSource
+     */
     @JsonProperty("ceOverrides")
     public CloudEventOverrides getCeOverrides() {
         return ceOverrides;
     }
 
+    /**
+     * IntegrationSourceSpec defines the desired state of IntegrationSource
+     */
     @JsonProperty("ceOverrides")
     public void setCeOverrides(CloudEventOverrides ceOverrides) {
         this.ceOverrides = ceOverrides;
     }
 
+    /**
+     * IntegrationSourceSpec defines the desired state of IntegrationSource
+     */
     @JsonProperty("sink")
     public Destination getSink() {
         return sink;
     }
 
+    /**
+     * IntegrationSourceSpec defines the desired state of IntegrationSource
+     */
     @JsonProperty("sink")
     public void setSink(Destination sink) {
         this.sink = sink;
     }
 
+    /**
+     * IntegrationSourceSpec defines the desired state of IntegrationSource
+     */
     @JsonProperty("timer")
     public Timer getTimer() {
         return timer;
     }
 
+    /**
+     * IntegrationSourceSpec defines the desired state of IntegrationSource
+     */
     @JsonProperty("timer")
     public void setTimer(Timer timer) {
         this.timer = timer;

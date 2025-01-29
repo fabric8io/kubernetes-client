@@ -94,51 +94,81 @@ public class RedisExpirationSpec implements Editable<RedisExpirationSpecBuilder>
         this.password = password;
     }
 
+    /**
+     * The adress of Redis server
+     */
     @JsonProperty("addr")
     public String getAddr() {
         return addr;
     }
 
+    /**
+     * The adress of Redis server
+     */
     @JsonProperty("addr")
     public void setAddr(String addr) {
         this.addr = addr;
     }
 
+    /**
+     * The expiration of the keys
+     */
     @JsonProperty("expiration")
     public String getExpiration() {
         return expiration;
     }
 
+    /**
+     * The expiration of the keys
+     */
     @JsonProperty("expiration")
     public void setExpiration(String expiration) {
         this.expiration = expiration;
     }
 
+    /**
+     * The keys to be expired
+     */
     @JsonProperty("key")
     public String getKey() {
         return key;
     }
 
+    /**
+     * The keys to be expired
+     */
     @JsonProperty("key")
     public void setKey(String key) {
         this.key = key;
     }
 
+    /**
+     * Additional options for `expiration`
+     */
     @JsonProperty("option")
     public String getOption() {
         return option;
     }
 
+    /**
+     * Additional options for `expiration`
+     */
     @JsonProperty("option")
     public void setOption(String option) {
         this.option = option;
     }
 
+    /**
+     * The password of Redis server
+     */
     @JsonProperty("password")
     public String getPassword() {
         return password;
     }
 
+    /**
+     * The password of Redis server
+     */
     @JsonProperty("password")
     public void setPassword(String password) {
         this.password = password;

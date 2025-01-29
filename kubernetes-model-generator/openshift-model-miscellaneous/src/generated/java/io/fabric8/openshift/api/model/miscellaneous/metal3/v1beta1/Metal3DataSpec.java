@@ -33,6 +33,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Metal3DataSpec defines the desired state of Metal3Data.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -99,61 +102,97 @@ public class Metal3DataSpec implements Editable<Metal3DataSpecBuilder>, Kubernet
         this.templateReference = templateReference;
     }
 
+    /**
+     * Metal3DataSpec defines the desired state of Metal3Data.
+     */
     @JsonProperty("claim")
     public ObjectReference getClaim() {
         return claim;
     }
 
+    /**
+     * Metal3DataSpec defines the desired state of Metal3Data.
+     */
     @JsonProperty("claim")
     public void setClaim(ObjectReference claim) {
         this.claim = claim;
     }
 
+    /**
+     * Index stores the index value of this instance in the Metal3DataTemplate.
+     */
     @JsonProperty("index")
     public Integer getIndex() {
         return index;
     }
 
+    /**
+     * Index stores the index value of this instance in the Metal3DataTemplate.
+     */
     @JsonProperty("index")
     public void setIndex(Integer index) {
         this.index = index;
     }
 
+    /**
+     * Metal3DataSpec defines the desired state of Metal3Data.
+     */
     @JsonProperty("metaData")
     public SecretReference getMetaData() {
         return metaData;
     }
 
+    /**
+     * Metal3DataSpec defines the desired state of Metal3Data.
+     */
     @JsonProperty("metaData")
     public void setMetaData(SecretReference metaData) {
         this.metaData = metaData;
     }
 
+    /**
+     * Metal3DataSpec defines the desired state of Metal3Data.
+     */
     @JsonProperty("networkData")
     public SecretReference getNetworkData() {
         return networkData;
     }
 
+    /**
+     * Metal3DataSpec defines the desired state of Metal3Data.
+     */
     @JsonProperty("networkData")
     public void setNetworkData(SecretReference networkData) {
         this.networkData = networkData;
     }
 
+    /**
+     * Metal3DataSpec defines the desired state of Metal3Data.
+     */
     @JsonProperty("template")
     public ObjectReference getTemplate() {
         return template;
     }
 
+    /**
+     * Metal3DataSpec defines the desired state of Metal3Data.
+     */
     @JsonProperty("template")
     public void setTemplate(ObjectReference template) {
         this.template = template;
     }
 
+    /**
+     * TemplateReference refers to the Template the Metal3MachineTemplate refers to. It can be matched against the key or it may also point to the name of the template Metal3Data refers to
+     */
     @JsonProperty("templateReference")
     public String getTemplateReference() {
         return templateReference;
     }
 
+    /**
+     * TemplateReference refers to the Template the Metal3MachineTemplate refers to. It can be matched against the key or it may also point to the name of the template Metal3Data refers to
+     */
     @JsonProperty("templateReference")
     public void setTemplateReference(String templateReference) {
         this.templateReference = templateReference;

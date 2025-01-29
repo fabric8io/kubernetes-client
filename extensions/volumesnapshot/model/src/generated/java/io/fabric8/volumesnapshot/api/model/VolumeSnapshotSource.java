@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * VolumeSnapshotSource specifies whether the underlying snapshot should be dynamically taken upon creation or if a pre-existing VolumeSnapshotContent object should be used. Exactly one of its members must be set. Members in VolumeSnapshotSource are immutable.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class VolumeSnapshotSource implements Editable<VolumeSnapshotSourceBuilde
         this.volumeSnapshotContentName = volumeSnapshotContentName;
     }
 
+    /**
+     * persistentVolumeClaimName specifies the name of the PersistentVolumeClaim object representing the volume from which a snapshot should be created. This PVC is assumed to be in the same namespace as the VolumeSnapshot object. This field should be set if the snapshot does not exists, and needs to be created. This field is immutable.
+     */
     @JsonProperty("persistentVolumeClaimName")
     public String getPersistentVolumeClaimName() {
         return persistentVolumeClaimName;
     }
 
+    /**
+     * persistentVolumeClaimName specifies the name of the PersistentVolumeClaim object representing the volume from which a snapshot should be created. This PVC is assumed to be in the same namespace as the VolumeSnapshot object. This field should be set if the snapshot does not exists, and needs to be created. This field is immutable.
+     */
     @JsonProperty("persistentVolumeClaimName")
     public void setPersistentVolumeClaimName(String persistentVolumeClaimName) {
         this.persistentVolumeClaimName = persistentVolumeClaimName;
     }
 
+    /**
+     * volumeSnapshotContentName specifies the name of a pre-existing VolumeSnapshotContent object representing an existing volume snapshot. This field should be set if the snapshot already exists and only needs a representation in Kubernetes. This field is immutable.
+     */
     @JsonProperty("volumeSnapshotContentName")
     public String getVolumeSnapshotContentName() {
         return volumeSnapshotContentName;
     }
 
+    /**
+     * volumeSnapshotContentName specifies the name of a pre-existing VolumeSnapshotContent object representing an existing volume snapshot. This field should be set if the snapshot already exists and only needs a representation in Kubernetes. This field is immutable.
+     */
     @JsonProperty("volumeSnapshotContentName")
     public void setVolumeSnapshotContentName(String volumeSnapshotContentName) {
         this.volumeSnapshotContentName = volumeSnapshotContentName;

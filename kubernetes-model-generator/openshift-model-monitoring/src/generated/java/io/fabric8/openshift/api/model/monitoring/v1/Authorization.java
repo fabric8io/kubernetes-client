@@ -97,21 +97,33 @@ public class Authorization implements Editable<AuthorizationBuilder>, Kubernetes
         this.credentials = credentials;
     }
 
+    /**
+     * File to read a secret from, mutually exclusive with `credentials`.
+     */
     @JsonProperty("credentialsFile")
     public String getCredentialsFile() {
         return credentialsFile;
     }
 
+    /**
+     * File to read a secret from, mutually exclusive with `credentials`.
+     */
     @JsonProperty("credentialsFile")
     public void setCredentialsFile(String credentialsFile) {
         this.credentialsFile = credentialsFile;
     }
 
+    /**
+     * Defines the authentication type. The value is case-insensitive.<br><p> <br><p> "Basic" is not a supported value.<br><p> <br><p> Default: "Bearer"
+     */
     @JsonProperty("type")
     public String getType() {
         return type;
     }
 
+    /**
+     * Defines the authentication type. The value is case-insensitive.<br><p> <br><p> "Basic" is not a supported value.<br><p> <br><p> Default: "Bearer"
+     */
     @JsonProperty("type")
     public void setType(String type) {
         this.type = type;

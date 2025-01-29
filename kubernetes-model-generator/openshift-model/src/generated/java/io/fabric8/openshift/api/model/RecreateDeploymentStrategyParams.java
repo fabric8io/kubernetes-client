@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * RecreateDeploymentStrategyParams are the input to the Recreate deployment strategy.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -90,41 +93,65 @@ public class RecreateDeploymentStrategyParams implements Editable<RecreateDeploy
         this.timeoutSeconds = timeoutSeconds;
     }
 
+    /**
+     * RecreateDeploymentStrategyParams are the input to the Recreate deployment strategy.
+     */
     @JsonProperty("mid")
     public LifecycleHook getMid() {
         return mid;
     }
 
+    /**
+     * RecreateDeploymentStrategyParams are the input to the Recreate deployment strategy.
+     */
     @JsonProperty("mid")
     public void setMid(LifecycleHook mid) {
         this.mid = mid;
     }
 
+    /**
+     * RecreateDeploymentStrategyParams are the input to the Recreate deployment strategy.
+     */
     @JsonProperty("post")
     public LifecycleHook getPost() {
         return post;
     }
 
+    /**
+     * RecreateDeploymentStrategyParams are the input to the Recreate deployment strategy.
+     */
     @JsonProperty("post")
     public void setPost(LifecycleHook post) {
         this.post = post;
     }
 
+    /**
+     * RecreateDeploymentStrategyParams are the input to the Recreate deployment strategy.
+     */
     @JsonProperty("pre")
     public LifecycleHook getPre() {
         return pre;
     }
 
+    /**
+     * RecreateDeploymentStrategyParams are the input to the Recreate deployment strategy.
+     */
     @JsonProperty("pre")
     public void setPre(LifecycleHook pre) {
         this.pre = pre;
     }
 
+    /**
+     * TimeoutSeconds is the time to wait for updates before giving up. If the value is nil, a default will be used.
+     */
     @JsonProperty("timeoutSeconds")
     public Long getTimeoutSeconds() {
         return timeoutSeconds;
     }
 
+    /**
+     * TimeoutSeconds is the time to wait for updates before giving up. If the value is nil, a default will be used.
+     */
     @JsonProperty("timeoutSeconds")
     public void setTimeoutSeconds(Long timeoutSeconds) {
         this.timeoutSeconds = timeoutSeconds;

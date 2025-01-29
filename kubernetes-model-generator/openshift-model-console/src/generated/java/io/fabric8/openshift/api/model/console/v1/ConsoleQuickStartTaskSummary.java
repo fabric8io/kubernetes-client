@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ConsoleQuickStartTaskSummary contains information about a passed step.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class ConsoleQuickStartTaskSummary implements Editable<ConsoleQuickStartT
         this.success = success;
     }
 
+    /**
+     * failed briefly describes the unsuccessfully passed task. (includes markdown)
+     */
     @JsonProperty("failed")
     public String getFailed() {
         return failed;
     }
 
+    /**
+     * failed briefly describes the unsuccessfully passed task. (includes markdown)
+     */
     @JsonProperty("failed")
     public void setFailed(String failed) {
         this.failed = failed;
     }
 
+    /**
+     * success describes the succesfully passed task.
+     */
     @JsonProperty("success")
     public String getSuccess() {
         return success;
     }
 
+    /**
+     * success describes the succesfully passed task.
+     */
     @JsonProperty("success")
     public void setSuccess(String success) {
         this.success = success;

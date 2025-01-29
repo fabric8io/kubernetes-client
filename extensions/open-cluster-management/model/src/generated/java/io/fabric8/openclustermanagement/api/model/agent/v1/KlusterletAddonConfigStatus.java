@@ -35,6 +35,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * KlusterletAddonConfigStatus defines the observed state of KlusterletAddonConfig
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -86,22 +89,34 @@ public class KlusterletAddonConfigStatus implements Editable<KlusterletAddonConf
         this.ocpGlobalProxy = ocpGlobalProxy;
     }
 
+    /**
+     * Conditions contains condition information for the klusterletAddonConfig
+     */
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Condition> getConditions() {
         return conditions;
     }
 
+    /**
+     * Conditions contains condition information for the klusterletAddonConfig
+     */
     @JsonProperty("conditions")
     public void setConditions(List<Condition> conditions) {
         this.conditions = conditions;
     }
 
+    /**
+     * KlusterletAddonConfigStatus defines the observed state of KlusterletAddonConfig
+     */
     @JsonProperty("ocpGlobalProxy")
     public ProxyConfig getOcpGlobalProxy() {
         return ocpGlobalProxy;
     }
 
+    /**
+     * KlusterletAddonConfigStatus defines the observed state of KlusterletAddonConfig
+     */
     @JsonProperty("ocpGlobalProxy")
     public void setOcpGlobalProxy(ProxyConfig ocpGlobalProxy) {
         this.ocpGlobalProxy = ocpGlobalProxy;

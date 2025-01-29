@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * SecretParam indicates which secret can be used to populate a field of the resource<br><p> <br><p> Deprecated: Unused, preserved only for backwards compatibility
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -86,31 +89,49 @@ public class SecretParam implements Editable<SecretParamBuilder>, KubernetesReso
         this.secretName = secretName;
     }
 
+    /**
+     * SecretParam indicates which secret can be used to populate a field of the resource<br><p> <br><p> Deprecated: Unused, preserved only for backwards compatibility
+     */
     @JsonProperty("fieldName")
     public String getFieldName() {
         return fieldName;
     }
 
+    /**
+     * SecretParam indicates which secret can be used to populate a field of the resource<br><p> <br><p> Deprecated: Unused, preserved only for backwards compatibility
+     */
     @JsonProperty("fieldName")
     public void setFieldName(String fieldName) {
         this.fieldName = fieldName;
     }
 
+    /**
+     * SecretParam indicates which secret can be used to populate a field of the resource<br><p> <br><p> Deprecated: Unused, preserved only for backwards compatibility
+     */
     @JsonProperty("secretKey")
     public String getSecretKey() {
         return secretKey;
     }
 
+    /**
+     * SecretParam indicates which secret can be used to populate a field of the resource<br><p> <br><p> Deprecated: Unused, preserved only for backwards compatibility
+     */
     @JsonProperty("secretKey")
     public void setSecretKey(String secretKey) {
         this.secretKey = secretKey;
     }
 
+    /**
+     * SecretParam indicates which secret can be used to populate a field of the resource<br><p> <br><p> Deprecated: Unused, preserved only for backwards compatibility
+     */
     @JsonProperty("secretName")
     public String getSecretName() {
         return secretName;
     }
 
+    /**
+     * SecretParam indicates which secret can be used to populate a field of the resource<br><p> <br><p> Deprecated: Unused, preserved only for backwards compatibility
+     */
     @JsonProperty("secretName")
     public void setSecretName(String secretName) {
         this.secretName = secretName;

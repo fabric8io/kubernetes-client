@@ -16,6 +16,7 @@
 * Fix #6802: Java generator support for required spec and status
 * Fix #5993: Support for Kubernetes v1.31 (elli)
 * Fix #6767: Support for Kubernetes v1.32 (penelope) 
+* Fix #6777: Added Javadoc comments to all generated models
 
 #### _**Note**_: Breaking changes
 

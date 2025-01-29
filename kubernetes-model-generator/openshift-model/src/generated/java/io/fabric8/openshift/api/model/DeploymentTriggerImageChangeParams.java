@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * DeploymentTriggerImageChangeParams represents the parameters to the ImageChange trigger.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -93,42 +96,66 @@ public class DeploymentTriggerImageChangeParams implements Editable<DeploymentTr
         this.lastTriggeredImage = lastTriggeredImage;
     }
 
+    /**
+     * Automatic means that the detection of a new tag value should result in an image update inside the pod template.
+     */
     @JsonProperty("automatic")
     public Boolean getAutomatic() {
         return automatic;
     }
 
+    /**
+     * Automatic means that the detection of a new tag value should result in an image update inside the pod template.
+     */
     @JsonProperty("automatic")
     public void setAutomatic(Boolean automatic) {
         this.automatic = automatic;
     }
 
+    /**
+     * ContainerNames is used to restrict tag updates to the specified set of container names in a pod. If multiple triggers point to the same containers, the resulting behavior is undefined. Future API versions will make this a validation error. If ContainerNames does not point to a valid container, the trigger will be ignored. Future API versions will make this a validation error.
+     */
     @JsonProperty("containerNames")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getContainerNames() {
         return containerNames;
     }
 
+    /**
+     * ContainerNames is used to restrict tag updates to the specified set of container names in a pod. If multiple triggers point to the same containers, the resulting behavior is undefined. Future API versions will make this a validation error. If ContainerNames does not point to a valid container, the trigger will be ignored. Future API versions will make this a validation error.
+     */
     @JsonProperty("containerNames")
     public void setContainerNames(List<String> containerNames) {
         this.containerNames = containerNames;
     }
 
+    /**
+     * DeploymentTriggerImageChangeParams represents the parameters to the ImageChange trigger.
+     */
     @JsonProperty("from")
     public ObjectReference getFrom() {
         return from;
     }
 
+    /**
+     * DeploymentTriggerImageChangeParams represents the parameters to the ImageChange trigger.
+     */
     @JsonProperty("from")
     public void setFrom(ObjectReference from) {
         this.from = from;
     }
 
+    /**
+     * LastTriggeredImage is the last image to be triggered.
+     */
     @JsonProperty("lastTriggeredImage")
     public String getLastTriggeredImage() {
         return lastTriggeredImage;
     }
 
+    /**
+     * LastTriggeredImage is the last image to be triggered.
+     */
     @JsonProperty("lastTriggeredImage")
     public void setLastTriggeredImage(String lastTriggeredImage) {
         this.lastTriggeredImage = lastTriggeredImage;

@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * FirmwareUpdate defines a firmware update specification.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class FirmwareUpdate implements Editable<FirmwareUpdateBuilder>, Kubernet
         this.url = url;
     }
 
+    /**
+     * FirmwareUpdate defines a firmware update specification.
+     */
     @JsonProperty("component")
     public String getComponent() {
         return component;
     }
 
+    /**
+     * FirmwareUpdate defines a firmware update specification.
+     */
     @JsonProperty("component")
     public void setComponent(String component) {
         this.component = component;
     }
 
+    /**
+     * FirmwareUpdate defines a firmware update specification.
+     */
     @JsonProperty("url")
     public String getUrl() {
         return url;
     }
 
+    /**
+     * FirmwareUpdate defines a firmware update specification.
+     */
     @JsonProperty("url")
     public void setUrl(String url) {
         this.url = url;

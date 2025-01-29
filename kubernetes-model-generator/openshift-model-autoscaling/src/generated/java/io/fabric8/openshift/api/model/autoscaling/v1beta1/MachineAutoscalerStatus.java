@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Most recently observed status of a scalable resource
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -78,11 +81,17 @@ public class MachineAutoscalerStatus implements Editable<MachineAutoscalerStatus
         this.lastTargetRef = lastTargetRef;
     }
 
+    /**
+     * Most recently observed status of a scalable resource
+     */
     @JsonProperty("lastTargetRef")
     public MachineAutoscalerStatusLastTargetRef getLastTargetRef() {
         return lastTargetRef;
     }
 
+    /**
+     * Most recently observed status of a scalable resource
+     */
     @JsonProperty("lastTargetRef")
     public void setLastTargetRef(MachineAutoscalerStatusLastTargetRef lastTargetRef) {
         this.lastTargetRef = lastTargetRef;

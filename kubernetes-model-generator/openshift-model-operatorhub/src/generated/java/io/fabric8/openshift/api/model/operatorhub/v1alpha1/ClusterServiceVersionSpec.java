@@ -35,6 +35,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ClusterServiceVersionSpec declarations tell OLM how to install an operator that can manage apps for a given version.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -180,242 +183,380 @@ public class ClusterServiceVersionSpec implements Editable<ClusterServiceVersion
         this.webhookdefinitions = webhookdefinitions;
     }
 
+    /**
+     * Annotations is an unstructured key value map stored with a resource that may be set by external tools to store and retrieve arbitrary metadata.
+     */
     @JsonProperty("annotations")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getAnnotations() {
         return annotations;
     }
 
+    /**
+     * Annotations is an unstructured key value map stored with a resource that may be set by external tools to store and retrieve arbitrary metadata.
+     */
     @JsonProperty("annotations")
     public void setAnnotations(Map<String, String> annotations) {
         this.annotations = annotations;
     }
 
+    /**
+     * ClusterServiceVersionSpec declarations tell OLM how to install an operator that can manage apps for a given version.
+     */
     @JsonProperty("apiservicedefinitions")
     public APIServiceDefinitions getApiservicedefinitions() {
         return apiservicedefinitions;
     }
 
+    /**
+     * ClusterServiceVersionSpec declarations tell OLM how to install an operator that can manage apps for a given version.
+     */
     @JsonProperty("apiservicedefinitions")
     public void setApiservicedefinitions(APIServiceDefinitions apiservicedefinitions) {
         this.apiservicedefinitions = apiservicedefinitions;
     }
 
+    /**
+     * ClusterServiceVersionSpec declarations tell OLM how to install an operator that can manage apps for a given version.
+     */
     @JsonProperty("cleanup")
     public CleanupSpec getCleanup() {
         return cleanup;
     }
 
+    /**
+     * ClusterServiceVersionSpec declarations tell OLM how to install an operator that can manage apps for a given version.
+     */
     @JsonProperty("cleanup")
     public void setCleanup(CleanupSpec cleanup) {
         this.cleanup = cleanup;
     }
 
+    /**
+     * ClusterServiceVersionSpec declarations tell OLM how to install an operator that can manage apps for a given version.
+     */
     @JsonProperty("customresourcedefinitions")
     public CustomResourceDefinitions getCustomresourcedefinitions() {
         return customresourcedefinitions;
     }
 
+    /**
+     * ClusterServiceVersionSpec declarations tell OLM how to install an operator that can manage apps for a given version.
+     */
     @JsonProperty("customresourcedefinitions")
     public void setCustomresourcedefinitions(CustomResourceDefinitions customresourcedefinitions) {
         this.customresourcedefinitions = customresourcedefinitions;
     }
 
+    /**
+     * Description of the operator. Can include the features, limitations or use-cases of the operator.
+     */
     @JsonProperty("description")
     public String getDescription() {
         return description;
     }
 
+    /**
+     * Description of the operator. Can include the features, limitations or use-cases of the operator.
+     */
     @JsonProperty("description")
     public void setDescription(String description) {
         this.description = description;
     }
 
+    /**
+     * The name of the operator in display format.
+     */
     @JsonProperty("displayName")
     public String getDisplayName() {
         return displayName;
     }
 
+    /**
+     * The name of the operator in display format.
+     */
     @JsonProperty("displayName")
     public void setDisplayName(String displayName) {
         this.displayName = displayName;
     }
 
+    /**
+     * The icon for this operator.
+     */
     @JsonProperty("icon")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Icon> getIcon() {
         return icon;
     }
 
+    /**
+     * The icon for this operator.
+     */
     @JsonProperty("icon")
     public void setIcon(List<Icon> icon) {
         this.icon = icon;
     }
 
+    /**
+     * ClusterServiceVersionSpec declarations tell OLM how to install an operator that can manage apps for a given version.
+     */
     @JsonProperty("install")
     public NamedInstallStrategy getInstall() {
         return install;
     }
 
+    /**
+     * ClusterServiceVersionSpec declarations tell OLM how to install an operator that can manage apps for a given version.
+     */
     @JsonProperty("install")
     public void setInstall(NamedInstallStrategy install) {
         this.install = install;
     }
 
+    /**
+     * InstallModes specify supported installation types
+     */
     @JsonProperty("installModes")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<InstallMode> getInstallModes() {
         return installModes;
     }
 
+    /**
+     * InstallModes specify supported installation types
+     */
     @JsonProperty("installModes")
     public void setInstallModes(List<InstallMode> installModes) {
         this.installModes = installModes;
     }
 
+    /**
+     * A list of keywords describing the operator.
+     */
     @JsonProperty("keywords")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getKeywords() {
         return keywords;
     }
 
+    /**
+     * A list of keywords describing the operator.
+     */
     @JsonProperty("keywords")
     public void setKeywords(List<String> keywords) {
         this.keywords = keywords;
     }
 
+    /**
+     * Map of string keys and values that can be used to organize and categorize (scope and select) objects.
+     */
     @JsonProperty("labels")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getLabels() {
         return labels;
     }
 
+    /**
+     * Map of string keys and values that can be used to organize and categorize (scope and select) objects.
+     */
     @JsonProperty("labels")
     public void setLabels(Map<String, String> labels) {
         this.labels = labels;
     }
 
+    /**
+     * A list of links related to the operator.
+     */
     @JsonProperty("links")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<AppLink> getLinks() {
         return links;
     }
 
+    /**
+     * A list of links related to the operator.
+     */
     @JsonProperty("links")
     public void setLinks(List<AppLink> links) {
         this.links = links;
     }
 
+    /**
+     * A list of organizational entities maintaining the operator.
+     */
     @JsonProperty("maintainers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Maintainer> getMaintainers() {
         return maintainers;
     }
 
+    /**
+     * A list of organizational entities maintaining the operator.
+     */
     @JsonProperty("maintainers")
     public void setMaintainers(List<Maintainer> maintainers) {
         this.maintainers = maintainers;
     }
 
+    /**
+     * ClusterServiceVersionSpec declarations tell OLM how to install an operator that can manage apps for a given version.
+     */
     @JsonProperty("maturity")
     public String getMaturity() {
         return maturity;
     }
 
+    /**
+     * ClusterServiceVersionSpec declarations tell OLM how to install an operator that can manage apps for a given version.
+     */
     @JsonProperty("maturity")
     public void setMaturity(String maturity) {
         this.maturity = maturity;
     }
 
+    /**
+     * ClusterServiceVersionSpec declarations tell OLM how to install an operator that can manage apps for a given version.
+     */
     @JsonProperty("minKubeVersion")
     public String getMinKubeVersion() {
         return minKubeVersion;
     }
 
+    /**
+     * ClusterServiceVersionSpec declarations tell OLM how to install an operator that can manage apps for a given version.
+     */
     @JsonProperty("minKubeVersion")
     public void setMinKubeVersion(String minKubeVersion) {
         this.minKubeVersion = minKubeVersion;
     }
 
+    /**
+     * ClusterServiceVersionSpec declarations tell OLM how to install an operator that can manage apps for a given version.
+     */
     @JsonProperty("nativeAPIs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<GroupVersionKind> getNativeAPIs() {
         return nativeAPIs;
     }
 
+    /**
+     * ClusterServiceVersionSpec declarations tell OLM how to install an operator that can manage apps for a given version.
+     */
     @JsonProperty("nativeAPIs")
     public void setNativeAPIs(List<GroupVersionKind> nativeAPIs) {
         this.nativeAPIs = nativeAPIs;
     }
 
+    /**
+     * ClusterServiceVersionSpec declarations tell OLM how to install an operator that can manage apps for a given version.
+     */
     @JsonProperty("provider")
     public AppLink getProvider() {
         return provider;
     }
 
+    /**
+     * ClusterServiceVersionSpec declarations tell OLM how to install an operator that can manage apps for a given version.
+     */
     @JsonProperty("provider")
     public void setProvider(AppLink provider) {
         this.provider = provider;
     }
 
+    /**
+     * List any related images, or other container images that your Operator might require to perform their functions. This list should also include operand images as well. All image references should be specified by digest (SHA) and not by tag. This field is only used during catalog creation and plays no part in cluster runtime.
+     */
     @JsonProperty("relatedImages")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<RelatedImage> getRelatedImages() {
         return relatedImages;
     }
 
+    /**
+     * List any related images, or other container images that your Operator might require to perform their functions. This list should also include operand images as well. All image references should be specified by digest (SHA) and not by tag. This field is only used during catalog creation and plays no part in cluster runtime.
+     */
     @JsonProperty("relatedImages")
     public void setRelatedImages(List<RelatedImage> relatedImages) {
         this.relatedImages = relatedImages;
     }
 
+    /**
+     * The name of a CSV this one replaces. Should match the `metadata.Name` field of the old CSV.
+     */
     @JsonProperty("replaces")
     public String getReplaces() {
         return replaces;
     }
 
+    /**
+     * The name of a CSV this one replaces. Should match the `metadata.Name` field of the old CSV.
+     */
     @JsonProperty("replaces")
     public void setReplaces(String replaces) {
         this.replaces = replaces;
     }
 
+    /**
+     * ClusterServiceVersionSpec declarations tell OLM how to install an operator that can manage apps for a given version.
+     */
     @JsonProperty("selector")
     public LabelSelector getSelector() {
         return selector;
     }
 
+    /**
+     * ClusterServiceVersionSpec declarations tell OLM how to install an operator that can manage apps for a given version.
+     */
     @JsonProperty("selector")
     public void setSelector(LabelSelector selector) {
         this.selector = selector;
     }
 
+    /**
+     * The name(s) of one or more CSV(s) that should be skipped in the upgrade graph. Should match the `metadata.Name` field of the CSV that should be skipped. This field is only used during catalog creation and plays no part in cluster runtime.
+     */
     @JsonProperty("skips")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getSkips() {
         return skips;
     }
 
+    /**
+     * The name(s) of one or more CSV(s) that should be skipped in the upgrade graph. Should match the `metadata.Name` field of the CSV that should be skipped. This field is only used during catalog creation and plays no part in cluster runtime.
+     */
     @JsonProperty("skips")
     public void setSkips(List<String> skips) {
         this.skips = skips;
     }
 
+    /**
+     * ClusterServiceVersionSpec declarations tell OLM how to install an operator that can manage apps for a given version.
+     */
     @JsonProperty("version")
     public String getVersion() {
         return version;
     }
 
+    /**
+     * ClusterServiceVersionSpec declarations tell OLM how to install an operator that can manage apps for a given version.
+     */
     @JsonProperty("version")
     public void setVersion(String version) {
         this.version = version;
     }
 
+    /**
+     * ClusterServiceVersionSpec declarations tell OLM how to install an operator that can manage apps for a given version.
+     */
     @JsonProperty("webhookdefinitions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<WebhookDescription> getWebhookdefinitions() {
         return webhookdefinitions;
     }
 
+    /**
+     * ClusterServiceVersionSpec declarations tell OLM how to install an operator that can manage apps for a given version.
+     */
     @JsonProperty("webhookdefinitions")
     public void setWebhookdefinitions(List<WebhookDescription> webhookdefinitions) {
         this.webhookdefinitions = webhookdefinitions;

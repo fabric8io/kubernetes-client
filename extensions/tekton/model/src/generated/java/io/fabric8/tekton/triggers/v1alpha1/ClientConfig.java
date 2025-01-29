@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ClientConfig describes how a client can communicate with the Interceptor
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -86,31 +89,49 @@ public class ClientConfig implements Editable<ClientConfigBuilder>, KubernetesRe
         this.url = url;
     }
 
+    /**
+     * CaBundle is a PEM encoded CA bundle which will be used to validate the clusterinterceptor server certificate
+     */
     @JsonProperty("caBundle")
     public String getCaBundle() {
         return caBundle;
     }
 
+    /**
+     * CaBundle is a PEM encoded CA bundle which will be used to validate the clusterinterceptor server certificate
+     */
     @JsonProperty("caBundle")
     public void setCaBundle(String caBundle) {
         this.caBundle = caBundle;
     }
 
+    /**
+     * ClientConfig describes how a client can communicate with the Interceptor
+     */
     @JsonProperty("service")
     public ServiceReference getService() {
         return service;
     }
 
+    /**
+     * ClientConfig describes how a client can communicate with the Interceptor
+     */
     @JsonProperty("service")
     public void setService(ServiceReference service) {
         this.service = service;
     }
 
+    /**
+     * ClientConfig describes how a client can communicate with the Interceptor
+     */
     @JsonProperty("url")
     public String getUrl() {
         return url;
     }
 
+    /**
+     * ClientConfig describes how a client can communicate with the Interceptor
+     */
     @JsonProperty("url")
     public void setUrl(String url) {
         this.url = url;

@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ScopeRestriction describe one restriction on scopes.  Exactly one option must be non-nil.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -85,22 +88,34 @@ public class ScopeRestriction implements Editable<ScopeRestrictionBuilder>, Kube
         this.literals = literals;
     }
 
+    /**
+     * ScopeRestriction describe one restriction on scopes.  Exactly one option must be non-nil.
+     */
     @JsonProperty("clusterRole")
     public ClusterRoleScopeRestriction getClusterRole() {
         return clusterRole;
     }
 
+    /**
+     * ScopeRestriction describe one restriction on scopes.  Exactly one option must be non-nil.
+     */
     @JsonProperty("clusterRole")
     public void setClusterRole(ClusterRoleScopeRestriction clusterRole) {
         this.clusterRole = clusterRole;
     }
 
+    /**
+     * ExactValues means the scope has to match a particular set of strings exactly
+     */
     @JsonProperty("literals")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getLiterals() {
         return literals;
     }
 
+    /**
+     * ExactValues means the scope has to match a particular set of strings exactly
+     */
     @JsonProperty("literals")
     public void setLiterals(List<String> literals) {
         this.literals = literals;

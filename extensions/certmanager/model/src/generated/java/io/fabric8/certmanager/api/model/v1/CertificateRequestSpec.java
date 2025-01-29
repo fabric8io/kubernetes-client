@@ -35,6 +35,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * CertificateRequestSpec defines the desired state of CertificateRequest<br><p> <br><p> NOTE: It is important to note that the issuer can choose to ignore or change any of the requested attributes. How the issuer maps a certificate request to a signed certificate is the full responsibility of the issuer itself. For example, as an edge case, an issuer that inverts the isCA value is free to do so.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -116,94 +119,148 @@ public class CertificateRequestSpec implements Editable<CertificateRequestSpecBu
         this.username = username;
     }
 
+    /**
+     * CertificateRequestSpec defines the desired state of CertificateRequest<br><p> <br><p> NOTE: It is important to note that the issuer can choose to ignore or change any of the requested attributes. How the issuer maps a certificate request to a signed certificate is the full responsibility of the issuer itself. For example, as an edge case, an issuer that inverts the isCA value is free to do so.
+     */
     @JsonProperty("duration")
     public Duration getDuration() {
         return duration;
     }
 
+    /**
+     * CertificateRequestSpec defines the desired state of CertificateRequest<br><p> <br><p> NOTE: It is important to note that the issuer can choose to ignore or change any of the requested attributes. How the issuer maps a certificate request to a signed certificate is the full responsibility of the issuer itself. For example, as an edge case, an issuer that inverts the isCA value is free to do so.
+     */
     @JsonProperty("duration")
     public void setDuration(Duration duration) {
         this.duration = duration;
     }
 
+    /**
+     * Extra contains extra attributes of the user that created the CertificateRequest. Populated by the cert-manager webhook on creation and immutable.
+     */
     @JsonProperty("extra")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, List<String>> getExtra() {
         return extra;
     }
 
+    /**
+     * Extra contains extra attributes of the user that created the CertificateRequest. Populated by the cert-manager webhook on creation and immutable.
+     */
     @JsonProperty("extra")
     public void setExtra(Map<String, List<String>> extra) {
         this.extra = extra;
     }
 
+    /**
+     * Groups contains group membership of the user that created the CertificateRequest. Populated by the cert-manager webhook on creation and immutable.
+     */
     @JsonProperty("groups")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getGroups() {
         return groups;
     }
 
+    /**
+     * Groups contains group membership of the user that created the CertificateRequest. Populated by the cert-manager webhook on creation and immutable.
+     */
     @JsonProperty("groups")
     public void setGroups(List<String> groups) {
         this.groups = groups;
     }
 
+    /**
+     * Requested basic constraints isCA value. Note that the issuer may choose to ignore the requested isCA value, just like any other requested attribute.<br><p> <br><p> NOTE: If the CSR in the `Request` field has a BasicConstraints extension, it must have the same isCA value as specified here.<br><p> <br><p> If true, this will automatically add the `cert sign` usage to the list of requested `usages`.
+     */
     @JsonProperty("isCA")
     public Boolean getIsCA() {
         return isCA;
     }
 
+    /**
+     * Requested basic constraints isCA value. Note that the issuer may choose to ignore the requested isCA value, just like any other requested attribute.<br><p> <br><p> NOTE: If the CSR in the `Request` field has a BasicConstraints extension, it must have the same isCA value as specified here.<br><p> <br><p> If true, this will automatically add the `cert sign` usage to the list of requested `usages`.
+     */
     @JsonProperty("isCA")
     public void setIsCA(Boolean isCA) {
         this.isCA = isCA;
     }
 
+    /**
+     * CertificateRequestSpec defines the desired state of CertificateRequest<br><p> <br><p> NOTE: It is important to note that the issuer can choose to ignore or change any of the requested attributes. How the issuer maps a certificate request to a signed certificate is the full responsibility of the issuer itself. For example, as an edge case, an issuer that inverts the isCA value is free to do so.
+     */
     @JsonProperty("issuerRef")
     public ObjectReference getIssuerRef() {
         return issuerRef;
     }
 
+    /**
+     * CertificateRequestSpec defines the desired state of CertificateRequest<br><p> <br><p> NOTE: It is important to note that the issuer can choose to ignore or change any of the requested attributes. How the issuer maps a certificate request to a signed certificate is the full responsibility of the issuer itself. For example, as an edge case, an issuer that inverts the isCA value is free to do so.
+     */
     @JsonProperty("issuerRef")
     public void setIssuerRef(ObjectReference issuerRef) {
         this.issuerRef = issuerRef;
     }
 
+    /**
+     * The PEM-encoded X.509 certificate signing request to be submitted to the issuer for signing.<br><p> <br><p> If the CSR has a BasicConstraints extension, its isCA attribute must match the `isCA` value of this CertificateRequest. If the CSR has a KeyUsage extension, its key usages must match the key usages in the `usages` field of this CertificateRequest. If the CSR has a ExtKeyUsage extension, its extended key usages must match the extended key usages in the `usages` field of this CertificateRequest.
+     */
     @JsonProperty("request")
     public String getRequest() {
         return request;
     }
 
+    /**
+     * The PEM-encoded X.509 certificate signing request to be submitted to the issuer for signing.<br><p> <br><p> If the CSR has a BasicConstraints extension, its isCA attribute must match the `isCA` value of this CertificateRequest. If the CSR has a KeyUsage extension, its key usages must match the key usages in the `usages` field of this CertificateRequest. If the CSR has a ExtKeyUsage extension, its extended key usages must match the extended key usages in the `usages` field of this CertificateRequest.
+     */
     @JsonProperty("request")
     public void setRequest(String request) {
         this.request = request;
     }
 
+    /**
+     * UID contains the uid of the user that created the CertificateRequest. Populated by the cert-manager webhook on creation and immutable.
+     */
     @JsonProperty("uid")
     public String getUid() {
         return uid;
     }
 
+    /**
+     * UID contains the uid of the user that created the CertificateRequest. Populated by the cert-manager webhook on creation and immutable.
+     */
     @JsonProperty("uid")
     public void setUid(String uid) {
         this.uid = uid;
     }
 
+    /**
+     * Requested key usages and extended key usages.<br><p> <br><p> NOTE: If the CSR in the `Request` field has uses the KeyUsage or ExtKeyUsage extension, these extensions must have the same values as specified here without any additional values.<br><p> <br><p> If unset, defaults to `digital signature` and `key encipherment`.
+     */
     @JsonProperty("usages")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getUsages() {
         return usages;
     }
 
+    /**
+     * Requested key usages and extended key usages.<br><p> <br><p> NOTE: If the CSR in the `Request` field has uses the KeyUsage or ExtKeyUsage extension, these extensions must have the same values as specified here without any additional values.<br><p> <br><p> If unset, defaults to `digital signature` and `key encipherment`.
+     */
     @JsonProperty("usages")
     public void setUsages(List<String> usages) {
         this.usages = usages;
     }
 
+    /**
+     * Username contains the name of the user that created the CertificateRequest. Populated by the cert-manager webhook on creation and immutable.
+     */
     @JsonProperty("username")
     public String getUsername() {
         return username;
     }
 
+    /**
+     * Username contains the name of the user that created the CertificateRequest. Populated by the cert-manager webhook on creation and immutable.
+     */
     @JsonProperty("username")
     public void setUsername(String username) {
         this.username = username;

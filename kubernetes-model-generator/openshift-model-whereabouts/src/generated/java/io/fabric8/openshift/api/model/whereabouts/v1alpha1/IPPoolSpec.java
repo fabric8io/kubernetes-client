@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * IPPoolSpec defines the desired state of IPPool
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -83,22 +86,34 @@ public class IPPoolSpec implements Editable<IPPoolSpecBuilder>, KubernetesResour
         this.range = range;
     }
 
+    /**
+     * Allocations is the set of allocated IPs for the given range. Its` indices are a direct mapping to the<br><p> IP with the same index/offset for the pool's range.
+     */
     @JsonProperty("allocations")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, IPPoolSpecAllocations> getAllocations() {
         return allocations;
     }
 
+    /**
+     * Allocations is the set of allocated IPs for the given range. Its` indices are a direct mapping to the<br><p> IP with the same index/offset for the pool's range.
+     */
     @JsonProperty("allocations")
     public void setAllocations(Map<String, IPPoolSpecAllocations> allocations) {
         this.allocations = allocations;
     }
 
+    /**
+     * Range is a RFC 4632/4291-style string that represents an IP address and prefix length in CIDR notation
+     */
     @JsonProperty("range")
     public String getRange() {
         return range;
     }
 
+    /**
+     * Range is a RFC 4632/4291-style string that represents an IP address and prefix length in CIDR notation
+     */
     @JsonProperty("range")
     public void setRange(String range) {
         this.range = range;

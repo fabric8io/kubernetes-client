@@ -33,6 +33,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * CluterSpec represents the template of Cluster
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -88,32 +91,50 @@ public class Cluster implements Editable<ClusterBuilder>, KubernetesResource
         this.weight = weight;
     }
 
+    /**
+     * CluterSpec represents the template of Cluster
+     */
     @JsonProperty("capacity")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, Quantity> getCapacity() {
         return capacity;
     }
 
+    /**
+     * CluterSpec represents the template of Cluster
+     */
     @JsonProperty("capacity")
     public void setCapacity(Map<String, Quantity> capacity) {
         this.capacity = capacity;
     }
 
+    /**
+     * CluterSpec represents the template of Cluster
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * CluterSpec represents the template of Cluster
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * CluterSpec represents the template of Cluster
+     */
     @JsonProperty("weight")
     public Integer getWeight() {
         return weight;
     }
 
+    /**
+     * CluterSpec represents the template of Cluster
+     */
     @JsonProperty("weight")
     public void setWeight(Integer weight) {
         this.weight = weight;

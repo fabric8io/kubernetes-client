@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * CPUInfo is the cpu topology detail
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -86,31 +89,49 @@ public class CPUInfo implements Editable<CPUInfoBuilder>, KubernetesResource
         this.socket = socket;
     }
 
+    /**
+     * CPUInfo is the cpu topology detail
+     */
     @JsonProperty("core")
     public Integer getCore() {
         return core;
     }
 
+    /**
+     * CPUInfo is the cpu topology detail
+     */
     @JsonProperty("core")
     public void setCore(Integer core) {
         this.core = core;
     }
 
+    /**
+     * CPUInfo is the cpu topology detail
+     */
     @JsonProperty("numa")
     public Integer getNuma() {
         return numa;
     }
 
+    /**
+     * CPUInfo is the cpu topology detail
+     */
     @JsonProperty("numa")
     public void setNuma(Integer numa) {
         this.numa = numa;
     }
 
+    /**
+     * CPUInfo is the cpu topology detail
+     */
     @JsonProperty("socket")
     public Integer getSocket() {
         return socket;
     }
 
+    /**
+     * CPUInfo is the cpu topology detail
+     */
     @JsonProperty("socket")
     public void setSocket(Integer socket) {
         this.socket = socket;

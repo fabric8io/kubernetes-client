@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * VMDiskSecurityProfile specifies the security profile settings for the managed disk. It can be set only for Confidential VMs.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class VMDiskSecurityProfile implements Editable<VMDiskSecurityProfileBuil
         this.securityEncryptionType = securityEncryptionType;
     }
 
+    /**
+     * VMDiskSecurityProfile specifies the security profile settings for the managed disk. It can be set only for Confidential VMs.
+     */
     @JsonProperty("diskEncryptionSet")
     public DiskEncryptionSet getDiskEncryptionSet() {
         return diskEncryptionSet;
     }
 
+    /**
+     * VMDiskSecurityProfile specifies the security profile settings for the managed disk. It can be set only for Confidential VMs.
+     */
     @JsonProperty("diskEncryptionSet")
     public void setDiskEncryptionSet(DiskEncryptionSet diskEncryptionSet) {
         this.diskEncryptionSet = diskEncryptionSet;
     }
 
+    /**
+     * SecurityEncryptionType specifies the encryption type of the managed disk. It is set to DiskWithVMGuestState to encrypt the managed disk along with the VMGuestState blob, and to VMGuestStateOnly to encrypt the VMGuestState blob only. When set to VMGuestStateOnly, the VTpmEnabled should be set to true. When set to DiskWithVMGuestState, both SecureBootEnabled and VTpmEnabled should be set to true. It can be set only for Confidential VMs.
+     */
     @JsonProperty("securityEncryptionType")
     public String getSecurityEncryptionType() {
         return securityEncryptionType;
     }
 
+    /**
+     * SecurityEncryptionType specifies the encryption type of the managed disk. It is set to DiskWithVMGuestState to encrypt the managed disk along with the VMGuestState blob, and to VMGuestStateOnly to encrypt the VMGuestState blob only. When set to VMGuestStateOnly, the VTpmEnabled should be set to true. When set to DiskWithVMGuestState, both SecureBootEnabled and VTpmEnabled should be set to true. It can be set only for Confidential VMs.
+     */
     @JsonProperty("securityEncryptionType")
     public void setSecurityEncryptionType(String securityEncryptionType) {
         this.securityEncryptionType = securityEncryptionType;

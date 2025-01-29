@@ -33,6 +33,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * IngressStatus describe the current state of the Ingress.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -79,11 +82,17 @@ public class IngressStatus implements Editable<IngressStatusBuilder>, Kubernetes
         this.loadBalancer = loadBalancer;
     }
 
+    /**
+     * IngressStatus describe the current state of the Ingress.
+     */
     @JsonProperty("loadBalancer")
     public LoadBalancerStatus getLoadBalancer() {
         return loadBalancer;
     }
 
+    /**
+     * IngressStatus describe the current state of the Ingress.
+     */
     @JsonProperty("loadBalancer")
     public void setLoadBalancer(LoadBalancerStatus loadBalancer) {
         this.loadBalancer = loadBalancer;

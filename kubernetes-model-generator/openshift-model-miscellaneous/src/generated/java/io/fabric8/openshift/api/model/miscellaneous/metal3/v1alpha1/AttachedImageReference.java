@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Contains the DataImage currently attached to the BMH.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -78,11 +81,17 @@ public class AttachedImageReference implements Editable<AttachedImageReferenceBu
         this.url = url;
     }
 
+    /**
+     * Contains the DataImage currently attached to the BMH.
+     */
     @JsonProperty("url")
     public String getUrl() {
         return url;
     }
 
+    /**
+     * Contains the DataImage currently attached to the BMH.
+     */
     @JsonProperty("url")
     public void setUrl(String url) {
         this.url = url;

@@ -33,6 +33,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * One or more match conditions to be met before a patch is applied to the generated configuration for a given proxy.
+ */
 @JsonDeserialize(using = io.fabric8.kubernetes.model.jackson.JsonUnwrappedDeserializer.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -88,32 +91,50 @@ public class EnvoyFilterEnvoyConfigObjectMatch implements Editable<EnvoyFilterEn
         this.proxy = proxy;
     }
 
+    /**
+     * One or more match conditions to be met before a patch is applied to the generated configuration for a given proxy.
+     */
     @JsonProperty("ObjectTypes")
     @JsonUnwrapped
     public IsEnvoyFilterEnvoyConfigObjectMatchObjectTypes getObjectTypes() {
         return objectTypes;
     }
 
+    /**
+     * One or more match conditions to be met before a patch is applied to the generated configuration for a given proxy.
+     */
     @JsonProperty("ObjectTypes")
     public void setObjectTypes(IsEnvoyFilterEnvoyConfigObjectMatchObjectTypes objectTypes) {
         this.objectTypes = objectTypes;
     }
 
+    /**
+     * One or more match conditions to be met before a patch is applied to the generated configuration for a given proxy.
+     */
     @JsonProperty("context")
     public EnvoyFilterPatchContext getContext() {
         return context;
     }
 
+    /**
+     * One or more match conditions to be met before a patch is applied to the generated configuration for a given proxy.
+     */
     @JsonProperty("context")
     public void setContext(EnvoyFilterPatchContext context) {
         this.context = context;
     }
 
+    /**
+     * One or more match conditions to be met before a patch is applied to the generated configuration for a given proxy.
+     */
     @JsonProperty("proxy")
     public EnvoyFilterProxyMatch getProxy() {
         return proxy;
     }
 
+    /**
+     * One or more match conditions to be met before a patch is applied to the generated configuration for a given proxy.
+     */
     @JsonProperty("proxy")
     public void setProxy(EnvoyFilterProxyMatch proxy) {
         this.proxy = proxy;

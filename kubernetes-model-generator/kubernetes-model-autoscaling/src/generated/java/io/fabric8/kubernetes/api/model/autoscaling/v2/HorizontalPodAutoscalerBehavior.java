@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * HorizontalPodAutoscalerBehavior configures the scaling behavior of the target in both Up and Down directions (scaleUp and scaleDown fields respectively).
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class HorizontalPodAutoscalerBehavior implements Editable<HorizontalPodAu
         this.scaleUp = scaleUp;
     }
 
+    /**
+     * HorizontalPodAutoscalerBehavior configures the scaling behavior of the target in both Up and Down directions (scaleUp and scaleDown fields respectively).
+     */
     @JsonProperty("scaleDown")
     public HPAScalingRules getScaleDown() {
         return scaleDown;
     }
 
+    /**
+     * HorizontalPodAutoscalerBehavior configures the scaling behavior of the target in both Up and Down directions (scaleUp and scaleDown fields respectively).
+     */
     @JsonProperty("scaleDown")
     public void setScaleDown(HPAScalingRules scaleDown) {
         this.scaleDown = scaleDown;
     }
 
+    /**
+     * HorizontalPodAutoscalerBehavior configures the scaling behavior of the target in both Up and Down directions (scaleUp and scaleDown fields respectively).
+     */
     @JsonProperty("scaleUp")
     public HPAScalingRules getScaleUp() {
         return scaleUp;
     }
 
+    /**
+     * HorizontalPodAutoscalerBehavior configures the scaling behavior of the target in both Up and Down directions (scaleUp and scaleDown fields respectively).
+     */
     @JsonProperty("scaleUp")
     public void setScaleUp(HPAScalingRules scaleUp) {
         this.scaleUp = scaleUp;

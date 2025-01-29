@@ -37,6 +37,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Service acts as a top-level container that manages a Route and Configuration which implement a network service. Service exists to provide a singular abstraction which can be access controlled, reasoned about, and which encapsulates software lifecycle decisions such as rollout policy and team resource ownership. Service acts only as an orchestrator of the underlying Routes and Configurations (much as a kubernetes Deployment orchestrates ReplicaSets), and its usage is optional but recommended.<br><p> <br><p> The Service's controller will track the statuses of its owned Configuration and Route, reflecting their statuses and conditions as its own.<br><p> <br><p> See also: https://github.com/knative/serving/blob/main/docs/spec/overview.md#service
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -76,14 +79,8 @@ import lombok.experimental.Accessors;
 public class Service implements Editable<ServiceBuilder>, HasMetadata, Namespaced
 {
 
-    /**
-     * (Required)
-     */
     @JsonProperty("apiVersion")
     private String apiVersion = "serving.knative.dev/v1";
-    /**
-     * (Required)
-     */
     @JsonProperty("kind")
     private String kind = "Service";
     @JsonProperty("metadata")
@@ -111,7 +108,7 @@ public class Service implements Editable<ServiceBuilder>, HasMetadata, Namespace
     }
 
     /**
-     * (Required)
+     * APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -119,7 +116,7 @@ public class Service implements Editable<ServiceBuilder>, HasMetadata, Namespace
     }
 
     /**
-     * (Required)
+     * APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -127,7 +124,7 @@ public class Service implements Editable<ServiceBuilder>, HasMetadata, Namespace
     }
 
     /**
-     * (Required)
+     * Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -135,38 +132,56 @@ public class Service implements Editable<ServiceBuilder>, HasMetadata, Namespace
     }
 
     /**
-     * (Required)
+     * Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
      */
     @JsonProperty("kind")
     public void setKind(String kind) {
         this.kind = kind;
     }
 
+    /**
+     * Service acts as a top-level container that manages a Route and Configuration which implement a network service. Service exists to provide a singular abstraction which can be access controlled, reasoned about, and which encapsulates software lifecycle decisions such as rollout policy and team resource ownership. Service acts only as an orchestrator of the underlying Routes and Configurations (much as a kubernetes Deployment orchestrates ReplicaSets), and its usage is optional but recommended.<br><p> <br><p> The Service's controller will track the statuses of its owned Configuration and Route, reflecting their statuses and conditions as its own.<br><p> <br><p> See also: https://github.com/knative/serving/blob/main/docs/spec/overview.md#service
+     */
     @JsonProperty("metadata")
     public ObjectMeta getMetadata() {
         return metadata;
     }
 
+    /**
+     * Service acts as a top-level container that manages a Route and Configuration which implement a network service. Service exists to provide a singular abstraction which can be access controlled, reasoned about, and which encapsulates software lifecycle decisions such as rollout policy and team resource ownership. Service acts only as an orchestrator of the underlying Routes and Configurations (much as a kubernetes Deployment orchestrates ReplicaSets), and its usage is optional but recommended.<br><p> <br><p> The Service's controller will track the statuses of its owned Configuration and Route, reflecting their statuses and conditions as its own.<br><p> <br><p> See also: https://github.com/knative/serving/blob/main/docs/spec/overview.md#service
+     */
     @JsonProperty("metadata")
     public void setMetadata(ObjectMeta metadata) {
         this.metadata = metadata;
     }
 
+    /**
+     * Service acts as a top-level container that manages a Route and Configuration which implement a network service. Service exists to provide a singular abstraction which can be access controlled, reasoned about, and which encapsulates software lifecycle decisions such as rollout policy and team resource ownership. Service acts only as an orchestrator of the underlying Routes and Configurations (much as a kubernetes Deployment orchestrates ReplicaSets), and its usage is optional but recommended.<br><p> <br><p> The Service's controller will track the statuses of its owned Configuration and Route, reflecting their statuses and conditions as its own.<br><p> <br><p> See also: https://github.com/knative/serving/blob/main/docs/spec/overview.md#service
+     */
     @JsonProperty("spec")
     public ServiceSpec getSpec() {
         return spec;
     }
 
+    /**
+     * Service acts as a top-level container that manages a Route and Configuration which implement a network service. Service exists to provide a singular abstraction which can be access controlled, reasoned about, and which encapsulates software lifecycle decisions such as rollout policy and team resource ownership. Service acts only as an orchestrator of the underlying Routes and Configurations (much as a kubernetes Deployment orchestrates ReplicaSets), and its usage is optional but recommended.<br><p> <br><p> The Service's controller will track the statuses of its owned Configuration and Route, reflecting their statuses and conditions as its own.<br><p> <br><p> See also: https://github.com/knative/serving/blob/main/docs/spec/overview.md#service
+     */
     @JsonProperty("spec")
     public void setSpec(ServiceSpec spec) {
         this.spec = spec;
     }
 
+    /**
+     * Service acts as a top-level container that manages a Route and Configuration which implement a network service. Service exists to provide a singular abstraction which can be access controlled, reasoned about, and which encapsulates software lifecycle decisions such as rollout policy and team resource ownership. Service acts only as an orchestrator of the underlying Routes and Configurations (much as a kubernetes Deployment orchestrates ReplicaSets), and its usage is optional but recommended.<br><p> <br><p> The Service's controller will track the statuses of its owned Configuration and Route, reflecting their statuses and conditions as its own.<br><p> <br><p> See also: https://github.com/knative/serving/blob/main/docs/spec/overview.md#service
+     */
     @JsonProperty("status")
     public ServiceStatus getStatus() {
         return status;
     }
 
+    /**
+     * Service acts as a top-level container that manages a Route and Configuration which implement a network service. Service exists to provide a singular abstraction which can be access controlled, reasoned about, and which encapsulates software lifecycle decisions such as rollout policy and team resource ownership. Service acts only as an orchestrator of the underlying Routes and Configurations (much as a kubernetes Deployment orchestrates ReplicaSets), and its usage is optional but recommended.<br><p> <br><p> The Service's controller will track the statuses of its owned Configuration and Route, reflecting their statuses and conditions as its own.<br><p> <br><p> See also: https://github.com/knative/serving/blob/main/docs/spec/overview.md#service
+     */
     @JsonProperty("status")
     public void setStatus(ServiceStatus status) {
         this.status = status;

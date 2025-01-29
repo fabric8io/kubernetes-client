@@ -78,11 +78,17 @@ public class MachineOSImageBuilder implements Editable<MachineOSImageBuilderBuil
         this.imageBuilderType = imageBuilderType;
     }
 
+    /**
+     * imageBuilderType specifies the backend to be used to build the image. Valid options are: PodImageBuilder
+     */
     @JsonProperty("imageBuilderType")
     public String getImageBuilderType() {
         return imageBuilderType;
     }
 
+    /**
+     * imageBuilderType specifies the backend to be used to build the image. Valid options are: PodImageBuilder
+     */
     @JsonProperty("imageBuilderType")
     public void setImageBuilderType(String imageBuilderType) {
         this.imageBuilderType = imageBuilderType;

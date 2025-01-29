@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * This message specifies the detail for copying claim to header.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class ClaimToHeader implements Editable<ClaimToHeaderBuilder>, Kubernetes
         this.header = header;
     }
 
+    /**
+     * The name of the claim to be copied from. Only claim of type string/int/bool is supported. The header will not be there if the claim does not exist or the type of the claim is not supported.
+     */
     @JsonProperty("claim")
     public String getClaim() {
         return claim;
     }
 
+    /**
+     * The name of the claim to be copied from. Only claim of type string/int/bool is supported. The header will not be there if the claim does not exist or the type of the claim is not supported.
+     */
     @JsonProperty("claim")
     public void setClaim(String claim) {
         this.claim = claim;
     }
 
+    /**
+     * The name of the header to be created. The header will be overridden if it already exists in the request.
+     */
     @JsonProperty("header")
     public String getHeader() {
         return header;
     }
 
+    /**
+     * The name of the header to be created. The header will be overridden if it already exists in the request.
+     */
     @JsonProperty("header")
     public void setHeader(String header) {
         this.header = header;

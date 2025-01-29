@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Artifacts represents the collection of input and output artifacts associated with a task run or a similar process. Artifacts in this context are units of data or resources that the process either consumes as input or produces as output.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -86,23 +89,35 @@ public class Artifacts implements Editable<ArtifactsBuilder>, KubernetesResource
         this.outputs = outputs;
     }
 
+    /**
+     * Artifacts represents the collection of input and output artifacts associated with a task run or a similar process. Artifacts in this context are units of data or resources that the process either consumes as input or produces as output.
+     */
     @JsonProperty("inputs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Artifact> getInputs() {
         return inputs;
     }
 
+    /**
+     * Artifacts represents the collection of input and output artifacts associated with a task run or a similar process. Artifacts in this context are units of data or resources that the process either consumes as input or produces as output.
+     */
     @JsonProperty("inputs")
     public void setInputs(List<Artifact> inputs) {
         this.inputs = inputs;
     }
 
+    /**
+     * Artifacts represents the collection of input and output artifacts associated with a task run or a similar process. Artifacts in this context are units of data or resources that the process either consumes as input or produces as output.
+     */
     @JsonProperty("outputs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Artifact> getOutputs() {
         return outputs;
     }
 
+    /**
+     * Artifacts represents the collection of input and output artifacts associated with a task run or a similar process. Artifacts in this context are units of data or resources that the process either consumes as input or produces as output.
+     */
     @JsonProperty("outputs")
     public void setOutputs(List<Artifact> outputs) {
         this.outputs = outputs;

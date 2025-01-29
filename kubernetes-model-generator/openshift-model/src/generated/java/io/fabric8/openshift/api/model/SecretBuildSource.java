@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * SecretBuildSource describes a secret and its destination directory that will be used only at the build time. The content of the secret referenced here will be copied into the destination directory instead of mounting.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class SecretBuildSource implements Editable<SecretBuildSourceBuilder>, Ku
         this.secret = secret;
     }
 
+    /**
+     * destinationDir is the directory where the files from the secret should be available for the build time. For the Source build strategy, these will be injected into a container where the assemble script runs. Later, when the script finishes, all files injected will be truncated to zero length. For the container image build strategy, these will be copied into the build directory, where the Dockerfile is located, so users can ADD or COPY them during container image build.
+     */
     @JsonProperty("destinationDir")
     public String getDestinationDir() {
         return destinationDir;
     }
 
+    /**
+     * destinationDir is the directory where the files from the secret should be available for the build time. For the Source build strategy, these will be injected into a container where the assemble script runs. Later, when the script finishes, all files injected will be truncated to zero length. For the container image build strategy, these will be copied into the build directory, where the Dockerfile is located, so users can ADD or COPY them during container image build.
+     */
     @JsonProperty("destinationDir")
     public void setDestinationDir(String destinationDir) {
         this.destinationDir = destinationDir;
     }
 
+    /**
+     * SecretBuildSource describes a secret and its destination directory that will be used only at the build time. The content of the secret referenced here will be copied into the destination directory instead of mounting.
+     */
     @JsonProperty("secret")
     public LocalObjectReference getSecret() {
         return secret;
     }
 
+    /**
+     * SecretBuildSource describes a secret and its destination directory that will be used only at the build time. The content of the secret referenced here will be copied into the destination directory instead of mounting.
+     */
     @JsonProperty("secret")
     public void setSecret(LocalObjectReference secret) {
         this.secret = secret;

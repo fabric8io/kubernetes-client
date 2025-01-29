@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Metal3ClusterSpec defines the desired state of Metal3Cluster.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class Metal3ClusterSpec implements Editable<Metal3ClusterSpecBuilder>, Ku
         this.noCloudProvider = noCloudProvider;
     }
 
+    /**
+     * Metal3ClusterSpec defines the desired state of Metal3Cluster.
+     */
     @JsonProperty("controlPlaneEndpoint")
     public APIEndpoint getControlPlaneEndpoint() {
         return controlPlaneEndpoint;
     }
 
+    /**
+     * Metal3ClusterSpec defines the desired state of Metal3Cluster.
+     */
     @JsonProperty("controlPlaneEndpoint")
     public void setControlPlaneEndpoint(APIEndpoint controlPlaneEndpoint) {
         this.controlPlaneEndpoint = controlPlaneEndpoint;
     }
 
+    /**
+     * Determines if the cluster is not to be deployed with an external cloud provider. If set to true, CAPM3 will use node labels to set providerID on the kubernetes nodes. If set to false, providerID is set on nodes by other entities and CAPM3 uses the value of the providerID on the m3m resource.
+     */
     @JsonProperty("noCloudProvider")
     public Boolean getNoCloudProvider() {
         return noCloudProvider;
     }
 
+    /**
+     * Determines if the cluster is not to be deployed with an external cloud provider. If set to true, CAPM3 will use node labels to set providerID on the kubernetes nodes. If set to false, providerID is set on nodes by other entities and CAPM3 uses the value of the providerID on the m3m resource.
+     */
     @JsonProperty("noCloudProvider")
     public void setNoCloudProvider(Boolean noCloudProvider) {
         this.noCloudProvider = noCloudProvider;

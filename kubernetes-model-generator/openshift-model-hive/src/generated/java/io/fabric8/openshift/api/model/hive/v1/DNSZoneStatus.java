@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * DNSZoneStatus defines the observed state of DNSZone
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -106,73 +109,115 @@ public class DNSZoneStatus implements Editable<DNSZoneStatusBuilder>, Kubernetes
         this.nameServers = nameServers;
     }
 
+    /**
+     * DNSZoneStatus defines the observed state of DNSZone
+     */
     @JsonProperty("aws")
     public AWSDNSZoneStatus getAws() {
         return aws;
     }
 
+    /**
+     * DNSZoneStatus defines the observed state of DNSZone
+     */
     @JsonProperty("aws")
     public void setAws(AWSDNSZoneStatus aws) {
         this.aws = aws;
     }
 
+    /**
+     * DNSZoneStatus defines the observed state of DNSZone
+     */
     @JsonProperty("azure")
     public AzureDNSZoneStatus getAzure() {
         return azure;
     }
 
+    /**
+     * DNSZoneStatus defines the observed state of DNSZone
+     */
     @JsonProperty("azure")
     public void setAzure(AzureDNSZoneStatus azure) {
         this.azure = azure;
     }
 
+    /**
+     * Conditions includes more detailed status for the DNSZone
+     */
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<DNSZoneCondition> getConditions() {
         return conditions;
     }
 
+    /**
+     * Conditions includes more detailed status for the DNSZone
+     */
     @JsonProperty("conditions")
     public void setConditions(List<DNSZoneCondition> conditions) {
         this.conditions = conditions;
     }
 
+    /**
+     * DNSZoneStatus defines the observed state of DNSZone
+     */
     @JsonProperty("gcp")
     public GCPDNSZoneStatus getGcp() {
         return gcp;
     }
 
+    /**
+     * DNSZoneStatus defines the observed state of DNSZone
+     */
     @JsonProperty("gcp")
     public void setGcp(GCPDNSZoneStatus gcp) {
         this.gcp = gcp;
     }
 
+    /**
+     * LastSyncGeneration is the generation of the zone resource that was last sync'd. This is used to know if the Object has changed and we should sync immediately.
+     */
     @JsonProperty("lastSyncGeneration")
     public Long getLastSyncGeneration() {
         return lastSyncGeneration;
     }
 
+    /**
+     * LastSyncGeneration is the generation of the zone resource that was last sync'd. This is used to know if the Object has changed and we should sync immediately.
+     */
     @JsonProperty("lastSyncGeneration")
     public void setLastSyncGeneration(Long lastSyncGeneration) {
         this.lastSyncGeneration = lastSyncGeneration;
     }
 
+    /**
+     * DNSZoneStatus defines the observed state of DNSZone
+     */
     @JsonProperty("lastSyncTimestamp")
     public String getLastSyncTimestamp() {
         return lastSyncTimestamp;
     }
 
+    /**
+     * DNSZoneStatus defines the observed state of DNSZone
+     */
     @JsonProperty("lastSyncTimestamp")
     public void setLastSyncTimestamp(String lastSyncTimestamp) {
         this.lastSyncTimestamp = lastSyncTimestamp;
     }
 
+    /**
+     * NameServers is a list of nameservers for this DNS zone
+     */
     @JsonProperty("nameServers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getNameServers() {
         return nameServers;
     }
 
+    /**
+     * NameServers is a list of nameservers for this DNS zone
+     */
     @JsonProperty("nameServers")
     public void setNameServers(List<String> nameServers) {
         this.nameServers = nameServers;

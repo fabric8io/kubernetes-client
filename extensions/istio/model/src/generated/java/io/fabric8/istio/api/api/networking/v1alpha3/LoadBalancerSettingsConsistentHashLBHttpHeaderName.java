@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Hash based on a specific HTTP header.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -78,11 +81,17 @@ public class LoadBalancerSettingsConsistentHashLBHttpHeaderName implements IsLoa
         this.httpHeaderName = httpHeaderName;
     }
 
+    /**
+     * Hash based on a specific HTTP header.
+     */
     @JsonProperty("httpHeaderName")
     public String getHttpHeaderName() {
         return httpHeaderName;
     }
 
+    /**
+     * Hash based on a specific HTTP header.
+     */
     @JsonProperty("httpHeaderName")
     public void setHttpHeaderName(String httpHeaderName) {
         this.httpHeaderName = httpHeaderName;

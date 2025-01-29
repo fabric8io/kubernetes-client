@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * RunAsUserStrategyOptions defines the strategy type and any options used to create the strategy. Deprecated: use RunAsUserStrategyOptions from policy API Group instead.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -85,22 +88,34 @@ public class RunAsUserStrategyOptions implements Editable<RunAsUserStrategyOptio
         this.rule = rule;
     }
 
+    /**
+     * ranges are the allowed ranges of uids that may be used. If you would like to force a single uid then supply a single range with the same start and end. Required for MustRunAs.
+     */
     @JsonProperty("ranges")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<IDRange> getRanges() {
         return ranges;
     }
 
+    /**
+     * ranges are the allowed ranges of uids that may be used. If you would like to force a single uid then supply a single range with the same start and end. Required for MustRunAs.
+     */
     @JsonProperty("ranges")
     public void setRanges(List<IDRange> ranges) {
         this.ranges = ranges;
     }
 
+    /**
+     * rule is the strategy that will dictate the allowable RunAsUser values that may be set.
+     */
     @JsonProperty("rule")
     public String getRule() {
         return rule;
     }
 
+    /**
+     * rule is the strategy that will dictate the allowable RunAsUser values that may be set.
+     */
     @JsonProperty("rule")
     public void setRule(String rule) {
         this.rule = rule;

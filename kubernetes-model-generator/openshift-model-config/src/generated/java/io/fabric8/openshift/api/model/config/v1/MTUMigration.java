@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * MTUMigration contains infomation about MTU migration.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class MTUMigration implements Editable<MTUMigrationBuilder>, KubernetesRe
         this.network = network;
     }
 
+    /**
+     * MTUMigration contains infomation about MTU migration.
+     */
     @JsonProperty("machine")
     public MTUMigrationValues getMachine() {
         return machine;
     }
 
+    /**
+     * MTUMigration contains infomation about MTU migration.
+     */
     @JsonProperty("machine")
     public void setMachine(MTUMigrationValues machine) {
         this.machine = machine;
     }
 
+    /**
+     * MTUMigration contains infomation about MTU migration.
+     */
     @JsonProperty("network")
     public MTUMigrationValues getNetwork() {
         return network;
     }
 
+    /**
+     * MTUMigration contains infomation about MTU migration.
+     */
     @JsonProperty("network")
     public void setNetwork(MTUMigrationValues network) {
         this.network = network;

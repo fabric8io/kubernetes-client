@@ -82,21 +82,33 @@ public class OtherName implements Editable<OtherNameBuilder>, KubernetesResource
         this.utf8Value = utf8Value;
     }
 
+    /**
+     * OID is the object identifier for the otherName SAN. The object identifier must be expressed as a dotted string, for example, "1.2.840.113556.1.4.221".
+     */
     @JsonProperty("oid")
     public String getOid() {
         return oid;
     }
 
+    /**
+     * OID is the object identifier for the otherName SAN. The object identifier must be expressed as a dotted string, for example, "1.2.840.113556.1.4.221".
+     */
     @JsonProperty("oid")
     public void setOid(String oid) {
         this.oid = oid;
     }
 
+    /**
+     * utf8Value is the string value of the otherName SAN. The utf8Value accepts any valid UTF8 string to set as value for the otherName SAN.
+     */
     @JsonProperty("utf8Value")
     public String getUtf8Value() {
         return utf8Value;
     }
 
+    /**
+     * utf8Value is the string value of the otherName SAN. The utf8Value accepts any valid UTF8 string to set as value for the otherName SAN.
+     */
     @JsonProperty("utf8Value")
     public void setUtf8Value(String utf8Value) {
         this.utf8Value = utf8Value;

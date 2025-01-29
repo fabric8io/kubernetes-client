@@ -21,6 +21,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ReplicationController represents the configuration of a replication controller.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -46,14 +49,8 @@ import lombok.experimental.Accessors;
 public class ReplicationController implements Editable<ReplicationControllerBuilder>, HasMetadata, Namespaced
 {
 
-    /**
-     * (Required)
-     */
     @JsonProperty("apiVersion")
     private String apiVersion = "v1";
-    /**
-     * (Required)
-     */
     @JsonProperty("kind")
     private String kind = "ReplicationController";
     @JsonProperty("metadata")
@@ -81,7 +78,7 @@ public class ReplicationController implements Editable<ReplicationControllerBuil
     }
 
     /**
-     * (Required)
+     * APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -89,7 +86,7 @@ public class ReplicationController implements Editable<ReplicationControllerBuil
     }
 
     /**
-     * (Required)
+     * APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -97,7 +94,7 @@ public class ReplicationController implements Editable<ReplicationControllerBuil
     }
 
     /**
-     * (Required)
+     * Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -105,38 +102,56 @@ public class ReplicationController implements Editable<ReplicationControllerBuil
     }
 
     /**
-     * (Required)
+     * Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
      */
     @JsonProperty("kind")
     public void setKind(String kind) {
         this.kind = kind;
     }
 
+    /**
+     * ReplicationController represents the configuration of a replication controller.
+     */
     @JsonProperty("metadata")
     public ObjectMeta getMetadata() {
         return metadata;
     }
 
+    /**
+     * ReplicationController represents the configuration of a replication controller.
+     */
     @JsonProperty("metadata")
     public void setMetadata(ObjectMeta metadata) {
         this.metadata = metadata;
     }
 
+    /**
+     * ReplicationController represents the configuration of a replication controller.
+     */
     @JsonProperty("spec")
     public ReplicationControllerSpec getSpec() {
         return spec;
     }
 
+    /**
+     * ReplicationController represents the configuration of a replication controller.
+     */
     @JsonProperty("spec")
     public void setSpec(ReplicationControllerSpec spec) {
         this.spec = spec;
     }
 
+    /**
+     * ReplicationController represents the configuration of a replication controller.
+     */
     @JsonProperty("status")
     public ReplicationControllerStatus getStatus() {
         return status;
     }
 
+    /**
+     * ReplicationController represents the configuration of a replication controller.
+     */
     @JsonProperty("status")
     public void setStatus(ReplicationControllerStatus status) {
         this.status = status;

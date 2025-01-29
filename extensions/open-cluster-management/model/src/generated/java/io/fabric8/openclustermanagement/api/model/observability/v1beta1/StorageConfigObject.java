@@ -33,6 +33,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * StorageConfigObject is the spec of object storage.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -87,31 +90,49 @@ public class StorageConfigObject implements Editable<StorageConfigObjectBuilder>
         this.statefulSetStorageClass = statefulSetStorageClass;
     }
 
+    /**
+     * StorageConfigObject is the spec of object storage.
+     */
     @JsonProperty("metricObjectStorage")
     public PreConfiguredStorage getMetricObjectStorage() {
         return metricObjectStorage;
     }
 
+    /**
+     * StorageConfigObject is the spec of object storage.
+     */
     @JsonProperty("metricObjectStorage")
     public void setMetricObjectStorage(PreConfiguredStorage metricObjectStorage) {
         this.metricObjectStorage = metricObjectStorage;
     }
 
+    /**
+     * The amount of storage applied to the Observability stateful sets, i.e. Thanos store, Rule, compact and receiver.
+     */
     @JsonProperty("statefulSetSize")
     public String getStatefulSetSize() {
         return statefulSetSize;
     }
 
+    /**
+     * The amount of storage applied to the Observability stateful sets, i.e. Thanos store, Rule, compact and receiver.
+     */
     @JsonProperty("statefulSetSize")
     public void setStatefulSetSize(String statefulSetSize) {
         this.statefulSetSize = statefulSetSize;
     }
 
+    /**
+     * Specify the storageClass Stateful Sets. This storage class will also<br><p> be used for Object Storage if MetricObjectStorage was configured for the system to create the storage.
+     */
     @JsonProperty("statefulSetStorageClass")
     public String getStatefulSetStorageClass() {
         return statefulSetStorageClass;
     }
 
+    /**
+     * Specify the storageClass Stateful Sets. This storage class will also<br><p> be used for Object Storage if MetricObjectStorage was configured for the system to create the storage.
+     */
     @JsonProperty("statefulSetStorageClass")
     public void setStatefulSetStorageClass(String statefulSetStorageClass) {
         this.statefulSetStorageClass = statefulSetStorageClass;

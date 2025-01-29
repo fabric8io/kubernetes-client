@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * PipelineTaskInputResource maps the name of a declared PipelineResource input dependency in a Task to the resource in the Pipeline's DeclaredPipelineResources that should be used. This input may come from a previous task.<br><p> <br><p> Deprecated: Unused, preserved only for backwards compatibility
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -89,32 +92,50 @@ public class PipelineTaskInputResource implements Editable<PipelineTaskInputReso
         this.resource = resource;
     }
 
+    /**
+     * From is the list of PipelineTask names that the resource has to come from. (Implies an ordering in the execution graph.)
+     */
     @JsonProperty("from")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getFrom() {
         return from;
     }
 
+    /**
+     * From is the list of PipelineTask names that the resource has to come from. (Implies an ordering in the execution graph.)
+     */
     @JsonProperty("from")
     public void setFrom(List<String> from) {
         this.from = from;
     }
 
+    /**
+     * Name is the name of the PipelineResource as declared by the Task.
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * Name is the name of the PipelineResource as declared by the Task.
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * Resource is the name of the DeclaredPipelineResource to use.
+     */
     @JsonProperty("resource")
     public String getResource() {
         return resource;
     }
 
+    /**
+     * Resource is the name of the DeclaredPipelineResource to use.
+     */
     @JsonProperty("resource")
     public void setResource(String resource) {
         this.resource = resource;

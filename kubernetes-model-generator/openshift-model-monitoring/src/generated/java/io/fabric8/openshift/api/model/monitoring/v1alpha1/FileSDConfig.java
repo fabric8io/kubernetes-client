@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * FileSDConfig defines a Prometheus file service discovery configuration See https://prometheus.io/docs/prometheus/latest/configuration/configuration/#file_sd_config
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -85,22 +88,34 @@ public class FileSDConfig implements Editable<FileSDConfigBuilder>, KubernetesRe
         this.refreshInterval = refreshInterval;
     }
 
+    /**
+     * List of files to be used for file discovery. Recommendation: use absolute paths. While relative paths work, the prometheus-operator project makes no guarantees about the working directory where the configuration file is stored. Files must be mounted using Prometheus.ConfigMaps or Prometheus.Secrets.
+     */
     @JsonProperty("files")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getFiles() {
         return files;
     }
 
+    /**
+     * List of files to be used for file discovery. Recommendation: use absolute paths. While relative paths work, the prometheus-operator project makes no guarantees about the working directory where the configuration file is stored. Files must be mounted using Prometheus.ConfigMaps or Prometheus.Secrets.
+     */
     @JsonProperty("files")
     public void setFiles(List<String> files) {
         this.files = files;
     }
 
+    /**
+     * RefreshInterval configures the refresh interval at which Prometheus will reload the content of the files.
+     */
     @JsonProperty("refreshInterval")
     public String getRefreshInterval() {
         return refreshInterval;
     }
 
+    /**
+     * RefreshInterval configures the refresh interval at which Prometheus will reload the content of the files.
+     */
     @JsonProperty("refreshInterval")
     public void setRefreshInterval(String refreshInterval) {
         this.refreshInterval = refreshInterval;

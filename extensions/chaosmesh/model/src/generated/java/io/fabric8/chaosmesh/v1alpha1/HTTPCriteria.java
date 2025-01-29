@@ -78,11 +78,17 @@ public class HTTPCriteria implements Editable<HTTPCriteriaBuilder>, KubernetesRe
         this.statusCode = statusCode;
     }
 
+    /**
+     * StatusCode defines the expected http status code for the request. A statusCode string could be a single code (e.g. 200), or an inclusive range (e.g. 200-400, both `200` and `400` are included).
+     */
     @JsonProperty("statusCode")
     public String getStatusCode() {
         return statusCode;
     }
 
+    /**
+     * StatusCode defines the expected http status code for the request. A statusCode string could be a single code (e.g. 200), or an inclusive range (e.g. 200-400, both `200` and `400` are included).
+     */
     @JsonProperty("statusCode")
     public void setStatusCode(String statusCode) {
         this.statusCode = statusCode;

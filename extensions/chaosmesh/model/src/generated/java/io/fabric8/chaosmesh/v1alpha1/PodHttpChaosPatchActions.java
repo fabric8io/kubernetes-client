@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * PodHttpChaosPatchActions defines possible patch-actions of HttpChaos.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -90,33 +93,51 @@ public class PodHttpChaosPatchActions implements Editable<PodHttpChaosPatchActio
         this.queries = queries;
     }
 
+    /**
+     * PodHttpChaosPatchActions defines possible patch-actions of HttpChaos.
+     */
     @JsonProperty("body")
     public PodHttpChaosPatchBodyAction getBody() {
         return body;
     }
 
+    /**
+     * PodHttpChaosPatchActions defines possible patch-actions of HttpChaos.
+     */
     @JsonProperty("body")
     public void setBody(PodHttpChaosPatchBodyAction body) {
         this.body = body;
     }
 
+    /**
+     * Headers is a rule to append http headers of target. For example: `[["Set-Cookie", "&lt;one cookie&gt;"], ["Set-Cookie", "&lt;another cookie&gt;"]]`.
+     */
     @JsonProperty("headers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<List<String>> getHeaders() {
         return headers;
     }
 
+    /**
+     * Headers is a rule to append http headers of target. For example: `[["Set-Cookie", "&lt;one cookie&gt;"], ["Set-Cookie", "&lt;another cookie&gt;"]]`.
+     */
     @JsonProperty("headers")
     public void setHeaders(List<List<String>> headers) {
         this.headers = headers;
     }
 
+    /**
+     * Queries is a rule to append uri queries of target(Request only). For example: `[["foo", "bar"], ["foo", "unknown"]]`.
+     */
     @JsonProperty("queries")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<List<String>> getQueries() {
         return queries;
     }
 
+    /**
+     * Queries is a rule to append uri queries of target(Request only). For example: `[["foo", "bar"], ["foo", "unknown"]]`.
+     */
     @JsonProperty("queries")
     public void setQueries(List<List<String>> queries) {
         this.queries = queries;

@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ControllerCertificate contains info about a specific cert.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -94,51 +97,81 @@ public class ControllerCertificate implements Editable<ControllerCertificateBuil
         this.subject = subject;
     }
 
+    /**
+     * bundleFile is the larger bundle a cert comes from
+     */
     @JsonProperty("bundleFile")
     public String getBundleFile() {
         return bundleFile;
     }
 
+    /**
+     * bundleFile is the larger bundle a cert comes from
+     */
     @JsonProperty("bundleFile")
     public void setBundleFile(String bundleFile) {
         this.bundleFile = bundleFile;
     }
 
+    /**
+     * ControllerCertificate contains info about a specific cert.
+     */
     @JsonProperty("notAfter")
     public String getNotAfter() {
         return notAfter;
     }
 
+    /**
+     * ControllerCertificate contains info about a specific cert.
+     */
     @JsonProperty("notAfter")
     public void setNotAfter(String notAfter) {
         this.notAfter = notAfter;
     }
 
+    /**
+     * ControllerCertificate contains info about a specific cert.
+     */
     @JsonProperty("notBefore")
     public String getNotBefore() {
         return notBefore;
     }
 
+    /**
+     * ControllerCertificate contains info about a specific cert.
+     */
     @JsonProperty("notBefore")
     public void setNotBefore(String notBefore) {
         this.notBefore = notBefore;
     }
 
+    /**
+     * signer is the  cert Issuer
+     */
     @JsonProperty("signer")
     public String getSigner() {
         return signer;
     }
 
+    /**
+     * signer is the  cert Issuer
+     */
     @JsonProperty("signer")
     public void setSigner(String signer) {
         this.signer = signer;
     }
 
+    /**
+     * subject is the cert subject
+     */
     @JsonProperty("subject")
     public String getSubject() {
         return subject;
     }
 
+    /**
+     * subject is the cert subject
+     */
     @JsonProperty("subject")
     public void setSubject(String subject) {
         this.subject = subject;

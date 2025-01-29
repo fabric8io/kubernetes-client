@@ -80,17 +80,11 @@ import lombok.experimental.Accessors;
 public class PodMetrics implements Editable<PodMetricsBuilder>, HasMetadata, Namespaced
 {
 
-    /**
-     * (Required)
-     */
     @JsonProperty("apiVersion")
     private String apiVersion = "metrics.k8s.io/v1beta1";
     @JsonProperty("containers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<ContainerMetrics> containers = new ArrayList<>();
-    /**
-     * (Required)
-     */
     @JsonProperty("kind")
     private String kind = "PodMetrics";
     @JsonProperty("metadata")
@@ -118,17 +112,11 @@ public class PodMetrics implements Editable<PodMetricsBuilder>, HasMetadata, Nam
         this.window = window;
     }
 
-    /**
-     * (Required)
-     */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
         return apiVersion;
     }
 
-    /**
-     * (Required)
-     */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
         this.apiVersion = apiVersion;
@@ -145,17 +133,11 @@ public class PodMetrics implements Editable<PodMetricsBuilder>, HasMetadata, Nam
         this.containers = containers;
     }
 
-    /**
-     * (Required)
-     */
     @JsonProperty("kind")
     public String getKind() {
         return kind;
     }
 
-    /**
-     * (Required)
-     */
     @JsonProperty("kind")
     public void setKind(String kind) {
         this.kind = kind;

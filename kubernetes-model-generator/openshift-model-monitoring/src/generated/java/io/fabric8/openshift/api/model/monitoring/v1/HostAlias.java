@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * HostAlias holds the mapping between IP and hostnames that will be injected as an entry in the pod's hosts file.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -85,22 +88,34 @@ public class HostAlias implements Editable<HostAliasBuilder>, KubernetesResource
         this.ip = ip;
     }
 
+    /**
+     * Hostnames for the above IP address.
+     */
     @JsonProperty("hostnames")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getHostnames() {
         return hostnames;
     }
 
+    /**
+     * Hostnames for the above IP address.
+     */
     @JsonProperty("hostnames")
     public void setHostnames(List<String> hostnames) {
         this.hostnames = hostnames;
     }
 
+    /**
+     * IP address of the host file entry.
+     */
     @JsonProperty("ip")
     public String getIp() {
         return ip;
     }
 
+    /**
+     * IP address of the host file entry.
+     */
     @JsonProperty("ip")
     public void setIp(String ip) {
         this.ip = ip;

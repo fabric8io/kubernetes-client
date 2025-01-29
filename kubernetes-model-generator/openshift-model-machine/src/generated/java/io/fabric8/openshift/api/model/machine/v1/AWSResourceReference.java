@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * AWSResourceReference is a reference to a specific AWS resource by ID, ARN, or filters. Only one of ID, ARN or Filters may be specified. Specifying more than one will result in a validation error.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -93,42 +96,66 @@ public class AWSResourceReference implements Editable<AWSResourceReferenceBuilde
         this.type = type;
     }
 
+    /**
+     * ARN of resource.
+     */
     @JsonProperty("arn")
     public String getArn() {
         return arn;
     }
 
+    /**
+     * ARN of resource.
+     */
     @JsonProperty("arn")
     public void setArn(String arn) {
         this.arn = arn;
     }
 
+    /**
+     * Filters is a set of filters used to identify a resource.
+     */
     @JsonProperty("filters")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<AWSResourceFilter> getFilters() {
         return filters;
     }
 
+    /**
+     * Filters is a set of filters used to identify a resource.
+     */
     @JsonProperty("filters")
     public void setFilters(List<AWSResourceFilter> filters) {
         this.filters = filters;
     }
 
+    /**
+     * ID of resource.
+     */
     @JsonProperty("id")
     public String getId() {
         return id;
     }
 
+    /**
+     * ID of resource.
+     */
     @JsonProperty("id")
     public void setId(String id) {
         this.id = id;
     }
 
+    /**
+     * Type determines how the reference will fetch the AWS resource.
+     */
     @JsonProperty("type")
     public String getType() {
         return type;
     }
 
+    /**
+     * Type determines how the reference will fetch the AWS resource.
+     */
     @JsonProperty("type")
     public void setType(String type) {
         this.type = type;

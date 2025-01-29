@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * TaskSpec specifies the task specification of Job.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -109,82 +112,130 @@ public class TaskSpec implements Editable<TaskSpecBuilder>, KubernetesResource
         this.topologyPolicy = topologyPolicy;
     }
 
+    /**
+     * TaskSpec specifies the task specification of Job.
+     */
     @JsonProperty("dependsOn")
     public DependsOn getDependsOn() {
         return dependsOn;
     }
 
+    /**
+     * TaskSpec specifies the task specification of Job.
+     */
     @JsonProperty("dependsOn")
     public void setDependsOn(DependsOn dependsOn) {
         this.dependsOn = dependsOn;
     }
 
+    /**
+     * Specifies the maximum number of retries before marking this Task failed. Defaults to 3.
+     */
     @JsonProperty("maxRetry")
     public Integer getMaxRetry() {
         return maxRetry;
     }
 
+    /**
+     * Specifies the maximum number of retries before marking this Task failed. Defaults to 3.
+     */
     @JsonProperty("maxRetry")
     public void setMaxRetry(Integer maxRetry) {
         this.maxRetry = maxRetry;
     }
 
+    /**
+     * The minimal available pods to run for this Task Defaults to the task replicas
+     */
     @JsonProperty("minAvailable")
     public Integer getMinAvailable() {
         return minAvailable;
     }
 
+    /**
+     * The minimal available pods to run for this Task Defaults to the task replicas
+     */
     @JsonProperty("minAvailable")
     public void setMinAvailable(Integer minAvailable) {
         this.minAvailable = minAvailable;
     }
 
+    /**
+     * Name specifies the name of tasks
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * Name specifies the name of tasks
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * Specifies the lifecycle of task
+     */
     @JsonProperty("policies")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<LifecyclePolicy> getPolicies() {
         return policies;
     }
 
+    /**
+     * Specifies the lifecycle of task
+     */
     @JsonProperty("policies")
     public void setPolicies(List<LifecyclePolicy> policies) {
         this.policies = policies;
     }
 
+    /**
+     * Replicas specifies the replicas of this TaskSpec in Job
+     */
     @JsonProperty("replicas")
     public Integer getReplicas() {
         return replicas;
     }
 
+    /**
+     * Replicas specifies the replicas of this TaskSpec in Job
+     */
     @JsonProperty("replicas")
     public void setReplicas(Integer replicas) {
         this.replicas = replicas;
     }
 
+    /**
+     * TaskSpec specifies the task specification of Job.
+     */
     @JsonProperty("template")
     public PodTemplateSpec getTemplate() {
         return template;
     }
 
+    /**
+     * TaskSpec specifies the task specification of Job.
+     */
     @JsonProperty("template")
     public void setTemplate(PodTemplateSpec template) {
         this.template = template;
     }
 
+    /**
+     * Specifies the topology policy of task
+     */
     @JsonProperty("topologyPolicy")
     public String getTopologyPolicy() {
         return topologyPolicy;
     }
 
+    /**
+     * Specifies the topology policy of task
+     */
     @JsonProperty("topologyPolicy")
     public void setTopologyPolicy(String topologyPolicy) {
         this.topologyPolicy = topologyPolicy;

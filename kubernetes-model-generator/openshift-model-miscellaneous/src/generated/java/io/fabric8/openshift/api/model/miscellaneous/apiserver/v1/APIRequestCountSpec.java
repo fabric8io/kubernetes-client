@@ -78,11 +78,17 @@ public class APIRequestCountSpec implements Editable<APIRequestCountSpecBuilder>
         this.numberOfUsersToReport = numberOfUsersToReport;
     }
 
+    /**
+     * numberOfUsersToReport is the number of users to include in the report. If unspecified or zero, the default is ten.  This is default is subject to change.
+     */
     @JsonProperty("numberOfUsersToReport")
     public Long getNumberOfUsersToReport() {
         return numberOfUsersToReport;
     }
 
+    /**
+     * numberOfUsersToReport is the number of users to include in the report. If unspecified or zero, the default is ten.  This is default is subject to change.
+     */
     @JsonProperty("numberOfUsersToReport")
     public void setNumberOfUsersToReport(Long numberOfUsersToReport) {
         this.numberOfUsersToReport = numberOfUsersToReport;

@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Rule describes an alerting or recording rule See Prometheus documentation: [alerting](https://www.prometheus.io/docs/prometheus/latest/configuration/alerting_rules/) or [recording](https://www.prometheus.io/docs/prometheus/latest/configuration/recording_rules/#recording-rules) rule
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -104,73 +107,115 @@ public class Rule implements Editable<RuleBuilder>, KubernetesResource
         this.record = record;
     }
 
+    /**
+     * Name of the alert. Must be a valid label value. Only one of `record` and `alert` must be set.
+     */
     @JsonProperty("alert")
     public String getAlert() {
         return alert;
     }
 
+    /**
+     * Name of the alert. Must be a valid label value. Only one of `record` and `alert` must be set.
+     */
     @JsonProperty("alert")
     public void setAlert(String alert) {
         this.alert = alert;
     }
 
+    /**
+     * Annotations to add to each alert. Only valid for alerting rules.
+     */
     @JsonProperty("annotations")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getAnnotations() {
         return annotations;
     }
 
+    /**
+     * Annotations to add to each alert. Only valid for alerting rules.
+     */
     @JsonProperty("annotations")
     public void setAnnotations(Map<String, String> annotations) {
         this.annotations = annotations;
     }
 
+    /**
+     * Rule describes an alerting or recording rule See Prometheus documentation: [alerting](https://www.prometheus.io/docs/prometheus/latest/configuration/alerting_rules/) or [recording](https://www.prometheus.io/docs/prometheus/latest/configuration/recording_rules/#recording-rules) rule
+     */
     @JsonProperty("expr")
     public IntOrString getExpr() {
         return expr;
     }
 
+    /**
+     * Rule describes an alerting or recording rule See Prometheus documentation: [alerting](https://www.prometheus.io/docs/prometheus/latest/configuration/alerting_rules/) or [recording](https://www.prometheus.io/docs/prometheus/latest/configuration/recording_rules/#recording-rules) rule
+     */
     @JsonProperty("expr")
     public void setExpr(IntOrString expr) {
         this.expr = expr;
     }
 
+    /**
+     * Alerts are considered firing once they have been returned for this long.
+     */
     @JsonProperty("for")
     public String getFor() {
         return _for;
     }
 
+    /**
+     * Alerts are considered firing once they have been returned for this long.
+     */
     @JsonProperty("for")
     public void setFor(String _for) {
         this._for = _for;
     }
 
+    /**
+     * KeepFiringFor defines how long an alert will continue firing after the condition that triggered it has cleared.
+     */
     @JsonProperty("keep_firing_for")
     public String getKeepFiringFor() {
         return keepFiringFor;
     }
 
+    /**
+     * KeepFiringFor defines how long an alert will continue firing after the condition that triggered it has cleared.
+     */
     @JsonProperty("keep_firing_for")
     public void setKeepFiringFor(String keepFiringFor) {
         this.keepFiringFor = keepFiringFor;
     }
 
+    /**
+     * Labels to add or overwrite.
+     */
     @JsonProperty("labels")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getLabels() {
         return labels;
     }
 
+    /**
+     * Labels to add or overwrite.
+     */
     @JsonProperty("labels")
     public void setLabels(Map<String, String> labels) {
         this.labels = labels;
     }
 
+    /**
+     * Name of the time series to output to. Must be a valid metric name. Only one of `record` and `alert` must be set.
+     */
     @JsonProperty("record")
     public String getRecord() {
         return record;
     }
 
+    /**
+     * Name of the time series to output to. Must be a valid metric name. Only one of `record` and `alert` must be set.
+     */
     @JsonProperty("record")
     public void setRecord(String record) {
         this.record = record;

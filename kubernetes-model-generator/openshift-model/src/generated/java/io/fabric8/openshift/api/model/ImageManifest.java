@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ImageManifest represents sub-manifests of a manifest list. The Digest field points to a regular Image object.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -98,61 +101,97 @@ public class ImageManifest implements Editable<ImageManifestBuilder>, Kubernetes
         this.variant = variant;
     }
 
+    /**
+     * Architecture specifies the supported CPU architecture, for example `amd64` or `ppc64le`.
+     */
     @JsonProperty("architecture")
     public String getArchitecture() {
         return architecture;
     }
 
+    /**
+     * Architecture specifies the supported CPU architecture, for example `amd64` or `ppc64le`.
+     */
     @JsonProperty("architecture")
     public void setArchitecture(String architecture) {
         this.architecture = architecture;
     }
 
+    /**
+     * Digest is the unique identifier for the manifest. It refers to an Image object.
+     */
     @JsonProperty("digest")
     public String getDigest() {
         return digest;
     }
 
+    /**
+     * Digest is the unique identifier for the manifest. It refers to an Image object.
+     */
     @JsonProperty("digest")
     public void setDigest(String digest) {
         this.digest = digest;
     }
 
+    /**
+     * ManifestSize represents the size of the raw object contents, in bytes.
+     */
     @JsonProperty("manifestSize")
     public Long getManifestSize() {
         return manifestSize;
     }
 
+    /**
+     * ManifestSize represents the size of the raw object contents, in bytes.
+     */
     @JsonProperty("manifestSize")
     public void setManifestSize(Long manifestSize) {
         this.manifestSize = manifestSize;
     }
 
+    /**
+     * MediaType defines the type of the manifest, possible values are application/vnd.oci.image.manifest.v1+json, application/vnd.docker.distribution.manifest.v2+json or application/vnd.docker.distribution.manifest.v1+json.
+     */
     @JsonProperty("mediaType")
     public String getMediaType() {
         return mediaType;
     }
 
+    /**
+     * MediaType defines the type of the manifest, possible values are application/vnd.oci.image.manifest.v1+json, application/vnd.docker.distribution.manifest.v2+json or application/vnd.docker.distribution.manifest.v1+json.
+     */
     @JsonProperty("mediaType")
     public void setMediaType(String mediaType) {
         this.mediaType = mediaType;
     }
 
+    /**
+     * OS specifies the operating system, for example `linux`.
+     */
     @JsonProperty("os")
     public String getOs() {
         return os;
     }
 
+    /**
+     * OS specifies the operating system, for example `linux`.
+     */
     @JsonProperty("os")
     public void setOs(String os) {
         this.os = os;
     }
 
+    /**
+     * Variant is an optional field repreenting a variant of the CPU, for example v6 to specify a particular CPU variant of the ARM CPU.
+     */
     @JsonProperty("variant")
     public String getVariant() {
         return variant;
     }
 
+    /**
+     * Variant is an optional field repreenting a variant of the CPU, for example v6 to specify a particular CPU variant of the ARM CPU.
+     */
     @JsonProperty("variant")
     public void setVariant(String variant) {
         this.variant = variant;

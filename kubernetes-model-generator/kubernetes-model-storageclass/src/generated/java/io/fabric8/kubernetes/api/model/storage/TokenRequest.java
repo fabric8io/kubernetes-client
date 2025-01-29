@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * TokenRequest contains parameters of a service account token.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class TokenRequest implements Editable<TokenRequestBuilder>, KubernetesRe
         this.expirationSeconds = expirationSeconds;
     }
 
+    /**
+     * audience is the intended audience of the token in "TokenRequestSpec". It will default to the audiences of kube apiserver.
+     */
     @JsonProperty("audience")
     public String getAudience() {
         return audience;
     }
 
+    /**
+     * audience is the intended audience of the token in "TokenRequestSpec". It will default to the audiences of kube apiserver.
+     */
     @JsonProperty("audience")
     public void setAudience(String audience) {
         this.audience = audience;
     }
 
+    /**
+     * expirationSeconds is the duration of validity of the token in "TokenRequestSpec". It has the same default value of "ExpirationSeconds" in "TokenRequestSpec".
+     */
     @JsonProperty("expirationSeconds")
     public Long getExpirationSeconds() {
         return expirationSeconds;
     }
 
+    /**
+     * expirationSeconds is the duration of validity of the token in "TokenRequestSpec". It has the same default value of "ExpirationSeconds" in "TokenRequestSpec".
+     */
     @JsonProperty("expirationSeconds")
     public void setExpirationSeconds(Long expirationSeconds) {
         this.expirationSeconds = expirationSeconds;

@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * BlockDelaySpec describes the block delay specification
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -86,31 +89,49 @@ public class BlockDelaySpec implements Editable<BlockDelaySpecBuilder>, Kubernet
         this.latency = latency;
     }
 
+    /**
+     * BlockDelaySpec describes the block delay specification
+     */
     @JsonProperty("correlation")
     public String getCorrelation() {
         return correlation;
     }
 
+    /**
+     * BlockDelaySpec describes the block delay specification
+     */
     @JsonProperty("correlation")
     public void setCorrelation(String correlation) {
         this.correlation = correlation;
     }
 
+    /**
+     * BlockDelaySpec describes the block delay specification
+     */
     @JsonProperty("jitter")
     public String getJitter() {
         return jitter;
     }
 
+    /**
+     * BlockDelaySpec describes the block delay specification
+     */
     @JsonProperty("jitter")
     public void setJitter(String jitter) {
         this.jitter = jitter;
     }
 
+    /**
+     * Latency defines the latency of every io request.
+     */
     @JsonProperty("latency")
     public String getLatency() {
         return latency;
     }
 
+    /**
+     * Latency defines the latency of every io request.
+     */
     @JsonProperty("latency")
     public void setLatency(String latency) {
         this.latency = latency;

@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * FixedIP identifies a subnet defined by a subnet filter.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -78,11 +81,17 @@ public class FixedIP implements Editable<FixedIPBuilder>, KubernetesResource
         this.subnet = subnet;
     }
 
+    /**
+     * FixedIP identifies a subnet defined by a subnet filter.
+     */
     @JsonProperty("subnet")
     public SubnetFilter getSubnet() {
         return subnet;
     }
 
+    /**
+     * FixedIP identifies a subnet defined by a subnet filter.
+     */
     @JsonProperty("subnet")
     public void setSubnet(SubnetFilter subnet) {
         this.subnet = subnet;

@@ -108,33 +108,51 @@ public class ImageSpec implements Editable<ImageSpecBuilder>, KubernetesResource
         this.additionalTrustedCA = additionalTrustedCA;
     }
 
+    /**
+     * allowedRegistriesForImport limits the container image registries that normal users may import images from. Set this list to the registries that you trust to contain valid Docker images and that you want applications to be able to import from. Users with permission to create Images or ImageStreamMappings via the API are not affected by this policy - typically only administrators or system integrations will have those permissions.
+     */
     @JsonProperty("allowedRegistriesForImport")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<RegistryLocation> getAllowedRegistriesForImport() {
         return allowedRegistriesForImport;
     }
 
+    /**
+     * allowedRegistriesForImport limits the container image registries that normal users may import images from. Set this list to the registries that you trust to contain valid Docker images and that you want applications to be able to import from. Users with permission to create Images or ImageStreamMappings via the API are not affected by this policy - typically only administrators or system integrations will have those permissions.
+     */
     @JsonProperty("allowedRegistriesForImport")
     public void setAllowedRegistriesForImport(List<RegistryLocation> allowedRegistriesForImport) {
         this.allowedRegistriesForImport = allowedRegistriesForImport;
     }
 
+    /**
+     * externalRegistryHostnames provides the hostnames for the default external image registry. The external hostname should be set only when the image registry is exposed externally. The first value is used in 'publicDockerImageRepository' field in ImageStreams. The value must be in "hostname[:port]" format.
+     */
     @JsonProperty("externalRegistryHostnames")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getExternalRegistryHostnames() {
         return externalRegistryHostnames;
     }
 
+    /**
+     * externalRegistryHostnames provides the hostnames for the default external image registry. The external hostname should be set only when the image registry is exposed externally. The first value is used in 'publicDockerImageRepository' field in ImageStreams. The value must be in "hostname[:port]" format.
+     */
     @JsonProperty("externalRegistryHostnames")
     public void setExternalRegistryHostnames(List<String> externalRegistryHostnames) {
         this.externalRegistryHostnames = externalRegistryHostnames;
     }
 
+    /**
+     * imageStreamImportMode controls the import mode behaviour of imagestreams. It can be set to `Legacy` or `PreserveOriginal` or the empty string. If this value is specified, this setting is applied to all newly created imagestreams which do not have the value set. `Legacy` indicates that the legacy behaviour should be used. For manifest lists, the legacy behaviour will discard the manifest list and import a single sub-manifest. In this case, the platform is chosen in the following order of priority: 1. tag annotations; 2. control plane arch/os; 3. linux/amd64; 4. the first manifest in the list. `PreserveOriginal` indicates that the original manifest will be preserved. For manifest lists, the manifest list and all its sub-manifests will be imported. When empty, the behaviour will be decided based on the payload type advertised by the ClusterVersion status, i.e single arch payload implies the import mode is Legacy and multi payload implies PreserveOriginal.<br><p> <br><p> Possible enum values:<br><p>  - `"Legacy"` indicates that the legacy behaviour should be used. For manifest lists, the legacy behaviour will discard the manifest list and import a single sub-manifest. In this case, the platform is chosen in the following order of priority: 1. tag annotations; 2. control plane arch/os; 3. linux/amd64; 4. the first manifest in the list. This mode is the default.<br><p>  - `"PreserveOriginal"` indicates that the original manifest will be preserved. For manifest lists, the manifest list and all its sub-manifests will be imported.
+     */
     @JsonProperty("imageStreamImportMode")
     public String getImageStreamImportMode() {
         return imageStreamImportMode;
     }
 
+    /**
+     * imageStreamImportMode controls the import mode behaviour of imagestreams. It can be set to `Legacy` or `PreserveOriginal` or the empty string. If this value is specified, this setting is applied to all newly created imagestreams which do not have the value set. `Legacy` indicates that the legacy behaviour should be used. For manifest lists, the legacy behaviour will discard the manifest list and import a single sub-manifest. In this case, the platform is chosen in the following order of priority: 1. tag annotations; 2. control plane arch/os; 3. linux/amd64; 4. the first manifest in the list. `PreserveOriginal` indicates that the original manifest will be preserved. For manifest lists, the manifest list and all its sub-manifests will be imported. When empty, the behaviour will be decided based on the payload type advertised by the ClusterVersion status, i.e single arch payload implies the import mode is Legacy and multi payload implies PreserveOriginal.<br><p> <br><p> Possible enum values:<br><p>  - `"Legacy"` indicates that the legacy behaviour should be used. For manifest lists, the legacy behaviour will discard the manifest list and import a single sub-manifest. In this case, the platform is chosen in the following order of priority: 1. tag annotations; 2. control plane arch/os; 3. linux/amd64; 4. the first manifest in the list. This mode is the default.<br><p>  - `"PreserveOriginal"` indicates that the original manifest will be preserved. For manifest lists, the manifest list and all its sub-manifests will be imported.
+     */
     @JsonProperty("imageStreamImportMode")
     public void setImageStreamImportMode(String imageStreamImportMode) {
         this.imageStreamImportMode = imageStreamImportMode;

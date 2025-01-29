@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * GitBuildSource defines the parameters of a Git SCM
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -94,51 +97,81 @@ public class GitBuildSource implements Editable<GitBuildSourceBuilder>, Kubernet
         this.uri = uri;
     }
 
+    /**
+     * httpProxy is a proxy used to reach the git repository over http
+     */
     @JsonProperty("httpProxy")
     public String getHttpProxy() {
         return httpProxy;
     }
 
+    /**
+     * httpProxy is a proxy used to reach the git repository over http
+     */
     @JsonProperty("httpProxy")
     public void setHttpProxy(String httpProxy) {
         this.httpProxy = httpProxy;
     }
 
+    /**
+     * httpsProxy is a proxy used to reach the git repository over https
+     */
     @JsonProperty("httpsProxy")
     public String getHttpsProxy() {
         return httpsProxy;
     }
 
+    /**
+     * httpsProxy is a proxy used to reach the git repository over https
+     */
     @JsonProperty("httpsProxy")
     public void setHttpsProxy(String httpsProxy) {
         this.httpsProxy = httpsProxy;
     }
 
+    /**
+     * noProxy is the list of domains for which the proxy should not be used
+     */
     @JsonProperty("noProxy")
     public String getNoProxy() {
         return noProxy;
     }
 
+    /**
+     * noProxy is the list of domains for which the proxy should not be used
+     */
     @JsonProperty("noProxy")
     public void setNoProxy(String noProxy) {
         this.noProxy = noProxy;
     }
 
+    /**
+     * ref is the branch/tag/ref to build.
+     */
     @JsonProperty("ref")
     public String getRef() {
         return ref;
     }
 
+    /**
+     * ref is the branch/tag/ref to build.
+     */
     @JsonProperty("ref")
     public void setRef(String ref) {
         this.ref = ref;
     }
 
+    /**
+     * uri points to the source that will be built. The structure of the source will depend on the type of build to run
+     */
     @JsonProperty("uri")
     public String getUri() {
         return uri;
     }
 
+    /**
+     * uri points to the source that will be built. The structure of the source will depend on the type of build to run
+     */
     @JsonProperty("uri")
     public void setUri(String uri) {
         this.uri = uri;

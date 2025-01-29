@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * LogSelector provides a coarse-grained ability to configure logging behavior based on certain traffic metadata (such as traffic direction). LogSelector applies to traffic metadata which is not represented in the attribute set currently supported by [filters](https://istio.io/latest/docs/reference/config/telemetry/#AccessLogging-Filter). It allows control planes to limit the configuration sent to individual workloads. Finer-grained logging behavior can be further configured via `filter`.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -78,11 +81,17 @@ public class AccessLoggingLogSelector implements Editable<AccessLoggingLogSelect
         this.mode = mode;
     }
 
+    /**
+     * LogSelector provides a coarse-grained ability to configure logging behavior based on certain traffic metadata (such as traffic direction). LogSelector applies to traffic metadata which is not represented in the attribute set currently supported by [filters](https://istio.io/latest/docs/reference/config/telemetry/#AccessLogging-Filter). It allows control planes to limit the configuration sent to individual workloads. Finer-grained logging behavior can be further configured via `filter`.
+     */
     @JsonProperty("mode")
     public WorkloadMode getMode() {
         return mode;
     }
 
+    /**
+     * LogSelector provides a coarse-grained ability to configure logging behavior based on certain traffic metadata (such as traffic direction). LogSelector applies to traffic metadata which is not represented in the attribute set currently supported by [filters](https://istio.io/latest/docs/reference/config/telemetry/#AccessLogging-Filter). It allows control planes to limit the configuration sent to individual workloads. Finer-grained logging behavior can be further configured via `filter`.
+     */
     @JsonProperty("mode")
     public void setMode(WorkloadMode mode) {
         this.mode = mode;

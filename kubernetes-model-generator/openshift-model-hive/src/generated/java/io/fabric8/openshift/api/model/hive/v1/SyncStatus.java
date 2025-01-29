@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * SyncStatus describes objects that have been created or patches that have been applied using the unique md5 sum of the object or patch.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -105,72 +108,114 @@ public class SyncStatus implements Editable<SyncStatusBuilder>, KubernetesResour
         this.resource = resource;
     }
 
+    /**
+     * APIVersion is the Group and Version of the object that was synced or patched.
+     */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
         return apiVersion;
     }
 
+    /**
+     * APIVersion is the Group and Version of the object that was synced or patched.
+     */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
         this.apiVersion = apiVersion;
     }
 
+    /**
+     * Conditions is the list of conditions indicating success or failure of object create, update and delete as well as patch application.
+     */
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<SyncCondition> getConditions() {
         return conditions;
     }
 
+    /**
+     * Conditions is the list of conditions indicating success or failure of object create, update and delete as well as patch application.
+     */
     @JsonProperty("conditions")
     public void setConditions(List<SyncCondition> conditions) {
         this.conditions = conditions;
     }
 
+    /**
+     * Hash is the unique md5 hash of the resource or patch.
+     */
     @JsonProperty("hash")
     public String getHash() {
         return hash;
     }
 
+    /**
+     * Hash is the unique md5 hash of the resource or patch.
+     */
     @JsonProperty("hash")
     public void setHash(String hash) {
         this.hash = hash;
     }
 
+    /**
+     * Kind is the Kind of the object that was synced or patched.
+     */
     @JsonProperty("kind")
     public String getKind() {
         return kind;
     }
 
+    /**
+     * Kind is the Kind of the object that was synced or patched.
+     */
     @JsonProperty("kind")
     public void setKind(String kind) {
         this.kind = kind;
     }
 
+    /**
+     * Name is the name of the object that was synced or patched.
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * Name is the name of the object that was synced or patched.
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * Namespace is the Namespace of the object that was synced or patched.
+     */
     @JsonProperty("namespace")
     public String getNamespace() {
         return namespace;
     }
 
+    /**
+     * Namespace is the Namespace of the object that was synced or patched.
+     */
     @JsonProperty("namespace")
     public void setNamespace(String namespace) {
         this.namespace = namespace;
     }
 
+    /**
+     * Resource is the resource name for the object that was synced. This will be populated for resources, but not patches
+     */
     @JsonProperty("resource")
     public String getResource() {
         return resource;
     }
 
+    /**
+     * Resource is the resource name for the object that was synced. This will be populated for resources, but not patches
+     */
     @JsonProperty("resource")
     public void setResource(String resource) {
         this.resource = resource;

@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * HardwareDataSpec defines the desired state of HardwareData.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -78,11 +81,17 @@ public class HardwareDataSpec implements Editable<HardwareDataSpecBuilder>, Kube
         this.hardware = hardware;
     }
 
+    /**
+     * HardwareDataSpec defines the desired state of HardwareData.
+     */
     @JsonProperty("hardware")
     public HardwareDetails getHardware() {
         return hardware;
     }
 
+    /**
+     * HardwareDataSpec defines the desired state of HardwareData.
+     */
     @JsonProperty("hardware")
     public void setHardware(HardwareDetails hardware) {
         this.hardware = hardware;

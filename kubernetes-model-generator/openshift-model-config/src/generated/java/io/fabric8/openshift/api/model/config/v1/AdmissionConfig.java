@@ -91,23 +91,35 @@ public class AdmissionConfig implements Editable<AdmissionConfigBuilder>, Kubern
         this.pluginConfig = pluginConfig;
     }
 
+    /**
+     * disabledPlugins is a list of admission plugins that must be off.  Putting something in this list is almost always a mistake and likely to result in cluster instability.
+     */
     @JsonProperty("disabledPlugins")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getDisabledPlugins() {
         return disabledPlugins;
     }
 
+    /**
+     * disabledPlugins is a list of admission plugins that must be off.  Putting something in this list is almost always a mistake and likely to result in cluster instability.
+     */
     @JsonProperty("disabledPlugins")
     public void setDisabledPlugins(List<String> disabledPlugins) {
         this.disabledPlugins = disabledPlugins;
     }
 
+    /**
+     * enabledPlugins is a list of admission plugins that must be on in addition to the default list. Some admission plugins are disabled by default, but certain configurations require them.  This is fairly uncommon and can result in performance penalties and unexpected behavior.
+     */
     @JsonProperty("enabledPlugins")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getEnabledPlugins() {
         return enabledPlugins;
     }
 
+    /**
+     * enabledPlugins is a list of admission plugins that must be on in addition to the default list. Some admission plugins are disabled by default, but certain configurations require them.  This is fairly uncommon and can result in performance penalties and unexpected behavior.
+     */
     @JsonProperty("enabledPlugins")
     public void setEnabledPlugins(List<String> enabledPlugins) {
         this.enabledPlugins = enabledPlugins;

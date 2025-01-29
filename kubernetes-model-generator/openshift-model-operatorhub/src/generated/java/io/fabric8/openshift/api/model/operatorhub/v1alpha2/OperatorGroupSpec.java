@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * OperatorGroupSpec is the spec for an OperatorGroup resource.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -93,42 +96,66 @@ public class OperatorGroupSpec implements Editable<OperatorGroupSpecBuilder>, Ku
         this.targetNamespaces = targetNamespaces;
     }
 
+    /**
+     * OperatorGroupSpec is the spec for an OperatorGroup resource.
+     */
     @JsonProperty("selector")
     public LabelSelector getSelector() {
         return selector;
     }
 
+    /**
+     * OperatorGroupSpec is the spec for an OperatorGroup resource.
+     */
     @JsonProperty("selector")
     public void setSelector(LabelSelector selector) {
         this.selector = selector;
     }
 
+    /**
+     * ServiceAccountName is the admin specified service account which will be used to deploy operator(s) in this operator group.
+     */
     @JsonProperty("serviceAccountName")
     public String getServiceAccountName() {
         return serviceAccountName;
     }
 
+    /**
+     * ServiceAccountName is the admin specified service account which will be used to deploy operator(s) in this operator group.
+     */
     @JsonProperty("serviceAccountName")
     public void setServiceAccountName(String serviceAccountName) {
         this.serviceAccountName = serviceAccountName;
     }
 
+    /**
+     * Static tells OLM not to update the OperatorGroup's providedAPIs annotation
+     */
     @JsonProperty("staticProvidedAPIs")
     public Boolean getStaticProvidedAPIs() {
         return staticProvidedAPIs;
     }
 
+    /**
+     * Static tells OLM not to update the OperatorGroup's providedAPIs annotation
+     */
     @JsonProperty("staticProvidedAPIs")
     public void setStaticProvidedAPIs(Boolean staticProvidedAPIs) {
         this.staticProvidedAPIs = staticProvidedAPIs;
     }
 
+    /**
+     * TargetNamespaces is an explicit set of namespaces to target. If it is set, Selector is ignored.
+     */
     @JsonProperty("targetNamespaces")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getTargetNamespaces() {
         return targetNamespaces;
     }
 
+    /**
+     * TargetNamespaces is an explicit set of namespaces to target. If it is set, Selector is ignored.
+     */
     @JsonProperty("targetNamespaces")
     public void setTargetNamespaces(List<String> targetNamespaces) {
         this.targetNamespaces = targetNamespaces;

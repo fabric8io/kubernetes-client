@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Matcher defines how to match on alert's labels.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -86,31 +89,49 @@ public class Matcher implements Editable<MatcherBuilder>, KubernetesResource
         this.value = value;
     }
 
+    /**
+     * Match operator, one of `=` (equal to), `!=` (not equal to), `=~` (regex match) or `!~` (not regex match). Negative operators (`!=` and `!~`) require Alertmanager &gt;= v0.22.0.
+     */
     @JsonProperty("matchType")
     public String getMatchType() {
         return matchType;
     }
 
+    /**
+     * Match operator, one of `=` (equal to), `!=` (not equal to), `=~` (regex match) or `!~` (not regex match). Negative operators (`!=` and `!~`) require Alertmanager &gt;= v0.22.0.
+     */
     @JsonProperty("matchType")
     public void setMatchType(String matchType) {
         this.matchType = matchType;
     }
 
+    /**
+     * Label to match.
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * Label to match.
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * Label value to match.
+     */
     @JsonProperty("value")
     public String getValue() {
         return value;
     }
 
+    /**
+     * Label value to match.
+     */
     @JsonProperty("value")
     public void setValue(String value) {
         this.value = value;

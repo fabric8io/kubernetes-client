@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * PodDisruptionBudgetSpec is a description of a PodDisruptionBudget.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -86,31 +89,49 @@ public class PodDisruptionBudgetSpec implements Editable<PodDisruptionBudgetSpec
         this.selector = selector;
     }
 
+    /**
+     * PodDisruptionBudgetSpec is a description of a PodDisruptionBudget.
+     */
     @JsonProperty("maxUnavailable")
     public IntOrString getMaxUnavailable() {
         return maxUnavailable;
     }
 
+    /**
+     * PodDisruptionBudgetSpec is a description of a PodDisruptionBudget.
+     */
     @JsonProperty("maxUnavailable")
     public void setMaxUnavailable(IntOrString maxUnavailable) {
         this.maxUnavailable = maxUnavailable;
     }
 
+    /**
+     * PodDisruptionBudgetSpec is a description of a PodDisruptionBudget.
+     */
     @JsonProperty("minAvailable")
     public IntOrString getMinAvailable() {
         return minAvailable;
     }
 
+    /**
+     * PodDisruptionBudgetSpec is a description of a PodDisruptionBudget.
+     */
     @JsonProperty("minAvailable")
     public void setMinAvailable(IntOrString minAvailable) {
         this.minAvailable = minAvailable;
     }
 
+    /**
+     * PodDisruptionBudgetSpec is a description of a PodDisruptionBudget.
+     */
     @JsonProperty("selector")
     public LabelSelector getSelector() {
         return selector;
     }
 
+    /**
+     * PodDisruptionBudgetSpec is a description of a PodDisruptionBudget.
+     */
     @JsonProperty("selector")
     public void setSelector(LabelSelector selector) {
         this.selector = selector;

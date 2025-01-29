@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Conditions specified in `ClusterMatch` must be met for the patch to be applied to a cluster.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -90,41 +93,65 @@ public class EnvoyFilterClusterMatch implements Editable<EnvoyFilterClusterMatch
         this.subset = subset;
     }
 
+    /**
+     * The exact name of the cluster to match. To match a specific cluster by name, such as the internally generated `Passthrough` cluster, leave all fields in clusterMatch empty, except the name.
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * The exact name of the cluster to match. To match a specific cluster by name, such as the internally generated `Passthrough` cluster, leave all fields in clusterMatch empty, except the name.
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * The service port for which this cluster was generated.  If omitted, applies to clusters for any port. &#42;&#42;Note:&#42;&#42; for inbound cluster, it is the service target port.
+     */
     @JsonProperty("portNumber")
     public Long getPortNumber() {
         return portNumber;
     }
 
+    /**
+     * The service port for which this cluster was generated.  If omitted, applies to clusters for any port. &#42;&#42;Note:&#42;&#42; for inbound cluster, it is the service target port.
+     */
     @JsonProperty("portNumber")
     public void setPortNumber(Long portNumber) {
         this.portNumber = portNumber;
     }
 
+    /**
+     * The fully qualified service name for this cluster. If omitted, applies to clusters for any service. For services defined through service entries, the service name is same as the hosts defined in the service entry. &#42;&#42;Note:&#42;&#42; for inbound cluster, this is ignored.
+     */
     @JsonProperty("service")
     public String getService() {
         return service;
     }
 
+    /**
+     * The fully qualified service name for this cluster. If omitted, applies to clusters for any service. For services defined through service entries, the service name is same as the hosts defined in the service entry. &#42;&#42;Note:&#42;&#42; for inbound cluster, this is ignored.
+     */
     @JsonProperty("service")
     public void setService(String service) {
         this.service = service;
     }
 
+    /**
+     * The subset associated with the service. If omitted, applies to clusters for any subset of a service.
+     */
     @JsonProperty("subset")
     public String getSubset() {
         return subset;
     }
 
+    /**
+     * The subset associated with the service. If omitted, applies to clusters for any subset of a service.
+     */
     @JsonProperty("subset")
     public void setSubset(String subset) {
         this.subset = subset;

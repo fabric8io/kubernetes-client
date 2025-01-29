@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * AWSDNSZoneStatus contains status information specific to AWS DNS zones
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -78,11 +81,17 @@ public class AWSDNSZoneStatus implements Editable<AWSDNSZoneStatusBuilder>, Kube
         this.zoneID = zoneID;
     }
 
+    /**
+     * ZoneID is the ID of the zone in AWS
+     */
     @JsonProperty("zoneID")
     public String getZoneID() {
         return zoneID;
     }
 
+    /**
+     * ZoneID is the ID of the zone in AWS
+     */
     @JsonProperty("zoneID")
     public void setZoneID(String zoneID) {
         this.zoneID = zoneID;

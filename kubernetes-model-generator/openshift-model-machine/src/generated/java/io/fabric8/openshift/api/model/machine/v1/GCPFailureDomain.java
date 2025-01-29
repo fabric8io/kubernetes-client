@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * GCPFailureDomain configures failure domain information for the GCP platform
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -78,11 +81,17 @@ public class GCPFailureDomain implements Editable<GCPFailureDomainBuilder>, Kube
         this.zone = zone;
     }
 
+    /**
+     * Zone is the zone in which the GCP machine provider will create the VM.
+     */
     @JsonProperty("zone")
     public String getZone() {
         return zone;
     }
 
+    /**
+     * Zone is the zone in which the GCP machine provider will create the VM.
+     */
     @JsonProperty("zone")
     public void setZone(String zone) {
         this.zone = zone;

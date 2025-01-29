@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * PrivateLinkConfig defines the configuration for the privatelink controller.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -78,11 +81,17 @@ public class PrivateLinkConfig implements Editable<PrivateLinkConfigBuilder>, Ku
         this.gcp = gcp;
     }
 
+    /**
+     * PrivateLinkConfig defines the configuration for the privatelink controller.
+     */
     @JsonProperty("gcp")
     public GCPPrivateServiceConnectConfig getGcp() {
         return gcp;
     }
 
+    /**
+     * PrivateLinkConfig defines the configuration for the privatelink controller.
+     */
     @JsonProperty("gcp")
     public void setGcp(GCPPrivateServiceConnectConfig gcp) {
         this.gcp = gcp;

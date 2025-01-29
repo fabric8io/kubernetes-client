@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * healthCheck represents an Insights health check attributes.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -90,41 +93,65 @@ public class HealthCheck implements Editable<HealthCheckBuilder>, KubernetesReso
         this.totalRisk = totalRisk;
     }
 
+    /**
+     * advisorURI provides the URL link to the Insights Advisor.
+     */
     @JsonProperty("advisorURI")
     public String getAdvisorURI() {
         return advisorURI;
     }
 
+    /**
+     * advisorURI provides the URL link to the Insights Advisor.
+     */
     @JsonProperty("advisorURI")
     public void setAdvisorURI(String advisorURI) {
         this.advisorURI = advisorURI;
     }
 
+    /**
+     * description provides basic description of the healtcheck.
+     */
     @JsonProperty("description")
     public String getDescription() {
         return description;
     }
 
+    /**
+     * description provides basic description of the healtcheck.
+     */
     @JsonProperty("description")
     public void setDescription(String description) {
         this.description = description;
     }
 
+    /**
+     * state determines what the current state of the health check is. Health check is enabled by default and can be disabled by the user in the Insights advisor user interface.
+     */
     @JsonProperty("state")
     public String getState() {
         return state;
     }
 
+    /**
+     * state determines what the current state of the health check is. Health check is enabled by default and can be disabled by the user in the Insights advisor user interface.
+     */
     @JsonProperty("state")
     public void setState(String state) {
         this.state = state;
     }
 
+    /**
+     * totalRisk of the healthcheck. Indicator of the total risk posed by the detected issue; combination of impact and likelihood. The values can be from 1 to 4, and the higher the number, the more important the issue.
+     */
     @JsonProperty("totalRisk")
     public Integer getTotalRisk() {
         return totalRisk;
     }
 
+    /**
+     * totalRisk of the healthcheck. Indicator of the total risk posed by the detected issue; combination of impact and likelihood. The values can be from 1 to 4, and the higher the number, the more important the issue.
+     */
     @JsonProperty("totalRisk")
     public void setTotalRisk(Integer totalRisk) {
         this.totalRisk = totalRisk;

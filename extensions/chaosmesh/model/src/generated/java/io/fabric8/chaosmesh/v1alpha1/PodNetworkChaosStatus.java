@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * PodNetworkChaosStatus defines the observed state of PodNetworkChaos
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class PodNetworkChaosStatus implements Editable<PodNetworkChaosStatusBuil
         this.observedGeneration = observedGeneration;
     }
 
+    /**
+     * PodNetworkChaosStatus defines the observed state of PodNetworkChaos
+     */
     @JsonProperty("failedMessage")
     public String getFailedMessage() {
         return failedMessage;
     }
 
+    /**
+     * PodNetworkChaosStatus defines the observed state of PodNetworkChaos
+     */
     @JsonProperty("failedMessage")
     public void setFailedMessage(String failedMessage) {
         this.failedMessage = failedMessage;
     }
 
+    /**
+     * PodNetworkChaosStatus defines the observed state of PodNetworkChaos
+     */
     @JsonProperty("observedGeneration")
     public Long getObservedGeneration() {
         return observedGeneration;
     }
 
+    /**
+     * PodNetworkChaosStatus defines the observed state of PodNetworkChaos
+     */
     @JsonProperty("observedGeneration")
     public void setObservedGeneration(Long observedGeneration) {
         this.observedGeneration = observedGeneration;

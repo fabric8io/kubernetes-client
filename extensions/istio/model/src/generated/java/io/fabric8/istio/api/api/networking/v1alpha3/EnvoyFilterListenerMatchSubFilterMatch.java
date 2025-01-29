@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Conditions to match a specific filter within another filter. This field is typically useful to match a HTTP filter inside the `envoy.filters.network.http_connection_manager` network filter. This could also be applicable for thrift filters.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -78,11 +81,17 @@ public class EnvoyFilterListenerMatchSubFilterMatch implements Editable<EnvoyFil
         this.name = name;
     }
 
+    /**
+     * The filter name to match on.
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * The filter name to match on.
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;

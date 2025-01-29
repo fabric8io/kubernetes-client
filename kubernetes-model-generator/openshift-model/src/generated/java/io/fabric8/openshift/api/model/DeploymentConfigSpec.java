@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * DeploymentConfigSpec represents the desired state of the deployment.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -114,93 +117,147 @@ public class DeploymentConfigSpec implements Editable<DeploymentConfigSpecBuilde
         this.triggers = triggers;
     }
 
+    /**
+     * MinReadySeconds is the minimum number of seconds for which a newly created pod should be ready without any of its container crashing, for it to be considered available. Defaults to 0 (pod will be considered available as soon as it is ready)
+     */
     @JsonProperty("minReadySeconds")
     public Integer getMinReadySeconds() {
         return minReadySeconds;
     }
 
+    /**
+     * MinReadySeconds is the minimum number of seconds for which a newly created pod should be ready without any of its container crashing, for it to be considered available. Defaults to 0 (pod will be considered available as soon as it is ready)
+     */
     @JsonProperty("minReadySeconds")
     public void setMinReadySeconds(Integer minReadySeconds) {
         this.minReadySeconds = minReadySeconds;
     }
 
+    /**
+     * Paused indicates that the deployment config is paused resulting in no new deployments on template changes or changes in the template caused by other triggers.
+     */
     @JsonProperty("paused")
     public Boolean getPaused() {
         return paused;
     }
 
+    /**
+     * Paused indicates that the deployment config is paused resulting in no new deployments on template changes or changes in the template caused by other triggers.
+     */
     @JsonProperty("paused")
     public void setPaused(Boolean paused) {
         this.paused = paused;
     }
 
+    /**
+     * Replicas is the number of desired replicas.
+     */
     @JsonProperty("replicas")
     public Integer getReplicas() {
         return replicas;
     }
 
+    /**
+     * Replicas is the number of desired replicas.
+     */
     @JsonProperty("replicas")
     public void setReplicas(Integer replicas) {
         this.replicas = replicas;
     }
 
+    /**
+     * RevisionHistoryLimit is the number of old ReplicationControllers to retain to allow for rollbacks. This field is a pointer to allow for differentiation between an explicit zero and not specified. Defaults to 10. (This only applies to DeploymentConfigs created via the new group API resource, not the legacy resource.)
+     */
     @JsonProperty("revisionHistoryLimit")
     public Integer getRevisionHistoryLimit() {
         return revisionHistoryLimit;
     }
 
+    /**
+     * RevisionHistoryLimit is the number of old ReplicationControllers to retain to allow for rollbacks. This field is a pointer to allow for differentiation between an explicit zero and not specified. Defaults to 10. (This only applies to DeploymentConfigs created via the new group API resource, not the legacy resource.)
+     */
     @JsonProperty("revisionHistoryLimit")
     public void setRevisionHistoryLimit(Integer revisionHistoryLimit) {
         this.revisionHistoryLimit = revisionHistoryLimit;
     }
 
+    /**
+     * Selector is a label query over pods that should match the Replicas count.
+     */
     @JsonProperty("selector")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getSelector() {
         return selector;
     }
 
+    /**
+     * Selector is a label query over pods that should match the Replicas count.
+     */
     @JsonProperty("selector")
     public void setSelector(Map<String, String> selector) {
         this.selector = selector;
     }
 
+    /**
+     * DeploymentConfigSpec represents the desired state of the deployment.
+     */
     @JsonProperty("strategy")
     public DeploymentStrategy getStrategy() {
         return strategy;
     }
 
+    /**
+     * DeploymentConfigSpec represents the desired state of the deployment.
+     */
     @JsonProperty("strategy")
     public void setStrategy(DeploymentStrategy strategy) {
         this.strategy = strategy;
     }
 
+    /**
+     * DeploymentConfigSpec represents the desired state of the deployment.
+     */
     @JsonProperty("template")
     public PodTemplateSpec getTemplate() {
         return template;
     }
 
+    /**
+     * DeploymentConfigSpec represents the desired state of the deployment.
+     */
     @JsonProperty("template")
     public void setTemplate(PodTemplateSpec template) {
         this.template = template;
     }
 
+    /**
+     * Test ensures that this deployment config will have zero replicas except while a deployment is running. This allows the deployment config to be used as a continuous deployment test - triggering on images, running the deployment, and then succeeding or failing. Post strategy hooks and After actions can be used to integrate successful deployment with an action.
+     */
     @JsonProperty("test")
     public Boolean getTest() {
         return test;
     }
 
+    /**
+     * Test ensures that this deployment config will have zero replicas except while a deployment is running. This allows the deployment config to be used as a continuous deployment test - triggering on images, running the deployment, and then succeeding or failing. Post strategy hooks and After actions can be used to integrate successful deployment with an action.
+     */
     @JsonProperty("test")
     public void setTest(Boolean test) {
         this.test = test;
     }
 
+    /**
+     * Triggers determine how updates to a DeploymentConfig result in new deployments. If no triggers are defined, a new deployment can only occur as a result of an explicit client update to the DeploymentConfig with a new LatestVersion. If null, defaults to having a config change trigger.
+     */
     @JsonProperty("triggers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<DeploymentTriggerPolicy> getTriggers() {
         return triggers;
     }
 
+    /**
+     * Triggers determine how updates to a DeploymentConfig result in new deployments. If no triggers are defined, a new deployment can only occur as a result of an explicit client update to the DeploymentConfig with a new LatestVersion. If null, defaults to having a config change trigger.
+     */
     @JsonProperty("triggers")
     public void setTriggers(List<DeploymentTriggerPolicy> triggers) {
         this.triggers = triggers;

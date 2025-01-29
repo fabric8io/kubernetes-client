@@ -90,12 +90,18 @@ public class MachineConfigurationStatus implements Editable<MachineConfiguration
         this.observedGeneration = observedGeneration;
     }
 
+    /**
+     * conditions is a list of conditions and their status
+     */
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Condition> getConditions() {
         return conditions;
     }
 
+    /**
+     * conditions is a list of conditions and their status
+     */
     @JsonProperty("conditions")
     public void setConditions(List<Condition> conditions) {
         this.conditions = conditions;
@@ -111,11 +117,17 @@ public class MachineConfigurationStatus implements Editable<MachineConfiguration
         this.nodeDisruptionPolicyStatus = nodeDisruptionPolicyStatus;
     }
 
+    /**
+     * observedGeneration is the last generation change you've dealt with
+     */
     @JsonProperty("observedGeneration")
     public Long getObservedGeneration() {
         return observedGeneration;
     }
 
+    /**
+     * observedGeneration is the last generation change you've dealt with
+     */
     @JsonProperty("observedGeneration")
     public void setObservedGeneration(Long observedGeneration) {
         this.observedGeneration = observedGeneration;

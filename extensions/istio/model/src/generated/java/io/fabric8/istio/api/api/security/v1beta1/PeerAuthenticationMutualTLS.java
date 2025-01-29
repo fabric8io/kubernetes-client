@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Mutual TLS settings.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -78,11 +81,17 @@ public class PeerAuthenticationMutualTLS implements Editable<PeerAuthenticationM
         this.mode = mode;
     }
 
+    /**
+     * Mutual TLS settings.
+     */
     @JsonProperty("mode")
     public PeerAuthenticationMutualTLSMode getMode() {
         return mode;
     }
 
+    /**
+     * Mutual TLS settings.
+     */
     @JsonProperty("mode")
     public void setMode(PeerAuthenticationMutualTLSMode mode) {
         this.mode = mode;

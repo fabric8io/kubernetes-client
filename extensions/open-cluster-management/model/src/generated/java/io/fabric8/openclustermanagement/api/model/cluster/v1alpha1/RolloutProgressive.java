@@ -35,6 +35,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * RolloutProgressive is a RolloutStrategy Type
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -98,52 +101,82 @@ public class RolloutProgressive implements Editable<RolloutProgressiveBuilder>, 
         this.progressDeadline = progressDeadline;
     }
 
+    /**
+     * List of the decision groups names or indexes to apply the workload first and fail if workload did not reach successful state. GroupName or GroupIndex must match with the decisionGroups defined in the placement's decisionStrategy
+     */
     @JsonProperty("mandatoryDecisionGroups")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<MandatoryDecisionGroup> getMandatoryDecisionGroups() {
         return mandatoryDecisionGroups;
     }
 
+    /**
+     * List of the decision groups names or indexes to apply the workload first and fail if workload did not reach successful state. GroupName or GroupIndex must match with the decisionGroups defined in the placement's decisionStrategy
+     */
     @JsonProperty("mandatoryDecisionGroups")
     public void setMandatoryDecisionGroups(List<MandatoryDecisionGroup> mandatoryDecisionGroups) {
         this.mandatoryDecisionGroups = mandatoryDecisionGroups;
     }
 
+    /**
+     * RolloutProgressive is a RolloutStrategy Type
+     */
     @JsonProperty("maxConcurrency")
     public IntOrString getMaxConcurrency() {
         return maxConcurrency;
     }
 
+    /**
+     * RolloutProgressive is a RolloutStrategy Type
+     */
     @JsonProperty("maxConcurrency")
     public void setMaxConcurrency(IntOrString maxConcurrency) {
         this.maxConcurrency = maxConcurrency;
     }
 
+    /**
+     * RolloutProgressive is a RolloutStrategy Type
+     */
     @JsonProperty("maxFailures")
     public IntOrString getMaxFailures() {
         return maxFailures;
     }
 
+    /**
+     * RolloutProgressive is a RolloutStrategy Type
+     */
     @JsonProperty("maxFailures")
     public void setMaxFailures(IntOrString maxFailures) {
         this.maxFailures = maxFailures;
     }
 
+    /**
+     * RolloutProgressive is a RolloutStrategy Type
+     */
     @JsonProperty("minSuccessTime")
     public Duration getMinSuccessTime() {
         return minSuccessTime;
     }
 
+    /**
+     * RolloutProgressive is a RolloutStrategy Type
+     */
     @JsonProperty("minSuccessTime")
     public void setMinSuccessTime(Duration minSuccessTime) {
         this.minSuccessTime = minSuccessTime;
     }
 
+    /**
+     * ProgressDeadline defines how long workload applier controller will wait for the workload to reach a successful state in the cluster. If the workload does not reach a successful state after ProgressDeadline, will stop waiting and workload will be treated as "timeout" and be counted into MaxFailures. Once the MaxFailures is breached, the rollout will stop. ProgressDeadline default value is "None", meaning the workload applier will wait for a successful state indefinitely. ProgressDeadline must be defined in [0-9h]|[0-9m]|[0-9s] format examples; 2h , 90m , 360s
+     */
     @JsonProperty("progressDeadline")
     public String getProgressDeadline() {
         return progressDeadline;
     }
 
+    /**
+     * ProgressDeadline defines how long workload applier controller will wait for the workload to reach a successful state in the cluster. If the workload does not reach a successful state after ProgressDeadline, will stop waiting and workload will be treated as "timeout" and be counted into MaxFailures. Once the MaxFailures is breached, the rollout will stop. ProgressDeadline default value is "None", meaning the workload applier will wait for a successful state indefinitely. ProgressDeadline must be defined in [0-9h]|[0-9m]|[0-9s] format examples; 2h , 90m , 360s
+     */
     @JsonProperty("progressDeadline")
     public void setProgressDeadline(String progressDeadline) {
         this.progressDeadline = progressDeadline;

@@ -33,6 +33,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Provenance contains metadata about resources used in the TaskRun/PipelineRun such as the source from where a remote build definition was fetched. This field aims to carry minimum amoumt of metadata in &#42;Run status so that Tekton Chains can capture them in the provenance.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -83,21 +86,33 @@ public class Provenance implements Editable<ProvenanceBuilder>, KubernetesResour
         this.refSource = refSource;
     }
 
+    /**
+     * Provenance contains metadata about resources used in the TaskRun/PipelineRun such as the source from where a remote build definition was fetched. This field aims to carry minimum amoumt of metadata in &#42;Run status so that Tekton Chains can capture them in the provenance.
+     */
     @JsonProperty("featureFlags")
     public FeatureFlags getFeatureFlags() {
         return featureFlags;
     }
 
+    /**
+     * Provenance contains metadata about resources used in the TaskRun/PipelineRun such as the source from where a remote build definition was fetched. This field aims to carry minimum amoumt of metadata in &#42;Run status so that Tekton Chains can capture them in the provenance.
+     */
     @JsonProperty("featureFlags")
     public void setFeatureFlags(FeatureFlags featureFlags) {
         this.featureFlags = featureFlags;
     }
 
+    /**
+     * Provenance contains metadata about resources used in the TaskRun/PipelineRun such as the source from where a remote build definition was fetched. This field aims to carry minimum amoumt of metadata in &#42;Run status so that Tekton Chains can capture them in the provenance.
+     */
     @JsonProperty("refSource")
     public RefSource getRefSource() {
         return refSource;
     }
 
+    /**
+     * Provenance contains metadata about resources used in the TaskRun/PipelineRun such as the source from where a remote build definition was fetched. This field aims to carry minimum amoumt of metadata in &#42;Run status so that Tekton Chains can capture them in the provenance.
+     */
     @JsonProperty("refSource")
     public void setRefSource(RefSource refSource) {
         this.refSource = refSource;

@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * CloudEventDelivery is the target of a cloud event along with the state of delivery.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class CloudEventDelivery implements Editable<CloudEventDeliveryBuilder>, 
         this.target = target;
     }
 
+    /**
+     * CloudEventDelivery is the target of a cloud event along with the state of delivery.
+     */
     @JsonProperty("status")
     public CloudEventDeliveryState getStatus() {
         return status;
     }
 
+    /**
+     * CloudEventDelivery is the target of a cloud event along with the state of delivery.
+     */
     @JsonProperty("status")
     public void setStatus(CloudEventDeliveryState status) {
         this.status = status;
     }
 
+    /**
+     * Target points to an addressable
+     */
     @JsonProperty("target")
     public String getTarget() {
         return target;
     }
 
+    /**
+     * Target points to an addressable
+     */
     @JsonProperty("target")
     public void setTarget(String target) {
         this.target = target;

@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * VolatileTime wraps metav1.Time<br><p> <br><p> Unlike metav1.Time, VolatileTimes are considered semantically equal when using kubernetes semantic equality checks. Thus differing VolatileTime values are not considered different. Note, go-cmp will still return inequality, see unit test if you need this behavior for go-cmp.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -78,11 +81,17 @@ public class VolatileTime implements Editable<VolatileTimeBuilder>, KubernetesRe
         this.time = time;
     }
 
+    /**
+     * VolatileTime wraps metav1.Time<br><p> <br><p> Unlike metav1.Time, VolatileTimes are considered semantically equal when using kubernetes semantic equality checks. Thus differing VolatileTime values are not considered different. Note, go-cmp will still return inequality, see unit test if you need this behavior for go-cmp.
+     */
     @JsonProperty("Time")
     public String getTime() {
         return time;
     }
 
+    /**
+     * VolatileTime wraps metav1.Time<br><p> <br><p> Unlike metav1.Time, VolatileTimes are considered semantically equal when using kubernetes semantic equality checks. Thus differing VolatileTime values are not considered different. Note, go-cmp will still return inequality, see unit test if you need this behavior for go-cmp.
+     */
     @JsonProperty("Time")
     public void setTime(String time) {
         this.time = time;

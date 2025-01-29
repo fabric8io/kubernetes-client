@@ -33,6 +33,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * NativeHistogramConfig extends the native histogram configuration settings.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -87,31 +90,49 @@ public class NativeHistogramConfig implements Editable<NativeHistogramConfigBuil
         this.scrapeClassicHistograms = scrapeClassicHistograms;
     }
 
+    /**
+     * If there are more than this many buckets in a native histogram, buckets will be merged to stay within the limit. It requires Prometheus &gt;= v2.45.0.
+     */
     @JsonProperty("nativeHistogramBucketLimit")
     public Long getNativeHistogramBucketLimit() {
         return nativeHistogramBucketLimit;
     }
 
+    /**
+     * If there are more than this many buckets in a native histogram, buckets will be merged to stay within the limit. It requires Prometheus &gt;= v2.45.0.
+     */
     @JsonProperty("nativeHistogramBucketLimit")
     public void setNativeHistogramBucketLimit(Long nativeHistogramBucketLimit) {
         this.nativeHistogramBucketLimit = nativeHistogramBucketLimit;
     }
 
+    /**
+     * NativeHistogramConfig extends the native histogram configuration settings.
+     */
     @JsonProperty("nativeHistogramMinBucketFactor")
     public Quantity getNativeHistogramMinBucketFactor() {
         return nativeHistogramMinBucketFactor;
     }
 
+    /**
+     * NativeHistogramConfig extends the native histogram configuration settings.
+     */
     @JsonProperty("nativeHistogramMinBucketFactor")
     public void setNativeHistogramMinBucketFactor(Quantity nativeHistogramMinBucketFactor) {
         this.nativeHistogramMinBucketFactor = nativeHistogramMinBucketFactor;
     }
 
+    /**
+     * Whether to scrape a classic histogram that is also exposed as a native histogram. It requires Prometheus &gt;= v2.45.0.
+     */
     @JsonProperty("scrapeClassicHistograms")
     public Boolean getScrapeClassicHistograms() {
         return scrapeClassicHistograms;
     }
 
+    /**
+     * Whether to scrape a classic histogram that is also exposed as a native histogram. It requires Prometheus &gt;= v2.45.0.
+     */
     @JsonProperty("scrapeClassicHistograms")
     public void setScrapeClassicHistograms(Boolean scrapeClassicHistograms) {
         this.scrapeClassicHistograms = scrapeClassicHistograms;

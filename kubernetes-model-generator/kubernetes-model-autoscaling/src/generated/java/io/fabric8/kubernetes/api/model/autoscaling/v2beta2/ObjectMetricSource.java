@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ObjectMetricSource indicates how to scale on a metric describing a kubernetes object (for example, hits-per-second on an Ingress object).
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -86,31 +89,49 @@ public class ObjectMetricSource implements Editable<ObjectMetricSourceBuilder>, 
         this.target = target;
     }
 
+    /**
+     * ObjectMetricSource indicates how to scale on a metric describing a kubernetes object (for example, hits-per-second on an Ingress object).
+     */
     @JsonProperty("describedObject")
     public CrossVersionObjectReference getDescribedObject() {
         return describedObject;
     }
 
+    /**
+     * ObjectMetricSource indicates how to scale on a metric describing a kubernetes object (for example, hits-per-second on an Ingress object).
+     */
     @JsonProperty("describedObject")
     public void setDescribedObject(CrossVersionObjectReference describedObject) {
         this.describedObject = describedObject;
     }
 
+    /**
+     * ObjectMetricSource indicates how to scale on a metric describing a kubernetes object (for example, hits-per-second on an Ingress object).
+     */
     @JsonProperty("metric")
     public MetricIdentifier getMetric() {
         return metric;
     }
 
+    /**
+     * ObjectMetricSource indicates how to scale on a metric describing a kubernetes object (for example, hits-per-second on an Ingress object).
+     */
     @JsonProperty("metric")
     public void setMetric(MetricIdentifier metric) {
         this.metric = metric;
     }
 
+    /**
+     * ObjectMetricSource indicates how to scale on a metric describing a kubernetes object (for example, hits-per-second on an Ingress object).
+     */
     @JsonProperty("target")
     public MetricTarget getTarget() {
         return target;
     }
 
+    /**
+     * ObjectMetricSource indicates how to scale on a metric describing a kubernetes object (for example, hits-per-second on an Ingress object).
+     */
     @JsonProperty("target")
     public void setTarget(MetricTarget target) {
         this.target = target;

@@ -17,6 +17,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * PodSchedulingGate is associated to a Pod to guard its scheduling.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -49,11 +52,17 @@ public class PodSchedulingGate implements Editable<PodSchedulingGateBuilder>, Ku
         this.name = name;
     }
 
+    /**
+     * Name of the scheduling gate. Each scheduling gate must have a unique name field.
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * Name of the scheduling gate. Each scheduling gate must have a unique name field.
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;

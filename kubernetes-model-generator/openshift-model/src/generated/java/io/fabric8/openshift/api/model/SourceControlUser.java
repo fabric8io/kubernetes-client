@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * SourceControlUser defines the identity of a user of source control
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class SourceControlUser implements Editable<SourceControlUserBuilder>, Ku
         this.name = name;
     }
 
+    /**
+     * email of the source control user
+     */
     @JsonProperty("email")
     public String getEmail() {
         return email;
     }
 
+    /**
+     * email of the source control user
+     */
     @JsonProperty("email")
     public void setEmail(String email) {
         this.email = email;
     }
 
+    /**
+     * name of the source control user
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * name of the source control user
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;

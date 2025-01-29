@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ImageStreamSpec represents options for ImageStreams.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -89,32 +92,50 @@ public class ImageStreamSpec implements Editable<ImageStreamSpecBuilder>, Kubern
         this.tags = tags;
     }
 
+    /**
+     * dockerImageRepository is optional, if specified this stream is backed by a container repository on this server Deprecated: This field is deprecated as of v3.7 and will be removed in a future release. Specify the source for the tags to be imported in each tag via the spec.tags.from reference instead.
+     */
     @JsonProperty("dockerImageRepository")
     public String getDockerImageRepository() {
         return dockerImageRepository;
     }
 
+    /**
+     * dockerImageRepository is optional, if specified this stream is backed by a container repository on this server Deprecated: This field is deprecated as of v3.7 and will be removed in a future release. Specify the source for the tags to be imported in each tag via the spec.tags.from reference instead.
+     */
     @JsonProperty("dockerImageRepository")
     public void setDockerImageRepository(String dockerImageRepository) {
         this.dockerImageRepository = dockerImageRepository;
     }
 
+    /**
+     * ImageStreamSpec represents options for ImageStreams.
+     */
     @JsonProperty("lookupPolicy")
     public ImageLookupPolicy getLookupPolicy() {
         return lookupPolicy;
     }
 
+    /**
+     * ImageStreamSpec represents options for ImageStreams.
+     */
     @JsonProperty("lookupPolicy")
     public void setLookupPolicy(ImageLookupPolicy lookupPolicy) {
         this.lookupPolicy = lookupPolicy;
     }
 
+    /**
+     * tags map arbitrary string values to specific image locators
+     */
     @JsonProperty("tags")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<TagReference> getTags() {
         return tags;
     }
 
+    /**
+     * tags map arbitrary string values to specific image locators
+     */
     @JsonProperty("tags")
     public void setTags(List<TagReference> tags) {
         this.tags = tags;

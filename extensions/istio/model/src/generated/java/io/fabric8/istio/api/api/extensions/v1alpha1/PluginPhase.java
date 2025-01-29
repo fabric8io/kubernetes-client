@@ -4,6 +4,9 @@ package io.fabric8.istio.api.api.extensions.v1alpha1;
 import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonCreator;
 
+/**
+ * The phase in the filter chain where the plugin will be injected.
+ */
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
 public enum PluginPhase 
 {

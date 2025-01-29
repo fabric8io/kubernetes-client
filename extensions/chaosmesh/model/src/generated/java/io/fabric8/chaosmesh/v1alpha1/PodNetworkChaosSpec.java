@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * PodNetworkChaosSpec defines the desired state of PodNetworkChaos
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -91,34 +94,52 @@ public class PodNetworkChaosSpec implements Editable<PodNetworkChaosSpecBuilder>
         this.tcs = tcs;
     }
 
+    /**
+     * The ipset on the pod
+     */
     @JsonProperty("ipsets")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<RawIPSet> getIpsets() {
         return ipsets;
     }
 
+    /**
+     * The ipset on the pod
+     */
     @JsonProperty("ipsets")
     public void setIpsets(List<RawIPSet> ipsets) {
         this.ipsets = ipsets;
     }
 
+    /**
+     * The iptables rules on the pod
+     */
     @JsonProperty("iptables")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<RawIptables> getIptables() {
         return iptables;
     }
 
+    /**
+     * The iptables rules on the pod
+     */
     @JsonProperty("iptables")
     public void setIptables(List<RawIptables> iptables) {
         this.iptables = iptables;
     }
 
+    /**
+     * The tc rules on the pod
+     */
     @JsonProperty("tcs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<RawTrafficControl> getTcs() {
         return tcs;
     }
 
+    /**
+     * The tc rules on the pod
+     */
     @JsonProperty("tcs")
     public void setTcs(List<RawTrafficControl> tcs) {
         this.tcs = tcs;

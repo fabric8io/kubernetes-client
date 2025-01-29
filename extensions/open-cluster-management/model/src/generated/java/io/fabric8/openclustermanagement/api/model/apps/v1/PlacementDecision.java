@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * PlacementDecision defines the decision made by controller
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class PlacementDecision implements Editable<PlacementDecisionBuilder>, Ku
         this.clusterNamespace = clusterNamespace;
     }
 
+    /**
+     * PlacementDecision defines the decision made by controller
+     */
     @JsonProperty("clusterName")
     public String getClusterName() {
         return clusterName;
     }
 
+    /**
+     * PlacementDecision defines the decision made by controller
+     */
     @JsonProperty("clusterName")
     public void setClusterName(String clusterName) {
         this.clusterName = clusterName;
     }
 
+    /**
+     * PlacementDecision defines the decision made by controller
+     */
     @JsonProperty("clusterNamespace")
     public String getClusterNamespace() {
         return clusterNamespace;
     }
 
+    /**
+     * PlacementDecision defines the decision made by controller
+     */
     @JsonProperty("clusterNamespace")
     public void setClusterNamespace(String clusterNamespace) {
         this.clusterNamespace = clusterNamespace;

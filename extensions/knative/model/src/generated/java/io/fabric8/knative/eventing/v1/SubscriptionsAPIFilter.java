@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * SubscriptionsAPIFilter allows defining a filter expression using CloudEvents Subscriptions API. If multiple filters are specified, then the same semantics of SubscriptionsAPIFilter.All is applied. If no filter dialect or empty object is specified, then the filter always accept the events.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -109,76 +112,118 @@ public class SubscriptionsAPIFilter implements Editable<SubscriptionsAPIFilterBu
         this.suffix = suffix;
     }
 
+    /**
+     * All evaluates to true if all the nested expressions evaluate to true. It must contain at least one filter expression.
+     */
     @JsonProperty("all")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.knative.eventing.v1.SubscriptionsAPIFilter> getAll() {
         return all;
     }
 
+    /**
+     * All evaluates to true if all the nested expressions evaluate to true. It must contain at least one filter expression.
+     */
     @JsonProperty("all")
     public void setAll(List<io.fabric8.knative.eventing.v1.SubscriptionsAPIFilter> all) {
         this.all = all;
     }
 
+    /**
+     * Any evaluates to true if at least one of the nested expressions evaluates to true. It must contain at least one filter expression.
+     */
     @JsonProperty("any")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.knative.eventing.v1.SubscriptionsAPIFilter> getAny() {
         return any;
     }
 
+    /**
+     * Any evaluates to true if at least one of the nested expressions evaluates to true. It must contain at least one filter expression.
+     */
     @JsonProperty("any")
     public void setAny(List<io.fabric8.knative.eventing.v1.SubscriptionsAPIFilter> any) {
         this.any = any;
     }
 
+    /**
+     * CESQL is a CloudEvents SQL expression that will be evaluated to true or false against each CloudEvent.
+     */
     @JsonProperty("cesql")
     public String getCesql() {
         return cesql;
     }
 
+    /**
+     * CESQL is a CloudEvents SQL expression that will be evaluated to true or false against each CloudEvent.
+     */
     @JsonProperty("cesql")
     public void setCesql(String cesql) {
         this.cesql = cesql;
     }
 
+    /**
+     * Exact evaluates to true if the values of the matching CloudEvents attributes MUST all exactly match with the associated value String specified (case-sensitive). The keys are the names of the CloudEvents attributes to be matched, and their values are the String values to use in the comparison. The attribute name and value specified in the filter express MUST NOT be empty strings.
+     */
     @JsonProperty("exact")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getExact() {
         return exact;
     }
 
+    /**
+     * Exact evaluates to true if the values of the matching CloudEvents attributes MUST all exactly match with the associated value String specified (case-sensitive). The keys are the names of the CloudEvents attributes to be matched, and their values are the String values to use in the comparison. The attribute name and value specified in the filter express MUST NOT be empty strings.
+     */
     @JsonProperty("exact")
     public void setExact(Map<String, String> exact) {
         this.exact = exact;
     }
 
+    /**
+     * SubscriptionsAPIFilter allows defining a filter expression using CloudEvents Subscriptions API. If multiple filters are specified, then the same semantics of SubscriptionsAPIFilter.All is applied. If no filter dialect or empty object is specified, then the filter always accept the events.
+     */
     @JsonProperty("not")
     public io.fabric8.knative.eventing.v1.SubscriptionsAPIFilter getNot() {
         return not;
     }
 
+    /**
+     * SubscriptionsAPIFilter allows defining a filter expression using CloudEvents Subscriptions API. If multiple filters are specified, then the same semantics of SubscriptionsAPIFilter.All is applied. If no filter dialect or empty object is specified, then the filter always accept the events.
+     */
     @JsonProperty("not")
     public void setNot(io.fabric8.knative.eventing.v1.SubscriptionsAPIFilter not) {
         this.not = not;
     }
 
+    /**
+     * Prefix evaluates to true if the values of the matching CloudEvents attributes MUST all start with the associated value String specified (case sensitive). The keys are the names of the CloudEvents attributes to be matched, and their values are the String values to use in the comparison. The attribute name and value specified in the filter express MUST NOT be empty strings.
+     */
     @JsonProperty("prefix")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getPrefix() {
         return prefix;
     }
 
+    /**
+     * Prefix evaluates to true if the values of the matching CloudEvents attributes MUST all start with the associated value String specified (case sensitive). The keys are the names of the CloudEvents attributes to be matched, and their values are the String values to use in the comparison. The attribute name and value specified in the filter express MUST NOT be empty strings.
+     */
     @JsonProperty("prefix")
     public void setPrefix(Map<String, String> prefix) {
         this.prefix = prefix;
     }
 
+    /**
+     * Suffix evaluates to true if the values of the matching CloudEvents attributes MUST all end with the associated value String specified (case sensitive). The keys are the names of the CloudEvents attributes to be matched, and their values are the String values to use in the comparison. The attribute name and value specified in the filter express MUST NOT be empty strings.
+     */
     @JsonProperty("suffix")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getSuffix() {
         return suffix;
     }
 
+    /**
+     * Suffix evaluates to true if the values of the matching CloudEvents attributes MUST all end with the associated value String specified (case sensitive). The keys are the names of the CloudEvents attributes to be matched, and their values are the String values to use in the comparison. The attribute name and value specified in the filter express MUST NOT be empty strings.
+     */
     @JsonProperty("suffix")
     public void setSuffix(Map<String, String> suffix) {
         this.suffix = suffix;

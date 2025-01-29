@@ -97,52 +97,82 @@ public class MachineConfigNodeStatusPinnedImageSet implements Editable<MachineCo
         this.name = name;
     }
 
+    /**
+     * currentGeneration is the generation of the pinned image set that has most recently been successfully pulled and pinned on this node.
+     */
     @JsonProperty("currentGeneration")
     public Integer getCurrentGeneration() {
         return currentGeneration;
     }
 
+    /**
+     * currentGeneration is the generation of the pinned image set that has most recently been successfully pulled and pinned on this node.
+     */
     @JsonProperty("currentGeneration")
     public void setCurrentGeneration(Integer currentGeneration) {
         this.currentGeneration = currentGeneration;
     }
 
+    /**
+     * desiredGeneration version is the generation of the pinned image set that is targeted to be pulled and pinned on this node.
+     */
     @JsonProperty("desiredGeneration")
     public Integer getDesiredGeneration() {
         return desiredGeneration;
     }
 
+    /**
+     * desiredGeneration version is the generation of the pinned image set that is targeted to be pulled and pinned on this node.
+     */
     @JsonProperty("desiredGeneration")
     public void setDesiredGeneration(Integer desiredGeneration) {
         this.desiredGeneration = desiredGeneration;
     }
 
+    /**
+     * lastFailedGeneration is the generation of the most recent pinned image set that failed to be pulled and pinned on this node.
+     */
     @JsonProperty("lastFailedGeneration")
     public Integer getLastFailedGeneration() {
         return lastFailedGeneration;
     }
 
+    /**
+     * lastFailedGeneration is the generation of the most recent pinned image set that failed to be pulled and pinned on this node.
+     */
     @JsonProperty("lastFailedGeneration")
     public void setLastFailedGeneration(Integer lastFailedGeneration) {
         this.lastFailedGeneration = lastFailedGeneration;
     }
 
+    /**
+     * lastFailedGenerationErrors is a list of errors why the lastFailed generation failed to be pulled and pinned.
+     */
     @JsonProperty("lastFailedGenerationErrors")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getLastFailedGenerationErrors() {
         return lastFailedGenerationErrors;
     }
 
+    /**
+     * lastFailedGenerationErrors is a list of errors why the lastFailed generation failed to be pulled and pinned.
+     */
     @JsonProperty("lastFailedGenerationErrors")
     public void setLastFailedGenerationErrors(List<String> lastFailedGenerationErrors) {
         this.lastFailedGenerationErrors = lastFailedGenerationErrors;
     }
 
+    /**
+     * name is the name of the pinned image set. Must be a lowercase RFC-1123 hostname (https://tools.ietf.org/html/rfc1123) It may consist of only alphanumeric characters, hyphens (-) and periods (.) and must be at most 253 characters in length.
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * name is the name of the pinned image set. Must be a lowercase RFC-1123 hostname (https://tools.ietf.org/html/rfc1123) It may consist of only alphanumeric characters, hyphens (-) and periods (.) and must be at most 253 characters in length.
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;

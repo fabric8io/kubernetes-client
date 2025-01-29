@@ -33,6 +33,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * PodGroupSpec represents the template of a pod group.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -97,53 +100,83 @@ public class PodGroupSpec implements Editable<PodGroupSpecBuilder>, KubernetesRe
         this.queue = queue;
     }
 
+    /**
+     * MinMember defines the minimal number of members/tasks to run the pod group; if there's not enough resources to start all tasks, the scheduler will not start anyone.
+     */
     @JsonProperty("minMember")
     public Integer getMinMember() {
         return minMember;
     }
 
+    /**
+     * MinMember defines the minimal number of members/tasks to run the pod group; if there's not enough resources to start all tasks, the scheduler will not start anyone.
+     */
     @JsonProperty("minMember")
     public void setMinMember(Integer minMember) {
         this.minMember = minMember;
     }
 
+    /**
+     * MinResources defines the minimal resource of members/tasks to run the pod group; if there's not enough resources to start all tasks, the scheduler will not start anyone.
+     */
     @JsonProperty("minResources")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, Quantity> getMinResources() {
         return minResources;
     }
 
+    /**
+     * MinResources defines the minimal resource of members/tasks to run the pod group; if there's not enough resources to start all tasks, the scheduler will not start anyone.
+     */
     @JsonProperty("minResources")
     public void setMinResources(Map<String, Quantity> minResources) {
         this.minResources = minResources;
     }
 
+    /**
+     * MinTaskMember defines the minimal number of pods to run each task in the pod group; if there's not enough resources to start each task, the scheduler will not start anyone.
+     */
     @JsonProperty("minTaskMember")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, Integer> getMinTaskMember() {
         return minTaskMember;
     }
 
+    /**
+     * MinTaskMember defines the minimal number of pods to run each task in the pod group; if there's not enough resources to start each task, the scheduler will not start anyone.
+     */
     @JsonProperty("minTaskMember")
     public void setMinTaskMember(Map<String, Integer> minTaskMember) {
         this.minTaskMember = minTaskMember;
     }
 
+    /**
+     * If specified, indicates the PodGroup's priority. "system-node-critical" and "system-cluster-critical" are two special keywords which indicate the highest priorities with the former being the highest priority. Any other name must be defined by creating a PriorityClass object with that name. If not specified, the PodGroup priority will be default or zero if there is no default.
+     */
     @JsonProperty("priorityClassName")
     public String getPriorityClassName() {
         return priorityClassName;
     }
 
+    /**
+     * If specified, indicates the PodGroup's priority. "system-node-critical" and "system-cluster-critical" are two special keywords which indicate the highest priorities with the former being the highest priority. Any other name must be defined by creating a PriorityClass object with that name. If not specified, the PodGroup priority will be default or zero if there is no default.
+     */
     @JsonProperty("priorityClassName")
     public void setPriorityClassName(String priorityClassName) {
         this.priorityClassName = priorityClassName;
     }
 
+    /**
+     * Queue defines the queue to allocate resource for PodGroup; if queue does not exist, the PodGroup will not be scheduled. Defaults to `default` Queue with the lowest weight.
+     */
     @JsonProperty("queue")
     public String getQueue() {
         return queue;
     }
 
+    /**
+     * Queue defines the queue to allocate resource for PodGroup; if queue does not exist, the PodGroup will not be scheduled. Defaults to `default` Queue with the lowest weight.
+     */
     @JsonProperty("queue")
     public void setQueue(String queue) {
         this.queue = queue;

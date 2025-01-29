@@ -33,6 +33,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Abort specification is used to prematurely abort a request with a pre-specified error code. The following example will return an HTTP 400 error code for 1 out of every 1000 requests to the "ratings" service "v1".<br><p> <br><p> ```yaml apiVersion: networking.istio.io/v1 kind: VirtualService metadata:<br><p> <br><p> 	name: ratings-route<br><p> <br><p> spec:<br><p> <br><p> 	hosts:<br><p> 	- ratings.prod.svc.cluster.local<br><p> 	http:<br><p> 	- route:<br><p> 	  - destination:<br><p> 	      host: ratings.prod.svc.cluster.local<br><p> 	      subset: v1<br><p> 	  fault:<br><p> 	    abort:<br><p> 	      percentage:<br><p> 	        value: 0.1<br><p> 	      httpStatus: 400<br><p> <br><p> ```<br><p> <br><p> The _httpStatus_ field is used to indicate the HTTP status code to return to the caller. The optional _percentage_ field can be used to only abort a certain percentage of requests. If not specified, no request will be aborted.
+ */
 @JsonDeserialize(using = io.fabric8.kubernetes.model.jackson.JsonUnwrappedDeserializer.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -84,22 +87,34 @@ public class HTTPFaultInjectionAbort implements Editable<HTTPFaultInjectionAbort
         this.percentage = percentage;
     }
 
+    /**
+     * Abort specification is used to prematurely abort a request with a pre-specified error code. The following example will return an HTTP 400 error code for 1 out of every 1000 requests to the "ratings" service "v1".<br><p> <br><p> ```yaml apiVersion: networking.istio.io/v1 kind: VirtualService metadata:<br><p> <br><p> 	name: ratings-route<br><p> <br><p> spec:<br><p> <br><p> 	hosts:<br><p> 	- ratings.prod.svc.cluster.local<br><p> 	http:<br><p> 	- route:<br><p> 	  - destination:<br><p> 	      host: ratings.prod.svc.cluster.local<br><p> 	      subset: v1<br><p> 	  fault:<br><p> 	    abort:<br><p> 	      percentage:<br><p> 	        value: 0.1<br><p> 	      httpStatus: 400<br><p> <br><p> ```<br><p> <br><p> The _httpStatus_ field is used to indicate the HTTP status code to return to the caller. The optional _percentage_ field can be used to only abort a certain percentage of requests. If not specified, no request will be aborted.
+     */
     @JsonProperty("ErrorType")
     @JsonUnwrapped
     public IsHTTPFaultInjectionAbortErrorType getErrorType() {
         return errorType;
     }
 
+    /**
+     * Abort specification is used to prematurely abort a request with a pre-specified error code. The following example will return an HTTP 400 error code for 1 out of every 1000 requests to the "ratings" service "v1".<br><p> <br><p> ```yaml apiVersion: networking.istio.io/v1 kind: VirtualService metadata:<br><p> <br><p> 	name: ratings-route<br><p> <br><p> spec:<br><p> <br><p> 	hosts:<br><p> 	- ratings.prod.svc.cluster.local<br><p> 	http:<br><p> 	- route:<br><p> 	  - destination:<br><p> 	      host: ratings.prod.svc.cluster.local<br><p> 	      subset: v1<br><p> 	  fault:<br><p> 	    abort:<br><p> 	      percentage:<br><p> 	        value: 0.1<br><p> 	      httpStatus: 400<br><p> <br><p> ```<br><p> <br><p> The _httpStatus_ field is used to indicate the HTTP status code to return to the caller. The optional _percentage_ field can be used to only abort a certain percentage of requests. If not specified, no request will be aborted.
+     */
     @JsonProperty("ErrorType")
     public void setErrorType(IsHTTPFaultInjectionAbortErrorType errorType) {
         this.errorType = errorType;
     }
 
+    /**
+     * Abort specification is used to prematurely abort a request with a pre-specified error code. The following example will return an HTTP 400 error code for 1 out of every 1000 requests to the "ratings" service "v1".<br><p> <br><p> ```yaml apiVersion: networking.istio.io/v1 kind: VirtualService metadata:<br><p> <br><p> 	name: ratings-route<br><p> <br><p> spec:<br><p> <br><p> 	hosts:<br><p> 	- ratings.prod.svc.cluster.local<br><p> 	http:<br><p> 	- route:<br><p> 	  - destination:<br><p> 	      host: ratings.prod.svc.cluster.local<br><p> 	      subset: v1<br><p> 	  fault:<br><p> 	    abort:<br><p> 	      percentage:<br><p> 	        value: 0.1<br><p> 	      httpStatus: 400<br><p> <br><p> ```<br><p> <br><p> The _httpStatus_ field is used to indicate the HTTP status code to return to the caller. The optional _percentage_ field can be used to only abort a certain percentage of requests. If not specified, no request will be aborted.
+     */
     @JsonProperty("percentage")
     public Percent getPercentage() {
         return percentage;
     }
 
+    /**
+     * Abort specification is used to prematurely abort a request with a pre-specified error code. The following example will return an HTTP 400 error code for 1 out of every 1000 requests to the "ratings" service "v1".<br><p> <br><p> ```yaml apiVersion: networking.istio.io/v1 kind: VirtualService metadata:<br><p> <br><p> 	name: ratings-route<br><p> <br><p> spec:<br><p> <br><p> 	hosts:<br><p> 	- ratings.prod.svc.cluster.local<br><p> 	http:<br><p> 	- route:<br><p> 	  - destination:<br><p> 	      host: ratings.prod.svc.cluster.local<br><p> 	      subset: v1<br><p> 	  fault:<br><p> 	    abort:<br><p> 	      percentage:<br><p> 	        value: 0.1<br><p> 	      httpStatus: 400<br><p> <br><p> ```<br><p> <br><p> The _httpStatus_ field is used to indicate the HTTP status code to return to the caller. The optional _percentage_ field can be used to only abort a certain percentage of requests. If not specified, no request will be aborted.
+     */
     @JsonProperty("percentage")
     public void setPercentage(Percent percentage) {
         this.percentage = percentage;

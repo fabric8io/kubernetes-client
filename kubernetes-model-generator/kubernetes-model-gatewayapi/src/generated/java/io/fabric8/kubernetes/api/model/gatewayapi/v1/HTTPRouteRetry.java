@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * HTTPRouteRetry defines retry configuration for an HTTPRoute.<br><p> <br><p> Implementations SHOULD retry on connection errors (disconnect, reset, timeout, TCP failure) if a retry stanza is configured.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -89,32 +92,50 @@ public class HTTPRouteRetry implements Editable<HTTPRouteRetryBuilder>, Kubernet
         this.codes = codes;
     }
 
+    /**
+     * Attempts specifies the maxmimum number of times an individual request from the gateway to a backend should be retried.<br><p> <br><p> If the maximum number of retries has been attempted without a successful response from the backend, the Gateway MUST return an error.<br><p> <br><p> When this field is unspecified, the number of times to attempt to retry a backend request is implementation-specific.<br><p> <br><p> Support: Extended
+     */
     @JsonProperty("attempts")
     public Integer getAttempts() {
         return attempts;
     }
 
+    /**
+     * Attempts specifies the maxmimum number of times an individual request from the gateway to a backend should be retried.<br><p> <br><p> If the maximum number of retries has been attempted without a successful response from the backend, the Gateway MUST return an error.<br><p> <br><p> When this field is unspecified, the number of times to attempt to retry a backend request is implementation-specific.<br><p> <br><p> Support: Extended
+     */
     @JsonProperty("attempts")
     public void setAttempts(Integer attempts) {
         this.attempts = attempts;
     }
 
+    /**
+     * Backoff specifies the minimum duration a Gateway should wait between retry attempts and is represented in Gateway API Duration formatting.<br><p> <br><p> For example, setting the `rules[].retry.backoff` field to the value `100ms` will cause a backend request to first be retried approximately 100 milliseconds after timing out or receiving a response code configured to be retryable.<br><p> <br><p> An implementation MAY use an exponential or alternative backoff strategy for subsequent retry attempts, MAY cap the maximum backoff duration to some amount greater than the specified minimum, and MAY add arbitrary jitter to stagger requests, as long as unsuccessful backend requests are not retried before the configured minimum duration.<br><p> <br><p> If a Request timeout (`rules[].timeouts.request`) is configured on the route, the entire duration of the initial request and any retry attempts MUST not exceed the Request timeout duration. If any retry attempts are still in progress when the Request timeout duration has been reached, these SHOULD be canceled if possible and the Gateway MUST immediately return a timeout error.<br><p> <br><p> If a BackendRequest timeout (`rules[].timeouts.backendRequest`) is configured on the route, any retry attempts which reach the configured BackendRequest timeout duration without a response SHOULD be canceled if possible and the Gateway should wait for at least the specified backoff duration before attempting to retry the backend request again.<br><p> <br><p> If a BackendRequest timeout is _not_ configured on the route, retry attempts MAY time out after an implementation default duration, or MAY remain pending until a configured Request timeout or implementation default duration for total request time is reached.<br><p> <br><p> When this field is unspecified, the time to wait between retry attempts is implementation-specific.<br><p> <br><p> Support: Extended
+     */
     @JsonProperty("backoff")
     public String getBackoff() {
         return backoff;
     }
 
+    /**
+     * Backoff specifies the minimum duration a Gateway should wait between retry attempts and is represented in Gateway API Duration formatting.<br><p> <br><p> For example, setting the `rules[].retry.backoff` field to the value `100ms` will cause a backend request to first be retried approximately 100 milliseconds after timing out or receiving a response code configured to be retryable.<br><p> <br><p> An implementation MAY use an exponential or alternative backoff strategy for subsequent retry attempts, MAY cap the maximum backoff duration to some amount greater than the specified minimum, and MAY add arbitrary jitter to stagger requests, as long as unsuccessful backend requests are not retried before the configured minimum duration.<br><p> <br><p> If a Request timeout (`rules[].timeouts.request`) is configured on the route, the entire duration of the initial request and any retry attempts MUST not exceed the Request timeout duration. If any retry attempts are still in progress when the Request timeout duration has been reached, these SHOULD be canceled if possible and the Gateway MUST immediately return a timeout error.<br><p> <br><p> If a BackendRequest timeout (`rules[].timeouts.backendRequest`) is configured on the route, any retry attempts which reach the configured BackendRequest timeout duration without a response SHOULD be canceled if possible and the Gateway should wait for at least the specified backoff duration before attempting to retry the backend request again.<br><p> <br><p> If a BackendRequest timeout is _not_ configured on the route, retry attempts MAY time out after an implementation default duration, or MAY remain pending until a configured Request timeout or implementation default duration for total request time is reached.<br><p> <br><p> When this field is unspecified, the time to wait between retry attempts is implementation-specific.<br><p> <br><p> Support: Extended
+     */
     @JsonProperty("backoff")
     public void setBackoff(String backoff) {
         this.backoff = backoff;
     }
 
+    /**
+     * Codes defines the HTTP response status codes for which a backend request should be retried.<br><p> <br><p> Support: Extended
+     */
     @JsonProperty("codes")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Integer> getCodes() {
         return codes;
     }
 
+    /**
+     * Codes defines the HTTP response status codes for which a backend request should be retried.<br><p> <br><p> Support: Extended
+     */
     @JsonProperty("codes")
     public void setCodes(List<Integer> codes) {
         this.codes = codes;

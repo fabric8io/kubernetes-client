@@ -37,6 +37,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * GrpcPodConfig contains configuration specified for a catalog source
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -109,73 +112,115 @@ public class GrpcPodConfig implements Editable<GrpcPodConfigBuilder>, Kubernetes
         this.tolerations = tolerations;
     }
 
+    /**
+     * GrpcPodConfig contains configuration specified for a catalog source
+     */
     @JsonProperty("affinity")
     public Affinity getAffinity() {
         return affinity;
     }
 
+    /**
+     * GrpcPodConfig contains configuration specified for a catalog source
+     */
     @JsonProperty("affinity")
     public void setAffinity(Affinity affinity) {
         this.affinity = affinity;
     }
 
+    /**
+     * GrpcPodConfig contains configuration specified for a catalog source
+     */
     @JsonProperty("extractContent")
     public ExtractContentConfig getExtractContent() {
         return extractContent;
     }
 
+    /**
+     * GrpcPodConfig contains configuration specified for a catalog source
+     */
     @JsonProperty("extractContent")
     public void setExtractContent(ExtractContentConfig extractContent) {
         this.extractContent = extractContent;
     }
 
+    /**
+     * GrpcPodConfig contains configuration specified for a catalog source
+     */
     @JsonProperty("memoryTarget")
     public Quantity getMemoryTarget() {
         return memoryTarget;
     }
 
+    /**
+     * GrpcPodConfig contains configuration specified for a catalog source
+     */
     @JsonProperty("memoryTarget")
     public void setMemoryTarget(Quantity memoryTarget) {
         this.memoryTarget = memoryTarget;
     }
 
+    /**
+     * NodeSelector is a selector which must be true for the pod to fit on a node. Selector which must match a node's labels for the pod to be scheduled on that node.
+     */
     @JsonProperty("nodeSelector")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getNodeSelector() {
         return nodeSelector;
     }
 
+    /**
+     * NodeSelector is a selector which must be true for the pod to fit on a node. Selector which must match a node's labels for the pod to be scheduled on that node.
+     */
     @JsonProperty("nodeSelector")
     public void setNodeSelector(Map<String, String> nodeSelector) {
         this.nodeSelector = nodeSelector;
     }
 
+    /**
+     * If specified, indicates the pod's priority. If not specified, the pod priority will be default or zero if there is no default.
+     */
     @JsonProperty("priorityClassName")
     public String getPriorityClassName() {
         return priorityClassName;
     }
 
+    /**
+     * If specified, indicates the pod's priority. If not specified, the pod priority will be default or zero if there is no default.
+     */
     @JsonProperty("priorityClassName")
     public void setPriorityClassName(String priorityClassName) {
         this.priorityClassName = priorityClassName;
     }
 
+    /**
+     * SecurityContextConfig can be one of `legacy` or `restricted`. The CatalogSource's pod is either injected with the right pod.spec.securityContext and pod.spec.container[&#42;].securityContext values to allow the pod to run in Pod Security Admission (PSA) `restricted` mode, or doesn't set these values at all, in which case the pod can only be run in PSA `baseline` or `privileged` namespaces. If the SecurityContextConfig is unspecified, the mode will be determined by the namespace's PSA configuration. If the namespace is enforcing `restricted` mode, then the pod will be configured as if `restricted` was specified. Otherwise, it will be configured as if `legacy` was specified. Specifying a value other than `legacy` or `restricted` result in a validation error. When using older catalog images, which can not run in `restricted` mode, the SecurityContextConfig should be set to `legacy`.<br><p> <br><p> More information about PSA can be found here: https://kubernetes.io/docs/concepts/security/pod-security-admission/'
+     */
     @JsonProperty("securityContextConfig")
     public String getSecurityContextConfig() {
         return securityContextConfig;
     }
 
+    /**
+     * SecurityContextConfig can be one of `legacy` or `restricted`. The CatalogSource's pod is either injected with the right pod.spec.securityContext and pod.spec.container[&#42;].securityContext values to allow the pod to run in Pod Security Admission (PSA) `restricted` mode, or doesn't set these values at all, in which case the pod can only be run in PSA `baseline` or `privileged` namespaces. If the SecurityContextConfig is unspecified, the mode will be determined by the namespace's PSA configuration. If the namespace is enforcing `restricted` mode, then the pod will be configured as if `restricted` was specified. Otherwise, it will be configured as if `legacy` was specified. Specifying a value other than `legacy` or `restricted` result in a validation error. When using older catalog images, which can not run in `restricted` mode, the SecurityContextConfig should be set to `legacy`.<br><p> <br><p> More information about PSA can be found here: https://kubernetes.io/docs/concepts/security/pod-security-admission/'
+     */
     @JsonProperty("securityContextConfig")
     public void setSecurityContextConfig(String securityContextConfig) {
         this.securityContextConfig = securityContextConfig;
     }
 
+    /**
+     * Tolerations are the catalog source's pod's tolerations.
+     */
     @JsonProperty("tolerations")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Toleration> getTolerations() {
         return tolerations;
     }
 
+    /**
+     * Tolerations are the catalog source's pod's tolerations.
+     */
     @JsonProperty("tolerations")
     public void setTolerations(List<Toleration> tolerations) {
         this.tolerations = tolerations;

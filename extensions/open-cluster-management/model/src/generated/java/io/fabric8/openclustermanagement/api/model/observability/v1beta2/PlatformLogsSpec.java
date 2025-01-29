@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * PlatformLogsSpec defines the spec for the addon to collect, forward and store logs from fleet managed clusters.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -78,11 +81,17 @@ public class PlatformLogsSpec implements Editable<PlatformLogsSpecBuilder>, Kube
         this.collection = collection;
     }
 
+    /**
+     * PlatformLogsSpec defines the spec for the addon to collect, forward and store logs from fleet managed clusters.
+     */
     @JsonProperty("collection")
     public PlatformLogsCollectionSpec getCollection() {
         return collection;
     }
 
+    /**
+     * PlatformLogsSpec defines the spec for the addon to collect, forward and store logs from fleet managed clusters.
+     */
     @JsonProperty("collection")
     public void setCollection(PlatformLogsCollectionSpec collection) {
         this.collection = collection;

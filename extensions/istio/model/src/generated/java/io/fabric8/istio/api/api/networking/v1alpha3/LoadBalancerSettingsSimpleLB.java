@@ -4,6 +4,9 @@ package io.fabric8.istio.api.api.networking.v1alpha3;
 import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonCreator;
 
+/**
+ * Standard load balancing algorithms that require no tuning.
+ */
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
 public enum LoadBalancerSettingsSimpleLB 
 {

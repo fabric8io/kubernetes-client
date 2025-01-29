@@ -33,6 +33,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * SecretValueFromSource represents the source of a secret value
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -79,11 +82,17 @@ public class SecretValueFromSource implements Editable<SecretValueFromSourceBuil
         this.secretKeyRef = secretKeyRef;
     }
 
+    /**
+     * SecretValueFromSource represents the source of a secret value
+     */
     @JsonProperty("secretKeyRef")
     public SecretKeySelector getSecretKeyRef() {
         return secretKeyRef;
     }
 
+    /**
+     * SecretValueFromSource represents the source of a secret value
+     */
     @JsonProperty("secretKeyRef")
     public void setSecretKeyRef(SecretKeySelector secretKeyRef) {
         this.secretKeyRef = secretKeyRef;

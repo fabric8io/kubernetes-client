@@ -126,131 +126,209 @@ public class SecurityGroupFilter implements Editable<SecurityGroupFilterBuilder>
         this.tenantId = tenantId;
     }
 
+    /**
+     * description filters security groups by description.
+     */
     @JsonProperty("description")
     public String getDescription() {
         return description;
     }
 
+    /**
+     * description filters security groups by description.
+     */
     @JsonProperty("description")
     public void setDescription(String description) {
         this.description = description;
     }
 
+    /**
+     * id specifies the ID of a security group to use. If set, id will not be validated before use. An invalid id will result in failure to create a server with an appropriate error message.
+     */
     @JsonProperty("id")
     public String getId() {
         return id;
     }
 
+    /**
+     * id specifies the ID of a security group to use. If set, id will not be validated before use. An invalid id will result in failure to create a server with an appropriate error message.
+     */
     @JsonProperty("id")
     public void setId(String id) {
         this.id = id;
     }
 
+    /**
+     * Deprecated: limit is silently ignored. It has no replacement.
+     */
     @JsonProperty("limit")
     public Integer getLimit() {
         return limit;
     }
 
+    /**
+     * Deprecated: limit is silently ignored. It has no replacement.
+     */
     @JsonProperty("limit")
     public void setLimit(Integer limit) {
         this.limit = limit;
     }
 
+    /**
+     * Deprecated: marker is silently ignored. It has no replacement.
+     */
     @JsonProperty("marker")
     public String getMarker() {
         return marker;
     }
 
+    /**
+     * Deprecated: marker is silently ignored. It has no replacement.
+     */
     @JsonProperty("marker")
     public void setMarker(String marker) {
         this.marker = marker;
     }
 
+    /**
+     * name filters security groups by name.
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * name filters security groups by name.
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * notTags filters by security groups which don't match all specified tags. NOT (t1 AND t2...) Multiple tags are comma separated.
+     */
     @JsonProperty("notTags")
     public String getNotTags() {
         return notTags;
     }
 
+    /**
+     * notTags filters by security groups which don't match all specified tags. NOT (t1 AND t2...) Multiple tags are comma separated.
+     */
     @JsonProperty("notTags")
     public void setNotTags(String notTags) {
         this.notTags = notTags;
     }
 
+    /**
+     * notTagsAny filters by security groups which don't match any specified tags. NOT (t1 OR t2...) Multiple tags are comma separated.
+     */
     @JsonProperty("notTagsAny")
     public String getNotTagsAny() {
         return notTagsAny;
     }
 
+    /**
+     * notTagsAny filters by security groups which don't match any specified tags. NOT (t1 OR t2...) Multiple tags are comma separated.
+     */
     @JsonProperty("notTagsAny")
     public void setNotTagsAny(String notTagsAny) {
         this.notTagsAny = notTagsAny;
     }
 
+    /**
+     * projectId filters security groups by project ID.
+     */
     @JsonProperty("projectId")
     public String getProjectId() {
         return projectId;
     }
 
+    /**
+     * projectId filters security groups by project ID.
+     */
     @JsonProperty("projectId")
     public void setProjectId(String projectId) {
         this.projectId = projectId;
     }
 
+    /**
+     * Deprecated: sortDir is silently ignored. It has no replacement.
+     */
     @JsonProperty("sortDir")
     public String getSortDir() {
         return sortDir;
     }
 
+    /**
+     * Deprecated: sortDir is silently ignored. It has no replacement.
+     */
     @JsonProperty("sortDir")
     public void setSortDir(String sortDir) {
         this.sortDir = sortDir;
     }
 
+    /**
+     * Deprecated: sortKey is silently ignored. It has no replacement.
+     */
     @JsonProperty("sortKey")
     public String getSortKey() {
         return sortKey;
     }
 
+    /**
+     * Deprecated: sortKey is silently ignored. It has no replacement.
+     */
     @JsonProperty("sortKey")
     public void setSortKey(String sortKey) {
         this.sortKey = sortKey;
     }
 
+    /**
+     * tags filters by security groups containing all specified tags. Multiple tags are comma separated.
+     */
     @JsonProperty("tags")
     public String getTags() {
         return tags;
     }
 
+    /**
+     * tags filters by security groups containing all specified tags. Multiple tags are comma separated.
+     */
     @JsonProperty("tags")
     public void setTags(String tags) {
         this.tags = tags;
     }
 
+    /**
+     * tagsAny filters by security groups containing any specified tags. Multiple tags are comma separated.
+     */
     @JsonProperty("tagsAny")
     public String getTagsAny() {
         return tagsAny;
     }
 
+    /**
+     * tagsAny filters by security groups containing any specified tags. Multiple tags are comma separated.
+     */
     @JsonProperty("tagsAny")
     public void setTagsAny(String tagsAny) {
         this.tagsAny = tagsAny;
     }
 
+    /**
+     * tenantId filters security groups by tenant ID. Deprecated: use projectId instead. tenantId will be ignored if projectId is set.
+     */
     @JsonProperty("tenantId")
     public String getTenantId() {
         return tenantId;
     }
 
+    /**
+     * tenantId filters security groups by tenant ID. Deprecated: use projectId instead. tenantId will be ignored if projectId is set.
+     */
     @JsonProperty("tenantId")
     public void setTenantId(String tenantId) {
         this.tenantId = tenantId;

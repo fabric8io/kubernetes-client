@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ConsolePluginService holds information on Service that is serving console dynamic plugin assets.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -90,41 +93,65 @@ public class ConsolePluginService implements Editable<ConsolePluginServiceBuilde
         this.port = port;
     }
 
+    /**
+     * basePath is the path to the plugin's assets. The primary asset it the manifest file called `plugin-manifest.json`, which is a JSON document that contains metadata about the plugin and the extensions.
+     */
     @JsonProperty("basePath")
     public String getBasePath() {
         return basePath;
     }
 
+    /**
+     * basePath is the path to the plugin's assets. The primary asset it the manifest file called `plugin-manifest.json`, which is a JSON document that contains metadata about the plugin and the extensions.
+     */
     @JsonProperty("basePath")
     public void setBasePath(String basePath) {
         this.basePath = basePath;
     }
 
+    /**
+     * name of Service that is serving the plugin assets.
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * name of Service that is serving the plugin assets.
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * namespace of Service that is serving the plugin assets.
+     */
     @JsonProperty("namespace")
     public String getNamespace() {
         return namespace;
     }
 
+    /**
+     * namespace of Service that is serving the plugin assets.
+     */
     @JsonProperty("namespace")
     public void setNamespace(String namespace) {
         this.namespace = namespace;
     }
 
+    /**
+     * port on which the Service that is serving the plugin is listening to.
+     */
     @JsonProperty("port")
     public Integer getPort() {
         return port;
     }
 
+    /**
+     * port on which the Service that is serving the plugin is listening to.
+     */
     @JsonProperty("port")
     public void setPort(Integer port) {
         this.port = port;

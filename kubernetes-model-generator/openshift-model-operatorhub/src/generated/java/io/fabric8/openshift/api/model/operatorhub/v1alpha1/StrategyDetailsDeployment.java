@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * StrategyDetailsDeployment represents the parsed details of a Deployment InstallStrategy.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -91,34 +94,52 @@ public class StrategyDetailsDeployment implements Editable<StrategyDetailsDeploy
         this.permissions = permissions;
     }
 
+    /**
+     * StrategyDetailsDeployment represents the parsed details of a Deployment InstallStrategy.
+     */
     @JsonProperty("clusterPermissions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<StrategyDeploymentPermissions> getClusterPermissions() {
         return clusterPermissions;
     }
 
+    /**
+     * StrategyDetailsDeployment represents the parsed details of a Deployment InstallStrategy.
+     */
     @JsonProperty("clusterPermissions")
     public void setClusterPermissions(List<StrategyDeploymentPermissions> clusterPermissions) {
         this.clusterPermissions = clusterPermissions;
     }
 
+    /**
+     * StrategyDetailsDeployment represents the parsed details of a Deployment InstallStrategy.
+     */
     @JsonProperty("deployments")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<StrategyDeploymentSpec> getDeployments() {
         return deployments;
     }
 
+    /**
+     * StrategyDetailsDeployment represents the parsed details of a Deployment InstallStrategy.
+     */
     @JsonProperty("deployments")
     public void setDeployments(List<StrategyDeploymentSpec> deployments) {
         this.deployments = deployments;
     }
 
+    /**
+     * StrategyDetailsDeployment represents the parsed details of a Deployment InstallStrategy.
+     */
     @JsonProperty("permissions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<StrategyDeploymentPermissions> getPermissions() {
         return permissions;
     }
 
+    /**
+     * StrategyDetailsDeployment represents the parsed details of a Deployment InstallStrategy.
+     */
     @JsonProperty("permissions")
     public void setPermissions(List<StrategyDeploymentPermissions> permissions) {
         this.permissions = permissions;

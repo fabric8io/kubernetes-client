@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ACMEChallengeSolverHTTP01 contains configuration detailing how to solve HTTP01 challenges within a Kubernetes cluster. Typically this is accomplished through creating 'routes' of some description that configure ingress controllers to direct traffic to 'solver pods', which are responsible for responding to the ACME server's HTTP requests. Only one of Ingress / Gateway can be specified.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class ACMEChallengeSolverHTTP01 implements Editable<ACMEChallengeSolverHT
         this.ingress = ingress;
     }
 
+    /**
+     * ACMEChallengeSolverHTTP01 contains configuration detailing how to solve HTTP01 challenges within a Kubernetes cluster. Typically this is accomplished through creating 'routes' of some description that configure ingress controllers to direct traffic to 'solver pods', which are responsible for responding to the ACME server's HTTP requests. Only one of Ingress / Gateway can be specified.
+     */
     @JsonProperty("gatewayHTTPRoute")
     public ACMEChallengeSolverHTTP01GatewayHTTPRoute getGatewayHTTPRoute() {
         return gatewayHTTPRoute;
     }
 
+    /**
+     * ACMEChallengeSolverHTTP01 contains configuration detailing how to solve HTTP01 challenges within a Kubernetes cluster. Typically this is accomplished through creating 'routes' of some description that configure ingress controllers to direct traffic to 'solver pods', which are responsible for responding to the ACME server's HTTP requests. Only one of Ingress / Gateway can be specified.
+     */
     @JsonProperty("gatewayHTTPRoute")
     public void setGatewayHTTPRoute(ACMEChallengeSolverHTTP01GatewayHTTPRoute gatewayHTTPRoute) {
         this.gatewayHTTPRoute = gatewayHTTPRoute;
     }
 
+    /**
+     * ACMEChallengeSolverHTTP01 contains configuration detailing how to solve HTTP01 challenges within a Kubernetes cluster. Typically this is accomplished through creating 'routes' of some description that configure ingress controllers to direct traffic to 'solver pods', which are responsible for responding to the ACME server's HTTP requests. Only one of Ingress / Gateway can be specified.
+     */
     @JsonProperty("ingress")
     public ACMEChallengeSolverHTTP01Ingress getIngress() {
         return ingress;
     }
 
+    /**
+     * ACMEChallengeSolverHTTP01 contains configuration detailing how to solve HTTP01 challenges within a Kubernetes cluster. Typically this is accomplished through creating 'routes' of some description that configure ingress controllers to direct traffic to 'solver pods', which are responsible for responding to the ACME server's HTTP requests. Only one of Ingress / Gateway can be specified.
+     */
     @JsonProperty("ingress")
     public void setIngress(ACMEChallengeSolverHTTP01Ingress ingress) {
         this.ingress = ingress;

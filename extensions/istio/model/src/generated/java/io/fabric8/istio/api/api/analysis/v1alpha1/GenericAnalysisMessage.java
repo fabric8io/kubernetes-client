@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * GenericAnalysisMessage is an instance of an AnalysisMessage defined by a schema, whose metaschema is AnalysisMessageWeakSchema. (Names are hard.) Code should be able to perform validation of arguments as needed by using the message type information to look at the AnalysisMessageWeakSchema and examine the list of args at runtime. Developers can also create stronger-typed versions of GenericAnalysisMessage for well-known and stable message types.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -90,33 +93,51 @@ public class GenericAnalysisMessage implements Editable<GenericAnalysisMessageBu
         this.resourcePaths = resourcePaths;
     }
 
+    /**
+     * GenericAnalysisMessage is an instance of an AnalysisMessage defined by a schema, whose metaschema is AnalysisMessageWeakSchema. (Names are hard.) Code should be able to perform validation of arguments as needed by using the message type information to look at the AnalysisMessageWeakSchema and examine the list of args at runtime. Developers can also create stronger-typed versions of GenericAnalysisMessage for well-known and stable message types.
+     */
     @JsonProperty("args")
     public Object getArgs() {
         return args;
     }
 
+    /**
+     * GenericAnalysisMessage is an instance of an AnalysisMessage defined by a schema, whose metaschema is AnalysisMessageWeakSchema. (Names are hard.) Code should be able to perform validation of arguments as needed by using the message type information to look at the AnalysisMessageWeakSchema and examine the list of args at runtime. Developers can also create stronger-typed versions of GenericAnalysisMessage for well-known and stable message types.
+     */
     @JsonProperty("args")
     @JsonDeserialize(using = io.fabric8.kubernetes.internal.KubernetesDeserializer.class)
     public void setArgs(Object args) {
         this.args = args;
     }
 
+    /**
+     * GenericAnalysisMessage is an instance of an AnalysisMessage defined by a schema, whose metaschema is AnalysisMessageWeakSchema. (Names are hard.) Code should be able to perform validation of arguments as needed by using the message type information to look at the AnalysisMessageWeakSchema and examine the list of args at runtime. Developers can also create stronger-typed versions of GenericAnalysisMessage for well-known and stable message types.
+     */
     @JsonProperty("messageBase")
     public AnalysisMessageBase getMessageBase() {
         return messageBase;
     }
 
+    /**
+     * GenericAnalysisMessage is an instance of an AnalysisMessage defined by a schema, whose metaschema is AnalysisMessageWeakSchema. (Names are hard.) Code should be able to perform validation of arguments as needed by using the message type information to look at the AnalysisMessageWeakSchema and examine the list of args at runtime. Developers can also create stronger-typed versions of GenericAnalysisMessage for well-known and stable message types.
+     */
     @JsonProperty("messageBase")
     public void setMessageBase(AnalysisMessageBase messageBase) {
         this.messageBase = messageBase;
     }
 
+    /**
+     * A list of strings specifying the resource identifiers that were the cause of message generation. A "path" here is a (NAMESPACE\/)?RESOURCETYPE/NAME tuple that uniquely identifies a particular resource. There doesn't seem to be a single concept for this, but this is intuitively taken from https://kubernetes.io/docs/reference/using-api/api-concepts/#standard-api-terminology At least one is required.
+     */
     @JsonProperty("resourcePaths")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getResourcePaths() {
         return resourcePaths;
     }
 
+    /**
+     * A list of strings specifying the resource identifiers that were the cause of message generation. A "path" here is a (NAMESPACE\/)?RESOURCETYPE/NAME tuple that uniquely identifies a particular resource. There doesn't seem to be a single concept for this, but this is intuitively taken from https://kubernetes.io/docs/reference/using-api/api-concepts/#standard-api-terminology At least one is required.
+     */
     @JsonProperty("resourcePaths")
     public void setResourcePaths(List<String> resourcePaths) {
         this.resourcePaths = resourcePaths;

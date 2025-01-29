@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * StageInfo contains details about a build stage.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -93,42 +96,66 @@ public class StageInfo implements Editable<StageInfoBuilder>, KubernetesResource
         this.steps = steps;
     }
 
+    /**
+     * durationMilliseconds identifies how long the stage took to complete in milliseconds. Note: the duration of a stage can exceed the sum of the duration of the steps within the stage as not all actions are accounted for in explicit build steps.
+     */
     @JsonProperty("durationMilliseconds")
     public Long getDurationMilliseconds() {
         return durationMilliseconds;
     }
 
+    /**
+     * durationMilliseconds identifies how long the stage took to complete in milliseconds. Note: the duration of a stage can exceed the sum of the duration of the steps within the stage as not all actions are accounted for in explicit build steps.
+     */
     @JsonProperty("durationMilliseconds")
     public void setDurationMilliseconds(Long durationMilliseconds) {
         this.durationMilliseconds = durationMilliseconds;
     }
 
+    /**
+     * name is a unique identifier for each build stage that occurs.
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * name is a unique identifier for each build stage that occurs.
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * StageInfo contains details about a build stage.
+     */
     @JsonProperty("startTime")
     public String getStartTime() {
         return startTime;
     }
 
+    /**
+     * StageInfo contains details about a build stage.
+     */
     @JsonProperty("startTime")
     public void setStartTime(String startTime) {
         this.startTime = startTime;
     }
 
+    /**
+     * steps contains details about each step that occurs during a build stage including start time and duration in milliseconds.
+     */
     @JsonProperty("steps")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<StepInfo> getSteps() {
         return steps;
     }
 
+    /**
+     * steps contains details about each step that occurs during a build stage including start time and duration in milliseconds.
+     */
     @JsonProperty("steps")
     public void setSteps(List<StepInfo> steps) {
         this.steps = steps;

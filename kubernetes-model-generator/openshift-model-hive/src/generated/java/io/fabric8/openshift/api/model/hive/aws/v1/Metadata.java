@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Metadata contains AWS metadata (e.g. for uninstalling the cluster).
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -78,11 +81,17 @@ public class Metadata implements Editable<MetadataBuilder>, KubernetesResource
         this.hostedZoneRole = hostedZoneRole;
     }
 
+    /**
+     * HostedZoneRole is the role to assume when performing operations on a hosted zone owned by another account.
+     */
     @JsonProperty("hostedZoneRole")
     public String getHostedZoneRole() {
         return hostedZoneRole;
     }
 
+    /**
+     * HostedZoneRole is the role to assume when performing operations on a hosted zone owned by another account.
+     */
     @JsonProperty("hostedZoneRole")
     public void setHostedZoneRole(String hostedZoneRole) {
         this.hostedZoneRole = hostedZoneRole;

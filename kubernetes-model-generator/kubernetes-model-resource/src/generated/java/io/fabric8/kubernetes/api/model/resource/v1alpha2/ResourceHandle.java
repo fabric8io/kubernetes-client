@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ResourceHandle holds opaque resource data for processing by a specific kubelet plugin.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -86,31 +89,49 @@ public class ResourceHandle implements Editable<ResourceHandleBuilder>, Kubernet
         this.structuredData = structuredData;
     }
 
+    /**
+     * Data contains the opaque data associated with this ResourceHandle. It is set by the controller component of the resource driver whose name matches the DriverName set in the ResourceClaimStatus this ResourceHandle is embedded in. It is set at allocation time and is intended for processing by the kubelet plugin whose name matches the DriverName set in this ResourceHandle.<br><p> <br><p> The maximum size of this field is 16KiB. This may get increased in the future, but not reduced.
+     */
     @JsonProperty("data")
     public String getData() {
         return data;
     }
 
+    /**
+     * Data contains the opaque data associated with this ResourceHandle. It is set by the controller component of the resource driver whose name matches the DriverName set in the ResourceClaimStatus this ResourceHandle is embedded in. It is set at allocation time and is intended for processing by the kubelet plugin whose name matches the DriverName set in this ResourceHandle.<br><p> <br><p> The maximum size of this field is 16KiB. This may get increased in the future, but not reduced.
+     */
     @JsonProperty("data")
     public void setData(String data) {
         this.data = data;
     }
 
+    /**
+     * DriverName specifies the name of the resource driver whose kubelet plugin should be invoked to process this ResourceHandle's data once it lands on a node. This may differ from the DriverName set in ResourceClaimStatus this ResourceHandle is embedded in.
+     */
     @JsonProperty("driverName")
     public String getDriverName() {
         return driverName;
     }
 
+    /**
+     * DriverName specifies the name of the resource driver whose kubelet plugin should be invoked to process this ResourceHandle's data once it lands on a node. This may differ from the DriverName set in ResourceClaimStatus this ResourceHandle is embedded in.
+     */
     @JsonProperty("driverName")
     public void setDriverName(String driverName) {
         this.driverName = driverName;
     }
 
+    /**
+     * ResourceHandle holds opaque resource data for processing by a specific kubelet plugin.
+     */
     @JsonProperty("structuredData")
     public StructuredResourceHandle getStructuredData() {
         return structuredData;
     }
 
+    /**
+     * ResourceHandle holds opaque resource data for processing by a specific kubelet plugin.
+     */
     @JsonProperty("structuredData")
     public void setStructuredData(StructuredResourceHandle structuredData) {
         this.structuredData = structuredData;

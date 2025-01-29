@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * PerVerbAPIRequestCount requestCounts requests by API request verb.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class PerVerbAPIRequestCount implements Editable<PerVerbAPIRequestCountBu
         this.verb = verb;
     }
 
+    /**
+     * requestCount of requests for verb.
+     */
     @JsonProperty("requestCount")
     public Long getRequestCount() {
         return requestCount;
     }
 
+    /**
+     * requestCount of requests for verb.
+     */
     @JsonProperty("requestCount")
     public void setRequestCount(Long requestCount) {
         this.requestCount = requestCount;
     }
 
+    /**
+     * verb of API request (get, list, create, etc...)
+     */
     @JsonProperty("verb")
     public String getVerb() {
         return verb;
     }
 
+    /**
+     * verb of API request (get, list, create, etc...)
+     */
     @JsonProperty("verb")
     public void setVerb(String verb) {
         this.verb = verb;

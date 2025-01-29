@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * PodHttpChaosSpec defines the desired state of PodHttpChaos.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -85,22 +88,34 @@ public class PodHttpChaosSpec implements Editable<PodHttpChaosSpecBuilder>, Kube
         this.tls = tls;
     }
 
+    /**
+     * Rules are a list of injection rule for http request.
+     */
     @JsonProperty("rules")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<PodHttpChaosRule> getRules() {
         return rules;
     }
 
+    /**
+     * Rules are a list of injection rule for http request.
+     */
     @JsonProperty("rules")
     public void setRules(List<PodHttpChaosRule> rules) {
         this.rules = rules;
     }
 
+    /**
+     * PodHttpChaosSpec defines the desired state of PodHttpChaos.
+     */
     @JsonProperty("tls")
     public PodHttpChaosTLS getTls() {
         return tls;
     }
 
+    /**
+     * PodHttpChaosSpec defines the desired state of PodHttpChaos.
+     */
     @JsonProperty("tls")
     public void setTls(PodHttpChaosTLS tls) {
         this.tls = tls;

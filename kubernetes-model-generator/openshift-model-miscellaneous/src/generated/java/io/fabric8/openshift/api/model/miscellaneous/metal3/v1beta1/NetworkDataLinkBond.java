@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * NetworkDataLinkBond represents a bond link object.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -101,62 +104,98 @@ public class NetworkDataLinkBond implements Editable<NetworkDataLinkBondBuilder>
         this.mtu = mtu;
     }
 
+    /**
+     * BondLinks is the list of links that are part of the bond.
+     */
     @JsonProperty("bondLinks")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getBondLinks() {
         return bondLinks;
     }
 
+    /**
+     * BondLinks is the list of links that are part of the bond.
+     */
     @JsonProperty("bondLinks")
     public void setBondLinks(List<String> bondLinks) {
         this.bondLinks = bondLinks;
     }
 
+    /**
+     * BondMode is the mode of bond used. It can be one of balance-rr, active-backup, balance-xor, broadcast, balance-tlb, balance-alb, 802.3ad
+     */
     @JsonProperty("bondMode")
     public String getBondMode() {
         return bondMode;
     }
 
+    /**
+     * BondMode is the mode of bond used. It can be one of balance-rr, active-backup, balance-xor, broadcast, balance-tlb, balance-alb, 802.3ad
+     */
     @JsonProperty("bondMode")
     public void setBondMode(String bondMode) {
         this.bondMode = bondMode;
     }
 
+    /**
+     * Selects the transmit hash policy used for port selection in balance-xor and 802.3ad modes
+     */
     @JsonProperty("bondXmitHashPolicy")
     public String getBondXmitHashPolicy() {
         return bondXmitHashPolicy;
     }
 
+    /**
+     * Selects the transmit hash policy used for port selection in balance-xor and 802.3ad modes
+     */
     @JsonProperty("bondXmitHashPolicy")
     public void setBondXmitHashPolicy(String bondXmitHashPolicy) {
         this.bondXmitHashPolicy = bondXmitHashPolicy;
     }
 
+    /**
+     * Id is the ID of the interface (used for naming)
+     */
     @JsonProperty("id")
     public String getId() {
         return id;
     }
 
+    /**
+     * Id is the ID of the interface (used for naming)
+     */
     @JsonProperty("id")
     public void setId(String id) {
         this.id = id;
     }
 
+    /**
+     * NetworkDataLinkBond represents a bond link object.
+     */
     @JsonProperty("macAddress")
     public NetworkLinkEthernetMac getMacAddress() {
         return macAddress;
     }
 
+    /**
+     * NetworkDataLinkBond represents a bond link object.
+     */
     @JsonProperty("macAddress")
     public void setMacAddress(NetworkLinkEthernetMac macAddress) {
         this.macAddress = macAddress;
     }
 
+    /**
+     * MTU is the MTU of the interface
+     */
     @JsonProperty("mtu")
     public Integer getMtu() {
         return mtu;
     }
 
+    /**
+     * MTU is the MTU of the interface
+     */
     @JsonProperty("mtu")
     public void setMtu(Integer mtu) {
         this.mtu = mtu;

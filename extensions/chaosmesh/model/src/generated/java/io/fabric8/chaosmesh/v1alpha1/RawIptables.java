@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * RawIptables represents the iptables rules on specific pod
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -97,52 +100,82 @@ public class RawIptables implements Editable<RawIptablesBuilder>, KubernetesReso
         this.source = source;
     }
 
+    /**
+     * Device represents the network device to be affected.
+     */
     @JsonProperty("device")
     public String getDevice() {
         return device;
     }
 
+    /**
+     * Device represents the network device to be affected.
+     */
     @JsonProperty("device")
     public void setDevice(String device) {
         this.device = device;
     }
 
+    /**
+     * The block direction of this iptables rule
+     */
     @JsonProperty("direction")
     public String getDirection() {
         return direction;
     }
 
+    /**
+     * The block direction of this iptables rule
+     */
     @JsonProperty("direction")
     public void setDirection(String direction) {
         this.direction = direction;
     }
 
+    /**
+     * The name of related ipset
+     */
     @JsonProperty("ipsets")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getIpsets() {
         return ipsets;
     }
 
+    /**
+     * The name of related ipset
+     */
     @JsonProperty("ipsets")
     public void setIpsets(List<String> ipsets) {
         this.ipsets = ipsets;
     }
 
+    /**
+     * The name of iptables chain
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * The name of iptables chain
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * RawIptables represents the iptables rules on specific pod
+     */
     @JsonProperty("source")
     public String getSource() {
         return source;
     }
 
+    /**
+     * RawIptables represents the iptables rules on specific pod
+     */
     @JsonProperty("source")
     public void setSource(String source) {
         this.source = source;

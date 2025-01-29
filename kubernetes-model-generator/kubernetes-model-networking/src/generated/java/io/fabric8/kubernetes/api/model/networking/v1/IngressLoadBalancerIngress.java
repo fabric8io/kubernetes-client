@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * IngressLoadBalancerIngress represents the status of a load-balancer ingress point.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -89,32 +92,50 @@ public class IngressLoadBalancerIngress implements Editable<IngressLoadBalancerI
         this.ports = ports;
     }
 
+    /**
+     * hostname is set for load-balancer ingress points that are DNS based.
+     */
     @JsonProperty("hostname")
     public String getHostname() {
         return hostname;
     }
 
+    /**
+     * hostname is set for load-balancer ingress points that are DNS based.
+     */
     @JsonProperty("hostname")
     public void setHostname(String hostname) {
         this.hostname = hostname;
     }
 
+    /**
+     * ip is set for load-balancer ingress points that are IP based.
+     */
     @JsonProperty("ip")
     public String getIp() {
         return ip;
     }
 
+    /**
+     * ip is set for load-balancer ingress points that are IP based.
+     */
     @JsonProperty("ip")
     public void setIp(String ip) {
         this.ip = ip;
     }
 
+    /**
+     * ports provides information about the ports exposed by this LoadBalancer.
+     */
     @JsonProperty("ports")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<IngressPortStatus> getPorts() {
         return ports;
     }
 
+    /**
+     * ports provides information about the ports exposed by this LoadBalancer.
+     */
     @JsonProperty("ports")
     public void setPorts(List<IngressPortStatus> ports) {
         this.ports = ports;

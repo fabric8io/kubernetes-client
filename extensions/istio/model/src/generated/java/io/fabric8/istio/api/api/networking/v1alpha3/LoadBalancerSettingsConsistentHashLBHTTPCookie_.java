@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Describes a HTTP cookie that will be used as the hash key for the Consistent Hash load balancer.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -86,31 +89,49 @@ public class LoadBalancerSettingsConsistentHashLBHTTPCookie_ implements Editable
         this.ttl = ttl;
     }
 
+    /**
+     * Name of the cookie.
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * Name of the cookie.
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * Path to set for the cookie.
+     */
     @JsonProperty("path")
     public String getPath() {
         return path;
     }
 
+    /**
+     * Path to set for the cookie.
+     */
     @JsonProperty("path")
     public void setPath(String path) {
         this.path = path;
     }
 
+    /**
+     * Describes a HTTP cookie that will be used as the hash key for the Consistent Hash load balancer.
+     */
     @JsonProperty("ttl")
     public String getTtl() {
         return ttl;
     }
 
+    /**
+     * Describes a HTTP cookie that will be used as the hash key for the Consistent Hash load balancer.
+     */
     @JsonProperty("ttl")
     public void setTtl(String ttl) {
         this.ttl = ttl;

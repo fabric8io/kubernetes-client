@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ClusterMetadata contains information regarding the cluster that was created by installer.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -136,151 +139,241 @@ public class ClusterMetadata implements Editable<ClusterMetadataBuilder>, Kubern
         this.vsphere = vsphere;
     }
 
+    /**
+     * ClusterMetadata contains information regarding the cluster that was created by installer.
+     */
     @JsonProperty("aws")
     public Metadata getAws() {
         return aws;
     }
 
+    /**
+     * ClusterMetadata contains information regarding the cluster that was created by installer.
+     */
     @JsonProperty("aws")
     public void setAws(Metadata aws) {
         this.aws = aws;
     }
 
+    /**
+     * ClusterMetadata contains information regarding the cluster that was created by installer.
+     */
     @JsonProperty("azure")
     public io.fabric8.openshift.api.model.installer.azure.v1.Metadata getAzure() {
         return azure;
     }
 
+    /**
+     * ClusterMetadata contains information regarding the cluster that was created by installer.
+     */
     @JsonProperty("azure")
     public void setAzure(io.fabric8.openshift.api.model.installer.azure.v1.Metadata azure) {
         this.azure = azure;
     }
 
+    /**
+     * ClusterMetadata contains information regarding the cluster that was created by installer.
+     */
     @JsonProperty("baremetal")
     public io.fabric8.openshift.api.model.installer.baremetal.v1.Metadata getBaremetal() {
         return baremetal;
     }
 
+    /**
+     * ClusterMetadata contains information regarding the cluster that was created by installer.
+     */
     @JsonProperty("baremetal")
     public void setBaremetal(io.fabric8.openshift.api.model.installer.baremetal.v1.Metadata baremetal) {
         this.baremetal = baremetal;
     }
 
+    /**
+     * ClusterID is a globally unique ID that is used to identify an Openshift cluster.
+     */
     @JsonProperty("clusterID")
     public String getClusterID() {
         return clusterID;
     }
 
+    /**
+     * ClusterID is a globally unique ID that is used to identify an Openshift cluster.
+     */
     @JsonProperty("clusterID")
     public void setClusterID(String clusterID) {
         this.clusterID = clusterID;
     }
 
+    /**
+     * ClusterName is the name for the cluster.
+     */
     @JsonProperty("clusterName")
     public String getClusterName() {
         return clusterName;
     }
 
+    /**
+     * ClusterName is the name for the cluster.
+     */
     @JsonProperty("clusterName")
     public void setClusterName(String clusterName) {
         this.clusterName = clusterName;
     }
 
+    /**
+     * ClusterMetadata contains information regarding the cluster that was created by installer.
+     */
     @JsonProperty("customFeatureSet")
     public CustomFeatureGates getCustomFeatureSet() {
         return customFeatureSet;
     }
 
+    /**
+     * ClusterMetadata contains information regarding the cluster that was created by installer.
+     */
     @JsonProperty("customFeatureSet")
     public void setCustomFeatureSet(CustomFeatureGates customFeatureSet) {
         this.customFeatureSet = customFeatureSet;
     }
 
+    /**
+     * ClusterMetadata contains information regarding the cluster that was created by installer.
+     */
     @JsonProperty("featureSet")
     public String getFeatureSet() {
         return featureSet;
     }
 
+    /**
+     * ClusterMetadata contains information regarding the cluster that was created by installer.
+     */
     @JsonProperty("featureSet")
     public void setFeatureSet(String featureSet) {
         this.featureSet = featureSet;
     }
 
+    /**
+     * ClusterMetadata contains information regarding the cluster that was created by installer.
+     */
     @JsonProperty("gcp")
     public io.fabric8.openshift.api.model.installer.gcp.v1.Metadata getGcp() {
         return gcp;
     }
 
+    /**
+     * ClusterMetadata contains information regarding the cluster that was created by installer.
+     */
     @JsonProperty("gcp")
     public void setGcp(io.fabric8.openshift.api.model.installer.gcp.v1.Metadata gcp) {
         this.gcp = gcp;
     }
 
+    /**
+     * ClusterMetadata contains information regarding the cluster that was created by installer.
+     */
     @JsonProperty("ibmcloud")
     public io.fabric8.openshift.api.model.installer.ibmcloud.v1.Metadata getIbmcloud() {
         return ibmcloud;
     }
 
+    /**
+     * ClusterMetadata contains information regarding the cluster that was created by installer.
+     */
     @JsonProperty("ibmcloud")
     public void setIbmcloud(io.fabric8.openshift.api.model.installer.ibmcloud.v1.Metadata ibmcloud) {
         this.ibmcloud = ibmcloud;
     }
 
+    /**
+     * InfraID is an ID that is used to identify cloud resources created by the installer.
+     */
     @JsonProperty("infraID")
     public String getInfraID() {
         return infraID;
     }
 
+    /**
+     * InfraID is an ID that is used to identify cloud resources created by the installer.
+     */
     @JsonProperty("infraID")
     public void setInfraID(String infraID) {
         this.infraID = infraID;
     }
 
+    /**
+     * ClusterMetadata contains information regarding the cluster that was created by installer.
+     */
     @JsonProperty("nutanix")
     public io.fabric8.openshift.api.model.installer.nutanix.v1.Metadata getNutanix() {
         return nutanix;
     }
 
+    /**
+     * ClusterMetadata contains information regarding the cluster that was created by installer.
+     */
     @JsonProperty("nutanix")
     public void setNutanix(io.fabric8.openshift.api.model.installer.nutanix.v1.Metadata nutanix) {
         this.nutanix = nutanix;
     }
 
+    /**
+     * ClusterMetadata contains information regarding the cluster that was created by installer.
+     */
     @JsonProperty("openstack")
     public io.fabric8.openshift.api.model.installer.openstack.v1.Metadata getOpenstack() {
         return openstack;
     }
 
+    /**
+     * ClusterMetadata contains information regarding the cluster that was created by installer.
+     */
     @JsonProperty("openstack")
     public void setOpenstack(io.fabric8.openshift.api.model.installer.openstack.v1.Metadata openstack) {
         this.openstack = openstack;
     }
 
+    /**
+     * ClusterMetadata contains information regarding the cluster that was created by installer.
+     */
     @JsonProperty("ovirt")
     public io.fabric8.openshift.api.model.installer.ovirt.v1.Metadata getOvirt() {
         return ovirt;
     }
 
+    /**
+     * ClusterMetadata contains information regarding the cluster that was created by installer.
+     */
     @JsonProperty("ovirt")
     public void setOvirt(io.fabric8.openshift.api.model.installer.ovirt.v1.Metadata ovirt) {
         this.ovirt = ovirt;
     }
 
+    /**
+     * ClusterMetadata contains information regarding the cluster that was created by installer.
+     */
     @JsonProperty("powervs")
     public io.fabric8.openshift.api.model.installer.powervs.v1.Metadata getPowervs() {
         return powervs;
     }
 
+    /**
+     * ClusterMetadata contains information regarding the cluster that was created by installer.
+     */
     @JsonProperty("powervs")
     public void setPowervs(io.fabric8.openshift.api.model.installer.powervs.v1.Metadata powervs) {
         this.powervs = powervs;
     }
 
+    /**
+     * ClusterMetadata contains information regarding the cluster that was created by installer.
+     */
     @JsonProperty("vsphere")
     public io.fabric8.openshift.api.model.installer.vsphere.v1.Metadata getVsphere() {
         return vsphere;
     }
 
+    /**
+     * ClusterMetadata contains information regarding the cluster that was created by installer.
+     */
     @JsonProperty("vsphere")
     public void setVsphere(io.fabric8.openshift.api.model.installer.vsphere.v1.Metadata vsphere) {
         this.vsphere = vsphere;

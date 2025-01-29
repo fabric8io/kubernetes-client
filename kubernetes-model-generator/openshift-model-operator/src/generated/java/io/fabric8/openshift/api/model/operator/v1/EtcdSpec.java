@@ -116,61 +116,97 @@ public class EtcdSpec implements Editable<EtcdSpecBuilder>, KubernetesResource
         this.unsupportedConfigOverrides = unsupportedConfigOverrides;
     }
 
+    /**
+     * backendQuotaGiB sets the etcd backend storage size limit in gibibytes. The value should be an integer not less than 8 and not more than 32. When not specified, the default value is 8.
+     */
     @JsonProperty("backendQuotaGiB")
     public Integer getBackendQuotaGiB() {
         return backendQuotaGiB;
     }
 
+    /**
+     * backendQuotaGiB sets the etcd backend storage size limit in gibibytes. The value should be an integer not less than 8 and not more than 32. When not specified, the default value is 8.
+     */
     @JsonProperty("backendQuotaGiB")
     public void setBackendQuotaGiB(Integer backendQuotaGiB) {
         this.backendQuotaGiB = backendQuotaGiB;
     }
 
+    /**
+     * HardwareSpeed allows user to change the etcd tuning profile which configures the latency parameters for heartbeat interval and leader election timeouts allowing the cluster to tolerate longer round-trip-times between etcd members. Valid values are "", "Standard" and "Slower".<br><p> 	"" means no opinion and the platform is left to choose a reasonable default<br><p> 	which is subject to change without notice.<br><p> <br><p> Possible enum values:<br><p>  - `"Slower"` provides more tolerance for slower hardware and/or higher latency networks. Sets (values subject to change): ETCD_HEARTBEAT_INTERVAL: 5x Standard ETCD_LEADER_ELECTION_TIMEOUT: 2.5x Standard<br><p>  - `"Standard"` provides the normal tolerances for hardware speed and latency. Currently sets (values subject to change at any time): ETCD_HEARTBEAT_INTERVAL: 100ms ETCD_LEADER_ELECTION_TIMEOUT: 1000ms
+     */
     @JsonProperty("controlPlaneHardwareSpeed")
     public String getControlPlaneHardwareSpeed() {
         return controlPlaneHardwareSpeed;
     }
 
+    /**
+     * HardwareSpeed allows user to change the etcd tuning profile which configures the latency parameters for heartbeat interval and leader election timeouts allowing the cluster to tolerate longer round-trip-times between etcd members. Valid values are "", "Standard" and "Slower".<br><p> 	"" means no opinion and the platform is left to choose a reasonable default<br><p> 	which is subject to change without notice.<br><p> <br><p> Possible enum values:<br><p>  - `"Slower"` provides more tolerance for slower hardware and/or higher latency networks. Sets (values subject to change): ETCD_HEARTBEAT_INTERVAL: 5x Standard ETCD_LEADER_ELECTION_TIMEOUT: 2.5x Standard<br><p>  - `"Standard"` provides the normal tolerances for hardware speed and latency. Currently sets (values subject to change at any time): ETCD_HEARTBEAT_INTERVAL: 100ms ETCD_LEADER_ELECTION_TIMEOUT: 1000ms
+     */
     @JsonProperty("controlPlaneHardwareSpeed")
     public void setControlPlaneHardwareSpeed(String controlPlaneHardwareSpeed) {
         this.controlPlaneHardwareSpeed = controlPlaneHardwareSpeed;
     }
 
+    /**
+     * failedRevisionLimit is the number of failed static pod installer revisions to keep on disk and in the api -1 = unlimited, 0 or unset = 5 (default)
+     */
     @JsonProperty("failedRevisionLimit")
     public Integer getFailedRevisionLimit() {
         return failedRevisionLimit;
     }
 
+    /**
+     * failedRevisionLimit is the number of failed static pod installer revisions to keep on disk and in the api -1 = unlimited, 0 or unset = 5 (default)
+     */
     @JsonProperty("failedRevisionLimit")
     public void setFailedRevisionLimit(Integer failedRevisionLimit) {
         this.failedRevisionLimit = failedRevisionLimit;
     }
 
+    /**
+     * forceRedeploymentReason can be used to force the redeployment of the operand by providing a unique string. This provides a mechanism to kick a previously failed deployment and provide a reason why you think it will work this time instead of failing again on the same config.
+     */
     @JsonProperty("forceRedeploymentReason")
     public String getForceRedeploymentReason() {
         return forceRedeploymentReason;
     }
 
+    /**
+     * forceRedeploymentReason can be used to force the redeployment of the operand by providing a unique string. This provides a mechanism to kick a previously failed deployment and provide a reason why you think it will work this time instead of failing again on the same config.
+     */
     @JsonProperty("forceRedeploymentReason")
     public void setForceRedeploymentReason(String forceRedeploymentReason) {
         this.forceRedeploymentReason = forceRedeploymentReason;
     }
 
+    /**
+     * logLevel is an intent based logging for an overall component.  It does not give fine grained control, but it is a simple way to manage coarse grained logging choices that operators have to interpret for their operands.<br><p> <br><p> Valid values are: "Normal", "Debug", "Trace", "TraceAll". Defaults to "Normal".
+     */
     @JsonProperty("logLevel")
     public String getLogLevel() {
         return logLevel;
     }
 
+    /**
+     * logLevel is an intent based logging for an overall component.  It does not give fine grained control, but it is a simple way to manage coarse grained logging choices that operators have to interpret for their operands.<br><p> <br><p> Valid values are: "Normal", "Debug", "Trace", "TraceAll". Defaults to "Normal".
+     */
     @JsonProperty("logLevel")
     public void setLogLevel(String logLevel) {
         this.logLevel = logLevel;
     }
 
+    /**
+     * managementState indicates whether and how the operator should manage the component
+     */
     @JsonProperty("managementState")
     public String getManagementState() {
         return managementState;
     }
 
+    /**
+     * managementState indicates whether and how the operator should manage the component
+     */
     @JsonProperty("managementState")
     public void setManagementState(String managementState) {
         this.managementState = managementState;
@@ -187,21 +223,33 @@ public class EtcdSpec implements Editable<EtcdSpecBuilder>, KubernetesResource
         this.observedConfig = observedConfig;
     }
 
+    /**
+     * operatorLogLevel is an intent based logging for the operator itself.  It does not give fine grained control, but it is a simple way to manage coarse grained logging choices that operators have to interpret for themselves.<br><p> <br><p> Valid values are: "Normal", "Debug", "Trace", "TraceAll". Defaults to "Normal".
+     */
     @JsonProperty("operatorLogLevel")
     public String getOperatorLogLevel() {
         return operatorLogLevel;
     }
 
+    /**
+     * operatorLogLevel is an intent based logging for the operator itself.  It does not give fine grained control, but it is a simple way to manage coarse grained logging choices that operators have to interpret for themselves.<br><p> <br><p> Valid values are: "Normal", "Debug", "Trace", "TraceAll". Defaults to "Normal".
+     */
     @JsonProperty("operatorLogLevel")
     public void setOperatorLogLevel(String operatorLogLevel) {
         this.operatorLogLevel = operatorLogLevel;
     }
 
+    /**
+     * succeededRevisionLimit is the number of successful static pod installer revisions to keep on disk and in the api -1 = unlimited, 0 or unset = 5 (default)
+     */
     @JsonProperty("succeededRevisionLimit")
     public Integer getSucceededRevisionLimit() {
         return succeededRevisionLimit;
     }
 
+    /**
+     * succeededRevisionLimit is the number of successful static pod installer revisions to keep on disk and in the api -1 = unlimited, 0 or unset = 5 (default)
+     */
     @JsonProperty("succeededRevisionLimit")
     public void setSucceededRevisionLimit(Integer succeededRevisionLimit) {
         this.succeededRevisionLimit = succeededRevisionLimit;

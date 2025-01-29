@@ -33,6 +33,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * AddonAgentConfig is the configurations for addon agents.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -100,62 +103,98 @@ public class AddonAgentConfig implements Editable<AddonAgentConfigBuilder>, Kube
         this.nodeSelector = nodeSelector;
     }
 
+    /**
+     * AddonAgentConfig is the configurations for addon agents.
+     */
     @JsonProperty("ImagePullPolicy")
     public String getImagePullPolicy() {
         return imagePullPolicy;
     }
 
+    /**
+     * AddonAgentConfig is the configurations for addon agents.
+     */
     @JsonProperty("ImagePullPolicy")
     public void setImagePullPolicy(String imagePullPolicy) {
         this.imagePullPolicy = imagePullPolicy;
     }
 
+    /**
+     * AddonAgentConfig is the configurations for addon agents.
+     */
     @JsonProperty("ImagePullSecret")
     public String getImagePullSecret() {
         return imagePullSecret;
     }
 
+    /**
+     * AddonAgentConfig is the configurations for addon agents.
+     */
     @JsonProperty("ImagePullSecret")
     public void setImagePullSecret(String imagePullSecret) {
         this.imagePullSecret = imagePullSecret;
     }
 
+    /**
+     * AddonAgentConfig is the configurations for addon agents.
+     */
     @JsonProperty("ImagePullSecretNamespace")
     public String getImagePullSecretNamespace() {
         return imagePullSecretNamespace;
     }
 
+    /**
+     * AddonAgentConfig is the configurations for addon agents.
+     */
     @JsonProperty("ImagePullSecretNamespace")
     public void setImagePullSecretNamespace(String imagePullSecretNamespace) {
         this.imagePullSecretNamespace = imagePullSecretNamespace;
     }
 
+    /**
+     * AddonAgentConfig is the configurations for addon agents.
+     */
     @JsonProperty("KlusterletAddonConfig")
     public KlusterletAddonConfig getKlusterletAddonConfig() {
         return klusterletAddonConfig;
     }
 
+    /**
+     * AddonAgentConfig is the configurations for addon agents.
+     */
     @JsonProperty("KlusterletAddonConfig")
     public void setKlusterletAddonConfig(KlusterletAddonConfig klusterletAddonConfig) {
         this.klusterletAddonConfig = klusterletAddonConfig;
     }
 
+    /**
+     * AddonAgentConfig is the configurations for addon agents.
+     */
     @JsonProperty("ManagedCluster")
     public ManagedCluster getManagedCluster() {
         return managedCluster;
     }
 
+    /**
+     * AddonAgentConfig is the configurations for addon agents.
+     */
     @JsonProperty("ManagedCluster")
     public void setManagedCluster(ManagedCluster managedCluster) {
         this.managedCluster = managedCluster;
     }
 
+    /**
+     * AddonAgentConfig is the configurations for addon agents.
+     */
     @JsonProperty("NodeSelector")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getNodeSelector() {
         return nodeSelector;
     }
 
+    /**
+     * AddonAgentConfig is the configurations for addon agents.
+     */
     @JsonProperty("NodeSelector")
     public void setNodeSelector(Map<String, String> nodeSelector) {
         this.nodeSelector = nodeSelector;

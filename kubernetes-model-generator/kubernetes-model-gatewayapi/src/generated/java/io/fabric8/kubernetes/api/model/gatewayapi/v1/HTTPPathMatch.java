@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * HTTPPathMatch describes how to select a HTTP route by matching the HTTP request path.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class HTTPPathMatch implements Editable<HTTPPathMatchBuilder>, Kubernetes
         this.value = value;
     }
 
+    /**
+     * Type specifies how to match against the path Value.<br><p> <br><p> Support: Core (Exact, PathPrefix)<br><p> <br><p> Support: Implementation-specific (RegularExpression)
+     */
     @JsonProperty("type")
     public String getType() {
         return type;
     }
 
+    /**
+     * Type specifies how to match against the path Value.<br><p> <br><p> Support: Core (Exact, PathPrefix)<br><p> <br><p> Support: Implementation-specific (RegularExpression)
+     */
     @JsonProperty("type")
     public void setType(String type) {
         this.type = type;
     }
 
+    /**
+     * Value of the HTTP path to match against.
+     */
     @JsonProperty("value")
     public String getValue() {
         return value;
     }
 
+    /**
+     * Value of the HTTP path to match against.
+     */
     @JsonProperty("value")
     public void setValue(String value) {
         this.value = value;

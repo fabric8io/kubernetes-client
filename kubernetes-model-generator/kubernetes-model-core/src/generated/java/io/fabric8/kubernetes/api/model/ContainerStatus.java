@@ -19,6 +19,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ContainerStatus contains details for the current status of this container.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -106,144 +109,228 @@ public class ContainerStatus implements Editable<ContainerStatusBuilder>, Kubern
         this.volumeMounts = volumeMounts;
     }
 
+    /**
+     * AllocatedResources represents the compute resources allocated for this container by the node. Kubelet sets this value to Container.Resources.Requests upon successful pod admission and after successfully admitting desired pod resize.
+     */
     @JsonProperty("allocatedResources")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, Quantity> getAllocatedResources() {
         return allocatedResources;
     }
 
+    /**
+     * AllocatedResources represents the compute resources allocated for this container by the node. Kubelet sets this value to Container.Resources.Requests upon successful pod admission and after successfully admitting desired pod resize.
+     */
     @JsonProperty("allocatedResources")
     public void setAllocatedResources(Map<String, Quantity> allocatedResources) {
         this.allocatedResources = allocatedResources;
     }
 
+    /**
+     * AllocatedResourcesStatus represents the status of various resources allocated for this Pod.
+     */
     @JsonProperty("allocatedResourcesStatus")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ResourceStatus> getAllocatedResourcesStatus() {
         return allocatedResourcesStatus;
     }
 
+    /**
+     * AllocatedResourcesStatus represents the status of various resources allocated for this Pod.
+     */
     @JsonProperty("allocatedResourcesStatus")
     public void setAllocatedResourcesStatus(List<ResourceStatus> allocatedResourcesStatus) {
         this.allocatedResourcesStatus = allocatedResourcesStatus;
     }
 
+    /**
+     * ContainerID is the ID of the container in the format '&lt;type&gt;://&lt;container_id&gt;'. Where type is a container runtime identifier, returned from Version call of CRI API (for example "containerd").
+     */
     @JsonProperty("containerID")
     public String getContainerID() {
         return containerID;
     }
 
+    /**
+     * ContainerID is the ID of the container in the format '&lt;type&gt;://&lt;container_id&gt;'. Where type is a container runtime identifier, returned from Version call of CRI API (for example "containerd").
+     */
     @JsonProperty("containerID")
     public void setContainerID(String containerID) {
         this.containerID = containerID;
     }
 
+    /**
+     * Image is the name of container image that the container is running. The container image may not match the image used in the PodSpec, as it may have been resolved by the runtime. More info: https://kubernetes.io/docs/concepts/containers/images.
+     */
     @JsonProperty("image")
     public String getImage() {
         return image;
     }
 
+    /**
+     * Image is the name of container image that the container is running. The container image may not match the image used in the PodSpec, as it may have been resolved by the runtime. More info: https://kubernetes.io/docs/concepts/containers/images.
+     */
     @JsonProperty("image")
     public void setImage(String image) {
         this.image = image;
     }
 
+    /**
+     * ImageID is the image ID of the container's image. The image ID may not match the image ID of the image used in the PodSpec, as it may have been resolved by the runtime.
+     */
     @JsonProperty("imageID")
     public String getImageID() {
         return imageID;
     }
 
+    /**
+     * ImageID is the image ID of the container's image. The image ID may not match the image ID of the image used in the PodSpec, as it may have been resolved by the runtime.
+     */
     @JsonProperty("imageID")
     public void setImageID(String imageID) {
         this.imageID = imageID;
     }
 
+    /**
+     * ContainerStatus contains details for the current status of this container.
+     */
     @JsonProperty("lastState")
     public ContainerState getLastState() {
         return lastState;
     }
 
+    /**
+     * ContainerStatus contains details for the current status of this container.
+     */
     @JsonProperty("lastState")
     public void setLastState(ContainerState lastState) {
         this.lastState = lastState;
     }
 
+    /**
+     * Name is a DNS_LABEL representing the unique name of the container. Each container in a pod must have a unique name across all container types. Cannot be updated.
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * Name is a DNS_LABEL representing the unique name of the container. Each container in a pod must have a unique name across all container types. Cannot be updated.
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * Ready specifies whether the container is currently passing its readiness check. The value will change as readiness probes keep executing. If no readiness probes are specified, this field defaults to true once the container is fully started (see Started field).<br><p> <br><p> The value is typically used to determine whether a container is ready to accept traffic.
+     */
     @JsonProperty("ready")
     public Boolean getReady() {
         return ready;
     }
 
+    /**
+     * Ready specifies whether the container is currently passing its readiness check. The value will change as readiness probes keep executing. If no readiness probes are specified, this field defaults to true once the container is fully started (see Started field).<br><p> <br><p> The value is typically used to determine whether a container is ready to accept traffic.
+     */
     @JsonProperty("ready")
     public void setReady(Boolean ready) {
         this.ready = ready;
     }
 
+    /**
+     * ContainerStatus contains details for the current status of this container.
+     */
     @JsonProperty("resources")
     public ResourceRequirements getResources() {
         return resources;
     }
 
+    /**
+     * ContainerStatus contains details for the current status of this container.
+     */
     @JsonProperty("resources")
     public void setResources(ResourceRequirements resources) {
         this.resources = resources;
     }
 
+    /**
+     * RestartCount holds the number of times the container has been restarted. Kubelet makes an effort to always increment the value, but there are cases when the state may be lost due to node restarts and then the value may be reset to 0. The value is never negative.
+     */
     @JsonProperty("restartCount")
     public Integer getRestartCount() {
         return restartCount;
     }
 
+    /**
+     * RestartCount holds the number of times the container has been restarted. Kubelet makes an effort to always increment the value, but there are cases when the state may be lost due to node restarts and then the value may be reset to 0. The value is never negative.
+     */
     @JsonProperty("restartCount")
     public void setRestartCount(Integer restartCount) {
         this.restartCount = restartCount;
     }
 
+    /**
+     * Started indicates whether the container has finished its postStart lifecycle hook and passed its startup probe. Initialized as false, becomes true after startupProbe is considered successful. Resets to false when the container is restarted, or if kubelet loses state temporarily. In both cases, startup probes will run again. Is always true when no startupProbe is defined and container is running and has passed the postStart lifecycle hook. The null value must be treated the same as false.
+     */
     @JsonProperty("started")
     public Boolean getStarted() {
         return started;
     }
 
+    /**
+     * Started indicates whether the container has finished its postStart lifecycle hook and passed its startup probe. Initialized as false, becomes true after startupProbe is considered successful. Resets to false when the container is restarted, or if kubelet loses state temporarily. In both cases, startup probes will run again. Is always true when no startupProbe is defined and container is running and has passed the postStart lifecycle hook. The null value must be treated the same as false.
+     */
     @JsonProperty("started")
     public void setStarted(Boolean started) {
         this.started = started;
     }
 
+    /**
+     * ContainerStatus contains details for the current status of this container.
+     */
     @JsonProperty("state")
     public ContainerState getState() {
         return state;
     }
 
+    /**
+     * ContainerStatus contains details for the current status of this container.
+     */
     @JsonProperty("state")
     public void setState(ContainerState state) {
         this.state = state;
     }
 
+    /**
+     * ContainerStatus contains details for the current status of this container.
+     */
     @JsonProperty("user")
     public ContainerUser getUser() {
         return user;
     }
 
+    /**
+     * ContainerStatus contains details for the current status of this container.
+     */
     @JsonProperty("user")
     public void setUser(ContainerUser user) {
         this.user = user;
     }
 
+    /**
+     * Status of volume mounts.
+     */
     @JsonProperty("volumeMounts")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<VolumeMountStatus> getVolumeMounts() {
         return volumeMounts;
     }
 
+    /**
+     * Status of volume mounts.
+     */
     @JsonProperty("volumeMounts")
     public void setVolumeMounts(List<VolumeMountStatus> volumeMounts) {
         this.volumeMounts = volumeMounts;

@@ -93,11 +93,17 @@ public class StorageSpec implements Editable<StorageSpecBuilder>, KubernetesReso
         this.size = size;
     }
 
+    /**
+     * name of the storage class
+     */
     @JsonProperty("storageClassName")
     public String getStorageClassName() {
         return storageClassName;
     }
 
+    /**
+     * name of the storage class
+     */
     @JsonProperty("storageClassName")
     public void setStorageClassName(String storageClassName) {
         this.storageClassName = storageClassName;

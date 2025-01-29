@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * OTLPConfig is the configuration for writing to the OTLP endpoint.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -85,22 +88,34 @@ public class OTLPConfig implements Editable<OTLPConfigBuilder>, KubernetesResour
         this.translationStrategy = translationStrategy;
     }
 
+    /**
+     * List of OpenTelemetry Attributes that should be promoted to metric labels, defaults to none.
+     */
     @JsonProperty("promoteResourceAttributes")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getPromoteResourceAttributes() {
         return promoteResourceAttributes;
     }
 
+    /**
+     * List of OpenTelemetry Attributes that should be promoted to metric labels, defaults to none.
+     */
     @JsonProperty("promoteResourceAttributes")
     public void setPromoteResourceAttributes(List<String> promoteResourceAttributes) {
         this.promoteResourceAttributes = promoteResourceAttributes;
     }
 
+    /**
+     * Configures how the OTLP receiver endpoint translates the incoming metrics. If unset, Prometheus uses its default value.<br><p> <br><p> It requires Prometheus &gt;= v3.0.0.
+     */
     @JsonProperty("translationStrategy")
     public String getTranslationStrategy() {
         return translationStrategy;
     }
 
+    /**
+     * Configures how the OTLP receiver endpoint translates the incoming metrics. If unset, Prometheus uses its default value.<br><p> <br><p> It requires Prometheus &gt;= v3.0.0.
+     */
     @JsonProperty("translationStrategy")
     public void setTranslationStrategy(String translationStrategy) {
         this.translationStrategy = translationStrategy;

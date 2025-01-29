@@ -17,6 +17,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * The weights of all of the matched WeightedPodAffinityTerm fields are added per-node to find the most preferred node(s)
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -53,21 +56,33 @@ public class WeightedPodAffinityTerm implements Editable<WeightedPodAffinityTerm
         this.weight = weight;
     }
 
+    /**
+     * The weights of all of the matched WeightedPodAffinityTerm fields are added per-node to find the most preferred node(s)
+     */
     @JsonProperty("podAffinityTerm")
     public PodAffinityTerm getPodAffinityTerm() {
         return podAffinityTerm;
     }
 
+    /**
+     * The weights of all of the matched WeightedPodAffinityTerm fields are added per-node to find the most preferred node(s)
+     */
     @JsonProperty("podAffinityTerm")
     public void setPodAffinityTerm(PodAffinityTerm podAffinityTerm) {
         this.podAffinityTerm = podAffinityTerm;
     }
 
+    /**
+     * weight associated with matching the corresponding podAffinityTerm, in the range 1-100.
+     */
     @JsonProperty("weight")
     public Integer getWeight() {
         return weight;
     }
 
+    /**
+     * weight associated with matching the corresponding podAffinityTerm, in the range 1-100.
+     */
     @JsonProperty("weight")
     public void setWeight(Integer weight) {
         this.weight = weight;

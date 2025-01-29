@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * NutanixFailureDomain configures failure domain information for the Nutanix platform.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -89,32 +92,50 @@ public class NutanixFailureDomain implements Editable<NutanixFailureDomainBuilde
         this.subnets = subnets;
     }
 
+    /**
+     * NutanixFailureDomain configures failure domain information for the Nutanix platform.
+     */
     @JsonProperty("cluster")
     public NutanixResourceIdentifier getCluster() {
         return cluster;
     }
 
+    /**
+     * NutanixFailureDomain configures failure domain information for the Nutanix platform.
+     */
     @JsonProperty("cluster")
     public void setCluster(NutanixResourceIdentifier cluster) {
         this.cluster = cluster;
     }
 
+    /**
+     * name defines the unique name of a failure domain. Name is required and must be at most 64 characters in length. It must consist of only lower case alphanumeric characters and hyphens (-). It must start and end with an alphanumeric character. This value is arbitrary and is used to identify the failure domain within the platform.
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * name defines the unique name of a failure domain. Name is required and must be at most 64 characters in length. It must consist of only lower case alphanumeric characters and hyphens (-). It must start and end with an alphanumeric character. This value is arbitrary and is used to identify the failure domain within the platform.
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * subnets holds a list of identifiers (one or more) of the cluster's network subnets for the Machine's VM to connect to. The subnet identifiers (uuid or name) can be obtained from the Prism Central console or using the prism_central API.
+     */
     @JsonProperty("subnets")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<NutanixResourceIdentifier> getSubnets() {
         return subnets;
     }
 
+    /**
+     * subnets holds a list of identifiers (one or more) of the cluster's network subnets for the Machine's VM to connect to. The subnet identifiers (uuid or name) can be obtained from the Prism Central console or using the prism_central API.
+     */
     @JsonProperty("subnets")
     public void setSubnets(List<NutanixResourceIdentifier> subnets) {
         this.subnets = subnets;

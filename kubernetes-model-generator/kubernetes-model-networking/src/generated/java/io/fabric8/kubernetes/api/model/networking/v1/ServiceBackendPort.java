@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ServiceBackendPort is the service port being referenced.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class ServiceBackendPort implements Editable<ServiceBackendPortBuilder>, 
         this.number = number;
     }
 
+    /**
+     * name is the name of the port on the Service. This is a mutually exclusive setting with "Number".
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * name is the name of the port on the Service. This is a mutually exclusive setting with "Number".
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * number is the numerical port number (e.g. 80) on the Service. This is a mutually exclusive setting with "Name".
+     */
     @JsonProperty("number")
     public Integer getNumber() {
         return number;
     }
 
+    /**
+     * number is the numerical port number (e.g. 80) on the Service. This is a mutually exclusive setting with "Name".
+     */
     @JsonProperty("number")
     public void setNumber(Integer number) {
         this.number = number;

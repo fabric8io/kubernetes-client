@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Used to bind Telemetry configuration to specific providers for targeted customization.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -78,11 +81,17 @@ public class ProviderRef implements Editable<ProviderRefBuilder>, KubernetesReso
         this.name = name;
     }
 
+    /**
+     * Required. Name of Telemetry provider in [MeshConfig](https://istio.io/latest/docs/reference/config/istio.mesh.v1alpha1/#MeshConfig-ExtensionProvider).
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * Required. Name of Telemetry provider in [MeshConfig](https://istio.io/latest/docs/reference/config/istio.mesh.v1alpha1/#MeshConfig-ExtensionProvider).
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;

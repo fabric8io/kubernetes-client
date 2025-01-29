@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ConsoleProviders defines a list of optional additional providers of functionality to the console.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -78,11 +81,17 @@ public class ConsoleProviders implements Editable<ConsoleProvidersBuilder>, Kube
         this.statuspage = statuspage;
     }
 
+    /**
+     * ConsoleProviders defines a list of optional additional providers of functionality to the console.
+     */
     @JsonProperty("statuspage")
     public StatuspageProvider getStatuspage() {
         return statuspage;
     }
 
+    /**
+     * ConsoleProviders defines a list of optional additional providers of functionality to the console.
+     */
     @JsonProperty("statuspage")
     public void setStatuspage(StatuspageProvider statuspage) {
         this.statuspage = statuspage;

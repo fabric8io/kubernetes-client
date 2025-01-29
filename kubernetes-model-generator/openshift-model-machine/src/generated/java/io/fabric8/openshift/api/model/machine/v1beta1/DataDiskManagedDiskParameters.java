@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * DataDiskManagedDiskParameters is the parameters of a DataDisk managed disk.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class DataDiskManagedDiskParameters implements Editable<DataDiskManagedDi
         this.storageAccountType = storageAccountType;
     }
 
+    /**
+     * DataDiskManagedDiskParameters is the parameters of a DataDisk managed disk.
+     */
     @JsonProperty("diskEncryptionSet")
     public DiskEncryptionSetParameters getDiskEncryptionSet() {
         return diskEncryptionSet;
     }
 
+    /**
+     * DataDiskManagedDiskParameters is the parameters of a DataDisk managed disk.
+     */
     @JsonProperty("diskEncryptionSet")
     public void setDiskEncryptionSet(DiskEncryptionSetParameters diskEncryptionSet) {
         this.diskEncryptionSet = diskEncryptionSet;
     }
 
+    /**
+     * StorageAccountType is the storage account type to use. Possible values include "Standard_LRS", "Premium_LRS" and "UltraSSD_LRS".
+     */
     @JsonProperty("storageAccountType")
     public String getStorageAccountType() {
         return storageAccountType;
     }
 
+    /**
+     * StorageAccountType is the storage account type to use. Possible values include "Standard_LRS", "Premium_LRS" and "UltraSSD_LRS".
+     */
     @JsonProperty("storageAccountType")
     public void setStorageAccountType(String storageAccountType) {
         this.storageAccountType = storageAccountType;

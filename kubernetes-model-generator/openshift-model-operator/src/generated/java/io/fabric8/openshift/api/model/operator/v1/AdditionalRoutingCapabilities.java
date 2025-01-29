@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * AdditionalRoutingCapabilities describes components and relevant configuration providing advanced routing capabilities.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -81,12 +84,18 @@ public class AdditionalRoutingCapabilities implements Editable<AdditionalRouting
         this.providers = providers;
     }
 
+    /**
+     * providers is a set of enabled components that provide additional routing capabilities. Entries on this list must be unique. The  only valid value is currrently "FRR" which provides FRR routing capabilities through the deployment of FRR.
+     */
     @JsonProperty("providers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getProviders() {
         return providers;
     }
 
+    /**
+     * providers is a set of enabled components that provide additional routing capabilities. Entries on this list must be unique. The  only valid value is currrently "FRR" which provides FRR routing capabilities through the deployment of FRR.
+     */
     @JsonProperty("providers")
     public void setProviders(List<String> providers) {
         this.providers = providers;

@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Image holds the details of an image to use during provisioning.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -90,41 +93,65 @@ public class Image implements Editable<ImageBuilder>, KubernetesResource
         this.url = url;
     }
 
+    /**
+     * Checksum is a md5sum, sha256sum or sha512sum value or a URL to retrieve one.
+     */
     @JsonProperty("checksum")
     public String getChecksum() {
         return checksum;
     }
 
+    /**
+     * Checksum is a md5sum, sha256sum or sha512sum value or a URL to retrieve one.
+     */
     @JsonProperty("checksum")
     public void setChecksum(String checksum) {
         this.checksum = checksum;
     }
 
+    /**
+     * ChecksumType is the checksum algorithm for the image. e.g md5, sha256, sha512
+     */
     @JsonProperty("checksumType")
     public String getChecksumType() {
         return checksumType;
     }
 
+    /**
+     * ChecksumType is the checksum algorithm for the image. e.g md5, sha256, sha512
+     */
     @JsonProperty("checksumType")
     public void setChecksumType(String checksumType) {
         this.checksumType = checksumType;
     }
 
+    /**
+     * DiskFormat contains the image disk format.
+     */
     @JsonProperty("format")
     public String getFormat() {
         return format;
     }
 
+    /**
+     * DiskFormat contains the image disk format.
+     */
     @JsonProperty("format")
     public void setFormat(String format) {
         this.format = format;
     }
 
+    /**
+     * URL is a location of an image to deploy.
+     */
     @JsonProperty("url")
     public String getUrl() {
         return url;
     }
 
+    /**
+     * URL is a location of an image to deploy.
+     */
     @JsonProperty("url")
     public void setUrl(String url) {
         this.url = url;

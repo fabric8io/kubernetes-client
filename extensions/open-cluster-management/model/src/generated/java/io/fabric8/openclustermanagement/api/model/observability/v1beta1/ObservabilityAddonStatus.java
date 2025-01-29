@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ObservabilityAddonStatus defines the observed state of ObservabilityAddon
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -81,12 +84,18 @@ public class ObservabilityAddonStatus implements Editable<ObservabilityAddonStat
         this.conditions = conditions;
     }
 
+    /**
+     * ObservabilityAddonStatus defines the observed state of ObservabilityAddon
+     */
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<StatusCondition> getConditions() {
         return conditions;
     }
 
+    /**
+     * ObservabilityAddonStatus defines the observed state of ObservabilityAddon
+     */
     @JsonProperty("conditions")
     public void setConditions(List<StatusCondition> conditions) {
         this.conditions = conditions;

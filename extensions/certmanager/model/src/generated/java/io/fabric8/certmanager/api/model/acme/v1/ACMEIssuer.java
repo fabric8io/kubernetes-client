@@ -35,6 +35,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ACMEIssuer contains the specification for an ACME issuer. This uses the RFC8555 specification to obtain certificates by completing 'challenges' to prove ownership of domain identifiers. Earlier draft versions of the ACME specification are not supported.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -118,102 +121,162 @@ public class ACMEIssuer implements Editable<ACMEIssuerBuilder>, KubernetesResour
         this.solvers = solvers;
     }
 
+    /**
+     * Base64-encoded bundle of PEM CAs which can be used to validate the certificate chain presented by the ACME server. Mutually exclusive with SkipTLSVerify; prefer using CABundle to prevent various kinds of security vulnerabilities. If CABundle and SkipTLSVerify are unset, the system certificate bundle inside the container is used to validate the TLS connection.
+     */
     @JsonProperty("caBundle")
     public String getCaBundle() {
         return caBundle;
     }
 
+    /**
+     * Base64-encoded bundle of PEM CAs which can be used to validate the certificate chain presented by the ACME server. Mutually exclusive with SkipTLSVerify; prefer using CABundle to prevent various kinds of security vulnerabilities. If CABundle and SkipTLSVerify are unset, the system certificate bundle inside the container is used to validate the TLS connection.
+     */
     @JsonProperty("caBundle")
     public void setCaBundle(String caBundle) {
         this.caBundle = caBundle;
     }
 
+    /**
+     * Enables or disables generating a new ACME account key. If true, the Issuer resource will &#42;not&#42; request a new account but will expect the account key to be supplied via an existing secret. If false, the cert-manager system will generate a new ACME account key for the Issuer. Defaults to false.
+     */
     @JsonProperty("disableAccountKeyGeneration")
     public Boolean getDisableAccountKeyGeneration() {
         return disableAccountKeyGeneration;
     }
 
+    /**
+     * Enables or disables generating a new ACME account key. If true, the Issuer resource will &#42;not&#42; request a new account but will expect the account key to be supplied via an existing secret. If false, the cert-manager system will generate a new ACME account key for the Issuer. Defaults to false.
+     */
     @JsonProperty("disableAccountKeyGeneration")
     public void setDisableAccountKeyGeneration(Boolean disableAccountKeyGeneration) {
         this.disableAccountKeyGeneration = disableAccountKeyGeneration;
     }
 
+    /**
+     * Email is the email address to be associated with the ACME account. This field is optional, but it is strongly recommended to be set. It will be used to contact you in case of issues with your account or certificates, including expiry notification emails. This field may be updated after the account is initially registered.
+     */
     @JsonProperty("email")
     public String getEmail() {
         return email;
     }
 
+    /**
+     * Email is the email address to be associated with the ACME account. This field is optional, but it is strongly recommended to be set. It will be used to contact you in case of issues with your account or certificates, including expiry notification emails. This field may be updated after the account is initially registered.
+     */
     @JsonProperty("email")
     public void setEmail(String email) {
         this.email = email;
     }
 
+    /**
+     * Enables requesting a Not After date on certificates that matches the duration of the certificate. This is not supported by all ACME servers like Let's Encrypt. If set to true when the ACME server does not support it, it will create an error on the Order. Defaults to false.
+     */
     @JsonProperty("enableDurationFeature")
     public Boolean getEnableDurationFeature() {
         return enableDurationFeature;
     }
 
+    /**
+     * Enables requesting a Not After date on certificates that matches the duration of the certificate. This is not supported by all ACME servers like Let's Encrypt. If set to true when the ACME server does not support it, it will create an error on the Order. Defaults to false.
+     */
     @JsonProperty("enableDurationFeature")
     public void setEnableDurationFeature(Boolean enableDurationFeature) {
         this.enableDurationFeature = enableDurationFeature;
     }
 
+    /**
+     * ACMEIssuer contains the specification for an ACME issuer. This uses the RFC8555 specification to obtain certificates by completing 'challenges' to prove ownership of domain identifiers. Earlier draft versions of the ACME specification are not supported.
+     */
     @JsonProperty("externalAccountBinding")
     public ACMEExternalAccountBinding getExternalAccountBinding() {
         return externalAccountBinding;
     }
 
+    /**
+     * ACMEIssuer contains the specification for an ACME issuer. This uses the RFC8555 specification to obtain certificates by completing 'challenges' to prove ownership of domain identifiers. Earlier draft versions of the ACME specification are not supported.
+     */
     @JsonProperty("externalAccountBinding")
     public void setExternalAccountBinding(ACMEExternalAccountBinding externalAccountBinding) {
         this.externalAccountBinding = externalAccountBinding;
     }
 
+    /**
+     * PreferredChain is the chain to use if the ACME server outputs multiple. PreferredChain is no guarantee that this one gets delivered by the ACME endpoint. For example, for Let's Encrypt's DST crosssign you would use: "DST Root CA X3" or "ISRG Root X1" for the newer Let's Encrypt root CA. This value picks the first certificate bundle in the combined set of ACME default and alternative chains that has a root-most certificate with this value as its issuer's commonname.
+     */
     @JsonProperty("preferredChain")
     public String getPreferredChain() {
         return preferredChain;
     }
 
+    /**
+     * PreferredChain is the chain to use if the ACME server outputs multiple. PreferredChain is no guarantee that this one gets delivered by the ACME endpoint. For example, for Let's Encrypt's DST crosssign you would use: "DST Root CA X3" or "ISRG Root X1" for the newer Let's Encrypt root CA. This value picks the first certificate bundle in the combined set of ACME default and alternative chains that has a root-most certificate with this value as its issuer's commonname.
+     */
     @JsonProperty("preferredChain")
     public void setPreferredChain(String preferredChain) {
         this.preferredChain = preferredChain;
     }
 
+    /**
+     * ACMEIssuer contains the specification for an ACME issuer. This uses the RFC8555 specification to obtain certificates by completing 'challenges' to prove ownership of domain identifiers. Earlier draft versions of the ACME specification are not supported.
+     */
     @JsonProperty("privateKeySecretRef")
     public SecretKeySelector getPrivateKeySecretRef() {
         return privateKeySecretRef;
     }
 
+    /**
+     * ACMEIssuer contains the specification for an ACME issuer. This uses the RFC8555 specification to obtain certificates by completing 'challenges' to prove ownership of domain identifiers. Earlier draft versions of the ACME specification are not supported.
+     */
     @JsonProperty("privateKeySecretRef")
     public void setPrivateKeySecretRef(SecretKeySelector privateKeySecretRef) {
         this.privateKeySecretRef = privateKeySecretRef;
     }
 
+    /**
+     * Server is the URL used to access the ACME server's 'directory' endpoint. For example, for Let's Encrypt's staging endpoint, you would use: "https://acme-staging-v02.api.letsencrypt.org/directory". Only ACME v2 endpoints (i.e. RFC 8555) are supported.
+     */
     @JsonProperty("server")
     public String getServer() {
         return server;
     }
 
+    /**
+     * Server is the URL used to access the ACME server's 'directory' endpoint. For example, for Let's Encrypt's staging endpoint, you would use: "https://acme-staging-v02.api.letsencrypt.org/directory". Only ACME v2 endpoints (i.e. RFC 8555) are supported.
+     */
     @JsonProperty("server")
     public void setServer(String server) {
         this.server = server;
     }
 
+    /**
+     * INSECURE: Enables or disables validation of the ACME server TLS certificate. If true, requests to the ACME server will not have the TLS certificate chain validated. Mutually exclusive with CABundle; prefer using CABundle to prevent various kinds of security vulnerabilities. Only enable this option in development environments. If CABundle and SkipTLSVerify are unset, the system certificate bundle inside the container is used to validate the TLS connection. Defaults to false.
+     */
     @JsonProperty("skipTLSVerify")
     public Boolean getSkipTLSVerify() {
         return skipTLSVerify;
     }
 
+    /**
+     * INSECURE: Enables or disables validation of the ACME server TLS certificate. If true, requests to the ACME server will not have the TLS certificate chain validated. Mutually exclusive with CABundle; prefer using CABundle to prevent various kinds of security vulnerabilities. Only enable this option in development environments. If CABundle and SkipTLSVerify are unset, the system certificate bundle inside the container is used to validate the TLS connection. Defaults to false.
+     */
     @JsonProperty("skipTLSVerify")
     public void setSkipTLSVerify(Boolean skipTLSVerify) {
         this.skipTLSVerify = skipTLSVerify;
     }
 
+    /**
+     * Solvers is a list of challenge solvers that will be used to solve ACME challenges for the matching domains. Solver configurations must be provided in order to obtain certificates from an ACME server. For more information, see: https://cert-manager.io/docs/configuration/acme/
+     */
     @JsonProperty("solvers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ACMEChallengeSolver> getSolvers() {
         return solvers;
     }
 
+    /**
+     * Solvers is a list of challenge solvers that will be used to solve ACME challenges for the matching domains. Solver configurations must be provided in order to obtain certificates from an ACME server. For more information, see: https://cert-manager.io/docs/configuration/acme/
+     */
     @JsonProperty("solvers")
     public void setSolvers(List<ACMEChallengeSolver> solvers) {
         this.solvers = solvers;

@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * NamedInstallStrategy represents the block of an ClusterServiceVersion resource where the install strategy is specified.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class NamedInstallStrategy implements Editable<NamedInstallStrategyBuilde
         this.strategy = strategy;
     }
 
+    /**
+     * NamedInstallStrategy represents the block of an ClusterServiceVersion resource where the install strategy is specified.
+     */
     @JsonProperty("spec")
     public StrategyDetailsDeployment getSpec() {
         return spec;
     }
 
+    /**
+     * NamedInstallStrategy represents the block of an ClusterServiceVersion resource where the install strategy is specified.
+     */
     @JsonProperty("spec")
     public void setSpec(StrategyDetailsDeployment spec) {
         this.spec = spec;
     }
 
+    /**
+     * NamedInstallStrategy represents the block of an ClusterServiceVersion resource where the install strategy is specified.
+     */
     @JsonProperty("strategy")
     public String getStrategy() {
         return strategy;
     }
 
+    /**
+     * NamedInstallStrategy represents the block of an ClusterServiceVersion resource where the install strategy is specified.
+     */
     @JsonProperty("strategy")
     public void setStrategy(String strategy) {
         this.strategy = strategy;

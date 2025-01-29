@@ -36,6 +36,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * TaskRunSpec defines the desired state of TaskRun
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -138,145 +141,229 @@ public class TaskRunSpec implements Editable<TaskRunSpecBuilder>, KubernetesReso
         this.workspaces = workspaces;
     }
 
+    /**
+     * TaskRunSpec defines the desired state of TaskRun
+     */
     @JsonProperty("computeResources")
     public ResourceRequirements getComputeResources() {
         return computeResources;
     }
 
+    /**
+     * TaskRunSpec defines the desired state of TaskRun
+     */
     @JsonProperty("computeResources")
     public void setComputeResources(ResourceRequirements computeResources) {
         this.computeResources = computeResources;
     }
 
+    /**
+     * TaskRunSpec defines the desired state of TaskRun
+     */
     @JsonProperty("debug")
     public TaskRunDebug getDebug() {
         return debug;
     }
 
+    /**
+     * TaskRunSpec defines the desired state of TaskRun
+     */
     @JsonProperty("debug")
     public void setDebug(TaskRunDebug debug) {
         this.debug = debug;
     }
 
+    /**
+     * TaskRunSpec defines the desired state of TaskRun
+     */
     @JsonProperty("params")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Param> getParams() {
         return params;
     }
 
+    /**
+     * TaskRunSpec defines the desired state of TaskRun
+     */
     @JsonProperty("params")
     public void setParams(List<Param> params) {
         this.params = params;
     }
 
+    /**
+     * TaskRunSpec defines the desired state of TaskRun
+     */
     @JsonProperty("podTemplate")
     public Template getPodTemplate() {
         return podTemplate;
     }
 
+    /**
+     * TaskRunSpec defines the desired state of TaskRun
+     */
     @JsonProperty("podTemplate")
     public void setPodTemplate(Template podTemplate) {
         this.podTemplate = podTemplate;
     }
 
+    /**
+     * Retries represents how many times this TaskRun should be retried in the event of task failure.
+     */
     @JsonProperty("retries")
     public Integer getRetries() {
         return retries;
     }
 
+    /**
+     * Retries represents how many times this TaskRun should be retried in the event of task failure.
+     */
     @JsonProperty("retries")
     public void setRetries(Integer retries) {
         this.retries = retries;
     }
 
+    /**
+     * TaskRunSpec defines the desired state of TaskRun
+     */
     @JsonProperty("serviceAccountName")
     public String getServiceAccountName() {
         return serviceAccountName;
     }
 
+    /**
+     * TaskRunSpec defines the desired state of TaskRun
+     */
     @JsonProperty("serviceAccountName")
     public void setServiceAccountName(String serviceAccountName) {
         this.serviceAccountName = serviceAccountName;
     }
 
+    /**
+     * Specs to apply to Sidecars in this TaskRun. If a field is specified in both a Sidecar and a SidecarSpec, the value from the SidecarSpec will be used. This field is only supported when the alpha feature gate is enabled.
+     */
     @JsonProperty("sidecarSpecs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<TaskRunSidecarSpec> getSidecarSpecs() {
         return sidecarSpecs;
     }
 
+    /**
+     * Specs to apply to Sidecars in this TaskRun. If a field is specified in both a Sidecar and a SidecarSpec, the value from the SidecarSpec will be used. This field is only supported when the alpha feature gate is enabled.
+     */
     @JsonProperty("sidecarSpecs")
     public void setSidecarSpecs(List<TaskRunSidecarSpec> sidecarSpecs) {
         this.sidecarSpecs = sidecarSpecs;
     }
 
+    /**
+     * Used for cancelling a TaskRun (and maybe more later on)
+     */
     @JsonProperty("status")
     public String getStatus() {
         return status;
     }
 
+    /**
+     * Used for cancelling a TaskRun (and maybe more later on)
+     */
     @JsonProperty("status")
     public void setStatus(String status) {
         this.status = status;
     }
 
+    /**
+     * Status message for cancellation.
+     */
     @JsonProperty("statusMessage")
     public String getStatusMessage() {
         return statusMessage;
     }
 
+    /**
+     * Status message for cancellation.
+     */
     @JsonProperty("statusMessage")
     public void setStatusMessage(String statusMessage) {
         this.statusMessage = statusMessage;
     }
 
+    /**
+     * Specs to apply to Steps in this TaskRun. If a field is specified in both a Step and a StepSpec, the value from the StepSpec will be used. This field is only supported when the alpha feature gate is enabled.
+     */
     @JsonProperty("stepSpecs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<TaskRunStepSpec> getStepSpecs() {
         return stepSpecs;
     }
 
+    /**
+     * Specs to apply to Steps in this TaskRun. If a field is specified in both a Step and a StepSpec, the value from the StepSpec will be used. This field is only supported when the alpha feature gate is enabled.
+     */
     @JsonProperty("stepSpecs")
     public void setStepSpecs(List<TaskRunStepSpec> stepSpecs) {
         this.stepSpecs = stepSpecs;
     }
 
+    /**
+     * TaskRunSpec defines the desired state of TaskRun
+     */
     @JsonProperty("taskRef")
     public TaskRef getTaskRef() {
         return taskRef;
     }
 
+    /**
+     * TaskRunSpec defines the desired state of TaskRun
+     */
     @JsonProperty("taskRef")
     public void setTaskRef(TaskRef taskRef) {
         this.taskRef = taskRef;
     }
 
+    /**
+     * TaskRunSpec defines the desired state of TaskRun
+     */
     @JsonProperty("taskSpec")
     public TaskSpec getTaskSpec() {
         return taskSpec;
     }
 
+    /**
+     * TaskRunSpec defines the desired state of TaskRun
+     */
     @JsonProperty("taskSpec")
     public void setTaskSpec(TaskSpec taskSpec) {
         this.taskSpec = taskSpec;
     }
 
+    /**
+     * TaskRunSpec defines the desired state of TaskRun
+     */
     @JsonProperty("timeout")
     public Duration getTimeout() {
         return timeout;
     }
 
+    /**
+     * TaskRunSpec defines the desired state of TaskRun
+     */
     @JsonProperty("timeout")
     public void setTimeout(Duration timeout) {
         this.timeout = timeout;
     }
 
+    /**
+     * Workspaces is a list of WorkspaceBindings from volumes to workspaces.
+     */
     @JsonProperty("workspaces")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<WorkspaceBinding> getWorkspaces() {
         return workspaces;
     }
 
+    /**
+     * Workspaces is a list of WorkspaceBindings from volumes to workspaces.
+     */
     @JsonProperty("workspaces")
     public void setWorkspaces(List<WorkspaceBinding> workspaces) {
         this.workspaces = workspaces;

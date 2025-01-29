@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * PipelineSpec defines the desired state of Pipeline.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -109,76 +112,118 @@ public class PipelineSpec implements Editable<PipelineSpecBuilder>, KubernetesRe
         this.workspaces = workspaces;
     }
 
+    /**
+     * Description is a user-facing description of the pipeline that may be used to populate a UI.
+     */
     @JsonProperty("description")
     public String getDescription() {
         return description;
     }
 
+    /**
+     * Description is a user-facing description of the pipeline that may be used to populate a UI.
+     */
     @JsonProperty("description")
     public void setDescription(String description) {
         this.description = description;
     }
 
+    /**
+     * DisplayName is a user-facing name of the pipeline that may be used to populate a UI.
+     */
     @JsonProperty("displayName")
     public String getDisplayName() {
         return displayName;
     }
 
+    /**
+     * DisplayName is a user-facing name of the pipeline that may be used to populate a UI.
+     */
     @JsonProperty("displayName")
     public void setDisplayName(String displayName) {
         this.displayName = displayName;
     }
 
+    /**
+     * Finally declares the list of Tasks that execute just before leaving the Pipeline i.e. either after all Tasks are finished executing successfully or after a failure which would result in ending the Pipeline
+     */
     @JsonProperty("finally")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<PipelineTask> getFinally() {
         return _finally;
     }
 
+    /**
+     * Finally declares the list of Tasks that execute just before leaving the Pipeline i.e. either after all Tasks are finished executing successfully or after a failure which would result in ending the Pipeline
+     */
     @JsonProperty("finally")
     public void setFinally(List<PipelineTask> _finally) {
         this._finally = _finally;
     }
 
+    /**
+     * Params declares a list of input parameters that must be supplied when this Pipeline is run.
+     */
     @JsonProperty("params")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ParamSpec> getParams() {
         return params;
     }
 
+    /**
+     * Params declares a list of input parameters that must be supplied when this Pipeline is run.
+     */
     @JsonProperty("params")
     public void setParams(List<ParamSpec> params) {
         this.params = params;
     }
 
+    /**
+     * Results are values that this pipeline can output once run
+     */
     @JsonProperty("results")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<PipelineResult> getResults() {
         return results;
     }
 
+    /**
+     * Results are values that this pipeline can output once run
+     */
     @JsonProperty("results")
     public void setResults(List<PipelineResult> results) {
         this.results = results;
     }
 
+    /**
+     * Tasks declares the graph of Tasks that execute when this Pipeline is run.
+     */
     @JsonProperty("tasks")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<PipelineTask> getTasks() {
         return tasks;
     }
 
+    /**
+     * Tasks declares the graph of Tasks that execute when this Pipeline is run.
+     */
     @JsonProperty("tasks")
     public void setTasks(List<PipelineTask> tasks) {
         this.tasks = tasks;
     }
 
+    /**
+     * Workspaces declares a set of named workspaces that are expected to be provided by a PipelineRun.
+     */
     @JsonProperty("workspaces")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<PipelineWorkspaceDeclaration> getWorkspaces() {
         return workspaces;
     }
 
+    /**
+     * Workspaces declares a set of named workspaces that are expected to be provided by a PipelineRun.
+     */
     @JsonProperty("workspaces")
     public void setWorkspaces(List<PipelineWorkspaceDeclaration> workspaces) {
         this.workspaces = workspaces;

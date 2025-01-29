@@ -92,11 +92,17 @@ public class DaemonSetUpdateStrategy implements Editable<DaemonSetUpdateStrategy
         this.rollingUpdate = rollingUpdate;
     }
 
+    /**
+     * Type of daemon set update. Can be "RollingUpdate" or "OnDelete". Default is OnDelete.
+     */
     @JsonProperty("type")
     public String getType() {
         return type;
     }
 
+    /**
+     * Type of daemon set update. Can be "RollingUpdate" or "OnDelete". Default is OnDelete.
+     */
     @JsonProperty("type")
     public void setType(String type) {
         this.type = type;

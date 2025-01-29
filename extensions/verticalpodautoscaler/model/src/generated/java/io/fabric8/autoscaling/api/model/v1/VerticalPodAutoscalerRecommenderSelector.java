@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * VerticalPodAutoscalerRecommenderSelector points to a specific Vertical Pod Autoscaler recommender. In the future it might pass parameters to the recommender.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -78,11 +81,17 @@ public class VerticalPodAutoscalerRecommenderSelector implements Editable<Vertic
         this.name = name;
     }
 
+    /**
+     * Name of the recommender responsible for generating recommendation for this object.
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * Name of the recommender responsible for generating recommendation for this object.
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;

@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Spec of the storage version migration.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class StorageVersionMigrationSpec implements Editable<StorageVersionMigra
         this.resource = resource;
     }
 
+    /**
+     * The token used in the list options to get the next chunk of objects to migrate. When the .status.conditions indicates the migration is "Running", users can use this token to check the progress of the migration.
+     */
     @JsonProperty("continueToken")
     public String getContinueToken() {
         return continueToken;
     }
 
+    /**
+     * The token used in the list options to get the next chunk of objects to migrate. When the .status.conditions indicates the migration is "Running", users can use this token to check the progress of the migration.
+     */
     @JsonProperty("continueToken")
     public void setContinueToken(String continueToken) {
         this.continueToken = continueToken;
     }
 
+    /**
+     * Spec of the storage version migration.
+     */
     @JsonProperty("resource")
     public GroupVersionResource getResource() {
         return resource;
     }
 
+    /**
+     * Spec of the storage version migration.
+     */
     @JsonProperty("resource")
     public void setResource(GroupVersionResource resource) {
         this.resource = resource;

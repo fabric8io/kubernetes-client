@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ScoreCoordinate represents the configuration of the score type and score source
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -86,31 +89,49 @@ public class ScoreCoordinate implements Editable<ScoreCoordinateBuilder>, Kubern
         this.type = type;
     }
 
+    /**
+     * ScoreCoordinate represents the configuration of the score type and score source
+     */
     @JsonProperty("addOn")
     public AddOnScore getAddOn() {
         return addOn;
     }
 
+    /**
+     * ScoreCoordinate represents the configuration of the score type and score source
+     */
     @JsonProperty("addOn")
     public void setAddOn(AddOnScore addOn) {
         this.addOn = addOn;
     }
 
+    /**
+     * BuiltIn defines the name of a BuiltIn prioritizer. Below are the valid BuiltIn prioritizer names. 1) Balance: balance the decisions among the clusters. 2) Steady: ensure the existing decision is stabilized. 3) ResourceAllocatableCPU &amp; ResourceAllocatableMemory: sort clusters based on the allocatable. 4) Spread: spread the workload evenly to topologies.
+     */
     @JsonProperty("builtIn")
     public String getBuiltIn() {
         return builtIn;
     }
 
+    /**
+     * BuiltIn defines the name of a BuiltIn prioritizer. Below are the valid BuiltIn prioritizer names. 1) Balance: balance the decisions among the clusters. 2) Steady: ensure the existing decision is stabilized. 3) ResourceAllocatableCPU &amp; ResourceAllocatableMemory: sort clusters based on the allocatable. 4) Spread: spread the workload evenly to topologies.
+     */
     @JsonProperty("builtIn")
     public void setBuiltIn(String builtIn) {
         this.builtIn = builtIn;
     }
 
+    /**
+     * Type defines the type of the prioritizer score. Type is either "BuiltIn", "AddOn" or "", where "" is "BuiltIn" by default. When the type is "BuiltIn", need to specify a BuiltIn prioritizer name in BuiltIn. When the type is "AddOn", need to configure the score source in AddOn.
+     */
     @JsonProperty("type")
     public String getType() {
         return type;
     }
 
+    /**
+     * Type defines the type of the prioritizer score. Type is either "BuiltIn", "AddOn" or "", where "" is "BuiltIn" by default. When the type is "BuiltIn", need to specify a BuiltIn prioritizer name in BuiltIn. When the type is "AddOn", need to configure the score source in AddOn.
+     */
     @JsonProperty("type")
     public void setType(String type) {
         this.type = type;

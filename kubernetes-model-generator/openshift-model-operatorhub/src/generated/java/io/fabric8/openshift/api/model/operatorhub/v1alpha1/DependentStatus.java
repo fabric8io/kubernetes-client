@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * DependentStatus is the status for a dependent requirement (to prevent infinite nesting)
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -98,61 +101,97 @@ public class DependentStatus implements Editable<DependentStatusBuilder>, Kubern
         this.version = version;
     }
 
+    /**
+     * DependentStatus is the status for a dependent requirement (to prevent infinite nesting)
+     */
     @JsonProperty("group")
     public String getGroup() {
         return group;
     }
 
+    /**
+     * DependentStatus is the status for a dependent requirement (to prevent infinite nesting)
+     */
     @JsonProperty("group")
     public void setGroup(String group) {
         this.group = group;
     }
 
+    /**
+     * DependentStatus is the status for a dependent requirement (to prevent infinite nesting)
+     */
     @JsonProperty("kind")
     public String getKind() {
         return kind;
     }
 
+    /**
+     * DependentStatus is the status for a dependent requirement (to prevent infinite nesting)
+     */
     @JsonProperty("kind")
     public void setKind(String kind) {
         this.kind = kind;
     }
 
+    /**
+     * DependentStatus is the status for a dependent requirement (to prevent infinite nesting)
+     */
     @JsonProperty("message")
     public String getMessage() {
         return message;
     }
 
+    /**
+     * DependentStatus is the status for a dependent requirement (to prevent infinite nesting)
+     */
     @JsonProperty("message")
     public void setMessage(String message) {
         this.message = message;
     }
 
+    /**
+     * DependentStatus is the status for a dependent requirement (to prevent infinite nesting)
+     */
     @JsonProperty("status")
     public String getStatus() {
         return status;
     }
 
+    /**
+     * DependentStatus is the status for a dependent requirement (to prevent infinite nesting)
+     */
     @JsonProperty("status")
     public void setStatus(String status) {
         this.status = status;
     }
 
+    /**
+     * DependentStatus is the status for a dependent requirement (to prevent infinite nesting)
+     */
     @JsonProperty("uuid")
     public String getUuid() {
         return uuid;
     }
 
+    /**
+     * DependentStatus is the status for a dependent requirement (to prevent infinite nesting)
+     */
     @JsonProperty("uuid")
     public void setUuid(String uuid) {
         this.uuid = uuid;
     }
 
+    /**
+     * DependentStatus is the status for a dependent requirement (to prevent infinite nesting)
+     */
     @JsonProperty("version")
     public String getVersion() {
         return version;
     }
 
+    /**
+     * DependentStatus is the status for a dependent requirement (to prevent infinite nesting)
+     */
     @JsonProperty("version")
     public void setVersion(String version) {
         this.version = version;

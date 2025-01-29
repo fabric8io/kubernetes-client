@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Image holds the details of an image either to provisioned or that has been provisioned.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -90,41 +93,65 @@ public class Image implements Editable<ImageBuilder>, KubernetesResource
         this.url = url;
     }
 
+    /**
+     * Checksum is the checksum for the image. Required for all formats except for "live-iso".
+     */
     @JsonProperty("checksum")
     public String getChecksum() {
         return checksum;
     }
 
+    /**
+     * Checksum is the checksum for the image. Required for all formats except for "live-iso".
+     */
     @JsonProperty("checksum")
     public void setChecksum(String checksum) {
         this.checksum = checksum;
     }
 
+    /**
+     * ChecksumType is the checksum algorithm for the image, e.g md5, sha256 or sha512. The special value "auto" can be used to detect the algorithm from the checksum. If missing, MD5 is used. If in doubt, use "auto".
+     */
     @JsonProperty("checksumType")
     public String getChecksumType() {
         return checksumType;
     }
 
+    /**
+     * ChecksumType is the checksum algorithm for the image, e.g md5, sha256 or sha512. The special value "auto" can be used to detect the algorithm from the checksum. If missing, MD5 is used. If in doubt, use "auto".
+     */
     @JsonProperty("checksumType")
     public void setChecksumType(String checksumType) {
         this.checksumType = checksumType;
     }
 
+    /**
+     * Format contains the format of the image (raw, qcow2, ...). When set to "live-iso", an ISO 9660 image referenced by the url will be live-booted and not deployed to disk.
+     */
     @JsonProperty("format")
     public String getFormat() {
         return format;
     }
 
+    /**
+     * Format contains the format of the image (raw, qcow2, ...). When set to "live-iso", an ISO 9660 image referenced by the url will be live-booted and not deployed to disk.
+     */
     @JsonProperty("format")
     public void setFormat(String format) {
         this.format = format;
     }
 
+    /**
+     * URL is a location of an image to deploy.
+     */
     @JsonProperty("url")
     public String getUrl() {
         return url;
     }
 
+    /**
+     * URL is a location of an image to deploy.
+     */
     @JsonProperty("url")
     public void setUrl(String url) {
         this.url = url;

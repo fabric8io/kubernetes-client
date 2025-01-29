@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ResourceRequirement allow user override the default pod QoS classes
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class ResourceRequirement implements Editable<ResourceRequirementBuilder>
         this.type = type;
     }
 
+    /**
+     * ResourceRequirement allow user override the default pod QoS classes
+     */
     @JsonProperty("resourceRequirements")
     public ResourceRequirements getResourceRequirements() {
         return resourceRequirements;
     }
 
+    /**
+     * ResourceRequirement allow user override the default pod QoS classes
+     */
     @JsonProperty("resourceRequirements")
     public void setResourceRequirements(ResourceRequirements resourceRequirements) {
         this.resourceRequirements = resourceRequirements;
     }
 
+    /**
+     * ResourceRequirement allow user override the default pod QoS classes
+     */
     @JsonProperty("type")
     public String getType() {
         return type;
     }
 
+    /**
+     * ResourceRequirement allow user override the default pod QoS classes
+     */
     @JsonProperty("type")
     public void setType(String type) {
         this.type = type;

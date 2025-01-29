@@ -35,6 +35,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * BackendTLSPolicySpec defines the desired state of BackendTLSPolicy.<br><p> <br><p> Support: Extended
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -91,33 +94,51 @@ public class BackendTLSPolicySpec implements Editable<BackendTLSPolicySpecBuilde
         this.validation = validation;
     }
 
+    /**
+     * Options are a list of key/value pairs to enable extended TLS configuration for each implementation. For example, configuring the minimum TLS version or supported cipher suites.<br><p> <br><p> A set of common keys MAY be defined by the API in the future. To avoid any ambiguity, implementation-specific definitions MUST use domain-prefixed names, such as `example.com/my-custom-option`. Un-prefixed names are reserved for key names defined by Gateway API.<br><p> <br><p> Support: Implementation-specific
+     */
     @JsonProperty("options")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getOptions() {
         return options;
     }
 
+    /**
+     * Options are a list of key/value pairs to enable extended TLS configuration for each implementation. For example, configuring the minimum TLS version or supported cipher suites.<br><p> <br><p> A set of common keys MAY be defined by the API in the future. To avoid any ambiguity, implementation-specific definitions MUST use domain-prefixed names, such as `example.com/my-custom-option`. Un-prefixed names are reserved for key names defined by Gateway API.<br><p> <br><p> Support: Implementation-specific
+     */
     @JsonProperty("options")
     public void setOptions(Map<String, String> options) {
         this.options = options;
     }
 
+    /**
+     * TargetRefs identifies an API object to apply the policy to. Only Services have Extended support. Implementations MAY support additional objects, with Implementation Specific support. Note that this config applies to the entire referenced resource by default, but this default may change in the future to provide a more granular application of the policy.<br><p> <br><p> Support: Extended for Kubernetes Service<br><p> <br><p> Support: Implementation-specific for any other resource
+     */
     @JsonProperty("targetRefs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<LocalPolicyTargetReferenceWithSectionName> getTargetRefs() {
         return targetRefs;
     }
 
+    /**
+     * TargetRefs identifies an API object to apply the policy to. Only Services have Extended support. Implementations MAY support additional objects, with Implementation Specific support. Note that this config applies to the entire referenced resource by default, but this default may change in the future to provide a more granular application of the policy.<br><p> <br><p> Support: Extended for Kubernetes Service<br><p> <br><p> Support: Implementation-specific for any other resource
+     */
     @JsonProperty("targetRefs")
     public void setTargetRefs(List<LocalPolicyTargetReferenceWithSectionName> targetRefs) {
         this.targetRefs = targetRefs;
     }
 
+    /**
+     * BackendTLSPolicySpec defines the desired state of BackendTLSPolicy.<br><p> <br><p> Support: Extended
+     */
     @JsonProperty("validation")
     public BackendTLSPolicyValidation getValidation() {
         return validation;
     }
 
+    /**
+     * BackendTLSPolicySpec defines the desired state of BackendTLSPolicy.<br><p> <br><p> Support: Extended
+     */
     @JsonProperty("validation")
     public void setValidation(BackendTLSPolicyValidation validation) {
         this.validation = validation;

@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Describes match conditions and actions for routing unterminated TLS traffic (TLS/HTTPS) The following routing rule forwards unterminated TLS traffic arriving at port 443 of gateway called "mygateway" to internal services in the mesh based on the SNI value.<br><p> <br><p> ```yaml apiVersion: networking.istio.io/v1 kind: VirtualService metadata:<br><p> <br><p> 	name: bookinfo-sni<br><p> <br><p> spec:<br><p> <br><p> 	hosts:<br><p> 	- "&#42;.bookinfo.com"<br><p> 	gateways:<br><p> 	- mygateway<br><p> 	tls:<br><p> 	- match:<br><p> 	  - port: 443<br><p> 	    sniHosts:<br><p> 	    - login.bookinfo.com<br><p> 	  route:<br><p> 	  - destination:<br><p> 	      host: login.prod.svc.cluster.local<br><p> 	- match:<br><p> 	  - port: 443<br><p> 	    sniHosts:<br><p> 	    - reviews.bookinfo.com<br><p> 	  route:<br><p> 	  - destination:<br><p> 	      host: reviews.prod.svc.cluster.local<br><p> <br><p> ```
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -86,23 +89,35 @@ public class TLSRoute implements Editable<TLSRouteBuilder>, KubernetesResource
         this.route = route;
     }
 
+    /**
+     * Match conditions to be satisfied for the rule to be activated. All conditions inside a single match block have AND semantics, while the list of match blocks have OR semantics. The rule is matched if any one of the match blocks succeed.
+     */
     @JsonProperty("match")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<TLSMatchAttributes> getMatch() {
         return match;
     }
 
+    /**
+     * Match conditions to be satisfied for the rule to be activated. All conditions inside a single match block have AND semantics, while the list of match blocks have OR semantics. The rule is matched if any one of the match blocks succeed.
+     */
     @JsonProperty("match")
     public void setMatch(List<TLSMatchAttributes> match) {
         this.match = match;
     }
 
+    /**
+     * The destination to which the connection should be forwarded to.
+     */
     @JsonProperty("route")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<RouteDestination> getRoute() {
         return route;
     }
 
+    /**
+     * The destination to which the connection should be forwarded to.
+     */
     @JsonProperty("route")
     public void setRoute(List<RouteDestination> route) {
         this.route = route;

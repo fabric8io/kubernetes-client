@@ -35,6 +35,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * SinkBindingSpec holds the desired state of the SinkBinding (from the client).
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -89,31 +92,49 @@ public class SinkBindingSpec implements Editable<SinkBindingSpecBuilder>, Kubern
         this.subject = subject;
     }
 
+    /**
+     * SinkBindingSpec holds the desired state of the SinkBinding (from the client).
+     */
     @JsonProperty("ceOverrides")
     public CloudEventOverrides getCeOverrides() {
         return ceOverrides;
     }
 
+    /**
+     * SinkBindingSpec holds the desired state of the SinkBinding (from the client).
+     */
     @JsonProperty("ceOverrides")
     public void setCeOverrides(CloudEventOverrides ceOverrides) {
         this.ceOverrides = ceOverrides;
     }
 
+    /**
+     * SinkBindingSpec holds the desired state of the SinkBinding (from the client).
+     */
     @JsonProperty("sink")
     public Destination getSink() {
         return sink;
     }
 
+    /**
+     * SinkBindingSpec holds the desired state of the SinkBinding (from the client).
+     */
     @JsonProperty("sink")
     public void setSink(Destination sink) {
         this.sink = sink;
     }
 
+    /**
+     * SinkBindingSpec holds the desired state of the SinkBinding (from the client).
+     */
     @JsonProperty("subject")
     public Reference getSubject() {
         return subject;
     }
 
+    /**
+     * SinkBindingSpec holds the desired state of the SinkBinding (from the client).
+     */
     @JsonProperty("subject")
     public void setSubject(Reference subject) {
         this.subject = subject;

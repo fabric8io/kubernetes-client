@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * VolumeSnapshotContentSpec is the specification of a VolumeSnapshotContent
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -98,61 +101,97 @@ public class VolumeSnapshotContentSpec implements Editable<VolumeSnapshotContent
         this.volumeSnapshotRef = volumeSnapshotRef;
     }
 
+    /**
+     * deletionPolicy determines whether this VolumeSnapshotContent and its physical snapshot on the underlying storage system should be deleted when its bound VolumeSnapshot is deleted. Supported values are "Retain" and "Delete". "Retain" means that the VolumeSnapshotContent and its physical snapshot on underlying storage system are kept. "Delete" means that the VolumeSnapshotContent and its physical snapshot on underlying storage system are deleted. For dynamically provisioned snapshots, this field will automatically be filled in by the CSI snapshotter sidecar with the "DeletionPolicy" field defined in the corresponding VolumeSnapshotClass. For pre-existing snapshots, users MUST specify this field when creating the<br><p>  VolumeSnapshotContent object.<br><p> Required.
+     */
     @JsonProperty("deletionPolicy")
     public String getDeletionPolicy() {
         return deletionPolicy;
     }
 
+    /**
+     * deletionPolicy determines whether this VolumeSnapshotContent and its physical snapshot on the underlying storage system should be deleted when its bound VolumeSnapshot is deleted. Supported values are "Retain" and "Delete". "Retain" means that the VolumeSnapshotContent and its physical snapshot on underlying storage system are kept. "Delete" means that the VolumeSnapshotContent and its physical snapshot on underlying storage system are deleted. For dynamically provisioned snapshots, this field will automatically be filled in by the CSI snapshotter sidecar with the "DeletionPolicy" field defined in the corresponding VolumeSnapshotClass. For pre-existing snapshots, users MUST specify this field when creating the<br><p>  VolumeSnapshotContent object.<br><p> Required.
+     */
     @JsonProperty("deletionPolicy")
     public void setDeletionPolicy(String deletionPolicy) {
         this.deletionPolicy = deletionPolicy;
     }
 
+    /**
+     * driver is the name of the CSI driver used to create the physical snapshot on the underlying storage system. This MUST be the same as the name returned by the CSI GetPluginName() call for that driver. Required.
+     */
     @JsonProperty("driver")
     public String getDriver() {
         return driver;
     }
 
+    /**
+     * driver is the name of the CSI driver used to create the physical snapshot on the underlying storage system. This MUST be the same as the name returned by the CSI GetPluginName() call for that driver. Required.
+     */
     @JsonProperty("driver")
     public void setDriver(String driver) {
         this.driver = driver;
     }
 
+    /**
+     * VolumeSnapshotContentSpec is the specification of a VolumeSnapshotContent
+     */
     @JsonProperty("source")
     public VolumeSnapshotContentSource getSource() {
         return source;
     }
 
+    /**
+     * VolumeSnapshotContentSpec is the specification of a VolumeSnapshotContent
+     */
     @JsonProperty("source")
     public void setSource(VolumeSnapshotContentSource source) {
         this.source = source;
     }
 
+    /**
+     * SourceVolumeMode is the mode of the volume whose snapshot is taken. Can be either "Filesystem" or "Block". If not specified, it indicates the source volume's mode is unknown. This field is immutable. This field is an alpha field.
+     */
     @JsonProperty("sourceVolumeMode")
     public String getSourceVolumeMode() {
         return sourceVolumeMode;
     }
 
+    /**
+     * SourceVolumeMode is the mode of the volume whose snapshot is taken. Can be either "Filesystem" or "Block". If not specified, it indicates the source volume's mode is unknown. This field is immutable. This field is an alpha field.
+     */
     @JsonProperty("sourceVolumeMode")
     public void setSourceVolumeMode(String sourceVolumeMode) {
         this.sourceVolumeMode = sourceVolumeMode;
     }
 
+    /**
+     * name of the VolumeSnapshotClass from which this snapshot was (or will be) created. Note that after provisioning, the VolumeSnapshotClass may be deleted or recreated with different set of values, and as such, should not be referenced post-snapshot creation.
+     */
     @JsonProperty("volumeSnapshotClassName")
     public String getVolumeSnapshotClassName() {
         return volumeSnapshotClassName;
     }
 
+    /**
+     * name of the VolumeSnapshotClass from which this snapshot was (or will be) created. Note that after provisioning, the VolumeSnapshotClass may be deleted or recreated with different set of values, and as such, should not be referenced post-snapshot creation.
+     */
     @JsonProperty("volumeSnapshotClassName")
     public void setVolumeSnapshotClassName(String volumeSnapshotClassName) {
         this.volumeSnapshotClassName = volumeSnapshotClassName;
     }
 
+    /**
+     * VolumeSnapshotContentSpec is the specification of a VolumeSnapshotContent
+     */
     @JsonProperty("volumeSnapshotRef")
     public ObjectReference getVolumeSnapshotRef() {
         return volumeSnapshotRef;
     }
 
+    /**
+     * VolumeSnapshotContentSpec is the specification of a VolumeSnapshotContent
+     */
     @JsonProperty("volumeSnapshotRef")
     public void setVolumeSnapshotRef(ObjectReference volumeSnapshotRef) {
         this.volumeSnapshotRef = volumeSnapshotRef;

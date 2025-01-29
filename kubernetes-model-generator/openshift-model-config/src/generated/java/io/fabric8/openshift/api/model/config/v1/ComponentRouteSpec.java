@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ComponentRouteSpec allows for configuration of a route's hostname and serving certificate.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -90,41 +93,65 @@ public class ComponentRouteSpec implements Editable<ComponentRouteSpecBuilder>, 
         this.servingCertKeyPairSecret = servingCertKeyPairSecret;
     }
 
+    /**
+     * hostname is the hostname that should be used by the route.
+     */
     @JsonProperty("hostname")
     public String getHostname() {
         return hostname;
     }
 
+    /**
+     * hostname is the hostname that should be used by the route.
+     */
     @JsonProperty("hostname")
     public void setHostname(String hostname) {
         this.hostname = hostname;
     }
 
+    /**
+     * name is the logical name of the route to customize.<br><p> <br><p> The namespace and name of this componentRoute must match a corresponding entry in the list of status.componentRoutes if the route is to be customized.
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * name is the logical name of the route to customize.<br><p> <br><p> The namespace and name of this componentRoute must match a corresponding entry in the list of status.componentRoutes if the route is to be customized.
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * namespace is the namespace of the route to customize.<br><p> <br><p> The namespace and name of this componentRoute must match a corresponding entry in the list of status.componentRoutes if the route is to be customized.
+     */
     @JsonProperty("namespace")
     public String getNamespace() {
         return namespace;
     }
 
+    /**
+     * namespace is the namespace of the route to customize.<br><p> <br><p> The namespace and name of this componentRoute must match a corresponding entry in the list of status.componentRoutes if the route is to be customized.
+     */
     @JsonProperty("namespace")
     public void setNamespace(String namespace) {
         this.namespace = namespace;
     }
 
+    /**
+     * ComponentRouteSpec allows for configuration of a route's hostname and serving certificate.
+     */
     @JsonProperty("servingCertKeyPairSecret")
     public SecretNameReference getServingCertKeyPairSecret() {
         return servingCertKeyPairSecret;
     }
 
+    /**
+     * ComponentRouteSpec allows for configuration of a route's hostname and serving certificate.
+     */
     @JsonProperty("servingCertKeyPairSecret")
     public void setServingCertKeyPairSecret(SecretNameReference servingCertKeyPairSecret) {
         this.servingCertKeyPairSecret = servingCertKeyPairSecret;

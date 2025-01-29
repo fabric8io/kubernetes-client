@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ContainerNodeVolumePathSelector is the selector to select a node and a PV on it
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -97,52 +100,82 @@ public class ContainerNodeVolumePathSelector implements Editable<ContainerNodeVo
         this.volumeName = volumeName;
     }
 
+    /**
+     * ContainerNames indicates list of the name of affected container. If not set, the first container will be injected
+     */
     @JsonProperty("containerNames")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getContainerNames() {
         return containerNames;
     }
 
+    /**
+     * ContainerNames indicates list of the name of affected container. If not set, the first container will be injected
+     */
     @JsonProperty("containerNames")
     public void setContainerNames(List<String> containerNames) {
         this.containerNames = containerNames;
     }
 
+    /**
+     * Mode defines the mode to run chaos action. Supported mode: one / all / fixed / fixed-percent / random-max-percent
+     */
     @JsonProperty("mode")
     public String getMode() {
         return mode;
     }
 
+    /**
+     * Mode defines the mode to run chaos action. Supported mode: one / all / fixed / fixed-percent / random-max-percent
+     */
     @JsonProperty("mode")
     public void setMode(String mode) {
         this.mode = mode;
     }
 
+    /**
+     * ContainerNodeVolumePathSelector is the selector to select a node and a PV on it
+     */
     @JsonProperty("selector")
     public PodSelectorSpec getSelector() {
         return selector;
     }
 
+    /**
+     * ContainerNodeVolumePathSelector is the selector to select a node and a PV on it
+     */
     @JsonProperty("selector")
     public void setSelector(PodSelectorSpec selector) {
         this.selector = selector;
     }
 
+    /**
+     * Value is required when the mode is set to `FixedMode` / `FixedPercentMode` / `RandomMaxPercentMode`. If `FixedMode`, provide an integer of pods to do chaos action. If `FixedPercentMode`, provide a number from 0-100 to specify the percent of pods the server can do chaos action. IF `RandomMaxPercentMode`,  provide a number from 0-100 to specify the max percent of pods to do chaos action
+     */
     @JsonProperty("value")
     public String getValue() {
         return value;
     }
 
+    /**
+     * Value is required when the mode is set to `FixedMode` / `FixedPercentMode` / `RandomMaxPercentMode`. If `FixedMode`, provide an integer of pods to do chaos action. If `FixedPercentMode`, provide a number from 0-100 to specify the percent of pods the server can do chaos action. IF `RandomMaxPercentMode`,  provide a number from 0-100 to specify the max percent of pods to do chaos action
+     */
     @JsonProperty("value")
     public void setValue(String value) {
         this.value = value;
     }
 
+    /**
+     * ContainerNodeVolumePathSelector is the selector to select a node and a PV on it
+     */
     @JsonProperty("volumeName")
     public String getVolumeName() {
         return volumeName;
     }
 
+    /**
+     * ContainerNodeVolumePathSelector is the selector to select a node and a PV on it
+     */
     @JsonProperty("volumeName")
     public void setVolumeName(String volumeName) {
         this.volumeName = volumeName;

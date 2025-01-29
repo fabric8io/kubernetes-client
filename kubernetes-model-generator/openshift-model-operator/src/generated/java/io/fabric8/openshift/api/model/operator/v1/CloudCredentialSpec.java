@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * CloudCredentialSpec is the specification of the desired behavior of the cloud-credential-operator.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -100,62 +103,98 @@ public class CloudCredentialSpec implements Editable<CloudCredentialSpecBuilder>
         this.unsupportedConfigOverrides = unsupportedConfigOverrides;
     }
 
+    /**
+     * CredentialsMode allows informing CCO that it should not attempt to dynamically determine the root cloud credentials capabilities, and it should just run in the specified mode. It also allows putting the operator into "manual" mode if desired. Leaving the field in default mode runs CCO so that the cluster's cloud credentials will be dynamically probed for capabilities (on supported clouds/platforms). Supported modes:<br><p>   AWS/Azure/GCP: "" (Default), "Mint", "Passthrough", "Manual"<br><p>   Others: Do not set value as other platforms only support running in "Passthrough"
+     */
     @JsonProperty("credentialsMode")
     public String getCredentialsMode() {
         return credentialsMode;
     }
 
+    /**
+     * CredentialsMode allows informing CCO that it should not attempt to dynamically determine the root cloud credentials capabilities, and it should just run in the specified mode. It also allows putting the operator into "manual" mode if desired. Leaving the field in default mode runs CCO so that the cluster's cloud credentials will be dynamically probed for capabilities (on supported clouds/platforms). Supported modes:<br><p>   AWS/Azure/GCP: "" (Default), "Mint", "Passthrough", "Manual"<br><p>   Others: Do not set value as other platforms only support running in "Passthrough"
+     */
     @JsonProperty("credentialsMode")
     public void setCredentialsMode(String credentialsMode) {
         this.credentialsMode = credentialsMode;
     }
 
+    /**
+     * logLevel is an intent based logging for an overall component.  It does not give fine grained control, but it is a simple way to manage coarse grained logging choices that operators have to interpret for their operands.<br><p> <br><p> Valid values are: "Normal", "Debug", "Trace", "TraceAll". Defaults to "Normal".
+     */
     @JsonProperty("logLevel")
     public String getLogLevel() {
         return logLevel;
     }
 
+    /**
+     * logLevel is an intent based logging for an overall component.  It does not give fine grained control, but it is a simple way to manage coarse grained logging choices that operators have to interpret for their operands.<br><p> <br><p> Valid values are: "Normal", "Debug", "Trace", "TraceAll". Defaults to "Normal".
+     */
     @JsonProperty("logLevel")
     public void setLogLevel(String logLevel) {
         this.logLevel = logLevel;
     }
 
+    /**
+     * managementState indicates whether and how the operator should manage the component
+     */
     @JsonProperty("managementState")
     public String getManagementState() {
         return managementState;
     }
 
+    /**
+     * managementState indicates whether and how the operator should manage the component
+     */
     @JsonProperty("managementState")
     public void setManagementState(String managementState) {
         this.managementState = managementState;
     }
 
+    /**
+     * CloudCredentialSpec is the specification of the desired behavior of the cloud-credential-operator.
+     */
     @JsonProperty("observedConfig")
     public Object getObservedConfig() {
         return observedConfig;
     }
 
+    /**
+     * CloudCredentialSpec is the specification of the desired behavior of the cloud-credential-operator.
+     */
     @JsonProperty("observedConfig")
     @JsonDeserialize(using = io.fabric8.kubernetes.internal.KubernetesDeserializer.class)
     public void setObservedConfig(Object observedConfig) {
         this.observedConfig = observedConfig;
     }
 
+    /**
+     * operatorLogLevel is an intent based logging for the operator itself.  It does not give fine grained control, but it is a simple way to manage coarse grained logging choices that operators have to interpret for themselves.<br><p> <br><p> Valid values are: "Normal", "Debug", "Trace", "TraceAll". Defaults to "Normal".
+     */
     @JsonProperty("operatorLogLevel")
     public String getOperatorLogLevel() {
         return operatorLogLevel;
     }
 
+    /**
+     * operatorLogLevel is an intent based logging for the operator itself.  It does not give fine grained control, but it is a simple way to manage coarse grained logging choices that operators have to interpret for themselves.<br><p> <br><p> Valid values are: "Normal", "Debug", "Trace", "TraceAll". Defaults to "Normal".
+     */
     @JsonProperty("operatorLogLevel")
     public void setOperatorLogLevel(String operatorLogLevel) {
         this.operatorLogLevel = operatorLogLevel;
     }
 
+    /**
+     * CloudCredentialSpec is the specification of the desired behavior of the cloud-credential-operator.
+     */
     @JsonProperty("unsupportedConfigOverrides")
     public Object getUnsupportedConfigOverrides() {
         return unsupportedConfigOverrides;
     }
 
+    /**
+     * CloudCredentialSpec is the specification of the desired behavior of the cloud-credential-operator.
+     */
     @JsonProperty("unsupportedConfigOverrides")
     @JsonDeserialize(using = io.fabric8.kubernetes.internal.KubernetesDeserializer.class)
     public void setUnsupportedConfigOverrides(Object unsupportedConfigOverrides) {

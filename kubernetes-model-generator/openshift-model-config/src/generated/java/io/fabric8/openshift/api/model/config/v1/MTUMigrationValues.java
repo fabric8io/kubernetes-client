@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * MTUMigrationValues contains the values for a MTU migration.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class MTUMigrationValues implements Editable<MTUMigrationValuesBuilder>, 
         this.to = to;
     }
 
+    /**
+     * From is the MTU to migrate from.
+     */
     @JsonProperty("from")
     public Long getFrom() {
         return from;
     }
 
+    /**
+     * From is the MTU to migrate from.
+     */
     @JsonProperty("from")
     public void setFrom(Long from) {
         this.from = from;
     }
 
+    /**
+     * To is the MTU to migrate to.
+     */
     @JsonProperty("to")
     public Long getTo() {
         return to;
     }
 
+    /**
+     * To is the MTU to migrate to.
+     */
     @JsonProperty("to")
     public void setTo(Long to) {
         this.to = to;

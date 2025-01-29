@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * TagImportPolicy controls how images related to this tag will be imported.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -86,31 +89,49 @@ public class TagImportPolicy implements Editable<TagImportPolicyBuilder>, Kubern
         this.scheduled = scheduled;
     }
 
+    /**
+     * ImportMode describes how to import an image manifest.
+     */
     @JsonProperty("importMode")
     public String getImportMode() {
         return importMode;
     }
 
+    /**
+     * ImportMode describes how to import an image manifest.
+     */
     @JsonProperty("importMode")
     public void setImportMode(String importMode) {
         this.importMode = importMode;
     }
 
+    /**
+     * Insecure is true if the server may bypass certificate verification or connect directly over HTTP during image import.
+     */
     @JsonProperty("insecure")
     public Boolean getInsecure() {
         return insecure;
     }
 
+    /**
+     * Insecure is true if the server may bypass certificate verification or connect directly over HTTP during image import.
+     */
     @JsonProperty("insecure")
     public void setInsecure(Boolean insecure) {
         this.insecure = insecure;
     }
 
+    /**
+     * Scheduled indicates to the server that this tag should be periodically checked to ensure it is up to date, and imported
+     */
     @JsonProperty("scheduled")
     public Boolean getScheduled() {
         return scheduled;
     }
 
+    /**
+     * Scheduled indicates to the server that this tag should be periodically checked to ensure it is up to date, and imported
+     */
     @JsonProperty("scheduled")
     public void setScheduled(Boolean scheduled) {
         this.scheduled = scheduled;

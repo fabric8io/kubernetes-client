@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * RouteIngress holds information about the places where a route is exposed.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -97,52 +100,82 @@ public class RouteIngress implements Editable<RouteIngressBuilder>, KubernetesRe
         this.wildcardPolicy = wildcardPolicy;
     }
 
+    /**
+     * Conditions is the state of the route, may be empty.
+     */
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<RouteIngressCondition> getConditions() {
         return conditions;
     }
 
+    /**
+     * Conditions is the state of the route, may be empty.
+     */
     @JsonProperty("conditions")
     public void setConditions(List<RouteIngressCondition> conditions) {
         this.conditions = conditions;
     }
 
+    /**
+     * Host is the host string under which the route is exposed; this value is required
+     */
     @JsonProperty("host")
     public String getHost() {
         return host;
     }
 
+    /**
+     * Host is the host string under which the route is exposed; this value is required
+     */
     @JsonProperty("host")
     public void setHost(String host) {
         this.host = host;
     }
 
+    /**
+     * CanonicalHostname is the external host name for the router that can be used as a CNAME for the host requested for this route. This value is optional and may not be set in all cases.
+     */
     @JsonProperty("routerCanonicalHostname")
     public String getRouterCanonicalHostname() {
         return routerCanonicalHostname;
     }
 
+    /**
+     * CanonicalHostname is the external host name for the router that can be used as a CNAME for the host requested for this route. This value is optional and may not be set in all cases.
+     */
     @JsonProperty("routerCanonicalHostname")
     public void setRouterCanonicalHostname(String routerCanonicalHostname) {
         this.routerCanonicalHostname = routerCanonicalHostname;
     }
 
+    /**
+     * Name is a name chosen by the router to identify itself; this value is required
+     */
     @JsonProperty("routerName")
     public String getRouterName() {
         return routerName;
     }
 
+    /**
+     * Name is a name chosen by the router to identify itself; this value is required
+     */
     @JsonProperty("routerName")
     public void setRouterName(String routerName) {
         this.routerName = routerName;
     }
 
+    /**
+     * Wildcard policy is the wildcard policy that was allowed where this route is exposed.
+     */
     @JsonProperty("wildcardPolicy")
     public String getWildcardPolicy() {
         return wildcardPolicy;
     }
 
+    /**
+     * Wildcard policy is the wildcard policy that was allowed where this route is exposed.
+     */
     @JsonProperty("wildcardPolicy")
     public void setWildcardPolicy(String wildcardPolicy) {
         this.wildcardPolicy = wildcardPolicy;

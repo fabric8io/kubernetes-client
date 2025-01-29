@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * BMC stores the information about a baremetal host's management controller.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -90,41 +93,65 @@ public class BMC implements Editable<BMCBuilder>, KubernetesResource
         this.username = username;
     }
 
+    /**
+     * BMC stores the information about a baremetal host's management controller.
+     */
     @JsonProperty("address")
     public String getAddress() {
         return address;
     }
 
+    /**
+     * BMC stores the information about a baremetal host's management controller.
+     */
     @JsonProperty("address")
     public void setAddress(String address) {
         this.address = address;
     }
 
+    /**
+     * BMC stores the information about a baremetal host's management controller.
+     */
     @JsonProperty("disableCertificateVerification")
     public Boolean getDisableCertificateVerification() {
         return disableCertificateVerification;
     }
 
+    /**
+     * BMC stores the information about a baremetal host's management controller.
+     */
     @JsonProperty("disableCertificateVerification")
     public void setDisableCertificateVerification(Boolean disableCertificateVerification) {
         this.disableCertificateVerification = disableCertificateVerification;
     }
 
+    /**
+     * BMC stores the information about a baremetal host's management controller.
+     */
     @JsonProperty("password")
     public String getPassword() {
         return password;
     }
 
+    /**
+     * BMC stores the information about a baremetal host's management controller.
+     */
     @JsonProperty("password")
     public void setPassword(String password) {
         this.password = password;
     }
 
+    /**
+     * BMC stores the information about a baremetal host's management controller.
+     */
     @JsonProperty("username")
     public String getUsername() {
         return username;
     }
 
+    /**
+     * BMC stores the information about a baremetal host's management controller.
+     */
     @JsonProperty("username")
     public void setUsername(String username) {
         this.username = username;

@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * BMCDetails contains the information necessary to communicate with the bare metal controller module on host.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -86,31 +89,49 @@ public class BMCDetails implements Editable<BMCDetailsBuilder>, KubernetesResour
         this.disableCertificateVerification = disableCertificateVerification;
     }
 
+    /**
+     * Address holds the URL for accessing the controller on the network. The scheme part designates the driver to use with the host.
+     */
     @JsonProperty("address")
     public String getAddress() {
         return address;
     }
 
+    /**
+     * Address holds the URL for accessing the controller on the network. The scheme part designates the driver to use with the host.
+     */
     @JsonProperty("address")
     public void setAddress(String address) {
         this.address = address;
     }
 
+    /**
+     * The name of the secret containing the BMC credentials (requires keys "username" and "password").
+     */
     @JsonProperty("credentialsName")
     public String getCredentialsName() {
         return credentialsName;
     }
 
+    /**
+     * The name of the secret containing the BMC credentials (requires keys "username" and "password").
+     */
     @JsonProperty("credentialsName")
     public void setCredentialsName(String credentialsName) {
         this.credentialsName = credentialsName;
     }
 
+    /**
+     * DisableCertificateVerification disables verification of server certificates when using HTTPS to connect to the BMC. This is required when the server certificate is self-signed, but is insecure because it allows a man-in-the-middle to intercept the connection.
+     */
     @JsonProperty("disableCertificateVerification")
     public Boolean getDisableCertificateVerification() {
         return disableCertificateVerification;
     }
 
+    /**
+     * DisableCertificateVerification disables verification of server certificates when using HTTPS to connect to the BMC. This is required when the server certificate is self-signed, but is insecure because it allows a man-in-the-middle to intercept the connection.
+     */
     @JsonProperty("disableCertificateVerification")
     public void setDisableCertificateVerification(Boolean disableCertificateVerification) {
         this.disableCertificateVerification = disableCertificateVerification;

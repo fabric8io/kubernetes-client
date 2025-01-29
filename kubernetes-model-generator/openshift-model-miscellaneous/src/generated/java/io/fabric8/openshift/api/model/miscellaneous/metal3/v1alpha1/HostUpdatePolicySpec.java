@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * HostUpdatePolicySpec defines the desired state of HostUpdatePolicy.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class HostUpdatePolicySpec implements Editable<HostUpdatePolicySpecBuilde
         this.firmwareUpdates = firmwareUpdates;
     }
 
+    /**
+     * Defines policy for changing firmware settings
+     */
     @JsonProperty("firmwareSettings")
     public String getFirmwareSettings() {
         return firmwareSettings;
     }
 
+    /**
+     * Defines policy for changing firmware settings
+     */
     @JsonProperty("firmwareSettings")
     public void setFirmwareSettings(String firmwareSettings) {
         this.firmwareSettings = firmwareSettings;
     }
 
+    /**
+     * Defines policy for updating firmware
+     */
     @JsonProperty("firmwareUpdates")
     public String getFirmwareUpdates() {
         return firmwareUpdates;
     }
 
+    /**
+     * Defines policy for updating firmware
+     */
     @JsonProperty("firmwareUpdates")
     public void setFirmwareUpdates(String firmwareUpdates) {
         this.firmwareUpdates = firmwareUpdates;

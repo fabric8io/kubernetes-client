@@ -39,6 +39,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * AzureProviderSpec contains the required information to create RBAC role bindings for Azure.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,9 +85,6 @@ import lombok.experimental.Accessors;
 public class AzureProviderSpec implements Editable<AzureProviderSpecBuilder>, KubernetesResource, Namespaced
 {
 
-    /**
-     * (Required)
-     */
     @JsonProperty("apiVersion")
     private String apiVersion = "cloudcredential.openshift.io/v1";
     @JsonProperty("azureClientID")
@@ -98,9 +98,6 @@ public class AzureProviderSpec implements Editable<AzureProviderSpecBuilder>, Ku
     @JsonProperty("dataPermissions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> dataPermissions = new ArrayList<>();
-    /**
-     * (Required)
-     */
     @JsonProperty("kind")
     private String kind = "AzureProviderSpec";
     @JsonProperty("permissions")
@@ -132,7 +129,7 @@ public class AzureProviderSpec implements Editable<AzureProviderSpecBuilder>, Ku
     }
 
     /**
-     * (Required)
+     * APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -140,66 +137,96 @@ public class AzureProviderSpec implements Editable<AzureProviderSpecBuilder>, Ku
     }
 
     /**
-     * (Required)
+     * APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
         this.apiVersion = apiVersion;
     }
 
+    /**
+     * The following fields are only required for Azure Workload Identity. AzureClientID is the ID of the specific application you created in Azure
+     */
     @JsonProperty("azureClientID")
     public String getAzureClientID() {
         return azureClientID;
     }
 
+    /**
+     * The following fields are only required for Azure Workload Identity. AzureClientID is the ID of the specific application you created in Azure
+     */
     @JsonProperty("azureClientID")
     public void setAzureClientID(String azureClientID) {
         this.azureClientID = azureClientID;
     }
 
+    /**
+     * AzureRegion is the geographic region of the Azure service.
+     */
     @JsonProperty("azureRegion")
     public String getAzureRegion() {
         return azureRegion;
     }
 
+    /**
+     * AzureRegion is the geographic region of the Azure service.
+     */
     @JsonProperty("azureRegion")
     public void setAzureRegion(String azureRegion) {
         this.azureRegion = azureRegion;
     }
 
+    /**
+     * Each Azure subscription has an ID associated with it, as does the tenant to which a subscription belongs. AzureSubscriptionID is the ID of the subscription.
+     */
     @JsonProperty("azureSubscriptionID")
     public String getAzureSubscriptionID() {
         return azureSubscriptionID;
     }
 
+    /**
+     * Each Azure subscription has an ID associated with it, as does the tenant to which a subscription belongs. AzureSubscriptionID is the ID of the subscription.
+     */
     @JsonProperty("azureSubscriptionID")
     public void setAzureSubscriptionID(String azureSubscriptionID) {
         this.azureSubscriptionID = azureSubscriptionID;
     }
 
+    /**
+     * AzureTenantID is the ID of the tenant to which the subscription belongs.
+     */
     @JsonProperty("azureTenantID")
     public String getAzureTenantID() {
         return azureTenantID;
     }
 
+    /**
+     * AzureTenantID is the ID of the tenant to which the subscription belongs.
+     */
     @JsonProperty("azureTenantID")
     public void setAzureTenantID(String azureTenantID) {
         this.azureTenantID = azureTenantID;
     }
 
+    /**
+     * DataPermissions is the list of Azure data permissions required to create a more fine-grained custom role to satisfy the CredentialsRequest. The DataPermissions field may be provided in addition to RoleBindings. When both fields are specified, the user-assigned managed identity will have union of permissions defined from both DataPermissions and RoleBindings.
+     */
     @JsonProperty("dataPermissions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getDataPermissions() {
         return dataPermissions;
     }
 
+    /**
+     * DataPermissions is the list of Azure data permissions required to create a more fine-grained custom role to satisfy the CredentialsRequest. The DataPermissions field may be provided in addition to RoleBindings. When both fields are specified, the user-assigned managed identity will have union of permissions defined from both DataPermissions and RoleBindings.
+     */
     @JsonProperty("dataPermissions")
     public void setDataPermissions(List<String> dataPermissions) {
         this.dataPermissions = dataPermissions;
     }
 
     /**
-     * (Required)
+     * Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -207,30 +234,42 @@ public class AzureProviderSpec implements Editable<AzureProviderSpecBuilder>, Ku
     }
 
     /**
-     * (Required)
+     * Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
      */
     @JsonProperty("kind")
     public void setKind(String kind) {
         this.kind = kind;
     }
 
+    /**
+     * Permissions is the list of Azure permissions required to create a more fine-grained custom role to satisfy the CredentialsRequest. The Permissions field may be provided in addition to RoleBindings. When both fields are specified, the user-assigned managed identity will have union of permissions defined from both Permissions and RoleBindings.
+     */
     @JsonProperty("permissions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getPermissions() {
         return permissions;
     }
 
+    /**
+     * Permissions is the list of Azure permissions required to create a more fine-grained custom role to satisfy the CredentialsRequest. The Permissions field may be provided in addition to RoleBindings. When both fields are specified, the user-assigned managed identity will have union of permissions defined from both Permissions and RoleBindings.
+     */
     @JsonProperty("permissions")
     public void setPermissions(List<String> permissions) {
         this.permissions = permissions;
     }
 
+    /**
+     * RoleBindings contains a list of roles that should be associated with the minted credential.
+     */
     @JsonProperty("roleBindings")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<RoleBinding> getRoleBindings() {
         return roleBindings;
     }
 
+    /**
+     * RoleBindings contains a list of roles that should be associated with the minted credential.
+     */
     @JsonProperty("roleBindings")
     public void setRoleBindings(List<RoleBinding> roleBindings) {
         this.roleBindings = roleBindings;

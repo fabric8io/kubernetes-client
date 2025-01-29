@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ClusterDeploymentCustomizationSpec defines the desired state of ClusterDeploymentCustomization.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -81,12 +84,18 @@ public class ClusterDeploymentCustomizationSpec implements Editable<ClusterDeplo
         this.installConfigPatches = installConfigPatches;
     }
 
+    /**
+     * InstallConfigPatches is a list of patches to be applied to the install-config.
+     */
     @JsonProperty("installConfigPatches")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<PatchEntity> getInstallConfigPatches() {
         return installConfigPatches;
     }
 
+    /**
+     * InstallConfigPatches is a list of patches to be applied to the install-config.
+     */
     @JsonProperty("installConfigPatches")
     public void setInstallConfigPatches(List<PatchEntity> installConfigPatches) {
         this.installConfigPatches = installConfigPatches;

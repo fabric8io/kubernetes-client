@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * OpenStackSDConfig allow retrieving scrape targets from OpenStack Nova instances. See https://prometheus.io/docs/prometheus/latest/configuration/configuration/#openstack_sd_config
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -148,181 +151,289 @@ public class OpenStackSDConfig implements Editable<OpenStackSDConfigBuilder>, Ku
         this.username = username;
     }
 
+    /**
+     * Whether the service discovery should list all instances for all projects. It is only relevant for the 'instance' role and usually requires admin permissions.
+     */
     @JsonProperty("allTenants")
     public Boolean getAllTenants() {
         return allTenants;
     }
 
+    /**
+     * Whether the service discovery should list all instances for all projects. It is only relevant for the 'instance' role and usually requires admin permissions.
+     */
     @JsonProperty("allTenants")
     public void setAllTenants(Boolean allTenants) {
         this.allTenants = allTenants;
     }
 
+    /**
+     * ApplicationCredentialID
+     */
     @JsonProperty("applicationCredentialId")
     public String getApplicationCredentialId() {
         return applicationCredentialId;
     }
 
+    /**
+     * ApplicationCredentialID
+     */
     @JsonProperty("applicationCredentialId")
     public void setApplicationCredentialId(String applicationCredentialId) {
         this.applicationCredentialId = applicationCredentialId;
     }
 
+    /**
+     * The ApplicationCredentialID or ApplicationCredentialName fields are required if using an application credential to authenticate. Some providers allow you to create an application credential to authenticate rather than a password.
+     */
     @JsonProperty("applicationCredentialName")
     public String getApplicationCredentialName() {
         return applicationCredentialName;
     }
 
+    /**
+     * The ApplicationCredentialID or ApplicationCredentialName fields are required if using an application credential to authenticate. Some providers allow you to create an application credential to authenticate rather than a password.
+     */
     @JsonProperty("applicationCredentialName")
     public void setApplicationCredentialName(String applicationCredentialName) {
         this.applicationCredentialName = applicationCredentialName;
     }
 
+    /**
+     * OpenStackSDConfig allow retrieving scrape targets from OpenStack Nova instances. See https://prometheus.io/docs/prometheus/latest/configuration/configuration/#openstack_sd_config
+     */
     @JsonProperty("applicationCredentialSecret")
     public SecretKeySelector getApplicationCredentialSecret() {
         return applicationCredentialSecret;
     }
 
+    /**
+     * OpenStackSDConfig allow retrieving scrape targets from OpenStack Nova instances. See https://prometheus.io/docs/prometheus/latest/configuration/configuration/#openstack_sd_config
+     */
     @JsonProperty("applicationCredentialSecret")
     public void setApplicationCredentialSecret(SecretKeySelector applicationCredentialSecret) {
         this.applicationCredentialSecret = applicationCredentialSecret;
     }
 
+    /**
+     * Availability of the endpoint to connect to.
+     */
     @JsonProperty("availability")
     public String getAvailability() {
         return availability;
     }
 
+    /**
+     * Availability of the endpoint to connect to.
+     */
     @JsonProperty("availability")
     public void setAvailability(String availability) {
         this.availability = availability;
     }
 
+    /**
+     * DomainID
+     */
     @JsonProperty("domainID")
     public String getDomainID() {
         return domainID;
     }
 
+    /**
+     * DomainID
+     */
     @JsonProperty("domainID")
     public void setDomainID(String domainID) {
         this.domainID = domainID;
     }
 
+    /**
+     * At most one of domainId and domainName must be provided if using username with Identity V3. Otherwise, either are optional.
+     */
     @JsonProperty("domainName")
     public String getDomainName() {
         return domainName;
     }
 
+    /**
+     * At most one of domainId and domainName must be provided if using username with Identity V3. Otherwise, either are optional.
+     */
     @JsonProperty("domainName")
     public void setDomainName(String domainName) {
         this.domainName = domainName;
     }
 
+    /**
+     * IdentityEndpoint specifies the HTTP endpoint that is required to work with the Identity API of the appropriate version.
+     */
     @JsonProperty("identityEndpoint")
     public String getIdentityEndpoint() {
         return identityEndpoint;
     }
 
+    /**
+     * IdentityEndpoint specifies the HTTP endpoint that is required to work with the Identity API of the appropriate version.
+     */
     @JsonProperty("identityEndpoint")
     public void setIdentityEndpoint(String identityEndpoint) {
         this.identityEndpoint = identityEndpoint;
     }
 
+    /**
+     * OpenStackSDConfig allow retrieving scrape targets from OpenStack Nova instances. See https://prometheus.io/docs/prometheus/latest/configuration/configuration/#openstack_sd_config
+     */
     @JsonProperty("password")
     public SecretKeySelector getPassword() {
         return password;
     }
 
+    /**
+     * OpenStackSDConfig allow retrieving scrape targets from OpenStack Nova instances. See https://prometheus.io/docs/prometheus/latest/configuration/configuration/#openstack_sd_config
+     */
     @JsonProperty("password")
     public void setPassword(SecretKeySelector password) {
         this.password = password;
     }
 
+    /**
+     * The port to scrape metrics from. If using the public IP address, this must instead be specified in the relabeling rule.
+     */
     @JsonProperty("port")
     public Integer getPort() {
         return port;
     }
 
+    /**
+     * The port to scrape metrics from. If using the public IP address, this must instead be specified in the relabeling rule.
+     */
     @JsonProperty("port")
     public void setPort(Integer port) {
         this.port = port;
     }
 
+    /**
+     * ProjectID
+     */
     @JsonProperty("projectID")
     public String getProjectID() {
         return projectID;
     }
 
+    /**
+     * ProjectID
+     */
     @JsonProperty("projectID")
     public void setProjectID(String projectID) {
         this.projectID = projectID;
     }
 
+    /**
+     * The ProjectId and ProjectName fields are optional for the Identity V2 API. Some providers allow you to specify a ProjectName instead of the ProjectId. Some require both. Your provider's authentication policies will determine how these fields influence authentication.
+     */
     @JsonProperty("projectName")
     public String getProjectName() {
         return projectName;
     }
 
+    /**
+     * The ProjectId and ProjectName fields are optional for the Identity V2 API. Some providers allow you to specify a ProjectName instead of the ProjectId. Some require both. Your provider's authentication policies will determine how these fields influence authentication.
+     */
     @JsonProperty("projectName")
     public void setProjectName(String projectName) {
         this.projectName = projectName;
     }
 
+    /**
+     * Refresh interval to re-read the instance list.
+     */
     @JsonProperty("refreshInterval")
     public String getRefreshInterval() {
         return refreshInterval;
     }
 
+    /**
+     * Refresh interval to re-read the instance list.
+     */
     @JsonProperty("refreshInterval")
     public void setRefreshInterval(String refreshInterval) {
         this.refreshInterval = refreshInterval;
     }
 
+    /**
+     * The OpenStack Region.
+     */
     @JsonProperty("region")
     public String getRegion() {
         return region;
     }
 
+    /**
+     * The OpenStack Region.
+     */
     @JsonProperty("region")
     public void setRegion(String region) {
         this.region = region;
     }
 
+    /**
+     * The OpenStack role of entities that should be discovered.
+     */
     @JsonProperty("role")
     public String getRole() {
         return role;
     }
 
+    /**
+     * The OpenStack role of entities that should be discovered.
+     */
     @JsonProperty("role")
     public void setRole(String role) {
         this.role = role;
     }
 
+    /**
+     * OpenStackSDConfig allow retrieving scrape targets from OpenStack Nova instances. See https://prometheus.io/docs/prometheus/latest/configuration/configuration/#openstack_sd_config
+     */
     @JsonProperty("tlsConfig")
     public SafeTLSConfig getTlsConfig() {
         return tlsConfig;
     }
 
+    /**
+     * OpenStackSDConfig allow retrieving scrape targets from OpenStack Nova instances. See https://prometheus.io/docs/prometheus/latest/configuration/configuration/#openstack_sd_config
+     */
     @JsonProperty("tlsConfig")
     public void setTlsConfig(SafeTLSConfig tlsConfig) {
         this.tlsConfig = tlsConfig;
     }
 
+    /**
+     * UserID
+     */
     @JsonProperty("userid")
     public String getUserid() {
         return userid;
     }
 
+    /**
+     * UserID
+     */
     @JsonProperty("userid")
     public void setUserid(String userid) {
         this.userid = userid;
     }
 
+    /**
+     * Username is required if using Identity V2 API. Consult with your provider's control panel to discover your account's username. In Identity V3, either userid or a combination of username and domainId or domainName are needed
+     */
     @JsonProperty("username")
     public String getUsername() {
         return username;
     }
 
+    /**
+     * Username is required if using Identity V2 API. Consult with your provider's control panel to discover your account's username. In Identity V3, either userid or a combination of username and domainId or domainName are needed
+     */
     @JsonProperty("username")
     public void setUsername(String username) {
         this.username = username;

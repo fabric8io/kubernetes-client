@@ -33,6 +33,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * SpotVMOptions defines the options relevant to running the Machine on Spot VMs
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -79,11 +82,17 @@ public class SpotVMOptions implements Editable<SpotVMOptionsBuilder>, Kubernetes
         this.maxPrice = maxPrice;
     }
 
+    /**
+     * SpotVMOptions defines the options relevant to running the Machine on Spot VMs
+     */
     @JsonProperty("maxPrice")
     public Quantity getMaxPrice() {
         return maxPrice;
     }
 
+    /**
+     * SpotVMOptions defines the options relevant to running the Machine on Spot VMs
+     */
     @JsonProperty("maxPrice")
     public void setMaxPrice(Quantity maxPrice) {
         this.maxPrice = maxPrice;

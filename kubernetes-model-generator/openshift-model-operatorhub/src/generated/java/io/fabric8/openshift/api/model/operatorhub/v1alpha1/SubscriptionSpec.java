@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * SubscriptionSpec defines an Application that can be installed
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -102,71 +105,113 @@ public class SubscriptionSpec implements Editable<SubscriptionSpecBuilder>, Kube
         this.startingCSV = startingCSV;
     }
 
+    /**
+     * SubscriptionSpec defines an Application that can be installed
+     */
     @JsonProperty("channel")
     public String getChannel() {
         return channel;
     }
 
+    /**
+     * SubscriptionSpec defines an Application that can be installed
+     */
     @JsonProperty("channel")
     public void setChannel(String channel) {
         this.channel = channel;
     }
 
+    /**
+     * SubscriptionSpec defines an Application that can be installed
+     */
     @JsonProperty("config")
     public SubscriptionConfig getConfig() {
         return config;
     }
 
+    /**
+     * SubscriptionSpec defines an Application that can be installed
+     */
     @JsonProperty("config")
     public void setConfig(SubscriptionConfig config) {
         this.config = config;
     }
 
+    /**
+     * SubscriptionSpec defines an Application that can be installed
+     */
     @JsonProperty("installPlanApproval")
     public String getInstallPlanApproval() {
         return installPlanApproval;
     }
 
+    /**
+     * SubscriptionSpec defines an Application that can be installed
+     */
     @JsonProperty("installPlanApproval")
     public void setInstallPlanApproval(String installPlanApproval) {
         this.installPlanApproval = installPlanApproval;
     }
 
+    /**
+     * SubscriptionSpec defines an Application that can be installed
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * SubscriptionSpec defines an Application that can be installed
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * SubscriptionSpec defines an Application that can be installed
+     */
     @JsonProperty("source")
     public String getSource() {
         return source;
     }
 
+    /**
+     * SubscriptionSpec defines an Application that can be installed
+     */
     @JsonProperty("source")
     public void setSource(String source) {
         this.source = source;
     }
 
+    /**
+     * SubscriptionSpec defines an Application that can be installed
+     */
     @JsonProperty("sourceNamespace")
     public String getSourceNamespace() {
         return sourceNamespace;
     }
 
+    /**
+     * SubscriptionSpec defines an Application that can be installed
+     */
     @JsonProperty("sourceNamespace")
     public void setSourceNamespace(String sourceNamespace) {
         this.sourceNamespace = sourceNamespace;
     }
 
+    /**
+     * SubscriptionSpec defines an Application that can be installed
+     */
     @JsonProperty("startingCSV")
     public String getStartingCSV() {
         return startingCSV;
     }
 
+    /**
+     * SubscriptionSpec defines an Application that can be installed
+     */
     @JsonProperty("startingCSV")
     public void setStartingCSV(String startingCSV) {
         this.startingCSV = startingCSV;

@@ -37,6 +37,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * KafkaSinkStatus represents the current state of the KafkaSink.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -102,54 +105,84 @@ public class KafkaSinkStatus implements Editable<KafkaSinkStatusBuilder>, Kubern
         this.policies = policies;
     }
 
+    /**
+     * KafkaSinkStatus represents the current state of the KafkaSink.
+     */
     @JsonProperty("AddressStatus")
     public AddressStatus getAddressStatus() {
         return addressStatus;
     }
 
+    /**
+     * KafkaSinkStatus represents the current state of the KafkaSink.
+     */
     @JsonProperty("AddressStatus")
     public void setAddressStatus(AddressStatus addressStatus) {
         this.addressStatus = addressStatus;
     }
 
+    /**
+     * Annotations is additional Status fields for the Resource to save some additional State as well as convey more information to the user. This is roughly akin to Annotations on any k8s resource, just the reconciler conveying richer information outwards.
+     */
     @JsonProperty("annotations")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getAnnotations() {
         return annotations;
     }
 
+    /**
+     * Annotations is additional Status fields for the Resource to save some additional State as well as convey more information to the user. This is roughly akin to Annotations on any k8s resource, just the reconciler conveying richer information outwards.
+     */
     @JsonProperty("annotations")
     public void setAnnotations(Map<String, String> annotations) {
         this.annotations = annotations;
     }
 
+    /**
+     * Conditions the latest available observations of a resource's current state.
+     */
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Condition> getConditions() {
         return conditions;
     }
 
+    /**
+     * Conditions the latest available observations of a resource's current state.
+     */
     @JsonProperty("conditions")
     public void setConditions(List<Condition> conditions) {
         this.conditions = conditions;
     }
 
+    /**
+     * ObservedGeneration is the 'Generation' of the Service that was last processed by the controller.
+     */
     @JsonProperty("observedGeneration")
     public Long getObservedGeneration() {
         return observedGeneration;
     }
 
+    /**
+     * ObservedGeneration is the 'Generation' of the Service that was last processed by the controller.
+     */
     @JsonProperty("observedGeneration")
     public void setObservedGeneration(Long observedGeneration) {
         this.observedGeneration = observedGeneration;
     }
 
+    /**
+     * Policies holds the list of applied EventPolicies
+     */
     @JsonProperty("policies")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<AppliedEventPolicyRef> getPolicies() {
         return policies;
     }
 
+    /**
+     * Policies holds the list of applied EventPolicies
+     */
     @JsonProperty("policies")
     public void setPolicies(List<AppliedEventPolicyRef> policies) {
         this.policies = policies;

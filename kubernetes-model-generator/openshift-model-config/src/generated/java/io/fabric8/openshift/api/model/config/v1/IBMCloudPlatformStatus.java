@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * IBMCloudPlatformStatus holds the current status of the IBMCloud infrastructure provider.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -101,62 +104,98 @@ public class IBMCloudPlatformStatus implements Editable<IBMCloudPlatformStatusBu
         this.serviceEndpoints = serviceEndpoints;
     }
 
+    /**
+     * CISInstanceCRN is the CRN of the Cloud Internet Services instance managing the DNS zone for the cluster's base domain
+     */
     @JsonProperty("cisInstanceCRN")
     public String getCisInstanceCRN() {
         return cisInstanceCRN;
     }
 
+    /**
+     * CISInstanceCRN is the CRN of the Cloud Internet Services instance managing the DNS zone for the cluster's base domain
+     */
     @JsonProperty("cisInstanceCRN")
     public void setCisInstanceCRN(String cisInstanceCRN) {
         this.cisInstanceCRN = cisInstanceCRN;
     }
 
+    /**
+     * DNSInstanceCRN is the CRN of the DNS Services instance managing the DNS zone for the cluster's base domain
+     */
     @JsonProperty("dnsInstanceCRN")
     public String getDnsInstanceCRN() {
         return dnsInstanceCRN;
     }
 
+    /**
+     * DNSInstanceCRN is the CRN of the DNS Services instance managing the DNS zone for the cluster's base domain
+     */
     @JsonProperty("dnsInstanceCRN")
     public void setDnsInstanceCRN(String dnsInstanceCRN) {
         this.dnsInstanceCRN = dnsInstanceCRN;
     }
 
+    /**
+     * Location is where the cluster has been deployed
+     */
     @JsonProperty("location")
     public String getLocation() {
         return location;
     }
 
+    /**
+     * Location is where the cluster has been deployed
+     */
     @JsonProperty("location")
     public void setLocation(String location) {
         this.location = location;
     }
 
+    /**
+     * ProviderType indicates the type of cluster that was created
+     */
     @JsonProperty("providerType")
     public String getProviderType() {
         return providerType;
     }
 
+    /**
+     * ProviderType indicates the type of cluster that was created
+     */
     @JsonProperty("providerType")
     public void setProviderType(String providerType) {
         this.providerType = providerType;
     }
 
+    /**
+     * ResourceGroupName is the Resource Group for new IBMCloud resources created for the cluster.
+     */
     @JsonProperty("resourceGroupName")
     public String getResourceGroupName() {
         return resourceGroupName;
     }
 
+    /**
+     * ResourceGroupName is the Resource Group for new IBMCloud resources created for the cluster.
+     */
     @JsonProperty("resourceGroupName")
     public void setResourceGroupName(String resourceGroupName) {
         this.resourceGroupName = resourceGroupName;
     }
 
+    /**
+     * serviceEndpoints is a list of custom endpoints which will override the default service endpoints of an IBM Cloud service. These endpoints are consumed by components within the cluster to reach the respective IBM Cloud Services.
+     */
     @JsonProperty("serviceEndpoints")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<IBMCloudServiceEndpoint> getServiceEndpoints() {
         return serviceEndpoints;
     }
 
+    /**
+     * serviceEndpoints is a list of custom endpoints which will override the default service endpoints of an IBM Cloud service. These endpoints are consumed by components within the cluster to reach the respective IBM Cloud Services.
+     */
     @JsonProperty("serviceEndpoints")
     public void setServiceEndpoints(List<IBMCloudServiceEndpoint> serviceEndpoints) {
         this.serviceEndpoints = serviceEndpoints;

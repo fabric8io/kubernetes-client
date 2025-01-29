@@ -39,6 +39,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * InstallConfig is the configuration for an OpenShift install.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -101,9 +104,6 @@ public class InstallConfig implements Editable<InstallConfigBuilder>, HasMetadat
     private String additionalTrustBundle;
     @JsonProperty("additionalTrustBundlePolicy")
     private String additionalTrustBundlePolicy;
-    /**
-     * (Required)
-     */
     @JsonProperty("apiVersion")
     private String apiVersion = "install.openshift.io/v1";
     @JsonProperty("baseDomain")
@@ -134,9 +134,6 @@ public class InstallConfig implements Editable<InstallConfigBuilder>, HasMetadat
     @JsonProperty("imageDigestSources")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<ImageDigestSource> imageDigestSources = new ArrayList<>();
-    /**
-     * (Required)
-     */
     @JsonProperty("kind")
     private String kind = "InstallConfig";
     @JsonProperty("metadata")
@@ -192,28 +189,40 @@ public class InstallConfig implements Editable<InstallConfigBuilder>, HasMetadat
         this.sshKey = sshKey;
     }
 
+    /**
+     * AdditionalTrustBundle is a PEM-encoded X.509 certificate bundle that will be added to the nodes' trusted certificate store.
+     */
     @JsonProperty("additionalTrustBundle")
     public String getAdditionalTrustBundle() {
         return additionalTrustBundle;
     }
 
+    /**
+     * AdditionalTrustBundle is a PEM-encoded X.509 certificate bundle that will be added to the nodes' trusted certificate store.
+     */
     @JsonProperty("additionalTrustBundle")
     public void setAdditionalTrustBundle(String additionalTrustBundle) {
         this.additionalTrustBundle = additionalTrustBundle;
     }
 
+    /**
+     * AdditionalTrustBundlePolicy determines when to add the AdditionalTrustBundle to the nodes' trusted certificate store. "Proxyonly" is the default. The field can be set to following specified values. "Proxyonly" : adds the AdditionalTrustBundle to nodes when http/https proxy is configured. "Always" : always adds AdditionalTrustBundle.
+     */
     @JsonProperty("additionalTrustBundlePolicy")
     public String getAdditionalTrustBundlePolicy() {
         return additionalTrustBundlePolicy;
     }
 
+    /**
+     * AdditionalTrustBundlePolicy determines when to add the AdditionalTrustBundle to the nodes' trusted certificate store. "Proxyonly" is the default. The field can be set to following specified values. "Proxyonly" : adds the AdditionalTrustBundle to nodes when http/https proxy is configured. "Always" : always adds AdditionalTrustBundle.
+     */
     @JsonProperty("additionalTrustBundlePolicy")
     public void setAdditionalTrustBundlePolicy(String additionalTrustBundlePolicy) {
         this.additionalTrustBundlePolicy = additionalTrustBundlePolicy;
     }
 
     /**
-     * (Required)
+     * APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -221,139 +230,211 @@ public class InstallConfig implements Editable<InstallConfigBuilder>, HasMetadat
     }
 
     /**
-     * (Required)
+     * APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
         this.apiVersion = apiVersion;
     }
 
+    /**
+     * BaseDomain is the base domain to which the cluster should belong.
+     */
     @JsonProperty("baseDomain")
     public String getBaseDomain() {
         return baseDomain;
     }
 
+    /**
+     * BaseDomain is the base domain to which the cluster should belong.
+     */
     @JsonProperty("baseDomain")
     public void setBaseDomain(String baseDomain) {
         this.baseDomain = baseDomain;
     }
 
+    /**
+     * InstallConfig is the configuration for an OpenShift install.
+     */
     @JsonProperty("bootstrapInPlace")
     public BootstrapInPlace getBootstrapInPlace() {
         return bootstrapInPlace;
     }
 
+    /**
+     * InstallConfig is the configuration for an OpenShift install.
+     */
     @JsonProperty("bootstrapInPlace")
     public void setBootstrapInPlace(BootstrapInPlace bootstrapInPlace) {
         this.bootstrapInPlace = bootstrapInPlace;
     }
 
+    /**
+     * InstallConfig is the configuration for an OpenShift install.
+     */
     @JsonProperty("capabilities")
     public Capabilities getCapabilities() {
         return capabilities;
     }
 
+    /**
+     * InstallConfig is the configuration for an OpenShift install.
+     */
     @JsonProperty("capabilities")
     public void setCapabilities(Capabilities capabilities) {
         this.capabilities = capabilities;
     }
 
+    /**
+     * Compute is the configuration for the machines that comprise the compute nodes.
+     */
     @JsonProperty("compute")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<MachinePool> getCompute() {
         return compute;
     }
 
+    /**
+     * Compute is the configuration for the machines that comprise the compute nodes.
+     */
     @JsonProperty("compute")
     public void setCompute(List<MachinePool> compute) {
         this.compute = compute;
     }
 
+    /**
+     * InstallConfig is the configuration for an OpenShift install.
+     */
     @JsonProperty("controlPlane")
     public MachinePool getControlPlane() {
         return controlPlane;
     }
 
+    /**
+     * InstallConfig is the configuration for an OpenShift install.
+     */
     @JsonProperty("controlPlane")
     public void setControlPlane(MachinePool controlPlane) {
         this.controlPlane = controlPlane;
     }
 
+    /**
+     * CPUPartitioning determines if a cluster should be setup for CPU workload partitioning at install time. When this field is set the cluster will be flagged for CPU Partitioning allowing users to segregate workloads to specific CPU Sets. This does not make any decisions on workloads it only configures the nodes to allow CPU Partitioning. The "AllNodes" value will setup all nodes for CPU Partitioning, the default is "None".
+     */
     @JsonProperty("cpuPartitioningMode")
     public String getCpuPartitioningMode() {
         return cpuPartitioningMode;
     }
 
+    /**
+     * CPUPartitioning determines if a cluster should be setup for CPU workload partitioning at install time. When this field is set the cluster will be flagged for CPU Partitioning allowing users to segregate workloads to specific CPU Sets. This does not make any decisions on workloads it only configures the nodes to allow CPU Partitioning. The "AllNodes" value will setup all nodes for CPU Partitioning, the default is "None".
+     */
     @JsonProperty("cpuPartitioningMode")
     public void setCpuPartitioningMode(String cpuPartitioningMode) {
         this.cpuPartitioningMode = cpuPartitioningMode;
     }
 
+    /**
+     * CredentialsMode is used to explicitly set the mode with which CredentialRequests are satisfied.<br><p> <br><p> If this field is set, then the installer will not attempt to query the cloud permissions before attempting installation. If the field is not set or empty, then the installer will perform its normal verification that the credentials provided are sufficient to perform an installation.<br><p> <br><p> There are three possible values for this field, but the valid values are dependent upon the platform being used. "Mint": create new credentials with a subset of the overall permissions for each CredentialsRequest "Passthrough": copy the credentials with all of the overall permissions for each CredentialsRequest "Manual": CredentialsRequests must be handled manually by the user<br><p> <br><p> For each of the following platforms, the field can set to the specified values. For all other platforms, the field must not be set. AWS: "Mint", "Passthrough", "Manual" Azure: "Passthrough", "Manual" AzureStack: "Manual" GCP: "Mint", "Passthrough", "Manual" IBMCloud: "Manual" PowerVS: "Manual" Nutanix: "Manual"
+     */
     @JsonProperty("credentialsMode")
     public String getCredentialsMode() {
         return credentialsMode;
     }
 
+    /**
+     * CredentialsMode is used to explicitly set the mode with which CredentialRequests are satisfied.<br><p> <br><p> If this field is set, then the installer will not attempt to query the cloud permissions before attempting installation. If the field is not set or empty, then the installer will perform its normal verification that the credentials provided are sufficient to perform an installation.<br><p> <br><p> There are three possible values for this field, but the valid values are dependent upon the platform being used. "Mint": create new credentials with a subset of the overall permissions for each CredentialsRequest "Passthrough": copy the credentials with all of the overall permissions for each CredentialsRequest "Manual": CredentialsRequests must be handled manually by the user<br><p> <br><p> For each of the following platforms, the field can set to the specified values. For all other platforms, the field must not be set. AWS: "Mint", "Passthrough", "Manual" Azure: "Passthrough", "Manual" AzureStack: "Manual" GCP: "Mint", "Passthrough", "Manual" IBMCloud: "Manual" PowerVS: "Manual" Nutanix: "Manual"
+     */
     @JsonProperty("credentialsMode")
     public void setCredentialsMode(String credentialsMode) {
         this.credentialsMode = credentialsMode;
     }
 
+    /**
+     * FeatureGates enables a set of custom feature gates. May only be used in conjunction with FeatureSet "CustomNoUpgrade". Features may be enabled or disabled by providing a true or false value for the feature gate. E.g. "featureGates": ["FeatureGate1=true", "FeatureGate2=false"].
+     */
     @JsonProperty("featureGates")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getFeatureGates() {
         return featureGates;
     }
 
+    /**
+     * FeatureGates enables a set of custom feature gates. May only be used in conjunction with FeatureSet "CustomNoUpgrade". Features may be enabled or disabled by providing a true or false value for the feature gate. E.g. "featureGates": ["FeatureGate1=true", "FeatureGate2=false"].
+     */
     @JsonProperty("featureGates")
     public void setFeatureGates(List<String> featureGates) {
         this.featureGates = featureGates;
     }
 
+    /**
+     * FeatureSet enables features that are not part of the default feature set. Valid values are "Default", "TechPreviewNoUpgrade" and "CustomNoUpgrade". When omitted, the "Default" feature set is used.
+     */
     @JsonProperty("featureSet")
     public String getFeatureSet() {
         return featureSet;
     }
 
+    /**
+     * FeatureSet enables features that are not part of the default feature set. Valid values are "Default", "TechPreviewNoUpgrade" and "CustomNoUpgrade". When omitted, the "Default" feature set is used.
+     */
     @JsonProperty("featureSet")
     public void setFeatureSet(String featureSet) {
         this.featureSet = featureSet;
     }
 
+    /**
+     * FIPS configures https://www.nist.gov/itl/fips-general-information
+     */
     @JsonProperty("fips")
     public Boolean getFips() {
         return fips;
     }
 
+    /**
+     * FIPS configures https://www.nist.gov/itl/fips-general-information
+     */
     @JsonProperty("fips")
     public void setFips(Boolean fips) {
         this.fips = fips;
     }
 
+    /**
+     * ImageContentSources lists sources/repositories for the release-image content. The field is deprecated. Please use imageDigestSources.
+     */
     @JsonProperty("imageContentSources")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ImageContentSource> getImageContentSources() {
         return imageContentSources;
     }
 
+    /**
+     * ImageContentSources lists sources/repositories for the release-image content. The field is deprecated. Please use imageDigestSources.
+     */
     @JsonProperty("imageContentSources")
     public void setImageContentSources(List<ImageContentSource> imageContentSources) {
         this.imageContentSources = imageContentSources;
     }
 
+    /**
+     * ImageDigestSources lists sources/repositories for the release-image content.
+     */
     @JsonProperty("imageDigestSources")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ImageDigestSource> getImageDigestSources() {
         return imageDigestSources;
     }
 
+    /**
+     * ImageDigestSources lists sources/repositories for the release-image content.
+     */
     @JsonProperty("imageDigestSources")
     public void setImageDigestSources(List<ImageDigestSource> imageDigestSources) {
         this.imageDigestSources = imageDigestSources;
     }
 
     /**
-     * (Required)
+     * Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -361,88 +442,136 @@ public class InstallConfig implements Editable<InstallConfigBuilder>, HasMetadat
     }
 
     /**
-     * (Required)
+     * Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
      */
     @JsonProperty("kind")
     public void setKind(String kind) {
         this.kind = kind;
     }
 
+    /**
+     * InstallConfig is the configuration for an OpenShift install.
+     */
     @JsonProperty("metadata")
     public ObjectMeta getMetadata() {
         return metadata;
     }
 
+    /**
+     * InstallConfig is the configuration for an OpenShift install.
+     */
     @JsonProperty("metadata")
     public void setMetadata(ObjectMeta metadata) {
         this.metadata = metadata;
     }
 
+    /**
+     * InstallConfig is the configuration for an OpenShift install.
+     */
     @JsonProperty("networking")
     public Networking getNetworking() {
         return networking;
     }
 
+    /**
+     * InstallConfig is the configuration for an OpenShift install.
+     */
     @JsonProperty("networking")
     public void setNetworking(Networking networking) {
         this.networking = networking;
     }
 
+    /**
+     * InstallConfig is the configuration for an OpenShift install.
+     */
     @JsonProperty("operatorPublishingStrategy")
     public OperatorPublishingStrategy getOperatorPublishingStrategy() {
         return operatorPublishingStrategy;
     }
 
+    /**
+     * InstallConfig is the configuration for an OpenShift install.
+     */
     @JsonProperty("operatorPublishingStrategy")
     public void setOperatorPublishingStrategy(OperatorPublishingStrategy operatorPublishingStrategy) {
         this.operatorPublishingStrategy = operatorPublishingStrategy;
     }
 
+    /**
+     * InstallConfig is the configuration for an OpenShift install.
+     */
     @JsonProperty("platform")
     public Platform getPlatform() {
         return platform;
     }
 
+    /**
+     * InstallConfig is the configuration for an OpenShift install.
+     */
     @JsonProperty("platform")
     public void setPlatform(Platform platform) {
         this.platform = platform;
     }
 
+    /**
+     * InstallConfig is the configuration for an OpenShift install.
+     */
     @JsonProperty("proxy")
     public Proxy getProxy() {
         return proxy;
     }
 
+    /**
+     * InstallConfig is the configuration for an OpenShift install.
+     */
     @JsonProperty("proxy")
     public void setProxy(Proxy proxy) {
         this.proxy = proxy;
     }
 
+    /**
+     * Publish controls how the user facing endpoints of the cluster like the Kubernetes API, OpenShift routes etc. are exposed. When no strategy is specified, the strategy is "External".
+     */
     @JsonProperty("publish")
     public String getPublish() {
         return publish;
     }
 
+    /**
+     * Publish controls how the user facing endpoints of the cluster like the Kubernetes API, OpenShift routes etc. are exposed. When no strategy is specified, the strategy is "External".
+     */
     @JsonProperty("publish")
     public void setPublish(String publish) {
         this.publish = publish;
     }
 
+    /**
+     * PullSecret is the secret to use when pulling images.
+     */
     @JsonProperty("pullSecret")
     public String getPullSecret() {
         return pullSecret;
     }
 
+    /**
+     * PullSecret is the secret to use when pulling images.
+     */
     @JsonProperty("pullSecret")
     public void setPullSecret(String pullSecret) {
         this.pullSecret = pullSecret;
     }
 
+    /**
+     * SSHKey is the public Secure Shell (SSH) key to provide access to instances.
+     */
     @JsonProperty("sshKey")
     public String getSshKey() {
         return sshKey;
     }
 
+    /**
+     * SSHKey is the public Secure Shell (SSH) key to provide access to instances.
+     */
     @JsonProperty("sshKey")
     public void setSshKey(String sshKey) {
         this.sshKey = sshKey;

@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * GenericWebHookCause holds information about a generic WebHook that triggered a build.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class GenericWebHookCause implements Editable<GenericWebHookCauseBuilder>
         this.secret = secret;
     }
 
+    /**
+     * GenericWebHookCause holds information about a generic WebHook that triggered a build.
+     */
     @JsonProperty("revision")
     public SourceRevision getRevision() {
         return revision;
     }
 
+    /**
+     * GenericWebHookCause holds information about a generic WebHook that triggered a build.
+     */
     @JsonProperty("revision")
     public void setRevision(SourceRevision revision) {
         this.revision = revision;
     }
 
+    /**
+     * secret is the obfuscated webhook secret that triggered a build.
+     */
     @JsonProperty("secret")
     public String getSecret() {
         return secret;
     }
 
+    /**
+     * secret is the obfuscated webhook secret that triggered a build.
+     */
     @JsonProperty("secret")
     public void setSecret(String secret) {
         this.secret = secret;

@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ACMEAuthorization contains data returned from the ACME server on an authorization that must be completed in order validate a DNS name on an ACME Order resource.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -97,52 +100,82 @@ public class ACMEAuthorization implements Editable<ACMEAuthorizationBuilder>, Ku
         this.wildcard = wildcard;
     }
 
+    /**
+     * Challenges specifies the challenge types offered by the ACME server. One of these challenge types will be selected when validating the DNS name and an appropriate Challenge resource will be created to perform the ACME challenge process.
+     */
     @JsonProperty("challenges")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ACMEChallenge> getChallenges() {
         return challenges;
     }
 
+    /**
+     * Challenges specifies the challenge types offered by the ACME server. One of these challenge types will be selected when validating the DNS name and an appropriate Challenge resource will be created to perform the ACME challenge process.
+     */
     @JsonProperty("challenges")
     public void setChallenges(List<ACMEChallenge> challenges) {
         this.challenges = challenges;
     }
 
+    /**
+     * Identifier is the DNS name to be validated as part of this authorization
+     */
     @JsonProperty("identifier")
     public String getIdentifier() {
         return identifier;
     }
 
+    /**
+     * Identifier is the DNS name to be validated as part of this authorization
+     */
     @JsonProperty("identifier")
     public void setIdentifier(String identifier) {
         this.identifier = identifier;
     }
 
+    /**
+     * InitialState is the initial state of the ACME authorization when first fetched from the ACME server. If an Authorization is already 'valid', the Order controller will not create a Challenge resource for the authorization. This will occur when working with an ACME server that enables 'authz reuse' (such as Let's Encrypt's production endpoint). If not set and 'identifier' is set, the state is assumed to be pending and a Challenge will be created.
+     */
     @JsonProperty("initialState")
     public String getInitialState() {
         return initialState;
     }
 
+    /**
+     * InitialState is the initial state of the ACME authorization when first fetched from the ACME server. If an Authorization is already 'valid', the Order controller will not create a Challenge resource for the authorization. This will occur when working with an ACME server that enables 'authz reuse' (such as Let's Encrypt's production endpoint). If not set and 'identifier' is set, the state is assumed to be pending and a Challenge will be created.
+     */
     @JsonProperty("initialState")
     public void setInitialState(String initialState) {
         this.initialState = initialState;
     }
 
+    /**
+     * URL is the URL of the Authorization that must be completed
+     */
     @JsonProperty("url")
     public String getUrl() {
         return url;
     }
 
+    /**
+     * URL is the URL of the Authorization that must be completed
+     */
     @JsonProperty("url")
     public void setUrl(String url) {
         this.url = url;
     }
 
+    /**
+     * Wildcard will be true if this authorization is for a wildcard DNS name. If this is true, the identifier will be the &#42;non-wildcard&#42; version of the DNS name. For example, if '&#42;.example.com' is the DNS name being validated, this field will be 'true' and the 'identifier' field will be 'example.com'.
+     */
     @JsonProperty("wildcard")
     public Boolean getWildcard() {
         return wildcard;
     }
 
+    /**
+     * Wildcard will be true if this authorization is for a wildcard DNS name. If this is true, the identifier will be the &#42;non-wildcard&#42; version of the DNS name. For example, if '&#42;.example.com' is the DNS name being validated, this field will be 'true' and the 'identifier' field will be 'example.com'.
+     */
     @JsonProperty("wildcard")
     public void setWildcard(Boolean wildcard) {
         this.wildcard = wildcard;

@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ReplicatedComplianceHistory defines the replicated policy compliance details history.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class ReplicatedComplianceHistory implements Editable<ReplicatedComplianc
         this.message = message;
     }
 
+    /**
+     * ReplicatedComplianceHistory defines the replicated policy compliance details history.
+     */
     @JsonProperty("lastTimestamp")
     public String getLastTimestamp() {
         return lastTimestamp;
     }
 
+    /**
+     * ReplicatedComplianceHistory defines the replicated policy compliance details history.
+     */
     @JsonProperty("lastTimestamp")
     public void setLastTimestamp(String lastTimestamp) {
         this.lastTimestamp = lastTimestamp;
     }
 
+    /**
+     * ReplicatedComplianceHistory defines the replicated policy compliance details history.
+     */
     @JsonProperty("message")
     public String getMessage() {
         return message;
     }
 
+    /**
+     * ReplicatedComplianceHistory defines the replicated policy compliance details history.
+     */
     @JsonProperty("message")
     public void setMessage(String message) {
         this.message = message;

@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * AllowedCSIDriver represents a single inline CSI Driver that is allowed to be used.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -78,11 +81,17 @@ public class AllowedCSIDriver implements Editable<AllowedCSIDriverBuilder>, Kube
         this.name = name;
     }
 
+    /**
+     * Name is the registered name of the CSI driver
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * Name is the registered name of the CSI driver
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;

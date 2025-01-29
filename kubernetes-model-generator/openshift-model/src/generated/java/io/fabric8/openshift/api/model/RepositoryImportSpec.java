@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * RepositoryImportSpec describes a request to import images from a container image repository.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -90,41 +93,65 @@ public class RepositoryImportSpec implements Editable<RepositoryImportSpecBuilde
         this.referencePolicy = referencePolicy;
     }
 
+    /**
+     * RepositoryImportSpec describes a request to import images from a container image repository.
+     */
     @JsonProperty("from")
     public ObjectReference getFrom() {
         return from;
     }
 
+    /**
+     * RepositoryImportSpec describes a request to import images from a container image repository.
+     */
     @JsonProperty("from")
     public void setFrom(ObjectReference from) {
         this.from = from;
     }
 
+    /**
+     * RepositoryImportSpec describes a request to import images from a container image repository.
+     */
     @JsonProperty("importPolicy")
     public TagImportPolicy getImportPolicy() {
         return importPolicy;
     }
 
+    /**
+     * RepositoryImportSpec describes a request to import images from a container image repository.
+     */
     @JsonProperty("importPolicy")
     public void setImportPolicy(TagImportPolicy importPolicy) {
         this.importPolicy = importPolicy;
     }
 
+    /**
+     * IncludeManifest determines if the manifest for each image is returned in the response
+     */
     @JsonProperty("includeManifest")
     public Boolean getIncludeManifest() {
         return includeManifest;
     }
 
+    /**
+     * IncludeManifest determines if the manifest for each image is returned in the response
+     */
     @JsonProperty("includeManifest")
     public void setIncludeManifest(Boolean includeManifest) {
         this.includeManifest = includeManifest;
     }
 
+    /**
+     * RepositoryImportSpec describes a request to import images from a container image repository.
+     */
     @JsonProperty("referencePolicy")
     public TagReferencePolicy getReferencePolicy() {
         return referencePolicy;
     }
 
+    /**
+     * RepositoryImportSpec describes a request to import images from a container image repository.
+     */
     @JsonProperty("referencePolicy")
     public void setReferencePolicy(TagReferencePolicy referencePolicy) {
         this.referencePolicy = referencePolicy;

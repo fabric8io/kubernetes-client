@@ -33,6 +33,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * VaultAppRole authenticates with Vault using the App Role auth mechanism, with the role and secret stored in a Kubernetes Secret resource.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -87,31 +90,49 @@ public class VaultAppRole implements Editable<VaultAppRoleBuilder>, KubernetesRe
         this.secretRef = secretRef;
     }
 
+    /**
+     * Path where the App Role authentication backend is mounted in Vault, e.g: "approle"
+     */
     @JsonProperty("path")
     public String getPath() {
         return path;
     }
 
+    /**
+     * Path where the App Role authentication backend is mounted in Vault, e.g: "approle"
+     */
     @JsonProperty("path")
     public void setPath(String path) {
         this.path = path;
     }
 
+    /**
+     * RoleID configured in the App Role authentication backend when setting up the authentication backend in Vault.
+     */
     @JsonProperty("roleId")
     public String getRoleId() {
         return roleId;
     }
 
+    /**
+     * RoleID configured in the App Role authentication backend when setting up the authentication backend in Vault.
+     */
     @JsonProperty("roleId")
     public void setRoleId(String roleId) {
         this.roleId = roleId;
     }
 
+    /**
+     * VaultAppRole authenticates with Vault using the App Role auth mechanism, with the role and secret stored in a Kubernetes Secret resource.
+     */
     @JsonProperty("secretRef")
     public SecretKeySelector getSecretRef() {
         return secretRef;
     }
 
+    /**
+     * VaultAppRole authenticates with Vault using the App Role auth mechanism, with the role and secret stored in a Kubernetes Secret resource.
+     */
     @JsonProperty("secretRef")
     public void setSecretRef(SecretKeySelector secretRef) {
         this.secretRef = secretRef;

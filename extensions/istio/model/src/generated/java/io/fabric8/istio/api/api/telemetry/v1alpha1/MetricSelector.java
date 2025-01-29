@@ -33,6 +33,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Provides a mechanism for matching metrics for the application of override behaviors.
+ */
 @JsonDeserialize(using = io.fabric8.kubernetes.model.jackson.JsonUnwrappedDeserializer.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -84,22 +87,34 @@ public class MetricSelector implements Editable<MetricSelectorBuilder>, Kubernet
         this.mode = mode;
     }
 
+    /**
+     * Provides a mechanism for matching metrics for the application of override behaviors.
+     */
     @JsonProperty("MetricMatch")
     @JsonUnwrapped
     public IsMetricSelectorMetricMatch getMetricMatch() {
         return metricMatch;
     }
 
+    /**
+     * Provides a mechanism for matching metrics for the application of override behaviors.
+     */
     @JsonProperty("MetricMatch")
     public void setMetricMatch(IsMetricSelectorMetricMatch metricMatch) {
         this.metricMatch = metricMatch;
     }
 
+    /**
+     * Provides a mechanism for matching metrics for the application of override behaviors.
+     */
     @JsonProperty("mode")
     public WorkloadMode getMode() {
         return mode;
     }
 
+    /**
+     * Provides a mechanism for matching metrics for the application of override behaviors.
+     */
     @JsonProperty("mode")
     public void setMode(WorkloadMode mode) {
         this.mode = mode;

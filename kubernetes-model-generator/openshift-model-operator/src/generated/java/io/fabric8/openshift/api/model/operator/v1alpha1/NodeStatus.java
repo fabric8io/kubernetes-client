@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * NodeStatus provides information about the current state of a particular node managed by this operator. Deprecated: Use v1.NodeStatus instead
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -97,52 +100,82 @@ public class NodeStatus implements Editable<NodeStatusBuilder>, KubernetesResour
         this.targetDeploymentGeneration = targetDeploymentGeneration;
     }
 
+    /**
+     * currentDeploymentGeneration is the generation of the most recently successful deployment
+     */
     @JsonProperty("currentDeploymentGeneration")
     public Integer getCurrentDeploymentGeneration() {
         return currentDeploymentGeneration;
     }
 
+    /**
+     * currentDeploymentGeneration is the generation of the most recently successful deployment
+     */
     @JsonProperty("currentDeploymentGeneration")
     public void setCurrentDeploymentGeneration(Integer currentDeploymentGeneration) {
         this.currentDeploymentGeneration = currentDeploymentGeneration;
     }
 
+    /**
+     * lastFailedDeploymentGenerationErrors is a list of the errors during the failed deployment referenced in lastFailedDeploymentGeneration
+     */
     @JsonProperty("lastFailedDeploymentErrors")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getLastFailedDeploymentErrors() {
         return lastFailedDeploymentErrors;
     }
 
+    /**
+     * lastFailedDeploymentGenerationErrors is a list of the errors during the failed deployment referenced in lastFailedDeploymentGeneration
+     */
     @JsonProperty("lastFailedDeploymentErrors")
     public void setLastFailedDeploymentErrors(List<String> lastFailedDeploymentErrors) {
         this.lastFailedDeploymentErrors = lastFailedDeploymentErrors;
     }
 
+    /**
+     * lastFailedDeploymentGeneration is the generation of the deployment we tried and failed to deploy.
+     */
     @JsonProperty("lastFailedDeploymentGeneration")
     public Integer getLastFailedDeploymentGeneration() {
         return lastFailedDeploymentGeneration;
     }
 
+    /**
+     * lastFailedDeploymentGeneration is the generation of the deployment we tried and failed to deploy.
+     */
     @JsonProperty("lastFailedDeploymentGeneration")
     public void setLastFailedDeploymentGeneration(Integer lastFailedDeploymentGeneration) {
         this.lastFailedDeploymentGeneration = lastFailedDeploymentGeneration;
     }
 
+    /**
+     * nodeName is the name of the node
+     */
     @JsonProperty("nodeName")
     public String getNodeName() {
         return nodeName;
     }
 
+    /**
+     * nodeName is the name of the node
+     */
     @JsonProperty("nodeName")
     public void setNodeName(String nodeName) {
         this.nodeName = nodeName;
     }
 
+    /**
+     * targetDeploymentGeneration is the generation of the deployment we're trying to apply
+     */
     @JsonProperty("targetDeploymentGeneration")
     public Integer getTargetDeploymentGeneration() {
         return targetDeploymentGeneration;
     }
 
+    /**
+     * targetDeploymentGeneration is the generation of the deployment we're trying to apply
+     */
     @JsonProperty("targetDeploymentGeneration")
     public void setTargetDeploymentGeneration(Integer targetDeploymentGeneration) {
         this.targetDeploymentGeneration = targetDeploymentGeneration;

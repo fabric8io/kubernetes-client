@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ClusterRoleScopeRestriction describes restrictions on cluster role scopes
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -90,33 +93,51 @@ public class ClusterRoleScopeRestriction implements Editable<ClusterRoleScopeRes
         this.roleNames = roleNames;
     }
 
+    /**
+     * AllowEscalation indicates whether you can request roles and their escalating resources
+     */
     @JsonProperty("allowEscalation")
     public Boolean getAllowEscalation() {
         return allowEscalation;
     }
 
+    /**
+     * AllowEscalation indicates whether you can request roles and their escalating resources
+     */
     @JsonProperty("allowEscalation")
     public void setAllowEscalation(Boolean allowEscalation) {
         this.allowEscalation = allowEscalation;
     }
 
+    /**
+     * Namespaces is the list of namespaces that can be referenced.  &#42; means any of them (including &#42;)
+     */
     @JsonProperty("namespaces")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getNamespaces() {
         return namespaces;
     }
 
+    /**
+     * Namespaces is the list of namespaces that can be referenced.  &#42; means any of them (including &#42;)
+     */
     @JsonProperty("namespaces")
     public void setNamespaces(List<String> namespaces) {
         this.namespaces = namespaces;
     }
 
+    /**
+     * RoleNames is the list of cluster roles that can referenced.  &#42; means anything
+     */
     @JsonProperty("roleNames")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getRoleNames() {
         return roleNames;
     }
 
+    /**
+     * RoleNames is the list of cluster roles that can referenced.  &#42; means anything
+     */
     @JsonProperty("roleNames")
     public void setRoleNames(List<String> roleNames) {
         this.roleNames = roleNames;

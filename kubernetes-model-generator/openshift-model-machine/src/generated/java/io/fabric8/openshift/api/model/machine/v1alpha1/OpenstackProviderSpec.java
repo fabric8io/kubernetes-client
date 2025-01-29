@@ -40,6 +40,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * OpenstackProviderSpec is the type that will be embedded in a Machine.Spec.ProviderSpec field for an OpenStack Instance. It is used by the Openstack machine actuator to create a single machine instance. Compatibility level 4: No compatibility is provided, the API can change at any point for any reason. These capabilities should not be used by applications needing long term support.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -101,9 +104,6 @@ public class OpenstackProviderSpec implements Editable<OpenstackProviderSpecBuil
     @JsonProperty("additionalBlockDevices")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<AdditionalBlockDevice> additionalBlockDevices = new ArrayList<>();
-    /**
-     * (Required)
-     */
     @JsonProperty("apiVersion")
     private String apiVersion = "machine.openshift.io/v1alpha1";
     @JsonProperty("availabilityZone")
@@ -122,9 +122,6 @@ public class OpenstackProviderSpec implements Editable<OpenstackProviderSpecBuil
     private String image;
     @JsonProperty("keyName")
     private String keyName;
-    /**
-     * (Required)
-     */
     @JsonProperty("kind")
     private String kind = "OpenstackProviderSpec";
     @JsonProperty("metadata")
@@ -195,19 +192,25 @@ public class OpenstackProviderSpec implements Editable<OpenstackProviderSpecBuil
         this.userDataSecret = userDataSecret;
     }
 
+    /**
+     * additionalBlockDevices is a list of specifications for additional block devices to attach to the server instance
+     */
     @JsonProperty("additionalBlockDevices")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<AdditionalBlockDevice> getAdditionalBlockDevices() {
         return additionalBlockDevices;
     }
 
+    /**
+     * additionalBlockDevices is a list of specifications for additional block devices to attach to the server instance
+     */
     @JsonProperty("additionalBlockDevices")
     public void setAdditionalBlockDevices(List<AdditionalBlockDevice> additionalBlockDevices) {
         this.additionalBlockDevices = additionalBlockDevices;
     }
 
     /**
-     * (Required)
+     * APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -215,95 +218,143 @@ public class OpenstackProviderSpec implements Editable<OpenstackProviderSpecBuil
     }
 
     /**
-     * (Required)
+     * APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
         this.apiVersion = apiVersion;
     }
 
+    /**
+     * The availability zone from which to launch the server.
+     */
     @JsonProperty("availabilityZone")
     public String getAvailabilityZone() {
         return availabilityZone;
     }
 
+    /**
+     * The availability zone from which to launch the server.
+     */
     @JsonProperty("availabilityZone")
     public void setAvailabilityZone(String availabilityZone) {
         this.availabilityZone = availabilityZone;
     }
 
+    /**
+     * The name of the cloud to use from the clouds secret
+     */
     @JsonProperty("cloudName")
     public String getCloudName() {
         return cloudName;
     }
 
+    /**
+     * The name of the cloud to use from the clouds secret
+     */
     @JsonProperty("cloudName")
     public void setCloudName(String cloudName) {
         this.cloudName = cloudName;
     }
 
+    /**
+     * OpenstackProviderSpec is the type that will be embedded in a Machine.Spec.ProviderSpec field for an OpenStack Instance. It is used by the Openstack machine actuator to create a single machine instance. Compatibility level 4: No compatibility is provided, the API can change at any point for any reason. These capabilities should not be used by applications needing long term support.
+     */
     @JsonProperty("cloudsSecret")
     public SecretReference getCloudsSecret() {
         return cloudsSecret;
     }
 
+    /**
+     * OpenstackProviderSpec is the type that will be embedded in a Machine.Spec.ProviderSpec field for an OpenStack Instance. It is used by the Openstack machine actuator to create a single machine instance. Compatibility level 4: No compatibility is provided, the API can change at any point for any reason. These capabilities should not be used by applications needing long term support.
+     */
     @JsonProperty("cloudsSecret")
     public void setCloudsSecret(SecretReference cloudsSecret) {
         this.cloudsSecret = cloudsSecret;
     }
 
+    /**
+     * Config Drive support
+     */
     @JsonProperty("configDrive")
     public Boolean getConfigDrive() {
         return configDrive;
     }
 
+    /**
+     * Config Drive support
+     */
     @JsonProperty("configDrive")
     public void setConfigDrive(Boolean configDrive) {
         this.configDrive = configDrive;
     }
 
+    /**
+     * The flavor reference for the flavor for your server instance.
+     */
     @JsonProperty("flavor")
     public String getFlavor() {
         return flavor;
     }
 
+    /**
+     * The flavor reference for the flavor for your server instance.
+     */
     @JsonProperty("flavor")
     public void setFlavor(String flavor) {
         this.flavor = flavor;
     }
 
+    /**
+     * floatingIP specifies a floating IP to be associated with the machine. Note that it is not safe to use this parameter in a MachineSet, as only one Machine may be assigned the same floating IP.<br><p> <br><p> Deprecated: floatingIP will be removed in a future release as it cannot be implemented correctly.
+     */
     @JsonProperty("floatingIP")
     public String getFloatingIP() {
         return floatingIP;
     }
 
+    /**
+     * floatingIP specifies a floating IP to be associated with the machine. Note that it is not safe to use this parameter in a MachineSet, as only one Machine may be assigned the same floating IP.<br><p> <br><p> Deprecated: floatingIP will be removed in a future release as it cannot be implemented correctly.
+     */
     @JsonProperty("floatingIP")
     public void setFloatingIP(String floatingIP) {
         this.floatingIP = floatingIP;
     }
 
+    /**
+     * The name of the image to use for your server instance. If the RootVolume is specified, this will be ignored and use rootVolume directly.
+     */
     @JsonProperty("image")
     public String getImage() {
         return image;
     }
 
+    /**
+     * The name of the image to use for your server instance. If the RootVolume is specified, this will be ignored and use rootVolume directly.
+     */
     @JsonProperty("image")
     public void setImage(String image) {
         this.image = image;
     }
 
+    /**
+     * The ssh key to inject in the instance
+     */
     @JsonProperty("keyName")
     public String getKeyName() {
         return keyName;
     }
 
+    /**
+     * The ssh key to inject in the instance
+     */
     @JsonProperty("keyName")
     public void setKeyName(String keyName) {
         this.keyName = keyName;
     }
 
     /**
-     * (Required)
+     * Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -311,143 +362,221 @@ public class OpenstackProviderSpec implements Editable<OpenstackProviderSpecBuil
     }
 
     /**
-     * (Required)
+     * Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
      */
     @JsonProperty("kind")
     public void setKind(String kind) {
         this.kind = kind;
     }
 
+    /**
+     * OpenstackProviderSpec is the type that will be embedded in a Machine.Spec.ProviderSpec field for an OpenStack Instance. It is used by the Openstack machine actuator to create a single machine instance. Compatibility level 4: No compatibility is provided, the API can change at any point for any reason. These capabilities should not be used by applications needing long term support.
+     */
     @JsonProperty("metadata")
     public ObjectMeta getMetadata() {
         return metadata;
     }
 
+    /**
+     * OpenstackProviderSpec is the type that will be embedded in a Machine.Spec.ProviderSpec field for an OpenStack Instance. It is used by the Openstack machine actuator to create a single machine instance. Compatibility level 4: No compatibility is provided, the API can change at any point for any reason. These capabilities should not be used by applications needing long term support.
+     */
     @JsonProperty("metadata")
     public void setMetadata(ObjectMeta metadata) {
         this.metadata = metadata;
     }
 
+    /**
+     * A networks object. Required parameter when there are multiple networks defined for the tenant. When you do not specify the networks parameter, the server attaches to the only network created for the current tenant.
+     */
     @JsonProperty("networks")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<NetworkParam> getNetworks() {
         return networks;
     }
 
+    /**
+     * A networks object. Required parameter when there are multiple networks defined for the tenant. When you do not specify the networks parameter, the server attaches to the only network created for the current tenant.
+     */
     @JsonProperty("networks")
     public void setNetworks(List<NetworkParam> networks) {
         this.networks = networks;
     }
 
+    /**
+     * Create and assign additional ports to instances
+     */
     @JsonProperty("ports")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<PortOpts> getPorts() {
         return ports;
     }
 
+    /**
+     * Create and assign additional ports to instances
+     */
     @JsonProperty("ports")
     public void setPorts(List<PortOpts> ports) {
         this.ports = ports;
     }
 
+    /**
+     * The subnet that a set of machines will get ingress/egress traffic from
+     */
     @JsonProperty("primarySubnet")
     public String getPrimarySubnet() {
         return primarySubnet;
     }
 
+    /**
+     * The subnet that a set of machines will get ingress/egress traffic from
+     */
     @JsonProperty("primarySubnet")
     public void setPrimarySubnet(String primarySubnet) {
         this.primarySubnet = primarySubnet;
     }
 
+    /**
+     * OpenstackProviderSpec is the type that will be embedded in a Machine.Spec.ProviderSpec field for an OpenStack Instance. It is used by the Openstack machine actuator to create a single machine instance. Compatibility level 4: No compatibility is provided, the API can change at any point for any reason. These capabilities should not be used by applications needing long term support.
+     */
     @JsonProperty("rootVolume")
     public RootVolume getRootVolume() {
         return rootVolume;
     }
 
+    /**
+     * OpenstackProviderSpec is the type that will be embedded in a Machine.Spec.ProviderSpec field for an OpenStack Instance. It is used by the Openstack machine actuator to create a single machine instance. Compatibility level 4: No compatibility is provided, the API can change at any point for any reason. These capabilities should not be used by applications needing long term support.
+     */
     @JsonProperty("rootVolume")
     public void setRootVolume(RootVolume rootVolume) {
         this.rootVolume = rootVolume;
     }
 
+    /**
+     * The names of the security groups to assign to the instance
+     */
     @JsonProperty("securityGroups")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<SecurityGroupParam> getSecurityGroups() {
         return securityGroups;
     }
 
+    /**
+     * The names of the security groups to assign to the instance
+     */
     @JsonProperty("securityGroups")
     public void setSecurityGroups(List<SecurityGroupParam> securityGroups) {
         this.securityGroups = securityGroups;
     }
 
+    /**
+     * The server group to assign the machine to.
+     */
     @JsonProperty("serverGroupID")
     public String getServerGroupID() {
         return serverGroupID;
     }
 
+    /**
+     * The server group to assign the machine to.
+     */
     @JsonProperty("serverGroupID")
     public void setServerGroupID(String serverGroupID) {
         this.serverGroupID = serverGroupID;
     }
 
+    /**
+     * The server group to assign the machine to. A server group with that name will be created if it does not exist. If both ServerGroupID and ServerGroupName are non-empty, they must refer to the same OpenStack resource.
+     */
     @JsonProperty("serverGroupName")
     public String getServerGroupName() {
         return serverGroupName;
     }
 
+    /**
+     * The server group to assign the machine to. A server group with that name will be created if it does not exist. If both ServerGroupID and ServerGroupName are non-empty, they must refer to the same OpenStack resource.
+     */
     @JsonProperty("serverGroupName")
     public void setServerGroupName(String serverGroupName) {
         this.serverGroupName = serverGroupName;
     }
 
+    /**
+     * Metadata mapping. Allows you to create a map of key value pairs to add to the server instance.
+     */
     @JsonProperty("serverMetadata")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getServerMetadata() {
         return serverMetadata;
     }
 
+    /**
+     * Metadata mapping. Allows you to create a map of key value pairs to add to the server instance.
+     */
     @JsonProperty("serverMetadata")
     public void setServerMetadata(Map<String, String> serverMetadata) {
         this.serverMetadata = serverMetadata;
     }
 
+    /**
+     * The machine ssh username
+     */
     @JsonProperty("sshUserName")
     public String getSshUserName() {
         return sshUserName;
     }
 
+    /**
+     * The machine ssh username
+     */
     @JsonProperty("sshUserName")
     public void setSshUserName(String sshUserName) {
         this.sshUserName = sshUserName;
     }
 
+    /**
+     * Machine tags Requires Nova api 2.52 minimum!
+     */
     @JsonProperty("tags")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getTags() {
         return tags;
     }
 
+    /**
+     * Machine tags Requires Nova api 2.52 minimum!
+     */
     @JsonProperty("tags")
     public void setTags(List<String> tags) {
         this.tags = tags;
     }
 
+    /**
+     * Whether the server instance is created on a trunk port or not.
+     */
     @JsonProperty("trunk")
     public Boolean getTrunk() {
         return trunk;
     }
 
+    /**
+     * Whether the server instance is created on a trunk port or not.
+     */
     @JsonProperty("trunk")
     public void setTrunk(Boolean trunk) {
         this.trunk = trunk;
     }
 
+    /**
+     * OpenstackProviderSpec is the type that will be embedded in a Machine.Spec.ProviderSpec field for an OpenStack Instance. It is used by the Openstack machine actuator to create a single machine instance. Compatibility level 4: No compatibility is provided, the API can change at any point for any reason. These capabilities should not be used by applications needing long term support.
+     */
     @JsonProperty("userDataSecret")
     public SecretReference getUserDataSecret() {
         return userDataSecret;
     }
 
+    /**
+     * OpenstackProviderSpec is the type that will be embedded in a Machine.Spec.ProviderSpec field for an OpenStack Instance. It is used by the Openstack machine actuator to create a single machine instance. Compatibility level 4: No compatibility is provided, the API can change at any point for any reason. These capabilities should not be used by applications needing long term support.
+     */
     @JsonProperty("userDataSecret")
     public void setUserDataSecret(SecretReference userDataSecret) {
         this.userDataSecret = userDataSecret;

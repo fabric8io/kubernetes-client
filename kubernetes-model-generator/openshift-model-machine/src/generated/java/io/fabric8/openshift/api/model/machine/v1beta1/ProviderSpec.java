@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ProviderSpec defines the configuration to use during node creation.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -79,11 +82,17 @@ public class ProviderSpec implements Editable<ProviderSpecBuilder>, KubernetesRe
         this.value = value;
     }
 
+    /**
+     * ProviderSpec defines the configuration to use during node creation.
+     */
     @JsonProperty("value")
     public Object getValue() {
         return value;
     }
 
+    /**
+     * ProviderSpec defines the configuration to use during node creation.
+     */
     @JsonProperty("value")
     @JsonDeserialize(using = io.fabric8.kubernetes.internal.KubernetesDeserializer.class)
     public void setValue(Object value) {

@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * PatchEntity represent a json patch (RFC 6902) to be applied to the install-config
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -90,41 +93,65 @@ public class PatchEntity implements Editable<PatchEntityBuilder>, KubernetesReso
         this.value = value;
     }
 
+    /**
+     * From is the json path to copy or move the value from
+     */
     @JsonProperty("from")
     public String getFrom() {
         return from;
     }
 
+    /**
+     * From is the json path to copy or move the value from
+     */
     @JsonProperty("from")
     public void setFrom(String from) {
         this.from = from;
     }
 
+    /**
+     * Op is the operation to perform: add, remove, replace, move, copy, test
+     */
     @JsonProperty("op")
     public String getOp() {
         return op;
     }
 
+    /**
+     * Op is the operation to perform: add, remove, replace, move, copy, test
+     */
     @JsonProperty("op")
     public void setOp(String op) {
         this.op = op;
     }
 
+    /**
+     * Path is the json path to the value to be modified
+     */
     @JsonProperty("path")
     public String getPath() {
         return path;
     }
 
+    /**
+     * Path is the json path to the value to be modified
+     */
     @JsonProperty("path")
     public void setPath(String path) {
         this.path = path;
     }
 
+    /**
+     * Value is the value to be used in the operation
+     */
     @JsonProperty("value")
     public String getValue() {
         return value;
     }
 
+    /**
+     * Value is the value to be used in the operation
+     */
     @JsonProperty("value")
     public void setValue(String value) {
         this.value = value;

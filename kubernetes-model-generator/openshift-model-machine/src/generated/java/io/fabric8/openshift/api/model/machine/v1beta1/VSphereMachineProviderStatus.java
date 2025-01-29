@@ -40,6 +40,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * VSphereMachineProviderStatus is the type that will be embedded in a Machine.Status.ProviderStatus field. It contains VSphere-specific status information. Compatibility level 2: Stable within a major release for a minimum of 9 months or 3 minor releases (whichever is longer).
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -80,9 +83,6 @@ import lombok.experimental.Accessors;
 public class VSphereMachineProviderStatus implements Editable<VSphereMachineProviderStatusBuilder>, KubernetesResource, Namespaced
 {
 
-    /**
-     * (Required)
-     */
     @JsonProperty("apiVersion")
     private String apiVersion = "machine.openshift.io/v1beta1";
     @JsonProperty("conditions")
@@ -92,9 +92,6 @@ public class VSphereMachineProviderStatus implements Editable<VSphereMachineProv
     private String instanceId;
     @JsonProperty("instanceState")
     private String instanceState;
-    /**
-     * (Required)
-     */
     @JsonProperty("kind")
     private String kind = "VSphereMachineProviderStatus";
     @JsonProperty("taskRef")
@@ -119,7 +116,7 @@ public class VSphereMachineProviderStatus implements Editable<VSphereMachineProv
     }
 
     /**
-     * (Required)
+     * APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -127,46 +124,64 @@ public class VSphereMachineProviderStatus implements Editable<VSphereMachineProv
     }
 
     /**
-     * (Required)
+     * APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
         this.apiVersion = apiVersion;
     }
 
+    /**
+     * Conditions is a set of conditions associated with the Machine to indicate errors or other status
+     */
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Condition> getConditions() {
         return conditions;
     }
 
+    /**
+     * Conditions is a set of conditions associated with the Machine to indicate errors or other status
+     */
     @JsonProperty("conditions")
     public void setConditions(List<Condition> conditions) {
         this.conditions = conditions;
     }
 
+    /**
+     * InstanceID is the ID of the instance in VSphere
+     */
     @JsonProperty("instanceId")
     public String getInstanceId() {
         return instanceId;
     }
 
+    /**
+     * InstanceID is the ID of the instance in VSphere
+     */
     @JsonProperty("instanceId")
     public void setInstanceId(String instanceId) {
         this.instanceId = instanceId;
     }
 
+    /**
+     * InstanceState is the provisioning state of the VSphere Instance.
+     */
     @JsonProperty("instanceState")
     public String getInstanceState() {
         return instanceState;
     }
 
+    /**
+     * InstanceState is the provisioning state of the VSphere Instance.
+     */
     @JsonProperty("instanceState")
     public void setInstanceState(String instanceState) {
         this.instanceState = instanceState;
     }
 
     /**
-     * (Required)
+     * Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -174,18 +189,24 @@ public class VSphereMachineProviderStatus implements Editable<VSphereMachineProv
     }
 
     /**
-     * (Required)
+     * Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
      */
     @JsonProperty("kind")
     public void setKind(String kind) {
         this.kind = kind;
     }
 
+    /**
+     * TaskRef is a managed object reference to a Task related to the machine. This value is set automatically at runtime and should not be set or modified by users.
+     */
     @JsonProperty("taskRef")
     public String getTaskRef() {
         return taskRef;
     }
 
+    /**
+     * TaskRef is a managed object reference to a Task related to the machine. This value is set automatically at runtime and should not be set or modified by users.
+     */
     @JsonProperty("taskRef")
     public void setTaskRef(String taskRef) {
         this.taskRef = taskRef;

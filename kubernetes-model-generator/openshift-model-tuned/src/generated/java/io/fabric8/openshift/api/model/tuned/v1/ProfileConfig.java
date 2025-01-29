@@ -94,21 +94,33 @@ public class ProfileConfig implements Editable<ProfileConfigBuilder>, Kubernetes
         this.verbosity = verbosity;
     }
 
+    /**
+     * option to debug TuneD daemon execution
+     */
     @JsonProperty("debug")
     public Boolean getDebug() {
         return debug;
     }
 
+    /**
+     * option to debug TuneD daemon execution
+     */
     @JsonProperty("debug")
     public void setDebug(Boolean debug) {
         this.debug = debug;
     }
 
+    /**
+     * Name of the cloud provider as taken from the Node providerID: &lt;ProviderName&gt;://&lt;ProviderSpecificNodeID&gt;
+     */
     @JsonProperty("providerName")
     public String getProviderName() {
         return providerName;
     }
 
+    /**
+     * Name of the cloud provider as taken from the Node providerID: &lt;ProviderName&gt;://&lt;ProviderSpecificNodeID&gt;
+     */
     @JsonProperty("providerName")
     public void setProviderName(String providerName) {
         this.providerName = providerName;
@@ -124,21 +136,33 @@ public class ProfileConfig implements Editable<ProfileConfigBuilder>, Kubernetes
         this.tunedConfig = tunedConfig;
     }
 
+    /**
+     * TuneD profile to apply
+     */
     @JsonProperty("tunedProfile")
     public String getTunedProfile() {
         return tunedProfile;
     }
 
+    /**
+     * TuneD profile to apply
+     */
     @JsonProperty("tunedProfile")
     public void setTunedProfile(String tunedProfile) {
         this.tunedProfile = tunedProfile;
     }
 
+    /**
+     * klog logging verbosity
+     */
     @JsonProperty("verbosity")
     public Integer getVerbosity() {
         return verbosity;
     }
 
+    /**
+     * klog logging verbosity
+     */
     @JsonProperty("verbosity")
     public void setVerbosity(Integer verbosity) {
         this.verbosity = verbosity;

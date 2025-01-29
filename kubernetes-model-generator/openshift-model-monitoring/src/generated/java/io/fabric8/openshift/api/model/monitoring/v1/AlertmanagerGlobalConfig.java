@@ -33,6 +33,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * AlertmanagerGlobalConfig configures parameters that are valid in all other configuration contexts. See https://prometheus.io/docs/alerting/latest/configuration/#configuration-file
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -103,71 +106,113 @@ public class AlertmanagerGlobalConfig implements Editable<AlertmanagerGlobalConf
         this.smtp = smtp;
     }
 
+    /**
+     * AlertmanagerGlobalConfig configures parameters that are valid in all other configuration contexts. See https://prometheus.io/docs/alerting/latest/configuration/#configuration-file
+     */
     @JsonProperty("httpConfig")
     public HTTPConfig getHttpConfig() {
         return httpConfig;
     }
 
+    /**
+     * AlertmanagerGlobalConfig configures parameters that are valid in all other configuration contexts. See https://prometheus.io/docs/alerting/latest/configuration/#configuration-file
+     */
     @JsonProperty("httpConfig")
     public void setHttpConfig(HTTPConfig httpConfig) {
         this.httpConfig = httpConfig;
     }
 
+    /**
+     * AlertmanagerGlobalConfig configures parameters that are valid in all other configuration contexts. See https://prometheus.io/docs/alerting/latest/configuration/#configuration-file
+     */
     @JsonProperty("opsGenieApiKey")
     public SecretKeySelector getOpsGenieApiKey() {
         return opsGenieApiKey;
     }
 
+    /**
+     * AlertmanagerGlobalConfig configures parameters that are valid in all other configuration contexts. See https://prometheus.io/docs/alerting/latest/configuration/#configuration-file
+     */
     @JsonProperty("opsGenieApiKey")
     public void setOpsGenieApiKey(SecretKeySelector opsGenieApiKey) {
         this.opsGenieApiKey = opsGenieApiKey;
     }
 
+    /**
+     * AlertmanagerGlobalConfig configures parameters that are valid in all other configuration contexts. See https://prometheus.io/docs/alerting/latest/configuration/#configuration-file
+     */
     @JsonProperty("opsGenieApiUrl")
     public SecretKeySelector getOpsGenieApiUrl() {
         return opsGenieApiUrl;
     }
 
+    /**
+     * AlertmanagerGlobalConfig configures parameters that are valid in all other configuration contexts. See https://prometheus.io/docs/alerting/latest/configuration/#configuration-file
+     */
     @JsonProperty("opsGenieApiUrl")
     public void setOpsGenieApiUrl(SecretKeySelector opsGenieApiUrl) {
         this.opsGenieApiUrl = opsGenieApiUrl;
     }
 
+    /**
+     * The default Pagerduty URL.
+     */
     @JsonProperty("pagerdutyUrl")
     public String getPagerdutyUrl() {
         return pagerdutyUrl;
     }
 
+    /**
+     * The default Pagerduty URL.
+     */
     @JsonProperty("pagerdutyUrl")
     public void setPagerdutyUrl(String pagerdutyUrl) {
         this.pagerdutyUrl = pagerdutyUrl;
     }
 
+    /**
+     * ResolveTimeout is the default value used by alertmanager if the alert does not include EndsAt, after this time passes it can declare the alert as resolved if it has not been updated. This has no impact on alerts from Prometheus, as they always include EndsAt.
+     */
     @JsonProperty("resolveTimeout")
     public String getResolveTimeout() {
         return resolveTimeout;
     }
 
+    /**
+     * ResolveTimeout is the default value used by alertmanager if the alert does not include EndsAt, after this time passes it can declare the alert as resolved if it has not been updated. This has no impact on alerts from Prometheus, as they always include EndsAt.
+     */
     @JsonProperty("resolveTimeout")
     public void setResolveTimeout(String resolveTimeout) {
         this.resolveTimeout = resolveTimeout;
     }
 
+    /**
+     * AlertmanagerGlobalConfig configures parameters that are valid in all other configuration contexts. See https://prometheus.io/docs/alerting/latest/configuration/#configuration-file
+     */
     @JsonProperty("slackApiUrl")
     public SecretKeySelector getSlackApiUrl() {
         return slackApiUrl;
     }
 
+    /**
+     * AlertmanagerGlobalConfig configures parameters that are valid in all other configuration contexts. See https://prometheus.io/docs/alerting/latest/configuration/#configuration-file
+     */
     @JsonProperty("slackApiUrl")
     public void setSlackApiUrl(SecretKeySelector slackApiUrl) {
         this.slackApiUrl = slackApiUrl;
     }
 
+    /**
+     * AlertmanagerGlobalConfig configures parameters that are valid in all other configuration contexts. See https://prometheus.io/docs/alerting/latest/configuration/#configuration-file
+     */
     @JsonProperty("smtp")
     public GlobalSMTPConfig getSmtp() {
         return smtp;
     }
 
+    /**
+     * AlertmanagerGlobalConfig configures parameters that are valid in all other configuration contexts. See https://prometheus.io/docs/alerting/latest/configuration/#configuration-file
+     */
     @JsonProperty("smtp")
     public void setSmtp(GlobalSMTPConfig smtp) {
         this.smtp = smtp;

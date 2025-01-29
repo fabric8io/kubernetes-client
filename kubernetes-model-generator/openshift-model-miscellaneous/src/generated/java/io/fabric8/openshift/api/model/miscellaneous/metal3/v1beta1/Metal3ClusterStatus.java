@@ -35,6 +35,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Metal3ClusterStatus defines the observed state of Metal3Cluster.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -98,52 +101,82 @@ public class Metal3ClusterStatus implements Editable<Metal3ClusterStatusBuilder>
         this.ready = ready;
     }
 
+    /**
+     * Conditions defines current service state of the Metal3Cluster.
+     */
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Condition> getConditions() {
         return conditions;
     }
 
+    /**
+     * Conditions defines current service state of the Metal3Cluster.
+     */
     @JsonProperty("conditions")
     public void setConditions(List<Condition> conditions) {
         this.conditions = conditions;
     }
 
+    /**
+     * FailureMessage indicates that there is a fatal problem reconciling the state, and will be set to a descriptive error message.
+     */
     @JsonProperty("failureMessage")
     public String getFailureMessage() {
         return failureMessage;
     }
 
+    /**
+     * FailureMessage indicates that there is a fatal problem reconciling the state, and will be set to a descriptive error message.
+     */
     @JsonProperty("failureMessage")
     public void setFailureMessage(String failureMessage) {
         this.failureMessage = failureMessage;
     }
 
+    /**
+     * FailureReason indicates that there is a fatal problem reconciling the state, and will be set to a token value suitable for programmatic interpretation.
+     */
     @JsonProperty("failureReason")
     public String getFailureReason() {
         return failureReason;
     }
 
+    /**
+     * FailureReason indicates that there is a fatal problem reconciling the state, and will be set to a token value suitable for programmatic interpretation.
+     */
     @JsonProperty("failureReason")
     public void setFailureReason(String failureReason) {
         this.failureReason = failureReason;
     }
 
+    /**
+     * Metal3ClusterStatus defines the observed state of Metal3Cluster.
+     */
     @JsonProperty("lastUpdated")
     public String getLastUpdated() {
         return lastUpdated;
     }
 
+    /**
+     * Metal3ClusterStatus defines the observed state of Metal3Cluster.
+     */
     @JsonProperty("lastUpdated")
     public void setLastUpdated(String lastUpdated) {
         this.lastUpdated = lastUpdated;
     }
 
+    /**
+     * Ready denotes that the Metal3 cluster (infrastructure) is ready. In Baremetal case, it does not mean anything for now as no infrastructure steps need to be performed. Required by Cluster API. Set to True by the metal3Cluster controller after creation.
+     */
     @JsonProperty("ready")
     public Boolean getReady() {
         return ready;
     }
 
+    /**
+     * Ready denotes that the Metal3 cluster (infrastructure) is ready. In Baremetal case, it does not mean anything for now as no infrastructure steps need to be performed. Required by Cluster API. Set to True by the metal3Cluster controller after creation.
+     */
     @JsonProperty("ready")
     public void setReady(Boolean ready) {
         this.ready = ready;

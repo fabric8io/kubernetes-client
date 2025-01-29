@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * AnsibleJobsStatus defines status of ansible jobs propagated by the subscription
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -94,43 +97,67 @@ public class AnsibleJobsStatus implements Editable<AnsibleJobsStatusBuilder>, Ku
         this.prehookjobshistory = prehookjobshistory;
     }
 
+    /**
+     * The lastly propagated posthook job
+     */
     @JsonProperty("lastposthookjob")
     public String getLastposthookjob() {
         return lastposthookjob;
     }
 
+    /**
+     * The lastly propagated posthook job
+     */
     @JsonProperty("lastposthookjob")
     public void setLastposthookjob(String lastposthookjob) {
         this.lastposthookjob = lastposthookjob;
     }
 
+    /**
+     * The lastly propagated prehook job
+     */
     @JsonProperty("lastprehookjob")
     public String getLastprehookjob() {
         return lastprehookjob;
     }
 
+    /**
+     * The lastly propagated prehook job
+     */
     @JsonProperty("lastprehookjob")
     public void setLastprehookjob(String lastprehookjob) {
         this.lastprehookjob = lastprehookjob;
     }
 
+    /**
+     * reserved for backward compatibility
+     */
     @JsonProperty("posthookjobshistory")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getPosthookjobshistory() {
         return posthookjobshistory;
     }
 
+    /**
+     * reserved for backward compatibility
+     */
     @JsonProperty("posthookjobshistory")
     public void setPosthookjobshistory(List<String> posthookjobshistory) {
         this.posthookjobshistory = posthookjobshistory;
     }
 
+    /**
+     * reserved for backward compatibility
+     */
     @JsonProperty("prehookjobshistory")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getPrehookjobshistory() {
         return prehookjobshistory;
     }
 
+    /**
+     * reserved for backward compatibility
+     */
     @JsonProperty("prehookjobshistory")
     public void setPrehookjobshistory(List<String> prehookjobshistory) {
         this.prehookjobshistory = prehookjobshistory;

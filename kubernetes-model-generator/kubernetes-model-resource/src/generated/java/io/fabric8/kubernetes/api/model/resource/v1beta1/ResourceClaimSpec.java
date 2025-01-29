@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ResourceClaimSpec defines what is being requested in a ResourceClaim and how to configure it.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -78,11 +81,17 @@ public class ResourceClaimSpec implements Editable<ResourceClaimSpecBuilder>, Ku
         this.devices = devices;
     }
 
+    /**
+     * ResourceClaimSpec defines what is being requested in a ResourceClaim and how to configure it.
+     */
     @JsonProperty("devices")
     public DeviceClaim getDevices() {
         return devices;
     }
 
+    /**
+     * ResourceClaimSpec defines what is being requested in a ResourceClaim and how to configure it.
+     */
     @JsonProperty("devices")
     public void setDevices(DeviceClaim devices) {
         this.devices = devices;

@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * MachinePool stores the configuration for a machine pool installed on ovirt.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -90,41 +93,65 @@ public class MachinePool implements Editable<MachinePoolBuilder>, KubernetesReso
         this.vmType = vmType;
     }
 
+    /**
+     * MachinePool stores the configuration for a machine pool installed on ovirt.
+     */
     @JsonProperty("cpu")
     public CPU getCpu() {
         return cpu;
     }
 
+    /**
+     * MachinePool stores the configuration for a machine pool installed on ovirt.
+     */
     @JsonProperty("cpu")
     public void setCpu(CPU cpu) {
         this.cpu = cpu;
     }
 
+    /**
+     * MemoryMB is the size of a VM's memory in MiBs.
+     */
     @JsonProperty("memoryMB")
     public Integer getMemoryMB() {
         return memoryMB;
     }
 
+    /**
+     * MemoryMB is the size of a VM's memory in MiBs.
+     */
     @JsonProperty("memoryMB")
     public void setMemoryMB(Integer memoryMB) {
         this.memoryMB = memoryMB;
     }
 
+    /**
+     * MachinePool stores the configuration for a machine pool installed on ovirt.
+     */
     @JsonProperty("osDisk")
     public Disk getOsDisk() {
         return osDisk;
     }
 
+    /**
+     * MachinePool stores the configuration for a machine pool installed on ovirt.
+     */
     @JsonProperty("osDisk")
     public void setOsDisk(Disk osDisk) {
         this.osDisk = osDisk;
     }
 
+    /**
+     * VMType defines the workload type of the VM.
+     */
     @JsonProperty("vmType")
     public String getVmType() {
         return vmType;
     }
 
+    /**
+     * VMType defines the workload type of the VM.
+     */
     @JsonProperty("vmType")
     public void setVmType(String vmType) {
         this.vmType = vmType;

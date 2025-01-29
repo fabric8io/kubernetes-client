@@ -37,6 +37,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * DeploymentLogOptions is the REST options for a deployment log<br><p> <br><p> Compatibility level 1: Stable within a major release for a minimum of 12 months or 3 minor releases (whichever is longer).
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -83,18 +86,12 @@ import lombok.experimental.Accessors;
 public class DeploymentLogOptions implements Editable<DeploymentLogOptionsBuilder>, KubernetesResource, Namespaced
 {
 
-    /**
-     * (Required)
-     */
     @JsonProperty("apiVersion")
     private String apiVersion = "apps.openshift.io/v1";
     @JsonProperty("container")
     private String container;
     @JsonProperty("follow")
     private Boolean follow;
-    /**
-     * (Required)
-     */
     @JsonProperty("kind")
     private String kind = "DeploymentLogOptions";
     @JsonProperty("limitBytes")
@@ -139,7 +136,7 @@ public class DeploymentLogOptions implements Editable<DeploymentLogOptionsBuilde
     }
 
     /**
-     * (Required)
+     * APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -147,35 +144,47 @@ public class DeploymentLogOptions implements Editable<DeploymentLogOptionsBuilde
     }
 
     /**
-     * (Required)
+     * APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
         this.apiVersion = apiVersion;
     }
 
+    /**
+     * The container for which to stream logs. Defaults to only container if there is one container in the pod.
+     */
     @JsonProperty("container")
     public String getContainer() {
         return container;
     }
 
+    /**
+     * The container for which to stream logs. Defaults to only container if there is one container in the pod.
+     */
     @JsonProperty("container")
     public void setContainer(String container) {
         this.container = container;
     }
 
+    /**
+     * Follow if true indicates that the build log should be streamed until the build terminates.
+     */
     @JsonProperty("follow")
     public Boolean getFollow() {
         return follow;
     }
 
+    /**
+     * Follow if true indicates that the build log should be streamed until the build terminates.
+     */
     @JsonProperty("follow")
     public void setFollow(Boolean follow) {
         this.follow = follow;
     }
 
     /**
-     * (Required)
+     * Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -183,88 +192,136 @@ public class DeploymentLogOptions implements Editable<DeploymentLogOptionsBuilde
     }
 
     /**
-     * (Required)
+     * Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
      */
     @JsonProperty("kind")
     public void setKind(String kind) {
         this.kind = kind;
     }
 
+    /**
+     * If set, the number of bytes to read from the server before terminating the log output. This may not display a complete final line of logging, and may return slightly more or slightly less than the specified limit.
+     */
     @JsonProperty("limitBytes")
     public Long getLimitBytes() {
         return limitBytes;
     }
 
+    /**
+     * If set, the number of bytes to read from the server before terminating the log output. This may not display a complete final line of logging, and may return slightly more or slightly less than the specified limit.
+     */
     @JsonProperty("limitBytes")
     public void setLimitBytes(Long limitBytes) {
         this.limitBytes = limitBytes;
     }
 
+    /**
+     * NoWait if true causes the call to return immediately even if the deployment is not available yet. Otherwise the server will wait until the deployment has started.
+     */
     @JsonProperty("nowait")
     public Boolean getNowait() {
         return nowait;
     }
 
+    /**
+     * NoWait if true causes the call to return immediately even if the deployment is not available yet. Otherwise the server will wait until the deployment has started.
+     */
     @JsonProperty("nowait")
     public void setNowait(Boolean nowait) {
         this.nowait = nowait;
     }
 
+    /**
+     * Return previous deployment logs. Defaults to false.
+     */
     @JsonProperty("previous")
     public Boolean getPrevious() {
         return previous;
     }
 
+    /**
+     * Return previous deployment logs. Defaults to false.
+     */
     @JsonProperty("previous")
     public void setPrevious(Boolean previous) {
         this.previous = previous;
     }
 
+    /**
+     * A relative time in seconds before the current time from which to show logs. If this value precedes the time a pod was started, only logs since the pod start will be returned. If this value is in the future, no logs will be returned. Only one of sinceSeconds or sinceTime may be specified.
+     */
     @JsonProperty("sinceSeconds")
     public Long getSinceSeconds() {
         return sinceSeconds;
     }
 
+    /**
+     * A relative time in seconds before the current time from which to show logs. If this value precedes the time a pod was started, only logs since the pod start will be returned. If this value is in the future, no logs will be returned. Only one of sinceSeconds or sinceTime may be specified.
+     */
     @JsonProperty("sinceSeconds")
     public void setSinceSeconds(Long sinceSeconds) {
         this.sinceSeconds = sinceSeconds;
     }
 
+    /**
+     * DeploymentLogOptions is the REST options for a deployment log<br><p> <br><p> Compatibility level 1: Stable within a major release for a minimum of 12 months or 3 minor releases (whichever is longer).
+     */
     @JsonProperty("sinceTime")
     public String getSinceTime() {
         return sinceTime;
     }
 
+    /**
+     * DeploymentLogOptions is the REST options for a deployment log<br><p> <br><p> Compatibility level 1: Stable within a major release for a minimum of 12 months or 3 minor releases (whichever is longer).
+     */
     @JsonProperty("sinceTime")
     public void setSinceTime(String sinceTime) {
         this.sinceTime = sinceTime;
     }
 
+    /**
+     * If set, the number of lines from the end of the logs to show. If not specified, logs are shown from the creation of the container or sinceSeconds or sinceTime
+     */
     @JsonProperty("tailLines")
     public Long getTailLines() {
         return tailLines;
     }
 
+    /**
+     * If set, the number of lines from the end of the logs to show. If not specified, logs are shown from the creation of the container or sinceSeconds or sinceTime
+     */
     @JsonProperty("tailLines")
     public void setTailLines(Long tailLines) {
         this.tailLines = tailLines;
     }
 
+    /**
+     * If true, add an RFC3339 or RFC3339Nano timestamp at the beginning of every line of log output. Defaults to false.
+     */
     @JsonProperty("timestamps")
     public Boolean getTimestamps() {
         return timestamps;
     }
 
+    /**
+     * If true, add an RFC3339 or RFC3339Nano timestamp at the beginning of every line of log output. Defaults to false.
+     */
     @JsonProperty("timestamps")
     public void setTimestamps(Boolean timestamps) {
         this.timestamps = timestamps;
     }
 
+    /**
+     * Version of the deployment for which to view logs.
+     */
     @JsonProperty("version")
     public Long getVersion() {
         return version;
     }
 
+    /**
+     * Version of the deployment for which to view logs.
+     */
     @JsonProperty("version")
     public void setVersion(Long version) {
         this.version = version;

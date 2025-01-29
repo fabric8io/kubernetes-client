@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * SubscriberItem defines subscriber item to share subscribers with different channel types
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -108,81 +111,129 @@ public class SubscriberItem implements Editable<SubscriberItemBuilder>, Kubernet
         this.subscriptionConfigMap = subscriptionConfigMap;
     }
 
+    /**
+     * SubscriberItem defines subscriber item to share subscribers with different channel types
+     */
     @JsonProperty("Channel")
     public Channel getChannel() {
         return channel;
     }
 
+    /**
+     * SubscriberItem defines subscriber item to share subscribers with different channel types
+     */
     @JsonProperty("Channel")
     public void setChannel(Channel channel) {
         this.channel = channel;
     }
 
+    /**
+     * SubscriberItem defines subscriber item to share subscribers with different channel types
+     */
     @JsonProperty("ChannelConfigMap")
     public ConfigMap getChannelConfigMap() {
         return channelConfigMap;
     }
 
+    /**
+     * SubscriberItem defines subscriber item to share subscribers with different channel types
+     */
     @JsonProperty("ChannelConfigMap")
     public void setChannelConfigMap(ConfigMap channelConfigMap) {
         this.channelConfigMap = channelConfigMap;
     }
 
+    /**
+     * SubscriberItem defines subscriber item to share subscribers with different channel types
+     */
     @JsonProperty("ChannelSecret")
     public Secret getChannelSecret() {
         return channelSecret;
     }
 
+    /**
+     * SubscriberItem defines subscriber item to share subscribers with different channel types
+     */
     @JsonProperty("ChannelSecret")
     public void setChannelSecret(Secret channelSecret) {
         this.channelSecret = channelSecret;
     }
 
+    /**
+     * SubscriberItem defines subscriber item to share subscribers with different channel types
+     */
     @JsonProperty("SecondaryChannel")
     public Channel getSecondaryChannel() {
         return secondaryChannel;
     }
 
+    /**
+     * SubscriberItem defines subscriber item to share subscribers with different channel types
+     */
     @JsonProperty("SecondaryChannel")
     public void setSecondaryChannel(Channel secondaryChannel) {
         this.secondaryChannel = secondaryChannel;
     }
 
+    /**
+     * SubscriberItem defines subscriber item to share subscribers with different channel types
+     */
     @JsonProperty("SecondaryChannelConfigMap")
     public ConfigMap getSecondaryChannelConfigMap() {
         return secondaryChannelConfigMap;
     }
 
+    /**
+     * SubscriberItem defines subscriber item to share subscribers with different channel types
+     */
     @JsonProperty("SecondaryChannelConfigMap")
     public void setSecondaryChannelConfigMap(ConfigMap secondaryChannelConfigMap) {
         this.secondaryChannelConfigMap = secondaryChannelConfigMap;
     }
 
+    /**
+     * SubscriberItem defines subscriber item to share subscribers with different channel types
+     */
     @JsonProperty("SecondaryChannelSecret")
     public Secret getSecondaryChannelSecret() {
         return secondaryChannelSecret;
     }
 
+    /**
+     * SubscriberItem defines subscriber item to share subscribers with different channel types
+     */
     @JsonProperty("SecondaryChannelSecret")
     public void setSecondaryChannelSecret(Secret secondaryChannelSecret) {
         this.secondaryChannelSecret = secondaryChannelSecret;
     }
 
+    /**
+     * SubscriberItem defines subscriber item to share subscribers with different channel types
+     */
     @JsonProperty("Subscription")
     public Subscription getSubscription() {
         return subscription;
     }
 
+    /**
+     * SubscriberItem defines subscriber item to share subscribers with different channel types
+     */
     @JsonProperty("Subscription")
     public void setSubscription(Subscription subscription) {
         this.subscription = subscription;
     }
 
+    /**
+     * SubscriberItem defines subscriber item to share subscribers with different channel types
+     */
     @JsonProperty("SubscriptionConfigMap")
     public ConfigMap getSubscriptionConfigMap() {
         return subscriptionConfigMap;
     }
 
+    /**
+     * SubscriberItem defines subscriber item to share subscribers with different channel types
+     */
     @JsonProperty("SubscriptionConfigMap")
     public void setSubscriptionConfigMap(ConfigMap subscriptionConfigMap) {
         this.subscriptionConfigMap = subscriptionConfigMap;

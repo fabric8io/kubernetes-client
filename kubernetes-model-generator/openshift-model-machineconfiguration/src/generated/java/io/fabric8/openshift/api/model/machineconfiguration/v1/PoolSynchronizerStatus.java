@@ -102,71 +102,113 @@ public class PoolSynchronizerStatus implements Editable<PoolSynchronizerStatusBu
         this.updatedMachineCount = updatedMachineCount;
     }
 
+    /**
+     * availableMachineCount is the number of machines managed by the node synchronizer which are available.
+     */
     @JsonProperty("availableMachineCount")
     public Long getAvailableMachineCount() {
         return availableMachineCount;
     }
 
+    /**
+     * availableMachineCount is the number of machines managed by the node synchronizer which are available.
+     */
     @JsonProperty("availableMachineCount")
     public void setAvailableMachineCount(Long availableMachineCount) {
         this.availableMachineCount = availableMachineCount;
     }
 
+    /**
+     * machineCount is the number of machines that are managed by the node synchronizer.
+     */
     @JsonProperty("machineCount")
     public Long getMachineCount() {
         return machineCount;
     }
 
+    /**
+     * machineCount is the number of machines that are managed by the node synchronizer.
+     */
     @JsonProperty("machineCount")
     public void setMachineCount(Long machineCount) {
         this.machineCount = machineCount;
     }
 
+    /**
+     * observedGeneration is the last generation change that has been applied.
+     */
     @JsonProperty("observedGeneration")
     public Long getObservedGeneration() {
         return observedGeneration;
     }
 
+    /**
+     * observedGeneration is the last generation change that has been applied.
+     */
     @JsonProperty("observedGeneration")
     public void setObservedGeneration(Long observedGeneration) {
         this.observedGeneration = observedGeneration;
     }
 
+    /**
+     * poolSynchronizerType describes the type of the pool synchronizer.
+     */
     @JsonProperty("poolSynchronizerType")
     public String getPoolSynchronizerType() {
         return poolSynchronizerType;
     }
 
+    /**
+     * poolSynchronizerType describes the type of the pool synchronizer.
+     */
     @JsonProperty("poolSynchronizerType")
     public void setPoolSynchronizerType(String poolSynchronizerType) {
         this.poolSynchronizerType = poolSynchronizerType;
     }
 
+    /**
+     * readyMachineCount is the number of machines managed by the node synchronizer that are in a ready state.
+     */
     @JsonProperty("readyMachineCount")
     public Long getReadyMachineCount() {
         return readyMachineCount;
     }
 
+    /**
+     * readyMachineCount is the number of machines managed by the node synchronizer that are in a ready state.
+     */
     @JsonProperty("readyMachineCount")
     public void setReadyMachineCount(Long readyMachineCount) {
         this.readyMachineCount = readyMachineCount;
     }
 
+    /**
+     * unavailableMachineCount is the number of machines managed by the node synchronizer but are unavailable.
+     */
     @JsonProperty("unavailableMachineCount")
     public Long getUnavailableMachineCount() {
         return unavailableMachineCount;
     }
 
+    /**
+     * unavailableMachineCount is the number of machines managed by the node synchronizer but are unavailable.
+     */
     @JsonProperty("unavailableMachineCount")
     public void setUnavailableMachineCount(Long unavailableMachineCount) {
         this.unavailableMachineCount = unavailableMachineCount;
     }
 
+    /**
+     * updatedMachineCount is the number of machines that have been updated by the node synchronizer.
+     */
     @JsonProperty("updatedMachineCount")
     public Long getUpdatedMachineCount() {
         return updatedMachineCount;
     }
 
+    /**
+     * updatedMachineCount is the number of machines that have been updated by the node synchronizer.
+     */
     @JsonProperty("updatedMachineCount")
     public void setUpdatedMachineCount(Long updatedMachineCount) {
         this.updatedMachineCount = updatedMachineCount;

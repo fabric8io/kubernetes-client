@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * SignatureIssuer holds information about an issuer of signing certificate or key.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class SignatureIssuer implements Editable<SignatureIssuerBuilder>, Kubern
         this.organization = organization;
     }
 
+    /**
+     * Common name (e.g. openshift-signing-service).
+     */
     @JsonProperty("commonName")
     public String getCommonName() {
         return commonName;
     }
 
+    /**
+     * Common name (e.g. openshift-signing-service).
+     */
     @JsonProperty("commonName")
     public void setCommonName(String commonName) {
         this.commonName = commonName;
     }
 
+    /**
+     * Organization name.
+     */
     @JsonProperty("organization")
     public String getOrganization() {
         return organization;
     }
 
+    /**
+     * Organization name.
+     */
     @JsonProperty("organization")
     public void setOrganization(String organization) {
         this.organization = organization;

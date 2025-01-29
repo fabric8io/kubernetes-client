@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * DecisionGroup define a subset of clusters that will be added to placementDecisions with groupName label.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class DecisionGroup implements Editable<DecisionGroupBuilder>, Kubernetes
         this.groupName = groupName;
     }
 
+    /**
+     * DecisionGroup define a subset of clusters that will be added to placementDecisions with groupName label.
+     */
     @JsonProperty("groupClusterSelector")
     public ClusterSelector getGroupClusterSelector() {
         return groupClusterSelector;
     }
 
+    /**
+     * DecisionGroup define a subset of clusters that will be added to placementDecisions with groupName label.
+     */
     @JsonProperty("groupClusterSelector")
     public void setGroupClusterSelector(ClusterSelector groupClusterSelector) {
         this.groupClusterSelector = groupClusterSelector;
     }
 
+    /**
+     * Group name to be added as label value to the created placement Decisions labels with label key cluster.open-cluster-management.io/decision-group-name
+     */
     @JsonProperty("groupName")
     public String getGroupName() {
         return groupName;
     }
 
+    /**
+     * Group name to be added as label value to the created placement Decisions labels with label key cluster.open-cluster-management.io/decision-group-name
+     */
     @JsonProperty("groupName")
     public void setGroupName(String groupName) {
         this.groupName = groupName;

@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ConsoleSampleGitImportSourceRepository let the user import code from a public git repository.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -86,31 +89,49 @@ public class ConsoleSampleGitImportSourceRepository implements Editable<ConsoleS
         this.url = url;
     }
 
+    /**
+     * contextDir is used to specify a directory within the repository to build the component. Must start with `/` and have a maximum length of 256 characters. When omitted, the default value is to build from the root of the repository.
+     */
     @JsonProperty("contextDir")
     public String getContextDir() {
         return contextDir;
     }
 
+    /**
+     * contextDir is used to specify a directory within the repository to build the component. Must start with `/` and have a maximum length of 256 characters. When omitted, the default value is to build from the root of the repository.
+     */
     @JsonProperty("contextDir")
     public void setContextDir(String contextDir) {
         this.contextDir = contextDir;
     }
 
+    /**
+     * revision is the git revision at which to clone the git repository Can be used to clone a specific branch, tag or commit SHA. Must be at most 256 characters in length. When omitted the repository's default branch is used.
+     */
     @JsonProperty("revision")
     public String getRevision() {
         return revision;
     }
 
+    /**
+     * revision is the git revision at which to clone the git repository Can be used to clone a specific branch, tag or commit SHA. Must be at most 256 characters in length. When omitted the repository's default branch is used.
+     */
     @JsonProperty("revision")
     public void setRevision(String revision) {
         this.revision = revision;
     }
 
+    /**
+     * url of the Git repository that contains a HTTP service. The HTTP service must be exposed on the default port (8080) unless otherwise configured with the port field.<br><p> <br><p> Only public repositories on GitHub, GitLab and Bitbucket are currently supported:<br><p> <br><p>   - https://github.com/&lt;org&gt;/&lt;repository&gt;<br><p>   - https://gitlab.com/&lt;org&gt;/&lt;repository&gt;<br><p>   - https://bitbucket.org/&lt;org&gt;/&lt;repository&gt;<br><p> <br><p> The url must have a maximum length of 256 characters.
+     */
     @JsonProperty("url")
     public String getUrl() {
         return url;
     }
 
+    /**
+     * url of the Git repository that contains a HTTP service. The HTTP service must be exposed on the default port (8080) unless otherwise configured with the port field.<br><p> <br><p> Only public repositories on GitHub, GitLab and Bitbucket are currently supported:<br><p> <br><p>   - https://github.com/&lt;org&gt;/&lt;repository&gt;<br><p>   - https://gitlab.com/&lt;org&gt;/&lt;repository&gt;<br><p>   - https://bitbucket.org/&lt;org&gt;/&lt;repository&gt;<br><p> <br><p> The url must have a maximum length of 256 characters.
+     */
     @JsonProperty("url")
     public void setUrl(String url) {
         this.url = url;

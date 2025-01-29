@@ -39,6 +39,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * VSphereProviderSpec contains the required information to create RBAC role bindings for VSphere.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -76,14 +79,8 @@ import lombok.experimental.Accessors;
 public class VSphereProviderSpec implements Editable<VSphereProviderSpecBuilder>, KubernetesResource, Namespaced
 {
 
-    /**
-     * (Required)
-     */
     @JsonProperty("apiVersion")
     private String apiVersion = "cloudcredential.openshift.io/v1";
-    /**
-     * (Required)
-     */
     @JsonProperty("kind")
     private String kind = "VSphereProviderSpec";
     @JsonProperty("permissions")
@@ -106,7 +103,7 @@ public class VSphereProviderSpec implements Editable<VSphereProviderSpecBuilder>
     }
 
     /**
-     * (Required)
+     * APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -114,7 +111,7 @@ public class VSphereProviderSpec implements Editable<VSphereProviderSpecBuilder>
     }
 
     /**
-     * (Required)
+     * APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -122,7 +119,7 @@ public class VSphereProviderSpec implements Editable<VSphereProviderSpecBuilder>
     }
 
     /**
-     * (Required)
+     * Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -130,19 +127,25 @@ public class VSphereProviderSpec implements Editable<VSphereProviderSpecBuilder>
     }
 
     /**
-     * (Required)
+     * Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
      */
     @JsonProperty("kind")
     public void setKind(String kind) {
         this.kind = kind;
     }
 
+    /**
+     * Permissions contains a list of groups of privileges that are being requested.
+     */
     @JsonProperty("permissions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<VSpherePermission> getPermissions() {
         return permissions;
     }
 
+    /**
+     * Permissions contains a list of groups of privileges that are being requested.
+     */
     @JsonProperty("permissions")
     public void setPermissions(List<VSpherePermission> permissions) {
         this.permissions = permissions;

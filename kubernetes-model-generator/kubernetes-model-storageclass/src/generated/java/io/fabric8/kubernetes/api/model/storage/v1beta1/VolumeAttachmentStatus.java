@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * VolumeAttachmentStatus is the status of a VolumeAttachment request.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -91,42 +94,66 @@ public class VolumeAttachmentStatus implements Editable<VolumeAttachmentStatusBu
         this.detachError = detachError;
     }
 
+    /**
+     * VolumeAttachmentStatus is the status of a VolumeAttachment request.
+     */
     @JsonProperty("attachError")
     public VolumeError getAttachError() {
         return attachError;
     }
 
+    /**
+     * VolumeAttachmentStatus is the status of a VolumeAttachment request.
+     */
     @JsonProperty("attachError")
     public void setAttachError(VolumeError attachError) {
         this.attachError = attachError;
     }
 
+    /**
+     * Indicates the volume is successfully attached. This field must only be set by the entity completing the attach operation, i.e. the external-attacher.
+     */
     @JsonProperty("attached")
     public Boolean getAttached() {
         return attached;
     }
 
+    /**
+     * Indicates the volume is successfully attached. This field must only be set by the entity completing the attach operation, i.e. the external-attacher.
+     */
     @JsonProperty("attached")
     public void setAttached(Boolean attached) {
         this.attached = attached;
     }
 
+    /**
+     * Upon successful attach, this field is populated with any information returned by the attach operation that must be passed into subsequent WaitForAttach or Mount calls. This field must only be set by the entity completing the attach operation, i.e. the external-attacher.
+     */
     @JsonProperty("attachmentMetadata")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getAttachmentMetadata() {
         return attachmentMetadata;
     }
 
+    /**
+     * Upon successful attach, this field is populated with any information returned by the attach operation that must be passed into subsequent WaitForAttach or Mount calls. This field must only be set by the entity completing the attach operation, i.e. the external-attacher.
+     */
     @JsonProperty("attachmentMetadata")
     public void setAttachmentMetadata(Map<String, String> attachmentMetadata) {
         this.attachmentMetadata = attachmentMetadata;
     }
 
+    /**
+     * VolumeAttachmentStatus is the status of a VolumeAttachment request.
+     */
     @JsonProperty("detachError")
     public VolumeError getDetachError() {
         return detachError;
     }
 
+    /**
+     * VolumeAttachmentStatus is the status of a VolumeAttachment request.
+     */
     @JsonProperty("detachError")
     public void setDetachError(VolumeError detachError) {
         this.detachError = detachError;

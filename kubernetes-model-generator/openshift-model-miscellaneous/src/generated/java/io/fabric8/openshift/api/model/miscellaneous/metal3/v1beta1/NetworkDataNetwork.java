@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * NetworkDataNetwork represents a network object.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -101,56 +104,86 @@ public class NetworkDataNetwork implements Editable<NetworkDataNetworkBuilder>, 
         this.ipv6SLAAC = ipv6SLAAC;
     }
 
+    /**
+     * IPv4 contains a list of IPv4 static allocations
+     */
     @JsonProperty("ipv4")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<NetworkDataIPv4> getIpv4() {
         return ipv4;
     }
 
+    /**
+     * IPv4 contains a list of IPv4 static allocations
+     */
     @JsonProperty("ipv4")
     public void setIpv4(List<NetworkDataIPv4> ipv4) {
         this.ipv4 = ipv4;
     }
 
+    /**
+     * IPv4 contains a list of IPv4 DHCP allocations
+     */
     @JsonProperty("ipv4DHCP")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<NetworkDataIPv4DHCP> getIpv4DHCP() {
         return ipv4DHCP;
     }
 
+    /**
+     * IPv4 contains a list of IPv4 DHCP allocations
+     */
     @JsonProperty("ipv4DHCP")
     public void setIpv4DHCP(List<NetworkDataIPv4DHCP> ipv4DHCP) {
         this.ipv4DHCP = ipv4DHCP;
     }
 
+    /**
+     * IPv4 contains a list of IPv6 static allocations
+     */
     @JsonProperty("ipv6")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<NetworkDataIPv6> getIpv6() {
         return ipv6;
     }
 
+    /**
+     * IPv4 contains a list of IPv6 static allocations
+     */
     @JsonProperty("ipv6")
     public void setIpv6(List<NetworkDataIPv6> ipv6) {
         this.ipv6 = ipv6;
     }
 
+    /**
+     * IPv4 contains a list of IPv6 DHCP allocations
+     */
     @JsonProperty("ipv6DHCP")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<NetworkDataIPv6DHCP> getIpv6DHCP() {
         return ipv6DHCP;
     }
 
+    /**
+     * IPv4 contains a list of IPv6 DHCP allocations
+     */
     @JsonProperty("ipv6DHCP")
     public void setIpv6DHCP(List<NetworkDataIPv6DHCP> ipv6DHCP) {
         this.ipv6DHCP = ipv6DHCP;
     }
 
+    /**
+     * IPv4 contains a list of IPv6 SLAAC allocations
+     */
     @JsonProperty("ipv6SLAAC")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<NetworkDataIPv6DHCP> getIpv6SLAAC() {
         return ipv6SLAAC;
     }
 
+    /**
+     * IPv4 contains a list of IPv6 SLAAC allocations
+     */
     @JsonProperty("ipv6SLAAC")
     public void setIpv6SLAAC(List<NetworkDataIPv6DHCP> ipv6SLAAC) {
         this.ipv6SLAAC = ipv6SLAAC;

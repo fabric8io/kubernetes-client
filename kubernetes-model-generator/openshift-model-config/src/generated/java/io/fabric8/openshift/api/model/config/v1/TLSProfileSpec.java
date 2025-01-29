@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * TLSProfileSpec is the desired behavior of a TLSSecurityProfile.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -85,22 +88,34 @@ public class TLSProfileSpec implements Editable<TLSProfileSpecBuilder>, Kubernet
         this.minTLSVersion = minTLSVersion;
     }
 
+    /**
+     * ciphers is used to specify the cipher algorithms that are negotiated during the TLS handshake.  Operators may remove entries their operands do not support.  For example, to use DES-CBC3-SHA  (yaml):<br><p> <br><p>   ciphers:<br><p>     - DES-CBC3-SHA
+     */
     @JsonProperty("ciphers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getCiphers() {
         return ciphers;
     }
 
+    /**
+     * ciphers is used to specify the cipher algorithms that are negotiated during the TLS handshake.  Operators may remove entries their operands do not support.  For example, to use DES-CBC3-SHA  (yaml):<br><p> <br><p>   ciphers:<br><p>     - DES-CBC3-SHA
+     */
     @JsonProperty("ciphers")
     public void setCiphers(List<String> ciphers) {
         this.ciphers = ciphers;
     }
 
+    /**
+     * minTLSVersion is used to specify the minimal version of the TLS protocol that is negotiated during the TLS handshake. For example, to use TLS versions 1.1, 1.2 and 1.3 (yaml):<br><p> <br><p>   minTLSVersion: VersionTLS11<br><p> <br><p> NOTE: currently the highest minTLSVersion allowed is VersionTLS12
+     */
     @JsonProperty("minTLSVersion")
     public String getMinTLSVersion() {
         return minTLSVersion;
     }
 
+    /**
+     * minTLSVersion is used to specify the minimal version of the TLS protocol that is negotiated during the TLS handshake. For example, to use TLS versions 1.1, 1.2 and 1.3 (yaml):<br><p> <br><p>   minTLSVersion: VersionTLS11<br><p> <br><p> NOTE: currently the highest minTLSVersion allowed is VersionTLS12
+     */
     @JsonProperty("minTLSVersion")
     public void setMinTLSVersion(String minTLSVersion) {
         this.minTLSVersion = minTLSVersion;

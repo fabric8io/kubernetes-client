@@ -35,6 +35,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * BackendLBPolicySpec defines the desired state of BackendLBPolicy. Note: there is no Override or Default policy configuration.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -86,22 +89,34 @@ public class BackendLBPolicySpec implements Editable<BackendLBPolicySpecBuilder>
         this.targetRefs = targetRefs;
     }
 
+    /**
+     * BackendLBPolicySpec defines the desired state of BackendLBPolicy. Note: there is no Override or Default policy configuration.
+     */
     @JsonProperty("sessionPersistence")
     public SessionPersistence getSessionPersistence() {
         return sessionPersistence;
     }
 
+    /**
+     * BackendLBPolicySpec defines the desired state of BackendLBPolicy. Note: there is no Override or Default policy configuration.
+     */
     @JsonProperty("sessionPersistence")
     public void setSessionPersistence(SessionPersistence sessionPersistence) {
         this.sessionPersistence = sessionPersistence;
     }
 
+    /**
+     * TargetRef identifies an API object to apply policy to. Currently, Backends (i.e. Service, ServiceImport, or any implementation-specific backendRef) are the only valid API target references.
+     */
     @JsonProperty("targetRefs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<LocalPolicyTargetReference> getTargetRefs() {
         return targetRefs;
     }
 
+    /**
+     * TargetRef identifies an API object to apply policy to. Currently, Backends (i.e. Service, ServiceImport, or any implementation-specific backendRef) are the only valid API target references.
+     */
     @JsonProperty("targetRefs")
     public void setTargetRefs(List<LocalPolicyTargetReference> targetRefs) {
         this.targetRefs = targetRefs;

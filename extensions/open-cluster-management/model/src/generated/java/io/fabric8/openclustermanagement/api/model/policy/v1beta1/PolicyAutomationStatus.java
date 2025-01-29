@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * PolicyAutomationStatus defines the observed state of the PolicyAutomation resource.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -79,12 +82,18 @@ public class PolicyAutomationStatus implements Editable<PolicyAutomationStatusBu
         this.clustersWithEvent = clustersWithEvent;
     }
 
+    /**
+     * Cluster name as the key of ClustersWithEvent
+     */
     @JsonProperty("clustersWithEvent")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, ClusterEvent> getClustersWithEvent() {
         return clustersWithEvent;
     }
 
+    /**
+     * Cluster name as the key of ClustersWithEvent
+     */
     @JsonProperty("clustersWithEvent")
     public void setClustersWithEvent(Map<String, ClusterEvent> clustersWithEvent) {
         this.clustersWithEvent = clustersWithEvent;

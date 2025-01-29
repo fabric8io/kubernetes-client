@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * EventListenerTriggerGroup defines a group of Triggers that share a common set of interceptors
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -89,32 +92,50 @@ public class EventListenerTriggerGroup implements Editable<EventListenerTriggerG
         this.triggerSelector = triggerSelector;
     }
 
+    /**
+     * EventListenerTriggerGroup defines a group of Triggers that share a common set of interceptors
+     */
     @JsonProperty("interceptors")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<TriggerInterceptor> getInterceptors() {
         return interceptors;
     }
 
+    /**
+     * EventListenerTriggerGroup defines a group of Triggers that share a common set of interceptors
+     */
     @JsonProperty("interceptors")
     public void setInterceptors(List<TriggerInterceptor> interceptors) {
         this.interceptors = interceptors;
     }
 
+    /**
+     * EventListenerTriggerGroup defines a group of Triggers that share a common set of interceptors
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * EventListenerTriggerGroup defines a group of Triggers that share a common set of interceptors
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * EventListenerTriggerGroup defines a group of Triggers that share a common set of interceptors
+     */
     @JsonProperty("triggerSelector")
     public EventListenerTriggerSelector getTriggerSelector() {
         return triggerSelector;
     }
 
+    /**
+     * EventListenerTriggerGroup defines a group of Triggers that share a common set of interceptors
+     */
     @JsonProperty("triggerSelector")
     public void setTriggerSelector(EventListenerTriggerSelector triggerSelector) {
         this.triggerSelector = triggerSelector;

@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ParamKind is a tuple of Group Kind and Version.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class ParamKind implements Editable<ParamKindBuilder>, KubernetesResource
         this.kind = kind;
     }
 
+    /**
+     * APIVersion is the API group version the resources belong to. In format of "group/version". Required.
+     */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
         return apiVersion;
     }
 
+    /**
+     * APIVersion is the API group version the resources belong to. In format of "group/version". Required.
+     */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
         this.apiVersion = apiVersion;
     }
 
+    /**
+     * Kind is the API kind the resources belong to. Required.
+     */
     @JsonProperty("kind")
     public String getKind() {
         return kind;
     }
 
+    /**
+     * Kind is the API kind the resources belong to. Required.
+     */
     @JsonProperty("kind")
     public void setKind(String kind) {
         this.kind = kind;

@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Platform stores all the global OpenStack configuration
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -90,41 +93,65 @@ public class Platform implements Editable<PlatformBuilder>, KubernetesResource
         this.trunkSupport = trunkSupport;
     }
 
+    /**
+     * Platform stores all the global OpenStack configuration
+     */
     @JsonProperty("certificatesSecretRef")
     public LocalObjectReference getCertificatesSecretRef() {
         return certificatesSecretRef;
     }
 
+    /**
+     * Platform stores all the global OpenStack configuration
+     */
     @JsonProperty("certificatesSecretRef")
     public void setCertificatesSecretRef(LocalObjectReference certificatesSecretRef) {
         this.certificatesSecretRef = certificatesSecretRef;
     }
 
+    /**
+     * Cloud will be used to indicate the OS_CLOUD value to use the right section from the clouds.yaml in the CredentialsSecretRef.
+     */
     @JsonProperty("cloud")
     public String getCloud() {
         return cloud;
     }
 
+    /**
+     * Cloud will be used to indicate the OS_CLOUD value to use the right section from the clouds.yaml in the CredentialsSecretRef.
+     */
     @JsonProperty("cloud")
     public void setCloud(String cloud) {
         this.cloud = cloud;
     }
 
+    /**
+     * Platform stores all the global OpenStack configuration
+     */
     @JsonProperty("credentialsSecretRef")
     public LocalObjectReference getCredentialsSecretRef() {
         return credentialsSecretRef;
     }
 
+    /**
+     * Platform stores all the global OpenStack configuration
+     */
     @JsonProperty("credentialsSecretRef")
     public void setCredentialsSecretRef(LocalObjectReference credentialsSecretRef) {
         this.credentialsSecretRef = credentialsSecretRef;
     }
 
+    /**
+     * TrunkSupport indicates whether or not to use trunk ports in your OpenShift cluster.
+     */
     @JsonProperty("trunkSupport")
     public Boolean getTrunkSupport() {
         return trunkSupport;
     }
 
+    /**
+     * TrunkSupport indicates whether or not to use trunk ports in your OpenShift cluster.
+     */
     @JsonProperty("trunkSupport")
     public void setTrunkSupport(Boolean trunkSupport) {
         this.trunkSupport = trunkSupport;

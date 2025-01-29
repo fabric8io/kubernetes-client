@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * SubscriptionCatalogHealth describes the health of a CatalogSource the Subscription knows about.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -86,31 +89,49 @@ public class SubscriptionCatalogHealth implements Editable<SubscriptionCatalogHe
         this.lastUpdated = lastUpdated;
     }
 
+    /**
+     * SubscriptionCatalogHealth describes the health of a CatalogSource the Subscription knows about.
+     */
     @JsonProperty("catalogSourceRef")
     public ObjectReference getCatalogSourceRef() {
         return catalogSourceRef;
     }
 
+    /**
+     * SubscriptionCatalogHealth describes the health of a CatalogSource the Subscription knows about.
+     */
     @JsonProperty("catalogSourceRef")
     public void setCatalogSourceRef(ObjectReference catalogSourceRef) {
         this.catalogSourceRef = catalogSourceRef;
     }
 
+    /**
+     * Healthy is true if the CatalogSource is healthy; false otherwise.
+     */
     @JsonProperty("healthy")
     public Boolean getHealthy() {
         return healthy;
     }
 
+    /**
+     * Healthy is true if the CatalogSource is healthy; false otherwise.
+     */
     @JsonProperty("healthy")
     public void setHealthy(Boolean healthy) {
         this.healthy = healthy;
     }
 
+    /**
+     * SubscriptionCatalogHealth describes the health of a CatalogSource the Subscription knows about.
+     */
     @JsonProperty("lastUpdated")
     public String getLastUpdated() {
         return lastUpdated;
     }
 
+    /**
+     * SubscriptionCatalogHealth describes the health of a CatalogSource the Subscription knows about.
+     */
     @JsonProperty("lastUpdated")
     public void setLastUpdated(String lastUpdated) {
         this.lastUpdated = lastUpdated;

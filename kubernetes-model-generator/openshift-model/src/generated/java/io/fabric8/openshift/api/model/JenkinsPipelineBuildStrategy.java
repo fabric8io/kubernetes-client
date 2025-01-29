@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * JenkinsPipelineBuildStrategy holds parameters specific to a Jenkins Pipeline build. Deprecated: use OpenShift Pipelines
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -89,32 +92,50 @@ public class JenkinsPipelineBuildStrategy implements Editable<JenkinsPipelineBui
         this.jenkinsfilePath = jenkinsfilePath;
     }
 
+    /**
+     * env contains additional environment variables you want to pass into a build pipeline.
+     */
     @JsonProperty("env")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<EnvVar> getEnv() {
         return env;
     }
 
+    /**
+     * env contains additional environment variables you want to pass into a build pipeline.
+     */
     @JsonProperty("env")
     public void setEnv(List<EnvVar> env) {
         this.env = env;
     }
 
+    /**
+     * Jenkinsfile defines the optional raw contents of a Jenkinsfile which defines a Jenkins pipeline build.
+     */
     @JsonProperty("jenkinsfile")
     public String getJenkinsfile() {
         return jenkinsfile;
     }
 
+    /**
+     * Jenkinsfile defines the optional raw contents of a Jenkinsfile which defines a Jenkins pipeline build.
+     */
     @JsonProperty("jenkinsfile")
     public void setJenkinsfile(String jenkinsfile) {
         this.jenkinsfile = jenkinsfile;
     }
 
+    /**
+     * JenkinsfilePath is the optional path of the Jenkinsfile that will be used to configure the pipeline relative to the root of the context (contextDir). If both JenkinsfilePath &amp; Jenkinsfile are both not specified, this defaults to Jenkinsfile in the root of the specified contextDir.
+     */
     @JsonProperty("jenkinsfilePath")
     public String getJenkinsfilePath() {
         return jenkinsfilePath;
     }
 
+    /**
+     * JenkinsfilePath is the optional path of the Jenkinsfile that will be used to configure the pipeline relative to the root of the context (contextDir). If both JenkinsfilePath &amp; Jenkinsfile are both not specified, this defaults to Jenkinsfile in the root of the specified contextDir.
+     */
     @JsonProperty("jenkinsfilePath")
     public void setJenkinsfilePath(String jenkinsfilePath) {
         this.jenkinsfilePath = jenkinsfilePath;

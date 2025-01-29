@@ -82,12 +82,18 @@ public class NodeStatus implements Editable<NodeStatusBuilder>, KubernetesResour
         this.conditions = conditions;
     }
 
+    /**
+     * conditions contain the details and the current state of the nodes.config object
+     */
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Condition> getConditions() {
         return conditions;
     }
 
+    /**
+     * conditions contain the details and the current state of the nodes.config object
+     */
     @JsonProperty("conditions")
     public void setConditions(List<Condition> conditions) {
         this.conditions = conditions;

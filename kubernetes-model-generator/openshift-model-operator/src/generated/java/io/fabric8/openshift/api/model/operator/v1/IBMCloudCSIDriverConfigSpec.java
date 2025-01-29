@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * IBMCloudCSIDriverConfigSpec defines the properties that can be configured for the IBM Cloud CSI driver.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -78,11 +81,17 @@ public class IBMCloudCSIDriverConfigSpec implements Editable<IBMCloudCSIDriverCo
         this.encryptionKeyCRN = encryptionKeyCRN;
     }
 
+    /**
+     * encryptionKeyCRN is the IBM Cloud CRN of the customer-managed root key to use for disk encryption of volumes for the default storage classes.
+     */
     @JsonProperty("encryptionKeyCRN")
     public String getEncryptionKeyCRN() {
         return encryptionKeyCRN;
     }
 
+    /**
+     * encryptionKeyCRN is the IBM Cloud CRN of the customer-managed root key to use for disk encryption of volumes for the default storage classes.
+     */
     @JsonProperty("encryptionKeyCRN")
     public void setEncryptionKeyCRN(String encryptionKeyCRN) {
         this.encryptionKeyCRN = encryptionKeyCRN;

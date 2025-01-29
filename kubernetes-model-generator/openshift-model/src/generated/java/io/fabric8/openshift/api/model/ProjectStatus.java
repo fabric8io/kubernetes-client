@@ -35,6 +35,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ProjectStatus is information about the current status of a Project
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -86,22 +89,34 @@ public class ProjectStatus implements Editable<ProjectStatusBuilder>, Kubernetes
         this.phase = phase;
     }
 
+    /**
+     * Represents the latest available observations of the project current state.
+     */
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<NamespaceCondition> getConditions() {
         return conditions;
     }
 
+    /**
+     * Represents the latest available observations of the project current state.
+     */
     @JsonProperty("conditions")
     public void setConditions(List<NamespaceCondition> conditions) {
         this.conditions = conditions;
     }
 
+    /**
+     * Phase is the current lifecycle phase of the project<br><p> <br><p> Possible enum values:<br><p>  - `"Active"` means the namespace is available for use in the system<br><p>  - `"Terminating"` means the namespace is undergoing graceful termination
+     */
     @JsonProperty("phase")
     public String getPhase() {
         return phase;
     }
 
+    /**
+     * Phase is the current lifecycle phase of the project<br><p> <br><p> Possible enum values:<br><p>  - `"Active"` means the namespace is available for use in the system<br><p>  - `"Terminating"` means the namespace is undergoing graceful termination
+     */
     @JsonProperty("phase")
     public void setPhase(String phase) {
         this.phase = phase;

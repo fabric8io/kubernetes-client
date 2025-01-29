@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ServiceProviderCredentials is used to configure credentials related to being a service provider on various cloud platforms.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -78,11 +81,17 @@ public class ServiceProviderCredentials implements Editable<ServiceProviderCrede
         this.aws = aws;
     }
 
+    /**
+     * ServiceProviderCredentials is used to configure credentials related to being a service provider on various cloud platforms.
+     */
     @JsonProperty("aws")
     public AWSServiceProviderCredentials getAws() {
         return aws;
     }
 
+    /**
+     * ServiceProviderCredentials is used to configure credentials related to being a service provider on various cloud platforms.
+     */
     @JsonProperty("aws")
     public void setAws(AWSServiceProviderCredentials aws) {
         this.aws = aws;

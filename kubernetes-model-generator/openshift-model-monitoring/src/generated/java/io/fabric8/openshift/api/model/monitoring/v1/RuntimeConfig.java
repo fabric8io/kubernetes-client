@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * RuntimeConfig configures the values for the process behavior.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -78,11 +81,17 @@ public class RuntimeConfig implements Editable<RuntimeConfigBuilder>, Kubernetes
         this.goGC = goGC;
     }
 
+    /**
+     * The Go garbage collection target percentage. Lowering this number may increase the CPU usage. See: https://tip.golang.org/doc/gc-guide#GOGC
+     */
     @JsonProperty("goGC")
     public Integer getGoGC() {
         return goGC;
     }
 
+    /**
+     * The Go garbage collection target percentage. Lowering this number may increase the CPU usage. See: https://tip.golang.org/doc/gc-guide#GOGC
+     */
     @JsonProperty("goGC")
     public void setGoGC(Integer goGC) {
         this.goGC = goGC;

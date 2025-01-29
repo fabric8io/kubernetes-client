@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Traffic policies that apply to specific ports of the service
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -94,51 +97,81 @@ public class TrafficPolicyPortTrafficPolicy implements Editable<TrafficPolicyPor
         this.tls = tls;
     }
 
+    /**
+     * Traffic policies that apply to specific ports of the service
+     */
     @JsonProperty("connectionPool")
     public ConnectionPoolSettings getConnectionPool() {
         return connectionPool;
     }
 
+    /**
+     * Traffic policies that apply to specific ports of the service
+     */
     @JsonProperty("connectionPool")
     public void setConnectionPool(ConnectionPoolSettings connectionPool) {
         this.connectionPool = connectionPool;
     }
 
+    /**
+     * Traffic policies that apply to specific ports of the service
+     */
     @JsonProperty("loadBalancer")
     public LoadBalancerSettings getLoadBalancer() {
         return loadBalancer;
     }
 
+    /**
+     * Traffic policies that apply to specific ports of the service
+     */
     @JsonProperty("loadBalancer")
     public void setLoadBalancer(LoadBalancerSettings loadBalancer) {
         this.loadBalancer = loadBalancer;
     }
 
+    /**
+     * Traffic policies that apply to specific ports of the service
+     */
     @JsonProperty("outlierDetection")
     public OutlierDetection getOutlierDetection() {
         return outlierDetection;
     }
 
+    /**
+     * Traffic policies that apply to specific ports of the service
+     */
     @JsonProperty("outlierDetection")
     public void setOutlierDetection(OutlierDetection outlierDetection) {
         this.outlierDetection = outlierDetection;
     }
 
+    /**
+     * Traffic policies that apply to specific ports of the service
+     */
     @JsonProperty("port")
     public PortSelector getPort() {
         return port;
     }
 
+    /**
+     * Traffic policies that apply to specific ports of the service
+     */
     @JsonProperty("port")
     public void setPort(PortSelector port) {
         this.port = port;
     }
 
+    /**
+     * Traffic policies that apply to specific ports of the service
+     */
     @JsonProperty("tls")
     public ClientTLSSettings getTls() {
         return tls;
     }
 
+    /**
+     * Traffic policies that apply to specific ports of the service
+     */
     @JsonProperty("tls")
     public void setTls(ClientTLSSettings tls) {
         this.tls = tls;

@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ServiceAccountPodSecurityPolicyReviewStatus represents ServiceAccount name and related review status
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -90,41 +93,65 @@ public class ServiceAccountPodSecurityPolicyReviewStatus implements Editable<Ser
         this.template = template;
     }
 
+    /**
+     * ServiceAccountPodSecurityPolicyReviewStatus represents ServiceAccount name and related review status
+     */
     @JsonProperty("allowedBy")
     public ObjectReference getAllowedBy() {
         return allowedBy;
     }
 
+    /**
+     * ServiceAccountPodSecurityPolicyReviewStatus represents ServiceAccount name and related review status
+     */
     @JsonProperty("allowedBy")
     public void setAllowedBy(ObjectReference allowedBy) {
         this.allowedBy = allowedBy;
     }
 
+    /**
+     * name contains the allowed and the denied ServiceAccount name
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * name contains the allowed and the denied ServiceAccount name
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * A machine-readable description of why this operation is in the "Failure" status. If this value is empty there is no information available.
+     */
     @JsonProperty("reason")
     public String getReason() {
         return reason;
     }
 
+    /**
+     * A machine-readable description of why this operation is in the "Failure" status. If this value is empty there is no information available.
+     */
     @JsonProperty("reason")
     public void setReason(String reason) {
         this.reason = reason;
     }
 
+    /**
+     * ServiceAccountPodSecurityPolicyReviewStatus represents ServiceAccount name and related review status
+     */
     @JsonProperty("template")
     public PodTemplateSpec getTemplate() {
         return template;
     }
 
+    /**
+     * ServiceAccountPodSecurityPolicyReviewStatus represents ServiceAccount name and related review status
+     */
     @JsonProperty("template")
     public void setTemplate(PodTemplateSpec template) {
         this.template = template;

@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * IoFault represents the fault to inject and their weight
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class IoFault implements Editable<IoFaultBuilder>, KubernetesResource
         this.weight = weight;
     }
 
+    /**
+     * IoFault represents the fault to inject and their weight
+     */
     @JsonProperty("errno")
     public Long getErrno() {
         return errno;
     }
 
+    /**
+     * IoFault represents the fault to inject and their weight
+     */
     @JsonProperty("errno")
     public void setErrno(Long errno) {
         this.errno = errno;
     }
 
+    /**
+     * IoFault represents the fault to inject and their weight
+     */
     @JsonProperty("weight")
     public Integer getWeight() {
         return weight;
     }
 
+    /**
+     * IoFault represents the fault to inject and their weight
+     */
     @JsonProperty("weight")
     public void setWeight(Integer weight) {
         this.weight = weight;

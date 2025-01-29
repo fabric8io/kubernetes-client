@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * PrivateLinkAccessStatus contains the observed state for PrivateLinkAccess resources.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -86,31 +89,49 @@ public class PrivateLinkAccessStatus implements Editable<PrivateLinkAccessStatus
         this.vpcEndpointService = vpcEndpointService;
     }
 
+    /**
+     * PrivateLinkAccessStatus contains the observed state for PrivateLinkAccess resources.
+     */
     @JsonProperty("hostedZoneID")
     public String getHostedZoneID() {
         return hostedZoneID;
     }
 
+    /**
+     * PrivateLinkAccessStatus contains the observed state for PrivateLinkAccess resources.
+     */
     @JsonProperty("hostedZoneID")
     public void setHostedZoneID(String hostedZoneID) {
         this.hostedZoneID = hostedZoneID;
     }
 
+    /**
+     * PrivateLinkAccessStatus contains the observed state for PrivateLinkAccess resources.
+     */
     @JsonProperty("vpcEndpointID")
     public String getVpcEndpointID() {
         return vpcEndpointID;
     }
 
+    /**
+     * PrivateLinkAccessStatus contains the observed state for PrivateLinkAccess resources.
+     */
     @JsonProperty("vpcEndpointID")
     public void setVpcEndpointID(String vpcEndpointID) {
         this.vpcEndpointID = vpcEndpointID;
     }
 
+    /**
+     * PrivateLinkAccessStatus contains the observed state for PrivateLinkAccess resources.
+     */
     @JsonProperty("vpcEndpointService")
     public VPCEndpointService getVpcEndpointService() {
         return vpcEndpointService;
     }
 
+    /**
+     * PrivateLinkAccessStatus contains the observed state for PrivateLinkAccess resources.
+     */
     @JsonProperty("vpcEndpointService")
     public void setVpcEndpointService(VPCEndpointService vpcEndpointService) {
         this.vpcEndpointService = vpcEndpointService;

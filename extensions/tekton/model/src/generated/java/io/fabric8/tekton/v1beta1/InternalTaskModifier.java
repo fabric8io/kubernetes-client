@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * InternalTaskModifier implements TaskModifier for resources that are built-in to Tekton Pipelines.<br><p> <br><p> Deprecated: Unused, preserved only for backwards compatibility
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -91,34 +94,52 @@ public class InternalTaskModifier implements Editable<InternalTaskModifierBuilde
         this.volumes = volumes;
     }
 
+    /**
+     * InternalTaskModifier implements TaskModifier for resources that are built-in to Tekton Pipelines.<br><p> <br><p> Deprecated: Unused, preserved only for backwards compatibility
+     */
     @JsonProperty("stepsToAppend")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Step> getStepsToAppend() {
         return stepsToAppend;
     }
 
+    /**
+     * InternalTaskModifier implements TaskModifier for resources that are built-in to Tekton Pipelines.<br><p> <br><p> Deprecated: Unused, preserved only for backwards compatibility
+     */
     @JsonProperty("stepsToAppend")
     public void setStepsToAppend(List<Step> stepsToAppend) {
         this.stepsToAppend = stepsToAppend;
     }
 
+    /**
+     * InternalTaskModifier implements TaskModifier for resources that are built-in to Tekton Pipelines.<br><p> <br><p> Deprecated: Unused, preserved only for backwards compatibility
+     */
     @JsonProperty("stepsToPrepend")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Step> getStepsToPrepend() {
         return stepsToPrepend;
     }
 
+    /**
+     * InternalTaskModifier implements TaskModifier for resources that are built-in to Tekton Pipelines.<br><p> <br><p> Deprecated: Unused, preserved only for backwards compatibility
+     */
     @JsonProperty("stepsToPrepend")
     public void setStepsToPrepend(List<Step> stepsToPrepend) {
         this.stepsToPrepend = stepsToPrepend;
     }
 
+    /**
+     * InternalTaskModifier implements TaskModifier for resources that are built-in to Tekton Pipelines.<br><p> <br><p> Deprecated: Unused, preserved only for backwards compatibility
+     */
     @JsonProperty("volumes")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Volume> getVolumes() {
         return volumes;
     }
 
+    /**
+     * InternalTaskModifier implements TaskModifier for resources that are built-in to Tekton Pipelines.<br><p> <br><p> Deprecated: Unused, preserved only for backwards compatibility
+     */
     @JsonProperty("volumes")
     public void setVolumes(List<Volume> volumes) {
         this.volumes = volumes;

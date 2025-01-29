@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ReferenceGrantSpec identifies a cross namespace relationship that is trusted for Gateway API.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -86,23 +89,35 @@ public class ReferenceGrantSpec implements Editable<ReferenceGrantSpecBuilder>, 
         this.to = to;
     }
 
+    /**
+     * From describes the trusted namespaces and kinds that can reference the resources described in "To". Each entry in this list MUST be considered to be an additional place that references can be valid from, or to put this another way, entries MUST be combined using OR.<br><p> <br><p> Support: Core
+     */
     @JsonProperty("from")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ReferenceGrantFrom> getFrom() {
         return from;
     }
 
+    /**
+     * From describes the trusted namespaces and kinds that can reference the resources described in "To". Each entry in this list MUST be considered to be an additional place that references can be valid from, or to put this another way, entries MUST be combined using OR.<br><p> <br><p> Support: Core
+     */
     @JsonProperty("from")
     public void setFrom(List<ReferenceGrantFrom> from) {
         this.from = from;
     }
 
+    /**
+     * To describes the resources that may be referenced by the resources described in "From". Each entry in this list MUST be considered to be an additional place that references can be valid to, or to put this another way, entries MUST be combined using OR.<br><p> <br><p> Support: Core
+     */
     @JsonProperty("to")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ReferenceGrantTo> getTo() {
         return to;
     }
 
+    /**
+     * To describes the resources that may be referenced by the resources described in "From". Each entry in this list MUST be considered to be an additional place that references can be valid to, or to put this another way, entries MUST be combined using OR.<br><p> <br><p> Support: Core
+     */
     @JsonProperty("to")
     public void setTo(List<ReferenceGrantTo> to) {
         this.to = to;

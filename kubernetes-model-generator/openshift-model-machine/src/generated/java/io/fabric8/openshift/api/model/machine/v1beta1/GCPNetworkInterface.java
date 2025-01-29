@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * GCPNetworkInterface describes network interfaces for GCP
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -90,41 +93,65 @@ public class GCPNetworkInterface implements Editable<GCPNetworkInterfaceBuilder>
         this.subnetwork = subnetwork;
     }
 
+    /**
+     * Network is the network name.
+     */
     @JsonProperty("network")
     public String getNetwork() {
         return network;
     }
 
+    /**
+     * Network is the network name.
+     */
     @JsonProperty("network")
     public void setNetwork(String network) {
         this.network = network;
     }
 
+    /**
+     * ProjectID is the project in which the GCP machine provider will create the VM.
+     */
     @JsonProperty("projectID")
     public String getProjectID() {
         return projectID;
     }
 
+    /**
+     * ProjectID is the project in which the GCP machine provider will create the VM.
+     */
     @JsonProperty("projectID")
     public void setProjectID(String projectID) {
         this.projectID = projectID;
     }
 
+    /**
+     * PublicIP indicates if true a public IP will be used
+     */
     @JsonProperty("publicIP")
     public Boolean getPublicIP() {
         return publicIP;
     }
 
+    /**
+     * PublicIP indicates if true a public IP will be used
+     */
     @JsonProperty("publicIP")
     public void setPublicIP(Boolean publicIP) {
         this.publicIP = publicIP;
     }
 
+    /**
+     * Subnetwork is the subnetwork name.
+     */
     @JsonProperty("subnetwork")
     public String getSubnetwork() {
         return subnetwork;
     }
 
+    /**
+     * Subnetwork is the subnetwork name.
+     */
     @JsonProperty("subnetwork")
     public void setSubnetwork(String subnetwork) {
         this.subnetwork = subnetwork;

@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * OperatorSpec contains common fields for an operator to need.  It is intended to be anonymous included inside of the Spec struct for you particular operator. DEPRECATED: Use v1.OperatorSpec instead
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -94,51 +97,81 @@ public class OperatorSpec implements Editable<OperatorSpecBuilder>, KubernetesRe
         this.version = version;
     }
 
+    /**
+     * imagePullPolicy specifies the image pull policy. One of Always, Never, IfNotPresent. Defaults to Always if :latest tag is specified, or IfNotPresent otherwise.
+     */
     @JsonProperty("imagePullPolicy")
     public String getImagePullPolicy() {
         return imagePullPolicy;
     }
 
+    /**
+     * imagePullPolicy specifies the image pull policy. One of Always, Never, IfNotPresent. Defaults to Always if :latest tag is specified, or IfNotPresent otherwise.
+     */
     @JsonProperty("imagePullPolicy")
     public void setImagePullPolicy(String imagePullPolicy) {
         this.imagePullPolicy = imagePullPolicy;
     }
 
+    /**
+     * imagePullSpec is the image to use for the component.
+     */
     @JsonProperty("imagePullSpec")
     public String getImagePullSpec() {
         return imagePullSpec;
     }
 
+    /**
+     * imagePullSpec is the image to use for the component.
+     */
     @JsonProperty("imagePullSpec")
     public void setImagePullSpec(String imagePullSpec) {
         this.imagePullSpec = imagePullSpec;
     }
 
+    /**
+     * OperatorSpec contains common fields for an operator to need.  It is intended to be anonymous included inside of the Spec struct for you particular operator. DEPRECATED: Use v1.OperatorSpec instead
+     */
     @JsonProperty("logging")
     public LoggingConfig getLogging() {
         return logging;
     }
 
+    /**
+     * OperatorSpec contains common fields for an operator to need.  It is intended to be anonymous included inside of the Spec struct for you particular operator. DEPRECATED: Use v1.OperatorSpec instead
+     */
     @JsonProperty("logging")
     public void setLogging(LoggingConfig logging) {
         this.logging = logging;
     }
 
+    /**
+     * managementState indicates whether and how the operator should manage the component
+     */
     @JsonProperty("managementState")
     public String getManagementState() {
         return managementState;
     }
 
+    /**
+     * managementState indicates whether and how the operator should manage the component
+     */
     @JsonProperty("managementState")
     public void setManagementState(String managementState) {
         this.managementState = managementState;
     }
 
+    /**
+     * version is the desired state in major.minor.micro-patch.  Usually patch is ignored.
+     */
     @JsonProperty("version")
     public String getVersion() {
         return version;
     }
 
+    /**
+     * version is the desired state in major.minor.micro-patch.  Usually patch is ignored.
+     */
     @JsonProperty("version")
     public void setVersion(String version) {
         this.version = version;

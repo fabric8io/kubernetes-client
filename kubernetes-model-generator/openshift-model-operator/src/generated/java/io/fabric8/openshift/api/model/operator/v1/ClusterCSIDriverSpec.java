@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ClusterCSIDriverSpec is the desired behavior of CSI driver operator
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -104,72 +107,114 @@ public class ClusterCSIDriverSpec implements Editable<ClusterCSIDriverSpecBuilde
         this.unsupportedConfigOverrides = unsupportedConfigOverrides;
     }
 
+    /**
+     * ClusterCSIDriverSpec is the desired behavior of CSI driver operator
+     */
     @JsonProperty("driverConfig")
     public CSIDriverConfigSpec getDriverConfig() {
         return driverConfig;
     }
 
+    /**
+     * ClusterCSIDriverSpec is the desired behavior of CSI driver operator
+     */
     @JsonProperty("driverConfig")
     public void setDriverConfig(CSIDriverConfigSpec driverConfig) {
         this.driverConfig = driverConfig;
     }
 
+    /**
+     * logLevel is an intent based logging for an overall component.  It does not give fine grained control, but it is a simple way to manage coarse grained logging choices that operators have to interpret for their operands.<br><p> <br><p> Valid values are: "Normal", "Debug", "Trace", "TraceAll". Defaults to "Normal".
+     */
     @JsonProperty("logLevel")
     public String getLogLevel() {
         return logLevel;
     }
 
+    /**
+     * logLevel is an intent based logging for an overall component.  It does not give fine grained control, but it is a simple way to manage coarse grained logging choices that operators have to interpret for their operands.<br><p> <br><p> Valid values are: "Normal", "Debug", "Trace", "TraceAll". Defaults to "Normal".
+     */
     @JsonProperty("logLevel")
     public void setLogLevel(String logLevel) {
         this.logLevel = logLevel;
     }
 
+    /**
+     * managementState indicates whether and how the operator should manage the component
+     */
     @JsonProperty("managementState")
     public String getManagementState() {
         return managementState;
     }
 
+    /**
+     * managementState indicates whether and how the operator should manage the component
+     */
     @JsonProperty("managementState")
     public void setManagementState(String managementState) {
         this.managementState = managementState;
     }
 
+    /**
+     * ClusterCSIDriverSpec is the desired behavior of CSI driver operator
+     */
     @JsonProperty("observedConfig")
     public Object getObservedConfig() {
         return observedConfig;
     }
 
+    /**
+     * ClusterCSIDriverSpec is the desired behavior of CSI driver operator
+     */
     @JsonProperty("observedConfig")
     @JsonDeserialize(using = io.fabric8.kubernetes.internal.KubernetesDeserializer.class)
     public void setObservedConfig(Object observedConfig) {
         this.observedConfig = observedConfig;
     }
 
+    /**
+     * operatorLogLevel is an intent based logging for the operator itself.  It does not give fine grained control, but it is a simple way to manage coarse grained logging choices that operators have to interpret for themselves.<br><p> <br><p> Valid values are: "Normal", "Debug", "Trace", "TraceAll". Defaults to "Normal".
+     */
     @JsonProperty("operatorLogLevel")
     public String getOperatorLogLevel() {
         return operatorLogLevel;
     }
 
+    /**
+     * operatorLogLevel is an intent based logging for the operator itself.  It does not give fine grained control, but it is a simple way to manage coarse grained logging choices that operators have to interpret for themselves.<br><p> <br><p> Valid values are: "Normal", "Debug", "Trace", "TraceAll". Defaults to "Normal".
+     */
     @JsonProperty("operatorLogLevel")
     public void setOperatorLogLevel(String operatorLogLevel) {
         this.operatorLogLevel = operatorLogLevel;
     }
 
+    /**
+     * StorageClassState determines if CSI operator should create and manage storage classes. If this field value is empty or Managed - CSI operator will continuously reconcile storage class and create if necessary. If this field value is Unmanaged - CSI operator will not reconcile any previously created storage class. If this field value is Removed - CSI operator will delete the storage class it created previously. When omitted, this means the user has no opinion and the platform chooses a reasonable default, which is subject to change over time. The current default behaviour is Managed.
+     */
     @JsonProperty("storageClassState")
     public String getStorageClassState() {
         return storageClassState;
     }
 
+    /**
+     * StorageClassState determines if CSI operator should create and manage storage classes. If this field value is empty or Managed - CSI operator will continuously reconcile storage class and create if necessary. If this field value is Unmanaged - CSI operator will not reconcile any previously created storage class. If this field value is Removed - CSI operator will delete the storage class it created previously. When omitted, this means the user has no opinion and the platform chooses a reasonable default, which is subject to change over time. The current default behaviour is Managed.
+     */
     @JsonProperty("storageClassState")
     public void setStorageClassState(String storageClassState) {
         this.storageClassState = storageClassState;
     }
 
+    /**
+     * ClusterCSIDriverSpec is the desired behavior of CSI driver operator
+     */
     @JsonProperty("unsupportedConfigOverrides")
     public Object getUnsupportedConfigOverrides() {
         return unsupportedConfigOverrides;
     }
 
+    /**
+     * ClusterCSIDriverSpec is the desired behavior of CSI driver operator
+     */
     @JsonProperty("unsupportedConfigOverrides")
     @JsonDeserialize(using = io.fabric8.kubernetes.internal.KubernetesDeserializer.class)
     public void setUnsupportedConfigOverrides(Object unsupportedConfigOverrides) {

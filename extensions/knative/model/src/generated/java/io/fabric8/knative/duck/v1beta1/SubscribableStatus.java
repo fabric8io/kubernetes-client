@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * SubscribableStatus is the schema for the subscribable's status portion of the status section of the resource.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -81,12 +84,18 @@ public class SubscribableStatus implements Editable<SubscribableStatusBuilder>, 
         this.subscribers = subscribers;
     }
 
+    /**
+     * This is the list of subscription's statuses for this channel.
+     */
     @JsonProperty("subscribers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<SubscriberStatus> getSubscribers() {
         return subscribers;
     }
 
+    /**
+     * This is the list of subscription's statuses for this channel.
+     */
     @JsonProperty("subscribers")
     public void setSubscribers(List<SubscriberStatus> subscribers) {
         this.subscribers = subscribers;

@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * TriggerSpec represents a connection between TriggerSpecBinding, and TriggerSpecTemplate; TriggerSpecBinding provides extracted values for TriggerSpecTemplate to then create resources from.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -98,53 +101,83 @@ public class TriggerSpec implements Editable<TriggerSpecBuilder>, KubernetesReso
         this.template = template;
     }
 
+    /**
+     * TriggerSpec represents a connection between TriggerSpecBinding, and TriggerSpecTemplate; TriggerSpecBinding provides extracted values for TriggerSpecTemplate to then create resources from.
+     */
     @JsonProperty("bindings")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<TriggerSpecBinding> getBindings() {
         return bindings;
     }
 
+    /**
+     * TriggerSpec represents a connection between TriggerSpecBinding, and TriggerSpecTemplate; TriggerSpecBinding provides extracted values for TriggerSpecTemplate to then create resources from.
+     */
     @JsonProperty("bindings")
     public void setBindings(List<TriggerSpecBinding> bindings) {
         this.bindings = bindings;
     }
 
+    /**
+     * TriggerSpec represents a connection between TriggerSpecBinding, and TriggerSpecTemplate; TriggerSpecBinding provides extracted values for TriggerSpecTemplate to then create resources from.
+     */
     @JsonProperty("interceptors")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<TriggerInterceptor> getInterceptors() {
         return interceptors;
     }
 
+    /**
+     * TriggerSpec represents a connection between TriggerSpecBinding, and TriggerSpecTemplate; TriggerSpecBinding provides extracted values for TriggerSpecTemplate to then create resources from.
+     */
     @JsonProperty("interceptors")
     public void setInterceptors(List<TriggerInterceptor> interceptors) {
         this.interceptors = interceptors;
     }
 
+    /**
+     * TriggerSpec represents a connection between TriggerSpecBinding, and TriggerSpecTemplate; TriggerSpecBinding provides extracted values for TriggerSpecTemplate to then create resources from.
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * TriggerSpec represents a connection between TriggerSpecBinding, and TriggerSpecTemplate; TriggerSpecBinding provides extracted values for TriggerSpecTemplate to then create resources from.
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * ServiceAccountName optionally associates credentials with each trigger; Unlike EventListeners, this should be scoped to the same namespace as the Trigger itself
+     */
     @JsonProperty("serviceAccountName")
     public String getServiceAccountName() {
         return serviceAccountName;
     }
 
+    /**
+     * ServiceAccountName optionally associates credentials with each trigger; Unlike EventListeners, this should be scoped to the same namespace as the Trigger itself
+     */
     @JsonProperty("serviceAccountName")
     public void setServiceAccountName(String serviceAccountName) {
         this.serviceAccountName = serviceAccountName;
     }
 
+    /**
+     * TriggerSpec represents a connection between TriggerSpecBinding, and TriggerSpecTemplate; TriggerSpecBinding provides extracted values for TriggerSpecTemplate to then create resources from.
+     */
     @JsonProperty("template")
     public TriggerSpecTemplate getTemplate() {
         return template;
     }
 
+    /**
+     * TriggerSpec represents a connection between TriggerSpecBinding, and TriggerSpecTemplate; TriggerSpecBinding provides extracted values for TriggerSpecTemplate to then create resources from.
+     */
     @JsonProperty("template")
     public void setTemplate(TriggerSpecTemplate template) {
         this.template = template;

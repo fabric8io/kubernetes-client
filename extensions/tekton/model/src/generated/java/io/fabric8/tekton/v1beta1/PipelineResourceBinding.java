@@ -33,6 +33,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * PipelineResourceBinding connects a reference to an instance of a PipelineResource with a PipelineResource dependency that the Pipeline has declared<br><p> <br><p> Deprecated: Unused, preserved only for backwards compatibility
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -87,31 +90,49 @@ public class PipelineResourceBinding implements Editable<PipelineResourceBinding
         this.resourceSpec = resourceSpec;
     }
 
+    /**
+     * Name is the name of the PipelineResource in the Pipeline's declaration
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * Name is the name of the PipelineResource in the Pipeline's declaration
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * PipelineResourceBinding connects a reference to an instance of a PipelineResource with a PipelineResource dependency that the Pipeline has declared<br><p> <br><p> Deprecated: Unused, preserved only for backwards compatibility
+     */
     @JsonProperty("resourceRef")
     public PipelineResourceRef getResourceRef() {
         return resourceRef;
     }
 
+    /**
+     * PipelineResourceBinding connects a reference to an instance of a PipelineResource with a PipelineResource dependency that the Pipeline has declared<br><p> <br><p> Deprecated: Unused, preserved only for backwards compatibility
+     */
     @JsonProperty("resourceRef")
     public void setResourceRef(PipelineResourceRef resourceRef) {
         this.resourceRef = resourceRef;
     }
 
+    /**
+     * PipelineResourceBinding connects a reference to an instance of a PipelineResource with a PipelineResource dependency that the Pipeline has declared<br><p> <br><p> Deprecated: Unused, preserved only for backwards compatibility
+     */
     @JsonProperty("resourceSpec")
     public PipelineResourceSpec getResourceSpec() {
         return resourceSpec;
     }
 
+    /**
+     * PipelineResourceBinding connects a reference to an instance of a PipelineResource with a PipelineResource dependency that the Pipeline has declared<br><p> <br><p> Deprecated: Unused, preserved only for backwards compatibility
+     */
     @JsonProperty("resourceSpec")
     public void setResourceSpec(PipelineResourceSpec resourceSpec) {
         this.resourceSpec = resourceSpec;

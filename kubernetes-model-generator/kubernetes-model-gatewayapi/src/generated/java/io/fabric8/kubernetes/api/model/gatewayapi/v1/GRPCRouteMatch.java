@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * GRPCRouteMatch defines the predicate used to match requests to a given action. Multiple match types are ANDed together, i.e. the match will evaluate to true only if all conditions are satisfied.<br><p> <br><p> For example, the match below will match a gRPC request only if its service is `foo` AND it contains the `version: v1` header:<br><p> <br><p> ``` matches:<br><p>   - method:<br><p>     type: Exact<br><p>     service: "foo"<br><p>     headers:<br><p>   - name: "version"<br><p>     value "v1"<br><p> <br><p> ```
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -85,22 +88,34 @@ public class GRPCRouteMatch implements Editable<GRPCRouteMatchBuilder>, Kubernet
         this.method = method;
     }
 
+    /**
+     * Headers specifies gRPC request header matchers. Multiple match values are ANDed together, meaning, a request MUST match all the specified headers to select the route.
+     */
     @JsonProperty("headers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<GRPCHeaderMatch> getHeaders() {
         return headers;
     }
 
+    /**
+     * Headers specifies gRPC request header matchers. Multiple match values are ANDed together, meaning, a request MUST match all the specified headers to select the route.
+     */
     @JsonProperty("headers")
     public void setHeaders(List<GRPCHeaderMatch> headers) {
         this.headers = headers;
     }
 
+    /**
+     * GRPCRouteMatch defines the predicate used to match requests to a given action. Multiple match types are ANDed together, i.e. the match will evaluate to true only if all conditions are satisfied.<br><p> <br><p> For example, the match below will match a gRPC request only if its service is `foo` AND it contains the `version: v1` header:<br><p> <br><p> ``` matches:<br><p>   - method:<br><p>     type: Exact<br><p>     service: "foo"<br><p>     headers:<br><p>   - name: "version"<br><p>     value "v1"<br><p> <br><p> ```
+     */
     @JsonProperty("method")
     public GRPCMethodMatch getMethod() {
         return method;
     }
 
+    /**
+     * GRPCRouteMatch defines the predicate used to match requests to a given action. Multiple match types are ANDed together, i.e. the match will evaluate to true only if all conditions are satisfied.<br><p> <br><p> For example, the match below will match a gRPC request only if its service is `foo` AND it contains the `version: v1` header:<br><p> <br><p> ``` matches:<br><p>   - method:<br><p>     type: Exact<br><p>     service: "foo"<br><p>     headers:<br><p>   - name: "version"<br><p>     value "v1"<br><p> <br><p> ```
+     */
     @JsonProperty("method")
     public void setMethod(GRPCMethodMatch method) {
         this.method = method;

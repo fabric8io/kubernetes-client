@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Mutation specifies the CEL expression which is used to apply the Mutation.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -86,31 +89,49 @@ public class Mutation implements Editable<MutationBuilder>, KubernetesResource
         this.patchType = patchType;
     }
 
+    /**
+     * Mutation specifies the CEL expression which is used to apply the Mutation.
+     */
     @JsonProperty("applyConfiguration")
     public ApplyConfiguration getApplyConfiguration() {
         return applyConfiguration;
     }
 
+    /**
+     * Mutation specifies the CEL expression which is used to apply the Mutation.
+     */
     @JsonProperty("applyConfiguration")
     public void setApplyConfiguration(ApplyConfiguration applyConfiguration) {
         this.applyConfiguration = applyConfiguration;
     }
 
+    /**
+     * Mutation specifies the CEL expression which is used to apply the Mutation.
+     */
     @JsonProperty("jsonPatch")
     public JSONPatch getJsonPatch() {
         return jsonPatch;
     }
 
+    /**
+     * Mutation specifies the CEL expression which is used to apply the Mutation.
+     */
     @JsonProperty("jsonPatch")
     public void setJsonPatch(JSONPatch jsonPatch) {
         this.jsonPatch = jsonPatch;
     }
 
+    /**
+     * patchType indicates the patch strategy used. Allowed values are "ApplyConfiguration" and "JSONPatch". Required.
+     */
     @JsonProperty("patchType")
     public String getPatchType() {
         return patchType;
     }
 
+    /**
+     * patchType indicates the patch strategy used. Allowed values are "ApplyConfiguration" and "JSONPatch". Required.
+     */
     @JsonProperty("patchType")
     public void setPatchType(String patchType) {
         this.patchType = patchType;

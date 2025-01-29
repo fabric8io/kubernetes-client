@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ImageStreamImportSpec defines what images should be imported.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -89,32 +92,50 @@ public class ImageStreamImportSpec implements Editable<ImageStreamImportSpecBuil
         this.repository = repository;
     }
 
+    /**
+     * Images are a list of individual images to import.
+     */
     @JsonProperty("images")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ImageImportSpec> getImages() {
         return images;
     }
 
+    /**
+     * Images are a list of individual images to import.
+     */
     @JsonProperty("images")
     public void setImages(List<ImageImportSpec> images) {
         this.images = images;
     }
 
+    /**
+     * Import indicates whether to perform an import - if so, the specified tags are set on the spec and status of the image stream defined by the type meta.
+     */
     @JsonProperty("import")
     public Boolean getImport() {
         return _import;
     }
 
+    /**
+     * Import indicates whether to perform an import - if so, the specified tags are set on the spec and status of the image stream defined by the type meta.
+     */
     @JsonProperty("import")
     public void setImport(Boolean _import) {
         this._import = _import;
     }
 
+    /**
+     * ImageStreamImportSpec defines what images should be imported.
+     */
     @JsonProperty("repository")
     public RepositoryImportSpec getRepository() {
         return repository;
     }
 
+    /**
+     * ImageStreamImportSpec defines what images should be imported.
+     */
     @JsonProperty("repository")
     public void setRepository(RepositoryImportSpec repository) {
         this.repository = repository;

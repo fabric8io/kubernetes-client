@@ -85,22 +85,34 @@ public class IngressStatus implements Editable<IngressStatusBuilder>, Kubernetes
         this.defaultPlacement = defaultPlacement;
     }
 
+    /**
+     * componentRoutes is where participating operators place the current route status for routes whose hostnames and serving certificates can be customized by the cluster-admin.
+     */
     @JsonProperty("componentRoutes")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ComponentRouteStatus> getComponentRoutes() {
         return componentRoutes;
     }
 
+    /**
+     * componentRoutes is where participating operators place the current route status for routes whose hostnames and serving certificates can be customized by the cluster-admin.
+     */
     @JsonProperty("componentRoutes")
     public void setComponentRoutes(List<ComponentRouteStatus> componentRoutes) {
         this.componentRoutes = componentRoutes;
     }
 
+    /**
+     * defaultPlacement is set at installation time to control which nodes will host the ingress router pods by default. The options are control-plane nodes or worker nodes.<br><p> <br><p> This field works by dictating how the Cluster Ingress Operator will consider unset replicas and nodePlacement fields in IngressController resources when creating the corresponding Deployments.<br><p> <br><p> See the documentation for the IngressController replicas and nodePlacement fields for more information.<br><p> <br><p> When omitted, the default value is Workers
+     */
     @JsonProperty("defaultPlacement")
     public String getDefaultPlacement() {
         return defaultPlacement;
     }
 
+    /**
+     * defaultPlacement is set at installation time to control which nodes will host the ingress router pods by default. The options are control-plane nodes or worker nodes.<br><p> <br><p> This field works by dictating how the Cluster Ingress Operator will consider unset replicas and nodePlacement fields in IngressController resources when creating the corresponding Deployments.<br><p> <br><p> See the documentation for the IngressController replicas and nodePlacement fields for more information.<br><p> <br><p> When omitted, the default value is Workers
+     */
     @JsonProperty("defaultPlacement")
     public void setDefaultPlacement(String defaultPlacement) {
         this.defaultPlacement = defaultPlacement;

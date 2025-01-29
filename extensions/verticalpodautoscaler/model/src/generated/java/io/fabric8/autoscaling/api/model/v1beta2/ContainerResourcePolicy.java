@@ -33,6 +33,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ContainerResourcePolicy controls how autoscaler computes the recommended resources for a specific container.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -93,43 +96,67 @@ public class ContainerResourcePolicy implements Editable<ContainerResourcePolicy
         this.mode = mode;
     }
 
+    /**
+     * Name of the container or DefaultContainerResourcePolicy, in which case the policy is used by the containers that don't have their own policy specified.
+     */
     @JsonProperty("containerName")
     public String getContainerName() {
         return containerName;
     }
 
+    /**
+     * Name of the container or DefaultContainerResourcePolicy, in which case the policy is used by the containers that don't have their own policy specified.
+     */
     @JsonProperty("containerName")
     public void setContainerName(String containerName) {
         this.containerName = containerName;
     }
 
+    /**
+     * Specifies the maximum amount of resources that will be recommended for the container. The default is no maximum.
+     */
     @JsonProperty("maxAllowed")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, Quantity> getMaxAllowed() {
         return maxAllowed;
     }
 
+    /**
+     * Specifies the maximum amount of resources that will be recommended for the container. The default is no maximum.
+     */
     @JsonProperty("maxAllowed")
     public void setMaxAllowed(Map<String, Quantity> maxAllowed) {
         this.maxAllowed = maxAllowed;
     }
 
+    /**
+     * Specifies the minimal amount of resources that will be recommended for the container. The default is no minimum.
+     */
     @JsonProperty("minAllowed")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, Quantity> getMinAllowed() {
         return minAllowed;
     }
 
+    /**
+     * Specifies the minimal amount of resources that will be recommended for the container. The default is no minimum.
+     */
     @JsonProperty("minAllowed")
     public void setMinAllowed(Map<String, Quantity> minAllowed) {
         this.minAllowed = minAllowed;
     }
 
+    /**
+     * Whether autoscaler is enabled for the container. The default is "Auto".
+     */
     @JsonProperty("mode")
     public String getMode() {
         return mode;
     }
 
+    /**
+     * Whether autoscaler is enabled for the container. The default is "Auto".
+     */
     @JsonProperty("mode")
     public void setMode(String mode) {
         this.mode = mode;

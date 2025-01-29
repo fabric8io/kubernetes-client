@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * HeaderOperations Describes the header manipulations to apply
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -91,34 +94,52 @@ public class HeadersHeaderOperations implements Editable<HeadersHeaderOperations
         this.set = set;
     }
 
+    /**
+     * Append the given values to the headers specified by keys (will create a comma-separated list of values)
+     */
     @JsonProperty("add")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getAdd() {
         return add;
     }
 
+    /**
+     * Append the given values to the headers specified by keys (will create a comma-separated list of values)
+     */
     @JsonProperty("add")
     public void setAdd(Map<String, String> add) {
         this.add = add;
     }
 
+    /**
+     * Remove the specified headers
+     */
     @JsonProperty("remove")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getRemove() {
         return remove;
     }
 
+    /**
+     * Remove the specified headers
+     */
     @JsonProperty("remove")
     public void setRemove(List<String> remove) {
         this.remove = remove;
     }
 
+    /**
+     * Overwrite the headers specified by key with the given values
+     */
     @JsonProperty("set")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getSet() {
         return set;
     }
 
+    /**
+     * Overwrite the headers specified by key with the given values
+     */
     @JsonProperty("set")
     public void setSet(Map<String, String> set) {
         this.set = set;

@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Refers to the name of a MachineConfigPool (e.g., "worker", "infra", etc.): the MachineOSBuilder pod validates that the user has provided a valid pool
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -78,11 +81,17 @@ public class MachineConfigPoolReference implements Editable<MachineConfigPoolRef
         this.name = name;
     }
 
+    /**
+     * name of the MachineConfigPool object.
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * name of the MachineConfigPool object.
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;

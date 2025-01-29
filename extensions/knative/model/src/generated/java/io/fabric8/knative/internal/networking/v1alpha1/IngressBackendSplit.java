@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * IngressBackendSplit describes all endpoints for a given service and port.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -95,52 +98,82 @@ public class IngressBackendSplit implements Editable<IngressBackendSplitBuilder>
         this.servicePort = servicePort;
     }
 
+    /**
+     * AppendHeaders allow specifying additional HTTP headers to add before forwarding a request to the destination service.<br><p> <br><p> NOTE: This differs from K8s Ingress which doesn't allow header appending.
+     */
     @JsonProperty("appendHeaders")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getAppendHeaders() {
         return appendHeaders;
     }
 
+    /**
+     * AppendHeaders allow specifying additional HTTP headers to add before forwarding a request to the destination service.<br><p> <br><p> NOTE: This differs from K8s Ingress which doesn't allow header appending.
+     */
     @JsonProperty("appendHeaders")
     public void setAppendHeaders(Map<String, String> appendHeaders) {
         this.appendHeaders = appendHeaders;
     }
 
+    /**
+     * Specifies the split percentage, a number between 0 and 100.  If only one split is specified, we default to 100.<br><p> <br><p> NOTE: This differs from K8s Ingress to allow percentage split.
+     */
     @JsonProperty("percent")
     public Integer getPercent() {
         return percent;
     }
 
+    /**
+     * Specifies the split percentage, a number between 0 and 100.  If only one split is specified, we default to 100.<br><p> <br><p> NOTE: This differs from K8s Ingress to allow percentage split.
+     */
     @JsonProperty("percent")
     public void setPercent(Integer percent) {
         this.percent = percent;
     }
 
+    /**
+     * Specifies the name of the referenced service.
+     */
     @JsonProperty("serviceName")
     public String getServiceName() {
         return serviceName;
     }
 
+    /**
+     * Specifies the name of the referenced service.
+     */
     @JsonProperty("serviceName")
     public void setServiceName(String serviceName) {
         this.serviceName = serviceName;
     }
 
+    /**
+     * Specifies the namespace of the referenced service.<br><p> <br><p> NOTE: This differs from K8s Ingress to allow routing to different namespaces.
+     */
     @JsonProperty("serviceNamespace")
     public String getServiceNamespace() {
         return serviceNamespace;
     }
 
+    /**
+     * Specifies the namespace of the referenced service.<br><p> <br><p> NOTE: This differs from K8s Ingress to allow routing to different namespaces.
+     */
     @JsonProperty("serviceNamespace")
     public void setServiceNamespace(String serviceNamespace) {
         this.serviceNamespace = serviceNamespace;
     }
 
+    /**
+     * IngressBackendSplit describes all endpoints for a given service and port.
+     */
     @JsonProperty("servicePort")
     public IntOrString getServicePort() {
         return servicePort;
     }
 
+    /**
+     * IngressBackendSplit describes all endpoints for a given service and port.
+     */
     @JsonProperty("servicePort")
     public void setServicePort(IntOrString servicePort) {
         this.servicePort = servicePort;

@@ -38,6 +38,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * HostSubnet was used by OpenShift SDN. DEPRECATED: OpenShift SDN is no longer supported and this object is no longer used in any way by OpenShift.<br><p> <br><p> Compatibility level 1: Stable within a major release for a minimum of 12 months or 3 minor releases (whichever is longer).
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -80,9 +83,6 @@ import lombok.experimental.Accessors;
 public class HostSubnet implements Editable<HostSubnetBuilder>, HasMetadata
 {
 
-    /**
-     * (Required)
-     */
     @JsonProperty("apiVersion")
     private String apiVersion = "network.openshift.io/v1";
     @JsonProperty("egressCIDRs")
@@ -95,9 +95,6 @@ public class HostSubnet implements Editable<HostSubnetBuilder>, HasMetadata
     private String host;
     @JsonProperty("hostIP")
     private String hostIP;
-    /**
-     * (Required)
-     */
     @JsonProperty("kind")
     private String kind = "HostSubnet";
     @JsonProperty("metadata")
@@ -126,7 +123,7 @@ public class HostSubnet implements Editable<HostSubnetBuilder>, HasMetadata
     }
 
     /**
-     * (Required)
+     * APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -134,57 +131,81 @@ public class HostSubnet implements Editable<HostSubnetBuilder>, HasMetadata
     }
 
     /**
-     * (Required)
+     * APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
         this.apiVersion = apiVersion;
     }
 
+    /**
+     * EgressCIDRs is the list of CIDR ranges available for automatically assigning egress IPs to this node from. If this field is set then EgressIPs should be treated as read-only.
+     */
     @JsonProperty("egressCIDRs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getEgressCIDRs() {
         return egressCIDRs;
     }
 
+    /**
+     * EgressCIDRs is the list of CIDR ranges available for automatically assigning egress IPs to this node from. If this field is set then EgressIPs should be treated as read-only.
+     */
     @JsonProperty("egressCIDRs")
     public void setEgressCIDRs(List<String> egressCIDRs) {
         this.egressCIDRs = egressCIDRs;
     }
 
+    /**
+     * EgressIPs is the list of automatic egress IP addresses currently hosted by this node. If EgressCIDRs is empty, this can be set by hand; if EgressCIDRs is set then the master will overwrite the value here with its own allocation of egress IPs.
+     */
     @JsonProperty("egressIPs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getEgressIPs() {
         return egressIPs;
     }
 
+    /**
+     * EgressIPs is the list of automatic egress IP addresses currently hosted by this node. If EgressCIDRs is empty, this can be set by hand; if EgressCIDRs is set then the master will overwrite the value here with its own allocation of egress IPs.
+     */
     @JsonProperty("egressIPs")
     public void setEgressIPs(List<String> egressIPs) {
         this.egressIPs = egressIPs;
     }
 
+    /**
+     * Host is the name of the node. (This is the same as the object's name, but both fields must be set.)
+     */
     @JsonProperty("host")
     public String getHost() {
         return host;
     }
 
+    /**
+     * Host is the name of the node. (This is the same as the object's name, but both fields must be set.)
+     */
     @JsonProperty("host")
     public void setHost(String host) {
         this.host = host;
     }
 
+    /**
+     * HostIP is the IP address to be used as a VTEP by other nodes in the overlay network
+     */
     @JsonProperty("hostIP")
     public String getHostIP() {
         return hostIP;
     }
 
+    /**
+     * HostIP is the IP address to be used as a VTEP by other nodes in the overlay network
+     */
     @JsonProperty("hostIP")
     public void setHostIP(String hostIP) {
         this.hostIP = hostIP;
     }
 
     /**
-     * (Required)
+     * Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -192,28 +213,40 @@ public class HostSubnet implements Editable<HostSubnetBuilder>, HasMetadata
     }
 
     /**
-     * (Required)
+     * Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
      */
     @JsonProperty("kind")
     public void setKind(String kind) {
         this.kind = kind;
     }
 
+    /**
+     * HostSubnet was used by OpenShift SDN. DEPRECATED: OpenShift SDN is no longer supported and this object is no longer used in any way by OpenShift.<br><p> <br><p> Compatibility level 1: Stable within a major release for a minimum of 12 months or 3 minor releases (whichever is longer).
+     */
     @JsonProperty("metadata")
     public ObjectMeta getMetadata() {
         return metadata;
     }
 
+    /**
+     * HostSubnet was used by OpenShift SDN. DEPRECATED: OpenShift SDN is no longer supported and this object is no longer used in any way by OpenShift.<br><p> <br><p> Compatibility level 1: Stable within a major release for a minimum of 12 months or 3 minor releases (whichever is longer).
+     */
     @JsonProperty("metadata")
     public void setMetadata(ObjectMeta metadata) {
         this.metadata = metadata;
     }
 
+    /**
+     * Subnet is the CIDR range of the overlay network assigned to the node for its pods
+     */
     @JsonProperty("subnet")
     public String getSubnet() {
         return subnet;
     }
 
+    /**
+     * Subnet is the CIDR range of the overlay network assigned to the node for its pods
+     */
     @JsonProperty("subnet")
     public void setSubnet(String subnet) {
         this.subnet = subnet;

@@ -35,6 +35,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ImagePrunerStatus reports image pruner operational status.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -86,22 +89,34 @@ public class ImagePrunerStatus implements Editable<ImagePrunerStatusBuilder>, Ku
         this.observedGeneration = observedGeneration;
     }
 
+    /**
+     * conditions is a list of conditions and their status.
+     */
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<OperatorCondition> getConditions() {
         return conditions;
     }
 
+    /**
+     * conditions is a list of conditions and their status.
+     */
     @JsonProperty("conditions")
     public void setConditions(List<OperatorCondition> conditions) {
         this.conditions = conditions;
     }
 
+    /**
+     * observedGeneration is the last generation change that has been applied.
+     */
     @JsonProperty("observedGeneration")
     public Long getObservedGeneration() {
         return observedGeneration;
     }
 
+    /**
+     * observedGeneration is the last generation change that has been applied.
+     */
     @JsonProperty("observedGeneration")
     public void setObservedGeneration(Long observedGeneration) {
         this.observedGeneration = observedGeneration;

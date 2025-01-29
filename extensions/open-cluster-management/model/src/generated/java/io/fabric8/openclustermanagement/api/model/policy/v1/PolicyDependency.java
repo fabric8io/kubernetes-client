@@ -37,6 +37,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Each PolicyDependency defines an object reference which must be in a certain compliance state before the policy should be created.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -76,16 +79,10 @@ import lombok.experimental.Accessors;
 public class PolicyDependency implements Editable<PolicyDependencyBuilder>, KubernetesResource, Namespaced
 {
 
-    /**
-     * (Required)
-     */
     @JsonProperty("apiVersion")
     private String apiVersion = "policy.open-cluster-management.io/v1";
     @JsonProperty("compliance")
     private String compliance;
-    /**
-     * (Required)
-     */
     @JsonProperty("kind")
     private String kind = "PolicyDependency";
     @JsonProperty("name")
@@ -111,7 +108,7 @@ public class PolicyDependency implements Editable<PolicyDependencyBuilder>, Kube
     }
 
     /**
-     * (Required)
+     * APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -119,25 +116,31 @@ public class PolicyDependency implements Editable<PolicyDependencyBuilder>, Kube
     }
 
     /**
-     * (Required)
+     * APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
         this.apiVersion = apiVersion;
     }
 
+    /**
+     * Compliance is the required ComplianceState of the object that the policy depends on, at the following path, .status.compliant.
+     */
     @JsonProperty("compliance")
     public String getCompliance() {
         return compliance;
     }
 
+    /**
+     * Compliance is the required ComplianceState of the object that the policy depends on, at the following path, .status.compliant.
+     */
     @JsonProperty("compliance")
     public void setCompliance(String compliance) {
         this.compliance = compliance;
     }
 
     /**
-     * (Required)
+     * Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -145,28 +148,40 @@ public class PolicyDependency implements Editable<PolicyDependencyBuilder>, Kube
     }
 
     /**
-     * (Required)
+     * Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
      */
     @JsonProperty("kind")
     public void setKind(String kind) {
         this.kind = kind;
     }
 
+    /**
+     * Name is the name of the object that the policy depends on.
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * Name is the name of the object that the policy depends on.
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * Namespace is the namespace of the object that the policy depends on (optional).
+     */
     @JsonProperty("namespace")
     public String getNamespace() {
         return namespace;
     }
 
+    /**
+     * Namespace is the namespace of the object that the policy depends on (optional).
+     */
     @JsonProperty("namespace")
     public void setNamespace(String namespace) {
         this.namespace = namespace;

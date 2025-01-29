@@ -35,6 +35,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * KafkaBindingSpec defines the desired state of the KafkaBinding.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -90,32 +93,50 @@ public class KafkaBindingSpec implements Editable<KafkaBindingSpecBuilder>, Kube
         this.subject = subject;
     }
 
+    /**
+     * Bootstrap servers are the Kafka servers the consumer will connect to.
+     */
     @JsonProperty("bootstrapServers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getBootstrapServers() {
         return bootstrapServers;
     }
 
+    /**
+     * Bootstrap servers are the Kafka servers the consumer will connect to.
+     */
     @JsonProperty("bootstrapServers")
     public void setBootstrapServers(List<String> bootstrapServers) {
         this.bootstrapServers = bootstrapServers;
     }
 
+    /**
+     * KafkaBindingSpec defines the desired state of the KafkaBinding.
+     */
     @JsonProperty("net")
     public KafkaNetSpec getNet() {
         return net;
     }
 
+    /**
+     * KafkaBindingSpec defines the desired state of the KafkaBinding.
+     */
     @JsonProperty("net")
     public void setNet(KafkaNetSpec net) {
         this.net = net;
     }
 
+    /**
+     * KafkaBindingSpec defines the desired state of the KafkaBinding.
+     */
     @JsonProperty("subject")
     public Reference getSubject() {
         return subject;
     }
 
+    /**
+     * KafkaBindingSpec defines the desired state of the KafkaBinding.
+     */
     @JsonProperty("subject")
     public void setSubject(Reference subject) {
         this.subject = subject;

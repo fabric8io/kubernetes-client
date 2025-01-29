@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * NonResourceRule holds information that describes a rule for the non-resource
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -86,23 +89,35 @@ public class NonResourceRule implements Editable<NonResourceRuleBuilder>, Kubern
         this.verbs = verbs;
     }
 
+    /**
+     * NonResourceURLs is a set of partial urls that a user should have access to.  &#42;s are allowed, but only as the full, final step in the path.  "&#42;" means all.
+     */
     @JsonProperty("nonResourceURLs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getNonResourceURLs() {
         return nonResourceURLs;
     }
 
+    /**
+     * NonResourceURLs is a set of partial urls that a user should have access to.  &#42;s are allowed, but only as the full, final step in the path.  "&#42;" means all.
+     */
     @JsonProperty("nonResourceURLs")
     public void setNonResourceURLs(List<String> nonResourceURLs) {
         this.nonResourceURLs = nonResourceURLs;
     }
 
+    /**
+     * Verb is a list of kubernetes non-resource API verbs, like: get, post, put, delete, patch, head, options.  "&#42;" means all.
+     */
     @JsonProperty("verbs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getVerbs() {
         return verbs;
     }
 
+    /**
+     * Verb is a list of kubernetes non-resource API verbs, like: get, post, put, delete, patch, head, options.  "&#42;" means all.
+     */
     @JsonProperty("verbs")
     public void setVerbs(List<String> verbs) {
         this.verbs = verbs;

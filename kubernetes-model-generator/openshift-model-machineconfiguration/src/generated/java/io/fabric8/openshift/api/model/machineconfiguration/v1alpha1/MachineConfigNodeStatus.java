@@ -35,6 +35,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * MachineConfigNodeStatus holds the reported information on a particular machine config node.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -95,43 +98,67 @@ public class MachineConfigNodeStatus implements Editable<MachineConfigNodeStatus
         this.pinnedImageSets = pinnedImageSets;
     }
 
+    /**
+     * conditions represent the observations of a machine config node's current state.
+     */
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Condition> getConditions() {
         return conditions;
     }
 
+    /**
+     * conditions represent the observations of a machine config node's current state.
+     */
     @JsonProperty("conditions")
     public void setConditions(List<Condition> conditions) {
         this.conditions = conditions;
     }
 
+    /**
+     * MachineConfigNodeStatus holds the reported information on a particular machine config node.
+     */
     @JsonProperty("configVersion")
     public MachineConfigNodeStatusMachineConfigVersion getConfigVersion() {
         return configVersion;
     }
 
+    /**
+     * MachineConfigNodeStatus holds the reported information on a particular machine config node.
+     */
     @JsonProperty("configVersion")
     public void setConfigVersion(MachineConfigNodeStatusMachineConfigVersion configVersion) {
         this.configVersion = configVersion;
     }
 
+    /**
+     * observedGeneration represents the generation observed by the controller. This field is updated when the controller observes a change to the desiredConfig in the configVersion of the machine config node spec.
+     */
     @JsonProperty("observedGeneration")
     public Long getObservedGeneration() {
         return observedGeneration;
     }
 
+    /**
+     * observedGeneration represents the generation observed by the controller. This field is updated when the controller observes a change to the desiredConfig in the configVersion of the machine config node spec.
+     */
     @JsonProperty("observedGeneration")
     public void setObservedGeneration(Long observedGeneration) {
         this.observedGeneration = observedGeneration;
     }
 
+    /**
+     * pinnedImageSets describes the current and desired pinned image sets for this node. The current version is the generation of the pinned image set that has most recently been successfully pulled and pinned on this node. The desired version is the generation of the pinned image set that is targeted to be pulled and pinned on this node.
+     */
     @JsonProperty("pinnedImageSets")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<MachineConfigNodeStatusPinnedImageSet> getPinnedImageSets() {
         return pinnedImageSets;
     }
 
+    /**
+     * pinnedImageSets describes the current and desired pinned image sets for this node. The current version is the generation of the pinned image set that has most recently been successfully pulled and pinned on this node. The desired version is the generation of the pinned image set that is targeted to be pulled and pinned on this node.
+     */
     @JsonProperty("pinnedImageSets")
     public void setPinnedImageSets(List<MachineConfigNodeStatusPinnedImageSet> pinnedImageSets) {
         this.pinnedImageSets = pinnedImageSets;

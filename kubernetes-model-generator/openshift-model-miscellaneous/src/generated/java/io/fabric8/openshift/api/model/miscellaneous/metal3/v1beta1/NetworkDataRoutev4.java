@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * NetworkDataRoutev4 represents an ipv4 route object.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -90,41 +93,65 @@ public class NetworkDataRoutev4 implements Editable<NetworkDataRoutev4Builder>, 
         this.services = services;
     }
 
+    /**
+     * NetworkDataRoutev4 represents an ipv4 route object.
+     */
     @JsonProperty("gateway")
     public NetworkGatewayv4 getGateway() {
         return gateway;
     }
 
+    /**
+     * NetworkDataRoutev4 represents an ipv4 route object.
+     */
     @JsonProperty("gateway")
     public void setGateway(NetworkGatewayv4 gateway) {
         this.gateway = gateway;
     }
 
+    /**
+     * Network is the IPv4 network address
+     */
     @JsonProperty("network")
     public String getNetwork() {
         return network;
     }
 
+    /**
+     * Network is the IPv4 network address
+     */
     @JsonProperty("network")
     public void setNetwork(String network) {
         this.network = network;
     }
 
+    /**
+     * Prefix is the mask of the network as integer (max 32)
+     */
     @JsonProperty("prefix")
     public Integer getPrefix() {
         return prefix;
     }
 
+    /**
+     * Prefix is the mask of the network as integer (max 32)
+     */
     @JsonProperty("prefix")
     public void setPrefix(Integer prefix) {
         this.prefix = prefix;
     }
 
+    /**
+     * NetworkDataRoutev4 represents an ipv4 route object.
+     */
     @JsonProperty("services")
     public NetworkDataServicev4 getServices() {
         return services;
     }
 
+    /**
+     * NetworkDataRoutev4 represents an ipv4 route object.
+     */
     @JsonProperty("services")
     public void setServices(NetworkDataServicev4 services) {
         this.services = services;

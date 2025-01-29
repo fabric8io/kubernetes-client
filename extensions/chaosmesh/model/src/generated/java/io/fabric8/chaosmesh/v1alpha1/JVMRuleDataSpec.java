@@ -86,31 +86,49 @@ public class JVMRuleDataSpec implements Editable<JVMRuleDataSpecBuilder>, Kubern
         this.ruleData = ruleData;
     }
 
+    /**
+     * the pid of Java process which needs to attach
+     */
     @JsonProperty("pid")
     public Integer getPid() {
         return pid;
     }
 
+    /**
+     * the pid of Java process which needs to attach
+     */
     @JsonProperty("pid")
     public void setPid(Integer pid) {
         this.pid = pid;
     }
 
+    /**
+     * the port of agent server, default 9277
+     */
     @JsonProperty("port")
     public Integer getPort() {
         return port;
     }
 
+    /**
+     * the port of agent server, default 9277
+     */
     @JsonProperty("port")
     public void setPort(Integer port) {
         this.port = port;
     }
 
+    /**
+     * RuleData used to save the rule file's data, will use it when recover
+     */
     @JsonProperty("rule-data")
     public String getRuleData() {
         return ruleData;
     }
 
+    /**
+     * RuleData used to save the rule file's data, will use it when recover
+     */
     @JsonProperty("rule-data")
     public void setRuleData(String ruleData) {
         this.ruleData = ruleData;

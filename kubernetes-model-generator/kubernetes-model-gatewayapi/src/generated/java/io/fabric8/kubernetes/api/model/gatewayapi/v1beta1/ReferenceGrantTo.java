@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ReferenceGrantTo describes what Kinds are allowed as targets of the references.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -86,31 +89,49 @@ public class ReferenceGrantTo implements Editable<ReferenceGrantToBuilder>, Kube
         this.name = name;
     }
 
+    /**
+     * Group is the group of the referent. When empty, the Kubernetes core API group is inferred.<br><p> <br><p> Support: Core
+     */
     @JsonProperty("group")
     public String getGroup() {
         return group;
     }
 
+    /**
+     * Group is the group of the referent. When empty, the Kubernetes core API group is inferred.<br><p> <br><p> Support: Core
+     */
     @JsonProperty("group")
     public void setGroup(String group) {
         this.group = group;
     }
 
+    /**
+     * Kind is the kind of the referent. Although implementations may support additional resources, the following types are part of the "Core" support level for this field:<br><p> <br><p> &#42; Secret when used to permit a SecretObjectReference &#42; Service when used to permit a BackendObjectReference
+     */
     @JsonProperty("kind")
     public String getKind() {
         return kind;
     }
 
+    /**
+     * Kind is the kind of the referent. Although implementations may support additional resources, the following types are part of the "Core" support level for this field:<br><p> <br><p> &#42; Secret when used to permit a SecretObjectReference &#42; Service when used to permit a BackendObjectReference
+     */
     @JsonProperty("kind")
     public void setKind(String kind) {
         this.kind = kind;
     }
 
+    /**
+     * Name is the name of the referent. When unspecified, this policy refers to all resources of the specified Group and Kind in the local namespace.
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * Name is the name of the referent. When unspecified, this policy refers to all resources of the specified Group and Kind in the local namespace.
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;

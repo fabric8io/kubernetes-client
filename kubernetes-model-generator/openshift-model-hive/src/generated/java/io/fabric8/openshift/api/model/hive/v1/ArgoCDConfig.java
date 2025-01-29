@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ArgoCDConfig contains settings for integration with ArgoCD.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class ArgoCDConfig implements Editable<ArgoCDConfigBuilder>, KubernetesRe
         this.namespace = namespace;
     }
 
+    /**
+     * Enabled dictates if ArgoCD gitops integration is enabled. If not specified, the default is disabled.
+     */
     @JsonProperty("enabled")
     public Boolean getEnabled() {
         return enabled;
     }
 
+    /**
+     * Enabled dictates if ArgoCD gitops integration is enabled. If not specified, the default is disabled.
+     */
     @JsonProperty("enabled")
     public void setEnabled(Boolean enabled) {
         this.enabled = enabled;
     }
 
+    /**
+     * Namespace specifies the namespace where ArgoCD is installed. Used for the location of cluster secrets. Defaults to "argocd"
+     */
     @JsonProperty("namespace")
     public String getNamespace() {
         return namespace;
     }
 
+    /**
+     * Namespace specifies the namespace where ArgoCD is installed. Used for the location of cluster secrets. Defaults to "argocd"
+     */
     @JsonProperty("namespace")
     public void setNamespace(String namespace) {
         this.namespace = namespace;

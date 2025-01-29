@@ -33,6 +33,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * DNSOverTLSConfig describes optional DNSTransportConfig fields that should be captured.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -83,21 +86,33 @@ public class DNSOverTLSConfig implements Editable<DNSOverTLSConfigBuilder>, Kube
         this.serverName = serverName;
     }
 
+    /**
+     * DNSOverTLSConfig describes optional DNSTransportConfig fields that should be captured.
+     */
     @JsonProperty("caBundle")
     public ConfigMapNameReference getCaBundle() {
         return caBundle;
     }
 
+    /**
+     * DNSOverTLSConfig describes optional DNSTransportConfig fields that should be captured.
+     */
     @JsonProperty("caBundle")
     public void setCaBundle(ConfigMapNameReference caBundle) {
         this.caBundle = caBundle;
     }
 
+    /**
+     * serverName is the upstream server to connect to when forwarding DNS queries. This is required when Transport is set to "TLS". ServerName will be validated against the DNS naming conventions in RFC 1123 and should match the TLS certificate installed in the upstream resolver(s).
+     */
     @JsonProperty("serverName")
     public String getServerName() {
         return serverName;
     }
 
+    /**
+     * serverName is the upstream server to connect to when forwarding DNS queries. This is required when Transport is set to "TLS". ServerName will be validated against the DNS naming conventions in RFC 1123 and should match the TLS certificate installed in the upstream resolver(s).
+     */
     @JsonProperty("serverName")
     public void setServerName(String serverName) {
         this.serverName = serverName;

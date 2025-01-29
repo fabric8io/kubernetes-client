@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * NetworkDataRoutev6 represents an ipv6 route object.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -90,41 +93,65 @@ public class NetworkDataRoutev6 implements Editable<NetworkDataRoutev6Builder>, 
         this.services = services;
     }
 
+    /**
+     * NetworkDataRoutev6 represents an ipv6 route object.
+     */
     @JsonProperty("gateway")
     public NetworkGatewayv6 getGateway() {
         return gateway;
     }
 
+    /**
+     * NetworkDataRoutev6 represents an ipv6 route object.
+     */
     @JsonProperty("gateway")
     public void setGateway(NetworkGatewayv6 gateway) {
         this.gateway = gateway;
     }
 
+    /**
+     * Network is the IPv6 network address
+     */
     @JsonProperty("network")
     public String getNetwork() {
         return network;
     }
 
+    /**
+     * Network is the IPv6 network address
+     */
     @JsonProperty("network")
     public void setNetwork(String network) {
         this.network = network;
     }
 
+    /**
+     * Prefix is the mask of the network as integer (max 128)
+     */
     @JsonProperty("prefix")
     public Integer getPrefix() {
         return prefix;
     }
 
+    /**
+     * Prefix is the mask of the network as integer (max 128)
+     */
     @JsonProperty("prefix")
     public void setPrefix(Integer prefix) {
         this.prefix = prefix;
     }
 
+    /**
+     * NetworkDataRoutev6 represents an ipv6 route object.
+     */
     @JsonProperty("services")
     public NetworkDataServicev6 getServices() {
         return services;
     }
 
+    /**
+     * NetworkDataRoutev6 represents an ipv6 route object.
+     */
     @JsonProperty("services")
     public void setServices(NetworkDataServicev6 services) {
         this.services = services;

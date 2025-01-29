@@ -134,151 +134,241 @@ public class AWSS3 implements Editable<AWSS3Builder>, KubernetesResource
         this.uriEndpointOverride = uriEndpointOverride;
     }
 
+    /**
+     * Embeds AWSCommon to inherit its fields in JSON
+     */
     @JsonProperty("arn")
     public String getArn() {
         return arn;
     }
 
+    /**
+     * Embeds AWSCommon to inherit its fields in JSON
+     */
     @JsonProperty("arn")
     public void setArn(String arn) {
         this.arn = arn;
     }
 
+    /**
+     * Suffix for moved objects
+     */
     @JsonProperty("autoCreateBucket")
     public Boolean getAutoCreateBucket() {
         return autoCreateBucket;
     }
 
+    /**
+     * Suffix for moved objects
+     */
     @JsonProperty("autoCreateBucket")
     public void setAutoCreateBucket(Boolean autoCreateBucket) {
         this.autoCreateBucket = autoCreateBucket;
     }
 
+    /**
+     * Force path style for bucket access
+     */
     @JsonProperty("delay")
     public Integer getDelay() {
         return delay;
     }
 
+    /**
+     * Force path style for bucket access
+     */
     @JsonProperty("delay")
     public void setDelay(Integer delay) {
         this.delay = delay;
     }
 
+    /**
+     * S3 ARN
+     */
     @JsonProperty("deleteAfterRead")
     public Boolean getDeleteAfterRead() {
         return deleteAfterRead;
     }
 
+    /**
+     * S3 ARN
+     */
     @JsonProperty("deleteAfterRead")
     public void setDeleteAfterRead(Boolean deleteAfterRead) {
         this.deleteAfterRead = deleteAfterRead;
     }
 
+    /**
+     * Move objects after reading
+     */
     @JsonProperty("destinationBucket")
     public String getDestinationBucket() {
         return destinationBucket;
     }
 
+    /**
+     * Move objects after reading
+     */
     @JsonProperty("destinationBucket")
     public void setDestinationBucket(String destinationBucket) {
         this.destinationBucket = destinationBucket;
     }
 
+    /**
+     * Destination bucket for moved objects
+     */
     @JsonProperty("destinationBucketPrefix")
     public String getDestinationBucketPrefix() {
         return destinationBucketPrefix;
     }
 
+    /**
+     * Destination bucket for moved objects
+     */
     @JsonProperty("destinationBucketPrefix")
     public void setDestinationBucketPrefix(String destinationBucketPrefix) {
         this.destinationBucketPrefix = destinationBucketPrefix;
     }
 
+    /**
+     * Prefix for moved objects
+     */
     @JsonProperty("destinationBucketSuffix")
     public String getDestinationBucketSuffix() {
         return destinationBucketSuffix;
     }
 
+    /**
+     * Prefix for moved objects
+     */
     @JsonProperty("destinationBucketSuffix")
     public void setDestinationBucketSuffix(String destinationBucketSuffix) {
         this.destinationBucketSuffix = destinationBucketSuffix;
     }
 
+    /**
+     * Ignore object body
+     */
     @JsonProperty("forcePathStyle")
     public Boolean getForcePathStyle() {
         return forcePathStyle;
     }
 
+    /**
+     * Ignore object body
+     */
     @JsonProperty("forcePathStyle")
     public void setForcePathStyle(Boolean forcePathStyle) {
         this.forcePathStyle = forcePathStyle;
     }
 
+    /**
+     * S3 bucket prefix for search
+     */
     @JsonProperty("ignoreBody")
     public Boolean getIgnoreBody() {
         return ignoreBody;
     }
 
+    /**
+     * S3 bucket prefix for search
+     */
     @JsonProperty("ignoreBody")
     public void setIgnoreBody(Boolean ignoreBody) {
         this.ignoreBody = ignoreBody;
     }
 
+    /**
+     * Delay between polls in milliseconds
+     */
     @JsonProperty("maxMessagesPerPoll")
     public Integer getMaxMessagesPerPoll() {
         return maxMessagesPerPoll;
     }
 
+    /**
+     * Delay between polls in milliseconds
+     */
     @JsonProperty("maxMessagesPerPoll")
     public void setMaxMessagesPerPoll(Integer maxMessagesPerPoll) {
         this.maxMessagesPerPoll = maxMessagesPerPoll;
     }
 
+    /**
+     * Auto-delete objects after reading
+     */
     @JsonProperty("moveAfterRead")
     public Boolean getMoveAfterRead() {
         return moveAfterRead;
     }
 
+    /**
+     * Auto-delete objects after reading
+     */
     @JsonProperty("moveAfterRead")
     public void setMoveAfterRead(Boolean moveAfterRead) {
         this.moveAfterRead = moveAfterRead;
     }
 
+    /**
+     * Override endpoint URI
+     */
     @JsonProperty("overrideEndpoint")
     public Boolean getOverrideEndpoint() {
         return overrideEndpoint;
     }
 
+    /**
+     * Override endpoint URI
+     */
     @JsonProperty("overrideEndpoint")
     public void setOverrideEndpoint(Boolean overrideEndpoint) {
         this.overrideEndpoint = overrideEndpoint;
     }
 
+    /**
+     * Auto-create S3 bucket
+     */
     @JsonProperty("prefix")
     public String getPrefix() {
         return prefix;
     }
 
+    /**
+     * Auto-create S3 bucket
+     */
     @JsonProperty("prefix")
     public void setPrefix(String prefix) {
         this.prefix = prefix;
     }
 
+    /**
+     * Auth is the S3 authentication (accessKey/secretKey) configuration.
+     */
     @JsonProperty("region")
     public String getRegion() {
         return region;
     }
 
+    /**
+     * Auth is the S3 authentication (accessKey/secretKey) configuration.
+     */
     @JsonProperty("region")
     public void setRegion(String region) {
         this.region = region;
     }
 
+    /**
+     * AWS region
+     */
     @JsonProperty("uriEndpointOverride")
     public String getUriEndpointOverride() {
         return uriEndpointOverride;
     }
 
+    /**
+     * AWS region
+     */
     @JsonProperty("uriEndpointOverride")
     public void setUriEndpointOverride(String uriEndpointOverride) {
         this.uriEndpointOverride = uriEndpointOverride;

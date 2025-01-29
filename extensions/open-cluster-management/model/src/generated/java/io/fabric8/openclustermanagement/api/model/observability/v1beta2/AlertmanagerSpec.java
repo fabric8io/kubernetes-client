@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * AlertmanagerSpec defines the spec for the Alertmanager component.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -89,32 +92,50 @@ public class AlertmanagerSpec implements Editable<AlertmanagerSpecBuilder>, Kube
         this.secrets = secrets;
     }
 
+    /**
+     * Replicas for this component.
+     */
     @JsonProperty("replicas")
     public Integer getReplicas() {
         return replicas;
     }
 
+    /**
+     * Replicas for this component.
+     */
     @JsonProperty("replicas")
     public void setReplicas(Integer replicas) {
         this.replicas = replicas;
     }
 
+    /**
+     * AlertmanagerSpec defines the spec for the Alertmanager component.
+     */
     @JsonProperty("resources")
     public ResourceRequirements getResources() {
         return resources;
     }
 
+    /**
+     * AlertmanagerSpec defines the spec for the Alertmanager component.
+     */
     @JsonProperty("resources")
     public void setResources(ResourceRequirements resources) {
         this.resources = resources;
     }
 
+    /**
+     * Secrets is a list of Secrets in the same namespace as the MCO object. Each of these Secrets shall be mounted into the Alertmanager Pods. Secrets are added to the StatefulSet as a volume named secret-&lt;secret-name&gt;. Secrets are mounted into /etc/alertmanager/secrets/&lt;secret-name&gt; in the 'alertmanager' container.
+     */
     @JsonProperty("secrets")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getSecrets() {
         return secrets;
     }
 
+    /**
+     * Secrets is a list of Secrets in the same namespace as the MCO object. Each of these Secrets shall be mounted into the Alertmanager Pods. Secrets are added to the StatefulSet as a volume named secret-&lt;secret-name&gt;. Secrets are mounted into /etc/alertmanager/secrets/&lt;secret-name&gt; in the 'alertmanager' container.
+     */
     @JsonProperty("secrets")
     public void setSecrets(List<String> secrets) {
         this.secrets = secrets;

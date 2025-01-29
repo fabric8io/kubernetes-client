@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * DeploymentDetails captures information about the causes of a deployment.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -85,22 +88,34 @@ public class DeploymentDetails implements Editable<DeploymentDetailsBuilder>, Ku
         this.message = message;
     }
 
+    /**
+     * Causes are extended data associated with all the causes for creating a new deployment
+     */
     @JsonProperty("causes")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<DeploymentCause> getCauses() {
         return causes;
     }
 
+    /**
+     * Causes are extended data associated with all the causes for creating a new deployment
+     */
     @JsonProperty("causes")
     public void setCauses(List<DeploymentCause> causes) {
         this.causes = causes;
     }
 
+    /**
+     * Message is the user specified change message, if this deployment was triggered manually by the user
+     */
     @JsonProperty("message")
     public String getMessage() {
         return message;
     }
 
+    /**
+     * Message is the user specified change message, if this deployment was triggered manually by the user
+     */
     @JsonProperty("message")
     public void setMessage(String message) {
         this.message = message;

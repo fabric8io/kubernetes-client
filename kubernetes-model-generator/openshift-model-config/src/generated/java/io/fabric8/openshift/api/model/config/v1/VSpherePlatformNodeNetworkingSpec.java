@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * VSpherePlatformNodeNetworkingSpec holds the network CIDR(s) and port group name for including and excluding IP ranges in the cloud provider. This would be used for example when multiple network adapters are attached to a guest to help determine which IP address the cloud config manager should use for the external and internal node networking.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -90,33 +93,51 @@ public class VSpherePlatformNodeNetworkingSpec implements Editable<VSpherePlatfo
         this.networkSubnetCidr = networkSubnetCidr;
     }
 
+    /**
+     * excludeNetworkSubnetCidr IP addresses in subnet ranges will be excluded when selecting the IP address from the VirtualMachine's VM for use in the status.addresses fields.
+     */
     @JsonProperty("excludeNetworkSubnetCidr")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getExcludeNetworkSubnetCidr() {
         return excludeNetworkSubnetCidr;
     }
 
+    /**
+     * excludeNetworkSubnetCidr IP addresses in subnet ranges will be excluded when selecting the IP address from the VirtualMachine's VM for use in the status.addresses fields.
+     */
     @JsonProperty("excludeNetworkSubnetCidr")
     public void setExcludeNetworkSubnetCidr(List<String> excludeNetworkSubnetCidr) {
         this.excludeNetworkSubnetCidr = excludeNetworkSubnetCidr;
     }
 
+    /**
+     * network VirtualMachine's VM Network names that will be used to when searching for status.addresses fields. Note that if internal.networkSubnetCIDR and external.networkSubnetCIDR are not set, then the vNIC associated to this network must only have a single IP address assigned to it. The available networks (port groups) can be listed using `govc ls 'network/&#42;'`
+     */
     @JsonProperty("network")
     public String getNetwork() {
         return network;
     }
 
+    /**
+     * network VirtualMachine's VM Network names that will be used to when searching for status.addresses fields. Note that if internal.networkSubnetCIDR and external.networkSubnetCIDR are not set, then the vNIC associated to this network must only have a single IP address assigned to it. The available networks (port groups) can be listed using `govc ls 'network/&#42;'`
+     */
     @JsonProperty("network")
     public void setNetwork(String network) {
         this.network = network;
     }
 
+    /**
+     * networkSubnetCidr IP address on VirtualMachine's network interfaces included in the fields' CIDRs that will be used in respective status.addresses fields.
+     */
     @JsonProperty("networkSubnetCidr")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getNetworkSubnetCidr() {
         return networkSubnetCidr;
     }
 
+    /**
+     * networkSubnetCidr IP address on VirtualMachine's network interfaces included in the fields' CIDRs that will be used in respective status.addresses fields.
+     */
     @JsonProperty("networkSubnetCidr")
     public void setNetworkSubnetCidr(List<String> networkSubnetCidr) {
         this.networkSubnetCidr = networkSubnetCidr;

@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Add a fixed delay before forwarding the request. Format: 1h/1m/1s/1ms. MUST be &gt;=1ms.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -78,11 +81,17 @@ public class HTTPFaultInjectionDelayFixedDelay implements IsHTTPFaultInjectionDe
         this.fixedDelay = fixedDelay;
     }
 
+    /**
+     * Add a fixed delay before forwarding the request. Format: 1h/1m/1s/1ms. MUST be &gt;=1ms.
+     */
     @JsonProperty("fixedDelay")
     public String getFixedDelay() {
         return fixedDelay;
     }
 
+    /**
+     * Add a fixed delay before forwarding the request. Format: 1h/1m/1s/1ms. MUST be &gt;=1ms.
+     */
     @JsonProperty("fixedDelay")
     public void setFixedDelay(String fixedDelay) {
         this.fixedDelay = fixedDelay;

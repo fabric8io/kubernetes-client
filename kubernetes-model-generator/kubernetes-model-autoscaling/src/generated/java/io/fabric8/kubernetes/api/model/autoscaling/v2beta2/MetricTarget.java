@@ -33,6 +33,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * MetricTarget defines the target value, average value, or average utilization of a specific metric
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -91,41 +94,65 @@ public class MetricTarget implements Editable<MetricTargetBuilder>, KubernetesRe
         this.value = value;
     }
 
+    /**
+     * averageUtilization is the target value of the average of the resource metric across all relevant pods, represented as a percentage of the requested value of the resource for the pods. Currently only valid for Resource metric source type
+     */
     @JsonProperty("averageUtilization")
     public Integer getAverageUtilization() {
         return averageUtilization;
     }
 
+    /**
+     * averageUtilization is the target value of the average of the resource metric across all relevant pods, represented as a percentage of the requested value of the resource for the pods. Currently only valid for Resource metric source type
+     */
     @JsonProperty("averageUtilization")
     public void setAverageUtilization(Integer averageUtilization) {
         this.averageUtilization = averageUtilization;
     }
 
+    /**
+     * MetricTarget defines the target value, average value, or average utilization of a specific metric
+     */
     @JsonProperty("averageValue")
     public Quantity getAverageValue() {
         return averageValue;
     }
 
+    /**
+     * MetricTarget defines the target value, average value, or average utilization of a specific metric
+     */
     @JsonProperty("averageValue")
     public void setAverageValue(Quantity averageValue) {
         this.averageValue = averageValue;
     }
 
+    /**
+     * type represents whether the metric type is Utilization, Value, or AverageValue
+     */
     @JsonProperty("type")
     public String getType() {
         return type;
     }
 
+    /**
+     * type represents whether the metric type is Utilization, Value, or AverageValue
+     */
     @JsonProperty("type")
     public void setType(String type) {
         this.type = type;
     }
 
+    /**
+     * MetricTarget defines the target value, average value, or average utilization of a specific metric
+     */
     @JsonProperty("value")
     public Quantity getValue() {
         return value;
     }
 
+    /**
+     * MetricTarget defines the target value, average value, or average utilization of a specific metric
+     */
     @JsonProperty("value")
     public void setValue(Quantity value) {
         this.value = value;

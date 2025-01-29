@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * PodHttpChaosStatus defines the actual state of PodHttpChaos.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -90,41 +93,65 @@ public class PodHttpChaosStatus implements Editable<PodHttpChaosStatusBuilder>, 
         this.startTime = startTime;
     }
 
+    /**
+     * PodHttpChaosStatus defines the actual state of PodHttpChaos.
+     */
     @JsonProperty("failedMessage")
     public String getFailedMessage() {
         return failedMessage;
     }
 
+    /**
+     * PodHttpChaosStatus defines the actual state of PodHttpChaos.
+     */
     @JsonProperty("failedMessage")
     public void setFailedMessage(String failedMessage) {
         this.failedMessage = failedMessage;
     }
 
+    /**
+     * PodHttpChaosStatus defines the actual state of PodHttpChaos.
+     */
     @JsonProperty("observedGeneration")
     public Long getObservedGeneration() {
         return observedGeneration;
     }
 
+    /**
+     * PodHttpChaosStatus defines the actual state of PodHttpChaos.
+     */
     @JsonProperty("observedGeneration")
     public void setObservedGeneration(Long observedGeneration) {
         this.observedGeneration = observedGeneration;
     }
 
+    /**
+     * Pid represents a running tproxy process id.
+     */
     @JsonProperty("pid")
     public Long getPid() {
         return pid;
     }
 
+    /**
+     * Pid represents a running tproxy process id.
+     */
     @JsonProperty("pid")
     public void setPid(Long pid) {
         this.pid = pid;
     }
 
+    /**
+     * StartTime represents the start time of a tproxy process.
+     */
     @JsonProperty("startTime")
     public Long getStartTime() {
         return startTime;
     }
 
+    /**
+     * StartTime represents the start time of a tproxy process.
+     */
     @JsonProperty("startTime")
     public void setStartTime(Long startTime) {
         this.startTime = startTime;

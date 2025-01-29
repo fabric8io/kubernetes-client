@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * RemoteConnectionInfo holds information necessary for establishing a remote connection
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -90,41 +93,65 @@ public class RemoteConnectionInfo implements Editable<RemoteConnectionInfoBuilde
         this.url = url;
     }
 
+    /**
+     * CA is the CA for verifying TLS connections
+     */
     @JsonProperty("ca")
     public String getCa() {
         return ca;
     }
 
+    /**
+     * CA is the CA for verifying TLS connections
+     */
     @JsonProperty("ca")
     public void setCa(String ca) {
         this.ca = ca;
     }
 
+    /**
+     * CertFile is a file containing a PEM-encoded certificate
+     */
     @JsonProperty("certFile")
     public String getCertFile() {
         return certFile;
     }
 
+    /**
+     * CertFile is a file containing a PEM-encoded certificate
+     */
     @JsonProperty("certFile")
     public void setCertFile(String certFile) {
         this.certFile = certFile;
     }
 
+    /**
+     * KeyFile is a file containing a PEM-encoded private key for the certificate specified by CertFile
+     */
     @JsonProperty("keyFile")
     public String getKeyFile() {
         return keyFile;
     }
 
+    /**
+     * KeyFile is a file containing a PEM-encoded private key for the certificate specified by CertFile
+     */
     @JsonProperty("keyFile")
     public void setKeyFile(String keyFile) {
         this.keyFile = keyFile;
     }
 
+    /**
+     * URL is the remote URL to connect to
+     */
     @JsonProperty("url")
     public String getUrl() {
         return url;
     }
 
+    /**
+     * URL is the remote URL to connect to
+     */
     @JsonProperty("url")
     public void setUrl(String url) {
         this.url = url;

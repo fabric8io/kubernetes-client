@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * TimeInterval specifies the periods in time when notifications will be muted or active.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -85,22 +88,34 @@ public class TimeInterval implements Editable<TimeIntervalBuilder>, KubernetesRe
         this.timeIntervals = timeIntervals;
     }
 
+    /**
+     * Name of the time interval.
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * Name of the time interval.
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * TimeIntervals is a list of TimePeriod.
+     */
     @JsonProperty("timeIntervals")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<TimePeriod> getTimeIntervals() {
         return timeIntervals;
     }
 
+    /**
+     * TimeIntervals is a list of TimePeriod.
+     */
     @JsonProperty("timeIntervals")
     public void setTimeIntervals(List<TimePeriod> timeIntervals) {
         this.timeIntervals = timeIntervals;

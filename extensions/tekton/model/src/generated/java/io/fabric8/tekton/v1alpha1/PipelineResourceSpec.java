@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * PipelineResourceSpec defines an individual resources used in the pipeline.<br><p> <br><p> Deprecated: Unused, preserved only for backwards compatibility
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -94,43 +97,67 @@ public class PipelineResourceSpec implements Editable<PipelineResourceSpecBuilde
         this.type = type;
     }
 
+    /**
+     * Description is a user-facing description of the resource that may be used to populate a UI.
+     */
     @JsonProperty("description")
     public String getDescription() {
         return description;
     }
 
+    /**
+     * Description is a user-facing description of the resource that may be used to populate a UI.
+     */
     @JsonProperty("description")
     public void setDescription(String description) {
         this.description = description;
     }
 
+    /**
+     * PipelineResourceSpec defines an individual resources used in the pipeline.<br><p> <br><p> Deprecated: Unused, preserved only for backwards compatibility
+     */
     @JsonProperty("params")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ResourceParam> getParams() {
         return params;
     }
 
+    /**
+     * PipelineResourceSpec defines an individual resources used in the pipeline.<br><p> <br><p> Deprecated: Unused, preserved only for backwards compatibility
+     */
     @JsonProperty("params")
     public void setParams(List<ResourceParam> params) {
         this.params = params;
     }
 
+    /**
+     * Secrets to fetch to populate some of resource fields
+     */
     @JsonProperty("secrets")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<SecretParam> getSecrets() {
         return secrets;
     }
 
+    /**
+     * Secrets to fetch to populate some of resource fields
+     */
     @JsonProperty("secrets")
     public void setSecrets(List<SecretParam> secrets) {
         this.secrets = secrets;
     }
 
+    /**
+     * PipelineResourceSpec defines an individual resources used in the pipeline.<br><p> <br><p> Deprecated: Unused, preserved only for backwards compatibility
+     */
     @JsonProperty("type")
     public String getType() {
         return type;
     }
 
+    /**
+     * PipelineResourceSpec defines an individual resources used in the pipeline.<br><p> <br><p> Deprecated: Unused, preserved only for backwards compatibility
+     */
     @JsonProperty("type")
     public void setType(String type) {
         this.type = type;

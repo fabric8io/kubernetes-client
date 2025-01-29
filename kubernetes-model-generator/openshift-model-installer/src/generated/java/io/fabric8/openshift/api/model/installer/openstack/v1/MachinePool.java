@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * MachinePool stores the configuration for a machine pool installed on OpenStack.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -103,64 +106,100 @@ public class MachinePool implements Editable<MachinePoolBuilder>, KubernetesReso
         this.zones = zones;
     }
 
+    /**
+     * AdditionalNetworkIDs contains IDs of additional networks for machines, where each ID is presented in UUID v4 format. Allowed address pairs won't be created for the additional networks.
+     */
     @JsonProperty("additionalNetworkIDs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getAdditionalNetworkIDs() {
         return additionalNetworkIDs;
     }
 
+    /**
+     * AdditionalNetworkIDs contains IDs of additional networks for machines, where each ID is presented in UUID v4 format. Allowed address pairs won't be created for the additional networks.
+     */
     @JsonProperty("additionalNetworkIDs")
     public void setAdditionalNetworkIDs(List<String> additionalNetworkIDs) {
         this.additionalNetworkIDs = additionalNetworkIDs;
     }
 
+    /**
+     * AdditionalSecurityGroupIDs contains IDs of additional security groups for machines, where each ID is presented in UUID v4 format.
+     */
     @JsonProperty("additionalSecurityGroupIDs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getAdditionalSecurityGroupIDs() {
         return additionalSecurityGroupIDs;
     }
 
+    /**
+     * AdditionalSecurityGroupIDs contains IDs of additional security groups for machines, where each ID is presented in UUID v4 format.
+     */
     @JsonProperty("additionalSecurityGroupIDs")
     public void setAdditionalSecurityGroupIDs(List<String> additionalSecurityGroupIDs) {
         this.additionalSecurityGroupIDs = additionalSecurityGroupIDs;
     }
 
+    /**
+     * MachinePool stores the configuration for a machine pool installed on OpenStack.
+     */
     @JsonProperty("rootVolume")
     public RootVolume getRootVolume() {
         return rootVolume;
     }
 
+    /**
+     * MachinePool stores the configuration for a machine pool installed on OpenStack.
+     */
     @JsonProperty("rootVolume")
     public void setRootVolume(RootVolume rootVolume) {
         this.rootVolume = rootVolume;
     }
 
+    /**
+     * ServerGroupPolicy will be used to create the Server Group that will contain all the machines of this MachinePool. Defaults to "soft-anti-affinity".
+     */
     @JsonProperty("serverGroupPolicy")
     public String getServerGroupPolicy() {
         return serverGroupPolicy;
     }
 
+    /**
+     * ServerGroupPolicy will be used to create the Server Group that will contain all the machines of this MachinePool. Defaults to "soft-anti-affinity".
+     */
     @JsonProperty("serverGroupPolicy")
     public void setServerGroupPolicy(String serverGroupPolicy) {
         this.serverGroupPolicy = serverGroupPolicy;
     }
 
+    /**
+     * FlavorName defines the OpenStack Nova flavor. eg. m1.large
+     */
     @JsonProperty("type")
     public String getType() {
         return type;
     }
 
+    /**
+     * FlavorName defines the OpenStack Nova flavor. eg. m1.large
+     */
     @JsonProperty("type")
     public void setType(String type) {
         this.type = type;
     }
 
+    /**
+     * Zones is the list of availability zones where the instances should be deployed. If no zones are provided, all instances will be deployed on OpenStack Nova default availability zone
+     */
     @JsonProperty("zones")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getZones() {
         return zones;
     }
 
+    /**
+     * Zones is the list of availability zones where the instances should be deployed. If no zones are provided, all instances will be deployed on OpenStack Nova default availability zone
+     */
     @JsonProperty("zones")
     public void setZones(List<String> zones) {
         this.zones = zones;

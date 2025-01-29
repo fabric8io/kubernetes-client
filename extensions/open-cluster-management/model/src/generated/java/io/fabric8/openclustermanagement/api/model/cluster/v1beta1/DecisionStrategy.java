@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * DecisionStrategy divide the created placement decision to groups and define number of clusters per decision group.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -78,11 +81,17 @@ public class DecisionStrategy implements Editable<DecisionStrategyBuilder>, Kube
         this.groupStrategy = groupStrategy;
     }
 
+    /**
+     * DecisionStrategy divide the created placement decision to groups and define number of clusters per decision group.
+     */
     @JsonProperty("groupStrategy")
     public GroupStrategy getGroupStrategy() {
         return groupStrategy;
     }
 
+    /**
+     * DecisionStrategy divide the created placement decision to groups and define number of clusters per decision group.
+     */
     @JsonProperty("groupStrategy")
     public void setGroupStrategy(GroupStrategy groupStrategy) {
         this.groupStrategy = groupStrategy;

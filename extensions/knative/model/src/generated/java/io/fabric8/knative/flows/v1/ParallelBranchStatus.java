@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ParallelBranchStatus represents the current state of a Parallel branch
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -86,31 +89,49 @@ public class ParallelBranchStatus implements Editable<ParallelBranchStatusBuilde
         this.subscriberSubscriptionStatus = subscriberSubscriptionStatus;
     }
 
+    /**
+     * ParallelBranchStatus represents the current state of a Parallel branch
+     */
     @JsonProperty("filterChannelStatus")
     public ParallelChannelStatus getFilterChannelStatus() {
         return filterChannelStatus;
     }
 
+    /**
+     * ParallelBranchStatus represents the current state of a Parallel branch
+     */
     @JsonProperty("filterChannelStatus")
     public void setFilterChannelStatus(ParallelChannelStatus filterChannelStatus) {
         this.filterChannelStatus = filterChannelStatus;
     }
 
+    /**
+     * ParallelBranchStatus represents the current state of a Parallel branch
+     */
     @JsonProperty("filterSubscriptionStatus")
     public ParallelSubscriptionStatus getFilterSubscriptionStatus() {
         return filterSubscriptionStatus;
     }
 
+    /**
+     * ParallelBranchStatus represents the current state of a Parallel branch
+     */
     @JsonProperty("filterSubscriptionStatus")
     public void setFilterSubscriptionStatus(ParallelSubscriptionStatus filterSubscriptionStatus) {
         this.filterSubscriptionStatus = filterSubscriptionStatus;
     }
 
+    /**
+     * ParallelBranchStatus represents the current state of a Parallel branch
+     */
     @JsonProperty("subscriberSubscriptionStatus")
     public ParallelSubscriptionStatus getSubscriberSubscriptionStatus() {
         return subscriberSubscriptionStatus;
     }
 
+    /**
+     * ParallelBranchStatus represents the current state of a Parallel branch
+     */
     @JsonProperty("subscriberSubscriptionStatus")
     public void setSubscriberSubscriptionStatus(ParallelSubscriptionStatus subscriberSubscriptionStatus) {
         this.subscriberSubscriptionStatus = subscriberSubscriptionStatus;

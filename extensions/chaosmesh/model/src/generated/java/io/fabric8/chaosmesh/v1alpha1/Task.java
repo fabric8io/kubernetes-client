@@ -95,12 +95,18 @@ public class Task implements Editable<TaskBuilder>, KubernetesResource
         this.container = container;
     }
 
+    /**
+     * Volumes is a list of volumes that can be mounted by containers in a template.
+     */
     @JsonProperty("volumes")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Volume> getVolumes() {
         return volumes;
     }
 
+    /**
+     * Volumes is a list of volumes that can be mounted by containers in a template.
+     */
     @JsonProperty("volumes")
     public void setVolumes(List<Volume> volumes) {
         this.volumes = volumes;

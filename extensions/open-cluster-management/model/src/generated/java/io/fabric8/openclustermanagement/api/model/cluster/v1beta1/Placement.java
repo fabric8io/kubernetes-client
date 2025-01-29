@@ -37,6 +37,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Placement defines a rule to select a set of ManagedClusters from the ManagedClusterSets bound to the placement namespace.<br><p> <br><p> Here is how the placement policy combines with other selection methods to determine a matching list of ManagedClusters:<br><p>  1. Kubernetes clusters are registered with hub as cluster-scoped ManagedClusters;<br><p>  2. ManagedClusters are organized into cluster-scoped ManagedClusterSets;<br><p>  3. ManagedClusterSets are bound to workload namespaces;<br><p>  4. Namespace-scoped Placements specify a slice of ManagedClusterSets which select a working set<br><p>     of potential ManagedClusters;<br><p>  5. Then Placements subselect from that working set using label/claim selection.<br><p> <br><p> A ManagedCluster will not be selected if no ManagedClusterSet is bound to the placement namespace. A user is able to bind a ManagedClusterSet to a namespace by creating a ManagedClusterSetBinding in that namespace if they have an RBAC rule to CREATE on the virtual subresource of `managedclustersets/bind`.<br><p> <br><p> A slice of PlacementDecisions with the label cluster.open-cluster-management.io/placement={placement name} will be created to represent the ManagedClusters selected by this placement.<br><p> <br><p> If a ManagedCluster is selected and added into the PlacementDecisions, other components may apply workload on it; once it is removed from the PlacementDecisions, the workload applied on this ManagedCluster should be evicted accordingly.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -76,14 +79,8 @@ import lombok.experimental.Accessors;
 public class Placement implements Editable<PlacementBuilder>, HasMetadata, Namespaced
 {
 
-    /**
-     * (Required)
-     */
     @JsonProperty("apiVersion")
     private String apiVersion = "cluster.open-cluster-management.io/v1beta1";
-    /**
-     * (Required)
-     */
     @JsonProperty("kind")
     private String kind = "Placement";
     @JsonProperty("metadata")
@@ -111,7 +108,7 @@ public class Placement implements Editable<PlacementBuilder>, HasMetadata, Names
     }
 
     /**
-     * (Required)
+     * APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -119,7 +116,7 @@ public class Placement implements Editable<PlacementBuilder>, HasMetadata, Names
     }
 
     /**
-     * (Required)
+     * APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -127,7 +124,7 @@ public class Placement implements Editable<PlacementBuilder>, HasMetadata, Names
     }
 
     /**
-     * (Required)
+     * Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -135,38 +132,56 @@ public class Placement implements Editable<PlacementBuilder>, HasMetadata, Names
     }
 
     /**
-     * (Required)
+     * Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
      */
     @JsonProperty("kind")
     public void setKind(String kind) {
         this.kind = kind;
     }
 
+    /**
+     * Placement defines a rule to select a set of ManagedClusters from the ManagedClusterSets bound to the placement namespace.<br><p> <br><p> Here is how the placement policy combines with other selection methods to determine a matching list of ManagedClusters:<br><p>  1. Kubernetes clusters are registered with hub as cluster-scoped ManagedClusters;<br><p>  2. ManagedClusters are organized into cluster-scoped ManagedClusterSets;<br><p>  3. ManagedClusterSets are bound to workload namespaces;<br><p>  4. Namespace-scoped Placements specify a slice of ManagedClusterSets which select a working set<br><p>     of potential ManagedClusters;<br><p>  5. Then Placements subselect from that working set using label/claim selection.<br><p> <br><p> A ManagedCluster will not be selected if no ManagedClusterSet is bound to the placement namespace. A user is able to bind a ManagedClusterSet to a namespace by creating a ManagedClusterSetBinding in that namespace if they have an RBAC rule to CREATE on the virtual subresource of `managedclustersets/bind`.<br><p> <br><p> A slice of PlacementDecisions with the label cluster.open-cluster-management.io/placement={placement name} will be created to represent the ManagedClusters selected by this placement.<br><p> <br><p> If a ManagedCluster is selected and added into the PlacementDecisions, other components may apply workload on it; once it is removed from the PlacementDecisions, the workload applied on this ManagedCluster should be evicted accordingly.
+     */
     @JsonProperty("metadata")
     public ObjectMeta getMetadata() {
         return metadata;
     }
 
+    /**
+     * Placement defines a rule to select a set of ManagedClusters from the ManagedClusterSets bound to the placement namespace.<br><p> <br><p> Here is how the placement policy combines with other selection methods to determine a matching list of ManagedClusters:<br><p>  1. Kubernetes clusters are registered with hub as cluster-scoped ManagedClusters;<br><p>  2. ManagedClusters are organized into cluster-scoped ManagedClusterSets;<br><p>  3. ManagedClusterSets are bound to workload namespaces;<br><p>  4. Namespace-scoped Placements specify a slice of ManagedClusterSets which select a working set<br><p>     of potential ManagedClusters;<br><p>  5. Then Placements subselect from that working set using label/claim selection.<br><p> <br><p> A ManagedCluster will not be selected if no ManagedClusterSet is bound to the placement namespace. A user is able to bind a ManagedClusterSet to a namespace by creating a ManagedClusterSetBinding in that namespace if they have an RBAC rule to CREATE on the virtual subresource of `managedclustersets/bind`.<br><p> <br><p> A slice of PlacementDecisions with the label cluster.open-cluster-management.io/placement={placement name} will be created to represent the ManagedClusters selected by this placement.<br><p> <br><p> If a ManagedCluster is selected and added into the PlacementDecisions, other components may apply workload on it; once it is removed from the PlacementDecisions, the workload applied on this ManagedCluster should be evicted accordingly.
+     */
     @JsonProperty("metadata")
     public void setMetadata(ObjectMeta metadata) {
         this.metadata = metadata;
     }
 
+    /**
+     * Placement defines a rule to select a set of ManagedClusters from the ManagedClusterSets bound to the placement namespace.<br><p> <br><p> Here is how the placement policy combines with other selection methods to determine a matching list of ManagedClusters:<br><p>  1. Kubernetes clusters are registered with hub as cluster-scoped ManagedClusters;<br><p>  2. ManagedClusters are organized into cluster-scoped ManagedClusterSets;<br><p>  3. ManagedClusterSets are bound to workload namespaces;<br><p>  4. Namespace-scoped Placements specify a slice of ManagedClusterSets which select a working set<br><p>     of potential ManagedClusters;<br><p>  5. Then Placements subselect from that working set using label/claim selection.<br><p> <br><p> A ManagedCluster will not be selected if no ManagedClusterSet is bound to the placement namespace. A user is able to bind a ManagedClusterSet to a namespace by creating a ManagedClusterSetBinding in that namespace if they have an RBAC rule to CREATE on the virtual subresource of `managedclustersets/bind`.<br><p> <br><p> A slice of PlacementDecisions with the label cluster.open-cluster-management.io/placement={placement name} will be created to represent the ManagedClusters selected by this placement.<br><p> <br><p> If a ManagedCluster is selected and added into the PlacementDecisions, other components may apply workload on it; once it is removed from the PlacementDecisions, the workload applied on this ManagedCluster should be evicted accordingly.
+     */
     @JsonProperty("spec")
     public PlacementSpec getSpec() {
         return spec;
     }
 
+    /**
+     * Placement defines a rule to select a set of ManagedClusters from the ManagedClusterSets bound to the placement namespace.<br><p> <br><p> Here is how the placement policy combines with other selection methods to determine a matching list of ManagedClusters:<br><p>  1. Kubernetes clusters are registered with hub as cluster-scoped ManagedClusters;<br><p>  2. ManagedClusters are organized into cluster-scoped ManagedClusterSets;<br><p>  3. ManagedClusterSets are bound to workload namespaces;<br><p>  4. Namespace-scoped Placements specify a slice of ManagedClusterSets which select a working set<br><p>     of potential ManagedClusters;<br><p>  5. Then Placements subselect from that working set using label/claim selection.<br><p> <br><p> A ManagedCluster will not be selected if no ManagedClusterSet is bound to the placement namespace. A user is able to bind a ManagedClusterSet to a namespace by creating a ManagedClusterSetBinding in that namespace if they have an RBAC rule to CREATE on the virtual subresource of `managedclustersets/bind`.<br><p> <br><p> A slice of PlacementDecisions with the label cluster.open-cluster-management.io/placement={placement name} will be created to represent the ManagedClusters selected by this placement.<br><p> <br><p> If a ManagedCluster is selected and added into the PlacementDecisions, other components may apply workload on it; once it is removed from the PlacementDecisions, the workload applied on this ManagedCluster should be evicted accordingly.
+     */
     @JsonProperty("spec")
     public void setSpec(PlacementSpec spec) {
         this.spec = spec;
     }
 
+    /**
+     * Placement defines a rule to select a set of ManagedClusters from the ManagedClusterSets bound to the placement namespace.<br><p> <br><p> Here is how the placement policy combines with other selection methods to determine a matching list of ManagedClusters:<br><p>  1. Kubernetes clusters are registered with hub as cluster-scoped ManagedClusters;<br><p>  2. ManagedClusters are organized into cluster-scoped ManagedClusterSets;<br><p>  3. ManagedClusterSets are bound to workload namespaces;<br><p>  4. Namespace-scoped Placements specify a slice of ManagedClusterSets which select a working set<br><p>     of potential ManagedClusters;<br><p>  5. Then Placements subselect from that working set using label/claim selection.<br><p> <br><p> A ManagedCluster will not be selected if no ManagedClusterSet is bound to the placement namespace. A user is able to bind a ManagedClusterSet to a namespace by creating a ManagedClusterSetBinding in that namespace if they have an RBAC rule to CREATE on the virtual subresource of `managedclustersets/bind`.<br><p> <br><p> A slice of PlacementDecisions with the label cluster.open-cluster-management.io/placement={placement name} will be created to represent the ManagedClusters selected by this placement.<br><p> <br><p> If a ManagedCluster is selected and added into the PlacementDecisions, other components may apply workload on it; once it is removed from the PlacementDecisions, the workload applied on this ManagedCluster should be evicted accordingly.
+     */
     @JsonProperty("status")
     public PlacementStatus getStatus() {
         return status;
     }
 
+    /**
+     * Placement defines a rule to select a set of ManagedClusters from the ManagedClusterSets bound to the placement namespace.<br><p> <br><p> Here is how the placement policy combines with other selection methods to determine a matching list of ManagedClusters:<br><p>  1. Kubernetes clusters are registered with hub as cluster-scoped ManagedClusters;<br><p>  2. ManagedClusters are organized into cluster-scoped ManagedClusterSets;<br><p>  3. ManagedClusterSets are bound to workload namespaces;<br><p>  4. Namespace-scoped Placements specify a slice of ManagedClusterSets which select a working set<br><p>     of potential ManagedClusters;<br><p>  5. Then Placements subselect from that working set using label/claim selection.<br><p> <br><p> A ManagedCluster will not be selected if no ManagedClusterSet is bound to the placement namespace. A user is able to bind a ManagedClusterSet to a namespace by creating a ManagedClusterSetBinding in that namespace if they have an RBAC rule to CREATE on the virtual subresource of `managedclustersets/bind`.<br><p> <br><p> A slice of PlacementDecisions with the label cluster.open-cluster-management.io/placement={placement name} will be created to represent the ManagedClusters selected by this placement.<br><p> <br><p> If a ManagedCluster is selected and added into the PlacementDecisions, other components may apply workload on it; once it is removed from the PlacementDecisions, the workload applied on this ManagedCluster should be evicted accordingly.
+     */
     @JsonProperty("status")
     public void setStatus(PlacementStatus status) {
         this.status = status;

@@ -51,9 +51,6 @@ import lombok.experimental.Accessors;
 public class DeleteOptions implements Editable<DeleteOptionsBuilder>, KubernetesResource
 {
 
-    /**
-     * (Required)
-     */
     @JsonProperty("apiVersion")
     private String apiVersion = "v1";
     @JsonProperty("dryRun")
@@ -63,9 +60,6 @@ public class DeleteOptions implements Editable<DeleteOptionsBuilder>, Kubernetes
     private Long gracePeriodSeconds;
     @JsonProperty("ignoreStoreReadErrorWithClusterBreakingPotential")
     private Boolean ignoreStoreReadErrorWithClusterBreakingPotential;
-    /**
-     * (Required)
-     */
     @JsonProperty("kind")
     private String kind = "DeleteOptions";
     @JsonProperty("orphanDependents")
@@ -95,17 +89,11 @@ public class DeleteOptions implements Editable<DeleteOptionsBuilder>, Kubernetes
         this.propagationPolicy = propagationPolicy;
     }
 
-    /**
-     * (Required)
-     */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
         return apiVersion;
     }
 
-    /**
-     * (Required)
-     */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
         this.apiVersion = apiVersion;
@@ -142,17 +130,11 @@ public class DeleteOptions implements Editable<DeleteOptionsBuilder>, Kubernetes
         this.ignoreStoreReadErrorWithClusterBreakingPotential = ignoreStoreReadErrorWithClusterBreakingPotential;
     }
 
-    /**
-     * (Required)
-     */
     @JsonProperty("kind")
     public String getKind() {
         return kind;
     }
 
-    /**
-     * (Required)
-     */
     @JsonProperty("kind")
     public void setKind(String kind) {
         this.kind = kind;

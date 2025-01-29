@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * AnalysisMessageBase describes some common information that is needed for all messages. All information should be static with respect to the error code.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -86,31 +89,49 @@ public class AnalysisMessageBase implements Editable<AnalysisMessageBaseBuilder>
         this.type = type;
     }
 
+    /**
+     * A url pointing to the Istio documentation for this specific error type. Should be of the form `^http(s)?://(preliminary\.)?istio.io/docs/reference/config/analysis/` Required.
+     */
     @JsonProperty("documentationUrl")
     public String getDocumentationUrl() {
         return documentationUrl;
     }
 
+    /**
+     * A url pointing to the Istio documentation for this specific error type. Should be of the form `^http(s)?://(preliminary\.)?istio.io/docs/reference/config/analysis/` Required.
+     */
     @JsonProperty("documentationUrl")
     public void setDocumentationUrl(String documentationUrl) {
         this.documentationUrl = documentationUrl;
     }
 
+    /**
+     * AnalysisMessageBase describes some common information that is needed for all messages. All information should be static with respect to the error code.
+     */
     @JsonProperty("level")
     public AnalysisMessageBaseLevel getLevel() {
         return level;
     }
 
+    /**
+     * AnalysisMessageBase describes some common information that is needed for all messages. All information should be static with respect to the error code.
+     */
     @JsonProperty("level")
     public void setLevel(AnalysisMessageBaseLevel level) {
         this.level = level;
     }
 
+    /**
+     * AnalysisMessageBase describes some common information that is needed for all messages. All information should be static with respect to the error code.
+     */
     @JsonProperty("type")
     public AnalysisMessageBaseType getType() {
         return type;
     }
 
+    /**
+     * AnalysisMessageBase describes some common information that is needed for all messages. All information should be static with respect to the error code.
+     */
     @JsonProperty("type")
     public void setType(AnalysisMessageBaseType type) {
         this.type = type;

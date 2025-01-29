@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ResolverRef can be used to refer to a Pipeline or Task in a remote location like a git repo. This feature is in beta and these fields are only available when the beta feature gate is enabled.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -85,22 +88,34 @@ public class ResolverRef implements Editable<ResolverRefBuilder>, KubernetesReso
         this.resolver = resolver;
     }
 
+    /**
+     * Params contains the parameters used to identify the referenced Tekton resource. Example entries might include "repo" or "path" but the set of params ultimately depends on the chosen resolver.
+     */
     @JsonProperty("params")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Param> getParams() {
         return params;
     }
 
+    /**
+     * Params contains the parameters used to identify the referenced Tekton resource. Example entries might include "repo" or "path" but the set of params ultimately depends on the chosen resolver.
+     */
     @JsonProperty("params")
     public void setParams(List<Param> params) {
         this.params = params;
     }
 
+    /**
+     * Resolver is the name of the resolver that should perform resolution of the referenced Tekton resource, such as "git".
+     */
     @JsonProperty("resolver")
     public String getResolver() {
         return resolver;
     }
 
+    /**
+     * Resolver is the name of the resolver that should perform resolution of the referenced Tekton resource, such as "git".
+     */
     @JsonProperty("resolver")
     public void setResolver(String resolver) {
         this.resolver = resolver;

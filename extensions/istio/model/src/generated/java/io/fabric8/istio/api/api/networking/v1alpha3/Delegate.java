@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Describes the delegate VirtualService. The following routing rules forward the traffic to `/productpage` by a delegate VirtualService named `productpage`, forward the traffic to `/reviews` by a delegate VirtualService named `reviews`.<br><p> <br><p> ```yaml apiVersion: networking.istio.io/v1 kind: VirtualService metadata:<br><p> <br><p> 	name: bookinfo<br><p> <br><p> spec:<br><p> <br><p> 	hosts:<br><p> 	- "bookinfo.com"<br><p> 	gateways:<br><p> 	- mygateway<br><p> 	http:<br><p> 	- match:<br><p> 	  - uri:<br><p> 	      prefix: "/productpage"<br><p> 	  delegate:<br><p> 	     name: productpage<br><p> 	     namespace: nsA<br><p> 	- match:<br><p> 	  - uri:<br><p> 	      prefix: "/reviews"<br><p> 	  delegate:<br><p> 	      name: reviews<br><p> 	      namespace: nsB<br><p> <br><p> ```<br><p> <br><p> ```yaml apiVersion: networking.istio.io/v1 kind: VirtualService metadata:<br><p> <br><p> 	name: productpage<br><p> 	namespace: nsA<br><p> <br><p> spec:<br><p> <br><p> 	http:<br><p> 	- match:<br><p> 	   - uri:<br><p> 	      prefix: "/productpage/v1/"<br><p> 	  route:<br><p> 	  - destination:<br><p> 	      host: productpage-v1.nsA.svc.cluster.local<br><p> 	- route:<br><p> 	  - destination:<br><p> 	      host: productpage.nsA.svc.cluster.local<br><p> <br><p> ```<br><p> <br><p> ```yaml apiVersion: networking.istio.io/v1 kind: VirtualService metadata:<br><p> <br><p> 	name: reviews<br><p> 	namespace: nsB<br><p> <br><p> spec:<br><p> <br><p> 	http:<br><p> 	- route:<br><p> 	  - destination:<br><p> 	      host: reviews.nsB.svc.cluster.local<br><p> <br><p> ```
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class Delegate implements Editable<DelegateBuilder>, KubernetesResource
         this.namespace = namespace;
     }
 
+    /**
+     * Name specifies the name of the delegate VirtualService.
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * Name specifies the name of the delegate VirtualService.
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * Namespace specifies the namespace where the delegate VirtualService resides. By default, it is same to the root's.
+     */
     @JsonProperty("namespace")
     public String getNamespace() {
         return namespace;
     }
 
+    /**
+     * Namespace specifies the namespace where the delegate VirtualService resides. By default, it is same to the root's.
+     */
     @JsonProperty("namespace")
     public void setNamespace(String namespace) {
         this.namespace = namespace;

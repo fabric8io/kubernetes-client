@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Frame defines the function signature and predicate in function's body
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -86,31 +89,49 @@ public class Frame implements Editable<FrameBuilder>, KubernetesResource
         this.predicate = predicate;
     }
 
+    /**
+     * Funcname can be find from kernel source or `/proc/kallsyms`, such as `ext4_mount`
+     */
     @JsonProperty("funcname")
     public String getFuncname() {
         return funcname;
     }
 
+    /**
+     * Funcname can be find from kernel source or `/proc/kallsyms`, such as `ext4_mount`
+     */
     @JsonProperty("funcname")
     public void setFuncname(String funcname) {
         this.funcname = funcname;
     }
 
+    /**
+     * Parameters is used with predicate, for example, if you want to inject slab error in `d_alloc_parallel(struct dentry &#42;parent, const struct qstr &#42;name)` with a special name `bananas`, you need to set it to `struct dentry &#42;parent, const struct qstr &#42;name` otherwise omit it.
+     */
     @JsonProperty("parameters")
     public String getParameters() {
         return parameters;
     }
 
+    /**
+     * Parameters is used with predicate, for example, if you want to inject slab error in `d_alloc_parallel(struct dentry &#42;parent, const struct qstr &#42;name)` with a special name `bananas`, you need to set it to `struct dentry &#42;parent, const struct qstr &#42;name` otherwise omit it.
+     */
     @JsonProperty("parameters")
     public void setParameters(String parameters) {
         this.parameters = parameters;
     }
 
+    /**
+     * Predicate will access the arguments of this Frame, example with Parameters's, you can set it to `STRNCMP(name-&gt;name, "bananas", 8)` to make inject only with it, or omit it to inject for all d_alloc_parallel call chain.
+     */
     @JsonProperty("predicate")
     public String getPredicate() {
         return predicate;
     }
 
+    /**
+     * Predicate will access the arguments of this Frame, example with Parameters's, you can set it to `STRNCMP(name-&gt;name, "bananas", 8)` to make inject only with it, or omit it to inject for all d_alloc_parallel call chain.
+     */
     @JsonProperty("predicate")
     public void setPredicate(String predicate) {
         this.predicate = predicate;

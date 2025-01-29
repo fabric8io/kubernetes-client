@@ -81,12 +81,18 @@ public class ManagedBootImages implements Editable<ManagedBootImagesBuilder>, Ku
         this.machineManagers = machineManagers;
     }
 
+    /**
+     * machineManagers can be used to register machine management resources for boot image updates. The Machine Config Operator will watch for changes to this list. Only one entry is permitted per type of machine management resource.
+     */
     @JsonProperty("machineManagers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<MachineManager> getMachineManagers() {
         return machineManagers;
     }
 
+    /**
+     * machineManagers can be used to register machine management resources for boot image updates. The Machine Config Operator will watch for changes to this list. Only one entry is permitted per type of machine management resource.
+     */
     @JsonProperty("machineManagers")
     public void setMachineManagers(List<MachineManager> machineManagers) {
         this.machineManagers = machineManagers;

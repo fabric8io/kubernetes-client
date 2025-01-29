@@ -33,6 +33,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * SELinuxContextStrategyOptions defines the strategy type and any options used to create the strategy.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -83,21 +86,33 @@ public class SELinuxContextStrategyOptions implements Editable<SELinuxContextStr
         this.type = type;
     }
 
+    /**
+     * SELinuxContextStrategyOptions defines the strategy type and any options used to create the strategy.
+     */
     @JsonProperty("seLinuxOptions")
     public SELinuxOptions getSeLinuxOptions() {
         return seLinuxOptions;
     }
 
+    /**
+     * SELinuxContextStrategyOptions defines the strategy type and any options used to create the strategy.
+     */
     @JsonProperty("seLinuxOptions")
     public void setSeLinuxOptions(SELinuxOptions seLinuxOptions) {
         this.seLinuxOptions = seLinuxOptions;
     }
 
+    /**
+     * Type is the strategy that will dictate what SELinux context is used in the SecurityContext.
+     */
     @JsonProperty("type")
     public String getType() {
         return type;
     }
 
+    /**
+     * Type is the strategy that will dictate what SELinux context is used in the SecurityContext.
+     */
     @JsonProperty("type")
     public void setType(String type) {
         this.type = type;

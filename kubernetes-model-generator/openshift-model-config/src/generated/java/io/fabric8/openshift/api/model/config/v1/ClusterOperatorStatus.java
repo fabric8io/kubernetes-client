@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ClusterOperatorStatus provides information about the status of the operator.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -96,45 +99,69 @@ public class ClusterOperatorStatus implements Editable<ClusterOperatorStatusBuil
         this.versions = versions;
     }
 
+    /**
+     * conditions describes the state of the operator's managed and monitored components.
+     */
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ClusterOperatorStatusCondition> getConditions() {
         return conditions;
     }
 
+    /**
+     * conditions describes the state of the operator's managed and monitored components.
+     */
     @JsonProperty("conditions")
     public void setConditions(List<ClusterOperatorStatusCondition> conditions) {
         this.conditions = conditions;
     }
 
+    /**
+     * ClusterOperatorStatus provides information about the status of the operator.
+     */
     @JsonProperty("extension")
     public Object getExtension() {
         return extension;
     }
 
+    /**
+     * ClusterOperatorStatus provides information about the status of the operator.
+     */
     @JsonProperty("extension")
     @JsonDeserialize(using = io.fabric8.kubernetes.internal.KubernetesDeserializer.class)
     public void setExtension(Object extension) {
         this.extension = extension;
     }
 
+    /**
+     * relatedObjects is a list of objects that are "interesting" or related to this operator.  Common uses are: 1. the detailed resource driving the operator 2. operator namespaces 3. operand namespaces
+     */
     @JsonProperty("relatedObjects")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ObjectReference> getRelatedObjects() {
         return relatedObjects;
     }
 
+    /**
+     * relatedObjects is a list of objects that are "interesting" or related to this operator.  Common uses are: 1. the detailed resource driving the operator 2. operator namespaces 3. operand namespaces
+     */
     @JsonProperty("relatedObjects")
     public void setRelatedObjects(List<ObjectReference> relatedObjects) {
         this.relatedObjects = relatedObjects;
     }
 
+    /**
+     * versions is a slice of operator and operand version tuples.  Operators which manage multiple operands will have multiple operand entries in the array.  Available operators must report the version of the operator itself with the name "operator". An operator reports a new "operator" version when it has rolled out the new version to all of its operands.
+     */
     @JsonProperty("versions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<OperandVersion> getVersions() {
         return versions;
     }
 
+    /**
+     * versions is a slice of operator and operand version tuples.  Operators which manage multiple operands will have multiple operand entries in the array.  Available operators must report the version of the operator itself with the name "operator". An operator reports a new "operator" version when it has rolled out the new version to all of its operands.
+     */
     @JsonProperty("versions")
     public void setVersions(List<OperandVersion> versions) {
         this.versions = versions;

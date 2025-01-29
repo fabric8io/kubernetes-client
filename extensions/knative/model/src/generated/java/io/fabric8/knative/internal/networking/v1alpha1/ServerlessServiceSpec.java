@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ServerlessServiceSpec describes the ServerlessService.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -90,41 +93,65 @@ public class ServerlessServiceSpec implements Editable<ServerlessServiceSpecBuil
         this.protocolType = protocolType;
     }
 
+    /**
+     * Mode describes the mode of operation of the ServerlessService.
+     */
     @JsonProperty("mode")
     public String getMode() {
         return mode;
     }
 
+    /**
+     * Mode describes the mode of operation of the ServerlessService.
+     */
     @JsonProperty("mode")
     public void setMode(String mode) {
         this.mode = mode;
     }
 
+    /**
+     * NumActivators contains number of Activators that this revision should be assigned. O means — assign all.
+     */
     @JsonProperty("numActivators")
     public Integer getNumActivators() {
         return numActivators;
     }
 
+    /**
+     * NumActivators contains number of Activators that this revision should be assigned. O means — assign all.
+     */
     @JsonProperty("numActivators")
     public void setNumActivators(Integer numActivators) {
         this.numActivators = numActivators;
     }
 
+    /**
+     * ServerlessServiceSpec describes the ServerlessService.
+     */
     @JsonProperty("objectRef")
     public ObjectReference getObjectRef() {
         return objectRef;
     }
 
+    /**
+     * ServerlessServiceSpec describes the ServerlessService.
+     */
     @JsonProperty("objectRef")
     public void setObjectRef(ObjectReference objectRef) {
         this.objectRef = objectRef;
     }
 
+    /**
+     * The application-layer protocol. Matches `RevisionProtocolType` set on the owning pa/revision. serving imports networking, so just use string.
+     */
     @JsonProperty("protocolType")
     public String getProtocolType() {
         return protocolType;
     }
 
+    /**
+     * The application-layer protocol. Matches `RevisionProtocolType` set on the owning pa/revision. serving imports networking, so just use string.
+     */
     @JsonProperty("protocolType")
     public void setProtocolType(String protocolType) {
         this.protocolType = protocolType;

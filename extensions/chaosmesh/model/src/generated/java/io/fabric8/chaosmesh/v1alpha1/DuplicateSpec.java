@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * DuplicateSpec defines detail of a duplicate action
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class DuplicateSpec implements Editable<DuplicateSpecBuilder>, Kubernetes
         this.duplicate = duplicate;
     }
 
+    /**
+     * DuplicateSpec defines detail of a duplicate action
+     */
     @JsonProperty("correlation")
     public String getCorrelation() {
         return correlation;
     }
 
+    /**
+     * DuplicateSpec defines detail of a duplicate action
+     */
     @JsonProperty("correlation")
     public void setCorrelation(String correlation) {
         this.correlation = correlation;
     }
 
+    /**
+     * DuplicateSpec defines detail of a duplicate action
+     */
     @JsonProperty("duplicate")
     public String getDuplicate() {
         return duplicate;
     }
 
+    /**
+     * DuplicateSpec defines detail of a duplicate action
+     */
     @JsonProperty("duplicate")
     public void setDuplicate(String duplicate) {
         this.duplicate = duplicate;

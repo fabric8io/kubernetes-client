@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * PodSelectorSpec defines the some selectors to select objects. If the all selectors are empty, all objects will be used in chaos experiment.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -116,89 +119,137 @@ public class PodSelectorSpec implements Editable<PodSelectorSpecBuilder>, Kubern
         this.pods = pods;
     }
 
+    /**
+     * Map of string keys and values that can be used to select objects. A selector based on annotations.
+     */
     @JsonProperty("annotationSelectors")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getAnnotationSelectors() {
         return annotationSelectors;
     }
 
+    /**
+     * Map of string keys and values that can be used to select objects. A selector based on annotations.
+     */
     @JsonProperty("annotationSelectors")
     public void setAnnotationSelectors(Map<String, String> annotationSelectors) {
         this.annotationSelectors = annotationSelectors;
     }
 
+    /**
+     * Map of string keys and values that can be used to select objects. A selector based on fields.
+     */
     @JsonProperty("fieldSelectors")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getFieldSelectors() {
         return fieldSelectors;
     }
 
+    /**
+     * Map of string keys and values that can be used to select objects. A selector based on fields.
+     */
     @JsonProperty("fieldSelectors")
     public void setFieldSelectors(Map<String, String> fieldSelectors) {
         this.fieldSelectors = fieldSelectors;
     }
 
+    /**
+     * Map of string keys and values that can be used to select objects. A selector based on labels.
+     */
     @JsonProperty("labelSelectors")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getLabelSelectors() {
         return labelSelectors;
     }
 
+    /**
+     * Map of string keys and values that can be used to select objects. A selector based on labels.
+     */
     @JsonProperty("labelSelectors")
     public void setLabelSelectors(Map<String, String> labelSelectors) {
         this.labelSelectors = labelSelectors;
     }
 
+    /**
+     * Namespaces is a set of namespace to which objects belong.
+     */
     @JsonProperty("namespaces")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getNamespaces() {
         return namespaces;
     }
 
+    /**
+     * Namespaces is a set of namespace to which objects belong.
+     */
     @JsonProperty("namespaces")
     public void setNamespaces(List<String> namespaces) {
         this.namespaces = namespaces;
     }
 
+    /**
+     * Map of string keys and values that can be used to select nodes. Selector which must match a node's labels, and objects must belong to these selected nodes.
+     */
     @JsonProperty("nodeSelectors")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getNodeSelectors() {
         return nodeSelectors;
     }
 
+    /**
+     * Map of string keys and values that can be used to select nodes. Selector which must match a node's labels, and objects must belong to these selected nodes.
+     */
     @JsonProperty("nodeSelectors")
     public void setNodeSelectors(Map<String, String> nodeSelectors) {
         this.nodeSelectors = nodeSelectors;
     }
 
+    /**
+     * Nodes is a set of node name and objects must belong to these nodes.
+     */
     @JsonProperty("nodes")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getNodes() {
         return nodes;
     }
 
+    /**
+     * Nodes is a set of node name and objects must belong to these nodes.
+     */
     @JsonProperty("nodes")
     public void setNodes(List<String> nodes) {
         this.nodes = nodes;
     }
 
+    /**
+     * PodPhaseSelectors is a set of condition of a pod at the current time. supported value: Pending / Running / Succeeded / Failed / Unknown
+     */
     @JsonProperty("podPhaseSelectors")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getPodPhaseSelectors() {
         return podPhaseSelectors;
     }
 
+    /**
+     * PodPhaseSelectors is a set of condition of a pod at the current time. supported value: Pending / Running / Succeeded / Failed / Unknown
+     */
     @JsonProperty("podPhaseSelectors")
     public void setPodPhaseSelectors(List<String> podPhaseSelectors) {
         this.podPhaseSelectors = podPhaseSelectors;
     }
 
+    /**
+     * Pods is a map of string keys and a set values that used to select pods. The key defines the namespace which pods belong, and the each values is a set of pod names.
+     */
     @JsonProperty("pods")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, List<String>> getPods() {
         return pods;
     }
 
+    /**
+     * Pods is a map of string keys and a set values that used to select pods. The key defines the namespace which pods belong, and the each values is a set of pod names.
+     */
     @JsonProperty("pods")
     public void setPods(Map<String, List<String>> pods) {
         this.pods = pods;

@@ -19,6 +19,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * A topology selector term represents the result of label queries. A null or empty topology selector term matches no objects. The requirements of them are ANDed. It provides a subset of functionality as NodeSelectorTerm. This is an alpha feature and may change in the future.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -52,12 +55,18 @@ public class TopologySelectorTerm implements Editable<TopologySelectorTermBuilde
         this.matchLabelExpressions = matchLabelExpressions;
     }
 
+    /**
+     * A list of topology selector requirements by labels.
+     */
     @JsonProperty("matchLabelExpressions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<TopologySelectorLabelRequirement> getMatchLabelExpressions() {
         return matchLabelExpressions;
     }
 
+    /**
+     * A list of topology selector requirements by labels.
+     */
     @JsonProperty("matchLabelExpressions")
     public void setMatchLabelExpressions(List<TopologySelectorLabelRequirement> matchLabelExpressions) {
         this.matchLabelExpressions = matchLabelExpressions;

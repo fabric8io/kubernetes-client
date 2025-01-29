@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * K8SSelectorConfig is Kubernetes Selector Config
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -86,31 +89,49 @@ public class K8SSelectorConfig implements Editable<K8SSelectorConfigBuilder>, Ku
         this.role = role;
     }
 
+    /**
+     * An optional field selector to limit the service discovery to resources which have fields with specific values. e.g: `metadata.name=foobar`
+     */
     @JsonProperty("field")
     public String getField() {
         return field;
     }
 
+    /**
+     * An optional field selector to limit the service discovery to resources which have fields with specific values. e.g: `metadata.name=foobar`
+     */
     @JsonProperty("field")
     public void setField(String field) {
         this.field = field;
     }
 
+    /**
+     * An optional label selector to limit the service discovery to resources with specific labels and label values. e.g: `node.kubernetes.io/instance-type=master`
+     */
     @JsonProperty("label")
     public String getLabel() {
         return label;
     }
 
+    /**
+     * An optional label selector to limit the service discovery to resources with specific labels and label values. e.g: `node.kubernetes.io/instance-type=master`
+     */
     @JsonProperty("label")
     public void setLabel(String label) {
         this.label = label;
     }
 
+    /**
+     * Role specifies the type of Kubernetes resource to limit the service discovery to. Accepted values are: Node, Pod, Endpoints, EndpointSlice, Service, Ingress.
+     */
     @JsonProperty("role")
     public String getRole() {
         return role;
     }
 
+    /**
+     * Role specifies the type of Kubernetes resource to limit the service discovery to. Accepted values are: Node, Pod, Endpoints, EndpointSlice, Service, Ingress.
+     */
     @JsonProperty("role")
     public void setRole(String role) {
         this.role = role;

@@ -106,81 +106,129 @@ public class NetworkDuplicateSpec implements Editable<NetworkDuplicateSpecBuilde
         this.sourcePort = sourcePort;
     }
 
+    /**
+     * correlation is percentage (10 is 10%)
+     */
     @JsonProperty("correlation")
     public String getCorrelation() {
         return correlation;
     }
 
+    /**
+     * correlation is percentage (10 is 10%)
+     */
     @JsonProperty("correlation")
     public void setCorrelation(String correlation) {
         this.correlation = correlation;
     }
 
+    /**
+     * the network interface to impact
+     */
     @JsonProperty("device")
     public String getDevice() {
         return device;
     }
 
+    /**
+     * the network interface to impact
+     */
     @JsonProperty("device")
     public void setDevice(String device) {
         this.device = device;
     }
 
+    /**
+     * only impact egress traffic to these destination ports, use a ',' to separate or to indicate the range, such as 80, 8001:8010. it can only be used in conjunction with -p tcp or -p udp
+     */
     @JsonProperty("egress-port")
     public String getEgressPort() {
         return egressPort;
     }
 
+    /**
+     * only impact egress traffic to these destination ports, use a ',' to separate or to indicate the range, such as 80, 8001:8010. it can only be used in conjunction with -p tcp or -p udp
+     */
     @JsonProperty("egress-port")
     public void setEgressPort(String egressPort) {
         this.egressPort = egressPort;
     }
 
+    /**
+     * only impact traffic to these hostnames
+     */
     @JsonProperty("hostname")
     public String getHostname() {
         return hostname;
     }
 
+    /**
+     * only impact traffic to these hostnames
+     */
     @JsonProperty("hostname")
     public void setHostname(String hostname) {
         this.hostname = hostname;
     }
 
+    /**
+     * only impact egress traffic to these IP addresses
+     */
     @JsonProperty("ip-address")
     public String getIpAddress() {
         return ipAddress;
     }
 
+    /**
+     * only impact egress traffic to these IP addresses
+     */
     @JsonProperty("ip-address")
     public void setIpAddress(String ipAddress) {
         this.ipAddress = ipAddress;
     }
 
+    /**
+     * only impact traffic using this IP protocol, supported: tcp, udp, icmp, all
+     */
     @JsonProperty("ip-protocol")
     public String getIpProtocol() {
         return ipProtocol;
     }
 
+    /**
+     * only impact traffic using this IP protocol, supported: tcp, udp, icmp, all
+     */
     @JsonProperty("ip-protocol")
     public void setIpProtocol(String ipProtocol) {
         this.ipProtocol = ipProtocol;
     }
 
+    /**
+     * percentage of packets to duplicate (10 is 10%)
+     */
     @JsonProperty("percent")
     public String getPercent() {
         return percent;
     }
 
+    /**
+     * percentage of packets to duplicate (10 is 10%)
+     */
     @JsonProperty("percent")
     public void setPercent(String percent) {
         this.percent = percent;
     }
 
+    /**
+     * only impact egress traffic from these source ports, use a ',' to separate or to indicate the range, such as 80, 8001:8010. it can only be used in conjunction with -p tcp or -p udp
+     */
     @JsonProperty("source-port")
     public String getSourcePort() {
         return sourcePort;
     }
 
+    /**
+     * only impact egress traffic from these source ports, use a ',' to separate or to indicate the range, such as 80, 8001:8010. it can only be used in conjunction with -p tcp or -p udp
+     */
     @JsonProperty("source-port")
     public void setSourcePort(String sourcePort) {
         this.sourcePort = sourcePort;

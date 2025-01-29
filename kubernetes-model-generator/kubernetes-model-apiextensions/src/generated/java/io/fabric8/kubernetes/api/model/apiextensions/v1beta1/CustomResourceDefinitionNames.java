@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * CustomResourceDefinitionNames indicates the names to serve this CustomResourceDefinition
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -102,63 +105,99 @@ public class CustomResourceDefinitionNames implements Editable<CustomResourceDef
         this.singular = singular;
     }
 
+    /**
+     * categories is a list of grouped resources this custom resource belongs to (e.g. 'all'). This is published in API discovery documents, and used by clients to support invocations like `kubectl get all`.
+     */
     @JsonProperty("categories")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getCategories() {
         return categories;
     }
 
+    /**
+     * categories is a list of grouped resources this custom resource belongs to (e.g. 'all'). This is published in API discovery documents, and used by clients to support invocations like `kubectl get all`.
+     */
     @JsonProperty("categories")
     public void setCategories(List<String> categories) {
         this.categories = categories;
     }
 
+    /**
+     * kind is the serialized kind of the resource. It is normally CamelCase and singular. Custom resource instances will use this value as the `kind` attribute in API calls.
+     */
     @JsonProperty("kind")
     public String getKind() {
         return kind;
     }
 
+    /**
+     * kind is the serialized kind of the resource. It is normally CamelCase and singular. Custom resource instances will use this value as the `kind` attribute in API calls.
+     */
     @JsonProperty("kind")
     public void setKind(String kind) {
         this.kind = kind;
     }
 
+    /**
+     * listKind is the serialized kind of the list for this resource. Defaults to "`kind`List".
+     */
     @JsonProperty("listKind")
     public String getListKind() {
         return listKind;
     }
 
+    /**
+     * listKind is the serialized kind of the list for this resource. Defaults to "`kind`List".
+     */
     @JsonProperty("listKind")
     public void setListKind(String listKind) {
         this.listKind = listKind;
     }
 
+    /**
+     * plural is the plural name of the resource to serve. The custom resources are served under `/apis/&lt;group&gt;/&lt;version&gt;/.../&lt;plural&gt;`. Must match the name of the CustomResourceDefinition (in the form `&lt;names.plural&gt;.&lt;group&gt;`). Must be all lowercase.
+     */
     @JsonProperty("plural")
     public String getPlural() {
         return plural;
     }
 
+    /**
+     * plural is the plural name of the resource to serve. The custom resources are served under `/apis/&lt;group&gt;/&lt;version&gt;/.../&lt;plural&gt;`. Must match the name of the CustomResourceDefinition (in the form `&lt;names.plural&gt;.&lt;group&gt;`). Must be all lowercase.
+     */
     @JsonProperty("plural")
     public void setPlural(String plural) {
         this.plural = plural;
     }
 
+    /**
+     * shortNames are short names for the resource, exposed in API discovery documents, and used by clients to support invocations like `kubectl get &lt;shortname&gt;`. It must be all lowercase.
+     */
     @JsonProperty("shortNames")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getShortNames() {
         return shortNames;
     }
 
+    /**
+     * shortNames are short names for the resource, exposed in API discovery documents, and used by clients to support invocations like `kubectl get &lt;shortname&gt;`. It must be all lowercase.
+     */
     @JsonProperty("shortNames")
     public void setShortNames(List<String> shortNames) {
         this.shortNames = shortNames;
     }
 
+    /**
+     * singular is the singular name of the resource. It must be all lowercase. Defaults to lowercased `kind`.
+     */
     @JsonProperty("singular")
     public String getSingular() {
         return singular;
     }
 
+    /**
+     * singular is the singular name of the resource. It must be all lowercase. Defaults to lowercased `kind`.
+     */
     @JsonProperty("singular")
     public void setSingular(String singular) {
         this.singular = singular;

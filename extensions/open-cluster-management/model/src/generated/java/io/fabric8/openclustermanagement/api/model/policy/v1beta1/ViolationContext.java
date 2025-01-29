@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ViolationContext defines the noncompliant replicated policy information that is sent to the AnsibleJob through the extra_vars parameter.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -103,64 +106,100 @@ public class ViolationContext implements Editable<ViolationContextBuilder>, Kube
         this.targetClusters = targetClusters;
     }
 
+    /**
+     * ViolationContext defines the noncompliant replicated policy information that is sent to the AnsibleJob through the extra_vars parameter.
+     */
     @JsonProperty("hubCluster")
     public String getHubCluster() {
         return hubCluster;
     }
 
+    /**
+     * ViolationContext defines the noncompliant replicated policy information that is sent to the AnsibleJob through the extra_vars parameter.
+     */
     @JsonProperty("hubCluster")
     public void setHubCluster(String hubCluster) {
         this.hubCluster = hubCluster;
     }
 
+    /**
+     * ViolationContext defines the noncompliant replicated policy information that is sent to the AnsibleJob through the extra_vars parameter.
+     */
     @JsonProperty("policyName")
     public String getPolicyName() {
         return policyName;
     }
 
+    /**
+     * ViolationContext defines the noncompliant replicated policy information that is sent to the AnsibleJob through the extra_vars parameter.
+     */
     @JsonProperty("policyName")
     public void setPolicyName(String policyName) {
         this.policyName = policyName;
     }
 
+    /**
+     * ViolationContext defines the noncompliant replicated policy information that is sent to the AnsibleJob through the extra_vars parameter.
+     */
     @JsonProperty("policyNamespace")
     public String getPolicyNamespace() {
         return policyNamespace;
     }
 
+    /**
+     * ViolationContext defines the noncompliant replicated policy information that is sent to the AnsibleJob through the extra_vars parameter.
+     */
     @JsonProperty("policyNamespace")
     public void setPolicyNamespace(String policyNamespace) {
         this.policyNamespace = policyNamespace;
     }
 
+    /**
+     * ViolationContext defines the noncompliant replicated policy information that is sent to the AnsibleJob through the extra_vars parameter.
+     */
     @JsonProperty("policySets")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getPolicySets() {
         return policySets;
     }
 
+    /**
+     * ViolationContext defines the noncompliant replicated policy information that is sent to the AnsibleJob through the extra_vars parameter.
+     */
     @JsonProperty("policySets")
     public void setPolicySets(List<String> policySets) {
         this.policySets = policySets;
     }
 
+    /**
+     * ViolationContext defines the noncompliant replicated policy information that is sent to the AnsibleJob through the extra_vars parameter.
+     */
     @JsonProperty("policyViolations")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, ReplicatedPolicyStatus> getPolicyViolations() {
         return policyViolations;
     }
 
+    /**
+     * ViolationContext defines the noncompliant replicated policy information that is sent to the AnsibleJob through the extra_vars parameter.
+     */
     @JsonProperty("policyViolations")
     public void setPolicyViolations(Map<String, ReplicatedPolicyStatus> policyViolations) {
         this.policyViolations = policyViolations;
     }
 
+    /**
+     * ViolationContext defines the noncompliant replicated policy information that is sent to the AnsibleJob through the extra_vars parameter.
+     */
     @JsonProperty("targetClusters")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getTargetClusters() {
         return targetClusters;
     }
 
+    /**
+     * ViolationContext defines the noncompliant replicated policy information that is sent to the AnsibleJob through the extra_vars parameter.
+     */
     @JsonProperty("targetClusters")
     public void setTargetClusters(List<String> targetClusters) {
         this.targetClusters = targetClusters;

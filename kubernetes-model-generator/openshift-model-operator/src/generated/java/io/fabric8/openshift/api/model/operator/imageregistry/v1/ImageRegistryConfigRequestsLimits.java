@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ImageRegistryConfigRequestsLimits holds configuration on the max, enqueued and waiting registry's API requests.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -86,31 +89,49 @@ public class ImageRegistryConfigRequestsLimits implements Editable<ImageRegistry
         this.maxWaitInQueue = maxWaitInQueue;
     }
 
+    /**
+     * maxInQueue sets the maximum queued api requests to the registry.
+     */
     @JsonProperty("maxInQueue")
     public Integer getMaxInQueue() {
         return maxInQueue;
     }
 
+    /**
+     * maxInQueue sets the maximum queued api requests to the registry.
+     */
     @JsonProperty("maxInQueue")
     public void setMaxInQueue(Integer maxInQueue) {
         this.maxInQueue = maxInQueue;
     }
 
+    /**
+     * maxRunning sets the maximum in flight api requests to the registry.
+     */
     @JsonProperty("maxRunning")
     public Integer getMaxRunning() {
         return maxRunning;
     }
 
+    /**
+     * maxRunning sets the maximum in flight api requests to the registry.
+     */
     @JsonProperty("maxRunning")
     public void setMaxRunning(Integer maxRunning) {
         this.maxRunning = maxRunning;
     }
 
+    /**
+     * ImageRegistryConfigRequestsLimits holds configuration on the max, enqueued and waiting registry's API requests.
+     */
     @JsonProperty("maxWaitInQueue")
     public String getMaxWaitInQueue() {
         return maxWaitInQueue;
     }
 
+    /**
+     * ImageRegistryConfigRequestsLimits holds configuration on the max, enqueued and waiting registry's API requests.
+     */
     @JsonProperty("maxWaitInQueue")
     public void setMaxWaitInQueue(String maxWaitInQueue) {
         this.maxWaitInQueue = maxWaitInQueue;

@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * JobFlowStatus defines the observed state of JobFlow
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -120,99 +123,153 @@ public class JobFlowStatus implements Editable<JobFlowStatusBuilder>, Kubernetes
         this.unKnowJobs = unKnowJobs;
     }
 
+    /**
+     * JobFlowStatus defines the observed state of JobFlow
+     */
     @JsonProperty("completedJobs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getCompletedJobs() {
         return completedJobs;
     }
 
+    /**
+     * JobFlowStatus defines the observed state of JobFlow
+     */
     @JsonProperty("completedJobs")
     public void setCompletedJobs(List<String> completedJobs) {
         this.completedJobs = completedJobs;
     }
 
+    /**
+     * JobFlowStatus defines the observed state of JobFlow
+     */
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, Condition> getConditions() {
         return conditions;
     }
 
+    /**
+     * JobFlowStatus defines the observed state of JobFlow
+     */
     @JsonProperty("conditions")
     public void setConditions(Map<String, Condition> conditions) {
         this.conditions = conditions;
     }
 
+    /**
+     * JobFlowStatus defines the observed state of JobFlow
+     */
     @JsonProperty("failedJobs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getFailedJobs() {
         return failedJobs;
     }
 
+    /**
+     * JobFlowStatus defines the observed state of JobFlow
+     */
     @JsonProperty("failedJobs")
     public void setFailedJobs(List<String> failedJobs) {
         this.failedJobs = failedJobs;
     }
 
+    /**
+     * JobFlowStatus defines the observed state of JobFlow
+     */
     @JsonProperty("jobStatusList")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<JobStatus> getJobStatusList() {
         return jobStatusList;
     }
 
+    /**
+     * JobFlowStatus defines the observed state of JobFlow
+     */
     @JsonProperty("jobStatusList")
     public void setJobStatusList(List<JobStatus> jobStatusList) {
         this.jobStatusList = jobStatusList;
     }
 
+    /**
+     * JobFlowStatus defines the observed state of JobFlow
+     */
     @JsonProperty("pendingJobs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getPendingJobs() {
         return pendingJobs;
     }
 
+    /**
+     * JobFlowStatus defines the observed state of JobFlow
+     */
     @JsonProperty("pendingJobs")
     public void setPendingJobs(List<String> pendingJobs) {
         this.pendingJobs = pendingJobs;
     }
 
+    /**
+     * JobFlowStatus defines the observed state of JobFlow
+     */
     @JsonProperty("runningJobs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getRunningJobs() {
         return runningJobs;
     }
 
+    /**
+     * JobFlowStatus defines the observed state of JobFlow
+     */
     @JsonProperty("runningJobs")
     public void setRunningJobs(List<String> runningJobs) {
         this.runningJobs = runningJobs;
     }
 
+    /**
+     * JobFlowStatus defines the observed state of JobFlow
+     */
     @JsonProperty("state")
     public State getState() {
         return state;
     }
 
+    /**
+     * JobFlowStatus defines the observed state of JobFlow
+     */
     @JsonProperty("state")
     public void setState(State state) {
         this.state = state;
     }
 
+    /**
+     * JobFlowStatus defines the observed state of JobFlow
+     */
     @JsonProperty("terminatedJobs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getTerminatedJobs() {
         return terminatedJobs;
     }
 
+    /**
+     * JobFlowStatus defines the observed state of JobFlow
+     */
     @JsonProperty("terminatedJobs")
     public void setTerminatedJobs(List<String> terminatedJobs) {
         this.terminatedJobs = terminatedJobs;
     }
 
+    /**
+     * JobFlowStatus defines the observed state of JobFlow
+     */
     @JsonProperty("unKnowJobs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getUnKnowJobs() {
         return unKnowJobs;
     }
 
+    /**
+     * JobFlowStatus defines the observed state of JobFlow
+     */
     @JsonProperty("unKnowJobs")
     public void setUnKnowJobs(List<String> unKnowJobs) {
         this.unKnowJobs = unKnowJobs;

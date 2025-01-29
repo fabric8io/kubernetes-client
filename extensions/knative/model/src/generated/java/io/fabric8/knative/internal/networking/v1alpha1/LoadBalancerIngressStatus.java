@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * LoadBalancerIngressStatus represents the status of a load-balancer ingress point: traffic intended for the service should be sent to an ingress point.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -90,41 +93,65 @@ public class LoadBalancerIngressStatus implements Editable<LoadBalancerIngressSt
         this.meshOnly = meshOnly;
     }
 
+    /**
+     * Domain is set for load-balancer ingress points that are DNS based (typically AWS load-balancers)
+     */
     @JsonProperty("domain")
     public String getDomain() {
         return domain;
     }
 
+    /**
+     * Domain is set for load-balancer ingress points that are DNS based (typically AWS load-balancers)
+     */
     @JsonProperty("domain")
     public void setDomain(String domain) {
         this.domain = domain;
     }
 
+    /**
+     * DomainInternal is set if there is a cluster-local DNS name to access the Ingress.<br><p> <br><p> NOTE: This differs from K8s Ingress, since we also desire to have a cluster-local<br><p>       DNS name to allow routing in case of not having a mesh.
+     */
     @JsonProperty("domainInternal")
     public String getDomainInternal() {
         return domainInternal;
     }
 
+    /**
+     * DomainInternal is set if there is a cluster-local DNS name to access the Ingress.<br><p> <br><p> NOTE: This differs from K8s Ingress, since we also desire to have a cluster-local<br><p>       DNS name to allow routing in case of not having a mesh.
+     */
     @JsonProperty("domainInternal")
     public void setDomainInternal(String domainInternal) {
         this.domainInternal = domainInternal;
     }
 
+    /**
+     * IP is set for load-balancer ingress points that are IP based (typically GCE or OpenStack load-balancers)
+     */
     @JsonProperty("ip")
     public String getIp() {
         return ip;
     }
 
+    /**
+     * IP is set for load-balancer ingress points that are IP based (typically GCE or OpenStack load-balancers)
+     */
     @JsonProperty("ip")
     public void setIp(String ip) {
         this.ip = ip;
     }
 
+    /**
+     * MeshOnly is set if the Ingress is only load-balanced through a Service mesh.
+     */
     @JsonProperty("meshOnly")
     public Boolean getMeshOnly() {
         return meshOnly;
     }
 
+    /**
+     * MeshOnly is set if the Ingress is only load-balanced through a Service mesh.
+     */
     @JsonProperty("meshOnly")
     public void setMeshOnly(Boolean meshOnly) {
         this.meshOnly = meshOnly;

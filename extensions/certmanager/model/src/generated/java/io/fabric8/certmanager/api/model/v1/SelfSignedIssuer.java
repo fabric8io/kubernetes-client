@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Configures an issuer to 'self sign' certificates using the private key used to create the CertificateRequest object.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -81,12 +84,18 @@ public class SelfSignedIssuer implements Editable<SelfSignedIssuerBuilder>, Kube
         this.crlDistributionPoints = crlDistributionPoints;
     }
 
+    /**
+     * The CRL distribution points is an X.509 v3 certificate extension which identifies the location of the CRL from which the revocation of this certificate can be checked. If not set certificate will be issued without CDP. Values are strings.
+     */
     @JsonProperty("crlDistributionPoints")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getCrlDistributionPoints() {
         return crlDistributionPoints;
     }
 
+    /**
+     * The CRL distribution points is an X.509 v3 certificate extension which identifies the location of the CRL from which the revocation of this certificate can be checked. If not set certificate will be issued without CDP. Values are strings.
+     */
     @JsonProperty("crlDistributionPoints")
     public void setCrlDistributionPoints(List<String> crlDistributionPoints) {
         this.crlDistributionPoints = crlDistributionPoints;

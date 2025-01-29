@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ConsoleStatus defines the observed status of the Console.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -78,11 +81,17 @@ public class ConsoleStatus implements Editable<ConsoleStatusBuilder>, Kubernetes
         this.consoleURL = consoleURL;
     }
 
+    /**
+     * The URL for the console. This will be derived from the host for the route that is created for the console.
+     */
     @JsonProperty("consoleURL")
     public String getConsoleURL() {
         return consoleURL;
     }
 
+    /**
+     * The URL for the console. This will be derived from the host for the route that is created for the console.
+     */
     @JsonProperty("consoleURL")
     public void setConsoleURL(String consoleURL) {
         this.consoleURL = consoleURL;

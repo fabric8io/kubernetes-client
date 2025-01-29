@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * DNS contains values interesting for DNS resolvers
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -95,44 +98,68 @@ public class DNS implements Editable<DNSBuilder>, KubernetesResource
         this.search = search;
     }
 
+    /**
+     * DNS contains values interesting for DNS resolvers
+     */
     @JsonProperty("domain")
     public String getDomain() {
         return domain;
     }
 
+    /**
+     * DNS contains values interesting for DNS resolvers
+     */
     @JsonProperty("domain")
     public void setDomain(String domain) {
         this.domain = domain;
     }
 
+    /**
+     * DNS contains values interesting for DNS resolvers
+     */
     @JsonProperty("nameservers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getNameservers() {
         return nameservers;
     }
 
+    /**
+     * DNS contains values interesting for DNS resolvers
+     */
     @JsonProperty("nameservers")
     public void setNameservers(List<String> nameservers) {
         this.nameservers = nameservers;
     }
 
+    /**
+     * DNS contains values interesting for DNS resolvers
+     */
     @JsonProperty("options")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getOptions() {
         return options;
     }
 
+    /**
+     * DNS contains values interesting for DNS resolvers
+     */
     @JsonProperty("options")
     public void setOptions(List<String> options) {
         this.options = options;
     }
 
+    /**
+     * DNS contains values interesting for DNS resolvers
+     */
     @JsonProperty("search")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getSearch() {
         return search;
     }
 
+    /**
+     * DNS contains values interesting for DNS resolvers
+     */
     @JsonProperty("search")
     public void setSearch(List<String> search) {
         this.search = search;

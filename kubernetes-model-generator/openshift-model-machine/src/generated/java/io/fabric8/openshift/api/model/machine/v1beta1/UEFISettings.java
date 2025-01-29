@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * UEFISettings specifies the security settings like secure boot and vTPM used while creating the virtual machine.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class UEFISettings implements Editable<UEFISettingsBuilder>, KubernetesRe
         this.virtualizedTrustedPlatformModule = virtualizedTrustedPlatformModule;
     }
 
+    /**
+     * secureBoot specifies whether secure boot should be enabled on the virtual machine. Secure Boot verifies the digital signature of all boot components and halts the boot process if signature verification fails. If omitted, the platform chooses a default, which is subject to change over time, currently that default is disabled.
+     */
     @JsonProperty("secureBoot")
     public String getSecureBoot() {
         return secureBoot;
     }
 
+    /**
+     * secureBoot specifies whether secure boot should be enabled on the virtual machine. Secure Boot verifies the digital signature of all boot components and halts the boot process if signature verification fails. If omitted, the platform chooses a default, which is subject to change over time, currently that default is disabled.
+     */
     @JsonProperty("secureBoot")
     public void setSecureBoot(String secureBoot) {
         this.secureBoot = secureBoot;
     }
 
+    /**
+     * virtualizedTrustedPlatformModule specifies whether vTPM should be enabled on the virtual machine. When enabled the virtualized trusted platform module measurements are used to create a known good boot integrity policy baseline. The integrity policy baseline is used for comparison with measurements from subsequent VM boots to determine if anything has changed. This is required to be enabled if SecurityEncryptionType is defined. If omitted, the platform chooses a default, which is subject to change over time, currently that default is disabled.
+     */
     @JsonProperty("virtualizedTrustedPlatformModule")
     public String getVirtualizedTrustedPlatformModule() {
         return virtualizedTrustedPlatformModule;
     }
 
+    /**
+     * virtualizedTrustedPlatformModule specifies whether vTPM should be enabled on the virtual machine. When enabled the virtualized trusted platform module measurements are used to create a known good boot integrity policy baseline. The integrity policy baseline is used for comparison with measurements from subsequent VM boots to determine if anything has changed. This is required to be enabled if SecurityEncryptionType is defined. If omitted, the platform chooses a default, which is subject to change over time, currently that default is disabled.
+     */
     @JsonProperty("virtualizedTrustedPlatformModule")
     public void setVirtualizedTrustedPlatformModule(String virtualizedTrustedPlatformModule) {
         this.virtualizedTrustedPlatformModule = virtualizedTrustedPlatformModule;

@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * VolumeAttachmentSpec is the specification of a VolumeAttachment request.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -86,31 +89,49 @@ public class VolumeAttachmentSpec implements Editable<VolumeAttachmentSpecBuilde
         this.source = source;
     }
 
+    /**
+     * Attacher indicates the name of the volume driver that MUST handle this request. This is the name returned by GetPluginName().
+     */
     @JsonProperty("attacher")
     public String getAttacher() {
         return attacher;
     }
 
+    /**
+     * Attacher indicates the name of the volume driver that MUST handle this request. This is the name returned by GetPluginName().
+     */
     @JsonProperty("attacher")
     public void setAttacher(String attacher) {
         this.attacher = attacher;
     }
 
+    /**
+     * The node that the volume should be attached to.
+     */
     @JsonProperty("nodeName")
     public String getNodeName() {
         return nodeName;
     }
 
+    /**
+     * The node that the volume should be attached to.
+     */
     @JsonProperty("nodeName")
     public void setNodeName(String nodeName) {
         this.nodeName = nodeName;
     }
 
+    /**
+     * VolumeAttachmentSpec is the specification of a VolumeAttachment request.
+     */
     @JsonProperty("source")
     public VolumeAttachmentSource getSource() {
         return source;
     }
 
+    /**
+     * VolumeAttachmentSpec is the specification of a VolumeAttachment request.
+     */
     @JsonProperty("source")
     public void setSource(VolumeAttachmentSource source) {
         this.source = source;

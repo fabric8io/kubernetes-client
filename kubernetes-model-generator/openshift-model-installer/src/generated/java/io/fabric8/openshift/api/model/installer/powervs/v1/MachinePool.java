@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * MachinePool stores the configuration for a machine pool installed on IBM Power VS.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -101,62 +104,98 @@ public class MachinePool implements Editable<MachinePoolBuilder>, KubernetesReso
         this.volumeIDs = volumeIDs;
     }
 
+    /**
+     * memoryGiB is the size of a virtual machine's memory, in GiB.
+     */
     @JsonProperty("memoryGiB")
     public Integer getMemoryGiB() {
         return memoryGiB;
     }
 
+    /**
+     * memoryGiB is the size of a virtual machine's memory, in GiB.
+     */
     @JsonProperty("memoryGiB")
     public void setMemoryGiB(Integer memoryGiB) {
         this.memoryGiB = memoryGiB;
     }
 
+    /**
+     * ProcType defines the processor sharing model for the instance. Must be one of {Capped, Dedicated, Shared}.
+     */
     @JsonProperty("procType")
     public String getProcType() {
         return procType;
     }
 
+    /**
+     * ProcType defines the processor sharing model for the instance. Must be one of {Capped, Dedicated, Shared}.
+     */
     @JsonProperty("procType")
     public void setProcType(String procType) {
         this.procType = procType;
     }
 
+    /**
+     * MachinePool stores the configuration for a machine pool installed on IBM Power VS.
+     */
     @JsonProperty("processors")
     public IntOrString getProcessors() {
         return processors;
     }
 
+    /**
+     * MachinePool stores the configuration for a machine pool installed on IBM Power VS.
+     */
     @JsonProperty("processors")
     public void setProcessors(IntOrString processors) {
         this.processors = processors;
     }
 
+    /**
+     * SMTLevel specifies the level of SMT to set the control plane and worker nodes to.
+     */
     @JsonProperty("smtLevel")
     public String getSmtLevel() {
         return smtLevel;
     }
 
+    /**
+     * SMTLevel specifies the level of SMT to set the control plane and worker nodes to.
+     */
     @JsonProperty("smtLevel")
     public void setSmtLevel(String smtLevel) {
         this.smtLevel = smtLevel;
     }
 
+    /**
+     * SysType defines the system type for instance.
+     */
     @JsonProperty("sysType")
     public String getSysType() {
         return sysType;
     }
 
+    /**
+     * SysType defines the system type for instance.
+     */
     @JsonProperty("sysType")
     public void setSysType(String sysType) {
         this.sysType = sysType;
     }
 
+    /**
+     * VolumeIDs is the list of volumes attached to the instance.
+     */
     @JsonProperty("volumeIDs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getVolumeIDs() {
         return volumeIDs;
     }
 
+    /**
+     * VolumeIDs is the list of volumes attached to the instance.
+     */
     @JsonProperty("volumeIDs")
     public void setVolumeIDs(List<String> volumeIDs) {
         this.volumeIDs = volumeIDs;

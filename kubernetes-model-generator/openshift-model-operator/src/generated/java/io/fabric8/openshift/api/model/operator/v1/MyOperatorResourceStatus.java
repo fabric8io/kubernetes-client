@@ -102,63 +102,99 @@ public class MyOperatorResourceStatus implements Editable<MyOperatorResourceStat
         this.version = version;
     }
 
+    /**
+     * conditions is a list of conditions and their status
+     */
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<OperatorCondition> getConditions() {
         return conditions;
     }
 
+    /**
+     * conditions is a list of conditions and their status
+     */
     @JsonProperty("conditions")
     public void setConditions(List<OperatorCondition> conditions) {
         this.conditions = conditions;
     }
 
+    /**
+     * generations are used to determine when an item needs to be reconciled or has changed in a way that needs a reaction.
+     */
     @JsonProperty("generations")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<GenerationStatus> getGenerations() {
         return generations;
     }
 
+    /**
+     * generations are used to determine when an item needs to be reconciled or has changed in a way that needs a reaction.
+     */
     @JsonProperty("generations")
     public void setGenerations(List<GenerationStatus> generations) {
         this.generations = generations;
     }
 
+    /**
+     * latestAvailableRevision is the deploymentID of the most recent deployment
+     */
     @JsonProperty("latestAvailableRevision")
     public Integer getLatestAvailableRevision() {
         return latestAvailableRevision;
     }
 
+    /**
+     * latestAvailableRevision is the deploymentID of the most recent deployment
+     */
     @JsonProperty("latestAvailableRevision")
     public void setLatestAvailableRevision(Integer latestAvailableRevision) {
         this.latestAvailableRevision = latestAvailableRevision;
     }
 
+    /**
+     * observedGeneration is the last generation change you've dealt with
+     */
     @JsonProperty("observedGeneration")
     public Long getObservedGeneration() {
         return observedGeneration;
     }
 
+    /**
+     * observedGeneration is the last generation change you've dealt with
+     */
     @JsonProperty("observedGeneration")
     public void setObservedGeneration(Long observedGeneration) {
         this.observedGeneration = observedGeneration;
     }
 
+    /**
+     * readyReplicas indicates how many replicas are ready and at the desired state
+     */
     @JsonProperty("readyReplicas")
     public Integer getReadyReplicas() {
         return readyReplicas;
     }
 
+    /**
+     * readyReplicas indicates how many replicas are ready and at the desired state
+     */
     @JsonProperty("readyReplicas")
     public void setReadyReplicas(Integer readyReplicas) {
         this.readyReplicas = readyReplicas;
     }
 
+    /**
+     * version is the level this availability applies to
+     */
     @JsonProperty("version")
     public String getVersion() {
         return version;
     }
 
+    /**
+     * version is the level this availability applies to
+     */
     @JsonProperty("version")
     public void setVersion(String version) {
         this.version = version;

@@ -85,12 +85,18 @@ public class ExperimentStatus implements Editable<ExperimentStatusBuilder>, Kube
         this.desiredPhase = desiredPhase;
     }
 
+    /**
+     * Records are used to track the running status
+     */
     @JsonProperty("containerRecords")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Record> getContainerRecords() {
         return containerRecords;
     }
 
+    /**
+     * Records are used to track the running status
+     */
     @JsonProperty("containerRecords")
     public void setContainerRecords(List<Record> containerRecords) {
         this.containerRecords = containerRecords;

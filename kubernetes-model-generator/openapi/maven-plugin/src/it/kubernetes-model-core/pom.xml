@@ -55,7 +55,7 @@
             <packageName>io.fabric8.kubernetes.api.model</packageName>
             <builderPackage>io.fabric8.kubernetes.api.builder</builderPackage>
             <addBuildableReferences>false</addBuildableReferences>
-            <generateJavadoc>false</generateJavadoc>
+            <generateJavadoc>true</generateJavadoc>
             <packageMappings>
               <io.k8s.api.core.v1>io.fabric8.kubernetes.api.model</io.k8s.api.core.v1>
               <io.k8s.apimachinery.pkg>io.fabric8.kubernetes.api.model</io.k8s.apimachinery.pkg>

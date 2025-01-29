@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * UserLabel is a label to apply to GCP resources created for the cluster.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class UserLabel implements Editable<UserLabelBuilder>, KubernetesResource
         this.value = value;
     }
 
+    /**
+     * key is the key part of the label. A label key can have a maximum of 63 characters and cannot be empty. Label must begin with a lowercase letter, and must contain only lowercase letters, numeric characters, and the following special characters `_-`.
+     */
     @JsonProperty("key")
     public String getKey() {
         return key;
     }
 
+    /**
+     * key is the key part of the label. A label key can have a maximum of 63 characters and cannot be empty. Label must begin with a lowercase letter, and must contain only lowercase letters, numeric characters, and the following special characters `_-`.
+     */
     @JsonProperty("key")
     public void setKey(String key) {
         this.key = key;
     }
 
+    /**
+     * value is the value part of the label. A label value can have a maximum of 63 characters and cannot be empty. Value must contain only lowercase letters, numeric characters, and the following special characters `_-`.
+     */
     @JsonProperty("value")
     public String getValue() {
         return value;
     }
 
+    /**
+     * value is the value part of the label. A label value can have a maximum of 63 characters and cannot be empty. Value must contain only lowercase letters, numeric characters, and the following special characters `_-`.
+     */
     @JsonProperty("value")
     public void setValue(String value) {
         this.value = value;

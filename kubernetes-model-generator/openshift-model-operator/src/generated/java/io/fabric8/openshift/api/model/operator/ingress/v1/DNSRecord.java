@@ -37,6 +37,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * DNSRecord is a DNS record managed in the zones defined by dns.config.openshift.io/cluster .spec.publicZone and .spec.privateZone.<br><p> <br><p> Cluster admin manipulation of this resource is not supported. This resource is only for internal communication of OpenShift operators.<br><p> <br><p> If DNSManagementPolicy is "Unmanaged", the operator will not be responsible for managing the DNS records on the cloud provider.<br><p> <br><p> Compatibility level 1: Stable within a major release for a minimum of 12 months or 3 minor releases (whichever is longer).
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -76,14 +79,8 @@ import lombok.experimental.Accessors;
 public class DNSRecord implements Editable<DNSRecordBuilder>, HasMetadata, Namespaced
 {
 
-    /**
-     * (Required)
-     */
     @JsonProperty("apiVersion")
     private String apiVersion = "ingress.operator.openshift.io/v1";
-    /**
-     * (Required)
-     */
     @JsonProperty("kind")
     private String kind = "DNSRecord";
     @JsonProperty("metadata")
@@ -111,7 +108,7 @@ public class DNSRecord implements Editable<DNSRecordBuilder>, HasMetadata, Names
     }
 
     /**
-     * (Required)
+     * APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -119,7 +116,7 @@ public class DNSRecord implements Editable<DNSRecordBuilder>, HasMetadata, Names
     }
 
     /**
-     * (Required)
+     * APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -127,7 +124,7 @@ public class DNSRecord implements Editable<DNSRecordBuilder>, HasMetadata, Names
     }
 
     /**
-     * (Required)
+     * Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -135,38 +132,56 @@ public class DNSRecord implements Editable<DNSRecordBuilder>, HasMetadata, Names
     }
 
     /**
-     * (Required)
+     * Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
      */
     @JsonProperty("kind")
     public void setKind(String kind) {
         this.kind = kind;
     }
 
+    /**
+     * DNSRecord is a DNS record managed in the zones defined by dns.config.openshift.io/cluster .spec.publicZone and .spec.privateZone.<br><p> <br><p> Cluster admin manipulation of this resource is not supported. This resource is only for internal communication of OpenShift operators.<br><p> <br><p> If DNSManagementPolicy is "Unmanaged", the operator will not be responsible for managing the DNS records on the cloud provider.<br><p> <br><p> Compatibility level 1: Stable within a major release for a minimum of 12 months or 3 minor releases (whichever is longer).
+     */
     @JsonProperty("metadata")
     public ObjectMeta getMetadata() {
         return metadata;
     }
 
+    /**
+     * DNSRecord is a DNS record managed in the zones defined by dns.config.openshift.io/cluster .spec.publicZone and .spec.privateZone.<br><p> <br><p> Cluster admin manipulation of this resource is not supported. This resource is only for internal communication of OpenShift operators.<br><p> <br><p> If DNSManagementPolicy is "Unmanaged", the operator will not be responsible for managing the DNS records on the cloud provider.<br><p> <br><p> Compatibility level 1: Stable within a major release for a minimum of 12 months or 3 minor releases (whichever is longer).
+     */
     @JsonProperty("metadata")
     public void setMetadata(ObjectMeta metadata) {
         this.metadata = metadata;
     }
 
+    /**
+     * DNSRecord is a DNS record managed in the zones defined by dns.config.openshift.io/cluster .spec.publicZone and .spec.privateZone.<br><p> <br><p> Cluster admin manipulation of this resource is not supported. This resource is only for internal communication of OpenShift operators.<br><p> <br><p> If DNSManagementPolicy is "Unmanaged", the operator will not be responsible for managing the DNS records on the cloud provider.<br><p> <br><p> Compatibility level 1: Stable within a major release for a minimum of 12 months or 3 minor releases (whichever is longer).
+     */
     @JsonProperty("spec")
     public DNSRecordSpec getSpec() {
         return spec;
     }
 
+    /**
+     * DNSRecord is a DNS record managed in the zones defined by dns.config.openshift.io/cluster .spec.publicZone and .spec.privateZone.<br><p> <br><p> Cluster admin manipulation of this resource is not supported. This resource is only for internal communication of OpenShift operators.<br><p> <br><p> If DNSManagementPolicy is "Unmanaged", the operator will not be responsible for managing the DNS records on the cloud provider.<br><p> <br><p> Compatibility level 1: Stable within a major release for a minimum of 12 months or 3 minor releases (whichever is longer).
+     */
     @JsonProperty("spec")
     public void setSpec(DNSRecordSpec spec) {
         this.spec = spec;
     }
 
+    /**
+     * DNSRecord is a DNS record managed in the zones defined by dns.config.openshift.io/cluster .spec.publicZone and .spec.privateZone.<br><p> <br><p> Cluster admin manipulation of this resource is not supported. This resource is only for internal communication of OpenShift operators.<br><p> <br><p> If DNSManagementPolicy is "Unmanaged", the operator will not be responsible for managing the DNS records on the cloud provider.<br><p> <br><p> Compatibility level 1: Stable within a major release for a minimum of 12 months or 3 minor releases (whichever is longer).
+     */
     @JsonProperty("status")
     public DNSRecordStatus getStatus() {
         return status;
     }
 
+    /**
+     * DNSRecord is a DNS record managed in the zones defined by dns.config.openshift.io/cluster .spec.publicZone and .spec.privateZone.<br><p> <br><p> Cluster admin manipulation of this resource is not supported. This resource is only for internal communication of OpenShift operators.<br><p> <br><p> If DNSManagementPolicy is "Unmanaged", the operator will not be responsible for managing the DNS records on the cloud provider.<br><p> <br><p> Compatibility level 1: Stable within a major release for a minimum of 12 months or 3 minor releases (whichever is longer).
+     */
     @JsonProperty("status")
     public void setStatus(DNSRecordStatus status) {
         this.status = status;

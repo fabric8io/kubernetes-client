@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * VerticalPodAutoscalerStatus describes the runtime state of the autoscaler.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -85,22 +88,34 @@ public class VerticalPodAutoscalerStatus implements Editable<VerticalPodAutoscal
         this.recommendation = recommendation;
     }
 
+    /**
+     * Conditions is the set of conditions required for this autoscaler to scale its target, and indicates whether or not those conditions are met.
+     */
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<VerticalPodAutoscalerCondition> getConditions() {
         return conditions;
     }
 
+    /**
+     * Conditions is the set of conditions required for this autoscaler to scale its target, and indicates whether or not those conditions are met.
+     */
     @JsonProperty("conditions")
     public void setConditions(List<VerticalPodAutoscalerCondition> conditions) {
         this.conditions = conditions;
     }
 
+    /**
+     * VerticalPodAutoscalerStatus describes the runtime state of the autoscaler.
+     */
     @JsonProperty("recommendation")
     public RecommendedPodResources getRecommendation() {
         return recommendation;
     }
 
+    /**
+     * VerticalPodAutoscalerStatus describes the runtime state of the autoscaler.
+     */
     @JsonProperty("recommendation")
     public void setRecommendation(RecommendedPodResources recommendation) {
         this.recommendation = recommendation;

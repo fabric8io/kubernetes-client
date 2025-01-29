@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ComplianceHistory reports a compliance message from a given time and event.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -86,31 +89,49 @@ public class ComplianceHistory implements Editable<ComplianceHistoryBuilder>, Ku
         this.message = message;
     }
 
+    /**
+     * EventName is the name of the event attached to the message.
+     */
     @JsonProperty("eventName")
     public String getEventName() {
         return eventName;
     }
 
+    /**
+     * EventName is the name of the event attached to the message.
+     */
     @JsonProperty("eventName")
     public void setEventName(String eventName) {
         this.eventName = eventName;
     }
 
+    /**
+     * ComplianceHistory reports a compliance message from a given time and event.
+     */
     @JsonProperty("lastTimestamp")
     public String getLastTimestamp() {
         return lastTimestamp;
     }
 
+    /**
+     * ComplianceHistory reports a compliance message from a given time and event.
+     */
     @JsonProperty("lastTimestamp")
     public void setLastTimestamp(String lastTimestamp) {
         this.lastTimestamp = lastTimestamp;
     }
 
+    /**
+     * Message is the compliance message resulting from evaluating the policy resource.
+     */
     @JsonProperty("message")
     public String getMessage() {
         return message;
     }
 
+    /**
+     * Message is the compliance message resulting from evaluating the policy resource.
+     */
     @JsonProperty("message")
     public void setMessage(String message) {
         this.message = message;

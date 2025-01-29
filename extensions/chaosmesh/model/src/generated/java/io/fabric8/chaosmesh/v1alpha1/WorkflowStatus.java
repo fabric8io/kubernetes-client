@@ -93,12 +93,18 @@ public class WorkflowStatus implements Editable<WorkflowStatusBuilder>, Kubernet
         this.startTime = startTime;
     }
 
+    /**
+     * Represents the latest available observations of a workflow's current state.
+     */
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<WorkflowCondition> getConditions() {
         return conditions;
     }
 
+    /**
+     * Represents the latest available observations of a workflow's current state.
+     */
     @JsonProperty("conditions")
     public void setConditions(List<WorkflowCondition> conditions) {
         this.conditions = conditions;

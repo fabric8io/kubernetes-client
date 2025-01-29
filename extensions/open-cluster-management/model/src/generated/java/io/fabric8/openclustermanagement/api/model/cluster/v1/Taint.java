@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * The managed cluster this Taint is attached to has the "effect" on any placement that does not tolerate the Taint.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -90,41 +93,65 @@ public class Taint implements Editable<TaintBuilder>, KubernetesResource
         this.value = value;
     }
 
+    /**
+     * Effect indicates the effect of the taint on placements that do not tolerate the taint. Valid effects are NoSelect, PreferNoSelect and NoSelectIfNew.
+     */
     @JsonProperty("effect")
     public String getEffect() {
         return effect;
     }
 
+    /**
+     * Effect indicates the effect of the taint on placements that do not tolerate the taint. Valid effects are NoSelect, PreferNoSelect and NoSelectIfNew.
+     */
     @JsonProperty("effect")
     public void setEffect(String effect) {
         this.effect = effect;
     }
 
+    /**
+     * Key is the taint key applied to a cluster. e.g. bar or foo.example.com/bar. The regex it matches is (dns1123SubdomainFmt/)?(qualifiedNameFmt)
+     */
     @JsonProperty("key")
     public String getKey() {
         return key;
     }
 
+    /**
+     * Key is the taint key applied to a cluster. e.g. bar or foo.example.com/bar. The regex it matches is (dns1123SubdomainFmt/)?(qualifiedNameFmt)
+     */
     @JsonProperty("key")
     public void setKey(String key) {
         this.key = key;
     }
 
+    /**
+     * The managed cluster this Taint is attached to has the "effect" on any placement that does not tolerate the Taint.
+     */
     @JsonProperty("timeAdded")
     public String getTimeAdded() {
         return timeAdded;
     }
 
+    /**
+     * The managed cluster this Taint is attached to has the "effect" on any placement that does not tolerate the Taint.
+     */
     @JsonProperty("timeAdded")
     public void setTimeAdded(String timeAdded) {
         this.timeAdded = timeAdded;
     }
 
+    /**
+     * Value is the taint value corresponding to the taint key.
+     */
     @JsonProperty("value")
     public String getValue() {
         return value;
     }
 
+    /**
+     * Value is the taint value corresponding to the taint key.
+     */
     @JsonProperty("value")
     public void setValue(String value) {
         this.value = value;

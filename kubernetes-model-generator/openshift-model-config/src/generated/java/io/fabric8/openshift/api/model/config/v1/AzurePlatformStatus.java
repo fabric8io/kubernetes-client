@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * AzurePlatformStatus holds the current status of the Azure infrastructure provider.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -97,52 +100,82 @@ public class AzurePlatformStatus implements Editable<AzurePlatformStatusBuilder>
         this.resourceTags = resourceTags;
     }
 
+    /**
+     * armEndpoint specifies a URL to use for resource management in non-soverign clouds such as Azure Stack.
+     */
     @JsonProperty("armEndpoint")
     public String getArmEndpoint() {
         return armEndpoint;
     }
 
+    /**
+     * armEndpoint specifies a URL to use for resource management in non-soverign clouds such as Azure Stack.
+     */
     @JsonProperty("armEndpoint")
     public void setArmEndpoint(String armEndpoint) {
         this.armEndpoint = armEndpoint;
     }
 
+    /**
+     * cloudName is the name of the Azure cloud environment which can be used to configure the Azure SDK with the appropriate Azure API endpoints. If empty, the value is equal to `AzurePublicCloud`.
+     */
     @JsonProperty("cloudName")
     public String getCloudName() {
         return cloudName;
     }
 
+    /**
+     * cloudName is the name of the Azure cloud environment which can be used to configure the Azure SDK with the appropriate Azure API endpoints. If empty, the value is equal to `AzurePublicCloud`.
+     */
     @JsonProperty("cloudName")
     public void setCloudName(String cloudName) {
         this.cloudName = cloudName;
     }
 
+    /**
+     * networkResourceGroupName is the Resource Group for network resources like the Virtual Network and Subnets used by the cluster. If empty, the value is same as ResourceGroupName.
+     */
     @JsonProperty("networkResourceGroupName")
     public String getNetworkResourceGroupName() {
         return networkResourceGroupName;
     }
 
+    /**
+     * networkResourceGroupName is the Resource Group for network resources like the Virtual Network and Subnets used by the cluster. If empty, the value is same as ResourceGroupName.
+     */
     @JsonProperty("networkResourceGroupName")
     public void setNetworkResourceGroupName(String networkResourceGroupName) {
         this.networkResourceGroupName = networkResourceGroupName;
     }
 
+    /**
+     * resourceGroupName is the Resource Group for new Azure resources created for the cluster.
+     */
     @JsonProperty("resourceGroupName")
     public String getResourceGroupName() {
         return resourceGroupName;
     }
 
+    /**
+     * resourceGroupName is the Resource Group for new Azure resources created for the cluster.
+     */
     @JsonProperty("resourceGroupName")
     public void setResourceGroupName(String resourceGroupName) {
         this.resourceGroupName = resourceGroupName;
     }
 
+    /**
+     * resourceTags is a list of additional tags to apply to Azure resources created for the cluster. See https://docs.microsoft.com/en-us/rest/api/resources/tags for information on tagging Azure resources. Due to limitations on Automation, Content Delivery Network, DNS Azure resources, a maximum of 15 tags may be applied. OpenShift reserves 5 tags for internal use, allowing 10 tags for user configuration.
+     */
     @JsonProperty("resourceTags")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<AzureResourceTag> getResourceTags() {
         return resourceTags;
     }
 
+    /**
+     * resourceTags is a list of additional tags to apply to Azure resources created for the cluster. See https://docs.microsoft.com/en-us/rest/api/resources/tags for information on tagging Azure resources. Due to limitations on Automation, Content Delivery Network, DNS Azure resources, a maximum of 15 tags may be applied. OpenShift reserves 5 tags for internal use, allowing 10 tags for user configuration.
+     */
     @JsonProperty("resourceTags")
     public void setResourceTags(List<AzureResourceTag> resourceTags) {
         this.resourceTags = resourceTags;

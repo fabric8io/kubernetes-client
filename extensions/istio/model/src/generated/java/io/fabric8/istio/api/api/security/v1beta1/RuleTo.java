@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * To includes a list of operations.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -78,11 +81,17 @@ public class RuleTo implements Editable<RuleToBuilder>, KubernetesResource
         this.operation = operation;
     }
 
+    /**
+     * To includes a list of operations.
+     */
     @JsonProperty("operation")
     public Operation getOperation() {
         return operation;
     }
 
+    /**
+     * To includes a list of operations.
+     */
     @JsonProperty("operation")
     public void setOperation(Operation operation) {
         this.operation = operation;

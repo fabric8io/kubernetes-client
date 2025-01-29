@@ -35,6 +35,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * StrategyDeploymentPermissions describe the rbac rules and service account needed by the install strategy
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -86,22 +89,34 @@ public class StrategyDeploymentPermissions implements Editable<StrategyDeploymen
         this.serviceAccountName = serviceAccountName;
     }
 
+    /**
+     * StrategyDeploymentPermissions describe the rbac rules and service account needed by the install strategy
+     */
     @JsonProperty("rules")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<PolicyRule> getRules() {
         return rules;
     }
 
+    /**
+     * StrategyDeploymentPermissions describe the rbac rules and service account needed by the install strategy
+     */
     @JsonProperty("rules")
     public void setRules(List<PolicyRule> rules) {
         this.rules = rules;
     }
 
+    /**
+     * StrategyDeploymentPermissions describe the rbac rules and service account needed by the install strategy
+     */
     @JsonProperty("serviceAccountName")
     public String getServiceAccountName() {
         return serviceAccountName;
     }
 
+    /**
+     * StrategyDeploymentPermissions describe the rbac rules and service account needed by the install strategy
+     */
     @JsonProperty("serviceAccountName")
     public void setServiceAccountName(String serviceAccountName) {
         this.serviceAccountName = serviceAccountName;

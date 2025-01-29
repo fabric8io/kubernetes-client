@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Specification of constraints of a scalable resource
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -86,31 +89,49 @@ public class MachineAutoscalerSpec implements Editable<MachineAutoscalerSpecBuil
         this.scaleTargetRef = scaleTargetRef;
     }
 
+    /**
+     * MaxReplicas constrains the maximal number of replicas of a scalable resource
+     */
     @JsonProperty("maxReplicas")
     public Integer getMaxReplicas() {
         return maxReplicas;
     }
 
+    /**
+     * MaxReplicas constrains the maximal number of replicas of a scalable resource
+     */
     @JsonProperty("maxReplicas")
     public void setMaxReplicas(Integer maxReplicas) {
         this.maxReplicas = maxReplicas;
     }
 
+    /**
+     * MinReplicas constrains the minimal number of replicas of a scalable resource
+     */
     @JsonProperty("minReplicas")
     public Integer getMinReplicas() {
         return minReplicas;
     }
 
+    /**
+     * MinReplicas constrains the minimal number of replicas of a scalable resource
+     */
     @JsonProperty("minReplicas")
     public void setMinReplicas(Integer minReplicas) {
         this.minReplicas = minReplicas;
     }
 
+    /**
+     * Specification of constraints of a scalable resource
+     */
     @JsonProperty("scaleTargetRef")
     public MachineAutoscalerSpecScaleTargetRef getScaleTargetRef() {
         return scaleTargetRef;
     }
 
+    /**
+     * Specification of constraints of a scalable resource
+     */
     @JsonProperty("scaleTargetRef")
     public void setScaleTargetRef(MachineAutoscalerSpecScaleTargetRef scaleTargetRef) {
         this.scaleTargetRef = scaleTargetRef;

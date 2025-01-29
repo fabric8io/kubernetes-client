@@ -33,6 +33,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * GitHubBindingSpec holds the desired state of the GitHubBinding (from the client).
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -83,21 +86,33 @@ public class GitHubBindingSpec implements Editable<GitHubBindingSpecBuilder>, Ku
         this.subject = subject;
     }
 
+    /**
+     * GitHubBindingSpec holds the desired state of the GitHubBinding (from the client).
+     */
     @JsonProperty("accessToken")
     public SecretValueFromSource getAccessToken() {
         return accessToken;
     }
 
+    /**
+     * GitHubBindingSpec holds the desired state of the GitHubBinding (from the client).
+     */
     @JsonProperty("accessToken")
     public void setAccessToken(SecretValueFromSource accessToken) {
         this.accessToken = accessToken;
     }
 
+    /**
+     * GitHubBindingSpec holds the desired state of the GitHubBinding (from the client).
+     */
     @JsonProperty("subject")
     public Reference getSubject() {
         return subject;
     }
 
+    /**
+     * GitHubBindingSpec holds the desired state of the GitHubBinding (from the client).
+     */
     @JsonProperty("subject")
     public void setSubject(Reference subject) {
         this.subject = subject;

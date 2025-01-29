@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * StatefulSetOrdinals describes the policy used for replica ordinal assignment in this StatefulSet.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -78,11 +81,17 @@ public class StatefulSetOrdinals implements Editable<StatefulSetOrdinalsBuilder>
         this.start = start;
     }
 
+    /**
+     * start is the number representing the first replica's index. It may be used to number replicas from an alternate index (eg: 1-indexed) over the default 0-indexed names, or to orchestrate progressive movement of replicas from one StatefulSet to another. If set, replica indices will be in the range:<br><p>   [.spec.ordinals.start, .spec.ordinals.start + .spec.replicas).<br><p> If unset, defaults to 0. Replica indices will be in the range:<br><p>   [0, .spec.replicas).
+     */
     @JsonProperty("start")
     public Integer getStart() {
         return start;
     }
 
+    /**
+     * start is the number representing the first replica's index. It may be used to number replicas from an alternate index (eg: 1-indexed) over the default 0-indexed names, or to orchestrate progressive movement of replicas from one StatefulSet to another. If set, replica indices will be in the range:<br><p>   [.spec.ordinals.start, .spec.ordinals.start + .spec.replicas).<br><p> If unset, defaults to 0. Replica indices will be in the range:<br><p>   [0, .spec.replicas).
+     */
     @JsonProperty("start")
     public void setStart(Integer start) {
         this.start = start;

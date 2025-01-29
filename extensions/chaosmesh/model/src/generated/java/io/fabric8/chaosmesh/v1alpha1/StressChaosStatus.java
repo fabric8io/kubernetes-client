@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * StressChaosStatus defines the observed state of StressChaos
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -90,33 +93,51 @@ public class StressChaosStatus implements Editable<StressChaosStatusBuilder>, Ku
         this.instances = instances;
     }
 
+    /**
+     * Conditions represents the current global condition of the chaos
+     */
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ChaosCondition> getConditions() {
         return conditions;
     }
 
+    /**
+     * Conditions represents the current global condition of the chaos
+     */
     @JsonProperty("conditions")
     public void setConditions(List<ChaosCondition> conditions) {
         this.conditions = conditions;
     }
 
+    /**
+     * StressChaosStatus defines the observed state of StressChaos
+     */
     @JsonProperty("experiment")
     public ExperimentStatus getExperiment() {
         return experiment;
     }
 
+    /**
+     * StressChaosStatus defines the observed state of StressChaos
+     */
     @JsonProperty("experiment")
     public void setExperiment(ExperimentStatus experiment) {
         this.experiment = experiment;
     }
 
+    /**
+     * Instances always specifies stressing instances
+     */
     @JsonProperty("instances")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, StressInstance> getInstances() {
         return instances;
     }
 
+    /**
+     * Instances always specifies stressing instances
+     */
     @JsonProperty("instances")
     public void setInstances(Map<String, StressInstance> instances) {
         this.instances = instances;

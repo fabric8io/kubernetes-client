@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * RelabelConfig allows dynamic rewriting of label sets for alerts. See Prometheus documentation: - https://prometheus.io/docs/prometheus/latest/configuration/configuration/#alert_relabel_configs - https://prometheus.io/docs/prometheus/latest/configuration/configuration/#relabel_config
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -105,72 +108,114 @@ public class RelabelConfig implements Editable<RelabelConfigBuilder>, Kubernetes
         this.targetLabel = targetLabel;
     }
 
+    /**
+     * action to perform based on regex matching. Must be one of: 'Replace', 'Keep', 'Drop', 'HashMod', 'LabelMap', 'LabelDrop', or 'LabelKeep'. Default is: 'Replace'
+     */
     @JsonProperty("action")
     public String getAction() {
         return action;
     }
 
+    /**
+     * action to perform based on regex matching. Must be one of: 'Replace', 'Keep', 'Drop', 'HashMod', 'LabelMap', 'LabelDrop', or 'LabelKeep'. Default is: 'Replace'
+     */
     @JsonProperty("action")
     public void setAction(String action) {
         this.action = action;
     }
 
+    /**
+     * modulus to take of the hash of the source label values.  This can be combined with the 'HashMod' action to set 'target_label' to the 'modulus' of a hash of the concatenated 'source_labels'. This is only valid if sourceLabels is not empty and action is not 'LabelKeep' or 'LabelDrop'.
+     */
     @JsonProperty("modulus")
     public Long getModulus() {
         return modulus;
     }
 
+    /**
+     * modulus to take of the hash of the source label values.  This can be combined with the 'HashMod' action to set 'target_label' to the 'modulus' of a hash of the concatenated 'source_labels'. This is only valid if sourceLabels is not empty and action is not 'LabelKeep' or 'LabelDrop'.
+     */
     @JsonProperty("modulus")
     public void setModulus(Long modulus) {
         this.modulus = modulus;
     }
 
+    /**
+     * regex against which the extracted value is matched. Default is: '(.&#42;)' regex is required for all actions except 'HashMod'
+     */
     @JsonProperty("regex")
     public String getRegex() {
         return regex;
     }
 
+    /**
+     * regex against which the extracted value is matched. Default is: '(.&#42;)' regex is required for all actions except 'HashMod'
+     */
     @JsonProperty("regex")
     public void setRegex(String regex) {
         this.regex = regex;
     }
 
+    /**
+     * replacement value against which a regex replace is performed if the regular expression matches. This is required if the action is 'Replace' or 'LabelMap' and forbidden for actions 'LabelKeep' and 'LabelDrop'. Regex capture groups are available. Default is: '$1'
+     */
     @JsonProperty("replacement")
     public String getReplacement() {
         return replacement;
     }
 
+    /**
+     * replacement value against which a regex replace is performed if the regular expression matches. This is required if the action is 'Replace' or 'LabelMap' and forbidden for actions 'LabelKeep' and 'LabelDrop'. Regex capture groups are available. Default is: '$1'
+     */
     @JsonProperty("replacement")
     public void setReplacement(String replacement) {
         this.replacement = replacement;
     }
 
+    /**
+     * separator placed between concatenated source label values. When omitted, Prometheus will use its default value of ';'.
+     */
     @JsonProperty("separator")
     public String getSeparator() {
         return separator;
     }
 
+    /**
+     * separator placed between concatenated source label values. When omitted, Prometheus will use its default value of ';'.
+     */
     @JsonProperty("separator")
     public void setSeparator(String separator) {
         this.separator = separator;
     }
 
+    /**
+     * sourceLabels select values from existing labels. Their content is concatenated using the configured separator and matched against the configured regular expression for the 'Replace', 'Keep', and 'Drop' actions. Not allowed for actions 'LabelKeep' and 'LabelDrop'.
+     */
     @JsonProperty("sourceLabels")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getSourceLabels() {
         return sourceLabels;
     }
 
+    /**
+     * sourceLabels select values from existing labels. Their content is concatenated using the configured separator and matched against the configured regular expression for the 'Replace', 'Keep', and 'Drop' actions. Not allowed for actions 'LabelKeep' and 'LabelDrop'.
+     */
     @JsonProperty("sourceLabels")
     public void setSourceLabels(List<String> sourceLabels) {
         this.sourceLabels = sourceLabels;
     }
 
+    /**
+     * targetLabel to which the resulting value is written in a 'Replace' action. It is required for 'Replace' and 'HashMod' actions and forbidden for actions 'LabelKeep' and 'LabelDrop'. Regex capture groups are available.
+     */
     @JsonProperty("targetLabel")
     public String getTargetLabel() {
         return targetLabel;
     }
 
+    /**
+     * targetLabel to which the resulting value is written in a 'Replace' action. It is required for 'Replace' and 'HashMod' actions and forbidden for actions 'LabelKeep' and 'LabelDrop'. Regex capture groups are available.
+     */
     @JsonProperty("targetLabel")
     public void setTargetLabel(String targetLabel) {
         this.targetLabel = targetLabel;

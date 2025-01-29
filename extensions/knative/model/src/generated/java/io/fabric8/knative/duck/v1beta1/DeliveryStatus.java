@@ -33,6 +33,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * DeliveryStatus contains the Status of an object supporting delivery options.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -79,11 +82,17 @@ public class DeliveryStatus implements Editable<DeliveryStatusBuilder>, Kubernet
         this.deadLetterChannel = deadLetterChannel;
     }
 
+    /**
+     * DeliveryStatus contains the Status of an object supporting delivery options.
+     */
     @JsonProperty("deadLetterChannel")
     public KReference getDeadLetterChannel() {
         return deadLetterChannel;
     }
 
+    /**
+     * DeliveryStatus contains the Status of an object supporting delivery options.
+     */
     @JsonProperty("deadLetterChannel")
     public void setDeadLetterChannel(KReference deadLetterChannel) {
         this.deadLetterChannel = deadLetterChannel;

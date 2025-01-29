@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * StatuspageProvider provides identity for statuspage account.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -78,11 +81,17 @@ public class StatuspageProvider implements Editable<StatuspageProviderBuilder>, 
         this.pageID = pageID;
     }
 
+    /**
+     * pageID is the unique ID assigned by Statuspage for your page. This must be a public page.
+     */
     @JsonProperty("pageID")
     public String getPageID() {
         return pageID;
     }
 
+    /**
+     * pageID is the unique ID assigned by Statuspage for your page. This must be a public page.
+     */
     @JsonProperty("pageID")
     public void setPageID(String pageID) {
         this.pageID = pageID;

@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Receiver defines one or more notification integrations.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -145,154 +148,238 @@ public class Receiver implements Editable<ReceiverBuilder>, KubernetesResource
         this.wechatConfigs = wechatConfigs;
     }
 
+    /**
+     * List of Slack configurations.
+     */
     @JsonProperty("discordConfigs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<DiscordConfig> getDiscordConfigs() {
         return discordConfigs;
     }
 
+    /**
+     * List of Slack configurations.
+     */
     @JsonProperty("discordConfigs")
     public void setDiscordConfigs(List<DiscordConfig> discordConfigs) {
         this.discordConfigs = discordConfigs;
     }
 
+    /**
+     * List of Email configurations.
+     */
     @JsonProperty("emailConfigs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<EmailConfig> getEmailConfigs() {
         return emailConfigs;
     }
 
+    /**
+     * List of Email configurations.
+     */
     @JsonProperty("emailConfigs")
     public void setEmailConfigs(List<EmailConfig> emailConfigs) {
         this.emailConfigs = emailConfigs;
     }
 
+    /**
+     * List of MSTeams configurations. It requires Alertmanager &gt;= 0.26.0.
+     */
     @JsonProperty("msteamsConfigs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<MSTeamsConfig> getMsteamsConfigs() {
         return msteamsConfigs;
     }
 
+    /**
+     * List of MSTeams configurations. It requires Alertmanager &gt;= 0.26.0.
+     */
     @JsonProperty("msteamsConfigs")
     public void setMsteamsConfigs(List<MSTeamsConfig> msteamsConfigs) {
         this.msteamsConfigs = msteamsConfigs;
     }
 
+    /**
+     * Name of the receiver. Must be unique across all items from the list.
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * Name of the receiver. Must be unique across all items from the list.
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * List of OpsGenie configurations.
+     */
     @JsonProperty("opsgenieConfigs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<OpsGenieConfig> getOpsgenieConfigs() {
         return opsgenieConfigs;
     }
 
+    /**
+     * List of OpsGenie configurations.
+     */
     @JsonProperty("opsgenieConfigs")
     public void setOpsgenieConfigs(List<OpsGenieConfig> opsgenieConfigs) {
         this.opsgenieConfigs = opsgenieConfigs;
     }
 
+    /**
+     * List of PagerDuty configurations.
+     */
     @JsonProperty("pagerdutyConfigs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<PagerDutyConfig> getPagerdutyConfigs() {
         return pagerdutyConfigs;
     }
 
+    /**
+     * List of PagerDuty configurations.
+     */
     @JsonProperty("pagerdutyConfigs")
     public void setPagerdutyConfigs(List<PagerDutyConfig> pagerdutyConfigs) {
         this.pagerdutyConfigs = pagerdutyConfigs;
     }
 
+    /**
+     * List of Pushover configurations.
+     */
     @JsonProperty("pushoverConfigs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<PushoverConfig> getPushoverConfigs() {
         return pushoverConfigs;
     }
 
+    /**
+     * List of Pushover configurations.
+     */
     @JsonProperty("pushoverConfigs")
     public void setPushoverConfigs(List<PushoverConfig> pushoverConfigs) {
         this.pushoverConfigs = pushoverConfigs;
     }
 
+    /**
+     * List of Slack configurations.
+     */
     @JsonProperty("slackConfigs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<SlackConfig> getSlackConfigs() {
         return slackConfigs;
     }
 
+    /**
+     * List of Slack configurations.
+     */
     @JsonProperty("slackConfigs")
     public void setSlackConfigs(List<SlackConfig> slackConfigs) {
         this.slackConfigs = slackConfigs;
     }
 
+    /**
+     * List of SNS configurations
+     */
     @JsonProperty("snsConfigs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<SNSConfig> getSnsConfigs() {
         return snsConfigs;
     }
 
+    /**
+     * List of SNS configurations
+     */
     @JsonProperty("snsConfigs")
     public void setSnsConfigs(List<SNSConfig> snsConfigs) {
         this.snsConfigs = snsConfigs;
     }
 
+    /**
+     * List of Telegram configurations.
+     */
     @JsonProperty("telegramConfigs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<TelegramConfig> getTelegramConfigs() {
         return telegramConfigs;
     }
 
+    /**
+     * List of Telegram configurations.
+     */
     @JsonProperty("telegramConfigs")
     public void setTelegramConfigs(List<TelegramConfig> telegramConfigs) {
         this.telegramConfigs = telegramConfigs;
     }
 
+    /**
+     * List of VictorOps configurations.
+     */
     @JsonProperty("victoropsConfigs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<VictorOpsConfig> getVictoropsConfigs() {
         return victoropsConfigs;
     }
 
+    /**
+     * List of VictorOps configurations.
+     */
     @JsonProperty("victoropsConfigs")
     public void setVictoropsConfigs(List<VictorOpsConfig> victoropsConfigs) {
         this.victoropsConfigs = victoropsConfigs;
     }
 
+    /**
+     * List of Webex configurations.
+     */
     @JsonProperty("webexConfigs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<WebexConfig> getWebexConfigs() {
         return webexConfigs;
     }
 
+    /**
+     * List of Webex configurations.
+     */
     @JsonProperty("webexConfigs")
     public void setWebexConfigs(List<WebexConfig> webexConfigs) {
         this.webexConfigs = webexConfigs;
     }
 
+    /**
+     * List of webhook configurations.
+     */
     @JsonProperty("webhookConfigs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<WebhookConfig> getWebhookConfigs() {
         return webhookConfigs;
     }
 
+    /**
+     * List of webhook configurations.
+     */
     @JsonProperty("webhookConfigs")
     public void setWebhookConfigs(List<WebhookConfig> webhookConfigs) {
         this.webhookConfigs = webhookConfigs;
     }
 
+    /**
+     * List of WeChat configurations.
+     */
     @JsonProperty("wechatConfigs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<WeChatConfig> getWechatConfigs() {
         return wechatConfigs;
     }
 
+    /**
+     * List of WeChat configurations.
+     */
     @JsonProperty("wechatConfigs")
     public void setWechatConfigs(List<WeChatConfig> wechatConfigs) {
         this.wechatConfigs = wechatConfigs;

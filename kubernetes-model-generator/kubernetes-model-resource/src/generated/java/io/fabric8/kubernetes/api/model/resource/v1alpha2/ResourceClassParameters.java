@@ -39,6 +39,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ResourceClassParameters defines resource requests for a ResourceClass in an in-tree format understood by Kubernetes.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -79,9 +82,6 @@ import lombok.experimental.Accessors;
 public class ResourceClassParameters implements Editable<ResourceClassParametersBuilder>, HasMetadata, Namespaced
 {
 
-    /**
-     * (Required)
-     */
     @JsonProperty("apiVersion")
     private String apiVersion = "resource.k8s.io/v1alpha2";
     @JsonProperty("filters")
@@ -89,9 +89,6 @@ public class ResourceClassParameters implements Editable<ResourceClassParameters
     private List<ResourceFilter> filters = new ArrayList<>();
     @JsonProperty("generatedFrom")
     private ResourceClassParametersReference generatedFrom;
-    /**
-     * (Required)
-     */
     @JsonProperty("kind")
     private String kind = "ResourceClassParameters";
     @JsonProperty("metadata")
@@ -119,7 +116,7 @@ public class ResourceClassParameters implements Editable<ResourceClassParameters
     }
 
     /**
-     * (Required)
+     * APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -127,36 +124,48 @@ public class ResourceClassParameters implements Editable<ResourceClassParameters
     }
 
     /**
-     * (Required)
+     * APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
         this.apiVersion = apiVersion;
     }
 
+    /**
+     * Filters describes additional contraints that must be met when using the class.
+     */
     @JsonProperty("filters")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ResourceFilter> getFilters() {
         return filters;
     }
 
+    /**
+     * Filters describes additional contraints that must be met when using the class.
+     */
     @JsonProperty("filters")
     public void setFilters(List<ResourceFilter> filters) {
         this.filters = filters;
     }
 
+    /**
+     * ResourceClassParameters defines resource requests for a ResourceClass in an in-tree format understood by Kubernetes.
+     */
     @JsonProperty("generatedFrom")
     public ResourceClassParametersReference getGeneratedFrom() {
         return generatedFrom;
     }
 
+    /**
+     * ResourceClassParameters defines resource requests for a ResourceClass in an in-tree format understood by Kubernetes.
+     */
     @JsonProperty("generatedFrom")
     public void setGeneratedFrom(ResourceClassParametersReference generatedFrom) {
         this.generatedFrom = generatedFrom;
     }
 
     /**
-     * (Required)
+     * Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -164,29 +173,41 @@ public class ResourceClassParameters implements Editable<ResourceClassParameters
     }
 
     /**
-     * (Required)
+     * Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
      */
     @JsonProperty("kind")
     public void setKind(String kind) {
         this.kind = kind;
     }
 
+    /**
+     * ResourceClassParameters defines resource requests for a ResourceClass in an in-tree format understood by Kubernetes.
+     */
     @JsonProperty("metadata")
     public ObjectMeta getMetadata() {
         return metadata;
     }
 
+    /**
+     * ResourceClassParameters defines resource requests for a ResourceClass in an in-tree format understood by Kubernetes.
+     */
     @JsonProperty("metadata")
     public void setMetadata(ObjectMeta metadata) {
         this.metadata = metadata;
     }
 
+    /**
+     * VendorParameters are arbitrary setup parameters for all claims using this class. They are ignored while allocating the claim. There must not be more than one entry per driver.
+     */
     @JsonProperty("vendorParameters")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<VendorParameters> getVendorParameters() {
         return vendorParameters;
     }
 
+    /**
+     * VendorParameters are arbitrary setup parameters for all claims using this class. They are ignored while allocating the claim. There must not be more than one entry per driver.
+     */
     @JsonProperty("vendorParameters")
     public void setVendorParameters(List<VendorParameters> vendorParameters) {
         this.vendorParameters = vendorParameters;

@@ -17,6 +17,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ContainerPort represents a network port in a single container.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -65,51 +68,81 @@ public class ContainerPort implements Editable<ContainerPortBuilder>, Kubernetes
         this.protocol = protocol;
     }
 
+    /**
+     * Number of port to expose on the pod's IP address. This must be a valid port number, 0 &lt; x &lt; 65536.
+     */
     @JsonProperty("containerPort")
     public Integer getContainerPort() {
         return containerPort;
     }
 
+    /**
+     * Number of port to expose on the pod's IP address. This must be a valid port number, 0 &lt; x &lt; 65536.
+     */
     @JsonProperty("containerPort")
     public void setContainerPort(Integer containerPort) {
         this.containerPort = containerPort;
     }
 
+    /**
+     * What host IP to bind the external port to.
+     */
     @JsonProperty("hostIP")
     public String getHostIP() {
         return hostIP;
     }
 
+    /**
+     * What host IP to bind the external port to.
+     */
     @JsonProperty("hostIP")
     public void setHostIP(String hostIP) {
         this.hostIP = hostIP;
     }
 
+    /**
+     * Number of port to expose on the host. If specified, this must be a valid port number, 0 &lt; x &lt; 65536. If HostNetwork is specified, this must match ContainerPort. Most containers do not need this.
+     */
     @JsonProperty("hostPort")
     public Integer getHostPort() {
         return hostPort;
     }
 
+    /**
+     * Number of port to expose on the host. If specified, this must be a valid port number, 0 &lt; x &lt; 65536. If HostNetwork is specified, this must match ContainerPort. Most containers do not need this.
+     */
     @JsonProperty("hostPort")
     public void setHostPort(Integer hostPort) {
         this.hostPort = hostPort;
     }
 
+    /**
+     * If specified, this must be an IANA_SVC_NAME and unique within the pod. Each named port in a pod must have a unique name. Name for the port that can be referred to by services.
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * If specified, this must be an IANA_SVC_NAME and unique within the pod. Each named port in a pod must have a unique name. Name for the port that can be referred to by services.
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * Protocol for port. Must be UDP, TCP, or SCTP. Defaults to "TCP".
+     */
     @JsonProperty("protocol")
     public String getProtocol() {
         return protocol;
     }
 
+    /**
+     * Protocol for port. Must be UDP, TCP, or SCTP. Defaults to "TCP".
+     */
     @JsonProperty("protocol")
     public void setProtocol(String protocol) {
         this.protocol = protocol;

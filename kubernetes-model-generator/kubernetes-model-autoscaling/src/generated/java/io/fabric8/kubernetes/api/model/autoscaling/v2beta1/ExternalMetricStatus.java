@@ -33,6 +33,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ExternalMetricStatus indicates the current value of a global metric not associated with any Kubernetes object.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -91,41 +94,65 @@ public class ExternalMetricStatus implements Editable<ExternalMetricStatusBuilde
         this.metricSelector = metricSelector;
     }
 
+    /**
+     * ExternalMetricStatus indicates the current value of a global metric not associated with any Kubernetes object.
+     */
     @JsonProperty("currentAverageValue")
     public Quantity getCurrentAverageValue() {
         return currentAverageValue;
     }
 
+    /**
+     * ExternalMetricStatus indicates the current value of a global metric not associated with any Kubernetes object.
+     */
     @JsonProperty("currentAverageValue")
     public void setCurrentAverageValue(Quantity currentAverageValue) {
         this.currentAverageValue = currentAverageValue;
     }
 
+    /**
+     * ExternalMetricStatus indicates the current value of a global metric not associated with any Kubernetes object.
+     */
     @JsonProperty("currentValue")
     public Quantity getCurrentValue() {
         return currentValue;
     }
 
+    /**
+     * ExternalMetricStatus indicates the current value of a global metric not associated with any Kubernetes object.
+     */
     @JsonProperty("currentValue")
     public void setCurrentValue(Quantity currentValue) {
         this.currentValue = currentValue;
     }
 
+    /**
+     * metricName is the name of a metric used for autoscaling in metric system.
+     */
     @JsonProperty("metricName")
     public String getMetricName() {
         return metricName;
     }
 
+    /**
+     * metricName is the name of a metric used for autoscaling in metric system.
+     */
     @JsonProperty("metricName")
     public void setMetricName(String metricName) {
         this.metricName = metricName;
     }
 
+    /**
+     * ExternalMetricStatus indicates the current value of a global metric not associated with any Kubernetes object.
+     */
     @JsonProperty("metricSelector")
     public LabelSelector getMetricSelector() {
         return metricSelector;
     }
 
+    /**
+     * ExternalMetricStatus indicates the current value of a global metric not associated with any Kubernetes object.
+     */
     @JsonProperty("metricSelector")
     public void setMetricSelector(LabelSelector metricSelector) {
         this.metricSelector = metricSelector;

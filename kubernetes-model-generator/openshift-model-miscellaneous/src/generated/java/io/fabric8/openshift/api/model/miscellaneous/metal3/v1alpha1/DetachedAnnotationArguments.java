@@ -78,11 +78,17 @@ public class DetachedAnnotationArguments implements Editable<DetachedAnnotationA
         this.deleteAction = deleteAction;
     }
 
+    /**
+     * DeleteAction indicates the desired delete logic when the detached annotation is present
+     */
     @JsonProperty("deleteAction")
     public String getDeleteAction() {
         return deleteAction;
     }
 
+    /**
+     * DeleteAction indicates the desired delete logic when the detached annotation is present
+     */
     @JsonProperty("deleteAction")
     public void setDeleteAction(String deleteAction) {
         this.deleteAction = deleteAction;

@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ConfigMapFileReference references a config map in a specific namespace. The namespace must be specified at the point of use.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class ConfigMapFileReference implements Editable<ConfigMapFileReferenceBu
         this.name = name;
     }
 
+    /**
+     * Key allows pointing to a specific key/value inside of the configmap.  This is useful for logical file references.
+     */
     @JsonProperty("key")
     public String getKey() {
         return key;
     }
 
+    /**
+     * Key allows pointing to a specific key/value inside of the configmap.  This is useful for logical file references.
+     */
     @JsonProperty("key")
     public void setKey(String key) {
         this.key = key;
     }
 
+    /**
+     * ConfigMapFileReference references a config map in a specific namespace. The namespace must be specified at the point of use.
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * ConfigMapFileReference references a config map in a specific namespace. The namespace must be specified at the point of use.
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;

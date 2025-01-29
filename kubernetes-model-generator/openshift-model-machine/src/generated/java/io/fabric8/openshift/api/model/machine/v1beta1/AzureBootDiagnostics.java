@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * AzureBootDiagnostics configures the boot diagnostics settings for the virtual machine. This allows you to configure capturing serial output from the virtual machine on boot. This is useful for debugging software based launch issues.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class AzureBootDiagnostics implements Editable<AzureBootDiagnosticsBuilde
         this.storageAccountType = storageAccountType;
     }
 
+    /**
+     * AzureBootDiagnostics configures the boot diagnostics settings for the virtual machine. This allows you to configure capturing serial output from the virtual machine on boot. This is useful for debugging software based launch issues.
+     */
     @JsonProperty("customerManaged")
     public AzureCustomerManagedBootDiagnostics getCustomerManaged() {
         return customerManaged;
     }
 
+    /**
+     * AzureBootDiagnostics configures the boot diagnostics settings for the virtual machine. This allows you to configure capturing serial output from the virtual machine on boot. This is useful for debugging software based launch issues.
+     */
     @JsonProperty("customerManaged")
     public void setCustomerManaged(AzureCustomerManagedBootDiagnostics customerManaged) {
         this.customerManaged = customerManaged;
     }
 
+    /**
+     * StorageAccountType determines if the storage account for storing the diagnostics data should be provisioned by Azure (AzureManaged) or by the customer (CustomerManaged).
+     */
     @JsonProperty("storageAccountType")
     public String getStorageAccountType() {
         return storageAccountType;
     }
 
+    /**
+     * StorageAccountType determines if the storage account for storing the diagnostics data should be provisioned by Azure (AzureManaged) or by the customer (CustomerManaged).
+     */
     @JsonProperty("storageAccountType")
     public void setStorageAccountType(String storageAccountType) {
         this.storageAccountType = storageAccountType;

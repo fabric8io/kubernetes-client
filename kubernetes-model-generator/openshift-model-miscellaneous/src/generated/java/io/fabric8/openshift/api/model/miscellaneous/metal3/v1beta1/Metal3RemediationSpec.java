@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Metal3RemediationSpec defines the desired state of Metal3Remediation.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -78,11 +81,17 @@ public class Metal3RemediationSpec implements Editable<Metal3RemediationSpecBuil
         this.strategy = strategy;
     }
 
+    /**
+     * Metal3RemediationSpec defines the desired state of Metal3Remediation.
+     */
     @JsonProperty("strategy")
     public RemediationStrategy getStrategy() {
         return strategy;
     }
 
+    /**
+     * Metal3RemediationSpec defines the desired state of Metal3Remediation.
+     */
     @JsonProperty("strategy")
     public void setStrategy(RemediationStrategy strategy) {
         this.strategy = strategy;

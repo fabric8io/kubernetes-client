@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * NamedResourcesRequest is used in ResourceRequestModel.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -78,11 +81,17 @@ public class NamedResourcesRequest implements Editable<NamedResourcesRequestBuil
         this.selector = selector;
     }
 
+    /**
+     * Selector is a CEL expression which must evaluate to true if a resource instance is suitable. The language is as defined in https://kubernetes.io/docs/reference/using-api/cel/<br><p> <br><p> In addition, for each type NamedResourcesin AttributeValue there is a map that resolves to the corresponding value of the instance under evaluation. For example:<br><p> <br><p>    attributes.quantity["a"].isGreaterThan(quantity("0")) &amp;&amp;<br><p>    attributes.stringslice["b"].isSorted()
+     */
     @JsonProperty("selector")
     public String getSelector() {
         return selector;
     }
 
+    /**
+     * Selector is a CEL expression which must evaluate to true if a resource instance is suitable. The language is as defined in https://kubernetes.io/docs/reference/using-api/cel/<br><p> <br><p> In addition, for each type NamedResourcesin AttributeValue there is a map that resolves to the corresponding value of the instance under evaluation. For example:<br><p> <br><p>    attributes.quantity["a"].isGreaterThan(quantity("0")) &amp;&amp;<br><p>    attributes.stringslice["b"].isSorted()
+     */
     @JsonProperty("selector")
     public void setSelector(String selector) {
         this.selector = selector;

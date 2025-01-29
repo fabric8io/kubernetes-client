@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * TagEventCondition contains condition information for a tag event.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -98,61 +101,97 @@ public class TagEventCondition implements Editable<TagEventConditionBuilder>, Ku
         this.type = type;
     }
 
+    /**
+     * Generation is the spec tag generation that this status corresponds to
+     */
     @JsonProperty("generation")
     public Long getGeneration() {
         return generation;
     }
 
+    /**
+     * Generation is the spec tag generation that this status corresponds to
+     */
     @JsonProperty("generation")
     public void setGeneration(Long generation) {
         this.generation = generation;
     }
 
+    /**
+     * TagEventCondition contains condition information for a tag event.
+     */
     @JsonProperty("lastTransitionTime")
     public String getLastTransitionTime() {
         return lastTransitionTime;
     }
 
+    /**
+     * TagEventCondition contains condition information for a tag event.
+     */
     @JsonProperty("lastTransitionTime")
     public void setLastTransitionTime(String lastTransitionTime) {
         this.lastTransitionTime = lastTransitionTime;
     }
 
+    /**
+     * Message is a human readable description of the details about last transition, complementing reason.
+     */
     @JsonProperty("message")
     public String getMessage() {
         return message;
     }
 
+    /**
+     * Message is a human readable description of the details about last transition, complementing reason.
+     */
     @JsonProperty("message")
     public void setMessage(String message) {
         this.message = message;
     }
 
+    /**
+     * Reason is a brief machine readable explanation for the condition's last transition.
+     */
     @JsonProperty("reason")
     public String getReason() {
         return reason;
     }
 
+    /**
+     * Reason is a brief machine readable explanation for the condition's last transition.
+     */
     @JsonProperty("reason")
     public void setReason(String reason) {
         this.reason = reason;
     }
 
+    /**
+     * Status of the condition, one of True, False, Unknown.
+     */
     @JsonProperty("status")
     public String getStatus() {
         return status;
     }
 
+    /**
+     * Status of the condition, one of True, False, Unknown.
+     */
     @JsonProperty("status")
     public void setStatus(String status) {
         this.status = status;
     }
 
+    /**
+     * Type of tag event condition, currently only ImportSuccess
+     */
     @JsonProperty("type")
     public String getType() {
         return type;
     }
 
+    /**
+     * Type of tag event condition, currently only ImportSuccess
+     */
     @JsonProperty("type")
     public void setType(String type) {
         this.type = type;

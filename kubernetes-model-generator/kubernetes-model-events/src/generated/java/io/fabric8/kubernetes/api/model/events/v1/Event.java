@@ -39,6 +39,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Event is a report of an event somewhere in the cluster. It generally denotes some state change in the system. Events have a limited retention time and triggers and messages may evolve with time.  Event consumers should not rely on the timing of an event with a given Reason reflecting a consistent underlying trigger, or the continued existence of events with that Reason.  Events should be treated as informative, best-effort, supplemental data.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -92,9 +95,6 @@ public class Event implements Editable<EventBuilder>, HasMetadata, Namespaced
 
     @JsonProperty("action")
     private String action;
-    /**
-     * (Required)
-     */
     @JsonProperty("apiVersion")
     private String apiVersion = "events.k8s.io/v1";
     @JsonProperty("deprecatedCount")
@@ -107,9 +107,6 @@ public class Event implements Editable<EventBuilder>, HasMetadata, Namespaced
     private EventSource deprecatedSource;
     @JsonProperty("eventTime")
     private MicroTime eventTime;
-    /**
-     * (Required)
-     */
     @JsonProperty("kind")
     private String kind = "Event";
     @JsonProperty("metadata")
@@ -160,18 +157,24 @@ public class Event implements Editable<EventBuilder>, HasMetadata, Namespaced
         this.type = type;
     }
 
+    /**
+     * action is what action was taken/failed regarding to the regarding object. It is machine-readable. This field cannot be empty for new Events and it can have at most 128 characters.
+     */
     @JsonProperty("action")
     public String getAction() {
         return action;
     }
 
+    /**
+     * action is what action was taken/failed regarding to the regarding object. It is machine-readable. This field cannot be empty for new Events and it can have at most 128 characters.
+     */
     @JsonProperty("action")
     public void setAction(String action) {
         this.action = action;
     }
 
     /**
-     * (Required)
+     * APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -179,65 +182,95 @@ public class Event implements Editable<EventBuilder>, HasMetadata, Namespaced
     }
 
     /**
-     * (Required)
+     * APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
         this.apiVersion = apiVersion;
     }
 
+    /**
+     * deprecatedCount is the deprecated field assuring backward compatibility with core.v1 Event type.
+     */
     @JsonProperty("deprecatedCount")
     public Integer getDeprecatedCount() {
         return deprecatedCount;
     }
 
+    /**
+     * deprecatedCount is the deprecated field assuring backward compatibility with core.v1 Event type.
+     */
     @JsonProperty("deprecatedCount")
     public void setDeprecatedCount(Integer deprecatedCount) {
         this.deprecatedCount = deprecatedCount;
     }
 
+    /**
+     * Event is a report of an event somewhere in the cluster. It generally denotes some state change in the system. Events have a limited retention time and triggers and messages may evolve with time.  Event consumers should not rely on the timing of an event with a given Reason reflecting a consistent underlying trigger, or the continued existence of events with that Reason.  Events should be treated as informative, best-effort, supplemental data.
+     */
     @JsonProperty("deprecatedFirstTimestamp")
     public String getDeprecatedFirstTimestamp() {
         return deprecatedFirstTimestamp;
     }
 
+    /**
+     * Event is a report of an event somewhere in the cluster. It generally denotes some state change in the system. Events have a limited retention time and triggers and messages may evolve with time.  Event consumers should not rely on the timing of an event with a given Reason reflecting a consistent underlying trigger, or the continued existence of events with that Reason.  Events should be treated as informative, best-effort, supplemental data.
+     */
     @JsonProperty("deprecatedFirstTimestamp")
     public void setDeprecatedFirstTimestamp(String deprecatedFirstTimestamp) {
         this.deprecatedFirstTimestamp = deprecatedFirstTimestamp;
     }
 
+    /**
+     * Event is a report of an event somewhere in the cluster. It generally denotes some state change in the system. Events have a limited retention time and triggers and messages may evolve with time.  Event consumers should not rely on the timing of an event with a given Reason reflecting a consistent underlying trigger, or the continued existence of events with that Reason.  Events should be treated as informative, best-effort, supplemental data.
+     */
     @JsonProperty("deprecatedLastTimestamp")
     public String getDeprecatedLastTimestamp() {
         return deprecatedLastTimestamp;
     }
 
+    /**
+     * Event is a report of an event somewhere in the cluster. It generally denotes some state change in the system. Events have a limited retention time and triggers and messages may evolve with time.  Event consumers should not rely on the timing of an event with a given Reason reflecting a consistent underlying trigger, or the continued existence of events with that Reason.  Events should be treated as informative, best-effort, supplemental data.
+     */
     @JsonProperty("deprecatedLastTimestamp")
     public void setDeprecatedLastTimestamp(String deprecatedLastTimestamp) {
         this.deprecatedLastTimestamp = deprecatedLastTimestamp;
     }
 
+    /**
+     * Event is a report of an event somewhere in the cluster. It generally denotes some state change in the system. Events have a limited retention time and triggers and messages may evolve with time.  Event consumers should not rely on the timing of an event with a given Reason reflecting a consistent underlying trigger, or the continued existence of events with that Reason.  Events should be treated as informative, best-effort, supplemental data.
+     */
     @JsonProperty("deprecatedSource")
     public EventSource getDeprecatedSource() {
         return deprecatedSource;
     }
 
+    /**
+     * Event is a report of an event somewhere in the cluster. It generally denotes some state change in the system. Events have a limited retention time and triggers and messages may evolve with time.  Event consumers should not rely on the timing of an event with a given Reason reflecting a consistent underlying trigger, or the continued existence of events with that Reason.  Events should be treated as informative, best-effort, supplemental data.
+     */
     @JsonProperty("deprecatedSource")
     public void setDeprecatedSource(EventSource deprecatedSource) {
         this.deprecatedSource = deprecatedSource;
     }
 
+    /**
+     * Event is a report of an event somewhere in the cluster. It generally denotes some state change in the system. Events have a limited retention time and triggers and messages may evolve with time.  Event consumers should not rely on the timing of an event with a given Reason reflecting a consistent underlying trigger, or the continued existence of events with that Reason.  Events should be treated as informative, best-effort, supplemental data.
+     */
     @JsonProperty("eventTime")
     public MicroTime getEventTime() {
         return eventTime;
     }
 
+    /**
+     * Event is a report of an event somewhere in the cluster. It generally denotes some state change in the system. Events have a limited retention time and triggers and messages may evolve with time.  Event consumers should not rely on the timing of an event with a given Reason reflecting a consistent underlying trigger, or the continued existence of events with that Reason.  Events should be treated as informative, best-effort, supplemental data.
+     */
     @JsonProperty("eventTime")
     public void setEventTime(MicroTime eventTime) {
         this.eventTime = eventTime;
     }
 
     /**
-     * (Required)
+     * Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -245,98 +278,152 @@ public class Event implements Editable<EventBuilder>, HasMetadata, Namespaced
     }
 
     /**
-     * (Required)
+     * Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
      */
     @JsonProperty("kind")
     public void setKind(String kind) {
         this.kind = kind;
     }
 
+    /**
+     * Event is a report of an event somewhere in the cluster. It generally denotes some state change in the system. Events have a limited retention time and triggers and messages may evolve with time.  Event consumers should not rely on the timing of an event with a given Reason reflecting a consistent underlying trigger, or the continued existence of events with that Reason.  Events should be treated as informative, best-effort, supplemental data.
+     */
     @JsonProperty("metadata")
     public ObjectMeta getMetadata() {
         return metadata;
     }
 
+    /**
+     * Event is a report of an event somewhere in the cluster. It generally denotes some state change in the system. Events have a limited retention time and triggers and messages may evolve with time.  Event consumers should not rely on the timing of an event with a given Reason reflecting a consistent underlying trigger, or the continued existence of events with that Reason.  Events should be treated as informative, best-effort, supplemental data.
+     */
     @JsonProperty("metadata")
     public void setMetadata(ObjectMeta metadata) {
         this.metadata = metadata;
     }
 
+    /**
+     * note is a human-readable description of the status of this operation. Maximal length of the note is 1kB, but libraries should be prepared to handle values up to 64kB.
+     */
     @JsonProperty("note")
     public String getNote() {
         return note;
     }
 
+    /**
+     * note is a human-readable description of the status of this operation. Maximal length of the note is 1kB, but libraries should be prepared to handle values up to 64kB.
+     */
     @JsonProperty("note")
     public void setNote(String note) {
         this.note = note;
     }
 
+    /**
+     * reason is why the action was taken. It is human-readable. This field cannot be empty for new Events and it can have at most 128 characters.
+     */
     @JsonProperty("reason")
     public String getReason() {
         return reason;
     }
 
+    /**
+     * reason is why the action was taken. It is human-readable. This field cannot be empty for new Events and it can have at most 128 characters.
+     */
     @JsonProperty("reason")
     public void setReason(String reason) {
         this.reason = reason;
     }
 
+    /**
+     * Event is a report of an event somewhere in the cluster. It generally denotes some state change in the system. Events have a limited retention time and triggers and messages may evolve with time.  Event consumers should not rely on the timing of an event with a given Reason reflecting a consistent underlying trigger, or the continued existence of events with that Reason.  Events should be treated as informative, best-effort, supplemental data.
+     */
     @JsonProperty("regarding")
     public ObjectReference getRegarding() {
         return regarding;
     }
 
+    /**
+     * Event is a report of an event somewhere in the cluster. It generally denotes some state change in the system. Events have a limited retention time and triggers and messages may evolve with time.  Event consumers should not rely on the timing of an event with a given Reason reflecting a consistent underlying trigger, or the continued existence of events with that Reason.  Events should be treated as informative, best-effort, supplemental data.
+     */
     @JsonProperty("regarding")
     public void setRegarding(ObjectReference regarding) {
         this.regarding = regarding;
     }
 
+    /**
+     * Event is a report of an event somewhere in the cluster. It generally denotes some state change in the system. Events have a limited retention time and triggers and messages may evolve with time.  Event consumers should not rely on the timing of an event with a given Reason reflecting a consistent underlying trigger, or the continued existence of events with that Reason.  Events should be treated as informative, best-effort, supplemental data.
+     */
     @JsonProperty("related")
     public ObjectReference getRelated() {
         return related;
     }
 
+    /**
+     * Event is a report of an event somewhere in the cluster. It generally denotes some state change in the system. Events have a limited retention time and triggers and messages may evolve with time.  Event consumers should not rely on the timing of an event with a given Reason reflecting a consistent underlying trigger, or the continued existence of events with that Reason.  Events should be treated as informative, best-effort, supplemental data.
+     */
     @JsonProperty("related")
     public void setRelated(ObjectReference related) {
         this.related = related;
     }
 
+    /**
+     * reportingController is the name of the controller that emitted this Event, e.g. `kubernetes.io/kubelet`. This field cannot be empty for new Events.
+     */
     @JsonProperty("reportingController")
     public String getReportingController() {
         return reportingController;
     }
 
+    /**
+     * reportingController is the name of the controller that emitted this Event, e.g. `kubernetes.io/kubelet`. This field cannot be empty for new Events.
+     */
     @JsonProperty("reportingController")
     public void setReportingController(String reportingController) {
         this.reportingController = reportingController;
     }
 
+    /**
+     * reportingInstance is the ID of the controller instance, e.g. `kubelet-xyzf`. This field cannot be empty for new Events and it can have at most 128 characters.
+     */
     @JsonProperty("reportingInstance")
     public String getReportingInstance() {
         return reportingInstance;
     }
 
+    /**
+     * reportingInstance is the ID of the controller instance, e.g. `kubelet-xyzf`. This field cannot be empty for new Events and it can have at most 128 characters.
+     */
     @JsonProperty("reportingInstance")
     public void setReportingInstance(String reportingInstance) {
         this.reportingInstance = reportingInstance;
     }
 
+    /**
+     * Event is a report of an event somewhere in the cluster. It generally denotes some state change in the system. Events have a limited retention time and triggers and messages may evolve with time.  Event consumers should not rely on the timing of an event with a given Reason reflecting a consistent underlying trigger, or the continued existence of events with that Reason.  Events should be treated as informative, best-effort, supplemental data.
+     */
     @JsonProperty("series")
     public EventSeries getSeries() {
         return series;
     }
 
+    /**
+     * Event is a report of an event somewhere in the cluster. It generally denotes some state change in the system. Events have a limited retention time and triggers and messages may evolve with time.  Event consumers should not rely on the timing of an event with a given Reason reflecting a consistent underlying trigger, or the continued existence of events with that Reason.  Events should be treated as informative, best-effort, supplemental data.
+     */
     @JsonProperty("series")
     public void setSeries(EventSeries series) {
         this.series = series;
     }
 
+    /**
+     * type is the type of this event (Normal, Warning), new types could be added in the future. It is machine-readable. This field cannot be empty for new Events.
+     */
     @JsonProperty("type")
     public String getType() {
         return type;
     }
 
+    /**
+     * type is the type of this event (Normal, Warning), new types could be added in the future. It is machine-readable. This field cannot be empty for new Events.
+     */
     @JsonProperty("type")
     public void setType(String type) {
         this.type = type;

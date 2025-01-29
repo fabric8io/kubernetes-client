@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * BandwidthEntry for CNI BandwidthEntry
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -90,41 +93,65 @@ public class BandwidthEntry implements Editable<BandwidthEntryBuilder>, Kubernet
         this.ingressRate = ingressRate;
     }
 
+    /**
+     * BandwidthEntry for CNI BandwidthEntry
+     */
     @JsonProperty("egressBurst")
     public Integer getEgressBurst() {
         return egressBurst;
     }
 
+    /**
+     * BandwidthEntry for CNI BandwidthEntry
+     */
     @JsonProperty("egressBurst")
     public void setEgressBurst(Integer egressBurst) {
         this.egressBurst = egressBurst;
     }
 
+    /**
+     * BandwidthEntry for CNI BandwidthEntry
+     */
     @JsonProperty("egressRate")
     public Integer getEgressRate() {
         return egressRate;
     }
 
+    /**
+     * BandwidthEntry for CNI BandwidthEntry
+     */
     @JsonProperty("egressRate")
     public void setEgressRate(Integer egressRate) {
         this.egressRate = egressRate;
     }
 
+    /**
+     * BandwidthEntry for CNI BandwidthEntry
+     */
     @JsonProperty("ingressBurst")
     public Integer getIngressBurst() {
         return ingressBurst;
     }
 
+    /**
+     * BandwidthEntry for CNI BandwidthEntry
+     */
     @JsonProperty("ingressBurst")
     public void setIngressBurst(Integer ingressBurst) {
         this.ingressBurst = ingressBurst;
     }
 
+    /**
+     * BandwidthEntry for CNI BandwidthEntry
+     */
     @JsonProperty("ingressRate")
     public Integer getIngressRate() {
         return ingressRate;
     }
 
+    /**
+     * BandwidthEntry for CNI BandwidthEntry
+     */
     @JsonProperty("ingressRate")
     public void setIngressRate(Integer ingressRate) {
         this.ingressRate = ingressRate;

@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * BackupConfig contains settings for the Velero backup integration.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class BackupConfig implements Editable<BackupConfigBuilder>, KubernetesRe
         this.velero = velero;
     }
 
+    /**
+     * (Deprecated) MinBackupPeriodSeconds specifies that a minimum of MinBackupPeriodSeconds will occur in between each backup. This is used to rate limit backups. This potentially batches together multiple changes into 1 backup. No backups will be lost as changes that happen during this interval are queued up and will result in a backup happening once the interval has been completed.
+     */
     @JsonProperty("minBackupPeriodSeconds")
     public Integer getMinBackupPeriodSeconds() {
         return minBackupPeriodSeconds;
     }
 
+    /**
+     * (Deprecated) MinBackupPeriodSeconds specifies that a minimum of MinBackupPeriodSeconds will occur in between each backup. This is used to rate limit backups. This potentially batches together multiple changes into 1 backup. No backups will be lost as changes that happen during this interval are queued up and will result in a backup happening once the interval has been completed.
+     */
     @JsonProperty("minBackupPeriodSeconds")
     public void setMinBackupPeriodSeconds(Integer minBackupPeriodSeconds) {
         this.minBackupPeriodSeconds = minBackupPeriodSeconds;
     }
 
+    /**
+     * BackupConfig contains settings for the Velero backup integration.
+     */
     @JsonProperty("velero")
     public VeleroBackupConfig getVelero() {
         return velero;
     }
 
+    /**
+     * BackupConfig contains settings for the Velero backup integration.
+     */
     @JsonProperty("velero")
     public void setVelero(VeleroBackupConfig velero) {
         this.velero = velero;

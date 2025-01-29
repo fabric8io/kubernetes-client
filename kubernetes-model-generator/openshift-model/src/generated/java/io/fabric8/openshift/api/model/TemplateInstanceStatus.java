@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * TemplateInstanceStatus describes the current state of a TemplateInstance.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -86,23 +89,35 @@ public class TemplateInstanceStatus implements Editable<TemplateInstanceStatusBu
         this.objects = objects;
     }
 
+    /**
+     * conditions represent the latest available observations of a TemplateInstance's current state.
+     */
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<TemplateInstanceCondition> getConditions() {
         return conditions;
     }
 
+    /**
+     * conditions represent the latest available observations of a TemplateInstance's current state.
+     */
     @JsonProperty("conditions")
     public void setConditions(List<TemplateInstanceCondition> conditions) {
         this.conditions = conditions;
     }
 
+    /**
+     * Objects references the objects created by the TemplateInstance.
+     */
     @JsonProperty("objects")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<TemplateInstanceObject> getObjects() {
         return objects;
     }
 
+    /**
+     * Objects references the objects created by the TemplateInstance.
+     */
     @JsonProperty("objects")
     public void setObjects(List<TemplateInstanceObject> objects) {
         this.objects = objects;

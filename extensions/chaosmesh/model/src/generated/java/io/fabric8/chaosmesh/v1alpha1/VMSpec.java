@@ -78,11 +78,17 @@ public class VMSpec implements Editable<VMSpecBuilder>, KubernetesResource
         this.vmName = vmName;
     }
 
+    /**
+     * The name of the VM to be injected
+     */
     @JsonProperty("vm-name")
     public String getVmName() {
         return vmName;
     }
 
+    /**
+     * The name of the VM to be injected
+     */
     @JsonProperty("vm-name")
     public void setVmName(String vmName) {
         this.vmName = vmName;

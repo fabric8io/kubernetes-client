@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ContainerRuntimeConfigSpec defines the desired state of ContainerRuntimeConfig
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class ContainerRuntimeConfigSpec implements Editable<ContainerRuntimeConf
         this.machineConfigPoolSelector = machineConfigPoolSelector;
     }
 
+    /**
+     * ContainerRuntimeConfigSpec defines the desired state of ContainerRuntimeConfig
+     */
     @JsonProperty("containerRuntimeConfig")
     public ContainerRuntimeConfiguration getContainerRuntimeConfig() {
         return containerRuntimeConfig;
     }
 
+    /**
+     * ContainerRuntimeConfigSpec defines the desired state of ContainerRuntimeConfig
+     */
     @JsonProperty("containerRuntimeConfig")
     public void setContainerRuntimeConfig(ContainerRuntimeConfiguration containerRuntimeConfig) {
         this.containerRuntimeConfig = containerRuntimeConfig;
     }
 
+    /**
+     * ContainerRuntimeConfigSpec defines the desired state of ContainerRuntimeConfig
+     */
     @JsonProperty("machineConfigPoolSelector")
     public LabelSelector getMachineConfigPoolSelector() {
         return machineConfigPoolSelector;
     }
 
+    /**
+     * ContainerRuntimeConfigSpec defines the desired state of ContainerRuntimeConfig
+     */
     @JsonProperty("machineConfigPoolSelector")
     public void setMachineConfigPoolSelector(LabelSelector machineConfigPoolSelector) {
         this.machineConfigPoolSelector = machineConfigPoolSelector;

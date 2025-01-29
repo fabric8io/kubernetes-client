@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * DeploymentConfigStatus represents the current deployment state.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -113,92 +116,146 @@ public class DeploymentConfigStatus implements Editable<DeploymentConfigStatusBu
         this.updatedReplicas = updatedReplicas;
     }
 
+    /**
+     * AvailableReplicas is the total number of available pods targeted by this deployment config.
+     */
     @JsonProperty("availableReplicas")
     public Integer getAvailableReplicas() {
         return availableReplicas;
     }
 
+    /**
+     * AvailableReplicas is the total number of available pods targeted by this deployment config.
+     */
     @JsonProperty("availableReplicas")
     public void setAvailableReplicas(Integer availableReplicas) {
         this.availableReplicas = availableReplicas;
     }
 
+    /**
+     * Conditions represents the latest available observations of a deployment config's current state.
+     */
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<DeploymentCondition> getConditions() {
         return conditions;
     }
 
+    /**
+     * Conditions represents the latest available observations of a deployment config's current state.
+     */
     @JsonProperty("conditions")
     public void setConditions(List<DeploymentCondition> conditions) {
         this.conditions = conditions;
     }
 
+    /**
+     * DeploymentConfigStatus represents the current deployment state.
+     */
     @JsonProperty("details")
     public DeploymentDetails getDetails() {
         return details;
     }
 
+    /**
+     * DeploymentConfigStatus represents the current deployment state.
+     */
     @JsonProperty("details")
     public void setDetails(DeploymentDetails details) {
         this.details = details;
     }
 
+    /**
+     * LatestVersion is used to determine whether the current deployment associated with a deployment config is out of sync.
+     */
     @JsonProperty("latestVersion")
     public Long getLatestVersion() {
         return latestVersion;
     }
 
+    /**
+     * LatestVersion is used to determine whether the current deployment associated with a deployment config is out of sync.
+     */
     @JsonProperty("latestVersion")
     public void setLatestVersion(Long latestVersion) {
         this.latestVersion = latestVersion;
     }
 
+    /**
+     * ObservedGeneration is the most recent generation observed by the deployment config controller.
+     */
     @JsonProperty("observedGeneration")
     public Long getObservedGeneration() {
         return observedGeneration;
     }
 
+    /**
+     * ObservedGeneration is the most recent generation observed by the deployment config controller.
+     */
     @JsonProperty("observedGeneration")
     public void setObservedGeneration(Long observedGeneration) {
         this.observedGeneration = observedGeneration;
     }
 
+    /**
+     * Total number of ready pods targeted by this deployment.
+     */
     @JsonProperty("readyReplicas")
     public Integer getReadyReplicas() {
         return readyReplicas;
     }
 
+    /**
+     * Total number of ready pods targeted by this deployment.
+     */
     @JsonProperty("readyReplicas")
     public void setReadyReplicas(Integer readyReplicas) {
         this.readyReplicas = readyReplicas;
     }
 
+    /**
+     * Replicas is the total number of pods targeted by this deployment config.
+     */
     @JsonProperty("replicas")
     public Integer getReplicas() {
         return replicas;
     }
 
+    /**
+     * Replicas is the total number of pods targeted by this deployment config.
+     */
     @JsonProperty("replicas")
     public void setReplicas(Integer replicas) {
         this.replicas = replicas;
     }
 
+    /**
+     * UnavailableReplicas is the total number of unavailable pods targeted by this deployment config.
+     */
     @JsonProperty("unavailableReplicas")
     public Integer getUnavailableReplicas() {
         return unavailableReplicas;
     }
 
+    /**
+     * UnavailableReplicas is the total number of unavailable pods targeted by this deployment config.
+     */
     @JsonProperty("unavailableReplicas")
     public void setUnavailableReplicas(Integer unavailableReplicas) {
         this.unavailableReplicas = unavailableReplicas;
     }
 
+    /**
+     * UpdatedReplicas is the total number of non-terminated pods targeted by this deployment config that have the desired template spec.
+     */
     @JsonProperty("updatedReplicas")
     public Integer getUpdatedReplicas() {
         return updatedReplicas;
     }
 
+    /**
+     * UpdatedReplicas is the total number of non-terminated pods targeted by this deployment config that have the desired template spec.
+     */
     @JsonProperty("updatedReplicas")
     public void setUpdatedReplicas(Integer updatedReplicas) {
         this.updatedReplicas = updatedReplicas;

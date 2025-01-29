@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * QuickStarts allow cluster admins to customize available ConsoleQuickStart resources.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -81,12 +84,18 @@ public class QuickStarts implements Editable<QuickStartsBuilder>, KubernetesReso
         this.disabled = disabled;
     }
 
+    /**
+     * disabled is a list of ConsoleQuickStart resource names that are not shown to users.
+     */
     @JsonProperty("disabled")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getDisabled() {
         return disabled;
     }
 
+    /**
+     * disabled is a list of ConsoleQuickStart resource names that are not shown to users.
+     */
     @JsonProperty("disabled")
     public void setDisabled(List<String> disabled) {
         this.disabled = disabled;

@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * MachineTemplateSpec describes the data needed to create a Machine from a template
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class MachineTemplateSpec implements Editable<MachineTemplateSpecBuilder>
         this.spec = spec;
     }
 
+    /**
+     * MachineTemplateSpec describes the data needed to create a Machine from a template
+     */
     @JsonProperty("metadata")
     public ObjectMeta getMetadata() {
         return metadata;
     }
 
+    /**
+     * MachineTemplateSpec describes the data needed to create a Machine from a template
+     */
     @JsonProperty("metadata")
     public void setMetadata(ObjectMeta metadata) {
         this.metadata = metadata;
     }
 
+    /**
+     * MachineTemplateSpec describes the data needed to create a Machine from a template
+     */
     @JsonProperty("spec")
     public MachineSpec getSpec() {
         return spec;
     }
 
+    /**
+     * MachineTemplateSpec describes the data needed to create a Machine from a template
+     */
     @JsonProperty("spec")
     public void setSpec(MachineSpec spec) {
         this.spec = spec;

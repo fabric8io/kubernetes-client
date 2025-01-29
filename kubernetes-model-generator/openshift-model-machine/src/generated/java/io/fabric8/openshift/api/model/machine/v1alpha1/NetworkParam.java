@@ -125,84 +125,132 @@ public class NetworkParam implements Editable<NetworkParamBuilder>, KubernetesRe
         this.filter = filter;
     }
 
+    /**
+     * A fixed IPv4 address for the NIC.
+     */
     @JsonProperty("fixedIp")
     public String getFixedIp() {
         return fixedIp;
     }
 
+    /**
+     * A fixed IPv4 address for the NIC.
+     */
     @JsonProperty("fixedIp")
     public void setFixedIp(String fixedIp) {
         this.fixedIp = fixedIp;
     }
 
+    /**
+     * NoAllowedAddressPairs disables creation of allowed address pairs for the network ports
+     */
     @JsonProperty("noAllowedAddressPairs")
     public Boolean getNoAllowedAddressPairs() {
         return noAllowedAddressPairs;
     }
 
+    /**
+     * NoAllowedAddressPairs disables creation of allowed address pairs for the network ports
+     */
     @JsonProperty("noAllowedAddressPairs")
     public void setNoAllowedAddressPairs(Boolean noAllowedAddressPairs) {
         this.noAllowedAddressPairs = noAllowedAddressPairs;
     }
 
+    /**
+     * PortSecurity optionally enables or disables security on ports managed by OpenStack
+     */
     @JsonProperty("portSecurity")
     public Boolean getPortSecurity() {
         return portSecurity;
     }
 
+    /**
+     * PortSecurity optionally enables or disables security on ports managed by OpenStack
+     */
     @JsonProperty("portSecurity")
     public void setPortSecurity(Boolean portSecurity) {
         this.portSecurity = portSecurity;
     }
 
+    /**
+     * PortTags allows users to specify a list of tags to add to ports created in a given network
+     */
     @JsonProperty("portTags")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getPortTags() {
         return portTags;
     }
 
+    /**
+     * PortTags allows users to specify a list of tags to add to ports created in a given network
+     */
     @JsonProperty("portTags")
     public void setPortTags(List<String> portTags) {
         this.portTags = portTags;
     }
 
+    /**
+     * A dictionary that enables the application running on the specified host to pass and receive virtual network interface (VIF) port-specific information to the plug-in.
+     */
     @JsonProperty("profile")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getProfile() {
         return profile;
     }
 
+    /**
+     * A dictionary that enables the application running on the specified host to pass and receive virtual network interface (VIF) port-specific information to the plug-in.
+     */
     @JsonProperty("profile")
     public void setProfile(Map<String, String> profile) {
         this.profile = profile;
     }
 
+    /**
+     * Subnet within a network to use
+     */
     @JsonProperty("subnets")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<SubnetParam> getSubnets() {
         return subnets;
     }
 
+    /**
+     * Subnet within a network to use
+     */
     @JsonProperty("subnets")
     public void setSubnets(List<SubnetParam> subnets) {
         this.subnets = subnets;
     }
 
+    /**
+     * The UUID of the network. Required if you omit the port attribute.
+     */
     @JsonProperty("uuid")
     public String getUuid() {
         return uuid;
     }
 
+    /**
+     * The UUID of the network. Required if you omit the port attribute.
+     */
     @JsonProperty("uuid")
     public void setUuid(String uuid) {
         this.uuid = uuid;
     }
 
+    /**
+     * The virtual network interface card (vNIC) type that is bound to the neutron port.
+     */
     @JsonProperty("vnicType")
     public String getVnicType() {
         return vnicType;
     }
 
+    /**
+     * The virtual network interface card (vNIC) type that is bound to the neutron port.
+     */
     @JsonProperty("vnicType")
     public void setVnicType(String vnicType) {
         this.vnicType = vnicType;

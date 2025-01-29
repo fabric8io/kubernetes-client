@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * PinnedImageSetSpec defines the desired state of a PinnedImageSet.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -81,12 +84,18 @@ public class PinnedImageSetSpec implements Editable<PinnedImageSetSpecBuilder>, 
         this.pinnedImages = pinnedImages;
     }
 
+    /**
+     * pinnedImages is a list of OCI Image referenced by digest that should be pinned and pre-loaded by the nodes of a MachineConfigPool. Translates into a new file inside the /etc/crio/crio.conf.d directory with content similar to this:<br><p> <br><p>      pinned_images = [<br><p>              "quay.io/openshift-release-dev/ocp-release@sha256:...",<br><p>              "quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:...",<br><p>              "quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:...",<br><p>              ...<br><p>      ]<br><p> <br><p> These image references should all be by digest, tags aren't allowed.
+     */
     @JsonProperty("pinnedImages")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<PinnedImageRef> getPinnedImages() {
         return pinnedImages;
     }
 
+    /**
+     * pinnedImages is a list of OCI Image referenced by digest that should be pinned and pre-loaded by the nodes of a MachineConfigPool. Translates into a new file inside the /etc/crio/crio.conf.d directory with content similar to this:<br><p> <br><p>      pinned_images = [<br><p>              "quay.io/openshift-release-dev/ocp-release@sha256:...",<br><p>              "quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:...",<br><p>              "quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:...",<br><p>              ...<br><p>      ]<br><p> <br><p> These image references should all be by digest, tags aren't allowed.
+     */
     @JsonProperty("pinnedImages")
     public void setPinnedImages(List<PinnedImageRef> pinnedImages) {
         this.pinnedImages = pinnedImages;

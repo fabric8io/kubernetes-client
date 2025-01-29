@@ -17,6 +17,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * FlexVolume represents a generic volume resource that is provisioned/attached using an exec based plugin.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -66,52 +69,82 @@ public class FlexVolumeSource implements Editable<FlexVolumeSourceBuilder>, Kube
         this.secretRef = secretRef;
     }
 
+    /**
+     * driver is the name of the driver to use for this volume.
+     */
     @JsonProperty("driver")
     public String getDriver() {
         return driver;
     }
 
+    /**
+     * driver is the name of the driver to use for this volume.
+     */
     @JsonProperty("driver")
     public void setDriver(String driver) {
         this.driver = driver;
     }
 
+    /**
+     * fsType is the filesystem type to mount. Must be a filesystem type supported by the host operating system. Ex. "ext4", "xfs", "ntfs". The default filesystem depends on FlexVolume script.
+     */
     @JsonProperty("fsType")
     public String getFsType() {
         return fsType;
     }
 
+    /**
+     * fsType is the filesystem type to mount. Must be a filesystem type supported by the host operating system. Ex. "ext4", "xfs", "ntfs". The default filesystem depends on FlexVolume script.
+     */
     @JsonProperty("fsType")
     public void setFsType(String fsType) {
         this.fsType = fsType;
     }
 
+    /**
+     * options is Optional: this field holds extra command options if any.
+     */
     @JsonProperty("options")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getOptions() {
         return options;
     }
 
+    /**
+     * options is Optional: this field holds extra command options if any.
+     */
     @JsonProperty("options")
     public void setOptions(Map<String, String> options) {
         this.options = options;
     }
 
+    /**
+     * readOnly is Optional: defaults to false (read/write). ReadOnly here will force the ReadOnly setting in VolumeMounts.
+     */
     @JsonProperty("readOnly")
     public Boolean getReadOnly() {
         return readOnly;
     }
 
+    /**
+     * readOnly is Optional: defaults to false (read/write). ReadOnly here will force the ReadOnly setting in VolumeMounts.
+     */
     @JsonProperty("readOnly")
     public void setReadOnly(Boolean readOnly) {
         this.readOnly = readOnly;
     }
 
+    /**
+     * FlexVolume represents a generic volume resource that is provisioned/attached using an exec based plugin.
+     */
     @JsonProperty("secretRef")
     public LocalObjectReference getSecretRef() {
         return secretRef;
     }
 
+    /**
+     * FlexVolume represents a generic volume resource that is provisioned/attached using an exec based plugin.
+     */
     @JsonProperty("secretRef")
     public void setSecretRef(LocalObjectReference secretRef) {
         this.secretRef = secretRef;

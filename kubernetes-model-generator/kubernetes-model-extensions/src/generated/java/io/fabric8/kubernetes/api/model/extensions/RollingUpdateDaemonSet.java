@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Spec to control the desired behavior of daemon set rolling update.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -78,11 +81,17 @@ public class RollingUpdateDaemonSet implements Editable<RollingUpdateDaemonSetBu
         this.maxUnavailable = maxUnavailable;
     }
 
+    /**
+     * Spec to control the desired behavior of daemon set rolling update.
+     */
     @JsonProperty("maxUnavailable")
     public IntOrString getMaxUnavailable() {
         return maxUnavailable;
     }
 
+    /**
+     * Spec to control the desired behavior of daemon set rolling update.
+     */
     @JsonProperty("maxUnavailable")
     public void setMaxUnavailable(IntOrString maxUnavailable) {
         this.maxUnavailable = maxUnavailable;

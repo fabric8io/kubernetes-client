@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * PriorityLevelConfigurationSpec specifies the configuration of a priority level.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class PriorityLevelConfigurationSpec implements Editable<PriorityLevelCon
         this.type = type;
     }
 
+    /**
+     * PriorityLevelConfigurationSpec specifies the configuration of a priority level.
+     */
     @JsonProperty("limited")
     public LimitedPriorityLevelConfiguration getLimited() {
         return limited;
     }
 
+    /**
+     * PriorityLevelConfigurationSpec specifies the configuration of a priority level.
+     */
     @JsonProperty("limited")
     public void setLimited(LimitedPriorityLevelConfiguration limited) {
         this.limited = limited;
     }
 
+    /**
+     * `type` indicates whether this priority level is subject to limitation on request execution.  A value of `"Exempt"` means that requests of this priority level are not subject to a limit (and thus are never queued) and do not detract from the capacity made available to other priority levels.  A value of `"Limited"` means that (a) requests of this priority level _are_ subject to limits and (b) some of the server's limited capacity is made available exclusively to this priority level. Required.
+     */
     @JsonProperty("type")
     public String getType() {
         return type;
     }
 
+    /**
+     * `type` indicates whether this priority level is subject to limitation on request execution.  A value of `"Exempt"` means that requests of this priority level are not subject to a limit (and thus are never queued) and do not detract from the capacity made available to other priority levels.  A value of `"Limited"` means that (a) requests of this priority level _are_ subject to limits and (b) some of the server's limited capacity is made available exclusively to this priority level. Required.
+     */
     @JsonProperty("type")
     public void setType(String type) {
         this.type = type;

@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * OperatorGroupSpec is the spec for an OperatorGroup resource.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -97,52 +100,82 @@ public class OperatorGroupSpec implements Editable<OperatorGroupSpecBuilder>, Ku
         this.upgradeStrategy = upgradeStrategy;
     }
 
+    /**
+     * OperatorGroupSpec is the spec for an OperatorGroup resource.
+     */
     @JsonProperty("selector")
     public LabelSelector getSelector() {
         return selector;
     }
 
+    /**
+     * OperatorGroupSpec is the spec for an OperatorGroup resource.
+     */
     @JsonProperty("selector")
     public void setSelector(LabelSelector selector) {
         this.selector = selector;
     }
 
+    /**
+     * ServiceAccountName is the admin specified service account which will be used to deploy operator(s) in this operator group.
+     */
     @JsonProperty("serviceAccountName")
     public String getServiceAccountName() {
         return serviceAccountName;
     }
 
+    /**
+     * ServiceAccountName is the admin specified service account which will be used to deploy operator(s) in this operator group.
+     */
     @JsonProperty("serviceAccountName")
     public void setServiceAccountName(String serviceAccountName) {
         this.serviceAccountName = serviceAccountName;
     }
 
+    /**
+     * Static tells OLM not to update the OperatorGroup's providedAPIs annotation
+     */
     @JsonProperty("staticProvidedAPIs")
     public Boolean getStaticProvidedAPIs() {
         return staticProvidedAPIs;
     }
 
+    /**
+     * Static tells OLM not to update the OperatorGroup's providedAPIs annotation
+     */
     @JsonProperty("staticProvidedAPIs")
     public void setStaticProvidedAPIs(Boolean staticProvidedAPIs) {
         this.staticProvidedAPIs = staticProvidedAPIs;
     }
 
+    /**
+     * TargetNamespaces is an explicit set of namespaces to target. If it is set, Selector is ignored.
+     */
     @JsonProperty("targetNamespaces")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getTargetNamespaces() {
         return targetNamespaces;
     }
 
+    /**
+     * TargetNamespaces is an explicit set of namespaces to target. If it is set, Selector is ignored.
+     */
     @JsonProperty("targetNamespaces")
     public void setTargetNamespaces(List<String> targetNamespaces) {
         this.targetNamespaces = targetNamespaces;
     }
 
+    /**
+     * UpgradeStrategy defines the upgrade strategy for operators in the namespace. There are currently two supported upgrade strategies:<br><p> <br><p> Default: OLM will only allow clusterServiceVersions to move to the replacing phase from the succeeded phase. This effectively means that OLM will not allow operators to move to the next version if an installation or upgrade has failed.<br><p> <br><p> TechPreviewUnsafeFailForward: OLM will allow clusterServiceVersions to move to the replacing phase from the succeeded phase or from the failed phase. Additionally, OLM will generate new installPlans when a subscription references a failed installPlan and the catalog has been updated with a new upgrade for the existing set of operators.<br><p> <br><p> WARNING: The TechPreviewUnsafeFailForward upgrade strategy is unsafe and may result in unexpected behavior or unrecoverable data loss unless you have deep understanding of the set of operators being managed in the namespace.
+     */
     @JsonProperty("upgradeStrategy")
     public String getUpgradeStrategy() {
         return upgradeStrategy;
     }
 
+    /**
+     * UpgradeStrategy defines the upgrade strategy for operators in the namespace. There are currently two supported upgrade strategies:<br><p> <br><p> Default: OLM will only allow clusterServiceVersions to move to the replacing phase from the succeeded phase. This effectively means that OLM will not allow operators to move to the next version if an installation or upgrade has failed.<br><p> <br><p> TechPreviewUnsafeFailForward: OLM will allow clusterServiceVersions to move to the replacing phase from the succeeded phase or from the failed phase. Additionally, OLM will generate new installPlans when a subscription references a failed installPlan and the catalog has been updated with a new upgrade for the existing set of operators.<br><p> <br><p> WARNING: The TechPreviewUnsafeFailForward upgrade strategy is unsafe and may result in unexpected behavior or unrecoverable data loss unless you have deep understanding of the set of operators being managed in the namespace.
+     */
     @JsonProperty("upgradeStrategy")
     public void setUpgradeStrategy(String upgradeStrategy) {
         this.upgradeStrategy = upgradeStrategy;

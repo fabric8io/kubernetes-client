@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * RetentionConfig is the spec of retention configurations.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -98,61 +101,97 @@ public class RetentionConfig implements Editable<RetentionConfigBuilder>, Kubern
         this.retentionResolutionRaw = retentionResolutionRaw;
     }
 
+    /**
+     * configure --tsdb.block-duration in rule (Block duration for TSDB block)
+     */
     @JsonProperty("blockDuration")
     public String getBlockDuration() {
         return blockDuration;
     }
 
+    /**
+     * configure --tsdb.block-duration in rule (Block duration for TSDB block)
+     */
     @JsonProperty("blockDuration")
     public void setBlockDuration(String blockDuration) {
         this.blockDuration = blockDuration;
     }
 
+    /**
+     * configure --delete-delay in compact Time before a block marked for deletion is deleted from bucket.
+     */
     @JsonProperty("deleteDelay")
     public String getDeleteDelay() {
         return deleteDelay;
     }
 
+    /**
+     * configure --delete-delay in compact Time before a block marked for deletion is deleted from bucket.
+     */
     @JsonProperty("deleteDelay")
     public void setDeleteDelay(String deleteDelay) {
         this.deleteDelay = deleteDelay;
     }
 
+    /**
+     * How long to retain raw samples in a local disk. It applies to rule/receive: --tsdb.retention in receive --tsdb.retention in rule
+     */
     @JsonProperty("retentionInLocal")
     public String getRetentionInLocal() {
         return retentionInLocal;
     }
 
+    /**
+     * How long to retain raw samples in a local disk. It applies to rule/receive: --tsdb.retention in receive --tsdb.retention in rule
+     */
     @JsonProperty("retentionInLocal")
     public void setRetentionInLocal(String retentionInLocal) {
         this.retentionInLocal = retentionInLocal;
     }
 
+    /**
+     * How long to retain samples of resolution 2 (1 hour) in bucket. It applies to --retention.resolution-1h in compact.
+     */
     @JsonProperty("retentionResolution1h")
     public String getRetentionResolution1h() {
         return retentionResolution1h;
     }
 
+    /**
+     * How long to retain samples of resolution 2 (1 hour) in bucket. It applies to --retention.resolution-1h in compact.
+     */
     @JsonProperty("retentionResolution1h")
     public void setRetentionResolution1h(String retentionResolution1h) {
         this.retentionResolution1h = retentionResolution1h;
     }
 
+    /**
+     * How long to retain samples of resolution 1 (5 minutes) in bucket. It applies to --retention.resolution-5m in compact.
+     */
     @JsonProperty("retentionResolution5m")
     public String getRetentionResolution5m() {
         return retentionResolution5m;
     }
 
+    /**
+     * How long to retain samples of resolution 1 (5 minutes) in bucket. It applies to --retention.resolution-5m in compact.
+     */
     @JsonProperty("retentionResolution5m")
     public void setRetentionResolution5m(String retentionResolution5m) {
         this.retentionResolution5m = retentionResolution5m;
     }
 
+    /**
+     * How long to retain raw samples in a bucket. It applies to --retention.resolution-raw in compact.
+     */
     @JsonProperty("retentionResolutionRaw")
     public String getRetentionResolutionRaw() {
         return retentionResolutionRaw;
     }
 
+    /**
+     * How long to retain raw samples in a bucket. It applies to --retention.resolution-raw in compact.
+     */
     @JsonProperty("retentionResolutionRaw")
     public void setRetentionResolutionRaw(String retentionResolutionRaw) {
         this.retentionResolutionRaw = retentionResolutionRaw;

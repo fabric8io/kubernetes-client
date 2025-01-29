@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Global configuration for the TuneD daemon as defined in tuned-main.conf
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -78,11 +81,17 @@ public class TuneDConfig implements Editable<TuneDConfigBuilder>, KubernetesReso
         this.reapplySysctl = reapplySysctl;
     }
 
+    /**
+     * turn reapply_sysctl functionality on/off for the TuneD daemon: true/false
+     */
     @JsonProperty("reapply_sysctl")
     public Boolean getReapplySysctl() {
         return reapplySysctl;
     }
 
+    /**
+     * turn reapply_sysctl functionality on/off for the TuneD daemon: true/false
+     */
     @JsonProperty("reapply_sysctl")
     public void setReapplySysctl(Boolean reapplySysctl) {
         this.reapplySysctl = reapplySysctl;

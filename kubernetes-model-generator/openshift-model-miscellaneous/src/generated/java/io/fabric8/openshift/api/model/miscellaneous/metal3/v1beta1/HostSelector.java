@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * HostSelector specifies matching criteria for labels on BareMetalHosts. This is used to limit the set of BareMetalHost objects considered for claiming for a Machine.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -86,23 +89,35 @@ public class HostSelector implements Editable<HostSelectorBuilder>, KubernetesRe
         this.matchLabels = matchLabels;
     }
 
+    /**
+     * Label match expressions that must be true on a chosen BareMetalHost
+     */
     @JsonProperty("matchExpressions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<HostSelectorRequirement> getMatchExpressions() {
         return matchExpressions;
     }
 
+    /**
+     * Label match expressions that must be true on a chosen BareMetalHost
+     */
     @JsonProperty("matchExpressions")
     public void setMatchExpressions(List<HostSelectorRequirement> matchExpressions) {
         this.matchExpressions = matchExpressions;
     }
 
+    /**
+     * Key/value pairs of labels that must exist on a chosen BareMetalHost
+     */
     @JsonProperty("matchLabels")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getMatchLabels() {
         return matchLabels;
     }
 
+    /**
+     * Key/value pairs of labels that must exist on a chosen BareMetalHost
+     */
     @JsonProperty("matchLabels")
     public void setMatchLabels(Map<String, String> matchLabels) {
         this.matchLabels = matchLabels;

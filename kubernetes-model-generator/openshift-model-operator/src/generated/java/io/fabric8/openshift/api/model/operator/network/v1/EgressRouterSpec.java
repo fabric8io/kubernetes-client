@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * EgressRouterSpec contains the configuration for an egress router. Mode, networkInterface and addresses fields must be specified along with exactly one "Config" that matches the mode. Each config consists of parameters specific to that mode.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -93,42 +96,66 @@ public class EgressRouterSpec implements Editable<EgressRouterSpecBuilder>, Kube
         this.redirect = redirect;
     }
 
+    /**
+     * List of IP addresses to configure on the pod's secondary interface.
+     */
     @JsonProperty("addresses")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<EgressRouterAddress> getAddresses() {
         return addresses;
     }
 
+    /**
+     * List of IP addresses to configure on the pod's secondary interface.
+     */
     @JsonProperty("addresses")
     public void setAddresses(List<EgressRouterAddress> addresses) {
         this.addresses = addresses;
     }
 
+    /**
+     * Mode depicts the mode that is used for the egress router. The default mode is "Redirect" and is the only supported mode currently.
+     */
     @JsonProperty("mode")
     public String getMode() {
         return mode;
     }
 
+    /**
+     * Mode depicts the mode that is used for the egress router. The default mode is "Redirect" and is the only supported mode currently.
+     */
     @JsonProperty("mode")
     public void setMode(String mode) {
         this.mode = mode;
     }
 
+    /**
+     * EgressRouterSpec contains the configuration for an egress router. Mode, networkInterface and addresses fields must be specified along with exactly one "Config" that matches the mode. Each config consists of parameters specific to that mode.
+     */
     @JsonProperty("networkInterface")
     public EgressRouterInterface getNetworkInterface() {
         return networkInterface;
     }
 
+    /**
+     * EgressRouterSpec contains the configuration for an egress router. Mode, networkInterface and addresses fields must be specified along with exactly one "Config" that matches the mode. Each config consists of parameters specific to that mode.
+     */
     @JsonProperty("networkInterface")
     public void setNetworkInterface(EgressRouterInterface networkInterface) {
         this.networkInterface = networkInterface;
     }
 
+    /**
+     * EgressRouterSpec contains the configuration for an egress router. Mode, networkInterface and addresses fields must be specified along with exactly one "Config" that matches the mode. Each config consists of parameters specific to that mode.
+     */
     @JsonProperty("redirect")
     public RedirectConfig getRedirect() {
         return redirect;
     }
 
+    /**
+     * EgressRouterSpec contains the configuration for an egress router. Mode, networkInterface and addresses fields must be specified along with exactly one "Config" that matches the mode. Each config consists of parameters specific to that mode.
+     */
     @JsonProperty("redirect")
     public void setRedirect(RedirectConfig redirect) {
         this.redirect = redirect;

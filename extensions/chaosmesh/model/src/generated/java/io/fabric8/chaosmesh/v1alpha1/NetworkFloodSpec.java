@@ -94,51 +94,81 @@ public class NetworkFloodSpec implements Editable<NetworkFloodSpecBuilder>, Kube
         this.rate = rate;
     }
 
+    /**
+     * The number of seconds to run the iperf test
+     */
     @JsonProperty("duration")
     public String getDuration() {
         return duration;
     }
 
+    /**
+     * The number of seconds to run the iperf test
+     */
     @JsonProperty("duration")
     public void setDuration(String duration) {
         this.duration = duration;
     }
 
+    /**
+     * Generate traffic to this IP address
+     */
     @JsonProperty("ip-address")
     public String getIpAddress() {
         return ipAddress;
     }
 
+    /**
+     * Generate traffic to this IP address
+     */
     @JsonProperty("ip-address")
     public void setIpAddress(String ipAddress) {
         this.ipAddress = ipAddress;
     }
 
+    /**
+     * The number of iperf parallel client threads to run
+     */
     @JsonProperty("parallel")
     public Integer getParallel() {
         return parallel;
     }
 
+    /**
+     * The number of iperf parallel client threads to run
+     */
     @JsonProperty("parallel")
     public void setParallel(Integer parallel) {
         this.parallel = parallel;
     }
 
+    /**
+     * Generate traffic to this port on the IP address
+     */
     @JsonProperty("port")
     public String getPort() {
         return port;
     }
 
+    /**
+     * Generate traffic to this port on the IP address
+     */
     @JsonProperty("port")
     public void setPort(String port) {
         this.port = port;
     }
 
+    /**
+     * The speed of network traffic, allows bps, kbps, mbps, gbps, tbps unit. bps means bytes per second
+     */
     @JsonProperty("rate")
     public String getRate() {
         return rate;
     }
 
+    /**
+     * The speed of network traffic, allows bps, kbps, mbps, gbps, tbps unit. bps means bytes per second
+     */
     @JsonProperty("rate")
     public void setRate(String rate) {
         this.rate = rate;

@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * SubscriptionSpec defines the desired state of Subscription
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -128,125 +131,197 @@ public class SubscriptionSpec implements Editable<SubscriptionSpecBuilder>, Kube
         this.watchHelmNamespaceScopedResources = watchHelmNamespaceScopedResources;
     }
 
+    /**
+     * Specify a list of resources allowed for deployment
+     */
     @JsonProperty("allow")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<AllowDenyItem> getAllow() {
         return allow;
     }
 
+    /**
+     * Specify a list of resources allowed for deployment
+     */
     @JsonProperty("allow")
     public void setAllow(List<AllowDenyItem> allow) {
         this.allow = allow;
     }
 
+    /**
+     * The primary channel namespaced name used by the subscription. Its format is "&lt;channel NameSpace&gt;/&lt;channel Name&gt;"
+     */
     @JsonProperty("channel")
     public String getChannel() {
         return channel;
     }
 
+    /**
+     * The primary channel namespaced name used by the subscription. Its format is "&lt;channel NameSpace&gt;/&lt;channel Name&gt;"
+     */
     @JsonProperty("channel")
     public void setChannel(String channel) {
         this.channel = channel;
     }
 
+    /**
+     * Specify a list of resources denied for deployment
+     */
     @JsonProperty("deny")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<AllowDenyItem> getDeny() {
         return deny;
     }
 
+    /**
+     * Specify a list of resources denied for deployment
+     */
     @JsonProperty("deny")
     public void setDeny(List<AllowDenyItem> deny) {
         this.deny = deny;
     }
 
+    /**
+     * SubscriptionSpec defines the desired state of Subscription
+     */
     @JsonProperty("hooksecretref")
     public ObjectReference getHooksecretref() {
         return hooksecretref;
     }
 
+    /**
+     * SubscriptionSpec defines the desired state of Subscription
+     */
     @JsonProperty("hooksecretref")
     public void setHooksecretref(ObjectReference hooksecretref) {
         this.hooksecretref = hooksecretref;
     }
 
+    /**
+     * Subscribe a package by its package name
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * Subscribe a package by its package name
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * Specify overrides when applied to clusters. Hub use only
+     */
     @JsonProperty("overrides")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ClusterOverrides> getOverrides() {
         return overrides;
     }
 
+    /**
+     * Specify overrides when applied to clusters. Hub use only
+     */
     @JsonProperty("overrides")
     public void setOverrides(List<ClusterOverrides> overrides) {
         this.overrides = overrides;
     }
 
+    /**
+     * SubscriptionSpec defines the desired state of Subscription
+     */
     @JsonProperty("packageFilter")
     public PackageFilter getPackageFilter() {
         return packageFilter;
     }
 
+    /**
+     * SubscriptionSpec defines the desired state of Subscription
+     */
     @JsonProperty("packageFilter")
     public void setPackageFilter(PackageFilter packageFilter) {
         this.packageFilter = packageFilter;
     }
 
+    /**
+     * Override packages
+     */
     @JsonProperty("packageOverrides")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Overrides> getPackageOverrides() {
         return packageOverrides;
     }
 
+    /**
+     * Override packages
+     */
     @JsonProperty("packageOverrides")
     public void setPackageOverrides(List<Overrides> packageOverrides) {
         this.packageOverrides = packageOverrides;
     }
 
+    /**
+     * SubscriptionSpec defines the desired state of Subscription
+     */
     @JsonProperty("placement")
     public Placement getPlacement() {
         return placement;
     }
 
+    /**
+     * SubscriptionSpec defines the desired state of Subscription
+     */
     @JsonProperty("placement")
     public void setPlacement(Placement placement) {
         this.placement = placement;
     }
 
+    /**
+     * The secondary channel will be applied if the primary channel fails to connect
+     */
     @JsonProperty("secondaryChannel")
     public String getSecondaryChannel() {
         return secondaryChannel;
     }
 
+    /**
+     * The secondary channel will be applied if the primary channel fails to connect
+     */
     @JsonProperty("secondaryChannel")
     public void setSecondaryChannel(String secondaryChannel) {
         this.secondaryChannel = secondaryChannel;
     }
 
+    /**
+     * SubscriptionSpec defines the desired state of Subscription
+     */
     @JsonProperty("timewindow")
     public TimeWindow getTimewindow() {
         return timewindow;
     }
 
+    /**
+     * SubscriptionSpec defines the desired state of Subscription
+     */
     @JsonProperty("timewindow")
     public void setTimewindow(TimeWindow timewindow) {
         this.timewindow = timewindow;
     }
 
+    /**
+     * WatchHelmNamespaceScopedResources is used to enable watching namespace scope Helm chart resources
+     */
     @JsonProperty("watchHelmNamespaceScopedResources")
     public Boolean getWatchHelmNamespaceScopedResources() {
         return watchHelmNamespaceScopedResources;
     }
 
+    /**
+     * WatchHelmNamespaceScopedResources is used to enable watching namespace scope Helm chart resources
+     */
     @JsonProperty("watchHelmNamespaceScopedResources")
     public void setWatchHelmNamespaceScopedResources(Boolean watchHelmNamespaceScopedResources) {
         this.watchHelmNamespaceScopedResources = watchHelmNamespaceScopedResources;

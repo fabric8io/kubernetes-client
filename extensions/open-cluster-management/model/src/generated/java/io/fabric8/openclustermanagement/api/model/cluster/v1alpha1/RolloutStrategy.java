@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Rollout strategy to apply workload to the selected clusters by Placement and DecisionStrategy.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -90,41 +93,65 @@ public class RolloutStrategy implements Editable<RolloutStrategyBuilder>, Kubern
         this.type = type;
     }
 
+    /**
+     * Rollout strategy to apply workload to the selected clusters by Placement and DecisionStrategy.
+     */
     @JsonProperty("all")
     public RolloutAll getAll() {
         return all;
     }
 
+    /**
+     * Rollout strategy to apply workload to the selected clusters by Placement and DecisionStrategy.
+     */
     @JsonProperty("all")
     public void setAll(RolloutAll all) {
         this.all = all;
     }
 
+    /**
+     * Rollout strategy to apply workload to the selected clusters by Placement and DecisionStrategy.
+     */
     @JsonProperty("progressive")
     public RolloutProgressive getProgressive() {
         return progressive;
     }
 
+    /**
+     * Rollout strategy to apply workload to the selected clusters by Placement and DecisionStrategy.
+     */
     @JsonProperty("progressive")
     public void setProgressive(RolloutProgressive progressive) {
         this.progressive = progressive;
     }
 
+    /**
+     * Rollout strategy to apply workload to the selected clusters by Placement and DecisionStrategy.
+     */
     @JsonProperty("progressivePerGroup")
     public RolloutProgressivePerGroup getProgressivePerGroup() {
         return progressivePerGroup;
     }
 
+    /**
+     * Rollout strategy to apply workload to the selected clusters by Placement and DecisionStrategy.
+     */
     @JsonProperty("progressivePerGroup")
     public void setProgressivePerGroup(RolloutProgressivePerGroup progressivePerGroup) {
         this.progressivePerGroup = progressivePerGroup;
     }
 
+    /**
+     * Rollout strategy to apply workload to the selected clusters by Placement and DecisionStrategy.
+     */
     @JsonProperty("type")
     public String getType() {
         return type;
     }
 
+    /**
+     * Rollout strategy to apply workload to the selected clusters by Placement and DecisionStrategy.
+     */
     @JsonProperty("type")
     public void setType(String type) {
         this.type = type;

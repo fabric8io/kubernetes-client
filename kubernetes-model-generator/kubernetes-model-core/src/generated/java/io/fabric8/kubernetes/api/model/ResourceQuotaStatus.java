@@ -17,6 +17,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ResourceQuotaStatus defines the enforced hard limits and observed use.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -55,23 +58,35 @@ public class ResourceQuotaStatus implements Editable<ResourceQuotaStatusBuilder>
         this.used = used;
     }
 
+    /**
+     * Hard is the set of enforced hard limits for each named resource. More info: https://kubernetes.io/docs/concepts/policy/resource-quotas/
+     */
     @JsonProperty("hard")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, Quantity> getHard() {
         return hard;
     }
 
+    /**
+     * Hard is the set of enforced hard limits for each named resource. More info: https://kubernetes.io/docs/concepts/policy/resource-quotas/
+     */
     @JsonProperty("hard")
     public void setHard(Map<String, Quantity> hard) {
         this.hard = hard;
     }
 
+    /**
+     * Used is the current observed total usage of the resource in the namespace.
+     */
     @JsonProperty("used")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, Quantity> getUsed() {
         return used;
     }
 
+    /**
+     * Used is the current observed total usage of the resource in the namespace.
+     */
     @JsonProperty("used")
     public void setUsed(Map<String, Quantity> used) {
         this.used = used;

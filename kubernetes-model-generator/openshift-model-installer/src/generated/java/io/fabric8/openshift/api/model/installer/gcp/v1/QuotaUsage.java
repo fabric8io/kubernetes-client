@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * QuotaUsage identifies a quota metric and records the usage
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -91,42 +94,66 @@ public class QuotaUsage implements Editable<QuotaUsageBuilder>, KubernetesResour
         this.service = service;
     }
 
+    /**
+     * Amount is the amount of the quota being used
+     */
     @JsonProperty("amount")
     public Long getAmount() {
         return amount;
     }
 
+    /**
+     * Amount is the amount of the quota being used
+     */
     @JsonProperty("amount")
     public void setAmount(Long amount) {
         this.amount = amount;
     }
 
+    /**
+     * Dimensions are unique axes on which this Limit is applied (e.g. region: us-central-1)
+     */
     @JsonProperty("dimensions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getDimensions() {
         return dimensions;
     }
 
+    /**
+     * Dimensions are unique axes on which this Limit is applied (e.g. region: us-central-1)
+     */
     @JsonProperty("dimensions")
     public void setDimensions(Map<String, String> dimensions) {
         this.dimensions = dimensions;
     }
 
+    /**
+     * Limit is the name of the item that's limited (e.g. cpus)
+     */
     @JsonProperty("limit")
     public String getLimit() {
         return limit;
     }
 
+    /**
+     * Limit is the name of the item that's limited (e.g. cpus)
+     */
     @JsonProperty("limit")
     public void setLimit(String limit) {
         this.limit = limit;
     }
 
+    /**
+     * Service is the Google Cloud Service to which this quota belongs (e.g. compute.googleapis.com)
+     */
     @JsonProperty("service")
     public String getService() {
         return service;
     }
 
+    /**
+     * Service is the Google Cloud Service to which this quota belongs (e.g. compute.googleapis.com)
+     */
     @JsonProperty("service")
     public void setService(String service) {
         this.service = service;

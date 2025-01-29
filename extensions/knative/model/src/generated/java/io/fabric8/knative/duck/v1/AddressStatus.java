@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * AddressStatus shows how we expect folks to embed Addressable in their Status field.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -85,22 +88,34 @@ public class AddressStatus implements Editable<AddressStatusBuilder>, Kubernetes
         this.addresses = addresses;
     }
 
+    /**
+     * AddressStatus shows how we expect folks to embed Addressable in their Status field.
+     */
     @JsonProperty("address")
     public Addressable getAddress() {
         return address;
     }
 
+    /**
+     * AddressStatus shows how we expect folks to embed Addressable in their Status field.
+     */
     @JsonProperty("address")
     public void setAddress(Addressable address) {
         this.address = address;
     }
 
+    /**
+     * Addresses is a list of addresses for different protocols (HTTP and HTTPS) If Addresses is present, Address must be ignored by clients.
+     */
     @JsonProperty("addresses")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Addressable> getAddresses() {
         return addresses;
     }
 
+    /**
+     * Addresses is a list of addresses for different protocols (HTTP and HTTPS) If Addresses is present, Address must be ignored by clients.
+     */
     @JsonProperty("addresses")
     public void setAddresses(List<Addressable> addresses) {
         this.addresses = addresses;

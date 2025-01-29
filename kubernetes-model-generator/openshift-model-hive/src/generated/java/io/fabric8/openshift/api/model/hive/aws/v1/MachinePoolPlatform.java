@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * MachinePoolPlatform stores the configuration for a machine pool installed on AWS.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -112,85 +115,133 @@ public class MachinePoolPlatform implements Editable<MachinePoolPlatformBuilder>
         this.zones = zones;
     }
 
+    /**
+     * AdditionalSecurityGroupIDs contains IDs of additional security groups for machines, where each ID is presented in the format sg-xxxx.
+     */
     @JsonProperty("additionalSecurityGroupIDs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getAdditionalSecurityGroupIDs() {
         return additionalSecurityGroupIDs;
     }
 
+    /**
+     * AdditionalSecurityGroupIDs contains IDs of additional security groups for machines, where each ID is presented in the format sg-xxxx.
+     */
     @JsonProperty("additionalSecurityGroupIDs")
     public void setAdditionalSecurityGroupIDs(List<String> additionalSecurityGroupIDs) {
         this.additionalSecurityGroupIDs = additionalSecurityGroupIDs;
     }
 
+    /**
+     * MachinePoolPlatform stores the configuration for a machine pool installed on AWS.
+     */
     @JsonProperty("metadataService")
     public EC2Metadata getMetadataService() {
         return metadataService;
     }
 
+    /**
+     * MachinePoolPlatform stores the configuration for a machine pool installed on AWS.
+     */
     @JsonProperty("metadataService")
     public void setMetadataService(EC2Metadata metadataService) {
         this.metadataService = metadataService;
     }
 
+    /**
+     * MachinePoolPlatform stores the configuration for a machine pool installed on AWS.
+     */
     @JsonProperty("rootVolume")
     public EC2RootVolume getRootVolume() {
         return rootVolume;
     }
 
+    /**
+     * MachinePoolPlatform stores the configuration for a machine pool installed on AWS.
+     */
     @JsonProperty("rootVolume")
     public void setRootVolume(EC2RootVolume rootVolume) {
         this.rootVolume = rootVolume;
     }
 
+    /**
+     * MachinePoolPlatform stores the configuration for a machine pool installed on AWS.
+     */
     @JsonProperty("spotMarketOptions")
     public SpotMarketOptions getSpotMarketOptions() {
         return spotMarketOptions;
     }
 
+    /**
+     * MachinePoolPlatform stores the configuration for a machine pool installed on AWS.
+     */
     @JsonProperty("spotMarketOptions")
     public void setSpotMarketOptions(SpotMarketOptions spotMarketOptions) {
         this.spotMarketOptions = spotMarketOptions;
     }
 
+    /**
+     * Subnets is the list of IDs of subnets to which to attach the machines. There must be exactly one subnet for each availability zone used. These subnets may be public or private. As a special case, for consistency with install-config, you may specify exactly one private and one public subnet for each availability zone. In this case, the public subnets will be filtered out and only the private subnets will be used. If empty/omitted, we will look for subnets in each availability zone tagged with Name=&lt;clusterID&gt;-private-&lt;az&gt; (legacy terraform) or &lt;clusterID&gt;-subnet-private-&lt;az&gt; (CAPA).
+     */
     @JsonProperty("subnets")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getSubnets() {
         return subnets;
     }
 
+    /**
+     * Subnets is the list of IDs of subnets to which to attach the machines. There must be exactly one subnet for each availability zone used. These subnets may be public or private. As a special case, for consistency with install-config, you may specify exactly one private and one public subnet for each availability zone. In this case, the public subnets will be filtered out and only the private subnets will be used. If empty/omitted, we will look for subnets in each availability zone tagged with Name=&lt;clusterID&gt;-private-&lt;az&gt; (legacy terraform) or &lt;clusterID&gt;-subnet-private-&lt;az&gt; (CAPA).
+     */
     @JsonProperty("subnets")
     public void setSubnets(List<String> subnets) {
         this.subnets = subnets;
     }
 
+    /**
+     * InstanceType defines the ec2 instance type. eg. m4-large
+     */
     @JsonProperty("type")
     public String getType() {
         return type;
     }
 
+    /**
+     * InstanceType defines the ec2 instance type. eg. m4-large
+     */
     @JsonProperty("type")
     public void setType(String type) {
         this.type = type;
     }
 
+    /**
+     * UserTags contains the user defined tags to be supplied for the ec2 instance. Note that these will be merged with ClusterDeployment.Spec.Platform.AWS.UserTags, with this field taking precedence when keys collide.
+     */
     @JsonProperty("userTags")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getUserTags() {
         return userTags;
     }
 
+    /**
+     * UserTags contains the user defined tags to be supplied for the ec2 instance. Note that these will be merged with ClusterDeployment.Spec.Platform.AWS.UserTags, with this field taking precedence when keys collide.
+     */
     @JsonProperty("userTags")
     public void setUserTags(Map<String, String> userTags) {
         this.userTags = userTags;
     }
 
+    /**
+     * Zones is list of availability zones that can be used.
+     */
     @JsonProperty("zones")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getZones() {
         return zones;
     }
 
+    /**
+     * Zones is list of availability zones that can be used.
+     */
     @JsonProperty("zones")
     public void setZones(List<String> zones) {
         this.zones = zones;

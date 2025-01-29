@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * StorageSpec defines the configured storage for a group Prometheus servers. If no storage option is specified, then by default an [EmptyDir](https://kubernetes.io/docs/concepts/storage/volumes/#emptydir) will be used.<br><p> <br><p> If multiple storage options are specified, priority will be given as follows:<br><p>  1. emptyDir<br><p>  2. ephemeral<br><p>  3. volumeClaimTemplate
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -92,41 +95,65 @@ public class StorageSpec implements Editable<StorageSpecBuilder>, KubernetesReso
         this.volumeClaimTemplate = volumeClaimTemplate;
     }
 
+    /**
+     * Deprecated: subPath usage will be removed in a future release.
+     */
     @JsonProperty("disableMountSubPath")
     public Boolean getDisableMountSubPath() {
         return disableMountSubPath;
     }
 
+    /**
+     * Deprecated: subPath usage will be removed in a future release.
+     */
     @JsonProperty("disableMountSubPath")
     public void setDisableMountSubPath(Boolean disableMountSubPath) {
         this.disableMountSubPath = disableMountSubPath;
     }
 
+    /**
+     * StorageSpec defines the configured storage for a group Prometheus servers. If no storage option is specified, then by default an [EmptyDir](https://kubernetes.io/docs/concepts/storage/volumes/#emptydir) will be used.<br><p> <br><p> If multiple storage options are specified, priority will be given as follows:<br><p>  1. emptyDir<br><p>  2. ephemeral<br><p>  3. volumeClaimTemplate
+     */
     @JsonProperty("emptyDir")
     public EmptyDirVolumeSource getEmptyDir() {
         return emptyDir;
     }
 
+    /**
+     * StorageSpec defines the configured storage for a group Prometheus servers. If no storage option is specified, then by default an [EmptyDir](https://kubernetes.io/docs/concepts/storage/volumes/#emptydir) will be used.<br><p> <br><p> If multiple storage options are specified, priority will be given as follows:<br><p>  1. emptyDir<br><p>  2. ephemeral<br><p>  3. volumeClaimTemplate
+     */
     @JsonProperty("emptyDir")
     public void setEmptyDir(EmptyDirVolumeSource emptyDir) {
         this.emptyDir = emptyDir;
     }
 
+    /**
+     * StorageSpec defines the configured storage for a group Prometheus servers. If no storage option is specified, then by default an [EmptyDir](https://kubernetes.io/docs/concepts/storage/volumes/#emptydir) will be used.<br><p> <br><p> If multiple storage options are specified, priority will be given as follows:<br><p>  1. emptyDir<br><p>  2. ephemeral<br><p>  3. volumeClaimTemplate
+     */
     @JsonProperty("ephemeral")
     public EphemeralVolumeSource getEphemeral() {
         return ephemeral;
     }
 
+    /**
+     * StorageSpec defines the configured storage for a group Prometheus servers. If no storage option is specified, then by default an [EmptyDir](https://kubernetes.io/docs/concepts/storage/volumes/#emptydir) will be used.<br><p> <br><p> If multiple storage options are specified, priority will be given as follows:<br><p>  1. emptyDir<br><p>  2. ephemeral<br><p>  3. volumeClaimTemplate
+     */
     @JsonProperty("ephemeral")
     public void setEphemeral(EphemeralVolumeSource ephemeral) {
         this.ephemeral = ephemeral;
     }
 
+    /**
+     * StorageSpec defines the configured storage for a group Prometheus servers. If no storage option is specified, then by default an [EmptyDir](https://kubernetes.io/docs/concepts/storage/volumes/#emptydir) will be used.<br><p> <br><p> If multiple storage options are specified, priority will be given as follows:<br><p>  1. emptyDir<br><p>  2. ephemeral<br><p>  3. volumeClaimTemplate
+     */
     @JsonProperty("volumeClaimTemplate")
     public EmbeddedPersistentVolumeClaim getVolumeClaimTemplate() {
         return volumeClaimTemplate;
     }
 
+    /**
+     * StorageSpec defines the configured storage for a group Prometheus servers. If no storage option is specified, then by default an [EmptyDir](https://kubernetes.io/docs/concepts/storage/volumes/#emptydir) will be used.<br><p> <br><p> If multiple storage options are specified, priority will be given as follows:<br><p>  1. emptyDir<br><p>  2. ephemeral<br><p>  3. volumeClaimTemplate
+     */
     @JsonProperty("volumeClaimTemplate")
     public void setVolumeClaimTemplate(EmbeddedPersistentVolumeClaim volumeClaimTemplate) {
         this.volumeClaimTemplate = volumeClaimTemplate;

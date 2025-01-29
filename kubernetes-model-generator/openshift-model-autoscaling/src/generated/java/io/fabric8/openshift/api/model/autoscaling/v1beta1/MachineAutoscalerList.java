@@ -78,17 +78,11 @@ import lombok.experimental.Accessors;
 public class MachineAutoscalerList implements Editable<MachineAutoscalerListBuilder>, KubernetesResource, KubernetesResourceList<io.fabric8.openshift.api.model.autoscaling.v1beta1.MachineAutoscaler>
 {
 
-    /**
-     * (Required)
-     */
     @JsonProperty("apiVersion")
     private String apiVersion = "autoscaling.openshift.io/v1beta1";
     @JsonProperty("items")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<io.fabric8.openshift.api.model.autoscaling.v1beta1.MachineAutoscaler> items = new ArrayList<>();
-    /**
-     * (Required)
-     */
     @JsonProperty("kind")
     private String kind = "MachineAutoscalerList";
     @JsonProperty("metadata")
@@ -110,17 +104,11 @@ public class MachineAutoscalerList implements Editable<MachineAutoscalerListBuil
         this.metadata = metadata;
     }
 
-    /**
-     * (Required)
-     */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
         return apiVersion;
     }
 
-    /**
-     * (Required)
-     */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
         this.apiVersion = apiVersion;
@@ -137,17 +125,11 @@ public class MachineAutoscalerList implements Editable<MachineAutoscalerListBuil
         this.items = items;
     }
 
-    /**
-     * (Required)
-     */
     @JsonProperty("kind")
     public String getKind() {
         return kind;
     }
 
-    /**
-     * (Required)
-     */
     @JsonProperty("kind")
     public void setKind(String kind) {
         this.kind = kind;

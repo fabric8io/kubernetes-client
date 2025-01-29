@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * EndpointPublishingStrategy is a way to publish the endpoints of an IngressController, and represents the type and any additional configuration for a specific type.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -94,51 +97,81 @@ public class EndpointPublishingStrategy implements Editable<EndpointPublishingSt
         this.type = type;
     }
 
+    /**
+     * EndpointPublishingStrategy is a way to publish the endpoints of an IngressController, and represents the type and any additional configuration for a specific type.
+     */
     @JsonProperty("hostNetwork")
     public HostNetworkStrategy getHostNetwork() {
         return hostNetwork;
     }
 
+    /**
+     * EndpointPublishingStrategy is a way to publish the endpoints of an IngressController, and represents the type and any additional configuration for a specific type.
+     */
     @JsonProperty("hostNetwork")
     public void setHostNetwork(HostNetworkStrategy hostNetwork) {
         this.hostNetwork = hostNetwork;
     }
 
+    /**
+     * EndpointPublishingStrategy is a way to publish the endpoints of an IngressController, and represents the type and any additional configuration for a specific type.
+     */
     @JsonProperty("loadBalancer")
     public LoadBalancerStrategy getLoadBalancer() {
         return loadBalancer;
     }
 
+    /**
+     * EndpointPublishingStrategy is a way to publish the endpoints of an IngressController, and represents the type and any additional configuration for a specific type.
+     */
     @JsonProperty("loadBalancer")
     public void setLoadBalancer(LoadBalancerStrategy loadBalancer) {
         this.loadBalancer = loadBalancer;
     }
 
+    /**
+     * EndpointPublishingStrategy is a way to publish the endpoints of an IngressController, and represents the type and any additional configuration for a specific type.
+     */
     @JsonProperty("nodePort")
     public NodePortStrategy getNodePort() {
         return nodePort;
     }
 
+    /**
+     * EndpointPublishingStrategy is a way to publish the endpoints of an IngressController, and represents the type and any additional configuration for a specific type.
+     */
     @JsonProperty("nodePort")
     public void setNodePort(NodePortStrategy nodePort) {
         this.nodePort = nodePort;
     }
 
+    /**
+     * EndpointPublishingStrategy is a way to publish the endpoints of an IngressController, and represents the type and any additional configuration for a specific type.
+     */
     @JsonProperty("private")
     public PrivateStrategy getPrivate() {
         return _private;
     }
 
+    /**
+     * EndpointPublishingStrategy is a way to publish the endpoints of an IngressController, and represents the type and any additional configuration for a specific type.
+     */
     @JsonProperty("private")
     public void setPrivate(PrivateStrategy _private) {
         this._private = _private;
     }
 
+    /**
+     * type is the publishing strategy to use. Valid values are:<br><p> <br><p> &#42; LoadBalancerService<br><p> <br><p> Publishes the ingress controller using a Kubernetes LoadBalancer Service.<br><p> <br><p> In this configuration, the ingress controller deployment uses container networking. A LoadBalancer Service is created to publish the deployment.<br><p> <br><p> See: https://kubernetes.io/docs/concepts/services-networking/service/#loadbalancer<br><p> <br><p> If domain is set, a wildcard DNS record will be managed to point at the LoadBalancer Service's external name. DNS records are managed only in DNS zones defined by dns.config.openshift.io/cluster .spec.publicZone and .spec.privateZone.<br><p> <br><p> Wildcard DNS management is currently supported only on the AWS, Azure, and GCP platforms.<br><p> <br><p> &#42; HostNetwork<br><p> <br><p> Publishes the ingress controller on node ports where the ingress controller is deployed.<br><p> <br><p> In this configuration, the ingress controller deployment uses host networking, bound to node ports 80 and 443. The user is responsible for configuring an external load balancer to publish the ingress controller via the node ports.<br><p> <br><p> &#42; Private<br><p> <br><p> Does not publish the ingress controller.<br><p> <br><p> In this configuration, the ingress controller deployment uses container networking, and is not explicitly published. The user must manually publish the ingress controller.<br><p> <br><p> &#42; NodePortService<br><p> <br><p> Publishes the ingress controller using a Kubernetes NodePort Service.<br><p> <br><p> In this configuration, the ingress controller deployment uses container networking. A NodePort Service is created to publish the deployment. The specific node ports are dynamically allocated by OpenShift; however, to support static port allocations, user changes to the node port field of the managed NodePort Service will preserved.
+     */
     @JsonProperty("type")
     public String getType() {
         return type;
     }
 
+    /**
+     * type is the publishing strategy to use. Valid values are:<br><p> <br><p> &#42; LoadBalancerService<br><p> <br><p> Publishes the ingress controller using a Kubernetes LoadBalancer Service.<br><p> <br><p> In this configuration, the ingress controller deployment uses container networking. A LoadBalancer Service is created to publish the deployment.<br><p> <br><p> See: https://kubernetes.io/docs/concepts/services-networking/service/#loadbalancer<br><p> <br><p> If domain is set, a wildcard DNS record will be managed to point at the LoadBalancer Service's external name. DNS records are managed only in DNS zones defined by dns.config.openshift.io/cluster .spec.publicZone and .spec.privateZone.<br><p> <br><p> Wildcard DNS management is currently supported only on the AWS, Azure, and GCP platforms.<br><p> <br><p> &#42; HostNetwork<br><p> <br><p> Publishes the ingress controller on node ports where the ingress controller is deployed.<br><p> <br><p> In this configuration, the ingress controller deployment uses host networking, bound to node ports 80 and 443. The user is responsible for configuring an external load balancer to publish the ingress controller via the node ports.<br><p> <br><p> &#42; Private<br><p> <br><p> Does not publish the ingress controller.<br><p> <br><p> In this configuration, the ingress controller deployment uses container networking, and is not explicitly published. The user must manually publish the ingress controller.<br><p> <br><p> &#42; NodePortService<br><p> <br><p> Publishes the ingress controller using a Kubernetes NodePort Service.<br><p> <br><p> In this configuration, the ingress controller deployment uses container networking. A NodePort Service is created to publish the deployment. The specific node ports are dynamically allocated by OpenShift; however, to support static port allocations, user changes to the node port field of the managed NodePort Service will preserved.
+     */
     @JsonProperty("type")
     public void setType(String type) {
         this.type = type;

@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * AlertingRuleStatus is the status of an AlertingRule resource.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class AlertingRuleStatus implements Editable<AlertingRuleStatusBuilder>, 
         this.prometheusRule = prometheusRule;
     }
 
+    /**
+     * observedGeneration is the last generation change you've dealt with.
+     */
     @JsonProperty("observedGeneration")
     public Long getObservedGeneration() {
         return observedGeneration;
     }
 
+    /**
+     * observedGeneration is the last generation change you've dealt with.
+     */
     @JsonProperty("observedGeneration")
     public void setObservedGeneration(Long observedGeneration) {
         this.observedGeneration = observedGeneration;
     }
 
+    /**
+     * AlertingRuleStatus is the status of an AlertingRule resource.
+     */
     @JsonProperty("prometheusRule")
     public PrometheusRuleRef getPrometheusRule() {
         return prometheusRule;
     }
 
+    /**
+     * AlertingRuleStatus is the status of an AlertingRule resource.
+     */
     @JsonProperty("prometheusRule")
     public void setPrometheusRule(PrometheusRuleRef prometheusRule) {
         this.prometheusRule = prometheusRule;

@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * BuildStatus contains the status of a build
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -130,133 +133,211 @@ public class BuildStatus implements Editable<BuildStatusBuilder>, KubernetesReso
         this.startTimestamp = startTimestamp;
     }
 
+    /**
+     * cancelled describes if a cancel event was triggered for the build.
+     */
     @JsonProperty("cancelled")
     public Boolean getCancelled() {
         return cancelled;
     }
 
+    /**
+     * cancelled describes if a cancel event was triggered for the build.
+     */
     @JsonProperty("cancelled")
     public void setCancelled(Boolean cancelled) {
         this.cancelled = cancelled;
     }
 
+    /**
+     * BuildStatus contains the status of a build
+     */
     @JsonProperty("completionTimestamp")
     public String getCompletionTimestamp() {
         return completionTimestamp;
     }
 
+    /**
+     * BuildStatus contains the status of a build
+     */
     @JsonProperty("completionTimestamp")
     public void setCompletionTimestamp(String completionTimestamp) {
         this.completionTimestamp = completionTimestamp;
     }
 
+    /**
+     * Conditions represents the latest available observations of a build's current state.
+     */
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<BuildCondition> getConditions() {
         return conditions;
     }
 
+    /**
+     * Conditions represents the latest available observations of a build's current state.
+     */
     @JsonProperty("conditions")
     public void setConditions(List<BuildCondition> conditions) {
         this.conditions = conditions;
     }
 
+    /**
+     * BuildStatus contains the status of a build
+     */
     @JsonProperty("config")
     public ObjectReference getConfig() {
         return config;
     }
 
+    /**
+     * BuildStatus contains the status of a build
+     */
     @JsonProperty("config")
     public void setConfig(ObjectReference config) {
         this.config = config;
     }
 
+    /**
+     * duration contains time.Duration object describing build time.
+     */
     @JsonProperty("duration")
     public Long getDuration() {
         return duration;
     }
 
+    /**
+     * duration contains time.Duration object describing build time.
+     */
     @JsonProperty("duration")
     public void setDuration(Long duration) {
         this.duration = duration;
     }
 
+    /**
+     * logSnippet is the last few lines of the build log.  This value is only set for builds that failed.
+     */
     @JsonProperty("logSnippet")
     public String getLogSnippet() {
         return logSnippet;
     }
 
+    /**
+     * logSnippet is the last few lines of the build log.  This value is only set for builds that failed.
+     */
     @JsonProperty("logSnippet")
     public void setLogSnippet(String logSnippet) {
         this.logSnippet = logSnippet;
     }
 
+    /**
+     * message is a human-readable message indicating details about why the build has this status.
+     */
     @JsonProperty("message")
     public String getMessage() {
         return message;
     }
 
+    /**
+     * message is a human-readable message indicating details about why the build has this status.
+     */
     @JsonProperty("message")
     public void setMessage(String message) {
         this.message = message;
     }
 
+    /**
+     * BuildStatus contains the status of a build
+     */
     @JsonProperty("output")
     public BuildStatusOutput getOutput() {
         return output;
     }
 
+    /**
+     * BuildStatus contains the status of a build
+     */
     @JsonProperty("output")
     public void setOutput(BuildStatusOutput output) {
         this.output = output;
     }
 
+    /**
+     * outputDockerImageReference contains a reference to the container image that will be built by this build. Its value is computed from Build.Spec.Output.To, and should include the registry address, so that it can be used to push and pull the image.
+     */
     @JsonProperty("outputDockerImageReference")
     public String getOutputDockerImageReference() {
         return outputDockerImageReference;
     }
 
+    /**
+     * outputDockerImageReference contains a reference to the container image that will be built by this build. Its value is computed from Build.Spec.Output.To, and should include the registry address, so that it can be used to push and pull the image.
+     */
     @JsonProperty("outputDockerImageReference")
     public void setOutputDockerImageReference(String outputDockerImageReference) {
         this.outputDockerImageReference = outputDockerImageReference;
     }
 
+    /**
+     * phase is the point in the build lifecycle. Possible values are "New", "Pending", "Running", "Complete", "Failed", "Error", and "Cancelled".
+     */
     @JsonProperty("phase")
     public String getPhase() {
         return phase;
     }
 
+    /**
+     * phase is the point in the build lifecycle. Possible values are "New", "Pending", "Running", "Complete", "Failed", "Error", and "Cancelled".
+     */
     @JsonProperty("phase")
     public void setPhase(String phase) {
         this.phase = phase;
     }
 
+    /**
+     * reason is a brief CamelCase string that describes any failure and is meant for machine parsing and tidy display in the CLI.
+     */
     @JsonProperty("reason")
     public String getReason() {
         return reason;
     }
 
+    /**
+     * reason is a brief CamelCase string that describes any failure and is meant for machine parsing and tidy display in the CLI.
+     */
     @JsonProperty("reason")
     public void setReason(String reason) {
         this.reason = reason;
     }
 
+    /**
+     * stages contains details about each stage that occurs during the build including start time, duration (in milliseconds), and the steps that occured within each stage.
+     */
     @JsonProperty("stages")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<StageInfo> getStages() {
         return stages;
     }
 
+    /**
+     * stages contains details about each stage that occurs during the build including start time, duration (in milliseconds), and the steps that occured within each stage.
+     */
     @JsonProperty("stages")
     public void setStages(List<StageInfo> stages) {
         this.stages = stages;
     }
 
+    /**
+     * BuildStatus contains the status of a build
+     */
     @JsonProperty("startTimestamp")
     public String getStartTimestamp() {
         return startTimestamp;
     }
 
+    /**
+     * BuildStatus contains the status of a build
+     */
     @JsonProperty("startTimestamp")
     public void setStartTimestamp(String startTimestamp) {
         this.startTimestamp = startTimestamp;

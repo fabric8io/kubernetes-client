@@ -33,6 +33,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ConsoleYAMLSampleSpec is the desired YAML sample configuration. Samples will appear with their descriptions in a samples sidebar when creating a resources in the web console.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -95,51 +98,81 @@ public class ConsoleYAMLSampleSpec implements Editable<ConsoleYAMLSampleSpecBuil
         this.yaml = yaml;
     }
 
+    /**
+     * description of the YAML sample.
+     */
     @JsonProperty("description")
     public String getDescription() {
         return description;
     }
 
+    /**
+     * description of the YAML sample.
+     */
     @JsonProperty("description")
     public void setDescription(String description) {
         this.description = description;
     }
 
+    /**
+     * snippet indicates that the YAML sample is not the full YAML resource definition, but a fragment that can be inserted into the existing YAML document at the user's cursor.
+     */
     @JsonProperty("snippet")
     public Boolean getSnippet() {
         return snippet;
     }
 
+    /**
+     * snippet indicates that the YAML sample is not the full YAML resource definition, but a fragment that can be inserted into the existing YAML document at the user's cursor.
+     */
     @JsonProperty("snippet")
     public void setSnippet(Boolean snippet) {
         this.snippet = snippet;
     }
 
+    /**
+     * ConsoleYAMLSampleSpec is the desired YAML sample configuration. Samples will appear with their descriptions in a samples sidebar when creating a resources in the web console.
+     */
     @JsonProperty("targetResource")
     public TypeMeta getTargetResource() {
         return targetResource;
     }
 
+    /**
+     * ConsoleYAMLSampleSpec is the desired YAML sample configuration. Samples will appear with their descriptions in a samples sidebar when creating a resources in the web console.
+     */
     @JsonProperty("targetResource")
     public void setTargetResource(TypeMeta targetResource) {
         this.targetResource = targetResource;
     }
 
+    /**
+     * title of the YAML sample.
+     */
     @JsonProperty("title")
     public String getTitle() {
         return title;
     }
 
+    /**
+     * title of the YAML sample.
+     */
     @JsonProperty("title")
     public void setTitle(String title) {
         this.title = title;
     }
 
+    /**
+     * yaml is the YAML sample to display.
+     */
     @JsonProperty("yaml")
     public String getYaml() {
         return yaml;
     }
 
+    /**
+     * yaml is the YAML sample to display.
+     */
     @JsonProperty("yaml")
     public void setYaml(String yaml) {
         this.yaml = yaml;

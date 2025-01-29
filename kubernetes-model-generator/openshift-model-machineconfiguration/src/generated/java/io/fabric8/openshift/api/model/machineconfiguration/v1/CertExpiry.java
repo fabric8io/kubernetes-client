@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ceryExpiry contains the bundle name and the expiry date
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -86,31 +89,49 @@ public class CertExpiry implements Editable<CertExpiryBuilder>, KubernetesResour
         this.subject = subject;
     }
 
+    /**
+     * bundle is the name of the bundle in which the subject certificate resides
+     */
     @JsonProperty("bundle")
     public String getBundle() {
         return bundle;
     }
 
+    /**
+     * bundle is the name of the bundle in which the subject certificate resides
+     */
     @JsonProperty("bundle")
     public void setBundle(String bundle) {
         this.bundle = bundle;
     }
 
+    /**
+     * ceryExpiry contains the bundle name and the expiry date
+     */
     @JsonProperty("expiry")
     public String getExpiry() {
         return expiry;
     }
 
+    /**
+     * ceryExpiry contains the bundle name and the expiry date
+     */
     @JsonProperty("expiry")
     public void setExpiry(String expiry) {
         this.expiry = expiry;
     }
 
+    /**
+     * subject is the subject of the certificate
+     */
     @JsonProperty("subject")
     public String getSubject() {
         return subject;
     }
 
+    /**
+     * subject is the subject of the certificate
+     */
     @JsonProperty("subject")
     public void setSubject(String subject) {
         this.subject = subject;

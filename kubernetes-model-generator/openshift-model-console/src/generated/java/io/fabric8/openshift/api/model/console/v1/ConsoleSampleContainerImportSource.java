@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ConsoleSampleContainerImportSource let the user import a container image.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class ConsoleSampleContainerImportSource implements Editable<ConsoleSampl
         this.service = service;
     }
 
+    /**
+     * reference to a container image that provides a HTTP service. The service must be exposed on the default port (8080) unless otherwise configured with the port field.<br><p> <br><p> Supported formats:<br><p>   - &lt;repository-name&gt;/&lt;image-name&gt;<br><p>   - docker.io/&lt;repository-name&gt;/&lt;image-name&gt;<br><p>   - quay.io/&lt;repository-name&gt;/&lt;image-name&gt;<br><p>   - quay.io/&lt;repository-name&gt;/&lt;image-name&gt;@sha256:&lt;image hash&gt;<br><p>   - quay.io/&lt;repository-name&gt;/&lt;image-name&gt;:&lt;tag&gt;
+     */
     @JsonProperty("image")
     public String getImage() {
         return image;
     }
 
+    /**
+     * reference to a container image that provides a HTTP service. The service must be exposed on the default port (8080) unless otherwise configured with the port field.<br><p> <br><p> Supported formats:<br><p>   - &lt;repository-name&gt;/&lt;image-name&gt;<br><p>   - docker.io/&lt;repository-name&gt;/&lt;image-name&gt;<br><p>   - quay.io/&lt;repository-name&gt;/&lt;image-name&gt;<br><p>   - quay.io/&lt;repository-name&gt;/&lt;image-name&gt;@sha256:&lt;image hash&gt;<br><p>   - quay.io/&lt;repository-name&gt;/&lt;image-name&gt;:&lt;tag&gt;
+     */
     @JsonProperty("image")
     public void setImage(String image) {
         this.image = image;
     }
 
+    /**
+     * ConsoleSampleContainerImportSource let the user import a container image.
+     */
     @JsonProperty("service")
     public ConsoleSampleContainerImportSourceService getService() {
         return service;
     }
 
+    /**
+     * ConsoleSampleContainerImportSource let the user import a container image.
+     */
     @JsonProperty("service")
     public void setService(ConsoleSampleContainerImportSourceService service) {
         this.service = service;

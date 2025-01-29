@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * DetailsPerTemplate reports the current compliance state and list of recent compliance messages for a given policy template.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -89,32 +92,50 @@ public class DetailsPerTemplate implements Editable<DetailsPerTemplateBuilder>, 
         this.templateMeta = templateMeta;
     }
 
+    /**
+     * DetailsPerTemplate reports the current compliance state and list of recent compliance messages for a given policy template.
+     */
     @JsonProperty("compliant")
     public String getCompliant() {
         return compliant;
     }
 
+    /**
+     * DetailsPerTemplate reports the current compliance state and list of recent compliance messages for a given policy template.
+     */
     @JsonProperty("compliant")
     public void setCompliant(String compliant) {
         this.compliant = compliant;
     }
 
+    /**
+     * DetailsPerTemplate reports the current compliance state and list of recent compliance messages for a given policy template.
+     */
     @JsonProperty("history")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ComplianceHistory> getHistory() {
         return history;
     }
 
+    /**
+     * DetailsPerTemplate reports the current compliance state and list of recent compliance messages for a given policy template.
+     */
     @JsonProperty("history")
     public void setHistory(List<ComplianceHistory> history) {
         this.history = history;
     }
 
+    /**
+     * DetailsPerTemplate reports the current compliance state and list of recent compliance messages for a given policy template.
+     */
     @JsonProperty("templateMeta")
     public ObjectMeta getTemplateMeta() {
         return templateMeta;
     }
 
+    /**
+     * DetailsPerTemplate reports the current compliance state and list of recent compliance messages for a given policy template.
+     */
     @JsonProperty("templateMeta")
     public void setTemplateMeta(ObjectMeta templateMeta) {
         this.templateMeta = templateMeta;

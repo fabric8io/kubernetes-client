@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * CSIDriverConfigSpec defines configuration spec that can be used to optionally configure a specific CSI Driver.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -98,61 +101,97 @@ public class CSIDriverConfigSpec implements Editable<CSIDriverConfigSpecBuilder>
         this.vSphere = vSphere;
     }
 
+    /**
+     * CSIDriverConfigSpec defines configuration spec that can be used to optionally configure a specific CSI Driver.
+     */
     @JsonProperty("aws")
     public AWSCSIDriverConfigSpec getAws() {
         return aws;
     }
 
+    /**
+     * CSIDriverConfigSpec defines configuration spec that can be used to optionally configure a specific CSI Driver.
+     */
     @JsonProperty("aws")
     public void setAws(AWSCSIDriverConfigSpec aws) {
         this.aws = aws;
     }
 
+    /**
+     * CSIDriverConfigSpec defines configuration spec that can be used to optionally configure a specific CSI Driver.
+     */
     @JsonProperty("azure")
     public AzureCSIDriverConfigSpec getAzure() {
         return azure;
     }
 
+    /**
+     * CSIDriverConfigSpec defines configuration spec that can be used to optionally configure a specific CSI Driver.
+     */
     @JsonProperty("azure")
     public void setAzure(AzureCSIDriverConfigSpec azure) {
         this.azure = azure;
     }
 
+    /**
+     * driverType indicates type of CSI driver for which the driverConfig is being applied to. Valid values are: AWS, Azure, GCP, IBMCloud, vSphere and omitted. Consumers should treat unknown values as a NO-OP.
+     */
     @JsonProperty("driverType")
     public String getDriverType() {
         return driverType;
     }
 
+    /**
+     * driverType indicates type of CSI driver for which the driverConfig is being applied to. Valid values are: AWS, Azure, GCP, IBMCloud, vSphere and omitted. Consumers should treat unknown values as a NO-OP.
+     */
     @JsonProperty("driverType")
     public void setDriverType(String driverType) {
         this.driverType = driverType;
     }
 
+    /**
+     * CSIDriverConfigSpec defines configuration spec that can be used to optionally configure a specific CSI Driver.
+     */
     @JsonProperty("gcp")
     public GCPCSIDriverConfigSpec getGcp() {
         return gcp;
     }
 
+    /**
+     * CSIDriverConfigSpec defines configuration spec that can be used to optionally configure a specific CSI Driver.
+     */
     @JsonProperty("gcp")
     public void setGcp(GCPCSIDriverConfigSpec gcp) {
         this.gcp = gcp;
     }
 
+    /**
+     * CSIDriverConfigSpec defines configuration spec that can be used to optionally configure a specific CSI Driver.
+     */
     @JsonProperty("ibmcloud")
     public IBMCloudCSIDriverConfigSpec getIbmcloud() {
         return ibmcloud;
     }
 
+    /**
+     * CSIDriverConfigSpec defines configuration spec that can be used to optionally configure a specific CSI Driver.
+     */
     @JsonProperty("ibmcloud")
     public void setIbmcloud(IBMCloudCSIDriverConfigSpec ibmcloud) {
         this.ibmcloud = ibmcloud;
     }
 
+    /**
+     * CSIDriverConfigSpec defines configuration spec that can be used to optionally configure a specific CSI Driver.
+     */
     @JsonProperty("vSphere")
     public VSphereCSIDriverConfigSpec getVSphere() {
         return vSphere;
     }
 
+    /**
+     * CSIDriverConfigSpec defines configuration spec that can be used to optionally configure a specific CSI Driver.
+     */
     @JsonProperty("vSphere")
     public void setVSphere(VSphereCSIDriverConfigSpec vSphere) {
         this.vSphere = vSphere;

@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Metadata contains GCP metadata (e.g. for uninstalling the cluster).
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -78,11 +81,17 @@ public class Metadata implements Editable<MetadataBuilder>, KubernetesResource
         this.networkProjectID = networkProjectID;
     }
 
+    /**
+     * NetworkProjectID is used for shared VPC setups
+     */
     @JsonProperty("networkProjectID")
     public String getNetworkProjectID() {
         return networkProjectID;
     }
 
+    /**
+     * NetworkProjectID is used for shared VPC setups
+     */
     @JsonProperty("networkProjectID")
     public void setNetworkProjectID(String networkProjectID) {
         this.networkProjectID = networkProjectID;

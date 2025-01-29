@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * TelegramConfig configures notifications via Telegram. See https://prometheus.io/docs/alerting/latest/configuration/#telegram_config
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -114,101 +117,161 @@ public class TelegramConfig implements Editable<TelegramConfigBuilder>, Kubernet
         this.sendResolved = sendResolved;
     }
 
+    /**
+     * The Telegram API URL i.e. https://api.telegram.org. If not specified, default API URL will be used.
+     */
     @JsonProperty("apiURL")
     public String getApiURL() {
         return apiURL;
     }
 
+    /**
+     * The Telegram API URL i.e. https://api.telegram.org. If not specified, default API URL will be used.
+     */
     @JsonProperty("apiURL")
     public void setApiURL(String apiURL) {
         this.apiURL = apiURL;
     }
 
+    /**
+     * TelegramConfig configures notifications via Telegram. See https://prometheus.io/docs/alerting/latest/configuration/#telegram_config
+     */
     @JsonProperty("botToken")
     public SecretKeySelector getBotToken() {
         return botToken;
     }
 
+    /**
+     * TelegramConfig configures notifications via Telegram. See https://prometheus.io/docs/alerting/latest/configuration/#telegram_config
+     */
     @JsonProperty("botToken")
     public void setBotToken(SecretKeySelector botToken) {
         this.botToken = botToken;
     }
 
+    /**
+     * File to read the Telegram bot token from. It is mutually exclusive with `botToken`. Either `botToken` or `botTokenFile` is required.<br><p> <br><p> It requires Alertmanager &gt;= v0.26.0.
+     */
     @JsonProperty("botTokenFile")
     public String getBotTokenFile() {
         return botTokenFile;
     }
 
+    /**
+     * File to read the Telegram bot token from. It is mutually exclusive with `botToken`. Either `botToken` or `botTokenFile` is required.<br><p> <br><p> It requires Alertmanager &gt;= v0.26.0.
+     */
     @JsonProperty("botTokenFile")
     public void setBotTokenFile(String botTokenFile) {
         this.botTokenFile = botTokenFile;
     }
 
+    /**
+     * The Telegram chat ID.
+     */
     @JsonProperty("chatID")
     public Long getChatID() {
         return chatID;
     }
 
+    /**
+     * The Telegram chat ID.
+     */
     @JsonProperty("chatID")
     public void setChatID(Long chatID) {
         this.chatID = chatID;
     }
 
+    /**
+     * Disable telegram notifications
+     */
     @JsonProperty("disableNotifications")
     public Boolean getDisableNotifications() {
         return disableNotifications;
     }
 
+    /**
+     * Disable telegram notifications
+     */
     @JsonProperty("disableNotifications")
     public void setDisableNotifications(Boolean disableNotifications) {
         this.disableNotifications = disableNotifications;
     }
 
+    /**
+     * TelegramConfig configures notifications via Telegram. See https://prometheus.io/docs/alerting/latest/configuration/#telegram_config
+     */
     @JsonProperty("httpConfig")
     public HTTPConfig getHttpConfig() {
         return httpConfig;
     }
 
+    /**
+     * TelegramConfig configures notifications via Telegram. See https://prometheus.io/docs/alerting/latest/configuration/#telegram_config
+     */
     @JsonProperty("httpConfig")
     public void setHttpConfig(HTTPConfig httpConfig) {
         this.httpConfig = httpConfig;
     }
 
+    /**
+     * Message template
+     */
     @JsonProperty("message")
     public String getMessage() {
         return message;
     }
 
+    /**
+     * Message template
+     */
     @JsonProperty("message")
     public void setMessage(String message) {
         this.message = message;
     }
 
+    /**
+     * The Telegram Group Topic ID. It requires Alertmanager &gt;= 0.26.0.
+     */
     @JsonProperty("messageThreadID")
     public Long getMessageThreadID() {
         return messageThreadID;
     }
 
+    /**
+     * The Telegram Group Topic ID. It requires Alertmanager &gt;= 0.26.0.
+     */
     @JsonProperty("messageThreadID")
     public void setMessageThreadID(Long messageThreadID) {
         this.messageThreadID = messageThreadID;
     }
 
+    /**
+     * Parse mode for telegram message
+     */
     @JsonProperty("parseMode")
     public String getParseMode() {
         return parseMode;
     }
 
+    /**
+     * Parse mode for telegram message
+     */
     @JsonProperty("parseMode")
     public void setParseMode(String parseMode) {
         this.parseMode = parseMode;
     }
 
+    /**
+     * Whether to notify about resolved alerts.
+     */
     @JsonProperty("sendResolved")
     public Boolean getSendResolved() {
         return sendResolved;
     }
 
+    /**
+     * Whether to notify about resolved alerts.
+     */
     @JsonProperty("sendResolved")
     public void setSendResolved(Boolean sendResolved) {
         this.sendResolved = sendResolved;

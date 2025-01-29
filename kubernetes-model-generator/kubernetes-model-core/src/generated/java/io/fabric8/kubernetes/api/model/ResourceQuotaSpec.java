@@ -19,6 +19,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ResourceQuotaSpec defines the desired hard limits to enforce for Quota.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -61,33 +64,51 @@ public class ResourceQuotaSpec implements Editable<ResourceQuotaSpecBuilder>, Ku
         this.scopes = scopes;
     }
 
+    /**
+     * hard is the set of desired hard limits for each named resource. More info: https://kubernetes.io/docs/concepts/policy/resource-quotas/
+     */
     @JsonProperty("hard")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, Quantity> getHard() {
         return hard;
     }
 
+    /**
+     * hard is the set of desired hard limits for each named resource. More info: https://kubernetes.io/docs/concepts/policy/resource-quotas/
+     */
     @JsonProperty("hard")
     public void setHard(Map<String, Quantity> hard) {
         this.hard = hard;
     }
 
+    /**
+     * ResourceQuotaSpec defines the desired hard limits to enforce for Quota.
+     */
     @JsonProperty("scopeSelector")
     public ScopeSelector getScopeSelector() {
         return scopeSelector;
     }
 
+    /**
+     * ResourceQuotaSpec defines the desired hard limits to enforce for Quota.
+     */
     @JsonProperty("scopeSelector")
     public void setScopeSelector(ScopeSelector scopeSelector) {
         this.scopeSelector = scopeSelector;
     }
 
+    /**
+     * A collection of filters that must match each object tracked by a quota. If not specified, the quota matches all objects.
+     */
     @JsonProperty("scopes")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getScopes() {
         return scopes;
     }
 
+    /**
+     * A collection of filters that must match each object tracked by a quota. If not specified, the quota matches all objects.
+     */
     @JsonProperty("scopes")
     public void setScopes(List<String> scopes) {
         this.scopes = scopes;

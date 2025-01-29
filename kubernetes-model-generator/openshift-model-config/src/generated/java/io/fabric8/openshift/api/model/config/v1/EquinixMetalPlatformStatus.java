@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * EquinixMetalPlatformStatus holds the current status of the Equinix Metal infrastructure provider.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class EquinixMetalPlatformStatus implements Editable<EquinixMetalPlatform
         this.ingressIP = ingressIP;
     }
 
+    /**
+     * apiServerInternalIP is an IP address to contact the Kubernetes API server that can be used by components inside the cluster, like kubelets using the infrastructure rather than Kubernetes networking. It is the IP that the Infrastructure.status.apiServerInternalURI points to. It is the IP for a self-hosted load balancer in front of the API servers.
+     */
     @JsonProperty("apiServerInternalIP")
     public String getApiServerInternalIP() {
         return apiServerInternalIP;
     }
 
+    /**
+     * apiServerInternalIP is an IP address to contact the Kubernetes API server that can be used by components inside the cluster, like kubelets using the infrastructure rather than Kubernetes networking. It is the IP that the Infrastructure.status.apiServerInternalURI points to. It is the IP for a self-hosted load balancer in front of the API servers.
+     */
     @JsonProperty("apiServerInternalIP")
     public void setApiServerInternalIP(String apiServerInternalIP) {
         this.apiServerInternalIP = apiServerInternalIP;
     }
 
+    /**
+     * ingressIP is an external IP which routes to the default ingress controller. The IP is a suitable target of a wildcard DNS record used to resolve default route host names.
+     */
     @JsonProperty("ingressIP")
     public String getIngressIP() {
         return ingressIP;
     }
 
+    /**
+     * ingressIP is an external IP which routes to the default ingress controller. The IP is a suitable target of a wildcard DNS record used to resolve default route host names.
+     */
     @JsonProperty("ingressIP")
     public void setIngressIP(String ingressIP) {
         this.ingressIP = ingressIP;

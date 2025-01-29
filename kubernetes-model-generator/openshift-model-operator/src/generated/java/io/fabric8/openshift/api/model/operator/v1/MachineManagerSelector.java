@@ -82,11 +82,17 @@ public class MachineManagerSelector implements Editable<MachineManagerSelectorBu
         this.partial = partial;
     }
 
+    /**
+     * mode determines how machine managers will be selected for updates. Valid values are All and Partial. All means that every resource matched by the machine manager will be updated. Partial requires specified selector(s) and allows customisation of which resources matched by the machine manager will be updated.
+     */
     @JsonProperty("mode")
     public String getMode() {
         return mode;
     }
 
+    /**
+     * mode determines how machine managers will be selected for updates. Valid values are All and Partial. All means that every resource matched by the machine manager will be updated. Partial requires specified selector(s) and allows customisation of which resources matched by the machine manager will be updated.
+     */
     @JsonProperty("mode")
     public void setMode(String mode) {
         this.mode = mode;

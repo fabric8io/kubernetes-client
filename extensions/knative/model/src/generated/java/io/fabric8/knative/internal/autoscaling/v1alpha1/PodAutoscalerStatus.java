@@ -35,6 +35,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * PodAutoscalerStatus communicates the observed state of the PodAutoscaler (from the controller).
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -107,73 +110,115 @@ public class PodAutoscalerStatus implements Editable<PodAutoscalerStatusBuilder>
         this.serviceName = serviceName;
     }
 
+    /**
+     * ActualScale shows the actual number of replicas for the revision.
+     */
     @JsonProperty("actualScale")
     public Integer getActualScale() {
         return actualScale;
     }
 
+    /**
+     * ActualScale shows the actual number of replicas for the revision.
+     */
     @JsonProperty("actualScale")
     public void setActualScale(Integer actualScale) {
         this.actualScale = actualScale;
     }
 
+    /**
+     * Annotations is additional Status fields for the Resource to save some additional State as well as convey more information to the user. This is roughly akin to Annotations on any k8s resource, just the reconciler conveying richer information outwards.
+     */
     @JsonProperty("annotations")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getAnnotations() {
         return annotations;
     }
 
+    /**
+     * Annotations is additional Status fields for the Resource to save some additional State as well as convey more information to the user. This is roughly akin to Annotations on any k8s resource, just the reconciler conveying richer information outwards.
+     */
     @JsonProperty("annotations")
     public void setAnnotations(Map<String, String> annotations) {
         this.annotations = annotations;
     }
 
+    /**
+     * Conditions the latest available observations of a resource's current state.
+     */
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Condition> getConditions() {
         return conditions;
     }
 
+    /**
+     * Conditions the latest available observations of a resource's current state.
+     */
     @JsonProperty("conditions")
     public void setConditions(List<Condition> conditions) {
         this.conditions = conditions;
     }
 
+    /**
+     * DesiredScale shows the current desired number of replicas for the revision.
+     */
     @JsonProperty("desiredScale")
     public Integer getDesiredScale() {
         return desiredScale;
     }
 
+    /**
+     * DesiredScale shows the current desired number of replicas for the revision.
+     */
     @JsonProperty("desiredScale")
     public void setDesiredScale(Integer desiredScale) {
         this.desiredScale = desiredScale;
     }
 
+    /**
+     * MetricsServiceName is the K8s Service name that provides revision metrics. The service is managed by the PA object.
+     */
     @JsonProperty("metricsServiceName")
     public String getMetricsServiceName() {
         return metricsServiceName;
     }
 
+    /**
+     * MetricsServiceName is the K8s Service name that provides revision metrics. The service is managed by the PA object.
+     */
     @JsonProperty("metricsServiceName")
     public void setMetricsServiceName(String metricsServiceName) {
         this.metricsServiceName = metricsServiceName;
     }
 
+    /**
+     * ObservedGeneration is the 'Generation' of the Service that was last processed by the controller.
+     */
     @JsonProperty("observedGeneration")
     public Long getObservedGeneration() {
         return observedGeneration;
     }
 
+    /**
+     * ObservedGeneration is the 'Generation' of the Service that was last processed by the controller.
+     */
     @JsonProperty("observedGeneration")
     public void setObservedGeneration(Long observedGeneration) {
         this.observedGeneration = observedGeneration;
     }
 
+    /**
+     * ServiceName is the K8s Service name that serves the revision, scaled by this PA. The service is created and owned by the ServerlessService object owned by this PA.
+     */
     @JsonProperty("serviceName")
     public String getServiceName() {
         return serviceName;
     }
 
+    /**
+     * ServiceName is the K8s Service name that serves the revision, scaled by this PA. The service is created and owned by the ServerlessService object owned by this PA.
+     */
     @JsonProperty("serviceName")
     public void setServiceName(String serviceName) {
         this.serviceName = serviceName;

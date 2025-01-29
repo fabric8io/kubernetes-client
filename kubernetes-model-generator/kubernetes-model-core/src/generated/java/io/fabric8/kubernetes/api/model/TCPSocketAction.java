@@ -17,6 +17,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * TCPSocketAction describes an action based on opening a socket
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -53,21 +56,33 @@ public class TCPSocketAction implements Editable<TCPSocketActionBuilder>, Kubern
         this.port = port;
     }
 
+    /**
+     * Optional: Host name to connect to, defaults to the pod IP.
+     */
     @JsonProperty("host")
     public String getHost() {
         return host;
     }
 
+    /**
+     * Optional: Host name to connect to, defaults to the pod IP.
+     */
     @JsonProperty("host")
     public void setHost(String host) {
         this.host = host;
     }
 
+    /**
+     * TCPSocketAction describes an action based on opening a socket
+     */
     @JsonProperty("port")
     public IntOrString getPort() {
         return port;
     }
 
+    /**
+     * TCPSocketAction describes an action based on opening a socket
+     */
     @JsonProperty("port")
     public void setPort(IntOrString port) {
         this.port = port;

@@ -35,6 +35,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * PipelineRunStatus defines the observed state of PipelineRun
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -141,149 +144,233 @@ public class PipelineRunStatus implements Editable<PipelineRunStatusBuilder>, Ku
         this.taskRuns = taskRuns;
     }
 
+    /**
+     * Annotations is additional Status fields for the Resource to save some additional State as well as convey more information to the user. This is roughly akin to Annotations on any k8s resource, just the reconciler conveying richer information outwards.
+     */
     @JsonProperty("annotations")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getAnnotations() {
         return annotations;
     }
 
+    /**
+     * Annotations is additional Status fields for the Resource to save some additional State as well as convey more information to the user. This is roughly akin to Annotations on any k8s resource, just the reconciler conveying richer information outwards.
+     */
     @JsonProperty("annotations")
     public void setAnnotations(Map<String, String> annotations) {
         this.annotations = annotations;
     }
 
+    /**
+     * list of TaskRun and Run names, PipelineTask names, and API versions/kinds for children of this PipelineRun.
+     */
     @JsonProperty("childReferences")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ChildStatusReference> getChildReferences() {
         return childReferences;
     }
 
+    /**
+     * list of TaskRun and Run names, PipelineTask names, and API versions/kinds for children of this PipelineRun.
+     */
     @JsonProperty("childReferences")
     public void setChildReferences(List<ChildStatusReference> childReferences) {
         this.childReferences = childReferences;
     }
 
+    /**
+     * PipelineRunStatus defines the observed state of PipelineRun
+     */
     @JsonProperty("completionTime")
     public String getCompletionTime() {
         return completionTime;
     }
 
+    /**
+     * PipelineRunStatus defines the observed state of PipelineRun
+     */
     @JsonProperty("completionTime")
     public void setCompletionTime(String completionTime) {
         this.completionTime = completionTime;
     }
 
+    /**
+     * Conditions the latest available observations of a resource's current state.
+     */
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Condition> getConditions() {
         return conditions;
     }
 
+    /**
+     * Conditions the latest available observations of a resource's current state.
+     */
     @JsonProperty("conditions")
     public void setConditions(List<Condition> conditions) {
         this.conditions = conditions;
     }
 
+    /**
+     * PipelineRunStatus defines the observed state of PipelineRun
+     */
     @JsonProperty("finallyStartTime")
     public String getFinallyStartTime() {
         return finallyStartTime;
     }
 
+    /**
+     * PipelineRunStatus defines the observed state of PipelineRun
+     */
     @JsonProperty("finallyStartTime")
     public void setFinallyStartTime(String finallyStartTime) {
         this.finallyStartTime = finallyStartTime;
     }
 
+    /**
+     * ObservedGeneration is the 'Generation' of the Service that was last processed by the controller.
+     */
     @JsonProperty("observedGeneration")
     public Long getObservedGeneration() {
         return observedGeneration;
     }
 
+    /**
+     * ObservedGeneration is the 'Generation' of the Service that was last processed by the controller.
+     */
     @JsonProperty("observedGeneration")
     public void setObservedGeneration(Long observedGeneration) {
         this.observedGeneration = observedGeneration;
     }
 
+    /**
+     * PipelineResults are the list of results written out by the pipeline task's containers
+     */
     @JsonProperty("pipelineResults")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<PipelineRunResult> getPipelineResults() {
         return pipelineResults;
     }
 
+    /**
+     * PipelineResults are the list of results written out by the pipeline task's containers
+     */
     @JsonProperty("pipelineResults")
     public void setPipelineResults(List<PipelineRunResult> pipelineResults) {
         this.pipelineResults = pipelineResults;
     }
 
+    /**
+     * PipelineRunStatus defines the observed state of PipelineRun
+     */
     @JsonProperty("pipelineSpec")
     public PipelineSpec getPipelineSpec() {
         return pipelineSpec;
     }
 
+    /**
+     * PipelineRunStatus defines the observed state of PipelineRun
+     */
     @JsonProperty("pipelineSpec")
     public void setPipelineSpec(PipelineSpec pipelineSpec) {
         this.pipelineSpec = pipelineSpec;
     }
 
+    /**
+     * PipelineRunStatus defines the observed state of PipelineRun
+     */
     @JsonProperty("provenance")
     public Provenance getProvenance() {
         return provenance;
     }
 
+    /**
+     * PipelineRunStatus defines the observed state of PipelineRun
+     */
     @JsonProperty("provenance")
     public void setProvenance(Provenance provenance) {
         this.provenance = provenance;
     }
 
+    /**
+     * Runs is a map of PipelineRunRunStatus with the run name as the key<br><p> <br><p> Deprecated: use ChildReferences instead. As of v0.45.0, this field is no longer populated and is only included for backwards compatibility with older server versions.
+     */
     @JsonProperty("runs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, PipelineRunRunStatus> getRuns() {
         return runs;
     }
 
+    /**
+     * Runs is a map of PipelineRunRunStatus with the run name as the key<br><p> <br><p> Deprecated: use ChildReferences instead. As of v0.45.0, this field is no longer populated and is only included for backwards compatibility with older server versions.
+     */
     @JsonProperty("runs")
     public void setRuns(Map<String, PipelineRunRunStatus> runs) {
         this.runs = runs;
     }
 
+    /**
+     * list of tasks that were skipped due to when expressions evaluating to false
+     */
     @JsonProperty("skippedTasks")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<SkippedTask> getSkippedTasks() {
         return skippedTasks;
     }
 
+    /**
+     * list of tasks that were skipped due to when expressions evaluating to false
+     */
     @JsonProperty("skippedTasks")
     public void setSkippedTasks(List<SkippedTask> skippedTasks) {
         this.skippedTasks = skippedTasks;
     }
 
+    /**
+     * SpanContext contains tracing span context fields
+     */
     @JsonProperty("spanContext")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getSpanContext() {
         return spanContext;
     }
 
+    /**
+     * SpanContext contains tracing span context fields
+     */
     @JsonProperty("spanContext")
     public void setSpanContext(Map<String, String> spanContext) {
         this.spanContext = spanContext;
     }
 
+    /**
+     * PipelineRunStatus defines the observed state of PipelineRun
+     */
     @JsonProperty("startTime")
     public String getStartTime() {
         return startTime;
     }
 
+    /**
+     * PipelineRunStatus defines the observed state of PipelineRun
+     */
     @JsonProperty("startTime")
     public void setStartTime(String startTime) {
         this.startTime = startTime;
     }
 
+    /**
+     * TaskRuns is a map of PipelineRunTaskRunStatus with the taskRun name as the key.<br><p> <br><p> Deprecated: use ChildReferences instead. As of v0.45.0, this field is no longer populated and is only included for backwards compatibility with older server versions.
+     */
     @JsonProperty("taskRuns")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, PipelineRunTaskRunStatus> getTaskRuns() {
         return taskRuns;
     }
 
+    /**
+     * TaskRuns is a map of PipelineRunTaskRunStatus with the taskRun name as the key.<br><p> <br><p> Deprecated: use ChildReferences instead. As of v0.45.0, this field is no longer populated and is only included for backwards compatibility with older server versions.
+     */
     @JsonProperty("taskRuns")
     public void setTaskRuns(Map<String, PipelineRunTaskRunStatus> taskRuns) {
         this.taskRuns = taskRuns;

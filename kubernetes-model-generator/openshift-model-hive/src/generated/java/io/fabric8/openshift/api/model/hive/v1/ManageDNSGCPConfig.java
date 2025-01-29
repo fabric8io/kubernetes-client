@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ManageDNSGCPConfig contains GCP-specific info to manage a given domain.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -78,11 +81,17 @@ public class ManageDNSGCPConfig implements Editable<ManageDNSGCPConfigBuilder>, 
         this.credentialsSecretRef = credentialsSecretRef;
     }
 
+    /**
+     * ManageDNSGCPConfig contains GCP-specific info to manage a given domain.
+     */
     @JsonProperty("credentialsSecretRef")
     public LocalObjectReference getCredentialsSecretRef() {
         return credentialsSecretRef;
     }
 
+    /**
+     * ManageDNSGCPConfig contains GCP-specific info to manage a given domain.
+     */
     @JsonProperty("credentialsSecretRef")
     public void setCredentialsSecretRef(LocalObjectReference credentialsSecretRef) {
         this.credentialsSecretRef = credentialsSecretRef;

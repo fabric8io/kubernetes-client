@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * CannotConvertError is returned when a field cannot be converted.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class CannotConvertError implements Editable<CannotConvertErrorBuilder>, 
         this.message = message;
     }
 
+    /**
+     * CannotConvertError is returned when a field cannot be converted.
+     */
     @JsonProperty("Field")
     public String getField() {
         return field;
     }
 
+    /**
+     * CannotConvertError is returned when a field cannot be converted.
+     */
     @JsonProperty("Field")
     public void setField(String field) {
         this.field = field;
     }
 
+    /**
+     * CannotConvertError is returned when a field cannot be converted.
+     */
     @JsonProperty("Message")
     public String getMessage() {
         return message;
     }
 
+    /**
+     * CannotConvertError is returned when a field cannot be converted.
+     */
     @JsonProperty("Message")
     public void setMessage(String message) {
         this.message = message;

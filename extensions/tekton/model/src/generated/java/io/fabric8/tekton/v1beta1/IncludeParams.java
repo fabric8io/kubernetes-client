@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * IncludeParams allows passing in a specific combinations of Parameters into the Matrix.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -85,22 +88,34 @@ public class IncludeParams implements Editable<IncludeParamsBuilder>, Kubernetes
         this.params = params;
     }
 
+    /**
+     * Name the specified combination
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * Name the specified combination
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * Params takes only `Parameters` of type `"string"` The names of the `params` must match the names of the `params` in the underlying `Task`
+     */
     @JsonProperty("params")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Param> getParams() {
         return params;
     }
 
+    /**
+     * Params takes only `Parameters` of type `"string"` The names of the `params` must match the names of the `params` in the underlying `Task`
+     */
     @JsonProperty("params")
     public void setParams(List<Param> params) {
         this.params = params;

@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Status of the storage version migration.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -85,22 +88,34 @@ public class StorageVersionMigrationStatus implements Editable<StorageVersionMig
         this.resourceVersion = resourceVersion;
     }
 
+    /**
+     * The latest available observations of the migration's current state.
+     */
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<MigrationCondition> getConditions() {
         return conditions;
     }
 
+    /**
+     * The latest available observations of the migration's current state.
+     */
     @JsonProperty("conditions")
     public void setConditions(List<MigrationCondition> conditions) {
         this.conditions = conditions;
     }
 
+    /**
+     * ResourceVersion to compare with the GC cache for performing the migration. This is the current resource version of given group, version and resource when kube-controller-manager first observes this StorageVersionMigration resource.
+     */
     @JsonProperty("resourceVersion")
     public String getResourceVersion() {
         return resourceVersion;
     }
 
+    /**
+     * ResourceVersion to compare with the GC cache for performing the migration. This is the current resource version of given group, version and resource when kube-controller-manager first observes this StorageVersionMigration resource.
+     */
     @JsonProperty("resourceVersion")
     public void setResourceVersion(String resourceVersion) {
         this.resourceVersion = resourceVersion;

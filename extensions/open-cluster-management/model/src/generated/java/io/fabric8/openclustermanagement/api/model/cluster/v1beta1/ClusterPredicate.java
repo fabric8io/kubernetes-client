@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ClusterPredicate represents a predicate to select ManagedClusters.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -78,11 +81,17 @@ public class ClusterPredicate implements Editable<ClusterPredicateBuilder>, Kube
         this.requiredClusterSelector = requiredClusterSelector;
     }
 
+    /**
+     * ClusterPredicate represents a predicate to select ManagedClusters.
+     */
     @JsonProperty("requiredClusterSelector")
     public ClusterSelector getRequiredClusterSelector() {
         return requiredClusterSelector;
     }
 
+    /**
+     * ClusterPredicate represents a predicate to select ManagedClusters.
+     */
     @JsonProperty("requiredClusterSelector")
     public void setRequiredClusterSelector(ClusterSelector requiredClusterSelector) {
         this.requiredClusterSelector = requiredClusterSelector;

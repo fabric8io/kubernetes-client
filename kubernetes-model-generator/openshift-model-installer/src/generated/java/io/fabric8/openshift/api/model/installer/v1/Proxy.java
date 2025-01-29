@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Proxy defines the proxy settings for the cluster. At least one of HTTPProxy or HTTPSProxy is required.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -86,31 +89,49 @@ public class Proxy implements Editable<ProxyBuilder>, KubernetesResource
         this.noProxy = noProxy;
     }
 
+    /**
+     * HTTPProxy is the URL of the proxy for HTTP requests.
+     */
     @JsonProperty("httpProxy")
     public String getHttpProxy() {
         return httpProxy;
     }
 
+    /**
+     * HTTPProxy is the URL of the proxy for HTTP requests.
+     */
     @JsonProperty("httpProxy")
     public void setHttpProxy(String httpProxy) {
         this.httpProxy = httpProxy;
     }
 
+    /**
+     * HTTPSProxy is the URL of the proxy for HTTPS requests.
+     */
     @JsonProperty("httpsProxy")
     public String getHttpsProxy() {
         return httpsProxy;
     }
 
+    /**
+     * HTTPSProxy is the URL of the proxy for HTTPS requests.
+     */
     @JsonProperty("httpsProxy")
     public void setHttpsProxy(String httpsProxy) {
         this.httpsProxy = httpsProxy;
     }
 
+    /**
+     * NoProxy is a comma-separated list of domains and CIDRs for which the proxy should not be used.
+     */
     @JsonProperty("noProxy")
     public String getNoProxy() {
         return noProxy;
     }
 
+    /**
+     * NoProxy is a comma-separated list of domains and CIDRs for which the proxy should not be used.
+     */
     @JsonProperty("noProxy")
     public void setNoProxy(String noProxy) {
         this.noProxy = noProxy;

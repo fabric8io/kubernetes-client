@@ -37,6 +37,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ProjectHelmChartRepository holds namespace-wide configuration for proxied Helm chart repository<br><p> <br><p> Compatibility level 2: Stable within a major release for a minimum of 9 months or 3 minor releases (whichever is longer).
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -76,14 +79,8 @@ import lombok.experimental.Accessors;
 public class ProjectHelmChartRepository implements Editable<ProjectHelmChartRepositoryBuilder>, HasMetadata, Namespaced
 {
 
-    /**
-     * (Required)
-     */
     @JsonProperty("apiVersion")
     private String apiVersion = "helm.openshift.io/v1beta1";
-    /**
-     * (Required)
-     */
     @JsonProperty("kind")
     private String kind = "ProjectHelmChartRepository";
     @JsonProperty("metadata")
@@ -111,7 +108,7 @@ public class ProjectHelmChartRepository implements Editable<ProjectHelmChartRepo
     }
 
     /**
-     * (Required)
+     * APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -119,7 +116,7 @@ public class ProjectHelmChartRepository implements Editable<ProjectHelmChartRepo
     }
 
     /**
-     * (Required)
+     * APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -127,7 +124,7 @@ public class ProjectHelmChartRepository implements Editable<ProjectHelmChartRepo
     }
 
     /**
-     * (Required)
+     * Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -135,38 +132,56 @@ public class ProjectHelmChartRepository implements Editable<ProjectHelmChartRepo
     }
 
     /**
-     * (Required)
+     * Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
      */
     @JsonProperty("kind")
     public void setKind(String kind) {
         this.kind = kind;
     }
 
+    /**
+     * ProjectHelmChartRepository holds namespace-wide configuration for proxied Helm chart repository<br><p> <br><p> Compatibility level 2: Stable within a major release for a minimum of 9 months or 3 minor releases (whichever is longer).
+     */
     @JsonProperty("metadata")
     public ObjectMeta getMetadata() {
         return metadata;
     }
 
+    /**
+     * ProjectHelmChartRepository holds namespace-wide configuration for proxied Helm chart repository<br><p> <br><p> Compatibility level 2: Stable within a major release for a minimum of 9 months or 3 minor releases (whichever is longer).
+     */
     @JsonProperty("metadata")
     public void setMetadata(ObjectMeta metadata) {
         this.metadata = metadata;
     }
 
+    /**
+     * ProjectHelmChartRepository holds namespace-wide configuration for proxied Helm chart repository<br><p> <br><p> Compatibility level 2: Stable within a major release for a minimum of 9 months or 3 minor releases (whichever is longer).
+     */
     @JsonProperty("spec")
     public ProjectHelmChartRepositorySpec getSpec() {
         return spec;
     }
 
+    /**
+     * ProjectHelmChartRepository holds namespace-wide configuration for proxied Helm chart repository<br><p> <br><p> Compatibility level 2: Stable within a major release for a minimum of 9 months or 3 minor releases (whichever is longer).
+     */
     @JsonProperty("spec")
     public void setSpec(ProjectHelmChartRepositorySpec spec) {
         this.spec = spec;
     }
 
+    /**
+     * ProjectHelmChartRepository holds namespace-wide configuration for proxied Helm chart repository<br><p> <br><p> Compatibility level 2: Stable within a major release for a minimum of 9 months or 3 minor releases (whichever is longer).
+     */
     @JsonProperty("status")
     public HelmChartRepositoryStatus getStatus() {
         return status;
     }
 
+    /**
+     * ProjectHelmChartRepository holds namespace-wide configuration for proxied Helm chart repository<br><p> <br><p> Compatibility level 2: Stable within a major release for a minimum of 9 months or 3 minor releases (whichever is longer).
+     */
     @JsonProperty("status")
     public void setStatus(HelmChartRepositoryStatus status) {
         this.status = status;

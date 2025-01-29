@@ -19,6 +19,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * APIServiceStatus contains derived information about an API server
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -52,12 +55,18 @@ public class APIServiceStatus implements Editable<APIServiceStatusBuilder>, Kube
         this.conditions = conditions;
     }
 
+    /**
+     * Current service state of apiService.
+     */
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<APIServiceCondition> getConditions() {
         return conditions;
     }
 
+    /**
+     * Current service state of apiService.
+     */
     @JsonProperty("conditions")
     public void setConditions(List<APIServiceCondition> conditions) {
         this.conditions = conditions;

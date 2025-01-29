@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * SimpleMacvlanConfig contains configurations for macvlan interface.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -90,41 +93,65 @@ public class SimpleMacvlanConfig implements Editable<SimpleMacvlanConfigBuilder>
         this.mtu = mtu;
     }
 
+    /**
+     * SimpleMacvlanConfig contains configurations for macvlan interface.
+     */
     @JsonProperty("ipamConfig")
     public IPAMConfig getIpamConfig() {
         return ipamConfig;
     }
 
+    /**
+     * SimpleMacvlanConfig contains configurations for macvlan interface.
+     */
     @JsonProperty("ipamConfig")
     public void setIpamConfig(IPAMConfig ipamConfig) {
         this.ipamConfig = ipamConfig;
     }
 
+    /**
+     * master is the host interface to create the macvlan interface from. If not specified, it will be default route interface
+     */
     @JsonProperty("master")
     public String getMaster() {
         return master;
     }
 
+    /**
+     * master is the host interface to create the macvlan interface from. If not specified, it will be default route interface
+     */
     @JsonProperty("master")
     public void setMaster(String master) {
         this.master = master;
     }
 
+    /**
+     * mode is the macvlan mode: bridge, private, vepa, passthru. The default is bridge
+     */
     @JsonProperty("mode")
     public String getMode() {
         return mode;
     }
 
+    /**
+     * mode is the macvlan mode: bridge, private, vepa, passthru. The default is bridge
+     */
     @JsonProperty("mode")
     public void setMode(String mode) {
         this.mode = mode;
     }
 
+    /**
+     * mtu is the mtu to use for the macvlan interface. if unset, host's kernel will select the value.
+     */
     @JsonProperty("mtu")
     public Long getMtu() {
         return mtu;
     }
 
+    /**
+     * mtu is the mtu to use for the macvlan interface. if unset, host's kernel will select the value.
+     */
     @JsonProperty("mtu")
     public void setMtu(Long mtu) {
         this.mtu = mtu;

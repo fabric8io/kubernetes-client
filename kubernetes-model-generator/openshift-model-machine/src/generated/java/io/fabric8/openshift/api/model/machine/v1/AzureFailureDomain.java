@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * AzureFailureDomain configures failure domain information for the Azure platform.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class AzureFailureDomain implements Editable<AzureFailureDomainBuilder>, 
         this.zone = zone;
     }
 
+    /**
+     * subnet is the name of the network subnet in which the VM will be created. When omitted, the subnet value from the machine providerSpec template will be used.
+     */
     @JsonProperty("subnet")
     public String getSubnet() {
         return subnet;
     }
 
+    /**
+     * subnet is the name of the network subnet in which the VM will be created. When omitted, the subnet value from the machine providerSpec template will be used.
+     */
     @JsonProperty("subnet")
     public void setSubnet(String subnet) {
         this.subnet = subnet;
     }
 
+    /**
+     * Availability Zone for the virtual machine. If nil, the virtual machine should be deployed to no zone.
+     */
     @JsonProperty("zone")
     public String getZone() {
         return zone;
     }
 
+    /**
+     * Availability Zone for the virtual machine. If nil, the virtual machine should be deployed to no zone.
+     */
     @JsonProperty("zone")
     public void setZone(String zone) {
         this.zone = zone;

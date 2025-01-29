@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Deprecation conveys information regarding a deprecated resource.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -78,11 +81,17 @@ public class Deprecation implements Editable<DeprecationBuilder>, KubernetesReso
         this.message = message;
     }
 
+    /**
+     * Message is a human readable message describing the deprecation.
+     */
     @JsonProperty("message")
     public String getMessage() {
         return message;
     }
 
+    /**
+     * Message is a human readable message describing the deprecation.
+     */
     @JsonProperty("message")
     public void setMessage(String message) {
         this.message = message;

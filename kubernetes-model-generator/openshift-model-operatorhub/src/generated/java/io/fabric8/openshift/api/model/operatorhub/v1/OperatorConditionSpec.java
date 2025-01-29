@@ -35,6 +35,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * OperatorConditionSpec allows a cluster admin to convey information about the state of an operator to OLM, potentially overriding state reported by the operator.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -92,34 +95,52 @@ public class OperatorConditionSpec implements Editable<OperatorConditionSpecBuil
         this.serviceAccounts = serviceAccounts;
     }
 
+    /**
+     * OperatorConditionSpec allows a cluster admin to convey information about the state of an operator to OLM, potentially overriding state reported by the operator.
+     */
     @JsonProperty("deployments")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getDeployments() {
         return deployments;
     }
 
+    /**
+     * OperatorConditionSpec allows a cluster admin to convey information about the state of an operator to OLM, potentially overriding state reported by the operator.
+     */
     @JsonProperty("deployments")
     public void setDeployments(List<String> deployments) {
         this.deployments = deployments;
     }
 
+    /**
+     * OperatorConditionSpec allows a cluster admin to convey information about the state of an operator to OLM, potentially overriding state reported by the operator.
+     */
     @JsonProperty("overrides")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Condition> getOverrides() {
         return overrides;
     }
 
+    /**
+     * OperatorConditionSpec allows a cluster admin to convey information about the state of an operator to OLM, potentially overriding state reported by the operator.
+     */
     @JsonProperty("overrides")
     public void setOverrides(List<Condition> overrides) {
         this.overrides = overrides;
     }
 
+    /**
+     * OperatorConditionSpec allows a cluster admin to convey information about the state of an operator to OLM, potentially overriding state reported by the operator.
+     */
     @JsonProperty("serviceAccounts")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getServiceAccounts() {
         return serviceAccounts;
     }
 
+    /**
+     * OperatorConditionSpec allows a cluster admin to convey information about the state of an operator to OLM, potentially overriding state reported by the operator.
+     */
     @JsonProperty("serviceAccounts")
     public void setServiceAccounts(List<String> serviceAccounts) {
         this.serviceAccounts = serviceAccounts;

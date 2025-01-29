@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * DeliverySpec contains the delivery options for event senders, such as channelable and source.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -102,71 +105,113 @@ public class DeliverySpec implements Editable<DeliverySpecBuilder>, KubernetesRe
         this.timeout = timeout;
     }
 
+    /**
+     * BackoffDelay is the delay before retrying. More information on Duration format:<br><p>  - https://www.iso.org/iso-8601-date-and-time-format.html<br><p>  - https://en.wikipedia.org/wiki/ISO_8601<br><p> <br><p> For linear policy, backoff delay is backoffDelay&#42;&lt;numberOfRetries&gt;. For exponential policy, backoff delay is backoffDelay&#42;2^&lt;numberOfRetries&gt;.
+     */
     @JsonProperty("backoffDelay")
     public String getBackoffDelay() {
         return backoffDelay;
     }
 
+    /**
+     * BackoffDelay is the delay before retrying. More information on Duration format:<br><p>  - https://www.iso.org/iso-8601-date-and-time-format.html<br><p>  - https://en.wikipedia.org/wiki/ISO_8601<br><p> <br><p> For linear policy, backoff delay is backoffDelay&#42;&lt;numberOfRetries&gt;. For exponential policy, backoff delay is backoffDelay&#42;2^&lt;numberOfRetries&gt;.
+     */
     @JsonProperty("backoffDelay")
     public void setBackoffDelay(String backoffDelay) {
         this.backoffDelay = backoffDelay;
     }
 
+    /**
+     * BackoffPolicy is the retry backoff policy (linear, exponential).
+     */
     @JsonProperty("backoffPolicy")
     public String getBackoffPolicy() {
         return backoffPolicy;
     }
 
+    /**
+     * BackoffPolicy is the retry backoff policy (linear, exponential).
+     */
     @JsonProperty("backoffPolicy")
     public void setBackoffPolicy(String backoffPolicy) {
         this.backoffPolicy = backoffPolicy;
     }
 
+    /**
+     * DeliverySpec contains the delivery options for event senders, such as channelable and source.
+     */
     @JsonProperty("deadLetterSink")
     public Destination getDeadLetterSink() {
         return deadLetterSink;
     }
 
+    /**
+     * DeliverySpec contains the delivery options for event senders, such as channelable and source.
+     */
     @JsonProperty("deadLetterSink")
     public void setDeadLetterSink(Destination deadLetterSink) {
         this.deadLetterSink = deadLetterSink;
     }
 
+    /**
+     * format specifies the desired event format for the cloud event. It can be one of the following values: - nil: default value, no specific format required. - "JSON": indicates the event should be in structured mode. - "binary": indicates the event should be in binary mode.
+     */
     @JsonProperty("format")
     public String getFormat() {
         return format;
     }
 
+    /**
+     * format specifies the desired event format for the cloud event. It can be one of the following values: - nil: default value, no specific format required. - "JSON": indicates the event should be in structured mode. - "binary": indicates the event should be in binary mode.
+     */
     @JsonProperty("format")
     public void setFormat(String format) {
         this.format = format;
     }
 
+    /**
+     * Retry is the minimum number of retries the sender should attempt when sending an event before moving it to the dead letter sink.
+     */
     @JsonProperty("retry")
     public Integer getRetry() {
         return retry;
     }
 
+    /**
+     * Retry is the minimum number of retries the sender should attempt when sending an event before moving it to the dead letter sink.
+     */
     @JsonProperty("retry")
     public void setRetry(Integer retry) {
         this.retry = retry;
     }
 
+    /**
+     * RetryAfterMax provides an optional upper bound on the duration specified in a "Retry-After" header when calculating backoff times for retrying 429 and 503 response codes.  Setting the value to zero ("PT0S") can be used to opt-out of respecting "Retry-After" header values altogether. This value only takes effect if "Retry" is configured, and also depends on specific implementations (Channels, Sources, etc.) choosing to provide this capability.<br><p> <br><p> Note: This API is EXPERIMENTAL and might be changed at anytime. While this experimental<br><p>       feature is in the Alpha/Beta stage, you must provide a valid value to opt-in for<br><p>       supporting "Retry-After" headers.  When the feature becomes Stable/GA "Retry-After"<br><p>       headers will be respected by default, and you can choose to specify "PT0S" to<br><p>       opt-out of supporting "Retry-After" headers.<br><p>       For more details: https://github.com/knative/eventing/issues/5811<br><p> <br><p> More information on Duration format:<br><p>  - https://www.iso.org/iso-8601-date-and-time-format.html<br><p>  - https://en.wikipedia.org/wiki/ISO_8601
+     */
     @JsonProperty("retryAfterMax")
     public String getRetryAfterMax() {
         return retryAfterMax;
     }
 
+    /**
+     * RetryAfterMax provides an optional upper bound on the duration specified in a "Retry-After" header when calculating backoff times for retrying 429 and 503 response codes.  Setting the value to zero ("PT0S") can be used to opt-out of respecting "Retry-After" header values altogether. This value only takes effect if "Retry" is configured, and also depends on specific implementations (Channels, Sources, etc.) choosing to provide this capability.<br><p> <br><p> Note: This API is EXPERIMENTAL and might be changed at anytime. While this experimental<br><p>       feature is in the Alpha/Beta stage, you must provide a valid value to opt-in for<br><p>       supporting "Retry-After" headers.  When the feature becomes Stable/GA "Retry-After"<br><p>       headers will be respected by default, and you can choose to specify "PT0S" to<br><p>       opt-out of supporting "Retry-After" headers.<br><p>       For more details: https://github.com/knative/eventing/issues/5811<br><p> <br><p> More information on Duration format:<br><p>  - https://www.iso.org/iso-8601-date-and-time-format.html<br><p>  - https://en.wikipedia.org/wiki/ISO_8601
+     */
     @JsonProperty("retryAfterMax")
     public void setRetryAfterMax(String retryAfterMax) {
         this.retryAfterMax = retryAfterMax;
     }
 
+    /**
+     * Timeout is the timeout of each single request. The value must be greater than 0. More information on Duration format:<br><p>  - https://www.iso.org/iso-8601-date-and-time-format.html<br><p>  - https://en.wikipedia.org/wiki/ISO_8601<br><p> <br><p> Note: This API is EXPERIMENTAL and might break anytime. For more details: https://github.com/knative/eventing/issues/5148
+     */
     @JsonProperty("timeout")
     public String getTimeout() {
         return timeout;
     }
 
+    /**
+     * Timeout is the timeout of each single request. The value must be greater than 0. More information on Duration format:<br><p>  - https://www.iso.org/iso-8601-date-and-time-format.html<br><p>  - https://en.wikipedia.org/wiki/ISO_8601<br><p> <br><p> Note: This API is EXPERIMENTAL and might break anytime. For more details: https://github.com/knative/eventing/issues/5148
+     */
     @JsonProperty("timeout")
     public void setTimeout(String timeout) {
         this.timeout = timeout;

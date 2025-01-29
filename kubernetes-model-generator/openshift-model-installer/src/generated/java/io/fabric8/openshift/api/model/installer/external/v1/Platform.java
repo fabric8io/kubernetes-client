@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Platform stores configuration related to external cloud providers.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class Platform implements Editable<PlatformBuilder>, KubernetesResource
         this.platformName = platformName;
     }
 
+    /**
+     * CloudControllerManager when set to external, this property will enable an external cloud provider.
+     */
     @JsonProperty("cloudControllerManager")
     public String getCloudControllerManager() {
         return cloudControllerManager;
     }
 
+    /**
+     * CloudControllerManager when set to external, this property will enable an external cloud provider.
+     */
     @JsonProperty("cloudControllerManager")
     public void setCloudControllerManager(String cloudControllerManager) {
         this.cloudControllerManager = cloudControllerManager;
     }
 
+    /**
+     * PlatformName holds the arbitrary string representing the infrastructure provider name, expected to be set at the installation time. This field is solely for informational and reporting purposes and is not expected to be used for decision-making.
+     */
     @JsonProperty("platformName")
     public String getPlatformName() {
         return platformName;
     }
 
+    /**
+     * PlatformName holds the arbitrary string representing the infrastructure provider name, expected to be set at the installation time. This field is solely for informational and reporting purposes and is not expected to be used for decision-making.
+     */
     @JsonProperty("platformName")
     public void setPlatformName(String platformName) {
         this.platformName = platformName;

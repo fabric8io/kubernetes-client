@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * DaemonSetStatus represents the current status of a daemon set.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -117,102 +120,162 @@ public class DaemonSetStatus implements Editable<DaemonSetStatusBuilder>, Kubern
         this.updatedNumberScheduled = updatedNumberScheduled;
     }
 
+    /**
+     * Count of hash collisions for the DaemonSet. The DaemonSet controller uses this field as a collision avoidance mechanism when it needs to create the name for the newest ControllerRevision.
+     */
     @JsonProperty("collisionCount")
     public Integer getCollisionCount() {
         return collisionCount;
     }
 
+    /**
+     * Count of hash collisions for the DaemonSet. The DaemonSet controller uses this field as a collision avoidance mechanism when it needs to create the name for the newest ControllerRevision.
+     */
     @JsonProperty("collisionCount")
     public void setCollisionCount(Integer collisionCount) {
         this.collisionCount = collisionCount;
     }
 
+    /**
+     * Represents the latest available observations of a DaemonSet's current state.
+     */
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<DaemonSetCondition> getConditions() {
         return conditions;
     }
 
+    /**
+     * Represents the latest available observations of a DaemonSet's current state.
+     */
     @JsonProperty("conditions")
     public void setConditions(List<DaemonSetCondition> conditions) {
         this.conditions = conditions;
     }
 
+    /**
+     * The number of nodes that are running at least 1 daemon pod and are supposed to run the daemon pod. More info: https://kubernetes.io/docs/concepts/workloads/controllers/daemonset/
+     */
     @JsonProperty("currentNumberScheduled")
     public Integer getCurrentNumberScheduled() {
         return currentNumberScheduled;
     }
 
+    /**
+     * The number of nodes that are running at least 1 daemon pod and are supposed to run the daemon pod. More info: https://kubernetes.io/docs/concepts/workloads/controllers/daemonset/
+     */
     @JsonProperty("currentNumberScheduled")
     public void setCurrentNumberScheduled(Integer currentNumberScheduled) {
         this.currentNumberScheduled = currentNumberScheduled;
     }
 
+    /**
+     * The total number of nodes that should be running the daemon pod (including nodes correctly running the daemon pod). More info: https://kubernetes.io/docs/concepts/workloads/controllers/daemonset/
+     */
     @JsonProperty("desiredNumberScheduled")
     public Integer getDesiredNumberScheduled() {
         return desiredNumberScheduled;
     }
 
+    /**
+     * The total number of nodes that should be running the daemon pod (including nodes correctly running the daemon pod). More info: https://kubernetes.io/docs/concepts/workloads/controllers/daemonset/
+     */
     @JsonProperty("desiredNumberScheduled")
     public void setDesiredNumberScheduled(Integer desiredNumberScheduled) {
         this.desiredNumberScheduled = desiredNumberScheduled;
     }
 
+    /**
+     * The number of nodes that should be running the daemon pod and have one or more of the daemon pod running and available (ready for at least spec.minReadySeconds)
+     */
     @JsonProperty("numberAvailable")
     public Integer getNumberAvailable() {
         return numberAvailable;
     }
 
+    /**
+     * The number of nodes that should be running the daemon pod and have one or more of the daemon pod running and available (ready for at least spec.minReadySeconds)
+     */
     @JsonProperty("numberAvailable")
     public void setNumberAvailable(Integer numberAvailable) {
         this.numberAvailable = numberAvailable;
     }
 
+    /**
+     * The number of nodes that are running the daemon pod, but are not supposed to run the daemon pod. More info: https://kubernetes.io/docs/concepts/workloads/controllers/daemonset/
+     */
     @JsonProperty("numberMisscheduled")
     public Integer getNumberMisscheduled() {
         return numberMisscheduled;
     }
 
+    /**
+     * The number of nodes that are running the daemon pod, but are not supposed to run the daemon pod. More info: https://kubernetes.io/docs/concepts/workloads/controllers/daemonset/
+     */
     @JsonProperty("numberMisscheduled")
     public void setNumberMisscheduled(Integer numberMisscheduled) {
         this.numberMisscheduled = numberMisscheduled;
     }
 
+    /**
+     * numberReady is the number of nodes that should be running the daemon pod and have one or more of the daemon pod running with a Ready Condition.
+     */
     @JsonProperty("numberReady")
     public Integer getNumberReady() {
         return numberReady;
     }
 
+    /**
+     * numberReady is the number of nodes that should be running the daemon pod and have one or more of the daemon pod running with a Ready Condition.
+     */
     @JsonProperty("numberReady")
     public void setNumberReady(Integer numberReady) {
         this.numberReady = numberReady;
     }
 
+    /**
+     * The number of nodes that should be running the daemon pod and have none of the daemon pod running and available (ready for at least spec.minReadySeconds)
+     */
     @JsonProperty("numberUnavailable")
     public Integer getNumberUnavailable() {
         return numberUnavailable;
     }
 
+    /**
+     * The number of nodes that should be running the daemon pod and have none of the daemon pod running and available (ready for at least spec.minReadySeconds)
+     */
     @JsonProperty("numberUnavailable")
     public void setNumberUnavailable(Integer numberUnavailable) {
         this.numberUnavailable = numberUnavailable;
     }
 
+    /**
+     * The most recent generation observed by the daemon set controller.
+     */
     @JsonProperty("observedGeneration")
     public Long getObservedGeneration() {
         return observedGeneration;
     }
 
+    /**
+     * The most recent generation observed by the daemon set controller.
+     */
     @JsonProperty("observedGeneration")
     public void setObservedGeneration(Long observedGeneration) {
         this.observedGeneration = observedGeneration;
     }
 
+    /**
+     * The total number of nodes that are running updated daemon pod
+     */
     @JsonProperty("updatedNumberScheduled")
     public Integer getUpdatedNumberScheduled() {
         return updatedNumberScheduled;
     }
 
+    /**
+     * The total number of nodes that are running updated daemon pod
+     */
     @JsonProperty("updatedNumberScheduled")
     public void setUpdatedNumberScheduled(Integer updatedNumberScheduled) {
         this.updatedNumberScheduled = updatedNumberScheduled;

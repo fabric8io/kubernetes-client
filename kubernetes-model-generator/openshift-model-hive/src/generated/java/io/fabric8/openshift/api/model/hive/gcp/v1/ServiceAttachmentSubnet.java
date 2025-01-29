@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ServiceAttachmentSubnet configures the subnetwork used by the service attachment
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class ServiceAttachmentSubnet implements Editable<ServiceAttachmentSubnet
         this.existing = existing;
     }
 
+    /**
+     * Cidr specifies the cidr to use when creating a service attachment subnet.
+     */
     @JsonProperty("cidr")
     public String getCidr() {
         return cidr;
     }
 
+    /**
+     * Cidr specifies the cidr to use when creating a service attachment subnet.
+     */
     @JsonProperty("cidr")
     public void setCidr(String cidr) {
         this.cidr = cidr;
     }
 
+    /**
+     * ServiceAttachmentSubnet configures the subnetwork used by the service attachment
+     */
     @JsonProperty("existing")
     public ServiceAttachmentSubnetExisting getExisting() {
         return existing;
     }
 
+    /**
+     * ServiceAttachmentSubnet configures the subnetwork used by the service attachment
+     */
     @JsonProperty("existing")
     public void setExisting(ServiceAttachmentSubnetExisting existing) {
         this.existing = existing;

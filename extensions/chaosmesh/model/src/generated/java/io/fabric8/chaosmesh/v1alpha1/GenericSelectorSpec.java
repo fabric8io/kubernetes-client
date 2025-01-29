@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * GenericSelectorSpec defines some selectors to select objects.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -96,45 +99,69 @@ public class GenericSelectorSpec implements Editable<GenericSelectorSpecBuilder>
         this.namespaces = namespaces;
     }
 
+    /**
+     * Map of string keys and values that can be used to select objects. A selector based on annotations.
+     */
     @JsonProperty("annotationSelectors")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getAnnotationSelectors() {
         return annotationSelectors;
     }
 
+    /**
+     * Map of string keys and values that can be used to select objects. A selector based on annotations.
+     */
     @JsonProperty("annotationSelectors")
     public void setAnnotationSelectors(Map<String, String> annotationSelectors) {
         this.annotationSelectors = annotationSelectors;
     }
 
+    /**
+     * Map of string keys and values that can be used to select objects. A selector based on fields.
+     */
     @JsonProperty("fieldSelectors")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getFieldSelectors() {
         return fieldSelectors;
     }
 
+    /**
+     * Map of string keys and values that can be used to select objects. A selector based on fields.
+     */
     @JsonProperty("fieldSelectors")
     public void setFieldSelectors(Map<String, String> fieldSelectors) {
         this.fieldSelectors = fieldSelectors;
     }
 
+    /**
+     * Map of string keys and values that can be used to select objects. A selector based on labels.
+     */
     @JsonProperty("labelSelectors")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getLabelSelectors() {
         return labelSelectors;
     }
 
+    /**
+     * Map of string keys and values that can be used to select objects. A selector based on labels.
+     */
     @JsonProperty("labelSelectors")
     public void setLabelSelectors(Map<String, String> labelSelectors) {
         this.labelSelectors = labelSelectors;
     }
 
+    /**
+     * Namespaces is a set of namespace to which objects belong.
+     */
     @JsonProperty("namespaces")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getNamespaces() {
         return namespaces;
     }
 
+    /**
+     * Namespaces is a set of namespace to which objects belong.
+     */
     @JsonProperty("namespaces")
     public void setNamespaces(List<String> namespaces) {
         this.namespaces = namespaces;

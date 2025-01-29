@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * An ACMEChallengeSolver describes how to solve ACME challenges for the issuer it is part of. A selector may be provided to use different solving strategies for different DNS names. Only one of HTTP01 or DNS01 must be provided.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -86,31 +89,49 @@ public class ACMEChallengeSolver implements Editable<ACMEChallengeSolverBuilder>
         this.selector = selector;
     }
 
+    /**
+     * An ACMEChallengeSolver describes how to solve ACME challenges for the issuer it is part of. A selector may be provided to use different solving strategies for different DNS names. Only one of HTTP01 or DNS01 must be provided.
+     */
     @JsonProperty("dns01")
     public ACMEChallengeSolverDNS01 getDns01() {
         return dns01;
     }
 
+    /**
+     * An ACMEChallengeSolver describes how to solve ACME challenges for the issuer it is part of. A selector may be provided to use different solving strategies for different DNS names. Only one of HTTP01 or DNS01 must be provided.
+     */
     @JsonProperty("dns01")
     public void setDns01(ACMEChallengeSolverDNS01 dns01) {
         this.dns01 = dns01;
     }
 
+    /**
+     * An ACMEChallengeSolver describes how to solve ACME challenges for the issuer it is part of. A selector may be provided to use different solving strategies for different DNS names. Only one of HTTP01 or DNS01 must be provided.
+     */
     @JsonProperty("http01")
     public ACMEChallengeSolverHTTP01 getHttp01() {
         return http01;
     }
 
+    /**
+     * An ACMEChallengeSolver describes how to solve ACME challenges for the issuer it is part of. A selector may be provided to use different solving strategies for different DNS names. Only one of HTTP01 or DNS01 must be provided.
+     */
     @JsonProperty("http01")
     public void setHttp01(ACMEChallengeSolverHTTP01 http01) {
         this.http01 = http01;
     }
 
+    /**
+     * An ACMEChallengeSolver describes how to solve ACME challenges for the issuer it is part of. A selector may be provided to use different solving strategies for different DNS names. Only one of HTTP01 or DNS01 must be provided.
+     */
     @JsonProperty("selector")
     public CertificateDNSNameSelector getSelector() {
         return selector;
     }
 
+    /**
+     * An ACMEChallengeSolver describes how to solve ACME challenges for the issuer it is part of. A selector may be provided to use different solving strategies for different DNS names. Only one of HTTP01 or DNS01 must be provided.
+     */
     @JsonProperty("selector")
     public void setSelector(CertificateDNSNameSelector selector) {
         this.selector = selector;

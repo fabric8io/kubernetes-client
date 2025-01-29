@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ImageLookupPolicy describes how an image stream can be used to override the image references used by pods, builds, and other resources in a namespace.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -78,11 +81,17 @@ public class ImageLookupPolicy implements Editable<ImageLookupPolicyBuilder>, Ku
         this.local = local;
     }
 
+    /**
+     * local will change the docker short image references (like "mysql" or "php:latest") on objects in this namespace to the image ID whenever they match this image stream, instead of reaching out to a remote registry. The name will be fully qualified to an image ID if found. The tag's referencePolicy is taken into account on the replaced value. Only works within the current namespace.
+     */
     @JsonProperty("local")
     public Boolean getLocal() {
         return local;
     }
 
+    /**
+     * local will change the docker short image references (like "mysql" or "php:latest") on objects in this namespace to the image ID whenever they match this image stream, instead of reaching out to a remote registry. The name will be fully qualified to an image ID if found. The tag's referencePolicy is taken into account on the replaced value. Only works within the current namespace.
+     */
     @JsonProperty("local")
     public void setLocal(Boolean local) {
         this.local = local;

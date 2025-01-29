@@ -85,22 +85,34 @@ public class Audit implements Editable<AuditBuilder>, KubernetesResource
         this.profile = profile;
     }
 
+    /**
+     * customRules specify profiles per group. These profile take precedence over the top-level profile field if they apply. They are evaluation from top to bottom and the first one that matches, applies.
+     */
     @JsonProperty("customRules")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<AuditCustomRule> getCustomRules() {
         return customRules;
     }
 
+    /**
+     * customRules specify profiles per group. These profile take precedence over the top-level profile field if they apply. They are evaluation from top to bottom and the first one that matches, applies.
+     */
     @JsonProperty("customRules")
     public void setCustomRules(List<AuditCustomRule> customRules) {
         this.customRules = customRules;
     }
 
+    /**
+     * profile specifies the name of the desired top-level audit profile to be applied to all requests sent to any of the OpenShift-provided API servers in the cluster (kube-apiserver, openshift-apiserver and oauth-apiserver), with the exception of those requests that match one or more of the customRules.<br><p> <br><p> The following profiles are provided: - Default: default policy which means MetaData level logging with the exception of events<br><p>   (not logged at all), oauthaccesstokens and oauthauthorizetokens (both logged at RequestBody<br><p>   level).<br><p> - WriteRequestBodies: like 'Default', but logs request and response HTTP payloads for write requests (create, update, patch). - AllRequestBodies: like 'WriteRequestBodies', but also logs request and response HTTP payloads for read requests (get, list). - None: no requests are logged at all, not even oauthaccesstokens and oauthauthorizetokens.<br><p> <br><p> Warning: It is not recommended to disable audit logging by using the `None` profile unless you are fully aware of the risks of not logging data that can be beneficial when troubleshooting issues. If you disable audit logging and a support situation arises, you might need to enable audit logging and reproduce the issue in order to troubleshoot properly.<br><p> <br><p> If unset, the 'Default' profile is used as the default.
+     */
     @JsonProperty("profile")
     public String getProfile() {
         return profile;
     }
 
+    /**
+     * profile specifies the name of the desired top-level audit profile to be applied to all requests sent to any of the OpenShift-provided API servers in the cluster (kube-apiserver, openshift-apiserver and oauth-apiserver), with the exception of those requests that match one or more of the customRules.<br><p> <br><p> The following profiles are provided: - Default: default policy which means MetaData level logging with the exception of events<br><p>   (not logged at all), oauthaccesstokens and oauthauthorizetokens (both logged at RequestBody<br><p>   level).<br><p> - WriteRequestBodies: like 'Default', but logs request and response HTTP payloads for write requests (create, update, patch). - AllRequestBodies: like 'WriteRequestBodies', but also logs request and response HTTP payloads for read requests (get, list). - None: no requests are logged at all, not even oauthaccesstokens and oauthauthorizetokens.<br><p> <br><p> Warning: It is not recommended to disable audit logging by using the `None` profile unless you are fully aware of the risks of not logging data that can be beneficial when troubleshooting issues. If you disable audit logging and a support situation arises, you might need to enable audit logging and reproduce the issue in order to troubleshoot properly.<br><p> <br><p> If unset, the 'Default' profile is used as the default.
+     */
     @JsonProperty("profile")
     public void setProfile(String profile) {
         this.profile = profile;

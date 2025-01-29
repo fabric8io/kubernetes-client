@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Release represents an OpenShift release image and associated metadata.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -93,42 +96,66 @@ public class Release implements Editable<ReleaseBuilder>, KubernetesResource
         this.version = version;
     }
 
+    /**
+     * channels is the set of Cincinnati channels to which the release currently belongs.
+     */
     @JsonProperty("channels")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getChannels() {
         return channels;
     }
 
+    /**
+     * channels is the set of Cincinnati channels to which the release currently belongs.
+     */
     @JsonProperty("channels")
     public void setChannels(List<String> channels) {
         this.channels = channels;
     }
 
+    /**
+     * image is a container image location that contains the update. When this field is part of spec, image is optional if version is specified and the availableUpdates field contains a matching version.
+     */
     @JsonProperty("image")
     public String getImage() {
         return image;
     }
 
+    /**
+     * image is a container image location that contains the update. When this field is part of spec, image is optional if version is specified and the availableUpdates field contains a matching version.
+     */
     @JsonProperty("image")
     public void setImage(String image) {
         this.image = image;
     }
 
+    /**
+     * url contains information about this release. This URL is set by the 'url' metadata property on a release or the metadata returned by the update API and should be displayed as a link in user interfaces. The URL field may not be set for test or nightly releases.
+     */
     @JsonProperty("url")
     public String getUrl() {
         return url;
     }
 
+    /**
+     * url contains information about this release. This URL is set by the 'url' metadata property on a release or the metadata returned by the update API and should be displayed as a link in user interfaces. The URL field may not be set for test or nightly releases.
+     */
     @JsonProperty("url")
     public void setUrl(String url) {
         this.url = url;
     }
 
+    /**
+     * version is a semantic version identifying the update version. When this field is part of spec, version is optional if image is specified.
+     */
     @JsonProperty("version")
     public String getVersion() {
         return version;
     }
 
+    /**
+     * version is a semantic version identifying the update version. When this field is part of spec, version is optional if image is specified.
+     */
     @JsonProperty("version")
     public void setVersion(String version) {
         this.version = version;

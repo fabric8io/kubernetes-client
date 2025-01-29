@@ -90,12 +90,18 @@ public class HTTPChaosStatus implements Editable<HTTPChaosStatusBuilder>, Kubern
         this.instances = instances;
     }
 
+    /**
+     * Conditions represents the current global condition of the chaos
+     */
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ChaosCondition> getConditions() {
         return conditions;
     }
 
+    /**
+     * Conditions represents the current global condition of the chaos
+     */
     @JsonProperty("conditions")
     public void setConditions(List<ChaosCondition> conditions) {
         this.conditions = conditions;
@@ -111,12 +117,18 @@ public class HTTPChaosStatus implements Editable<HTTPChaosStatusBuilder>, Kubern
         this.experiment = experiment;
     }
 
+    /**
+     * Instances always specifies podhttpchaos generation or empty
+     */
     @JsonProperty("instances")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, Long> getInstances() {
         return instances;
     }
 
+    /**
+     * Instances always specifies podhttpchaos generation or empty
+     */
     @JsonProperty("instances")
     public void setInstances(Map<String, Long> instances) {
         this.instances = instances;

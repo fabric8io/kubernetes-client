@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * NutanixPlatformStatus holds the current status of the Nutanix infrastructure provider.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -98,53 +101,83 @@ public class NutanixPlatformStatus implements Editable<NutanixPlatformStatusBuil
         this.loadBalancer = loadBalancer;
     }
 
+    /**
+     * apiServerInternalIP is an IP address to contact the Kubernetes API server that can be used by components inside the cluster, like kubelets using the infrastructure rather than Kubernetes networking. It is the IP that the Infrastructure.status.apiServerInternalURI points to. It is the IP for a self-hosted load balancer in front of the API servers.<br><p> <br><p> Deprecated: Use APIServerInternalIPs instead.
+     */
     @JsonProperty("apiServerInternalIP")
     public String getApiServerInternalIP() {
         return apiServerInternalIP;
     }
 
+    /**
+     * apiServerInternalIP is an IP address to contact the Kubernetes API server that can be used by components inside the cluster, like kubelets using the infrastructure rather than Kubernetes networking. It is the IP that the Infrastructure.status.apiServerInternalURI points to. It is the IP for a self-hosted load balancer in front of the API servers.<br><p> <br><p> Deprecated: Use APIServerInternalIPs instead.
+     */
     @JsonProperty("apiServerInternalIP")
     public void setApiServerInternalIP(String apiServerInternalIP) {
         this.apiServerInternalIP = apiServerInternalIP;
     }
 
+    /**
+     * apiServerInternalIPs are the IP addresses to contact the Kubernetes API server that can be used by components inside the cluster, like kubelets using the infrastructure rather than Kubernetes networking. These are the IPs for a self-hosted load balancer in front of the API servers. In dual stack clusters this list contains two IPs otherwise only one.
+     */
     @JsonProperty("apiServerInternalIPs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getApiServerInternalIPs() {
         return apiServerInternalIPs;
     }
 
+    /**
+     * apiServerInternalIPs are the IP addresses to contact the Kubernetes API server that can be used by components inside the cluster, like kubelets using the infrastructure rather than Kubernetes networking. These are the IPs for a self-hosted load balancer in front of the API servers. In dual stack clusters this list contains two IPs otherwise only one.
+     */
     @JsonProperty("apiServerInternalIPs")
     public void setApiServerInternalIPs(List<String> apiServerInternalIPs) {
         this.apiServerInternalIPs = apiServerInternalIPs;
     }
 
+    /**
+     * ingressIP is an external IP which routes to the default ingress controller. The IP is a suitable target of a wildcard DNS record used to resolve default route host names.<br><p> <br><p> Deprecated: Use IngressIPs instead.
+     */
     @JsonProperty("ingressIP")
     public String getIngressIP() {
         return ingressIP;
     }
 
+    /**
+     * ingressIP is an external IP which routes to the default ingress controller. The IP is a suitable target of a wildcard DNS record used to resolve default route host names.<br><p> <br><p> Deprecated: Use IngressIPs instead.
+     */
     @JsonProperty("ingressIP")
     public void setIngressIP(String ingressIP) {
         this.ingressIP = ingressIP;
     }
 
+    /**
+     * ingressIPs are the external IPs which route to the default ingress controller. The IPs are suitable targets of a wildcard DNS record used to resolve default route host names. In dual stack clusters this list contains two IPs otherwise only one.
+     */
     @JsonProperty("ingressIPs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getIngressIPs() {
         return ingressIPs;
     }
 
+    /**
+     * ingressIPs are the external IPs which route to the default ingress controller. The IPs are suitable targets of a wildcard DNS record used to resolve default route host names. In dual stack clusters this list contains two IPs otherwise only one.
+     */
     @JsonProperty("ingressIPs")
     public void setIngressIPs(List<String> ingressIPs) {
         this.ingressIPs = ingressIPs;
     }
 
+    /**
+     * NutanixPlatformStatus holds the current status of the Nutanix infrastructure provider.
+     */
     @JsonProperty("loadBalancer")
     public NutanixPlatformLoadBalancer getLoadBalancer() {
         return loadBalancer;
     }
 
+    /**
+     * NutanixPlatformStatus holds the current status of the Nutanix infrastructure provider.
+     */
     @JsonProperty("loadBalancer")
     public void setLoadBalancer(NutanixPlatformLoadBalancer loadBalancer) {
         this.loadBalancer = loadBalancer;

@@ -19,6 +19,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * NodeStatus is information about the current status of a node.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -107,139 +110,217 @@ public class NodeStatus implements Editable<NodeStatusBuilder>, KubernetesResour
         this.volumesInUse = volumesInUse;
     }
 
+    /**
+     * List of addresses reachable to the node. Queried from cloud provider, if available. More info: https://kubernetes.io/docs/reference/node/node-status/#addresses Note: This field is declared as mergeable, but the merge key is not sufficiently unique, which can cause data corruption when it is merged. Callers should instead use a full-replacement patch. See https://pr.k8s.io/79391 for an example. Consumers should assume that addresses can change during the lifetime of a Node. However, there are some exceptions where this may not be possible, such as Pods that inherit a Node's address in its own status or consumers of the downward API (status.hostIP).
+     */
     @JsonProperty("addresses")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<NodeAddress> getAddresses() {
         return addresses;
     }
 
+    /**
+     * List of addresses reachable to the node. Queried from cloud provider, if available. More info: https://kubernetes.io/docs/reference/node/node-status/#addresses Note: This field is declared as mergeable, but the merge key is not sufficiently unique, which can cause data corruption when it is merged. Callers should instead use a full-replacement patch. See https://pr.k8s.io/79391 for an example. Consumers should assume that addresses can change during the lifetime of a Node. However, there are some exceptions where this may not be possible, such as Pods that inherit a Node's address in its own status or consumers of the downward API (status.hostIP).
+     */
     @JsonProperty("addresses")
     public void setAddresses(List<NodeAddress> addresses) {
         this.addresses = addresses;
     }
 
+    /**
+     * Allocatable represents the resources of a node that are available for scheduling. Defaults to Capacity.
+     */
     @JsonProperty("allocatable")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, Quantity> getAllocatable() {
         return allocatable;
     }
 
+    /**
+     * Allocatable represents the resources of a node that are available for scheduling. Defaults to Capacity.
+     */
     @JsonProperty("allocatable")
     public void setAllocatable(Map<String, Quantity> allocatable) {
         this.allocatable = allocatable;
     }
 
+    /**
+     * Capacity represents the total resources of a node. More info: https://kubernetes.io/docs/reference/node/node-status/#capacity
+     */
     @JsonProperty("capacity")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, Quantity> getCapacity() {
         return capacity;
     }
 
+    /**
+     * Capacity represents the total resources of a node. More info: https://kubernetes.io/docs/reference/node/node-status/#capacity
+     */
     @JsonProperty("capacity")
     public void setCapacity(Map<String, Quantity> capacity) {
         this.capacity = capacity;
     }
 
+    /**
+     * Conditions is an array of current observed node conditions. More info: https://kubernetes.io/docs/reference/node/node-status/#condition
+     */
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<NodeCondition> getConditions() {
         return conditions;
     }
 
+    /**
+     * Conditions is an array of current observed node conditions. More info: https://kubernetes.io/docs/reference/node/node-status/#condition
+     */
     @JsonProperty("conditions")
     public void setConditions(List<NodeCondition> conditions) {
         this.conditions = conditions;
     }
 
+    /**
+     * NodeStatus is information about the current status of a node.
+     */
     @JsonProperty("config")
     public NodeConfigStatus getConfig() {
         return config;
     }
 
+    /**
+     * NodeStatus is information about the current status of a node.
+     */
     @JsonProperty("config")
     public void setConfig(NodeConfigStatus config) {
         this.config = config;
     }
 
+    /**
+     * NodeStatus is information about the current status of a node.
+     */
     @JsonProperty("daemonEndpoints")
     public NodeDaemonEndpoints getDaemonEndpoints() {
         return daemonEndpoints;
     }
 
+    /**
+     * NodeStatus is information about the current status of a node.
+     */
     @JsonProperty("daemonEndpoints")
     public void setDaemonEndpoints(NodeDaemonEndpoints daemonEndpoints) {
         this.daemonEndpoints = daemonEndpoints;
     }
 
+    /**
+     * NodeStatus is information about the current status of a node.
+     */
     @JsonProperty("features")
     public NodeFeatures getFeatures() {
         return features;
     }
 
+    /**
+     * NodeStatus is information about the current status of a node.
+     */
     @JsonProperty("features")
     public void setFeatures(NodeFeatures features) {
         this.features = features;
     }
 
+    /**
+     * List of container images on this node
+     */
     @JsonProperty("images")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ContainerImage> getImages() {
         return images;
     }
 
+    /**
+     * List of container images on this node
+     */
     @JsonProperty("images")
     public void setImages(List<ContainerImage> images) {
         this.images = images;
     }
 
+    /**
+     * NodeStatus is information about the current status of a node.
+     */
     @JsonProperty("nodeInfo")
     public NodeSystemInfo getNodeInfo() {
         return nodeInfo;
     }
 
+    /**
+     * NodeStatus is information about the current status of a node.
+     */
     @JsonProperty("nodeInfo")
     public void setNodeInfo(NodeSystemInfo nodeInfo) {
         this.nodeInfo = nodeInfo;
     }
 
+    /**
+     * NodePhase is the recently observed lifecycle phase of the node. More info: https://kubernetes.io/docs/concepts/nodes/node/#phase The field is never populated, and now is deprecated.
+     */
     @JsonProperty("phase")
     public String getPhase() {
         return phase;
     }
 
+    /**
+     * NodePhase is the recently observed lifecycle phase of the node. More info: https://kubernetes.io/docs/concepts/nodes/node/#phase The field is never populated, and now is deprecated.
+     */
     @JsonProperty("phase")
     public void setPhase(String phase) {
         this.phase = phase;
     }
 
+    /**
+     * The available runtime handlers.
+     */
     @JsonProperty("runtimeHandlers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<NodeRuntimeHandler> getRuntimeHandlers() {
         return runtimeHandlers;
     }
 
+    /**
+     * The available runtime handlers.
+     */
     @JsonProperty("runtimeHandlers")
     public void setRuntimeHandlers(List<NodeRuntimeHandler> runtimeHandlers) {
         this.runtimeHandlers = runtimeHandlers;
     }
 
+    /**
+     * List of volumes that are attached to the node.
+     */
     @JsonProperty("volumesAttached")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<AttachedVolume> getVolumesAttached() {
         return volumesAttached;
     }
 
+    /**
+     * List of volumes that are attached to the node.
+     */
     @JsonProperty("volumesAttached")
     public void setVolumesAttached(List<AttachedVolume> volumesAttached) {
         this.volumesAttached = volumesAttached;
     }
 
+    /**
+     * List of attachable volumes in use (mounted) by the node.
+     */
     @JsonProperty("volumesInUse")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getVolumesInUse() {
         return volumesInUse;
     }
 
+    /**
+     * List of attachable volumes in use (mounted) by the node.
+     */
     @JsonProperty("volumesInUse")
     public void setVolumesInUse(List<String> volumesInUse) {
         this.volumesInUse = volumesInUse;

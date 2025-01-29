@@ -91,33 +91,51 @@ public class PlacementStatus implements Editable<PlacementStatusBuilder>, Kubern
         this.numberOfSelectedClusters = numberOfSelectedClusters;
     }
 
+    /**
+     * Conditions contains the different condition status for this Placement.
+     */
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Condition> getConditions() {
         return conditions;
     }
 
+    /**
+     * Conditions contains the different condition status for this Placement.
+     */
     @JsonProperty("conditions")
     public void setConditions(List<Condition> conditions) {
         this.conditions = conditions;
     }
 
+    /**
+     * List of decision groups determined by the placement and DecisionStrategy.
+     */
     @JsonProperty("decisionGroups")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<DecisionGroupStatus> getDecisionGroups() {
         return decisionGroups;
     }
 
+    /**
+     * List of decision groups determined by the placement and DecisionStrategy.
+     */
     @JsonProperty("decisionGroups")
     public void setDecisionGroups(List<DecisionGroupStatus> decisionGroups) {
         this.decisionGroups = decisionGroups;
     }
 
+    /**
+     * NumberOfSelectedClusters represents the number of selected ManagedClusters
+     */
     @JsonProperty("numberOfSelectedClusters")
     public Integer getNumberOfSelectedClusters() {
         return numberOfSelectedClusters;
     }
 
+    /**
+     * NumberOfSelectedClusters represents the number of selected ManagedClusters
+     */
     @JsonProperty("numberOfSelectedClusters")
     public void setNumberOfSelectedClusters(Integer numberOfSelectedClusters) {
         this.numberOfSelectedClusters = numberOfSelectedClusters;

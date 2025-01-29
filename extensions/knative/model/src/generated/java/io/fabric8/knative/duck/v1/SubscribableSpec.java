@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * SubscribableSpec shows how we expect folks to embed Subscribable in their Spec field.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -81,12 +84,18 @@ public class SubscribableSpec implements Editable<SubscribableSpecBuilder>, Kube
         this.subscribers = subscribers;
     }
 
+    /**
+     * This is the list of subscriptions for this subscribable.
+     */
     @JsonProperty("subscribers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<SubscriberSpec> getSubscribers() {
         return subscribers;
     }
 
+    /**
+     * This is the list of subscriptions for this subscribable.
+     */
     @JsonProperty("subscribers")
     public void setSubscribers(List<SubscriberSpec> subscribers) {
         this.subscribers = subscribers;

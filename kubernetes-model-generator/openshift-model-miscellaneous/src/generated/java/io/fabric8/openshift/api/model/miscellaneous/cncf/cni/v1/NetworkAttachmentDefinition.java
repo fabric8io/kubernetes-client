@@ -75,14 +75,8 @@ import lombok.experimental.Accessors;
 public class NetworkAttachmentDefinition implements Editable<NetworkAttachmentDefinitionBuilder>, HasMetadata, Namespaced
 {
 
-    /**
-     * (Required)
-     */
     @JsonProperty("apiVersion")
     private String apiVersion = "k8s.cni.cncf.io/v1";
-    /**
-     * (Required)
-     */
     @JsonProperty("kind")
     private String kind = "NetworkAttachmentDefinition";
     @JsonProperty("metadata")
@@ -107,7 +101,7 @@ public class NetworkAttachmentDefinition implements Editable<NetworkAttachmentDe
     }
 
     /**
-     * (Required)
+     * APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -115,7 +109,7 @@ public class NetworkAttachmentDefinition implements Editable<NetworkAttachmentDe
     }
 
     /**
-     * (Required)
+     * APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -123,7 +117,7 @@ public class NetworkAttachmentDefinition implements Editable<NetworkAttachmentDe
     }
 
     /**
-     * (Required)
+     * Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -131,7 +125,7 @@ public class NetworkAttachmentDefinition implements Editable<NetworkAttachmentDe
     }
 
     /**
-     * (Required)
+     * Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

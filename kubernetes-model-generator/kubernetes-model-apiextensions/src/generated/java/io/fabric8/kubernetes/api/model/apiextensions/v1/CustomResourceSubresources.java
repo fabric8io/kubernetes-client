@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * CustomResourceSubresources defines the status and scale subresources for CustomResources.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class CustomResourceSubresources implements Editable<CustomResourceSubres
         this.status = status;
     }
 
+    /**
+     * CustomResourceSubresources defines the status and scale subresources for CustomResources.
+     */
     @JsonProperty("scale")
     public CustomResourceSubresourceScale getScale() {
         return scale;
     }
 
+    /**
+     * CustomResourceSubresources defines the status and scale subresources for CustomResources.
+     */
     @JsonProperty("scale")
     public void setScale(CustomResourceSubresourceScale scale) {
         this.scale = scale;
     }
 
+    /**
+     * CustomResourceSubresources defines the status and scale subresources for CustomResources.
+     */
     @JsonProperty("status")
     public CustomResourceSubresourceStatus getStatus() {
         return status;
     }
 
+    /**
+     * CustomResourceSubresources defines the status and scale subresources for CustomResources.
+     */
     @JsonProperty("status")
     public void setStatus(CustomResourceSubresourceStatus status) {
         this.status = status;

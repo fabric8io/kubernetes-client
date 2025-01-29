@@ -35,6 +35,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ClusterDeploymentCustomizationStatus defines the observed state of ClusterDeploymentCustomization.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -94,42 +97,66 @@ public class ClusterDeploymentCustomizationStatus implements Editable<ClusterDep
         this.lastAppliedConfiguration = lastAppliedConfiguration;
     }
 
+    /**
+     * ClusterDeploymentCustomizationStatus defines the observed state of ClusterDeploymentCustomization.
+     */
     @JsonProperty("clusterDeploymentRef")
     public LocalObjectReference getClusterDeploymentRef() {
         return clusterDeploymentRef;
     }
 
+    /**
+     * ClusterDeploymentCustomizationStatus defines the observed state of ClusterDeploymentCustomization.
+     */
     @JsonProperty("clusterDeploymentRef")
     public void setClusterDeploymentRef(LocalObjectReference clusterDeploymentRef) {
         this.clusterDeploymentRef = clusterDeploymentRef;
     }
 
+    /**
+     * ClusterDeploymentCustomizationStatus defines the observed state of ClusterDeploymentCustomization.
+     */
     @JsonProperty("clusterPoolRef")
     public LocalObjectReference getClusterPoolRef() {
         return clusterPoolRef;
     }
 
+    /**
+     * ClusterDeploymentCustomizationStatus defines the observed state of ClusterDeploymentCustomization.
+     */
     @JsonProperty("clusterPoolRef")
     public void setClusterPoolRef(LocalObjectReference clusterPoolRef) {
         this.clusterPoolRef = clusterPoolRef;
     }
 
+    /**
+     * Conditions describes the state of the operator's reconciliation functionality.
+     */
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Condition> getConditions() {
         return conditions;
     }
 
+    /**
+     * Conditions describes the state of the operator's reconciliation functionality.
+     */
     @JsonProperty("conditions")
     public void setConditions(List<Condition> conditions) {
         this.conditions = conditions;
     }
 
+    /**
+     * LastAppliedConfiguration contains the last applied patches to the install-config. The information will retain for reference in case the customization is updated.
+     */
     @JsonProperty("lastAppliedConfiguration")
     public String getLastAppliedConfiguration() {
         return lastAppliedConfiguration;
     }
 
+    /**
+     * LastAppliedConfiguration contains the last applied patches to the install-config. The information will retain for reference in case the customization is updated.
+     */
     @JsonProperty("lastAppliedConfiguration")
     public void setLastAppliedConfiguration(String lastAppliedConfiguration) {
         this.lastAppliedConfiguration = lastAppliedConfiguration;

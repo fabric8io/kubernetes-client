@@ -35,6 +35,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ClusterOperatorState summarizes the status of a single cluster operator
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -86,22 +89,34 @@ public class ClusterOperatorState implements Editable<ClusterOperatorStateBuilde
         this.name = name;
     }
 
+    /**
+     * Conditions is the set of conditions in the status of the cluster operator on the target cluster
+     */
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ClusterOperatorStatusCondition> getConditions() {
         return conditions;
     }
 
+    /**
+     * Conditions is the set of conditions in the status of the cluster operator on the target cluster
+     */
     @JsonProperty("conditions")
     public void setConditions(List<ClusterOperatorStatusCondition> conditions) {
         this.conditions = conditions;
     }
 
+    /**
+     * Name is the name of the cluster operator
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * Name is the name of the cluster operator
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;

@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * CELInterceptor provides a webhook to intercept and pre-process events
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -85,22 +88,34 @@ public class CELInterceptor implements Editable<CELInterceptorBuilder>, Kubernet
         this.overlays = overlays;
     }
 
+    /**
+     * CELInterceptor provides a webhook to intercept and pre-process events
+     */
     @JsonProperty("filter")
     public String getFilter() {
         return filter;
     }
 
+    /**
+     * CELInterceptor provides a webhook to intercept and pre-process events
+     */
     @JsonProperty("filter")
     public void setFilter(String filter) {
         this.filter = filter;
     }
 
+    /**
+     * CELInterceptor provides a webhook to intercept and pre-process events
+     */
     @JsonProperty("overlays")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<CELOverlay> getOverlays() {
         return overlays;
     }
 
+    /**
+     * CELInterceptor provides a webhook to intercept and pre-process events
+     */
     @JsonProperty("overlays")
     public void setOverlays(List<CELOverlay> overlays) {
         this.overlays = overlays;

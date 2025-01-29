@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * NutanixPlatformSpec holds the desired state of the Nutanix infrastructure provider. This only includes fields that can be modified in the cluster.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -90,33 +93,51 @@ public class NutanixPlatformSpec implements Editable<NutanixPlatformSpecBuilder>
         this.prismElements = prismElements;
     }
 
+    /**
+     * failureDomains configures failure domains information for the Nutanix platform. When set, the failure domains defined here may be used to spread Machines across prism element clusters to improve fault tolerance of the cluster.
+     */
     @JsonProperty("failureDomains")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<NutanixFailureDomain> getFailureDomains() {
         return failureDomains;
     }
 
+    /**
+     * failureDomains configures failure domains information for the Nutanix platform. When set, the failure domains defined here may be used to spread Machines across prism element clusters to improve fault tolerance of the cluster.
+     */
     @JsonProperty("failureDomains")
     public void setFailureDomains(List<NutanixFailureDomain> failureDomains) {
         this.failureDomains = failureDomains;
     }
 
+    /**
+     * NutanixPlatformSpec holds the desired state of the Nutanix infrastructure provider. This only includes fields that can be modified in the cluster.
+     */
     @JsonProperty("prismCentral")
     public NutanixPrismEndpoint getPrismCentral() {
         return prismCentral;
     }
 
+    /**
+     * NutanixPlatformSpec holds the desired state of the Nutanix infrastructure provider. This only includes fields that can be modified in the cluster.
+     */
     @JsonProperty("prismCentral")
     public void setPrismCentral(NutanixPrismEndpoint prismCentral) {
         this.prismCentral = prismCentral;
     }
 
+    /**
+     * prismElements holds one or more endpoint address and port data to access the Nutanix Prism Elements (clusters) of the Nutanix Prism Central. Currently we only support one Prism Element (cluster) for an OpenShift cluster, where all the Nutanix resources (VMs, subnets, volumes, etc.) used in the OpenShift cluster are located. In the future, we may support Nutanix resources (VMs, etc.) spread over multiple Prism Elements (clusters) of the Prism Central.
+     */
     @JsonProperty("prismElements")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<NutanixPrismElementEndpoint> getPrismElements() {
         return prismElements;
     }
 
+    /**
+     * prismElements holds one or more endpoint address and port data to access the Nutanix Prism Elements (clusters) of the Nutanix Prism Central. Currently we only support one Prism Element (cluster) for an OpenShift cluster, where all the Nutanix resources (VMs, subnets, volumes, etc.) used in the OpenShift cluster are located. In the future, we may support Nutanix resources (VMs, etc.) spread over multiple Prism Elements (clusters) of the Prism Central.
+     */
     @JsonProperty("prismElements")
     public void setPrismElements(List<NutanixPrismElementEndpoint> prismElements) {
         this.prismElements = prismElements;

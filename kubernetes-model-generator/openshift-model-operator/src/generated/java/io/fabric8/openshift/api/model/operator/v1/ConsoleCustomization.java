@@ -35,6 +35,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ConsoleCustomization defines a list of optional configuration for the console UI.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -119,103 +122,163 @@ public class ConsoleCustomization implements Editable<ConsoleCustomizationBuilde
         this.quickStarts = quickStarts;
     }
 
+    /**
+     * ConsoleCustomization defines a list of optional configuration for the console UI.
+     */
     @JsonProperty("addPage")
     public AddPage getAddPage() {
         return addPage;
     }
 
+    /**
+     * ConsoleCustomization defines a list of optional configuration for the console UI.
+     */
     @JsonProperty("addPage")
     public void setAddPage(AddPage addPage) {
         this.addPage = addPage;
     }
 
+    /**
+     * brand is the default branding of the web console which can be overridden by providing the brand field.  There is a limited set of specific brand options. This field controls elements of the console such as the logo. Invalid value will prevent a console rollout.
+     */
     @JsonProperty("brand")
     public String getBrand() {
         return brand;
     }
 
+    /**
+     * brand is the default branding of the web console which can be overridden by providing the brand field.  There is a limited set of specific brand options. This field controls elements of the console such as the logo. Invalid value will prevent a console rollout.
+     */
     @JsonProperty("brand")
     public void setBrand(String brand) {
         this.brand = brand;
     }
 
+    /**
+     * capabilities defines an array of capabilities that can be interacted with in the console UI. Each capability defines a visual state that can be interacted with the console to render in the UI. Available capabilities are LightspeedButton and GettingStartedBanner. Each of the available capabilities may appear only once in the list.
+     */
     @JsonProperty("capabilities")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Capability> getCapabilities() {
         return capabilities;
     }
 
+    /**
+     * capabilities defines an array of capabilities that can be interacted with in the console UI. Each capability defines a visual state that can be interacted with the console to render in the UI. Available capabilities are LightspeedButton and GettingStartedBanner. Each of the available capabilities may appear only once in the list.
+     */
     @JsonProperty("capabilities")
     public void setCapabilities(List<Capability> capabilities) {
         this.capabilities = capabilities;
     }
 
+    /**
+     * ConsoleCustomization defines a list of optional configuration for the console UI.
+     */
     @JsonProperty("customLogoFile")
     public ConfigMapFileReference getCustomLogoFile() {
         return customLogoFile;
     }
 
+    /**
+     * ConsoleCustomization defines a list of optional configuration for the console UI.
+     */
     @JsonProperty("customLogoFile")
     public void setCustomLogoFile(ConfigMapFileReference customLogoFile) {
         this.customLogoFile = customLogoFile;
     }
 
+    /**
+     * customProductName is the name that will be displayed in page titles, logo alt text, and the about dialog instead of the normal OpenShift product name.
+     */
     @JsonProperty("customProductName")
     public String getCustomProductName() {
         return customProductName;
     }
 
+    /**
+     * customProductName is the name that will be displayed in page titles, logo alt text, and the about dialog instead of the normal OpenShift product name.
+     */
     @JsonProperty("customProductName")
     public void setCustomProductName(String customProductName) {
         this.customProductName = customProductName;
     }
 
+    /**
+     * ConsoleCustomization defines a list of optional configuration for the console UI.
+     */
     @JsonProperty("developerCatalog")
     public DeveloperConsoleCatalogCustomization getDeveloperCatalog() {
         return developerCatalog;
     }
 
+    /**
+     * ConsoleCustomization defines a list of optional configuration for the console UI.
+     */
     @JsonProperty("developerCatalog")
     public void setDeveloperCatalog(DeveloperConsoleCatalogCustomization developerCatalog) {
         this.developerCatalog = developerCatalog;
     }
 
+    /**
+     * documentationBaseURL links to external documentation are shown in various sections of the web console.  Providing documentationBaseURL will override the default documentation URL. Invalid value will prevent a console rollout.
+     */
     @JsonProperty("documentationBaseURL")
     public String getDocumentationBaseURL() {
         return documentationBaseURL;
     }
 
+    /**
+     * documentationBaseURL links to external documentation are shown in various sections of the web console.  Providing documentationBaseURL will override the default documentation URL. Invalid value will prevent a console rollout.
+     */
     @JsonProperty("documentationBaseURL")
     public void setDocumentationBaseURL(String documentationBaseURL) {
         this.documentationBaseURL = documentationBaseURL;
     }
 
+    /**
+     * perspectives allows enabling/disabling of perspective(s) that user can see in the Perspective switcher dropdown.
+     */
     @JsonProperty("perspectives")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Perspective> getPerspectives() {
         return perspectives;
     }
 
+    /**
+     * perspectives allows enabling/disabling of perspective(s) that user can see in the Perspective switcher dropdown.
+     */
     @JsonProperty("perspectives")
     public void setPerspectives(List<Perspective> perspectives) {
         this.perspectives = perspectives;
     }
 
+    /**
+     * ConsoleCustomization defines a list of optional configuration for the console UI.
+     */
     @JsonProperty("projectAccess")
     public ProjectAccess getProjectAccess() {
         return projectAccess;
     }
 
+    /**
+     * ConsoleCustomization defines a list of optional configuration for the console UI.
+     */
     @JsonProperty("projectAccess")
     public void setProjectAccess(ProjectAccess projectAccess) {
         this.projectAccess = projectAccess;
     }
 
+    /**
+     * ConsoleCustomization defines a list of optional configuration for the console UI.
+     */
     @JsonProperty("quickStarts")
     public QuickStarts getQuickStarts() {
         return quickStarts;
     }
 
+    /**
+     * ConsoleCustomization defines a list of optional configuration for the console UI.
+     */
     @JsonProperty("quickStarts")
     public void setQuickStarts(QuickStarts quickStarts) {
         this.quickStarts = quickStarts;

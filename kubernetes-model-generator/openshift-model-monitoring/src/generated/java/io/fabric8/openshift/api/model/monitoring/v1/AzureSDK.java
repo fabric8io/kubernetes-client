@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * AzureSDK is used to store azure SDK config values.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -78,11 +81,17 @@ public class AzureSDK implements Editable<AzureSDKBuilder>, KubernetesResource
         this.tenantId = tenantId;
     }
 
+    /**
+     * `tenantId` is the tenant ID of the azure active directory application that is being used to authenticate.
+     */
     @JsonProperty("tenantId")
     public String getTenantId() {
         return tenantId;
     }
 
+    /**
+     * `tenantId` is the tenant ID of the azure active directory application that is being used to authenticate.
+     */
     @JsonProperty("tenantId")
     public void setTenantId(String tenantId) {
         this.tenantId = tenantId;

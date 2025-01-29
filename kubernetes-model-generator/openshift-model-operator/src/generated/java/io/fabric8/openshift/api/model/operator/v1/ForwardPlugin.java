@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ForwardPlugin defines a schema for configuring the CoreDNS forward plugin.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -93,42 +96,66 @@ public class ForwardPlugin implements Editable<ForwardPluginBuilder>, Kubernetes
         this.upstreams = upstreams;
     }
 
+    /**
+     * policy is used to determine the order in which upstream servers are selected for querying. Any one of the following values may be specified:<br><p> <br><p> &#42; "Random" picks a random upstream server for each query. &#42; "RoundRobin" picks upstream servers in a round-robin order, moving to the next server for each new query. &#42; "Sequential" tries querying upstream servers in a sequential order until one responds, starting with the first server for each new query.<br><p> <br><p> The default value is "Random"
+     */
     @JsonProperty("policy")
     public String getPolicy() {
         return policy;
     }
 
+    /**
+     * policy is used to determine the order in which upstream servers are selected for querying. Any one of the following values may be specified:<br><p> <br><p> &#42; "Random" picks a random upstream server for each query. &#42; "RoundRobin" picks upstream servers in a round-robin order, moving to the next server for each new query. &#42; "Sequential" tries querying upstream servers in a sequential order until one responds, starting with the first server for each new query.<br><p> <br><p> The default value is "Random"
+     */
     @JsonProperty("policy")
     public void setPolicy(String policy) {
         this.policy = policy;
     }
 
+    /**
+     * protocolStrategy specifies the protocol to use for upstream DNS requests. Valid values for protocolStrategy are "TCP" and omitted. When omitted, this means no opinion and the platform is left to choose a reasonable default, which is subject to change over time. The current default is to use the protocol of the original client request. "TCP" specifies that the platform should use TCP for all upstream DNS requests, even if the client request uses UDP. "TCP" is useful for UDP-specific issues such as those created by non-compliant upstream resolvers, but may consume more bandwidth or increase DNS response time. Note that protocolStrategy only affects the protocol of DNS requests that CoreDNS makes to upstream resolvers. It does not affect the protocol of DNS requests between clients and CoreDNS.
+     */
     @JsonProperty("protocolStrategy")
     public String getProtocolStrategy() {
         return protocolStrategy;
     }
 
+    /**
+     * protocolStrategy specifies the protocol to use for upstream DNS requests. Valid values for protocolStrategy are "TCP" and omitted. When omitted, this means no opinion and the platform is left to choose a reasonable default, which is subject to change over time. The current default is to use the protocol of the original client request. "TCP" specifies that the platform should use TCP for all upstream DNS requests, even if the client request uses UDP. "TCP" is useful for UDP-specific issues such as those created by non-compliant upstream resolvers, but may consume more bandwidth or increase DNS response time. Note that protocolStrategy only affects the protocol of DNS requests that CoreDNS makes to upstream resolvers. It does not affect the protocol of DNS requests between clients and CoreDNS.
+     */
     @JsonProperty("protocolStrategy")
     public void setProtocolStrategy(String protocolStrategy) {
         this.protocolStrategy = protocolStrategy;
     }
 
+    /**
+     * ForwardPlugin defines a schema for configuring the CoreDNS forward plugin.
+     */
     @JsonProperty("transportConfig")
     public DNSTransportConfig getTransportConfig() {
         return transportConfig;
     }
 
+    /**
+     * ForwardPlugin defines a schema for configuring the CoreDNS forward plugin.
+     */
     @JsonProperty("transportConfig")
     public void setTransportConfig(DNSTransportConfig transportConfig) {
         this.transportConfig = transportConfig;
     }
 
+    /**
+     * upstreams is a list of resolvers to forward name queries for subdomains of Zones. Each instance of CoreDNS performs health checking of Upstreams. When a healthy upstream returns an error during the exchange, another resolver is tried from Upstreams. The Upstreams are selected in the order specified in Policy. Each upstream is represented by an IP address or IP:port if the upstream listens on a port other than 53.<br><p> <br><p> A maximum of 15 upstreams is allowed per ForwardPlugin.
+     */
     @JsonProperty("upstreams")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getUpstreams() {
         return upstreams;
     }
 
+    /**
+     * upstreams is a list of resolvers to forward name queries for subdomains of Zones. Each instance of CoreDNS performs health checking of Upstreams. When a healthy upstream returns an error during the exchange, another resolver is tried from Upstreams. The Upstreams are selected in the order specified in Policy. Each upstream is represented by an IP address or IP:port if the upstream listens on a port other than 53.<br><p> <br><p> A maximum of 15 upstreams is allowed per ForwardPlugin.
+     */
     @JsonProperty("upstreams")
     public void setUpstreams(List<String> upstreams) {
         this.upstreams = upstreams;

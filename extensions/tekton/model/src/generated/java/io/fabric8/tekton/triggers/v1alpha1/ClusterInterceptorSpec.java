@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ClusterInterceptorSpec describes the Spec for an ClusterInterceptor
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -78,11 +81,17 @@ public class ClusterInterceptorSpec implements Editable<ClusterInterceptorSpecBu
         this.clientConfig = clientConfig;
     }
 
+    /**
+     * ClusterInterceptorSpec describes the Spec for an ClusterInterceptor
+     */
     @JsonProperty("clientConfig")
     public ClientConfig getClientConfig() {
         return clientConfig;
     }
 
+    /**
+     * ClusterInterceptorSpec describes the Spec for an ClusterInterceptor
+     */
     @JsonProperty("clientConfig")
     public void setClientConfig(ClientConfig clientConfig) {
         this.clientConfig = clientConfig;

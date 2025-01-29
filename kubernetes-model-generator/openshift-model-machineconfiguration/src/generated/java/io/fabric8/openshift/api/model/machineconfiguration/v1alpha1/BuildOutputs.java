@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * BuildOutputs holds all information needed to handle booting the image after a build
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -78,11 +81,17 @@ public class BuildOutputs implements Editable<BuildOutputsBuilder>, KubernetesRe
         this.currentImagePullSecret = currentImagePullSecret;
     }
 
+    /**
+     * BuildOutputs holds all information needed to handle booting the image after a build
+     */
     @JsonProperty("currentImagePullSecret")
     public ImageSecretObjectReference getCurrentImagePullSecret() {
         return currentImagePullSecret;
     }
 
+    /**
+     * BuildOutputs holds all information needed to handle booting the image after a build
+     */
     @JsonProperty("currentImagePullSecret")
     public void setCurrentImagePullSecret(ImageSecretObjectReference currentImagePullSecret) {
         this.currentImagePullSecret = currentImagePullSecret;

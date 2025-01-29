@@ -36,6 +36,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Platform stores any global configuration used for vsphere platforms.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -167,216 +170,342 @@ public class Platform implements Editable<PlatformBuilder>, KubernetesResource
         this.vcenters = vcenters;
     }
 
+    /**
+     * DeprecatedAPIVIP is the virtual IP address for the api endpoint Deprecated: Use APIVIPs
+     */
     @JsonProperty("apiVIP")
     public String getApiVIP() {
         return apiVIP;
     }
 
+    /**
+     * DeprecatedAPIVIP is the virtual IP address for the api endpoint Deprecated: Use APIVIPs
+     */
     @JsonProperty("apiVIP")
     public void setApiVIP(String apiVIP) {
         this.apiVIP = apiVIP;
     }
 
+    /**
+     * APIVIPs contains the VIP(s) for the api endpoint. In dual stack clusters it contains an IPv4 and IPv6 address, otherwise only one VIP
+     */
     @JsonProperty("apiVIPs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getApiVIPs() {
         return apiVIPs;
     }
 
+    /**
+     * APIVIPs contains the VIP(s) for the api endpoint. In dual stack clusters it contains an IPv4 and IPv6 address, otherwise only one VIP
+     */
     @JsonProperty("apiVIPs")
     public void setApiVIPs(List<String> apiVIPs) {
         this.apiVIPs = apiVIPs;
     }
 
+    /**
+     * Cluster is the name of the cluster virtual machines will be cloned into. Deprecated: Use FailureDomains.Topology.Cluster
+     */
     @JsonProperty("cluster")
     public String getCluster() {
         return cluster;
     }
 
+    /**
+     * Cluster is the name of the cluster virtual machines will be cloned into. Deprecated: Use FailureDomains.Topology.Cluster
+     */
     @JsonProperty("cluster")
     public void setCluster(String cluster) {
         this.cluster = cluster;
     }
 
+    /**
+     * ClusterOSImage overrides the url provided in rhcos.json to download the RHCOS OVA
+     */
     @JsonProperty("clusterOSImage")
     public String getClusterOSImage() {
         return clusterOSImage;
     }
 
+    /**
+     * ClusterOSImage overrides the url provided in rhcos.json to download the RHCOS OVA
+     */
     @JsonProperty("clusterOSImage")
     public void setClusterOSImage(String clusterOSImage) {
         this.clusterOSImage = clusterOSImage;
     }
 
+    /**
+     * Datacenter is the name of the datacenter to use in the vCenter. Deprecated: Use FailureDomains.Topology.Datacenter
+     */
     @JsonProperty("datacenter")
     public String getDatacenter() {
         return datacenter;
     }
 
+    /**
+     * Datacenter is the name of the datacenter to use in the vCenter. Deprecated: Use FailureDomains.Topology.Datacenter
+     */
     @JsonProperty("datacenter")
     public void setDatacenter(String datacenter) {
         this.datacenter = datacenter;
     }
 
+    /**
+     * DefaultDatastore is the default datastore to use for provisioning volumes. Deprecated: Use FailureDomains.Topology.Datastore
+     */
     @JsonProperty("defaultDatastore")
     public String getDefaultDatastore() {
         return defaultDatastore;
     }
 
+    /**
+     * DefaultDatastore is the default datastore to use for provisioning volumes. Deprecated: Use FailureDomains.Topology.Datastore
+     */
     @JsonProperty("defaultDatastore")
     public void setDefaultDatastore(String defaultDatastore) {
         this.defaultDatastore = defaultDatastore;
     }
 
+    /**
+     * Platform stores any global configuration used for vsphere platforms.
+     */
     @JsonProperty("defaultMachinePlatform")
     public MachinePool getDefaultMachinePlatform() {
         return defaultMachinePlatform;
     }
 
+    /**
+     * Platform stores any global configuration used for vsphere platforms.
+     */
     @JsonProperty("defaultMachinePlatform")
     public void setDefaultMachinePlatform(MachinePool defaultMachinePlatform) {
         this.defaultMachinePlatform = defaultMachinePlatform;
     }
 
+    /**
+     * DiskType is the name of the disk provisioning type, valid values are thin, thick, and eagerZeroedThick. When not specified, it will be set according to the default storage policy of vsphere.
+     */
     @JsonProperty("diskType")
     public String getDiskType() {
         return diskType;
     }
 
+    /**
+     * DiskType is the name of the disk provisioning type, valid values are thin, thick, and eagerZeroedThick. When not specified, it will be set according to the default storage policy of vsphere.
+     */
     @JsonProperty("diskType")
     public void setDiskType(String diskType) {
         this.diskType = diskType;
     }
 
+    /**
+     * FailureDomains holds the VSpherePlatformFailureDomainSpec which contains the definition of region, zone and the vCenter topology. If this is omitted failure domains (regions and zones) will not be used.
+     */
     @JsonProperty("failureDomains")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<FailureDomain> getFailureDomains() {
         return failureDomains;
     }
 
+    /**
+     * FailureDomains holds the VSpherePlatformFailureDomainSpec which contains the definition of region, zone and the vCenter topology. If this is omitted failure domains (regions and zones) will not be used.
+     */
     @JsonProperty("failureDomains")
     public void setFailureDomains(List<FailureDomain> failureDomains) {
         this.failureDomains = failureDomains;
     }
 
+    /**
+     * Folder is the absolute path of the folder that will be used and/or created for virtual machines. The absolute path is of the form /&lt;datacenter&gt;/vm/&lt;folder&gt;/&lt;subfolder&gt;. Deprecated: Use FailureDomains.Topology.Folder
+     */
     @JsonProperty("folder")
     public String getFolder() {
         return folder;
     }
 
+    /**
+     * Folder is the absolute path of the folder that will be used and/or created for virtual machines. The absolute path is of the form /&lt;datacenter&gt;/vm/&lt;folder&gt;/&lt;subfolder&gt;. Deprecated: Use FailureDomains.Topology.Folder
+     */
     @JsonProperty("folder")
     public void setFolder(String folder) {
         this.folder = folder;
     }
 
+    /**
+     * Hosts defines network configurations to be applied by the installer. Hosts is available in TechPreview.
+     */
     @JsonProperty("hosts")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Host> getHosts() {
         return hosts;
     }
 
+    /**
+     * Hosts defines network configurations to be applied by the installer. Hosts is available in TechPreview.
+     */
     @JsonProperty("hosts")
     public void setHosts(List<Host> hosts) {
         this.hosts = hosts;
     }
 
+    /**
+     * DeprecatedIngressVIP is the virtual IP address for ingress Deprecated: Use IngressVIPs
+     */
     @JsonProperty("ingressVIP")
     public String getIngressVIP() {
         return ingressVIP;
     }
 
+    /**
+     * DeprecatedIngressVIP is the virtual IP address for ingress Deprecated: Use IngressVIPs
+     */
     @JsonProperty("ingressVIP")
     public void setIngressVIP(String ingressVIP) {
         this.ingressVIP = ingressVIP;
     }
 
+    /**
+     * IngressVIPs contains the VIP(s) for ingress. In dual stack clusters it contains an IPv4 and IPv6 address, otherwise only one VIP
+     */
     @JsonProperty("ingressVIPs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getIngressVIPs() {
         return ingressVIPs;
     }
 
+    /**
+     * IngressVIPs contains the VIP(s) for ingress. In dual stack clusters it contains an IPv4 and IPv6 address, otherwise only one VIP
+     */
     @JsonProperty("ingressVIPs")
     public void setIngressVIPs(List<String> ingressVIPs) {
         this.ingressVIPs = ingressVIPs;
     }
 
+    /**
+     * Platform stores any global configuration used for vsphere platforms.
+     */
     @JsonProperty("loadBalancer")
     public VSpherePlatformLoadBalancer getLoadBalancer() {
         return loadBalancer;
     }
 
+    /**
+     * Platform stores any global configuration used for vsphere platforms.
+     */
     @JsonProperty("loadBalancer")
     public void setLoadBalancer(VSpherePlatformLoadBalancer loadBalancer) {
         this.loadBalancer = loadBalancer;
     }
 
+    /**
+     * Network specifies the name of the network to be used by the cluster. Deprecated: Use FailureDomains.Topology.Network
+     */
     @JsonProperty("network")
     public String getNetwork() {
         return network;
     }
 
+    /**
+     * Network specifies the name of the network to be used by the cluster. Deprecated: Use FailureDomains.Topology.Network
+     */
     @JsonProperty("network")
     public void setNetwork(String network) {
         this.network = network;
     }
 
+    /**
+     * Platform stores any global configuration used for vsphere platforms.
+     */
     @JsonProperty("nodeNetworking")
     public VSpherePlatformNodeNetworking getNodeNetworking() {
         return nodeNetworking;
     }
 
+    /**
+     * Platform stores any global configuration used for vsphere platforms.
+     */
     @JsonProperty("nodeNetworking")
     public void setNodeNetworking(VSpherePlatformNodeNetworking nodeNetworking) {
         this.nodeNetworking = nodeNetworking;
     }
 
+    /**
+     * Password is the password for the user to use to connect to the vCenter. Deprecated: Use VCenters.Password
+     */
     @JsonProperty("password")
     public String getPassword() {
         return password;
     }
 
+    /**
+     * Password is the password for the user to use to connect to the vCenter. Deprecated: Use VCenters.Password
+     */
     @JsonProperty("password")
     public void setPassword(String password) {
         this.password = password;
     }
 
+    /**
+     * ResourcePool is the absolute path of the resource pool where virtual machines will be created. The absolute path is of the form /&lt;datacenter&gt;/host/&lt;cluster&gt;/Resources/&lt;resourcepool&gt;. Deprecated: Use FailureDomains.Topology.ResourcePool
+     */
     @JsonProperty("resourcePool")
     public String getResourcePool() {
         return resourcePool;
     }
 
+    /**
+     * ResourcePool is the absolute path of the resource pool where virtual machines will be created. The absolute path is of the form /&lt;datacenter&gt;/host/&lt;cluster&gt;/Resources/&lt;resourcepool&gt;. Deprecated: Use FailureDomains.Topology.ResourcePool
+     */
     @JsonProperty("resourcePool")
     public void setResourcePool(String resourcePool) {
         this.resourcePool = resourcePool;
     }
 
+    /**
+     * Username is the name of the user to use to connect to the vCenter. Deprecated: Use VCenters.Username
+     */
     @JsonProperty("username")
     public String getUsername() {
         return username;
     }
 
+    /**
+     * Username is the name of the user to use to connect to the vCenter. Deprecated: Use VCenters.Username
+     */
     @JsonProperty("username")
     public void setUsername(String username) {
         this.username = username;
     }
 
+    /**
+     * VCenter is the domain name or IP address of the vCenter. Deprecated: Use VCenters.Server
+     */
     @JsonProperty("vCenter")
     public String getVCenter() {
         return vCenter;
     }
 
+    /**
+     * VCenter is the domain name or IP address of the vCenter. Deprecated: Use VCenters.Server
+     */
     @JsonProperty("vCenter")
     public void setVCenter(String vCenter) {
         this.vCenter = vCenter;
     }
 
+    /**
+     * VCenters holds the connection details for services to communicate with vCenter. Currently only a single vCenter is supported.
+     */
     @JsonProperty("vcenters")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<VCenter> getVcenters() {
         return vcenters;
     }
 
+    /**
+     * VCenters holds the connection details for services to communicate with vCenter. Currently only a single vCenter is supported.
+     */
     @JsonProperty("vcenters")
     public void setVcenters(List<VCenter> vcenters) {
         this.vcenters = vcenters;

@@ -33,6 +33,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * PodSpecable is implemented by types containing a PodTemplateSpec in the manner of ReplicaSet, Deployment, DaemonSet, StatefulSet.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -83,21 +86,33 @@ public class PodSpecable implements Editable<PodSpecableBuilder>, KubernetesReso
         this.spec = spec;
     }
 
+    /**
+     * PodSpecable is implemented by types containing a PodTemplateSpec in the manner of ReplicaSet, Deployment, DaemonSet, StatefulSet.
+     */
     @JsonProperty("metadata")
     public ObjectMeta getMetadata() {
         return metadata;
     }
 
+    /**
+     * PodSpecable is implemented by types containing a PodTemplateSpec in the manner of ReplicaSet, Deployment, DaemonSet, StatefulSet.
+     */
     @JsonProperty("metadata")
     public void setMetadata(ObjectMeta metadata) {
         this.metadata = metadata;
     }
 
+    /**
+     * PodSpecable is implemented by types containing a PodTemplateSpec in the manner of ReplicaSet, Deployment, DaemonSet, StatefulSet.
+     */
     @JsonProperty("spec")
     public PodSpec getSpec() {
         return spec;
     }
 
+    /**
+     * PodSpecable is implemented by types containing a PodTemplateSpec in the manner of ReplicaSet, Deployment, DaemonSet, StatefulSet.
+     */
     @JsonProperty("spec")
     public void setSpec(PodSpec spec) {
         this.spec = spec;

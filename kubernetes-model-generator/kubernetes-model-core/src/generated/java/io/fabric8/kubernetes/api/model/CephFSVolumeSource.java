@@ -19,6 +19,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Represents a Ceph Filesystem mount that lasts the lifetime of a pod Cephfs volumes do not support ownership management or SELinux relabeling.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -72,62 +75,98 @@ public class CephFSVolumeSource implements Editable<CephFSVolumeSourceBuilder>, 
         this.user = user;
     }
 
+    /**
+     * monitors is Required: Monitors is a collection of Ceph monitors More info: https://examples.k8s.io/volumes/cephfs/README.md#how-to-use-it
+     */
     @JsonProperty("monitors")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getMonitors() {
         return monitors;
     }
 
+    /**
+     * monitors is Required: Monitors is a collection of Ceph monitors More info: https://examples.k8s.io/volumes/cephfs/README.md#how-to-use-it
+     */
     @JsonProperty("monitors")
     public void setMonitors(List<String> monitors) {
         this.monitors = monitors;
     }
 
+    /**
+     * path is Optional: Used as the mounted root, rather than the full Ceph tree, default is /
+     */
     @JsonProperty("path")
     public String getPath() {
         return path;
     }
 
+    /**
+     * path is Optional: Used as the mounted root, rather than the full Ceph tree, default is /
+     */
     @JsonProperty("path")
     public void setPath(String path) {
         this.path = path;
     }
 
+    /**
+     * readOnly is Optional: Defaults to false (read/write). ReadOnly here will force the ReadOnly setting in VolumeMounts. More info: https://examples.k8s.io/volumes/cephfs/README.md#how-to-use-it
+     */
     @JsonProperty("readOnly")
     public Boolean getReadOnly() {
         return readOnly;
     }
 
+    /**
+     * readOnly is Optional: Defaults to false (read/write). ReadOnly here will force the ReadOnly setting in VolumeMounts. More info: https://examples.k8s.io/volumes/cephfs/README.md#how-to-use-it
+     */
     @JsonProperty("readOnly")
     public void setReadOnly(Boolean readOnly) {
         this.readOnly = readOnly;
     }
 
+    /**
+     * secretFile is Optional: SecretFile is the path to key ring for User, default is /etc/ceph/user.secret More info: https://examples.k8s.io/volumes/cephfs/README.md#how-to-use-it
+     */
     @JsonProperty("secretFile")
     public String getSecretFile() {
         return secretFile;
     }
 
+    /**
+     * secretFile is Optional: SecretFile is the path to key ring for User, default is /etc/ceph/user.secret More info: https://examples.k8s.io/volumes/cephfs/README.md#how-to-use-it
+     */
     @JsonProperty("secretFile")
     public void setSecretFile(String secretFile) {
         this.secretFile = secretFile;
     }
 
+    /**
+     * Represents a Ceph Filesystem mount that lasts the lifetime of a pod Cephfs volumes do not support ownership management or SELinux relabeling.
+     */
     @JsonProperty("secretRef")
     public LocalObjectReference getSecretRef() {
         return secretRef;
     }
 
+    /**
+     * Represents a Ceph Filesystem mount that lasts the lifetime of a pod Cephfs volumes do not support ownership management or SELinux relabeling.
+     */
     @JsonProperty("secretRef")
     public void setSecretRef(LocalObjectReference secretRef) {
         this.secretRef = secretRef;
     }
 
+    /**
+     * user is optional: User is the rados user name, default is admin More info: https://examples.k8s.io/volumes/cephfs/README.md#how-to-use-it
+     */
     @JsonProperty("user")
     public String getUser() {
         return user;
     }
 
+    /**
+     * user is optional: User is the rados user name, default is admin More info: https://examples.k8s.io/volumes/cephfs/README.md#how-to-use-it
+     */
     @JsonProperty("user")
     public void setUser(String user) {
         this.user = user;

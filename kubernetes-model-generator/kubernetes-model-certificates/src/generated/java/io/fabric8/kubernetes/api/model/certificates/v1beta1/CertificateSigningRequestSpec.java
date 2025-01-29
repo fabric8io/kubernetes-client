@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * This information is immutable after the request is created. Only the Request and Usages fields can be set on creation, other fields are derived by Kubernetes and cannot be modified by users.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -107,74 +110,116 @@ public class CertificateSigningRequestSpec implements Editable<CertificateSignin
         this.username = username;
     }
 
+    /**
+     * Extra information about the requesting user. See user.Info interface for details.
+     */
     @JsonProperty("extra")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, List<String>> getExtra() {
         return extra;
     }
 
+    /**
+     * Extra information about the requesting user. See user.Info interface for details.
+     */
     @JsonProperty("extra")
     public void setExtra(Map<String, List<String>> extra) {
         this.extra = extra;
     }
 
+    /**
+     * Group information about the requesting user. See user.Info interface for details.
+     */
     @JsonProperty("groups")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getGroups() {
         return groups;
     }
 
+    /**
+     * Group information about the requesting user. See user.Info interface for details.
+     */
     @JsonProperty("groups")
     public void setGroups(List<String> groups) {
         this.groups = groups;
     }
 
+    /**
+     * Base64-encoded PKCS#10 CSR data
+     */
     @JsonProperty("request")
     public String getRequest() {
         return request;
     }
 
+    /**
+     * Base64-encoded PKCS#10 CSR data
+     */
     @JsonProperty("request")
     public void setRequest(String request) {
         this.request = request;
     }
 
+    /**
+     * Requested signer for the request. It is a qualified name in the form: `scope-hostname.io/name`. If empty, it will be defaulted:<br><p>  1. If it's a kubelet client certificate, it is assigned<br><p>     "kubernetes.io/kube-apiserver-client-kubelet".<br><p>  2. If it's a kubelet serving certificate, it is assigned<br><p>     "kubernetes.io/kubelet-serving".<br><p>  3. Otherwise, it is assigned "kubernetes.io/legacy-unknown".<br><p> Distribution of trust for signers happens out of band. You can select on this field using `spec.signerName`.
+     */
     @JsonProperty("signerName")
     public String getSignerName() {
         return signerName;
     }
 
+    /**
+     * Requested signer for the request. It is a qualified name in the form: `scope-hostname.io/name`. If empty, it will be defaulted:<br><p>  1. If it's a kubelet client certificate, it is assigned<br><p>     "kubernetes.io/kube-apiserver-client-kubelet".<br><p>  2. If it's a kubelet serving certificate, it is assigned<br><p>     "kubernetes.io/kubelet-serving".<br><p>  3. Otherwise, it is assigned "kubernetes.io/legacy-unknown".<br><p> Distribution of trust for signers happens out of band. You can select on this field using `spec.signerName`.
+     */
     @JsonProperty("signerName")
     public void setSignerName(String signerName) {
         this.signerName = signerName;
     }
 
+    /**
+     * UID information about the requesting user. See user.Info interface for details.
+     */
     @JsonProperty("uid")
     public String getUid() {
         return uid;
     }
 
+    /**
+     * UID information about the requesting user. See user.Info interface for details.
+     */
     @JsonProperty("uid")
     public void setUid(String uid) {
         this.uid = uid;
     }
 
+    /**
+     * allowedUsages specifies a set of usage contexts the key will be valid for. See: https://tools.ietf.org/html/rfc5280#section-4.2.1.3<br><p>      https://tools.ietf.org/html/rfc5280#section-4.2.1.12<br><p> Valid values are:<br><p>  "signing",<br><p>  "digital signature",<br><p>  "content commitment",<br><p>  "key encipherment",<br><p>  "key agreement",<br><p>  "data encipherment",<br><p>  "cert sign",<br><p>  "crl sign",<br><p>  "encipher only",<br><p>  "decipher only",<br><p>  "any",<br><p>  "server auth",<br><p>  "client auth",<br><p>  "code signing",<br><p>  "email protection",<br><p>  "s/mime",<br><p>  "ipsec end system",<br><p>  "ipsec tunnel",<br><p>  "ipsec user",<br><p>  "timestamping",<br><p>  "ocsp signing",<br><p>  "microsoft sgc",<br><p>  "netscape sgc"
+     */
     @JsonProperty("usages")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getUsages() {
         return usages;
     }
 
+    /**
+     * allowedUsages specifies a set of usage contexts the key will be valid for. See: https://tools.ietf.org/html/rfc5280#section-4.2.1.3<br><p>      https://tools.ietf.org/html/rfc5280#section-4.2.1.12<br><p> Valid values are:<br><p>  "signing",<br><p>  "digital signature",<br><p>  "content commitment",<br><p>  "key encipherment",<br><p>  "key agreement",<br><p>  "data encipherment",<br><p>  "cert sign",<br><p>  "crl sign",<br><p>  "encipher only",<br><p>  "decipher only",<br><p>  "any",<br><p>  "server auth",<br><p>  "client auth",<br><p>  "code signing",<br><p>  "email protection",<br><p>  "s/mime",<br><p>  "ipsec end system",<br><p>  "ipsec tunnel",<br><p>  "ipsec user",<br><p>  "timestamping",<br><p>  "ocsp signing",<br><p>  "microsoft sgc",<br><p>  "netscape sgc"
+     */
     @JsonProperty("usages")
     public void setUsages(List<String> usages) {
         this.usages = usages;
     }
 
+    /**
+     * Information about the requesting user. See user.Info interface for details.
+     */
     @JsonProperty("username")
     public String getUsername() {
         return username;
     }
 
+    /**
+     * Information about the requesting user. See user.Info interface for details.
+     */
     @JsonProperty("username")
     public void setUsername(String username) {
         this.username = username;

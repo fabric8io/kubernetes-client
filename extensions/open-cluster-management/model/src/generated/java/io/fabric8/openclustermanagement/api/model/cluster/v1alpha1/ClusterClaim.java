@@ -36,6 +36,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ClusterClaim represents cluster information that a managed cluster claims ClusterClaims with well known names include,<br><p>  1. id.k8s.io, it contains a unique identifier for the cluster.<br><p>  2. clusterset.k8s.io, it contains an identifier that relates the cluster<br><p>     to the ClusterSet in which it belongs.<br><p> <br><p> ClusterClaims created on a managed cluster will be collected and saved into the status of the corresponding ManagedCluster on hub.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -74,14 +77,8 @@ import lombok.experimental.Accessors;
 public class ClusterClaim implements Editable<ClusterClaimBuilder>, HasMetadata
 {
 
-    /**
-     * (Required)
-     */
     @JsonProperty("apiVersion")
     private String apiVersion = "cluster.open-cluster-management.io/v1alpha1";
-    /**
-     * (Required)
-     */
     @JsonProperty("kind")
     private String kind = "ClusterClaim";
     @JsonProperty("metadata")
@@ -106,7 +103,7 @@ public class ClusterClaim implements Editable<ClusterClaimBuilder>, HasMetadata
     }
 
     /**
-     * (Required)
+     * APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -114,7 +111,7 @@ public class ClusterClaim implements Editable<ClusterClaimBuilder>, HasMetadata
     }
 
     /**
-     * (Required)
+     * APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -122,7 +119,7 @@ public class ClusterClaim implements Editable<ClusterClaimBuilder>, HasMetadata
     }
 
     /**
-     * (Required)
+     * Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -130,28 +127,40 @@ public class ClusterClaim implements Editable<ClusterClaimBuilder>, HasMetadata
     }
 
     /**
-     * (Required)
+     * Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
      */
     @JsonProperty("kind")
     public void setKind(String kind) {
         this.kind = kind;
     }
 
+    /**
+     * ClusterClaim represents cluster information that a managed cluster claims ClusterClaims with well known names include,<br><p>  1. id.k8s.io, it contains a unique identifier for the cluster.<br><p>  2. clusterset.k8s.io, it contains an identifier that relates the cluster<br><p>     to the ClusterSet in which it belongs.<br><p> <br><p> ClusterClaims created on a managed cluster will be collected and saved into the status of the corresponding ManagedCluster on hub.
+     */
     @JsonProperty("metadata")
     public ObjectMeta getMetadata() {
         return metadata;
     }
 
+    /**
+     * ClusterClaim represents cluster information that a managed cluster claims ClusterClaims with well known names include,<br><p>  1. id.k8s.io, it contains a unique identifier for the cluster.<br><p>  2. clusterset.k8s.io, it contains an identifier that relates the cluster<br><p>     to the ClusterSet in which it belongs.<br><p> <br><p> ClusterClaims created on a managed cluster will be collected and saved into the status of the corresponding ManagedCluster on hub.
+     */
     @JsonProperty("metadata")
     public void setMetadata(ObjectMeta metadata) {
         this.metadata = metadata;
     }
 
+    /**
+     * ClusterClaim represents cluster information that a managed cluster claims ClusterClaims with well known names include,<br><p>  1. id.k8s.io, it contains a unique identifier for the cluster.<br><p>  2. clusterset.k8s.io, it contains an identifier that relates the cluster<br><p>     to the ClusterSet in which it belongs.<br><p> <br><p> ClusterClaims created on a managed cluster will be collected and saved into the status of the corresponding ManagedCluster on hub.
+     */
     @JsonProperty("spec")
     public ClusterClaimSpec getSpec() {
         return spec;
     }
 
+    /**
+     * ClusterClaim represents cluster information that a managed cluster claims ClusterClaims with well known names include,<br><p>  1. id.k8s.io, it contains a unique identifier for the cluster.<br><p>  2. clusterset.k8s.io, it contains an identifier that relates the cluster<br><p>     to the ClusterSet in which it belongs.<br><p> <br><p> ClusterClaims created on a managed cluster will be collected and saved into the status of the corresponding ManagedCluster on hub.
+     */
     @JsonProperty("spec")
     public void setSpec(ClusterClaimSpec spec) {
         this.spec = spec;

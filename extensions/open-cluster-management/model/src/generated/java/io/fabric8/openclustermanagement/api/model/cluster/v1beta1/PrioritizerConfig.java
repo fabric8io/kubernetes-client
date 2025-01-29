@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * PrioritizerConfig represents the configuration of prioritizer
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class PrioritizerConfig implements Editable<PrioritizerConfigBuilder>, Ku
         this.weight = weight;
     }
 
+    /**
+     * PrioritizerConfig represents the configuration of prioritizer
+     */
     @JsonProperty("scoreCoordinate")
     public ScoreCoordinate getScoreCoordinate() {
         return scoreCoordinate;
     }
 
+    /**
+     * PrioritizerConfig represents the configuration of prioritizer
+     */
     @JsonProperty("scoreCoordinate")
     public void setScoreCoordinate(ScoreCoordinate scoreCoordinate) {
         this.scoreCoordinate = scoreCoordinate;
     }
 
+    /**
+     * Weight defines the weight of the prioritizer score. The value must be ranged in [-10,10]. Each prioritizer will calculate an integer score of a cluster in the range of [-100, 100]. The final score of a cluster will be sum(weight &#42; prioritizer_score). A higher weight indicates that the prioritizer weights more in the cluster selection, while 0 weight indicates that the prioritizer is disabled. A negative weight indicates wants to select the last ones.
+     */
     @JsonProperty("weight")
     public Integer getWeight() {
         return weight;
     }
 
+    /**
+     * Weight defines the weight of the prioritizer score. The value must be ranged in [-10,10]. Each prioritizer will calculate an integer score of a cluster in the range of [-100, 100]. The final score of a cluster will be sum(weight &#42; prioritizer_score). A higher weight indicates that the prioritizer weights more in the cluster selection, while 0 weight indicates that the prioritizer is disabled. A negative weight indicates wants to select the last ones.
+     */
     @JsonProperty("weight")
     public void setWeight(Integer weight) {
         this.weight = weight;

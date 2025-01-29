@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * NonResourcePolicyRule is a predicate that matches non-resource requests according to their verb and the target non-resource URL. A NonResourcePolicyRule matches a request if and only if both (a) at least one member of verbs matches the request and (b) at least one member of nonResourceURLs matches the request.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -86,23 +89,35 @@ public class NonResourcePolicyRule implements Editable<NonResourcePolicyRuleBuil
         this.verbs = verbs;
     }
 
+    /**
+     * `nonResourceURLs` is a set of url prefixes that a user should have access to and may not be empty. For example:<br><p>   - "/healthz" is legal<br><p>   - "/hea&#42;" is illegal<br><p>   - "/hea" is legal but matches nothing<br><p>   - "/hea/&#42;" also matches nothing<br><p>   - "/healthz/&#42;" matches all per-component health checks.<br><p> "&#42;" matches all non-resource urls. if it is present, it must be the only entry. Required.
+     */
     @JsonProperty("nonResourceURLs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getNonResourceURLs() {
         return nonResourceURLs;
     }
 
+    /**
+     * `nonResourceURLs` is a set of url prefixes that a user should have access to and may not be empty. For example:<br><p>   - "/healthz" is legal<br><p>   - "/hea&#42;" is illegal<br><p>   - "/hea" is legal but matches nothing<br><p>   - "/hea/&#42;" also matches nothing<br><p>   - "/healthz/&#42;" matches all per-component health checks.<br><p> "&#42;" matches all non-resource urls. if it is present, it must be the only entry. Required.
+     */
     @JsonProperty("nonResourceURLs")
     public void setNonResourceURLs(List<String> nonResourceURLs) {
         this.nonResourceURLs = nonResourceURLs;
     }
 
+    /**
+     * `verbs` is a list of matching verbs and may not be empty. "&#42;" matches all verbs. If it is present, it must be the only entry. Required.
+     */
     @JsonProperty("verbs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getVerbs() {
         return verbs;
     }
 
+    /**
+     * `verbs` is a list of matching verbs and may not be empty. "&#42;" matches all verbs. If it is present, it must be the only entry. Required.
+     */
     @JsonProperty("verbs")
     public void setVerbs(List<String> verbs) {
         this.verbs = verbs;

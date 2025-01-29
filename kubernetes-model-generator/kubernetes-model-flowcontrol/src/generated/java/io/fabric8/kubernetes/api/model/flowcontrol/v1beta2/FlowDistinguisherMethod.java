@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * FlowDistinguisherMethod specifies the method of a flow distinguisher.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -78,11 +81,17 @@ public class FlowDistinguisherMethod implements Editable<FlowDistinguisherMethod
         this.type = type;
     }
 
+    /**
+     * `type` is the type of flow distinguisher method The supported types are "ByUser" and "ByNamespace". Required.
+     */
     @JsonProperty("type")
     public String getType() {
         return type;
     }
 
+    /**
+     * `type` is the type of flow distinguisher method The supported types are "ByUser" and "ByNamespace". Required.
+     */
     @JsonProperty("type")
     public void setType(String type) {
         this.type = type;

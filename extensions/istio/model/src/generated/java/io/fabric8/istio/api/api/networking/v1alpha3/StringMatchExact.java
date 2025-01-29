@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * exact string match
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -78,11 +81,17 @@ public class StringMatchExact implements IsStringMatchMatchType, Editable<String
         this.exact = exact;
     }
 
+    /**
+     * exact string match
+     */
     @JsonProperty("exact")
     public String getExact() {
         return exact;
     }
 
+    /**
+     * exact string match
+     */
     @JsonProperty("exact")
     public void setExact(String exact) {
         this.exact = exact;

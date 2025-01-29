@@ -17,6 +17,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * GRPCAction specifies an action involving a GRPC service.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -53,21 +56,33 @@ public class GRPCAction implements Editable<GRPCActionBuilder>, KubernetesResour
         this.service = service;
     }
 
+    /**
+     * Port number of the gRPC service. Number must be in the range 1 to 65535.
+     */
     @JsonProperty("port")
     public Integer getPort() {
         return port;
     }
 
+    /**
+     * Port number of the gRPC service. Number must be in the range 1 to 65535.
+     */
     @JsonProperty("port")
     public void setPort(Integer port) {
         this.port = port;
     }
 
+    /**
+     * Service is the name of the service to place in the gRPC HealthCheckRequest (see https://github.com/grpc/grpc/blob/master/doc/health-checking.md).<br><p> <br><p> If this is not specified, the default behavior is defined by gRPC.
+     */
     @JsonProperty("service")
     public String getService() {
         return service;
     }
 
+    /**
+     * Service is the name of the service to place in the gRPC HealthCheckRequest (see https://github.com/grpc/grpc/blob/master/doc/health-checking.md).<br><p> <br><p> If this is not specified, the default behavior is defined by gRPC.
+     */
     @JsonProperty("service")
     public void setService(String service) {
         this.service = service;

@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * StaticPodOperatorStatus is status for controllers that manage static pods.  There are different needs because individual node status must be tracked. DEPRECATED: Use v1.StaticPodOperatorStatus instead
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -110,83 +113,131 @@ public class StaticPodOperatorStatus implements Editable<StaticPodOperatorStatus
         this.taskSummary = taskSummary;
     }
 
+    /**
+     * conditions is a list of conditions and their status
+     */
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<OperatorCondition> getConditions() {
         return conditions;
     }
 
+    /**
+     * conditions is a list of conditions and their status
+     */
     @JsonProperty("conditions")
     public void setConditions(List<OperatorCondition> conditions) {
         this.conditions = conditions;
     }
 
+    /**
+     * StaticPodOperatorStatus is status for controllers that manage static pods.  There are different needs because individual node status must be tracked. DEPRECATED: Use v1.StaticPodOperatorStatus instead
+     */
     @JsonProperty("currentVersionAvailability")
     public VersionAvailability getCurrentVersionAvailability() {
         return currentVersionAvailability;
     }
 
+    /**
+     * StaticPodOperatorStatus is status for controllers that manage static pods.  There are different needs because individual node status must be tracked. DEPRECATED: Use v1.StaticPodOperatorStatus instead
+     */
     @JsonProperty("currentVersionAvailability")
     public void setCurrentVersionAvailability(VersionAvailability currentVersionAvailability) {
         this.currentVersionAvailability = currentVersionAvailability;
     }
 
+    /**
+     * latestAvailableDeploymentGeneration is the deploymentID of the most recent deployment
+     */
     @JsonProperty("latestAvailableDeploymentGeneration")
     public Integer getLatestAvailableDeploymentGeneration() {
         return latestAvailableDeploymentGeneration;
     }
 
+    /**
+     * latestAvailableDeploymentGeneration is the deploymentID of the most recent deployment
+     */
     @JsonProperty("latestAvailableDeploymentGeneration")
     public void setLatestAvailableDeploymentGeneration(Integer latestAvailableDeploymentGeneration) {
         this.latestAvailableDeploymentGeneration = latestAvailableDeploymentGeneration;
     }
 
+    /**
+     * nodeStatuses track the deployment values and errors across individual nodes
+     */
     @JsonProperty("nodeStatuses")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<NodeStatus> getNodeStatuses() {
         return nodeStatuses;
     }
 
+    /**
+     * nodeStatuses track the deployment values and errors across individual nodes
+     */
     @JsonProperty("nodeStatuses")
     public void setNodeStatuses(List<NodeStatus> nodeStatuses) {
         this.nodeStatuses = nodeStatuses;
     }
 
+    /**
+     * observedGeneration is the last generation change you've dealt with
+     */
     @JsonProperty("observedGeneration")
     public Long getObservedGeneration() {
         return observedGeneration;
     }
 
+    /**
+     * observedGeneration is the last generation change you've dealt with
+     */
     @JsonProperty("observedGeneration")
     public void setObservedGeneration(Long observedGeneration) {
         this.observedGeneration = observedGeneration;
     }
 
+    /**
+     * state indicates what the operator has observed to be its current operational status.
+     */
     @JsonProperty("state")
     public String getState() {
         return state;
     }
 
+    /**
+     * state indicates what the operator has observed to be its current operational status.
+     */
     @JsonProperty("state")
     public void setState(String state) {
         this.state = state;
     }
 
+    /**
+     * StaticPodOperatorStatus is status for controllers that manage static pods.  There are different needs because individual node status must be tracked. DEPRECATED: Use v1.StaticPodOperatorStatus instead
+     */
     @JsonProperty("targetVersionAvailability")
     public VersionAvailability getTargetVersionAvailability() {
         return targetVersionAvailability;
     }
 
+    /**
+     * StaticPodOperatorStatus is status for controllers that manage static pods.  There are different needs because individual node status must be tracked. DEPRECATED: Use v1.StaticPodOperatorStatus instead
+     */
     @JsonProperty("targetVersionAvailability")
     public void setTargetVersionAvailability(VersionAvailability targetVersionAvailability) {
         this.targetVersionAvailability = targetVersionAvailability;
     }
 
+    /**
+     * taskSummary is a high level summary of what the controller is currently attempting to do.  It is high-level, human-readable and not guaranteed in any way. (I needed this for debugging and realized it made a great summary).
+     */
     @JsonProperty("taskSummary")
     public String getTaskSummary() {
         return taskSummary;
     }
 
+    /**
+     * taskSummary is a high level summary of what the controller is currently attempting to do.  It is high-level, human-readable and not guaranteed in any way. (I needed this for debugging and realized it made a great summary).
+     */
     @JsonProperty("taskSummary")
     public void setTaskSummary(String taskSummary) {
         this.taskSummary = taskSummary;

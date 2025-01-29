@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ReplicatedDetailsPerTemplate defines the replicated policy compliance details and history.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -85,22 +88,34 @@ public class ReplicatedDetailsPerTemplate implements Editable<ReplicatedDetailsP
         this.history = history;
     }
 
+    /**
+     * ReplicatedDetailsPerTemplate defines the replicated policy compliance details and history.
+     */
     @JsonProperty("compliant")
     public String getCompliant() {
         return compliant;
     }
 
+    /**
+     * ReplicatedDetailsPerTemplate defines the replicated policy compliance details and history.
+     */
     @JsonProperty("compliant")
     public void setCompliant(String compliant) {
         this.compliant = compliant;
     }
 
+    /**
+     * ReplicatedDetailsPerTemplate defines the replicated policy compliance details and history.
+     */
     @JsonProperty("history")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ReplicatedComplianceHistory> getHistory() {
         return history;
     }
 
+    /**
+     * ReplicatedDetailsPerTemplate defines the replicated policy compliance details and history.
+     */
     @JsonProperty("history")
     public void setHistory(List<ReplicatedComplianceHistory> history) {
         this.history = history;

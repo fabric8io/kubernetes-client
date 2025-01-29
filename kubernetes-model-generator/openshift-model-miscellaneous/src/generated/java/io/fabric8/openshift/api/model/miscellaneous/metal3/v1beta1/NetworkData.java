@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * NetworkData represents a networkData object.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -86,31 +89,49 @@ public class NetworkData implements Editable<NetworkDataBuilder>, KubernetesReso
         this.services = services;
     }
 
+    /**
+     * NetworkData represents a networkData object.
+     */
     @JsonProperty("links")
     public NetworkDataLink getLinks() {
         return links;
     }
 
+    /**
+     * NetworkData represents a networkData object.
+     */
     @JsonProperty("links")
     public void setLinks(NetworkDataLink links) {
         this.links = links;
     }
 
+    /**
+     * NetworkData represents a networkData object.
+     */
     @JsonProperty("networks")
     public NetworkDataNetwork getNetworks() {
         return networks;
     }
 
+    /**
+     * NetworkData represents a networkData object.
+     */
     @JsonProperty("networks")
     public void setNetworks(NetworkDataNetwork networks) {
         this.networks = networks;
     }
 
+    /**
+     * NetworkData represents a networkData object.
+     */
     @JsonProperty("services")
     public NetworkDataService getServices() {
         return services;
     }
 
+    /**
+     * NetworkData represents a networkData object.
+     */
     @JsonProperty("services")
     public void setServices(NetworkDataService services) {
         this.services = services;

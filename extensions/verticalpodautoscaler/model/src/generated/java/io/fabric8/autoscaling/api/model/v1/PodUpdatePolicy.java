@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * PodUpdatePolicy describes the rules on how changes are applied to the pods.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -89,32 +92,50 @@ public class PodUpdatePolicy implements Editable<PodUpdatePolicyBuilder>, Kubern
         this.updateMode = updateMode;
     }
 
+    /**
+     * EvictionRequirements is a list of EvictionRequirements that need to evaluate to true in order for a Pod to be evicted. If more than one EvictionRequirement is specified, all of them need to be fulfilled to allow eviction.
+     */
     @JsonProperty("evictionRequirements")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<EvictionRequirement> getEvictionRequirements() {
         return evictionRequirements;
     }
 
+    /**
+     * EvictionRequirements is a list of EvictionRequirements that need to evaluate to true in order for a Pod to be evicted. If more than one EvictionRequirement is specified, all of them need to be fulfilled to allow eviction.
+     */
     @JsonProperty("evictionRequirements")
     public void setEvictionRequirements(List<EvictionRequirement> evictionRequirements) {
         this.evictionRequirements = evictionRequirements;
     }
 
+    /**
+     * Minimal number of replicas which need to be alive for Updater to attempt pod eviction (pending other checks like PDB). Only positive values are allowed. Overrides global '--min-replicas' flag.
+     */
     @JsonProperty("minReplicas")
     public Integer getMinReplicas() {
         return minReplicas;
     }
 
+    /**
+     * Minimal number of replicas which need to be alive for Updater to attempt pod eviction (pending other checks like PDB). Only positive values are allowed. Overrides global '--min-replicas' flag.
+     */
     @JsonProperty("minReplicas")
     public void setMinReplicas(Integer minReplicas) {
         this.minReplicas = minReplicas;
     }
 
+    /**
+     * Controls when autoscaler applies changes to the pod resources. The default is 'Auto'.
+     */
     @JsonProperty("updateMode")
     public String getUpdateMode() {
         return updateMode;
     }
 
+    /**
+     * Controls when autoscaler applies changes to the pod resources. The default is 'Auto'.
+     */
     @JsonProperty("updateMode")
     public void setUpdateMode(String updateMode) {
         this.updateMode = updateMode;

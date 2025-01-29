@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Placement indicates where to create the instance in AWS
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -86,31 +89,49 @@ public class Placement implements Editable<PlacementBuilder>, KubernetesResource
         this.tenancy = tenancy;
     }
 
+    /**
+     * AvailabilityZone is the availability zone of the instance
+     */
     @JsonProperty("availabilityZone")
     public String getAvailabilityZone() {
         return availabilityZone;
     }
 
+    /**
+     * AvailabilityZone is the availability zone of the instance
+     */
     @JsonProperty("availabilityZone")
     public void setAvailabilityZone(String availabilityZone) {
         this.availabilityZone = availabilityZone;
     }
 
+    /**
+     * Region is the region to use to create the instance
+     */
     @JsonProperty("region")
     public String getRegion() {
         return region;
     }
 
+    /**
+     * Region is the region to use to create the instance
+     */
     @JsonProperty("region")
     public void setRegion(String region) {
         this.region = region;
     }
 
+    /**
+     * Tenancy indicates if instance should run on shared or single-tenant hardware. There are supported 3 options: default, dedicated and host.
+     */
     @JsonProperty("tenancy")
     public String getTenancy() {
         return tenancy;
     }
 
+    /**
+     * Tenancy indicates if instance should run on shared or single-tenant hardware. There are supported 3 options: default, dedicated and host.
+     */
     @JsonProperty("tenancy")
     public void setTenancy(String tenancy) {
         this.tenancy = tenancy;

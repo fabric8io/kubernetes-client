@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * PolicySetSpec defines the group of policies to be included in the policy set.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -85,22 +88,34 @@ public class PolicySetSpec implements Editable<PolicySetSpecBuilder>, Kubernetes
         this.policies = policies;
     }
 
+    /**
+     * Description is the description of this policy set.
+     */
     @JsonProperty("description")
     public String getDescription() {
         return description;
     }
 
+    /**
+     * Description is the description of this policy set.
+     */
     @JsonProperty("description")
     public void setDescription(String description) {
         this.description = description;
     }
 
+    /**
+     * Policies is a list of policy names that are contained within the policy set.
+     */
     @JsonProperty("policies")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getPolicies() {
         return policies;
     }
 
+    /**
+     * Policies is a list of policy names that are contained within the policy set.
+     */
     @JsonProperty("policies")
     public void setPolicies(List<String> policies) {
         this.policies = policies;

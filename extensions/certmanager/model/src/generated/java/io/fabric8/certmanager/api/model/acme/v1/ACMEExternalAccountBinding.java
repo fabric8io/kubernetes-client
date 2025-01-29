@@ -33,6 +33,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ACMEExternalAccountBinding is a reference to a CA external account of the ACME server.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -87,31 +90,49 @@ public class ACMEExternalAccountBinding implements Editable<ACMEExternalAccountB
         this.keySecretRef = keySecretRef;
     }
 
+    /**
+     * Deprecated: keyAlgorithm field exists for historical compatibility reasons and should not be used. The algorithm is now hardcoded to HS256 in golang/x/crypto/acme.
+     */
     @JsonProperty("keyAlgorithm")
     public String getKeyAlgorithm() {
         return keyAlgorithm;
     }
 
+    /**
+     * Deprecated: keyAlgorithm field exists for historical compatibility reasons and should not be used. The algorithm is now hardcoded to HS256 in golang/x/crypto/acme.
+     */
     @JsonProperty("keyAlgorithm")
     public void setKeyAlgorithm(String keyAlgorithm) {
         this.keyAlgorithm = keyAlgorithm;
     }
 
+    /**
+     * keyID is the ID of the CA key that the External Account is bound to.
+     */
     @JsonProperty("keyID")
     public String getKeyID() {
         return keyID;
     }
 
+    /**
+     * keyID is the ID of the CA key that the External Account is bound to.
+     */
     @JsonProperty("keyID")
     public void setKeyID(String keyID) {
         this.keyID = keyID;
     }
 
+    /**
+     * ACMEExternalAccountBinding is a reference to a CA external account of the ACME server.
+     */
     @JsonProperty("keySecretRef")
     public SecretKeySelector getKeySecretRef() {
         return keySecretRef;
     }
 
+    /**
+     * ACMEExternalAccountBinding is a reference to a CA external account of the ACME server.
+     */
     @JsonProperty("keySecretRef")
     public void setKeySecretRef(SecretKeySelector keySecretRef) {
         this.keySecretRef = keySecretRef;

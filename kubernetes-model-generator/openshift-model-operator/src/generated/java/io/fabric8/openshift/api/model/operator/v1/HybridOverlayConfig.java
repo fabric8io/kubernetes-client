@@ -85,22 +85,34 @@ public class HybridOverlayConfig implements Editable<HybridOverlayConfigBuilder>
         this.hybridOverlayVXLANPort = hybridOverlayVXLANPort;
     }
 
+    /**
+     * HybridClusterNetwork defines a network space given to nodes on an additional overlay network.
+     */
     @JsonProperty("hybridClusterNetwork")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ClusterNetworkEntry> getHybridClusterNetwork() {
         return hybridClusterNetwork;
     }
 
+    /**
+     * HybridClusterNetwork defines a network space given to nodes on an additional overlay network.
+     */
     @JsonProperty("hybridClusterNetwork")
     public void setHybridClusterNetwork(List<ClusterNetworkEntry> hybridClusterNetwork) {
         this.hybridClusterNetwork = hybridClusterNetwork;
     }
 
+    /**
+     * HybridOverlayVXLANPort defines the VXLAN port number to be used by the additional overlay network. Default is 4789
+     */
     @JsonProperty("hybridOverlayVXLANPort")
     public Long getHybridOverlayVXLANPort() {
         return hybridOverlayVXLANPort;
     }
 
+    /**
+     * HybridOverlayVXLANPort defines the VXLAN port number to be used by the additional overlay network. Default is 4789
+     */
     @JsonProperty("hybridOverlayVXLANPort")
     public void setHybridOverlayVXLANPort(Long hybridOverlayVXLANPort) {
         this.hybridOverlayVXLANPort = hybridOverlayVXLANPort;

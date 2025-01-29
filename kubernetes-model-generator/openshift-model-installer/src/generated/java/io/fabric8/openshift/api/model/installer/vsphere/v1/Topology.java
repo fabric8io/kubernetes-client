@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Topology holds the required and optional vCenter objects - datacenter, computeCluster, networks, datastore and resourcePool - to provision virtual machines.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -110,83 +113,131 @@ public class Topology implements Editable<TopologyBuilder>, KubernetesResource
         this.template = template;
     }
 
+    /**
+     * computeCluster as the failure domain This is required to be a path
+     */
     @JsonProperty("computeCluster")
     public String getComputeCluster() {
         return computeCluster;
     }
 
+    /**
+     * computeCluster as the failure domain This is required to be a path
+     */
     @JsonProperty("computeCluster")
     public void setComputeCluster(String computeCluster) {
         this.computeCluster = computeCluster;
     }
 
+    /**
+     * datacenter is the vCenter datacenter in which virtual machines will be located and defined as the failure domain.
+     */
     @JsonProperty("datacenter")
     public String getDatacenter() {
         return datacenter;
     }
 
+    /**
+     * datacenter is the vCenter datacenter in which virtual machines will be located and defined as the failure domain.
+     */
     @JsonProperty("datacenter")
     public void setDatacenter(String datacenter) {
         this.datacenter = datacenter;
     }
 
+    /**
+     * datastore is the name or inventory path of the datastore in which the virtual machine is created/located.
+     */
     @JsonProperty("datastore")
     public String getDatastore() {
         return datastore;
     }
 
+    /**
+     * datastore is the name or inventory path of the datastore in which the virtual machine is created/located.
+     */
     @JsonProperty("datastore")
     public void setDatastore(String datastore) {
         this.datastore = datastore;
     }
 
+    /**
+     * folder is the inventory path of the folder in which the virtual machine is created/located.
+     */
     @JsonProperty("folder")
     public String getFolder() {
         return folder;
     }
 
+    /**
+     * folder is the inventory path of the folder in which the virtual machine is created/located.
+     */
     @JsonProperty("folder")
     public void setFolder(String folder) {
         this.folder = folder;
     }
 
+    /**
+     * networks is the list of networks within this failure domain
+     */
     @JsonProperty("networks")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getNetworks() {
         return networks;
     }
 
+    /**
+     * networks is the list of networks within this failure domain
+     */
     @JsonProperty("networks")
     public void setNetworks(List<String> networks) {
         this.networks = networks;
     }
 
+    /**
+     * resourcePool is the absolute path of the resource pool where virtual machines will be created. The absolute path is of the form /&lt;datacenter&gt;/host/&lt;cluster&gt;/Resources/&lt;resourcepool&gt;.
+     */
     @JsonProperty("resourcePool")
     public String getResourcePool() {
         return resourcePool;
     }
 
+    /**
+     * resourcePool is the absolute path of the resource pool where virtual machines will be created. The absolute path is of the form /&lt;datacenter&gt;/host/&lt;cluster&gt;/Resources/&lt;resourcepool&gt;.
+     */
     @JsonProperty("resourcePool")
     public void setResourcePool(String resourcePool) {
         this.resourcePool = resourcePool;
     }
 
+    /**
+     * tagIDs is an optional set of tags to add to an instance. Specified tagIDs must use URN-notation instead of display names. A maximum of 10 tag IDs may be specified.
+     */
     @JsonProperty("tagIDs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getTagIDs() {
         return tagIDs;
     }
 
+    /**
+     * tagIDs is an optional set of tags to add to an instance. Specified tagIDs must use URN-notation instead of display names. A maximum of 10 tag IDs may be specified.
+     */
     @JsonProperty("tagIDs")
     public void setTagIDs(List<String> tagIDs) {
         this.tagIDs = tagIDs;
     }
 
+    /**
+     * template is the inventory path of the virtual machine or template that will be used for cloning.
+     */
     @JsonProperty("template")
     public String getTemplate() {
         return template;
     }
 
+    /**
+     * template is the inventory path of the virtual machine or template that will be used for cloning.
+     */
     @JsonProperty("template")
     public void setTemplate(String template) {
         this.template = template;

@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ClusterPoolStatus defines the observed state of ClusterPool
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -93,42 +96,66 @@ public class ClusterPoolStatus implements Editable<ClusterPoolStatusBuilder>, Ku
         this.standby = standby;
     }
 
+    /**
+     * Conditions includes more detailed status for the cluster pool
+     */
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ClusterPoolCondition> getConditions() {
         return conditions;
     }
 
+    /**
+     * Conditions includes more detailed status for the cluster pool
+     */
     @JsonProperty("conditions")
     public void setConditions(List<ClusterPoolCondition> conditions) {
         this.conditions = conditions;
     }
 
+    /**
+     * Ready is the number of unclaimed clusters that are installed and are running and ready to be claimed.
+     */
     @JsonProperty("ready")
     public Integer getReady() {
         return ready;
     }
 
+    /**
+     * Ready is the number of unclaimed clusters that are installed and are running and ready to be claimed.
+     */
     @JsonProperty("ready")
     public void setReady(Integer ready) {
         this.ready = ready;
     }
 
+    /**
+     * Size is the number of unclaimed clusters that have been created for the pool.
+     */
     @JsonProperty("size")
     public Integer getSize() {
         return size;
     }
 
+    /**
+     * Size is the number of unclaimed clusters that have been created for the pool.
+     */
     @JsonProperty("size")
     public void setSize(Integer size) {
         this.size = size;
     }
 
+    /**
+     * Standby is the number of unclaimed clusters that are installed, but not running.
+     */
     @JsonProperty("standby")
     public Integer getStandby() {
         return standby;
     }
 
+    /**
+     * Standby is the number of unclaimed clusters that are installed, but not running.
+     */
     @JsonProperty("standby")
     public void setStandby(Integer standby) {
         this.standby = standby;

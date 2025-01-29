@@ -35,6 +35,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * AWSDNSZoneSpec contains AWS-specific DNSZone specifications
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -94,42 +97,66 @@ public class AWSDNSZoneSpec implements Editable<AWSDNSZoneSpecBuilder>, Kubernet
         this.region = region;
     }
 
+    /**
+     * AdditionalTags is a set of additional tags to set on the DNS hosted zone. In addition to these tags,the DNS Zone controller will set a hive.openhsift.io/hostedzone tag identifying the HostedZone record that it belongs to.
+     */
     @JsonProperty("additionalTags")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<AWSResourceTag> getAdditionalTags() {
         return additionalTags;
     }
 
+    /**
+     * AdditionalTags is a set of additional tags to set on the DNS hosted zone. In addition to these tags,the DNS Zone controller will set a hive.openhsift.io/hostedzone tag identifying the HostedZone record that it belongs to.
+     */
     @JsonProperty("additionalTags")
     public void setAdditionalTags(List<AWSResourceTag> additionalTags) {
         this.additionalTags = additionalTags;
     }
 
+    /**
+     * AWSDNSZoneSpec contains AWS-specific DNSZone specifications
+     */
     @JsonProperty("credentialsAssumeRole")
     public AssumeRole getCredentialsAssumeRole() {
         return credentialsAssumeRole;
     }
 
+    /**
+     * AWSDNSZoneSpec contains AWS-specific DNSZone specifications
+     */
     @JsonProperty("credentialsAssumeRole")
     public void setCredentialsAssumeRole(AssumeRole credentialsAssumeRole) {
         this.credentialsAssumeRole = credentialsAssumeRole;
     }
 
+    /**
+     * AWSDNSZoneSpec contains AWS-specific DNSZone specifications
+     */
     @JsonProperty("credentialsSecretRef")
     public LocalObjectReference getCredentialsSecretRef() {
         return credentialsSecretRef;
     }
 
+    /**
+     * AWSDNSZoneSpec contains AWS-specific DNSZone specifications
+     */
     @JsonProperty("credentialsSecretRef")
     public void setCredentialsSecretRef(LocalObjectReference credentialsSecretRef) {
         this.credentialsSecretRef = credentialsSecretRef;
     }
 
+    /**
+     * Region is the AWS region to use for route53 operations. This defaults to us-east-1. For AWS China, use cn-northwest-1.
+     */
     @JsonProperty("region")
     public String getRegion() {
         return region;
     }
 
+    /**
+     * Region is the AWS region to use for route53 operations. This defaults to us-east-1. For AWS China, use cn-northwest-1.
+     */
     @JsonProperty("region")
     public void setRegion(String region) {
         this.region = region;

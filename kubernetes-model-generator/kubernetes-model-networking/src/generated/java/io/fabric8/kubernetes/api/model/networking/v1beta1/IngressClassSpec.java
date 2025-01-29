@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * IngressClassSpec provides information about the class of an Ingress.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class IngressClassSpec implements Editable<IngressClassSpecBuilder>, Kube
         this.parameters = parameters;
     }
 
+    /**
+     * Controller refers to the name of the controller that should handle this class. This allows for different "flavors" that are controlled by the same controller. For example, you may have different Parameters for the same implementing controller. This should be specified as a domain-prefixed path no more than 250 characters in length, e.g. "acme.io/ingress-controller". This field is immutable.
+     */
     @JsonProperty("controller")
     public String getController() {
         return controller;
     }
 
+    /**
+     * Controller refers to the name of the controller that should handle this class. This allows for different "flavors" that are controlled by the same controller. For example, you may have different Parameters for the same implementing controller. This should be specified as a domain-prefixed path no more than 250 characters in length, e.g. "acme.io/ingress-controller". This field is immutable.
+     */
     @JsonProperty("controller")
     public void setController(String controller) {
         this.controller = controller;
     }
 
+    /**
+     * IngressClassSpec provides information about the class of an Ingress.
+     */
     @JsonProperty("parameters")
     public IngressClassParametersReference getParameters() {
         return parameters;
     }
 
+    /**
+     * IngressClassSpec provides information about the class of an Ingress.
+     */
     @JsonProperty("parameters")
     public void setParameters(IngressClassParametersReference parameters) {
         this.parameters = parameters;

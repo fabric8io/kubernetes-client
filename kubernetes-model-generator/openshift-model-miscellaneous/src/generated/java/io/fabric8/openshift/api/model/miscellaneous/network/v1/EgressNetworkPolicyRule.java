@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * EgressNetworkPolicyRule contains a single egress network policy rule
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class EgressNetworkPolicyRule implements Editable<EgressNetworkPolicyRule
         this.type = type;
     }
 
+    /**
+     * EgressNetworkPolicyRule contains a single egress network policy rule
+     */
     @JsonProperty("to")
     public EgressNetworkPolicyPeer getTo() {
         return to;
     }
 
+    /**
+     * EgressNetworkPolicyRule contains a single egress network policy rule
+     */
     @JsonProperty("to")
     public void setTo(EgressNetworkPolicyPeer to) {
         this.to = to;
     }
 
+    /**
+     * type marks this as an "Allow" or "Deny" rule
+     */
     @JsonProperty("type")
     public String getType() {
         return type;
     }
 
+    /**
+     * type marks this as an "Allow" or "Deny" rule
+     */
     @JsonProperty("type")
     public void setType(String type) {
         this.type = type;

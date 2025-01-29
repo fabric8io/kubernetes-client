@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * PrometheusRuleSpec contains specification parameters for a Rule.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -81,12 +84,18 @@ public class PrometheusRuleSpec implements Editable<PrometheusRuleSpecBuilder>, 
         this.groups = groups;
     }
 
+    /**
+     * Content of Prometheus rule file
+     */
     @JsonProperty("groups")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<RuleGroup> getGroups() {
         return groups;
     }
 
+    /**
+     * Content of Prometheus rule file
+     */
     @JsonProperty("groups")
     public void setGroups(List<RuleGroup> groups) {
         this.groups = groups;

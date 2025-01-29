@@ -92,11 +92,17 @@ public class ServiceAccountIssuerStatus implements Editable<ServiceAccountIssuer
         this.expirationTime = expirationTime;
     }
 
+    /**
+     * name is the name of the service account issuer
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * name is the name of the service account issuer
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;

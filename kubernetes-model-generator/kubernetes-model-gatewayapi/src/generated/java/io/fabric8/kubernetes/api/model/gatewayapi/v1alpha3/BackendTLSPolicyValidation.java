@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * BackendTLSPolicyValidation contains backend TLS validation configuration.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -94,43 +97,67 @@ public class BackendTLSPolicyValidation implements Editable<BackendTLSPolicyVali
         this.wellKnownCACertificates = wellKnownCACertificates;
     }
 
+    /**
+     * CACertificateRefs contains one or more references to Kubernetes objects that contain a PEM-encoded TLS CA certificate bundle, which is used to validate a TLS handshake between the Gateway and backend Pod.<br><p> <br><p> If CACertificateRefs is empty or unspecified, then WellKnownCACertificates must be specified. Only one of CACertificateRefs or WellKnownCACertificates may be specified, not both. If CACertifcateRefs is empty or unspecified, the configuration for WellKnownCACertificates MUST be honored instead if supported by the implementation.<br><p> <br><p> References to a resource in a different namespace are invalid for the moment, although we will revisit this in the future.<br><p> <br><p> A single CACertificateRef to a Kubernetes ConfigMap kind has "Core" support. Implementations MAY choose to support attaching multiple certificates to a backend, but this behavior is implementation-specific.<br><p> <br><p> Support: Core - An optional single reference to a Kubernetes ConfigMap, with the CA certificate in a key named `ca.crt`.<br><p> <br><p> Support: Implementation-specific (More than one reference, or other kinds of resources).
+     */
     @JsonProperty("caCertificateRefs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<LocalObjectReference> getCaCertificateRefs() {
         return caCertificateRefs;
     }
 
+    /**
+     * CACertificateRefs contains one or more references to Kubernetes objects that contain a PEM-encoded TLS CA certificate bundle, which is used to validate a TLS handshake between the Gateway and backend Pod.<br><p> <br><p> If CACertificateRefs is empty or unspecified, then WellKnownCACertificates must be specified. Only one of CACertificateRefs or WellKnownCACertificates may be specified, not both. If CACertifcateRefs is empty or unspecified, the configuration for WellKnownCACertificates MUST be honored instead if supported by the implementation.<br><p> <br><p> References to a resource in a different namespace are invalid for the moment, although we will revisit this in the future.<br><p> <br><p> A single CACertificateRef to a Kubernetes ConfigMap kind has "Core" support. Implementations MAY choose to support attaching multiple certificates to a backend, but this behavior is implementation-specific.<br><p> <br><p> Support: Core - An optional single reference to a Kubernetes ConfigMap, with the CA certificate in a key named `ca.crt`.<br><p> <br><p> Support: Implementation-specific (More than one reference, or other kinds of resources).
+     */
     @JsonProperty("caCertificateRefs")
     public void setCaCertificateRefs(List<LocalObjectReference> caCertificateRefs) {
         this.caCertificateRefs = caCertificateRefs;
     }
 
+    /**
+     * Hostname is used for two purposes in the connection between Gateways and backends:<br><p> <br><p> 1. Hostname MUST be used as the SNI to connect to the backend (RFC 6066). 2. If SubjectAltNames is not specified, Hostname MUST be used for<br><p>    authentication and MUST match the certificate served by the matching<br><p>    backend.<br><p> <br><p> Support: Core
+     */
     @JsonProperty("hostname")
     public String getHostname() {
         return hostname;
     }
 
+    /**
+     * Hostname is used for two purposes in the connection between Gateways and backends:<br><p> <br><p> 1. Hostname MUST be used as the SNI to connect to the backend (RFC 6066). 2. If SubjectAltNames is not specified, Hostname MUST be used for<br><p>    authentication and MUST match the certificate served by the matching<br><p>    backend.<br><p> <br><p> Support: Core
+     */
     @JsonProperty("hostname")
     public void setHostname(String hostname) {
         this.hostname = hostname;
     }
 
+    /**
+     * SubjectAltNames contains one or more Subject Alternative Names. When specified, the certificate served from the backend MUST have at least one Subject Alternate Name matching one of the specified SubjectAltNames.<br><p> <br><p> Support: Core
+     */
     @JsonProperty("subjectAltNames")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<SubjectAltName> getSubjectAltNames() {
         return subjectAltNames;
     }
 
+    /**
+     * SubjectAltNames contains one or more Subject Alternative Names. When specified, the certificate served from the backend MUST have at least one Subject Alternate Name matching one of the specified SubjectAltNames.<br><p> <br><p> Support: Core
+     */
     @JsonProperty("subjectAltNames")
     public void setSubjectAltNames(List<SubjectAltName> subjectAltNames) {
         this.subjectAltNames = subjectAltNames;
     }
 
+    /**
+     * WellKnownCACertificates specifies whether system CA certificates may be used in the TLS handshake between the gateway and backend pod.<br><p> <br><p> If WellKnownCACertificates is unspecified or empty (""), then CACertificateRefs must be specified with at least one entry for a valid configuration. Only one of CACertificateRefs or WellKnownCACertificates may be specified, not both. If an implementation does not support the WellKnownCACertificates field or the value supplied is not supported, the Status Conditions on the Policy MUST be updated to include an Accepted: False Condition with Reason: Invalid.<br><p> <br><p> Support: Implementation-specific
+     */
     @JsonProperty("wellKnownCACertificates")
     public String getWellKnownCACertificates() {
         return wellKnownCACertificates;
     }
 
+    /**
+     * WellKnownCACertificates specifies whether system CA certificates may be used in the TLS handshake between the gateway and backend pod.<br><p> <br><p> If WellKnownCACertificates is unspecified or empty (""), then CACertificateRefs must be specified with at least one entry for a valid configuration. Only one of CACertificateRefs or WellKnownCACertificates may be specified, not both. If an implementation does not support the WellKnownCACertificates field or the value supplied is not supported, the Status Conditions on the Policy MUST be updated to include an Accepted: False Condition with Reason: Invalid.<br><p> <br><p> Support: Implementation-specific
+     */
     @JsonProperty("wellKnownCACertificates")
     public void setWellKnownCACertificates(String wellKnownCACertificates) {
         this.wellKnownCACertificates = wellKnownCACertificates;

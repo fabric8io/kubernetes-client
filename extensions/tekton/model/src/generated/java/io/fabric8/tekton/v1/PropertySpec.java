@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * PropertySpec defines the struct for object keys
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -78,11 +81,17 @@ public class PropertySpec implements Editable<PropertySpecBuilder>, KubernetesRe
         this.type = type;
     }
 
+    /**
+     * PropertySpec defines the struct for object keys
+     */
     @JsonProperty("type")
     public String getType() {
         return type;
     }
 
+    /**
+     * PropertySpec defines the struct for object keys
+     */
     @JsonProperty("type")
     public void setType(String type) {
         this.type = type;

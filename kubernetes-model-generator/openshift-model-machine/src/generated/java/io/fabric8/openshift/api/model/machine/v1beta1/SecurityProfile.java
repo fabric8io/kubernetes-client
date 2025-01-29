@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * SecurityProfile specifies the Security profile settings for a virtual machine or virtual machine scale set.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class SecurityProfile implements Editable<SecurityProfileBuilder>, Kubern
         this.settings = settings;
     }
 
+    /**
+     * encryptionAtHost indicates whether Host Encryption should be enabled or disabled for a virtual machine or virtual machine scale set. This should be disabled when SecurityEncryptionType is set to DiskWithVMGuestState. Default is disabled.
+     */
     @JsonProperty("encryptionAtHost")
     public Boolean getEncryptionAtHost() {
         return encryptionAtHost;
     }
 
+    /**
+     * encryptionAtHost indicates whether Host Encryption should be enabled or disabled for a virtual machine or virtual machine scale set. This should be disabled when SecurityEncryptionType is set to DiskWithVMGuestState. Default is disabled.
+     */
     @JsonProperty("encryptionAtHost")
     public void setEncryptionAtHost(Boolean encryptionAtHost) {
         this.encryptionAtHost = encryptionAtHost;
     }
 
+    /**
+     * SecurityProfile specifies the Security profile settings for a virtual machine or virtual machine scale set.
+     */
     @JsonProperty("settings")
     public SecuritySettings getSettings() {
         return settings;
     }
 
+    /**
+     * SecurityProfile specifies the Security profile settings for a virtual machine or virtual machine scale set.
+     */
     @JsonProperty("settings")
     public void setSettings(SecuritySettings settings) {
         this.settings = settings;

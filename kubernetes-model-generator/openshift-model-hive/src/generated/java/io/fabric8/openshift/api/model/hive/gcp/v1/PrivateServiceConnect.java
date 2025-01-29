@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * PrivateServiceConnectAccess configures access to the cluster API using GCP Private Service Connect
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class PrivateServiceConnect implements Editable<PrivateServiceConnectBuil
         this.serviceAttachment = serviceAttachment;
     }
 
+    /**
+     * Enabled specifies if Private Service Connect is to be enabled on the cluster.
+     */
     @JsonProperty("enabled")
     public Boolean getEnabled() {
         return enabled;
     }
 
+    /**
+     * Enabled specifies if Private Service Connect is to be enabled on the cluster.
+     */
     @JsonProperty("enabled")
     public void setEnabled(Boolean enabled) {
         this.enabled = enabled;
     }
 
+    /**
+     * PrivateServiceConnectAccess configures access to the cluster API using GCP Private Service Connect
+     */
     @JsonProperty("serviceAttachment")
     public ServiceAttachment getServiceAttachment() {
         return serviceAttachment;
     }
 
+    /**
+     * PrivateServiceConnectAccess configures access to the cluster API using GCP Private Service Connect
+     */
     @JsonProperty("serviceAttachment")
     public void setServiceAttachment(ServiceAttachment serviceAttachment) {
         this.serviceAttachment = serviceAttachment;

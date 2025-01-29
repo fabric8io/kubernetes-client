@@ -17,6 +17,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Affinity is a group of affinity scheduling rules.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -57,31 +60,49 @@ public class Affinity implements Editable<AffinityBuilder>, KubernetesResource
         this.podAntiAffinity = podAntiAffinity;
     }
 
+    /**
+     * Affinity is a group of affinity scheduling rules.
+     */
     @JsonProperty("nodeAffinity")
     public NodeAffinity getNodeAffinity() {
         return nodeAffinity;
     }
 
+    /**
+     * Affinity is a group of affinity scheduling rules.
+     */
     @JsonProperty("nodeAffinity")
     public void setNodeAffinity(NodeAffinity nodeAffinity) {
         this.nodeAffinity = nodeAffinity;
     }
 
+    /**
+     * Affinity is a group of affinity scheduling rules.
+     */
     @JsonProperty("podAffinity")
     public PodAffinity getPodAffinity() {
         return podAffinity;
     }
 
+    /**
+     * Affinity is a group of affinity scheduling rules.
+     */
     @JsonProperty("podAffinity")
     public void setPodAffinity(PodAffinity podAffinity) {
         this.podAffinity = podAffinity;
     }
 
+    /**
+     * Affinity is a group of affinity scheduling rules.
+     */
     @JsonProperty("podAntiAffinity")
     public PodAntiAffinity getPodAntiAffinity() {
         return podAntiAffinity;
     }
 
+    /**
+     * Affinity is a group of affinity scheduling rules.
+     */
     @JsonProperty("podAntiAffinity")
     public void setPodAntiAffinity(PodAntiAffinity podAntiAffinity) {
         this.podAntiAffinity = podAntiAffinity;

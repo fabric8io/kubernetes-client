@@ -98,53 +98,83 @@ public class Layer2Config implements Editable<Layer2ConfigBuilder>, KubernetesRe
         this.subnets = subnets;
     }
 
+    /**
+     * IPAMLifecycle controls IP addresses management lifecycle.<br><p> <br><p> The only allowed value is Persistent. When set, OVN Kubernetes assigned IP addresses will be persisted in an `ipamclaims.k8s.cni.cncf.io` object. These IP addresses will be reused by other pods if requested. Only supported when "subnets" are set.
+     */
     @JsonProperty("ipamLifecycle")
     public String getIpamLifecycle() {
         return ipamLifecycle;
     }
 
+    /**
+     * IPAMLifecycle controls IP addresses management lifecycle.<br><p> <br><p> The only allowed value is Persistent. When set, OVN Kubernetes assigned IP addresses will be persisted in an `ipamclaims.k8s.cni.cncf.io` object. These IP addresses will be reused by other pods if requested. Only supported when "subnets" are set.
+     */
     @JsonProperty("ipamLifecycle")
     public void setIpamLifecycle(String ipamLifecycle) {
         this.ipamLifecycle = ipamLifecycle;
     }
 
+    /**
+     * JoinSubnets are used inside the OVN network topology.<br><p> <br><p> Dual-stack clusters may set 2 subnets (one for each IP family), otherwise only 1 subnet is allowed. This field is only allowed for "Primary" network. It is not recommended to set this field without explicit need and understanding of the OVN network topology. When omitted, the platform will choose a reasonable default which is subject to change over time.
+     */
     @JsonProperty("joinSubnets")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getJoinSubnets() {
         return joinSubnets;
     }
 
+    /**
+     * JoinSubnets are used inside the OVN network topology.<br><p> <br><p> Dual-stack clusters may set 2 subnets (one for each IP family), otherwise only 1 subnet is allowed. This field is only allowed for "Primary" network. It is not recommended to set this field without explicit need and understanding of the OVN network topology. When omitted, the platform will choose a reasonable default which is subject to change over time.
+     */
     @JsonProperty("joinSubnets")
     public void setJoinSubnets(List<String> joinSubnets) {
         this.joinSubnets = joinSubnets;
     }
 
+    /**
+     * MTU is the maximum transmission unit for a network. MTU is optional, if not provided, the globally configured value in OVN-Kubernetes (defaults to 1400) is used for the network.
+     */
     @JsonProperty("mtu")
     public Integer getMtu() {
         return mtu;
     }
 
+    /**
+     * MTU is the maximum transmission unit for a network. MTU is optional, if not provided, the globally configured value in OVN-Kubernetes (defaults to 1400) is used for the network.
+     */
     @JsonProperty("mtu")
     public void setMtu(Integer mtu) {
         this.mtu = mtu;
     }
 
+    /**
+     * Role describes the network role in the pod.<br><p> <br><p> Allowed value is "Secondary". Secondary network is only assigned to pods that use `k8s.v1.cni.cncf.io/networks` annotation to select given network.
+     */
     @JsonProperty("role")
     public String getRole() {
         return role;
     }
 
+    /**
+     * Role describes the network role in the pod.<br><p> <br><p> Allowed value is "Secondary". Secondary network is only assigned to pods that use `k8s.v1.cni.cncf.io/networks` annotation to select given network.
+     */
     @JsonProperty("role")
     public void setRole(String role) {
         this.role = role;
     }
 
+    /**
+     * Subnets are used for the pod network across the cluster. Dual-stack clusters may set 2 subnets (one for each IP family), otherwise only 1 subnet is allowed.<br><p> <br><p> The format should match standard CIDR notation (for example, "10.128.0.0/16"). This field may be omitted. In that case the logical switch implementing the network only provides layer 2 communication, and users must configure IP addresses for the pods. As a consequence, Port security only prevents MAC spoofing.
+     */
     @JsonProperty("subnets")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getSubnets() {
         return subnets;
     }
 
+    /**
+     * Subnets are used for the pod network across the cluster. Dual-stack clusters may set 2 subnets (one for each IP family), otherwise only 1 subnet is allowed.<br><p> <br><p> The format should match standard CIDR notation (for example, "10.128.0.0/16"). This field may be omitted. In that case the logical switch implementing the network only provides layer 2 communication, and users must configure IP addresses for the pods. As a consequence, Port security only prevents MAC spoofing.
+     */
     @JsonProperty("subnets")
     public void setSubnets(List<String> subnets) {
         this.subnets = subnets;

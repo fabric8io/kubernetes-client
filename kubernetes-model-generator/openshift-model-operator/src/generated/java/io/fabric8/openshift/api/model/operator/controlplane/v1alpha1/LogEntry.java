@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * LogEntry records events
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -94,51 +97,81 @@ public class LogEntry implements Editable<LogEntryBuilder>, KubernetesResource
         this.time = time;
     }
 
+    /**
+     * LogEntry records events
+     */
     @JsonProperty("latency")
     public String getLatency() {
         return latency;
     }
 
+    /**
+     * LogEntry records events
+     */
     @JsonProperty("latency")
     public void setLatency(String latency) {
         this.latency = latency;
     }
 
+    /**
+     * Message explaining status in a human readable format.
+     */
     @JsonProperty("message")
     public String getMessage() {
         return message;
     }
 
+    /**
+     * Message explaining status in a human readable format.
+     */
     @JsonProperty("message")
     public void setMessage(String message) {
         this.message = message;
     }
 
+    /**
+     * Reason for status in a machine readable format.
+     */
     @JsonProperty("reason")
     public String getReason() {
         return reason;
     }
 
+    /**
+     * Reason for status in a machine readable format.
+     */
     @JsonProperty("reason")
     public void setReason(String reason) {
         this.reason = reason;
     }
 
+    /**
+     * Success indicates if the log entry indicates a success or failure.
+     */
     @JsonProperty("success")
     public Boolean getSuccess() {
         return success;
     }
 
+    /**
+     * Success indicates if the log entry indicates a success or failure.
+     */
     @JsonProperty("success")
     public void setSuccess(Boolean success) {
         this.success = success;
     }
 
+    /**
+     * LogEntry records events
+     */
     @JsonProperty("time")
     public String getTime() {
         return time;
     }
 
+    /**
+     * LogEntry records events
+     */
     @JsonProperty("time")
     public void setTime(String time) {
         this.time = time;

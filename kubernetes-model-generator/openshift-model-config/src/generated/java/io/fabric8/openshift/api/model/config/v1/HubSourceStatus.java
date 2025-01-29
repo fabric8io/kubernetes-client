@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * HubSourceStatus is used to reflect the current state of applying the configuration to a default source
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class HubSourceStatus implements Editable<HubSourceStatusBuilder>, Kubern
         this.status = status;
     }
 
+    /**
+     * message provides more information regarding failures
+     */
     @JsonProperty("message")
     public String getMessage() {
         return message;
     }
 
+    /**
+     * message provides more information regarding failures
+     */
     @JsonProperty("message")
     public void setMessage(String message) {
         this.message = message;
     }
 
+    /**
+     * status indicates success or failure in applying the configuration
+     */
     @JsonProperty("status")
     public String getStatus() {
         return status;
     }
 
+    /**
+     * status indicates success or failure in applying the configuration
+     */
     @JsonProperty("status")
     public void setStatus(String status) {
         this.status = status;

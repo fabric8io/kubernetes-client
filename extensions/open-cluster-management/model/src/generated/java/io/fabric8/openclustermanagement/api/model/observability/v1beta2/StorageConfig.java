@@ -35,6 +35,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * StorageConfig is the spec of object storage.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -110,82 +113,130 @@ public class StorageConfig implements Editable<StorageConfigBuilder>, Kubernetes
         this.writeStorage = writeStorage;
     }
 
+    /**
+     * The amount of storage applied to alertmanager stateful sets,
+     */
     @JsonProperty("alertmanagerStorageSize")
     public String getAlertmanagerStorageSize() {
         return alertmanagerStorageSize;
     }
 
+    /**
+     * The amount of storage applied to alertmanager stateful sets,
+     */
     @JsonProperty("alertmanagerStorageSize")
     public void setAlertmanagerStorageSize(String alertmanagerStorageSize) {
         this.alertmanagerStorageSize = alertmanagerStorageSize;
     }
 
+    /**
+     * The amount of storage applied to thanos compact stateful sets,
+     */
     @JsonProperty("compactStorageSize")
     public String getCompactStorageSize() {
         return compactStorageSize;
     }
 
+    /**
+     * The amount of storage applied to thanos compact stateful sets,
+     */
     @JsonProperty("compactStorageSize")
     public void setCompactStorageSize(String compactStorageSize) {
         this.compactStorageSize = compactStorageSize;
     }
 
+    /**
+     * StorageConfig is the spec of object storage.
+     */
     @JsonProperty("metricObjectStorage")
     public PreConfiguredStorage getMetricObjectStorage() {
         return metricObjectStorage;
     }
 
+    /**
+     * StorageConfig is the spec of object storage.
+     */
     @JsonProperty("metricObjectStorage")
     public void setMetricObjectStorage(PreConfiguredStorage metricObjectStorage) {
         this.metricObjectStorage = metricObjectStorage;
     }
 
+    /**
+     * The amount of storage applied to thanos receive stateful sets,
+     */
     @JsonProperty("receiveStorageSize")
     public String getReceiveStorageSize() {
         return receiveStorageSize;
     }
 
+    /**
+     * The amount of storage applied to thanos receive stateful sets,
+     */
     @JsonProperty("receiveStorageSize")
     public void setReceiveStorageSize(String receiveStorageSize) {
         this.receiveStorageSize = receiveStorageSize;
     }
 
+    /**
+     * The amount of storage applied to thanos rule stateful sets,
+     */
     @JsonProperty("ruleStorageSize")
     public String getRuleStorageSize() {
         return ruleStorageSize;
     }
 
+    /**
+     * The amount of storage applied to thanos rule stateful sets,
+     */
     @JsonProperty("ruleStorageSize")
     public void setRuleStorageSize(String ruleStorageSize) {
         this.ruleStorageSize = ruleStorageSize;
     }
 
+    /**
+     * Specify the storageClass Stateful Sets. This storage class will also be used for Object Storage if MetricObjectStorage was configured for the system to create the storage.
+     */
     @JsonProperty("storageClass")
     public String getStorageClass() {
         return storageClass;
     }
 
+    /**
+     * Specify the storageClass Stateful Sets. This storage class will also be used for Object Storage if MetricObjectStorage was configured for the system to create the storage.
+     */
     @JsonProperty("storageClass")
     public void setStorageClass(String storageClass) {
         this.storageClass = storageClass;
     }
 
+    /**
+     * The amount of storage applied to thanos store stateful sets,
+     */
     @JsonProperty("storeStorageSize")
     public String getStoreStorageSize() {
         return storeStorageSize;
     }
 
+    /**
+     * The amount of storage applied to thanos store stateful sets,
+     */
     @JsonProperty("storeStorageSize")
     public void setStoreStorageSize(String storeStorageSize) {
         this.storeStorageSize = storeStorageSize;
     }
 
+    /**
+     * WriteStorage storage config secret list for metrics
+     */
     @JsonProperty("writeStorage")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<PreConfiguredStorage> getWriteStorage() {
         return writeStorage;
     }
 
+    /**
+     * WriteStorage storage config secret list for metrics
+     */
     @JsonProperty("writeStorage")
     public void setWriteStorage(List<PreConfiguredStorage> writeStorage) {
         this.writeStorage = writeStorage;

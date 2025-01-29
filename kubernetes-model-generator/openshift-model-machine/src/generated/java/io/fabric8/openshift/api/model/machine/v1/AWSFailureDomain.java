@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * AWSFailureDomain configures failure domain information for the AWS platform.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class AWSFailureDomain implements Editable<AWSFailureDomainBuilder>, Kube
         this.subnet = subnet;
     }
 
+    /**
+     * AWSFailureDomain configures failure domain information for the AWS platform.
+     */
     @JsonProperty("placement")
     public AWSFailureDomainPlacement getPlacement() {
         return placement;
     }
 
+    /**
+     * AWSFailureDomain configures failure domain information for the AWS platform.
+     */
     @JsonProperty("placement")
     public void setPlacement(AWSFailureDomainPlacement placement) {
         this.placement = placement;
     }
 
+    /**
+     * AWSFailureDomain configures failure domain information for the AWS platform.
+     */
     @JsonProperty("subnet")
     public AWSResourceReference getSubnet() {
         return subnet;
     }
 
+    /**
+     * AWSFailureDomain configures failure domain information for the AWS platform.
+     */
     @JsonProperty("subnet")
     public void setSubnet(AWSResourceReference subnet) {
         this.subnet = subnet;

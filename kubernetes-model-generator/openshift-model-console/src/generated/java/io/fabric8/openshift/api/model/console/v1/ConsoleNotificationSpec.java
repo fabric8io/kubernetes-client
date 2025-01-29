@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ConsoleNotificationSpec is the desired console notification configuration.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -94,51 +97,81 @@ public class ConsoleNotificationSpec implements Editable<ConsoleNotificationSpec
         this.text = text;
     }
 
+    /**
+     * backgroundColor is the color of the background for the notification as CSS data type color.
+     */
     @JsonProperty("backgroundColor")
     public String getBackgroundColor() {
         return backgroundColor;
     }
 
+    /**
+     * backgroundColor is the color of the background for the notification as CSS data type color.
+     */
     @JsonProperty("backgroundColor")
     public void setBackgroundColor(String backgroundColor) {
         this.backgroundColor = backgroundColor;
     }
 
+    /**
+     * color is the color of the text for the notification as CSS data type color.
+     */
     @JsonProperty("color")
     public String getColor() {
         return color;
     }
 
+    /**
+     * color is the color of the text for the notification as CSS data type color.
+     */
     @JsonProperty("color")
     public void setColor(String color) {
         this.color = color;
     }
 
+    /**
+     * ConsoleNotificationSpec is the desired console notification configuration.
+     */
     @JsonProperty("link")
     public Link getLink() {
         return link;
     }
 
+    /**
+     * ConsoleNotificationSpec is the desired console notification configuration.
+     */
     @JsonProperty("link")
     public void setLink(Link link) {
         this.link = link;
     }
 
+    /**
+     * location is the location of the notification in the console. Valid values are: "BannerTop", "BannerBottom", "BannerTopBottom".
+     */
     @JsonProperty("location")
     public String getLocation() {
         return location;
     }
 
+    /**
+     * location is the location of the notification in the console. Valid values are: "BannerTop", "BannerBottom", "BannerTopBottom".
+     */
     @JsonProperty("location")
     public void setLocation(String location) {
         this.location = location;
     }
 
+    /**
+     * text is the visible text of the notification.
+     */
     @JsonProperty("text")
     public String getText() {
         return text;
     }
 
+    /**
+     * text is the visible text of the notification.
+     */
     @JsonProperty("text")
     public void setText(String text) {
         this.text = text;

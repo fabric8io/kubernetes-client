@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * MultiClusterHubStatus defines the observed state of MultiClusterHub
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -98,53 +101,83 @@ public class MultiClusterHubStatus implements Editable<MultiClusterHubStatusBuil
         this.phase = phase;
     }
 
+    /**
+     * Components []ComponentCondition `json:"manifests,omitempty"`
+     */
     @JsonProperty("components")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, StatusCondition> getComponents() {
         return components;
     }
 
+    /**
+     * Components []ComponentCondition `json:"manifests,omitempty"`
+     */
     @JsonProperty("components")
     public void setComponents(Map<String, StatusCondition> components) {
         this.components = components;
     }
 
+    /**
+     * Conditions contains the different condition statuses for the MultiClusterHub
+     */
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<HubCondition> getConditions() {
         return conditions;
     }
 
+    /**
+     * Conditions contains the different condition statuses for the MultiClusterHub
+     */
     @JsonProperty("conditions")
     public void setConditions(List<HubCondition> conditions) {
         this.conditions = conditions;
     }
 
+    /**
+     * CurrentVersion indicates the current version
+     */
     @JsonProperty("currentVersion")
     public String getCurrentVersion() {
         return currentVersion;
     }
 
+    /**
+     * CurrentVersion indicates the current version
+     */
     @JsonProperty("currentVersion")
     public void setCurrentVersion(String currentVersion) {
         this.currentVersion = currentVersion;
     }
 
+    /**
+     * DesiredVersion indicates the desired version
+     */
     @JsonProperty("desiredVersion")
     public String getDesiredVersion() {
         return desiredVersion;
     }
 
+    /**
+     * DesiredVersion indicates the desired version
+     */
     @JsonProperty("desiredVersion")
     public void setDesiredVersion(String desiredVersion) {
         this.desiredVersion = desiredVersion;
     }
 
+    /**
+     * Represents the running phase of the MultiClusterHub
+     */
     @JsonProperty("phase")
     public String getPhase() {
         return phase;
     }
 
+    /**
+     * Represents the running phase of the MultiClusterHub
+     */
     @JsonProperty("phase")
     public void setPhase(String phase) {
         this.phase = phase;

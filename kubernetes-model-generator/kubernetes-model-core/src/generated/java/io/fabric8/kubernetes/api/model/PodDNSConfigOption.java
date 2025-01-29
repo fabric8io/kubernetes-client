@@ -17,6 +17,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * PodDNSConfigOption defines DNS resolver options of a pod.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -53,21 +56,33 @@ public class PodDNSConfigOption implements Editable<PodDNSConfigOptionBuilder>, 
         this.value = value;
     }
 
+    /**
+     * Name is this DNS resolver option's name. Required.
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * Name is this DNS resolver option's name. Required.
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * Value is this DNS resolver option's value.
+     */
     @JsonProperty("value")
     public String getValue() {
         return value;
     }
 
+    /**
+     * Value is this DNS resolver option's value.
+     */
     @JsonProperty("value")
     public void setValue(String value) {
         this.value = value;

@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * GCPKMSKeyReference gathers required fields for looking up a GCP KMS Key
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -90,41 +93,65 @@ public class GCPKMSKeyReference implements Editable<GCPKMSKeyReferenceBuilder>, 
         this.projectID = projectID;
     }
 
+    /**
+     * KeyRing is the name of the KMS Key Ring which the KMS Key belongs to.
+     */
     @JsonProperty("keyRing")
     public String getKeyRing() {
         return keyRing;
     }
 
+    /**
+     * KeyRing is the name of the KMS Key Ring which the KMS Key belongs to.
+     */
     @JsonProperty("keyRing")
     public void setKeyRing(String keyRing) {
         this.keyRing = keyRing;
     }
 
+    /**
+     * Location is the GCP location in which the Key Ring exists.
+     */
     @JsonProperty("location")
     public String getLocation() {
         return location;
     }
 
+    /**
+     * Location is the GCP location in which the Key Ring exists.
+     */
     @JsonProperty("location")
     public void setLocation(String location) {
         this.location = location;
     }
 
+    /**
+     * Name is the name of the customer managed encryption key to be used for the disk encryption.
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * Name is the name of the customer managed encryption key to be used for the disk encryption.
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * ProjectID is the ID of the Project in which the KMS Key Ring exists. Defaults to the VM ProjectID if not set.
+     */
     @JsonProperty("projectID")
     public String getProjectID() {
         return projectID;
     }
 
+    /**
+     * ProjectID is the ID of the Project in which the KMS Key Ring exists. Defaults to the VM ProjectID if not set.
+     */
     @JsonProperty("projectID")
     public void setProjectID(String projectID) {
         this.projectID = projectID;

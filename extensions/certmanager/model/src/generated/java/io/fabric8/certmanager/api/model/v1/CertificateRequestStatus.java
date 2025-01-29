@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * CertificateRequestStatus defines the observed state of CertificateRequest and resulting signed certificate.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -93,42 +96,66 @@ public class CertificateRequestStatus implements Editable<CertificateRequestStat
         this.failureTime = failureTime;
     }
 
+    /**
+     * The PEM encoded X.509 certificate of the signer, also known as the CA (Certificate Authority). This is set on a best-effort basis by different issuers. If not set, the CA is assumed to be unknown/not available.
+     */
     @JsonProperty("ca")
     public String getCa() {
         return ca;
     }
 
+    /**
+     * The PEM encoded X.509 certificate of the signer, also known as the CA (Certificate Authority). This is set on a best-effort basis by different issuers. If not set, the CA is assumed to be unknown/not available.
+     */
     @JsonProperty("ca")
     public void setCa(String ca) {
         this.ca = ca;
     }
 
+    /**
+     * The PEM encoded X.509 certificate resulting from the certificate signing request. If not set, the CertificateRequest has either not been completed or has failed. More information on failure can be found by checking the `conditions` field.
+     */
     @JsonProperty("certificate")
     public String getCertificate() {
         return certificate;
     }
 
+    /**
+     * The PEM encoded X.509 certificate resulting from the certificate signing request. If not set, the CertificateRequest has either not been completed or has failed. More information on failure can be found by checking the `conditions` field.
+     */
     @JsonProperty("certificate")
     public void setCertificate(String certificate) {
         this.certificate = certificate;
     }
 
+    /**
+     * List of status conditions to indicate the status of a CertificateRequest. Known condition types are `Ready`, `InvalidRequest`, `Approved` and `Denied`.
+     */
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<CertificateRequestCondition> getConditions() {
         return conditions;
     }
 
+    /**
+     * List of status conditions to indicate the status of a CertificateRequest. Known condition types are `Ready`, `InvalidRequest`, `Approved` and `Denied`.
+     */
     @JsonProperty("conditions")
     public void setConditions(List<CertificateRequestCondition> conditions) {
         this.conditions = conditions;
     }
 
+    /**
+     * CertificateRequestStatus defines the observed state of CertificateRequest and resulting signed certificate.
+     */
     @JsonProperty("failureTime")
     public String getFailureTime() {
         return failureTime;
     }
 
+    /**
+     * CertificateRequestStatus defines the observed state of CertificateRequest and resulting signed certificate.
+     */
     @JsonProperty("failureTime")
     public void setFailureTime(String failureTime) {
         this.failureTime = failureTime;

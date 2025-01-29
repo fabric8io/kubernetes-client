@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * CertificateDNSNameSelector selects certificates using a label selector, and can optionally select individual DNS names within those certificates. If both MatchLabels and DNSNames are empty, this selector will match all certificates and DNS names within them.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -91,34 +94,52 @@ public class CertificateDNSNameSelector implements Editable<CertificateDNSNameSe
         this.matchLabels = matchLabels;
     }
 
+    /**
+     * List of DNSNames that this solver will be used to solve. If specified and a match is found, a dnsNames selector will take precedence over a dnsZones selector. If multiple solvers match with the same dnsNames value, the solver with the most matching labels in matchLabels will be selected. If neither has more matches, the solver defined earlier in the list will be selected.
+     */
     @JsonProperty("dnsNames")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getDnsNames() {
         return dnsNames;
     }
 
+    /**
+     * List of DNSNames that this solver will be used to solve. If specified and a match is found, a dnsNames selector will take precedence over a dnsZones selector. If multiple solvers match with the same dnsNames value, the solver with the most matching labels in matchLabels will be selected. If neither has more matches, the solver defined earlier in the list will be selected.
+     */
     @JsonProperty("dnsNames")
     public void setDnsNames(List<String> dnsNames) {
         this.dnsNames = dnsNames;
     }
 
+    /**
+     * List of DNSZones that this solver will be used to solve. The most specific DNS zone match specified here will take precedence over other DNS zone matches, so a solver specifying sys.example.com will be selected over one specifying example.com for the domain www.sys.example.com. If multiple solvers match with the same dnsZones value, the solver with the most matching labels in matchLabels will be selected. If neither has more matches, the solver defined earlier in the list will be selected.
+     */
     @JsonProperty("dnsZones")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getDnsZones() {
         return dnsZones;
     }
 
+    /**
+     * List of DNSZones that this solver will be used to solve. The most specific DNS zone match specified here will take precedence over other DNS zone matches, so a solver specifying sys.example.com will be selected over one specifying example.com for the domain www.sys.example.com. If multiple solvers match with the same dnsZones value, the solver with the most matching labels in matchLabels will be selected. If neither has more matches, the solver defined earlier in the list will be selected.
+     */
     @JsonProperty("dnsZones")
     public void setDnsZones(List<String> dnsZones) {
         this.dnsZones = dnsZones;
     }
 
+    /**
+     * A label selector that is used to refine the set of certificate's that this challenge solver will apply to.
+     */
     @JsonProperty("matchLabels")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getMatchLabels() {
         return matchLabels;
     }
 
+    /**
+     * A label selector that is used to refine the set of certificate's that this challenge solver will apply to.
+     */
     @JsonProperty("matchLabels")
     public void setMatchLabels(Map<String, String> matchLabels) {
         this.matchLabels = matchLabels;

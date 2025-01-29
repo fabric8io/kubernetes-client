@@ -19,6 +19,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * NamespaceSpec describes the attributes on a Namespace.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -52,12 +55,18 @@ public class NamespaceSpec implements Editable<NamespaceSpecBuilder>, Kubernetes
         this.finalizers = finalizers;
     }
 
+    /**
+     * Finalizers is an opaque list of values that must be empty to permanently remove object from storage. More info: https://kubernetes.io/docs/tasks/administer-cluster/namespaces/
+     */
     @JsonProperty("finalizers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getFinalizers() {
         return finalizers;
     }
 
+    /**
+     * Finalizers is an opaque list of values that must be empty to permanently remove object from storage. More info: https://kubernetes.io/docs/tasks/administer-cluster/namespaces/
+     */
     @JsonProperty("finalizers")
     public void setFinalizers(List<String> finalizers) {
         this.finalizers = finalizers;

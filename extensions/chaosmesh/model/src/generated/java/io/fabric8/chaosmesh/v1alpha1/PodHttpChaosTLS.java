@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * PodHttpChaosTLS contains the tls config for HTTPChaos
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -94,51 +97,81 @@ public class PodHttpChaosTLS implements Editable<PodHttpChaosTLSBuilder>, Kubern
         this.secretNamespace = secretNamespace;
     }
 
+    /**
+     * CAName represents the data name of ca file in secret, `ca.crt` for example
+     */
     @JsonProperty("caName")
     public String getCaName() {
         return caName;
     }
 
+    /**
+     * CAName represents the data name of ca file in secret, `ca.crt` for example
+     */
     @JsonProperty("caName")
     public void setCaName(String caName) {
         this.caName = caName;
     }
 
+    /**
+     * CertName represents the data name of cert file in secret, `tls.crt` for example
+     */
     @JsonProperty("certName")
     public String getCertName() {
         return certName;
     }
 
+    /**
+     * CertName represents the data name of cert file in secret, `tls.crt` for example
+     */
     @JsonProperty("certName")
     public void setCertName(String certName) {
         this.certName = certName;
     }
 
+    /**
+     * KeyName represents the data name of key file in secret, `tls.key` for example
+     */
     @JsonProperty("keyName")
     public String getKeyName() {
         return keyName;
     }
 
+    /**
+     * KeyName represents the data name of key file in secret, `tls.key` for example
+     */
     @JsonProperty("keyName")
     public void setKeyName(String keyName) {
         this.keyName = keyName;
     }
 
+    /**
+     * SecretName represents the name of required secret resource
+     */
     @JsonProperty("secretName")
     public String getSecretName() {
         return secretName;
     }
 
+    /**
+     * SecretName represents the name of required secret resource
+     */
     @JsonProperty("secretName")
     public void setSecretName(String secretName) {
         this.secretName = secretName;
     }
 
+    /**
+     * SecretNamespace represents the namespace of required secret resource
+     */
     @JsonProperty("secretNamespace")
     public String getSecretNamespace() {
         return secretNamespace;
     }
 
+    /**
+     * SecretNamespace represents the namespace of required secret resource
+     */
     @JsonProperty("secretNamespace")
     public void setSecretNamespace(String secretNamespace) {
         this.secretNamespace = secretNamespace;

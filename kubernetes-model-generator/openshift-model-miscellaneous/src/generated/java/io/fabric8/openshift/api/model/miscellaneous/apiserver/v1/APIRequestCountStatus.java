@@ -99,12 +99,18 @@ public class APIRequestCountStatus implements Editable<APIRequestCountStatusBuil
         this.requestCount = requestCount;
     }
 
+    /**
+     * conditions contains details of the current status of this API Resource.
+     */
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Condition> getConditions() {
         return conditions;
     }
 
+    /**
+     * conditions contains details of the current status of this API Resource.
+     */
     @JsonProperty("conditions")
     public void setConditions(List<Condition> conditions) {
         this.conditions = conditions;
@@ -120,32 +126,50 @@ public class APIRequestCountStatus implements Editable<APIRequestCountStatusBuil
         this.currentHour = currentHour;
     }
 
+    /**
+     * last24h contains request history for the last 24 hours, indexed by the hour, so 12:00AM-12:59 is in index 0, 6am-6:59am is index 6, etc. The index of the current hour is updated live and then duplicated into the requestsLastHour field.
+     */
     @JsonProperty("last24h")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<PerResourceAPIRequestLog> getLast24h() {
         return last24h;
     }
 
+    /**
+     * last24h contains request history for the last 24 hours, indexed by the hour, so 12:00AM-12:59 is in index 0, 6am-6:59am is index 6, etc. The index of the current hour is updated live and then duplicated into the requestsLastHour field.
+     */
     @JsonProperty("last24h")
     public void setLast24h(List<PerResourceAPIRequestLog> last24h) {
         this.last24h = last24h;
     }
 
+    /**
+     * removedInRelease is when the API will be removed.
+     */
     @JsonProperty("removedInRelease")
     public String getRemovedInRelease() {
         return removedInRelease;
     }
 
+    /**
+     * removedInRelease is when the API will be removed.
+     */
     @JsonProperty("removedInRelease")
     public void setRemovedInRelease(String removedInRelease) {
         this.removedInRelease = removedInRelease;
     }
 
+    /**
+     * requestCount is a sum of all requestCounts across all current hours, nodes, and users.
+     */
     @JsonProperty("requestCount")
     public Long getRequestCount() {
         return requestCount;
     }
 
+    /**
+     * requestCount is a sum of all requestCounts across all current hours, nodes, and users.
+     */
     @JsonProperty("requestCount")
     public void setRequestCount(Long requestCount) {
         this.requestCount = requestCount;

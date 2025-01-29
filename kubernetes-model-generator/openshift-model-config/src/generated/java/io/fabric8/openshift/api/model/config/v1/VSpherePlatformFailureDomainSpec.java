@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * VSpherePlatformFailureDomainSpec holds the region and zone failure domain and the vCenter topology of that failure domain.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -94,51 +97,81 @@ public class VSpherePlatformFailureDomainSpec implements Editable<VSpherePlatfor
         this.zone = zone;
     }
 
+    /**
+     * name defines the arbitrary but unique name of a failure domain.
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * name defines the arbitrary but unique name of a failure domain.
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * region defines the name of a region tag that will be attached to a vCenter datacenter. The tag category in vCenter must be named openshift-region.
+     */
     @JsonProperty("region")
     public String getRegion() {
         return region;
     }
 
+    /**
+     * region defines the name of a region tag that will be attached to a vCenter datacenter. The tag category in vCenter must be named openshift-region.
+     */
     @JsonProperty("region")
     public void setRegion(String region) {
         this.region = region;
     }
 
+    /**
+     * server is the fully-qualified domain name or the IP address of the vCenter server.
+     */
     @JsonProperty("server")
     public String getServer() {
         return server;
     }
 
+    /**
+     * server is the fully-qualified domain name or the IP address of the vCenter server.
+     */
     @JsonProperty("server")
     public void setServer(String server) {
         this.server = server;
     }
 
+    /**
+     * VSpherePlatformFailureDomainSpec holds the region and zone failure domain and the vCenter topology of that failure domain.
+     */
     @JsonProperty("topology")
     public VSpherePlatformTopology getTopology() {
         return topology;
     }
 
+    /**
+     * VSpherePlatformFailureDomainSpec holds the region and zone failure domain and the vCenter topology of that failure domain.
+     */
     @JsonProperty("topology")
     public void setTopology(VSpherePlatformTopology topology) {
         this.topology = topology;
     }
 
+    /**
+     * zone defines the name of a zone tag that will be attached to a vCenter cluster. The tag category in vCenter must be named openshift-zone.
+     */
     @JsonProperty("zone")
     public String getZone() {
         return zone;
     }
 
+    /**
+     * zone defines the name of a zone tag that will be attached to a vCenter cluster. The tag category in vCenter must be named openshift-zone.
+     */
     @JsonProperty("zone")
     public void setZone(String zone) {
         this.zone = zone;

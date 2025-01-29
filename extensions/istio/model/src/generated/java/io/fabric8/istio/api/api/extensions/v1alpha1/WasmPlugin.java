@@ -41,6 +41,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * WasmPlugins provides a mechanism to extend the functionality provided by the Istio proxy through WebAssembly filters.<br><p> <br><p> &lt;!-- crd generation tags representing the server time when this object was created. It is not guaranteed to be set in happens-before order across separate operations. Clients may not set this value. It is represented in RFC3339 form and is in UTC. Populated by the system. Read-only. Null for lists. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#metadata" --&gt;<br><p> <br><p> &lt;!-- go code generation tags --&gt;
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -155,164 +158,260 @@ public class WasmPlugin implements Editable<WasmPluginBuilder>, KubernetesResour
         this.vmConfig = vmConfig;
     }
 
+    /**
+     * WasmPlugins provides a mechanism to extend the functionality provided by the Istio proxy through WebAssembly filters.<br><p> <br><p> &lt;!-- crd generation tags representing the server time when this object was created. It is not guaranteed to be set in happens-before order across separate operations. Clients may not set this value. It is represented in RFC3339 form and is in UTC. Populated by the system. Read-only. Null for lists. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#metadata" --&gt;<br><p> <br><p> &lt;!-- go code generation tags --&gt;
+     */
     @JsonProperty("failStrategy")
     public FailStrategy getFailStrategy() {
         return failStrategy;
     }
 
+    /**
+     * WasmPlugins provides a mechanism to extend the functionality provided by the Istio proxy through WebAssembly filters.<br><p> <br><p> &lt;!-- crd generation tags representing the server time when this object was created. It is not guaranteed to be set in happens-before order across separate operations. Clients may not set this value. It is represented in RFC3339 form and is in UTC. Populated by the system. Read-only. Null for lists. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#metadata" --&gt;<br><p> <br><p> &lt;!-- go code generation tags --&gt;
+     */
     @JsonProperty("failStrategy")
     public void setFailStrategy(FailStrategy failStrategy) {
         this.failStrategy = failStrategy;
     }
 
+    /**
+     * WasmPlugins provides a mechanism to extend the functionality provided by the Istio proxy through WebAssembly filters.<br><p> <br><p> &lt;!-- crd generation tags representing the server time when this object was created. It is not guaranteed to be set in happens-before order across separate operations. Clients may not set this value. It is represented in RFC3339 form and is in UTC. Populated by the system. Read-only. Null for lists. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#metadata" --&gt;<br><p> <br><p> &lt;!-- go code generation tags --&gt;
+     */
     @JsonProperty("imagePullPolicy")
     public PullPolicy getImagePullPolicy() {
         return imagePullPolicy;
     }
 
+    /**
+     * WasmPlugins provides a mechanism to extend the functionality provided by the Istio proxy through WebAssembly filters.<br><p> <br><p> &lt;!-- crd generation tags representing the server time when this object was created. It is not guaranteed to be set in happens-before order across separate operations. Clients may not set this value. It is represented in RFC3339 form and is in UTC. Populated by the system. Read-only. Null for lists. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#metadata" --&gt;<br><p> <br><p> &lt;!-- go code generation tags --&gt;
+     */
     @JsonProperty("imagePullPolicy")
     public void setImagePullPolicy(PullPolicy imagePullPolicy) {
         this.imagePullPolicy = imagePullPolicy;
     }
 
+    /**
+     * Credentials to use for OCI image pulling. Name of a Kubernetes Secret in the same namespace as the `WasmPlugin` that contains a Docker pull secret which is to be used to authenticate against the registry when pulling the image.
+     */
     @JsonProperty("imagePullSecret")
     public String getImagePullSecret() {
         return imagePullSecret;
     }
 
+    /**
+     * Credentials to use for OCI image pulling. Name of a Kubernetes Secret in the same namespace as the `WasmPlugin` that contains a Docker pull secret which is to be used to authenticate against the registry when pulling the image.
+     */
     @JsonProperty("imagePullSecret")
     public void setImagePullSecret(String imagePullSecret) {
         this.imagePullSecret = imagePullSecret;
     }
 
+    /**
+     * Specifies the criteria to determine which traffic is passed to WasmPlugin. If a traffic satisfies any of TrafficSelectors, the traffic passes the WasmPlugin.
+     */
     @JsonProperty("match")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<WasmPluginTrafficSelector> getMatch() {
         return match;
     }
 
+    /**
+     * Specifies the criteria to determine which traffic is passed to WasmPlugin. If a traffic satisfies any of TrafficSelectors, the traffic passes the WasmPlugin.
+     */
     @JsonProperty("match")
     public void setMatch(List<WasmPluginTrafficSelector> match) {
         this.match = match;
     }
 
+    /**
+     * WasmPlugins provides a mechanism to extend the functionality provided by the Istio proxy through WebAssembly filters.<br><p> <br><p> &lt;!-- crd generation tags representing the server time when this object was created. It is not guaranteed to be set in happens-before order across separate operations. Clients may not set this value. It is represented in RFC3339 form and is in UTC. Populated by the system. Read-only. Null for lists. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#metadata" --&gt;<br><p> <br><p> &lt;!-- go code generation tags --&gt;
+     */
     @JsonProperty("phase")
     public PluginPhase getPhase() {
         return phase;
     }
 
+    /**
+     * WasmPlugins provides a mechanism to extend the functionality provided by the Istio proxy through WebAssembly filters.<br><p> <br><p> &lt;!-- crd generation tags representing the server time when this object was created. It is not guaranteed to be set in happens-before order across separate operations. Clients may not set this value. It is represented in RFC3339 form and is in UTC. Populated by the system. Read-only. Null for lists. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#metadata" --&gt;<br><p> <br><p> &lt;!-- go code generation tags --&gt;
+     */
     @JsonProperty("phase")
     public void setPhase(PluginPhase phase) {
         this.phase = phase;
     }
 
+    /**
+     * WasmPlugins provides a mechanism to extend the functionality provided by the Istio proxy through WebAssembly filters.<br><p> <br><p> &lt;!-- crd generation tags representing the server time when this object was created. It is not guaranteed to be set in happens-before order across separate operations. Clients may not set this value. It is represented in RFC3339 form and is in UTC. Populated by the system. Read-only. Null for lists. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#metadata" --&gt;<br><p> <br><p> &lt;!-- go code generation tags --&gt;
+     */
     @JsonProperty("pluginConfig")
     public Object getPluginConfig() {
         return pluginConfig;
     }
 
+    /**
+     * WasmPlugins provides a mechanism to extend the functionality provided by the Istio proxy through WebAssembly filters.<br><p> <br><p> &lt;!-- crd generation tags representing the server time when this object was created. It is not guaranteed to be set in happens-before order across separate operations. Clients may not set this value. It is represented in RFC3339 form and is in UTC. Populated by the system. Read-only. Null for lists. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#metadata" --&gt;<br><p> <br><p> &lt;!-- go code generation tags --&gt;
+     */
     @JsonProperty("pluginConfig")
     @JsonDeserialize(using = io.fabric8.kubernetes.internal.KubernetesDeserializer.class)
     public void setPluginConfig(Object pluginConfig) {
         this.pluginConfig = pluginConfig;
     }
 
+    /**
+     * The plugin name to be used in the Envoy configuration (used to be called `rootID`). Some .wasm modules might require this value to select the Wasm plugin to execute.
+     */
     @JsonProperty("pluginName")
     public String getPluginName() {
         return pluginName;
     }
 
+    /**
+     * The plugin name to be used in the Envoy configuration (used to be called `rootID`). Some .wasm modules might require this value to select the Wasm plugin to execute.
+     */
     @JsonProperty("pluginName")
     public void setPluginName(String pluginName) {
         this.pluginName = pluginName;
     }
 
+    /**
+     * WasmPlugins provides a mechanism to extend the functionality provided by the Istio proxy through WebAssembly filters.<br><p> <br><p> &lt;!-- crd generation tags representing the server time when this object was created. It is not guaranteed to be set in happens-before order across separate operations. Clients may not set this value. It is represented in RFC3339 form and is in UTC. Populated by the system. Read-only. Null for lists. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#metadata" --&gt;<br><p> <br><p> &lt;!-- go code generation tags --&gt;
+     */
     @JsonProperty("priority")
     public Integer getPriority() {
         return priority;
     }
 
+    /**
+     * WasmPlugins provides a mechanism to extend the functionality provided by the Istio proxy through WebAssembly filters.<br><p> <br><p> &lt;!-- crd generation tags representing the server time when this object was created. It is not guaranteed to be set in happens-before order across separate operations. Clients may not set this value. It is represented in RFC3339 form and is in UTC. Populated by the system. Read-only. Null for lists. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#metadata" --&gt;<br><p> <br><p> &lt;!-- go code generation tags --&gt;
+     */
     @JsonProperty("priority")
     public void setPriority(Integer priority) {
         this.priority = priority;
     }
 
+    /**
+     * WasmPlugins provides a mechanism to extend the functionality provided by the Istio proxy through WebAssembly filters.<br><p> <br><p> &lt;!-- crd generation tags representing the server time when this object was created. It is not guaranteed to be set in happens-before order across separate operations. Clients may not set this value. It is represented in RFC3339 form and is in UTC. Populated by the system. Read-only. Null for lists. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#metadata" --&gt;<br><p> <br><p> &lt;!-- go code generation tags --&gt;
+     */
     @JsonProperty("selector")
     public WorkloadSelector getSelector() {
         return selector;
     }
 
+    /**
+     * WasmPlugins provides a mechanism to extend the functionality provided by the Istio proxy through WebAssembly filters.<br><p> <br><p> &lt;!-- crd generation tags representing the server time when this object was created. It is not guaranteed to be set in happens-before order across separate operations. Clients may not set this value. It is represented in RFC3339 form and is in UTC. Populated by the system. Read-only. Null for lists. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#metadata" --&gt;<br><p> <br><p> &lt;!-- go code generation tags --&gt;
+     */
     @JsonProperty("selector")
     public void setSelector(WorkloadSelector selector) {
         this.selector = selector;
     }
 
+    /**
+     * SHA256 checksum that will be used to verify Wasm module or OCI container. If the `url` field already references a SHA256 (using the `@sha256:` notation), it must match the value of this field. If an OCI image is referenced by tag and this field is set, its checksum will be verified against the contents of this field after pulling.
+     */
     @JsonProperty("sha256")
     public String getSha256() {
         return sha256;
     }
 
+    /**
+     * SHA256 checksum that will be used to verify Wasm module or OCI container. If the `url` field already references a SHA256 (using the `@sha256:` notation), it must match the value of this field. If an OCI image is referenced by tag and this field is set, its checksum will be verified against the contents of this field after pulling.
+     */
     @JsonProperty("sha256")
     public void setSha256(String sha256) {
         this.sha256 = sha256;
     }
 
+    /**
+     * WasmPlugins provides a mechanism to extend the functionality provided by the Istio proxy through WebAssembly filters.<br><p> <br><p> &lt;!-- crd generation tags representing the server time when this object was created. It is not guaranteed to be set in happens-before order across separate operations. Clients may not set this value. It is represented in RFC3339 form and is in UTC. Populated by the system. Read-only. Null for lists. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#metadata" --&gt;<br><p> <br><p> &lt;!-- go code generation tags --&gt;
+     */
     @JsonProperty("targetRef")
     public PolicyTargetReference getTargetRef() {
         return targetRef;
     }
 
+    /**
+     * WasmPlugins provides a mechanism to extend the functionality provided by the Istio proxy through WebAssembly filters.<br><p> <br><p> &lt;!-- crd generation tags representing the server time when this object was created. It is not guaranteed to be set in happens-before order across separate operations. Clients may not set this value. It is represented in RFC3339 form and is in UTC. Populated by the system. Read-only. Null for lists. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#metadata" --&gt;<br><p> <br><p> &lt;!-- go code generation tags --&gt;
+     */
     @JsonProperty("targetRef")
     public void setTargetRef(PolicyTargetReference targetRef) {
         this.targetRef = targetRef;
     }
 
+    /**
+     * Optional. The targetRefs specifies a list of resources the policy should be applied to. The targeted resources specified will determine which workloads the policy applies to.<br><p> <br><p> Currently, the following resource attachment types are supported: &#42; `kind: Gateway` with `group: gateway.networking.k8s.io` in the same namespace. &#42; `kind: Service` with `group: ""` or `group: "core"` in the same namespace. This type is only supported for waypoints.<br><p> <br><p> If not set, the policy is applied as defined by the selector. At most one of the selector and targetRefs can be set.<br><p> <br><p> NOTE: If you are using the `targetRefs` field in a multi-revision environment with Istio versions prior to 1.22, it is highly recommended that you pin the policy to a revision running 1.22+ via the `istio.io/rev` label. This is to prevent proxies connected to older control planes (that don't know about the `targetRefs` field) from misinterpreting the policy as namespace-wide during the upgrade process.<br><p> <br><p> NOTE: Waypoint proxies are required to use this field for policies to apply; `selector` policies will be ignored.
+     */
     @JsonProperty("targetRefs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<PolicyTargetReference> getTargetRefs() {
         return targetRefs;
     }
 
+    /**
+     * Optional. The targetRefs specifies a list of resources the policy should be applied to. The targeted resources specified will determine which workloads the policy applies to.<br><p> <br><p> Currently, the following resource attachment types are supported: &#42; `kind: Gateway` with `group: gateway.networking.k8s.io` in the same namespace. &#42; `kind: Service` with `group: ""` or `group: "core"` in the same namespace. This type is only supported for waypoints.<br><p> <br><p> If not set, the policy is applied as defined by the selector. At most one of the selector and targetRefs can be set.<br><p> <br><p> NOTE: If you are using the `targetRefs` field in a multi-revision environment with Istio versions prior to 1.22, it is highly recommended that you pin the policy to a revision running 1.22+ via the `istio.io/rev` label. This is to prevent proxies connected to older control planes (that don't know about the `targetRefs` field) from misinterpreting the policy as namespace-wide during the upgrade process.<br><p> <br><p> NOTE: Waypoint proxies are required to use this field for policies to apply; `selector` policies will be ignored.
+     */
     @JsonProperty("targetRefs")
     public void setTargetRefs(List<PolicyTargetReference> targetRefs) {
         this.targetRefs = targetRefs;
     }
 
+    /**
+     * WasmPlugins provides a mechanism to extend the functionality provided by the Istio proxy through WebAssembly filters.<br><p> <br><p> &lt;!-- crd generation tags representing the server time when this object was created. It is not guaranteed to be set in happens-before order across separate operations. Clients may not set this value. It is represented in RFC3339 form and is in UTC. Populated by the system. Read-only. Null for lists. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#metadata" --&gt;<br><p> <br><p> &lt;!-- go code generation tags --&gt;
+     */
     @JsonProperty("type")
     public PluginType getType() {
         return type;
     }
 
+    /**
+     * WasmPlugins provides a mechanism to extend the functionality provided by the Istio proxy through WebAssembly filters.<br><p> <br><p> &lt;!-- crd generation tags representing the server time when this object was created. It is not guaranteed to be set in happens-before order across separate operations. Clients may not set this value. It is represented in RFC3339 form and is in UTC. Populated by the system. Read-only. Null for lists. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#metadata" --&gt;<br><p> <br><p> &lt;!-- go code generation tags --&gt;
+     */
     @JsonProperty("type")
     public void setType(PluginType type) {
         this.type = type;
     }
 
+    /**
+     * URL of a Wasm module or OCI container. If no scheme is present, defaults to `oci://`, referencing an OCI image. Other valid schemes are `file://` for referencing .wasm module files present locally within the proxy container, and `http[s]://` for `.wasm` module files hosted remotely.
+     */
     @JsonProperty("url")
     public String getUrl() {
         return url;
     }
 
+    /**
+     * URL of a Wasm module or OCI container. If no scheme is present, defaults to `oci://`, referencing an OCI image. Other valid schemes are `file://` for referencing .wasm module files present locally within the proxy container, and `http[s]://` for `.wasm` module files hosted remotely.
+     */
     @JsonProperty("url")
     public void setUrl(String url) {
         this.url = url;
     }
 
+    /**
+     * $hide_from_docs Public key that will be used to verify signatures of signed OCI images or Wasm modules.<br><p> <br><p> At this moment, various ways for signing/verifying are emerging and being proposed. We can observe two major streams for signing OCI images: Cosign from Sigstore and Notary, which is used in Docker Content Trust. In case of Wasm module, multiple approaches are still in discussion.<br><p>   - https://github.com/WebAssembly/design/issues/1413<br><p>   - https://github.com/wasm-signatures/design (various signing tools are enumerated)<br><p> <br><p> In addition, for each method for signing&amp;verifying, we may need to consider to provide additional data or configuration (e.g., key rolling, KMS, root certs, ...) as well.<br><p> <br><p> To deal with this situation, we need to elaborate more generic way to describe how to sign and verify the image or wasm binary, and how to specify relevant data, including this `verification_key`.<br><p> <br><p> Therefore, this field will not be implemented until the detailed design is established. For the future use, just keep this field in proto and hide from documentation.
+     */
     @JsonProperty("verificationKey")
     public String getVerificationKey() {
         return verificationKey;
     }
 
+    /**
+     * $hide_from_docs Public key that will be used to verify signatures of signed OCI images or Wasm modules.<br><p> <br><p> At this moment, various ways for signing/verifying are emerging and being proposed. We can observe two major streams for signing OCI images: Cosign from Sigstore and Notary, which is used in Docker Content Trust. In case of Wasm module, multiple approaches are still in discussion.<br><p>   - https://github.com/WebAssembly/design/issues/1413<br><p>   - https://github.com/wasm-signatures/design (various signing tools are enumerated)<br><p> <br><p> In addition, for each method for signing&amp;verifying, we may need to consider to provide additional data or configuration (e.g., key rolling, KMS, root certs, ...) as well.<br><p> <br><p> To deal with this situation, we need to elaborate more generic way to describe how to sign and verify the image or wasm binary, and how to specify relevant data, including this `verification_key`.<br><p> <br><p> Therefore, this field will not be implemented until the detailed design is established. For the future use, just keep this field in proto and hide from documentation.
+     */
     @JsonProperty("verificationKey")
     public void setVerificationKey(String verificationKey) {
         this.verificationKey = verificationKey;
     }
 
+    /**
+     * WasmPlugins provides a mechanism to extend the functionality provided by the Istio proxy through WebAssembly filters.<br><p> <br><p> &lt;!-- crd generation tags representing the server time when this object was created. It is not guaranteed to be set in happens-before order across separate operations. Clients may not set this value. It is represented in RFC3339 form and is in UTC. Populated by the system. Read-only. Null for lists. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#metadata" --&gt;<br><p> <br><p> &lt;!-- go code generation tags --&gt;
+     */
     @JsonProperty("vmConfig")
     public VmConfig getVmConfig() {
         return vmConfig;
     }
 
+    /**
+     * WasmPlugins provides a mechanism to extend the functionality provided by the Istio proxy through WebAssembly filters.<br><p> <br><p> &lt;!-- crd generation tags representing the server time when this object was created. It is not guaranteed to be set in happens-before order across separate operations. Clients may not set this value. It is represented in RFC3339 form and is in UTC. Populated by the system. Read-only. Null for lists. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#metadata" --&gt;<br><p> <br><p> &lt;!-- go code generation tags --&gt;
+     */
     @JsonProperty("vmConfig")
     public void setVmConfig(VmConfig vmConfig) {
         this.vmConfig = vmConfig;

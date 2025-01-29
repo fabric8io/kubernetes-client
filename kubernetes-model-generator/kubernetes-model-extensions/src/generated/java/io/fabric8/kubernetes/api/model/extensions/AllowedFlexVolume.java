@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * AllowedFlexVolume represents a single Flexvolume that is allowed to be used. Deprecated: use AllowedFlexVolume from policy API Group instead.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -78,11 +81,17 @@ public class AllowedFlexVolume implements Editable<AllowedFlexVolumeBuilder>, Ku
         this.driver = driver;
     }
 
+    /**
+     * driver is the name of the Flexvolume driver.
+     */
     @JsonProperty("driver")
     public String getDriver() {
         return driver;
     }
 
+    /**
+     * driver is the name of the Flexvolume driver.
+     */
     @JsonProperty("driver")
     public void setDriver(String driver) {
         this.driver = driver;

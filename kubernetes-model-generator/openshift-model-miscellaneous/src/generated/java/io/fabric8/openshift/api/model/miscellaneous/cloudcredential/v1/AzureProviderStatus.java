@@ -37,6 +37,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * AzureProviderStatus contains the status of the credentials request in Azure.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -76,16 +79,10 @@ import lombok.experimental.Accessors;
 public class AzureProviderStatus implements Editable<AzureProviderStatusBuilder>, KubernetesResource, Namespaced
 {
 
-    /**
-     * (Required)
-     */
     @JsonProperty("apiVersion")
     private String apiVersion = "cloudcredential.openshift.io/v1";
     @JsonProperty("appID")
     private String appID;
-    /**
-     * (Required)
-     */
     @JsonProperty("kind")
     private String kind = "AzureProviderStatus";
     @JsonProperty("name")
@@ -111,7 +108,7 @@ public class AzureProviderStatus implements Editable<AzureProviderStatusBuilder>
     }
 
     /**
-     * (Required)
+     * APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -119,25 +116,31 @@ public class AzureProviderStatus implements Editable<AzureProviderStatusBuilder>
     }
 
     /**
-     * (Required)
+     * APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
         this.apiVersion = apiVersion;
     }
 
+    /**
+     * AppID is the application id of the service principal created in Azure for these credentials.
+     */
     @JsonProperty("appID")
     public String getAppID() {
         return appID;
     }
 
+    /**
+     * AppID is the application id of the service principal created in Azure for these credentials.
+     */
     @JsonProperty("appID")
     public void setAppID(String appID) {
         this.appID = appID;
     }
 
     /**
-     * (Required)
+     * Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -145,28 +148,40 @@ public class AzureProviderStatus implements Editable<AzureProviderStatusBuilder>
     }
 
     /**
-     * (Required)
+     * Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
      */
     @JsonProperty("kind")
     public void setKind(String kind) {
         this.kind = kind;
     }
 
+    /**
+     * ServicePrincipalName is the name of the service principal created in Azure for these credentials.
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * ServicePrincipalName is the name of the service principal created in Azure for these credentials.
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * SecretLastResourceVersion is the resource version of the secret resource that was last synced. Used to determine if the object has changed and requires a sync.
+     */
     @JsonProperty("secretLastResourceVersion")
     public String getSecretLastResourceVersion() {
         return secretLastResourceVersion;
     }
 
+    /**
+     * SecretLastResourceVersion is the resource version of the secret resource that was last synced. Used to determine if the object has changed and requires a sync.
+     */
     @JsonProperty("secretLastResourceVersion")
     public void setSecretLastResourceVersion(String secretLastResourceVersion) {
         this.secretLastResourceVersion = secretLastResourceVersion;

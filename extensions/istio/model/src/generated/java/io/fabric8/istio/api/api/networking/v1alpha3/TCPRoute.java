@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Describes match conditions and actions for routing TCP traffic. The following routing rule forwards traffic arriving at port 27017 for mongo.prod.svc.cluster.local to another Mongo server on port 5555.<br><p> <br><p> ```yaml apiVersion: networking.istio.io/v1 kind: VirtualService metadata:<br><p> <br><p> 	name: bookinfo-mongo<br><p> <br><p> spec:<br><p> <br><p> 	hosts:<br><p> 	- mongo.prod.svc.cluster.local<br><p> 	tcp:<br><p> 	- match:<br><p> 	  - port: 27017<br><p> 	  route:<br><p> 	  - destination:<br><p> 	      host: mongo.backup.svc.cluster.local<br><p> 	      port:<br><p> 	        number: 5555<br><p> <br><p> ```
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -86,23 +89,35 @@ public class TCPRoute implements Editable<TCPRouteBuilder>, KubernetesResource
         this.route = route;
     }
 
+    /**
+     * Match conditions to be satisfied for the rule to be activated. All conditions inside a single match block have AND semantics, while the list of match blocks have OR semantics. The rule is matched if any one of the match blocks succeed.
+     */
     @JsonProperty("match")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<L4MatchAttributes> getMatch() {
         return match;
     }
 
+    /**
+     * Match conditions to be satisfied for the rule to be activated. All conditions inside a single match block have AND semantics, while the list of match blocks have OR semantics. The rule is matched if any one of the match blocks succeed.
+     */
     @JsonProperty("match")
     public void setMatch(List<L4MatchAttributes> match) {
         this.match = match;
     }
 
+    /**
+     * The destination to which the connection should be forwarded to.
+     */
     @JsonProperty("route")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<RouteDestination> getRoute() {
         return route;
     }
 
+    /**
+     * The destination to which the connection should be forwarded to.
+     */
     @JsonProperty("route")
     public void setRoute(List<RouteDestination> route) {
         this.route = route;

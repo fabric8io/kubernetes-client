@@ -17,6 +17,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Volume represents a named volume in a pod that may be accessed by any container in the pod.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -169,311 +172,497 @@ public class Volume implements Editable<VolumeBuilder>, KubernetesResource
         this.vsphereVolume = vsphereVolume;
     }
 
+    /**
+     * Volume represents a named volume in a pod that may be accessed by any container in the pod.
+     */
     @JsonProperty("awsElasticBlockStore")
     public AWSElasticBlockStoreVolumeSource getAwsElasticBlockStore() {
         return awsElasticBlockStore;
     }
 
+    /**
+     * Volume represents a named volume in a pod that may be accessed by any container in the pod.
+     */
     @JsonProperty("awsElasticBlockStore")
     public void setAwsElasticBlockStore(AWSElasticBlockStoreVolumeSource awsElasticBlockStore) {
         this.awsElasticBlockStore = awsElasticBlockStore;
     }
 
+    /**
+     * Volume represents a named volume in a pod that may be accessed by any container in the pod.
+     */
     @JsonProperty("azureDisk")
     public AzureDiskVolumeSource getAzureDisk() {
         return azureDisk;
     }
 
+    /**
+     * Volume represents a named volume in a pod that may be accessed by any container in the pod.
+     */
     @JsonProperty("azureDisk")
     public void setAzureDisk(AzureDiskVolumeSource azureDisk) {
         this.azureDisk = azureDisk;
     }
 
+    /**
+     * Volume represents a named volume in a pod that may be accessed by any container in the pod.
+     */
     @JsonProperty("azureFile")
     public AzureFileVolumeSource getAzureFile() {
         return azureFile;
     }
 
+    /**
+     * Volume represents a named volume in a pod that may be accessed by any container in the pod.
+     */
     @JsonProperty("azureFile")
     public void setAzureFile(AzureFileVolumeSource azureFile) {
         this.azureFile = azureFile;
     }
 
+    /**
+     * Volume represents a named volume in a pod that may be accessed by any container in the pod.
+     */
     @JsonProperty("cephfs")
     public CephFSVolumeSource getCephfs() {
         return cephfs;
     }
 
+    /**
+     * Volume represents a named volume in a pod that may be accessed by any container in the pod.
+     */
     @JsonProperty("cephfs")
     public void setCephfs(CephFSVolumeSource cephfs) {
         this.cephfs = cephfs;
     }
 
+    /**
+     * Volume represents a named volume in a pod that may be accessed by any container in the pod.
+     */
     @JsonProperty("cinder")
     public CinderVolumeSource getCinder() {
         return cinder;
     }
 
+    /**
+     * Volume represents a named volume in a pod that may be accessed by any container in the pod.
+     */
     @JsonProperty("cinder")
     public void setCinder(CinderVolumeSource cinder) {
         this.cinder = cinder;
     }
 
+    /**
+     * Volume represents a named volume in a pod that may be accessed by any container in the pod.
+     */
     @JsonProperty("configMap")
     public ConfigMapVolumeSource getConfigMap() {
         return configMap;
     }
 
+    /**
+     * Volume represents a named volume in a pod that may be accessed by any container in the pod.
+     */
     @JsonProperty("configMap")
     public void setConfigMap(ConfigMapVolumeSource configMap) {
         this.configMap = configMap;
     }
 
+    /**
+     * Volume represents a named volume in a pod that may be accessed by any container in the pod.
+     */
     @JsonProperty("csi")
     public CSIVolumeSource getCsi() {
         return csi;
     }
 
+    /**
+     * Volume represents a named volume in a pod that may be accessed by any container in the pod.
+     */
     @JsonProperty("csi")
     public void setCsi(CSIVolumeSource csi) {
         this.csi = csi;
     }
 
+    /**
+     * Volume represents a named volume in a pod that may be accessed by any container in the pod.
+     */
     @JsonProperty("downwardAPI")
     public DownwardAPIVolumeSource getDownwardAPI() {
         return downwardAPI;
     }
 
+    /**
+     * Volume represents a named volume in a pod that may be accessed by any container in the pod.
+     */
     @JsonProperty("downwardAPI")
     public void setDownwardAPI(DownwardAPIVolumeSource downwardAPI) {
         this.downwardAPI = downwardAPI;
     }
 
+    /**
+     * Volume represents a named volume in a pod that may be accessed by any container in the pod.
+     */
     @JsonProperty("emptyDir")
     public EmptyDirVolumeSource getEmptyDir() {
         return emptyDir;
     }
 
+    /**
+     * Volume represents a named volume in a pod that may be accessed by any container in the pod.
+     */
     @JsonProperty("emptyDir")
     public void setEmptyDir(EmptyDirVolumeSource emptyDir) {
         this.emptyDir = emptyDir;
     }
 
+    /**
+     * Volume represents a named volume in a pod that may be accessed by any container in the pod.
+     */
     @JsonProperty("ephemeral")
     public EphemeralVolumeSource getEphemeral() {
         return ephemeral;
     }
 
+    /**
+     * Volume represents a named volume in a pod that may be accessed by any container in the pod.
+     */
     @JsonProperty("ephemeral")
     public void setEphemeral(EphemeralVolumeSource ephemeral) {
         this.ephemeral = ephemeral;
     }
 
+    /**
+     * Volume represents a named volume in a pod that may be accessed by any container in the pod.
+     */
     @JsonProperty("fc")
     public FCVolumeSource getFc() {
         return fc;
     }
 
+    /**
+     * Volume represents a named volume in a pod that may be accessed by any container in the pod.
+     */
     @JsonProperty("fc")
     public void setFc(FCVolumeSource fc) {
         this.fc = fc;
     }
 
+    /**
+     * Volume represents a named volume in a pod that may be accessed by any container in the pod.
+     */
     @JsonProperty("flexVolume")
     public FlexVolumeSource getFlexVolume() {
         return flexVolume;
     }
 
+    /**
+     * Volume represents a named volume in a pod that may be accessed by any container in the pod.
+     */
     @JsonProperty("flexVolume")
     public void setFlexVolume(FlexVolumeSource flexVolume) {
         this.flexVolume = flexVolume;
     }
 
+    /**
+     * Volume represents a named volume in a pod that may be accessed by any container in the pod.
+     */
     @JsonProperty("flocker")
     public FlockerVolumeSource getFlocker() {
         return flocker;
     }
 
+    /**
+     * Volume represents a named volume in a pod that may be accessed by any container in the pod.
+     */
     @JsonProperty("flocker")
     public void setFlocker(FlockerVolumeSource flocker) {
         this.flocker = flocker;
     }
 
+    /**
+     * Volume represents a named volume in a pod that may be accessed by any container in the pod.
+     */
     @JsonProperty("gcePersistentDisk")
     public GCEPersistentDiskVolumeSource getGcePersistentDisk() {
         return gcePersistentDisk;
     }
 
+    /**
+     * Volume represents a named volume in a pod that may be accessed by any container in the pod.
+     */
     @JsonProperty("gcePersistentDisk")
     public void setGcePersistentDisk(GCEPersistentDiskVolumeSource gcePersistentDisk) {
         this.gcePersistentDisk = gcePersistentDisk;
     }
 
+    /**
+     * Volume represents a named volume in a pod that may be accessed by any container in the pod.
+     */
     @JsonProperty("gitRepo")
     public GitRepoVolumeSource getGitRepo() {
         return gitRepo;
     }
 
+    /**
+     * Volume represents a named volume in a pod that may be accessed by any container in the pod.
+     */
     @JsonProperty("gitRepo")
     public void setGitRepo(GitRepoVolumeSource gitRepo) {
         this.gitRepo = gitRepo;
     }
 
+    /**
+     * Volume represents a named volume in a pod that may be accessed by any container in the pod.
+     */
     @JsonProperty("glusterfs")
     public GlusterfsVolumeSource getGlusterfs() {
         return glusterfs;
     }
 
+    /**
+     * Volume represents a named volume in a pod that may be accessed by any container in the pod.
+     */
     @JsonProperty("glusterfs")
     public void setGlusterfs(GlusterfsVolumeSource glusterfs) {
         this.glusterfs = glusterfs;
     }
 
+    /**
+     * Volume represents a named volume in a pod that may be accessed by any container in the pod.
+     */
     @JsonProperty("hostPath")
     public HostPathVolumeSource getHostPath() {
         return hostPath;
     }
 
+    /**
+     * Volume represents a named volume in a pod that may be accessed by any container in the pod.
+     */
     @JsonProperty("hostPath")
     public void setHostPath(HostPathVolumeSource hostPath) {
         this.hostPath = hostPath;
     }
 
+    /**
+     * Volume represents a named volume in a pod that may be accessed by any container in the pod.
+     */
     @JsonProperty("image")
     public ImageVolumeSource getImage() {
         return image;
     }
 
+    /**
+     * Volume represents a named volume in a pod that may be accessed by any container in the pod.
+     */
     @JsonProperty("image")
     public void setImage(ImageVolumeSource image) {
         this.image = image;
     }
 
+    /**
+     * Volume represents a named volume in a pod that may be accessed by any container in the pod.
+     */
     @JsonProperty("iscsi")
     public ISCSIVolumeSource getIscsi() {
         return iscsi;
     }
 
+    /**
+     * Volume represents a named volume in a pod that may be accessed by any container in the pod.
+     */
     @JsonProperty("iscsi")
     public void setIscsi(ISCSIVolumeSource iscsi) {
         this.iscsi = iscsi;
     }
 
+    /**
+     * name of the volume. Must be a DNS_LABEL and unique within the pod. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * name of the volume. Must be a DNS_LABEL and unique within the pod. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * Volume represents a named volume in a pod that may be accessed by any container in the pod.
+     */
     @JsonProperty("nfs")
     public NFSVolumeSource getNfs() {
         return nfs;
     }
 
+    /**
+     * Volume represents a named volume in a pod that may be accessed by any container in the pod.
+     */
     @JsonProperty("nfs")
     public void setNfs(NFSVolumeSource nfs) {
         this.nfs = nfs;
     }
 
+    /**
+     * Volume represents a named volume in a pod that may be accessed by any container in the pod.
+     */
     @JsonProperty("persistentVolumeClaim")
     public PersistentVolumeClaimVolumeSource getPersistentVolumeClaim() {
         return persistentVolumeClaim;
     }
 
+    /**
+     * Volume represents a named volume in a pod that may be accessed by any container in the pod.
+     */
     @JsonProperty("persistentVolumeClaim")
     public void setPersistentVolumeClaim(PersistentVolumeClaimVolumeSource persistentVolumeClaim) {
         this.persistentVolumeClaim = persistentVolumeClaim;
     }
 
+    /**
+     * Volume represents a named volume in a pod that may be accessed by any container in the pod.
+     */
     @JsonProperty("photonPersistentDisk")
     public PhotonPersistentDiskVolumeSource getPhotonPersistentDisk() {
         return photonPersistentDisk;
     }
 
+    /**
+     * Volume represents a named volume in a pod that may be accessed by any container in the pod.
+     */
     @JsonProperty("photonPersistentDisk")
     public void setPhotonPersistentDisk(PhotonPersistentDiskVolumeSource photonPersistentDisk) {
         this.photonPersistentDisk = photonPersistentDisk;
     }
 
+    /**
+     * Volume represents a named volume in a pod that may be accessed by any container in the pod.
+     */
     @JsonProperty("portworxVolume")
     public PortworxVolumeSource getPortworxVolume() {
         return portworxVolume;
     }
 
+    /**
+     * Volume represents a named volume in a pod that may be accessed by any container in the pod.
+     */
     @JsonProperty("portworxVolume")
     public void setPortworxVolume(PortworxVolumeSource portworxVolume) {
         this.portworxVolume = portworxVolume;
     }
 
+    /**
+     * Volume represents a named volume in a pod that may be accessed by any container in the pod.
+     */
     @JsonProperty("projected")
     public ProjectedVolumeSource getProjected() {
         return projected;
     }
 
+    /**
+     * Volume represents a named volume in a pod that may be accessed by any container in the pod.
+     */
     @JsonProperty("projected")
     public void setProjected(ProjectedVolumeSource projected) {
         this.projected = projected;
     }
 
+    /**
+     * Volume represents a named volume in a pod that may be accessed by any container in the pod.
+     */
     @JsonProperty("quobyte")
     public QuobyteVolumeSource getQuobyte() {
         return quobyte;
     }
 
+    /**
+     * Volume represents a named volume in a pod that may be accessed by any container in the pod.
+     */
     @JsonProperty("quobyte")
     public void setQuobyte(QuobyteVolumeSource quobyte) {
         this.quobyte = quobyte;
     }
 
+    /**
+     * Volume represents a named volume in a pod that may be accessed by any container in the pod.
+     */
     @JsonProperty("rbd")
     public RBDVolumeSource getRbd() {
         return rbd;
     }
 
+    /**
+     * Volume represents a named volume in a pod that may be accessed by any container in the pod.
+     */
     @JsonProperty("rbd")
     public void setRbd(RBDVolumeSource rbd) {
         this.rbd = rbd;
     }
 
+    /**
+     * Volume represents a named volume in a pod that may be accessed by any container in the pod.
+     */
     @JsonProperty("scaleIO")
     public ScaleIOVolumeSource getScaleIO() {
         return scaleIO;
     }
 
+    /**
+     * Volume represents a named volume in a pod that may be accessed by any container in the pod.
+     */
     @JsonProperty("scaleIO")
     public void setScaleIO(ScaleIOVolumeSource scaleIO) {
         this.scaleIO = scaleIO;
     }
 
+    /**
+     * Volume represents a named volume in a pod that may be accessed by any container in the pod.
+     */
     @JsonProperty("secret")
     public SecretVolumeSource getSecret() {
         return secret;
     }
 
+    /**
+     * Volume represents a named volume in a pod that may be accessed by any container in the pod.
+     */
     @JsonProperty("secret")
     public void setSecret(SecretVolumeSource secret) {
         this.secret = secret;
     }
 
+    /**
+     * Volume represents a named volume in a pod that may be accessed by any container in the pod.
+     */
     @JsonProperty("storageos")
     public StorageOSVolumeSource getStorageos() {
         return storageos;
     }
 
+    /**
+     * Volume represents a named volume in a pod that may be accessed by any container in the pod.
+     */
     @JsonProperty("storageos")
     public void setStorageos(StorageOSVolumeSource storageos) {
         this.storageos = storageos;
     }
 
+    /**
+     * Volume represents a named volume in a pod that may be accessed by any container in the pod.
+     */
     @JsonProperty("vsphereVolume")
     public VsphereVirtualDiskVolumeSource getVsphereVolume() {
         return vsphereVolume;
     }
 
+    /**
+     * Volume represents a named volume in a pod that may be accessed by any container in the pod.
+     */
     @JsonProperty("vsphereVolume")
     public void setVsphereVolume(VsphereVirtualDiskVolumeSource vsphereVolume) {
         this.vsphereVolume = vsphereVolume;

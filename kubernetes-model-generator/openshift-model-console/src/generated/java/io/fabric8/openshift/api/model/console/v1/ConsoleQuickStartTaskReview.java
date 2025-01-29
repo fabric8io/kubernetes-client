@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ConsoleQuickStartTaskReview contains instructions that validate a task was completed successfully.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class ConsoleQuickStartTaskReview implements Editable<ConsoleQuickStartTa
         this.instructions = instructions;
     }
 
+    /**
+     * failedTaskHelp contains suggestions for a failed task review and is shown at the end of task. (includes markdown)
+     */
     @JsonProperty("failedTaskHelp")
     public String getFailedTaskHelp() {
         return failedTaskHelp;
     }
 
+    /**
+     * failedTaskHelp contains suggestions for a failed task review and is shown at the end of task. (includes markdown)
+     */
     @JsonProperty("failedTaskHelp")
     public void setFailedTaskHelp(String failedTaskHelp) {
         this.failedTaskHelp = failedTaskHelp;
     }
 
+    /**
+     * instructions contains steps that user needs to take in order to validate his work after going through a task. (includes markdown)
+     */
     @JsonProperty("instructions")
     public String getInstructions() {
         return instructions;
     }
 
+    /**
+     * instructions contains steps that user needs to take in order to validate his work after going through a task. (includes markdown)
+     */
     @JsonProperty("instructions")
     public void setInstructions(String instructions) {
         this.instructions = instructions;

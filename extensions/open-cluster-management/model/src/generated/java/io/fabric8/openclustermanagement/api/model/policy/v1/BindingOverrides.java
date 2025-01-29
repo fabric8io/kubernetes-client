@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * BindingOverrides defines the overrides for the subjects.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -78,11 +81,17 @@ public class BindingOverrides implements Editable<BindingOverridesBuilder>, Kube
         this.remediationAction = remediationAction;
     }
 
+    /**
+     * RemediationAction overrides the policy remediationAction on target clusters. This parameter is optional. If you set it, you must set it to "enforce".
+     */
     @JsonProperty("remediationAction")
     public String getRemediationAction() {
         return remediationAction;
     }
 
+    /**
+     * RemediationAction overrides the policy remediationAction on target clusters. This parameter is optional. If you set it, you must set it to "enforce".
+     */
     @JsonProperty("remediationAction")
     public void setRemediationAction(String remediationAction) {
         this.remediationAction = remediationAction;

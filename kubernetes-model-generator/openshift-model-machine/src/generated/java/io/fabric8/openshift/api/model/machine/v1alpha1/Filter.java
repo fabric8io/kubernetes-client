@@ -138,161 +138,257 @@ public class Filter implements Editable<FilterBuilder>, KubernetesResource
         this.tenantId = tenantId;
     }
 
+    /**
+     * Deprecated: adminStateUp is silently ignored. It has no replacement.
+     */
     @JsonProperty("adminStateUp")
     public Boolean getAdminStateUp() {
         return adminStateUp;
     }
 
+    /**
+     * Deprecated: adminStateUp is silently ignored. It has no replacement.
+     */
     @JsonProperty("adminStateUp")
     public void setAdminStateUp(Boolean adminStateUp) {
         this.adminStateUp = adminStateUp;
     }
 
+    /**
+     * description filters networks by description.
+     */
     @JsonProperty("description")
     public String getDescription() {
         return description;
     }
 
+    /**
+     * description filters networks by description.
+     */
     @JsonProperty("description")
     public void setDescription(String description) {
         this.description = description;
     }
 
+    /**
+     * Deprecated: use NetworkParam.uuid instead. Ignored if NetworkParam.uuid is set.
+     */
     @JsonProperty("id")
     public String getId() {
         return id;
     }
 
+    /**
+     * Deprecated: use NetworkParam.uuid instead. Ignored if NetworkParam.uuid is set.
+     */
     @JsonProperty("id")
     public void setId(String id) {
         this.id = id;
     }
 
+    /**
+     * Deprecated: limit is silently ignored. It has no replacement.
+     */
     @JsonProperty("limit")
     public Integer getLimit() {
         return limit;
     }
 
+    /**
+     * Deprecated: limit is silently ignored. It has no replacement.
+     */
     @JsonProperty("limit")
     public void setLimit(Integer limit) {
         this.limit = limit;
     }
 
+    /**
+     * Deprecated: marker is silently ignored. It has no replacement.
+     */
     @JsonProperty("marker")
     public String getMarker() {
         return marker;
     }
 
+    /**
+     * Deprecated: marker is silently ignored. It has no replacement.
+     */
     @JsonProperty("marker")
     public void setMarker(String marker) {
         this.marker = marker;
     }
 
+    /**
+     * name filters networks by name.
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * name filters networks by name.
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * notTags filters by networks which don't match all specified tags. NOT (t1 AND t2...) Multiple tags are comma separated.
+     */
     @JsonProperty("notTags")
     public String getNotTags() {
         return notTags;
     }
 
+    /**
+     * notTags filters by networks which don't match all specified tags. NOT (t1 AND t2...) Multiple tags are comma separated.
+     */
     @JsonProperty("notTags")
     public void setNotTags(String notTags) {
         this.notTags = notTags;
     }
 
+    /**
+     * notTagsAny filters by networks which don't match any specified tags. NOT (t1 OR t2...) Multiple tags are comma separated.
+     */
     @JsonProperty("notTagsAny")
     public String getNotTagsAny() {
         return notTagsAny;
     }
 
+    /**
+     * notTagsAny filters by networks which don't match any specified tags. NOT (t1 OR t2...) Multiple tags are comma separated.
+     */
     @JsonProperty("notTagsAny")
     public void setNotTagsAny(String notTagsAny) {
         this.notTagsAny = notTagsAny;
     }
 
+    /**
+     * projectId filters networks by project ID.
+     */
     @JsonProperty("projectId")
     public String getProjectId() {
         return projectId;
     }
 
+    /**
+     * projectId filters networks by project ID.
+     */
     @JsonProperty("projectId")
     public void setProjectId(String projectId) {
         this.projectId = projectId;
     }
 
+    /**
+     * Deprecated: shared is silently ignored. It has no replacement.
+     */
     @JsonProperty("shared")
     public Boolean getShared() {
         return shared;
     }
 
+    /**
+     * Deprecated: shared is silently ignored. It has no replacement.
+     */
     @JsonProperty("shared")
     public void setShared(Boolean shared) {
         this.shared = shared;
     }
 
+    /**
+     * Deprecated: sortDir is silently ignored. It has no replacement.
+     */
     @JsonProperty("sortDir")
     public String getSortDir() {
         return sortDir;
     }
 
+    /**
+     * Deprecated: sortDir is silently ignored. It has no replacement.
+     */
     @JsonProperty("sortDir")
     public void setSortDir(String sortDir) {
         this.sortDir = sortDir;
     }
 
+    /**
+     * Deprecated: sortKey is silently ignored. It has no replacement.
+     */
     @JsonProperty("sortKey")
     public String getSortKey() {
         return sortKey;
     }
 
+    /**
+     * Deprecated: sortKey is silently ignored. It has no replacement.
+     */
     @JsonProperty("sortKey")
     public void setSortKey(String sortKey) {
         this.sortKey = sortKey;
     }
 
+    /**
+     * Deprecated: status is silently ignored. It has no replacement.
+     */
     @JsonProperty("status")
     public String getStatus() {
         return status;
     }
 
+    /**
+     * Deprecated: status is silently ignored. It has no replacement.
+     */
     @JsonProperty("status")
     public void setStatus(String status) {
         this.status = status;
     }
 
+    /**
+     * tags filters by networks containing all specified tags. Multiple tags are comma separated.
+     */
     @JsonProperty("tags")
     public String getTags() {
         return tags;
     }
 
+    /**
+     * tags filters by networks containing all specified tags. Multiple tags are comma separated.
+     */
     @JsonProperty("tags")
     public void setTags(String tags) {
         this.tags = tags;
     }
 
+    /**
+     * tagsAny filters by networks containing any specified tags. Multiple tags are comma separated.
+     */
     @JsonProperty("tagsAny")
     public String getTagsAny() {
         return tagsAny;
     }
 
+    /**
+     * tagsAny filters by networks containing any specified tags. Multiple tags are comma separated.
+     */
     @JsonProperty("tagsAny")
     public void setTagsAny(String tagsAny) {
         this.tagsAny = tagsAny;
     }
 
+    /**
+     * tenantId filters networks by tenant ID. Deprecated: use projectId instead. tenantId will be ignored if projectId is set.
+     */
     @JsonProperty("tenantId")
     public String getTenantId() {
         return tenantId;
     }
 
+    /**
+     * tenantId filters networks by tenant ID. Deprecated: use projectId instead. tenantId will be ignored if projectId is set.
+     */
     @JsonProperty("tenantId")
     public void setTenantId(String tenantId) {
         this.tenantId = tenantId;

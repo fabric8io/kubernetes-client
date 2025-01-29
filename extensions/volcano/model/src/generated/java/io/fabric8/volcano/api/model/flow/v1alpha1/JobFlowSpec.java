@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * JobFlowSpec defines the desired state of JobFlow
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -85,22 +88,34 @@ public class JobFlowSpec implements Editable<JobFlowSpecBuilder>, KubernetesReso
         this.jobRetainPolicy = jobRetainPolicy;
     }
 
+    /**
+     * Foo is an example field of JobFlow. Edit jobflow_types.go to remove/update
+     */
     @JsonProperty("flows")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Flow> getFlows() {
         return flows;
     }
 
+    /**
+     * Foo is an example field of JobFlow. Edit jobflow_types.go to remove/update
+     */
     @JsonProperty("flows")
     public void setFlows(List<Flow> flows) {
         this.flows = flows;
     }
 
+    /**
+     * JobFlowSpec defines the desired state of JobFlow
+     */
     @JsonProperty("jobRetainPolicy")
     public String getJobRetainPolicy() {
         return jobRetainPolicy;
     }
 
+    /**
+     * JobFlowSpec defines the desired state of JobFlow
+     */
     @JsonProperty("jobRetainPolicy")
     public void setJobRetainPolicy(String jobRetainPolicy) {
         this.jobRetainPolicy = jobRetainPolicy;

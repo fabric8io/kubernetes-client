@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * OperatorCondition is just the standard condition fields. DEPRECATED: Use v1.OperatorCondition instead
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -94,51 +97,81 @@ public class OperatorCondition implements Editable<OperatorConditionBuilder>, Ku
         this.type = type;
     }
 
+    /**
+     * OperatorCondition is just the standard condition fields. DEPRECATED: Use v1.OperatorCondition instead
+     */
     @JsonProperty("lastTransitionTime")
     public String getLastTransitionTime() {
         return lastTransitionTime;
     }
 
+    /**
+     * OperatorCondition is just the standard condition fields. DEPRECATED: Use v1.OperatorCondition instead
+     */
     @JsonProperty("lastTransitionTime")
     public void setLastTransitionTime(String lastTransitionTime) {
         this.lastTransitionTime = lastTransitionTime;
     }
 
+    /**
+     * OperatorCondition is just the standard condition fields. DEPRECATED: Use v1.OperatorCondition instead
+     */
     @JsonProperty("message")
     public String getMessage() {
         return message;
     }
 
+    /**
+     * OperatorCondition is just the standard condition fields. DEPRECATED: Use v1.OperatorCondition instead
+     */
     @JsonProperty("message")
     public void setMessage(String message) {
         this.message = message;
     }
 
+    /**
+     * OperatorCondition is just the standard condition fields. DEPRECATED: Use v1.OperatorCondition instead
+     */
     @JsonProperty("reason")
     public String getReason() {
         return reason;
     }
 
+    /**
+     * OperatorCondition is just the standard condition fields. DEPRECATED: Use v1.OperatorCondition instead
+     */
     @JsonProperty("reason")
     public void setReason(String reason) {
         this.reason = reason;
     }
 
+    /**
+     * OperatorCondition is just the standard condition fields. DEPRECATED: Use v1.OperatorCondition instead
+     */
     @JsonProperty("status")
     public String getStatus() {
         return status;
     }
 
+    /**
+     * OperatorCondition is just the standard condition fields. DEPRECATED: Use v1.OperatorCondition instead
+     */
     @JsonProperty("status")
     public void setStatus(String status) {
         this.status = status;
     }
 
+    /**
+     * OperatorCondition is just the standard condition fields. DEPRECATED: Use v1.OperatorCondition instead
+     */
     @JsonProperty("type")
     public String getType() {
         return type;
     }
 
+    /**
+     * OperatorCondition is just the standard condition fields. DEPRECATED: Use v1.OperatorCondition instead
+     */
     @JsonProperty("type")
     public void setType(String type) {
         this.type = type;

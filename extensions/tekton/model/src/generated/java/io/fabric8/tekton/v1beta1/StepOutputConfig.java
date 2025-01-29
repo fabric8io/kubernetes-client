@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * StepOutputConfig stores configuration for a step output stream.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -78,11 +81,17 @@ public class StepOutputConfig implements Editable<StepOutputConfigBuilder>, Kube
         this.path = path;
     }
 
+    /**
+     * Path to duplicate stdout stream to on container's local filesystem.
+     */
     @JsonProperty("path")
     public String getPath() {
         return path;
     }
 
+    /**
+     * Path to duplicate stdout stream to on container's local filesystem.
+     */
     @JsonProperty("path")
     public void setPath(String path) {
         this.path = path;

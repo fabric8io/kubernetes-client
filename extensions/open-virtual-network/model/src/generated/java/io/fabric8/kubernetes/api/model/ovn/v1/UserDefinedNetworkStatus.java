@@ -35,6 +35,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * UserDefinedNetworkStatus contains the observed status of the UserDefinedNetwork.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,12 +85,18 @@ public class UserDefinedNetworkStatus implements Editable<UserDefinedNetworkStat
         this.conditions = conditions;
     }
 
+    /**
+     * UserDefinedNetworkStatus contains the observed status of the UserDefinedNetwork.
+     */
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Condition> getConditions() {
         return conditions;
     }
 
+    /**
+     * UserDefinedNetworkStatus contains the observed status of the UserDefinedNetwork.
+     */
     @JsonProperty("conditions")
     public void setConditions(List<Condition> conditions) {
         this.conditions = conditions;

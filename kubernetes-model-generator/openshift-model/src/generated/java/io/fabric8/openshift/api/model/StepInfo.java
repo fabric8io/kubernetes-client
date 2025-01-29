@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * StepInfo contains details about a build step.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -86,31 +89,49 @@ public class StepInfo implements Editable<StepInfoBuilder>, KubernetesResource
         this.startTime = startTime;
     }
 
+    /**
+     * durationMilliseconds identifies how long the step took to complete in milliseconds.
+     */
     @JsonProperty("durationMilliseconds")
     public Long getDurationMilliseconds() {
         return durationMilliseconds;
     }
 
+    /**
+     * durationMilliseconds identifies how long the step took to complete in milliseconds.
+     */
     @JsonProperty("durationMilliseconds")
     public void setDurationMilliseconds(Long durationMilliseconds) {
         this.durationMilliseconds = durationMilliseconds;
     }
 
+    /**
+     * name is a unique identifier for each build step.
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * name is a unique identifier for each build step.
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * StepInfo contains details about a build step.
+     */
     @JsonProperty("startTime")
     public String getStartTime() {
         return startTime;
     }
 
+    /**
+     * StepInfo contains details about a build step.
+     */
     @JsonProperty("startTime")
     public void setStartTime(String startTime) {
         this.startTime = startTime;

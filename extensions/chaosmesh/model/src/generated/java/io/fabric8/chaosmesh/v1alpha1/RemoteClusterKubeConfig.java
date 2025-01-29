@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * RemoteClusterKubeConfig refers to a secret by which we'll use to connect remote cluster
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -78,11 +81,17 @@ public class RemoteClusterKubeConfig implements Editable<RemoteClusterKubeConfig
         this.secretRef = secretRef;
     }
 
+    /**
+     * RemoteClusterKubeConfig refers to a secret by which we'll use to connect remote cluster
+     */
     @JsonProperty("secretRef")
     public RemoteClusterSecretRef getSecretRef() {
         return secretRef;
     }
 
+    /**
+     * RemoteClusterKubeConfig refers to a secret by which we'll use to connect remote cluster
+     */
     @JsonProperty("secretRef")
     public void setSecretRef(RemoteClusterSecretRef secretRef) {
         this.secretRef = secretRef;

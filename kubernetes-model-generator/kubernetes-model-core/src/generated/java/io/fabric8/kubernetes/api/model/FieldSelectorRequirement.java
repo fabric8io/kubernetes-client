@@ -19,6 +19,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * FieldSelectorRequirement is a selector that contains values, a key, and an operator that relates the key and values.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -60,32 +63,50 @@ public class FieldSelectorRequirement implements Editable<FieldSelectorRequireme
         this.values = values;
     }
 
+    /**
+     * key is the field selector key that the requirement applies to.
+     */
     @JsonProperty("key")
     public String getKey() {
         return key;
     }
 
+    /**
+     * key is the field selector key that the requirement applies to.
+     */
     @JsonProperty("key")
     public void setKey(String key) {
         this.key = key;
     }
 
+    /**
+     * operator represents a key's relationship to a set of values. Valid operators are In, NotIn, Exists, DoesNotExist. The list of operators may grow in the future.
+     */
     @JsonProperty("operator")
     public String getOperator() {
         return operator;
     }
 
+    /**
+     * operator represents a key's relationship to a set of values. Valid operators are In, NotIn, Exists, DoesNotExist. The list of operators may grow in the future.
+     */
     @JsonProperty("operator")
     public void setOperator(String operator) {
         this.operator = operator;
     }
 
+    /**
+     * values is an array of string values. If the operator is In or NotIn, the values array must be non-empty. If the operator is Exists or DoesNotExist, the values array must be empty.
+     */
     @JsonProperty("values")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getValues() {
         return values;
     }
 
+    /**
+     * values is an array of string values. If the operator is In or NotIn, the values array must be non-empty. If the operator is Exists or DoesNotExist, the values array must be empty.
+     */
     @JsonProperty("values")
     public void setValues(List<String> values) {
         this.values = values;

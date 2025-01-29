@@ -17,6 +17,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * GroupVersion contains the "group/version" and "version" string of a version. It is made a struct to keep extensibility.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -53,21 +56,33 @@ public class GroupVersionForDiscovery implements Editable<GroupVersionForDiscove
         this.version = version;
     }
 
+    /**
+     * groupVersion specifies the API group and version in the form "group/version"
+     */
     @JsonProperty("groupVersion")
     public String getGroupVersion() {
         return groupVersion;
     }
 
+    /**
+     * groupVersion specifies the API group and version in the form "group/version"
+     */
     @JsonProperty("groupVersion")
     public void setGroupVersion(String groupVersion) {
         this.groupVersion = groupVersion;
     }
 
+    /**
+     * version specifies the version in the form of "version". This is to save the clients the trouble of splitting the GroupVersion.
+     */
     @JsonProperty("version")
     public String getVersion() {
         return version;
     }
 
+    /**
+     * version specifies the version in the form of "version". This is to save the clients the trouble of splitting the GroupVersion.
+     */
     @JsonProperty("version")
     public void setVersion(String version) {
         this.version = version;

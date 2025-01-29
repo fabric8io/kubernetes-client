@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * EgressFirewallSpec is a desired state description of EgressFirewall.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -81,12 +84,18 @@ public class EgressFirewallSpec implements Editable<EgressFirewallSpecBuilder>, 
         this.egress = egress;
     }
 
+    /**
+     * a collection of egress firewall rule objects
+     */
     @JsonProperty("egress")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<EgressFirewallRule> getEgress() {
         return egress;
     }
 
+    /**
+     * a collection of egress firewall rule objects
+     */
     @JsonProperty("egress")
     public void setEgress(List<EgressFirewallRule> egress) {
         this.egress = egress;

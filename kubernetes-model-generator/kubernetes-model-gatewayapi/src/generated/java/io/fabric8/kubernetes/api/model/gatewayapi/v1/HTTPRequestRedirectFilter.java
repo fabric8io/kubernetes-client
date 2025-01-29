@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * HTTPRequestRedirect defines a filter that redirects a request. This filter MUST NOT be used on the same Route rule as a HTTPURLRewrite filter.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -94,51 +97,81 @@ public class HTTPRequestRedirectFilter implements Editable<HTTPRequestRedirectFi
         this.statusCode = statusCode;
     }
 
+    /**
+     * Hostname is the hostname to be used in the value of the `Location` header in the response. When empty, the hostname in the `Host` header of the request is used.<br><p> <br><p> Support: Core
+     */
     @JsonProperty("hostname")
     public String getHostname() {
         return hostname;
     }
 
+    /**
+     * Hostname is the hostname to be used in the value of the `Location` header in the response. When empty, the hostname in the `Host` header of the request is used.<br><p> <br><p> Support: Core
+     */
     @JsonProperty("hostname")
     public void setHostname(String hostname) {
         this.hostname = hostname;
     }
 
+    /**
+     * HTTPRequestRedirect defines a filter that redirects a request. This filter MUST NOT be used on the same Route rule as a HTTPURLRewrite filter.
+     */
     @JsonProperty("path")
     public HTTPPathModifier getPath() {
         return path;
     }
 
+    /**
+     * HTTPRequestRedirect defines a filter that redirects a request. This filter MUST NOT be used on the same Route rule as a HTTPURLRewrite filter.
+     */
     @JsonProperty("path")
     public void setPath(HTTPPathModifier path) {
         this.path = path;
     }
 
+    /**
+     * Port is the port to be used in the value of the `Location` header in the response.<br><p> <br><p> If no port is specified, the redirect port MUST be derived using the following rules:<br><p> <br><p> &#42; If redirect scheme is not-empty, the redirect port MUST be the well-known<br><p>   port associated with the redirect scheme. Specifically "http" to port 80<br><p>   and "https" to port 443. If the redirect scheme does not have a<br><p>   well-known port, the listener port of the Gateway SHOULD be used.<br><p> &#42; If redirect scheme is empty, the redirect port MUST be the Gateway<br><p>   Listener port.<br><p> <br><p> Implementations SHOULD NOT add the port number in the 'Location' header in the following cases:<br><p> <br><p> &#42; A Location header that will use HTTP (whether that is determined via<br><p>   the Listener protocol or the Scheme field) _and_ use port 80.<br><p> &#42; A Location header that will use HTTPS (whether that is determined via<br><p>   the Listener protocol or the Scheme field) _and_ use port 443.<br><p> <br><p> Support: Extended
+     */
     @JsonProperty("port")
     public Integer getPort() {
         return port;
     }
 
+    /**
+     * Port is the port to be used in the value of the `Location` header in the response.<br><p> <br><p> If no port is specified, the redirect port MUST be derived using the following rules:<br><p> <br><p> &#42; If redirect scheme is not-empty, the redirect port MUST be the well-known<br><p>   port associated with the redirect scheme. Specifically "http" to port 80<br><p>   and "https" to port 443. If the redirect scheme does not have a<br><p>   well-known port, the listener port of the Gateway SHOULD be used.<br><p> &#42; If redirect scheme is empty, the redirect port MUST be the Gateway<br><p>   Listener port.<br><p> <br><p> Implementations SHOULD NOT add the port number in the 'Location' header in the following cases:<br><p> <br><p> &#42; A Location header that will use HTTP (whether that is determined via<br><p>   the Listener protocol or the Scheme field) _and_ use port 80.<br><p> &#42; A Location header that will use HTTPS (whether that is determined via<br><p>   the Listener protocol or the Scheme field) _and_ use port 443.<br><p> <br><p> Support: Extended
+     */
     @JsonProperty("port")
     public void setPort(Integer port) {
         this.port = port;
     }
 
+    /**
+     * Scheme is the scheme to be used in the value of the `Location` header in the response. When empty, the scheme of the request is used.<br><p> <br><p> Scheme redirects can affect the port of the redirect, for more information, refer to the documentation for the port field of this filter.<br><p> <br><p> Note that values may be added to this enum, implementations must ensure that unknown values will not cause a crash.<br><p> <br><p> Unknown values here must result in the implementation setting the Accepted Condition for the Route to `status: False`, with a Reason of `UnsupportedValue`.<br><p> <br><p> Support: Extended
+     */
     @JsonProperty("scheme")
     public String getScheme() {
         return scheme;
     }
 
+    /**
+     * Scheme is the scheme to be used in the value of the `Location` header in the response. When empty, the scheme of the request is used.<br><p> <br><p> Scheme redirects can affect the port of the redirect, for more information, refer to the documentation for the port field of this filter.<br><p> <br><p> Note that values may be added to this enum, implementations must ensure that unknown values will not cause a crash.<br><p> <br><p> Unknown values here must result in the implementation setting the Accepted Condition for the Route to `status: False`, with a Reason of `UnsupportedValue`.<br><p> <br><p> Support: Extended
+     */
     @JsonProperty("scheme")
     public void setScheme(String scheme) {
         this.scheme = scheme;
     }
 
+    /**
+     * StatusCode is the HTTP status code to be used in response.<br><p> <br><p> Note that values may be added to this enum, implementations must ensure that unknown values will not cause a crash.<br><p> <br><p> Unknown values here must result in the implementation setting the Accepted Condition for the Route to `status: False`, with a Reason of `UnsupportedValue`.<br><p> <br><p> Support: Core
+     */
     @JsonProperty("statusCode")
     public Integer getStatusCode() {
         return statusCode;
     }
 
+    /**
+     * StatusCode is the HTTP status code to be used in response.<br><p> <br><p> Note that values may be added to this enum, implementations must ensure that unknown values will not cause a crash.<br><p> <br><p> Unknown values here must result in the implementation setting the Accepted Condition for the Route to `status: False`, with a Reason of `UnsupportedValue`.<br><p> <br><p> Support: Core
+     */
     @JsonProperty("statusCode")
     public void setStatusCode(Integer statusCode) {
         this.statusCode = statusCode;

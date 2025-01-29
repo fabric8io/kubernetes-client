@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Metal3DataTemplateSpec defines the desired state of Metal3DataTemplate.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -90,41 +93,65 @@ public class Metal3DataTemplateSpec implements Editable<Metal3DataTemplateSpecBu
         this.templateReference = templateReference;
     }
 
+    /**
+     * ClusterName is the name of the Cluster this object belongs to.
+     */
     @JsonProperty("clusterName")
     public String getClusterName() {
         return clusterName;
     }
 
+    /**
+     * ClusterName is the name of the Cluster this object belongs to.
+     */
     @JsonProperty("clusterName")
     public void setClusterName(String clusterName) {
         this.clusterName = clusterName;
     }
 
+    /**
+     * Metal3DataTemplateSpec defines the desired state of Metal3DataTemplate.
+     */
     @JsonProperty("metaData")
     public MetaData getMetaData() {
         return metaData;
     }
 
+    /**
+     * Metal3DataTemplateSpec defines the desired state of Metal3DataTemplate.
+     */
     @JsonProperty("metaData")
     public void setMetaData(MetaData metaData) {
         this.metaData = metaData;
     }
 
+    /**
+     * Metal3DataTemplateSpec defines the desired state of Metal3DataTemplate.
+     */
     @JsonProperty("networkData")
     public NetworkData getNetworkData() {
         return networkData;
     }
 
+    /**
+     * Metal3DataTemplateSpec defines the desired state of Metal3DataTemplate.
+     */
     @JsonProperty("networkData")
     public void setNetworkData(NetworkData networkData) {
         this.networkData = networkData;
     }
 
+    /**
+     * TemplateReference refers to the Template the Metal3MachineTemplate refers to. It can be matched against the key or it may also point to the name of the template Metal3Data refers to
+     */
     @JsonProperty("templateReference")
     public String getTemplateReference() {
         return templateReference;
     }
 
+    /**
+     * TemplateReference refers to the Template the Metal3MachineTemplate refers to. It can be matched against the key or it may also point to the name of the template Metal3Data refers to
+     */
     @JsonProperty("templateReference")
     public void setTemplateReference(String templateReference) {
         this.templateReference = templateReference;

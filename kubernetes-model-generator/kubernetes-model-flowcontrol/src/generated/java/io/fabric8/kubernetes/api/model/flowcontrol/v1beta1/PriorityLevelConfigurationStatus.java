@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * PriorityLevelConfigurationStatus represents the current state of a "request-priority".
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -81,12 +84,18 @@ public class PriorityLevelConfigurationStatus implements Editable<PriorityLevelC
         this.conditions = conditions;
     }
 
+    /**
+     * `conditions` is the current state of "request-priority".
+     */
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<PriorityLevelConfigurationCondition> getConditions() {
         return conditions;
     }
 
+    /**
+     * `conditions` is the current state of "request-priority".
+     */
     @JsonProperty("conditions")
     public void setConditions(List<PriorityLevelConfigurationCondition> conditions) {
         this.conditions = conditions;

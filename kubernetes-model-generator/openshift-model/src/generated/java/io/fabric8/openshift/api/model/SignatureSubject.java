@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * SignatureSubject holds information about a person or entity who created the signature.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -86,31 +89,49 @@ public class SignatureSubject implements Editable<SignatureSubjectBuilder>, Kube
         this.publicKeyID = publicKeyID;
     }
 
+    /**
+     * Common name (e.g. openshift-signing-service).
+     */
     @JsonProperty("commonName")
     public String getCommonName() {
         return commonName;
     }
 
+    /**
+     * Common name (e.g. openshift-signing-service).
+     */
     @JsonProperty("commonName")
     public void setCommonName(String commonName) {
         this.commonName = commonName;
     }
 
+    /**
+     * Organization name.
+     */
     @JsonProperty("organization")
     public String getOrganization() {
         return organization;
     }
 
+    /**
+     * Organization name.
+     */
     @JsonProperty("organization")
     public void setOrganization(String organization) {
         this.organization = organization;
     }
 
+    /**
+     * If present, it is a human readable key id of public key belonging to the subject used to verify image signature. It should contain at least 64 lowest bits of public key's fingerprint (e.g. 0x685ebe62bf278440).
+     */
     @JsonProperty("publicKeyID")
     public String getPublicKeyID() {
         return publicKeyID;
     }
 
+    /**
+     * If present, it is a human readable key id of public key belonging to the subject used to verify image signature. It should contain at least 64 lowest bits of public key's fingerprint (e.g. 0x685ebe62bf278440).
+     */
     @JsonProperty("publicKeyID")
     public void setPublicKeyID(String publicKeyID) {
         this.publicKeyID = publicKeyID;

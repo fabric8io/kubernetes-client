@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Icon defines a base64 encoded icon and media type
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class Icon implements Editable<IconBuilder>, KubernetesResource
         this.mediatype = mediatype;
     }
 
+    /**
+     * Icon defines a base64 encoded icon and media type
+     */
     @JsonProperty("base64data")
     public String getBase64data() {
         return base64data;
     }
 
+    /**
+     * Icon defines a base64 encoded icon and media type
+     */
     @JsonProperty("base64data")
     public void setBase64data(String base64data) {
         this.base64data = base64data;
     }
 
+    /**
+     * Icon defines a base64 encoded icon and media type
+     */
     @JsonProperty("mediatype")
     public String getMediatype() {
         return mediatype;
     }
 
+    /**
+     * Icon defines a base64 encoded icon and media type
+     */
     @JsonProperty("mediatype")
     public void setMediatype(String mediatype) {
         this.mediatype = mediatype;

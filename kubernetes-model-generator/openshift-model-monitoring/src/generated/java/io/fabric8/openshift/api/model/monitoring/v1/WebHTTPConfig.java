@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * WebHTTPConfig defines HTTP parameters for web server.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class WebHTTPConfig implements Editable<WebHTTPConfigBuilder>, Kubernetes
         this.http2 = http2;
     }
 
+    /**
+     * WebHTTPConfig defines HTTP parameters for web server.
+     */
     @JsonProperty("headers")
     public WebHTTPHeaders getHeaders() {
         return headers;
     }
 
+    /**
+     * WebHTTPConfig defines HTTP parameters for web server.
+     */
     @JsonProperty("headers")
     public void setHeaders(WebHTTPHeaders headers) {
         this.headers = headers;
     }
 
+    /**
+     * Enable HTTP/2 support. Note that HTTP/2 is only supported with TLS. When TLSConfig is not configured, HTTP/2 will be disabled. Whenever the value of the field changes, a rolling update will be triggered.
+     */
     @JsonProperty("http2")
     public Boolean getHttp2() {
         return http2;
     }
 
+    /**
+     * Enable HTTP/2 support. Note that HTTP/2 is only supported with TLS. When TLSConfig is not configured, HTTP/2 will be disabled. Whenever the value of the field changes, a rolling update will be triggered.
+     */
     @JsonProperty("http2")
     public void setHttp2(Boolean http2) {
         this.http2 = http2;

@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * GCPPrivateServiceConnectConfig defines the gcp private service connect config for the private-link controller.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -85,22 +88,34 @@ public class GCPPrivateServiceConnectConfig implements Editable<GCPPrivateServic
         this.endpointVPCInventory = endpointVPCInventory;
     }
 
+    /**
+     * GCPPrivateServiceConnectConfig defines the gcp private service connect config for the private-link controller.
+     */
     @JsonProperty("credentialsSecretRef")
     public LocalObjectReference getCredentialsSecretRef() {
         return credentialsSecretRef;
     }
 
+    /**
+     * GCPPrivateServiceConnectConfig defines the gcp private service connect config for the private-link controller.
+     */
     @JsonProperty("credentialsSecretRef")
     public void setCredentialsSecretRef(LocalObjectReference credentialsSecretRef) {
         this.credentialsSecretRef = credentialsSecretRef;
     }
 
+    /**
+     * EndpointVPCInventory is a list of VPCs and the corresponding subnets in various GCP regions. The controller uses this list to choose a VPC for creating GCP Endpoints. Since the VPC Endpoints must be in the same region as the ClusterDeployment, we must have VPCs in that region to be able to setup Private Service Connect.
+     */
     @JsonProperty("endpointVPCInventory")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<GCPPrivateServiceConnectInventory> getEndpointVPCInventory() {
         return endpointVPCInventory;
     }
 
+    /**
+     * EndpointVPCInventory is a list of VPCs and the corresponding subnets in various GCP regions. The controller uses this list to choose a VPC for creating GCP Endpoints. Since the VPC Endpoints must be in the same region as the ClusterDeployment, we must have VPCs in that region to be able to setup Private Service Connect.
+     */
     @JsonProperty("endpointVPCInventory")
     public void setEndpointVPCInventory(List<GCPPrivateServiceConnectInventory> endpointVPCInventory) {
         this.endpointVPCInventory = endpointVPCInventory;

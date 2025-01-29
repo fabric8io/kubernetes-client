@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * DataImageSpec defines the desired state of DataImage.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -78,11 +81,17 @@ public class DataImageSpec implements Editable<DataImageSpecBuilder>, Kubernetes
         this.url = url;
     }
 
+    /**
+     * Url is the address of the dataImage that we want to attach to a BareMetalHost
+     */
     @JsonProperty("url")
     public String getUrl() {
         return url;
     }
 
+    /**
+     * Url is the address of the dataImage that we want to attach to a BareMetalHost
+     */
     @JsonProperty("url")
     public void setUrl(String url) {
         this.url = url;

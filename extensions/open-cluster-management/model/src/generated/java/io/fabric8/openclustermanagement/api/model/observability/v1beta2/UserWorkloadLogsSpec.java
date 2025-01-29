@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * UserWorkloadLogsSpec defines the spec for the addon to collect,forward and store logs from user workloads hosted on fleet managed clusters.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -78,11 +81,17 @@ public class UserWorkloadLogsSpec implements Editable<UserWorkloadLogsSpecBuilde
         this.collection = collection;
     }
 
+    /**
+     * UserWorkloadLogsSpec defines the spec for the addon to collect,forward and store logs from user workloads hosted on fleet managed clusters.
+     */
     @JsonProperty("collection")
     public UserWorkloadLogsCollectionSpec getCollection() {
         return collection;
     }
 
+    /**
+     * UserWorkloadLogsSpec defines the spec for the addon to collect,forward and store logs from user workloads hosted on fleet managed clusters.
+     */
     @JsonProperty("collection")
     public void setCollection(UserWorkloadLogsCollectionSpec collection) {
         this.collection = collection;

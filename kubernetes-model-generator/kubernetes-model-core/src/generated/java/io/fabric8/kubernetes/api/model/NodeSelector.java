@@ -19,6 +19,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * A node selector represents the union of the results of one or more label queries over a set of nodes; that is, it represents the OR of the selectors represented by the node selector terms.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -52,12 +55,18 @@ public class NodeSelector implements Editable<NodeSelectorBuilder>, KubernetesRe
         this.nodeSelectorTerms = nodeSelectorTerms;
     }
 
+    /**
+     * Required. A list of node selector terms. The terms are ORed.
+     */
     @JsonProperty("nodeSelectorTerms")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<NodeSelectorTerm> getNodeSelectorTerms() {
         return nodeSelectorTerms;
     }
 
+    /**
+     * Required. A list of node selector terms. The terms are ORed.
+     */
     @JsonProperty("nodeSelectorTerms")
     public void setNodeSelectorTerms(List<NodeSelectorTerm> nodeSelectorTerms) {
         this.nodeSelectorTerms = nodeSelectorTerms;

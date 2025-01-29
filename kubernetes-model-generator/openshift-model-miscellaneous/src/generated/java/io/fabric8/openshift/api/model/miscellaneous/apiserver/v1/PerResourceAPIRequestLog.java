@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * PerResourceAPIRequestLog logs request for various nodes.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -85,22 +88,34 @@ public class PerResourceAPIRequestLog implements Editable<PerResourceAPIRequestL
         this.requestCount = requestCount;
     }
 
+    /**
+     * byNode contains logs of requests per node.
+     */
     @JsonProperty("byNode")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<PerNodeAPIRequestLog> getByNode() {
         return byNode;
     }
 
+    /**
+     * byNode contains logs of requests per node.
+     */
     @JsonProperty("byNode")
     public void setByNode(List<PerNodeAPIRequestLog> byNode) {
         this.byNode = byNode;
     }
 
+    /**
+     * requestCount is a sum of all requestCounts across nodes.
+     */
     @JsonProperty("requestCount")
     public Long getRequestCount() {
         return requestCount;
     }
 
+    /**
+     * requestCount is a sum of all requestCounts across nodes.
+     */
     @JsonProperty("requestCount")
     public void setRequestCount(Long requestCount) {
         this.requestCount = requestCount;

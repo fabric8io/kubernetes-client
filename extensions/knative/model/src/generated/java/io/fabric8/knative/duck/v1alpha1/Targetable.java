@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Targetable is an earlier version of the Callable interface. Callable is a higher-level interface which implements Addressable but further promises that the destination may synchronously return response messages in reply to a message.<br><p> <br><p> Targetable implementations should instead implement Addressable and include an `eventing.knative.dev/returns=any` annotation.<br><p> <br><p> Targetable is retired; implement Addressable for now.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -78,11 +81,17 @@ public class Targetable implements Editable<TargetableBuilder>, KubernetesResour
         this.domainInternal = domainInternal;
     }
 
+    /**
+     * Targetable is an earlier version of the Callable interface. Callable is a higher-level interface which implements Addressable but further promises that the destination may synchronously return response messages in reply to a message.<br><p> <br><p> Targetable implementations should instead implement Addressable and include an `eventing.knative.dev/returns=any` annotation.<br><p> <br><p> Targetable is retired; implement Addressable for now.
+     */
     @JsonProperty("domainInternal")
     public String getDomainInternal() {
         return domainInternal;
     }
 
+    /**
+     * Targetable is an earlier version of the Callable interface. Callable is a higher-level interface which implements Addressable but further promises that the destination may synchronously return response messages in reply to a message.<br><p> <br><p> Targetable implementations should instead implement Addressable and include an `eventing.knative.dev/returns=any` annotation.<br><p> <br><p> Targetable is retired; implement Addressable for now.
+     */
     @JsonProperty("domainInternal")
     public void setDomainInternal(String domainInternal) {
         this.domainInternal = domainInternal;

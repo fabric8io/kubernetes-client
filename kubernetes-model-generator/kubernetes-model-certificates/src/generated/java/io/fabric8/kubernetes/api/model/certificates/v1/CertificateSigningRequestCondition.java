@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * CertificateSigningRequestCondition describes a condition of a CertificateSigningRequest object
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -98,61 +101,97 @@ public class CertificateSigningRequestCondition implements Editable<CertificateS
         this.type = type;
     }
 
+    /**
+     * CertificateSigningRequestCondition describes a condition of a CertificateSigningRequest object
+     */
     @JsonProperty("lastTransitionTime")
     public String getLastTransitionTime() {
         return lastTransitionTime;
     }
 
+    /**
+     * CertificateSigningRequestCondition describes a condition of a CertificateSigningRequest object
+     */
     @JsonProperty("lastTransitionTime")
     public void setLastTransitionTime(String lastTransitionTime) {
         this.lastTransitionTime = lastTransitionTime;
     }
 
+    /**
+     * CertificateSigningRequestCondition describes a condition of a CertificateSigningRequest object
+     */
     @JsonProperty("lastUpdateTime")
     public String getLastUpdateTime() {
         return lastUpdateTime;
     }
 
+    /**
+     * CertificateSigningRequestCondition describes a condition of a CertificateSigningRequest object
+     */
     @JsonProperty("lastUpdateTime")
     public void setLastUpdateTime(String lastUpdateTime) {
         this.lastUpdateTime = lastUpdateTime;
     }
 
+    /**
+     * message contains a human readable message with details about the request state
+     */
     @JsonProperty("message")
     public String getMessage() {
         return message;
     }
 
+    /**
+     * message contains a human readable message with details about the request state
+     */
     @JsonProperty("message")
     public void setMessage(String message) {
         this.message = message;
     }
 
+    /**
+     * reason indicates a brief reason for the request state
+     */
     @JsonProperty("reason")
     public String getReason() {
         return reason;
     }
 
+    /**
+     * reason indicates a brief reason for the request state
+     */
     @JsonProperty("reason")
     public void setReason(String reason) {
         this.reason = reason;
     }
 
+    /**
+     * status of the condition, one of True, False, Unknown. Approved, Denied, and Failed conditions may not be "False" or "Unknown".
+     */
     @JsonProperty("status")
     public String getStatus() {
         return status;
     }
 
+    /**
+     * status of the condition, one of True, False, Unknown. Approved, Denied, and Failed conditions may not be "False" or "Unknown".
+     */
     @JsonProperty("status")
     public void setStatus(String status) {
         this.status = status;
     }
 
+    /**
+     * type of the condition. Known conditions are "Approved", "Denied", and "Failed".<br><p> <br><p> An "Approved" condition is added via the /approval subresource, indicating the request was approved and should be issued by the signer.<br><p> <br><p> A "Denied" condition is added via the /approval subresource, indicating the request was denied and should not be issued by the signer.<br><p> <br><p> A "Failed" condition is added via the /status subresource, indicating the signer failed to issue the certificate.<br><p> <br><p> Approved and Denied conditions are mutually exclusive. Approved, Denied, and Failed conditions cannot be removed once added.<br><p> <br><p> Only one condition of a given type is allowed.
+     */
     @JsonProperty("type")
     public String getType() {
         return type;
     }
 
+    /**
+     * type of the condition. Known conditions are "Approved", "Denied", and "Failed".<br><p> <br><p> An "Approved" condition is added via the /approval subresource, indicating the request was approved and should be issued by the signer.<br><p> <br><p> A "Denied" condition is added via the /approval subresource, indicating the request was denied and should not be issued by the signer.<br><p> <br><p> A "Failed" condition is added via the /status subresource, indicating the signer failed to issue the certificate.<br><p> <br><p> Approved and Denied conditions are mutually exclusive. Approved, Denied, and Failed conditions cannot be removed once added.<br><p> <br><p> Only one condition of a given type is allowed.
+     */
     @JsonProperty("type")
     public void setType(String type) {
         this.type = type;

@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * HTTPMirrorPolicy can be used to specify the destinations to mirror HTTP traffic in addition to the original destination. Mirrored traffic is on a best effort basis where the sidecar/gateway will not wait for the mirrored destinations to respond before returning the response from the original destination. Statistics will be generated for the mirrored destination.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class HTTPMirrorPolicy implements Editable<HTTPMirrorPolicyBuilder>, Kube
         this.percentage = percentage;
     }
 
+    /**
+     * HTTPMirrorPolicy can be used to specify the destinations to mirror HTTP traffic in addition to the original destination. Mirrored traffic is on a best effort basis where the sidecar/gateway will not wait for the mirrored destinations to respond before returning the response from the original destination. Statistics will be generated for the mirrored destination.
+     */
     @JsonProperty("destination")
     public Destination getDestination() {
         return destination;
     }
 
+    /**
+     * HTTPMirrorPolicy can be used to specify the destinations to mirror HTTP traffic in addition to the original destination. Mirrored traffic is on a best effort basis where the sidecar/gateway will not wait for the mirrored destinations to respond before returning the response from the original destination. Statistics will be generated for the mirrored destination.
+     */
     @JsonProperty("destination")
     public void setDestination(Destination destination) {
         this.destination = destination;
     }
 
+    /**
+     * HTTPMirrorPolicy can be used to specify the destinations to mirror HTTP traffic in addition to the original destination. Mirrored traffic is on a best effort basis where the sidecar/gateway will not wait for the mirrored destinations to respond before returning the response from the original destination. Statistics will be generated for the mirrored destination.
+     */
     @JsonProperty("percentage")
     public Percent getPercentage() {
         return percentage;
     }
 
+    /**
+     * HTTPMirrorPolicy can be used to specify the destinations to mirror HTTP traffic in addition to the original destination. Mirrored traffic is on a best effort basis where the sidecar/gateway will not wait for the mirrored destinations to respond before returning the response from the original destination. Statistics will be generated for the mirrored destination.
+     */
     @JsonProperty("percentage")
     public void setPercentage(Percent percentage) {
         this.percentage = percentage;

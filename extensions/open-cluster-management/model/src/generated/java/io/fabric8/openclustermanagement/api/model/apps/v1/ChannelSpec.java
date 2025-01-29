@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ChannelSpec defines the desired state of Channel
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -105,72 +108,114 @@ public class ChannelSpec implements Editable<ChannelSpecBuilder>, KubernetesReso
         this.type = type;
     }
 
+    /**
+     * ChannelSpec defines the desired state of Channel
+     */
     @JsonProperty("configMapRef")
     public ObjectReference getConfigMapRef() {
         return configMapRef;
     }
 
+    /**
+     * ChannelSpec defines the desired state of Channel
+     */
     @JsonProperty("configMapRef")
     public void setConfigMapRef(ObjectReference configMapRef) {
         this.configMapRef = configMapRef;
     }
 
+    /**
+     * ChannelSpec defines the desired state of Channel
+     */
     @JsonProperty("gates")
     public ChannelGate getGates() {
         return gates;
     }
 
+    /**
+     * ChannelSpec defines the desired state of Channel
+     */
     @JsonProperty("gates")
     public void setGates(ChannelGate gates) {
         this.gates = gates;
     }
 
+    /**
+     * Skip server TLS certificate verification for Git or Helm channel.
+     */
     @JsonProperty("insecureSkipVerify")
     public Boolean getInsecureSkipVerify() {
         return insecureSkipVerify;
     }
 
+    /**
+     * Skip server TLS certificate verification for Git or Helm channel.
+     */
     @JsonProperty("insecureSkipVerify")
     public void setInsecureSkipVerify(Boolean insecureSkipVerify) {
         this.insecureSkipVerify = insecureSkipVerify;
     }
 
+    /**
+     * For a `helmrepo` or `github` channel, pathname is the repo URL. For a `objectbucket` channel, pathname is the Object store URL with the name of the bucket.
+     */
     @JsonProperty("pathname")
     public String getPathname() {
         return pathname;
     }
 
+    /**
+     * For a `helmrepo` or `github` channel, pathname is the repo URL. For a `objectbucket` channel, pathname is the Object store URL with the name of the bucket.
+     */
     @JsonProperty("pathname")
     public void setPathname(String pathname) {
         this.pathname = pathname;
     }
 
+    /**
+     * ChannelSpec defines the desired state of Channel
+     */
     @JsonProperty("secretRef")
     public ObjectReference getSecretRef() {
         return secretRef;
     }
 
+    /**
+     * ChannelSpec defines the desired state of Channel
+     */
     @JsonProperty("secretRef")
     public void setSecretRef(ObjectReference secretRef) {
         this.secretRef = secretRef;
     }
 
+    /**
+     * A list of namespace names from which Deployables can be promoted.
+     */
     @JsonProperty("sourceNamespaces")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getSourceNamespaces() {
         return sourceNamespaces;
     }
 
+    /**
+     * A list of namespace names from which Deployables can be promoted.
+     */
     @JsonProperty("sourceNamespaces")
     public void setSourceNamespaces(List<String> sourceNamespaces) {
         this.sourceNamespaces = sourceNamespaces;
     }
 
+    /**
+     * ChannelSpec defines the desired state of Channel
+     */
     @JsonProperty("type")
     public String getType() {
         return type;
     }
 
+    /**
+     * ChannelSpec defines the desired state of Channel
+     */
     @JsonProperty("type")
     public void setType(String type) {
         this.type = type;

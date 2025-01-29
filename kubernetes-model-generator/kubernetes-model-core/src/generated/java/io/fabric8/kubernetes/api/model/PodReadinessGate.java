@@ -17,6 +17,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * PodReadinessGate contains the reference to a pod condition
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -49,11 +52,17 @@ public class PodReadinessGate implements Editable<PodReadinessGateBuilder>, Kube
         this.conditionType = conditionType;
     }
 
+    /**
+     * ConditionType refers to a condition in the pod's condition list with matching type.
+     */
     @JsonProperty("conditionType")
     public String getConditionType() {
         return conditionType;
     }
 
+    /**
+     * ConditionType refers to a condition in the pod's condition list with matching type.
+     */
     @JsonProperty("conditionType")
     public void setConditionType(String conditionType) {
         this.conditionType = conditionType;

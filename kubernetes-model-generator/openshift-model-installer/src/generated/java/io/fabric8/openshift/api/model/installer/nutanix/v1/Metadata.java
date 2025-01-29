@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Metadata contains Nutanix metadata (e.g. for uninstalling the cluster).
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -90,41 +93,65 @@ public class Metadata implements Editable<MetadataBuilder>, KubernetesResource
         this.username = username;
     }
 
+    /**
+     * Password is the password for the user to use to connect to the Prism Central.
+     */
     @JsonProperty("password")
     public String getPassword() {
         return password;
     }
 
+    /**
+     * Password is the password for the user to use to connect to the Prism Central.
+     */
     @JsonProperty("password")
     public void setPassword(String password) {
         this.password = password;
     }
 
+    /**
+     * Port is the port used to connect to the Prism Central.
+     */
     @JsonProperty("port")
     public String getPort() {
         return port;
     }
 
+    /**
+     * Port is the port used to connect to the Prism Central.
+     */
     @JsonProperty("port")
     public void setPort(String port) {
         this.port = port;
     }
 
+    /**
+     * PrismCentral is the domain name or IP address of the Prism Central.
+     */
     @JsonProperty("prismCentral")
     public String getPrismCentral() {
         return prismCentral;
     }
 
+    /**
+     * PrismCentral is the domain name or IP address of the Prism Central.
+     */
     @JsonProperty("prismCentral")
     public void setPrismCentral(String prismCentral) {
         this.prismCentral = prismCentral;
     }
 
+    /**
+     * Username is the name of the user to use to connect to the Prism Central.
+     */
     @JsonProperty("username")
     public String getUsername() {
         return username;
     }
 
+    /**
+     * Username is the name of the user to use to connect to the Prism Central.
+     */
     @JsonProperty("username")
     public void setUsername(String username) {
         this.username = username;

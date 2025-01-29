@@ -33,6 +33,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ACMEIssuerDNS01ProviderAcmeDNS is a structure containing the configuration for ACME-DNS servers
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -83,21 +86,33 @@ public class ACMEIssuerDNS01ProviderAcmeDNS implements Editable<ACMEIssuerDNS01P
         this.host = host;
     }
 
+    /**
+     * ACMEIssuerDNS01ProviderAcmeDNS is a structure containing the configuration for ACME-DNS servers
+     */
     @JsonProperty("accountSecretRef")
     public SecretKeySelector getAccountSecretRef() {
         return accountSecretRef;
     }
 
+    /**
+     * ACMEIssuerDNS01ProviderAcmeDNS is a structure containing the configuration for ACME-DNS servers
+     */
     @JsonProperty("accountSecretRef")
     public void setAccountSecretRef(SecretKeySelector accountSecretRef) {
         this.accountSecretRef = accountSecretRef;
     }
 
+    /**
+     * ACMEIssuerDNS01ProviderAcmeDNS is a structure containing the configuration for ACME-DNS servers
+     */
     @JsonProperty("host")
     public String getHost() {
         return host;
     }
 
+    /**
+     * ACMEIssuerDNS01ProviderAcmeDNS is a structure containing the configuration for ACME-DNS servers
+     */
     @JsonProperty("host")
     public void setHost(String host) {
         this.host = host;

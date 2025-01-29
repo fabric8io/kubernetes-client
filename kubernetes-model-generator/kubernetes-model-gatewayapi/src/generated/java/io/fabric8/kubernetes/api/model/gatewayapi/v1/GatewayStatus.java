@@ -35,6 +35,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * GatewayStatus defines the observed state of Gateway.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -92,34 +95,52 @@ public class GatewayStatus implements Editable<GatewayStatusBuilder>, Kubernetes
         this.listeners = listeners;
     }
 
+    /**
+     * Addresses lists the network addresses that have been bound to the Gateway.<br><p> <br><p> This list may differ from the addresses provided in the spec under some conditions:<br><p> <br><p>   &#42; no addresses are specified, all addresses are dynamically assigned<br><p>   &#42; a combination of specified and dynamic addresses are assigned<br><p>   &#42; a specified address was unusable (e.g. already in use)<br><p> <br><p> &lt;gateway:validateIPAddress&gt;
+     */
     @JsonProperty("addresses")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<GatewayStatusAddress> getAddresses() {
         return addresses;
     }
 
+    /**
+     * Addresses lists the network addresses that have been bound to the Gateway.<br><p> <br><p> This list may differ from the addresses provided in the spec under some conditions:<br><p> <br><p>   &#42; no addresses are specified, all addresses are dynamically assigned<br><p>   &#42; a combination of specified and dynamic addresses are assigned<br><p>   &#42; a specified address was unusable (e.g. already in use)<br><p> <br><p> &lt;gateway:validateIPAddress&gt;
+     */
     @JsonProperty("addresses")
     public void setAddresses(List<GatewayStatusAddress> addresses) {
         this.addresses = addresses;
     }
 
+    /**
+     * Conditions describe the current conditions of the Gateway.<br><p> <br><p> Implementations should prefer to express Gateway conditions using the `GatewayConditionType` and `GatewayConditionReason` constants so that operators and tools can converge on a common vocabulary to describe Gateway state.<br><p> <br><p> Known condition types are:<br><p> <br><p> &#42; "Accepted" &#42; "Programmed" &#42; "Ready"
+     */
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Condition> getConditions() {
         return conditions;
     }
 
+    /**
+     * Conditions describe the current conditions of the Gateway.<br><p> <br><p> Implementations should prefer to express Gateway conditions using the `GatewayConditionType` and `GatewayConditionReason` constants so that operators and tools can converge on a common vocabulary to describe Gateway state.<br><p> <br><p> Known condition types are:<br><p> <br><p> &#42; "Accepted" &#42; "Programmed" &#42; "Ready"
+     */
     @JsonProperty("conditions")
     public void setConditions(List<Condition> conditions) {
         this.conditions = conditions;
     }
 
+    /**
+     * Listeners provide status for each unique listener port defined in the Spec.
+     */
     @JsonProperty("listeners")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ListenerStatus> getListeners() {
         return listeners;
     }
 
+    /**
+     * Listeners provide status for each unique listener port defined in the Spec.
+     */
     @JsonProperty("listeners")
     public void setListeners(List<ListenerStatus> listeners) {
         this.listeners = listeners;

@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * VCenter stores the vCenter connection fields https://github.com/kubernetes/cloud-provider-vsphere/blob/master/pkg/common/config/types_yaml.go
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -97,52 +100,82 @@ public class VCenter implements Editable<VCenterBuilder>, KubernetesResource
         this.user = user;
     }
 
+    /**
+     * Datacenter in which VMs are located.
+     */
     @JsonProperty("datacenters")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getDatacenters() {
         return datacenters;
     }
 
+    /**
+     * Datacenter in which VMs are located.
+     */
     @JsonProperty("datacenters")
     public void setDatacenters(List<String> datacenters) {
         this.datacenters = datacenters;
     }
 
+    /**
+     * Password is the password for the user to use to connect to the vCenter.
+     */
     @JsonProperty("password")
     public String getPassword() {
         return password;
     }
 
+    /**
+     * Password is the password for the user to use to connect to the vCenter.
+     */
     @JsonProperty("password")
     public void setPassword(String password) {
         this.password = password;
     }
 
+    /**
+     * port is the TCP port that will be used to communicate to the vCenter endpoint. This is typically unchanged from the default of HTTPS TCP/443.
+     */
     @JsonProperty("port")
     public Integer getPort() {
         return port;
     }
 
+    /**
+     * port is the TCP port that will be used to communicate to the vCenter endpoint. This is typically unchanged from the default of HTTPS TCP/443.
+     */
     @JsonProperty("port")
     public void setPort(Integer port) {
         this.port = port;
     }
 
+    /**
+     * server is the fully-qualified domain name or the IP address of the vCenter server.
+     */
     @JsonProperty("server")
     public String getServer() {
         return server;
     }
 
+    /**
+     * server is the fully-qualified domain name or the IP address of the vCenter server.
+     */
     @JsonProperty("server")
     public void setServer(String server) {
         this.server = server;
     }
 
+    /**
+     * Username is the username that will be used to connect to vCenter
+     */
     @JsonProperty("user")
     public String getUser() {
         return user;
     }
 
+    /**
+     * Username is the username that will be used to connect to vCenter
+     */
     @JsonProperty("user")
     public void setUser(String user) {
         this.user = user;

@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * NetworkDataIPv6DHCP represents an ipv6 DHCP network object.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -89,32 +92,50 @@ public class NetworkDataIPv6DHCP implements Editable<NetworkDataIPv6DHCPBuilder>
         this.routes = routes;
     }
 
+    /**
+     * ID is the network ID (name)
+     */
     @JsonProperty("id")
     public String getId() {
         return id;
     }
 
+    /**
+     * ID is the network ID (name)
+     */
     @JsonProperty("id")
     public void setId(String id) {
         this.id = id;
     }
 
+    /**
+     * Link is the link on which the network applies
+     */
     @JsonProperty("link")
     public String getLink() {
         return link;
     }
 
+    /**
+     * Link is the link on which the network applies
+     */
     @JsonProperty("link")
     public void setLink(String link) {
         this.link = link;
     }
 
+    /**
+     * Routes contains a list of IPv6 routes
+     */
     @JsonProperty("routes")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<NetworkDataRoutev6> getRoutes() {
         return routes;
     }
 
+    /**
+     * Routes contains a list of IPv6 routes
+     */
     @JsonProperty("routes")
     public void setRoutes(List<NetworkDataRoutev6> routes) {
         this.routes = routes;

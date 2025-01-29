@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * AllowedHostPath defines the host volume conditions that will be enabled by a policy for pods to use. It requires the path prefix to be defined. Deprecated: use AllowedHostPath from policy API Group instead.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class AllowedHostPath implements Editable<AllowedHostPathBuilder>, Kubern
         this.readOnly = readOnly;
     }
 
+    /**
+     * pathPrefix is the path prefix that the host volume must match. It does not support `&#42;`. Trailing slashes are trimmed when validating the path prefix with a host path.<br><p> <br><p> Examples: `/foo` would allow `/foo`, `/foo/` and `/foo/bar` `/foo` would not allow `/food` or `/etc/foo`
+     */
     @JsonProperty("pathPrefix")
     public String getPathPrefix() {
         return pathPrefix;
     }
 
+    /**
+     * pathPrefix is the path prefix that the host volume must match. It does not support `&#42;`. Trailing slashes are trimmed when validating the path prefix with a host path.<br><p> <br><p> Examples: `/foo` would allow `/foo`, `/foo/` and `/foo/bar` `/foo` would not allow `/food` or `/etc/foo`
+     */
     @JsonProperty("pathPrefix")
     public void setPathPrefix(String pathPrefix) {
         this.pathPrefix = pathPrefix;
     }
 
+    /**
+     * when set to true, will allow host volumes matching the pathPrefix only if all volume mounts are readOnly.
+     */
     @JsonProperty("readOnly")
     public Boolean getReadOnly() {
         return readOnly;
     }
 
+    /**
+     * when set to true, will allow host volumes matching the pathPrefix only if all volume mounts are readOnly.
+     */
     @JsonProperty("readOnly")
     public void setReadOnly(Boolean readOnly) {
         this.readOnly = readOnly;

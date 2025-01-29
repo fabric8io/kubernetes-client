@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * BitbucketWebHookCause has information about a Bitbucket webhook that triggered a build.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class BitbucketWebHookCause implements Editable<BitbucketWebHookCauseBuil
         this.secret = secret;
     }
 
+    /**
+     * BitbucketWebHookCause has information about a Bitbucket webhook that triggered a build.
+     */
     @JsonProperty("revision")
     public SourceRevision getRevision() {
         return revision;
     }
 
+    /**
+     * BitbucketWebHookCause has information about a Bitbucket webhook that triggered a build.
+     */
     @JsonProperty("revision")
     public void setRevision(SourceRevision revision) {
         this.revision = revision;
     }
 
+    /**
+     * Secret is the obfuscated webhook secret that triggered a build.
+     */
     @JsonProperty("secret")
     public String getSecret() {
         return secret;
     }
 
+    /**
+     * Secret is the obfuscated webhook secret that triggered a build.
+     */
     @JsonProperty("secret")
     public void setSecret(String secret) {
         this.secret = secret;

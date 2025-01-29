@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * DiskEncryptionSet defines the configuration for a disk encryption set.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -86,31 +89,49 @@ public class DiskEncryptionSet implements Editable<DiskEncryptionSetBuilder>, Ku
         this.subscriptionId = subscriptionId;
     }
 
+    /**
+     * Name is the name of the disk encryption set.
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * Name is the name of the disk encryption set.
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * ResourceGroup defines the Azure resource group used by the disk encryption set.
+     */
     @JsonProperty("resourceGroup")
     public String getResourceGroup() {
         return resourceGroup;
     }
 
+    /**
+     * ResourceGroup defines the Azure resource group used by the disk encryption set.
+     */
     @JsonProperty("resourceGroup")
     public void setResourceGroup(String resourceGroup) {
         this.resourceGroup = resourceGroup;
     }
 
+    /**
+     * SubscriptionID defines the Azure subscription the disk encryption set is in.
+     */
     @JsonProperty("subscriptionId")
     public String getSubscriptionId() {
         return subscriptionId;
     }
 
+    /**
+     * SubscriptionID defines the Azure subscription the disk encryption set is in.
+     */
     @JsonProperty("subscriptionId")
     public void setSubscriptionId(String subscriptionId) {
         this.subscriptionId = subscriptionId;

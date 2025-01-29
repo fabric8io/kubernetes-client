@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ExternalIPConfig specifies some IP blocks relevant for the ExternalIP field of a Service resource.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -85,22 +88,34 @@ public class ExternalIPConfig implements Editable<ExternalIPConfigBuilder>, Kube
         this.policy = policy;
     }
 
+    /**
+     * autoAssignCIDRs is a list of CIDRs from which to automatically assign Service.ExternalIP. These are assigned when the service is of type LoadBalancer. In general, this is only useful for bare-metal clusters. In Openshift 3.x, this was misleadingly called "IngressIPs". Automatically assigned External IPs are not affected by any ExternalIPPolicy rules. Currently, only one entry may be provided.
+     */
     @JsonProperty("autoAssignCIDRs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getAutoAssignCIDRs() {
         return autoAssignCIDRs;
     }
 
+    /**
+     * autoAssignCIDRs is a list of CIDRs from which to automatically assign Service.ExternalIP. These are assigned when the service is of type LoadBalancer. In general, this is only useful for bare-metal clusters. In Openshift 3.x, this was misleadingly called "IngressIPs". Automatically assigned External IPs are not affected by any ExternalIPPolicy rules. Currently, only one entry may be provided.
+     */
     @JsonProperty("autoAssignCIDRs")
     public void setAutoAssignCIDRs(List<String> autoAssignCIDRs) {
         this.autoAssignCIDRs = autoAssignCIDRs;
     }
 
+    /**
+     * ExternalIPConfig specifies some IP blocks relevant for the ExternalIP field of a Service resource.
+     */
     @JsonProperty("policy")
     public ExternalIPPolicy getPolicy() {
         return policy;
     }
 
+    /**
+     * ExternalIPConfig specifies some IP blocks relevant for the ExternalIP field of a Service resource.
+     */
     @JsonProperty("policy")
     public void setPolicy(ExternalIPPolicy policy) {
         this.policy = policy;

@@ -82,21 +82,33 @@ public class IPv6OVNKubernetesConfig implements Editable<IPv6OVNKubernetesConfig
         this.internalTransitSwitchSubnet = internalTransitSwitchSubnet;
     }
 
+    /**
+     * internalJoinSubnet is a v6 subnet used internally by ovn-kubernetes in case the default one is being already used by something else. It must not overlap with any other subnet being used by OpenShift or by the node network. The size of the subnet must be larger than the number of nodes. The value cannot be changed after installation. The subnet must be large enough to accomadate one IP per node in your cluster The current default value is fd98::/48 The value must be in proper IPV6 CIDR format Note that IPV6 dual addresses are not permitted
+     */
     @JsonProperty("internalJoinSubnet")
     public String getInternalJoinSubnet() {
         return internalJoinSubnet;
     }
 
+    /**
+     * internalJoinSubnet is a v6 subnet used internally by ovn-kubernetes in case the default one is being already used by something else. It must not overlap with any other subnet being used by OpenShift or by the node network. The size of the subnet must be larger than the number of nodes. The value cannot be changed after installation. The subnet must be large enough to accomadate one IP per node in your cluster The current default value is fd98::/48 The value must be in proper IPV6 CIDR format Note that IPV6 dual addresses are not permitted
+     */
     @JsonProperty("internalJoinSubnet")
     public void setInternalJoinSubnet(String internalJoinSubnet) {
         this.internalJoinSubnet = internalJoinSubnet;
     }
 
+    /**
+     * internalTransitSwitchSubnet is a v4 subnet in IPV4 CIDR format used internally by OVN-Kubernetes for the distributed transit switch in the OVN Interconnect architecture that connects the cluster routers on each node together to enable east west traffic. The subnet chosen should not overlap with other networks specified for OVN-Kubernetes as well as other networks used on the host. The value cannot be changed after installation. When ommitted, this means no opinion and the platform is left to choose a reasonable default which is subject to change over time. The subnet must be large enough to accomadate one IP per node in your cluster The current default subnet is fd97::/64 The value must be in proper IPV6 CIDR format Note that IPV6 dual addresses are not permitted
+     */
     @JsonProperty("internalTransitSwitchSubnet")
     public String getInternalTransitSwitchSubnet() {
         return internalTransitSwitchSubnet;
     }
 
+    /**
+     * internalTransitSwitchSubnet is a v4 subnet in IPV4 CIDR format used internally by OVN-Kubernetes for the distributed transit switch in the OVN Interconnect architecture that connects the cluster routers on each node together to enable east west traffic. The subnet chosen should not overlap with other networks specified for OVN-Kubernetes as well as other networks used on the host. The value cannot be changed after installation. When ommitted, this means no opinion and the platform is left to choose a reasonable default which is subject to change over time. The subnet must be large enough to accomadate one IP per node in your cluster The current default subnet is fd97::/64 The value must be in proper IPV6 CIDR format Note that IPV6 dual addresses are not permitted
+     */
     @JsonProperty("internalTransitSwitchSubnet")
     public void setInternalTransitSwitchSubnet(String internalTransitSwitchSubnet) {
         this.internalTransitSwitchSubnet = internalTransitSwitchSubnet;

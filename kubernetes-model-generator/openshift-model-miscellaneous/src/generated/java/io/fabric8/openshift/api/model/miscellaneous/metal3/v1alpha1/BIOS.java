@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * BIOS describes the BIOS version on the host.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -86,31 +89,49 @@ public class BIOS implements Editable<BIOSBuilder>, KubernetesResource
         this.version = version;
     }
 
+    /**
+     * The release/build date for this BIOS
+     */
     @JsonProperty("date")
     public String getDate() {
         return date;
     }
 
+    /**
+     * The release/build date for this BIOS
+     */
     @JsonProperty("date")
     public void setDate(String date) {
         this.date = date;
     }
 
+    /**
+     * The vendor name for this BIOS
+     */
     @JsonProperty("vendor")
     public String getVendor() {
         return vendor;
     }
 
+    /**
+     * The vendor name for this BIOS
+     */
     @JsonProperty("vendor")
     public void setVendor(String vendor) {
         this.vendor = vendor;
     }
 
+    /**
+     * The version of the BIOS
+     */
     @JsonProperty("version")
     public String getVersion() {
         return version;
     }
 
+    /**
+     * The version of the BIOS
+     */
     @JsonProperty("version")
     public void setVersion(String version) {
         this.version = version;

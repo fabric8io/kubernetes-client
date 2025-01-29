@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ClusterPoolReference is a reference to a ClusterPool
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -94,51 +97,81 @@ public class ClusterPoolReference implements Editable<ClusterPoolReferenceBuilde
         this.poolName = poolName;
     }
 
+    /**
+     * ClaimName is the name of the ClusterClaim that claimed the cluster from the pool.
+     */
     @JsonProperty("claimName")
     public String getClaimName() {
         return claimName;
     }
 
+    /**
+     * ClaimName is the name of the ClusterClaim that claimed the cluster from the pool.
+     */
     @JsonProperty("claimName")
     public void setClaimName(String claimName) {
         this.claimName = claimName;
     }
 
+    /**
+     * ClusterPoolReference is a reference to a ClusterPool
+     */
     @JsonProperty("claimedTimestamp")
     public String getClaimedTimestamp() {
         return claimedTimestamp;
     }
 
+    /**
+     * ClusterPoolReference is a reference to a ClusterPool
+     */
     @JsonProperty("claimedTimestamp")
     public void setClaimedTimestamp(String claimedTimestamp) {
         this.claimedTimestamp = claimedTimestamp;
     }
 
+    /**
+     * ClusterPoolReference is a reference to a ClusterPool
+     */
     @JsonProperty("clusterDeploymentCustomization")
     public LocalObjectReference getClusterDeploymentCustomization() {
         return clusterDeploymentCustomization;
     }
 
+    /**
+     * ClusterPoolReference is a reference to a ClusterPool
+     */
     @JsonProperty("clusterDeploymentCustomization")
     public void setClusterDeploymentCustomization(LocalObjectReference clusterDeploymentCustomization) {
         this.clusterDeploymentCustomization = clusterDeploymentCustomization;
     }
 
+    /**
+     * Namespace is the namespace where the ClusterPool resides.
+     */
     @JsonProperty("namespace")
     public String getNamespace() {
         return namespace;
     }
 
+    /**
+     * Namespace is the namespace where the ClusterPool resides.
+     */
     @JsonProperty("namespace")
     public void setNamespace(String namespace) {
         this.namespace = namespace;
     }
 
+    /**
+     * PoolName is the name of the ClusterPool for which the cluster was created.
+     */
     @JsonProperty("poolName")
     public String getPoolName() {
         return poolName;
     }
 
+    /**
+     * PoolName is the name of the ClusterPool for which the cluster was created.
+     */
     @JsonProperty("poolName")
     public void setPoolName(String poolName) {
         this.poolName = poolName;

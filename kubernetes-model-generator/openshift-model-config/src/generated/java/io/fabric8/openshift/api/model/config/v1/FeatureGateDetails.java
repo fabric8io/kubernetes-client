@@ -90,33 +90,51 @@ public class FeatureGateDetails implements Editable<FeatureGateDetailsBuilder>, 
         this.version = version;
     }
 
+    /**
+     * disabled is a list of all feature gates that are disabled in the cluster for the named version.
+     */
     @JsonProperty("disabled")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<FeatureGateAttributes> getDisabled() {
         return disabled;
     }
 
+    /**
+     * disabled is a list of all feature gates that are disabled in the cluster for the named version.
+     */
     @JsonProperty("disabled")
     public void setDisabled(List<FeatureGateAttributes> disabled) {
         this.disabled = disabled;
     }
 
+    /**
+     * enabled is a list of all feature gates that are enabled in the cluster for the named version.
+     */
     @JsonProperty("enabled")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<FeatureGateAttributes> getEnabled() {
         return enabled;
     }
 
+    /**
+     * enabled is a list of all feature gates that are enabled in the cluster for the named version.
+     */
     @JsonProperty("enabled")
     public void setEnabled(List<FeatureGateAttributes> enabled) {
         this.enabled = enabled;
     }
 
+    /**
+     * version matches the version provided by the ClusterVersion and in the ClusterOperator.Status.Versions field.
+     */
     @JsonProperty("version")
     public String getVersion() {
         return version;
     }
 
+    /**
+     * version matches the version provided by the ClusterVersion and in the ClusterOperator.Status.Versions field.
+     */
     @JsonProperty("version")
     public void setVersion(String version) {
         this.version = version;

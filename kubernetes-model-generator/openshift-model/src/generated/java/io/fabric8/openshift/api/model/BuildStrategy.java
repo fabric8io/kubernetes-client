@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * BuildStrategy contains the details of how to perform a build.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -94,51 +97,81 @@ public class BuildStrategy implements Editable<BuildStrategyBuilder>, Kubernetes
         this.type = type;
     }
 
+    /**
+     * BuildStrategy contains the details of how to perform a build.
+     */
     @JsonProperty("customStrategy")
     public CustomBuildStrategy getCustomStrategy() {
         return customStrategy;
     }
 
+    /**
+     * BuildStrategy contains the details of how to perform a build.
+     */
     @JsonProperty("customStrategy")
     public void setCustomStrategy(CustomBuildStrategy customStrategy) {
         this.customStrategy = customStrategy;
     }
 
+    /**
+     * BuildStrategy contains the details of how to perform a build.
+     */
     @JsonProperty("dockerStrategy")
     public DockerBuildStrategy getDockerStrategy() {
         return dockerStrategy;
     }
 
+    /**
+     * BuildStrategy contains the details of how to perform a build.
+     */
     @JsonProperty("dockerStrategy")
     public void setDockerStrategy(DockerBuildStrategy dockerStrategy) {
         this.dockerStrategy = dockerStrategy;
     }
 
+    /**
+     * BuildStrategy contains the details of how to perform a build.
+     */
     @JsonProperty("jenkinsPipelineStrategy")
     public JenkinsPipelineBuildStrategy getJenkinsPipelineStrategy() {
         return jenkinsPipelineStrategy;
     }
 
+    /**
+     * BuildStrategy contains the details of how to perform a build.
+     */
     @JsonProperty("jenkinsPipelineStrategy")
     public void setJenkinsPipelineStrategy(JenkinsPipelineBuildStrategy jenkinsPipelineStrategy) {
         this.jenkinsPipelineStrategy = jenkinsPipelineStrategy;
     }
 
+    /**
+     * BuildStrategy contains the details of how to perform a build.
+     */
     @JsonProperty("sourceStrategy")
     public SourceBuildStrategy getSourceStrategy() {
         return sourceStrategy;
     }
 
+    /**
+     * BuildStrategy contains the details of how to perform a build.
+     */
     @JsonProperty("sourceStrategy")
     public void setSourceStrategy(SourceBuildStrategy sourceStrategy) {
         this.sourceStrategy = sourceStrategy;
     }
 
+    /**
+     * type is the kind of build strategy.
+     */
     @JsonProperty("type")
     public String getType() {
         return type;
     }
 
+    /**
+     * type is the kind of build strategy.
+     */
     @JsonProperty("type")
     public void setType(String type) {
         this.type = type;

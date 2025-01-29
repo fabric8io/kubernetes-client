@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * DNSSDConfig allows specifying a set of DNS domain names which are periodically queried to discover a list of targets. The DNS servers to be contacted are read from /etc/resolv.conf. See https://prometheus.io/docs/prometheus/latest/configuration/configuration/#dns_sd_config
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -93,42 +96,66 @@ public class DNSSDConfig implements Editable<DNSSDConfigBuilder>, KubernetesReso
         this.type = type;
     }
 
+    /**
+     * A list of DNS domain names to be queried.
+     */
     @JsonProperty("names")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getNames() {
         return names;
     }
 
+    /**
+     * A list of DNS domain names to be queried.
+     */
     @JsonProperty("names")
     public void setNames(List<String> names) {
         this.names = names;
     }
 
+    /**
+     * The port number used if the query type is not SRV Ignored for SRV records
+     */
     @JsonProperty("port")
     public Integer getPort() {
         return port;
     }
 
+    /**
+     * The port number used if the query type is not SRV Ignored for SRV records
+     */
     @JsonProperty("port")
     public void setPort(Integer port) {
         this.port = port;
     }
 
+    /**
+     * RefreshInterval configures the time after which the provided names are refreshed. If not set, Prometheus uses its default value.
+     */
     @JsonProperty("refreshInterval")
     public String getRefreshInterval() {
         return refreshInterval;
     }
 
+    /**
+     * RefreshInterval configures the time after which the provided names are refreshed. If not set, Prometheus uses its default value.
+     */
     @JsonProperty("refreshInterval")
     public void setRefreshInterval(String refreshInterval) {
         this.refreshInterval = refreshInterval;
     }
 
+    /**
+     * The type of DNS query to perform. One of SRV, A, AAAA, MX or NS. If not set, Prometheus uses its default value.<br><p> <br><p> When set to NS, it requires Prometheus &gt;= v2.49.0. When set to MX, it requires Prometheus &gt;= v2.38.0
+     */
     @JsonProperty("type")
     public String getType() {
         return type;
     }
 
+    /**
+     * The type of DNS query to perform. One of SRV, A, AAAA, MX or NS. If not set, Prometheus uses its default value.<br><p> <br><p> When set to NS, it requires Prometheus &gt;= v2.49.0. When set to MX, it requires Prometheus &gt;= v2.38.0
+     */
     @JsonProperty("type")
     public void setType(String type) {
         this.type = type;

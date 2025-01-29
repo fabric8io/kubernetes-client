@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ConfigurationSpec holds the desired state of the Configuration (from the client).
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -78,11 +81,17 @@ public class ConfigurationSpec implements Editable<ConfigurationSpecBuilder>, Ku
         this.template = template;
     }
 
+    /**
+     * ConfigurationSpec holds the desired state of the Configuration (from the client).
+     */
     @JsonProperty("template")
     public RevisionTemplateSpec getTemplate() {
         return template;
     }
 
+    /**
+     * ConfigurationSpec holds the desired state of the Configuration (from the client).
+     */
     @JsonProperty("template")
     public void setTemplate(RevisionTemplateSpec template) {
         this.template = template;

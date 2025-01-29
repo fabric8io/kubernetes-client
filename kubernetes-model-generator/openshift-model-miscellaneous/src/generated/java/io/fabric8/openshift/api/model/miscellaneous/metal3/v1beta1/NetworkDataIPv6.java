@@ -35,6 +35,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * NetworkDataIPv6 represents an ipv6 static network object.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -98,52 +101,82 @@ public class NetworkDataIPv6 implements Editable<NetworkDataIPv6Builder>, Kubern
         this.routes = routes;
     }
 
+    /**
+     * NetworkDataIPv6 represents an ipv6 static network object.
+     */
     @JsonProperty("fromPoolRef")
     public TypedLocalObjectReference getFromPoolRef() {
         return fromPoolRef;
     }
 
+    /**
+     * NetworkDataIPv6 represents an ipv6 static network object.
+     */
     @JsonProperty("fromPoolRef")
     public void setFromPoolRef(TypedLocalObjectReference fromPoolRef) {
         this.fromPoolRef = fromPoolRef;
     }
 
+    /**
+     * ID is the network ID (name)
+     */
     @JsonProperty("id")
     public String getId() {
         return id;
     }
 
+    /**
+     * ID is the network ID (name)
+     */
     @JsonProperty("id")
     public void setId(String id) {
         this.id = id;
     }
 
+    /**
+     * IPAddressFromIPPool contains the name of the IPPool to use to get an ip address
+     */
     @JsonProperty("ipAddressFromIPPool")
     public String getIpAddressFromIPPool() {
         return ipAddressFromIPPool;
     }
 
+    /**
+     * IPAddressFromIPPool contains the name of the IPPool to use to get an ip address
+     */
     @JsonProperty("ipAddressFromIPPool")
     public void setIpAddressFromIPPool(String ipAddressFromIPPool) {
         this.ipAddressFromIPPool = ipAddressFromIPPool;
     }
 
+    /**
+     * Link is the link on which the network applies
+     */
     @JsonProperty("link")
     public String getLink() {
         return link;
     }
 
+    /**
+     * Link is the link on which the network applies
+     */
     @JsonProperty("link")
     public void setLink(String link) {
         this.link = link;
     }
 
+    /**
+     * Routes contains a list of IPv6 routes
+     */
     @JsonProperty("routes")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<NetworkDataRoutev6> getRoutes() {
         return routes;
     }
 
+    /**
+     * Routes contains a list of IPv6 routes
+     */
     @JsonProperty("routes")
     public void setRoutes(List<NetworkDataRoutev6> routes) {
         this.routes = routes;

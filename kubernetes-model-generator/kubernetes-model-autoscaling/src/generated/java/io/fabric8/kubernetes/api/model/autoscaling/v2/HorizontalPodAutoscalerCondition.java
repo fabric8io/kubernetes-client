@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * HorizontalPodAutoscalerCondition describes the state of a HorizontalPodAutoscaler at a certain point.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -94,51 +97,81 @@ public class HorizontalPodAutoscalerCondition implements Editable<HorizontalPodA
         this.type = type;
     }
 
+    /**
+     * HorizontalPodAutoscalerCondition describes the state of a HorizontalPodAutoscaler at a certain point.
+     */
     @JsonProperty("lastTransitionTime")
     public String getLastTransitionTime() {
         return lastTransitionTime;
     }
 
+    /**
+     * HorizontalPodAutoscalerCondition describes the state of a HorizontalPodAutoscaler at a certain point.
+     */
     @JsonProperty("lastTransitionTime")
     public void setLastTransitionTime(String lastTransitionTime) {
         this.lastTransitionTime = lastTransitionTime;
     }
 
+    /**
+     * message is a human-readable explanation containing details about the transition
+     */
     @JsonProperty("message")
     public String getMessage() {
         return message;
     }
 
+    /**
+     * message is a human-readable explanation containing details about the transition
+     */
     @JsonProperty("message")
     public void setMessage(String message) {
         this.message = message;
     }
 
+    /**
+     * reason is the reason for the condition's last transition.
+     */
     @JsonProperty("reason")
     public String getReason() {
         return reason;
     }
 
+    /**
+     * reason is the reason for the condition's last transition.
+     */
     @JsonProperty("reason")
     public void setReason(String reason) {
         this.reason = reason;
     }
 
+    /**
+     * status is the status of the condition (True, False, Unknown)
+     */
     @JsonProperty("status")
     public String getStatus() {
         return status;
     }
 
+    /**
+     * status is the status of the condition (True, False, Unknown)
+     */
     @JsonProperty("status")
     public void setStatus(String status) {
         this.status = status;
     }
 
+    /**
+     * type describes the current condition
+     */
     @JsonProperty("type")
     public String getType() {
         return type;
     }
 
+    /**
+     * type describes the current condition
+     */
     @JsonProperty("type")
     public void setType(String type) {
         this.type = type;

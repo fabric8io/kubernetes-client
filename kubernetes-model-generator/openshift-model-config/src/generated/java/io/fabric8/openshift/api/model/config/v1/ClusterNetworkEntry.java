@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ClusterNetworkEntry is a contiguous block of IP addresses from which pod IPs are allocated.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class ClusterNetworkEntry implements Editable<ClusterNetworkEntryBuilder>
         this.hostPrefix = hostPrefix;
     }
 
+    /**
+     * The complete block for pod IPs.
+     */
     @JsonProperty("cidr")
     public String getCidr() {
         return cidr;
     }
 
+    /**
+     * The complete block for pod IPs.
+     */
     @JsonProperty("cidr")
     public void setCidr(String cidr) {
         this.cidr = cidr;
     }
 
+    /**
+     * The size (prefix) of block to allocate to each node. If this field is not used by the plugin, it can be left unset.
+     */
     @JsonProperty("hostPrefix")
     public Long getHostPrefix() {
         return hostPrefix;
     }
 
+    /**
+     * The size (prefix) of block to allocate to each node. If this field is not used by the plugin, it can be left unset.
+     */
     @JsonProperty("hostPrefix")
     public void setHostPrefix(Long hostPrefix) {
         this.hostPrefix = hostPrefix;

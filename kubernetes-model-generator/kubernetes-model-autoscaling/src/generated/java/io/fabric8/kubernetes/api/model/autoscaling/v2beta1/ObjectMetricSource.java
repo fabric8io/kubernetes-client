@@ -33,6 +33,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ObjectMetricSource indicates how to scale on a metric describing a kubernetes object (for example, hits-per-second on an Ingress object).
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -95,51 +98,81 @@ public class ObjectMetricSource implements Editable<ObjectMetricSourceBuilder>, 
         this.targetValue = targetValue;
     }
 
+    /**
+     * ObjectMetricSource indicates how to scale on a metric describing a kubernetes object (for example, hits-per-second on an Ingress object).
+     */
     @JsonProperty("averageValue")
     public Quantity getAverageValue() {
         return averageValue;
     }
 
+    /**
+     * ObjectMetricSource indicates how to scale on a metric describing a kubernetes object (for example, hits-per-second on an Ingress object).
+     */
     @JsonProperty("averageValue")
     public void setAverageValue(Quantity averageValue) {
         this.averageValue = averageValue;
     }
 
+    /**
+     * metricName is the name of the metric in question.
+     */
     @JsonProperty("metricName")
     public String getMetricName() {
         return metricName;
     }
 
+    /**
+     * metricName is the name of the metric in question.
+     */
     @JsonProperty("metricName")
     public void setMetricName(String metricName) {
         this.metricName = metricName;
     }
 
+    /**
+     * ObjectMetricSource indicates how to scale on a metric describing a kubernetes object (for example, hits-per-second on an Ingress object).
+     */
     @JsonProperty("selector")
     public LabelSelector getSelector() {
         return selector;
     }
 
+    /**
+     * ObjectMetricSource indicates how to scale on a metric describing a kubernetes object (for example, hits-per-second on an Ingress object).
+     */
     @JsonProperty("selector")
     public void setSelector(LabelSelector selector) {
         this.selector = selector;
     }
 
+    /**
+     * ObjectMetricSource indicates how to scale on a metric describing a kubernetes object (for example, hits-per-second on an Ingress object).
+     */
     @JsonProperty("target")
     public CrossVersionObjectReference getTarget() {
         return target;
     }
 
+    /**
+     * ObjectMetricSource indicates how to scale on a metric describing a kubernetes object (for example, hits-per-second on an Ingress object).
+     */
     @JsonProperty("target")
     public void setTarget(CrossVersionObjectReference target) {
         this.target = target;
     }
 
+    /**
+     * ObjectMetricSource indicates how to scale on a metric describing a kubernetes object (for example, hits-per-second on an Ingress object).
+     */
     @JsonProperty("targetValue")
     public Quantity getTargetValue() {
         return targetValue;
     }
 
+    /**
+     * ObjectMetricSource indicates how to scale on a metric describing a kubernetes object (for example, hits-per-second on an Ingress object).
+     */
     @JsonProperty("targetValue")
     public void setTargetValue(Quantity targetValue) {
         this.targetValue = targetValue;

@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * OSImage is the image to use for the OS of a machine.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -94,51 +97,81 @@ public class OSImage implements Editable<OSImageBuilder>, KubernetesResource
         this.version = version;
     }
 
+    /**
+     * Offer is the offer of the image.
+     */
     @JsonProperty("offer")
     public String getOffer() {
         return offer;
     }
 
+    /**
+     * Offer is the offer of the image.
+     */
     @JsonProperty("offer")
     public void setOffer(String offer) {
         this.offer = offer;
     }
 
+    /**
+     * Plan is the purchase plan of the image. If omitted, it defaults to "WithPurchasePlan".
+     */
     @JsonProperty("plan")
     public String getPlan() {
         return plan;
     }
 
+    /**
+     * Plan is the purchase plan of the image. If omitted, it defaults to "WithPurchasePlan".
+     */
     @JsonProperty("plan")
     public void setPlan(String plan) {
         this.plan = plan;
     }
 
+    /**
+     * Publisher is the publisher of the image.
+     */
     @JsonProperty("publisher")
     public String getPublisher() {
         return publisher;
     }
 
+    /**
+     * Publisher is the publisher of the image.
+     */
     @JsonProperty("publisher")
     public void setPublisher(String publisher) {
         this.publisher = publisher;
     }
 
+    /**
+     * SKU is the SKU of the image.
+     */
     @JsonProperty("sku")
     public String getSku() {
         return sku;
     }
 
+    /**
+     * SKU is the SKU of the image.
+     */
     @JsonProperty("sku")
     public void setSku(String sku) {
         this.sku = sku;
     }
 
+    /**
+     * Version is the version of the image.
+     */
     @JsonProperty("version")
     public String getVersion() {
         return version;
     }
 
+    /**
+     * Version is the version of the image.
+     */
     @JsonProperty("version")
     public void setVersion(String version) {
         this.version = version;

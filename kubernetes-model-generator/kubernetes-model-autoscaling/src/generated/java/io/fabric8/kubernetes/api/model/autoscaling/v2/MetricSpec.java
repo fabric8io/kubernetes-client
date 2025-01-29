@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * MetricSpec specifies how to scale based on a single metric (only `type` and one other matching field should be set at once).
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -98,61 +101,97 @@ public class MetricSpec implements Editable<MetricSpecBuilder>, KubernetesResour
         this.type = type;
     }
 
+    /**
+     * MetricSpec specifies how to scale based on a single metric (only `type` and one other matching field should be set at once).
+     */
     @JsonProperty("containerResource")
     public ContainerResourceMetricSource getContainerResource() {
         return containerResource;
     }
 
+    /**
+     * MetricSpec specifies how to scale based on a single metric (only `type` and one other matching field should be set at once).
+     */
     @JsonProperty("containerResource")
     public void setContainerResource(ContainerResourceMetricSource containerResource) {
         this.containerResource = containerResource;
     }
 
+    /**
+     * MetricSpec specifies how to scale based on a single metric (only `type` and one other matching field should be set at once).
+     */
     @JsonProperty("external")
     public ExternalMetricSource getExternal() {
         return external;
     }
 
+    /**
+     * MetricSpec specifies how to scale based on a single metric (only `type` and one other matching field should be set at once).
+     */
     @JsonProperty("external")
     public void setExternal(ExternalMetricSource external) {
         this.external = external;
     }
 
+    /**
+     * MetricSpec specifies how to scale based on a single metric (only `type` and one other matching field should be set at once).
+     */
     @JsonProperty("object")
     public ObjectMetricSource getObject() {
         return object;
     }
 
+    /**
+     * MetricSpec specifies how to scale based on a single metric (only `type` and one other matching field should be set at once).
+     */
     @JsonProperty("object")
     public void setObject(ObjectMetricSource object) {
         this.object = object;
     }
 
+    /**
+     * MetricSpec specifies how to scale based on a single metric (only `type` and one other matching field should be set at once).
+     */
     @JsonProperty("pods")
     public PodsMetricSource getPods() {
         return pods;
     }
 
+    /**
+     * MetricSpec specifies how to scale based on a single metric (only `type` and one other matching field should be set at once).
+     */
     @JsonProperty("pods")
     public void setPods(PodsMetricSource pods) {
         this.pods = pods;
     }
 
+    /**
+     * MetricSpec specifies how to scale based on a single metric (only `type` and one other matching field should be set at once).
+     */
     @JsonProperty("resource")
     public ResourceMetricSource getResource() {
         return resource;
     }
 
+    /**
+     * MetricSpec specifies how to scale based on a single metric (only `type` and one other matching field should be set at once).
+     */
     @JsonProperty("resource")
     public void setResource(ResourceMetricSource resource) {
         this.resource = resource;
     }
 
+    /**
+     * type is the type of metric source.  It should be one of "ContainerResource", "External", "Object", "Pods" or "Resource", each mapping to a matching field in the object.
+     */
     @JsonProperty("type")
     public String getType() {
         return type;
     }
 
+    /**
+     * type is the type of metric source.  It should be one of "ContainerResource", "External", "Object", "Pods" or "Resource", each mapping to a matching field in the object.
+     */
     @JsonProperty("type")
     public void setType(String type) {
         this.type = type;

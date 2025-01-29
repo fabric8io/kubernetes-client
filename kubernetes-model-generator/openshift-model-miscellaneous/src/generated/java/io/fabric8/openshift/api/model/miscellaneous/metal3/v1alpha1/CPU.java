@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * CPU describes one processor on the host.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -97,52 +100,82 @@ public class CPU implements Editable<CPUBuilder>, KubernetesResource
         this.model = model;
     }
 
+    /**
+     * CPU describes one processor on the host.
+     */
     @JsonProperty("arch")
     public String getArch() {
         return arch;
     }
 
+    /**
+     * CPU describes one processor on the host.
+     */
     @JsonProperty("arch")
     public void setArch(String arch) {
         this.arch = arch;
     }
 
+    /**
+     * CPU describes one processor on the host.
+     */
     @JsonProperty("clockMegahertz")
     public Double getClockMegahertz() {
         return clockMegahertz;
     }
 
+    /**
+     * CPU describes one processor on the host.
+     */
     @JsonProperty("clockMegahertz")
     public void setClockMegahertz(Double clockMegahertz) {
         this.clockMegahertz = clockMegahertz;
     }
 
+    /**
+     * CPU describes one processor on the host.
+     */
     @JsonProperty("count")
     public Integer getCount() {
         return count;
     }
 
+    /**
+     * CPU describes one processor on the host.
+     */
     @JsonProperty("count")
     public void setCount(Integer count) {
         this.count = count;
     }
 
+    /**
+     * CPU describes one processor on the host.
+     */
     @JsonProperty("flags")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getFlags() {
         return flags;
     }
 
+    /**
+     * CPU describes one processor on the host.
+     */
     @JsonProperty("flags")
     public void setFlags(List<String> flags) {
         this.flags = flags;
     }
 
+    /**
+     * CPU describes one processor on the host.
+     */
     @JsonProperty("model")
     public String getModel() {
         return model;
     }
 
+    /**
+     * CPU describes one processor on the host.
+     */
     @JsonProperty("model")
     public void setModel(String model) {
         this.model = model;

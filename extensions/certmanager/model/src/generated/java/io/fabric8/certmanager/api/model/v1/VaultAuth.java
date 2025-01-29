@@ -33,6 +33,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * VaultAuth is configuration used to authenticate with a Vault server. The order of precedence is [`tokenSecretRef`, `appRole`, `clientCertificate` or `kubernetes`].
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -91,41 +94,65 @@ public class VaultAuth implements Editable<VaultAuthBuilder>, KubernetesResource
         this.tokenSecretRef = tokenSecretRef;
     }
 
+    /**
+     * VaultAuth is configuration used to authenticate with a Vault server. The order of precedence is [`tokenSecretRef`, `appRole`, `clientCertificate` or `kubernetes`].
+     */
     @JsonProperty("appRole")
     public VaultAppRole getAppRole() {
         return appRole;
     }
 
+    /**
+     * VaultAuth is configuration used to authenticate with a Vault server. The order of precedence is [`tokenSecretRef`, `appRole`, `clientCertificate` or `kubernetes`].
+     */
     @JsonProperty("appRole")
     public void setAppRole(VaultAppRole appRole) {
         this.appRole = appRole;
     }
 
+    /**
+     * VaultAuth is configuration used to authenticate with a Vault server. The order of precedence is [`tokenSecretRef`, `appRole`, `clientCertificate` or `kubernetes`].
+     */
     @JsonProperty("clientCertificate")
     public VaultClientCertificateAuth getClientCertificate() {
         return clientCertificate;
     }
 
+    /**
+     * VaultAuth is configuration used to authenticate with a Vault server. The order of precedence is [`tokenSecretRef`, `appRole`, `clientCertificate` or `kubernetes`].
+     */
     @JsonProperty("clientCertificate")
     public void setClientCertificate(VaultClientCertificateAuth clientCertificate) {
         this.clientCertificate = clientCertificate;
     }
 
+    /**
+     * VaultAuth is configuration used to authenticate with a Vault server. The order of precedence is [`tokenSecretRef`, `appRole`, `clientCertificate` or `kubernetes`].
+     */
     @JsonProperty("kubernetes")
     public VaultKubernetesAuth getKubernetes() {
         return kubernetes;
     }
 
+    /**
+     * VaultAuth is configuration used to authenticate with a Vault server. The order of precedence is [`tokenSecretRef`, `appRole`, `clientCertificate` or `kubernetes`].
+     */
     @JsonProperty("kubernetes")
     public void setKubernetes(VaultKubernetesAuth kubernetes) {
         this.kubernetes = kubernetes;
     }
 
+    /**
+     * VaultAuth is configuration used to authenticate with a Vault server. The order of precedence is [`tokenSecretRef`, `appRole`, `clientCertificate` or `kubernetes`].
+     */
     @JsonProperty("tokenSecretRef")
     public SecretKeySelector getTokenSecretRef() {
         return tokenSecretRef;
     }
 
+    /**
+     * VaultAuth is configuration used to authenticate with a Vault server. The order of precedence is [`tokenSecretRef`, `appRole`, `clientCertificate` or `kubernetes`].
+     */
     @JsonProperty("tokenSecretRef")
     public void setTokenSecretRef(SecretKeySelector tokenSecretRef) {
         this.tokenSecretRef = tokenSecretRef;

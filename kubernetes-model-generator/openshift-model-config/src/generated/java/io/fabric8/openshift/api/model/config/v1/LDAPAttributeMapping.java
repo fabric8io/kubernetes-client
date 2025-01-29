@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * LDAPAttributeMapping maps LDAP attributes to OpenShift identity fields
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -96,45 +99,69 @@ public class LDAPAttributeMapping implements Editable<LDAPAttributeMappingBuilde
         this.preferredUsername = preferredUsername;
     }
 
+    /**
+     * email is the list of attributes whose values should be used as the email address. Optional. If unspecified, no email is set for the identity
+     */
     @JsonProperty("email")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getEmail() {
         return email;
     }
 
+    /**
+     * email is the list of attributes whose values should be used as the email address. Optional. If unspecified, no email is set for the identity
+     */
     @JsonProperty("email")
     public void setEmail(List<String> email) {
         this.email = email;
     }
 
+    /**
+     * id is the list of attributes whose values should be used as the user ID. Required. First non-empty attribute is used. At least one attribute is required. If none of the listed attribute have a value, authentication fails. LDAP standard identity attribute is "dn"
+     */
     @JsonProperty("id")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getId() {
         return id;
     }
 
+    /**
+     * id is the list of attributes whose values should be used as the user ID. Required. First non-empty attribute is used. At least one attribute is required. If none of the listed attribute have a value, authentication fails. LDAP standard identity attribute is "dn"
+     */
     @JsonProperty("id")
     public void setId(List<String> id) {
         this.id = id;
     }
 
+    /**
+     * name is the list of attributes whose values should be used as the display name. Optional. If unspecified, no display name is set for the identity LDAP standard display name attribute is "cn"
+     */
     @JsonProperty("name")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getName() {
         return name;
     }
 
+    /**
+     * name is the list of attributes whose values should be used as the display name. Optional. If unspecified, no display name is set for the identity LDAP standard display name attribute is "cn"
+     */
     @JsonProperty("name")
     public void setName(List<String> name) {
         this.name = name;
     }
 
+    /**
+     * preferredUsername is the list of attributes whose values should be used as the preferred username. LDAP standard login attribute is "uid"
+     */
     @JsonProperty("preferredUsername")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getPreferredUsername() {
         return preferredUsername;
     }
 
+    /**
+     * preferredUsername is the list of attributes whose values should be used as the preferred username. LDAP standard login attribute is "uid"
+     */
     @JsonProperty("preferredUsername")
     public void setPreferredUsername(List<String> preferredUsername) {
         this.preferredUsername = preferredUsername;

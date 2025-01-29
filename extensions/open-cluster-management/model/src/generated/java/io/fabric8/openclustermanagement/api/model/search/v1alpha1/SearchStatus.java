@@ -35,6 +35,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * SearchStatus defines the observed state of Search.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -90,32 +93,50 @@ public class SearchStatus implements Editable<SearchStatusBuilder>, KubernetesRe
         this.storage = storage;
     }
 
+    /**
+     * Conditions
+     */
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Condition> getConditions() {
         return conditions;
     }
 
+    /**
+     * Conditions
+     */
     @JsonProperty("conditions")
     public void setConditions(List<Condition> conditions) {
         this.conditions = conditions;
     }
 
+    /**
+     * Database used by Search.
+     */
     @JsonProperty("db")
     public String getDb() {
         return db;
     }
 
+    /**
+     * Database used by Search.
+     */
     @JsonProperty("db")
     public void setDb(String db) {
         this.db = db;
     }
 
+    /**
+     * Storage used by database
+     */
     @JsonProperty("storage")
     public String getStorage() {
         return storage;
     }
 
+    /**
+     * Storage used by database
+     */
     @JsonProperty("storage")
     public void setStorage(String storage) {
         this.storage = storage;

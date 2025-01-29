@@ -33,6 +33,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Metal3MachineSpec defines the desired state of Metal3Machine.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -111,91 +114,145 @@ public class Metal3MachineSpec implements Editable<Metal3MachineSpecBuilder>, Ku
         this.userData = userData;
     }
 
+    /**
+     * When set to disabled, automated cleaning of host disks will be skipped during provisioning and deprovisioning.
+     */
     @JsonProperty("automatedCleaningMode")
     public String getAutomatedCleaningMode() {
         return automatedCleaningMode;
     }
 
+    /**
+     * When set to disabled, automated cleaning of host disks will be skipped during provisioning and deprovisioning.
+     */
     @JsonProperty("automatedCleaningMode")
     public void setAutomatedCleaningMode(String automatedCleaningMode) {
         this.automatedCleaningMode = automatedCleaningMode;
     }
 
+    /**
+     * Metal3MachineSpec defines the desired state of Metal3Machine.
+     */
     @JsonProperty("customDeploy")
     public CustomDeploy getCustomDeploy() {
         return customDeploy;
     }
 
+    /**
+     * Metal3MachineSpec defines the desired state of Metal3Machine.
+     */
     @JsonProperty("customDeploy")
     public void setCustomDeploy(CustomDeploy customDeploy) {
         this.customDeploy = customDeploy;
     }
 
+    /**
+     * Metal3MachineSpec defines the desired state of Metal3Machine.
+     */
     @JsonProperty("dataTemplate")
     public ObjectReference getDataTemplate() {
         return dataTemplate;
     }
 
+    /**
+     * Metal3MachineSpec defines the desired state of Metal3Machine.
+     */
     @JsonProperty("dataTemplate")
     public void setDataTemplate(ObjectReference dataTemplate) {
         this.dataTemplate = dataTemplate;
     }
 
+    /**
+     * Metal3MachineSpec defines the desired state of Metal3Machine.
+     */
     @JsonProperty("hostSelector")
     public HostSelector getHostSelector() {
         return hostSelector;
     }
 
+    /**
+     * Metal3MachineSpec defines the desired state of Metal3Machine.
+     */
     @JsonProperty("hostSelector")
     public void setHostSelector(HostSelector hostSelector) {
         this.hostSelector = hostSelector;
     }
 
+    /**
+     * Metal3MachineSpec defines the desired state of Metal3Machine.
+     */
     @JsonProperty("image")
     public Image getImage() {
         return image;
     }
 
+    /**
+     * Metal3MachineSpec defines the desired state of Metal3Machine.
+     */
     @JsonProperty("image")
     public void setImage(Image image) {
         this.image = image;
     }
 
+    /**
+     * Metal3MachineSpec defines the desired state of Metal3Machine.
+     */
     @JsonProperty("metaData")
     public SecretReference getMetaData() {
         return metaData;
     }
 
+    /**
+     * Metal3MachineSpec defines the desired state of Metal3Machine.
+     */
     @JsonProperty("metaData")
     public void setMetaData(SecretReference metaData) {
         this.metaData = metaData;
     }
 
+    /**
+     * Metal3MachineSpec defines the desired state of Metal3Machine.
+     */
     @JsonProperty("networkData")
     public SecretReference getNetworkData() {
         return networkData;
     }
 
+    /**
+     * Metal3MachineSpec defines the desired state of Metal3Machine.
+     */
     @JsonProperty("networkData")
     public void setNetworkData(SecretReference networkData) {
         this.networkData = networkData;
     }
 
+    /**
+     * ProviderID will be the Metal3 machine in ProviderID format (metal3://&lt;bmh-uuid&gt;)
+     */
     @JsonProperty("providerID")
     public String getProviderID() {
         return providerID;
     }
 
+    /**
+     * ProviderID will be the Metal3 machine in ProviderID format (metal3://&lt;bmh-uuid&gt;)
+     */
     @JsonProperty("providerID")
     public void setProviderID(String providerID) {
         this.providerID = providerID;
     }
 
+    /**
+     * Metal3MachineSpec defines the desired state of Metal3Machine.
+     */
     @JsonProperty("userData")
     public SecretReference getUserData() {
         return userData;
     }
 
+    /**
+     * Metal3MachineSpec defines the desired state of Metal3Machine.
+     */
     @JsonProperty("userData")
     public void setUserData(SecretReference userData) {
         this.userData = userData;

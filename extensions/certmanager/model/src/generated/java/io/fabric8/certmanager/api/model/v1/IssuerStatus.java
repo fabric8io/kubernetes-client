@@ -35,6 +35,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * IssuerStatus contains status information about an Issuer
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -86,22 +89,34 @@ public class IssuerStatus implements Editable<IssuerStatusBuilder>, KubernetesRe
         this.conditions = conditions;
     }
 
+    /**
+     * IssuerStatus contains status information about an Issuer
+     */
     @JsonProperty("acme")
     public ACMEIssuerStatus getAcme() {
         return acme;
     }
 
+    /**
+     * IssuerStatus contains status information about an Issuer
+     */
     @JsonProperty("acme")
     public void setAcme(ACMEIssuerStatus acme) {
         this.acme = acme;
     }
 
+    /**
+     * List of status conditions to indicate the status of a CertificateRequest. Known condition types are `Ready`.
+     */
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<IssuerCondition> getConditions() {
         return conditions;
     }
 
+    /**
+     * List of status conditions to indicate the status of a CertificateRequest. Known condition types are `Ready`.
+     */
     @JsonProperty("conditions")
     public void setConditions(List<IssuerCondition> conditions) {
         this.conditions = conditions;

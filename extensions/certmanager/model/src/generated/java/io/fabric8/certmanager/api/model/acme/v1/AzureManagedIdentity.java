@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * AzureManagedIdentity contains the configuration for Azure Workload Identity or Azure Managed Service Identity If the AZURE_FEDERATED_TOKEN_FILE environment variable is set, the Azure Workload Identity will be used. Otherwise, we fall-back to using Azure Managed Service Identity.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class AzureManagedIdentity implements Editable<AzureManagedIdentityBuilde
         this.resourceID = resourceID;
     }
 
+    /**
+     * client ID of the managed identity, can not be used at the same time as resourceID
+     */
     @JsonProperty("clientID")
     public String getClientID() {
         return clientID;
     }
 
+    /**
+     * client ID of the managed identity, can not be used at the same time as resourceID
+     */
     @JsonProperty("clientID")
     public void setClientID(String clientID) {
         this.clientID = clientID;
     }
 
+    /**
+     * resource ID of the managed identity, can not be used at the same time as clientID Cannot be used for Azure Managed Service Identity
+     */
     @JsonProperty("resourceID")
     public String getResourceID() {
         return resourceID;
     }
 
+    /**
+     * resource ID of the managed identity, can not be used at the same time as clientID Cannot be used for Azure Managed Service Identity
+     */
     @JsonProperty("resourceID")
     public void setResourceID(String resourceID) {
         this.resourceID = resourceID;

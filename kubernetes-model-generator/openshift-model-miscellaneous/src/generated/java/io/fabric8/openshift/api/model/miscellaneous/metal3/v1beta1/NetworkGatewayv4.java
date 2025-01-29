@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * NetworkGatewayv4 represents a gateway, given as a string or as a reference to a Metal3IPPool.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class NetworkGatewayv4 implements Editable<NetworkGatewayv4Builder>, Kube
         this.string = string;
     }
 
+    /**
+     * FromIPPool is the name of the IPPool to fetch the gateway from
+     */
     @JsonProperty("fromIPPool")
     public String getFromIPPool() {
         return fromIPPool;
     }
 
+    /**
+     * FromIPPool is the name of the IPPool to fetch the gateway from
+     */
     @JsonProperty("fromIPPool")
     public void setFromIPPool(String fromIPPool) {
         this.fromIPPool = fromIPPool;
     }
 
+    /**
+     * String is the gateway given as a string
+     */
     @JsonProperty("string")
     public String getString() {
         return string;
     }
 
+    /**
+     * String is the gateway given as a string
+     */
     @JsonProperty("string")
     public void setString(String string) {
         this.string = string;

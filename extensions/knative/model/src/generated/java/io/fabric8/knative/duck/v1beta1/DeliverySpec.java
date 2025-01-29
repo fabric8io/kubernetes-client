@@ -33,6 +33,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * DeliverySpec contains the delivery options for event senders, such as channelable and source.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -95,51 +98,81 @@ public class DeliverySpec implements Editable<DeliverySpecBuilder>, KubernetesRe
         this.timeout = timeout;
     }
 
+    /**
+     * BackoffDelay is the delay before retrying. More information on Duration format:<br><p>  - https://www.iso.org/iso-8601-date-and-time-format.html<br><p>  - https://en.wikipedia.org/wiki/ISO_8601<br><p> <br><p> For linear policy, backoff delay is backoffDelay&#42;&lt;numberOfRetries&gt;. For exponential policy, backoff delay is backoffDelay&#42;2^&lt;numberOfRetries&gt;.
+     */
     @JsonProperty("backoffDelay")
     public String getBackoffDelay() {
         return backoffDelay;
     }
 
+    /**
+     * BackoffDelay is the delay before retrying. More information on Duration format:<br><p>  - https://www.iso.org/iso-8601-date-and-time-format.html<br><p>  - https://en.wikipedia.org/wiki/ISO_8601<br><p> <br><p> For linear policy, backoff delay is backoffDelay&#42;&lt;numberOfRetries&gt;. For exponential policy, backoff delay is backoffDelay&#42;2^&lt;numberOfRetries&gt;.
+     */
     @JsonProperty("backoffDelay")
     public void setBackoffDelay(String backoffDelay) {
         this.backoffDelay = backoffDelay;
     }
 
+    /**
+     * BackoffPolicy is the retry backoff policy (linear, exponential).
+     */
     @JsonProperty("backoffPolicy")
     public String getBackoffPolicy() {
         return backoffPolicy;
     }
 
+    /**
+     * BackoffPolicy is the retry backoff policy (linear, exponential).
+     */
     @JsonProperty("backoffPolicy")
     public void setBackoffPolicy(String backoffPolicy) {
         this.backoffPolicy = backoffPolicy;
     }
 
+    /**
+     * DeliverySpec contains the delivery options for event senders, such as channelable and source.
+     */
     @JsonProperty("deadLetterSink")
     public Destination getDeadLetterSink() {
         return deadLetterSink;
     }
 
+    /**
+     * DeliverySpec contains the delivery options for event senders, such as channelable and source.
+     */
     @JsonProperty("deadLetterSink")
     public void setDeadLetterSink(Destination deadLetterSink) {
         this.deadLetterSink = deadLetterSink;
     }
 
+    /**
+     * Retry is the minimum number of retries the sender should attempt when sending an event before moving it to the dead letter sink.
+     */
     @JsonProperty("retry")
     public Integer getRetry() {
         return retry;
     }
 
+    /**
+     * Retry is the minimum number of retries the sender should attempt when sending an event before moving it to the dead letter sink.
+     */
     @JsonProperty("retry")
     public void setRetry(Integer retry) {
         this.retry = retry;
     }
 
+    /**
+     * Timeout is the timeout of each single request. More information on Duration format:<br><p>  - https://www.iso.org/iso-8601-date-and-time-format.html<br><p>  - https://en.wikipedia.org/wiki/ISO_8601
+     */
     @JsonProperty("timeout")
     public String getTimeout() {
         return timeout;
     }
 
+    /**
+     * Timeout is the timeout of each single request. More information on Duration format:<br><p>  - https://www.iso.org/iso-8601-date-and-time-format.html<br><p>  - https://en.wikipedia.org/wiki/ISO_8601
+     */
     @JsonProperty("timeout")
     public void setTimeout(String timeout) {
         this.timeout = timeout;

@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ClusterDeprovisionPlatform contains platform-specific configuration for the deprovision
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -102,71 +105,113 @@ public class ClusterDeprovisionPlatform implements Editable<ClusterDeprovisionPl
         this.vsphere = vsphere;
     }
 
+    /**
+     * ClusterDeprovisionPlatform contains platform-specific configuration for the deprovision
+     */
     @JsonProperty("aws")
     public AWSClusterDeprovision getAws() {
         return aws;
     }
 
+    /**
+     * ClusterDeprovisionPlatform contains platform-specific configuration for the deprovision
+     */
     @JsonProperty("aws")
     public void setAws(AWSClusterDeprovision aws) {
         this.aws = aws;
     }
 
+    /**
+     * ClusterDeprovisionPlatform contains platform-specific configuration for the deprovision
+     */
     @JsonProperty("azure")
     public AzureClusterDeprovision getAzure() {
         return azure;
     }
 
+    /**
+     * ClusterDeprovisionPlatform contains platform-specific configuration for the deprovision
+     */
     @JsonProperty("azure")
     public void setAzure(AzureClusterDeprovision azure) {
         this.azure = azure;
     }
 
+    /**
+     * ClusterDeprovisionPlatform contains platform-specific configuration for the deprovision
+     */
     @JsonProperty("gcp")
     public GCPClusterDeprovision getGcp() {
         return gcp;
     }
 
+    /**
+     * ClusterDeprovisionPlatform contains platform-specific configuration for the deprovision
+     */
     @JsonProperty("gcp")
     public void setGcp(GCPClusterDeprovision gcp) {
         this.gcp = gcp;
     }
 
+    /**
+     * ClusterDeprovisionPlatform contains platform-specific configuration for the deprovision
+     */
     @JsonProperty("ibmcloud")
     public IBMClusterDeprovision getIbmcloud() {
         return ibmcloud;
     }
 
+    /**
+     * ClusterDeprovisionPlatform contains platform-specific configuration for the deprovision
+     */
     @JsonProperty("ibmcloud")
     public void setIbmcloud(IBMClusterDeprovision ibmcloud) {
         this.ibmcloud = ibmcloud;
     }
 
+    /**
+     * ClusterDeprovisionPlatform contains platform-specific configuration for the deprovision
+     */
     @JsonProperty("openstack")
     public OpenStackClusterDeprovision getOpenstack() {
         return openstack;
     }
 
+    /**
+     * ClusterDeprovisionPlatform contains platform-specific configuration for the deprovision
+     */
     @JsonProperty("openstack")
     public void setOpenstack(OpenStackClusterDeprovision openstack) {
         this.openstack = openstack;
     }
 
+    /**
+     * ClusterDeprovisionPlatform contains platform-specific configuration for the deprovision
+     */
     @JsonProperty("ovirt")
     public OvirtClusterDeprovision getOvirt() {
         return ovirt;
     }
 
+    /**
+     * ClusterDeprovisionPlatform contains platform-specific configuration for the deprovision
+     */
     @JsonProperty("ovirt")
     public void setOvirt(OvirtClusterDeprovision ovirt) {
         this.ovirt = ovirt;
     }
 
+    /**
+     * ClusterDeprovisionPlatform contains platform-specific configuration for the deprovision
+     */
     @JsonProperty("vsphere")
     public VSphereClusterDeprovision getVsphere() {
         return vsphere;
     }
 
+    /**
+     * ClusterDeprovisionPlatform contains platform-specific configuration for the deprovision
+     */
     @JsonProperty("vsphere")
     public void setVsphere(VSphereClusterDeprovision vsphere) {
         this.vsphere = vsphere;

@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * StatusCheckTemplate represents a template of status check. A statusCheckTemplate would save in the ConfigMap named `template-status-check-&lt;template-name&gt;`.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -110,91 +113,145 @@ public class StatusCheckTemplate implements Editable<StatusCheckTemplateBuilder>
         this.type = type;
     }
 
+    /**
+     * Duration defines the duration of the whole status check if the number of failed execution does not exceed the failure threshold. Duration is available to both `Synchronous` and `Continuous` mode. A duration string is a possibly signed sequence of decimal numbers, each with optional fraction and a unit suffix, such as "300ms", "-1.5h" or "2h45m". Valid time units are "ns", "us" (or "µs"), "ms", "s", "m", "h".
+     */
     @JsonProperty("duration")
     public String getDuration() {
         return duration;
     }
 
+    /**
+     * Duration defines the duration of the whole status check if the number of failed execution does not exceed the failure threshold. Duration is available to both `Synchronous` and `Continuous` mode. A duration string is a possibly signed sequence of decimal numbers, each with optional fraction and a unit suffix, such as "300ms", "-1.5h" or "2h45m". Valid time units are "ns", "us" (or "µs"), "ms", "s", "m", "h".
+     */
     @JsonProperty("duration")
     public void setDuration(String duration) {
         this.duration = duration;
     }
 
+    /**
+     * FailureThreshold defines the minimum consecutive failure for the status check to be considered failed.
+     */
     @JsonProperty("failureThreshold")
     public Integer getFailureThreshold() {
         return failureThreshold;
     }
 
+    /**
+     * FailureThreshold defines the minimum consecutive failure for the status check to be considered failed.
+     */
     @JsonProperty("failureThreshold")
     public void setFailureThreshold(Integer failureThreshold) {
         this.failureThreshold = failureThreshold;
     }
 
+    /**
+     * StatusCheckTemplate represents a template of status check. A statusCheckTemplate would save in the ConfigMap named `template-status-check-&lt;template-name&gt;`.
+     */
     @JsonProperty("http")
     public HTTPStatusCheck getHttp() {
         return http;
     }
 
+    /**
+     * StatusCheckTemplate represents a template of status check. A statusCheckTemplate would save in the ConfigMap named `template-status-check-&lt;template-name&gt;`.
+     */
     @JsonProperty("http")
     public void setHttp(HTTPStatusCheck http) {
         this.http = http;
     }
 
+    /**
+     * IntervalSeconds defines how often (in seconds) to perform an execution of status check.
+     */
     @JsonProperty("intervalSeconds")
     public Integer getIntervalSeconds() {
         return intervalSeconds;
     }
 
+    /**
+     * IntervalSeconds defines how often (in seconds) to perform an execution of status check.
+     */
     @JsonProperty("intervalSeconds")
     public void setIntervalSeconds(Integer intervalSeconds) {
         this.intervalSeconds = intervalSeconds;
     }
 
+    /**
+     * Mode defines the execution mode of the status check. Support type: Synchronous / Continuous
+     */
     @JsonProperty("mode")
     public String getMode() {
         return mode;
     }
 
+    /**
+     * Mode defines the execution mode of the status check. Support type: Synchronous / Continuous
+     */
     @JsonProperty("mode")
     public void setMode(String mode) {
         this.mode = mode;
     }
 
+    /**
+     * RecordsHistoryLimit defines the number of record to retain.
+     */
     @JsonProperty("recordsHistoryLimit")
     public Integer getRecordsHistoryLimit() {
         return recordsHistoryLimit;
     }
 
+    /**
+     * RecordsHistoryLimit defines the number of record to retain.
+     */
     @JsonProperty("recordsHistoryLimit")
     public void setRecordsHistoryLimit(Integer recordsHistoryLimit) {
         this.recordsHistoryLimit = recordsHistoryLimit;
     }
 
+    /**
+     * SuccessThreshold defines the minimum consecutive successes for the status check to be considered successful. SuccessThreshold only works for `Synchronous` mode.
+     */
     @JsonProperty("successThreshold")
     public Integer getSuccessThreshold() {
         return successThreshold;
     }
 
+    /**
+     * SuccessThreshold defines the minimum consecutive successes for the status check to be considered successful. SuccessThreshold only works for `Synchronous` mode.
+     */
     @JsonProperty("successThreshold")
     public void setSuccessThreshold(Integer successThreshold) {
         this.successThreshold = successThreshold;
     }
 
+    /**
+     * TimeoutSeconds defines the number of seconds after which an execution of status check times out.
+     */
     @JsonProperty("timeoutSeconds")
     public Integer getTimeoutSeconds() {
         return timeoutSeconds;
     }
 
+    /**
+     * TimeoutSeconds defines the number of seconds after which an execution of status check times out.
+     */
     @JsonProperty("timeoutSeconds")
     public void setTimeoutSeconds(Integer timeoutSeconds) {
         this.timeoutSeconds = timeoutSeconds;
     }
 
+    /**
+     * Type defines the specific status check type. Support type: HTTP
+     */
     @JsonProperty("type")
     public String getType() {
         return type;
     }
 
+    /**
+     * Type defines the specific status check type. Support type: HTTP
+     */
     @JsonProperty("type")
     public void setType(String type) {
         this.type = type;

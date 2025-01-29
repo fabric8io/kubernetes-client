@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * InstallPlanSpec defines a set of Application resources to be installed
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -101,62 +104,98 @@ public class InstallPlanSpec implements Editable<InstallPlanSpecBuilder>, Kubern
         this.sourceNamespace = sourceNamespace;
     }
 
+    /**
+     * InstallPlanSpec defines a set of Application resources to be installed
+     */
     @JsonProperty("approval")
     public String getApproval() {
         return approval;
     }
 
+    /**
+     * InstallPlanSpec defines a set of Application resources to be installed
+     */
     @JsonProperty("approval")
     public void setApproval(String approval) {
         this.approval = approval;
     }
 
+    /**
+     * InstallPlanSpec defines a set of Application resources to be installed
+     */
     @JsonProperty("approved")
     public Boolean getApproved() {
         return approved;
     }
 
+    /**
+     * InstallPlanSpec defines a set of Application resources to be installed
+     */
     @JsonProperty("approved")
     public void setApproved(Boolean approved) {
         this.approved = approved;
     }
 
+    /**
+     * InstallPlanSpec defines a set of Application resources to be installed
+     */
     @JsonProperty("clusterServiceVersionNames")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getClusterServiceVersionNames() {
         return clusterServiceVersionNames;
     }
 
+    /**
+     * InstallPlanSpec defines a set of Application resources to be installed
+     */
     @JsonProperty("clusterServiceVersionNames")
     public void setClusterServiceVersionNames(List<String> clusterServiceVersionNames) {
         this.clusterServiceVersionNames = clusterServiceVersionNames;
     }
 
+    /**
+     * InstallPlanSpec defines a set of Application resources to be installed
+     */
     @JsonProperty("generation")
     public Integer getGeneration() {
         return generation;
     }
 
+    /**
+     * InstallPlanSpec defines a set of Application resources to be installed
+     */
     @JsonProperty("generation")
     public void setGeneration(Integer generation) {
         this.generation = generation;
     }
 
+    /**
+     * InstallPlanSpec defines a set of Application resources to be installed
+     */
     @JsonProperty("source")
     public String getSource() {
         return source;
     }
 
+    /**
+     * InstallPlanSpec defines a set of Application resources to be installed
+     */
     @JsonProperty("source")
     public void setSource(String source) {
         this.source = source;
     }
 
+    /**
+     * InstallPlanSpec defines a set of Application resources to be installed
+     */
     @JsonProperty("sourceNamespace")
     public String getSourceNamespace() {
         return sourceNamespace;
     }
 
+    /**
+     * InstallPlanSpec defines a set of Application resources to be installed
+     */
     @JsonProperty("sourceNamespace")
     public void setSourceNamespace(String sourceNamespace) {
         this.sourceNamespace = sourceNamespace;

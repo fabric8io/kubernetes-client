@@ -33,6 +33,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Overhead structure represents the resource overhead associated with running a pod.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -80,12 +83,18 @@ public class Overhead implements Editable<OverheadBuilder>, KubernetesResource
         this.podFixed = podFixed;
     }
 
+    /**
+     * PodFixed represents the fixed resource overhead associated with running a pod.
+     */
     @JsonProperty("podFixed")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, Quantity> getPodFixed() {
         return podFixed;
     }
 
+    /**
+     * PodFixed represents the fixed resource overhead associated with running a pod.
+     */
     @JsonProperty("podFixed")
     public void setPodFixed(Map<String, Quantity> podFixed) {
         this.podFixed = podFixed;

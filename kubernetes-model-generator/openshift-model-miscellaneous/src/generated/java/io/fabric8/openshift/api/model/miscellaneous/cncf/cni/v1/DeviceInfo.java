@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * DeviceInfo contains the information of the device associated with this network (if any)
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -98,61 +101,97 @@ public class DeviceInfo implements Editable<DeviceInfoBuilder>, KubernetesResour
         this.vhostUser = vhostUser;
     }
 
+    /**
+     * DeviceInfo contains the information of the device associated with this network (if any)
+     */
     @JsonProperty("memif")
     public MemifDevice getMemif() {
         return memif;
     }
 
+    /**
+     * DeviceInfo contains the information of the device associated with this network (if any)
+     */
     @JsonProperty("memif")
     public void setMemif(MemifDevice memif) {
         this.memif = memif;
     }
 
+    /**
+     * DeviceInfo contains the information of the device associated with this network (if any)
+     */
     @JsonProperty("pci")
     public PciDevice getPci() {
         return pci;
     }
 
+    /**
+     * DeviceInfo contains the information of the device associated with this network (if any)
+     */
     @JsonProperty("pci")
     public void setPci(PciDevice pci) {
         this.pci = pci;
     }
 
+    /**
+     * DeviceInfo contains the information of the device associated with this network (if any)
+     */
     @JsonProperty("type")
     public String getType() {
         return type;
     }
 
+    /**
+     * DeviceInfo contains the information of the device associated with this network (if any)
+     */
     @JsonProperty("type")
     public void setType(String type) {
         this.type = type;
     }
 
+    /**
+     * DeviceInfo contains the information of the device associated with this network (if any)
+     */
     @JsonProperty("vdpa")
     public VdpaDevice getVdpa() {
         return vdpa;
     }
 
+    /**
+     * DeviceInfo contains the information of the device associated with this network (if any)
+     */
     @JsonProperty("vdpa")
     public void setVdpa(VdpaDevice vdpa) {
         this.vdpa = vdpa;
     }
 
+    /**
+     * DeviceInfo contains the information of the device associated with this network (if any)
+     */
     @JsonProperty("version")
     public String getVersion() {
         return version;
     }
 
+    /**
+     * DeviceInfo contains the information of the device associated with this network (if any)
+     */
     @JsonProperty("version")
     public void setVersion(String version) {
         this.version = version;
     }
 
+    /**
+     * DeviceInfo contains the information of the device associated with this network (if any)
+     */
     @JsonProperty("vhost-user")
     public VhostDevice getVhostUser() {
         return vhostUser;
     }
 
+    /**
+     * DeviceInfo contains the information of the device associated with this network (if any)
+     */
     @JsonProperty("vhost-user")
     public void setVhostUser(VhostDevice vhostUser) {
         this.vhostUser = vhostUser;

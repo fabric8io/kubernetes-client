@@ -172,7 +172,7 @@
               <packageName>io.fabric8.kubernetes.api.model</packageName>
               <builderPackage>io.fabric8.kubernetes.api.builder</builderPackage>
               <addBuildableReferences>true</addBuildableReferences>
-              <generateJavadoc>false</generateJavadoc>
+              <generateJavadoc>true</generateJavadoc>
               <packageMappings>
                 <com.coreos.monitoring>io.fabric8.openshift.api.model.monitoring</com.coreos.monitoring>
                 <com.github.openshift.custom-resource-status>io.fabric8.openshift.api.model.customresourcestatus</com.github.openshift.custom-resource-status>

@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ClusterDomainClaimSpec is the desired state of the ClusterDomainClaim. Its only field is `namespace`, which controls which namespace currently owns the ability to create a DomainMapping with the ClusterDomainClaim's name.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -78,11 +81,17 @@ public class ClusterDomainClaimSpec implements Editable<ClusterDomainClaimSpecBu
         this.namespace = namespace;
     }
 
+    /**
+     * Namespace is the namespace which is allowed to create a DomainMapping using this ClusterDomainClaim's name.
+     */
     @JsonProperty("namespace")
     public String getNamespace() {
         return namespace;
     }
 
+    /**
+     * Namespace is the namespace which is allowed to create a DomainMapping using this ClusterDomainClaim's name.
+     */
     @JsonProperty("namespace")
     public void setNamespace(String namespace) {
         this.namespace = namespace;

@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * deprecatedWebhookTokenAuthenticator holds the necessary configuration options for a remote token authenticator. It's the same as WebhookTokenAuthenticator but it's missing the 'required' validation on KubeConfig field.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -78,11 +81,17 @@ public class DeprecatedWebhookTokenAuthenticator implements Editable<DeprecatedW
         this.kubeConfig = kubeConfig;
     }
 
+    /**
+     * deprecatedWebhookTokenAuthenticator holds the necessary configuration options for a remote token authenticator. It's the same as WebhookTokenAuthenticator but it's missing the 'required' validation on KubeConfig field.
+     */
     @JsonProperty("kubeConfig")
     public SecretNameReference getKubeConfig() {
         return kubeConfig;
     }
 
+    /**
+     * deprecatedWebhookTokenAuthenticator holds the necessary configuration options for a remote token authenticator. It's the same as WebhookTokenAuthenticator but it's missing the 'required' validation on KubeConfig field.
+     */
     @JsonProperty("kubeConfig")
     public void setKubeConfig(SecretNameReference kubeConfig) {
         this.kubeConfig = kubeConfig;

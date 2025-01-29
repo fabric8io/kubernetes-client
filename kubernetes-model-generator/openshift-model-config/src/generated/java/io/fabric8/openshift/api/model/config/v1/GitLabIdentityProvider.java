@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * GitLabIdentityProvider provides identities for users authenticating using GitLab credentials
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -90,41 +93,65 @@ public class GitLabIdentityProvider implements Editable<GitLabIdentityProviderBu
         this.url = url;
     }
 
+    /**
+     * GitLabIdentityProvider provides identities for users authenticating using GitLab credentials
+     */
     @JsonProperty("ca")
     public ConfigMapNameReference getCa() {
         return ca;
     }
 
+    /**
+     * GitLabIdentityProvider provides identities for users authenticating using GitLab credentials
+     */
     @JsonProperty("ca")
     public void setCa(ConfigMapNameReference ca) {
         this.ca = ca;
     }
 
+    /**
+     * clientID is the oauth client ID
+     */
     @JsonProperty("clientID")
     public String getClientID() {
         return clientID;
     }
 
+    /**
+     * clientID is the oauth client ID
+     */
     @JsonProperty("clientID")
     public void setClientID(String clientID) {
         this.clientID = clientID;
     }
 
+    /**
+     * GitLabIdentityProvider provides identities for users authenticating using GitLab credentials
+     */
     @JsonProperty("clientSecret")
     public SecretNameReference getClientSecret() {
         return clientSecret;
     }
 
+    /**
+     * GitLabIdentityProvider provides identities for users authenticating using GitLab credentials
+     */
     @JsonProperty("clientSecret")
     public void setClientSecret(SecretNameReference clientSecret) {
         this.clientSecret = clientSecret;
     }
 
+    /**
+     * url is the oauth server base URL
+     */
     @JsonProperty("url")
     public String getUrl() {
         return url;
     }
 
+    /**
+     * url is the oauth server base URL
+     */
     @JsonProperty("url")
     public void setUrl(String url) {
         this.url = url;

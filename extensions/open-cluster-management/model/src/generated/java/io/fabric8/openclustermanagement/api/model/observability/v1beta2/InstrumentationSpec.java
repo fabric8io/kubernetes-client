@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * OpenTelemetryCollectorSpec defines the spec for the addon to collect observability signals using the Instrumentation custom resource.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -78,11 +81,17 @@ public class InstrumentationSpec implements Editable<InstrumentationSpecBuilder>
         this.enabled = enabled;
     }
 
+    /**
+     * Enabled defines a flag to enable/disable the user workload observability collection using the Instrumentation resource.
+     */
     @JsonProperty("enabled")
     public Boolean getEnabled() {
         return enabled;
     }
 
+    /**
+     * Enabled defines a flag to enable/disable the user workload observability collection using the Instrumentation resource.
+     */
     @JsonProperty("enabled")
     public void setEnabled(Boolean enabled) {
         this.enabled = enabled;

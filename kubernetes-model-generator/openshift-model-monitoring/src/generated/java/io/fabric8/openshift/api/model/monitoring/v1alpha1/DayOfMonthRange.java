@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * DayOfMonthRange is an inclusive range of days of the month beginning at 1
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class DayOfMonthRange implements Editable<DayOfMonthRangeBuilder>, Kubern
         this.start = start;
     }
 
+    /**
+     * End of the inclusive range
+     */
     @JsonProperty("end")
     public Integer getEnd() {
         return end;
     }
 
+    /**
+     * End of the inclusive range
+     */
     @JsonProperty("end")
     public void setEnd(Integer end) {
         this.end = end;
     }
 
+    /**
+     * Start of the inclusive range
+     */
     @JsonProperty("start")
     public Integer getStart() {
         return start;
     }
 
+    /**
+     * Start of the inclusive range
+     */
     @JsonProperty("start")
     public void setStart(Integer start) {
         this.start = start;

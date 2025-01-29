@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * WebHTTPHeaders defines the list of headers that can be added to HTTP responses.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -94,51 +97,81 @@ public class WebHTTPHeaders implements Editable<WebHTTPHeadersBuilder>, Kubernet
         this.xXSSProtection = xXSSProtection;
     }
 
+    /**
+     * Set the Content-Security-Policy header to HTTP responses. Unset if blank.
+     */
     @JsonProperty("contentSecurityPolicy")
     public String getContentSecurityPolicy() {
         return contentSecurityPolicy;
     }
 
+    /**
+     * Set the Content-Security-Policy header to HTTP responses. Unset if blank.
+     */
     @JsonProperty("contentSecurityPolicy")
     public void setContentSecurityPolicy(String contentSecurityPolicy) {
         this.contentSecurityPolicy = contentSecurityPolicy;
     }
 
+    /**
+     * Set the Strict-Transport-Security header to HTTP responses. Unset if blank. Please make sure that you use this with care as this header might force browsers to load Prometheus and the other applications hosted on the same domain and subdomains over HTTPS. https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Strict-Transport-Security
+     */
     @JsonProperty("strictTransportSecurity")
     public String getStrictTransportSecurity() {
         return strictTransportSecurity;
     }
 
+    /**
+     * Set the Strict-Transport-Security header to HTTP responses. Unset if blank. Please make sure that you use this with care as this header might force browsers to load Prometheus and the other applications hosted on the same domain and subdomains over HTTPS. https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Strict-Transport-Security
+     */
     @JsonProperty("strictTransportSecurity")
     public void setStrictTransportSecurity(String strictTransportSecurity) {
         this.strictTransportSecurity = strictTransportSecurity;
     }
 
+    /**
+     * Set the X-Content-Type-Options header to HTTP responses. Unset if blank. Accepted value is nosniff. https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Content-Type-Options
+     */
     @JsonProperty("xContentTypeOptions")
     public String getXContentTypeOptions() {
         return xContentTypeOptions;
     }
 
+    /**
+     * Set the X-Content-Type-Options header to HTTP responses. Unset if blank. Accepted value is nosniff. https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Content-Type-Options
+     */
     @JsonProperty("xContentTypeOptions")
     public void setXContentTypeOptions(String xContentTypeOptions) {
         this.xContentTypeOptions = xContentTypeOptions;
     }
 
+    /**
+     * Set the X-Frame-Options header to HTTP responses. Unset if blank. Accepted values are deny and sameorigin. https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Frame-Options
+     */
     @JsonProperty("xFrameOptions")
     public String getXFrameOptions() {
         return xFrameOptions;
     }
 
+    /**
+     * Set the X-Frame-Options header to HTTP responses. Unset if blank. Accepted values are deny and sameorigin. https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Frame-Options
+     */
     @JsonProperty("xFrameOptions")
     public void setXFrameOptions(String xFrameOptions) {
         this.xFrameOptions = xFrameOptions;
     }
 
+    /**
+     * Set the X-XSS-Protection header to all responses. Unset if blank. https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-XSS-Protection
+     */
     @JsonProperty("xXSSProtection")
     public String getXXSSProtection() {
         return xXSSProtection;
     }
 
+    /**
+     * Set the X-XSS-Protection header to all responses. Unset if blank. https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-XSS-Protection
+     */
     @JsonProperty("xXSSProtection")
     public void setXXSSProtection(String xXSSProtection) {
         this.xXSSProtection = xXSSProtection;

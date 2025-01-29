@@ -37,6 +37,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * LegacyTarget is a skeleton type wrapping LegacyTargetable in the manner we want to support unless they get migrated into supporting Legacy. We will typically use this type to deserialize LegacyTargetable ObjectReferences and access the LegacyTargetable data.  This is not a real resource. &#42;&#42; Do not use this for any new resources &#42;&#42;
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -75,14 +78,8 @@ import lombok.experimental.Accessors;
 public class LegacyTarget implements Editable<LegacyTargetBuilder>, HasMetadata, Namespaced
 {
 
-    /**
-     * (Required)
-     */
     @JsonProperty("apiVersion")
     private String apiVersion = "duck.knative.dev/v1alpha1";
-    /**
-     * (Required)
-     */
     @JsonProperty("kind")
     private String kind = "LegacyTarget";
     @JsonProperty("metadata")
@@ -107,7 +104,7 @@ public class LegacyTarget implements Editable<LegacyTargetBuilder>, HasMetadata,
     }
 
     /**
-     * (Required)
+     * APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -115,7 +112,7 @@ public class LegacyTarget implements Editable<LegacyTargetBuilder>, HasMetadata,
     }
 
     /**
-     * (Required)
+     * APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -123,7 +120,7 @@ public class LegacyTarget implements Editable<LegacyTargetBuilder>, HasMetadata,
     }
 
     /**
-     * (Required)
+     * Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -131,28 +128,40 @@ public class LegacyTarget implements Editable<LegacyTargetBuilder>, HasMetadata,
     }
 
     /**
-     * (Required)
+     * Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
      */
     @JsonProperty("kind")
     public void setKind(String kind) {
         this.kind = kind;
     }
 
+    /**
+     * LegacyTarget is a skeleton type wrapping LegacyTargetable in the manner we want to support unless they get migrated into supporting Legacy. We will typically use this type to deserialize LegacyTargetable ObjectReferences and access the LegacyTargetable data.  This is not a real resource. &#42;&#42; Do not use this for any new resources &#42;&#42;
+     */
     @JsonProperty("metadata")
     public ObjectMeta getMetadata() {
         return metadata;
     }
 
+    /**
+     * LegacyTarget is a skeleton type wrapping LegacyTargetable in the manner we want to support unless they get migrated into supporting Legacy. We will typically use this type to deserialize LegacyTargetable ObjectReferences and access the LegacyTargetable data.  This is not a real resource. &#42;&#42; Do not use this for any new resources &#42;&#42;
+     */
     @JsonProperty("metadata")
     public void setMetadata(ObjectMeta metadata) {
         this.metadata = metadata;
     }
 
+    /**
+     * LegacyTarget is a skeleton type wrapping LegacyTargetable in the manner we want to support unless they get migrated into supporting Legacy. We will typically use this type to deserialize LegacyTargetable ObjectReferences and access the LegacyTargetable data.  This is not a real resource. &#42;&#42; Do not use this for any new resources &#42;&#42;
+     */
     @JsonProperty("status")
     public LegacyTargetable getStatus() {
         return status;
     }
 
+    /**
+     * LegacyTarget is a skeleton type wrapping LegacyTargetable in the manner we want to support unless they get migrated into supporting Legacy. We will typically use this type to deserialize LegacyTargetable ObjectReferences and access the LegacyTargetable data.  This is not a real resource. &#42;&#42; Do not use this for any new resources &#42;&#42;
+     */
     @JsonProperty("status")
     public void setStatus(LegacyTargetable status) {
         this.status = status;

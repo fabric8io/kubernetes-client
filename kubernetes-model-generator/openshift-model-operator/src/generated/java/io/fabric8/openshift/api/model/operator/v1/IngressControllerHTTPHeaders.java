@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * IngressControllerHTTPHeaders specifies how the IngressController handles certain HTTP headers.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -93,42 +96,66 @@ public class IngressControllerHTTPHeaders implements Editable<IngressControllerH
         this.uniqueId = uniqueId;
     }
 
+    /**
+     * IngressControllerHTTPHeaders specifies how the IngressController handles certain HTTP headers.
+     */
     @JsonProperty("actions")
     public IngressControllerHTTPHeaderActions getActions() {
         return actions;
     }
 
+    /**
+     * IngressControllerHTTPHeaders specifies how the IngressController handles certain HTTP headers.
+     */
     @JsonProperty("actions")
     public void setActions(IngressControllerHTTPHeaderActions actions) {
         this.actions = actions;
     }
 
+    /**
+     * forwardedHeaderPolicy specifies when and how the IngressController sets the Forwarded, X-Forwarded-For, X-Forwarded-Host, X-Forwarded-Port, X-Forwarded-Proto, and X-Forwarded-Proto-Version HTTP headers.  The value may be one of the following:<br><p> <br><p> &#42; "Append", which specifies that the IngressController appends the<br><p>   headers, preserving existing headers.<br><p> <br><p> &#42; "Replace", which specifies that the IngressController sets the<br><p>   headers, replacing any existing Forwarded or X-Forwarded-&#42; headers.<br><p> <br><p> &#42; "IfNone", which specifies that the IngressController sets the<br><p>   headers if they are not already set.<br><p> <br><p> &#42; "Never", which specifies that the IngressController never sets the<br><p>   headers, preserving any existing headers.<br><p> <br><p> By default, the policy is "Append".
+     */
     @JsonProperty("forwardedHeaderPolicy")
     public String getForwardedHeaderPolicy() {
         return forwardedHeaderPolicy;
     }
 
+    /**
+     * forwardedHeaderPolicy specifies when and how the IngressController sets the Forwarded, X-Forwarded-For, X-Forwarded-Host, X-Forwarded-Port, X-Forwarded-Proto, and X-Forwarded-Proto-Version HTTP headers.  The value may be one of the following:<br><p> <br><p> &#42; "Append", which specifies that the IngressController appends the<br><p>   headers, preserving existing headers.<br><p> <br><p> &#42; "Replace", which specifies that the IngressController sets the<br><p>   headers, replacing any existing Forwarded or X-Forwarded-&#42; headers.<br><p> <br><p> &#42; "IfNone", which specifies that the IngressController sets the<br><p>   headers if they are not already set.<br><p> <br><p> &#42; "Never", which specifies that the IngressController never sets the<br><p>   headers, preserving any existing headers.<br><p> <br><p> By default, the policy is "Append".
+     */
     @JsonProperty("forwardedHeaderPolicy")
     public void setForwardedHeaderPolicy(String forwardedHeaderPolicy) {
         this.forwardedHeaderPolicy = forwardedHeaderPolicy;
     }
 
+    /**
+     * headerNameCaseAdjustments specifies case adjustments that can be applied to HTTP header names.  Each adjustment is specified as an HTTP header name with the desired capitalization.  For example, specifying "X-Forwarded-For" indicates that the "x-forwarded-for" HTTP header should be adjusted to have the specified capitalization.<br><p> <br><p> These adjustments are only applied to cleartext, edge-terminated, and re-encrypt routes, and only when using HTTP/1.<br><p> <br><p> For request headers, these adjustments are applied only for routes that have the haproxy.router.openshift.io/h1-adjust-case=true annotation.  For response headers, these adjustments are applied to all HTTP responses.<br><p> <br><p> If this field is empty, no request headers are adjusted.
+     */
     @JsonProperty("headerNameCaseAdjustments")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getHeaderNameCaseAdjustments() {
         return headerNameCaseAdjustments;
     }
 
+    /**
+     * headerNameCaseAdjustments specifies case adjustments that can be applied to HTTP header names.  Each adjustment is specified as an HTTP header name with the desired capitalization.  For example, specifying "X-Forwarded-For" indicates that the "x-forwarded-for" HTTP header should be adjusted to have the specified capitalization.<br><p> <br><p> These adjustments are only applied to cleartext, edge-terminated, and re-encrypt routes, and only when using HTTP/1.<br><p> <br><p> For request headers, these adjustments are applied only for routes that have the haproxy.router.openshift.io/h1-adjust-case=true annotation.  For response headers, these adjustments are applied to all HTTP responses.<br><p> <br><p> If this field is empty, no request headers are adjusted.
+     */
     @JsonProperty("headerNameCaseAdjustments")
     public void setHeaderNameCaseAdjustments(List<String> headerNameCaseAdjustments) {
         this.headerNameCaseAdjustments = headerNameCaseAdjustments;
     }
 
+    /**
+     * IngressControllerHTTPHeaders specifies how the IngressController handles certain HTTP headers.
+     */
     @JsonProperty("uniqueId")
     public IngressControllerHTTPUniqueIdHeaderPolicy getUniqueId() {
         return uniqueId;
     }
 
+    /**
+     * IngressControllerHTTPHeaders specifies how the IngressController handles certain HTTP headers.
+     */
     @JsonProperty("uniqueId")
     public void setUniqueId(IngressControllerHTTPUniqueIdHeaderPolicy uniqueId) {
         this.uniqueId = uniqueId;

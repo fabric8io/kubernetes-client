@@ -37,6 +37,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * InMemoryChannel is a resource representing an in memory channel
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -76,14 +79,8 @@ import lombok.experimental.Accessors;
 public class InMemoryChannel implements Editable<InMemoryChannelBuilder>, HasMetadata, Namespaced
 {
 
-    /**
-     * (Required)
-     */
     @JsonProperty("apiVersion")
     private String apiVersion = "messaging.knative.dev/v1";
-    /**
-     * (Required)
-     */
     @JsonProperty("kind")
     private String kind = "InMemoryChannel";
     @JsonProperty("metadata")
@@ -111,7 +108,7 @@ public class InMemoryChannel implements Editable<InMemoryChannelBuilder>, HasMet
     }
 
     /**
-     * (Required)
+     * APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -119,7 +116,7 @@ public class InMemoryChannel implements Editable<InMemoryChannelBuilder>, HasMet
     }
 
     /**
-     * (Required)
+     * APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -127,7 +124,7 @@ public class InMemoryChannel implements Editable<InMemoryChannelBuilder>, HasMet
     }
 
     /**
-     * (Required)
+     * Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -135,38 +132,56 @@ public class InMemoryChannel implements Editable<InMemoryChannelBuilder>, HasMet
     }
 
     /**
-     * (Required)
+     * Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
      */
     @JsonProperty("kind")
     public void setKind(String kind) {
         this.kind = kind;
     }
 
+    /**
+     * InMemoryChannel is a resource representing an in memory channel
+     */
     @JsonProperty("metadata")
     public ObjectMeta getMetadata() {
         return metadata;
     }
 
+    /**
+     * InMemoryChannel is a resource representing an in memory channel
+     */
     @JsonProperty("metadata")
     public void setMetadata(ObjectMeta metadata) {
         this.metadata = metadata;
     }
 
+    /**
+     * InMemoryChannel is a resource representing an in memory channel
+     */
     @JsonProperty("spec")
     public InMemoryChannelSpec getSpec() {
         return spec;
     }
 
+    /**
+     * InMemoryChannel is a resource representing an in memory channel
+     */
     @JsonProperty("spec")
     public void setSpec(InMemoryChannelSpec spec) {
         this.spec = spec;
     }
 
+    /**
+     * InMemoryChannel is a resource representing an in memory channel
+     */
     @JsonProperty("status")
     public InMemoryChannelStatus getStatus() {
         return status;
     }
 
+    /**
+     * InMemoryChannel is a resource representing an in memory channel
+     */
     @JsonProperty("status")
     public void setStatus(InMemoryChannelStatus status) {
         this.status = status;

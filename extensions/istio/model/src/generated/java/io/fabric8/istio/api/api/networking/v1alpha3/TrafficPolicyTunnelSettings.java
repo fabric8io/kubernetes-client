@@ -86,31 +86,49 @@ public class TrafficPolicyTunnelSettings implements Editable<TrafficPolicyTunnel
         this.targetPort = targetPort;
     }
 
+    /**
+     * Specifies which protocol to use for tunneling the downstream connection. Supported protocols are:<br><p> <br><p> 	CONNECT - uses HTTP CONNECT;<br><p> 	POST - uses HTTP POST.<br><p> <br><p> CONNECT is used by default if not specified. HTTP version for upstream requests is determined by the service protocol defined for the proxy.
+     */
     @JsonProperty("protocol")
     public String getProtocol() {
         return protocol;
     }
 
+    /**
+     * Specifies which protocol to use for tunneling the downstream connection. Supported protocols are:<br><p> <br><p> 	CONNECT - uses HTTP CONNECT;<br><p> 	POST - uses HTTP POST.<br><p> <br><p> CONNECT is used by default if not specified. HTTP version for upstream requests is determined by the service protocol defined for the proxy.
+     */
     @JsonProperty("protocol")
     public void setProtocol(String protocol) {
         this.protocol = protocol;
     }
 
+    /**
+     * Specifies a host to which the downstream connection is tunneled. Target host must be an FQDN or IP address.
+     */
     @JsonProperty("targetHost")
     public String getTargetHost() {
         return targetHost;
     }
 
+    /**
+     * Specifies a host to which the downstream connection is tunneled. Target host must be an FQDN or IP address.
+     */
     @JsonProperty("targetHost")
     public void setTargetHost(String targetHost) {
         this.targetHost = targetHost;
     }
 
+    /**
+     * Specifies a port to which the downstream connection is tunneled.
+     */
     @JsonProperty("targetPort")
     public Long getTargetPort() {
         return targetPort;
     }
 
+    /**
+     * Specifies a port to which the downstream connection is tunneled.
+     */
     @JsonProperty("targetPort")
     public void setTargetPort(Long targetPort) {
         this.targetPort = targetPort;

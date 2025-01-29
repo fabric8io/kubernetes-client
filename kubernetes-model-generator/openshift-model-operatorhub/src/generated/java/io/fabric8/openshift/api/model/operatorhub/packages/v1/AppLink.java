@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * AppLink defines a link to an application
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class AppLink implements Editable<AppLinkBuilder>, KubernetesResource
         this.url = url;
     }
 
+    /**
+     * AppLink defines a link to an application
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * AppLink defines a link to an application
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * AppLink defines a link to an application
+     */
     @JsonProperty("url")
     public String getUrl() {
         return url;
     }
 
+    /**
+     * AppLink defines a link to an application
+     */
     @JsonProperty("url")
     public void setUrl(String url) {
         this.url = url;

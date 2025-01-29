@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ControllerConfig contains the configuration for a controller
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -102,71 +105,113 @@ public class ControllerConfig implements Editable<ControllerConfigBuilder>, Kube
         this.resources = resources;
     }
 
+    /**
+     * ClientBurst specifies client rate limiter burst for a controller
+     */
     @JsonProperty("clientBurst")
     public Integer getClientBurst() {
         return clientBurst;
     }
 
+    /**
+     * ClientBurst specifies client rate limiter burst for a controller
+     */
     @JsonProperty("clientBurst")
     public void setClientBurst(Integer clientBurst) {
         this.clientBurst = clientBurst;
     }
 
+    /**
+     * ClientQPS specifies client rate limiter QPS for a controller
+     */
     @JsonProperty("clientQPS")
     public Integer getClientQPS() {
         return clientQPS;
     }
 
+    /**
+     * ClientQPS specifies client rate limiter QPS for a controller
+     */
     @JsonProperty("clientQPS")
     public void setClientQPS(Integer clientQPS) {
         this.clientQPS = clientQPS;
     }
 
+    /**
+     * ConcurrentReconciles specifies number of concurrent reconciles for a controller
+     */
     @JsonProperty("concurrentReconciles")
     public Integer getConcurrentReconciles() {
         return concurrentReconciles;
     }
 
+    /**
+     * ConcurrentReconciles specifies number of concurrent reconciles for a controller
+     */
     @JsonProperty("concurrentReconciles")
     public void setConcurrentReconciles(Integer concurrentReconciles) {
         this.concurrentReconciles = concurrentReconciles;
     }
 
+    /**
+     * QueueBurst specifies workqueue rate limiter burst for a controller
+     */
     @JsonProperty("queueBurst")
     public Integer getQueueBurst() {
         return queueBurst;
     }
 
+    /**
+     * QueueBurst specifies workqueue rate limiter burst for a controller
+     */
     @JsonProperty("queueBurst")
     public void setQueueBurst(Integer queueBurst) {
         this.queueBurst = queueBurst;
     }
 
+    /**
+     * QueueQPS specifies workqueue rate limiter QPS for a controller
+     */
     @JsonProperty("queueQPS")
     public Integer getQueueQPS() {
         return queueQPS;
     }
 
+    /**
+     * QueueQPS specifies workqueue rate limiter QPS for a controller
+     */
     @JsonProperty("queueQPS")
     public void setQueueQPS(Integer queueQPS) {
         this.queueQPS = queueQPS;
     }
 
+    /**
+     * Replicas specifies the number of replicas the specific controller pod should use. This is ONLY for controllers that have been split out into their own pods. This is ignored for all others.
+     */
     @JsonProperty("replicas")
     public Integer getReplicas() {
         return replicas;
     }
 
+    /**
+     * Replicas specifies the number of replicas the specific controller pod should use. This is ONLY for controllers that have been split out into their own pods. This is ignored for all others.
+     */
     @JsonProperty("replicas")
     public void setReplicas(Integer replicas) {
         this.replicas = replicas;
     }
 
+    /**
+     * ControllerConfig contains the configuration for a controller
+     */
     @JsonProperty("resources")
     public ResourceRequirements getResources() {
         return resources;
     }
 
+    /**
+     * ControllerConfig contains the configuration for a controller
+     */
     @JsonProperty("resources")
     public void setResources(ResourceRequirements resources) {
         this.resources = resources;

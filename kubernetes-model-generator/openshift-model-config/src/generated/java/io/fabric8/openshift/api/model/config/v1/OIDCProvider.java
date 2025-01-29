@@ -108,12 +108,18 @@ public class OIDCProvider implements Editable<OIDCProviderBuilder>, KubernetesRe
         this.claimMappings = claimMappings;
     }
 
+    /**
+     * ClaimValidationRules are rules that are applied to validate token claims to authenticate users.
+     */
     @JsonProperty("claimValidationRules")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<TokenClaimValidationRule> getClaimValidationRules() {
         return claimValidationRules;
     }
 
+    /**
+     * ClaimValidationRules are rules that are applied to validate token claims to authenticate users.
+     */
     @JsonProperty("claimValidationRules")
     public void setClaimValidationRules(List<TokenClaimValidationRule> claimValidationRules) {
         this.claimValidationRules = claimValidationRules;
@@ -129,22 +135,34 @@ public class OIDCProvider implements Editable<OIDCProviderBuilder>, KubernetesRe
         this.issuer = issuer;
     }
 
+    /**
+     * Name of the OIDC provider
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * Name of the OIDC provider
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * OIDCClients contains configuration for the platform's clients that need to request tokens from the issuer
+     */
     @JsonProperty("oidcClients")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<OIDCClientConfig> getOidcClients() {
         return oidcClients;
     }
 
+    /**
+     * OIDCClients contains configuration for the platform's clients that need to request tokens from the issuer
+     */
     @JsonProperty("oidcClients")
     public void setOidcClients(List<OIDCClientConfig> oidcClients) {
         this.oidcClients = oidcClients;

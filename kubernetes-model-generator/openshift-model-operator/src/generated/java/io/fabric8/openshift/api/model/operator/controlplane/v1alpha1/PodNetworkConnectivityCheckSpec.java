@@ -87,21 +87,33 @@ public class PodNetworkConnectivityCheckSpec implements Editable<PodNetworkConne
         this.tlsClientCert = tlsClientCert;
     }
 
+    /**
+     * SourcePod names the pod from which the condition will be checked
+     */
     @JsonProperty("sourcePod")
     public String getSourcePod() {
         return sourcePod;
     }
 
+    /**
+     * SourcePod names the pod from which the condition will be checked
+     */
     @JsonProperty("sourcePod")
     public void setSourcePod(String sourcePod) {
         this.sourcePod = sourcePod;
     }
 
+    /**
+     * EndpointAddress to check. A TCP address of the form host:port. Note that if host is a DNS name, then the check would fail if the DNS name cannot be resolved. Specify an IP address for host to bypass DNS name lookup.
+     */
     @JsonProperty("targetEndpoint")
     public String getTargetEndpoint() {
         return targetEndpoint;
     }
 
+    /**
+     * EndpointAddress to check. A TCP address of the form host:port. Note that if host is a DNS name, then the check would fail if the DNS name cannot be resolved. Specify an IP address for host to bypass DNS name lookup.
+     */
     @JsonProperty("targetEndpoint")
     public void setTargetEndpoint(String targetEndpoint) {
         this.targetEndpoint = targetEndpoint;

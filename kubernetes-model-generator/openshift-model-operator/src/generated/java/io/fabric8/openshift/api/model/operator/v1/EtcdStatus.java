@@ -115,94 +115,148 @@ public class EtcdStatus implements Editable<EtcdStatusBuilder>, KubernetesResour
         this.version = version;
     }
 
+    /**
+     * conditions is a list of conditions and their status
+     */
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<OperatorCondition> getConditions() {
         return conditions;
     }
 
+    /**
+     * conditions is a list of conditions and their status
+     */
     @JsonProperty("conditions")
     public void setConditions(List<OperatorCondition> conditions) {
         this.conditions = conditions;
     }
 
+    /**
+     * Possible enum values:<br><p>  - `"Slower"` provides more tolerance for slower hardware and/or higher latency networks. Sets (values subject to change): ETCD_HEARTBEAT_INTERVAL: 5x Standard ETCD_LEADER_ELECTION_TIMEOUT: 2.5x Standard<br><p>  - `"Standard"` provides the normal tolerances for hardware speed and latency. Currently sets (values subject to change at any time): ETCD_HEARTBEAT_INTERVAL: 100ms ETCD_LEADER_ELECTION_TIMEOUT: 1000ms
+     */
     @JsonProperty("controlPlaneHardwareSpeed")
     public String getControlPlaneHardwareSpeed() {
         return controlPlaneHardwareSpeed;
     }
 
+    /**
+     * Possible enum values:<br><p>  - `"Slower"` provides more tolerance for slower hardware and/or higher latency networks. Sets (values subject to change): ETCD_HEARTBEAT_INTERVAL: 5x Standard ETCD_LEADER_ELECTION_TIMEOUT: 2.5x Standard<br><p>  - `"Standard"` provides the normal tolerances for hardware speed and latency. Currently sets (values subject to change at any time): ETCD_HEARTBEAT_INTERVAL: 100ms ETCD_LEADER_ELECTION_TIMEOUT: 1000ms
+     */
     @JsonProperty("controlPlaneHardwareSpeed")
     public void setControlPlaneHardwareSpeed(String controlPlaneHardwareSpeed) {
         this.controlPlaneHardwareSpeed = controlPlaneHardwareSpeed;
     }
 
+    /**
+     * generations are used to determine when an item needs to be reconciled or has changed in a way that needs a reaction.
+     */
     @JsonProperty("generations")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<GenerationStatus> getGenerations() {
         return generations;
     }
 
+    /**
+     * generations are used to determine when an item needs to be reconciled or has changed in a way that needs a reaction.
+     */
     @JsonProperty("generations")
     public void setGenerations(List<GenerationStatus> generations) {
         this.generations = generations;
     }
 
+    /**
+     * latestAvailableRevision is the deploymentID of the most recent deployment
+     */
     @JsonProperty("latestAvailableRevision")
     public Integer getLatestAvailableRevision() {
         return latestAvailableRevision;
     }
 
+    /**
+     * latestAvailableRevision is the deploymentID of the most recent deployment
+     */
     @JsonProperty("latestAvailableRevision")
     public void setLatestAvailableRevision(Integer latestAvailableRevision) {
         this.latestAvailableRevision = latestAvailableRevision;
     }
 
+    /**
+     * latestAvailableRevisionReason describe the detailed reason for the most recent deployment
+     */
     @JsonProperty("latestAvailableRevisionReason")
     public String getLatestAvailableRevisionReason() {
         return latestAvailableRevisionReason;
     }
 
+    /**
+     * latestAvailableRevisionReason describe the detailed reason for the most recent deployment
+     */
     @JsonProperty("latestAvailableRevisionReason")
     public void setLatestAvailableRevisionReason(String latestAvailableRevisionReason) {
         this.latestAvailableRevisionReason = latestAvailableRevisionReason;
     }
 
+    /**
+     * nodeStatuses track the deployment values and errors across individual nodes
+     */
     @JsonProperty("nodeStatuses")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<NodeStatus> getNodeStatuses() {
         return nodeStatuses;
     }
 
+    /**
+     * nodeStatuses track the deployment values and errors across individual nodes
+     */
     @JsonProperty("nodeStatuses")
     public void setNodeStatuses(List<NodeStatus> nodeStatuses) {
         this.nodeStatuses = nodeStatuses;
     }
 
+    /**
+     * observedGeneration is the last generation change you've dealt with
+     */
     @JsonProperty("observedGeneration")
     public Long getObservedGeneration() {
         return observedGeneration;
     }
 
+    /**
+     * observedGeneration is the last generation change you've dealt with
+     */
     @JsonProperty("observedGeneration")
     public void setObservedGeneration(Long observedGeneration) {
         this.observedGeneration = observedGeneration;
     }
 
+    /**
+     * readyReplicas indicates how many replicas are ready and at the desired state
+     */
     @JsonProperty("readyReplicas")
     public Integer getReadyReplicas() {
         return readyReplicas;
     }
 
+    /**
+     * readyReplicas indicates how many replicas are ready and at the desired state
+     */
     @JsonProperty("readyReplicas")
     public void setReadyReplicas(Integer readyReplicas) {
         this.readyReplicas = readyReplicas;
     }
 
+    /**
+     * version is the level this availability applies to
+     */
     @JsonProperty("version")
     public String getVersion() {
         return version;
     }
 
+    /**
+     * version is the level this availability applies to
+     */
     @JsonProperty("version")
     public void setVersion(String version) {
         this.version = version;

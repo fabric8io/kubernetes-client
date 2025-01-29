@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * SubscriptionStatus defines the observed status of a subscription
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -103,72 +106,114 @@ public class SubscriptionStatus implements Editable<SubscriptionStatusBuilder>, 
         this.statuses = statuses;
     }
 
+    /**
+     * SubscriptionStatus defines the observed status of a subscription
+     */
     @JsonProperty("ansiblejobs")
     public AnsibleJobsStatus getAnsiblejobs() {
         return ansiblejobs;
     }
 
+    /**
+     * SubscriptionStatus defines the observed status of a subscription
+     */
     @JsonProperty("ansiblejobs")
     public void setAnsiblejobs(AnsibleJobsStatus ansiblejobs) {
         this.ansiblejobs = ansiblejobs;
     }
 
+    /**
+     * The CLI reference for getting the subscription status output
+     */
     @JsonProperty("appstatusReference")
     public String getAppstatusReference() {
         return appstatusReference;
     }
 
+    /**
+     * The CLI reference for getting the subscription status output
+     */
     @JsonProperty("appstatusReference")
     public void setAppstatusReference(String appstatusReference) {
         this.appstatusReference = appstatusReference;
     }
 
+    /**
+     * SubscriptionStatus defines the observed status of a subscription
+     */
     @JsonProperty("lastUpdateTime")
     public String getLastUpdateTime() {
         return lastUpdateTime;
     }
 
+    /**
+     * SubscriptionStatus defines the observed status of a subscription
+     */
     @JsonProperty("lastUpdateTime")
     public void setLastUpdateTime(String lastUpdateTime) {
         this.lastUpdateTime = lastUpdateTime;
     }
 
+    /**
+     * Informational message of the subscription deployment
+     */
     @JsonProperty("message")
     public String getMessage() {
         return message;
     }
 
+    /**
+     * Informational message of the subscription deployment
+     */
     @JsonProperty("message")
     public void setMessage(String message) {
         this.message = message;
     }
 
+    /**
+     * Phase of the subscription deployment
+     */
     @JsonProperty("phase")
     public String getPhase() {
         return phase;
     }
 
+    /**
+     * Phase of the subscription deployment
+     */
     @JsonProperty("phase")
     public void setPhase(String phase) {
         this.phase = phase;
     }
 
+    /**
+     * additional error output of the subscription deployment
+     */
     @JsonProperty("reason")
     public String getReason() {
         return reason;
     }
 
+    /**
+     * additional error output of the subscription deployment
+     */
     @JsonProperty("reason")
     public void setReason(String reason) {
         this.reason = reason;
     }
 
+    /**
+     * SubscriptionStatus defines the observed status of a subscription
+     */
     @JsonProperty("statuses")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, SubscriptionPerClusterStatus> getStatuses() {
         return statuses;
     }
 
+    /**
+     * SubscriptionStatus defines the observed status of a subscription
+     */
     @JsonProperty("statuses")
     public void setStatuses(Map<String, SubscriptionPerClusterStatus> statuses) {
         this.statuses = statuses;

@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * WorkspaceDeclaration is a declaration of a volume that a Task requires.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -94,51 +97,81 @@ public class WorkspaceDeclaration implements Editable<WorkspaceDeclarationBuilde
         this.readOnly = readOnly;
     }
 
+    /**
+     * Description is an optional human readable description of this volume.
+     */
     @JsonProperty("description")
     public String getDescription() {
         return description;
     }
 
+    /**
+     * Description is an optional human readable description of this volume.
+     */
     @JsonProperty("description")
     public void setDescription(String description) {
         this.description = description;
     }
 
+    /**
+     * MountPath overrides the directory that the volume will be made available at.
+     */
     @JsonProperty("mountPath")
     public String getMountPath() {
         return mountPath;
     }
 
+    /**
+     * MountPath overrides the directory that the volume will be made available at.
+     */
     @JsonProperty("mountPath")
     public void setMountPath(String mountPath) {
         this.mountPath = mountPath;
     }
 
+    /**
+     * Name is the name by which you can bind the volume at runtime.
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * Name is the name by which you can bind the volume at runtime.
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * Optional marks a Workspace as not being required in TaskRuns. By default this field is false and so declared workspaces are required.
+     */
     @JsonProperty("optional")
     public Boolean getOptional() {
         return optional;
     }
 
+    /**
+     * Optional marks a Workspace as not being required in TaskRuns. By default this field is false and so declared workspaces are required.
+     */
     @JsonProperty("optional")
     public void setOptional(Boolean optional) {
         this.optional = optional;
     }
 
+    /**
+     * ReadOnly dictates whether a mounted volume is writable. By default this field is false and so mounted volumes are writable.
+     */
     @JsonProperty("readOnly")
     public Boolean getReadOnly() {
         return readOnly;
     }
 
+    /**
+     * ReadOnly dictates whether a mounted volume is writable. By default this field is false and so mounted volumes are writable.
+     */
     @JsonProperty("readOnly")
     public void setReadOnly(Boolean readOnly) {
         this.readOnly = readOnly;

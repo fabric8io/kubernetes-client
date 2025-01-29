@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Platform stores the global configuration for the cluster.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -78,11 +81,17 @@ public class Platform implements Editable<PlatformBuilder>, KubernetesResource
         this.libvirtSSHPrivateKeySecretRef = libvirtSSHPrivateKeySecretRef;
     }
 
+    /**
+     * Platform stores the global configuration for the cluster.
+     */
     @JsonProperty("libvirtSSHPrivateKeySecretRef")
     public LocalObjectReference getLibvirtSSHPrivateKeySecretRef() {
         return libvirtSSHPrivateKeySecretRef;
     }
 
+    /**
+     * Platform stores the global configuration for the cluster.
+     */
     @JsonProperty("libvirtSSHPrivateKeySecretRef")
     public void setLibvirtSSHPrivateKeySecretRef(LocalObjectReference libvirtSSHPrivateKeySecretRef) {
         this.libvirtSSHPrivateKeySecretRef = libvirtSSHPrivateKeySecretRef;

@@ -100,12 +100,18 @@ public class WorkflowNodeStatus implements Editable<WorkflowNodeStatusBuilder>, 
         this.finishedChildren = finishedChildren;
     }
 
+    /**
+     * ActiveChildren means the created children node
+     */
     @JsonProperty("activeChildren")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<LocalObjectReference> getActiveChildren() {
         return activeChildren;
     }
 
+    /**
+     * ActiveChildren means the created children node
+     */
     @JsonProperty("activeChildren")
     public void setActiveChildren(List<LocalObjectReference> activeChildren) {
         this.activeChildren = activeChildren;
@@ -131,23 +137,35 @@ public class WorkflowNodeStatus implements Editable<WorkflowNodeStatusBuilder>, 
         this.conditionalBranchesStatus = conditionalBranchesStatus;
     }
 
+    /**
+     * Represents the latest available observations of a workflow node's current state.
+     */
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<WorkflowNodeCondition> getConditions() {
         return conditions;
     }
 
+    /**
+     * Represents the latest available observations of a workflow node's current state.
+     */
     @JsonProperty("conditions")
     public void setConditions(List<WorkflowNodeCondition> conditions) {
         this.conditions = conditions;
     }
 
+    /**
+     * Children is necessary for representing the order when replicated child template references by parent template.
+     */
     @JsonProperty("finishedChildren")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<LocalObjectReference> getFinishedChildren() {
         return finishedChildren;
     }
 
+    /**
+     * Children is necessary for representing the order when replicated child template references by parent template.
+     */
     @JsonProperty("finishedChildren")
     public void setFinishedChildren(List<LocalObjectReference> finishedChildren) {
         this.finishedChildren = finishedChildren;

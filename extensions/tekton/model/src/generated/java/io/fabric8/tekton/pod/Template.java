@@ -40,6 +40,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Template holds pod specific configuration
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -157,178 +160,280 @@ public class Template implements Editable<TemplateBuilder>, KubernetesResource
         this.volumes = volumes;
     }
 
+    /**
+     * Template holds pod specific configuration
+     */
     @JsonProperty("affinity")
     public Affinity getAffinity() {
         return affinity;
     }
 
+    /**
+     * Template holds pod specific configuration
+     */
     @JsonProperty("affinity")
     public void setAffinity(Affinity affinity) {
         this.affinity = affinity;
     }
 
+    /**
+     * AutomountServiceAccountToken indicates whether pods running as this service account should have an API token automatically mounted.
+     */
     @JsonProperty("automountServiceAccountToken")
     public Boolean getAutomountServiceAccountToken() {
         return automountServiceAccountToken;
     }
 
+    /**
+     * AutomountServiceAccountToken indicates whether pods running as this service account should have an API token automatically mounted.
+     */
     @JsonProperty("automountServiceAccountToken")
     public void setAutomountServiceAccountToken(Boolean automountServiceAccountToken) {
         this.automountServiceAccountToken = automountServiceAccountToken;
     }
 
+    /**
+     * Template holds pod specific configuration
+     */
     @JsonProperty("dnsConfig")
     public PodDNSConfig getDnsConfig() {
         return dnsConfig;
     }
 
+    /**
+     * Template holds pod specific configuration
+     */
     @JsonProperty("dnsConfig")
     public void setDnsConfig(PodDNSConfig dnsConfig) {
         this.dnsConfig = dnsConfig;
     }
 
+    /**
+     * Set DNS policy for the pod. Defaults to "ClusterFirst". Valid values are 'ClusterFirst', 'Default' or 'None'. DNS parameters given in DNSConfig will be merged with the policy selected with DNSPolicy.
+     */
     @JsonProperty("dnsPolicy")
     public String getDnsPolicy() {
         return dnsPolicy;
     }
 
+    /**
+     * Set DNS policy for the pod. Defaults to "ClusterFirst". Valid values are 'ClusterFirst', 'Default' or 'None'. DNS parameters given in DNSConfig will be merged with the policy selected with DNSPolicy.
+     */
     @JsonProperty("dnsPolicy")
     public void setDnsPolicy(String dnsPolicy) {
         this.dnsPolicy = dnsPolicy;
     }
 
+    /**
+     * EnableServiceLinks indicates whether information about services should be injected into pod's environment variables, matching the syntax of Docker links. Optional: Defaults to true.
+     */
     @JsonProperty("enableServiceLinks")
     public Boolean getEnableServiceLinks() {
         return enableServiceLinks;
     }
 
+    /**
+     * EnableServiceLinks indicates whether information about services should be injected into pod's environment variables, matching the syntax of Docker links. Optional: Defaults to true.
+     */
     @JsonProperty("enableServiceLinks")
     public void setEnableServiceLinks(Boolean enableServiceLinks) {
         this.enableServiceLinks = enableServiceLinks;
     }
 
+    /**
+     * List of environment variables that can be provided to the containers belonging to the pod.
+     */
     @JsonProperty("env")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<EnvVar> getEnv() {
         return env;
     }
 
+    /**
+     * List of environment variables that can be provided to the containers belonging to the pod.
+     */
     @JsonProperty("env")
     public void setEnv(List<EnvVar> env) {
         this.env = env;
     }
 
+    /**
+     * HostAliases is an optional list of hosts and IPs that will be injected into the pod's hosts file if specified. This is only valid for non-hostNetwork pods.
+     */
     @JsonProperty("hostAliases")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<HostAlias> getHostAliases() {
         return hostAliases;
     }
 
+    /**
+     * HostAliases is an optional list of hosts and IPs that will be injected into the pod's hosts file if specified. This is only valid for non-hostNetwork pods.
+     */
     @JsonProperty("hostAliases")
     public void setHostAliases(List<HostAlias> hostAliases) {
         this.hostAliases = hostAliases;
     }
 
+    /**
+     * HostNetwork specifies whether the pod may use the node network namespace
+     */
     @JsonProperty("hostNetwork")
     public Boolean getHostNetwork() {
         return hostNetwork;
     }
 
+    /**
+     * HostNetwork specifies whether the pod may use the node network namespace
+     */
     @JsonProperty("hostNetwork")
     public void setHostNetwork(Boolean hostNetwork) {
         this.hostNetwork = hostNetwork;
     }
 
+    /**
+     * ImagePullSecrets gives the name of the secret used by the pod to pull the image if specified
+     */
     @JsonProperty("imagePullSecrets")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<LocalObjectReference> getImagePullSecrets() {
         return imagePullSecrets;
     }
 
+    /**
+     * ImagePullSecrets gives the name of the secret used by the pod to pull the image if specified
+     */
     @JsonProperty("imagePullSecrets")
     public void setImagePullSecrets(List<LocalObjectReference> imagePullSecrets) {
         this.imagePullSecrets = imagePullSecrets;
     }
 
+    /**
+     * NodeSelector is a selector which must be true for the pod to fit on a node. Selector which must match a node's labels for the pod to be scheduled on that node. More info: https://kubernetes.io/docs/concepts/configuration/assign-pod-node/
+     */
     @JsonProperty("nodeSelector")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getNodeSelector() {
         return nodeSelector;
     }
 
+    /**
+     * NodeSelector is a selector which must be true for the pod to fit on a node. Selector which must match a node's labels for the pod to be scheduled on that node. More info: https://kubernetes.io/docs/concepts/configuration/assign-pod-node/
+     */
     @JsonProperty("nodeSelector")
     public void setNodeSelector(Map<String, String> nodeSelector) {
         this.nodeSelector = nodeSelector;
     }
 
+    /**
+     * If specified, indicates the pod's priority. "system-node-critical" and "system-cluster-critical" are two special keywords which indicate the highest priorities with the former being the highest priority. Any other name must be defined by creating a PriorityClass object with that name. If not specified, the pod priority will be default or zero if there is no default.
+     */
     @JsonProperty("priorityClassName")
     public String getPriorityClassName() {
         return priorityClassName;
     }
 
+    /**
+     * If specified, indicates the pod's priority. "system-node-critical" and "system-cluster-critical" are two special keywords which indicate the highest priorities with the former being the highest priority. Any other name must be defined by creating a PriorityClass object with that name. If not specified, the pod priority will be default or zero if there is no default.
+     */
     @JsonProperty("priorityClassName")
     public void setPriorityClassName(String priorityClassName) {
         this.priorityClassName = priorityClassName;
     }
 
+    /**
+     * RuntimeClassName refers to a RuntimeClass object in the node.k8s.io group, which should be used to run this pod. If no RuntimeClass resource matches the named class, the pod will not be run. If unset or empty, the "legacy" RuntimeClass will be used, which is an implicit class with an empty definition that uses the default runtime handler. More info: https://git.k8s.io/enhancements/keps/sig-node/runtime-class.md This is a beta feature as of Kubernetes v1.14.
+     */
     @JsonProperty("runtimeClassName")
     public String getRuntimeClassName() {
         return runtimeClassName;
     }
 
+    /**
+     * RuntimeClassName refers to a RuntimeClass object in the node.k8s.io group, which should be used to run this pod. If no RuntimeClass resource matches the named class, the pod will not be run. If unset or empty, the "legacy" RuntimeClass will be used, which is an implicit class with an empty definition that uses the default runtime handler. More info: https://git.k8s.io/enhancements/keps/sig-node/runtime-class.md This is a beta feature as of Kubernetes v1.14.
+     */
     @JsonProperty("runtimeClassName")
     public void setRuntimeClassName(String runtimeClassName) {
         this.runtimeClassName = runtimeClassName;
     }
 
+    /**
+     * SchedulerName specifies the scheduler to be used to dispatch the Pod
+     */
     @JsonProperty("schedulerName")
     public String getSchedulerName() {
         return schedulerName;
     }
 
+    /**
+     * SchedulerName specifies the scheduler to be used to dispatch the Pod
+     */
     @JsonProperty("schedulerName")
     public void setSchedulerName(String schedulerName) {
         this.schedulerName = schedulerName;
     }
 
+    /**
+     * Template holds pod specific configuration
+     */
     @JsonProperty("securityContext")
     public PodSecurityContext getSecurityContext() {
         return securityContext;
     }
 
+    /**
+     * Template holds pod specific configuration
+     */
     @JsonProperty("securityContext")
     public void setSecurityContext(PodSecurityContext securityContext) {
         this.securityContext = securityContext;
     }
 
+    /**
+     * If specified, the pod's tolerations.
+     */
     @JsonProperty("tolerations")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Toleration> getTolerations() {
         return tolerations;
     }
 
+    /**
+     * If specified, the pod's tolerations.
+     */
     @JsonProperty("tolerations")
     public void setTolerations(List<Toleration> tolerations) {
         this.tolerations = tolerations;
     }
 
+    /**
+     * TopologySpreadConstraints controls how Pods are spread across your cluster among failure-domains such as regions, zones, nodes, and other user-defined topology domains.
+     */
     @JsonProperty("topologySpreadConstraints")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<TopologySpreadConstraint> getTopologySpreadConstraints() {
         return topologySpreadConstraints;
     }
 
+    /**
+     * TopologySpreadConstraints controls how Pods are spread across your cluster among failure-domains such as regions, zones, nodes, and other user-defined topology domains.
+     */
     @JsonProperty("topologySpreadConstraints")
     public void setTopologySpreadConstraints(List<TopologySpreadConstraint> topologySpreadConstraints) {
         this.topologySpreadConstraints = topologySpreadConstraints;
     }
 
+    /**
+     * List of volumes that can be mounted by containers belonging to the pod. More info: https://kubernetes.io/docs/concepts/storage/volumes
+     */
     @JsonProperty("volumes")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Volume> getVolumes() {
         return volumes;
     }
 
+    /**
+     * List of volumes that can be mounted by containers belonging to the pod. More info: https://kubernetes.io/docs/concepts/storage/volumes
+     */
     @JsonProperty("volumes")
     public void setVolumes(List<Volume> volumes) {
         this.volumes = volumes;

@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * PodFailurePolicyOnPodConditionsPattern describes a pattern for matching an actual pod condition type.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class PodFailurePolicyOnPodConditionsPattern implements Editable<PodFailu
         this.type = type;
     }
 
+    /**
+     * Specifies the required Pod condition status. To match a pod condition it is required that the specified status equals the pod condition status. Defaults to True.
+     */
     @JsonProperty("status")
     public String getStatus() {
         return status;
     }
 
+    /**
+     * Specifies the required Pod condition status. To match a pod condition it is required that the specified status equals the pod condition status. Defaults to True.
+     */
     @JsonProperty("status")
     public void setStatus(String status) {
         this.status = status;
     }
 
+    /**
+     * Specifies the required Pod condition type. To match a pod condition it is required that specified type equals the pod condition type.
+     */
     @JsonProperty("type")
     public String getType() {
         return type;
     }
 
+    /**
+     * Specifies the required Pod condition type. To match a pod condition it is required that specified type equals the pod condition type.
+     */
     @JsonProperty("type")
     public void setType(String type) {
         this.type = type;

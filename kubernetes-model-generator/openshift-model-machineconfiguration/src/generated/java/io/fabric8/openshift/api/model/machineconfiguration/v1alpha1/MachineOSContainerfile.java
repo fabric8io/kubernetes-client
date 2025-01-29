@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * MachineOSContainerfile contains all custom content the user wants built into the image
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class MachineOSContainerfile implements Editable<MachineOSContainerfileBu
         this.content = content;
     }
 
+    /**
+     * containerfileArch describes the architecture this containerfile is to be built for this arch is optional. If the user does not specify an architecture, it is assumed that the content can be applied to all architectures, or in a single arch cluster: the only architecture.
+     */
     @JsonProperty("containerfileArch")
     public String getContainerfileArch() {
         return containerfileArch;
     }
 
+    /**
+     * containerfileArch describes the architecture this containerfile is to be built for this arch is optional. If the user does not specify an architecture, it is assumed that the content can be applied to all architectures, or in a single arch cluster: the only architecture.
+     */
     @JsonProperty("containerfileArch")
     public void setContainerfileArch(String containerfileArch) {
         this.containerfileArch = containerfileArch;
     }
 
+    /**
+     * content is the custom content to be built
+     */
     @JsonProperty("content")
     public String getContent() {
         return content;
     }
 
+    /**
+     * content is the custom content to be built
+     */
     @JsonProperty("content")
     public void setContent(String content) {
         this.content = content;

@@ -35,6 +35,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * WebTLSConfig defines the TLS parameters for HTTPS.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -127,123 +130,195 @@ public class WebTLSConfig implements Editable<WebTLSConfigBuilder>, KubernetesRe
         this.preferServerCipherSuites = preferServerCipherSuites;
     }
 
+    /**
+     * WebTLSConfig defines the TLS parameters for HTTPS.
+     */
     @JsonProperty("cert")
     public SecretOrConfigMap getCert() {
         return cert;
     }
 
+    /**
+     * WebTLSConfig defines the TLS parameters for HTTPS.
+     */
     @JsonProperty("cert")
     public void setCert(SecretOrConfigMap cert) {
         this.cert = cert;
     }
 
+    /**
+     * Path to the TLS certificate file in the Prometheus container for the server. Mutually exclusive with `cert`.
+     */
     @JsonProperty("certFile")
     public String getCertFile() {
         return certFile;
     }
 
+    /**
+     * Path to the TLS certificate file in the Prometheus container for the server. Mutually exclusive with `cert`.
+     */
     @JsonProperty("certFile")
     public void setCertFile(String certFile) {
         this.certFile = certFile;
     }
 
+    /**
+     * List of supported cipher suites for TLS versions up to TLS 1.2. If empty, Go default cipher suites are used. Available cipher suites are documented in the go documentation: https://golang.org/pkg/crypto/tls/#pkg-constants
+     */
     @JsonProperty("cipherSuites")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getCipherSuites() {
         return cipherSuites;
     }
 
+    /**
+     * List of supported cipher suites for TLS versions up to TLS 1.2. If empty, Go default cipher suites are used. Available cipher suites are documented in the go documentation: https://golang.org/pkg/crypto/tls/#pkg-constants
+     */
     @JsonProperty("cipherSuites")
     public void setCipherSuites(List<String> cipherSuites) {
         this.cipherSuites = cipherSuites;
     }
 
+    /**
+     * Server policy for client authentication. Maps to ClientAuth Policies. For more detail on clientAuth options: https://golang.org/pkg/crypto/tls/#ClientAuthType
+     */
     @JsonProperty("clientAuthType")
     public String getClientAuthType() {
         return clientAuthType;
     }
 
+    /**
+     * Server policy for client authentication. Maps to ClientAuth Policies. For more detail on clientAuth options: https://golang.org/pkg/crypto/tls/#ClientAuthType
+     */
     @JsonProperty("clientAuthType")
     public void setClientAuthType(String clientAuthType) {
         this.clientAuthType = clientAuthType;
     }
 
+    /**
+     * Path to the CA certificate file for client certificate authentication to the server. Mutually exclusive with `client_ca`.
+     */
     @JsonProperty("clientCAFile")
     public String getClientCAFile() {
         return clientCAFile;
     }
 
+    /**
+     * Path to the CA certificate file for client certificate authentication to the server. Mutually exclusive with `client_ca`.
+     */
     @JsonProperty("clientCAFile")
     public void setClientCAFile(String clientCAFile) {
         this.clientCAFile = clientCAFile;
     }
 
+    /**
+     * WebTLSConfig defines the TLS parameters for HTTPS.
+     */
     @JsonProperty("client_ca")
     public SecretOrConfigMap getClientCa() {
         return clientCa;
     }
 
+    /**
+     * WebTLSConfig defines the TLS parameters for HTTPS.
+     */
     @JsonProperty("client_ca")
     public void setClientCa(SecretOrConfigMap clientCa) {
         this.clientCa = clientCa;
     }
 
+    /**
+     * Elliptic curves that will be used in an ECDHE handshake, in preference order. Available curves are documented in the go documentation: https://golang.org/pkg/crypto/tls/#CurveID
+     */
     @JsonProperty("curvePreferences")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getCurvePreferences() {
         return curvePreferences;
     }
 
+    /**
+     * Elliptic curves that will be used in an ECDHE handshake, in preference order. Available curves are documented in the go documentation: https://golang.org/pkg/crypto/tls/#CurveID
+     */
     @JsonProperty("curvePreferences")
     public void setCurvePreferences(List<String> curvePreferences) {
         this.curvePreferences = curvePreferences;
     }
 
+    /**
+     * Path to the TLS key file in the Prometheus container for the server. Mutually exclusive with `keySecret`.
+     */
     @JsonProperty("keyFile")
     public String getKeyFile() {
         return keyFile;
     }
 
+    /**
+     * Path to the TLS key file in the Prometheus container for the server. Mutually exclusive with `keySecret`.
+     */
     @JsonProperty("keyFile")
     public void setKeyFile(String keyFile) {
         this.keyFile = keyFile;
     }
 
+    /**
+     * WebTLSConfig defines the TLS parameters for HTTPS.
+     */
     @JsonProperty("keySecret")
     public SecretKeySelector getKeySecret() {
         return keySecret;
     }
 
+    /**
+     * WebTLSConfig defines the TLS parameters for HTTPS.
+     */
     @JsonProperty("keySecret")
     public void setKeySecret(SecretKeySelector keySecret) {
         this.keySecret = keySecret;
     }
 
+    /**
+     * Maximum TLS version that is acceptable. Defaults to TLS13.
+     */
     @JsonProperty("maxVersion")
     public String getMaxVersion() {
         return maxVersion;
     }
 
+    /**
+     * Maximum TLS version that is acceptable. Defaults to TLS13.
+     */
     @JsonProperty("maxVersion")
     public void setMaxVersion(String maxVersion) {
         this.maxVersion = maxVersion;
     }
 
+    /**
+     * Minimum TLS version that is acceptable. Defaults to TLS12.
+     */
     @JsonProperty("minVersion")
     public String getMinVersion() {
         return minVersion;
     }
 
+    /**
+     * Minimum TLS version that is acceptable. Defaults to TLS12.
+     */
     @JsonProperty("minVersion")
     public void setMinVersion(String minVersion) {
         this.minVersion = minVersion;
     }
 
+    /**
+     * Controls whether the server selects the client's most preferred cipher suite, or the server's most preferred cipher suite. If true then the server's preference, as expressed in the order of elements in cipherSuites, is used.
+     */
     @JsonProperty("preferServerCipherSuites")
     public Boolean getPreferServerCipherSuites() {
         return preferServerCipherSuites;
     }
 
+    /**
+     * Controls whether the server selects the client's most preferred cipher suite, or the server's most preferred cipher suite. If true then the server's preference, as expressed in the order of elements in cipherSuites, is used.
+     */
     @JsonProperty("preferServerCipherSuites")
     public void setPreferServerCipherSuites(Boolean preferServerCipherSuites) {
         this.preferServerCipherSuites = preferServerCipherSuites;

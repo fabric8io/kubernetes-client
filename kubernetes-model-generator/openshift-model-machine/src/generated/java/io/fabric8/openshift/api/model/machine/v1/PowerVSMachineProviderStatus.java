@@ -40,6 +40,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * PowerVSMachineProviderStatus is the type that will be embedded in a Machine.Status.ProviderStatus field. It contains PowerVS-specific status information.<br><p> <br><p> Compatibility level 1: Stable within a major release for a minimum of 12 months or 3 minor releases (whichever is longer).
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -80,9 +83,6 @@ import lombok.experimental.Accessors;
 public class PowerVSMachineProviderStatus implements Editable<PowerVSMachineProviderStatusBuilder>, KubernetesResource, Namespaced
 {
 
-    /**
-     * (Required)
-     */
     @JsonProperty("apiVersion")
     private String apiVersion = "machine.openshift.io/v1";
     @JsonProperty("conditions")
@@ -92,9 +92,6 @@ public class PowerVSMachineProviderStatus implements Editable<PowerVSMachineProv
     private String instanceId;
     @JsonProperty("instanceState")
     private String instanceState;
-    /**
-     * (Required)
-     */
     @JsonProperty("kind")
     private String kind = "PowerVSMachineProviderStatus";
     @JsonProperty("serviceInstanceID")
@@ -119,7 +116,7 @@ public class PowerVSMachineProviderStatus implements Editable<PowerVSMachineProv
     }
 
     /**
-     * (Required)
+     * APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -127,46 +124,64 @@ public class PowerVSMachineProviderStatus implements Editable<PowerVSMachineProv
     }
 
     /**
-     * (Required)
+     * APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
         this.apiVersion = apiVersion;
     }
 
+    /**
+     * conditions is a set of conditions associated with the Machine to indicate errors or other status
+     */
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Condition> getConditions() {
         return conditions;
     }
 
+    /**
+     * conditions is a set of conditions associated with the Machine to indicate errors or other status
+     */
     @JsonProperty("conditions")
     public void setConditions(List<Condition> conditions) {
         this.conditions = conditions;
     }
 
+    /**
+     * instanceId is the instance ID of the machine created in PowerVS instanceId uniquely identifies a Power VS server instance(VM) under a Power VS service. This will help in updating or deleting a VM in Power VS Cloud
+     */
     @JsonProperty("instanceId")
     public String getInstanceId() {
         return instanceId;
     }
 
+    /**
+     * instanceId is the instance ID of the machine created in PowerVS instanceId uniquely identifies a Power VS server instance(VM) under a Power VS service. This will help in updating or deleting a VM in Power VS Cloud
+     */
     @JsonProperty("instanceId")
     public void setInstanceId(String instanceId) {
         this.instanceId = instanceId;
     }
 
+    /**
+     * instanceState is the state of the PowerVS instance for this machine Possible instance states are Active, Build, ShutOff, Reboot This is used to display additional information to user regarding instance current state
+     */
     @JsonProperty("instanceState")
     public String getInstanceState() {
         return instanceState;
     }
 
+    /**
+     * instanceState is the state of the PowerVS instance for this machine Possible instance states are Active, Build, ShutOff, Reboot This is used to display additional information to user regarding instance current state
+     */
     @JsonProperty("instanceState")
     public void setInstanceState(String instanceState) {
         this.instanceState = instanceState;
     }
 
     /**
-     * (Required)
+     * Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -174,18 +189,24 @@ public class PowerVSMachineProviderStatus implements Editable<PowerVSMachineProv
     }
 
     /**
-     * (Required)
+     * Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
      */
     @JsonProperty("kind")
     public void setKind(String kind) {
         this.kind = kind;
     }
 
+    /**
+     * serviceInstanceID is the reference to the Power VS ServiceInstance on which the machine instance will be created. serviceInstanceID uniquely identifies the Power VS service By setting serviceInstanceID it will become easy and efficient to fetch a server instance(VM) within Power VS Cloud.
+     */
     @JsonProperty("serviceInstanceID")
     public String getServiceInstanceID() {
         return serviceInstanceID;
     }
 
+    /**
+     * serviceInstanceID is the reference to the Power VS ServiceInstance on which the machine instance will be created. serviceInstanceID uniquely identifies the Power VS service By setting serviceInstanceID it will become easy and efficient to fetch a server instance(VM) within Power VS Cloud.
+     */
     @JsonProperty("serviceInstanceID")
     public void setServiceInstanceID(String serviceInstanceID) {
         this.serviceInstanceID = serviceInstanceID;

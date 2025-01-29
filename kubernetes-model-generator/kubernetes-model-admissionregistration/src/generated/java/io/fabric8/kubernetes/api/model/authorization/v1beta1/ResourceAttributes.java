@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ResourceAttributes includes the authorization attributes available for resource requests to the Authorizer interface
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -102,71 +105,113 @@ public class ResourceAttributes implements Editable<ResourceAttributesBuilder>, 
         this.version = version;
     }
 
+    /**
+     * Group is the API Group of the Resource.  "&#42;" means all.
+     */
     @JsonProperty("group")
     public String getGroup() {
         return group;
     }
 
+    /**
+     * Group is the API Group of the Resource.  "&#42;" means all.
+     */
     @JsonProperty("group")
     public void setGroup(String group) {
         this.group = group;
     }
 
+    /**
+     * Name is the name of the resource being requested for a "get" or deleted for a "delete". "" (empty) means all.
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * Name is the name of the resource being requested for a "get" or deleted for a "delete". "" (empty) means all.
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * Namespace is the namespace of the action being requested.  Currently, there is no distinction between no namespace and all namespaces "" (empty) is defaulted for LocalSubjectAccessReviews "" (empty) is empty for cluster-scoped resources "" (empty) means "all" for namespace scoped resources from a SubjectAccessReview or SelfSubjectAccessReview
+     */
     @JsonProperty("namespace")
     public String getNamespace() {
         return namespace;
     }
 
+    /**
+     * Namespace is the namespace of the action being requested.  Currently, there is no distinction between no namespace and all namespaces "" (empty) is defaulted for LocalSubjectAccessReviews "" (empty) is empty for cluster-scoped resources "" (empty) means "all" for namespace scoped resources from a SubjectAccessReview or SelfSubjectAccessReview
+     */
     @JsonProperty("namespace")
     public void setNamespace(String namespace) {
         this.namespace = namespace;
     }
 
+    /**
+     * Resource is one of the existing resource types.  "&#42;" means all.
+     */
     @JsonProperty("resource")
     public String getResource() {
         return resource;
     }
 
+    /**
+     * Resource is one of the existing resource types.  "&#42;" means all.
+     */
     @JsonProperty("resource")
     public void setResource(String resource) {
         this.resource = resource;
     }
 
+    /**
+     * Subresource is one of the existing resource types.  "" means none.
+     */
     @JsonProperty("subresource")
     public String getSubresource() {
         return subresource;
     }
 
+    /**
+     * Subresource is one of the existing resource types.  "" means none.
+     */
     @JsonProperty("subresource")
     public void setSubresource(String subresource) {
         this.subresource = subresource;
     }
 
+    /**
+     * Verb is a kubernetes resource API verb, like: get, list, watch, create, update, delete, proxy.  "&#42;" means all.
+     */
     @JsonProperty("verb")
     public String getVerb() {
         return verb;
     }
 
+    /**
+     * Verb is a kubernetes resource API verb, like: get, list, watch, create, update, delete, proxy.  "&#42;" means all.
+     */
     @JsonProperty("verb")
     public void setVerb(String verb) {
         this.verb = verb;
     }
 
+    /**
+     * Version is the API Version of the Resource.  "&#42;" means all.
+     */
     @JsonProperty("version")
     public String getVersion() {
         return version;
     }
 
+    /**
+     * Version is the API Version of the Resource.  "&#42;" means all.
+     */
     @JsonProperty("version")
     public void setVersion(String version) {
         this.version = version;

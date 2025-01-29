@@ -110,21 +110,33 @@ public class ChallengeSpec implements Editable<ChallengeSpecBuilder>, Kubernetes
         this.wildcard = wildcard;
     }
 
+    /**
+     * The URL to the ACME Authorization resource that this challenge is a part of.
+     */
     @JsonProperty("authorizationURL")
     public String getAuthorizationURL() {
         return authorizationURL;
     }
 
+    /**
+     * The URL to the ACME Authorization resource that this challenge is a part of.
+     */
     @JsonProperty("authorizationURL")
     public void setAuthorizationURL(String authorizationURL) {
         this.authorizationURL = authorizationURL;
     }
 
+    /**
+     * dnsName is the identifier that this challenge is for, e.g. example.com. If the requested DNSName is a 'wildcard', this field MUST be set to the non-wildcard domain, e.g. for `&#42;.example.com`, it must be `example.com`.
+     */
     @JsonProperty("dnsName")
     public String getDnsName() {
         return dnsName;
     }
 
+    /**
+     * dnsName is the identifier that this challenge is for, e.g. example.com. If the requested DNSName is a 'wildcard', this field MUST be set to the non-wildcard domain, e.g. for `&#42;.example.com`, it must be `example.com`.
+     */
     @JsonProperty("dnsName")
     public void setDnsName(String dnsName) {
         this.dnsName = dnsName;
@@ -140,11 +152,17 @@ public class ChallengeSpec implements Editable<ChallengeSpecBuilder>, Kubernetes
         this.issuerRef = issuerRef;
     }
 
+    /**
+     * The ACME challenge key for this challenge For HTTP01 challenges, this is the value that must be responded with to complete the HTTP01 challenge in the format: `&lt;private key JWK thumbprint&gt;.&lt;key from acme server for challenge&gt;`. For DNS01 challenges, this is the base64 encoded SHA256 sum of the `&lt;private key JWK thumbprint&gt;.&lt;key from acme server for challenge&gt;` text that must be set as the TXT record content.
+     */
     @JsonProperty("key")
     public String getKey() {
         return key;
     }
 
+    /**
+     * The ACME challenge key for this challenge For HTTP01 challenges, this is the value that must be responded with to complete the HTTP01 challenge in the format: `&lt;private key JWK thumbprint&gt;.&lt;key from acme server for challenge&gt;`. For DNS01 challenges, this is the base64 encoded SHA256 sum of the `&lt;private key JWK thumbprint&gt;.&lt;key from acme server for challenge&gt;` text that must be set as the TXT record content.
+     */
     @JsonProperty("key")
     public void setKey(String key) {
         this.key = key;
@@ -160,41 +178,65 @@ public class ChallengeSpec implements Editable<ChallengeSpecBuilder>, Kubernetes
         this.solver = solver;
     }
 
+    /**
+     * The ACME challenge token for this challenge. This is the raw value returned from the ACME server.
+     */
     @JsonProperty("token")
     public String getToken() {
         return token;
     }
 
+    /**
+     * The ACME challenge token for this challenge. This is the raw value returned from the ACME server.
+     */
     @JsonProperty("token")
     public void setToken(String token) {
         this.token = token;
     }
 
+    /**
+     * The type of ACME challenge this resource represents. One of "HTTP-01" or "DNS-01".
+     */
     @JsonProperty("type")
     public String getType() {
         return type;
     }
 
+    /**
+     * The type of ACME challenge this resource represents. One of "HTTP-01" or "DNS-01".
+     */
     @JsonProperty("type")
     public void setType(String type) {
         this.type = type;
     }
 
+    /**
+     * The URL of the ACME Challenge resource for this challenge. This can be used to lookup details about the status of this challenge.
+     */
     @JsonProperty("url")
     public String getUrl() {
         return url;
     }
 
+    /**
+     * The URL of the ACME Challenge resource for this challenge. This can be used to lookup details about the status of this challenge.
+     */
     @JsonProperty("url")
     public void setUrl(String url) {
         this.url = url;
     }
 
+    /**
+     * wildcard will be true if this challenge is for a wildcard identifier, for example '&#42;.example.com'.
+     */
     @JsonProperty("wildcard")
     public Boolean getWildcard() {
         return wildcard;
     }
 
+    /**
+     * wildcard will be true if this challenge is for a wildcard identifier, for example '&#42;.example.com'.
+     */
     @JsonProperty("wildcard")
     public void setWildcard(Boolean wildcard) {
         this.wildcard = wildcard;

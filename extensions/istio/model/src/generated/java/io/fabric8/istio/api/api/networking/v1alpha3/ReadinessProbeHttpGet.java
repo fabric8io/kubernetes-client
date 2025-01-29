@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * `httpGet` is performed to a given endpoint and the status/able to connect determines health.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -78,11 +81,17 @@ public class ReadinessProbeHttpGet implements IsReadinessProbeHealthCheckMethod,
         this.httpGet = httpGet;
     }
 
+    /**
+     * `httpGet` is performed to a given endpoint and the status/able to connect determines health.
+     */
     @JsonProperty("httpGet")
     public HTTPHealthCheckConfig getHttpGet() {
         return httpGet;
     }
 
+    /**
+     * `httpGet` is performed to a given endpoint and the status/able to connect determines health.
+     */
     @JsonProperty("httpGet")
     public void setHttpGet(HTTPHealthCheckConfig httpGet) {
         this.httpGet = httpGet;

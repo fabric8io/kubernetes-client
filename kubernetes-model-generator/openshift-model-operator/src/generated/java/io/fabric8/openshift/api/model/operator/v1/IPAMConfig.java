@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * IPAMConfig contains configurations for IPAM (IP Address Management)
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class IPAMConfig implements Editable<IPAMConfigBuilder>, KubernetesResour
         this.type = type;
     }
 
+    /**
+     * IPAMConfig contains configurations for IPAM (IP Address Management)
+     */
     @JsonProperty("staticIPAMConfig")
     public StaticIPAMConfig getStaticIPAMConfig() {
         return staticIPAMConfig;
     }
 
+    /**
+     * IPAMConfig contains configurations for IPAM (IP Address Management)
+     */
     @JsonProperty("staticIPAMConfig")
     public void setStaticIPAMConfig(StaticIPAMConfig staticIPAMConfig) {
         this.staticIPAMConfig = staticIPAMConfig;
     }
 
+    /**
+     * Type is the type of IPAM module will be used for IP Address Management(IPAM). The supported values are IPAMTypeDHCP, IPAMTypeStatic
+     */
     @JsonProperty("type")
     public String getType() {
         return type;
     }
 
+    /**
+     * Type is the type of IPAM module will be used for IP Address Management(IPAM). The supported values are IPAMTypeDHCP, IPAMTypeStatic
+     */
     @JsonProperty("type")
     public void setType(String type) {
         this.type = type;

@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ConsolePluginProxyEndpoint holds information about the endpoint to which request will be proxied to.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class ConsolePluginProxyEndpoint implements Editable<ConsolePluginProxyEn
         this.type = type;
     }
 
+    /**
+     * ConsolePluginProxyEndpoint holds information about the endpoint to which request will be proxied to.
+     */
     @JsonProperty("service")
     public ConsolePluginProxyServiceConfig getService() {
         return service;
     }
 
+    /**
+     * ConsolePluginProxyEndpoint holds information about the endpoint to which request will be proxied to.
+     */
     @JsonProperty("service")
     public void setService(ConsolePluginProxyServiceConfig service) {
         this.service = service;
     }
 
+    /**
+     * type is the type of the console plugin's proxy. Currently only "Service" is supported.
+     */
     @JsonProperty("type")
     public String getType() {
         return type;
     }
 
+    /**
+     * type is the type of the console plugin's proxy. Currently only "Service" is supported.
+     */
     @JsonProperty("type")
     public void setType(String type) {
         this.type = type;

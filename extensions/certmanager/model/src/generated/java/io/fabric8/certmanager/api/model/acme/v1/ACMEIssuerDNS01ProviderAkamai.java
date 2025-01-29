@@ -33,6 +33,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ACMEIssuerDNS01ProviderAkamai is a structure containing the DNS configuration for Akamai DNS—Zone Record Management API
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -91,41 +94,65 @@ public class ACMEIssuerDNS01ProviderAkamai implements Editable<ACMEIssuerDNS01Pr
         this.serviceConsumerDomain = serviceConsumerDomain;
     }
 
+    /**
+     * ACMEIssuerDNS01ProviderAkamai is a structure containing the DNS configuration for Akamai DNS—Zone Record Management API
+     */
     @JsonProperty("accessTokenSecretRef")
     public SecretKeySelector getAccessTokenSecretRef() {
         return accessTokenSecretRef;
     }
 
+    /**
+     * ACMEIssuerDNS01ProviderAkamai is a structure containing the DNS configuration for Akamai DNS—Zone Record Management API
+     */
     @JsonProperty("accessTokenSecretRef")
     public void setAccessTokenSecretRef(SecretKeySelector accessTokenSecretRef) {
         this.accessTokenSecretRef = accessTokenSecretRef;
     }
 
+    /**
+     * ACMEIssuerDNS01ProviderAkamai is a structure containing the DNS configuration for Akamai DNS—Zone Record Management API
+     */
     @JsonProperty("clientSecretSecretRef")
     public SecretKeySelector getClientSecretSecretRef() {
         return clientSecretSecretRef;
     }
 
+    /**
+     * ACMEIssuerDNS01ProviderAkamai is a structure containing the DNS configuration for Akamai DNS—Zone Record Management API
+     */
     @JsonProperty("clientSecretSecretRef")
     public void setClientSecretSecretRef(SecretKeySelector clientSecretSecretRef) {
         this.clientSecretSecretRef = clientSecretSecretRef;
     }
 
+    /**
+     * ACMEIssuerDNS01ProviderAkamai is a structure containing the DNS configuration for Akamai DNS—Zone Record Management API
+     */
     @JsonProperty("clientTokenSecretRef")
     public SecretKeySelector getClientTokenSecretRef() {
         return clientTokenSecretRef;
     }
 
+    /**
+     * ACMEIssuerDNS01ProviderAkamai is a structure containing the DNS configuration for Akamai DNS—Zone Record Management API
+     */
     @JsonProperty("clientTokenSecretRef")
     public void setClientTokenSecretRef(SecretKeySelector clientTokenSecretRef) {
         this.clientTokenSecretRef = clientTokenSecretRef;
     }
 
+    /**
+     * ACMEIssuerDNS01ProviderAkamai is a structure containing the DNS configuration for Akamai DNS—Zone Record Management API
+     */
     @JsonProperty("serviceConsumerDomain")
     public String getServiceConsumerDomain() {
         return serviceConsumerDomain;
     }
 
+    /**
+     * ACMEIssuerDNS01ProviderAkamai is a structure containing the DNS configuration for Akamai DNS—Zone Record Management API
+     */
     @JsonProperty("serviceConsumerDomain")
     public void setServiceConsumerDomain(String serviceConsumerDomain) {
         this.serviceConsumerDomain = serviceConsumerDomain;

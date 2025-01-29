@@ -33,6 +33,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * PipelineTaskRunTemplate is used to specify run specifications for all Task in pipelinerun.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -83,21 +86,33 @@ public class PipelineTaskRunTemplate implements Editable<PipelineTaskRunTemplate
         this.serviceAccountName = serviceAccountName;
     }
 
+    /**
+     * PipelineTaskRunTemplate is used to specify run specifications for all Task in pipelinerun.
+     */
     @JsonProperty("podTemplate")
     public Template getPodTemplate() {
         return podTemplate;
     }
 
+    /**
+     * PipelineTaskRunTemplate is used to specify run specifications for all Task in pipelinerun.
+     */
     @JsonProperty("podTemplate")
     public void setPodTemplate(Template podTemplate) {
         this.podTemplate = podTemplate;
     }
 
+    /**
+     * PipelineTaskRunTemplate is used to specify run specifications for all Task in pipelinerun.
+     */
     @JsonProperty("serviceAccountName")
     public String getServiceAccountName() {
         return serviceAccountName;
     }
 
+    /**
+     * PipelineTaskRunTemplate is used to specify run specifications for all Task in pipelinerun.
+     */
     @JsonProperty("serviceAccountName")
     public void setServiceAccountName(String serviceAccountName) {
         this.serviceAccountName = serviceAccountName;

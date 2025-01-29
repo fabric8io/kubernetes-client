@@ -33,6 +33,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * The configuration for the issuer. Only one of these can be set.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -95,51 +98,81 @@ public class IssuerConfig implements Editable<IssuerConfigBuilder>, KubernetesRe
         this.venafi = venafi;
     }
 
+    /**
+     * The configuration for the issuer. Only one of these can be set.
+     */
     @JsonProperty("acme")
     public ACMEIssuer getAcme() {
         return acme;
     }
 
+    /**
+     * The configuration for the issuer. Only one of these can be set.
+     */
     @JsonProperty("acme")
     public void setAcme(ACMEIssuer acme) {
         this.acme = acme;
     }
 
+    /**
+     * The configuration for the issuer. Only one of these can be set.
+     */
     @JsonProperty("ca")
     public CAIssuer getCa() {
         return ca;
     }
 
+    /**
+     * The configuration for the issuer. Only one of these can be set.
+     */
     @JsonProperty("ca")
     public void setCa(CAIssuer ca) {
         this.ca = ca;
     }
 
+    /**
+     * The configuration for the issuer. Only one of these can be set.
+     */
     @JsonProperty("selfSigned")
     public SelfSignedIssuer getSelfSigned() {
         return selfSigned;
     }
 
+    /**
+     * The configuration for the issuer. Only one of these can be set.
+     */
     @JsonProperty("selfSigned")
     public void setSelfSigned(SelfSignedIssuer selfSigned) {
         this.selfSigned = selfSigned;
     }
 
+    /**
+     * The configuration for the issuer. Only one of these can be set.
+     */
     @JsonProperty("vault")
     public VaultIssuer getVault() {
         return vault;
     }
 
+    /**
+     * The configuration for the issuer. Only one of these can be set.
+     */
     @JsonProperty("vault")
     public void setVault(VaultIssuer vault) {
         this.vault = vault;
     }
 
+    /**
+     * The configuration for the issuer. Only one of these can be set.
+     */
     @JsonProperty("venafi")
     public VenafiIssuer getVenafi() {
         return venafi;
     }
 
+    /**
+     * The configuration for the issuer. Only one of these can be set.
+     */
     @JsonProperty("venafi")
     public void setVenafi(VenafiIssuer venafi) {
         this.venafi = venafi;

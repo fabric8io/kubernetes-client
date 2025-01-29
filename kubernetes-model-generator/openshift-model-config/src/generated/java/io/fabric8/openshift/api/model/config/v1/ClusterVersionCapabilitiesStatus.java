@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ClusterVersionCapabilitiesStatus describes the state of optional, core cluster components.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -86,23 +89,35 @@ public class ClusterVersionCapabilitiesStatus implements Editable<ClusterVersion
         this.knownCapabilities = knownCapabilities;
     }
 
+    /**
+     * enabledCapabilities lists all the capabilities that are currently managed.
+     */
     @JsonProperty("enabledCapabilities")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getEnabledCapabilities() {
         return enabledCapabilities;
     }
 
+    /**
+     * enabledCapabilities lists all the capabilities that are currently managed.
+     */
     @JsonProperty("enabledCapabilities")
     public void setEnabledCapabilities(List<String> enabledCapabilities) {
         this.enabledCapabilities = enabledCapabilities;
     }
 
+    /**
+     * knownCapabilities lists all the capabilities known to the current cluster.
+     */
     @JsonProperty("knownCapabilities")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getKnownCapabilities() {
         return knownCapabilities;
     }
 
+    /**
+     * knownCapabilities lists all the capabilities known to the current cluster.
+     */
     @JsonProperty("knownCapabilities")
     public void setKnownCapabilities(List<String> knownCapabilities) {
         this.knownCapabilities = knownCapabilities;

@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * EgressNetworkPolicySpec provides a list of policies on outgoing network traffic
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -81,12 +84,18 @@ public class EgressNetworkPolicySpec implements Editable<EgressNetworkPolicySpec
         this.egress = egress;
     }
 
+    /**
+     * egress contains the list of egress policy rules
+     */
     @JsonProperty("egress")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<EgressNetworkPolicyRule> getEgress() {
         return egress;
     }
 
+    /**
+     * egress contains the list of egress policy rules
+     */
     @JsonProperty("egress")
     public void setEgress(List<EgressNetworkPolicyRule> egress) {
         this.egress = egress;

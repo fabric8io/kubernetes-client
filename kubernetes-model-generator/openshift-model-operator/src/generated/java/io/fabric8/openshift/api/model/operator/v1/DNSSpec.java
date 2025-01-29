@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * DNSSpec is the specification of the desired behavior of the DNS.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -105,72 +108,114 @@ public class DNSSpec implements Editable<DNSSpecBuilder>, KubernetesResource
         this.upstreamResolvers = upstreamResolvers;
     }
 
+    /**
+     * DNSSpec is the specification of the desired behavior of the DNS.
+     */
     @JsonProperty("cache")
     public DNSCache getCache() {
         return cache;
     }
 
+    /**
+     * DNSSpec is the specification of the desired behavior of the DNS.
+     */
     @JsonProperty("cache")
     public void setCache(DNSCache cache) {
         this.cache = cache;
     }
 
+    /**
+     * logLevel describes the desired logging verbosity for CoreDNS. Any one of the following values may be specified: &#42; Normal logs errors from upstream resolvers. &#42; Debug logs errors, NXDOMAIN responses, and NODATA responses. &#42; Trace logs errors and all responses.<br><p>  Setting logLevel: Trace will produce extremely verbose logs.<br><p> Valid values are: "Normal", "Debug", "Trace". Defaults to "Normal".
+     */
     @JsonProperty("logLevel")
     public String getLogLevel() {
         return logLevel;
     }
 
+    /**
+     * logLevel describes the desired logging verbosity for CoreDNS. Any one of the following values may be specified: &#42; Normal logs errors from upstream resolvers. &#42; Debug logs errors, NXDOMAIN responses, and NODATA responses. &#42; Trace logs errors and all responses.<br><p>  Setting logLevel: Trace will produce extremely verbose logs.<br><p> Valid values are: "Normal", "Debug", "Trace". Defaults to "Normal".
+     */
     @JsonProperty("logLevel")
     public void setLogLevel(String logLevel) {
         this.logLevel = logLevel;
     }
 
+    /**
+     * managementState indicates whether the DNS operator should manage cluster DNS
+     */
     @JsonProperty("managementState")
     public String getManagementState() {
         return managementState;
     }
 
+    /**
+     * managementState indicates whether the DNS operator should manage cluster DNS
+     */
     @JsonProperty("managementState")
     public void setManagementState(String managementState) {
         this.managementState = managementState;
     }
 
+    /**
+     * DNSSpec is the specification of the desired behavior of the DNS.
+     */
     @JsonProperty("nodePlacement")
     public DNSNodePlacement getNodePlacement() {
         return nodePlacement;
     }
 
+    /**
+     * DNSSpec is the specification of the desired behavior of the DNS.
+     */
     @JsonProperty("nodePlacement")
     public void setNodePlacement(DNSNodePlacement nodePlacement) {
         this.nodePlacement = nodePlacement;
     }
 
+    /**
+     * operatorLogLevel controls the logging level of the DNS Operator. Valid values are: "Normal", "Debug", "Trace". Defaults to "Normal". setting operatorLogLevel: Trace will produce extremely verbose logs.
+     */
     @JsonProperty("operatorLogLevel")
     public String getOperatorLogLevel() {
         return operatorLogLevel;
     }
 
+    /**
+     * operatorLogLevel controls the logging level of the DNS Operator. Valid values are: "Normal", "Debug", "Trace". Defaults to "Normal". setting operatorLogLevel: Trace will produce extremely verbose logs.
+     */
     @JsonProperty("operatorLogLevel")
     public void setOperatorLogLevel(String operatorLogLevel) {
         this.operatorLogLevel = operatorLogLevel;
     }
 
+    /**
+     * servers is a list of DNS resolvers that provide name query delegation for one or more subdomains outside the scope of the cluster domain. If servers consists of more than one Server, longest suffix match will be used to determine the Server.<br><p> <br><p> For example, if there are two Servers, one for "foo.com" and another for "a.foo.com", and the name query is for "www.a.foo.com", it will be routed to the Server with Zone "a.foo.com".<br><p> <br><p> If this field is nil, no servers are created.
+     */
     @JsonProperty("servers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Server> getServers() {
         return servers;
     }
 
+    /**
+     * servers is a list of DNS resolvers that provide name query delegation for one or more subdomains outside the scope of the cluster domain. If servers consists of more than one Server, longest suffix match will be used to determine the Server.<br><p> <br><p> For example, if there are two Servers, one for "foo.com" and another for "a.foo.com", and the name query is for "www.a.foo.com", it will be routed to the Server with Zone "a.foo.com".<br><p> <br><p> If this field is nil, no servers are created.
+     */
     @JsonProperty("servers")
     public void setServers(List<Server> servers) {
         this.servers = servers;
     }
 
+    /**
+     * DNSSpec is the specification of the desired behavior of the DNS.
+     */
     @JsonProperty("upstreamResolvers")
     public UpstreamResolvers getUpstreamResolvers() {
         return upstreamResolvers;
     }
 
+    /**
+     * DNSSpec is the specification of the desired behavior of the DNS.
+     */
     @JsonProperty("upstreamResolvers")
     public void setUpstreamResolvers(UpstreamResolvers upstreamResolvers) {
         this.upstreamResolvers = upstreamResolvers;

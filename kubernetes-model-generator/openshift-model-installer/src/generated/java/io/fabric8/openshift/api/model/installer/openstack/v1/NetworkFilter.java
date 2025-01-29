@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * NetworkFilter defines a network by name and/or ID.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class NetworkFilter implements Editable<NetworkFilterBuilder>, Kubernetes
         this.name = name;
     }
 
+    /**
+     * NetworkFilter defines a network by name and/or ID.
+     */
     @JsonProperty("id")
     public String getId() {
         return id;
     }
 
+    /**
+     * NetworkFilter defines a network by name and/or ID.
+     */
     @JsonProperty("id")
     public void setId(String id) {
         this.id = id;
     }
 
+    /**
+     * NetworkFilter defines a network by name and/or ID.
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * NetworkFilter defines a network by name and/or ID.
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;

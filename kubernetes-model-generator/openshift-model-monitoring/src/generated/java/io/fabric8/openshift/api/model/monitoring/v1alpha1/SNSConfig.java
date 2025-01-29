@@ -33,6 +33,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * SNSConfig configures notifications via AWS SNS. See https://prometheus.io/docs/alerting/latest/configuration/#sns_configs
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -116,102 +119,162 @@ public class SNSConfig implements Editable<SNSConfigBuilder>, KubernetesResource
         this.topicARN = topicARN;
     }
 
+    /**
+     * The SNS API URL i.e. https://sns.us-east-2.amazonaws.com. If not specified, the SNS API URL from the SNS SDK will be used.
+     */
     @JsonProperty("apiURL")
     public String getApiURL() {
         return apiURL;
     }
 
+    /**
+     * The SNS API URL i.e. https://sns.us-east-2.amazonaws.com. If not specified, the SNS API URL from the SNS SDK will be used.
+     */
     @JsonProperty("apiURL")
     public void setApiURL(String apiURL) {
         this.apiURL = apiURL;
     }
 
+    /**
+     * SNS message attributes.
+     */
     @JsonProperty("attributes")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getAttributes() {
         return attributes;
     }
 
+    /**
+     * SNS message attributes.
+     */
     @JsonProperty("attributes")
     public void setAttributes(Map<String, String> attributes) {
         this.attributes = attributes;
     }
 
+    /**
+     * SNSConfig configures notifications via AWS SNS. See https://prometheus.io/docs/alerting/latest/configuration/#sns_configs
+     */
     @JsonProperty("httpConfig")
     public HTTPConfig getHttpConfig() {
         return httpConfig;
     }
 
+    /**
+     * SNSConfig configures notifications via AWS SNS. See https://prometheus.io/docs/alerting/latest/configuration/#sns_configs
+     */
     @JsonProperty("httpConfig")
     public void setHttpConfig(HTTPConfig httpConfig) {
         this.httpConfig = httpConfig;
     }
 
+    /**
+     * The message content of the SNS notification.
+     */
     @JsonProperty("message")
     public String getMessage() {
         return message;
     }
 
+    /**
+     * The message content of the SNS notification.
+     */
     @JsonProperty("message")
     public void setMessage(String message) {
         this.message = message;
     }
 
+    /**
+     * Phone number if message is delivered via SMS in E.164 format. If you don't specify this value, you must specify a value for the TopicARN or TargetARN.
+     */
     @JsonProperty("phoneNumber")
     public String getPhoneNumber() {
         return phoneNumber;
     }
 
+    /**
+     * Phone number if message is delivered via SMS in E.164 format. If you don't specify this value, you must specify a value for the TopicARN or TargetARN.
+     */
     @JsonProperty("phoneNumber")
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
 
+    /**
+     * Whether or not to notify about resolved alerts.
+     */
     @JsonProperty("sendResolved")
     public Boolean getSendResolved() {
         return sendResolved;
     }
 
+    /**
+     * Whether or not to notify about resolved alerts.
+     */
     @JsonProperty("sendResolved")
     public void setSendResolved(Boolean sendResolved) {
         this.sendResolved = sendResolved;
     }
 
+    /**
+     * SNSConfig configures notifications via AWS SNS. See https://prometheus.io/docs/alerting/latest/configuration/#sns_configs
+     */
     @JsonProperty("sigv4")
     public Sigv4 getSigv4() {
         return sigv4;
     }
 
+    /**
+     * SNSConfig configures notifications via AWS SNS. See https://prometheus.io/docs/alerting/latest/configuration/#sns_configs
+     */
     @JsonProperty("sigv4")
     public void setSigv4(Sigv4 sigv4) {
         this.sigv4 = sigv4;
     }
 
+    /**
+     * Subject line when the message is delivered to email endpoints.
+     */
     @JsonProperty("subject")
     public String getSubject() {
         return subject;
     }
 
+    /**
+     * Subject line when the message is delivered to email endpoints.
+     */
     @JsonProperty("subject")
     public void setSubject(String subject) {
         this.subject = subject;
     }
 
+    /**
+     * The  mobile platform endpoint ARN if message is delivered via mobile notifications. If you don't specify this value, you must specify a value for the topic_arn or PhoneNumber.
+     */
     @JsonProperty("targetARN")
     public String getTargetARN() {
         return targetARN;
     }
 
+    /**
+     * The  mobile platform endpoint ARN if message is delivered via mobile notifications. If you don't specify this value, you must specify a value for the topic_arn or PhoneNumber.
+     */
     @JsonProperty("targetARN")
     public void setTargetARN(String targetARN) {
         this.targetARN = targetARN;
     }
 
+    /**
+     * SNS topic ARN, i.e. arn:aws:sns:us-east-2:698519295917:My-Topic If you don't specify this value, you must specify a value for the PhoneNumber or TargetARN.
+     */
     @JsonProperty("topicARN")
     public String getTopicARN() {
         return topicARN;
     }
 
+    /**
+     * SNS topic ARN, i.e. arn:aws:sns:us-east-2:698519295917:My-Topic If you don't specify this value, you must specify a value for the PhoneNumber or TargetARN.
+     */
     @JsonProperty("topicARN")
     public void setTopicARN(String topicARN) {
         this.topicARN = topicARN;

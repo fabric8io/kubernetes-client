@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * TaskState contains details for the current state of the task.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -79,12 +82,18 @@ public class TaskState implements Editable<TaskStateBuilder>, KubernetesResource
         this.phase = phase;
     }
 
+    /**
+     * The phase of Task.
+     */
     @JsonProperty("phase")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, Integer> getPhase() {
         return phase;
     }
 
+    /**
+     * The phase of Task.
+     */
     @JsonProperty("phase")
     public void setPhase(Map<String, Integer> phase) {
         this.phase = phase;

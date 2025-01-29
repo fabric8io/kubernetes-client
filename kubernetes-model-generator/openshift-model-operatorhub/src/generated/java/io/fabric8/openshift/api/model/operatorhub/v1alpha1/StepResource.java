@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * StepResource represents the status of a resource to be tracked by an InstallPlan.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -102,71 +105,113 @@ public class StepResource implements Editable<StepResourceBuilder>, KubernetesRe
         this.version = version;
     }
 
+    /**
+     * StepResource represents the status of a resource to be tracked by an InstallPlan.
+     */
     @JsonProperty("group")
     public String getGroup() {
         return group;
     }
 
+    /**
+     * StepResource represents the status of a resource to be tracked by an InstallPlan.
+     */
     @JsonProperty("group")
     public void setGroup(String group) {
         this.group = group;
     }
 
+    /**
+     * StepResource represents the status of a resource to be tracked by an InstallPlan.
+     */
     @JsonProperty("kind")
     public String getKind() {
         return kind;
     }
 
+    /**
+     * StepResource represents the status of a resource to be tracked by an InstallPlan.
+     */
     @JsonProperty("kind")
     public void setKind(String kind) {
         this.kind = kind;
     }
 
+    /**
+     * StepResource represents the status of a resource to be tracked by an InstallPlan.
+     */
     @JsonProperty("manifest")
     public String getManifest() {
         return manifest;
     }
 
+    /**
+     * StepResource represents the status of a resource to be tracked by an InstallPlan.
+     */
     @JsonProperty("manifest")
     public void setManifest(String manifest) {
         this.manifest = manifest;
     }
 
+    /**
+     * StepResource represents the status of a resource to be tracked by an InstallPlan.
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * StepResource represents the status of a resource to be tracked by an InstallPlan.
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * StepResource represents the status of a resource to be tracked by an InstallPlan.
+     */
     @JsonProperty("sourceName")
     public String getSourceName() {
         return sourceName;
     }
 
+    /**
+     * StepResource represents the status of a resource to be tracked by an InstallPlan.
+     */
     @JsonProperty("sourceName")
     public void setSourceName(String sourceName) {
         this.sourceName = sourceName;
     }
 
+    /**
+     * StepResource represents the status of a resource to be tracked by an InstallPlan.
+     */
     @JsonProperty("sourceNamespace")
     public String getSourceNamespace() {
         return sourceNamespace;
     }
 
+    /**
+     * StepResource represents the status of a resource to be tracked by an InstallPlan.
+     */
     @JsonProperty("sourceNamespace")
     public void setSourceNamespace(String sourceNamespace) {
         this.sourceNamespace = sourceNamespace;
     }
 
+    /**
+     * StepResource represents the status of a resource to be tracked by an InstallPlan.
+     */
     @JsonProperty("version")
     public String getVersion() {
         return version;
     }
 
+    /**
+     * StepResource represents the status of a resource to be tracked by an InstallPlan.
+     */
     @JsonProperty("version")
     public void setVersion(String version) {
         this.version = version;

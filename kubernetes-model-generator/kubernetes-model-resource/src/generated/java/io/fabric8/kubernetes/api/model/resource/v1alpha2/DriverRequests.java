@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * DriverRequests describes all resources that are needed from one particular driver.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -90,32 +93,50 @@ public class DriverRequests implements Editable<DriverRequestsBuilder>, Kubernet
         this.vendorParameters = vendorParameters;
     }
 
+    /**
+     * DriverName is the name used by the DRA driver kubelet plugin.
+     */
     @JsonProperty("driverName")
     public String getDriverName() {
         return driverName;
     }
 
+    /**
+     * DriverName is the name used by the DRA driver kubelet plugin.
+     */
     @JsonProperty("driverName")
     public void setDriverName(String driverName) {
         this.driverName = driverName;
     }
 
+    /**
+     * Requests describes all resources that are needed from the driver.
+     */
     @JsonProperty("requests")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ResourceRequest> getRequests() {
         return requests;
     }
 
+    /**
+     * Requests describes all resources that are needed from the driver.
+     */
     @JsonProperty("requests")
     public void setRequests(List<ResourceRequest> requests) {
         this.requests = requests;
     }
 
+    /**
+     * DriverRequests describes all resources that are needed from one particular driver.
+     */
     @JsonProperty("vendorParameters")
     public Object getVendorParameters() {
         return vendorParameters;
     }
 
+    /**
+     * DriverRequests describes all resources that are needed from one particular driver.
+     */
     @JsonProperty("vendorParameters")
     @JsonDeserialize(using = io.fabric8.kubernetes.internal.KubernetesDeserializer.class)
     public void setVendorParameters(Object vendorParameters) {

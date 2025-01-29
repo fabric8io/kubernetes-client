@@ -35,6 +35,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ResourceSliceSpec contains the information published by the driver in one ResourceSlice.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -102,62 +105,98 @@ public class ResourceSliceSpec implements Editable<ResourceSliceSpecBuilder>, Ku
         this.pool = pool;
     }
 
+    /**
+     * AllNodes indicates that all nodes have access to the resources in the pool.<br><p> <br><p> Exactly one of NodeName, NodeSelector and AllNodes must be set.
+     */
     @JsonProperty("allNodes")
     public Boolean getAllNodes() {
         return allNodes;
     }
 
+    /**
+     * AllNodes indicates that all nodes have access to the resources in the pool.<br><p> <br><p> Exactly one of NodeName, NodeSelector and AllNodes must be set.
+     */
     @JsonProperty("allNodes")
     public void setAllNodes(Boolean allNodes) {
         this.allNodes = allNodes;
     }
 
+    /**
+     * Devices lists some or all of the devices in this pool.<br><p> <br><p> Must not have more than 128 entries.
+     */
     @JsonProperty("devices")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Device> getDevices() {
         return devices;
     }
 
+    /**
+     * Devices lists some or all of the devices in this pool.<br><p> <br><p> Must not have more than 128 entries.
+     */
     @JsonProperty("devices")
     public void setDevices(List<Device> devices) {
         this.devices = devices;
     }
 
+    /**
+     * Driver identifies the DRA driver providing the capacity information. A field selector can be used to list only ResourceSlice objects with a certain driver name.<br><p> <br><p> Must be a DNS subdomain and should end with a DNS domain owned by the vendor of the driver. This field is immutable.
+     */
     @JsonProperty("driver")
     public String getDriver() {
         return driver;
     }
 
+    /**
+     * Driver identifies the DRA driver providing the capacity information. A field selector can be used to list only ResourceSlice objects with a certain driver name.<br><p> <br><p> Must be a DNS subdomain and should end with a DNS domain owned by the vendor of the driver. This field is immutable.
+     */
     @JsonProperty("driver")
     public void setDriver(String driver) {
         this.driver = driver;
     }
 
+    /**
+     * NodeName identifies the node which provides the resources in this pool. A field selector can be used to list only ResourceSlice objects belonging to a certain node.<br><p> <br><p> This field can be used to limit access from nodes to ResourceSlices with the same node name. It also indicates to autoscalers that adding new nodes of the same type as some old node might also make new resources available.<br><p> <br><p> Exactly one of NodeName, NodeSelector and AllNodes must be set. This field is immutable.
+     */
     @JsonProperty("nodeName")
     public String getNodeName() {
         return nodeName;
     }
 
+    /**
+     * NodeName identifies the node which provides the resources in this pool. A field selector can be used to list only ResourceSlice objects belonging to a certain node.<br><p> <br><p> This field can be used to limit access from nodes to ResourceSlices with the same node name. It also indicates to autoscalers that adding new nodes of the same type as some old node might also make new resources available.<br><p> <br><p> Exactly one of NodeName, NodeSelector and AllNodes must be set. This field is immutable.
+     */
     @JsonProperty("nodeName")
     public void setNodeName(String nodeName) {
         this.nodeName = nodeName;
     }
 
+    /**
+     * ResourceSliceSpec contains the information published by the driver in one ResourceSlice.
+     */
     @JsonProperty("nodeSelector")
     public NodeSelector getNodeSelector() {
         return nodeSelector;
     }
 
+    /**
+     * ResourceSliceSpec contains the information published by the driver in one ResourceSlice.
+     */
     @JsonProperty("nodeSelector")
     public void setNodeSelector(NodeSelector nodeSelector) {
         this.nodeSelector = nodeSelector;
     }
 
+    /**
+     * ResourceSliceSpec contains the information published by the driver in one ResourceSlice.
+     */
     @JsonProperty("pool")
     public ResourcePool getPool() {
         return pool;
     }
 
+    /**
+     * ResourceSliceSpec contains the information published by the driver in one ResourceSlice.
+     */
     @JsonProperty("pool")
     public void setPool(ResourcePool pool) {
         this.pool = pool;

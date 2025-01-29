@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * StaticHop defines the configuration of a static IP that acts as an external Gateway Interface. IP field is mandatory.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class StaticHop implements Editable<StaticHopBuilder>, KubernetesResource
         this.ip = ip;
     }
 
+    /**
+     * BFDEnabled determines if the interface implements the Bidirectional Forward Detection protocol. Defaults to false.
+     */
     @JsonProperty("bfdEnabled")
     public Boolean getBfdEnabled() {
         return bfdEnabled;
     }
 
+    /**
+     * BFDEnabled determines if the interface implements the Bidirectional Forward Detection protocol. Defaults to false.
+     */
     @JsonProperty("bfdEnabled")
     public void setBfdEnabled(Boolean bfdEnabled) {
         this.bfdEnabled = bfdEnabled;
     }
 
+    /**
+     * IP defines the static IP to be used for egress traffic. The IP can be either IPv4 or IPv6.
+     */
     @JsonProperty("ip")
     public String getIp() {
         return ip;
     }
 
+    /**
+     * IP defines the static IP to be used for egress traffic. The IP can be either IPv4 or IPv6.
+     */
     @JsonProperty("ip")
     public void setIp(String ip) {
         this.ip = ip;

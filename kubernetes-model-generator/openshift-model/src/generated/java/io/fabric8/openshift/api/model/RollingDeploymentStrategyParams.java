@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * RollingDeploymentStrategyParams are the input to the Rolling deployment strategy.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -102,71 +105,113 @@ public class RollingDeploymentStrategyParams implements Editable<RollingDeployme
         this.updatePeriodSeconds = updatePeriodSeconds;
     }
 
+    /**
+     * IntervalSeconds is the time to wait between polling deployment status after update. If the value is nil, a default will be used.
+     */
     @JsonProperty("intervalSeconds")
     public Long getIntervalSeconds() {
         return intervalSeconds;
     }
 
+    /**
+     * IntervalSeconds is the time to wait between polling deployment status after update. If the value is nil, a default will be used.
+     */
     @JsonProperty("intervalSeconds")
     public void setIntervalSeconds(Long intervalSeconds) {
         this.intervalSeconds = intervalSeconds;
     }
 
+    /**
+     * RollingDeploymentStrategyParams are the input to the Rolling deployment strategy.
+     */
     @JsonProperty("maxSurge")
     public IntOrString getMaxSurge() {
         return maxSurge;
     }
 
+    /**
+     * RollingDeploymentStrategyParams are the input to the Rolling deployment strategy.
+     */
     @JsonProperty("maxSurge")
     public void setMaxSurge(IntOrString maxSurge) {
         this.maxSurge = maxSurge;
     }
 
+    /**
+     * RollingDeploymentStrategyParams are the input to the Rolling deployment strategy.
+     */
     @JsonProperty("maxUnavailable")
     public IntOrString getMaxUnavailable() {
         return maxUnavailable;
     }
 
+    /**
+     * RollingDeploymentStrategyParams are the input to the Rolling deployment strategy.
+     */
     @JsonProperty("maxUnavailable")
     public void setMaxUnavailable(IntOrString maxUnavailable) {
         this.maxUnavailable = maxUnavailable;
     }
 
+    /**
+     * RollingDeploymentStrategyParams are the input to the Rolling deployment strategy.
+     */
     @JsonProperty("post")
     public LifecycleHook getPost() {
         return post;
     }
 
+    /**
+     * RollingDeploymentStrategyParams are the input to the Rolling deployment strategy.
+     */
     @JsonProperty("post")
     public void setPost(LifecycleHook post) {
         this.post = post;
     }
 
+    /**
+     * RollingDeploymentStrategyParams are the input to the Rolling deployment strategy.
+     */
     @JsonProperty("pre")
     public LifecycleHook getPre() {
         return pre;
     }
 
+    /**
+     * RollingDeploymentStrategyParams are the input to the Rolling deployment strategy.
+     */
     @JsonProperty("pre")
     public void setPre(LifecycleHook pre) {
         this.pre = pre;
     }
 
+    /**
+     * TimeoutSeconds is the time to wait for updates before giving up. If the value is nil, a default will be used.
+     */
     @JsonProperty("timeoutSeconds")
     public Long getTimeoutSeconds() {
         return timeoutSeconds;
     }
 
+    /**
+     * TimeoutSeconds is the time to wait for updates before giving up. If the value is nil, a default will be used.
+     */
     @JsonProperty("timeoutSeconds")
     public void setTimeoutSeconds(Long timeoutSeconds) {
         this.timeoutSeconds = timeoutSeconds;
     }
 
+    /**
+     * UpdatePeriodSeconds is the time to wait between individual pod updates. If the value is nil, a default will be used.
+     */
     @JsonProperty("updatePeriodSeconds")
     public Long getUpdatePeriodSeconds() {
         return updatePeriodSeconds;
     }
 
+    /**
+     * UpdatePeriodSeconds is the time to wait between individual pod updates. If the value is nil, a default will be used.
+     */
     @JsonProperty("updatePeriodSeconds")
     public void setUpdatePeriodSeconds(Long updatePeriodSeconds) {
         this.updatePeriodSeconds = updatePeriodSeconds;

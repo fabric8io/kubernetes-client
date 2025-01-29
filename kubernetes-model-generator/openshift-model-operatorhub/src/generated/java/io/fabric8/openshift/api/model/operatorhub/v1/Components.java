@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Components tracks the resources that compose an operator.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -85,22 +88,34 @@ public class Components implements Editable<ComponentsBuilder>, KubernetesResour
         this.refs = refs;
     }
 
+    /**
+     * Components tracks the resources that compose an operator.
+     */
     @JsonProperty("labelSelector")
     public LabelSelector getLabelSelector() {
         return labelSelector;
     }
 
+    /**
+     * Components tracks the resources that compose an operator.
+     */
     @JsonProperty("labelSelector")
     public void setLabelSelector(LabelSelector labelSelector) {
         this.labelSelector = labelSelector;
     }
 
+    /**
+     * Refs are a set of references to the operator's component resources, selected with LabelSelector.
+     */
     @JsonProperty("refs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<RichReference> getRefs() {
         return refs;
     }
 
+    /**
+     * Refs are a set of references to the operator's component resources, selected with LabelSelector.
+     */
     @JsonProperty("refs")
     public void setRefs(List<RichReference> refs) {
         this.refs = refs;

@@ -78,17 +78,11 @@ import lombok.experimental.Accessors;
 public class NodeMetricsList implements Editable<NodeMetricsListBuilder>, KubernetesResource, KubernetesResourceList<io.fabric8.kubernetes.api.model.metrics.v1beta1.NodeMetrics>
 {
 
-    /**
-     * (Required)
-     */
     @JsonProperty("apiVersion")
     private String apiVersion = "metrics.k8s.io/v1beta1";
     @JsonProperty("items")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<io.fabric8.kubernetes.api.model.metrics.v1beta1.NodeMetrics> items = new ArrayList<>();
-    /**
-     * (Required)
-     */
     @JsonProperty("kind")
     private String kind = "NodeMetricsList";
     @JsonProperty("metadata")
@@ -110,17 +104,11 @@ public class NodeMetricsList implements Editable<NodeMetricsListBuilder>, Kubern
         this.metadata = metadata;
     }
 
-    /**
-     * (Required)
-     */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
         return apiVersion;
     }
 
-    /**
-     * (Required)
-     */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
         this.apiVersion = apiVersion;
@@ -137,17 +125,11 @@ public class NodeMetricsList implements Editable<NodeMetricsListBuilder>, Kubern
         this.items = items;
     }
 
-    /**
-     * (Required)
-     */
     @JsonProperty("kind")
     public String getKind() {
         return kind;
     }
 
-    /**
-     * (Required)
-     */
     @JsonProperty("kind")
     public void setKind(String kind) {
         this.kind = kind;

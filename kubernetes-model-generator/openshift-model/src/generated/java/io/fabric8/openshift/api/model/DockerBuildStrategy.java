@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * DockerBuildStrategy defines input parameters specific to container image build.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -115,94 +118,148 @@ public class DockerBuildStrategy implements Editable<DockerBuildStrategyBuilder>
         this.volumes = volumes;
     }
 
+    /**
+     * buildArgs contains build arguments that will be resolved in the Dockerfile.  See https://docs.docker.com/engine/reference/builder/#/arg for more details. NOTE: Only the 'name' and 'value' fields are supported. Any settings on the 'valueFrom' field are ignored.
+     */
     @JsonProperty("buildArgs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<EnvVar> getBuildArgs() {
         return buildArgs;
     }
 
+    /**
+     * buildArgs contains build arguments that will be resolved in the Dockerfile.  See https://docs.docker.com/engine/reference/builder/#/arg for more details. NOTE: Only the 'name' and 'value' fields are supported. Any settings on the 'valueFrom' field are ignored.
+     */
     @JsonProperty("buildArgs")
     public void setBuildArgs(List<EnvVar> buildArgs) {
         this.buildArgs = buildArgs;
     }
 
+    /**
+     * dockerfilePath is the path of the Dockerfile that will be used to build the container image, relative to the root of the context (contextDir). Defaults to `Dockerfile` if unset.
+     */
     @JsonProperty("dockerfilePath")
     public String getDockerfilePath() {
         return dockerfilePath;
     }
 
+    /**
+     * dockerfilePath is the path of the Dockerfile that will be used to build the container image, relative to the root of the context (contextDir). Defaults to `Dockerfile` if unset.
+     */
     @JsonProperty("dockerfilePath")
     public void setDockerfilePath(String dockerfilePath) {
         this.dockerfilePath = dockerfilePath;
     }
 
+    /**
+     * env contains additional environment variables you want to pass into a builder container.
+     */
     @JsonProperty("env")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<EnvVar> getEnv() {
         return env;
     }
 
+    /**
+     * env contains additional environment variables you want to pass into a builder container.
+     */
     @JsonProperty("env")
     public void setEnv(List<EnvVar> env) {
         this.env = env;
     }
 
+    /**
+     * forcePull describes if the builder should pull the images from registry prior to building.
+     */
     @JsonProperty("forcePull")
     public Boolean getForcePull() {
         return forcePull;
     }
 
+    /**
+     * forcePull describes if the builder should pull the images from registry prior to building.
+     */
     @JsonProperty("forcePull")
     public void setForcePull(Boolean forcePull) {
         this.forcePull = forcePull;
     }
 
+    /**
+     * DockerBuildStrategy defines input parameters specific to container image build.
+     */
     @JsonProperty("from")
     public ObjectReference getFrom() {
         return from;
     }
 
+    /**
+     * DockerBuildStrategy defines input parameters specific to container image build.
+     */
     @JsonProperty("from")
     public void setFrom(ObjectReference from) {
         this.from = from;
     }
 
+    /**
+     * imageOptimizationPolicy describes what optimizations the system can use when building images to reduce the final size or time spent building the image. The default policy is 'None' which means the final build image will be equivalent to an image created by the container image build API. The experimental policy 'SkipLayers' will avoid commiting new layers in between each image step, and will fail if the Dockerfile cannot provide compatibility with the 'None' policy. An additional experimental policy 'SkipLayersAndWarn' is the same as 'SkipLayers' but simply warns if compatibility cannot be preserved.
+     */
     @JsonProperty("imageOptimizationPolicy")
     public String getImageOptimizationPolicy() {
         return imageOptimizationPolicy;
     }
 
+    /**
+     * imageOptimizationPolicy describes what optimizations the system can use when building images to reduce the final size or time spent building the image. The default policy is 'None' which means the final build image will be equivalent to an image created by the container image build API. The experimental policy 'SkipLayers' will avoid commiting new layers in between each image step, and will fail if the Dockerfile cannot provide compatibility with the 'None' policy. An additional experimental policy 'SkipLayersAndWarn' is the same as 'SkipLayers' but simply warns if compatibility cannot be preserved.
+     */
     @JsonProperty("imageOptimizationPolicy")
     public void setImageOptimizationPolicy(String imageOptimizationPolicy) {
         this.imageOptimizationPolicy = imageOptimizationPolicy;
     }
 
+    /**
+     * noCache if set to true indicates that the container image build must be executed with the --no-cache=true flag
+     */
     @JsonProperty("noCache")
     public Boolean getNoCache() {
         return noCache;
     }
 
+    /**
+     * noCache if set to true indicates that the container image build must be executed with the --no-cache=true flag
+     */
     @JsonProperty("noCache")
     public void setNoCache(Boolean noCache) {
         this.noCache = noCache;
     }
 
+    /**
+     * DockerBuildStrategy defines input parameters specific to container image build.
+     */
     @JsonProperty("pullSecret")
     public LocalObjectReference getPullSecret() {
         return pullSecret;
     }
 
+    /**
+     * DockerBuildStrategy defines input parameters specific to container image build.
+     */
     @JsonProperty("pullSecret")
     public void setPullSecret(LocalObjectReference pullSecret) {
         this.pullSecret = pullSecret;
     }
 
+    /**
+     * volumes is a list of input volumes that can be mounted into the builds runtime environment. Only a subset of Kubernetes Volume sources are supported by builds. More info: https://kubernetes.io/docs/concepts/storage/volumes
+     */
     @JsonProperty("volumes")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<BuildVolume> getVolumes() {
         return volumes;
     }
 
+    /**
+     * volumes is a list of input volumes that can be mounted into the builds runtime environment. Only a subset of Kubernetes Volume sources are supported by builds. More info: https://kubernetes.io/docs/concepts/storage/volumes
+     */
     @JsonProperty("volumes")
     public void setVolumes(List<BuildVolume> volumes) {
         this.volumes = volumes;

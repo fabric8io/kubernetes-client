@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * RootDeviceHints holds the hints for specifying the storage location for the root filesystem for the image.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -114,101 +117,161 @@ public class RootDeviceHints implements Editable<RootDeviceHintsBuilder>, Kubern
         this.wwnWithExtension = wwnWithExtension;
     }
 
+    /**
+     * A Linux device name like "/dev/vda". The hint must match the actual value exactly.
+     */
     @JsonProperty("deviceName")
     public String getDeviceName() {
         return deviceName;
     }
 
+    /**
+     * A Linux device name like "/dev/vda". The hint must match the actual value exactly.
+     */
     @JsonProperty("deviceName")
     public void setDeviceName(String deviceName) {
         this.deviceName = deviceName;
     }
 
+    /**
+     * A SCSI bus address like 0:0:0:0. The hint must match the actual value exactly.
+     */
     @JsonProperty("hctl")
     public String getHctl() {
         return hctl;
     }
 
+    /**
+     * A SCSI bus address like 0:0:0:0. The hint must match the actual value exactly.
+     */
     @JsonProperty("hctl")
     public void setHctl(String hctl) {
         this.hctl = hctl;
     }
 
+    /**
+     * The minimum size of the device in Gigabytes.
+     */
     @JsonProperty("minSizeGigabytes")
     public Integer getMinSizeGigabytes() {
         return minSizeGigabytes;
     }
 
+    /**
+     * The minimum size of the device in Gigabytes.
+     */
     @JsonProperty("minSizeGigabytes")
     public void setMinSizeGigabytes(Integer minSizeGigabytes) {
         this.minSizeGigabytes = minSizeGigabytes;
     }
 
+    /**
+     * A vendor-specific device identifier. The hint can be a substring of the actual value.
+     */
     @JsonProperty("model")
     public String getModel() {
         return model;
     }
 
+    /**
+     * A vendor-specific device identifier. The hint can be a substring of the actual value.
+     */
     @JsonProperty("model")
     public void setModel(String model) {
         this.model = model;
     }
 
+    /**
+     * True if the device should use spinning media, false otherwise.
+     */
     @JsonProperty("rotational")
     public Boolean getRotational() {
         return rotational;
     }
 
+    /**
+     * True if the device should use spinning media, false otherwise.
+     */
     @JsonProperty("rotational")
     public void setRotational(Boolean rotational) {
         this.rotational = rotational;
     }
 
+    /**
+     * Device serial number. The hint must match the actual value exactly.
+     */
     @JsonProperty("serialNumber")
     public String getSerialNumber() {
         return serialNumber;
     }
 
+    /**
+     * Device serial number. The hint must match the actual value exactly.
+     */
     @JsonProperty("serialNumber")
     public void setSerialNumber(String serialNumber) {
         this.serialNumber = serialNumber;
     }
 
+    /**
+     * The name of the vendor or manufacturer of the device. The hint can be a substring of the actual value.
+     */
     @JsonProperty("vendor")
     public String getVendor() {
         return vendor;
     }
 
+    /**
+     * The name of the vendor or manufacturer of the device. The hint can be a substring of the actual value.
+     */
     @JsonProperty("vendor")
     public void setVendor(String vendor) {
         this.vendor = vendor;
     }
 
+    /**
+     * Unique storage identifier. The hint must match the actual value exactly.
+     */
     @JsonProperty("wwn")
     public String getWwn() {
         return wwn;
     }
 
+    /**
+     * Unique storage identifier. The hint must match the actual value exactly.
+     */
     @JsonProperty("wwn")
     public void setWwn(String wwn) {
         this.wwn = wwn;
     }
 
+    /**
+     * Unique vendor storage identifier. The hint must match the actual value exactly.
+     */
     @JsonProperty("wwnVendorExtension")
     public String getWwnVendorExtension() {
         return wwnVendorExtension;
     }
 
+    /**
+     * Unique vendor storage identifier. The hint must match the actual value exactly.
+     */
     @JsonProperty("wwnVendorExtension")
     public void setWwnVendorExtension(String wwnVendorExtension) {
         this.wwnVendorExtension = wwnVendorExtension;
     }
 
+    /**
+     * Unique storage identifier with the vendor extension appended. The hint must match the actual value exactly.
+     */
     @JsonProperty("wwnWithExtension")
     public String getWwnWithExtension() {
         return wwnWithExtension;
     }
 
+    /**
+     * Unique storage identifier with the vendor extension appended. The hint must match the actual value exactly.
+     */
     @JsonProperty("wwnWithExtension")
     public void setWwnWithExtension(String wwnWithExtension) {
         this.wwnWithExtension = wwnWithExtension;

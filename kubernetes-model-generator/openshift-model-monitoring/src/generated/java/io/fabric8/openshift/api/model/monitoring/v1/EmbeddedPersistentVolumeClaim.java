@@ -39,6 +39,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * EmbeddedPersistentVolumeClaim is an embedded version of k8s.io/api/core/v1.PersistentVolumeClaim. It contains TypeMeta and a reduced ObjectMeta.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -78,14 +81,8 @@ import lombok.experimental.Accessors;
 public class EmbeddedPersistentVolumeClaim implements Editable<EmbeddedPersistentVolumeClaimBuilder>, KubernetesResource, Namespaced
 {
 
-    /**
-     * (Required)
-     */
     @JsonProperty("apiVersion")
     private String apiVersion = "monitoring.coreos.com/v1";
-    /**
-     * (Required)
-     */
     @JsonProperty("kind")
     private String kind = "EmbeddedPersistentVolumeClaim";
     @JsonProperty("metadata")
@@ -113,7 +110,7 @@ public class EmbeddedPersistentVolumeClaim implements Editable<EmbeddedPersisten
     }
 
     /**
-     * (Required)
+     * APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -121,7 +118,7 @@ public class EmbeddedPersistentVolumeClaim implements Editable<EmbeddedPersisten
     }
 
     /**
-     * (Required)
+     * APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -129,7 +126,7 @@ public class EmbeddedPersistentVolumeClaim implements Editable<EmbeddedPersisten
     }
 
     /**
-     * (Required)
+     * Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -137,38 +134,56 @@ public class EmbeddedPersistentVolumeClaim implements Editable<EmbeddedPersisten
     }
 
     /**
-     * (Required)
+     * Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
      */
     @JsonProperty("kind")
     public void setKind(String kind) {
         this.kind = kind;
     }
 
+    /**
+     * EmbeddedPersistentVolumeClaim is an embedded version of k8s.io/api/core/v1.PersistentVolumeClaim. It contains TypeMeta and a reduced ObjectMeta.
+     */
     @JsonProperty("metadata")
     public EmbeddedObjectMetadata getMetadata() {
         return metadata;
     }
 
+    /**
+     * EmbeddedPersistentVolumeClaim is an embedded version of k8s.io/api/core/v1.PersistentVolumeClaim. It contains TypeMeta and a reduced ObjectMeta.
+     */
     @JsonProperty("metadata")
     public void setMetadata(EmbeddedObjectMetadata metadata) {
         this.metadata = metadata;
     }
 
+    /**
+     * EmbeddedPersistentVolumeClaim is an embedded version of k8s.io/api/core/v1.PersistentVolumeClaim. It contains TypeMeta and a reduced ObjectMeta.
+     */
     @JsonProperty("spec")
     public PersistentVolumeClaimSpec getSpec() {
         return spec;
     }
 
+    /**
+     * EmbeddedPersistentVolumeClaim is an embedded version of k8s.io/api/core/v1.PersistentVolumeClaim. It contains TypeMeta and a reduced ObjectMeta.
+     */
     @JsonProperty("spec")
     public void setSpec(PersistentVolumeClaimSpec spec) {
         this.spec = spec;
     }
 
+    /**
+     * EmbeddedPersistentVolumeClaim is an embedded version of k8s.io/api/core/v1.PersistentVolumeClaim. It contains TypeMeta and a reduced ObjectMeta.
+     */
     @JsonProperty("status")
     public PersistentVolumeClaimStatus getStatus() {
         return status;
     }
 
+    /**
+     * EmbeddedPersistentVolumeClaim is an embedded version of k8s.io/api/core/v1.PersistentVolumeClaim. It contains TypeMeta and a reduced ObjectMeta.
+     */
     @JsonProperty("status")
     public void setStatus(PersistentVolumeClaimStatus status) {
         this.status = status;

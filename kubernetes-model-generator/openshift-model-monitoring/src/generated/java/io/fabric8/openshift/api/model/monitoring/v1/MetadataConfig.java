@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * MetadataConfig configures the sending of series metadata to the remote storage.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class MetadataConfig implements Editable<MetadataConfigBuilder>, Kubernet
         this.sendInterval = sendInterval;
     }
 
+    /**
+     * Defines whether metric metadata is sent to the remote storage or not.
+     */
     @JsonProperty("send")
     public Boolean getSend() {
         return send;
     }
 
+    /**
+     * Defines whether metric metadata is sent to the remote storage or not.
+     */
     @JsonProperty("send")
     public void setSend(Boolean send) {
         this.send = send;
     }
 
+    /**
+     * Defines how frequently metric metadata is sent to the remote storage.
+     */
     @JsonProperty("sendInterval")
     public String getSendInterval() {
         return sendInterval;
     }
 
+    /**
+     * Defines how frequently metric metadata is sent to the remote storage.
+     */
     @JsonProperty("sendInterval")
     public void setSendInterval(String sendInterval) {
         this.sendInterval = sendInterval;

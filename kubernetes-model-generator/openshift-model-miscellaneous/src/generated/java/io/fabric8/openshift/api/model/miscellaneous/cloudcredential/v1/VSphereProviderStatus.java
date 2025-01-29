@@ -37,6 +37,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * VSphereProviderStatus contains the status of the credentials request in VSphere.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -74,14 +77,8 @@ import lombok.experimental.Accessors;
 public class VSphereProviderStatus implements Editable<VSphereProviderStatusBuilder>, KubernetesResource, Namespaced
 {
 
-    /**
-     * (Required)
-     */
     @JsonProperty("apiVersion")
     private String apiVersion = "cloudcredential.openshift.io/v1";
-    /**
-     * (Required)
-     */
     @JsonProperty("kind")
     private String kind = "VSphereProviderStatus";
     @JsonProperty("secretLastResourceVersion")
@@ -103,7 +100,7 @@ public class VSphereProviderStatus implements Editable<VSphereProviderStatusBuil
     }
 
     /**
-     * (Required)
+     * APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -111,7 +108,7 @@ public class VSphereProviderStatus implements Editable<VSphereProviderStatusBuil
     }
 
     /**
-     * (Required)
+     * APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -119,7 +116,7 @@ public class VSphereProviderStatus implements Editable<VSphereProviderStatusBuil
     }
 
     /**
-     * (Required)
+     * Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -127,18 +124,24 @@ public class VSphereProviderStatus implements Editable<VSphereProviderStatusBuil
     }
 
     /**
-     * (Required)
+     * Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
      */
     @JsonProperty("kind")
     public void setKind(String kind) {
         this.kind = kind;
     }
 
+    /**
+     * SecretLastResourceVersion is the resource version of the secret resource that was last synced. Used to determine if the object has changed and requires a sync.
+     */
     @JsonProperty("secretLastResourceVersion")
     public String getSecretLastResourceVersion() {
         return secretLastResourceVersion;
     }
 
+    /**
+     * SecretLastResourceVersion is the resource version of the secret resource that was last synced. Used to determine if the object has changed and requires a sync.
+     */
     @JsonProperty("secretLastResourceVersion")
     public void setSecretLastResourceVersion(String secretLastResourceVersion) {
         this.secretLastResourceVersion = secretLastResourceVersion;

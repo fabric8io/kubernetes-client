@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ConsolePluginProxy holds information on various service types to which console's backend will proxy the plugin's requests.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -90,41 +93,65 @@ public class ConsolePluginProxy implements Editable<ConsolePluginProxyBuilder>, 
         this.endpoint = endpoint;
     }
 
+    /**
+     * alias is a proxy name that identifies the plugin's proxy. An alias name should be unique per plugin. The console backend exposes following proxy endpoint:<br><p> <br><p> /api/proxy/plugin/&lt;plugin-name&gt;/&lt;proxy-alias&gt;/&lt;request-path&gt;?&lt;optional-query-parameters&gt;<br><p> <br><p> Request example path:<br><p> <br><p> /api/proxy/plugin/acm/search/pods?namespace=openshift-apiserver
+     */
     @JsonProperty("alias")
     public String getAlias() {
         return alias;
     }
 
+    /**
+     * alias is a proxy name that identifies the plugin's proxy. An alias name should be unique per plugin. The console backend exposes following proxy endpoint:<br><p> <br><p> /api/proxy/plugin/&lt;plugin-name&gt;/&lt;proxy-alias&gt;/&lt;request-path&gt;?&lt;optional-query-parameters&gt;<br><p> <br><p> Request example path:<br><p> <br><p> /api/proxy/plugin/acm/search/pods?namespace=openshift-apiserver
+     */
     @JsonProperty("alias")
     public void setAlias(String alias) {
         this.alias = alias;
     }
 
+    /**
+     * authorization provides information about authorization type, which the proxied request should contain
+     */
     @JsonProperty("authorization")
     public String getAuthorization() {
         return authorization;
     }
 
+    /**
+     * authorization provides information about authorization type, which the proxied request should contain
+     */
     @JsonProperty("authorization")
     public void setAuthorization(String authorization) {
         this.authorization = authorization;
     }
 
+    /**
+     * caCertificate provides the cert authority certificate contents, in case the proxied Service is using custom service CA. By default, the service CA bundle provided by the service-ca operator is used.
+     */
     @JsonProperty("caCertificate")
     public String getCaCertificate() {
         return caCertificate;
     }
 
+    /**
+     * caCertificate provides the cert authority certificate contents, in case the proxied Service is using custom service CA. By default, the service CA bundle provided by the service-ca operator is used.
+     */
     @JsonProperty("caCertificate")
     public void setCaCertificate(String caCertificate) {
         this.caCertificate = caCertificate;
     }
 
+    /**
+     * ConsolePluginProxy holds information on various service types to which console's backend will proxy the plugin's requests.
+     */
     @JsonProperty("endpoint")
     public ConsolePluginProxyEndpoint getEndpoint() {
         return endpoint;
     }
 
+    /**
+     * ConsolePluginProxy holds information on various service types to which console's backend will proxy the plugin's requests.
+     */
     @JsonProperty("endpoint")
     public void setEndpoint(ConsolePluginProxyEndpoint endpoint) {
         this.endpoint = endpoint;

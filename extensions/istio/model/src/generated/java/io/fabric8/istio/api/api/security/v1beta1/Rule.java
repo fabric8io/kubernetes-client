@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Rule matches requests from a list of sources that perform a list of operations subject to a list of conditions. A match occurs when at least one source, one operation and all conditions matches the request. An empty rule is always matched.<br><p> <br><p> Any string field in the rule supports Exact, Prefix, Suffix and Presence match:<br><p> <br><p> - Exact match: `abc` will match on value `abc`. - Prefix match: `abc&#42;` will match on value `abc` and `abcd`. - Suffix match: `&#42;abc` will match on value `abc` and `xabc`. - Presence match: `&#42;` will match when value is not empty.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -91,34 +94,52 @@ public class Rule implements Editable<RuleBuilder>, KubernetesResource
         this.when = when;
     }
 
+    /**
+     * Optional. `from` specifies the source of a request.<br><p> <br><p> If not set, any source is allowed.
+     */
     @JsonProperty("from")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<RuleFrom> getFrom() {
         return from;
     }
 
+    /**
+     * Optional. `from` specifies the source of a request.<br><p> <br><p> If not set, any source is allowed.
+     */
     @JsonProperty("from")
     public void setFrom(List<RuleFrom> from) {
         this.from = from;
     }
 
+    /**
+     * Optional. `to` specifies the operation of a request.<br><p> <br><p> If not set, any operation is allowed.
+     */
     @JsonProperty("to")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<RuleTo> getTo() {
         return to;
     }
 
+    /**
+     * Optional. `to` specifies the operation of a request.<br><p> <br><p> If not set, any operation is allowed.
+     */
     @JsonProperty("to")
     public void setTo(List<RuleTo> to) {
         this.to = to;
     }
 
+    /**
+     * Optional. `when` specifies a list of additional conditions of a request.<br><p> <br><p> If not set, any condition is allowed.
+     */
     @JsonProperty("when")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Condition> getWhen() {
         return when;
     }
 
+    /**
+     * Optional. `when` specifies a list of additional conditions of a request.<br><p> <br><p> If not set, any condition is allowed.
+     */
     @JsonProperty("when")
     public void setWhen(List<Condition> when) {
         this.when = when;

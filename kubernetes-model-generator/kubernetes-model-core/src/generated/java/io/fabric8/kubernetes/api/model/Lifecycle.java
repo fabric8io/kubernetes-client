@@ -17,6 +17,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Lifecycle describes actions that the management system should take in response to container lifecycle events. For the PostStart and PreStop lifecycle handlers, management of the container blocks until the action is complete, unless the container process fails, in which case the handler is aborted.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -53,21 +56,33 @@ public class Lifecycle implements Editable<LifecycleBuilder>, KubernetesResource
         this.preStop = preStop;
     }
 
+    /**
+     * Lifecycle describes actions that the management system should take in response to container lifecycle events. For the PostStart and PreStop lifecycle handlers, management of the container blocks until the action is complete, unless the container process fails, in which case the handler is aborted.
+     */
     @JsonProperty("postStart")
     public LifecycleHandler getPostStart() {
         return postStart;
     }
 
+    /**
+     * Lifecycle describes actions that the management system should take in response to container lifecycle events. For the PostStart and PreStop lifecycle handlers, management of the container blocks until the action is complete, unless the container process fails, in which case the handler is aborted.
+     */
     @JsonProperty("postStart")
     public void setPostStart(LifecycleHandler postStart) {
         this.postStart = postStart;
     }
 
+    /**
+     * Lifecycle describes actions that the management system should take in response to container lifecycle events. For the PostStart and PreStop lifecycle handlers, management of the container blocks until the action is complete, unless the container process fails, in which case the handler is aborted.
+     */
     @JsonProperty("preStop")
     public LifecycleHandler getPreStop() {
         return preStop;
     }
 
+    /**
+     * Lifecycle describes actions that the management system should take in response to container lifecycle events. For the PostStart and PreStop lifecycle handlers, management of the container blocks until the action is complete, unless the container process fails, in which case the handler is aborted.
+     */
     @JsonProperty("preStop")
     public void setPreStop(LifecycleHandler preStop) {
         this.preStop = preStop;

@@ -35,6 +35,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * CustomRunStatus defines the observed state of CustomRun.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -114,86 +117,134 @@ public class CustomRunStatus implements Editable<CustomRunStatusBuilder>, Kubern
         this.startTime = startTime;
     }
 
+    /**
+     * Annotations is additional Status fields for the Resource to save some additional State as well as convey more information to the user. This is roughly akin to Annotations on any k8s resource, just the reconciler conveying richer information outwards.
+     */
     @JsonProperty("annotations")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getAnnotations() {
         return annotations;
     }
 
+    /**
+     * Annotations is additional Status fields for the Resource to save some additional State as well as convey more information to the user. This is roughly akin to Annotations on any k8s resource, just the reconciler conveying richer information outwards.
+     */
     @JsonProperty("annotations")
     public void setAnnotations(Map<String, String> annotations) {
         this.annotations = annotations;
     }
 
+    /**
+     * CustomRunStatus defines the observed state of CustomRun.
+     */
     @JsonProperty("completionTime")
     public String getCompletionTime() {
         return completionTime;
     }
 
+    /**
+     * CustomRunStatus defines the observed state of CustomRun.
+     */
     @JsonProperty("completionTime")
     public void setCompletionTime(String completionTime) {
         this.completionTime = completionTime;
     }
 
+    /**
+     * Conditions the latest available observations of a resource's current state.
+     */
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Condition> getConditions() {
         return conditions;
     }
 
+    /**
+     * Conditions the latest available observations of a resource's current state.
+     */
     @JsonProperty("conditions")
     public void setConditions(List<Condition> conditions) {
         this.conditions = conditions;
     }
 
+    /**
+     * CustomRunStatus defines the observed state of CustomRun.
+     */
     @JsonProperty("extraFields")
     public Object getExtraFields() {
         return extraFields;
     }
 
+    /**
+     * CustomRunStatus defines the observed state of CustomRun.
+     */
     @JsonProperty("extraFields")
     @JsonDeserialize(using = io.fabric8.kubernetes.internal.KubernetesDeserializer.class)
     public void setExtraFields(Object extraFields) {
         this.extraFields = extraFields;
     }
 
+    /**
+     * ObservedGeneration is the 'Generation' of the Service that was last processed by the controller.
+     */
     @JsonProperty("observedGeneration")
     public Long getObservedGeneration() {
         return observedGeneration;
     }
 
+    /**
+     * ObservedGeneration is the 'Generation' of the Service that was last processed by the controller.
+     */
     @JsonProperty("observedGeneration")
     public void setObservedGeneration(Long observedGeneration) {
         this.observedGeneration = observedGeneration;
     }
 
+    /**
+     * Results reports any output result values to be consumed by later tasks in a pipeline.
+     */
     @JsonProperty("results")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<CustomRunResult> getResults() {
         return results;
     }
 
+    /**
+     * Results reports any output result values to be consumed by later tasks in a pipeline.
+     */
     @JsonProperty("results")
     public void setResults(List<CustomRunResult> results) {
         this.results = results;
     }
 
+    /**
+     * RetriesStatus contains the history of CustomRunStatus, in case of a retry.
+     */
     @JsonProperty("retriesStatus")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.tekton.v1beta1.CustomRunStatus> getRetriesStatus() {
         return retriesStatus;
     }
 
+    /**
+     * RetriesStatus contains the history of CustomRunStatus, in case of a retry.
+     */
     @JsonProperty("retriesStatus")
     public void setRetriesStatus(List<io.fabric8.tekton.v1beta1.CustomRunStatus> retriesStatus) {
         this.retriesStatus = retriesStatus;
     }
 
+    /**
+     * CustomRunStatus defines the observed state of CustomRun.
+     */
     @JsonProperty("startTime")
     public String getStartTime() {
         return startTime;
     }
 
+    /**
+     * CustomRunStatus defines the observed state of CustomRun.
+     */
     @JsonProperty("startTime")
     public void setStartTime(String startTime) {
         this.startTime = startTime;
