@@ -72,7 +72,6 @@ public class SelfSubjectAccessReviewSpec implements Editable<SelfSubjectAccessRe
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public SelfSubjectAccessReviewSpec() {
     }

@@ -363,7 +363,6 @@ public class CommonPrometheusFields implements Editable<CommonPrometheusFieldsBu
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public CommonPrometheusFields() {
     }

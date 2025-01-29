@@ -81,7 +81,6 @@ public class DaemonSetCondition implements Editable<DaemonSetConditionBuilder>, 
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public DaemonSetCondition() {
     }

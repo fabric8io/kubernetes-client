@@ -75,7 +75,6 @@ public class OpenStackClusterDeprovision implements Editable<OpenStackClusterDep
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public OpenStackClusterDeprovision() {
     }

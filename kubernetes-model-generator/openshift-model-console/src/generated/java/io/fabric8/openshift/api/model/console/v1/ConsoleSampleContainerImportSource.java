@@ -72,7 +72,6 @@ public class ConsoleSampleContainerImportSource implements Editable<ConsoleSampl
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ConsoleSampleContainerImportSource() {
     }

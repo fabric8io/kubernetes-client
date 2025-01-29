@@ -75,7 +75,6 @@ public class ResourcePool implements Editable<ResourcePoolBuilder>, KubernetesRe
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ResourcePool() {
     }

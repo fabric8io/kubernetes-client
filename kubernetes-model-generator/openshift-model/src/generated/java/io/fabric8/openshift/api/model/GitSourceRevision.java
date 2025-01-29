@@ -78,7 +78,6 @@ public class GitSourceRevision implements Editable<GitSourceRevisionBuilder>, Ku
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public GitSourceRevision() {
     }

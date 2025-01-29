@@ -93,7 +93,6 @@ public class AWSChaosSpec implements Editable<AWSChaosSpecBuilder>, KubernetesRe
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public AWSChaosSpec() {
     }

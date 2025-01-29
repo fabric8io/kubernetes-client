@@ -72,7 +72,6 @@ public class AddressPair implements Editable<AddressPairBuilder>, KubernetesReso
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public AddressPair() {
     }

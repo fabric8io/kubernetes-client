@@ -69,7 +69,6 @@ public class PhysicalMachineSpec implements Editable<PhysicalMachineSpecBuilder>
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public PhysicalMachineSpec() {
     }

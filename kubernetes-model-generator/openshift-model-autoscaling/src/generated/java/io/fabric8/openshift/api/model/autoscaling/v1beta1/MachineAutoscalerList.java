@@ -79,9 +79,7 @@ public class MachineAutoscalerList implements Editable<MachineAutoscalerListBuil
 {
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "autoscaling.openshift.io/v1beta1";
@@ -89,9 +87,7 @@ public class MachineAutoscalerList implements Editable<MachineAutoscalerListBuil
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<io.fabric8.openshift.api.model.autoscaling.v1beta1.MachineAutoscaler> items = new ArrayList<>();
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "MachineAutoscalerList";
@@ -102,7 +98,6 @@ public class MachineAutoscalerList implements Editable<MachineAutoscalerListBuil
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public MachineAutoscalerList() {
     }
@@ -116,9 +111,7 @@ public class MachineAutoscalerList implements Editable<MachineAutoscalerListBuil
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -126,9 +119,7 @@ public class MachineAutoscalerList implements Editable<MachineAutoscalerListBuil
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -147,9 +138,7 @@ public class MachineAutoscalerList implements Editable<MachineAutoscalerListBuil
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -157,9 +146,7 @@ public class MachineAutoscalerList implements Editable<MachineAutoscalerListBuil
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

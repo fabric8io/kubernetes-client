@@ -81,7 +81,6 @@ public class Toleration implements Editable<TolerationBuilder>, KubernetesResour
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public Toleration() {
     }

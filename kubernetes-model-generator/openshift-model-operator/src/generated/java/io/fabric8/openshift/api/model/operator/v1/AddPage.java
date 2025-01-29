@@ -72,7 +72,6 @@ public class AddPage implements Editable<AddPageBuilder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public AddPage() {
     }

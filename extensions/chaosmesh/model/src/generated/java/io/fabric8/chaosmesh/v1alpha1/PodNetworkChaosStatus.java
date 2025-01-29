@@ -72,7 +72,6 @@ public class PodNetworkChaosStatus implements Editable<PodNetworkChaosStatusBuil
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public PodNetworkChaosStatus() {
     }

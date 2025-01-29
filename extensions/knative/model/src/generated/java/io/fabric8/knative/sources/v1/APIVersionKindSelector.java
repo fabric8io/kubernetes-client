@@ -75,7 +75,6 @@ public class APIVersionKindSelector implements Editable<APIVersionKindSelectorBu
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public APIVersionKindSelector() {
     }

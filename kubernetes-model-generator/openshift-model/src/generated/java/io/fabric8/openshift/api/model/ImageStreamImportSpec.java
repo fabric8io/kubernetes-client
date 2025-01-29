@@ -78,7 +78,6 @@ public class ImageStreamImportSpec implements Editable<ImageStreamImportSpecBuil
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ImageStreamImportSpec() {
     }

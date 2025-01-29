@@ -72,7 +72,6 @@ public class ClientConfig implements Editable<ClientConfigBuilder>, KubernetesRe
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ClientConfig() {
     }

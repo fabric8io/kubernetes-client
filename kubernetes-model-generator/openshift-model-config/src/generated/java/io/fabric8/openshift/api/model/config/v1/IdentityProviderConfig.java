@@ -96,7 +96,6 @@ public class IdentityProviderConfig implements Editable<IdentityProviderConfigBu
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public IdentityProviderConfig() {
     }

@@ -79,7 +79,6 @@ public class DriverRequests implements Editable<DriverRequestsBuilder>, Kubernet
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public DriverRequests() {
     }

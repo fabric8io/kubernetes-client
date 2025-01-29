@@ -78,7 +78,6 @@ public class HPAScalingRules implements Editable<HPAScalingRulesBuilder>, Kubern
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public HPAScalingRules() {
     }

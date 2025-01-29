@@ -72,7 +72,6 @@ public class MetricsOverridesTagOverride implements Editable<MetricsOverridesTag
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public MetricsOverridesTagOverride() {
     }

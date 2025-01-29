@@ -84,7 +84,6 @@ public class HiveConfigCondition implements Editable<HiveConfigConditionBuilder>
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public HiveConfigCondition() {
     }

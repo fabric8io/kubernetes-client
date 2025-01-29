@@ -75,7 +75,6 @@ public class OvirtClusterDeprovision implements Editable<OvirtClusterDeprovision
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public OvirtClusterDeprovision() {
     }

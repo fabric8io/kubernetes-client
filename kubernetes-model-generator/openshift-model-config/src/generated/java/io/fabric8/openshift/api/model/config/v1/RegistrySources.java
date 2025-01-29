@@ -84,7 +84,6 @@ public class RegistrySources implements Editable<RegistrySourcesBuilder>, Kubern
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public RegistrySources() {
     }

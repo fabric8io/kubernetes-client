@@ -75,7 +75,6 @@ public class UserTag implements Editable<UserTagBuilder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public UserTag() {
     }

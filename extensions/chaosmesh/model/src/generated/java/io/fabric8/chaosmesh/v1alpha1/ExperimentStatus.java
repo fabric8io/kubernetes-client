@@ -75,7 +75,6 @@ public class ExperimentStatus implements Editable<ExperimentStatusBuilder>, Kube
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ExperimentStatus() {
     }

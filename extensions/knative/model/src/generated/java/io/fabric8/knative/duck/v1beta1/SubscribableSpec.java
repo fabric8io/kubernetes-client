@@ -72,7 +72,6 @@ public class SubscribableSpec implements Editable<SubscribableSpecBuilder>, Kube
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public SubscribableSpec() {
     }

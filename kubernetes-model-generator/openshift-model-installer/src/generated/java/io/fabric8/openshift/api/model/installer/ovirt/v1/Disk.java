@@ -69,7 +69,6 @@ public class Disk implements Editable<DiskBuilder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public Disk() {
     }

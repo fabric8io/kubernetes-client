@@ -47,7 +47,6 @@ public class LabelSelector implements Editable<LabelSelectorBuilder>, Kubernetes
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public LabelSelector() {
     }

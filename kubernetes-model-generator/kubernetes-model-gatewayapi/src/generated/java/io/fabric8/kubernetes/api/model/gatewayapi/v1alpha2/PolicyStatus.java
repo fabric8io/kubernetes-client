@@ -72,7 +72,6 @@ public class PolicyStatus implements Editable<PolicyStatusBuilder>, KubernetesRe
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public PolicyStatus() {
     }

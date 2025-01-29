@@ -81,7 +81,6 @@ public class Reference implements Editable<ReferenceBuilder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public Reference() {
     }

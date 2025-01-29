@@ -69,7 +69,6 @@ public class RouteSetHTTPHeader implements Editable<RouteSetHTTPHeaderBuilder>, 
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public RouteSetHTTPHeader() {
     }

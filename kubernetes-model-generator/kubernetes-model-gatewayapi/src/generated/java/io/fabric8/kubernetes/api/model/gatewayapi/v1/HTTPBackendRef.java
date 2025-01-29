@@ -90,7 +90,6 @@ public class HTTPBackendRef implements Editable<HTTPBackendRefBuilder>, Kubernet
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public HTTPBackendRef() {
     }

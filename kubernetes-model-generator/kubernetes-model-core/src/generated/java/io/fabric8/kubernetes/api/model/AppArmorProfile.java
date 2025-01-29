@@ -43,7 +43,6 @@ public class AppArmorProfile implements Editable<AppArmorProfileBuilder>, Kubern
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public AppArmorProfile() {
     }

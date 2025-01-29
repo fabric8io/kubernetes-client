@@ -87,7 +87,6 @@ public class VerticalPodAutoscalerCheckpointStatus implements Editable<VerticalP
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public VerticalPodAutoscalerCheckpointStatus() {
     }

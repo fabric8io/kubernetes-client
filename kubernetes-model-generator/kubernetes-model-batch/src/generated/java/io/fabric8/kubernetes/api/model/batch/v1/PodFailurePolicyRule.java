@@ -78,7 +78,6 @@ public class PodFailurePolicyRule implements Editable<PodFailurePolicyRuleBuilde
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public PodFailurePolicyRule() {
     }

@@ -98,7 +98,6 @@ public class RunStatus implements Editable<RunStatusBuilder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public RunStatus() {
     }

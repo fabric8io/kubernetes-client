@@ -75,7 +75,6 @@ public class PodSchedulingContextSpec implements Editable<PodSchedulingContextSp
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public PodSchedulingContextSpec() {
     }

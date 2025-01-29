@@ -79,7 +79,6 @@ public class CustomDeploymentStrategyParams implements Editable<CustomDeployment
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public CustomDeploymentStrategyParams() {
     }

@@ -83,7 +83,6 @@ public class OperatorGroupStatus implements Editable<OperatorGroupStatusBuilder>
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public OperatorGroupStatus() {
     }

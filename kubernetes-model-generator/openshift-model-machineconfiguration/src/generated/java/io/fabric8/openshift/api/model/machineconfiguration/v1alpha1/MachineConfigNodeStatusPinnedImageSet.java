@@ -84,7 +84,6 @@ public class MachineConfigNodeStatusPinnedImageSet implements Editable<MachineCo
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public MachineConfigNodeStatusPinnedImageSet() {
     }

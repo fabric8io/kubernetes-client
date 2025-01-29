@@ -72,7 +72,6 @@ public class LocalityLoadBalancerSettingFailover implements Editable<LocalityLoa
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public LocalityLoadBalancerSettingFailover() {
     }

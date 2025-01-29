@@ -73,7 +73,6 @@ public class DriverAllocationResult implements Editable<DriverAllocationResultBu
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public DriverAllocationResult() {
     }

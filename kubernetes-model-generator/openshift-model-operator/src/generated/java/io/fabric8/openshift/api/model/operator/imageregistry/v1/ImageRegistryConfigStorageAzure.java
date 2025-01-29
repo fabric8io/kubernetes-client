@@ -78,7 +78,6 @@ public class ImageRegistryConfigStorageAzure implements Editable<ImageRegistryCo
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ImageRegistryConfigStorageAzure() {
     }

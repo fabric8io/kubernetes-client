@@ -78,7 +78,6 @@ public class RepositoryDigestMirrors implements Editable<RepositoryDigestMirrors
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public RepositoryDigestMirrors() {
     }

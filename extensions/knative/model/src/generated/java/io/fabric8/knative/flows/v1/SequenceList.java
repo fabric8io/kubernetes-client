@@ -79,9 +79,7 @@ public class SequenceList implements Editable<SequenceListBuilder>, KubernetesRe
 {
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "flows.knative.dev/v1";
@@ -89,9 +87,7 @@ public class SequenceList implements Editable<SequenceListBuilder>, KubernetesRe
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<io.fabric8.knative.flows.v1.Sequence> items = new ArrayList<>();
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "SequenceList";
@@ -102,7 +98,6 @@ public class SequenceList implements Editable<SequenceListBuilder>, KubernetesRe
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public SequenceList() {
     }
@@ -116,9 +111,7 @@ public class SequenceList implements Editable<SequenceListBuilder>, KubernetesRe
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -126,9 +119,7 @@ public class SequenceList implements Editable<SequenceListBuilder>, KubernetesRe
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -147,9 +138,7 @@ public class SequenceList implements Editable<SequenceListBuilder>, KubernetesRe
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -157,9 +146,7 @@ public class SequenceList implements Editable<SequenceListBuilder>, KubernetesRe
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

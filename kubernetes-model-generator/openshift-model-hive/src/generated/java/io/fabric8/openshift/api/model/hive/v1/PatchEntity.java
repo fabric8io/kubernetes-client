@@ -78,7 +78,6 @@ public class PatchEntity implements Editable<PatchEntityBuilder>, KubernetesReso
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public PatchEntity() {
     }

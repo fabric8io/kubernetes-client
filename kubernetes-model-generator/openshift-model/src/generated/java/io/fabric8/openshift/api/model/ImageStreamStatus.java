@@ -78,7 +78,6 @@ public class ImageStreamStatus implements Editable<ImageStreamStatusBuilder>, Ku
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ImageStreamStatus() {
     }

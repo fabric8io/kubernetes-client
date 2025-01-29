@@ -75,7 +75,6 @@ public class NutanixGPU implements Editable<NutanixGPUBuilder>, KubernetesResour
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public NutanixGPU() {
     }

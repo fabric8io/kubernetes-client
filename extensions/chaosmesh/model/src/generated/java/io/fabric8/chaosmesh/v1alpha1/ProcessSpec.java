@@ -75,7 +75,6 @@ public class ProcessSpec implements Editable<ProcessSpecBuilder>, KubernetesReso
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ProcessSpec() {
     }

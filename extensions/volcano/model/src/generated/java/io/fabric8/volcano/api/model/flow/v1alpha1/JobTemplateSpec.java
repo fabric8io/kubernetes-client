@@ -70,7 +70,6 @@ public class JobTemplateSpec implements Editable<JobTemplateSpecBuilder>, Kubern
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public JobTemplateSpec() {
     }

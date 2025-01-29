@@ -75,7 +75,6 @@ public class EndpointConditions implements Editable<EndpointConditionsBuilder>, 
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public EndpointConditions() {
     }

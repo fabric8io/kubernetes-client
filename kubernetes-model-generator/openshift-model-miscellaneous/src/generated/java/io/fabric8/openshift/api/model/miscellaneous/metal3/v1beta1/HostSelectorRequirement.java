@@ -78,7 +78,6 @@ public class HostSelectorRequirement implements Editable<HostSelectorRequirement
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public HostSelectorRequirement() {
     }

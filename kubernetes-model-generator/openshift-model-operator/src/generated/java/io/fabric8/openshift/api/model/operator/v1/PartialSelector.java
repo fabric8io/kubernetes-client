@@ -69,7 +69,6 @@ public class PartialSelector implements Editable<PartialSelectorBuilder>, Kubern
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public PartialSelector() {
     }

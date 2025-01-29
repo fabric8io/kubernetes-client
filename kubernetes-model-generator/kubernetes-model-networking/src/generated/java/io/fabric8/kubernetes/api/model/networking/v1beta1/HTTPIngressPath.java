@@ -75,7 +75,6 @@ public class HTTPIngressPath implements Editable<HTTPIngressPathBuilder>, Kubern
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public HTTPIngressPath() {
     }

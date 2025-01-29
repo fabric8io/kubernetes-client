@@ -98,7 +98,6 @@ public class NetworkParam implements Editable<NetworkParamBuilder>, KubernetesRe
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public NetworkParam() {
     }

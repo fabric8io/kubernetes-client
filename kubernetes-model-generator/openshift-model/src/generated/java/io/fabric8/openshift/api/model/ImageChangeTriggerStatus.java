@@ -75,7 +75,6 @@ public class ImageChangeTriggerStatus implements Editable<ImageChangeTriggerStat
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ImageChangeTriggerStatus() {
     }

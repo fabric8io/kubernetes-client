@@ -49,7 +49,6 @@ public class ConfigMapProjection implements Editable<ConfigMapProjectionBuilder>
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ConfigMapProjection() {
     }

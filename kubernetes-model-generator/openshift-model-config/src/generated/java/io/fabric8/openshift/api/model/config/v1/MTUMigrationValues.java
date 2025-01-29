@@ -72,7 +72,6 @@ public class MTUMigrationValues implements Editable<MTUMigrationValuesBuilder>, 
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public MTUMigrationValues() {
     }

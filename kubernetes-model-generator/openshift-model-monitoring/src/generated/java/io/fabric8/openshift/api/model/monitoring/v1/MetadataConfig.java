@@ -72,7 +72,6 @@ public class MetadataConfig implements Editable<MetadataConfigBuilder>, Kubernet
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public MetadataConfig() {
     }

@@ -81,7 +81,6 @@ public class PriorityLevelConfigurationCondition implements Editable<PriorityLev
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public PriorityLevelConfigurationCondition() {
     }

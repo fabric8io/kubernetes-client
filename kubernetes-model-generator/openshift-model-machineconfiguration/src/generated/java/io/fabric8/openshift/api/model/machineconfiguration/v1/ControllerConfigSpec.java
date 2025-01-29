@@ -143,7 +143,6 @@ public class ControllerConfigSpec implements Editable<ControllerConfigSpecBuilde
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ControllerConfigSpec() {
     }

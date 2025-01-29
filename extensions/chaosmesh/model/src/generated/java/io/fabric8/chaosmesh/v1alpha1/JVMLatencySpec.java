@@ -81,7 +81,6 @@ public class JVMLatencySpec implements Editable<JVMLatencySpecBuilder>, Kubernet
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public JVMLatencySpec() {
     }

@@ -75,7 +75,6 @@ public class AnalysisMessageBase implements Editable<AnalysisMessageBaseBuilder>
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public AnalysisMessageBase() {
     }

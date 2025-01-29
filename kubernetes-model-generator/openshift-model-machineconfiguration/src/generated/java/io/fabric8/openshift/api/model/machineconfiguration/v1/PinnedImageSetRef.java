@@ -69,7 +69,6 @@ public class PinnedImageSetRef implements Editable<PinnedImageSetRefBuilder>, Ku
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public PinnedImageSetRef() {
     }

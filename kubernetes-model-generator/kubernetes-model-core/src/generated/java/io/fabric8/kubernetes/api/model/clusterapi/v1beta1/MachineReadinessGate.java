@@ -41,7 +41,6 @@ public class MachineReadinessGate implements Editable<MachineReadinessGateBuilde
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public MachineReadinessGate() {
     }

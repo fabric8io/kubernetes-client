@@ -75,7 +75,6 @@ public class UnhealthyCondition implements Editable<UnhealthyConditionBuilder>, 
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public UnhealthyCondition() {
     }

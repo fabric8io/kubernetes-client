@@ -78,7 +78,6 @@ public class EventPolicyFromReference implements Editable<EventPolicyFromReferen
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public EventPolicyFromReference() {
     }

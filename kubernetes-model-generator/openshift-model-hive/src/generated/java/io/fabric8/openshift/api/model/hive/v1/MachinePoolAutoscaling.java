@@ -72,7 +72,6 @@ public class MachinePoolAutoscaling implements Editable<MachinePoolAutoscalingBu
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public MachinePoolAutoscaling() {
     }

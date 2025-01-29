@@ -77,7 +77,6 @@ public class TCPRouteSpec implements Editable<TCPRouteSpecBuilder>, KubernetesRe
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public TCPRouteSpec() {
     }

@@ -76,7 +76,6 @@ public class StaticConfig implements Editable<StaticConfigBuilder>, KubernetesRe
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public StaticConfig() {
     }

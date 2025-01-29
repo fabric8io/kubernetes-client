@@ -69,7 +69,6 @@ public class PrivateStrategy implements Editable<PrivateStrategyBuilder>, Kubern
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public PrivateStrategy() {
     }

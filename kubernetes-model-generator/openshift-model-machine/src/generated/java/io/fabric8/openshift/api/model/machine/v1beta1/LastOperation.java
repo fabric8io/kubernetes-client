@@ -78,7 +78,6 @@ public class LastOperation implements Editable<LastOperationBuilder>, Kubernetes
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public LastOperation() {
     }

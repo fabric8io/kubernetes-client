@@ -78,7 +78,6 @@ public class DeveloperConsoleCatalogCategoryMeta implements Editable<DeveloperCo
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public DeveloperConsoleCatalogCategoryMeta() {
     }

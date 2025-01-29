@@ -84,7 +84,6 @@ public class ImageManifest implements Editable<ImageManifestBuilder>, Kubernetes
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ImageManifest() {
     }

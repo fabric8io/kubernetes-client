@@ -75,16 +75,12 @@ public class CSINode implements Editable<CSINodeBuilder>, HasMetadata
 {
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "storage.k8s.io/v1beta1";
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "CSINode";
@@ -97,7 +93,6 @@ public class CSINode implements Editable<CSINodeBuilder>, HasMetadata
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public CSINode() {
     }
@@ -111,9 +106,7 @@ public class CSINode implements Editable<CSINodeBuilder>, HasMetadata
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -121,9 +114,7 @@ public class CSINode implements Editable<CSINodeBuilder>, HasMetadata
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -131,9 +122,7 @@ public class CSINode implements Editable<CSINodeBuilder>, HasMetadata
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -141,9 +130,7 @@ public class CSINode implements Editable<CSINodeBuilder>, HasMetadata
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

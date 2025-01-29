@@ -69,7 +69,6 @@ public class AzureDiagnostics implements Editable<AzureDiagnosticsBuilder>, Kube
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public AzureDiagnostics() {
     }

@@ -52,7 +52,6 @@ public class APIServiceCondition implements Editable<APIServiceConditionBuilder>
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public APIServiceCondition() {
     }

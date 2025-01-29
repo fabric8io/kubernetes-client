@@ -69,7 +69,6 @@ public class FieldSelector implements Editable<FieldSelectorBuilder>, Kubernetes
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public FieldSelector() {
     }

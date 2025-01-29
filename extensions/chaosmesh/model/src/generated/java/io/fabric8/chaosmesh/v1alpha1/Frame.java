@@ -75,7 +75,6 @@ public class Frame implements Editable<FrameBuilder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public Frame() {
     }

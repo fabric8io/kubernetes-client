@@ -75,7 +75,6 @@ public class TaskBreakpoints implements Editable<TaskBreakpointsBuilder>, Kubern
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public TaskBreakpoints() {
     }

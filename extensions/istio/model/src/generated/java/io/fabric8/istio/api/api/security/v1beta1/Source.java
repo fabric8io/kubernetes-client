@@ -108,7 +108,6 @@ public class Source implements Editable<SourceBuilder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public Source() {
     }

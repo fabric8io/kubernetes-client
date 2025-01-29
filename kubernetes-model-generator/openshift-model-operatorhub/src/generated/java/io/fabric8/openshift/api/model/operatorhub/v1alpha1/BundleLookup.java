@@ -87,7 +87,6 @@ public class BundleLookup implements Editable<BundleLookupBuilder>, KubernetesRe
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public BundleLookup() {
     }

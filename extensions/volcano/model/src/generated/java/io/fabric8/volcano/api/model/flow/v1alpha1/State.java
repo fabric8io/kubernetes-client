@@ -69,7 +69,6 @@ public class State implements Editable<StateBuilder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public State() {
     }

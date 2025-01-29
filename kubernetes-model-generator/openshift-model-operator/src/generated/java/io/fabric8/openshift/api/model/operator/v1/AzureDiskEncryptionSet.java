@@ -75,7 +75,6 @@ public class AzureDiskEncryptionSet implements Editable<AzureDiskEncryptionSetBu
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public AzureDiskEncryptionSet() {
     }

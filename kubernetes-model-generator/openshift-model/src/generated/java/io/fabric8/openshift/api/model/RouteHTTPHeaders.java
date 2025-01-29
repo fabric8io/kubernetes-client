@@ -69,7 +69,6 @@ public class RouteHTTPHeaders implements Editable<RouteHTTPHeadersBuilder>, Kube
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public RouteHTTPHeaders() {
     }

@@ -78,7 +78,6 @@ public class ImageDigestMirrors implements Editable<ImageDigestMirrorsBuilder>, 
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ImageDigestMirrors() {
     }

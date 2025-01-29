@@ -69,7 +69,6 @@ public class WebhookTokenAuthenticator implements Editable<WebhookTokenAuthentic
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public WebhookTokenAuthenticator() {
     }

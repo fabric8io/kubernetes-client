@@ -86,7 +86,6 @@ public class GRPCRouteRule implements Editable<GRPCRouteRuleBuilder>, Kubernetes
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public GRPCRouteRule() {
     }

@@ -85,7 +85,6 @@ public class VolumeSnapshotStatus implements Editable<VolumeSnapshotStatusBuilde
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public VolumeSnapshotStatus() {
     }

@@ -72,7 +72,6 @@ public class Param implements Editable<ParamBuilder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public Param() {
     }

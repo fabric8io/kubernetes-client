@@ -75,7 +75,6 @@ public class ReorderSpec implements Editable<ReorderSpecBuilder>, KubernetesReso
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ReorderSpec() {
     }

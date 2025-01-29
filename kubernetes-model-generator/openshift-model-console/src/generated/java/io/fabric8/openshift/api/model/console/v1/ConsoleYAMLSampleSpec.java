@@ -82,7 +82,6 @@ public class ConsoleYAMLSampleSpec implements Editable<ConsoleYAMLSampleSpecBuil
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ConsoleYAMLSampleSpec() {
     }

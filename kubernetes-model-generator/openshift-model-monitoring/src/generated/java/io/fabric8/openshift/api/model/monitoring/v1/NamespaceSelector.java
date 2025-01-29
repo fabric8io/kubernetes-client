@@ -75,7 +75,6 @@ public class NamespaceSelector implements Editable<NamespaceSelectorBuilder>, Ku
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public NamespaceSelector() {
     }

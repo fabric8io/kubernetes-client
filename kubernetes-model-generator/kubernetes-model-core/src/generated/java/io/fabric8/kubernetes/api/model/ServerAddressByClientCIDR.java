@@ -43,7 +43,6 @@ public class ServerAddressByClientCIDR implements Editable<ServerAddressByClient
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ServerAddressByClientCIDR() {
     }

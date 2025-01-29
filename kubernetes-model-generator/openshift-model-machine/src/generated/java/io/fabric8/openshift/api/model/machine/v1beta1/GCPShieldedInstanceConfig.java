@@ -75,7 +75,6 @@ public class GCPShieldedInstanceConfig implements Editable<GCPShieldedInstanceCo
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public GCPShieldedInstanceConfig() {
     }

@@ -84,7 +84,6 @@ public class InstallPlanCondition implements Editable<InstallPlanConditionBuilde
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public InstallPlanCondition() {
     }

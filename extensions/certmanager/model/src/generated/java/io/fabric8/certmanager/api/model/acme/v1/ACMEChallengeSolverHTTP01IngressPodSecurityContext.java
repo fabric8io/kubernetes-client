@@ -100,7 +100,6 @@ public class ACMEChallengeSolverHTTP01IngressPodSecurityContext implements Edita
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ACMEChallengeSolverHTTP01IngressPodSecurityContext() {
     }

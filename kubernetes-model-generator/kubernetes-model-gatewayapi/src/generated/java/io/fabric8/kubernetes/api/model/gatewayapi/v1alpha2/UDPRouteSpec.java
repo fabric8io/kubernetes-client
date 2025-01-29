@@ -77,7 +77,6 @@ public class UDPRouteSpec implements Editable<UDPRouteSpecBuilder>, KubernetesRe
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public UDPRouteSpec() {
     }

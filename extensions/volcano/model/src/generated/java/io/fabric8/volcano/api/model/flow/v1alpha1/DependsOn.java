@@ -75,7 +75,6 @@ public class DependsOn implements Editable<DependsOnBuilder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public DependsOn() {
     }

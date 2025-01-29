@@ -81,7 +81,6 @@ public class LogEntry implements Editable<LogEntryBuilder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public LogEntry() {
     }

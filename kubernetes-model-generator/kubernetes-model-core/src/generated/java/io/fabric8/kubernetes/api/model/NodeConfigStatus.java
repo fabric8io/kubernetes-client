@@ -49,7 +49,6 @@ public class NodeConfigStatus implements Editable<NodeConfigStatusBuilder>, Kube
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public NodeConfigStatus() {
     }

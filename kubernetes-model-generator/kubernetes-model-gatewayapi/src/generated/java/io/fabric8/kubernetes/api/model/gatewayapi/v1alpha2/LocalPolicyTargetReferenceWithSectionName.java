@@ -78,7 +78,6 @@ public class LocalPolicyTargetReferenceWithSectionName implements Editable<Local
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public LocalPolicyTargetReferenceWithSectionName() {
     }

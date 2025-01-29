@@ -72,7 +72,6 @@ public class SubscribableStatus implements Editable<SubscribableStatusBuilder>, 
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public SubscribableStatus() {
     }

@@ -43,7 +43,6 @@ public class APIServiceStatus implements Editable<APIServiceStatusBuilder>, Kube
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public APIServiceStatus() {
     }

@@ -72,7 +72,6 @@ public class ClusterConditionFilter implements Editable<ClusterConditionFilterBu
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ClusterConditionFilter() {
     }

@@ -76,7 +76,6 @@ public class OpenShiftMachineV1Beta1MachineTemplate implements Editable<OpenShif
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public OpenShiftMachineV1Beta1MachineTemplate() {
     }

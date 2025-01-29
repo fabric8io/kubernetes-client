@@ -43,7 +43,6 @@ public class NodeSelector implements Editable<NodeSelectorBuilder>, KubernetesRe
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public NodeSelector() {
     }

@@ -75,7 +75,6 @@ public class AWSAssociatedVPC implements Editable<AWSAssociatedVPCBuilder>, Kube
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public AWSAssociatedVPC() {
     }

@@ -72,7 +72,6 @@ public class IBMCloudServiceEndpoint implements Editable<IBMCloudServiceEndpoint
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public IBMCloudServiceEndpoint() {
     }

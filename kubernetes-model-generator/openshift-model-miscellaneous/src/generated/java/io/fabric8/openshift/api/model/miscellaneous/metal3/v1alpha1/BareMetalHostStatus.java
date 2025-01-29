@@ -102,7 +102,6 @@ public class BareMetalHostStatus implements Editable<BareMetalHostStatusBuilder>
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public BareMetalHostStatus() {
     }

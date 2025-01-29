@@ -72,7 +72,6 @@ public class InternalErrorAnalysisMessage implements Editable<InternalErrorAnaly
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public InternalErrorAnalysisMessage() {
     }

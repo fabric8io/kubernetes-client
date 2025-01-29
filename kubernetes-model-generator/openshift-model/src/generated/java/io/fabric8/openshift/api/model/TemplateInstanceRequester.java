@@ -82,7 +82,6 @@ public class TemplateInstanceRequester implements Editable<TemplateInstanceReque
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public TemplateInstanceRequester() {
     }

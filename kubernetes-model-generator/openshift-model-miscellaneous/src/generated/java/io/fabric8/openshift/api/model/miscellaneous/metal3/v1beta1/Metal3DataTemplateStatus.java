@@ -73,7 +73,6 @@ public class Metal3DataTemplateStatus implements Editable<Metal3DataTemplateStat
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public Metal3DataTemplateStatus() {
     }

@@ -96,7 +96,6 @@ public class DeploymentConfigStatus implements Editable<DeploymentConfigStatusBu
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public DeploymentConfigStatus() {
     }

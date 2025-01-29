@@ -54,7 +54,6 @@ public class Machine implements Editable<MachineBuilder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public Machine() {
     }

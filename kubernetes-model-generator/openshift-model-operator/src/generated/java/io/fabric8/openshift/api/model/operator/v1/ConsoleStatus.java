@@ -88,7 +88,6 @@ public class ConsoleStatus implements Editable<ConsoleStatusBuilder>, Kubernetes
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ConsoleStatus() {
     }

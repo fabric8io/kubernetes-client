@@ -83,7 +83,6 @@ public class KubeletConfigSpec implements Editable<KubeletConfigSpecBuilder>, Ku
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public KubeletConfigSpec() {
     }

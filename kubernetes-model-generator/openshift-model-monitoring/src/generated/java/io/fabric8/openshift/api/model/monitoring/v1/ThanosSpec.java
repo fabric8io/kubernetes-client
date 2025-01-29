@@ -140,7 +140,6 @@ public class ThanosSpec implements Editable<ThanosSpecBuilder>, KubernetesResour
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ThanosSpec() {
     }

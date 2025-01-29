@@ -126,7 +126,6 @@ public class ClusterPoolSpec implements Editable<ClusterPoolSpecBuilder>, Kubern
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ClusterPoolSpec() {
     }

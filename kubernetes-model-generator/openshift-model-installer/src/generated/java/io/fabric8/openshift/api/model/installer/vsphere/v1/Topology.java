@@ -94,7 +94,6 @@ public class Topology implements Editable<TopologyBuilder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public Topology() {
     }

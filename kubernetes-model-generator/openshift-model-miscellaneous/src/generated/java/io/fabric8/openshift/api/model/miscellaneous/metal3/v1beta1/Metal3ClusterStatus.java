@@ -85,7 +85,6 @@ public class Metal3ClusterStatus implements Editable<Metal3ClusterStatusBuilder>
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public Metal3ClusterStatus() {
     }

@@ -76,16 +76,12 @@ public class GCPProviderStatus implements Editable<GCPProviderStatusBuilder>, Ku
 {
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "cloudcredential.openshift.io/v1";
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "GCPProviderStatus";
@@ -98,7 +94,6 @@ public class GCPProviderStatus implements Editable<GCPProviderStatusBuilder>, Ku
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public GCPProviderStatus() {
     }
@@ -112,9 +107,7 @@ public class GCPProviderStatus implements Editable<GCPProviderStatusBuilder>, Ku
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -122,9 +115,7 @@ public class GCPProviderStatus implements Editable<GCPProviderStatusBuilder>, Ku
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -132,9 +123,7 @@ public class GCPProviderStatus implements Editable<GCPProviderStatusBuilder>, Ku
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -142,9 +131,7 @@ public class GCPProviderStatus implements Editable<GCPProviderStatusBuilder>, Ku
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

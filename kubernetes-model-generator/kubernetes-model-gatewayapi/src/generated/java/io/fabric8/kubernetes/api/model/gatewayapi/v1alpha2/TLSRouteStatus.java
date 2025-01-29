@@ -73,7 +73,6 @@ public class TLSRouteStatus implements Editable<TLSRouteStatusBuilder>, Kubernet
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public TLSRouteStatus() {
     }

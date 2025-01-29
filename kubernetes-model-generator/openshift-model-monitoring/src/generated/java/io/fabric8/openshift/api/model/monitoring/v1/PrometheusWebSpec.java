@@ -78,7 +78,6 @@ public class PrometheusWebSpec implements Editable<PrometheusWebSpecBuilder>, Ku
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public PrometheusWebSpec() {
     }

@@ -78,7 +78,6 @@ public class NamedCertificate implements Editable<NamedCertificateBuilder>, Kube
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public NamedCertificate() {
     }

@@ -138,7 +138,6 @@ public class PodMetricsEndpoint implements Editable<PodMetricsEndpointBuilder>, 
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public PodMetricsEndpoint() {
     }

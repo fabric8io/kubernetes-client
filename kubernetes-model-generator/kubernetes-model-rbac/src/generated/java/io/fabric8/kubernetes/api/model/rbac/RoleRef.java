@@ -75,7 +75,6 @@ public class RoleRef implements Editable<RoleRefBuilder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public RoleRef() {
     }

@@ -72,7 +72,6 @@ public class DuplicateSpec implements Editable<DuplicateSpecBuilder>, Kubernetes
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public DuplicateSpec() {
     }

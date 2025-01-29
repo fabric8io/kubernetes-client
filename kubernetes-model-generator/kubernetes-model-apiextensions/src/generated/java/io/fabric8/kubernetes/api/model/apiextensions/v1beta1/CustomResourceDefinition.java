@@ -76,16 +76,12 @@ public class CustomResourceDefinition implements Editable<CustomResourceDefiniti
 {
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "apiextensions.k8s.io/v1beta1";
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "CustomResourceDefinition";
@@ -100,7 +96,6 @@ public class CustomResourceDefinition implements Editable<CustomResourceDefiniti
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public CustomResourceDefinition() {
     }
@@ -115,9 +110,7 @@ public class CustomResourceDefinition implements Editable<CustomResourceDefiniti
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -125,9 +118,7 @@ public class CustomResourceDefinition implements Editable<CustomResourceDefiniti
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -135,9 +126,7 @@ public class CustomResourceDefinition implements Editable<CustomResourceDefiniti
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -145,9 +134,7 @@ public class CustomResourceDefinition implements Editable<CustomResourceDefiniti
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

@@ -58,7 +58,6 @@ public class ContainerStateTerminated implements Editable<ContainerStateTerminat
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ContainerStateTerminated() {
     }

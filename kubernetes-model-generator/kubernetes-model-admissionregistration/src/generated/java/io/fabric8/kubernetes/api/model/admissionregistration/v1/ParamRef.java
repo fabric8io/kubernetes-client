@@ -78,7 +78,6 @@ public class ParamRef implements Editable<ParamRefBuilder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ParamRef() {
     }

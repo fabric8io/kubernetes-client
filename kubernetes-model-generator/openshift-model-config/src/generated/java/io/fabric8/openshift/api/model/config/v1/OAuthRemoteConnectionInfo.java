@@ -78,7 +78,6 @@ public class OAuthRemoteConnectionInfo implements Editable<OAuthRemoteConnection
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public OAuthRemoteConnectionInfo() {
     }

@@ -84,7 +84,6 @@ public class AWSDDBStreams implements Editable<AWSDDBStreamsBuilder>, Kubernetes
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public AWSDDBStreams() {
     }

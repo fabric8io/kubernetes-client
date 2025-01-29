@@ -77,16 +77,12 @@ public class MachinePool implements Editable<MachinePoolBuilder>, HasMetadata, N
 {
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "hive.openshift.io/v1";
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "MachinePool";
@@ -101,7 +97,6 @@ public class MachinePool implements Editable<MachinePoolBuilder>, HasMetadata, N
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public MachinePool() {
     }
@@ -116,9 +111,7 @@ public class MachinePool implements Editable<MachinePoolBuilder>, HasMetadata, N
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -126,9 +119,7 @@ public class MachinePool implements Editable<MachinePoolBuilder>, HasMetadata, N
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -136,9 +127,7 @@ public class MachinePool implements Editable<MachinePoolBuilder>, HasMetadata, N
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -146,9 +135,7 @@ public class MachinePool implements Editable<MachinePoolBuilder>, HasMetadata, N
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

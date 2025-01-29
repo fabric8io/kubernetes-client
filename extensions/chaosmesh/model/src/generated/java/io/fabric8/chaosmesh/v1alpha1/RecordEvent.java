@@ -78,7 +78,6 @@ public class RecordEvent implements Editable<RecordEventBuilder>, KubernetesReso
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public RecordEvent() {
     }

@@ -77,16 +77,12 @@ public class ProjectHelmChartRepository implements Editable<ProjectHelmChartRepo
 {
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "helm.openshift.io/v1beta1";
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "ProjectHelmChartRepository";
@@ -101,7 +97,6 @@ public class ProjectHelmChartRepository implements Editable<ProjectHelmChartRepo
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ProjectHelmChartRepository() {
     }
@@ -116,9 +111,7 @@ public class ProjectHelmChartRepository implements Editable<ProjectHelmChartRepo
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -126,9 +119,7 @@ public class ProjectHelmChartRepository implements Editable<ProjectHelmChartRepo
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -136,9 +127,7 @@ public class ProjectHelmChartRepository implements Editable<ProjectHelmChartRepo
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -146,9 +135,7 @@ public class ProjectHelmChartRepository implements Editable<ProjectHelmChartRepo
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

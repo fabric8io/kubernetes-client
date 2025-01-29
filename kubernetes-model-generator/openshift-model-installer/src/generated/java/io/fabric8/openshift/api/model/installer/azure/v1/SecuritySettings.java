@@ -75,7 +75,6 @@ public class SecuritySettings implements Editable<SecuritySettingsBuilder>, Kube
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public SecuritySettings() {
     }

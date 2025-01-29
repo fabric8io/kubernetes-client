@@ -72,7 +72,6 @@ public class PrometheusRuleSpec implements Editable<PrometheusRuleSpecBuilder>, 
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public PrometheusRuleSpec() {
     }

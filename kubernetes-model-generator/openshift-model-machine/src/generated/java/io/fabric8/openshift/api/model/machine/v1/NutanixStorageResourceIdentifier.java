@@ -72,7 +72,6 @@ public class NutanixStorageResourceIdentifier implements Editable<NutanixStorage
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public NutanixStorageResourceIdentifier() {
     }

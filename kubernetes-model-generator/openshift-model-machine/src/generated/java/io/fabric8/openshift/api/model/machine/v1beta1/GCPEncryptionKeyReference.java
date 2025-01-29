@@ -72,7 +72,6 @@ public class GCPEncryptionKeyReference implements Editable<GCPEncryptionKeyRefer
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public GCPEncryptionKeyReference() {
     }

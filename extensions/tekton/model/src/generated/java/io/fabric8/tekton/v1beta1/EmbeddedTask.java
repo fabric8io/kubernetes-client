@@ -117,7 +117,6 @@ public class EmbeddedTask implements Editable<EmbeddedTaskBuilder>, KubernetesRe
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public EmbeddedTask() {
     }

@@ -77,18 +77,14 @@ public class ImageStreamMapping implements Editable<ImageStreamMappingBuilder>, 
 {
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "image.openshift.io/v1";
     @JsonProperty("image")
     private Image image;
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "ImageStreamMapping";
@@ -101,7 +97,6 @@ public class ImageStreamMapping implements Editable<ImageStreamMappingBuilder>, 
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ImageStreamMapping() {
     }
@@ -116,9 +111,7 @@ public class ImageStreamMapping implements Editable<ImageStreamMappingBuilder>, 
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -126,9 +119,7 @@ public class ImageStreamMapping implements Editable<ImageStreamMappingBuilder>, 
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -146,9 +137,7 @@ public class ImageStreamMapping implements Editable<ImageStreamMappingBuilder>, 
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -156,9 +145,7 @@ public class ImageStreamMapping implements Editable<ImageStreamMappingBuilder>, 
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

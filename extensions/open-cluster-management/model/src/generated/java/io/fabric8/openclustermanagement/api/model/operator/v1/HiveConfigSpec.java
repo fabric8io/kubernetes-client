@@ -87,7 +87,6 @@ public class HiveConfigSpec implements Editable<HiveConfigSpecBuilder>, Kubernet
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public HiveConfigSpec() {
     }

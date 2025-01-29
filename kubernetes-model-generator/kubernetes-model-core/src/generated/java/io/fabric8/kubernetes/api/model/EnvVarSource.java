@@ -49,7 +49,6 @@ public class EnvVarSource implements Editable<EnvVarSourceBuilder>, KubernetesRe
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public EnvVarSource() {
     }

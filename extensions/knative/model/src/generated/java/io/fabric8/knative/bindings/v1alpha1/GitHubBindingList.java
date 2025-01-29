@@ -79,9 +79,7 @@ public class GitHubBindingList implements Editable<GitHubBindingListBuilder>, Ku
 {
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "bindings.knative.dev/v1alpha1";
@@ -89,9 +87,7 @@ public class GitHubBindingList implements Editable<GitHubBindingListBuilder>, Ku
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<io.fabric8.knative.bindings.v1alpha1.GitHubBinding> items = new ArrayList<>();
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "GitHubBindingList";
@@ -102,7 +98,6 @@ public class GitHubBindingList implements Editable<GitHubBindingListBuilder>, Ku
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public GitHubBindingList() {
     }
@@ -116,9 +111,7 @@ public class GitHubBindingList implements Editable<GitHubBindingListBuilder>, Ku
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -126,9 +119,7 @@ public class GitHubBindingList implements Editable<GitHubBindingListBuilder>, Ku
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -147,9 +138,7 @@ public class GitHubBindingList implements Editable<GitHubBindingListBuilder>, Ku
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -157,9 +146,7 @@ public class GitHubBindingList implements Editable<GitHubBindingListBuilder>, Ku
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

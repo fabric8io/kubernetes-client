@@ -72,7 +72,6 @@ public class TaskStatus implements Editable<TaskStatusBuilder>, KubernetesResour
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public TaskStatus() {
     }

@@ -75,7 +75,6 @@ public class AddressStatus implements Editable<AddressStatusBuilder>, Kubernetes
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public AddressStatus() {
     }

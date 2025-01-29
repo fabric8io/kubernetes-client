@@ -77,7 +77,6 @@ public class InMemoryChannelSpec implements Editable<InMemoryChannelSpecBuilder>
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public InMemoryChannelSpec() {
     }

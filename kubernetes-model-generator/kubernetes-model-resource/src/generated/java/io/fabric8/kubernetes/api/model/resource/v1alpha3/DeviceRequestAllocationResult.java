@@ -81,7 +81,6 @@ public class DeviceRequestAllocationResult implements Editable<DeviceRequestAllo
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public DeviceRequestAllocationResult() {
     }

@@ -120,7 +120,6 @@ public class PagerDutyConfig implements Editable<PagerDutyConfigBuilder>, Kubern
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public PagerDutyConfig() {
     }

@@ -69,7 +69,6 @@ public class RemoteClusterKubeConfig implements Editable<RemoteClusterKubeConfig
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public RemoteClusterKubeConfig() {
     }

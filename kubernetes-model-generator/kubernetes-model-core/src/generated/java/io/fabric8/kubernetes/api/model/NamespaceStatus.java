@@ -46,7 +46,6 @@ public class NamespaceStatus implements Editable<NamespaceStatusBuilder>, Kubern
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public NamespaceStatus() {
     }

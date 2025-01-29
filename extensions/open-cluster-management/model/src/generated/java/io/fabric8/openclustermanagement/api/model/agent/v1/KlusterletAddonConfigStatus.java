@@ -76,7 +76,6 @@ public class KlusterletAddonConfigStatus implements Editable<KlusterletAddonConf
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public KlusterletAddonConfigStatus() {
     }

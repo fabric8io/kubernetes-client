@@ -72,7 +72,6 @@ public class GenericWebHookCause implements Editable<GenericWebHookCauseBuilder>
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public GenericWebHookCause() {
     }

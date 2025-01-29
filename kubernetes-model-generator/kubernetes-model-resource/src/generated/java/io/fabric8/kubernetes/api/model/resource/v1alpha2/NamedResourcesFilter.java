@@ -69,7 +69,6 @@ public class NamedResourcesFilter implements Editable<NamedResourcesFilterBuilde
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public NamedResourcesFilter() {
     }

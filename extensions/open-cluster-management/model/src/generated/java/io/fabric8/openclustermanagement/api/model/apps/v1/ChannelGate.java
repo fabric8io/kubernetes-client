@@ -76,7 +76,6 @@ public class ChannelGate implements Editable<ChannelGateBuilder>, KubernetesReso
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ChannelGate() {
     }

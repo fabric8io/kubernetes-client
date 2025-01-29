@@ -69,7 +69,6 @@ public class Exemplars implements Editable<ExemplarsBuilder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public Exemplars() {
     }

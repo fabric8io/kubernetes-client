@@ -172,7 +172,6 @@ public class PodSpec implements Editable<PodSpecBuilder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     *
      */
     public PodSpec() {
     }

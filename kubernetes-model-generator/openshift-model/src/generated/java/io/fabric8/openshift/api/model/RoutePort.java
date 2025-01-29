@@ -69,7 +69,6 @@ public class RoutePort implements Editable<RoutePortBuilder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public RoutePort() {
     }

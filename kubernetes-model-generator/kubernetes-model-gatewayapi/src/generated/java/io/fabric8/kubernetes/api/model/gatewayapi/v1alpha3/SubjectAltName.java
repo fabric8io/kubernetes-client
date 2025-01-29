@@ -75,7 +75,6 @@ public class SubjectAltName implements Editable<SubjectAltNameBuilder>, Kubernet
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public SubjectAltName() {
     }

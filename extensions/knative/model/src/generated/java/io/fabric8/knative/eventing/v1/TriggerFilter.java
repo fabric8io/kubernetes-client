@@ -70,7 +70,6 @@ public class TriggerFilter implements Editable<TriggerFilterBuilder>, Kubernetes
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public TriggerFilter() {
     }

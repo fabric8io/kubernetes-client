@@ -112,7 +112,6 @@ public class BuildConfigSpec implements Editable<BuildConfigSpecBuilder>, Kubern
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public BuildConfigSpec() {
     }

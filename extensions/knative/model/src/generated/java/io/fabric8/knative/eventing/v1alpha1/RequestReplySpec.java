@@ -89,7 +89,6 @@ public class RequestReplySpec implements Editable<RequestReplySpecBuilder>, Kube
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public RequestReplySpec() {
     }

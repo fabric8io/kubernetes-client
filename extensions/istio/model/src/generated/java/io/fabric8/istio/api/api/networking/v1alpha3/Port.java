@@ -78,7 +78,6 @@ public class Port implements Editable<PortBuilder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public Port() {
     }

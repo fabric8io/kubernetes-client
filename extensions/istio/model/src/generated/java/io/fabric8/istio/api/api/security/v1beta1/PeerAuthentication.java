@@ -87,7 +87,6 @@ public class PeerAuthentication implements Editable<PeerAuthenticationBuilder>, 
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public PeerAuthentication() {
     }

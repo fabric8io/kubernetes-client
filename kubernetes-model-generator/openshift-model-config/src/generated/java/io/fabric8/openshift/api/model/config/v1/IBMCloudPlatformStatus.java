@@ -87,7 +87,6 @@ public class IBMCloudPlatformStatus implements Editable<IBMCloudPlatformStatusBu
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public IBMCloudPlatformStatus() {
     }

@@ -72,7 +72,6 @@ public class NamedResourcesIntSlice implements Editable<NamedResourcesIntSliceBu
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public NamedResourcesIntSlice() {
     }

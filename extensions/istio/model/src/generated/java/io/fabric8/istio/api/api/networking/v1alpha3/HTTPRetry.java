@@ -78,7 +78,6 @@ public class HTTPRetry implements Editable<HTTPRetryBuilder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public HTTPRetry() {
     }

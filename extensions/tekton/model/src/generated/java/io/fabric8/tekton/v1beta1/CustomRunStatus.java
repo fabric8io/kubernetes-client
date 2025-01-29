@@ -98,7 +98,6 @@ public class CustomRunStatus implements Editable<CustomRunStatusBuilder>, Kubern
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public CustomRunStatus() {
     }

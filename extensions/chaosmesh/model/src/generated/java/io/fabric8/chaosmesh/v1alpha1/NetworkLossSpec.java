@@ -90,7 +90,6 @@ public class NetworkLossSpec implements Editable<NetworkLossSpecBuilder>, Kubern
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public NetworkLossSpec() {
     }

@@ -101,7 +101,6 @@ public class ConsoleCustomization implements Editable<ConsoleCustomizationBuilde
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ConsoleCustomization() {
     }

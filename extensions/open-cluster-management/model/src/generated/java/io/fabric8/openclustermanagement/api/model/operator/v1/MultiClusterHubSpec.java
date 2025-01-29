@@ -110,7 +110,6 @@ public class MultiClusterHubSpec implements Editable<MultiClusterHubSpecBuilder>
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public MultiClusterHubSpec() {
     }

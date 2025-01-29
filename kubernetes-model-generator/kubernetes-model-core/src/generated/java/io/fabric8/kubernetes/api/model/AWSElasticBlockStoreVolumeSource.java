@@ -49,7 +49,6 @@ public class AWSElasticBlockStoreVolumeSource implements Editable<AWSElasticBloc
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public AWSElasticBlockStoreVolumeSource() {
     }

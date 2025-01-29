@@ -69,7 +69,6 @@ public class LoadBalancerSettingsSimple implements IsLoadBalancerSettingsLbPolic
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public LoadBalancerSettingsSimple() {
     }

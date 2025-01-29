@@ -107,7 +107,6 @@ public class ConsoleQuickStartSpec implements Editable<ConsoleQuickStartSpecBuil
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ConsoleQuickStartSpec() {
     }

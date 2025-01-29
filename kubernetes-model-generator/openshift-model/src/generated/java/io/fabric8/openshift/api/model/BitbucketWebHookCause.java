@@ -72,7 +72,6 @@ public class BitbucketWebHookCause implements Editable<BitbucketWebHookCauseBuil
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public BitbucketWebHookCause() {
     }

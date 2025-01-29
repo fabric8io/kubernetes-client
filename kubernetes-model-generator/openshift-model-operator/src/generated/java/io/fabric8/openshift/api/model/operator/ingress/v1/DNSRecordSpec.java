@@ -84,7 +84,6 @@ public class DNSRecordSpec implements Editable<DNSRecordSpecBuilder>, Kubernetes
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public DNSRecordSpec() {
     }

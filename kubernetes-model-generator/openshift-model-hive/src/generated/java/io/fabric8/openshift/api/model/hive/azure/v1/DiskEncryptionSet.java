@@ -75,7 +75,6 @@ public class DiskEncryptionSet implements Editable<DiskEncryptionSetBuilder>, Ku
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public DiskEncryptionSet() {
     }

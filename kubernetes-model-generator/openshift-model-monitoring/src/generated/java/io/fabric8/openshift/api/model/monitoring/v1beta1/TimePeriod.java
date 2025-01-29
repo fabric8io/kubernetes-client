@@ -88,7 +88,6 @@ public class TimePeriod implements Editable<TimePeriodBuilder>, KubernetesResour
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public TimePeriod() {
     }

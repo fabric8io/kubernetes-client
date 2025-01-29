@@ -78,7 +78,6 @@ public class NutanixFailureDomain implements Editable<NutanixFailureDomainBuilde
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public NutanixFailureDomain() {
     }

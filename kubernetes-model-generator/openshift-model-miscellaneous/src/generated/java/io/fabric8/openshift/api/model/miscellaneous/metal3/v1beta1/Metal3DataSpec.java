@@ -85,7 +85,6 @@ public class Metal3DataSpec implements Editable<Metal3DataSpecBuilder>, Kubernet
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public Metal3DataSpec() {
     }

@@ -78,7 +78,6 @@ public class CronJobStatus implements Editable<CronJobStatusBuilder>, Kubernetes
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public CronJobStatus() {
     }

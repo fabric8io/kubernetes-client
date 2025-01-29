@@ -76,7 +76,6 @@ public class EtcdBackupStatus implements Editable<EtcdBackupStatusBuilder>, Kube
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public EtcdBackupStatus() {
     }

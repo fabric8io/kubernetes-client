@@ -72,7 +72,6 @@ public class ACMEChallengeSolverHTTP01 implements Editable<ACMEChallengeSolverHT
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ACMEChallengeSolverHTTP01() {
     }

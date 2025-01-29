@@ -69,7 +69,6 @@ public class ManageDNSGCPConfig implements Editable<ManageDNSGCPConfigBuilder>, 
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ManageDNSGCPConfig() {
     }

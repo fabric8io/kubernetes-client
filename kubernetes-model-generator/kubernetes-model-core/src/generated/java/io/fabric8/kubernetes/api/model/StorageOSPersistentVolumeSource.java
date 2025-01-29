@@ -52,7 +52,6 @@ public class StorageOSPersistentVolumeSource implements Editable<StorageOSPersis
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public StorageOSPersistentVolumeSource() {
     }

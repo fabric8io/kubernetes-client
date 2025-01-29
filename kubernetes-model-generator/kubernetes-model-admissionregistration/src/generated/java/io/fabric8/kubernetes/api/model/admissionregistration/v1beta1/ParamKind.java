@@ -72,7 +72,6 @@ public class ParamKind implements Editable<ParamKindBuilder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ParamKind() {
     }

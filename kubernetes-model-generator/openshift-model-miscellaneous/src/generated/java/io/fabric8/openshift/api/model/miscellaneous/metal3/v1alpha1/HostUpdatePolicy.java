@@ -77,16 +77,12 @@ public class HostUpdatePolicy implements Editable<HostUpdatePolicyBuilder>, HasM
 {
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "metal3.io/v1alpha1";
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "HostUpdatePolicy";
@@ -101,7 +97,6 @@ public class HostUpdatePolicy implements Editable<HostUpdatePolicyBuilder>, HasM
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public HostUpdatePolicy() {
     }
@@ -116,9 +111,7 @@ public class HostUpdatePolicy implements Editable<HostUpdatePolicyBuilder>, HasM
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -126,9 +119,7 @@ public class HostUpdatePolicy implements Editable<HostUpdatePolicyBuilder>, HasM
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -136,9 +127,7 @@ public class HostUpdatePolicy implements Editable<HostUpdatePolicyBuilder>, HasM
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -146,9 +135,7 @@ public class HostUpdatePolicy implements Editable<HostUpdatePolicyBuilder>, HasM
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

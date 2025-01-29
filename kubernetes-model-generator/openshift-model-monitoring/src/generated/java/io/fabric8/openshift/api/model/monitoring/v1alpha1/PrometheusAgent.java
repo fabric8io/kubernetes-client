@@ -78,16 +78,12 @@ public class PrometheusAgent implements Editable<PrometheusAgentBuilder>, HasMet
 {
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "monitoring.coreos.com/v1alpha1";
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "PrometheusAgent";
@@ -102,7 +98,6 @@ public class PrometheusAgent implements Editable<PrometheusAgentBuilder>, HasMet
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public PrometheusAgent() {
     }
@@ -117,9 +112,7 @@ public class PrometheusAgent implements Editable<PrometheusAgentBuilder>, HasMet
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -127,9 +120,7 @@ public class PrometheusAgent implements Editable<PrometheusAgentBuilder>, HasMet
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -137,9 +128,7 @@ public class PrometheusAgent implements Editable<PrometheusAgentBuilder>, HasMet
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -147,9 +136,7 @@ public class PrometheusAgent implements Editable<PrometheusAgentBuilder>, HasMet
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

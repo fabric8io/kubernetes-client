@@ -90,7 +90,6 @@ public class ResolutionRequestStatus implements Editable<ResolutionRequestStatus
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ResolutionRequestStatus() {
     }

@@ -72,7 +72,6 @@ public class NetworkFilter implements Editable<NetworkFilterBuilder>, Kubernetes
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public NetworkFilter() {
     }

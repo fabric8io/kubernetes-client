@@ -91,7 +91,6 @@ public class NamedRuleWithOperations implements Editable<NamedRuleWithOperations
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public NamedRuleWithOperations() {
     }

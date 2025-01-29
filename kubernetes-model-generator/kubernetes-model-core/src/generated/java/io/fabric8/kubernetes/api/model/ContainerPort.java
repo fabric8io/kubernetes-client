@@ -52,7 +52,6 @@ public class ContainerPort implements Editable<ContainerPortBuilder>, Kubernetes
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ContainerPort() {
     }

@@ -84,7 +84,6 @@ public class PodGroupSpec implements Editable<PodGroupSpecBuilder>, KubernetesRe
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public PodGroupSpec() {
     }

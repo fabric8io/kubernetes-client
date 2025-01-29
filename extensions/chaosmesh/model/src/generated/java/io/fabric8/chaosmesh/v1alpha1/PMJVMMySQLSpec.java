@@ -90,7 +90,6 @@ public class PMJVMMySQLSpec implements Editable<PMJVMMySQLSpecBuilder>, Kubernet
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public PMJVMMySQLSpec() {
     }

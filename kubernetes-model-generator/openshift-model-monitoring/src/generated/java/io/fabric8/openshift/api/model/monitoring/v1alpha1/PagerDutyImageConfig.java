@@ -75,7 +75,6 @@ public class PagerDutyImageConfig implements Editable<PagerDutyImageConfigBuilde
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public PagerDutyImageConfig() {
     }

@@ -84,7 +84,6 @@ public class OIDCClientConfig implements Editable<OIDCClientConfigBuilder>, Kube
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public OIDCClientConfig() {
     }

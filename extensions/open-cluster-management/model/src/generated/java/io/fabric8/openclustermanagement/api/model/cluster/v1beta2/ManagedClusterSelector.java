@@ -72,7 +72,6 @@ public class ManagedClusterSelector implements Editable<ManagedClusterSelectorBu
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ManagedClusterSelector() {
     }

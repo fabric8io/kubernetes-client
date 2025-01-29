@@ -75,7 +75,6 @@ public class Mutation implements Editable<MutationBuilder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public Mutation() {
     }

@@ -75,7 +75,6 @@ public class ImageRegistryConfigRequestsLimits implements Editable<ImageRegistry
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ImageRegistryConfigRequestsLimits() {
     }

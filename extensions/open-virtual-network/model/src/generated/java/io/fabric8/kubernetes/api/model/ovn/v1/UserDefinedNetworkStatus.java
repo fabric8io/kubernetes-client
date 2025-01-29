@@ -73,7 +73,6 @@ public class UserDefinedNetworkStatus implements Editable<UserDefinedNetworkStat
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public UserDefinedNetworkStatus() {
     }

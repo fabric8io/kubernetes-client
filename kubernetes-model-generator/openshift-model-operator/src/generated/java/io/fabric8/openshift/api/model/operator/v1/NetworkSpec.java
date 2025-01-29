@@ -124,7 +124,6 @@ public class NetworkSpec implements Editable<NetworkSpecBuilder>, KubernetesReso
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public NetworkSpec() {
     }

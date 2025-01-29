@@ -69,7 +69,6 @@ public class HTTPBodyString implements IsHTTPBodySpecifier, Editable<HTTPBodyStr
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public HTTPBodyString() {
     }

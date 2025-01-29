@@ -72,7 +72,6 @@ public class TagImageHook implements Editable<TagImageHookBuilder>, KubernetesRe
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public TagImageHook() {
     }

@@ -91,7 +91,6 @@ public class EventListenerSpec implements Editable<EventListenerSpecBuilder>, Ku
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public EventListenerSpec() {
     }

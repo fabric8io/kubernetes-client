@@ -83,7 +83,6 @@ public class DNSNameResolverResolvedName implements Editable<DNSNameResolverReso
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public DNSNameResolverResolvedName() {
     }

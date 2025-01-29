@@ -68,7 +68,6 @@ public class PersistentVolumeClaimStatus implements Editable<PersistentVolumeCla
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public PersistentVolumeClaimStatus() {
     }

@@ -51,7 +51,6 @@ public class ResourceRequirements implements Editable<ResourceRequirementsBuilde
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ResourceRequirements() {
     }

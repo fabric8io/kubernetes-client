@@ -81,16 +81,12 @@ public class ClusterRole implements Editable<ClusterRoleBuilder>, HasMetadata
     @JsonProperty("aggregationRule")
     private AggregationRule aggregationRule;
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "authorization.openshift.io/v1";
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "ClusterRole";
@@ -104,7 +100,6 @@ public class ClusterRole implements Editable<ClusterRoleBuilder>, HasMetadata
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ClusterRole() {
     }
@@ -129,9 +124,7 @@ public class ClusterRole implements Editable<ClusterRoleBuilder>, HasMetadata
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -139,9 +132,7 @@ public class ClusterRole implements Editable<ClusterRoleBuilder>, HasMetadata
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -149,9 +140,7 @@ public class ClusterRole implements Editable<ClusterRoleBuilder>, HasMetadata
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -159,9 +148,7 @@ public class ClusterRole implements Editable<ClusterRoleBuilder>, HasMetadata
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

@@ -151,7 +151,6 @@ public class PodSecurityPolicySpec implements Editable<PodSecurityPolicySpecBuil
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public PodSecurityPolicySpec() {
     }

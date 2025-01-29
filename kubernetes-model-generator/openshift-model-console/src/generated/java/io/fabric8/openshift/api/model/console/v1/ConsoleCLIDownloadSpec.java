@@ -78,7 +78,6 @@ public class ConsoleCLIDownloadSpec implements Editable<ConsoleCLIDownloadSpecBu
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ConsoleCLIDownloadSpec() {
     }

@@ -75,7 +75,6 @@ public class ReplicatedDetailsPerTemplate implements Editable<ReplicatedDetailsP
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ReplicatedDetailsPerTemplate() {
     }

@@ -43,7 +43,6 @@ public class VolumeDevice implements Editable<VolumeDeviceBuilder>, KubernetesRe
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public VolumeDevice() {
     }

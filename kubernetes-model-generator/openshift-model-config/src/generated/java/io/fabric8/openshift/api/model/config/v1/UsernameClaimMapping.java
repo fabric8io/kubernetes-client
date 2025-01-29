@@ -75,7 +75,6 @@ public class UsernameClaimMapping implements Editable<UsernameClaimMappingBuilde
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public UsernameClaimMapping() {
     }

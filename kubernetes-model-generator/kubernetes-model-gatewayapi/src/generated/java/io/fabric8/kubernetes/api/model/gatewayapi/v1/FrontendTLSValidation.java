@@ -72,7 +72,6 @@ public class FrontendTLSValidation implements Editable<FrontendTLSValidationBuil
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public FrontendTLSValidation() {
     }

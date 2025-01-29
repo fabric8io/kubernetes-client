@@ -75,7 +75,6 @@ public class CertificateBundleSpec implements Editable<CertificateBundleSpecBuil
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public CertificateBundleSpec() {
     }

@@ -75,7 +75,6 @@ public class ScheduleStatus implements Editable<ScheduleStatusBuilder>, Kubernet
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ScheduleStatus() {
     }

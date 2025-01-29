@@ -87,7 +87,6 @@ public class DeviceRequest implements Editable<DeviceRequestBuilder>, Kubernetes
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public DeviceRequest() {
     }

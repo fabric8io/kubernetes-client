@@ -69,7 +69,6 @@ public class AccessLoggingLogSelector implements Editable<AccessLoggingLogSelect
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public AccessLoggingLogSelector() {
     }

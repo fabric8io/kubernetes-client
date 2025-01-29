@@ -105,7 +105,6 @@ public class ServiceSpec implements Editable<ServiceSpecBuilder>, KubernetesReso
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ServiceSpec() {
     }

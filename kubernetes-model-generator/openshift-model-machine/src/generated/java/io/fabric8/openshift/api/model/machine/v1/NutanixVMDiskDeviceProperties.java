@@ -75,7 +75,6 @@ public class NutanixVMDiskDeviceProperties implements Editable<NutanixVMDiskDevi
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public NutanixVMDiskDeviceProperties() {
     }

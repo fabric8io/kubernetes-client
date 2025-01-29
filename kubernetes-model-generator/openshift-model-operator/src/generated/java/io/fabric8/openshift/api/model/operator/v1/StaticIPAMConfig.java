@@ -79,7 +79,6 @@ public class StaticIPAMConfig implements Editable<StaticIPAMConfigBuilder>, Kube
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public StaticIPAMConfig() {
     }

@@ -84,7 +84,6 @@ public class BuildTriggerPolicy implements Editable<BuildTriggerPolicyBuilder>, 
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public BuildTriggerPolicy() {
     }

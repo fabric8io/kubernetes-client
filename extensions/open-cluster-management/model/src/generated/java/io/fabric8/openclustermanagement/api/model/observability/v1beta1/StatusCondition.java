@@ -81,7 +81,6 @@ public class StatusCondition implements Editable<StatusConditionBuilder>, Kubern
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public StatusCondition() {
     }

@@ -79,9 +79,7 @@ public class RemoteClusterList implements Editable<RemoteClusterListBuilder>, Ku
 {
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "chaos-mesh.org/v1alpha1";
@@ -89,9 +87,7 @@ public class RemoteClusterList implements Editable<RemoteClusterListBuilder>, Ku
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<io.fabric8.chaosmesh.v1alpha1.RemoteCluster> items = new ArrayList<>();
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "RemoteClusterList";
@@ -102,7 +98,6 @@ public class RemoteClusterList implements Editable<RemoteClusterListBuilder>, Ku
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public RemoteClusterList() {
     }
@@ -116,9 +111,7 @@ public class RemoteClusterList implements Editable<RemoteClusterListBuilder>, Ku
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -126,9 +119,7 @@ public class RemoteClusterList implements Editable<RemoteClusterListBuilder>, Ku
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -147,9 +138,7 @@ public class RemoteClusterList implements Editable<RemoteClusterListBuilder>, Ku
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -157,9 +146,7 @@ public class RemoteClusterList implements Editable<RemoteClusterListBuilder>, Ku
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

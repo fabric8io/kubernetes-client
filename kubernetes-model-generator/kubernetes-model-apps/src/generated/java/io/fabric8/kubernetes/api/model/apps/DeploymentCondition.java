@@ -84,7 +84,6 @@ public class DeploymentCondition implements Editable<DeploymentConditionBuilder>
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public DeploymentCondition() {
     }

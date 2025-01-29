@@ -69,7 +69,6 @@ public class GenericClusterReference implements Editable<GenericClusterReference
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public GenericClusterReference() {
     }

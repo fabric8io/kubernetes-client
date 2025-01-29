@@ -75,7 +75,6 @@ public class JVMRuleDataSpec implements Editable<JVMRuleDataSpecBuilder>, Kubern
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public JVMRuleDataSpec() {
     }

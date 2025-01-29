@@ -86,7 +86,6 @@ public class RunStatusFields implements Editable<RunStatusFieldsBuilder>, Kubern
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public RunStatusFields() {
     }

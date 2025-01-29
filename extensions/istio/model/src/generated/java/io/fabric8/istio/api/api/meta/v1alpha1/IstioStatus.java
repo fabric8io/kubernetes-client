@@ -80,7 +80,6 @@ public class IstioStatus implements Editable<IstioStatusBuilder>, KubernetesReso
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public IstioStatus() {
     }

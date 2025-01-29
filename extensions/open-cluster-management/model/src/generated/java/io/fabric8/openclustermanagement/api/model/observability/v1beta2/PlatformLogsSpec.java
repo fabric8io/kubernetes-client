@@ -69,7 +69,6 @@ public class PlatformLogsSpec implements Editable<PlatformLogsSpecBuilder>, Kube
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public PlatformLogsSpec() {
     }

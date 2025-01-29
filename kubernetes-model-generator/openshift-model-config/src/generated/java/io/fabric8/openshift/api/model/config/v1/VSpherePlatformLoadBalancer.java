@@ -69,7 +69,6 @@ public class VSpherePlatformLoadBalancer implements Editable<VSpherePlatformLoad
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public VSpherePlatformLoadBalancer() {
     }

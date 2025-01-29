@@ -74,7 +74,6 @@ public class WorkloadGroupObjectMeta implements Editable<WorkloadGroupObjectMeta
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public WorkloadGroupObjectMeta() {
     }

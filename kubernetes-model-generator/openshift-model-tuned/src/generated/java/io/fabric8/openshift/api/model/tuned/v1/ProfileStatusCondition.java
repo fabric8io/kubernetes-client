@@ -81,7 +81,6 @@ public class ProfileStatusCondition implements Editable<ProfileStatusConditionBu
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ProfileStatusCondition() {
     }

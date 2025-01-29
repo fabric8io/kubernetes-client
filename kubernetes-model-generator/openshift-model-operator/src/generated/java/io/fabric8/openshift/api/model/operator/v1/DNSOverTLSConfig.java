@@ -73,7 +73,6 @@ public class DNSOverTLSConfig implements Editable<DNSOverTLSConfigBuilder>, Kube
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public DNSOverTLSConfig() {
     }

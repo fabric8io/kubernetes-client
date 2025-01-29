@@ -78,7 +78,6 @@ public class PodIOChaosStatus implements Editable<PodIOChaosStatusBuilder>, Kube
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public PodIOChaosStatus() {
     }

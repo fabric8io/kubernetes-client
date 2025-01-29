@@ -72,7 +72,6 @@ public class Metal3MachineTemplateSpec implements Editable<Metal3MachineTemplate
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public Metal3MachineTemplateSpec() {
     }

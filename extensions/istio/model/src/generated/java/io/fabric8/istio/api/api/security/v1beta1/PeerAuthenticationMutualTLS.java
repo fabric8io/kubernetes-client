@@ -69,7 +69,6 @@ public class PeerAuthenticationMutualTLS implements Editable<PeerAuthenticationM
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public PeerAuthenticationMutualTLS() {
     }

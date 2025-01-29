@@ -83,9 +83,7 @@ public class AzureProviderSpec implements Editable<AzureProviderSpecBuilder>, Ku
 {
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "cloudcredential.openshift.io/v1";
@@ -101,9 +99,7 @@ public class AzureProviderSpec implements Editable<AzureProviderSpecBuilder>, Ku
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> dataPermissions = new ArrayList<>();
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "AzureProviderSpec";
@@ -118,7 +114,6 @@ public class AzureProviderSpec implements Editable<AzureProviderSpecBuilder>, Ku
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public AzureProviderSpec() {
     }
@@ -137,9 +132,7 @@ public class AzureProviderSpec implements Editable<AzureProviderSpecBuilder>, Ku
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -147,9 +140,7 @@ public class AzureProviderSpec implements Editable<AzureProviderSpecBuilder>, Ku
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -208,9 +199,7 @@ public class AzureProviderSpec implements Editable<AzureProviderSpecBuilder>, Ku
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -218,9 +207,7 @@ public class AzureProviderSpec implements Editable<AzureProviderSpecBuilder>, Ku
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

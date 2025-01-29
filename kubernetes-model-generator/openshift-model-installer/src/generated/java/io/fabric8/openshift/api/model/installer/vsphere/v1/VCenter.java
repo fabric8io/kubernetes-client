@@ -84,7 +84,6 @@ public class VCenter implements Editable<VCenterBuilder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public VCenter() {
     }

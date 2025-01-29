@@ -69,7 +69,6 @@ public class ImageSecretObjectReference implements Editable<ImageSecretObjectRef
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ImageSecretObjectReference() {
     }

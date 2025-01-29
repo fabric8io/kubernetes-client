@@ -75,7 +75,6 @@ public class DockerStrategyOptions implements Editable<DockerStrategyOptionsBuil
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public DockerStrategyOptions() {
     }

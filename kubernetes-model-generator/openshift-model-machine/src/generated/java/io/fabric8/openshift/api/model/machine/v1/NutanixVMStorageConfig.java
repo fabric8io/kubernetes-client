@@ -72,7 +72,6 @@ public class NutanixVMStorageConfig implements Editable<NutanixVMStorageConfigBu
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public NutanixVMStorageConfig() {
     }

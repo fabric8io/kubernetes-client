@@ -75,7 +75,6 @@ public class OTLPConfig implements Editable<OTLPConfigBuilder>, KubernetesResour
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public OTLPConfig() {
     }

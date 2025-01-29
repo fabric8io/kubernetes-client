@@ -93,7 +93,6 @@ public class EnvoyFilter implements Editable<EnvoyFilterBuilder>, KubernetesReso
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public EnvoyFilter() {
     }

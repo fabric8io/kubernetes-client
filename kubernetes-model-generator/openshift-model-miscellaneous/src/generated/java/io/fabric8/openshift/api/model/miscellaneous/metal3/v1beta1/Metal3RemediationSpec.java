@@ -69,7 +69,6 @@ public class Metal3RemediationSpec implements Editable<Metal3RemediationSpecBuil
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public Metal3RemediationSpec() {
     }

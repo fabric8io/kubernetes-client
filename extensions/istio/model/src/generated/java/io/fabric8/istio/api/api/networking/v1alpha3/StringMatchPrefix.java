@@ -69,7 +69,6 @@ public class StringMatchPrefix implements IsStringMatchMatchType, Editable<Strin
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public StringMatchPrefix() {
     }

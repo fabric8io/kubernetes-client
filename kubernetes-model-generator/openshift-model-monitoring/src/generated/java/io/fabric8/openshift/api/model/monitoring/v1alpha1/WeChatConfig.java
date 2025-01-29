@@ -100,7 +100,6 @@ public class WeChatConfig implements Editable<WeChatConfigBuilder>, KubernetesRe
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public WeChatConfig() {
     }

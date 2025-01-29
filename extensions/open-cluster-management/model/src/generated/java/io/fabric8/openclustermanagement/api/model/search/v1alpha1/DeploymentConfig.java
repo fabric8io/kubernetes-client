@@ -85,7 +85,6 @@ public class DeploymentConfig implements Editable<DeploymentConfigBuilder>, Kube
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public DeploymentConfig() {
     }

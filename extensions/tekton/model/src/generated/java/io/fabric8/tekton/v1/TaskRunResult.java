@@ -75,7 +75,6 @@ public class TaskRunResult implements Editable<TaskRunResultBuilder>, Kubernetes
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public TaskRunResult() {
     }

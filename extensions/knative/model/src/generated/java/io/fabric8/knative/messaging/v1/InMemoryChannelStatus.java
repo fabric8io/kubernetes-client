@@ -107,7 +107,6 @@ public class InMemoryChannelStatus implements Editable<InMemoryChannelStatusBuil
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public InMemoryChannelStatus() {
     }

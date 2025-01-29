@@ -78,7 +78,6 @@ public class NetworkDataRoutev6 implements Editable<NetworkDataRoutev6Builder>, 
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public NetworkDataRoutev6() {
     }

@@ -78,7 +78,6 @@ public class ProjectHelmChartRepositorySpec implements Editable<ProjectHelmChart
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ProjectHelmChartRepositorySpec() {
     }

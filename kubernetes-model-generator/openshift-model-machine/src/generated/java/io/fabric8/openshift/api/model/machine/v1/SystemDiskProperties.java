@@ -78,7 +78,6 @@ public class SystemDiskProperties implements Editable<SystemDiskPropertiesBuilde
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public SystemDiskProperties() {
     }

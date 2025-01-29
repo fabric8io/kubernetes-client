@@ -78,7 +78,6 @@ public class TagEvent implements Editable<TagEventBuilder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public TagEvent() {
     }

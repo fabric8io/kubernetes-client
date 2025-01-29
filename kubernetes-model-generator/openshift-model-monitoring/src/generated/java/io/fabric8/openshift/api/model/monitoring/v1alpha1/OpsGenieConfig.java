@@ -116,7 +116,6 @@ public class OpsGenieConfig implements Editable<OpsGenieConfigBuilder>, Kubernet
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public OpsGenieConfig() {
     }

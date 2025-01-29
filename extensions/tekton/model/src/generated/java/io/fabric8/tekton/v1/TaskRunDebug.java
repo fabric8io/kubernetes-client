@@ -69,7 +69,6 @@ public class TaskRunDebug implements Editable<TaskRunDebugBuilder>, KubernetesRe
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public TaskRunDebug() {
     }

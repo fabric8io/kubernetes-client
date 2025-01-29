@@ -72,7 +72,6 @@ public class SuccessPolicy implements Editable<SuccessPolicyBuilder>, Kubernetes
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public SuccessPolicy() {
     }

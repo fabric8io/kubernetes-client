@@ -100,7 +100,6 @@ public class ClusterServiceVersionStatus implements Editable<ClusterServiceVersi
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ClusterServiceVersionStatus() {
     }

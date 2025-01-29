@@ -78,7 +78,6 @@ public class Matcher implements Editable<MatcherBuilder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public Matcher() {
     }

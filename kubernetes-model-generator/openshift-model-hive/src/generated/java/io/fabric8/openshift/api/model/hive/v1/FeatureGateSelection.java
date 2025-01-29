@@ -72,7 +72,6 @@ public class FeatureGateSelection implements Editable<FeatureGateSelectionBuilde
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public FeatureGateSelection() {
     }

@@ -69,7 +69,6 @@ public class EnvoyFilterListenerMatchSubFilterMatch implements Editable<EnvoyFil
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public EnvoyFilterListenerMatchSubFilterMatch() {
     }

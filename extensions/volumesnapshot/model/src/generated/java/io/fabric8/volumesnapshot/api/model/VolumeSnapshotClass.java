@@ -77,9 +77,7 @@ public class VolumeSnapshotClass implements Editable<VolumeSnapshotClassBuilder>
 {
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "snapshot.storage.k8s.io/v1";
@@ -88,9 +86,7 @@ public class VolumeSnapshotClass implements Editable<VolumeSnapshotClassBuilder>
     @JsonProperty("driver")
     private String driver;
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "VolumeSnapshotClass";
@@ -104,7 +100,6 @@ public class VolumeSnapshotClass implements Editable<VolumeSnapshotClassBuilder>
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public VolumeSnapshotClass() {
     }
@@ -120,9 +115,7 @@ public class VolumeSnapshotClass implements Editable<VolumeSnapshotClassBuilder>
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -130,9 +123,7 @@ public class VolumeSnapshotClass implements Editable<VolumeSnapshotClassBuilder>
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -160,9 +151,7 @@ public class VolumeSnapshotClass implements Editable<VolumeSnapshotClassBuilder>
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -170,9 +159,7 @@ public class VolumeSnapshotClass implements Editable<VolumeSnapshotClassBuilder>
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

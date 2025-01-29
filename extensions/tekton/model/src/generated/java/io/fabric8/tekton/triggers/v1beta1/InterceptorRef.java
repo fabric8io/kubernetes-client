@@ -75,7 +75,6 @@ public class InterceptorRef implements Editable<InterceptorRefBuilder>, Kubernet
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public InterceptorRef() {
     }

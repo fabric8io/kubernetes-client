@@ -72,7 +72,6 @@ public class DNSCache implements Editable<DNSCacheBuilder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public DNSCache() {
     }

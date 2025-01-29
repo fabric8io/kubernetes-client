@@ -98,7 +98,6 @@ public class EtcdSpec implements Editable<EtcdSpecBuilder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public EtcdSpec() {
     }

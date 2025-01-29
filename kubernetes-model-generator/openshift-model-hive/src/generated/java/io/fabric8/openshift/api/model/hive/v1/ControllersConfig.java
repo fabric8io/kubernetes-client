@@ -75,7 +75,6 @@ public class ControllersConfig implements Editable<ControllersConfigBuilder>, Ku
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ControllersConfig() {
     }

@@ -72,7 +72,6 @@ public class HTTPHeader implements Editable<HTTPHeaderBuilder>, KubernetesResour
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public HTTPHeader() {
     }

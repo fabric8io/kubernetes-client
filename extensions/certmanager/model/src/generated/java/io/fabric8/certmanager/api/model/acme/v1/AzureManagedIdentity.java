@@ -72,7 +72,6 @@ public class AzureManagedIdentity implements Editable<AzureManagedIdentityBuilde
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public AzureManagedIdentity() {
     }

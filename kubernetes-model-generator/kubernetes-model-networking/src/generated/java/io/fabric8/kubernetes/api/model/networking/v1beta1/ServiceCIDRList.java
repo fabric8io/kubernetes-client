@@ -79,9 +79,7 @@ public class ServiceCIDRList implements Editable<ServiceCIDRListBuilder>, Kubern
 {
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "networking.k8s.io/v1beta1";
@@ -89,9 +87,7 @@ public class ServiceCIDRList implements Editable<ServiceCIDRListBuilder>, Kubern
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<io.fabric8.kubernetes.api.model.networking.v1beta1.ServiceCIDR> items = new ArrayList<>();
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "ServiceCIDRList";
@@ -102,7 +98,6 @@ public class ServiceCIDRList implements Editable<ServiceCIDRListBuilder>, Kubern
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ServiceCIDRList() {
     }
@@ -116,9 +111,7 @@ public class ServiceCIDRList implements Editable<ServiceCIDRListBuilder>, Kubern
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -126,9 +119,7 @@ public class ServiceCIDRList implements Editable<ServiceCIDRListBuilder>, Kubern
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -147,9 +138,7 @@ public class ServiceCIDRList implements Editable<ServiceCIDRListBuilder>, Kubern
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -157,9 +146,7 @@ public class ServiceCIDRList implements Editable<ServiceCIDRListBuilder>, Kubern
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

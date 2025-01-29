@@ -75,7 +75,6 @@ public class WorkflowSpec implements Editable<WorkflowSpecBuilder>, KubernetesRe
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public WorkflowSpec() {
     }

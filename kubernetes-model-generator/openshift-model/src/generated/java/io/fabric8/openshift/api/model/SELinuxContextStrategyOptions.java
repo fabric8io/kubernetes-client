@@ -73,7 +73,6 @@ public class SELinuxContextStrategyOptions implements Editable<SELinuxContextStr
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public SELinuxContextStrategyOptions() {
     }

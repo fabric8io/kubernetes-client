@@ -95,7 +95,6 @@ public class CertificateSigningRequestSpec implements Editable<CertificateSignin
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public CertificateSigningRequestSpec() {
     }

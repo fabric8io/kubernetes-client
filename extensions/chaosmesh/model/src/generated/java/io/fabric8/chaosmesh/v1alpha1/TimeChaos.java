@@ -77,16 +77,12 @@ public class TimeChaos implements Editable<TimeChaosBuilder>, HasMetadata, Names
 {
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "chaos-mesh.org/v1alpha1";
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "TimeChaos";
@@ -101,7 +97,6 @@ public class TimeChaos implements Editable<TimeChaosBuilder>, HasMetadata, Names
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public TimeChaos() {
     }
@@ -116,9 +111,7 @@ public class TimeChaos implements Editable<TimeChaosBuilder>, HasMetadata, Names
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -126,9 +119,7 @@ public class TimeChaos implements Editable<TimeChaosBuilder>, HasMetadata, Names
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -136,9 +127,7 @@ public class TimeChaos implements Editable<TimeChaosBuilder>, HasMetadata, Names
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -146,9 +135,7 @@ public class TimeChaos implements Editable<TimeChaosBuilder>, HasMetadata, Names
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

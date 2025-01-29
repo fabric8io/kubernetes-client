@@ -75,7 +75,6 @@ public class ReferenceGrantFrom implements Editable<ReferenceGrantFromBuilder>, 
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ReferenceGrantFrom() {
     }

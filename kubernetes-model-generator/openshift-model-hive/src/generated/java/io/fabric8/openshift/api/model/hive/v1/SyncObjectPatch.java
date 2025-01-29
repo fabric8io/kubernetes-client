@@ -84,7 +84,6 @@ public class SyncObjectPatch implements Editable<SyncObjectPatchBuilder>, Kubern
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public SyncObjectPatch() {
     }

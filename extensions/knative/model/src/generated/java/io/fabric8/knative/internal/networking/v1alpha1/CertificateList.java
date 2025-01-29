@@ -79,9 +79,7 @@ public class CertificateList implements Editable<CertificateListBuilder>, Kubern
 {
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "networking.internal.knative.dev/v1alpha1";
@@ -89,9 +87,7 @@ public class CertificateList implements Editable<CertificateListBuilder>, Kubern
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<io.fabric8.knative.internal.networking.v1alpha1.Certificate> items = new ArrayList<>();
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "CertificateList";
@@ -102,7 +98,6 @@ public class CertificateList implements Editable<CertificateListBuilder>, Kubern
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public CertificateList() {
     }
@@ -116,9 +111,7 @@ public class CertificateList implements Editable<CertificateListBuilder>, Kubern
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -126,9 +119,7 @@ public class CertificateList implements Editable<CertificateListBuilder>, Kubern
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -147,9 +138,7 @@ public class CertificateList implements Editable<CertificateListBuilder>, Kubern
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -157,9 +146,7 @@ public class CertificateList implements Editable<CertificateListBuilder>, Kubern
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

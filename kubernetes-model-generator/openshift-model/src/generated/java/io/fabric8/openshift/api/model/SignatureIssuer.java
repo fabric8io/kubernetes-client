@@ -72,7 +72,6 @@ public class SignatureIssuer implements Editable<SignatureIssuerBuilder>, Kubern
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public SignatureIssuer() {
     }

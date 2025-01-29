@@ -91,7 +91,6 @@ public class VaultIssuer implements Editable<VaultIssuerBuilder>, KubernetesReso
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public VaultIssuer() {
     }

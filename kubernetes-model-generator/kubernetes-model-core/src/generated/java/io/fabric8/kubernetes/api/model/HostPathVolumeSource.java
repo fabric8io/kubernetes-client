@@ -43,7 +43,6 @@ public class HostPathVolumeSource implements Editable<HostPathVolumeSourceBuilde
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public HostPathVolumeSource() {
     }

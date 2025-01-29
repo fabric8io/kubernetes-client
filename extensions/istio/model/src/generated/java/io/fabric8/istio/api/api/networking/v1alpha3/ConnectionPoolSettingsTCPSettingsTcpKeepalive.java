@@ -75,7 +75,6 @@ public class ConnectionPoolSettingsTCPSettingsTcpKeepalive implements Editable<C
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ConnectionPoolSettingsTCPSettingsTcpKeepalive() {
     }

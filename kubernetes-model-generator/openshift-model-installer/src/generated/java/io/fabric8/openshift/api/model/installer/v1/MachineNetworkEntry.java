@@ -69,7 +69,6 @@ public class MachineNetworkEntry implements Editable<MachineNetworkEntryBuilder>
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public MachineNetworkEntry() {
     }

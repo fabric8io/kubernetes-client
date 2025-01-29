@@ -83,7 +83,6 @@ public class AwsSqsSourceSpec implements Editable<AwsSqsSourceSpecBuilder>, Kube
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public AwsSqsSourceSpec() {
     }

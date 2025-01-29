@@ -75,7 +75,6 @@ public class RulesAlert implements Editable<RulesAlertBuilder>, KubernetesResour
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public RulesAlert() {
     }

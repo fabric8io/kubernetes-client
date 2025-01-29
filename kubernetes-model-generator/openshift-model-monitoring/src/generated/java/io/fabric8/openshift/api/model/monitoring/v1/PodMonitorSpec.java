@@ -132,7 +132,6 @@ public class PodMonitorSpec implements Editable<PodMonitorSpecBuilder>, Kubernet
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public PodMonitorSpec() {
     }

@@ -99,7 +99,6 @@ public class GitInfo implements Editable<GitInfoBuilder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public GitInfo() {
     }

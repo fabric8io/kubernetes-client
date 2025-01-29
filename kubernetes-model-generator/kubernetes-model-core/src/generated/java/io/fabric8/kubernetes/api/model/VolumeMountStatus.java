@@ -49,7 +49,6 @@ public class VolumeMountStatus implements Editable<VolumeMountStatusBuilder>, Ku
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public VolumeMountStatus() {
     }

@@ -82,9 +82,7 @@ public class ImageStreamTag implements Editable<ImageStreamTagBuilder>, HasMetad
 {
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "image.openshift.io/v1";
@@ -96,9 +94,7 @@ public class ImageStreamTag implements Editable<ImageStreamTagBuilder>, HasMetad
     @JsonProperty("image")
     private Image image;
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "ImageStreamTag";
@@ -113,7 +109,6 @@ public class ImageStreamTag implements Editable<ImageStreamTagBuilder>, HasMetad
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ImageStreamTag() {
     }
@@ -131,9 +126,7 @@ public class ImageStreamTag implements Editable<ImageStreamTagBuilder>, HasMetad
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -141,9 +134,7 @@ public class ImageStreamTag implements Editable<ImageStreamTagBuilder>, HasMetad
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -182,9 +173,7 @@ public class ImageStreamTag implements Editable<ImageStreamTagBuilder>, HasMetad
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -192,9 +181,7 @@ public class ImageStreamTag implements Editable<ImageStreamTagBuilder>, HasMetad
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

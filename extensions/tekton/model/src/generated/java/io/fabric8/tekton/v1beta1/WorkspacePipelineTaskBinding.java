@@ -75,7 +75,6 @@ public class WorkspacePipelineTaskBinding implements Editable<WorkspacePipelineT
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public WorkspacePipelineTaskBinding() {
     }

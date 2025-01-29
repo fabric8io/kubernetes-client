@@ -72,7 +72,6 @@ public class ManagedBootImages implements Editable<ManagedBootImagesBuilder>, Ku
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ManagedBootImages() {
     }

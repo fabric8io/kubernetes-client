@@ -69,7 +69,6 @@ public class AllowedCSIDriver implements Editable<AllowedCSIDriverBuilder>, Kube
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public AllowedCSIDriver() {
     }

@@ -81,7 +81,6 @@ public class TunedMatch implements Editable<TunedMatchBuilder>, KubernetesResour
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public TunedMatch() {
     }

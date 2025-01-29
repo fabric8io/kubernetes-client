@@ -72,7 +72,6 @@ public class FileModifyPrivilegeSpec implements Editable<FileModifyPrivilegeSpec
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public FileModifyPrivilegeSpec() {
     }

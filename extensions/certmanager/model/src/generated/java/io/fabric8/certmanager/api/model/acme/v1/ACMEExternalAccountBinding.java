@@ -76,7 +76,6 @@ public class ACMEExternalAccountBinding implements Editable<ACMEExternalAccountB
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ACMEExternalAccountBinding() {
     }

@@ -73,7 +73,6 @@ public class OpaqueDeviceConfiguration implements Editable<OpaqueDeviceConfigura
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public OpaqueDeviceConfiguration() {
     }

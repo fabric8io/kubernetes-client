@@ -75,7 +75,6 @@ public class VerticalPodAutoscalerSpec implements Editable<VerticalPodAutoscaler
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public VerticalPodAutoscalerSpec() {
     }

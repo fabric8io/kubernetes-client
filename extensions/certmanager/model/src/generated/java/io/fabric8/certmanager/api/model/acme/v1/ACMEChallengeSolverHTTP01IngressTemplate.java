@@ -69,7 +69,6 @@ public class ACMEChallengeSolverHTTP01IngressTemplate implements Editable<ACMECh
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ACMEChallengeSolverHTTP01IngressTemplate() {
     }

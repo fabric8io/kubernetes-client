@@ -81,7 +81,6 @@ public class AWSSelector implements Editable<AWSSelectorBuilder>, KubernetesReso
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public AWSSelector() {
     }

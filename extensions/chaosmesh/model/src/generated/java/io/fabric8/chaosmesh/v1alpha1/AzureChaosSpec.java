@@ -93,7 +93,6 @@ public class AzureChaosSpec implements Editable<AzureChaosSpecBuilder>, Kubernet
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public AzureChaosSpec() {
     }

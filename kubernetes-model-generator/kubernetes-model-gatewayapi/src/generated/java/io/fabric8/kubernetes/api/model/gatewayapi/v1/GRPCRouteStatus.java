@@ -72,7 +72,6 @@ public class GRPCRouteStatus implements Editable<GRPCRouteStatusBuilder>, Kubern
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public GRPCRouteStatus() {
     }

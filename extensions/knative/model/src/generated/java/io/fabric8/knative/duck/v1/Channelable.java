@@ -77,16 +77,12 @@ public class Channelable implements Editable<ChannelableBuilder>, HasMetadata, N
 {
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "duck.knative.dev/v1";
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "Channelable";
@@ -101,7 +97,6 @@ public class Channelable implements Editable<ChannelableBuilder>, HasMetadata, N
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public Channelable() {
     }
@@ -116,9 +111,7 @@ public class Channelable implements Editable<ChannelableBuilder>, HasMetadata, N
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -126,9 +119,7 @@ public class Channelable implements Editable<ChannelableBuilder>, HasMetadata, N
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -136,9 +127,7 @@ public class Channelable implements Editable<ChannelableBuilder>, HasMetadata, N
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -146,9 +135,7 @@ public class Channelable implements Editable<ChannelableBuilder>, HasMetadata, N
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

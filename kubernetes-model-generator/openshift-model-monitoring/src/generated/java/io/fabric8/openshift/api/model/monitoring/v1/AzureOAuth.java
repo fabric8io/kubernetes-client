@@ -76,7 +76,6 @@ public class AzureOAuth implements Editable<AzureOAuthBuilder>, KubernetesResour
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public AzureOAuth() {
     }

@@ -85,7 +85,6 @@ public class ServiceEntryStatus implements Editable<ServiceEntryStatusBuilder>, 
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ServiceEntryStatus() {
     }

@@ -79,9 +79,7 @@ public class OrderList implements Editable<OrderListBuilder>, KubernetesResource
 {
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "acme.cert-manager.io/v1";
@@ -89,9 +87,7 @@ public class OrderList implements Editable<OrderListBuilder>, KubernetesResource
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<io.fabric8.certmanager.api.model.acme.v1.Order> items = new ArrayList<>();
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "OrderList";
@@ -102,7 +98,6 @@ public class OrderList implements Editable<OrderListBuilder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public OrderList() {
     }
@@ -116,9 +111,7 @@ public class OrderList implements Editable<OrderListBuilder>, KubernetesResource
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -126,9 +119,7 @@ public class OrderList implements Editable<OrderListBuilder>, KubernetesResource
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -147,9 +138,7 @@ public class OrderList implements Editable<OrderListBuilder>, KubernetesResource
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -157,9 +146,7 @@ public class OrderList implements Editable<OrderListBuilder>, KubernetesResource
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

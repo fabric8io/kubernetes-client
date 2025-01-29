@@ -87,7 +87,6 @@ public class KafkaSinkSpec implements Editable<KafkaSinkSpecBuilder>, Kubernetes
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public KafkaSinkSpec() {
     }

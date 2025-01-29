@@ -75,7 +75,6 @@ public class SlackField implements Editable<SlackFieldBuilder>, KubernetesResour
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public SlackField() {
     }

@@ -89,7 +89,6 @@ public class ViolationContext implements Editable<ViolationContextBuilder>, Kube
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ViolationContext() {
     }

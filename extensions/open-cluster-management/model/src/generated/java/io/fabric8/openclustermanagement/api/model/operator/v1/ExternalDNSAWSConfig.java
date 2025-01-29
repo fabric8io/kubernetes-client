@@ -69,7 +69,6 @@ public class ExternalDNSAWSConfig implements Editable<ExternalDNSAWSConfigBuilde
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ExternalDNSAWSConfig() {
     }

@@ -72,7 +72,6 @@ public class LoadBalancerReference implements Editable<LoadBalancerReferenceBuil
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public LoadBalancerReference() {
     }

@@ -81,7 +81,6 @@ public class RelatedResourceMeta implements Editable<RelatedResourceMetaBuilder>
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public RelatedResourceMeta() {
     }

@@ -77,18 +77,14 @@ public class Eviction implements Editable<EvictionBuilder>, HasMetadata, Namespa
 {
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "policy/v1beta1";
     @JsonProperty("deleteOptions")
     private DeleteOptions deleteOptions;
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "Eviction";
@@ -99,7 +95,6 @@ public class Eviction implements Editable<EvictionBuilder>, HasMetadata, Namespa
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public Eviction() {
     }
@@ -113,9 +108,7 @@ public class Eviction implements Editable<EvictionBuilder>, HasMetadata, Namespa
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -123,9 +116,7 @@ public class Eviction implements Editable<EvictionBuilder>, HasMetadata, Namespa
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -143,9 +134,7 @@ public class Eviction implements Editable<EvictionBuilder>, HasMetadata, Namespa
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -153,9 +142,7 @@ public class Eviction implements Editable<EvictionBuilder>, HasMetadata, Namespa
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

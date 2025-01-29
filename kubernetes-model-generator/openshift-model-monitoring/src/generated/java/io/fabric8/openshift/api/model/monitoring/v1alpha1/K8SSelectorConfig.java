@@ -75,7 +75,6 @@ public class K8SSelectorConfig implements Editable<K8SSelectorConfigBuilder>, Ku
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public K8SSelectorConfig() {
     }

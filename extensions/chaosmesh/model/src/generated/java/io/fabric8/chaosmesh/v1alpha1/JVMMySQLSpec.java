@@ -78,7 +78,6 @@ public class JVMMySQLSpec implements Editable<JVMMySQLSpecBuilder>, KubernetesRe
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public JVMMySQLSpec() {
     }

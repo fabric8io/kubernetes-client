@@ -72,7 +72,6 @@ public class PlacementRuleStatus implements Editable<PlacementRuleStatusBuilder>
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public PlacementRuleStatus() {
     }

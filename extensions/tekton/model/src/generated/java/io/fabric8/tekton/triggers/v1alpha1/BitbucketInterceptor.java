@@ -75,7 +75,6 @@ public class BitbucketInterceptor implements Editable<BitbucketInterceptorBuilde
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public BitbucketInterceptor() {
     }

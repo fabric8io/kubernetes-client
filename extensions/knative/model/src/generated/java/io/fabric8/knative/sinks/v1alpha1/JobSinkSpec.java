@@ -70,7 +70,6 @@ public class JobSinkSpec implements Editable<JobSinkSpecBuilder>, KubernetesReso
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public JobSinkSpec() {
     }

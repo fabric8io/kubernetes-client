@@ -84,7 +84,6 @@ public class ValidationRule implements Editable<ValidationRuleBuilder>, Kubernet
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ValidationRule() {
     }

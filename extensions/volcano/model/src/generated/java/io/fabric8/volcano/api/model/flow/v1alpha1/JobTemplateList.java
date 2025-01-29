@@ -79,9 +79,7 @@ public class JobTemplateList implements Editable<JobTemplateListBuilder>, Kubern
 {
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "flow.volcano.sh/v1alpha1";
@@ -89,9 +87,7 @@ public class JobTemplateList implements Editable<JobTemplateListBuilder>, Kubern
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<io.fabric8.volcano.api.model.flow.v1alpha1.JobTemplate> items = new ArrayList<>();
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "JobTemplateList";
@@ -102,7 +98,6 @@ public class JobTemplateList implements Editable<JobTemplateListBuilder>, Kubern
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public JobTemplateList() {
     }
@@ -116,9 +111,7 @@ public class JobTemplateList implements Editable<JobTemplateListBuilder>, Kubern
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -126,9 +119,7 @@ public class JobTemplateList implements Editable<JobTemplateListBuilder>, Kubern
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -147,9 +138,7 @@ public class JobTemplateList implements Editable<JobTemplateListBuilder>, Kubern
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -157,9 +146,7 @@ public class JobTemplateList implements Editable<JobTemplateListBuilder>, Kubern
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

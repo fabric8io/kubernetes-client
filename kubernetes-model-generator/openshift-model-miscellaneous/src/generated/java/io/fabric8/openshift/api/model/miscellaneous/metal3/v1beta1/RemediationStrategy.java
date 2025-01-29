@@ -75,7 +75,6 @@ public class RemediationStrategy implements Editable<RemediationStrategyBuilder>
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public RemediationStrategy() {
     }

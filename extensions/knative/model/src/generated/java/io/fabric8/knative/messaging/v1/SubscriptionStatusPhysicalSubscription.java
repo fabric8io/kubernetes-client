@@ -93,7 +93,6 @@ public class SubscriptionStatusPhysicalSubscription implements Editable<Subscrip
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public SubscriptionStatusPhysicalSubscription() {
     }

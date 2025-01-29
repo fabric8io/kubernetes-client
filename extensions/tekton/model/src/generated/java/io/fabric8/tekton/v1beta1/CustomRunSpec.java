@@ -98,7 +98,6 @@ public class CustomRunSpec implements Editable<CustomRunSpecBuilder>, Kubernetes
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public CustomRunSpec() {
     }

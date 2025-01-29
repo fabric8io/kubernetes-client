@@ -43,7 +43,6 @@ public class SecretEnvSource implements Editable<SecretEnvSourceBuilder>, Kubern
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public SecretEnvSource() {
     }

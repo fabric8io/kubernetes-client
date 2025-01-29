@@ -76,7 +76,6 @@ public class VaultAppRole implements Editable<VaultAppRoleBuilder>, KubernetesRe
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public VaultAppRole() {
     }

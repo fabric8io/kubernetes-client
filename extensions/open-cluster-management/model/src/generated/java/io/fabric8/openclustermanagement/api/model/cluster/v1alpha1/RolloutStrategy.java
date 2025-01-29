@@ -78,7 +78,6 @@ public class RolloutStrategy implements Editable<RolloutStrategyBuilder>, Kubern
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public RolloutStrategy() {
     }

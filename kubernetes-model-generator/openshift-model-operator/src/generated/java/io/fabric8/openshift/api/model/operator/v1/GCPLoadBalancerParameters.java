@@ -69,7 +69,6 @@ public class GCPLoadBalancerParameters implements Editable<GCPLoadBalancerParame
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public GCPLoadBalancerParameters() {
     }

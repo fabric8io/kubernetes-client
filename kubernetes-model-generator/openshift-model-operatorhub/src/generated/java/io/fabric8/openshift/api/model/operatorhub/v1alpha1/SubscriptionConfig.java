@@ -108,7 +108,6 @@ public class SubscriptionConfig implements Editable<SubscriptionConfigBuilder>, 
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public SubscriptionConfig() {
     }

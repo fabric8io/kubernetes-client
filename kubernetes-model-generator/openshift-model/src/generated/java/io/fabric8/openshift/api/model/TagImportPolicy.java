@@ -75,7 +75,6 @@ public class TagImportPolicy implements Editable<TagImportPolicyBuilder>, Kubern
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public TagImportPolicy() {
     }

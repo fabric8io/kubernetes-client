@@ -73,7 +73,6 @@ public class InterceptorParams implements Editable<InterceptorParamsBuilder>, Ku
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public InterceptorParams() {
     }

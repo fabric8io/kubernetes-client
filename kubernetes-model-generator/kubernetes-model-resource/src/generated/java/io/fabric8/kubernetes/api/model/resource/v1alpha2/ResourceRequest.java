@@ -73,7 +73,6 @@ public class ResourceRequest implements Editable<ResourceRequestBuilder>, Kubern
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ResourceRequest() {
     }

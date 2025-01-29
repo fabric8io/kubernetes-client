@@ -83,7 +83,6 @@ public class OLMSpec implements Editable<OLMSpecBuilder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public OLMSpec() {
     }

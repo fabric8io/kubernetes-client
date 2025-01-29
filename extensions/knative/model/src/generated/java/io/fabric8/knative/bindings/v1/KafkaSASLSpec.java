@@ -78,7 +78,6 @@ public class KafkaSASLSpec implements Editable<KafkaSASLSpecBuilder>, Kubernetes
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public KafkaSASLSpec() {
     }

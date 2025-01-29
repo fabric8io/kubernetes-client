@@ -93,7 +93,6 @@ public class CoreV1TopologySpreadConstraint implements Editable<CoreV1TopologySp
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public CoreV1TopologySpreadConstraint() {
     }

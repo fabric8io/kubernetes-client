@@ -79,7 +79,6 @@ public class RouteStatusFields implements Editable<RouteStatusFieldsBuilder>, Ku
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public RouteStatusFields() {
     }

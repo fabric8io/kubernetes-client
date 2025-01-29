@@ -47,16 +47,12 @@ public class Service implements Editable<ServiceBuilder>, HasMetadata, Namespace
 {
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "v1";
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "Service";
@@ -71,7 +67,6 @@ public class Service implements Editable<ServiceBuilder>, HasMetadata, Namespace
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public Service() {
     }
@@ -86,9 +81,7 @@ public class Service implements Editable<ServiceBuilder>, HasMetadata, Namespace
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -96,9 +89,7 @@ public class Service implements Editable<ServiceBuilder>, HasMetadata, Namespace
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -106,9 +97,7 @@ public class Service implements Editable<ServiceBuilder>, HasMetadata, Namespace
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -116,9 +105,7 @@ public class Service implements Editable<ServiceBuilder>, HasMetadata, Namespace
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

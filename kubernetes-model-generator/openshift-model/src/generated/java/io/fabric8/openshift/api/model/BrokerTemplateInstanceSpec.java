@@ -78,7 +78,6 @@ public class BrokerTemplateInstanceSpec implements Editable<BrokerTemplateInstan
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public BrokerTemplateInstanceSpec() {
     }

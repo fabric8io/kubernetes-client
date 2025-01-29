@@ -72,7 +72,6 @@ public class CustomerManagedKey implements Editable<CustomerManagedKeyBuilder>, 
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public CustomerManagedKey() {
     }

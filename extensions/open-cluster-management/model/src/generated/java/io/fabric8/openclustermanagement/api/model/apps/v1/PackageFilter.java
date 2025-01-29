@@ -79,7 +79,6 @@ public class PackageFilter implements Editable<PackageFilterBuilder>, Kubernetes
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public PackageFilter() {
     }

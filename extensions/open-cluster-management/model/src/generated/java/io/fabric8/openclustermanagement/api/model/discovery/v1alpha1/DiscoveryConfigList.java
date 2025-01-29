@@ -79,9 +79,7 @@ public class DiscoveryConfigList implements Editable<DiscoveryConfigListBuilder>
 {
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "discovery.open-cluster-management.io/v1alpha1";
@@ -89,9 +87,7 @@ public class DiscoveryConfigList implements Editable<DiscoveryConfigListBuilder>
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<io.fabric8.openclustermanagement.api.model.discovery.v1alpha1.DiscoveryConfig> items = new ArrayList<>();
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "DiscoveryConfigList";
@@ -102,7 +98,6 @@ public class DiscoveryConfigList implements Editable<DiscoveryConfigListBuilder>
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public DiscoveryConfigList() {
     }
@@ -116,9 +111,7 @@ public class DiscoveryConfigList implements Editable<DiscoveryConfigListBuilder>
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -126,9 +119,7 @@ public class DiscoveryConfigList implements Editable<DiscoveryConfigListBuilder>
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -147,9 +138,7 @@ public class DiscoveryConfigList implements Editable<DiscoveryConfigListBuilder>
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -157,9 +146,7 @@ public class DiscoveryConfigList implements Editable<DiscoveryConfigListBuilder>
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

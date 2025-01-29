@@ -79,9 +79,7 @@ public class WithPodList implements Editable<WithPodListBuilder>, KubernetesReso
 {
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "duck.knative.dev/v1";
@@ -89,9 +87,7 @@ public class WithPodList implements Editable<WithPodListBuilder>, KubernetesReso
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<io.fabric8.knative.duck.v1.WithPod> items = new ArrayList<>();
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "WithPodList";
@@ -102,7 +98,6 @@ public class WithPodList implements Editable<WithPodListBuilder>, KubernetesReso
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public WithPodList() {
     }
@@ -116,9 +111,7 @@ public class WithPodList implements Editable<WithPodListBuilder>, KubernetesReso
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -126,9 +119,7 @@ public class WithPodList implements Editable<WithPodListBuilder>, KubernetesReso
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -147,9 +138,7 @@ public class WithPodList implements Editable<WithPodListBuilder>, KubernetesReso
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -157,9 +146,7 @@ public class WithPodList implements Editable<WithPodListBuilder>, KubernetesReso
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

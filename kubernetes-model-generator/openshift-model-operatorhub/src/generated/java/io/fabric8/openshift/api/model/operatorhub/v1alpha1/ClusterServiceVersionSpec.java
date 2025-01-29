@@ -149,7 +149,6 @@ public class ClusterServiceVersionSpec implements Editable<ClusterServiceVersion
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ClusterServiceVersionSpec() {
     }

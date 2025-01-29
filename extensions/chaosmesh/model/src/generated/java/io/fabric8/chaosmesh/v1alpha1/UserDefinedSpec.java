@@ -72,7 +72,6 @@ public class UserDefinedSpec implements Editable<UserDefinedSpecBuilder>, Kubern
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public UserDefinedSpec() {
     }

@@ -69,7 +69,6 @@ public class Route53KubernetesAuth implements Editable<Route53KubernetesAuthBuil
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public Route53KubernetesAuth() {
     }

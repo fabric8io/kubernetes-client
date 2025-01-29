@@ -93,7 +93,6 @@ public class ConsoleSampleSpec implements Editable<ConsoleSampleSpecBuilder>, Ku
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ConsoleSampleSpec() {
     }

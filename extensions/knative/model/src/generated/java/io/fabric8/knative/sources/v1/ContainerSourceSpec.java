@@ -77,7 +77,6 @@ public class ContainerSourceSpec implements Editable<ContainerSourceSpecBuilder>
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ContainerSourceSpec() {
     }

@@ -46,7 +46,6 @@ public class TopologySelectorLabelRequirement implements Editable<TopologySelect
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public TopologySelectorLabelRequirement() {
     }

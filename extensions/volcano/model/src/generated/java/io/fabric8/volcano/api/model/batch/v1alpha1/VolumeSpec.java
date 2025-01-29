@@ -76,7 +76,6 @@ public class VolumeSpec implements Editable<VolumeSpecBuilder>, KubernetesResour
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public VolumeSpec() {
     }

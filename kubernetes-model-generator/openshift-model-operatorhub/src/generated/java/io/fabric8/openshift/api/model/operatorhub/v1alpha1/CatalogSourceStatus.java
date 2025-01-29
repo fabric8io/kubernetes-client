@@ -91,7 +91,6 @@ public class CatalogSourceStatus implements Editable<CatalogSourceStatusBuilder>
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public CatalogSourceStatus() {
     }

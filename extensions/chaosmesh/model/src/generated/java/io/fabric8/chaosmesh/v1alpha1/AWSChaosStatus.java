@@ -75,7 +75,6 @@ public class AWSChaosStatus implements Editable<AWSChaosStatusBuilder>, Kubernet
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public AWSChaosStatus() {
     }

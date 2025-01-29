@@ -94,7 +94,6 @@ public class SyncSetSpec implements Editable<SyncSetSpecBuilder>, KubernetesReso
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public SyncSetSpec() {
     }

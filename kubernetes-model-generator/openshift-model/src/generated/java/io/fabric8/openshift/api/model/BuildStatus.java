@@ -109,7 +109,6 @@ public class BuildStatus implements Editable<BuildStatusBuilder>, KubernetesReso
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public BuildStatus() {
     }

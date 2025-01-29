@@ -76,7 +76,6 @@ public class JKSKeystore implements Editable<JKSKeystoreBuilder>, KubernetesReso
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public JKSKeystore() {
     }

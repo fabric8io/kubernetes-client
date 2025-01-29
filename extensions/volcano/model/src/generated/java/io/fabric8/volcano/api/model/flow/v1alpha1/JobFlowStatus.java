@@ -103,7 +103,6 @@ public class JobFlowStatus implements Editable<JobFlowStatusBuilder>, Kubernetes
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public JobFlowStatus() {
     }

@@ -69,7 +69,6 @@ public class ConfigurationSpec implements Editable<ConfigurationSpecBuilder>, Ku
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ConfigurationSpec() {
     }

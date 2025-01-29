@@ -84,7 +84,6 @@ public class BuildOverrides implements Editable<BuildOverridesBuilder>, Kubernet
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public BuildOverrides() {
     }

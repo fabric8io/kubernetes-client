@@ -78,16 +78,12 @@ public class PeerAuthentication implements Editable<PeerAuthenticationBuilder>, 
 {
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "security.istio.io/v1beta1";
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "PeerAuthentication";
@@ -102,7 +98,6 @@ public class PeerAuthentication implements Editable<PeerAuthenticationBuilder>, 
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public PeerAuthentication() {
     }
@@ -117,9 +112,7 @@ public class PeerAuthentication implements Editable<PeerAuthenticationBuilder>, 
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -127,9 +120,7 @@ public class PeerAuthentication implements Editable<PeerAuthenticationBuilder>, 
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -137,9 +128,7 @@ public class PeerAuthentication implements Editable<PeerAuthenticationBuilder>, 
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -147,9 +136,7 @@ public class PeerAuthentication implements Editable<PeerAuthenticationBuilder>, 
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

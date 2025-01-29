@@ -124,9 +124,7 @@ public class SecurityContextConstraints implements Editable<SecurityContextConst
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> allowedUnsafeSysctls = new ArrayList<>();
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "security.openshift.io/v1";
@@ -144,9 +142,7 @@ public class SecurityContextConstraints implements Editable<SecurityContextConst
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> groups = new ArrayList<>();
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "SecurityContextConstraints";
@@ -181,7 +177,6 @@ public class SecurityContextConstraints implements Editable<SecurityContextConst
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public SecurityContextConstraints() {
     }
@@ -322,9 +317,7 @@ public class SecurityContextConstraints implements Editable<SecurityContextConst
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -332,9 +325,7 @@ public class SecurityContextConstraints implements Editable<SecurityContextConst
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -395,9 +386,7 @@ public class SecurityContextConstraints implements Editable<SecurityContextConst
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -405,9 +394,7 @@ public class SecurityContextConstraints implements Editable<SecurityContextConst
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

@@ -72,7 +72,6 @@ public class Metal3DataStatus implements Editable<Metal3DataStatusBuilder>, Kube
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public Metal3DataStatus() {
     }

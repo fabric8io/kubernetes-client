@@ -69,7 +69,6 @@ public class Rules implements Editable<RulesBuilder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public Rules() {
     }

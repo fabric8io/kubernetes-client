@@ -72,7 +72,6 @@ public class SortOptions implements Editable<SortOptionsBuilder>, KubernetesReso
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public SortOptions() {
     }

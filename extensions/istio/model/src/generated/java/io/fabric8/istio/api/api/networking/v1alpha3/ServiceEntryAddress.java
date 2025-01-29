@@ -72,7 +72,6 @@ public class ServiceEntryAddress implements Editable<ServiceEntryAddressBuilder>
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ServiceEntryAddress() {
     }

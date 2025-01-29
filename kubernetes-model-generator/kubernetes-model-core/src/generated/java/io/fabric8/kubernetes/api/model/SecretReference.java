@@ -43,7 +43,6 @@ public class SecretReference implements Editable<SecretReferenceBuilder>, Kubern
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public SecretReference() {
     }

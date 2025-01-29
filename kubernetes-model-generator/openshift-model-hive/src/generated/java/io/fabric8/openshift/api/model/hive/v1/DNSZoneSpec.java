@@ -84,7 +84,6 @@ public class DNSZoneSpec implements Editable<DNSZoneSpecBuilder>, KubernetesReso
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public DNSZoneSpec() {
     }

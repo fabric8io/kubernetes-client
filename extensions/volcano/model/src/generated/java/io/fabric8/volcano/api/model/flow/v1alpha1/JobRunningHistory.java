@@ -75,7 +75,6 @@ public class JobRunningHistory implements Editable<JobRunningHistoryBuilder>, Ku
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public JobRunningHistory() {
     }

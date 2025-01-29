@@ -102,7 +102,6 @@ public class TriggerStatus implements Editable<TriggerStatusBuilder>, Kubernetes
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public TriggerStatus() {
     }

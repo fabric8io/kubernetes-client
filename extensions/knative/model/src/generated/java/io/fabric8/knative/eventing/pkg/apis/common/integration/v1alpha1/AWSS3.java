@@ -111,7 +111,6 @@ public class AWSS3 implements Editable<AWSS3Builder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public AWSS3() {
     }

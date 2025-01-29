@@ -81,7 +81,6 @@ public class PolicyAuditConfig implements Editable<PolicyAuditConfigBuilder>, Ku
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public PolicyAuditConfig() {
     }

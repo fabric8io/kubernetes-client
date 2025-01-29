@@ -69,7 +69,6 @@ public class RoleBinding implements Editable<RoleBindingBuilder>, KubernetesReso
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public RoleBinding() {
     }

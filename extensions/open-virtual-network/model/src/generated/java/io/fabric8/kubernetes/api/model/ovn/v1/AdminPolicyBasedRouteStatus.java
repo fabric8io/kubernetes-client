@@ -78,7 +78,6 @@ public class AdminPolicyBasedRouteStatus implements Editable<AdminPolicyBasedRou
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public AdminPolicyBasedRouteStatus() {
     }

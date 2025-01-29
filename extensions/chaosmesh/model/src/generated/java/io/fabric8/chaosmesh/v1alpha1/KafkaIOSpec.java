@@ -78,7 +78,6 @@ public class KafkaIOSpec implements Editable<KafkaIOSpecBuilder>, KubernetesReso
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public KafkaIOSpec() {
     }

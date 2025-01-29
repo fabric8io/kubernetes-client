@@ -40,7 +40,6 @@ public class PodReadinessGate implements Editable<PodReadinessGateBuilder>, Kube
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public PodReadinessGate() {
     }

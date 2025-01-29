@@ -45,7 +45,6 @@ public class MachineV1Beta2Status implements Editable<MachineV1Beta2StatusBuilde
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public MachineV1Beta2Status() {
     }

@@ -48,9 +48,7 @@ public class ConfigMap implements Editable<ConfigMapBuilder>, HasMetadata, Names
 {
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "v1";
@@ -63,9 +61,7 @@ public class ConfigMap implements Editable<ConfigMapBuilder>, HasMetadata, Names
     @JsonProperty("immutable")
     private Boolean immutable;
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "ConfigMap";
@@ -76,7 +72,6 @@ public class ConfigMap implements Editable<ConfigMapBuilder>, HasMetadata, Names
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ConfigMap() {
     }
@@ -92,9 +87,7 @@ public class ConfigMap implements Editable<ConfigMapBuilder>, HasMetadata, Names
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -102,9 +95,7 @@ public class ConfigMap implements Editable<ConfigMapBuilder>, HasMetadata, Names
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -144,9 +135,7 @@ public class ConfigMap implements Editable<ConfigMapBuilder>, HasMetadata, Names
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -154,9 +143,7 @@ public class ConfigMap implements Editable<ConfigMapBuilder>, HasMetadata, Names
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

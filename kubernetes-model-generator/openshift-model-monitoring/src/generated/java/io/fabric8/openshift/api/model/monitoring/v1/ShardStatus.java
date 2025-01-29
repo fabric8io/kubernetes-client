@@ -81,7 +81,6 @@ public class ShardStatus implements Editable<ShardStatusBuilder>, KubernetesReso
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ShardStatus() {
     }

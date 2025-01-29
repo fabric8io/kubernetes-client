@@ -75,7 +75,6 @@ public class ProxyStatus implements Editable<ProxyStatusBuilder>, KubernetesReso
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ProxyStatus() {
     }

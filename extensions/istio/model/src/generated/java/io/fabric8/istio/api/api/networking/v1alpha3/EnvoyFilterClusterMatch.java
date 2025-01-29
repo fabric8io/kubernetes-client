@@ -78,7 +78,6 @@ public class EnvoyFilterClusterMatch implements Editable<EnvoyFilterClusterMatch
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public EnvoyFilterClusterMatch() {
     }

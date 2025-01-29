@@ -78,7 +78,6 @@ public class DynamicHop implements Editable<DynamicHopBuilder>, KubernetesResour
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public DynamicHop() {
     }

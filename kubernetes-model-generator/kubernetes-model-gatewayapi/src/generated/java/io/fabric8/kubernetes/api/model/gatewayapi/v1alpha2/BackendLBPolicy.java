@@ -77,16 +77,12 @@ public class BackendLBPolicy implements Editable<BackendLBPolicyBuilder>, HasMet
 {
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "gateway.networking.k8s.io/v1alpha2";
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "BackendLBPolicy";
@@ -101,7 +97,6 @@ public class BackendLBPolicy implements Editable<BackendLBPolicyBuilder>, HasMet
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public BackendLBPolicy() {
     }
@@ -116,9 +111,7 @@ public class BackendLBPolicy implements Editable<BackendLBPolicyBuilder>, HasMet
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -126,9 +119,7 @@ public class BackendLBPolicy implements Editable<BackendLBPolicyBuilder>, HasMet
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -136,9 +127,7 @@ public class BackendLBPolicy implements Editable<BackendLBPolicyBuilder>, HasMet
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -146,9 +135,7 @@ public class BackendLBPolicy implements Editable<BackendLBPolicyBuilder>, HasMet
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

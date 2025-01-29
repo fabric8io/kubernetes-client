@@ -43,7 +43,6 @@ public class ResourceHealth implements Editable<ResourceHealthBuilder>, Kubernet
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ResourceHealth() {
     }

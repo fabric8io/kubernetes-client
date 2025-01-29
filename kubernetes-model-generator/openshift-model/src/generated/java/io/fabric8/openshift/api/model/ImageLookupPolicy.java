@@ -69,7 +69,6 @@ public class ImageLookupPolicy implements Editable<ImageLookupPolicyBuilder>, Ku
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ImageLookupPolicy() {
     }

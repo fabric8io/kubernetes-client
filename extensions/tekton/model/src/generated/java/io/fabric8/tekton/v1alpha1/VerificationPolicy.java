@@ -76,16 +76,12 @@ public class VerificationPolicy implements Editable<VerificationPolicyBuilder>, 
 {
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "tekton.dev/v1alpha1";
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "VerificationPolicy";
@@ -98,7 +94,6 @@ public class VerificationPolicy implements Editable<VerificationPolicyBuilder>, 
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public VerificationPolicy() {
     }
@@ -112,9 +107,7 @@ public class VerificationPolicy implements Editable<VerificationPolicyBuilder>, 
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -122,9 +115,7 @@ public class VerificationPolicy implements Editable<VerificationPolicyBuilder>, 
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -132,9 +123,7 @@ public class VerificationPolicy implements Editable<VerificationPolicyBuilder>, 
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -142,9 +131,7 @@ public class VerificationPolicy implements Editable<VerificationPolicyBuilder>, 
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

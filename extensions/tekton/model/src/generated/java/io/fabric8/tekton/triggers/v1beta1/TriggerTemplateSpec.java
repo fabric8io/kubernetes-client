@@ -76,7 +76,6 @@ public class TriggerTemplateSpec implements Editable<TriggerTemplateSpecBuilder>
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public TriggerTemplateSpec() {
     }

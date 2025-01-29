@@ -79,7 +79,6 @@ public class GathererStatus implements Editable<GathererStatusBuilder>, Kubernet
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public GathererStatus() {
     }

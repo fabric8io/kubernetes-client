@@ -72,7 +72,6 @@ public class IngressControllerHTTPUniqueIdHeaderPolicy implements Editable<Ingre
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public IngressControllerHTTPUniqueIdHeaderPolicy() {
     }

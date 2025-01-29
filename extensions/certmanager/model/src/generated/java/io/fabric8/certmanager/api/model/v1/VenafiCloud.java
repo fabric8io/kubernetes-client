@@ -73,7 +73,6 @@ public class VenafiCloud implements Editable<VenafiCloudBuilder>, KubernetesReso
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public VenafiCloud() {
     }

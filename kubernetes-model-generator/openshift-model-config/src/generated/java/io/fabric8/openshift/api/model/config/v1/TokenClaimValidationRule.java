@@ -72,7 +72,6 @@ public class TokenClaimValidationRule implements Editable<TokenClaimValidationRu
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public TokenClaimValidationRule() {
     }

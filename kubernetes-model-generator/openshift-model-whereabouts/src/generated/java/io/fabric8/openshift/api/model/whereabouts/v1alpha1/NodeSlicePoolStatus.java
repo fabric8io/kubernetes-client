@@ -72,7 +72,6 @@ public class NodeSlicePoolStatus implements Editable<NodeSlicePoolStatusBuilder>
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public NodeSlicePoolStatus() {
     }

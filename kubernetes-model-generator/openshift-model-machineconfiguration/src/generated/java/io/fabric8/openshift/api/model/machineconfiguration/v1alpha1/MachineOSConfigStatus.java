@@ -79,7 +79,6 @@ public class MachineOSConfigStatus implements Editable<MachineOSConfigStatusBuil
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public MachineOSConfigStatus() {
     }

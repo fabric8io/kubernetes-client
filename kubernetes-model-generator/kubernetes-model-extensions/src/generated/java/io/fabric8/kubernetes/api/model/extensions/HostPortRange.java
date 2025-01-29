@@ -72,7 +72,6 @@ public class HostPortRange implements Editable<HostPortRangeBuilder>, Kubernetes
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public HostPortRange() {
     }

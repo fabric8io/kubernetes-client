@@ -72,7 +72,6 @@ public class Link implements Editable<LinkBuilder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public Link() {
     }

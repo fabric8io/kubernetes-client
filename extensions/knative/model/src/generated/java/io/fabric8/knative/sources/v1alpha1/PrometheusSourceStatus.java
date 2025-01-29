@@ -98,7 +98,6 @@ public class PrometheusSourceStatus implements Editable<PrometheusSourceStatusBu
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public PrometheusSourceStatus() {
     }

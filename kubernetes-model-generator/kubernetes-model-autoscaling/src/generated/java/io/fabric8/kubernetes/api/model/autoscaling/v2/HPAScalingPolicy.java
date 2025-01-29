@@ -75,7 +75,6 @@ public class HPAScalingPolicy implements Editable<HPAScalingPolicyBuilder>, Kube
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public HPAScalingPolicy() {
     }

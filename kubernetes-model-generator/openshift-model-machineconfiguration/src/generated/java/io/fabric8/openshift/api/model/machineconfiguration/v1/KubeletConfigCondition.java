@@ -81,7 +81,6 @@ public class KubeletConfigCondition implements Editable<KubeletConfigConditionBu
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public KubeletConfigCondition() {
     }

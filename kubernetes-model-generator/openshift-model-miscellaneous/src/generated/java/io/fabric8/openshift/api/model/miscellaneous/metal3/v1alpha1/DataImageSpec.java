@@ -69,7 +69,6 @@ public class DataImageSpec implements Editable<DataImageSpecBuilder>, Kubernetes
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public DataImageSpec() {
     }

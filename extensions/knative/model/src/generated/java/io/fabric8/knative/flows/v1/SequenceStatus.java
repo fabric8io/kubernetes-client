@@ -101,7 +101,6 @@ public class SequenceStatus implements Editable<SequenceStatusBuilder>, Kubernet
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public SequenceStatus() {
     }

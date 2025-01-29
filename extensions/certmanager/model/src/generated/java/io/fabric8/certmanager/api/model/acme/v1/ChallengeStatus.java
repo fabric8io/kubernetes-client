@@ -78,7 +78,6 @@ public class ChallengeStatus implements Editable<ChallengeStatusBuilder>, Kubern
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ChallengeStatus() {
     }

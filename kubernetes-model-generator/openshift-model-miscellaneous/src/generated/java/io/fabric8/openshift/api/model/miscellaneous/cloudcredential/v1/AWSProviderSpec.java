@@ -78,16 +78,12 @@ public class AWSProviderSpec implements Editable<AWSProviderSpecBuilder>, Kubern
 {
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "cloudcredential.openshift.io/v1";
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "AWSProviderSpec";
@@ -101,7 +97,6 @@ public class AWSProviderSpec implements Editable<AWSProviderSpecBuilder>, Kubern
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public AWSProviderSpec() {
     }
@@ -115,9 +110,7 @@ public class AWSProviderSpec implements Editable<AWSProviderSpecBuilder>, Kubern
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -125,9 +118,7 @@ public class AWSProviderSpec implements Editable<AWSProviderSpecBuilder>, Kubern
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -135,9 +126,7 @@ public class AWSProviderSpec implements Editable<AWSProviderSpecBuilder>, Kubern
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -145,9 +134,7 @@ public class AWSProviderSpec implements Editable<AWSProviderSpecBuilder>, Kubern
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

@@ -87,7 +87,6 @@ public class AuthInfo implements Editable<AuthInfoBuilder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public AuthInfo() {
     }

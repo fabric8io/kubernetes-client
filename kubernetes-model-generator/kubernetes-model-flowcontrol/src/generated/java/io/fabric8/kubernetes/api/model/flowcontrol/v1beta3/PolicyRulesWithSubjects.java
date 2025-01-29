@@ -80,7 +80,6 @@ public class PolicyRulesWithSubjects implements Editable<PolicyRulesWithSubjects
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public PolicyRulesWithSubjects() {
     }

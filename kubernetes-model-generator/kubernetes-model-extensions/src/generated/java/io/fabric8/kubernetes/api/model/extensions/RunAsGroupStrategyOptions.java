@@ -75,7 +75,6 @@ public class RunAsGroupStrategyOptions implements Editable<RunAsGroupStrategyOpt
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public RunAsGroupStrategyOptions() {
     }

@@ -248,7 +248,6 @@ public class ThanosRulerSpec implements Editable<ThanosRulerSpecBuilder>, Kubern
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ThanosRulerSpec() {
     }

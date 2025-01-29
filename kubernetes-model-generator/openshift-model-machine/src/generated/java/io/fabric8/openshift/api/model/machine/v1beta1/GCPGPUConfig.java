@@ -72,7 +72,6 @@ public class GCPGPUConfig implements Editable<GCPGPUConfigBuilder>, KubernetesRe
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public GCPGPUConfig() {
     }

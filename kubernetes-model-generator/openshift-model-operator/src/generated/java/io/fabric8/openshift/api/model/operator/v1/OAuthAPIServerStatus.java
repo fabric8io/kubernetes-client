@@ -69,7 +69,6 @@ public class OAuthAPIServerStatus implements Editable<OAuthAPIServerStatusBuilde
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public OAuthAPIServerStatus() {
     }

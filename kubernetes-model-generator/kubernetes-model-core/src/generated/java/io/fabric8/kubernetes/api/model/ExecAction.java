@@ -43,7 +43,6 @@ public class ExecAction implements Editable<ExecActionBuilder>, KubernetesResour
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ExecAction() {
     }

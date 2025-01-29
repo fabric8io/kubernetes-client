@@ -85,7 +85,6 @@ public class ClusterIngress implements Editable<ClusterIngressBuilder>, Kubernet
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ClusterIngress() {
     }

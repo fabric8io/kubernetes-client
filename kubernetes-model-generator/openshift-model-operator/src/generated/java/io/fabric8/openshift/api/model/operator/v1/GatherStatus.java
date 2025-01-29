@@ -78,7 +78,6 @@ public class GatherStatus implements Editable<GatherStatusBuilder>, KubernetesRe
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public GatherStatus() {
     }

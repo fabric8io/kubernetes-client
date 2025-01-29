@@ -81,7 +81,6 @@ public class ConnectionPoolSettingsTCPSettings implements Editable<ConnectionPoo
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ConnectionPoolSettingsTCPSettings() {
     }

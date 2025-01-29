@@ -72,7 +72,6 @@ public class KafkaNetSpec implements Editable<KafkaNetSpecBuilder>, KubernetesRe
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public KafkaNetSpec() {
     }

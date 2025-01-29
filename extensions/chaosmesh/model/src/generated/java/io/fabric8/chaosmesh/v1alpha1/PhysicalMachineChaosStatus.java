@@ -75,7 +75,6 @@ public class PhysicalMachineChaosStatus implements Editable<PhysicalMachineChaos
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public PhysicalMachineChaosStatus() {
     }

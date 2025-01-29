@@ -92,7 +92,6 @@ public class KubeAPIServerSpec implements Editable<KubeAPIServerSpecBuilder>, Ku
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public KubeAPIServerSpec() {
     }

@@ -55,7 +55,6 @@ public class ServicePort implements Editable<ServicePortBuilder>, KubernetesReso
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ServicePort() {
     }

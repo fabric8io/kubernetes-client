@@ -72,7 +72,6 @@ public class Variable implements Editable<VariableBuilder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public Variable() {
     }

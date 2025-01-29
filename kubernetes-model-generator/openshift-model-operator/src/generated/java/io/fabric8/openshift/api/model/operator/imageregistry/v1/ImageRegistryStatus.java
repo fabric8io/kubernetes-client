@@ -96,7 +96,6 @@ public class ImageRegistryStatus implements Editable<ImageRegistryStatusBuilder>
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ImageRegistryStatus() {
     }

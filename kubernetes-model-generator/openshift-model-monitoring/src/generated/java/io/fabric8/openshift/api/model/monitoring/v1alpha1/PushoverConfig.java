@@ -118,7 +118,6 @@ public class PushoverConfig implements Editable<PushoverConfigBuilder>, Kubernet
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public PushoverConfig() {
     }

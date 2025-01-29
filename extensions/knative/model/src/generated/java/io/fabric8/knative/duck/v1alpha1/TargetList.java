@@ -79,9 +79,7 @@ public class TargetList implements Editable<TargetListBuilder>, KubernetesResour
 {
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "duck.knative.dev/v1alpha1";
@@ -89,9 +87,7 @@ public class TargetList implements Editable<TargetListBuilder>, KubernetesResour
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<io.fabric8.knative.duck.v1alpha1.Target> items = new ArrayList<>();
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "TargetList";
@@ -102,7 +98,6 @@ public class TargetList implements Editable<TargetListBuilder>, KubernetesResour
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public TargetList() {
     }
@@ -116,9 +111,7 @@ public class TargetList implements Editable<TargetListBuilder>, KubernetesResour
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -126,9 +119,7 @@ public class TargetList implements Editable<TargetListBuilder>, KubernetesResour
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -147,9 +138,7 @@ public class TargetList implements Editable<TargetListBuilder>, KubernetesResour
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -157,9 +146,7 @@ public class TargetList implements Editable<TargetListBuilder>, KubernetesResour
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

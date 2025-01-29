@@ -73,7 +73,6 @@ public class ClusterQuota implements Editable<ClusterQuotaBuilder>, KubernetesRe
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ClusterQuota() {
     }

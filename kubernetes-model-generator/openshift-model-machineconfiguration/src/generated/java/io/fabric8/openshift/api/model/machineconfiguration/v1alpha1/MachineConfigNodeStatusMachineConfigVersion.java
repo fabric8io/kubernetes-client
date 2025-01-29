@@ -72,7 +72,6 @@ public class MachineConfigNodeStatusMachineConfigVersion implements Editable<Mac
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public MachineConfigNodeStatusMachineConfigVersion() {
     }

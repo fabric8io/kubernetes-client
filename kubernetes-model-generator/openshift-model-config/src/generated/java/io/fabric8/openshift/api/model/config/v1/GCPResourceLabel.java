@@ -72,7 +72,6 @@ public class GCPResourceLabel implements Editable<GCPResourceLabelBuilder>, Kube
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public GCPResourceLabel() {
     }

@@ -69,7 +69,6 @@ public class VMSpec implements Editable<VMSpecBuilder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public VMSpec() {
     }

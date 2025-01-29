@@ -76,7 +76,6 @@ public class HistogramCheckpoint implements Editable<HistogramCheckpointBuilder>
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public HistogramCheckpoint() {
     }

@@ -88,7 +88,6 @@ public class SafeTLSConfig implements Editable<SafeTLSConfigBuilder>, Kubernetes
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public SafeTLSConfig() {
     }

@@ -77,7 +77,6 @@ public class Reservation implements Editable<ReservationBuilder>, KubernetesReso
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public Reservation() {
     }

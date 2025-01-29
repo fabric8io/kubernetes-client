@@ -72,7 +72,6 @@ public class Metal3DataClaimStatus implements Editable<Metal3DataClaimStatusBuil
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public Metal3DataClaimStatus() {
     }

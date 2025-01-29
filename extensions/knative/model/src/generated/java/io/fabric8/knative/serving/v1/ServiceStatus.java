@@ -97,7 +97,6 @@ public class ServiceStatus implements Editable<ServiceStatusBuilder>, Kubernetes
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ServiceStatus() {
     }

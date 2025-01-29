@@ -75,7 +75,6 @@ public class ProfileSpec implements Editable<ProfileSpecBuilder>, KubernetesReso
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ProfileSpec() {
     }

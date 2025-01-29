@@ -69,7 +69,6 @@ public class TargetStatus implements Editable<TargetStatusBuilder>, KubernetesRe
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public TargetStatus() {
     }

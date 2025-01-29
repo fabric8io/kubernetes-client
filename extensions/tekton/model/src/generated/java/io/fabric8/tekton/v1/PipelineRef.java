@@ -72,7 +72,6 @@ public class PipelineRef implements Editable<PipelineRefBuilder>, KubernetesReso
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public PipelineRef() {
     }

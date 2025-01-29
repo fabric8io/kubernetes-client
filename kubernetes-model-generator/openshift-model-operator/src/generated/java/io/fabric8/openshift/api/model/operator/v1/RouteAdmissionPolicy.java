@@ -72,7 +72,6 @@ public class RouteAdmissionPolicy implements Editable<RouteAdmissionPolicyBuilde
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public RouteAdmissionPolicy() {
     }

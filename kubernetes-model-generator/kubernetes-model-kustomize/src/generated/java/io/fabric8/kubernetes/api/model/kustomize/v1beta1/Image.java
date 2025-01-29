@@ -81,7 +81,6 @@ public class Image implements Editable<ImageBuilder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public Image() {
     }

@@ -72,7 +72,6 @@ public class BlockDeviceVolume implements Editable<BlockDeviceVolumeBuilder>, Ku
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public BlockDeviceVolume() {
     }

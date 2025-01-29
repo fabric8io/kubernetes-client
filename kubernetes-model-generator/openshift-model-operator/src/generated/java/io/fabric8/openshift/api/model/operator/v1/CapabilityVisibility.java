@@ -69,7 +69,6 @@ public class CapabilityVisibility implements Editable<CapabilityVisibilityBuilde
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public CapabilityVisibility() {
     }

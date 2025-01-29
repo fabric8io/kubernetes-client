@@ -76,7 +76,6 @@ public class RefSource implements Editable<RefSourceBuilder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public RefSource() {
     }

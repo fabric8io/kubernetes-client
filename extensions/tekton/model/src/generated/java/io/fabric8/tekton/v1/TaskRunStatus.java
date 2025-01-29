@@ -118,7 +118,6 @@ public class TaskRunStatus implements Editable<TaskRunStatusBuilder>, Kubernetes
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public TaskRunStatus() {
     }

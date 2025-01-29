@@ -79,7 +79,6 @@ public class AWSPlatformStatus implements Editable<AWSPlatformStatusBuilder>, Ku
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public AWSPlatformStatus() {
     }

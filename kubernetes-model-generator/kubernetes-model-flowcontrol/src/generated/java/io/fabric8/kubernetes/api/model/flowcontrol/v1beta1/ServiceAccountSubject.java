@@ -72,7 +72,6 @@ public class ServiceAccountSubject implements Editable<ServiceAccountSubjectBuil
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ServiceAccountSubject() {
     }

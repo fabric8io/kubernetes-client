@@ -115,7 +115,6 @@ public class HTTPMatchRequest implements Editable<HTTPMatchRequestBuilder>, Kube
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public HTTPMatchRequest() {
     }

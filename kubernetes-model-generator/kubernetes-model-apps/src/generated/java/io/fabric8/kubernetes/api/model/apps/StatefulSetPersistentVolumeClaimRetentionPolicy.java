@@ -72,7 +72,6 @@ public class StatefulSetPersistentVolumeClaimRetentionPolicy implements Editable
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public StatefulSetPersistentVolumeClaimRetentionPolicy() {
     }

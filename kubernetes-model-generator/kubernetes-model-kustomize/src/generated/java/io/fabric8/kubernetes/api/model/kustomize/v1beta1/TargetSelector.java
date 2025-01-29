@@ -82,7 +82,6 @@ public class TargetSelector implements Editable<TargetSelectorBuilder>, Kubernet
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public TargetSelector() {
     }

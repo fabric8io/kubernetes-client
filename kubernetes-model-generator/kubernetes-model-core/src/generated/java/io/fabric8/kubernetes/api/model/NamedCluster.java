@@ -43,7 +43,6 @@ public class NamedCluster implements Editable<NamedClusterBuilder>, KubernetesRe
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public NamedCluster() {
     }

@@ -95,7 +95,6 @@ public class StaticPodOperatorStatus implements Editable<StaticPodOperatorStatus
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public StaticPodOperatorStatus() {
     }

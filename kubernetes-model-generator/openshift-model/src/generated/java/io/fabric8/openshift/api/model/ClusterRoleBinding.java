@@ -80,9 +80,7 @@ public class ClusterRoleBinding implements Editable<ClusterRoleBindingBuilder>, 
 {
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "authorization.openshift.io/v1";
@@ -90,9 +88,7 @@ public class ClusterRoleBinding implements Editable<ClusterRoleBindingBuilder>, 
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> groupNames = new ArrayList<>();
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "ClusterRoleBinding";
@@ -111,7 +107,6 @@ public class ClusterRoleBinding implements Editable<ClusterRoleBindingBuilder>, 
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ClusterRoleBinding() {
     }
@@ -128,9 +123,7 @@ public class ClusterRoleBinding implements Editable<ClusterRoleBindingBuilder>, 
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -138,9 +131,7 @@ public class ClusterRoleBinding implements Editable<ClusterRoleBindingBuilder>, 
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -159,9 +150,7 @@ public class ClusterRoleBinding implements Editable<ClusterRoleBindingBuilder>, 
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -169,9 +158,7 @@ public class ClusterRoleBinding implements Editable<ClusterRoleBindingBuilder>, 
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

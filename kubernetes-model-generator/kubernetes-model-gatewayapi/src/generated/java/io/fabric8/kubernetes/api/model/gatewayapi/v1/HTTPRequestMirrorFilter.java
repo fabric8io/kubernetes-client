@@ -75,7 +75,6 @@ public class HTTPRequestMirrorFilter implements Editable<HTTPRequestMirrorFilter
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public HTTPRequestMirrorFilter() {
     }

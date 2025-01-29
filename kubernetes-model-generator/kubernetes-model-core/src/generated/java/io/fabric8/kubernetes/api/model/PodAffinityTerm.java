@@ -60,7 +60,6 @@ public class PodAffinityTerm implements Editable<PodAffinityTermBuilder>, Kubern
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public PodAffinityTerm() {
     }

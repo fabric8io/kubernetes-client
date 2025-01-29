@@ -90,7 +90,6 @@ public class KafkaFillSpec implements Editable<KafkaFillSpecBuilder>, Kubernetes
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public KafkaFillSpec() {
     }

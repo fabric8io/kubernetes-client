@@ -43,7 +43,6 @@ public class PersistentVolumeClaimTemplate implements Editable<PersistentVolumeC
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public PersistentVolumeClaimTemplate() {
     }

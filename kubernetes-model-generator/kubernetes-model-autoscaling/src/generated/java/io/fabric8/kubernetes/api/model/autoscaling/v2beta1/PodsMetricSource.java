@@ -76,7 +76,6 @@ public class PodsMetricSource implements Editable<PodsMetricSourceBuilder>, Kube
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public PodsMetricSource() {
     }

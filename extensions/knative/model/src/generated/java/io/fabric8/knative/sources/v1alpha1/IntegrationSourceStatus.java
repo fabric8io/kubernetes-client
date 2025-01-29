@@ -98,7 +98,6 @@ public class IntegrationSourceStatus implements Editable<IntegrationSourceStatus
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public IntegrationSourceStatus() {
     }

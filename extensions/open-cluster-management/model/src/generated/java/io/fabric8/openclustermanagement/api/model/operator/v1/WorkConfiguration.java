@@ -75,7 +75,6 @@ public class WorkConfiguration implements Editable<WorkConfigurationBuilder>, Ku
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public WorkConfiguration() {
     }

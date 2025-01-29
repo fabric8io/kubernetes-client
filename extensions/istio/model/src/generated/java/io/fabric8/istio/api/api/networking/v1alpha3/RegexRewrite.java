@@ -72,7 +72,6 @@ public class RegexRewrite implements Editable<RegexRewriteBuilder>, KubernetesRe
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public RegexRewrite() {
     }

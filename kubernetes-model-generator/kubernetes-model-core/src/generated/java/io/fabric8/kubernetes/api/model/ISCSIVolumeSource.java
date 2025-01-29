@@ -73,7 +73,6 @@ public class ISCSIVolumeSource implements Editable<ISCSIVolumeSourceBuilder>, Ku
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ISCSIVolumeSource() {
     }

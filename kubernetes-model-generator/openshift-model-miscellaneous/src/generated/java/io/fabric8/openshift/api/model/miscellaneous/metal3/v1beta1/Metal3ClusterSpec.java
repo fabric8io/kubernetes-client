@@ -72,7 +72,6 @@ public class Metal3ClusterSpec implements Editable<Metal3ClusterSpecBuilder>, Ku
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public Metal3ClusterSpec() {
     }

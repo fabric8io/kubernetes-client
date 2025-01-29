@@ -78,7 +78,6 @@ public class PerNodeAPIRequestLog implements Editable<PerNodeAPIRequestLogBuilde
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public PerNodeAPIRequestLog() {
     }

@@ -82,7 +82,6 @@ public class IngressSpec implements Editable<IngressSpecBuilder>, KubernetesReso
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public IngressSpec() {
     }

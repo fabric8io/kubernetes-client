@@ -78,7 +78,6 @@ public class AlertmanagerWebSpec implements Editable<AlertmanagerWebSpecBuilder>
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public AlertmanagerWebSpec() {
     }

@@ -72,7 +72,6 @@ public class NetworkLinkEthernetMacFromAnnotation implements Editable<NetworkLin
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public NetworkLinkEthernetMacFromAnnotation() {
     }

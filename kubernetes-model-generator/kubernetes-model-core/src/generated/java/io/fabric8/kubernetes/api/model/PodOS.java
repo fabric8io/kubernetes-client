@@ -40,7 +40,6 @@ public class PodOS implements Editable<PodOSBuilder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public PodOS() {
     }

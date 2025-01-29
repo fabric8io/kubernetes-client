@@ -91,7 +91,6 @@ public class PreprovisioningImageStatus implements Editable<PreprovisioningImage
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public PreprovisioningImageStatus() {
     }

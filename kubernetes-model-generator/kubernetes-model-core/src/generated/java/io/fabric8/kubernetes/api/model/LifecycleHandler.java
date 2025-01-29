@@ -49,7 +49,6 @@ public class LifecycleHandler implements Editable<LifecycleHandlerBuilder>, Kube
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public LifecycleHandler() {
     }

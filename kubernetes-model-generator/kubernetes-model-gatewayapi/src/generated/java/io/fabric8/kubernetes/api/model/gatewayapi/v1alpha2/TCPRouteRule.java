@@ -76,7 +76,6 @@ public class TCPRouteRule implements Editable<TCPRouteRuleBuilder>, KubernetesRe
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public TCPRouteRule() {
     }

@@ -46,7 +46,6 @@ public class ServiceReference implements Editable<ServiceReferenceBuilder>, Kube
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ServiceReference() {
     }

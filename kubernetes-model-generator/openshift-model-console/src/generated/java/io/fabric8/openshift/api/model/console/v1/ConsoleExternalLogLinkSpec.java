@@ -75,7 +75,6 @@ public class ConsoleExternalLogLinkSpec implements Editable<ConsoleExternalLogLi
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ConsoleExternalLogLinkSpec() {
     }

@@ -43,7 +43,6 @@ public class LocalVolumeSource implements Editable<LocalVolumeSourceBuilder>, Ku
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public LocalVolumeSource() {
     }

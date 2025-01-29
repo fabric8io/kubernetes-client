@@ -74,7 +74,6 @@ public class JSONSchemaPropsOrBool implements Editable<JSONSchemaPropsOrBoolBuil
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public JSONSchemaPropsOrBool() {
     }

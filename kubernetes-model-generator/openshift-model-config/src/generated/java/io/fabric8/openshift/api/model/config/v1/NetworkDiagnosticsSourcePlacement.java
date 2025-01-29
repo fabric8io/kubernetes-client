@@ -77,7 +77,6 @@ public class NetworkDiagnosticsSourcePlacement implements Editable<NetworkDiagno
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public NetworkDiagnosticsSourcePlacement() {
     }

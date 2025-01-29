@@ -82,7 +82,6 @@ public class TimeWindow implements Editable<TimeWindowBuilder>, KubernetesResour
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public TimeWindow() {
     }

@@ -46,7 +46,6 @@ public class Preferences implements Editable<PreferencesBuilder>, KubernetesReso
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public Preferences() {
     }

@@ -79,9 +79,7 @@ public class NumatopologyList implements Editable<NumatopologyListBuilder>, Kube
 {
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "nodeinfo.volcano.sh/v1alpha1";
@@ -89,9 +87,7 @@ public class NumatopologyList implements Editable<NumatopologyListBuilder>, Kube
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<io.fabric8.volcano.api.model.nodeinfo.v1alpha1.Numatopology> items = new ArrayList<>();
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "NumatopologyList";
@@ -102,7 +98,6 @@ public class NumatopologyList implements Editable<NumatopologyListBuilder>, Kube
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public NumatopologyList() {
     }
@@ -116,9 +111,7 @@ public class NumatopologyList implements Editable<NumatopologyListBuilder>, Kube
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -126,9 +119,7 @@ public class NumatopologyList implements Editable<NumatopologyListBuilder>, Kube
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -147,9 +138,7 @@ public class NumatopologyList implements Editable<NumatopologyListBuilder>, Kube
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -157,9 +146,7 @@ public class NumatopologyList implements Editable<NumatopologyListBuilder>, Kube
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

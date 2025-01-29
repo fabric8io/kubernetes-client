@@ -85,7 +85,6 @@ public class TunedRecommend implements Editable<TunedRecommendBuilder>, Kubernet
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public TunedRecommend() {
     }

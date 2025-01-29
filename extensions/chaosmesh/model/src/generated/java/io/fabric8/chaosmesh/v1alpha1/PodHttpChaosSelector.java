@@ -86,7 +86,6 @@ public class PodHttpChaosSelector implements Editable<PodHttpChaosSelectorBuilde
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public PodHttpChaosSelector() {
     }

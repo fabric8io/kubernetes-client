@@ -72,7 +72,6 @@ public class PrioritizerConfig implements Editable<PrioritizerConfigBuilder>, Ku
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public PrioritizerConfig() {
     }

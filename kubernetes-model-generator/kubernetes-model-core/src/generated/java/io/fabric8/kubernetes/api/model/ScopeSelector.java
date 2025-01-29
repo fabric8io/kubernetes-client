@@ -43,7 +43,6 @@ public class ScopeSelector implements Editable<ScopeSelectorBuilder>, Kubernetes
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ScopeSelector() {
     }

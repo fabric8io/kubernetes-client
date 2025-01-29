@@ -69,7 +69,6 @@ public class RuleFrom implements Editable<RuleFromBuilder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public RuleFrom() {
     }

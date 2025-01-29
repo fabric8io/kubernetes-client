@@ -69,7 +69,6 @@ public class ForZone implements Editable<ForZoneBuilder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ForZone() {
     }

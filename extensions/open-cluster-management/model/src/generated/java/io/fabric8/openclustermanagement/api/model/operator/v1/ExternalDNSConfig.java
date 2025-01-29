@@ -72,7 +72,6 @@ public class ExternalDNSConfig implements Editable<ExternalDNSConfigBuilder>, Ku
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ExternalDNSConfig() {
     }

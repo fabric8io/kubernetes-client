@@ -118,7 +118,6 @@ public class PuppetDBSDConfig implements Editable<PuppetDBSDConfigBuilder>, Kube
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public PuppetDBSDConfig() {
     }

@@ -72,7 +72,6 @@ public class FileCreateSpec implements Editable<FileCreateSpecBuilder>, Kubernet
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public FileCreateSpec() {
     }

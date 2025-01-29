@@ -69,7 +69,6 @@ public class RuntimeConfig implements Editable<RuntimeConfigBuilder>, Kubernetes
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public RuntimeConfig() {
     }

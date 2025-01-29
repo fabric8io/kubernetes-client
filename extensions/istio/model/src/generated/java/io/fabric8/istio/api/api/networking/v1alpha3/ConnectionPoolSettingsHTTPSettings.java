@@ -90,7 +90,6 @@ public class ConnectionPoolSettingsHTTPSettings implements Editable<ConnectionPo
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ConnectionPoolSettingsHTTPSettings() {
     }

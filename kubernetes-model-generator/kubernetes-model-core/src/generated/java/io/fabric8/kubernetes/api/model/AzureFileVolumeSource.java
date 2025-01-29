@@ -46,7 +46,6 @@ public class AzureFileVolumeSource implements Editable<AzureFileVolumeSourceBuil
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public AzureFileVolumeSource() {
     }

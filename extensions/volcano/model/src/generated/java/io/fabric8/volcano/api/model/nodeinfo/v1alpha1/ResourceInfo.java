@@ -72,7 +72,6 @@ public class ResourceInfo implements Editable<ResourceInfoBuilder>, KubernetesRe
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ResourceInfo() {
     }

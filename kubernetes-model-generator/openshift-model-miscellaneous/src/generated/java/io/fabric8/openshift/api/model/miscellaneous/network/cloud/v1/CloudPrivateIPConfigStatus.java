@@ -76,7 +76,6 @@ public class CloudPrivateIPConfigStatus implements Editable<CloudPrivateIPConfig
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public CloudPrivateIPConfigStatus() {
     }

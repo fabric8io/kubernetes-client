@@ -84,7 +84,6 @@ public class TcParameter implements Editable<TcParameterBuilder>, KubernetesReso
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public TcParameter() {
     }

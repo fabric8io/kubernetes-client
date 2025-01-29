@@ -131,7 +131,6 @@ public class BareMetalHostSpec implements Editable<BareMetalHostSpecBuilder>, Ku
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public BareMetalHostSpec() {
     }

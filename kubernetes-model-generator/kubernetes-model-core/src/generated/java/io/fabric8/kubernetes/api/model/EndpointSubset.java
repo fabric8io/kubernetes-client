@@ -51,7 +51,6 @@ public class EndpointSubset implements Editable<EndpointSubsetBuilder>, Kubernet
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public EndpointSubset() {
     }

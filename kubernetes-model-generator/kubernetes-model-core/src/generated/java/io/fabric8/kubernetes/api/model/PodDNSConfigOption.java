@@ -43,7 +43,6 @@ public class PodDNSConfigOption implements Editable<PodDNSConfigOptionBuilder>, 
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public PodDNSConfigOption() {
     }

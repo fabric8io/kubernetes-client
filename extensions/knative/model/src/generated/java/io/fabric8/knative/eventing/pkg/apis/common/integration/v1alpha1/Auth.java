@@ -75,7 +75,6 @@ public class Auth implements Editable<AuthBuilder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public Auth() {
     }

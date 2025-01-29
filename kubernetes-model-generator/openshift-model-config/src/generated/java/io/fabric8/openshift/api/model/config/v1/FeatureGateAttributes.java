@@ -69,7 +69,6 @@ public class FeatureGateAttributes implements Editable<FeatureGateAttributesBuil
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public FeatureGateAttributes() {
     }

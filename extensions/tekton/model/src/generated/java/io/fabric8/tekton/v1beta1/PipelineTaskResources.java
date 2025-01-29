@@ -76,7 +76,6 @@ public class PipelineTaskResources implements Editable<PipelineTaskResourcesBuil
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public PipelineTaskResources() {
     }

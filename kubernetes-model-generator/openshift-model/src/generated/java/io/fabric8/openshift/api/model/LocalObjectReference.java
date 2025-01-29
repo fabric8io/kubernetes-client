@@ -68,7 +68,6 @@ public class LocalObjectReference implements Editable<LocalObjectReferenceBuilde
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public LocalObjectReference() {
     }

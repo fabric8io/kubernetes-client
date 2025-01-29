@@ -72,7 +72,6 @@ public class RegistrationDriver implements Editable<RegistrationDriverBuilder>, 
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public RegistrationDriver() {
     }

@@ -77,7 +77,6 @@ public class ConnectionConfig implements Editable<ConnectionConfigBuilder>, Kube
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ConnectionConfig() {
     }

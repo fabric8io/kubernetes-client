@@ -69,7 +69,6 @@ public class ManagedIdentity implements Editable<ManagedIdentityBuilder>, Kubern
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ManagedIdentity() {
     }

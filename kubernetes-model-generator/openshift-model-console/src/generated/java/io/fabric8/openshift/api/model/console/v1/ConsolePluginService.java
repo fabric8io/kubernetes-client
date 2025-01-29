@@ -78,7 +78,6 @@ public class ConsolePluginService implements Editable<ConsolePluginServiceBuilde
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ConsolePluginService() {
     }

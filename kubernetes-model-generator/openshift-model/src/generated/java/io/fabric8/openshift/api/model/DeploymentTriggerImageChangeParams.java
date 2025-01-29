@@ -81,7 +81,6 @@ public class DeploymentTriggerImageChangeParams implements Editable<DeploymentTr
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public DeploymentTriggerImageChangeParams() {
     }

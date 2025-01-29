@@ -84,7 +84,6 @@ public class RequiredHSTSPolicy implements Editable<RequiredHSTSPolicyBuilder>, 
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public RequiredHSTSPolicy() {
     }

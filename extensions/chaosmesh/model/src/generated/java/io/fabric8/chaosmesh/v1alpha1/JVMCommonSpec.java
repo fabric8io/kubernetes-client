@@ -72,7 +72,6 @@ public class JVMCommonSpec implements Editable<JVMCommonSpecBuilder>, Kubernetes
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public JVMCommonSpec() {
     }

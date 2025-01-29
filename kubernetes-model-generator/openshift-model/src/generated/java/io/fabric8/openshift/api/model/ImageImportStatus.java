@@ -82,7 +82,6 @@ public class ImageImportStatus implements Editable<ImageImportStatusBuilder>, Ku
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ImageImportStatus() {
     }

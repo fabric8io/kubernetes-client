@@ -78,7 +78,6 @@ public class PipelineRunTaskRunStatus implements Editable<PipelineRunTaskRunStat
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public PipelineRunTaskRunStatus() {
     }

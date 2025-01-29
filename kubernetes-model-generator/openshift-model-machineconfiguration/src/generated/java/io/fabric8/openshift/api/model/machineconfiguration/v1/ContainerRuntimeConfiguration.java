@@ -82,7 +82,6 @@ public class ContainerRuntimeConfiguration implements Editable<ContainerRuntimeC
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ContainerRuntimeConfiguration() {
     }

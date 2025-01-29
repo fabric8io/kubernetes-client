@@ -43,7 +43,6 @@ public class NodeRuntimeHandlerFeatures implements Editable<NodeRuntimeHandlerFe
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public NodeRuntimeHandlerFeatures() {
     }

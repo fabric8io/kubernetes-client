@@ -73,7 +73,6 @@ public class PodSpecable implements Editable<PodSpecableBuilder>, KubernetesReso
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public PodSpecable() {
     }

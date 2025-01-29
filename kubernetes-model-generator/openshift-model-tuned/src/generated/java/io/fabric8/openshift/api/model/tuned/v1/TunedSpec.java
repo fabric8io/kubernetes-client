@@ -79,7 +79,6 @@ public class TunedSpec implements Editable<TunedSpecBuilder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public TunedSpec() {
     }

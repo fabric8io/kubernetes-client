@@ -40,7 +40,6 @@ public class ContainerStateRunning implements Editable<ContainerStateRunningBuil
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ContainerStateRunning() {
     }

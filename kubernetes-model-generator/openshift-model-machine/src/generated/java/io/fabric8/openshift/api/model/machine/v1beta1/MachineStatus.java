@@ -105,7 +105,6 @@ public class MachineStatus implements Editable<MachineStatusBuilder>, Kubernetes
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public MachineStatus() {
     }

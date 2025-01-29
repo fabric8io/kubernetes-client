@@ -69,7 +69,6 @@ public class FlowDistinguisherMethod implements Editable<FlowDistinguisherMethod
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public FlowDistinguisherMethod() {
     }

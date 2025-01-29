@@ -43,7 +43,6 @@ public class ConfigMapEnvSource implements Editable<ConfigMapEnvSourceBuilder>, 
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ConfigMapEnvSource() {
     }

@@ -76,16 +76,12 @@ public class AlertmanagerConfig implements Editable<AlertmanagerConfigBuilder>, 
 {
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "monitoring.coreos.com/v1beta1";
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "AlertmanagerConfig";
@@ -98,7 +94,6 @@ public class AlertmanagerConfig implements Editable<AlertmanagerConfigBuilder>, 
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public AlertmanagerConfig() {
     }
@@ -112,9 +107,7 @@ public class AlertmanagerConfig implements Editable<AlertmanagerConfigBuilder>, 
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -122,9 +115,7 @@ public class AlertmanagerConfig implements Editable<AlertmanagerConfigBuilder>, 
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -132,9 +123,7 @@ public class AlertmanagerConfig implements Editable<AlertmanagerConfigBuilder>, 
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -142,9 +131,7 @@ public class AlertmanagerConfig implements Editable<AlertmanagerConfigBuilder>, 
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

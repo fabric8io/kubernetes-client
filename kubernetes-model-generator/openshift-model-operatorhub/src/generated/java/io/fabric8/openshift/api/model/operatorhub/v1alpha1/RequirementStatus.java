@@ -93,7 +93,6 @@ public class RequirementStatus implements Editable<RequirementStatusBuilder>, Ku
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public RequirementStatus() {
     }

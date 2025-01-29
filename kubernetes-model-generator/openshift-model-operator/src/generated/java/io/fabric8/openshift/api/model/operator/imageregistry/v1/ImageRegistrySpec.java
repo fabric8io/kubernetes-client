@@ -140,7 +140,6 @@ public class ImageRegistrySpec implements Editable<ImageRegistrySpecBuilder>, Ku
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ImageRegistrySpec() {
     }

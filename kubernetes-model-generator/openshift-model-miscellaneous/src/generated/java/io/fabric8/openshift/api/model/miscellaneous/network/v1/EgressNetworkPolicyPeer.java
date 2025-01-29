@@ -72,7 +72,6 @@ public class EgressNetworkPolicyPeer implements Editable<EgressNetworkPolicyPeer
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public EgressNetworkPolicyPeer() {
     }

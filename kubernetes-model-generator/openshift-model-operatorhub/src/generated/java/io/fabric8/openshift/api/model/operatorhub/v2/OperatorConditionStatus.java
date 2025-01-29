@@ -73,7 +73,6 @@ public class OperatorConditionStatus implements Editable<OperatorConditionStatus
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public OperatorConditionStatus() {
     }

@@ -73,7 +73,6 @@ public class ArtifactValue implements Editable<ArtifactValueBuilder>, Kubernetes
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ArtifactValue() {
     }

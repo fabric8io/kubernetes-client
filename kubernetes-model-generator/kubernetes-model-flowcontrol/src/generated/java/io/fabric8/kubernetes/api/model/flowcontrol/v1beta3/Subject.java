@@ -78,7 +78,6 @@ public class Subject implements Editable<SubjectBuilder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public Subject() {
     }

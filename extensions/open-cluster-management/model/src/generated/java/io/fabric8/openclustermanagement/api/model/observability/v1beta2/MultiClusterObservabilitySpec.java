@@ -102,7 +102,6 @@ public class MultiClusterObservabilitySpec implements Editable<MultiClusterObser
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public MultiClusterObservabilitySpec() {
     }

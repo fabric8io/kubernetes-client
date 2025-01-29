@@ -82,7 +82,6 @@ public class WebhookConfig implements Editable<WebhookConfigBuilder>, Kubernetes
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public WebhookConfig() {
     }

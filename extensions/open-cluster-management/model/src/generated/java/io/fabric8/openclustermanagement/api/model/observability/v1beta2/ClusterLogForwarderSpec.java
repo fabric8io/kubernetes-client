@@ -69,7 +69,6 @@ public class ClusterLogForwarderSpec implements Editable<ClusterLogForwarderSpec
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ClusterLogForwarderSpec() {
     }

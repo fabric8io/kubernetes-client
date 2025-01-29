@@ -81,7 +81,6 @@ public class BandwidthSpec implements Editable<BandwidthSpecBuilder>, Kubernetes
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public BandwidthSpec() {
     }

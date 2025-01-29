@@ -91,7 +91,6 @@ public class NamedResourcesAttribute implements Editable<NamedResourcesAttribute
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public NamedResourcesAttribute() {
     }

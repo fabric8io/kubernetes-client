@@ -72,7 +72,6 @@ public class AssumeRole implements Editable<AssumeRoleBuilder>, KubernetesResour
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public AssumeRole() {
     }

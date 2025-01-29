@@ -73,7 +73,6 @@ public class VolumeAttachmentSource implements Editable<VolumeAttachmentSourceBu
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public VolumeAttachmentSource() {
     }

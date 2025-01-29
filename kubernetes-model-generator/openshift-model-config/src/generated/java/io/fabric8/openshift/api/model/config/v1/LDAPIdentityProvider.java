@@ -84,7 +84,6 @@ public class LDAPIdentityProvider implements Editable<LDAPIdentityProviderBuilde
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public LDAPIdentityProvider() {
     }

@@ -75,7 +75,6 @@ public class GCPPrivateServiceConnectInventory implements Editable<GCPPrivateSer
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public GCPPrivateServiceConnectInventory() {
     }

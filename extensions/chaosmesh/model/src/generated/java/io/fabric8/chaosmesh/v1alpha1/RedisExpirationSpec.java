@@ -81,7 +81,6 @@ public class RedisExpirationSpec implements Editable<RedisExpirationSpecBuilder>
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public RedisExpirationSpec() {
     }

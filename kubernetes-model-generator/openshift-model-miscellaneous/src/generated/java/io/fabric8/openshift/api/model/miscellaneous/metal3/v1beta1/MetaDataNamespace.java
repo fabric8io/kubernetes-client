@@ -69,7 +69,6 @@ public class MetaDataNamespace implements Editable<MetaDataNamespaceBuilder>, Ku
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public MetaDataNamespace() {
     }

@@ -78,7 +78,6 @@ public class StressInstance implements Editable<StressInstanceBuilder>, Kubernet
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public StressInstance() {
     }

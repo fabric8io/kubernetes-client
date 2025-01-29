@@ -69,7 +69,6 @@ public class PortSelector implements Editable<PortSelectorBuilder>, KubernetesRe
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public PortSelector() {
     }

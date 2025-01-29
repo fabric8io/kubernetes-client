@@ -75,7 +75,6 @@ public class ImageDigestSource implements Editable<ImageDigestSourceBuilder>, Ku
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ImageDigestSource() {
     }

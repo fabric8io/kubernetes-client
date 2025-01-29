@@ -99,7 +99,6 @@ public class X509Subject implements Editable<X509SubjectBuilder>, KubernetesReso
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public X509Subject() {
     }

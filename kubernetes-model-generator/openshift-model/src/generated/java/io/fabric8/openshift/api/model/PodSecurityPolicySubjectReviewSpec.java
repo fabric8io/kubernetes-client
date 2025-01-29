@@ -78,7 +78,6 @@ public class PodSecurityPolicySubjectReviewSpec implements Editable<PodSecurityP
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public PodSecurityPolicySubjectReviewSpec() {
     }

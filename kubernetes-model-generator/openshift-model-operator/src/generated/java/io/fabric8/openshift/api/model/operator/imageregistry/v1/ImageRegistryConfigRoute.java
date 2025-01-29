@@ -75,7 +75,6 @@ public class ImageRegistryConfigRoute implements Editable<ImageRegistryConfigRou
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ImageRegistryConfigRoute() {
     }

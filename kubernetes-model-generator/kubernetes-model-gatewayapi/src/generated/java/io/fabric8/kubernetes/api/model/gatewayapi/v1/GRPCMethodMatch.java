@@ -75,7 +75,6 @@ public class GRPCMethodMatch implements Editable<GRPCMethodMatchBuilder>, Kubern
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public GRPCMethodMatch() {
     }

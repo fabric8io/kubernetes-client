@@ -72,7 +72,6 @@ public class NamedRole implements Editable<NamedRoleBuilder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public NamedRole() {
     }

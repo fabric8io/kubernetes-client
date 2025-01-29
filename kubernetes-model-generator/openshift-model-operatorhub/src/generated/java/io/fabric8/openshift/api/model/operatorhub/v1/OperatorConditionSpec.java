@@ -81,7 +81,6 @@ public class OperatorConditionSpec implements Editable<OperatorConditionSpecBuil
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public OperatorConditionSpec() {
     }

@@ -84,7 +84,6 @@ public class Target implements Editable<TargetBuilder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public Target() {
     }

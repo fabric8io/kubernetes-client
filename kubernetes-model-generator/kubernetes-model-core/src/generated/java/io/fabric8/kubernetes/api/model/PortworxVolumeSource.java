@@ -46,7 +46,6 @@ public class PortworxVolumeSource implements Editable<PortworxVolumeSourceBuilde
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public PortworxVolumeSource() {
     }

@@ -111,7 +111,6 @@ public class PlatformSpec implements Editable<PlatformSpecBuilder>, KubernetesRe
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public PlatformSpec() {
     }

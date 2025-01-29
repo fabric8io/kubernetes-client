@@ -72,7 +72,6 @@ public class RedisCommonSpec implements Editable<RedisCommonSpecBuilder>, Kubern
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public RedisCommonSpec() {
     }

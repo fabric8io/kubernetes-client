@@ -46,7 +46,6 @@ public class NFSVolumeSource implements Editable<NFSVolumeSourceBuilder>, Kubern
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public NFSVolumeSource() {
     }

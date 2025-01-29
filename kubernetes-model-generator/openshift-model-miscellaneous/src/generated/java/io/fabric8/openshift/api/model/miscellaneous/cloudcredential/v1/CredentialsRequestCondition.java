@@ -84,7 +84,6 @@ public class CredentialsRequestCondition implements Editable<CredentialsRequestC
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public CredentialsRequestCondition() {
     }

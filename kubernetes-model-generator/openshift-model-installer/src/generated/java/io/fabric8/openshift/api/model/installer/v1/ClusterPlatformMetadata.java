@@ -97,7 +97,6 @@ public class ClusterPlatformMetadata implements Editable<ClusterPlatformMetadata
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ClusterPlatformMetadata() {
     }

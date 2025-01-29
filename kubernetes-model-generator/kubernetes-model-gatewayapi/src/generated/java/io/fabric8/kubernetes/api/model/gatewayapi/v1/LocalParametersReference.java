@@ -75,7 +75,6 @@ public class LocalParametersReference implements Editable<LocalParametersReferen
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public LocalParametersReference() {
     }

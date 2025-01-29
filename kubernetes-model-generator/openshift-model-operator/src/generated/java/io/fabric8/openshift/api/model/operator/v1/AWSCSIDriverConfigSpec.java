@@ -72,7 +72,6 @@ public class AWSCSIDriverConfigSpec implements Editable<AWSCSIDriverConfigSpecBu
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public AWSCSIDriverConfigSpec() {
     }

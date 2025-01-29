@@ -72,7 +72,6 @@ public class PlacementDecisionStatus implements Editable<PlacementDecisionStatus
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public PlacementDecisionStatus() {
     }

@@ -75,7 +75,6 @@ public class LocalPolicyTargetReference implements Editable<LocalPolicyTargetRef
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public LocalPolicyTargetReference() {
     }

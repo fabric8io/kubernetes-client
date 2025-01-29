@@ -72,7 +72,6 @@ public class DedicatedHost implements Editable<DedicatedHostBuilder>, Kubernetes
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public DedicatedHost() {
     }

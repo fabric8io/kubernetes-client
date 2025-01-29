@@ -69,7 +69,6 @@ public class VeleroBackupConfig implements Editable<VeleroBackupConfigBuilder>, 
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public VeleroBackupConfig() {
     }

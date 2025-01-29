@@ -72,7 +72,6 @@ public class PipelineResourceRef implements Editable<PipelineResourceRefBuilder>
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public PipelineResourceRef() {
     }

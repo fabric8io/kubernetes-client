@@ -82,7 +82,6 @@ public class RolloutProgressivePerGroup implements Editable<RolloutProgressivePe
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public RolloutProgressivePerGroup() {
     }

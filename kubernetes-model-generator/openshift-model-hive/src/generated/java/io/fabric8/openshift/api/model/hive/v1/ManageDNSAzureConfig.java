@@ -75,7 +75,6 @@ public class ManageDNSAzureConfig implements Editable<ManageDNSAzureConfigBuilde
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ManageDNSAzureConfig() {
     }

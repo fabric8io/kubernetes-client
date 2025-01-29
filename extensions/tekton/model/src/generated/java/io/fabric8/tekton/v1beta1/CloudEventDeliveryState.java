@@ -78,7 +78,6 @@ public class CloudEventDeliveryState implements Editable<CloudEventDeliveryState
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public CloudEventDeliveryState() {
     }

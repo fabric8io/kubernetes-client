@@ -83,7 +83,6 @@ public class AuthenticationSpec implements Editable<AuthenticationSpecBuilder>, 
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public AuthenticationSpec() {
     }

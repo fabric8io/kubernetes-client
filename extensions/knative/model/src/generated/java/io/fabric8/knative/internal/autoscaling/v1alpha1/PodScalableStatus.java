@@ -69,7 +69,6 @@ public class PodScalableStatus implements Editable<PodScalableStatusBuilder>, Ku
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public PodScalableStatus() {
     }

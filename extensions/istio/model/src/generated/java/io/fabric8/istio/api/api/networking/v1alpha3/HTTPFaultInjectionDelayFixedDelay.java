@@ -69,7 +69,6 @@ public class HTTPFaultInjectionDelayFixedDelay implements IsHTTPFaultInjectionDe
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public HTTPFaultInjectionDelayFixedDelay() {
     }

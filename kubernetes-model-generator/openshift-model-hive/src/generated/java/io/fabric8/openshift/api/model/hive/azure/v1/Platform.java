@@ -78,7 +78,6 @@ public class Platform implements Editable<PlatformBuilder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public Platform() {
     }

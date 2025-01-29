@@ -76,7 +76,6 @@ public class UDPRouteRule implements Editable<UDPRouteRuleBuilder>, KubernetesRe
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public UDPRouteRule() {
     }

@@ -87,7 +87,6 @@ public class UpdateHistory implements Editable<UpdateHistoryBuilder>, Kubernetes
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public UpdateHistory() {
     }

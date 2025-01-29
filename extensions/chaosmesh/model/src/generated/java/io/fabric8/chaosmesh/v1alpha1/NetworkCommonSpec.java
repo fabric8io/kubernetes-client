@@ -87,7 +87,6 @@ public class NetworkCommonSpec implements Editable<NetworkCommonSpecBuilder>, Ku
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public NetworkCommonSpec() {
     }

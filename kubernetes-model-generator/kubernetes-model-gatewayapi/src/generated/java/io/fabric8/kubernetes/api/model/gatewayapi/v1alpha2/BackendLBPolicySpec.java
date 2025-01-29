@@ -76,7 +76,6 @@ public class BackendLBPolicySpec implements Editable<BackendLBPolicySpecBuilder>
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public BackendLBPolicySpec() {
     }

@@ -75,7 +75,6 @@ public class MachineOSConfigSpec implements Editable<MachineOSConfigSpecBuilder>
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public MachineOSConfigSpec() {
     }

@@ -81,7 +81,6 @@ public class AlibabaResourceReference implements Editable<AlibabaResourceReferen
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public AlibabaResourceReference() {
     }

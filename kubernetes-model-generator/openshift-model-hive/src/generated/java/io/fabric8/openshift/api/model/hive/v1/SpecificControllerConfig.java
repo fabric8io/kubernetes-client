@@ -72,7 +72,6 @@ public class SpecificControllerConfig implements Editable<SpecificControllerConf
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public SpecificControllerConfig() {
     }

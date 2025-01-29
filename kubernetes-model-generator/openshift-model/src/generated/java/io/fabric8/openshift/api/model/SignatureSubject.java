@@ -75,7 +75,6 @@ public class SignatureSubject implements Editable<SignatureSubjectBuilder>, Kube
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public SignatureSubject() {
     }

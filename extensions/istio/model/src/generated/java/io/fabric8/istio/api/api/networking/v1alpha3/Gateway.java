@@ -86,7 +86,6 @@ public class Gateway implements Editable<GatewayBuilder>, KubernetesResource, Na
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public Gateway() {
     }

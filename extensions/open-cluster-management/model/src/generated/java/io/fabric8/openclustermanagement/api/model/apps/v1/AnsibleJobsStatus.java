@@ -82,7 +82,6 @@ public class AnsibleJobsStatus implements Editable<AnsibleJobsStatusBuilder>, Ku
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public AnsibleJobsStatus() {
     }

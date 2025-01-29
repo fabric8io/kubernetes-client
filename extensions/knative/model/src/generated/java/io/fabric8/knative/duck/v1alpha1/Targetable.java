@@ -69,7 +69,6 @@ public class Targetable implements Editable<TargetableBuilder>, KubernetesResour
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public Targetable() {
     }

@@ -75,7 +75,6 @@ public class Overrides implements Editable<OverridesBuilder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public Overrides() {
     }

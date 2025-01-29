@@ -49,7 +49,6 @@ public class PersistentVolumeStatus implements Editable<PersistentVolumeStatusBu
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public PersistentVolumeStatus() {
     }

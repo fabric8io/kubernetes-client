@@ -76,7 +76,6 @@ public class PKCS12Keystore implements Editable<PKCS12KeystoreBuilder>, Kubernet
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public PKCS12Keystore() {
     }

@@ -100,7 +100,6 @@ public class Operation implements Editable<OperationBuilder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public Operation() {
     }

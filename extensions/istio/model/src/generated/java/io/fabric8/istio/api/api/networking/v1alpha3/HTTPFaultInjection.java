@@ -72,7 +72,6 @@ public class HTTPFaultInjection implements Editable<HTTPFaultInjectionBuilder>, 
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public HTTPFaultInjection() {
     }

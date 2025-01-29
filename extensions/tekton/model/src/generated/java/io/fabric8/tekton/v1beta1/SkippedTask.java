@@ -78,7 +78,6 @@ public class SkippedTask implements Editable<SkippedTaskBuilder>, KubernetesReso
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public SkippedTask() {
     }

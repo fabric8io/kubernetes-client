@@ -80,7 +80,6 @@ public class CertificateDNSNameSelector implements Editable<CertificateDNSNameSe
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public CertificateDNSNameSelector() {
     }

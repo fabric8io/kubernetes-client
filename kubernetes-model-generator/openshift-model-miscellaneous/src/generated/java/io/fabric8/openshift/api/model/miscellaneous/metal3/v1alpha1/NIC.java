@@ -93,7 +93,6 @@ public class NIC implements Editable<NICBuilder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public NIC() {
     }

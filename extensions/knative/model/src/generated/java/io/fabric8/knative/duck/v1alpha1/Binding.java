@@ -76,16 +76,12 @@ public class Binding implements Editable<BindingBuilder>, HasMetadata, Namespace
 {
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "duck.knative.dev/v1alpha1";
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "Binding";
@@ -98,7 +94,6 @@ public class Binding implements Editable<BindingBuilder>, HasMetadata, Namespace
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public Binding() {
     }
@@ -112,9 +107,7 @@ public class Binding implements Editable<BindingBuilder>, HasMetadata, Namespace
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -122,9 +115,7 @@ public class Binding implements Editable<BindingBuilder>, HasMetadata, Namespace
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -132,9 +123,7 @@ public class Binding implements Editable<BindingBuilder>, HasMetadata, Namespace
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -142,9 +131,7 @@ public class Binding implements Editable<BindingBuilder>, HasMetadata, Namespace
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

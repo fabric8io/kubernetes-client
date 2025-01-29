@@ -71,7 +71,6 @@ public class StringMatch implements Editable<StringMatchBuilder>, KubernetesReso
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public StringMatch() {
     }

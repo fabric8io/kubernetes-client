@@ -72,7 +72,6 @@ public class IngressClassSpec implements Editable<IngressClassSpecBuilder>, Kube
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public IngressClassSpec() {
     }

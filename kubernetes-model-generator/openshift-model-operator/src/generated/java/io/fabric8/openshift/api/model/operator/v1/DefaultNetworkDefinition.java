@@ -75,7 +75,6 @@ public class DefaultNetworkDefinition implements Editable<DefaultNetworkDefiniti
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public DefaultNetworkDefinition() {
     }

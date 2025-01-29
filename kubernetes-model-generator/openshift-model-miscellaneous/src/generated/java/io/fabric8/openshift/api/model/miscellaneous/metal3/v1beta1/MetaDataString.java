@@ -72,7 +72,6 @@ public class MetaDataString implements Editable<MetaDataStringBuilder>, Kubernet
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public MetaDataString() {
     }

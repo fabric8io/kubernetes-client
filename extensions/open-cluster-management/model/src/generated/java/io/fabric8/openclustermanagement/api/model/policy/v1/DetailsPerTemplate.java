@@ -78,7 +78,6 @@ public class DetailsPerTemplate implements Editable<DetailsPerTemplateBuilder>, 
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public DetailsPerTemplate() {
     }

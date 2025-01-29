@@ -43,7 +43,6 @@ public class PhotonPersistentDiskVolumeSource implements Editable<PhotonPersiste
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public PhotonPersistentDiskVolumeSource() {
     }

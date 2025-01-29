@@ -72,7 +72,6 @@ public class EgressNetworkPolicyRule implements Editable<EgressNetworkPolicyRule
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public EgressNetworkPolicyRule() {
     }

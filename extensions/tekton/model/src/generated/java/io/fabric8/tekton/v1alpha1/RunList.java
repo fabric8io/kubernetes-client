@@ -79,9 +79,7 @@ public class RunList implements Editable<RunListBuilder>, KubernetesResource, Ku
 {
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "tekton.dev/v1alpha1";
@@ -89,9 +87,7 @@ public class RunList implements Editable<RunListBuilder>, KubernetesResource, Ku
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<io.fabric8.tekton.v1alpha1.Run> items = new ArrayList<>();
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "RunList";
@@ -102,7 +98,6 @@ public class RunList implements Editable<RunListBuilder>, KubernetesResource, Ku
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public RunList() {
     }
@@ -116,9 +111,7 @@ public class RunList implements Editable<RunListBuilder>, KubernetesResource, Ku
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -126,9 +119,7 @@ public class RunList implements Editable<RunListBuilder>, KubernetesResource, Ku
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -147,9 +138,7 @@ public class RunList implements Editable<RunListBuilder>, KubernetesResource, Ku
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -157,9 +146,7 @@ public class RunList implements Editable<RunListBuilder>, KubernetesResource, Ku
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

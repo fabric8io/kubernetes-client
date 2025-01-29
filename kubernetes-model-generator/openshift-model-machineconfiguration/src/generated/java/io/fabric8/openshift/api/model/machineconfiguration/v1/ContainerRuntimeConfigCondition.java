@@ -81,7 +81,6 @@ public class ContainerRuntimeConfigCondition implements Editable<ContainerRuntim
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ContainerRuntimeConfigCondition() {
     }

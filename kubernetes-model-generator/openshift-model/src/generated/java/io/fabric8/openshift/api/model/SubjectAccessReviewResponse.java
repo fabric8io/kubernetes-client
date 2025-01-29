@@ -80,18 +80,14 @@ public class SubjectAccessReviewResponse implements Editable<SubjectAccessReview
     @JsonProperty("allowed")
     private Boolean allowed;
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "authorization.openshift.io/v1";
     @JsonProperty("evaluationError")
     private String evaluationError;
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "SubjectAccessReviewResponse";
@@ -104,7 +100,6 @@ public class SubjectAccessReviewResponse implements Editable<SubjectAccessReview
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public SubjectAccessReviewResponse() {
     }
@@ -130,9 +125,7 @@ public class SubjectAccessReviewResponse implements Editable<SubjectAccessReview
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -140,9 +133,7 @@ public class SubjectAccessReviewResponse implements Editable<SubjectAccessReview
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -160,9 +151,7 @@ public class SubjectAccessReviewResponse implements Editable<SubjectAccessReview
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -170,9 +159,7 @@ public class SubjectAccessReviewResponse implements Editable<SubjectAccessReview
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

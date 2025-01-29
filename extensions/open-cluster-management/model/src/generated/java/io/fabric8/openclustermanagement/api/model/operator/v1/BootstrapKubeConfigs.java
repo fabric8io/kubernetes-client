@@ -72,7 +72,6 @@ public class BootstrapKubeConfigs implements Editable<BootstrapKubeConfigsBuilde
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public BootstrapKubeConfigs() {
     }

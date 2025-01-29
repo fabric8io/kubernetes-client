@@ -46,7 +46,6 @@ public class GroupVersionResource implements Editable<GroupVersionResourceBuilde
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public GroupVersionResource() {
     }

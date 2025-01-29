@@ -75,7 +75,6 @@ public class ParallelBranchStatus implements Editable<ParallelBranchStatusBuilde
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ParallelBranchStatus() {
     }

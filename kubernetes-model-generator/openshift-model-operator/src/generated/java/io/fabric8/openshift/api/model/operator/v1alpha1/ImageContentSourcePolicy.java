@@ -75,16 +75,12 @@ public class ImageContentSourcePolicy implements Editable<ImageContentSourcePoli
 {
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "operator.openshift.io/v1alpha1";
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "ImageContentSourcePolicy";
@@ -97,7 +93,6 @@ public class ImageContentSourcePolicy implements Editable<ImageContentSourcePoli
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ImageContentSourcePolicy() {
     }
@@ -111,9 +106,7 @@ public class ImageContentSourcePolicy implements Editable<ImageContentSourcePoli
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -121,9 +114,7 @@ public class ImageContentSourcePolicy implements Editable<ImageContentSourcePoli
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -131,9 +122,7 @@ public class ImageContentSourcePolicy implements Editable<ImageContentSourcePoli
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -141,9 +130,7 @@ public class ImageContentSourcePolicy implements Editable<ImageContentSourcePoli
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

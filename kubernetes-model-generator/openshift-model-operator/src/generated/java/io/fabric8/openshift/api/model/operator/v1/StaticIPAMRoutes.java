@@ -72,7 +72,6 @@ public class StaticIPAMRoutes implements Editable<StaticIPAMRoutesBuilder>, Kube
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public StaticIPAMRoutes() {
     }

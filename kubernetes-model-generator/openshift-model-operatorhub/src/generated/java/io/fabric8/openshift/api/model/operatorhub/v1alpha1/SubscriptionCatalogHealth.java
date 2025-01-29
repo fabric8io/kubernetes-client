@@ -75,7 +75,6 @@ public class SubscriptionCatalogHealth implements Editable<SubscriptionCatalogHe
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public SubscriptionCatalogHealth() {
     }

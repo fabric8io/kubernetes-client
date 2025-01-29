@@ -72,7 +72,6 @@ public class LimitResponse implements Editable<LimitResponseBuilder>, Kubernetes
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public LimitResponse() {
     }

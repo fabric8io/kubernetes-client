@@ -101,7 +101,6 @@ public class TaskSpec implements Editable<TaskSpecBuilder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public TaskSpec() {
     }

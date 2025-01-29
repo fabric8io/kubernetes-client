@@ -69,7 +69,6 @@ public class ClusterDomainClaimSpec implements Editable<ClusterDomainClaimSpecBu
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ClusterDomainClaimSpec() {
     }

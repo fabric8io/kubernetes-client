@@ -88,7 +88,6 @@ public class MachineSpec implements Editable<MachineSpecBuilder>, KubernetesReso
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public MachineSpec() {
     }

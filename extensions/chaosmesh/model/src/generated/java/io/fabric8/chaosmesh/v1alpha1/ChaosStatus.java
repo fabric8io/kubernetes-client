@@ -75,7 +75,6 @@ public class ChaosStatus implements Editable<ChaosStatusBuilder>, KubernetesReso
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ChaosStatus() {
     }

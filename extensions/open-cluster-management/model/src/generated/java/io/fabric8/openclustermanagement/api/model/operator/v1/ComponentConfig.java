@@ -72,7 +72,6 @@ public class ComponentConfig implements Editable<ComponentConfigBuilder>, Kubern
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ComponentConfig() {
     }

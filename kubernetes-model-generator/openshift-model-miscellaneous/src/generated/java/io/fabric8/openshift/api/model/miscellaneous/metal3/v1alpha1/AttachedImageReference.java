@@ -69,7 +69,6 @@ public class AttachedImageReference implements Editable<AttachedImageReferenceBu
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public AttachedImageReference() {
     }

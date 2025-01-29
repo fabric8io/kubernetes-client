@@ -78,7 +78,6 @@ public class NamespacedPolicyTargetReference implements Editable<NamespacedPolic
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public NamespacedPolicyTargetReference() {
     }

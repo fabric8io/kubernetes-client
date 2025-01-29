@@ -72,7 +72,6 @@ public class AddOnManagerConfiguration implements Editable<AddOnManagerConfigura
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public AddOnManagerConfiguration() {
     }

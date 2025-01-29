@@ -78,7 +78,6 @@ public class EgressFirewallRule implements Editable<EgressFirewallRuleBuilder>, 
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public EgressFirewallRule() {
     }

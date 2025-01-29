@@ -79,9 +79,7 @@ public class DaemonSetList implements Editable<DaemonSetListBuilder>, Kubernetes
 {
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "apps/v1";
@@ -89,9 +87,7 @@ public class DaemonSetList implements Editable<DaemonSetListBuilder>, Kubernetes
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<io.fabric8.kubernetes.api.model.apps.DaemonSet> items = new ArrayList<>();
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "DaemonSetList";
@@ -102,7 +98,6 @@ public class DaemonSetList implements Editable<DaemonSetListBuilder>, Kubernetes
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public DaemonSetList() {
     }
@@ -116,9 +111,7 @@ public class DaemonSetList implements Editable<DaemonSetListBuilder>, Kubernetes
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -126,9 +119,7 @@ public class DaemonSetList implements Editable<DaemonSetListBuilder>, Kubernetes
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -147,9 +138,7 @@ public class DaemonSetList implements Editable<DaemonSetListBuilder>, Kubernetes
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -157,9 +146,7 @@ public class DaemonSetList implements Editable<DaemonSetListBuilder>, Kubernetes
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

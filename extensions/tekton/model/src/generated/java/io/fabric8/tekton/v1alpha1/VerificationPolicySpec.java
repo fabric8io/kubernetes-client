@@ -79,7 +79,6 @@ public class VerificationPolicySpec implements Editable<VerificationPolicySpecBu
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public VerificationPolicySpec() {
     }

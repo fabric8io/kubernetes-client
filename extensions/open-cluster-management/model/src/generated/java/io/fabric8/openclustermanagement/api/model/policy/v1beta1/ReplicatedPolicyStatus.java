@@ -78,7 +78,6 @@ public class ReplicatedPolicyStatus implements Editable<ReplicatedPolicyStatusBu
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ReplicatedPolicyStatus() {
     }

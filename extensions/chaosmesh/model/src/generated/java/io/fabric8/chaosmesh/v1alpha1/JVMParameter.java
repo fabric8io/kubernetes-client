@@ -111,7 +111,6 @@ public class JVMParameter implements Editable<JVMParameterBuilder>, KubernetesRe
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public JVMParameter() {
     }

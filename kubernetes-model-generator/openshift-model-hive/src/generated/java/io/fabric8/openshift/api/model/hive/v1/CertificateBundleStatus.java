@@ -72,7 +72,6 @@ public class CertificateBundleStatus implements Editable<CertificateBundleStatus
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public CertificateBundleStatus() {
     }

@@ -79,7 +79,6 @@ public class StaticIPAMDNS implements Editable<StaticIPAMDNSBuilder>, Kubernetes
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public StaticIPAMDNS() {
     }

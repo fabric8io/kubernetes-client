@@ -72,7 +72,6 @@ public class CannotConvertError implements Editable<CannotConvertErrorBuilder>, 
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public CannotConvertError() {
     }

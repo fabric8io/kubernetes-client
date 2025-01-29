@@ -81,7 +81,6 @@ public class BuildVolumeSource implements Editable<BuildVolumeSourceBuilder>, Ku
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public BuildVolumeSource() {
     }

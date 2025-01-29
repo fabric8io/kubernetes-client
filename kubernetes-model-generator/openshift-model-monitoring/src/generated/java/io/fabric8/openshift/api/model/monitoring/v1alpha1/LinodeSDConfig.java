@@ -111,7 +111,6 @@ public class LinodeSDConfig implements Editable<LinodeSDConfigBuilder>, Kubernet
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public LinodeSDConfig() {
     }

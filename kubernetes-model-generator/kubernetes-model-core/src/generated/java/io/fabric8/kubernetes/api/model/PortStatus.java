@@ -46,7 +46,6 @@ public class PortStatus implements Editable<PortStatusBuilder>, KubernetesResour
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public PortStatus() {
     }

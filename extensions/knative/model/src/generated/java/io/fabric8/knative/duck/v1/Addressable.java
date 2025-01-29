@@ -78,7 +78,6 @@ public class Addressable implements Editable<AddressableBuilder>, KubernetesReso
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public Addressable() {
     }

@@ -61,9 +61,7 @@ public class Event implements Editable<EventBuilder>, HasMetadata, Namespaced
     @JsonProperty("action")
     private String action;
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "v1";
@@ -76,9 +74,7 @@ public class Event implements Editable<EventBuilder>, HasMetadata, Namespaced
     @JsonProperty("involvedObject")
     private ObjectReference involvedObject;
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "Event";
@@ -107,7 +103,6 @@ public class Event implements Editable<EventBuilder>, HasMetadata, Namespaced
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public Event() {
     }
@@ -144,9 +139,7 @@ public class Event implements Editable<EventBuilder>, HasMetadata, Namespaced
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -154,9 +147,7 @@ public class Event implements Editable<EventBuilder>, HasMetadata, Namespaced
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -204,9 +195,7 @@ public class Event implements Editable<EventBuilder>, HasMetadata, Namespaced
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -214,9 +203,7 @@ public class Event implements Editable<EventBuilder>, HasMetadata, Namespaced
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

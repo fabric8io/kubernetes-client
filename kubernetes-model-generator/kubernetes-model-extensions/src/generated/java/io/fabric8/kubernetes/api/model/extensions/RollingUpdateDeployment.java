@@ -72,7 +72,6 @@ public class RollingUpdateDeployment implements Editable<RollingUpdateDeployment
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public RollingUpdateDeployment() {
     }

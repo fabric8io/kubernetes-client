@@ -77,18 +77,14 @@ public class PolicyDependency implements Editable<PolicyDependencyBuilder>, Kube
 {
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "policy.open-cluster-management.io/v1";
     @JsonProperty("compliance")
     private String compliance;
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "PolicyDependency";
@@ -101,7 +97,6 @@ public class PolicyDependency implements Editable<PolicyDependencyBuilder>, Kube
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public PolicyDependency() {
     }
@@ -116,9 +111,7 @@ public class PolicyDependency implements Editable<PolicyDependencyBuilder>, Kube
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -126,9 +119,7 @@ public class PolicyDependency implements Editable<PolicyDependencyBuilder>, Kube
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -146,9 +137,7 @@ public class PolicyDependency implements Editable<PolicyDependencyBuilder>, Kube
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -156,9 +145,7 @@ public class PolicyDependency implements Editable<PolicyDependencyBuilder>, Kube
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

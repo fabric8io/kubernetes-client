@@ -46,7 +46,6 @@ public class ProjectedVolumeSource implements Editable<ProjectedVolumeSourceBuil
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ProjectedVolumeSource() {
     }

@@ -72,7 +72,6 @@ public class AppliedEventPoliciesStatus implements Editable<AppliedEventPolicies
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public AppliedEventPoliciesStatus() {
     }

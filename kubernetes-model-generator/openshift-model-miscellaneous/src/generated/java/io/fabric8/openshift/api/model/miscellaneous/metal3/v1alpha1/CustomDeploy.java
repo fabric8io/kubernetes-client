@@ -69,7 +69,6 @@ public class CustomDeploy implements Editable<CustomDeployBuilder>, KubernetesRe
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public CustomDeploy() {
     }

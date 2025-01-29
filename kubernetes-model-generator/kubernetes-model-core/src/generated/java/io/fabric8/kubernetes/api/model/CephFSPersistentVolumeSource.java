@@ -58,7 +58,6 @@ public class CephFSPersistentVolumeSource implements Editable<CephFSPersistentVo
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public CephFSPersistentVolumeSource() {
     }

@@ -84,7 +84,6 @@ public class Condition implements Editable<ConditionBuilder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public Condition() {
     }

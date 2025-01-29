@@ -72,7 +72,6 @@ public class DataImageError implements Editable<DataImageErrorBuilder>, Kubernet
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public DataImageError() {
     }

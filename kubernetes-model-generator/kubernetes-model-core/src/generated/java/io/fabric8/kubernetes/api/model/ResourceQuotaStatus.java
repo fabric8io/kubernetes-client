@@ -45,7 +45,6 @@ public class ResourceQuotaStatus implements Editable<ResourceQuotaStatusBuilder>
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ResourceQuotaStatus() {
     }

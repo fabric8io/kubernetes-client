@@ -79,9 +79,7 @@ public class RoleBindingRestrictionList implements Editable<RoleBindingRestricti
 {
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "authorization.openshift.io/v1";
@@ -89,9 +87,7 @@ public class RoleBindingRestrictionList implements Editable<RoleBindingRestricti
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<io.fabric8.openshift.api.model.RoleBindingRestriction> items = new ArrayList<>();
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "RoleBindingRestrictionList";
@@ -102,7 +98,6 @@ public class RoleBindingRestrictionList implements Editable<RoleBindingRestricti
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public RoleBindingRestrictionList() {
     }
@@ -116,9 +111,7 @@ public class RoleBindingRestrictionList implements Editable<RoleBindingRestricti
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -126,9 +119,7 @@ public class RoleBindingRestrictionList implements Editable<RoleBindingRestricti
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -147,9 +138,7 @@ public class RoleBindingRestrictionList implements Editable<RoleBindingRestricti
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -157,9 +146,7 @@ public class RoleBindingRestrictionList implements Editable<RoleBindingRestricti
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

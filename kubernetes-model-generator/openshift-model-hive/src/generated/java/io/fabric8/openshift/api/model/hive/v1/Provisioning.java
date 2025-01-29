@@ -97,7 +97,6 @@ public class Provisioning implements Editable<ProvisioningBuilder>, KubernetesRe
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public Provisioning() {
     }

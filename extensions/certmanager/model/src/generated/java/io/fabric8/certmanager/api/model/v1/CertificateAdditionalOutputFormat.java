@@ -69,7 +69,6 @@ public class CertificateAdditionalOutputFormat implements Editable<CertificateAd
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public CertificateAdditionalOutputFormat() {
     }

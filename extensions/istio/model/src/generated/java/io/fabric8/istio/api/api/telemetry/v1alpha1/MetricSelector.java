@@ -74,7 +74,6 @@ public class MetricSelector implements Editable<MetricSelectorBuilder>, Kubernet
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public MetricSelector() {
     }

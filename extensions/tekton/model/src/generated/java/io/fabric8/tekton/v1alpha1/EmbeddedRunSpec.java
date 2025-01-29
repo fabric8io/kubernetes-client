@@ -80,7 +80,6 @@ public class EmbeddedRunSpec implements Editable<EmbeddedRunSpecBuilder>, Kubern
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public EmbeddedRunSpec() {
     }

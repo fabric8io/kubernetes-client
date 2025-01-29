@@ -88,7 +88,6 @@ public class CloudCredentialStatus implements Editable<CloudCredentialStatusBuil
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public CloudCredentialStatus() {
     }

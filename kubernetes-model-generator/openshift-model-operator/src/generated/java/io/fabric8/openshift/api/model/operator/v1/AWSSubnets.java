@@ -76,7 +76,6 @@ public class AWSSubnets implements Editable<AWSSubnetsBuilder>, KubernetesResour
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public AWSSubnets() {
     }

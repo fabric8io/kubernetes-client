@@ -76,7 +76,6 @@ public class UncountedTerminatedPods implements Editable<UncountedTerminatedPods
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public UncountedTerminatedPods() {
     }

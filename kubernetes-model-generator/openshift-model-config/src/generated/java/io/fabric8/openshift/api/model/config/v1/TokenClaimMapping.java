@@ -69,7 +69,6 @@ public class TokenClaimMapping implements Editable<TokenClaimMappingBuilder>, Ku
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public TokenClaimMapping() {
     }

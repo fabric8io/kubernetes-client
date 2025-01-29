@@ -75,7 +75,6 @@ public class AddressesFromPool implements Editable<AddressesFromPoolBuilder>, Ku
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public AddressesFromPool() {
     }

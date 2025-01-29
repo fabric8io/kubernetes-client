@@ -69,7 +69,6 @@ public class TemplateInstanceObject implements Editable<TemplateInstanceObjectBu
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public TemplateInstanceObject() {
     }

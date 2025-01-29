@@ -69,7 +69,6 @@ public class S3TrustedCASource implements Editable<S3TrustedCASourceBuilder>, Ku
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public S3TrustedCASource() {
     }

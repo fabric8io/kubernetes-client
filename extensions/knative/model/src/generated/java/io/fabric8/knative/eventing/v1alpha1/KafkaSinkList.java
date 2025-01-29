@@ -79,9 +79,7 @@ public class KafkaSinkList implements Editable<KafkaSinkListBuilder>, Kubernetes
 {
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "eventing.knative.dev/v1alpha1";
@@ -89,9 +87,7 @@ public class KafkaSinkList implements Editable<KafkaSinkListBuilder>, Kubernetes
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<io.fabric8.knative.eventing.v1alpha1.KafkaSink> items = new ArrayList<>();
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "KafkaSinkList";
@@ -102,7 +98,6 @@ public class KafkaSinkList implements Editable<KafkaSinkListBuilder>, Kubernetes
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public KafkaSinkList() {
     }
@@ -116,9 +111,7 @@ public class KafkaSinkList implements Editable<KafkaSinkListBuilder>, Kubernetes
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -126,9 +119,7 @@ public class KafkaSinkList implements Editable<KafkaSinkListBuilder>, Kubernetes
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -147,9 +138,7 @@ public class KafkaSinkList implements Editable<KafkaSinkListBuilder>, Kubernetes
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -157,9 +146,7 @@ public class KafkaSinkList implements Editable<KafkaSinkListBuilder>, Kubernetes
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

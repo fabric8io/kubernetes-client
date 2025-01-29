@@ -78,7 +78,6 @@ public class SidecarPort implements Editable<SidecarPortBuilder>, KubernetesReso
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public SidecarPort() {
     }

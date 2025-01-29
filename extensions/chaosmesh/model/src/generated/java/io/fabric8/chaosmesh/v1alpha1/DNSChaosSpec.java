@@ -94,7 +94,6 @@ public class DNSChaosSpec implements Editable<DNSChaosSpecBuilder>, KubernetesRe
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public DNSChaosSpec() {
     }

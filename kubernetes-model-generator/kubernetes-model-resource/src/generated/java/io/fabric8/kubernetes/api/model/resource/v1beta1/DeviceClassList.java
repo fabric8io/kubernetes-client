@@ -79,9 +79,7 @@ public class DeviceClassList implements Editable<DeviceClassListBuilder>, Kubern
 {
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "resource.k8s.io/v1beta1";
@@ -89,9 +87,7 @@ public class DeviceClassList implements Editable<DeviceClassListBuilder>, Kubern
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<io.fabric8.kubernetes.api.model.resource.v1beta1.DeviceClass> items = new ArrayList<>();
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "DeviceClassList";
@@ -102,7 +98,6 @@ public class DeviceClassList implements Editable<DeviceClassListBuilder>, Kubern
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public DeviceClassList() {
     }
@@ -116,9 +111,7 @@ public class DeviceClassList implements Editable<DeviceClassListBuilder>, Kubern
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -126,9 +119,7 @@ public class DeviceClassList implements Editable<DeviceClassListBuilder>, Kubern
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -147,9 +138,7 @@ public class DeviceClassList implements Editable<DeviceClassListBuilder>, Kubern
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -157,9 +146,7 @@ public class DeviceClassList implements Editable<DeviceClassListBuilder>, Kubern
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

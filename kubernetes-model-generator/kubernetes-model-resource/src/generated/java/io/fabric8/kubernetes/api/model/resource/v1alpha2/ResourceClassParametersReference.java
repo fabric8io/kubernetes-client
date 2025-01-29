@@ -78,7 +78,6 @@ public class ResourceClassParametersReference implements Editable<ResourceClassP
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ResourceClassParametersReference() {
     }

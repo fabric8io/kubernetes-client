@@ -72,7 +72,6 @@ public class NetFlowConfig implements Editable<NetFlowConfigBuilder>, Kubernetes
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public NetFlowConfig() {
     }

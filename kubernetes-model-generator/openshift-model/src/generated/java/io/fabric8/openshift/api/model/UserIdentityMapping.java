@@ -76,18 +76,14 @@ public class UserIdentityMapping implements Editable<UserIdentityMappingBuilder>
 {
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "user.openshift.io/v1";
     @JsonProperty("identity")
     private ObjectReference identity;
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "UserIdentityMapping";
@@ -100,7 +96,6 @@ public class UserIdentityMapping implements Editable<UserIdentityMappingBuilder>
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public UserIdentityMapping() {
     }
@@ -115,9 +110,7 @@ public class UserIdentityMapping implements Editable<UserIdentityMappingBuilder>
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -125,9 +118,7 @@ public class UserIdentityMapping implements Editable<UserIdentityMappingBuilder>
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -145,9 +136,7 @@ public class UserIdentityMapping implements Editable<UserIdentityMappingBuilder>
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -155,9 +144,7 @@ public class UserIdentityMapping implements Editable<UserIdentityMappingBuilder>
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

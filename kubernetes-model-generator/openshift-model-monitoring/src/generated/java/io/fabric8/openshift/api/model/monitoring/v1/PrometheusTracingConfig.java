@@ -92,7 +92,6 @@ public class PrometheusTracingConfig implements Editable<PrometheusTracingConfig
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public PrometheusTracingConfig() {
     }

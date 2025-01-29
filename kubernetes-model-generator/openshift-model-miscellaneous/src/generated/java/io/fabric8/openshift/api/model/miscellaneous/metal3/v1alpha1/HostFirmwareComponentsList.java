@@ -79,9 +79,7 @@ public class HostFirmwareComponentsList implements Editable<HostFirmwareComponen
 {
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "metal3.io/v1alpha1";
@@ -89,9 +87,7 @@ public class HostFirmwareComponentsList implements Editable<HostFirmwareComponen
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<io.fabric8.openshift.api.model.miscellaneous.metal3.v1alpha1.HostFirmwareComponents> items = new ArrayList<>();
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "HostFirmwareComponentsList";
@@ -102,7 +98,6 @@ public class HostFirmwareComponentsList implements Editable<HostFirmwareComponen
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public HostFirmwareComponentsList() {
     }
@@ -116,9 +111,7 @@ public class HostFirmwareComponentsList implements Editable<HostFirmwareComponen
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -126,9 +119,7 @@ public class HostFirmwareComponentsList implements Editable<HostFirmwareComponen
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -147,9 +138,7 @@ public class HostFirmwareComponentsList implements Editable<HostFirmwareComponen
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -157,9 +146,7 @@ public class HostFirmwareComponentsList implements Editable<HostFirmwareComponen
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

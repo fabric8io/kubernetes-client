@@ -75,7 +75,6 @@ public class ScopeRestriction implements Editable<ScopeRestrictionBuilder>, Kube
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ScopeRestriction() {
     }

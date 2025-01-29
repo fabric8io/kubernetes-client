@@ -82,7 +82,6 @@ public class DiscordConfig implements Editable<DiscordConfigBuilder>, Kubernetes
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public DiscordConfig() {
     }

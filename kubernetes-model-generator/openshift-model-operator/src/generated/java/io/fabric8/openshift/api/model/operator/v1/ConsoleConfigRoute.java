@@ -73,7 +73,6 @@ public class ConsoleConfigRoute implements Editable<ConsoleConfigRouteBuilder>, 
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ConsoleConfigRoute() {
     }

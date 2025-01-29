@@ -80,7 +80,6 @@ public class DataDisk implements Editable<DataDiskBuilder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public DataDisk() {
     }

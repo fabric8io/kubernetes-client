@@ -79,9 +79,7 @@ public class VolumeSnapshotContentList implements Editable<VolumeSnapshotContent
 {
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "snapshot.storage.k8s.io/v1";
@@ -89,9 +87,7 @@ public class VolumeSnapshotContentList implements Editable<VolumeSnapshotContent
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<io.fabric8.volumesnapshot.api.model.VolumeSnapshotContent> items = new ArrayList<>();
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "VolumeSnapshotContentList";
@@ -102,7 +98,6 @@ public class VolumeSnapshotContentList implements Editable<VolumeSnapshotContent
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public VolumeSnapshotContentList() {
     }
@@ -116,9 +111,7 @@ public class VolumeSnapshotContentList implements Editable<VolumeSnapshotContent
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -126,9 +119,7 @@ public class VolumeSnapshotContentList implements Editable<VolumeSnapshotContent
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -147,9 +138,7 @@ public class VolumeSnapshotContentList implements Editable<VolumeSnapshotContent
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -157,9 +146,7 @@ public class VolumeSnapshotContentList implements Editable<VolumeSnapshotContent
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

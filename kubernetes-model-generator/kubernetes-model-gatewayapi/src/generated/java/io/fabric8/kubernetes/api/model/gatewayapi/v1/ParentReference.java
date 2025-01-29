@@ -84,7 +84,6 @@ public class ParentReference implements Editable<ParentReferenceBuilder>, Kubern
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ParentReference() {
     }

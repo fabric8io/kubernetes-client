@@ -73,7 +73,6 @@ public class EnvoyFilterProxyMatch implements Editable<EnvoyFilterProxyMatchBuil
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public EnvoyFilterProxyMatch() {
     }

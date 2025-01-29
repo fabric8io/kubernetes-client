@@ -85,7 +85,6 @@ public class NutanixPlatformStatus implements Editable<NutanixPlatformStatusBuil
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public NutanixPlatformStatus() {
     }

@@ -65,7 +65,6 @@ public class Info implements Editable<InfoBuilder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public Info() {
     }

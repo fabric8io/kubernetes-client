@@ -81,9 +81,7 @@ public class AzureMachineProviderStatus implements Editable<AzureMachineProvider
 {
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "machine.openshift.io/v1beta1";
@@ -91,9 +89,7 @@ public class AzureMachineProviderStatus implements Editable<AzureMachineProvider
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<Condition> conditions = new ArrayList<>();
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "AzureMachineProviderStatus";
@@ -108,7 +104,6 @@ public class AzureMachineProviderStatus implements Editable<AzureMachineProvider
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public AzureMachineProviderStatus() {
     }
@@ -124,9 +119,7 @@ public class AzureMachineProviderStatus implements Editable<AzureMachineProvider
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -134,9 +127,7 @@ public class AzureMachineProviderStatus implements Editable<AzureMachineProvider
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -155,9 +146,7 @@ public class AzureMachineProviderStatus implements Editable<AzureMachineProvider
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -165,9 +154,7 @@ public class AzureMachineProviderStatus implements Editable<AzureMachineProvider
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

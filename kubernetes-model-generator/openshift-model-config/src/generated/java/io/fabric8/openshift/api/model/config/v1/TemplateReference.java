@@ -69,7 +69,6 @@ public class TemplateReference implements Editable<TemplateReferenceBuilder>, Ku
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public TemplateReference() {
     }

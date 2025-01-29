@@ -77,16 +77,12 @@ public class EgressFirewall implements Editable<EgressFirewallBuilder>, HasMetad
 {
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "k8s.ovn.org/v1";
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "EgressFirewall";
@@ -101,7 +97,6 @@ public class EgressFirewall implements Editable<EgressFirewallBuilder>, HasMetad
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public EgressFirewall() {
     }
@@ -116,9 +111,7 @@ public class EgressFirewall implements Editable<EgressFirewallBuilder>, HasMetad
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -126,9 +119,7 @@ public class EgressFirewall implements Editable<EgressFirewallBuilder>, HasMetad
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -136,9 +127,7 @@ public class EgressFirewall implements Editable<EgressFirewallBuilder>, HasMetad
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -146,9 +135,7 @@ public class EgressFirewall implements Editable<EgressFirewallBuilder>, HasMetad
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

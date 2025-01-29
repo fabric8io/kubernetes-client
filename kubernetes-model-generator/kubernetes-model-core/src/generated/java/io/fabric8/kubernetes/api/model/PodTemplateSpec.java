@@ -43,7 +43,6 @@ public class PodTemplateSpec implements Editable<PodTemplateSpecBuilder>, Kubern
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public PodTemplateSpec() {
     }

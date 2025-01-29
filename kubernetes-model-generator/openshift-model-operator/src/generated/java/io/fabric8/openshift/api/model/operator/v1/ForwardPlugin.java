@@ -81,7 +81,6 @@ public class ForwardPlugin implements Editable<ForwardPluginBuilder>, Kubernetes
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ForwardPlugin() {
     }

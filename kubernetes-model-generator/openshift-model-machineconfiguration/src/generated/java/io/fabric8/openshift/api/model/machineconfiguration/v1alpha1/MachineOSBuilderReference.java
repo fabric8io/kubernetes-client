@@ -72,7 +72,6 @@ public class MachineOSBuilderReference implements Editable<MachineOSBuilderRefer
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public MachineOSBuilderReference() {
     }

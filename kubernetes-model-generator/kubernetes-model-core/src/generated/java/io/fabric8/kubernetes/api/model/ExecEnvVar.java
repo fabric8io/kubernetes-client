@@ -43,7 +43,6 @@ public class ExecEnvVar implements Editable<ExecEnvVarBuilder>, KubernetesResour
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ExecEnvVar() {
     }

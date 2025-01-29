@@ -80,7 +80,6 @@ public class PodNetworkChaosSpec implements Editable<PodNetworkChaosSpecBuilder>
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public PodNetworkChaosSpec() {
     }

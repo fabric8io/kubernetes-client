@@ -80,7 +80,6 @@ public class GeneratorOptions implements Editable<GeneratorOptionsBuilder>, Kube
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public GeneratorOptions() {
     }

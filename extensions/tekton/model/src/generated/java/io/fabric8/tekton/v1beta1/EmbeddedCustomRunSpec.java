@@ -79,7 +79,6 @@ public class EmbeddedCustomRunSpec implements Editable<EmbeddedCustomRunSpecBuil
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public EmbeddedCustomRunSpec() {
     }

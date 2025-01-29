@@ -46,7 +46,6 @@ public class ResourceStatus implements Editable<ResourceStatusBuilder>, Kubernet
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ResourceStatus() {
     }

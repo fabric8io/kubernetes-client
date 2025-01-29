@@ -69,7 +69,6 @@ public class KlusterletDeployOption implements Editable<KlusterletDeployOptionBu
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public KlusterletDeployOption() {
     }

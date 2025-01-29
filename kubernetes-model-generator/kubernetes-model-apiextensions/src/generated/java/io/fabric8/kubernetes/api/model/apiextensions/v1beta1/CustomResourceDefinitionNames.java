@@ -88,7 +88,6 @@ public class CustomResourceDefinitionNames implements Editable<CustomResourceDef
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public CustomResourceDefinitionNames() {
     }

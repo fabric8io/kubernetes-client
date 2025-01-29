@@ -69,7 +69,6 @@ public class AWSFailureDomainPlacement implements Editable<AWSFailureDomainPlace
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public AWSFailureDomainPlacement() {
     }

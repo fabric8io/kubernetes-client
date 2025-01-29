@@ -81,7 +81,6 @@ public class MachineOSBuildSpec implements Editable<MachineOSBuildSpecBuilder>, 
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public MachineOSBuildSpec() {
     }

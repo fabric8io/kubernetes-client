@@ -75,7 +75,6 @@ public class PrioritizerPolicy implements Editable<PrioritizerPolicyBuilder>, Ku
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public PrioritizerPolicy() {
     }

@@ -69,7 +69,6 @@ public class EtcdBackupSpec implements Editable<EtcdBackupSpecBuilder>, Kubernet
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public EtcdBackupSpec() {
     }

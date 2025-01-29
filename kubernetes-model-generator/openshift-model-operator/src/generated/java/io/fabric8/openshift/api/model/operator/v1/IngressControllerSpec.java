@@ -120,7 +120,6 @@ public class IngressControllerSpec implements Editable<IngressControllerSpecBuil
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public IngressControllerSpec() {
     }

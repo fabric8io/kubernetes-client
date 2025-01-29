@@ -43,7 +43,6 @@ public class ImageVolumeSource implements Editable<ImageVolumeSourceBuilder>, Ku
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ImageVolumeSource() {
     }

@@ -87,7 +87,6 @@ public class Parameter implements Editable<ParameterBuilder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public Parameter() {
     }

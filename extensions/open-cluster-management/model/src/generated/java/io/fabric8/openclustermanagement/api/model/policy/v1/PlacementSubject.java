@@ -75,7 +75,6 @@ public class PlacementSubject implements Editable<PlacementSubjectBuilder>, Kube
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public PlacementSubject() {
     }

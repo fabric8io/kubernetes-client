@@ -72,7 +72,6 @@ public class GCPPrivateServiceConnectSubnet implements Editable<GCPPrivateServic
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public GCPPrivateServiceConnectSubnet() {
     }

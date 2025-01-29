@@ -89,7 +89,6 @@ public class KafkaSinkStatus implements Editable<KafkaSinkStatusBuilder>, Kubern
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public KafkaSinkStatus() {
     }

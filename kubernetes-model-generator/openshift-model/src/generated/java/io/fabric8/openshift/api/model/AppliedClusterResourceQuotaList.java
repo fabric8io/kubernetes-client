@@ -79,9 +79,7 @@ public class AppliedClusterResourceQuotaList implements Editable<AppliedClusterR
 {
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "quota.openshift.io/v1";
@@ -89,9 +87,7 @@ public class AppliedClusterResourceQuotaList implements Editable<AppliedClusterR
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<io.fabric8.openshift.api.model.AppliedClusterResourceQuota> items = new ArrayList<>();
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "AppliedClusterResourceQuotaList";
@@ -102,7 +98,6 @@ public class AppliedClusterResourceQuotaList implements Editable<AppliedClusterR
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public AppliedClusterResourceQuotaList() {
     }
@@ -116,9 +111,7 @@ public class AppliedClusterResourceQuotaList implements Editable<AppliedClusterR
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -126,9 +119,7 @@ public class AppliedClusterResourceQuotaList implements Editable<AppliedClusterR
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -147,9 +138,7 @@ public class AppliedClusterResourceQuotaList implements Editable<AppliedClusterR
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -157,9 +146,7 @@ public class AppliedClusterResourceQuotaList implements Editable<AppliedClusterR
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

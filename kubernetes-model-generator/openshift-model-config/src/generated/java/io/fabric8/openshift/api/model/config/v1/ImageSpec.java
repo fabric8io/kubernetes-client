@@ -85,7 +85,6 @@ public class ImageSpec implements Editable<ImageSpecBuilder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ImageSpec() {
     }

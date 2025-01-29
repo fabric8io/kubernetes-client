@@ -72,7 +72,6 @@ public class AnalysisMessageWeakSchemaArgType implements Editable<AnalysisMessag
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public AnalysisMessageWeakSchemaArgType() {
     }

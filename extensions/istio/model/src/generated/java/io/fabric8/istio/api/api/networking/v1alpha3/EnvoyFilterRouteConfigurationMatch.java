@@ -81,7 +81,6 @@ public class EnvoyFilterRouteConfigurationMatch implements Editable<EnvoyFilterR
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public EnvoyFilterRouteConfigurationMatch() {
     }

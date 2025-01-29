@@ -146,7 +146,6 @@ public class StepTemplate implements Editable<StepTemplateBuilder>, KubernetesRe
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public StepTemplate() {
     }

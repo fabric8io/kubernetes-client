@@ -75,7 +75,6 @@ public class ServiceAccountRef implements Editable<ServiceAccountRefBuilder>, Ku
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ServiceAccountRef() {
     }

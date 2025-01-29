@@ -119,7 +119,6 @@ public class Container implements Editable<ContainerBuilder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public Container() {
     }

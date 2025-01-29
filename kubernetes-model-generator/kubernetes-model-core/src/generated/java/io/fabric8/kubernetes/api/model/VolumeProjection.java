@@ -52,7 +52,6 @@ public class VolumeProjection implements Editable<VolumeProjectionBuilder>, Kube
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public VolumeProjection() {
     }

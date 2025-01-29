@@ -75,7 +75,6 @@ public class KeyVault implements Editable<KeyVaultBuilder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public KeyVault() {
     }

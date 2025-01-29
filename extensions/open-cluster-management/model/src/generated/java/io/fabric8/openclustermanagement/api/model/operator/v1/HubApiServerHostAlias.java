@@ -72,7 +72,6 @@ public class HubApiServerHostAlias implements Editable<HubApiServerHostAliasBuil
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public HubApiServerHostAlias() {
     }

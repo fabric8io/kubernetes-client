@@ -72,7 +72,6 @@ public class MandatoryDecisionGroups implements Editable<MandatoryDecisionGroups
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public MandatoryDecisionGroups() {
     }

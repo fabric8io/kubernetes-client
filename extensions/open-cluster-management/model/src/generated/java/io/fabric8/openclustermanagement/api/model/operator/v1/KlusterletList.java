@@ -79,9 +79,7 @@ public class KlusterletList implements Editable<KlusterletListBuilder>, Kubernet
 {
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "operator.open-cluster-management.io/v1";
@@ -89,9 +87,7 @@ public class KlusterletList implements Editable<KlusterletListBuilder>, Kubernet
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<io.fabric8.openclustermanagement.api.model.operator.v1.Klusterlet> items = new ArrayList<>();
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "KlusterletList";
@@ -102,7 +98,6 @@ public class KlusterletList implements Editable<KlusterletListBuilder>, Kubernet
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public KlusterletList() {
     }
@@ -116,9 +111,7 @@ public class KlusterletList implements Editable<KlusterletListBuilder>, Kubernet
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -126,9 +119,7 @@ public class KlusterletList implements Editable<KlusterletListBuilder>, Kubernet
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -147,9 +138,7 @@ public class KlusterletList implements Editable<KlusterletListBuilder>, Kubernet
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -157,9 +146,7 @@ public class KlusterletList implements Editable<KlusterletListBuilder>, Kubernet
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

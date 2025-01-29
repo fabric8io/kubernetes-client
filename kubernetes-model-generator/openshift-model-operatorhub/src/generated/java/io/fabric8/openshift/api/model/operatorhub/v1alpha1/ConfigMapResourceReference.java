@@ -81,7 +81,6 @@ public class ConfigMapResourceReference implements Editable<ConfigMapResourceRef
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ConfigMapResourceReference() {
     }

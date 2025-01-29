@@ -69,7 +69,6 @@ public class WithPodSpec implements Editable<WithPodSpecBuilder>, KubernetesReso
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public WithPodSpec() {
     }

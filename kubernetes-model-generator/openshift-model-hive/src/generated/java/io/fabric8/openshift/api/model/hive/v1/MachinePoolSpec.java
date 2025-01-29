@@ -96,7 +96,6 @@ public class MachinePoolSpec implements Editable<MachinePoolSpecBuilder>, Kubern
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public MachinePoolSpec() {
     }

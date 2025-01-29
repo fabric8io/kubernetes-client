@@ -88,7 +88,6 @@ public class AffinityAssistantTemplate implements Editable<AffinityAssistantTemp
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public AffinityAssistantTemplate() {
     }

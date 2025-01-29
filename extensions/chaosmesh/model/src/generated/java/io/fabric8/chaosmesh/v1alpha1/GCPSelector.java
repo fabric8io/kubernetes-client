@@ -81,7 +81,6 @@ public class GCPSelector implements Editable<GCPSelectorBuilder>, KubernetesReso
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public GCPSelector() {
     }

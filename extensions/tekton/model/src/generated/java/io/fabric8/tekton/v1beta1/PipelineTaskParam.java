@@ -72,7 +72,6 @@ public class PipelineTaskParam implements Editable<PipelineTaskParamBuilder>, Ku
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public PipelineTaskParam() {
     }

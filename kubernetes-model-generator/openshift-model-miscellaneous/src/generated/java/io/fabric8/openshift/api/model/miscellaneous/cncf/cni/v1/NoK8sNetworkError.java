@@ -69,7 +69,6 @@ public class NoK8sNetworkError implements Editable<NoK8sNetworkErrorBuilder>, Ku
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public NoK8sNetworkError() {
     }

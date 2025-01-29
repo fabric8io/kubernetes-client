@@ -72,7 +72,6 @@ public class ServiceAttachmentSubnet implements Editable<ServiceAttachmentSubnet
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ServiceAttachmentSubnet() {
     }

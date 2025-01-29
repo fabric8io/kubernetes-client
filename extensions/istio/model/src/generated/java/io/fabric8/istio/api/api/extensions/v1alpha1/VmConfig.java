@@ -72,7 +72,6 @@ public class VmConfig implements Editable<VmConfigBuilder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public VmConfig() {
     }

@@ -82,7 +82,6 @@ public class MachinePool implements Editable<MachinePoolBuilder>, KubernetesReso
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public MachinePool() {
     }

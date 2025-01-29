@@ -75,7 +75,6 @@ public class Placeable implements Editable<PlaceableBuilder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public Placeable() {
     }

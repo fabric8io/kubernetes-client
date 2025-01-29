@@ -91,18 +91,14 @@ public class OAuthClient implements Editable<OAuthClientBuilder>, HasMetadata
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> additionalSecrets = new ArrayList<>();
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "oauth.openshift.io/v1";
     @JsonProperty("grantMethod")
     private String grantMethod;
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "OAuthClient";
@@ -123,7 +119,6 @@ public class OAuthClient implements Editable<OAuthClientBuilder>, HasMetadata
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public OAuthClient() {
     }
@@ -175,9 +170,7 @@ public class OAuthClient implements Editable<OAuthClientBuilder>, HasMetadata
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -185,9 +178,7 @@ public class OAuthClient implements Editable<OAuthClientBuilder>, HasMetadata
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -205,9 +196,7 @@ public class OAuthClient implements Editable<OAuthClientBuilder>, HasMetadata
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -215,9 +204,7 @@ public class OAuthClient implements Editable<OAuthClientBuilder>, HasMetadata
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

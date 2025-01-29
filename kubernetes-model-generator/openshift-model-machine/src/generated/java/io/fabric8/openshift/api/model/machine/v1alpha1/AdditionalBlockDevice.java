@@ -75,7 +75,6 @@ public class AdditionalBlockDevice implements Editable<AdditionalBlockDeviceBuil
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public AdditionalBlockDevice() {
     }

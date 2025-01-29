@@ -77,16 +77,12 @@ public class ValidatingWebhookConfiguration implements Editable<ValidatingWebhoo
 {
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "admissionregistration.k8s.io/v1";
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "ValidatingWebhookConfiguration";
@@ -100,7 +96,6 @@ public class ValidatingWebhookConfiguration implements Editable<ValidatingWebhoo
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ValidatingWebhookConfiguration() {
     }
@@ -114,9 +109,7 @@ public class ValidatingWebhookConfiguration implements Editable<ValidatingWebhoo
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -124,9 +117,7 @@ public class ValidatingWebhookConfiguration implements Editable<ValidatingWebhoo
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -134,9 +125,7 @@ public class ValidatingWebhookConfiguration implements Editable<ValidatingWebhoo
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -144,9 +133,7 @@ public class ValidatingWebhookConfiguration implements Editable<ValidatingWebhoo
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

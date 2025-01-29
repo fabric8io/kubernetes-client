@@ -75,7 +75,6 @@ public class InsightsReport implements Editable<InsightsReportBuilder>, Kubernet
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public InsightsReport() {
     }

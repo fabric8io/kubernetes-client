@@ -73,7 +73,6 @@ public class CredentialsStatus implements Editable<CredentialsStatusBuilder>, Ku
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public CredentialsStatus() {
     }

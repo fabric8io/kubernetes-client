@@ -104,7 +104,6 @@ public class ChannelableStatus implements Editable<ChannelableStatusBuilder>, Ku
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ChannelableStatus() {
     }

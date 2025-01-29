@@ -90,7 +90,6 @@ public class TLSMatchAttributes implements Editable<TLSMatchAttributesBuilder>, 
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public TLSMatchAttributes() {
     }

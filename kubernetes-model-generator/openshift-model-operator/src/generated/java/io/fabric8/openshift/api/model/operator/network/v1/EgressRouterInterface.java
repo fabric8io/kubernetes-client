@@ -69,7 +69,6 @@ public class EgressRouterInterface implements Editable<EgressRouterInterfaceBuil
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public EgressRouterInterface() {
     }

@@ -125,7 +125,6 @@ public class RemoteReadSpec implements Editable<RemoteReadSpecBuilder>, Kubernet
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public RemoteReadSpec() {
     }

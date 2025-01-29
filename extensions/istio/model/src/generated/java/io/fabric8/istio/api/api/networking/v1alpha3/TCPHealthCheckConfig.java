@@ -72,7 +72,6 @@ public class TCPHealthCheckConfig implements Editable<TCPHealthCheckConfigBuilde
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public TCPHealthCheckConfig() {
     }

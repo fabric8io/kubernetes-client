@@ -84,7 +84,6 @@ public class Metadata implements Editable<MetadataBuilder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public Metadata() {
     }

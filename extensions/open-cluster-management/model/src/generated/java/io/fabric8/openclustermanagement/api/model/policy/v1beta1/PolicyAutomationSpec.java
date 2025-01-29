@@ -84,7 +84,6 @@ public class PolicyAutomationSpec implements Editable<PolicyAutomationSpecBuilde
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public PolicyAutomationSpec() {
     }

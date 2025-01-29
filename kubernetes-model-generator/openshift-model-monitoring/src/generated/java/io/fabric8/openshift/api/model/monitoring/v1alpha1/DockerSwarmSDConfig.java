@@ -120,7 +120,6 @@ public class DockerSwarmSDConfig implements Editable<DockerSwarmSDConfigBuilder>
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public DockerSwarmSDConfig() {
     }

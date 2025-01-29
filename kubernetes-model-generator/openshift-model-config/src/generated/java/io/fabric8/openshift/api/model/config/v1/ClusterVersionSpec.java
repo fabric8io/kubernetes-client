@@ -91,7 +91,6 @@ public class ClusterVersionSpec implements Editable<ClusterVersionSpecBuilder>, 
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ClusterVersionSpec() {
     }

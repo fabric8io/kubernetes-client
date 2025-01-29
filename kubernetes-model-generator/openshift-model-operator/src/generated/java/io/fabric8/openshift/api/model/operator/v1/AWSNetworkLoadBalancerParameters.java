@@ -75,7 +75,6 @@ public class AWSNetworkLoadBalancerParameters implements Editable<AWSNetworkLoad
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public AWSNetworkLoadBalancerParameters() {
     }

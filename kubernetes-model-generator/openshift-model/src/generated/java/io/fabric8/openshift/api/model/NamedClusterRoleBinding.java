@@ -72,7 +72,6 @@ public class NamedClusterRoleBinding implements Editable<NamedClusterRoleBinding
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public NamedClusterRoleBinding() {
     }

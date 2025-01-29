@@ -78,16 +78,12 @@ public class GatewayClass implements Editable<GatewayClassBuilder>, HasMetadata
 {
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "gateway.networking.k8s.io/v1beta1";
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "GatewayClass";
@@ -102,7 +98,6 @@ public class GatewayClass implements Editable<GatewayClassBuilder>, HasMetadata
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public GatewayClass() {
     }
@@ -117,9 +112,7 @@ public class GatewayClass implements Editable<GatewayClassBuilder>, HasMetadata
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -127,9 +120,7 @@ public class GatewayClass implements Editable<GatewayClassBuilder>, HasMetadata
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -137,9 +128,7 @@ public class GatewayClass implements Editable<GatewayClassBuilder>, HasMetadata
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -147,9 +136,7 @@ public class GatewayClass implements Editable<GatewayClassBuilder>, HasMetadata
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

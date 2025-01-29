@@ -90,7 +90,6 @@ public class NetworkCorruptSpec implements Editable<NetworkCorruptSpecBuilder>, 
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public NetworkCorruptSpec() {
     }

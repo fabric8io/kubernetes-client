@@ -69,7 +69,6 @@ public class PlatformLogsCollectionSpec implements Editable<PlatformLogsCollecti
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public PlatformLogsCollectionSpec() {
     }

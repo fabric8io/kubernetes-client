@@ -94,7 +94,6 @@ public class TimeChaosSpec implements Editable<TimeChaosSpecBuilder>, Kubernetes
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public TimeChaosSpec() {
     }

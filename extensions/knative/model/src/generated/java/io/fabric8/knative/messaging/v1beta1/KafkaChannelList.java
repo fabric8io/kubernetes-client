@@ -79,9 +79,7 @@ public class KafkaChannelList implements Editable<KafkaChannelListBuilder>, Kube
 {
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "messaging.knative.dev/v1beta1";
@@ -89,9 +87,7 @@ public class KafkaChannelList implements Editable<KafkaChannelListBuilder>, Kube
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<io.fabric8.knative.messaging.v1beta1.KafkaChannel> items = new ArrayList<>();
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "KafkaChannelList";
@@ -102,7 +98,6 @@ public class KafkaChannelList implements Editable<KafkaChannelListBuilder>, Kube
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public KafkaChannelList() {
     }
@@ -116,9 +111,7 @@ public class KafkaChannelList implements Editable<KafkaChannelListBuilder>, Kube
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -126,9 +119,7 @@ public class KafkaChannelList implements Editable<KafkaChannelListBuilder>, Kube
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -147,9 +138,7 @@ public class KafkaChannelList implements Editable<KafkaChannelListBuilder>, Kube
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -157,9 +146,7 @@ public class KafkaChannelList implements Editable<KafkaChannelListBuilder>, Kube
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

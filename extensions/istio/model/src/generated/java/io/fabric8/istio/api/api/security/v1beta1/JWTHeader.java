@@ -72,7 +72,6 @@ public class JWTHeader implements Editable<JWTHeaderBuilder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public JWTHeader() {
     }

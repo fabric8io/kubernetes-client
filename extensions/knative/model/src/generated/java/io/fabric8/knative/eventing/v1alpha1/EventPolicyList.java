@@ -79,9 +79,7 @@ public class EventPolicyList implements Editable<EventPolicyListBuilder>, Kubern
 {
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "eventing.knative.dev/v1alpha1";
@@ -89,9 +87,7 @@ public class EventPolicyList implements Editable<EventPolicyListBuilder>, Kubern
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<io.fabric8.knative.eventing.v1alpha1.EventPolicy> items = new ArrayList<>();
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "EventPolicyList";
@@ -102,7 +98,6 @@ public class EventPolicyList implements Editable<EventPolicyListBuilder>, Kubern
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public EventPolicyList() {
     }
@@ -116,9 +111,7 @@ public class EventPolicyList implements Editable<EventPolicyListBuilder>, Kubern
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -126,9 +119,7 @@ public class EventPolicyList implements Editable<EventPolicyListBuilder>, Kubern
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -147,9 +138,7 @@ public class EventPolicyList implements Editable<EventPolicyListBuilder>, Kubern
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -157,9 +146,7 @@ public class EventPolicyList implements Editable<EventPolicyListBuilder>, Kubern
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

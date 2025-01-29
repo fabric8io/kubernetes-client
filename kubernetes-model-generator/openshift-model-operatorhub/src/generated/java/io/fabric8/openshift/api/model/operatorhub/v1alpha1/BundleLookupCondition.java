@@ -84,7 +84,6 @@ public class BundleLookupCondition implements Editable<BundleLookupConditionBuil
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public BundleLookupCondition() {
     }

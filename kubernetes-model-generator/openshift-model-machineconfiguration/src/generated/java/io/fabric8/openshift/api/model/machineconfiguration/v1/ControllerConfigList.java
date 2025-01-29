@@ -79,9 +79,7 @@ public class ControllerConfigList implements Editable<ControllerConfigListBuilde
 {
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "machineconfiguration.openshift.io/v1";
@@ -89,9 +87,7 @@ public class ControllerConfigList implements Editable<ControllerConfigListBuilde
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<io.fabric8.openshift.api.model.machineconfiguration.v1.ControllerConfig> items = new ArrayList<>();
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "ControllerConfigList";
@@ -102,7 +98,6 @@ public class ControllerConfigList implements Editable<ControllerConfigListBuilde
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ControllerConfigList() {
     }
@@ -116,9 +111,7 @@ public class ControllerConfigList implements Editable<ControllerConfigListBuilde
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -126,9 +119,7 @@ public class ControllerConfigList implements Editable<ControllerConfigListBuilde
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -147,9 +138,7 @@ public class ControllerConfigList implements Editable<ControllerConfigListBuilde
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -157,9 +146,7 @@ public class ControllerConfigList implements Editable<ControllerConfigListBuilde
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

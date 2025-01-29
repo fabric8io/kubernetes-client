@@ -76,7 +76,6 @@ public class DeviceAllocationResult implements Editable<DeviceAllocationResultBu
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public DeviceAllocationResult() {
     }

@@ -70,7 +70,6 @@ public class WorkloadSelector implements Editable<WorkloadSelectorBuilder>, Kube
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public WorkloadSelector() {
     }

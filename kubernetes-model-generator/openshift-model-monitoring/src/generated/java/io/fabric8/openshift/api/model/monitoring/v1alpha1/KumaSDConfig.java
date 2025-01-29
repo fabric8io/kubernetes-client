@@ -115,7 +115,6 @@ public class KumaSDConfig implements Editable<KumaSDConfigBuilder>, KubernetesRe
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public KumaSDConfig() {
     }

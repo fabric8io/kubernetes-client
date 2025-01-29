@@ -73,7 +73,6 @@ public class ParallelSubscriptionStatus implements Editable<ParallelSubscription
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ParallelSubscriptionStatus() {
     }

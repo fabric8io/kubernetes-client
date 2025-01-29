@@ -79,7 +79,6 @@ public class ClientTLS implements Editable<ClientTLSBuilder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ClientTLS() {
     }

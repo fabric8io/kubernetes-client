@@ -72,7 +72,6 @@ public class KeyValue implements Editable<KeyValueBuilder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public KeyValue() {
     }

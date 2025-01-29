@@ -69,7 +69,6 @@ public class DeviceClassConfiguration implements Editable<DeviceClassConfigurati
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public DeviceClassConfiguration() {
     }

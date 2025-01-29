@@ -69,7 +69,6 @@ public class BindingOverrides implements Editable<BindingOverridesBuilder>, Kube
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public BindingOverrides() {
     }

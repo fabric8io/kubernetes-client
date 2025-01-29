@@ -76,7 +76,6 @@ public class NetworkPolicyEgressRule implements Editable<NetworkPolicyEgressRule
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public NetworkPolicyEgressRule() {
     }

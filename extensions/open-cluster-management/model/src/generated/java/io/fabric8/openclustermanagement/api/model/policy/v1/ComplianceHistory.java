@@ -75,7 +75,6 @@ public class ComplianceHistory implements Editable<ComplianceHistoryBuilder>, Ku
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ComplianceHistory() {
     }

@@ -82,7 +82,6 @@ public class PipelineResourceSpec implements Editable<PipelineResourceSpecBuilde
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public PipelineResourceSpec() {
     }

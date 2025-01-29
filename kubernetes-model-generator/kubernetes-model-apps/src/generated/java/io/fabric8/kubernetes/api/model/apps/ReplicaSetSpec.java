@@ -78,7 +78,6 @@ public class ReplicaSetSpec implements Editable<ReplicaSetSpecBuilder>, Kubernet
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ReplicaSetSpec() {
     }

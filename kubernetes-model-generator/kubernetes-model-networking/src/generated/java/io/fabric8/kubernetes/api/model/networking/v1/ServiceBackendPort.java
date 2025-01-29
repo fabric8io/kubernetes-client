@@ -72,7 +72,6 @@ public class ServiceBackendPort implements Editable<ServiceBackendPortBuilder>, 
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ServiceBackendPort() {
     }

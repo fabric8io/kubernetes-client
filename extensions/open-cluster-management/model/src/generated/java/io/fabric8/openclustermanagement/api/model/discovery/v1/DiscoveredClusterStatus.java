@@ -72,7 +72,6 @@ public class DiscoveredClusterStatus implements Editable<DiscoveredClusterStatus
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public DiscoveredClusterStatus() {
     }

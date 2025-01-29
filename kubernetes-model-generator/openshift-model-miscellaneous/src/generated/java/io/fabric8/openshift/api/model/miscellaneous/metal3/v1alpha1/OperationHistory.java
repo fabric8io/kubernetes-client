@@ -78,7 +78,6 @@ public class OperationHistory implements Editable<OperationHistoryBuilder>, Kube
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public OperationHistory() {
     }

@@ -76,7 +76,6 @@ public class CustomFeatureGates implements Editable<CustomFeatureGatesBuilder>, 
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public CustomFeatureGates() {
     }

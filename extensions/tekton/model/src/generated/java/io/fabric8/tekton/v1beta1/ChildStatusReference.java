@@ -87,7 +87,6 @@ public class ChildStatusReference implements Editable<ChildStatusReferenceBuilde
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ChildStatusReference() {
     }

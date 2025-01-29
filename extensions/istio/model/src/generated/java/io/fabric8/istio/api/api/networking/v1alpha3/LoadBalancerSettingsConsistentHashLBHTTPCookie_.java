@@ -75,7 +75,6 @@ public class LoadBalancerSettingsConsistentHashLBHTTPCookie_ implements Editable
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public LoadBalancerSettingsConsistentHashLBHTTPCookie_() {
     }

@@ -76,7 +76,6 @@ public class RAIDConfig implements Editable<RAIDConfigBuilder>, KubernetesResour
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public RAIDConfig() {
     }

@@ -78,7 +78,6 @@ public class AlibabaCloudPlatformStatus implements Editable<AlibabaCloudPlatform
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public AlibabaCloudPlatformStatus() {
     }

@@ -104,7 +104,6 @@ public class ParallelStatus implements Editable<ParallelStatusBuilder>, Kubernet
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ParallelStatus() {
     }

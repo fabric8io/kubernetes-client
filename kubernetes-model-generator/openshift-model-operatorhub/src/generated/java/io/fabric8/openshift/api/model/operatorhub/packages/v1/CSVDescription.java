@@ -128,7 +128,6 @@ public class CSVDescription implements Editable<CSVDescriptionBuilder>, Kubernet
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public CSVDescription() {
     }

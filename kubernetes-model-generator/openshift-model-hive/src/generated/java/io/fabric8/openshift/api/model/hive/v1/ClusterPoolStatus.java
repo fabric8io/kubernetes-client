@@ -81,7 +81,6 @@ public class ClusterPoolStatus implements Editable<ClusterPoolStatusBuilder>, Ku
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ClusterPoolStatus() {
     }

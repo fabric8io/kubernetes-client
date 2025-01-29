@@ -56,9 +56,7 @@ public class ListOptions implements Editable<ListOptionsBuilder>, KubernetesReso
     @JsonProperty("allowWatchBookmarks")
     private Boolean allowWatchBookmarks;
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "v1";
@@ -67,9 +65,7 @@ public class ListOptions implements Editable<ListOptionsBuilder>, KubernetesReso
     @JsonProperty("fieldSelector")
     private String fieldSelector;
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "ListOptions";
@@ -92,7 +88,6 @@ public class ListOptions implements Editable<ListOptionsBuilder>, KubernetesReso
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ListOptions() {
     }
@@ -124,9 +119,7 @@ public class ListOptions implements Editable<ListOptionsBuilder>, KubernetesReso
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -134,9 +127,7 @@ public class ListOptions implements Editable<ListOptionsBuilder>, KubernetesReso
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -164,9 +155,7 @@ public class ListOptions implements Editable<ListOptionsBuilder>, KubernetesReso
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -174,9 +163,7 @@ public class ListOptions implements Editable<ListOptionsBuilder>, KubernetesReso
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

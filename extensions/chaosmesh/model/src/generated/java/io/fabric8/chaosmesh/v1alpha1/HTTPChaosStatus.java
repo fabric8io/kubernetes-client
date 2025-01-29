@@ -79,7 +79,6 @@ public class HTTPChaosStatus implements Editable<HTTPChaosStatusBuilder>, Kubern
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public HTTPChaosStatus() {
     }

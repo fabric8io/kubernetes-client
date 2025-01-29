@@ -93,7 +93,6 @@ public class SelectorSyncSetSpec implements Editable<SelectorSyncSetSpecBuilder>
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public SelectorSyncSetSpec() {
     }

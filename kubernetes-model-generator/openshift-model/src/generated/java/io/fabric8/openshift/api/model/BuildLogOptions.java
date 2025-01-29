@@ -85,9 +85,7 @@ public class BuildLogOptions implements Editable<BuildLogOptionsBuilder>, Kubern
 {
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "build.openshift.io/v1";
@@ -98,9 +96,7 @@ public class BuildLogOptions implements Editable<BuildLogOptionsBuilder>, Kubern
     @JsonProperty("insecureSkipTLSVerifyBackend")
     private Boolean insecureSkipTLSVerifyBackend;
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "BuildLogOptions";
@@ -125,7 +121,6 @@ public class BuildLogOptions implements Editable<BuildLogOptionsBuilder>, Kubern
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public BuildLogOptions() {
     }
@@ -148,9 +143,7 @@ public class BuildLogOptions implements Editable<BuildLogOptionsBuilder>, Kubern
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -158,9 +151,7 @@ public class BuildLogOptions implements Editable<BuildLogOptionsBuilder>, Kubern
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -198,9 +189,7 @@ public class BuildLogOptions implements Editable<BuildLogOptionsBuilder>, Kubern
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -208,9 +197,7 @@ public class BuildLogOptions implements Editable<BuildLogOptionsBuilder>, Kubern
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

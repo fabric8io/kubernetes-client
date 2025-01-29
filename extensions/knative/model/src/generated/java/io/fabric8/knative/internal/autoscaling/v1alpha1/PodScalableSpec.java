@@ -75,7 +75,6 @@ public class PodScalableSpec implements Editable<PodScalableSpecBuilder>, Kubern
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public PodScalableSpec() {
     }

@@ -69,7 +69,6 @@ public class IPv6GatewayConfig implements Editable<IPv6GatewayConfigBuilder>, Ku
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public IPv6GatewayConfig() {
     }

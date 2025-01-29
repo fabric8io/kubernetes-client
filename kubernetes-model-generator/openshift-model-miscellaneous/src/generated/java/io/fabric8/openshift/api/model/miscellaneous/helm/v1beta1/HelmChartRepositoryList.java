@@ -79,9 +79,7 @@ public class HelmChartRepositoryList implements Editable<HelmChartRepositoryList
 {
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "helm.openshift.io/v1beta1";
@@ -89,9 +87,7 @@ public class HelmChartRepositoryList implements Editable<HelmChartRepositoryList
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<io.fabric8.openshift.api.model.miscellaneous.helm.v1beta1.HelmChartRepository> items = new ArrayList<>();
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "HelmChartRepositoryList";
@@ -102,7 +98,6 @@ public class HelmChartRepositoryList implements Editable<HelmChartRepositoryList
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public HelmChartRepositoryList() {
     }
@@ -116,9 +111,7 @@ public class HelmChartRepositoryList implements Editable<HelmChartRepositoryList
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -126,9 +119,7 @@ public class HelmChartRepositoryList implements Editable<HelmChartRepositoryList
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -147,9 +138,7 @@ public class HelmChartRepositoryList implements Editable<HelmChartRepositoryList
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -157,9 +146,7 @@ public class HelmChartRepositoryList implements Editable<HelmChartRepositoryList
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

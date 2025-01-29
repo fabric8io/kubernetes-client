@@ -75,7 +75,6 @@ public class EventPolicyToReference implements Editable<EventPolicyToReferenceBu
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public EventPolicyToReference() {
     }

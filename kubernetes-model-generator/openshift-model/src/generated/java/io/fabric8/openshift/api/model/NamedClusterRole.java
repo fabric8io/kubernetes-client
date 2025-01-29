@@ -72,7 +72,6 @@ public class NamedClusterRole implements Editable<NamedClusterRoleBuilder>, Kube
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public NamedClusterRole() {
     }

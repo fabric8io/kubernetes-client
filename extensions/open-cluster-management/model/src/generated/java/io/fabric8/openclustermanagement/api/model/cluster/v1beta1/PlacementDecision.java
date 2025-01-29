@@ -76,16 +76,12 @@ public class PlacementDecision implements Editable<PlacementDecisionBuilder>, Ha
 {
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "cluster.open-cluster-management.io/v1beta1";
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "PlacementDecision";
@@ -98,7 +94,6 @@ public class PlacementDecision implements Editable<PlacementDecisionBuilder>, Ha
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public PlacementDecision() {
     }
@@ -112,9 +107,7 @@ public class PlacementDecision implements Editable<PlacementDecisionBuilder>, Ha
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -122,9 +115,7 @@ public class PlacementDecision implements Editable<PlacementDecisionBuilder>, Ha
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -132,9 +123,7 @@ public class PlacementDecision implements Editable<PlacementDecisionBuilder>, Ha
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -142,9 +131,7 @@ public class PlacementDecision implements Editable<PlacementDecisionBuilder>, Ha
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

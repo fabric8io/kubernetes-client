@@ -115,7 +115,6 @@ public class KafkaSourceStatus implements Editable<KafkaSourceStatusBuilder>, Ku
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public KafkaSourceStatus() {
     }

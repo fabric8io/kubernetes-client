@@ -72,7 +72,6 @@ public class SuccessPolicyRule implements Editable<SuccessPolicyRuleBuilder>, Ku
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public SuccessPolicyRule() {
     }

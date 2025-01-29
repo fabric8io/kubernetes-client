@@ -75,7 +75,6 @@ public class PrismCentral implements Editable<PrismCentralBuilder>, KubernetesRe
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public PrismCentral() {
     }

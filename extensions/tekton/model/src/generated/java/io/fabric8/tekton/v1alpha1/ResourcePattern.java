@@ -69,7 +69,6 @@ public class ResourcePattern implements Editable<ResourcePatternBuilder>, Kubern
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ResourcePattern() {
     }

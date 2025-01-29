@@ -110,7 +110,6 @@ public class StepActionSpec implements Editable<StepActionSpecBuilder>, Kubernet
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public StepActionSpec() {
     }

@@ -78,7 +78,6 @@ public class ProviderLoadBalancerParameters implements Editable<ProviderLoadBala
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ProviderLoadBalancerParameters() {
     }

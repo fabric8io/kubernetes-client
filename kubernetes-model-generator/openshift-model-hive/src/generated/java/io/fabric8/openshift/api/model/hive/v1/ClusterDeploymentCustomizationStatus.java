@@ -82,7 +82,6 @@ public class ClusterDeploymentCustomizationStatus implements Editable<ClusterDep
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ClusterDeploymentCustomizationStatus() {
     }

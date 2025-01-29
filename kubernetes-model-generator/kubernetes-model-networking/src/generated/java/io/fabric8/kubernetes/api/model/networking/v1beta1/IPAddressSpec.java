@@ -69,7 +69,6 @@ public class IPAddressSpec implements Editable<IPAddressSpecBuilder>, Kubernetes
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public IPAddressSpec() {
     }

@@ -108,9 +108,7 @@ public class AzureMachineProviderSpec implements Editable<AzureMachineProviderSp
     @JsonProperty("acceleratedNetworking")
     private Boolean acceleratedNetworking;
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "machine.openshift.io/v1beta1";
@@ -133,9 +131,7 @@ public class AzureMachineProviderSpec implements Editable<AzureMachineProviderSp
     @JsonProperty("internalLoadBalancer")
     private String internalLoadBalancer;
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "AzureMachineProviderSpec";
@@ -185,7 +181,6 @@ public class AzureMachineProviderSpec implements Editable<AzureMachineProviderSp
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public AzureMachineProviderSpec() {
     }
@@ -236,9 +231,7 @@ public class AzureMachineProviderSpec implements Editable<AzureMachineProviderSp
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -246,9 +239,7 @@ public class AzureMachineProviderSpec implements Editable<AzureMachineProviderSp
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -338,9 +329,7 @@ public class AzureMachineProviderSpec implements Editable<AzureMachineProviderSp
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -348,9 +337,7 @@ public class AzureMachineProviderSpec implements Editable<AzureMachineProviderSp
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

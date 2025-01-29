@@ -123,7 +123,6 @@ public class DockerSDConfig implements Editable<DockerSDConfigBuilder>, Kubernet
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public DockerSDConfig() {
     }

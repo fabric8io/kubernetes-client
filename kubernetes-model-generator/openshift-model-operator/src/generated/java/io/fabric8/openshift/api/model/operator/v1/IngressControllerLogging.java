@@ -69,7 +69,6 @@ public class IngressControllerLogging implements Editable<IngressControllerLoggi
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public IngressControllerLogging() {
     }

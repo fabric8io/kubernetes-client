@@ -72,7 +72,6 @@ public class SchemaReference implements Editable<SchemaReferenceBuilder>, Kubern
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public SchemaReference() {
     }

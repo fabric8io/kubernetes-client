@@ -87,7 +87,6 @@ public class ThanosRulerStatus implements Editable<ThanosRulerStatusBuilder>, Ku
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ThanosRulerStatus() {
     }

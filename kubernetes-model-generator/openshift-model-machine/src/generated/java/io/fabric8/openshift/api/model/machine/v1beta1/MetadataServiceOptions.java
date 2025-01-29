@@ -69,7 +69,6 @@ public class MetadataServiceOptions implements Editable<MetadataServiceOptionsBu
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public MetadataServiceOptions() {
     }

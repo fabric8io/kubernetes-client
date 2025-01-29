@@ -98,7 +98,6 @@ public class MachineConfigurationSpec implements Editable<MachineConfigurationSp
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public MachineConfigurationSpec() {
     }

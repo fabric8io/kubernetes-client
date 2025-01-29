@@ -81,7 +81,6 @@ public class FlowSchemaSpec implements Editable<FlowSchemaSpecBuilder>, Kubernet
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public FlowSchemaSpec() {
     }

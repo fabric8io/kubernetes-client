@@ -75,7 +75,6 @@ public class ImageChangeTrigger implements Editable<ImageChangeTriggerBuilder>, 
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ImageChangeTrigger() {
     }

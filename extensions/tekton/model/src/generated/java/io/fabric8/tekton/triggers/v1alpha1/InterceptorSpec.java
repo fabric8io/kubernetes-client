@@ -69,7 +69,6 @@ public class InterceptorSpec implements Editable<InterceptorSpecBuilder>, Kubern
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public InterceptorSpec() {
     }

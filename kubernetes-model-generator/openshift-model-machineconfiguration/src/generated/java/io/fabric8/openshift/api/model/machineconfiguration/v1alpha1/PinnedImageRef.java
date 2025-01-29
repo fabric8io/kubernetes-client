@@ -69,7 +69,6 @@ public class PinnedImageRef implements Editable<PinnedImageRefBuilder>, Kubernet
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public PinnedImageRef() {
     }

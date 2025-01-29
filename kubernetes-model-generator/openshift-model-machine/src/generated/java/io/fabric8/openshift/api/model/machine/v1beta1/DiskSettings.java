@@ -69,7 +69,6 @@ public class DiskSettings implements Editable<DiskSettingsBuilder>, KubernetesRe
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public DiskSettings() {
     }

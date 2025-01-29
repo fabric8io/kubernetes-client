@@ -81,7 +81,6 @@ public class EgressRouterStatusCondition implements Editable<EgressRouterStatusC
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public EgressRouterStatusCondition() {
     }

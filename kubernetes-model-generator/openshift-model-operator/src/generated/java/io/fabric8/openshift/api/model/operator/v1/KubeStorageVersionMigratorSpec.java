@@ -83,7 +83,6 @@ public class KubeStorageVersionMigratorSpec implements Editable<KubeStorageVersi
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public KubeStorageVersionMigratorSpec() {
     }

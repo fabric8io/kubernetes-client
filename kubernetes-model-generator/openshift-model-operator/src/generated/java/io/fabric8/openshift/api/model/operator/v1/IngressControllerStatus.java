@@ -97,7 +97,6 @@ public class IngressControllerStatus implements Editable<IngressControllerStatus
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public IngressControllerStatus() {
     }

@@ -75,7 +75,6 @@ public class TokenConfig implements Editable<TokenConfigBuilder>, KubernetesReso
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public TokenConfig() {
     }

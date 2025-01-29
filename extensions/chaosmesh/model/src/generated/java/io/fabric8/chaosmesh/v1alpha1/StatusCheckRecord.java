@@ -72,7 +72,6 @@ public class StatusCheckRecord implements Editable<StatusCheckRecordBuilder>, Ku
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public StatusCheckRecord() {
     }

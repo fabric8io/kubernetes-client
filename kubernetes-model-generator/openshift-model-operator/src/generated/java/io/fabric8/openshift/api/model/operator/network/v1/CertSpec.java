@@ -69,7 +69,6 @@ public class CertSpec implements Editable<CertSpecBuilder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public CertSpec() {
     }

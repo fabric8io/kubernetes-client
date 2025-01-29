@@ -96,7 +96,6 @@ public class SourceStatus implements Editable<SourceStatusBuilder>, KubernetesRe
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public SourceStatus() {
     }

@@ -73,7 +73,6 @@ public class ISCSIPersistentVolumeSource implements Editable<ISCSIPersistentVolu
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ISCSIPersistentVolumeSource() {
     }

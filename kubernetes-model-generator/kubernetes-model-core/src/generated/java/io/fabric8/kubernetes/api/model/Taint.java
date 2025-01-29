@@ -49,7 +49,6 @@ public class Taint implements Editable<TaintBuilder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public Taint() {
     }

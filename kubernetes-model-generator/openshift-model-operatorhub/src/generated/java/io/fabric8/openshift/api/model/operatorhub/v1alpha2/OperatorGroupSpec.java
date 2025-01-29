@@ -81,7 +81,6 @@ public class OperatorGroupSpec implements Editable<OperatorGroupSpecBuilder>, Ku
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public OperatorGroupSpec() {
     }

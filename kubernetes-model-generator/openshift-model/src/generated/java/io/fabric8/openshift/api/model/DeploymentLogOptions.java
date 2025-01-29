@@ -84,9 +84,7 @@ public class DeploymentLogOptions implements Editable<DeploymentLogOptionsBuilde
 {
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "apps.openshift.io/v1";
@@ -95,9 +93,7 @@ public class DeploymentLogOptions implements Editable<DeploymentLogOptionsBuilde
     @JsonProperty("follow")
     private Boolean follow;
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "DeploymentLogOptions";
@@ -122,7 +118,6 @@ public class DeploymentLogOptions implements Editable<DeploymentLogOptionsBuilde
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public DeploymentLogOptions() {
     }
@@ -144,9 +139,7 @@ public class DeploymentLogOptions implements Editable<DeploymentLogOptionsBuilde
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -154,9 +147,7 @@ public class DeploymentLogOptions implements Editable<DeploymentLogOptionsBuilde
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -184,9 +175,7 @@ public class DeploymentLogOptions implements Editable<DeploymentLogOptionsBuilde
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -194,9 +183,7 @@ public class DeploymentLogOptions implements Editable<DeploymentLogOptionsBuilde
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

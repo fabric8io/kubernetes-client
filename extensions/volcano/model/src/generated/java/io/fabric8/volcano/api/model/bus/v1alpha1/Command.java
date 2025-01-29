@@ -82,16 +82,12 @@ public class Command implements Editable<CommandBuilder>, HasMetadata, Namespace
     @JsonProperty("action")
     private String action;
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "bus.volcano.sh/v1alpha1";
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "Command";
@@ -108,7 +104,6 @@ public class Command implements Editable<CommandBuilder>, HasMetadata, Namespace
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public Command() {
     }
@@ -135,9 +130,7 @@ public class Command implements Editable<CommandBuilder>, HasMetadata, Namespace
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -145,9 +138,7 @@ public class Command implements Editable<CommandBuilder>, HasMetadata, Namespace
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -155,9 +146,7 @@ public class Command implements Editable<CommandBuilder>, HasMetadata, Namespace
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -165,9 +154,7 @@ public class Command implements Editable<CommandBuilder>, HasMetadata, Namespace
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

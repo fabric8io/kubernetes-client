@@ -53,7 +53,6 @@ public class FlexPersistentVolumeSource implements Editable<FlexPersistentVolume
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public FlexPersistentVolumeSource() {
     }

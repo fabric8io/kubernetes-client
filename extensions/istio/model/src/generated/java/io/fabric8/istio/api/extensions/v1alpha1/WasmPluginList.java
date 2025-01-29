@@ -79,9 +79,7 @@ public class WasmPluginList implements Editable<WasmPluginListBuilder>, Kubernet
 {
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "extensions.istio.io/v1alpha1";
@@ -89,9 +87,7 @@ public class WasmPluginList implements Editable<WasmPluginListBuilder>, Kubernet
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<io.fabric8.istio.api.extensions.v1alpha1.WasmPlugin> items = new ArrayList<>();
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "WasmPluginList";
@@ -102,7 +98,6 @@ public class WasmPluginList implements Editable<WasmPluginListBuilder>, Kubernet
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public WasmPluginList() {
     }
@@ -116,9 +111,7 @@ public class WasmPluginList implements Editable<WasmPluginListBuilder>, Kubernet
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -126,9 +119,7 @@ public class WasmPluginList implements Editable<WasmPluginListBuilder>, Kubernet
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -147,9 +138,7 @@ public class WasmPluginList implements Editable<WasmPluginListBuilder>, Kubernet
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -157,9 +146,7 @@ public class WasmPluginList implements Editable<WasmPluginListBuilder>, Kubernet
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

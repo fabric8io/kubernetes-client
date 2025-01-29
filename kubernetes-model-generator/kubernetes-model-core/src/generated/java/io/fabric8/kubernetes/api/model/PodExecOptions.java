@@ -52,9 +52,7 @@ public class PodExecOptions implements Editable<PodExecOptionsBuilder>, Kubernet
 {
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "v1";
@@ -64,9 +62,7 @@ public class PodExecOptions implements Editable<PodExecOptionsBuilder>, Kubernet
     @JsonProperty("container")
     private String container;
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "PodExecOptions";
@@ -83,7 +79,6 @@ public class PodExecOptions implements Editable<PodExecOptionsBuilder>, Kubernet
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public PodExecOptions() {
     }
@@ -101,9 +96,7 @@ public class PodExecOptions implements Editable<PodExecOptionsBuilder>, Kubernet
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -111,9 +104,7 @@ public class PodExecOptions implements Editable<PodExecOptionsBuilder>, Kubernet
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -142,9 +133,7 @@ public class PodExecOptions implements Editable<PodExecOptionsBuilder>, Kubernet
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -152,9 +141,7 @@ public class PodExecOptions implements Editable<PodExecOptionsBuilder>, Kubernet
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

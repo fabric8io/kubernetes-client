@@ -79,7 +79,6 @@ public class CustomResourceDefinitionStatus implements Editable<CustomResourceDe
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public CustomResourceDefinitionStatus() {
     }

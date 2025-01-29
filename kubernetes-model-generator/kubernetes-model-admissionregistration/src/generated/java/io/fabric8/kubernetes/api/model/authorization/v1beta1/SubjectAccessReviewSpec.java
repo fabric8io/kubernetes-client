@@ -88,7 +88,6 @@ public class SubjectAccessReviewSpec implements Editable<SubjectAccessReviewSpec
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public SubjectAccessReviewSpec() {
     }

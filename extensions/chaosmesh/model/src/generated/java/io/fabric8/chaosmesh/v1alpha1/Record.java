@@ -87,7 +87,6 @@ public class Record implements Editable<RecordBuilder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public Record() {
     }

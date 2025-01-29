@@ -81,7 +81,6 @@ public class MemoryStressor implements Editable<MemoryStressorBuilder>, Kubernet
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public MemoryStressor() {
     }

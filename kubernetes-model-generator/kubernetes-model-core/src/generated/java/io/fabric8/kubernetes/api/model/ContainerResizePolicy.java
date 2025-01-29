@@ -43,7 +43,6 @@ public class ContainerResizePolicy implements Editable<ContainerResizePolicyBuil
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ContainerResizePolicy() {
     }

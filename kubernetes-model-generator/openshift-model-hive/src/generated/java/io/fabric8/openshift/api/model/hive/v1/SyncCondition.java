@@ -84,7 +84,6 @@ public class SyncCondition implements Editable<SyncConditionBuilder>, Kubernetes
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public SyncCondition() {
     }

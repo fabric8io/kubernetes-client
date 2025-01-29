@@ -97,7 +97,6 @@ public class RequestHeaderIdentityProvider implements Editable<RequestHeaderIden
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public RequestHeaderIdentityProvider() {
     }

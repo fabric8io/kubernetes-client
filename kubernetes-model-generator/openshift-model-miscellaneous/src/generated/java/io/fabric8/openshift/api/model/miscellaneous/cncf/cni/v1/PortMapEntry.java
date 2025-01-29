@@ -78,7 +78,6 @@ public class PortMapEntry implements Editable<PortMapEntryBuilder>, KubernetesRe
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public PortMapEntry() {
     }

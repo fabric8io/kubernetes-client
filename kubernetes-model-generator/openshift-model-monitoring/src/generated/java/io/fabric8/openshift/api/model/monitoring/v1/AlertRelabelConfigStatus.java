@@ -73,7 +73,6 @@ public class AlertRelabelConfigStatus implements Editable<AlertRelabelConfigStat
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public AlertRelabelConfigStatus() {
     }

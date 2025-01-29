@@ -75,7 +75,6 @@ public class ACMEIssuerStatus implements Editable<ACMEIssuerStatusBuilder>, Kube
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ACMEIssuerStatus() {
     }

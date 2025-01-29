@@ -85,7 +85,6 @@ public class LifecyclePolicy implements Editable<LifecyclePolicyBuilder>, Kubern
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public LifecyclePolicy() {
     }

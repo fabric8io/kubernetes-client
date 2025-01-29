@@ -72,7 +72,6 @@ public class ResourceParam implements Editable<ResourceParamBuilder>, Kubernetes
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ResourceParam() {
     }

@@ -75,7 +75,6 @@ public class PodChaosStatus implements Editable<PodChaosStatusBuilder>, Kubernet
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public PodChaosStatus() {
     }

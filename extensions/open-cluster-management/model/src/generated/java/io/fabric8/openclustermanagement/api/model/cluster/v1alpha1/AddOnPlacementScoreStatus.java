@@ -80,7 +80,6 @@ public class AddOnPlacementScoreStatus implements Editable<AddOnPlacementScoreSt
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public AddOnPlacementScoreStatus() {
     }

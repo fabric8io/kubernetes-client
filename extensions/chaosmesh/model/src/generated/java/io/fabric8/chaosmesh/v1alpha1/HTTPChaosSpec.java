@@ -119,7 +119,6 @@ public class HTTPChaosSpec implements Editable<HTTPChaosSpecBuilder>, Kubernetes
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public HTTPChaosSpec() {
     }

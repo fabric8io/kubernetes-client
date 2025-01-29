@@ -75,7 +75,6 @@ public class ScoreCoordinate implements Editable<ScoreCoordinateBuilder>, Kubern
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ScoreCoordinate() {
     }

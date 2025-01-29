@@ -77,16 +77,12 @@ public class DaemonSet implements Editable<DaemonSetBuilder>, HasMetadata, Names
 {
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "extensions/v1beta1";
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "DaemonSet";
@@ -101,7 +97,6 @@ public class DaemonSet implements Editable<DaemonSetBuilder>, HasMetadata, Names
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public DaemonSet() {
     }
@@ -116,9 +111,7 @@ public class DaemonSet implements Editable<DaemonSetBuilder>, HasMetadata, Names
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -126,9 +119,7 @@ public class DaemonSet implements Editable<DaemonSetBuilder>, HasMetadata, Names
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -136,9 +127,7 @@ public class DaemonSet implements Editable<DaemonSetBuilder>, HasMetadata, Names
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -146,9 +135,7 @@ public class DaemonSet implements Editable<DaemonSetBuilder>, HasMetadata, Names
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

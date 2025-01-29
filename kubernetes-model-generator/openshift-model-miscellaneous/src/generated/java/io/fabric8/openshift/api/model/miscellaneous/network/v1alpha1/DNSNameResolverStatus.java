@@ -72,7 +72,6 @@ public class DNSNameResolverStatus implements Editable<DNSNameResolverStatusBuil
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public DNSNameResolverStatus() {
     }

@@ -87,7 +87,6 @@ public class HTTPCommonSpec implements Editable<HTTPCommonSpecBuilder>, Kubernet
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public HTTPCommonSpec() {
     }

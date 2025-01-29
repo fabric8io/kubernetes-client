@@ -79,9 +79,7 @@ public class Metal3MachineTemplateList implements Editable<Metal3MachineTemplate
 {
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "infrastructure.cluster.x-k8s.io/v1beta1";
@@ -89,9 +87,7 @@ public class Metal3MachineTemplateList implements Editable<Metal3MachineTemplate
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<io.fabric8.openshift.api.model.miscellaneous.metal3.v1beta1.Metal3MachineTemplate> items = new ArrayList<>();
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "Metal3MachineTemplateList";
@@ -102,7 +98,6 @@ public class Metal3MachineTemplateList implements Editable<Metal3MachineTemplate
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public Metal3MachineTemplateList() {
     }
@@ -116,9 +111,7 @@ public class Metal3MachineTemplateList implements Editable<Metal3MachineTemplate
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -126,9 +119,7 @@ public class Metal3MachineTemplateList implements Editable<Metal3MachineTemplate
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -147,9 +138,7 @@ public class Metal3MachineTemplateList implements Editable<Metal3MachineTemplate
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -157,9 +146,7 @@ public class Metal3MachineTemplateList implements Editable<Metal3MachineTemplate
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

@@ -82,7 +82,6 @@ public class IssuerConfig implements Editable<IssuerConfigBuilder>, KubernetesRe
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public IssuerConfig() {
     }

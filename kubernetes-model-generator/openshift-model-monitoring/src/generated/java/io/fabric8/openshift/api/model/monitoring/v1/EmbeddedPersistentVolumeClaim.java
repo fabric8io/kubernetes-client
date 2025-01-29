@@ -79,16 +79,12 @@ public class EmbeddedPersistentVolumeClaim implements Editable<EmbeddedPersisten
 {
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "monitoring.coreos.com/v1";
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "EmbeddedPersistentVolumeClaim";
@@ -103,7 +99,6 @@ public class EmbeddedPersistentVolumeClaim implements Editable<EmbeddedPersisten
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public EmbeddedPersistentVolumeClaim() {
     }
@@ -118,9 +113,7 @@ public class EmbeddedPersistentVolumeClaim implements Editable<EmbeddedPersisten
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -128,9 +121,7 @@ public class EmbeddedPersistentVolumeClaim implements Editable<EmbeddedPersisten
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -138,9 +129,7 @@ public class EmbeddedPersistentVolumeClaim implements Editable<EmbeddedPersisten
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -148,9 +137,7 @@ public class EmbeddedPersistentVolumeClaim implements Editable<EmbeddedPersisten
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

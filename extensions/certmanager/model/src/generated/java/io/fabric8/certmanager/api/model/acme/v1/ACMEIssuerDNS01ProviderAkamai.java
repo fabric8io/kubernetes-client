@@ -79,7 +79,6 @@ public class ACMEIssuerDNS01ProviderAkamai implements Editable<ACMEIssuerDNS01Pr
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ACMEIssuerDNS01ProviderAkamai() {
     }

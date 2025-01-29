@@ -69,7 +69,6 @@ public class IPv4GatewayConfig implements Editable<IPv4GatewayConfigBuilder>, Ku
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public IPv4GatewayConfig() {
     }

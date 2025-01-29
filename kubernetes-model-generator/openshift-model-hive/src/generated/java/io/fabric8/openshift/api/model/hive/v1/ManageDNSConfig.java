@@ -81,7 +81,6 @@ public class ManageDNSConfig implements Editable<ManageDNSConfigBuilder>, Kubern
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ManageDNSConfig() {
     }

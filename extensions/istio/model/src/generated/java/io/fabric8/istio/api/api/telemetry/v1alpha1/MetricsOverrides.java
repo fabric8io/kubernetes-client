@@ -76,7 +76,6 @@ public class MetricsOverrides implements Editable<MetricsOverridesBuilder>, Kube
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public MetricsOverrides() {
     }

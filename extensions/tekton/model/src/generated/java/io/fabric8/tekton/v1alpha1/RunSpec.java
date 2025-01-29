@@ -105,7 +105,6 @@ public class RunSpec implements Editable<RunSpecBuilder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public RunSpec() {
     }

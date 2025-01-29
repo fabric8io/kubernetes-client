@@ -75,7 +75,6 @@ public class TimeChaosStatus implements Editable<TimeChaosStatusBuilder>, Kubern
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public TimeChaosStatus() {
     }

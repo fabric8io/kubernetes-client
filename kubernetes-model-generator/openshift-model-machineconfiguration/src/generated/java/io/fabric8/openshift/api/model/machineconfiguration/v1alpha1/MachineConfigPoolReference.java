@@ -69,7 +69,6 @@ public class MachineConfigPoolReference implements Editable<MachineConfigPoolRef
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public MachineConfigPoolReference() {
     }

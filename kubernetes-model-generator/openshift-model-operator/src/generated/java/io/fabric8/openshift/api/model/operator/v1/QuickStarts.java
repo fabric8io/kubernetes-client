@@ -72,7 +72,6 @@ public class QuickStarts implements Editable<QuickStartsBuilder>, KubernetesReso
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public QuickStarts() {
     }

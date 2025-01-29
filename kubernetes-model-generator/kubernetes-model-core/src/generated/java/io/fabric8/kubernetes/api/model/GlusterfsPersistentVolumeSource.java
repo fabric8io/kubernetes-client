@@ -49,7 +49,6 @@ public class GlusterfsPersistentVolumeSource implements Editable<GlusterfsPersis
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public GlusterfsPersistentVolumeSource() {
     }

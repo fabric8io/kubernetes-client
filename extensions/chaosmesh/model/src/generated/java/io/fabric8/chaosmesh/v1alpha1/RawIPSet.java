@@ -89,7 +89,6 @@ public class RawIPSet implements Editable<RawIPSetBuilder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public RawIPSet() {
     }

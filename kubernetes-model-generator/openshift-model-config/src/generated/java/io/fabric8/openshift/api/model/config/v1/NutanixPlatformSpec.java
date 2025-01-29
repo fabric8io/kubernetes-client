@@ -79,7 +79,6 @@ public class NutanixPlatformSpec implements Editable<NutanixPlatformSpecBuilder>
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public NutanixPlatformSpec() {
     }

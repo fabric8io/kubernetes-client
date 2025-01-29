@@ -58,7 +58,6 @@ public class StatusDetails implements Editable<StatusDetailsBuilder>, Kubernetes
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public StatusDetails() {
     }

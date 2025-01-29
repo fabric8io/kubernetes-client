@@ -81,7 +81,6 @@ public class PerUserAPIRequestCount implements Editable<PerUserAPIRequestCountBu
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public PerUserAPIRequestCount() {
     }

@@ -72,7 +72,6 @@ public class OtherName implements Editable<OtherNameBuilder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public OtherName() {
     }

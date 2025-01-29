@@ -69,7 +69,6 @@ public class Stressor implements Editable<StressorBuilder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public Stressor() {
     }

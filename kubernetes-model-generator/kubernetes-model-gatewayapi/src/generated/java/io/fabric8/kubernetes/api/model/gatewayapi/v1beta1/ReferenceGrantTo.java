@@ -75,7 +75,6 @@ public class ReferenceGrantTo implements Editable<ReferenceGrantToBuilder>, Kube
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ReferenceGrantTo() {
     }

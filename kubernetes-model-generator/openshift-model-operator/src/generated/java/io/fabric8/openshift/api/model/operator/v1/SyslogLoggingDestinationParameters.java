@@ -78,7 +78,6 @@ public class SyslogLoggingDestinationParameters implements Editable<SyslogLoggin
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public SyslogLoggingDestinationParameters() {
     }

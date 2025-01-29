@@ -69,7 +69,6 @@ public class StatuspageProvider implements Editable<StatuspageProviderBuilder>, 
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public StatuspageProvider() {
     }

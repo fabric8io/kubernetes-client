@@ -85,7 +85,6 @@ public class NetworkDataIPv6 implements Editable<NetworkDataIPv6Builder>, Kubern
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public NetworkDataIPv6() {
     }

@@ -73,7 +73,6 @@ public class ClusterResourceQuotaSpec implements Editable<ClusterResourceQuotaSp
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ClusterResourceQuotaSpec() {
     }

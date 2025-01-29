@@ -79,9 +79,7 @@ public class EtcdBackupList implements Editable<EtcdBackupListBuilder>, Kubernet
 {
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "operator.openshift.io/v1alpha1";
@@ -89,9 +87,7 @@ public class EtcdBackupList implements Editable<EtcdBackupListBuilder>, Kubernet
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<io.fabric8.openshift.api.model.operator.v1alpha1.EtcdBackup> items = new ArrayList<>();
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "EtcdBackupList";
@@ -102,7 +98,6 @@ public class EtcdBackupList implements Editable<EtcdBackupListBuilder>, Kubernet
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public EtcdBackupList() {
     }
@@ -116,9 +111,7 @@ public class EtcdBackupList implements Editable<EtcdBackupListBuilder>, Kubernet
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -126,9 +119,7 @@ public class EtcdBackupList implements Editable<EtcdBackupListBuilder>, Kubernet
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -147,9 +138,7 @@ public class EtcdBackupList implements Editable<EtcdBackupListBuilder>, Kubernet
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -157,9 +146,7 @@ public class EtcdBackupList implements Editable<EtcdBackupListBuilder>, Kubernet
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

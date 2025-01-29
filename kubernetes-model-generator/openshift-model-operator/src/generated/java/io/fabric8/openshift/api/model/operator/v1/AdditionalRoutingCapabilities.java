@@ -72,7 +72,6 @@ public class AdditionalRoutingCapabilities implements Editable<AdditionalRouting
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public AdditionalRoutingCapabilities() {
     }

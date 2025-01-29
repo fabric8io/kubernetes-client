@@ -75,7 +75,6 @@ public class MachineAutoscalerSpec implements Editable<MachineAutoscalerSpecBuil
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public MachineAutoscalerSpec() {
     }

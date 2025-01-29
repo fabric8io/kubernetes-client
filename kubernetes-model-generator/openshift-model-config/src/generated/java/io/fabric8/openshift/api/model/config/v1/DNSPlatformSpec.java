@@ -72,7 +72,6 @@ public class DNSPlatformSpec implements Editable<DNSPlatformSpecBuilder>, Kubern
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public DNSPlatformSpec() {
     }

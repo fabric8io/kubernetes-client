@@ -84,7 +84,6 @@ public class ACMEAuthorization implements Editable<ACMEAuthorizationBuilder>, Ku
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ACMEAuthorization() {
     }

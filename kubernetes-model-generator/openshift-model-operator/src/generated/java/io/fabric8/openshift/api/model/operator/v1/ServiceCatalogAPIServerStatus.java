@@ -88,7 +88,6 @@ public class ServiceCatalogAPIServerStatus implements Editable<ServiceCatalogAPI
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ServiceCatalogAPIServerStatus() {
     }

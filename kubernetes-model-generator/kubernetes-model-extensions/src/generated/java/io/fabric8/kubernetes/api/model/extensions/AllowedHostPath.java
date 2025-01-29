@@ -72,7 +72,6 @@ public class AllowedHostPath implements Editable<AllowedHostPathBuilder>, Kubern
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public AllowedHostPath() {
     }

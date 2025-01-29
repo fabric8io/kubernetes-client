@@ -72,7 +72,6 @@ public class KubeconfigSecretReference implements Editable<KubeconfigSecretRefer
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public KubeconfigSecretReference() {
     }

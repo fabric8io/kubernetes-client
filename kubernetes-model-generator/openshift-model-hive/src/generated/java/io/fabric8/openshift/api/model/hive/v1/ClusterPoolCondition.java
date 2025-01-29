@@ -84,7 +84,6 @@ public class ClusterPoolCondition implements Editable<ClusterPoolConditionBuilde
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ClusterPoolCondition() {
     }

@@ -79,7 +79,6 @@ public class DeveloperConsoleCatalogTypes implements Editable<DeveloperConsoleCa
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public DeveloperConsoleCatalogTypes() {
     }

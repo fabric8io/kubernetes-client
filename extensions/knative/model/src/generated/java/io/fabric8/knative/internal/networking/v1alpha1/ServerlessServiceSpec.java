@@ -78,7 +78,6 @@ public class ServerlessServiceSpec implements Editable<ServerlessServiceSpecBuil
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ServerlessServiceSpec() {
     }

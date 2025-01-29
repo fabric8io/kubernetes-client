@@ -43,7 +43,6 @@ public class LoadBalancerStatus implements Editable<LoadBalancerStatusBuilder>, 
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public LoadBalancerStatus() {
     }

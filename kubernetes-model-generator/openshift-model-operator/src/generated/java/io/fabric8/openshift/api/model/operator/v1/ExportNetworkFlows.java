@@ -75,7 +75,6 @@ public class ExportNetworkFlows implements Editable<ExportNetworkFlowsBuilder>, 
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ExportNetworkFlows() {
     }

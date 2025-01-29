@@ -72,7 +72,6 @@ public class EgressRouterStatus implements Editable<EgressRouterStatusBuilder>, 
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public EgressRouterStatus() {
     }

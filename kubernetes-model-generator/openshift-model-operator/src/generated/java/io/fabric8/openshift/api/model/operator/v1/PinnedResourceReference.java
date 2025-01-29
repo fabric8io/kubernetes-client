@@ -75,7 +75,6 @@ public class PinnedResourceReference implements Editable<PinnedResourceReference
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public PinnedResourceReference() {
     }

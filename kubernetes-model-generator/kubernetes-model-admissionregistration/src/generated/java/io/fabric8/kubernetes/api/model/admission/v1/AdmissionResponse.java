@@ -92,7 +92,6 @@ public class AdmissionResponse implements Editable<AdmissionResponseBuilder>, Ku
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public AdmissionResponse() {
     }

@@ -78,7 +78,6 @@ public class Timer implements Editable<TimerBuilder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public Timer() {
     }

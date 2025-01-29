@@ -89,7 +89,6 @@ public class ManagedClusterStatus implements Editable<ManagedClusterStatusBuilde
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ManagedClusterStatus() {
     }

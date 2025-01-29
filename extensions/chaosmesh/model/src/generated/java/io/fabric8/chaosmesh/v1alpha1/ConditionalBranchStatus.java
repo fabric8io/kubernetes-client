@@ -72,7 +72,6 @@ public class ConditionalBranchStatus implements Editable<ConditionalBranchStatus
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ConditionalBranchStatus() {
     }

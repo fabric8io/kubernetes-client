@@ -69,7 +69,6 @@ public class RegistryPoll implements Editable<RegistryPollBuilder>, KubernetesRe
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public RegistryPoll() {
     }

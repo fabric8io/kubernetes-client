@@ -72,7 +72,6 @@ public class OperandVersion implements Editable<OperandVersionBuilder>, Kubernet
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public OperandVersion() {
     }

@@ -69,7 +69,6 @@ public class MCOObjectReference implements Editable<MCOObjectReferenceBuilder>, 
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public MCOObjectReference() {
     }

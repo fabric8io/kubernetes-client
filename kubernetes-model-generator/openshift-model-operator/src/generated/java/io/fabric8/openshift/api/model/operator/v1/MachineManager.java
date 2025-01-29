@@ -75,7 +75,6 @@ public class MachineManager implements Editable<MachineManagerBuilder>, Kubernet
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public MachineManager() {
     }

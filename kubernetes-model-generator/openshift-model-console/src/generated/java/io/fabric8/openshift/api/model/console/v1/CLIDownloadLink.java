@@ -72,7 +72,6 @@ public class CLIDownloadLink implements Editable<CLIDownloadLinkBuilder>, Kubern
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public CLIDownloadLink() {
     }

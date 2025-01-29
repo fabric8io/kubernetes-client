@@ -90,7 +90,6 @@ public class NetworkBandwidthSpec implements Editable<NetworkBandwidthSpecBuilde
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public NetworkBandwidthSpec() {
     }

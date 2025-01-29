@@ -72,7 +72,6 @@ public class MacvlanConfig implements Editable<MacvlanConfigBuilder>, Kubernetes
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public MacvlanConfig() {
     }

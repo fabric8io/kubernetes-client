@@ -96,7 +96,6 @@ public class BlockChaosSpec implements Editable<BlockChaosSpecBuilder>, Kubernet
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public BlockChaosSpec() {
     }

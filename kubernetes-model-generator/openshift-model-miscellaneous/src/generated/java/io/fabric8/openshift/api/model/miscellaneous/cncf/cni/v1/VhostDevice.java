@@ -72,7 +72,6 @@ public class VhostDevice implements Editable<VhostDeviceBuilder>, KubernetesReso
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public VhostDevice() {
     }

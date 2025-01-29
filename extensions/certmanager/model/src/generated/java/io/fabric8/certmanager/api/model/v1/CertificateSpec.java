@@ -142,7 +142,6 @@ public class CertificateSpec implements Editable<CertificateSpecBuilder>, Kubern
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public CertificateSpec() {
     }

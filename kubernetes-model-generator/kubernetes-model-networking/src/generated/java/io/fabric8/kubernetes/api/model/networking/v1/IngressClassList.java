@@ -79,9 +79,7 @@ public class IngressClassList implements Editable<IngressClassListBuilder>, Kube
 {
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "networking.k8s.io/v1";
@@ -89,9 +87,7 @@ public class IngressClassList implements Editable<IngressClassListBuilder>, Kube
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<io.fabric8.kubernetes.api.model.networking.v1.IngressClass> items = new ArrayList<>();
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "IngressClassList";
@@ -102,7 +98,6 @@ public class IngressClassList implements Editable<IngressClassListBuilder>, Kube
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public IngressClassList() {
     }
@@ -116,9 +111,7 @@ public class IngressClassList implements Editable<IngressClassListBuilder>, Kube
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -126,9 +119,7 @@ public class IngressClassList implements Editable<IngressClassListBuilder>, Kube
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -147,9 +138,7 @@ public class IngressClassList implements Editable<IngressClassListBuilder>, Kube
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -157,9 +146,7 @@ public class IngressClassList implements Editable<IngressClassListBuilder>, Kube
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

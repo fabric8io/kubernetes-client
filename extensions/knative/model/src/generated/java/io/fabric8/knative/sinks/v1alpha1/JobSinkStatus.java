@@ -96,7 +96,6 @@ public class JobSinkStatus implements Editable<JobSinkStatusBuilder>, Kubernetes
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public JobSinkStatus() {
     }

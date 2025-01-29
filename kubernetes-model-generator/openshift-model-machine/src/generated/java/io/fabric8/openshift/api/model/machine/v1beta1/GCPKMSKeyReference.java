@@ -78,7 +78,6 @@ public class GCPKMSKeyReference implements Editable<GCPKMSKeyReferenceBuilder>, 
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public GCPKMSKeyReference() {
     }

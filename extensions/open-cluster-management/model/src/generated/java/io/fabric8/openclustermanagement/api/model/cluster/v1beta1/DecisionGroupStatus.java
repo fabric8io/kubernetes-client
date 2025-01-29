@@ -81,7 +81,6 @@ public class DecisionGroupStatus implements Editable<DecisionGroupStatusBuilder>
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public DecisionGroupStatus() {
     }

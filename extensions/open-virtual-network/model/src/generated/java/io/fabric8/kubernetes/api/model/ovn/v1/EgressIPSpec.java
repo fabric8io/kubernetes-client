@@ -78,7 +78,6 @@ public class EgressIPSpec implements Editable<EgressIPSpecBuilder>, KubernetesRe
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public EgressIPSpec() {
     }

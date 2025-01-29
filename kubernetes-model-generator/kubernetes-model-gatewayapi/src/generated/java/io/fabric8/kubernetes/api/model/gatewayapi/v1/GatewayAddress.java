@@ -72,7 +72,6 @@ public class GatewayAddress implements Editable<GatewayAddressBuilder>, Kubernet
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public GatewayAddress() {
     }

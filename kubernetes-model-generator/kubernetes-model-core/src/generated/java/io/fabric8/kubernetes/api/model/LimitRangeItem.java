@@ -60,7 +60,6 @@ public class LimitRangeItem implements Editable<LimitRangeItemBuilder>, Kubernet
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public LimitRangeItem() {
     }

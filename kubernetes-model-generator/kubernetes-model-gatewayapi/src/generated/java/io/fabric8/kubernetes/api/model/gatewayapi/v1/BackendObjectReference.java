@@ -81,7 +81,6 @@ public class BackendObjectReference implements Editable<BackendObjectReferenceBu
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public BackendObjectReference() {
     }

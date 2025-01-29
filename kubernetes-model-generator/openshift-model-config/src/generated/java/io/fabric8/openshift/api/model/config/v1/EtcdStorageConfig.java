@@ -84,7 +84,6 @@ public class EtcdStorageConfig implements Editable<EtcdStorageConfigBuilder>, Ku
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public EtcdStorageConfig() {
     }

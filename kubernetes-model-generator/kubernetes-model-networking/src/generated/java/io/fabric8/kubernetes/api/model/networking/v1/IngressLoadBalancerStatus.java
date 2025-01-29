@@ -72,7 +72,6 @@ public class IngressLoadBalancerStatus implements Editable<IngressLoadBalancerSt
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public IngressLoadBalancerStatus() {
     }

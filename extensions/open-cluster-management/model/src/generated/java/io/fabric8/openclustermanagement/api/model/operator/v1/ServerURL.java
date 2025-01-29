@@ -72,7 +72,6 @@ public class ServerURL implements Editable<ServerURLBuilder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ServerURL() {
     }

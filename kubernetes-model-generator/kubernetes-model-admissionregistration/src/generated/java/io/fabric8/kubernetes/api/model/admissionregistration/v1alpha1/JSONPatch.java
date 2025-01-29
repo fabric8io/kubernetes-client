@@ -69,7 +69,6 @@ public class JSONPatch implements Editable<JSONPatchBuilder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public JSONPatch() {
     }

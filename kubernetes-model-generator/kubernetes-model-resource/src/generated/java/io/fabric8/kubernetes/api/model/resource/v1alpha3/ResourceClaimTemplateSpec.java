@@ -72,7 +72,6 @@ public class ResourceClaimTemplateSpec implements Editable<ResourceClaimTemplate
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ResourceClaimTemplateSpec() {
     }

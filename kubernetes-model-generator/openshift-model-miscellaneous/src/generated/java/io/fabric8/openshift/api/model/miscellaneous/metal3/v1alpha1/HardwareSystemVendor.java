@@ -75,7 +75,6 @@ public class HardwareSystemVendor implements Editable<HardwareSystemVendorBuilde
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public HardwareSystemVendor() {
     }

@@ -77,16 +77,12 @@ public class PodSecurityPolicySubjectReview implements Editable<PodSecurityPolic
 {
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "security.openshift.io/v1";
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "PodSecurityPolicySubjectReview";
@@ -101,7 +97,6 @@ public class PodSecurityPolicySubjectReview implements Editable<PodSecurityPolic
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public PodSecurityPolicySubjectReview() {
     }
@@ -116,9 +111,7 @@ public class PodSecurityPolicySubjectReview implements Editable<PodSecurityPolic
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -126,9 +119,7 @@ public class PodSecurityPolicySubjectReview implements Editable<PodSecurityPolic
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -136,9 +127,7 @@ public class PodSecurityPolicySubjectReview implements Editable<PodSecurityPolic
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -146,9 +135,7 @@ public class PodSecurityPolicySubjectReview implements Editable<PodSecurityPolic
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

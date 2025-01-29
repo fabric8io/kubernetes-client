@@ -88,7 +88,6 @@ public class StorageStatus implements Editable<StorageStatusBuilder>, Kubernetes
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public StorageStatus() {
     }

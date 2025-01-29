@@ -84,7 +84,6 @@ public class ClusterInstallCondition implements Editable<ClusterInstallCondition
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ClusterInstallCondition() {
     }

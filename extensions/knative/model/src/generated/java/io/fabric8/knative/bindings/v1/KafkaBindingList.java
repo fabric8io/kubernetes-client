@@ -79,9 +79,7 @@ public class KafkaBindingList implements Editable<KafkaBindingListBuilder>, Kube
 {
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "bindings.knative.dev/v1";
@@ -89,9 +87,7 @@ public class KafkaBindingList implements Editable<KafkaBindingListBuilder>, Kube
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<io.fabric8.knative.bindings.v1.KafkaBinding> items = new ArrayList<>();
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "KafkaBindingList";
@@ -102,7 +98,6 @@ public class KafkaBindingList implements Editable<KafkaBindingListBuilder>, Kube
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public KafkaBindingList() {
     }
@@ -116,9 +111,7 @@ public class KafkaBindingList implements Editable<KafkaBindingListBuilder>, Kube
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -126,9 +119,7 @@ public class KafkaBindingList implements Editable<KafkaBindingListBuilder>, Kube
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -147,9 +138,7 @@ public class KafkaBindingList implements Editable<KafkaBindingListBuilder>, Kube
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -157,9 +146,7 @@ public class KafkaBindingList implements Editable<KafkaBindingListBuilder>, Kube
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

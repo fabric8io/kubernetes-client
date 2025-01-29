@@ -105,7 +105,6 @@ public class Storage implements Editable<StorageBuilder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public Storage() {
     }

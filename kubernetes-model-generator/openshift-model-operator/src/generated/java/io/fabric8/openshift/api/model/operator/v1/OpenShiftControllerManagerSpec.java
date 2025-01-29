@@ -83,7 +83,6 @@ public class OpenShiftControllerManagerSpec implements Editable<OpenShiftControl
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public OpenShiftControllerManagerSpec() {
     }

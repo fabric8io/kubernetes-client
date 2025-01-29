@@ -84,9 +84,7 @@ public class ImageSignature implements Editable<ImageSignatureBuilder>, HasMetad
 {
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "image.openshift.io/v1";
@@ -104,9 +102,7 @@ public class ImageSignature implements Editable<ImageSignatureBuilder>, HasMetad
     @JsonProperty("issuedTo")
     private SignatureSubject issuedTo;
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "ImageSignature";
@@ -122,7 +118,6 @@ public class ImageSignature implements Editable<ImageSignatureBuilder>, HasMetad
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ImageSignature() {
     }
@@ -143,9 +138,7 @@ public class ImageSignature implements Editable<ImageSignatureBuilder>, HasMetad
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -153,9 +146,7 @@ public class ImageSignature implements Editable<ImageSignatureBuilder>, HasMetad
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -224,9 +215,7 @@ public class ImageSignature implements Editable<ImageSignatureBuilder>, HasMetad
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -234,9 +223,7 @@ public class ImageSignature implements Editable<ImageSignatureBuilder>, HasMetad
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

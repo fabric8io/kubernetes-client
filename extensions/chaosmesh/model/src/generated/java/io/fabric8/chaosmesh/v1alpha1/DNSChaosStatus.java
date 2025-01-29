@@ -75,7 +75,6 @@ public class DNSChaosStatus implements Editable<DNSChaosStatusBuilder>, Kubernet
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public DNSChaosStatus() {
     }

@@ -72,7 +72,6 @@ public class IPv6OVNKubernetesConfig implements Editable<IPv6OVNKubernetesConfig
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public IPv6OVNKubernetesConfig() {
     }

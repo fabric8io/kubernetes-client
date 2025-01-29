@@ -75,7 +75,6 @@ public class HTTPHeaderMatch implements Editable<HTTPHeaderMatchBuilder>, Kubern
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public HTTPHeaderMatch() {
     }

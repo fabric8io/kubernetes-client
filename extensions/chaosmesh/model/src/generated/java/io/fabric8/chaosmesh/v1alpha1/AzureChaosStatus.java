@@ -75,7 +75,6 @@ public class AzureChaosStatus implements Editable<AzureChaosStatusBuilder>, Kube
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public AzureChaosStatus() {
     }

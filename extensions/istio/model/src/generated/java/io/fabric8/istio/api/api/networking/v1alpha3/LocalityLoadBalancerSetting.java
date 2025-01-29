@@ -83,7 +83,6 @@ public class LocalityLoadBalancerSetting implements Editable<LocalityLoadBalance
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public LocalityLoadBalancerSetting() {
     }

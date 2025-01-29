@@ -72,7 +72,6 @@ public class AggregationRule implements Editable<AggregationRuleBuilder>, Kubern
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public AggregationRule() {
     }

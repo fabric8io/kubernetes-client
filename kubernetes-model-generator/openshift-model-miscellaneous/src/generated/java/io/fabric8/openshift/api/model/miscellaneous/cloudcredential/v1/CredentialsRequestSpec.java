@@ -82,7 +82,6 @@ public class CredentialsRequestSpec implements Editable<CredentialsRequestSpecBu
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public CredentialsRequestSpec() {
     }

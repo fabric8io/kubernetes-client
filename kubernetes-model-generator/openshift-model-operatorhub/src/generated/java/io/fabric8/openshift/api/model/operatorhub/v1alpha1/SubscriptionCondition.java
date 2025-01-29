@@ -84,7 +84,6 @@ public class SubscriptionCondition implements Editable<SubscriptionConditionBuil
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public SubscriptionCondition() {
     }

@@ -81,7 +81,6 @@ public class ConditionalUpdateRisk implements Editable<ConditionalUpdateRiskBuil
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ConditionalUpdateRisk() {
     }

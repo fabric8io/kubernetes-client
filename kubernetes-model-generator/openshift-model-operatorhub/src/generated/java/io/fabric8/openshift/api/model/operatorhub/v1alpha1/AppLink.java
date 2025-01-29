@@ -72,7 +72,6 @@ public class AppLink implements Editable<AppLinkBuilder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public AppLink() {
     }

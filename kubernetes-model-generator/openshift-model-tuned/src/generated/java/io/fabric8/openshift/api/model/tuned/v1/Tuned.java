@@ -77,16 +77,12 @@ public class Tuned implements Editable<TunedBuilder>, HasMetadata, Namespaced
 {
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "tuned.openshift.io/v1";
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "Tuned";
@@ -101,7 +97,6 @@ public class Tuned implements Editable<TunedBuilder>, HasMetadata, Namespaced
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public Tuned() {
     }
@@ -116,9 +111,7 @@ public class Tuned implements Editable<TunedBuilder>, HasMetadata, Namespaced
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -126,9 +119,7 @@ public class Tuned implements Editable<TunedBuilder>, HasMetadata, Namespaced
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -136,9 +127,7 @@ public class Tuned implements Editable<TunedBuilder>, HasMetadata, Namespaced
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -146,9 +135,7 @@ public class Tuned implements Editable<TunedBuilder>, HasMetadata, Namespaced
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

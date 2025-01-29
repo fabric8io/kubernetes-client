@@ -46,7 +46,6 @@ public class ContainerImage implements Editable<ContainerImageBuilder>, Kubernet
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ContainerImage() {
     }

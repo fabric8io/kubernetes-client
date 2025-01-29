@@ -85,9 +85,7 @@ public class OAuthAccessToken implements Editable<OAuthAccessTokenBuilder>, HasM
 {
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "oauth.openshift.io/v1";
@@ -100,9 +98,7 @@ public class OAuthAccessToken implements Editable<OAuthAccessTokenBuilder>, HasM
     @JsonProperty("inactivityTimeoutSeconds")
     private Integer inactivityTimeoutSeconds;
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "OAuthAccessToken";
@@ -124,7 +120,6 @@ public class OAuthAccessToken implements Editable<OAuthAccessTokenBuilder>, HasM
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public OAuthAccessToken() {
     }
@@ -146,9 +141,7 @@ public class OAuthAccessToken implements Editable<OAuthAccessTokenBuilder>, HasM
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -156,9 +149,7 @@ public class OAuthAccessToken implements Editable<OAuthAccessTokenBuilder>, HasM
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -206,9 +197,7 @@ public class OAuthAccessToken implements Editable<OAuthAccessTokenBuilder>, HasM
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -216,9 +205,7 @@ public class OAuthAccessToken implements Editable<OAuthAccessTokenBuilder>, HasM
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

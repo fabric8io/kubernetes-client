@@ -79,7 +79,6 @@ public class NodeDisruptionPolicyConfig implements Editable<NodeDisruptionPolicy
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public NodeDisruptionPolicyConfig() {
     }

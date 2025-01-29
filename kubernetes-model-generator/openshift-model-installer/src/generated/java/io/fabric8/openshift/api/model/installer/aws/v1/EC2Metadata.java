@@ -69,7 +69,6 @@ public class EC2Metadata implements Editable<EC2MetadataBuilder>, KubernetesReso
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public EC2Metadata() {
     }

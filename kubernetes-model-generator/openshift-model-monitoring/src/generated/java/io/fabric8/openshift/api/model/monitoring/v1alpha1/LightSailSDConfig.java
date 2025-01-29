@@ -124,7 +124,6 @@ public class LightSailSDConfig implements Editable<LightSailSDConfigBuilder>, Ku
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public LightSailSDConfig() {
     }

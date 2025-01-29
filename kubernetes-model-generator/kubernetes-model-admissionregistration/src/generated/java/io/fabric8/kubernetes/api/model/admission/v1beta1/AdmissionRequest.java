@@ -117,7 +117,6 @@ public class AdmissionRequest implements Editable<AdmissionRequestBuilder>, Kube
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public AdmissionRequest() {
     }

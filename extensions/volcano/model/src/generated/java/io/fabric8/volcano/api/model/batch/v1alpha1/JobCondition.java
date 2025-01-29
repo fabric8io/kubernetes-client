@@ -72,7 +72,6 @@ public class JobCondition implements Editable<JobConditionBuilder>, KubernetesRe
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public JobCondition() {
     }

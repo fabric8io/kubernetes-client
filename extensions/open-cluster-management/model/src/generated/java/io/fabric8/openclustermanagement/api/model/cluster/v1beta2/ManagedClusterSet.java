@@ -76,16 +76,12 @@ public class ManagedClusterSet implements Editable<ManagedClusterSetBuilder>, Ha
 {
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "cluster.open-cluster-management.io/v1beta2";
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "ManagedClusterSet";
@@ -100,7 +96,6 @@ public class ManagedClusterSet implements Editable<ManagedClusterSetBuilder>, Ha
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ManagedClusterSet() {
     }
@@ -115,9 +110,7 @@ public class ManagedClusterSet implements Editable<ManagedClusterSetBuilder>, Ha
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -125,9 +118,7 @@ public class ManagedClusterSet implements Editable<ManagedClusterSetBuilder>, Ha
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -135,9 +126,7 @@ public class ManagedClusterSet implements Editable<ManagedClusterSetBuilder>, Ha
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -145,9 +134,7 @@ public class ManagedClusterSet implements Editable<ManagedClusterSetBuilder>, Ha
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

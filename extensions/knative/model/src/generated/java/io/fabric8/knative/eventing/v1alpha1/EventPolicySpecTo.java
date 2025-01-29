@@ -72,7 +72,6 @@ public class EventPolicySpecTo implements Editable<EventPolicySpecToBuilder>, Ku
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public EventPolicySpecTo() {
     }

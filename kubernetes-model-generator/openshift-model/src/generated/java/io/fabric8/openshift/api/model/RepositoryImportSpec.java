@@ -78,7 +78,6 @@ public class RepositoryImportSpec implements Editable<RepositoryImportSpecBuilde
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public RepositoryImportSpec() {
     }

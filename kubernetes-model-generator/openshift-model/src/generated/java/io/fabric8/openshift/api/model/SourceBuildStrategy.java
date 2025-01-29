@@ -91,7 +91,6 @@ public class SourceBuildStrategy implements Editable<SourceBuildStrategyBuilder>
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public SourceBuildStrategy() {
     }

@@ -80,7 +80,6 @@ public class HTTPRouteSpec implements Editable<HTTPRouteSpecBuilder>, Kubernetes
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public HTTPRouteSpec() {
     }

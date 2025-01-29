@@ -72,7 +72,6 @@ public class MachineTemplateSpec implements Editable<MachineTemplateSpecBuilder>
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public MachineTemplateSpec() {
     }

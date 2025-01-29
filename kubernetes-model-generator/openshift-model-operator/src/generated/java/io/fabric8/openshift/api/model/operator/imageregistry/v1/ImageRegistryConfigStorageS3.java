@@ -93,7 +93,6 @@ public class ImageRegistryConfigStorageS3 implements Editable<ImageRegistryConfi
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ImageRegistryConfigStorageS3() {
     }

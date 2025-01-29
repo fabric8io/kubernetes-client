@@ -86,9 +86,7 @@ public class Image implements Editable<ImageBuilder>, HasMetadata
 {
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "image.openshift.io/v1";
@@ -115,9 +113,7 @@ public class Image implements Editable<ImageBuilder>, HasMetadata
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> dockerImageSignatures = new ArrayList<>();
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "Image";
@@ -131,7 +127,6 @@ public class Image implements Editable<ImageBuilder>, HasMetadata
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public Image() {
     }
@@ -154,9 +149,7 @@ public class Image implements Editable<ImageBuilder>, HasMetadata
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -164,9 +157,7 @@ public class Image implements Editable<ImageBuilder>, HasMetadata
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -268,9 +259,7 @@ public class Image implements Editable<ImageBuilder>, HasMetadata
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -278,9 +267,7 @@ public class Image implements Editable<ImageBuilder>, HasMetadata
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

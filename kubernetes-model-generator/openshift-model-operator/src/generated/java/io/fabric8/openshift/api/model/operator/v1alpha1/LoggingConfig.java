@@ -72,7 +72,6 @@ public class LoggingConfig implements Editable<LoggingConfigBuilder>, Kubernetes
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public LoggingConfig() {
     }

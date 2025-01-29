@@ -79,7 +79,6 @@ public class CompactSpec implements Editable<CompactSpecBuilder>, KubernetesReso
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public CompactSpec() {
     }

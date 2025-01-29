@@ -75,7 +75,6 @@ public class CertExpiry implements Editable<CertExpiryBuilder>, KubernetesResour
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public CertExpiry() {
     }

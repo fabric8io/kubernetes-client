@@ -72,7 +72,6 @@ public class HourRange implements Editable<HourRangeBuilder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public HourRange() {
     }

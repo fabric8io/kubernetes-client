@@ -93,7 +93,6 @@ public class BuildInputs implements Editable<BuildInputsBuilder>, KubernetesReso
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public BuildInputs() {
     }

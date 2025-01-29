@@ -69,7 +69,6 @@ public class PlatformStatus implements Editable<PlatformStatusBuilder>, Kubernet
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public PlatformStatus() {
     }

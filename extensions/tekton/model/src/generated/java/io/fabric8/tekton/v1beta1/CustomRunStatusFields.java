@@ -86,7 +86,6 @@ public class CustomRunStatusFields implements Editable<CustomRunStatusFieldsBuil
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public CustomRunStatusFields() {
     }

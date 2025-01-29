@@ -72,7 +72,6 @@ public class NamedRoleBinding implements Editable<NamedRoleBindingBuilder>, Kube
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public NamedRoleBinding() {
     }

@@ -78,7 +78,6 @@ public class NetworkDataLinkEthernet implements Editable<NetworkDataLinkEthernet
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public NetworkDataLinkEthernet() {
     }

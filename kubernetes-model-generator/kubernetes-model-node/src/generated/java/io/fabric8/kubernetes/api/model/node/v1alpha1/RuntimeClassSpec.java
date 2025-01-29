@@ -75,7 +75,6 @@ public class RuntimeClassSpec implements Editable<RuntimeClassSpecBuilder>, Kube
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public RuntimeClassSpec() {
     }

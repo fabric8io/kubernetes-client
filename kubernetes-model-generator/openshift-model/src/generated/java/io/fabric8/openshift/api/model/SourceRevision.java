@@ -72,7 +72,6 @@ public class SourceRevision implements Editable<SourceRevisionBuilder>, Kubernet
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public SourceRevision() {
     }

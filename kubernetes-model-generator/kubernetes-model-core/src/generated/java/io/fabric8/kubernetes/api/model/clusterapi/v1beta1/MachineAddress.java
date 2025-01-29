@@ -44,7 +44,6 @@ public class MachineAddress implements Editable<MachineAddressBuilder>, Kubernet
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public MachineAddress() {
     }

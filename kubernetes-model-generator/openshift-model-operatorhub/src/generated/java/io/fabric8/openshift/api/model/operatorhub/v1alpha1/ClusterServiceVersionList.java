@@ -79,9 +79,7 @@ public class ClusterServiceVersionList implements Editable<ClusterServiceVersion
 {
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "operators.coreos.com/v1alpha1";
@@ -89,9 +87,7 @@ public class ClusterServiceVersionList implements Editable<ClusterServiceVersion
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<io.fabric8.openshift.api.model.operatorhub.v1alpha1.ClusterServiceVersion> items = new ArrayList<>();
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "ClusterServiceVersionList";
@@ -102,7 +98,6 @@ public class ClusterServiceVersionList implements Editable<ClusterServiceVersion
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ClusterServiceVersionList() {
     }
@@ -116,9 +111,7 @@ public class ClusterServiceVersionList implements Editable<ClusterServiceVersion
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -126,9 +119,7 @@ public class ClusterServiceVersionList implements Editable<ClusterServiceVersion
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -147,9 +138,7 @@ public class ClusterServiceVersionList implements Editable<ClusterServiceVersion
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -157,9 +146,7 @@ public class ClusterServiceVersionList implements Editable<ClusterServiceVersion
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

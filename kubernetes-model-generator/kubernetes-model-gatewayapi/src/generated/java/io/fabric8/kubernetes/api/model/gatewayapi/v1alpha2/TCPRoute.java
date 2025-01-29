@@ -77,16 +77,12 @@ public class TCPRoute implements Editable<TCPRouteBuilder>, HasMetadata, Namespa
 {
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "gateway.networking.k8s.io/v1alpha2";
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "TCPRoute";
@@ -101,7 +97,6 @@ public class TCPRoute implements Editable<TCPRouteBuilder>, HasMetadata, Namespa
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public TCPRoute() {
     }
@@ -116,9 +111,7 @@ public class TCPRoute implements Editable<TCPRouteBuilder>, HasMetadata, Namespa
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -126,9 +119,7 @@ public class TCPRoute implements Editable<TCPRouteBuilder>, HasMetadata, Namespa
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -136,9 +127,7 @@ public class TCPRoute implements Editable<TCPRouteBuilder>, HasMetadata, Namespa
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -146,9 +135,7 @@ public class TCPRoute implements Editable<TCPRouteBuilder>, HasMetadata, Namespa
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

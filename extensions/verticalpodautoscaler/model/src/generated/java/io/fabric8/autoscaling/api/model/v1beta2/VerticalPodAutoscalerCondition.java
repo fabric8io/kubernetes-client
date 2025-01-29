@@ -81,7 +81,6 @@ public class VerticalPodAutoscalerCondition implements Editable<VerticalPodAutos
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public VerticalPodAutoscalerCondition() {
     }

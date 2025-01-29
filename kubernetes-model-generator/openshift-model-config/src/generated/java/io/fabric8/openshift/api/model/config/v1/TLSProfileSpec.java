@@ -75,7 +75,6 @@ public class TLSProfileSpec implements Editable<TLSProfileSpecBuilder>, Kubernet
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public TLSProfileSpec() {
     }

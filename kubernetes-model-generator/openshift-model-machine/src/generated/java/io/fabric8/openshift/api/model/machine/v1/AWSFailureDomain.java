@@ -72,7 +72,6 @@ public class AWSFailureDomain implements Editable<AWSFailureDomainBuilder>, Kube
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public AWSFailureDomain() {
     }

@@ -72,7 +72,6 @@ public class ResourceInstance implements Editable<ResourceInstanceBuilder>, Kube
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ResourceInstance() {
     }

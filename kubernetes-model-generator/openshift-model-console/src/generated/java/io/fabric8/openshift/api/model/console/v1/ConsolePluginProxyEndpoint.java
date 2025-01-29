@@ -72,7 +72,6 @@ public class ConsolePluginProxyEndpoint implements Editable<ConsolePluginProxyEn
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ConsolePluginProxyEndpoint() {
     }

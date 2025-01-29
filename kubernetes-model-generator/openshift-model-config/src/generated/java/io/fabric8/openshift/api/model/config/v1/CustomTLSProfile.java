@@ -75,7 +75,6 @@ public class CustomTLSProfile implements Editable<CustomTLSProfileBuilder>, Kube
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public CustomTLSProfile() {
     }

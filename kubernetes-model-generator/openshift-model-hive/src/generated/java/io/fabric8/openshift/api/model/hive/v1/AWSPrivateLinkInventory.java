@@ -78,7 +78,6 @@ public class AWSPrivateLinkInventory implements Editable<AWSPrivateLinkInventory
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public AWSPrivateLinkInventory() {
     }

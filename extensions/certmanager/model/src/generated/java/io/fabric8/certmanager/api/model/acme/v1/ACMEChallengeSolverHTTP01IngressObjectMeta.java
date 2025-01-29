@@ -74,7 +74,6 @@ public class ACMEChallengeSolverHTTP01IngressObjectMeta implements Editable<ACME
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ACMEChallengeSolverHTTP01IngressObjectMeta() {
     }

@@ -80,7 +80,6 @@ public class DeviceClaim implements Editable<DeviceClaimBuilder>, KubernetesReso
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public DeviceClaim() {
     }

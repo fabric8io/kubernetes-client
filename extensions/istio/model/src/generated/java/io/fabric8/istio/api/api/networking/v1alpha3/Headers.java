@@ -72,7 +72,6 @@ public class Headers implements Editable<HeadersBuilder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public Headers() {
     }

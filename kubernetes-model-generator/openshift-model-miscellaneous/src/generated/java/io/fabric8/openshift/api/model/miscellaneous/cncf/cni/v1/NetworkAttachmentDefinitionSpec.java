@@ -69,7 +69,6 @@ public class NetworkAttachmentDefinitionSpec implements Editable<NetworkAttachme
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public NetworkAttachmentDefinitionSpec() {
     }

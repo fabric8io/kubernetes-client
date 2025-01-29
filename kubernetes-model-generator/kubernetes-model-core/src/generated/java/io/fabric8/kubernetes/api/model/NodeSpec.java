@@ -62,7 +62,6 @@ public class NodeSpec implements Editable<NodeSpecBuilder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public NodeSpec() {
     }

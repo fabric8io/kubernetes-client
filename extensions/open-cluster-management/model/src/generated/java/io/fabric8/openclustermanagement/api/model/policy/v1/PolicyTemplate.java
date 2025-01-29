@@ -79,7 +79,6 @@ public class PolicyTemplate implements Editable<PolicyTemplateBuilder>, Kubernet
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public PolicyTemplate() {
     }

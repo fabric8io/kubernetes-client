@@ -49,9 +49,7 @@ public class CreateOptions implements Editable<CreateOptionsBuilder>, Kubernetes
 {
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "v1";
@@ -63,9 +61,7 @@ public class CreateOptions implements Editable<CreateOptionsBuilder>, Kubernetes
     @JsonProperty("fieldValidation")
     private String fieldValidation;
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "CreateOptions";
@@ -74,7 +70,6 @@ public class CreateOptions implements Editable<CreateOptionsBuilder>, Kubernetes
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public CreateOptions() {
     }
@@ -89,9 +84,7 @@ public class CreateOptions implements Editable<CreateOptionsBuilder>, Kubernetes
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -99,9 +92,7 @@ public class CreateOptions implements Editable<CreateOptionsBuilder>, Kubernetes
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -140,9 +131,7 @@ public class CreateOptions implements Editable<CreateOptionsBuilder>, Kubernetes
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -150,9 +139,7 @@ public class CreateOptions implements Editable<CreateOptionsBuilder>, Kubernetes
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

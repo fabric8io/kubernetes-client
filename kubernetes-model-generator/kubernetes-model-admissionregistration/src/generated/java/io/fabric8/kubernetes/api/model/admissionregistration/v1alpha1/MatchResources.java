@@ -85,7 +85,6 @@ public class MatchResources implements Editable<MatchResourcesBuilder>, Kubernet
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public MatchResources() {
     }

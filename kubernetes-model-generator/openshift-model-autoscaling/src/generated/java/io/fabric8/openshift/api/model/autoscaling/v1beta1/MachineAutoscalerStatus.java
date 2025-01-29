@@ -69,7 +69,6 @@ public class MachineAutoscalerStatus implements Editable<MachineAutoscalerStatus
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public MachineAutoscalerStatus() {
     }

@@ -81,7 +81,6 @@ public class ReplicaSetCondition implements Editable<ReplicaSetConditionBuilder>
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ReplicaSetCondition() {
     }

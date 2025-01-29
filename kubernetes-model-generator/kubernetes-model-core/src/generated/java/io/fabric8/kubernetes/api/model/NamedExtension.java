@@ -44,7 +44,6 @@ public class NamedExtension implements Editable<NamedExtensionBuilder>, Kubernet
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public NamedExtension() {
     }

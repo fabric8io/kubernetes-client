@@ -115,7 +115,6 @@ public class IOChaosSpec implements Editable<IOChaosSpecBuilder>, KubernetesReso
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public IOChaosSpec() {
     }

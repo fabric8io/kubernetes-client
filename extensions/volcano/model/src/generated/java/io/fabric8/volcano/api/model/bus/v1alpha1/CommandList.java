@@ -79,9 +79,7 @@ public class CommandList implements Editable<CommandListBuilder>, KubernetesReso
 {
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "bus.volcano.sh/v1alpha1";
@@ -89,9 +87,7 @@ public class CommandList implements Editable<CommandListBuilder>, KubernetesReso
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<io.fabric8.volcano.api.model.bus.v1alpha1.Command> items = new ArrayList<>();
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "CommandList";
@@ -102,7 +98,6 @@ public class CommandList implements Editable<CommandListBuilder>, KubernetesReso
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public CommandList() {
     }
@@ -116,9 +111,7 @@ public class CommandList implements Editable<CommandListBuilder>, KubernetesReso
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -126,9 +119,7 @@ public class CommandList implements Editable<CommandListBuilder>, KubernetesReso
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -147,9 +138,7 @@ public class CommandList implements Editable<CommandListBuilder>, KubernetesReso
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -157,9 +146,7 @@ public class CommandList implements Editable<CommandListBuilder>, KubernetesReso
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

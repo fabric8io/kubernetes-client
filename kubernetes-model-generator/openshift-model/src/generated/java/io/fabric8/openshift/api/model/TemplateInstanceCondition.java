@@ -81,7 +81,6 @@ public class TemplateInstanceCondition implements Editable<TemplateInstanceCondi
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public TemplateInstanceCondition() {
     }

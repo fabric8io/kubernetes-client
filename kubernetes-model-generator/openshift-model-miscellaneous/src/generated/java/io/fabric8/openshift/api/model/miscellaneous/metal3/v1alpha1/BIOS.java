@@ -75,7 +75,6 @@ public class BIOS implements Editable<BIOSBuilder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public BIOS() {
     }

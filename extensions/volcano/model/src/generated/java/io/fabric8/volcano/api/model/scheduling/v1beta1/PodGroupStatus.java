@@ -84,7 +84,6 @@ public class PodGroupStatus implements Editable<PodGroupStatusBuilder>, Kubernet
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public PodGroupStatus() {
     }

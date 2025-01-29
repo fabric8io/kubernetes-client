@@ -78,7 +78,6 @@ public class PolicySetStatus implements Editable<PolicySetStatusBuilder>, Kubern
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public PolicySetStatus() {
     }

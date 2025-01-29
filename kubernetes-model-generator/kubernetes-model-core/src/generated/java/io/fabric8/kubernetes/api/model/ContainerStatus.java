@@ -84,7 +84,6 @@ public class ContainerStatus implements Editable<ContainerStatusBuilder>, Kubern
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ContainerStatus() {
     }

@@ -72,7 +72,6 @@ public class IPFIXConfig implements Editable<IPFIXConfigBuilder>, KubernetesReso
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public IPFIXConfig() {
     }

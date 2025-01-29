@@ -43,7 +43,6 @@ public class NodeAddress implements Editable<NodeAddressBuilder>, KubernetesReso
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public NodeAddress() {
     }

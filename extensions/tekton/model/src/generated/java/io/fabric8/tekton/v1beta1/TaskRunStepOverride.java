@@ -72,7 +72,6 @@ public class TaskRunStepOverride implements Editable<TaskRunStepOverrideBuilder>
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public TaskRunStepOverride() {
     }

@@ -95,7 +95,6 @@ public class GitLabSourceSpec implements Editable<GitLabSourceSpecBuilder>, Kube
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public GitLabSourceSpec() {
     }

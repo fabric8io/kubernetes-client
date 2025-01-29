@@ -85,7 +85,6 @@ public class BuildDefaults implements Editable<BuildDefaultsBuilder>, Kubernetes
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public BuildDefaults() {
     }

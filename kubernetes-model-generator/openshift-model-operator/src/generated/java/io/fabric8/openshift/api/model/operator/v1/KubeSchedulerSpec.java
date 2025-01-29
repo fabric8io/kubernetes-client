@@ -92,7 +92,6 @@ public class KubeSchedulerSpec implements Editable<KubeSchedulerSpecBuilder>, Ku
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public KubeSchedulerSpec() {
     }

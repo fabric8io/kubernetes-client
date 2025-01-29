@@ -69,7 +69,6 @@ public class PlatformCapabilitiesSpec implements Editable<PlatformCapabilitiesSp
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public PlatformCapabilitiesSpec() {
     }

@@ -69,7 +69,6 @@ public class TracingLiteral implements Editable<TracingLiteralBuilder>, Kubernet
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public TracingLiteral() {
     }

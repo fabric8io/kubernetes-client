@@ -55,7 +55,6 @@ public class HTTPGetAction implements Editable<HTTPGetActionBuilder>, Kubernetes
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public HTTPGetAction() {
     }

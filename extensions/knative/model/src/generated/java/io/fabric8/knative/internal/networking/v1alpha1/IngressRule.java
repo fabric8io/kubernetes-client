@@ -78,7 +78,6 @@ public class IngressRule implements Editable<IngressRuleBuilder>, KubernetesReso
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public IngressRule() {
     }

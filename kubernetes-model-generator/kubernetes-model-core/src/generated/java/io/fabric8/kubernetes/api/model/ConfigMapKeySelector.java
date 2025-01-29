@@ -46,7 +46,6 @@ public class ConfigMapKeySelector implements Editable<ConfigMapKeySelectorBuilde
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ConfigMapKeySelector() {
     }

@@ -93,7 +93,6 @@ public class PodChaosSpec implements Editable<PodChaosSpecBuilder>, KubernetesRe
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public PodChaosSpec() {
     }

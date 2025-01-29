@@ -76,7 +76,6 @@ public class EgressQoSStatus implements Editable<EgressQoSStatusBuilder>, Kubern
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public EgressQoSStatus() {
     }

@@ -78,7 +78,6 @@ public class GitLabIdentityProvider implements Editable<GitLabIdentityProviderBu
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public GitLabIdentityProvider() {
     }

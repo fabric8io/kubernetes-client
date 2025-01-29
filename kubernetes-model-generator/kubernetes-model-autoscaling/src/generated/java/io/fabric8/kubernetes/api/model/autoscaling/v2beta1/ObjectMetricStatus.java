@@ -82,7 +82,6 @@ public class ObjectMetricStatus implements Editable<ObjectMetricStatusBuilder>, 
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ObjectMetricStatus() {
     }

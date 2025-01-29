@@ -78,16 +78,12 @@ public class RequestAuthentication implements Editable<RequestAuthenticationBuil
 {
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "security.istio.io/v1beta1";
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "RequestAuthentication";
@@ -102,7 +98,6 @@ public class RequestAuthentication implements Editable<RequestAuthenticationBuil
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public RequestAuthentication() {
     }
@@ -117,9 +112,7 @@ public class RequestAuthentication implements Editable<RequestAuthenticationBuil
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -127,9 +120,7 @@ public class RequestAuthentication implements Editable<RequestAuthenticationBuil
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -137,9 +128,7 @@ public class RequestAuthentication implements Editable<RequestAuthenticationBuil
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -147,9 +136,7 @@ public class RequestAuthentication implements Editable<RequestAuthenticationBuil
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

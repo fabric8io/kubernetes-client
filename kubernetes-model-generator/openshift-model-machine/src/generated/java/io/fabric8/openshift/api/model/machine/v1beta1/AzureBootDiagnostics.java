@@ -72,7 +72,6 @@ public class AzureBootDiagnostics implements Editable<AzureBootDiagnosticsBuilde
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public AzureBootDiagnostics() {
     }

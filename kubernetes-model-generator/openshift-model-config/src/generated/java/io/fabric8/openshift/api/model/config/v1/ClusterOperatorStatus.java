@@ -84,7 +84,6 @@ public class ClusterOperatorStatus implements Editable<ClusterOperatorStatusBuil
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ClusterOperatorStatus() {
     }

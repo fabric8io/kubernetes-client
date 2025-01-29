@@ -107,7 +107,6 @@ public class KafkaChannelStatus implements Editable<KafkaChannelStatusBuilder>, 
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public KafkaChannelStatus() {
     }

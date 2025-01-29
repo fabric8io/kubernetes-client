@@ -48,18 +48,14 @@ public class APIResourceList implements Editable<APIResourceListBuilder>, Kubern
 {
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "v1";
     @JsonProperty("groupVersion")
     private String groupVersion;
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "APIResourceList";
@@ -71,7 +67,6 @@ public class APIResourceList implements Editable<APIResourceListBuilder>, Kubern
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public APIResourceList() {
     }
@@ -85,9 +80,7 @@ public class APIResourceList implements Editable<APIResourceListBuilder>, Kubern
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -95,9 +88,7 @@ public class APIResourceList implements Editable<APIResourceListBuilder>, Kubern
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -115,9 +106,7 @@ public class APIResourceList implements Editable<APIResourceListBuilder>, Kubern
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -125,9 +114,7 @@ public class APIResourceList implements Editable<APIResourceListBuilder>, Kubern
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

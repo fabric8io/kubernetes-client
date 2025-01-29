@@ -77,16 +77,12 @@ public class DiscoveryConfig implements Editable<DiscoveryConfigBuilder>, HasMet
 {
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "discovery.open-cluster-management.io/v1alpha1";
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "DiscoveryConfig";
@@ -101,7 +97,6 @@ public class DiscoveryConfig implements Editable<DiscoveryConfigBuilder>, HasMet
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public DiscoveryConfig() {
     }
@@ -116,9 +111,7 @@ public class DiscoveryConfig implements Editable<DiscoveryConfigBuilder>, HasMet
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -126,9 +119,7 @@ public class DiscoveryConfig implements Editable<DiscoveryConfigBuilder>, HasMet
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -136,9 +127,7 @@ public class DiscoveryConfig implements Editable<DiscoveryConfigBuilder>, HasMet
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -146,9 +135,7 @@ public class DiscoveryConfig implements Editable<DiscoveryConfigBuilder>, HasMet
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

@@ -69,7 +69,6 @@ public class IPsecConfig implements Editable<IPsecConfigBuilder>, KubernetesReso
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public IPsecConfig() {
     }

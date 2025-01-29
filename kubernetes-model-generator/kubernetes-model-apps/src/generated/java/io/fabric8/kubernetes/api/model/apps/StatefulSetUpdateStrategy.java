@@ -72,7 +72,6 @@ public class StatefulSetUpdateStrategy implements Editable<StatefulSetUpdateStra
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public StatefulSetUpdateStrategy() {
     }

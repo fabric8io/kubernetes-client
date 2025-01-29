@@ -84,7 +84,6 @@ public class KReference implements Editable<KReferenceBuilder>, KubernetesResour
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public KReference() {
     }

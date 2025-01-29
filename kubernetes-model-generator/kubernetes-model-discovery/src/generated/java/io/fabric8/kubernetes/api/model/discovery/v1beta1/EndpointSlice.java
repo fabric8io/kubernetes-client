@@ -82,9 +82,7 @@ public class EndpointSlice implements Editable<EndpointSliceBuilder>, HasMetadat
     @JsonProperty("addressType")
     private String addressType;
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "discovery.k8s.io/v1beta1";
@@ -92,9 +90,7 @@ public class EndpointSlice implements Editable<EndpointSliceBuilder>, HasMetadat
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<Endpoint> endpoints = new ArrayList<>();
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "EndpointSlice";
@@ -108,7 +104,6 @@ public class EndpointSlice implements Editable<EndpointSliceBuilder>, HasMetadat
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public EndpointSlice() {
     }
@@ -134,9 +129,7 @@ public class EndpointSlice implements Editable<EndpointSliceBuilder>, HasMetadat
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -144,9 +137,7 @@ public class EndpointSlice implements Editable<EndpointSliceBuilder>, HasMetadat
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -165,9 +156,7 @@ public class EndpointSlice implements Editable<EndpointSliceBuilder>, HasMetadat
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -175,9 +164,7 @@ public class EndpointSlice implements Editable<EndpointSliceBuilder>, HasMetadat
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

@@ -74,7 +74,6 @@ public class BrokerSpec implements Editable<BrokerSpecBuilder>, KubernetesResour
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public BrokerSpec() {
     }

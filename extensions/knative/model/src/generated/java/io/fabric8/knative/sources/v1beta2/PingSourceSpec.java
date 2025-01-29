@@ -89,7 +89,6 @@ public class PingSourceSpec implements Editable<PingSourceSpecBuilder>, Kubernet
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public PingSourceSpec() {
     }

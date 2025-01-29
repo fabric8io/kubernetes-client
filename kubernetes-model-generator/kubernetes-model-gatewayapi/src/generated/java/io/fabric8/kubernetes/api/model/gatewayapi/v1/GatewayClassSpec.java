@@ -75,7 +75,6 @@ public class GatewayClassSpec implements Editable<GatewayClassSpecBuilder>, Kube
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public GatewayClassSpec() {
     }

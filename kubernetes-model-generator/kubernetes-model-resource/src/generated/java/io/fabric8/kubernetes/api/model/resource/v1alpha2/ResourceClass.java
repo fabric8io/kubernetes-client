@@ -79,18 +79,14 @@ public class ResourceClass implements Editable<ResourceClassBuilder>, HasMetadat
 {
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "resource.k8s.io/v1alpha2";
     @JsonProperty("driverName")
     private String driverName;
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "ResourceClass";
@@ -107,7 +103,6 @@ public class ResourceClass implements Editable<ResourceClassBuilder>, HasMetadat
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ResourceClass() {
     }
@@ -124,9 +119,7 @@ public class ResourceClass implements Editable<ResourceClassBuilder>, HasMetadat
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -134,9 +127,7 @@ public class ResourceClass implements Editable<ResourceClassBuilder>, HasMetadat
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -154,9 +145,7 @@ public class ResourceClass implements Editable<ResourceClassBuilder>, HasMetadat
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -164,9 +153,7 @@ public class ResourceClass implements Editable<ResourceClassBuilder>, HasMetadat
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

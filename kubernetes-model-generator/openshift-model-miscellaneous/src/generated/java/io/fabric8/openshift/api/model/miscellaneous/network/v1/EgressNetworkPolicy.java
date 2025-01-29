@@ -76,16 +76,12 @@ public class EgressNetworkPolicy implements Editable<EgressNetworkPolicyBuilder>
 {
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "network.openshift.io/v1";
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "EgressNetworkPolicy";
@@ -98,7 +94,6 @@ public class EgressNetworkPolicy implements Editable<EgressNetworkPolicyBuilder>
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public EgressNetworkPolicy() {
     }
@@ -112,9 +107,7 @@ public class EgressNetworkPolicy implements Editable<EgressNetworkPolicyBuilder>
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -122,9 +115,7 @@ public class EgressNetworkPolicy implements Editable<EgressNetworkPolicyBuilder>
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -132,9 +123,7 @@ public class EgressNetworkPolicy implements Editable<EgressNetworkPolicyBuilder>
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -142,9 +131,7 @@ public class EgressNetworkPolicy implements Editable<EgressNetworkPolicyBuilder>
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

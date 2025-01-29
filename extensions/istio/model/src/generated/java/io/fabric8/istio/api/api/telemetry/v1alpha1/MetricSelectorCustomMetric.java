@@ -69,7 +69,6 @@ public class MetricSelectorCustomMetric implements IsMetricSelectorMetricMatch, 
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public MetricSelectorCustomMetric() {
     }

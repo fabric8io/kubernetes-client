@@ -75,7 +75,6 @@ public class StressMemorySpec implements Editable<StressMemorySpecBuilder>, Kube
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public StressMemorySpec() {
     }

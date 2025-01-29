@@ -78,7 +78,6 @@ public class ResourceClaimConsumerReference implements Editable<ResourceClaimCon
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ResourceClaimConsumerReference() {
     }

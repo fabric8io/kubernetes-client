@@ -117,7 +117,6 @@ public class DiscoveredClusterSpec implements Editable<DiscoveredClusterSpecBuil
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public DiscoveredClusterSpec() {
     }

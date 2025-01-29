@@ -72,7 +72,6 @@ public class ClusterAutoscalerSpecRLCores implements Editable<ClusterAutoscalerS
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ClusterAutoscalerSpecRLCores() {
     }

@@ -72,7 +72,6 @@ public class RouterShard implements Editable<RouterShardBuilder>, KubernetesReso
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public RouterShard() {
     }

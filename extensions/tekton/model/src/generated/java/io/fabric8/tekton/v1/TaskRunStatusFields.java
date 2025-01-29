@@ -106,7 +106,6 @@ public class TaskRunStatusFields implements Editable<TaskRunStatusFieldsBuilder>
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public TaskRunStatusFields() {
     }

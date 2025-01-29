@@ -82,7 +82,6 @@ public class BackendTLSPolicyValidation implements Editable<BackendTLSPolicyVali
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public BackendTLSPolicyValidation() {
     }

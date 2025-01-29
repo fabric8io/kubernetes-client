@@ -98,7 +98,6 @@ public class ContainerSourceStatus implements Editable<ContainerSourceStatusBuil
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ContainerSourceStatus() {
     }

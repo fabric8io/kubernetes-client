@@ -72,7 +72,6 @@ public class ClusterDeploymentCustomizationSpec implements Editable<ClusterDeplo
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ClusterDeploymentCustomizationSpec() {
     }

@@ -101,7 +101,6 @@ public class SinkBindingStatus implements Editable<SinkBindingStatusBuilder>, Ku
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public SinkBindingStatus() {
     }

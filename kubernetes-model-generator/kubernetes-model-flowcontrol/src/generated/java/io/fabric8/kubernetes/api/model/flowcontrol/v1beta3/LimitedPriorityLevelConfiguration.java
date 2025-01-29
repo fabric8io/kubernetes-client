@@ -78,7 +78,6 @@ public class LimitedPriorityLevelConfiguration implements Editable<LimitedPriori
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public LimitedPriorityLevelConfiguration() {
     }

@@ -79,7 +79,6 @@ public class WebhookInterceptor implements Editable<WebhookInterceptorBuilder>, 
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public WebhookInterceptor() {
     }

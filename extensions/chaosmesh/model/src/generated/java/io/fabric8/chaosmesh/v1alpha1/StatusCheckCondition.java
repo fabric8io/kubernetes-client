@@ -81,7 +81,6 @@ public class StatusCheckCondition implements Editable<StatusCheckConditionBuilde
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public StatusCheckCondition() {
     }

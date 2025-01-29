@@ -81,7 +81,6 @@ public class DockerImageReference implements Editable<DockerImageReferenceBuilde
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public DockerImageReference() {
     }

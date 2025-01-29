@@ -72,7 +72,6 @@ public class ControlPlaneMachineSetTemplate implements Editable<ControlPlaneMach
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ControlPlaneMachineSetTemplate() {
     }

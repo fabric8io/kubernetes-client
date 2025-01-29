@@ -76,7 +76,6 @@ public class IssuerStatus implements Editable<IssuerStatusBuilder>, KubernetesRe
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public IssuerStatus() {
     }

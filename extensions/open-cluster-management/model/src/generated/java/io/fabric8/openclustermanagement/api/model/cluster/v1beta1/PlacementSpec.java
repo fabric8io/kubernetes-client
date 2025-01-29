@@ -92,7 +92,6 @@ public class PlacementSpec implements Editable<PlacementSpecBuilder>, Kubernetes
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public PlacementSpec() {
     }

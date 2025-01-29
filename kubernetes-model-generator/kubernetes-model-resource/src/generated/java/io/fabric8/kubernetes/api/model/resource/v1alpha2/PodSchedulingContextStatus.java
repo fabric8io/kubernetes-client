@@ -72,7 +72,6 @@ public class PodSchedulingContextStatus implements Editable<PodSchedulingContext
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public PodSchedulingContextStatus() {
     }

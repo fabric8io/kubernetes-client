@@ -84,7 +84,6 @@ public class NetworkPartitionSpec implements Editable<NetworkPartitionSpecBuilde
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public NetworkPartitionSpec() {
     }

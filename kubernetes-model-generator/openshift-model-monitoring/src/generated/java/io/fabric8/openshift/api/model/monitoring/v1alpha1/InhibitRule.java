@@ -80,7 +80,6 @@ public class InhibitRule implements Editable<InhibitRuleBuilder>, KubernetesReso
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public InhibitRule() {
     }

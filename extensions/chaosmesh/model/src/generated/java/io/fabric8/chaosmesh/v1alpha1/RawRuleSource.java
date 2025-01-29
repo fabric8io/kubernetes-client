@@ -69,7 +69,6 @@ public class RawRuleSource implements Editable<RawRuleSourceBuilder>, Kubernetes
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public RawRuleSource() {
     }

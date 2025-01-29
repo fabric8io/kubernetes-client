@@ -90,7 +90,6 @@ public class HardwareRAIDVolume implements Editable<HardwareRAIDVolumeBuilder>, 
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public HardwareRAIDVolume() {
     }

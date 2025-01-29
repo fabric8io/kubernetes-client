@@ -76,16 +76,12 @@ public class PhysicalMachine implements Editable<PhysicalMachineBuilder>, HasMet
 {
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "chaos-mesh.org/v1alpha1";
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "PhysicalMachine";
@@ -98,7 +94,6 @@ public class PhysicalMachine implements Editable<PhysicalMachineBuilder>, HasMet
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public PhysicalMachine() {
     }
@@ -112,9 +107,7 @@ public class PhysicalMachine implements Editable<PhysicalMachineBuilder>, HasMet
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -122,9 +115,7 @@ public class PhysicalMachine implements Editable<PhysicalMachineBuilder>, HasMet
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -132,9 +123,7 @@ public class PhysicalMachine implements Editable<PhysicalMachineBuilder>, HasMet
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -142,9 +131,7 @@ public class PhysicalMachine implements Editable<PhysicalMachineBuilder>, HasMet
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

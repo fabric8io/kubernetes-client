@@ -76,7 +76,6 @@ public class ProjectStatus implements Editable<ProjectStatusBuilder>, Kubernetes
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ProjectStatus() {
     }

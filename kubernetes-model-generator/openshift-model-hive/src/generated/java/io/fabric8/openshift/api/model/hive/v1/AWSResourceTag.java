@@ -72,7 +72,6 @@ public class AWSResourceTag implements Editable<AWSResourceTagBuilder>, Kubernet
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public AWSResourceTag() {
     }

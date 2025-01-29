@@ -135,7 +135,6 @@ public class PersistentVolumeSpec implements Editable<PersistentVolumeSpecBuilde
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public PersistentVolumeSpec() {
     }

@@ -72,7 +72,6 @@ public class VMDiskSecurityProfile implements Editable<VMDiskSecurityProfileBuil
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public VMDiskSecurityProfile() {
     }

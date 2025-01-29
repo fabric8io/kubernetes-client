@@ -86,7 +86,6 @@ public class ReadinessProbe implements Editable<ReadinessProbeBuilder>, Kubernet
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ReadinessProbe() {
     }

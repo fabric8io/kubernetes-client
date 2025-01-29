@@ -43,7 +43,6 @@ public class SeccompProfile implements Editable<SeccompProfileBuilder>, Kubernet
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public SeccompProfile() {
     }

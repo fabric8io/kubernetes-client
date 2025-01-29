@@ -88,7 +88,6 @@ public class KubeStorageVersionMigratorStatus implements Editable<KubeStorageVer
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public KubeStorageVersionMigratorStatus() {
     }

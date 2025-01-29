@@ -72,7 +72,6 @@ public class ProjectAccess implements Editable<ProjectAccessBuilder>, Kubernetes
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ProjectAccess() {
     }

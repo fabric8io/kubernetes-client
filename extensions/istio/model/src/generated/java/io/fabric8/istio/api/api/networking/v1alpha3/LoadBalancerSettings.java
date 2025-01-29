@@ -80,7 +80,6 @@ public class LoadBalancerSettings implements Editable<LoadBalancerSettingsBuilde
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public LoadBalancerSettings() {
     }

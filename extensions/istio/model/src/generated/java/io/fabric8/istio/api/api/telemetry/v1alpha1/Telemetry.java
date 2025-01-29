@@ -102,7 +102,6 @@ public class Telemetry implements Editable<TelemetryBuilder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public Telemetry() {
     }

@@ -72,7 +72,6 @@ public class ServiceAccountReference implements Editable<ServiceAccountReference
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ServiceAccountReference() {
     }

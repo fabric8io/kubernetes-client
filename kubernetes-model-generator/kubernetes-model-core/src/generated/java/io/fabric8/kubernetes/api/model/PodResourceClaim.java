@@ -46,7 +46,6 @@ public class PodResourceClaim implements Editable<PodResourceClaimBuilder>, Kube
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public PodResourceClaim() {
     }

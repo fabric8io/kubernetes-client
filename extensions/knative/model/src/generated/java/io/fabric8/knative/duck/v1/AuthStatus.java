@@ -75,7 +75,6 @@ public class AuthStatus implements Editable<AuthStatusBuilder>, KubernetesResour
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public AuthStatus() {
     }

@@ -79,9 +79,7 @@ public class ContainerRuntimeConfigList implements Editable<ContainerRuntimeConf
 {
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "machineconfiguration.openshift.io/v1";
@@ -89,9 +87,7 @@ public class ContainerRuntimeConfigList implements Editable<ContainerRuntimeConf
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<io.fabric8.openshift.api.model.machineconfiguration.v1.ContainerRuntimeConfig> items = new ArrayList<>();
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "ContainerRuntimeConfigList";
@@ -102,7 +98,6 @@ public class ContainerRuntimeConfigList implements Editable<ContainerRuntimeConf
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ContainerRuntimeConfigList() {
     }
@@ -116,9 +111,7 @@ public class ContainerRuntimeConfigList implements Editable<ContainerRuntimeConf
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -126,9 +119,7 @@ public class ContainerRuntimeConfigList implements Editable<ContainerRuntimeConf
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -147,9 +138,7 @@ public class ContainerRuntimeConfigList implements Editable<ContainerRuntimeConf
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -157,9 +146,7 @@ public class ContainerRuntimeConfigList implements Editable<ContainerRuntimeConf
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

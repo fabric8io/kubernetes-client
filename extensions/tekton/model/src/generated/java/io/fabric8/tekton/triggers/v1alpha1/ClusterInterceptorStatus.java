@@ -88,7 +88,6 @@ public class ClusterInterceptorStatus implements Editable<ClusterInterceptorStat
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ClusterInterceptorStatus() {
     }

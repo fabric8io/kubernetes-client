@@ -96,7 +96,6 @@ public class RouteSpec implements Editable<RouteSpecBuilder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public RouteSpec() {
     }

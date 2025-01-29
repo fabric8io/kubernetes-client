@@ -82,7 +82,6 @@ public class DeliverySpec implements Editable<DeliverySpecBuilder>, KubernetesRe
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public DeliverySpec() {
     }

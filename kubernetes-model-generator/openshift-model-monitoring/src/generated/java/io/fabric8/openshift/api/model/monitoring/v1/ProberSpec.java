@@ -78,7 +78,6 @@ public class ProberSpec implements Editable<ProberSpecBuilder>, KubernetesResour
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ProberSpec() {
     }

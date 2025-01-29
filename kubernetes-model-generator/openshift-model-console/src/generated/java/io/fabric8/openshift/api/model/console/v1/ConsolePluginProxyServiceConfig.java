@@ -75,7 +75,6 @@ public class ConsolePluginProxyServiceConfig implements Editable<ConsolePluginPr
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ConsolePluginProxyServiceConfig() {
     }

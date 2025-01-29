@@ -93,7 +93,6 @@ public class StatusCheckSpec implements Editable<StatusCheckSpecBuilder>, Kubern
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public StatusCheckSpec() {
     }

@@ -78,7 +78,6 @@ public class SlackConfirmationField implements Editable<SlackConfirmationFieldBu
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public SlackConfirmationField() {
     }

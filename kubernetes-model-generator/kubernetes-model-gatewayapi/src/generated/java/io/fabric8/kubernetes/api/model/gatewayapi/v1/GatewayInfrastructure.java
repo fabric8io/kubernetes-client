@@ -77,7 +77,6 @@ public class GatewayInfrastructure implements Editable<GatewayInfrastructureBuil
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public GatewayInfrastructure() {
     }

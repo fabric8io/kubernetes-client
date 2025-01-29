@@ -93,7 +93,6 @@ public class OutlierDetection implements Editable<OutlierDetectionBuilder>, Kube
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public OutlierDetection() {
     }

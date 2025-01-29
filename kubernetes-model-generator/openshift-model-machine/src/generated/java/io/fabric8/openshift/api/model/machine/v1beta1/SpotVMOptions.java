@@ -70,7 +70,6 @@ public class SpotVMOptions implements Editable<SpotVMOptionsBuilder>, Kubernetes
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public SpotVMOptions() {
     }

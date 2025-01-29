@@ -75,7 +75,6 @@ public class ConsoleSampleSource implements Editable<ConsoleSampleSourceBuilder>
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ConsoleSampleSource() {
     }

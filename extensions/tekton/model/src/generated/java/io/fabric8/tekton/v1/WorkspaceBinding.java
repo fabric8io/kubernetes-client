@@ -99,7 +99,6 @@ public class WorkspaceBinding implements Editable<WorkspaceBindingBuilder>, Kube
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public WorkspaceBinding() {
     }

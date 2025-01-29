@@ -69,7 +69,6 @@ public class ProfileCustomizations implements Editable<ProfileCustomizationsBuil
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ProfileCustomizations() {
     }

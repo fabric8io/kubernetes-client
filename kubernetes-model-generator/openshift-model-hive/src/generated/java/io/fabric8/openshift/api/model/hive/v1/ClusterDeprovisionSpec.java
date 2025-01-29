@@ -81,7 +81,6 @@ public class ClusterDeprovisionSpec implements Editable<ClusterDeprovisionSpecBu
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ClusterDeprovisionSpec() {
     }

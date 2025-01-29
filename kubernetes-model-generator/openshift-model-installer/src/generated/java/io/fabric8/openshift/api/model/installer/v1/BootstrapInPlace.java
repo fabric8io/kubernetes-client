@@ -69,7 +69,6 @@ public class BootstrapInPlace implements Editable<BootstrapInPlaceBuilder>, Kube
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public BootstrapInPlace() {
     }

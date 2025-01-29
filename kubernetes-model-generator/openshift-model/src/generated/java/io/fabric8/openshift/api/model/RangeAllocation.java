@@ -76,18 +76,14 @@ public class RangeAllocation implements Editable<RangeAllocationBuilder>, HasMet
 {
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "security.openshift.io/v1";
     @JsonProperty("data")
     private String data;
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "RangeAllocation";
@@ -100,7 +96,6 @@ public class RangeAllocation implements Editable<RangeAllocationBuilder>, HasMet
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public RangeAllocation() {
     }
@@ -115,9 +110,7 @@ public class RangeAllocation implements Editable<RangeAllocationBuilder>, HasMet
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -125,9 +118,7 @@ public class RangeAllocation implements Editable<RangeAllocationBuilder>, HasMet
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -145,9 +136,7 @@ public class RangeAllocation implements Editable<RangeAllocationBuilder>, HasMet
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -155,9 +144,7 @@ public class RangeAllocation implements Editable<RangeAllocationBuilder>, HasMet
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

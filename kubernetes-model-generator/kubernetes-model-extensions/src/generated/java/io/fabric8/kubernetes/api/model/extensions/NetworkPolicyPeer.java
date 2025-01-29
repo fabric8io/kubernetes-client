@@ -75,7 +75,6 @@ public class NetworkPolicyPeer implements Editable<NetworkPolicyPeerBuilder>, Ku
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public NetworkPolicyPeer() {
     }

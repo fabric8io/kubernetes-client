@@ -78,18 +78,14 @@ public class ImageTag implements Editable<ImageTagBuilder>, HasMetadata, Namespa
 {
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "image.openshift.io/v1";
     @JsonProperty("image")
     private Image image;
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "ImageTag";
@@ -104,7 +100,6 @@ public class ImageTag implements Editable<ImageTagBuilder>, HasMetadata, Namespa
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ImageTag() {
     }
@@ -120,9 +115,7 @@ public class ImageTag implements Editable<ImageTagBuilder>, HasMetadata, Namespa
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -130,9 +123,7 @@ public class ImageTag implements Editable<ImageTagBuilder>, HasMetadata, Namespa
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -150,9 +141,7 @@ public class ImageTag implements Editable<ImageTagBuilder>, HasMetadata, Namespa
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -160,9 +149,7 @@ public class ImageTag implements Editable<ImageTagBuilder>, HasMetadata, Namespa
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

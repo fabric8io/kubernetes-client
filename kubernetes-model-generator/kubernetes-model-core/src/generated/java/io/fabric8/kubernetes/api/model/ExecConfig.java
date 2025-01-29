@@ -62,7 +62,6 @@ public class ExecConfig implements Editable<ExecConfigBuilder>, KubernetesResour
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ExecConfig() {
     }

@@ -69,7 +69,6 @@ public class BuildVolumeMount implements Editable<BuildVolumeMountBuilder>, Kube
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public BuildVolumeMount() {
     }

@@ -69,7 +69,6 @@ public class GCPFailureDomain implements Editable<GCPFailureDomainBuilder>, Kube
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public GCPFailureDomain() {
     }

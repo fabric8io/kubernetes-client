@@ -111,7 +111,6 @@ public class ImagePrunerSpec implements Editable<ImagePrunerSpecBuilder>, Kubern
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ImagePrunerSpec() {
     }

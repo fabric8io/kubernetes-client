@@ -69,7 +69,6 @@ public class VSphereFailureDomain implements Editable<VSphereFailureDomainBuilde
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public VSphereFailureDomain() {
     }

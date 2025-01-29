@@ -76,7 +76,6 @@ public class NativeHistogramConfig implements Editable<NativeHistogramConfigBuil
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public NativeHistogramConfig() {
     }

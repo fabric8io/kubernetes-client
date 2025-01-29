@@ -100,7 +100,6 @@ class ModelGenerator {
   }
 
   private void processTemplate(TemplateContext ret) {
-    ret.put("emptySpace", " "); // TODO: remove after generator migration, current workaround so that models match with jsonschema2pojo
     ret.addAllImports(initDefaultImports());
     if (ret.getApiVersion() != null) {
       ret.addImport("io.fabric8.kubernetes.model.annotation.Version");

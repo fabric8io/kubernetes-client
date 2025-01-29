@@ -72,7 +72,6 @@ public class NonResourceAttributes implements Editable<NonResourceAttributesBuil
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public NonResourceAttributes() {
     }

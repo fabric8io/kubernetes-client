@@ -69,7 +69,6 @@ public class AuthenticatableStatus implements Editable<AuthenticatableStatusBuil
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public AuthenticatableStatus() {
     }

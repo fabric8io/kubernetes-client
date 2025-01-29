@@ -94,7 +94,6 @@ public class PodStatus implements Editable<PodStatusBuilder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     *
      */
     public PodStatus() {
     }

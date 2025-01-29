@@ -79,9 +79,7 @@ public class OperatorList implements Editable<OperatorListBuilder>, KubernetesRe
 {
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "operators.coreos.com/v1";
@@ -89,9 +87,7 @@ public class OperatorList implements Editable<OperatorListBuilder>, KubernetesRe
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<io.fabric8.openshift.api.model.operatorhub.v1.Operator> items = new ArrayList<>();
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "OperatorList";
@@ -102,7 +98,6 @@ public class OperatorList implements Editable<OperatorListBuilder>, KubernetesRe
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public OperatorList() {
     }
@@ -116,9 +111,7 @@ public class OperatorList implements Editable<OperatorListBuilder>, KubernetesRe
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -126,9 +119,7 @@ public class OperatorList implements Editable<OperatorListBuilder>, KubernetesRe
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -147,9 +138,7 @@ public class OperatorList implements Editable<OperatorListBuilder>, KubernetesRe
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -157,9 +146,7 @@ public class OperatorList implements Editable<OperatorListBuilder>, KubernetesRe
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

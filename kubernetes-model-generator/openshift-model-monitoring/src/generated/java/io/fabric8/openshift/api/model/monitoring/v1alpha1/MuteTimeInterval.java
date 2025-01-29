@@ -75,7 +75,6 @@ public class MuteTimeInterval implements Editable<MuteTimeIntervalBuilder>, Kube
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public MuteTimeInterval() {
     }

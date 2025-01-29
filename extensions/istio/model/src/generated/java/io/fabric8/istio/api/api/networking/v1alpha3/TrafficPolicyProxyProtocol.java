@@ -69,7 +69,6 @@ public class TrafficPolicyProxyProtocol implements Editable<TrafficPolicyProxyPr
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public TrafficPolicyProxyProtocol() {
     }

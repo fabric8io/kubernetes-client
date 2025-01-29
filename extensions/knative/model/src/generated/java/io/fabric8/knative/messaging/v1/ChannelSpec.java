@@ -80,7 +80,6 @@ public class ChannelSpec implements Editable<ChannelSpecBuilder>, KubernetesReso
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ChannelSpec() {
     }

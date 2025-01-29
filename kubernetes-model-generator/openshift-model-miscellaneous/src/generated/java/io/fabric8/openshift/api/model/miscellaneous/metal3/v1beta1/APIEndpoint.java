@@ -72,7 +72,6 @@ public class APIEndpoint implements Editable<APIEndpointBuilder>, KubernetesReso
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public APIEndpoint() {
     }

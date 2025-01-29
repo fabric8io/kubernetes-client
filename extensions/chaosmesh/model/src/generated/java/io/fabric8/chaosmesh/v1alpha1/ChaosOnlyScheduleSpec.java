@@ -123,7 +123,6 @@ public class ChaosOnlyScheduleSpec implements Editable<ChaosOnlyScheduleSpecBuil
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ChaosOnlyScheduleSpec() {
     }

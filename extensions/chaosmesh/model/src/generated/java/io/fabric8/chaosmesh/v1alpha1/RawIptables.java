@@ -84,7 +84,6 @@ public class RawIptables implements Editable<RawIptablesBuilder>, KubernetesReso
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public RawIptables() {
     }

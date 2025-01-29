@@ -97,7 +97,6 @@ public class CorsPolicy implements Editable<CorsPolicyBuilder>, KubernetesResour
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public CorsPolicy() {
     }

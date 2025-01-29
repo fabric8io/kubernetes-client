@@ -75,7 +75,6 @@ public class ObjectMetricSource implements Editable<ObjectMetricSourceBuilder>, 
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ObjectMetricSource() {
     }

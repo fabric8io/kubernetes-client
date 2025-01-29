@@ -47,7 +47,6 @@ public class PodAntiAffinity implements Editable<PodAntiAffinityBuilder>, Kubern
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public PodAntiAffinity() {
     }

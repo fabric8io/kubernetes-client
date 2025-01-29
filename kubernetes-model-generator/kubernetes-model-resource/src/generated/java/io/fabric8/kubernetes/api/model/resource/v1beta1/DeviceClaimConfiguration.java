@@ -75,7 +75,6 @@ public class DeviceClaimConfiguration implements Editable<DeviceClaimConfigurati
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public DeviceClaimConfiguration() {
     }

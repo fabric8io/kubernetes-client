@@ -75,16 +75,12 @@ public class ValidatingAdmissionPolicyBinding implements Editable<ValidatingAdmi
 {
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "admissionregistration.k8s.io/v1";
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "ValidatingAdmissionPolicyBinding";
@@ -97,7 +93,6 @@ public class ValidatingAdmissionPolicyBinding implements Editable<ValidatingAdmi
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ValidatingAdmissionPolicyBinding() {
     }
@@ -111,9 +106,7 @@ public class ValidatingAdmissionPolicyBinding implements Editable<ValidatingAdmi
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -121,9 +114,7 @@ public class ValidatingAdmissionPolicyBinding implements Editable<ValidatingAdmi
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -131,9 +122,7 @@ public class ValidatingAdmissionPolicyBinding implements Editable<ValidatingAdmi
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -141,9 +130,7 @@ public class ValidatingAdmissionPolicyBinding implements Editable<ValidatingAdmi
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

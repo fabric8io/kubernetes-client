@@ -129,7 +129,6 @@ public class SubnetFilter implements Editable<SubnetFilterBuilder>, KubernetesRe
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public SubnetFilter() {
     }

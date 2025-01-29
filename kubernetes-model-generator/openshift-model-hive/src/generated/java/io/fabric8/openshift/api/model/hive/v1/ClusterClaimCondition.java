@@ -84,7 +84,6 @@ public class ClusterClaimCondition implements Editable<ClusterClaimConditionBuil
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ClusterClaimCondition() {
     }

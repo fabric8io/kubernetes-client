@@ -77,16 +77,12 @@ public class ResourceClaim implements Editable<ResourceClaimBuilder>, HasMetadat
 {
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "resource.k8s.io/v1beta1";
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "ResourceClaim";
@@ -101,7 +97,6 @@ public class ResourceClaim implements Editable<ResourceClaimBuilder>, HasMetadat
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ResourceClaim() {
     }
@@ -116,9 +111,7 @@ public class ResourceClaim implements Editable<ResourceClaimBuilder>, HasMetadat
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -126,9 +119,7 @@ public class ResourceClaim implements Editable<ResourceClaimBuilder>, HasMetadat
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -136,9 +127,7 @@ public class ResourceClaim implements Editable<ResourceClaimBuilder>, HasMetadat
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -146,9 +135,7 @@ public class ResourceClaim implements Editable<ResourceClaimBuilder>, HasMetadat
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

@@ -82,7 +82,6 @@ public class RootVolume implements Editable<RootVolumeBuilder>, KubernetesResour
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public RootVolume() {
     }

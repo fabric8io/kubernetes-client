@@ -72,7 +72,6 @@ public class LossSpec implements Editable<LossSpecBuilder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public LossSpec() {
     }

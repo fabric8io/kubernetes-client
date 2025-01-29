@@ -72,7 +72,6 @@ public class ObservabilityAddonStatus implements Editable<ObservabilityAddonStat
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ObservabilityAddonStatus() {
     }

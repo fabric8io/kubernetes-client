@@ -84,7 +84,6 @@ public class TagEventCondition implements Editable<TagEventConditionBuilder>, Ku
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public TagEventCondition() {
     }

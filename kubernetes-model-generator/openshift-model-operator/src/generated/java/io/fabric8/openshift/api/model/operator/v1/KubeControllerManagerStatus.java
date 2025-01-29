@@ -95,7 +95,6 @@ public class KubeControllerManagerStatus implements Editable<KubeControllerManag
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public KubeControllerManagerStatus() {
     }

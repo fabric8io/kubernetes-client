@@ -81,7 +81,6 @@ public class OperatorCondition implements Editable<OperatorConditionBuilder>, Ku
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public OperatorCondition() {
     }

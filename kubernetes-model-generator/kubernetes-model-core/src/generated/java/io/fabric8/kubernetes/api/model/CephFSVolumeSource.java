@@ -58,7 +58,6 @@ public class CephFSVolumeSource implements Editable<CephFSVolumeSourceBuilder>, 
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public CephFSVolumeSource() {
     }

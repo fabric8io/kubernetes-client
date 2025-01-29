@@ -75,16 +75,12 @@ public class ClusterDomainClaim implements Editable<ClusterDomainClaimBuilder>, 
 {
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "networking.internal.knative.dev/v1alpha1";
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "ClusterDomainClaim";
@@ -97,7 +93,6 @@ public class ClusterDomainClaim implements Editable<ClusterDomainClaimBuilder>, 
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ClusterDomainClaim() {
     }
@@ -111,9 +106,7 @@ public class ClusterDomainClaim implements Editable<ClusterDomainClaimBuilder>, 
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -121,9 +114,7 @@ public class ClusterDomainClaim implements Editable<ClusterDomainClaimBuilder>, 
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -131,9 +122,7 @@ public class ClusterDomainClaim implements Editable<ClusterDomainClaimBuilder>, 
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -141,9 +130,7 @@ public class ClusterDomainClaim implements Editable<ClusterDomainClaimBuilder>, 
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

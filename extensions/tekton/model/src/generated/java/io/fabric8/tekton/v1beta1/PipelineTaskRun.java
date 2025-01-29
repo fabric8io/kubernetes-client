@@ -69,7 +69,6 @@ public class PipelineTaskRun implements Editable<PipelineTaskRunBuilder>, Kubern
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public PipelineTaskRun() {
     }

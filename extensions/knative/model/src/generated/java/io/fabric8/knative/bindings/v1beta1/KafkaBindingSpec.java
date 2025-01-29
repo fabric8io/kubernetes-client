@@ -79,7 +79,6 @@ public class KafkaBindingSpec implements Editable<KafkaBindingSpecBuilder>, Kube
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public KafkaBindingSpec() {
     }

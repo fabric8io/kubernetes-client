@@ -78,7 +78,6 @@ public class AlertmanagerConfiguration implements Editable<AlertmanagerConfigura
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public AlertmanagerConfiguration() {
     }

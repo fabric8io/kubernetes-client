@@ -88,7 +88,6 @@ public class Tracing implements Editable<TracingBuilder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public Tracing() {
     }

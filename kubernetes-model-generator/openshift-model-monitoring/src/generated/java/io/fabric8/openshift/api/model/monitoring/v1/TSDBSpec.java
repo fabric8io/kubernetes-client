@@ -69,7 +69,6 @@ public class TSDBSpec implements Editable<TSDBSpecBuilder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public TSDBSpec() {
     }

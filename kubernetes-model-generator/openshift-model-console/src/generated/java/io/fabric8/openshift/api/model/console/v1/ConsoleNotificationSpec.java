@@ -81,7 +81,6 @@ public class ConsoleNotificationSpec implements Editable<ConsoleNotificationSpec
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ConsoleNotificationSpec() {
     }

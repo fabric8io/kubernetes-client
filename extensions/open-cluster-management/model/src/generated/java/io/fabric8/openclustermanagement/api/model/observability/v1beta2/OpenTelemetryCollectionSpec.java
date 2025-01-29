@@ -72,7 +72,6 @@ public class OpenTelemetryCollectionSpec implements Editable<OpenTelemetryCollec
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public OpenTelemetryCollectionSpec() {
     }

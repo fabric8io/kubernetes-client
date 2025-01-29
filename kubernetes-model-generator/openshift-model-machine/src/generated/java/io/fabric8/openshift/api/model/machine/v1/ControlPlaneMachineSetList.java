@@ -79,9 +79,7 @@ public class ControlPlaneMachineSetList implements Editable<ControlPlaneMachineS
 {
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "machine.openshift.io/v1";
@@ -89,9 +87,7 @@ public class ControlPlaneMachineSetList implements Editable<ControlPlaneMachineS
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<io.fabric8.openshift.api.model.machine.v1.ControlPlaneMachineSet> items = new ArrayList<>();
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "ControlPlaneMachineSetList";
@@ -102,7 +98,6 @@ public class ControlPlaneMachineSetList implements Editable<ControlPlaneMachineS
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ControlPlaneMachineSetList() {
     }
@@ -116,9 +111,7 @@ public class ControlPlaneMachineSetList implements Editable<ControlPlaneMachineS
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -126,9 +119,7 @@ public class ControlPlaneMachineSetList implements Editable<ControlPlaneMachineS
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -147,9 +138,7 @@ public class ControlPlaneMachineSetList implements Editable<ControlPlaneMachineS
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -157,9 +146,7 @@ public class ControlPlaneMachineSetList implements Editable<ControlPlaneMachineS
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

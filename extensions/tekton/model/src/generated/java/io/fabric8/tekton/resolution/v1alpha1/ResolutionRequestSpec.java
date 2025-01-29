@@ -70,7 +70,6 @@ public class ResolutionRequestSpec implements Editable<ResolutionRequestSpecBuil
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ResolutionRequestSpec() {
     }

@@ -76,7 +76,6 @@ public class ReferenceGrantSpec implements Editable<ReferenceGrantSpecBuilder>, 
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ReferenceGrantSpec() {
     }

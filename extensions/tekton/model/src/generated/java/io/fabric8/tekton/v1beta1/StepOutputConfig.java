@@ -69,7 +69,6 @@ public class StepOutputConfig implements Editable<StepOutputConfigBuilder>, Kube
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public StepOutputConfig() {
     }

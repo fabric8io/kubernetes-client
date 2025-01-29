@@ -156,7 +156,6 @@ public class Sidecar implements Editable<SidecarBuilder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public Sidecar() {
     }

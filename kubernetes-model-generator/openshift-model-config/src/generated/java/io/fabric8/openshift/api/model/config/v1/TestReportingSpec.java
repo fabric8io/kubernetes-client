@@ -72,7 +72,6 @@ public class TestReportingSpec implements Editable<TestReportingSpecBuilder>, Ku
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public TestReportingSpec() {
     }

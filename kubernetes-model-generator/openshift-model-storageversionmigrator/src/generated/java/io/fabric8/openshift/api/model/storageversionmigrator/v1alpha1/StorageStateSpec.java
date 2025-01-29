@@ -69,7 +69,6 @@ public class StorageStateSpec implements Editable<StorageStateSpecBuilder>, Kube
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public StorageStateSpec() {
     }

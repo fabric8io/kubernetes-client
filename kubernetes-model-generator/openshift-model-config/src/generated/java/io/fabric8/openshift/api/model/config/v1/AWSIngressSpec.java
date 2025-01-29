@@ -69,7 +69,6 @@ public class AWSIngressSpec implements Editable<AWSIngressSpecBuilder>, Kubernet
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public AWSIngressSpec() {
     }

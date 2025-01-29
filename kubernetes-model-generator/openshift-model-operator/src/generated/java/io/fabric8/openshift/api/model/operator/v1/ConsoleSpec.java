@@ -101,7 +101,6 @@ public class ConsoleSpec implements Editable<ConsoleSpecBuilder>, KubernetesReso
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ConsoleSpec() {
     }

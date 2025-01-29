@@ -78,7 +78,6 @@ public class PodHttpChaosActions implements Editable<PodHttpChaosActionsBuilder>
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public PodHttpChaosActions() {
     }

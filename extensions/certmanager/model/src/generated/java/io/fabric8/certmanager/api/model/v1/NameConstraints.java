@@ -75,7 +75,6 @@ public class NameConstraints implements Editable<NameConstraintsBuilder>, Kubern
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public NameConstraints() {
     }

@@ -87,7 +87,6 @@ public class Selector implements Editable<SelectorBuilder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public Selector() {
     }

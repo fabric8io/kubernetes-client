@@ -75,7 +75,6 @@ public class UserDefinedNetworkSpec implements Editable<UserDefinedNetworkSpecBu
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public UserDefinedNetworkSpec() {
     }

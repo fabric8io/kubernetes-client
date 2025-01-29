@@ -46,7 +46,6 @@ public class GroupVersionKind implements Editable<GroupVersionKindBuilder>, Kube
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public GroupVersionKind() {
     }

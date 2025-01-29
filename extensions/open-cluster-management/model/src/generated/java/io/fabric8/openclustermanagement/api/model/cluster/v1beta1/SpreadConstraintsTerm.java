@@ -78,7 +78,6 @@ public class SpreadConstraintsTerm implements Editable<SpreadConstraintsTermBuil
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public SpreadConstraintsTerm() {
     }

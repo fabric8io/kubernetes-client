@@ -80,9 +80,7 @@ public class GenericOperatorConfig implements Editable<GenericOperatorConfigBuil
 {
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "operator.openshift.io/v1alpha1";
@@ -91,9 +89,7 @@ public class GenericOperatorConfig implements Editable<GenericOperatorConfigBuil
     @JsonProperty("authorization")
     private DelegatedAuthorization authorization;
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "GenericOperatorConfig";
@@ -106,7 +102,6 @@ public class GenericOperatorConfig implements Editable<GenericOperatorConfigBuil
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public GenericOperatorConfig() {
     }
@@ -122,9 +117,7 @@ public class GenericOperatorConfig implements Editable<GenericOperatorConfigBuil
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -132,9 +125,7 @@ public class GenericOperatorConfig implements Editable<GenericOperatorConfigBuil
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -162,9 +153,7 @@ public class GenericOperatorConfig implements Editable<GenericOperatorConfigBuil
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -172,9 +161,7 @@ public class GenericOperatorConfig implements Editable<GenericOperatorConfigBuil
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

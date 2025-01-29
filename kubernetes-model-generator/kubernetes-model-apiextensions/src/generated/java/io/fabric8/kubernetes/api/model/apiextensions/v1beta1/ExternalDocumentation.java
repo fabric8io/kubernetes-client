@@ -72,7 +72,6 @@ public class ExternalDocumentation implements Editable<ExternalDocumentationBuil
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ExternalDocumentation() {
     }

@@ -72,7 +72,6 @@ public class AdminPolicyBasedExternalRouteSpec implements Editable<AdminPolicyBa
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public AdminPolicyBasedExternalRouteSpec() {
     }

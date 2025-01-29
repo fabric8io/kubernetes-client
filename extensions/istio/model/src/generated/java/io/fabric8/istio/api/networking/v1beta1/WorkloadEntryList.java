@@ -79,9 +79,7 @@ public class WorkloadEntryList implements Editable<WorkloadEntryListBuilder>, Ku
 {
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "networking.istio.io/v1beta1";
@@ -89,9 +87,7 @@ public class WorkloadEntryList implements Editable<WorkloadEntryListBuilder>, Ku
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<io.fabric8.istio.api.networking.v1beta1.WorkloadEntry> items = new ArrayList<>();
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "WorkloadEntryList";
@@ -102,7 +98,6 @@ public class WorkloadEntryList implements Editable<WorkloadEntryListBuilder>, Ku
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public WorkloadEntryList() {
     }
@@ -116,9 +111,7 @@ public class WorkloadEntryList implements Editable<WorkloadEntryListBuilder>, Ku
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -126,9 +119,7 @@ public class WorkloadEntryList implements Editable<WorkloadEntryListBuilder>, Ku
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -147,9 +138,7 @@ public class WorkloadEntryList implements Editable<WorkloadEntryListBuilder>, Ku
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -157,9 +146,7 @@ public class WorkloadEntryList implements Editable<WorkloadEntryListBuilder>, Ku
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

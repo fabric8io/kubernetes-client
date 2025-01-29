@@ -82,7 +82,6 @@ public class GatewayTLSConfig implements Editable<GatewayTLSConfigBuilder>, Kube
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public GatewayTLSConfig() {
     }

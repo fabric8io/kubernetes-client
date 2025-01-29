@@ -72,7 +72,6 @@ public class ClusterCondition implements Editable<ClusterConditionBuilder>, Kube
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ClusterCondition() {
     }

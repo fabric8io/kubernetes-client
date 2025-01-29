@@ -79,9 +79,7 @@ public class InMemoryChannelList implements Editable<InMemoryChannelListBuilder>
 {
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "messaging.knative.dev/v1";
@@ -89,9 +87,7 @@ public class InMemoryChannelList implements Editable<InMemoryChannelListBuilder>
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<io.fabric8.knative.messaging.v1.InMemoryChannel> items = new ArrayList<>();
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "InMemoryChannelList";
@@ -102,7 +98,6 @@ public class InMemoryChannelList implements Editable<InMemoryChannelListBuilder>
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public InMemoryChannelList() {
     }
@@ -116,9 +111,7 @@ public class InMemoryChannelList implements Editable<InMemoryChannelListBuilder>
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -126,9 +119,7 @@ public class InMemoryChannelList implements Editable<InMemoryChannelListBuilder>
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -147,9 +138,7 @@ public class InMemoryChannelList implements Editable<InMemoryChannelListBuilder>
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -157,9 +146,7 @@ public class InMemoryChannelList implements Editable<InMemoryChannelListBuilder>
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

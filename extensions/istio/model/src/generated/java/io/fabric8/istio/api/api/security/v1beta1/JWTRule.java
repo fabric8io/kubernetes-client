@@ -106,7 +106,6 @@ public class JWTRule implements Editable<JWTRuleBuilder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public JWTRule() {
     }

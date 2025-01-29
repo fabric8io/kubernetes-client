@@ -72,7 +72,6 @@ public class KlusterletAddonAgentConfigSpec implements Editable<KlusterletAddonA
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public KlusterletAddonAgentConfigSpec() {
     }

@@ -72,7 +72,6 @@ public class EgressQoSSpec implements Editable<EgressQoSSpecBuilder>, Kubernetes
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public EgressQoSSpec() {
     }

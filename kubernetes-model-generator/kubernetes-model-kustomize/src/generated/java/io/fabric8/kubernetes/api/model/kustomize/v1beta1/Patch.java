@@ -79,7 +79,6 @@ public class Patch implements Editable<PatchBuilder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public Patch() {
     }

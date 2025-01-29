@@ -82,7 +82,6 @@ public class NumatopoSpec implements Editable<NumatopoSpecBuilder>, KubernetesRe
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public NumatopoSpec() {
     }

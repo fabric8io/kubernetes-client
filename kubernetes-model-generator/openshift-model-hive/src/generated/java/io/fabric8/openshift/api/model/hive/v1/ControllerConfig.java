@@ -87,7 +87,6 @@ public class ControllerConfig implements Editable<ControllerConfigBuilder>, Kube
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ControllerConfig() {
     }

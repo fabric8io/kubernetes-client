@@ -72,7 +72,6 @@ public class FlowSchemaStatus implements Editable<FlowSchemaStatusBuilder>, Kube
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public FlowSchemaStatus() {
     }

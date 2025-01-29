@@ -74,7 +74,6 @@ public class ContainerMetrics implements Editable<ContainerMetricsBuilder>, Kube
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ContainerMetrics() {
     }

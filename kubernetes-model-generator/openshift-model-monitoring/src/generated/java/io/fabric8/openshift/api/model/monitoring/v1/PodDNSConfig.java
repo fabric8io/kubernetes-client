@@ -80,7 +80,6 @@ public class PodDNSConfig implements Editable<PodDNSConfigBuilder>, KubernetesRe
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public PodDNSConfig() {
     }

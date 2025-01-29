@@ -69,7 +69,6 @@ public class MachineOSConfigReference implements Editable<MachineOSConfigReferen
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public MachineOSConfigReference() {
     }

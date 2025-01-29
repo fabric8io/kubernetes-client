@@ -79,7 +79,6 @@ public class BlockChaosStatus implements Editable<BlockChaosStatusBuilder>, Kube
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public BlockChaosStatus() {
     }

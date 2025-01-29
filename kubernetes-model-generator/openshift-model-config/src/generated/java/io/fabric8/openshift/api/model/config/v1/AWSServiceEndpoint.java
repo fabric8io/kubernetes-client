@@ -72,7 +72,6 @@ public class AWSServiceEndpoint implements Editable<AWSServiceEndpointBuilder>, 
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public AWSServiceEndpoint() {
     }

@@ -70,7 +70,6 @@ public class ACMEIssuerDNS01ProviderDigitalOcean implements Editable<ACMEIssuerD
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ACMEIssuerDNS01ProviderDigitalOcean() {
     }

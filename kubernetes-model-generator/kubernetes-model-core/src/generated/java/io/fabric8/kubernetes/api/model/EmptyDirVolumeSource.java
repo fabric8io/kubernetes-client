@@ -43,7 +43,6 @@ public class EmptyDirVolumeSource implements Editable<EmptyDirVolumeSourceBuilde
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public EmptyDirVolumeSource() {
     }

@@ -72,7 +72,6 @@ public class SecretRef implements Editable<SecretRefBuilder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public SecretRef() {
     }

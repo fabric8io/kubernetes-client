@@ -81,7 +81,6 @@ public class PciDevice implements Editable<PciDeviceBuilder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public PciDevice() {
     }

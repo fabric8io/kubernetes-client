@@ -78,7 +78,6 @@ public class ImageStreamImportStatus implements Editable<ImageStreamImportStatus
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ImageStreamImportStatus() {
     }

@@ -49,7 +49,6 @@ public class TypedObjectReference implements Editable<TypedObjectReferenceBuilde
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public TypedObjectReference() {
     }

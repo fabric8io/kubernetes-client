@@ -56,7 +56,6 @@ public class FCVolumeSource implements Editable<FCVolumeSourceBuilder>, Kubernet
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public FCVolumeSource() {
     }

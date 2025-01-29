@@ -99,7 +99,6 @@ public class Networking implements Editable<NetworkingBuilder>, KubernetesResour
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public Networking() {
     }

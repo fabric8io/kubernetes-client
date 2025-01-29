@@ -72,7 +72,6 @@ public class HTTPPathMatch implements Editable<HTTPPathMatchBuilder>, Kubernetes
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public HTTPPathMatch() {
     }

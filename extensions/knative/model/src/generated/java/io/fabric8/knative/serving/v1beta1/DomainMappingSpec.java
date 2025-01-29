@@ -73,7 +73,6 @@ public class DomainMappingSpec implements Editable<DomainMappingSpecBuilder>, Ku
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public DomainMappingSpec() {
     }

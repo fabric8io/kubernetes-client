@@ -75,7 +75,6 @@ public class RouteTargetReference implements Editable<RouteTargetReferenceBuilde
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public RouteTargetReference() {
     }

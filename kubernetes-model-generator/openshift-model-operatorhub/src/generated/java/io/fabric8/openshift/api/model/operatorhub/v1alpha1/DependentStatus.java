@@ -84,7 +84,6 @@ public class DependentStatus implements Editable<DependentStatusBuilder>, Kubern
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public DependentStatus() {
     }

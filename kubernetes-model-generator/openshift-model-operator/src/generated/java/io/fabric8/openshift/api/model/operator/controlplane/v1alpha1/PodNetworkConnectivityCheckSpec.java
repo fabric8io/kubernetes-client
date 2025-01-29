@@ -76,7 +76,6 @@ public class PodNetworkConnectivityCheckSpec implements Editable<PodNetworkConne
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public PodNetworkConnectivityCheckSpec() {
     }

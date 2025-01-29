@@ -72,7 +72,6 @@ public class APIResource implements Editable<APIResourceBuilder>, KubernetesReso
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public APIResource() {
     }

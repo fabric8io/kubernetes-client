@@ -72,7 +72,6 @@ public class NetworkDownSpec implements Editable<NetworkDownSpecBuilder>, Kubern
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public NetworkDownSpec() {
     }

@@ -72,7 +72,6 @@ public class TriggerBindingSpec implements Editable<TriggerBindingSpecBuilder>, 
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public TriggerBindingSpec() {
     }

@@ -79,7 +79,6 @@ public class HttpGet implements Editable<HttpGetBuilder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public HttpGet() {
     }

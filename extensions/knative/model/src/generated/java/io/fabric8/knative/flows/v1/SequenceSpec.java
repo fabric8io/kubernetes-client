@@ -80,7 +80,6 @@ public class SequenceSpec implements Editable<SequenceSpecBuilder>, KubernetesRe
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public SequenceSpec() {
     }

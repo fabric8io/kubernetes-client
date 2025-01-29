@@ -78,7 +78,6 @@ public class BasicAuthIdentityProvider implements Editable<BasicAuthIdentityProv
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public BasicAuthIdentityProvider() {
     }

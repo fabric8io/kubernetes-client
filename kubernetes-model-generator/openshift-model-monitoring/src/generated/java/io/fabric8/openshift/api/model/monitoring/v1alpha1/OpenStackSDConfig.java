@@ -122,7 +122,6 @@ public class OpenStackSDConfig implements Editable<OpenStackSDConfigBuilder>, Ku
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public OpenStackSDConfig() {
     }

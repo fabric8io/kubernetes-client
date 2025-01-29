@@ -72,7 +72,6 @@ public class EventListenerTriggerSelector implements Editable<EventListenerTrigg
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public EventListenerTriggerSelector() {
     }

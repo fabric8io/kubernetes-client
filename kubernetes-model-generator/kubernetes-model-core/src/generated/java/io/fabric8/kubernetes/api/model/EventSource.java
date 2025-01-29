@@ -43,7 +43,6 @@ public class EventSource implements Editable<EventSourceBuilder>, KubernetesReso
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public EventSource() {
     }

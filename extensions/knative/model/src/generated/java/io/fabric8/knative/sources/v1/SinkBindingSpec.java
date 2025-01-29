@@ -78,7 +78,6 @@ public class SinkBindingSpec implements Editable<SinkBindingSpecBuilder>, Kubern
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public SinkBindingSpec() {
     }

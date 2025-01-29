@@ -80,7 +80,6 @@ public class StrategyDetailsDeployment implements Editable<StrategyDetailsDeploy
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public StrategyDetailsDeployment() {
     }

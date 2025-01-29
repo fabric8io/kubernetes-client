@@ -75,7 +75,6 @@ public class PortTarget implements Editable<PortTargetBuilder>, KubernetesResour
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public PortTarget() {
     }

@@ -75,7 +75,6 @@ public class PodHttpChaosSpec implements Editable<PodHttpChaosSpecBuilder>, Kube
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public PodHttpChaosSpec() {
     }

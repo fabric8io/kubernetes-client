@@ -81,7 +81,6 @@ public class CacheConfig implements Editable<CacheConfigBuilder>, KubernetesReso
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public CacheConfig() {
     }

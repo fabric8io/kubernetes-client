@@ -99,9 +99,7 @@ public class AWSMachineProviderConfig implements Editable<AWSMachineProviderConf
     @JsonProperty("ami")
     private AWSResourceReference ami;
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "machine.openshift.io/v1beta1";
@@ -121,9 +119,7 @@ public class AWSMachineProviderConfig implements Editable<AWSMachineProviderConf
     @JsonProperty("keyName")
     private String keyName;
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "AWSMachineProviderConfig";
@@ -161,7 +157,6 @@ public class AWSMachineProviderConfig implements Editable<AWSMachineProviderConf
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public AWSMachineProviderConfig() {
     }
@@ -204,9 +199,7 @@ public class AWSMachineProviderConfig implements Editable<AWSMachineProviderConf
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -214,9 +207,7 @@ public class AWSMachineProviderConfig implements Editable<AWSMachineProviderConf
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -295,9 +286,7 @@ public class AWSMachineProviderConfig implements Editable<AWSMachineProviderConf
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -305,9 +294,7 @@ public class AWSMachineProviderConfig implements Editable<AWSMachineProviderConf
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

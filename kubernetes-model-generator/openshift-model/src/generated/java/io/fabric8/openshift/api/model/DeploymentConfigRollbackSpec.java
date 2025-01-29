@@ -84,7 +84,6 @@ public class DeploymentConfigRollbackSpec implements Editable<DeploymentConfigRo
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public DeploymentConfigRollbackSpec() {
     }

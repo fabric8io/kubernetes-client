@@ -72,7 +72,6 @@ public class StorageStateSpecResource implements Editable<StorageStateSpecResour
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public StorageStateSpecResource() {
     }

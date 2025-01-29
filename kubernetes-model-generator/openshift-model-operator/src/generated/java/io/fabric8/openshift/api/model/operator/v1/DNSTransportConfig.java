@@ -72,7 +72,6 @@ public class DNSTransportConfig implements Editable<DNSTransportConfigBuilder>, 
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public DNSTransportConfig() {
     }

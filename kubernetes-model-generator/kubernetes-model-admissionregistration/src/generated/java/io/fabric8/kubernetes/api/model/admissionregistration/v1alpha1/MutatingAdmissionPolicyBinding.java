@@ -75,16 +75,12 @@ public class MutatingAdmissionPolicyBinding implements Editable<MutatingAdmissio
 {
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "admissionregistration.k8s.io/v1alpha1";
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "MutatingAdmissionPolicyBinding";
@@ -97,7 +93,6 @@ public class MutatingAdmissionPolicyBinding implements Editable<MutatingAdmissio
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public MutatingAdmissionPolicyBinding() {
     }
@@ -111,9 +106,7 @@ public class MutatingAdmissionPolicyBinding implements Editable<MutatingAdmissio
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -121,9 +114,7 @@ public class MutatingAdmissionPolicyBinding implements Editable<MutatingAdmissio
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -131,9 +122,7 @@ public class MutatingAdmissionPolicyBinding implements Editable<MutatingAdmissio
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -141,9 +130,7 @@ public class MutatingAdmissionPolicyBinding implements Editable<MutatingAdmissio
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

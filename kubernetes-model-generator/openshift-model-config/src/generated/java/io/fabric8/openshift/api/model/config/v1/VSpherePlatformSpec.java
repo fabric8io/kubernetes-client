@@ -91,7 +91,6 @@ public class VSpherePlatformSpec implements Editable<VSpherePlatformSpecBuilder>
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public VSpherePlatformSpec() {
     }

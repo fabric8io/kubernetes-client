@@ -48,16 +48,12 @@ public class APIVersions implements Editable<APIVersionsBuilder>, KubernetesReso
 {
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "v1";
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "APIVersions";
@@ -72,7 +68,6 @@ public class APIVersions implements Editable<APIVersionsBuilder>, KubernetesReso
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public APIVersions() {
     }
@@ -86,9 +81,7 @@ public class APIVersions implements Editable<APIVersionsBuilder>, KubernetesReso
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -96,9 +89,7 @@ public class APIVersions implements Editable<APIVersionsBuilder>, KubernetesReso
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -106,9 +97,7 @@ public class APIVersions implements Editable<APIVersionsBuilder>, KubernetesReso
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -116,9 +105,7 @@ public class APIVersions implements Editable<APIVersionsBuilder>, KubernetesReso
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

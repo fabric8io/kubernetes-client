@@ -76,16 +76,12 @@ public class AuthenticatableType implements Editable<AuthenticatableTypeBuilder>
 {
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "duck.knative.dev/v1";
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "AuthenticatableType";
@@ -98,7 +94,6 @@ public class AuthenticatableType implements Editable<AuthenticatableTypeBuilder>
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public AuthenticatableType() {
     }
@@ -112,9 +107,7 @@ public class AuthenticatableType implements Editable<AuthenticatableTypeBuilder>
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -122,9 +115,7 @@ public class AuthenticatableType implements Editable<AuthenticatableTypeBuilder>
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -132,9 +123,7 @@ public class AuthenticatableType implements Editable<AuthenticatableTypeBuilder>
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -142,9 +131,7 @@ public class AuthenticatableType implements Editable<AuthenticatableTypeBuilder>
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

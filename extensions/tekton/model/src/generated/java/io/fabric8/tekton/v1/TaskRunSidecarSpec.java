@@ -72,7 +72,6 @@ public class TaskRunSidecarSpec implements Editable<TaskRunSidecarSpecBuilder>, 
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public TaskRunSidecarSpec() {
     }

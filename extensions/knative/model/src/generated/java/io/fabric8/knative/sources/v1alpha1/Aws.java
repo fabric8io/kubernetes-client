@@ -82,7 +82,6 @@ public class Aws implements Editable<AwsBuilder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public Aws() {
     }

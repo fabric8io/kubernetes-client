@@ -47,7 +47,6 @@ public class Capabilities implements Editable<CapabilitiesBuilder>, KubernetesRe
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public Capabilities() {
     }

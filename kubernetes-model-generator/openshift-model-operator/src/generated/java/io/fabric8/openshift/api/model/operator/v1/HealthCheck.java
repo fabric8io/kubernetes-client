@@ -78,7 +78,6 @@ public class HealthCheck implements Editable<HealthCheckBuilder>, KubernetesReso
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public HealthCheck() {
     }

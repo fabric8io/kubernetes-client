@@ -76,7 +76,6 @@ public class ResourceMetricStatus implements Editable<ResourceMetricStatusBuilde
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ResourceMetricStatus() {
     }

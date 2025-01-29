@@ -75,7 +75,6 @@ public class EgressQoSRule implements Editable<EgressQoSRuleBuilder>, Kubernetes
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public EgressQoSRule() {
     }

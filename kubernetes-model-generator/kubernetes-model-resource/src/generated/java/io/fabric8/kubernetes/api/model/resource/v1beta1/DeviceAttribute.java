@@ -78,7 +78,6 @@ public class DeviceAttribute implements Editable<DeviceAttributeBuilder>, Kubern
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public DeviceAttribute() {
     }

@@ -72,7 +72,6 @@ public class AzureFailureDomain implements Editable<AzureFailureDomainBuilder>, 
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public AzureFailureDomain() {
     }

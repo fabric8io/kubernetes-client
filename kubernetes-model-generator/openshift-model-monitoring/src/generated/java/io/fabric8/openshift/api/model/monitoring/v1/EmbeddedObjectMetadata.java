@@ -77,7 +77,6 @@ public class EmbeddedObjectMetadata implements Editable<EmbeddedObjectMetadataBu
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public EmbeddedObjectMetadata() {
     }

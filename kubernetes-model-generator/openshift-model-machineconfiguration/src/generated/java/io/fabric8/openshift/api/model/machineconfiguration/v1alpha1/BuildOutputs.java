@@ -69,7 +69,6 @@ public class BuildOutputs implements Editable<BuildOutputsBuilder>, KubernetesRe
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public BuildOutputs() {
     }

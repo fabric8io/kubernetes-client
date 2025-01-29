@@ -78,7 +78,6 @@ public class DeviceAllocationConfiguration implements Editable<DeviceAllocationC
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public DeviceAllocationConfiguration() {
     }

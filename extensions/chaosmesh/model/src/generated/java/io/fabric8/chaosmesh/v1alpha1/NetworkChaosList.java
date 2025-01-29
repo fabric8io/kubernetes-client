@@ -79,9 +79,7 @@ public class NetworkChaosList implements Editable<NetworkChaosListBuilder>, Kube
 {
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "chaos-mesh.org/v1alpha1";
@@ -89,9 +87,7 @@ public class NetworkChaosList implements Editable<NetworkChaosListBuilder>, Kube
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<io.fabric8.chaosmesh.v1alpha1.NetworkChaos> items = new ArrayList<>();
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "NetworkChaosList";
@@ -102,7 +98,6 @@ public class NetworkChaosList implements Editable<NetworkChaosListBuilder>, Kube
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public NetworkChaosList() {
     }
@@ -116,9 +111,7 @@ public class NetworkChaosList implements Editable<NetworkChaosListBuilder>, Kube
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -126,9 +119,7 @@ public class NetworkChaosList implements Editable<NetworkChaosListBuilder>, Kube
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -147,9 +138,7 @@ public class NetworkChaosList implements Editable<NetworkChaosListBuilder>, Kube
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -157,9 +146,7 @@ public class NetworkChaosList implements Editable<NetworkChaosListBuilder>, Kube
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

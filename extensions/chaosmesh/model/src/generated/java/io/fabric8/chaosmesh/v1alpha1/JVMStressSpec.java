@@ -78,7 +78,6 @@ public class JVMStressSpec implements Editable<JVMStressSpecBuilder>, Kubernetes
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public JVMStressSpec() {
     }

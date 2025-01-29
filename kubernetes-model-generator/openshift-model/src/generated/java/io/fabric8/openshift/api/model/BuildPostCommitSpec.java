@@ -79,7 +79,6 @@ public class BuildPostCommitSpec implements Editable<BuildPostCommitSpecBuilder>
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public BuildPostCommitSpec() {
     }

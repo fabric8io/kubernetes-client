@@ -83,7 +83,6 @@ public class HTTPStatusCheck implements Editable<HTTPStatusCheckBuilder>, Kubern
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public HTTPStatusCheck() {
     }

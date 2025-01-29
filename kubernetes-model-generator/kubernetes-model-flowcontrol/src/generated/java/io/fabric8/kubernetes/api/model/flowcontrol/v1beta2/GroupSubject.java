@@ -69,7 +69,6 @@ public class GroupSubject implements Editable<GroupSubjectBuilder>, KubernetesRe
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public GroupSubject() {
     }

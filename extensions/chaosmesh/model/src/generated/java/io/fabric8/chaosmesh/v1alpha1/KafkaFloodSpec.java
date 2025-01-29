@@ -87,7 +87,6 @@ public class KafkaFloodSpec implements Editable<KafkaFloodSpecBuilder>, Kubernet
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public KafkaFloodSpec() {
     }

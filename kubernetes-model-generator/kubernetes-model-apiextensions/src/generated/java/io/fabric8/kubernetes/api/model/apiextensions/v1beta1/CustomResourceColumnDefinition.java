@@ -84,7 +84,6 @@ public class CustomResourceColumnDefinition implements Editable<CustomResourceCo
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public CustomResourceColumnDefinition() {
     }

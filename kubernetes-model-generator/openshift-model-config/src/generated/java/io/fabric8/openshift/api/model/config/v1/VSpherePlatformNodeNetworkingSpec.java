@@ -79,7 +79,6 @@ public class VSpherePlatformNodeNetworkingSpec implements Editable<VSpherePlatfo
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public VSpherePlatformNodeNetworkingSpec() {
     }

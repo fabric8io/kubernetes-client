@@ -75,7 +75,6 @@ public class BlockDelaySpec implements Editable<BlockDelaySpecBuilder>, Kubernet
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public BlockDelaySpec() {
     }

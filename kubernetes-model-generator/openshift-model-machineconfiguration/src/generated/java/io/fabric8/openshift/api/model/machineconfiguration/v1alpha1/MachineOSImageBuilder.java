@@ -69,7 +69,6 @@ public class MachineOSImageBuilder implements Editable<MachineOSImageBuilderBuil
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public MachineOSImageBuilder() {
     }

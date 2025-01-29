@@ -102,9 +102,7 @@ public class InstallConfig implements Editable<InstallConfigBuilder>, HasMetadat
     @JsonProperty("additionalTrustBundlePolicy")
     private String additionalTrustBundlePolicy;
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "install.openshift.io/v1";
@@ -137,9 +135,7 @@ public class InstallConfig implements Editable<InstallConfigBuilder>, HasMetadat
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<ImageDigestSource> imageDigestSources = new ArrayList<>();
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "InstallConfig";
@@ -164,7 +160,6 @@ public class InstallConfig implements Editable<InstallConfigBuilder>, HasMetadat
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public InstallConfig() {
     }
@@ -218,9 +213,7 @@ public class InstallConfig implements Editable<InstallConfigBuilder>, HasMetadat
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -228,9 +221,7 @@ public class InstallConfig implements Editable<InstallConfigBuilder>, HasMetadat
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -362,9 +353,7 @@ public class InstallConfig implements Editable<InstallConfigBuilder>, HasMetadat
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -372,9 +361,7 @@ public class InstallConfig implements Editable<InstallConfigBuilder>, HasMetadat
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

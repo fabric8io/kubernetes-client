@@ -50,9 +50,7 @@ public class PatchOptions implements Editable<PatchOptionsBuilder>, KubernetesRe
 {
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "v1";
@@ -66,9 +64,7 @@ public class PatchOptions implements Editable<PatchOptionsBuilder>, KubernetesRe
     @JsonProperty("force")
     private Boolean force;
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "PatchOptions";
@@ -77,7 +73,6 @@ public class PatchOptions implements Editable<PatchOptionsBuilder>, KubernetesRe
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public PatchOptions() {
     }
@@ -93,9 +88,7 @@ public class PatchOptions implements Editable<PatchOptionsBuilder>, KubernetesRe
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -103,9 +96,7 @@ public class PatchOptions implements Editable<PatchOptionsBuilder>, KubernetesRe
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -154,9 +145,7 @@ public class PatchOptions implements Editable<PatchOptionsBuilder>, KubernetesRe
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -164,9 +153,7 @@ public class PatchOptions implements Editable<PatchOptionsBuilder>, KubernetesRe
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

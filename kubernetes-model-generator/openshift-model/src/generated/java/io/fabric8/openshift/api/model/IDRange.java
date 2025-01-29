@@ -72,7 +72,6 @@ public class IDRange implements Editable<IDRangeBuilder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public IDRange() {
     }

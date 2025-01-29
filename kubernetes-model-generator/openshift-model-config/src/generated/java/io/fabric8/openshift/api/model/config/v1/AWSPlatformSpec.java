@@ -72,7 +72,6 @@ public class AWSPlatformSpec implements Editable<AWSPlatformSpecBuilder>, Kubern
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public AWSPlatformSpec() {
     }

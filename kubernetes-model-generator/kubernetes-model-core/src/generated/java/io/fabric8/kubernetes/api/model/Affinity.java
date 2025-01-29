@@ -46,7 +46,6 @@ public class Affinity implements Editable<AffinityBuilder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public Affinity() {
     }

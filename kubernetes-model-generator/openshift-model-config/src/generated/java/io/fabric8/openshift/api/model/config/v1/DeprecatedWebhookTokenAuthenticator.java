@@ -69,7 +69,6 @@ public class DeprecatedWebhookTokenAuthenticator implements Editable<DeprecatedW
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public DeprecatedWebhookTokenAuthenticator() {
     }

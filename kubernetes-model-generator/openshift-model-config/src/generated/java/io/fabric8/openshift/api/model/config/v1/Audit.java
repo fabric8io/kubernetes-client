@@ -75,7 +75,6 @@ public class Audit implements Editable<AuditBuilder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public Audit() {
     }

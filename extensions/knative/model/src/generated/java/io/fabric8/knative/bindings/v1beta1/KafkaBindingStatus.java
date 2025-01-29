@@ -80,7 +80,6 @@ public class KafkaBindingStatus implements Editable<KafkaBindingStatusBuilder>, 
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public KafkaBindingStatus() {
     }

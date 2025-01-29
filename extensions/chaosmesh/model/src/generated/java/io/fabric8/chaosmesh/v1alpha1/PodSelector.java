@@ -75,7 +75,6 @@ public class PodSelector implements Editable<PodSelectorBuilder>, KubernetesReso
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public PodSelector() {
     }

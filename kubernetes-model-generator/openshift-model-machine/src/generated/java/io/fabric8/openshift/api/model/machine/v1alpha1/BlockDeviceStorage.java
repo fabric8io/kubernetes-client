@@ -72,7 +72,6 @@ public class BlockDeviceStorage implements Editable<BlockDeviceStorageBuilder>, 
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public BlockDeviceStorage() {
     }

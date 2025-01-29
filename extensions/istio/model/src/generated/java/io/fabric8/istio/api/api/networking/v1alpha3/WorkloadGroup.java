@@ -85,7 +85,6 @@ public class WorkloadGroup implements Editable<WorkloadGroupBuilder>, Kubernetes
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public WorkloadGroup() {
     }

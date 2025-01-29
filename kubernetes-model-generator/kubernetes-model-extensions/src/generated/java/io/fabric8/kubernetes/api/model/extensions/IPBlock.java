@@ -75,7 +75,6 @@ public class IPBlock implements Editable<IPBlockBuilder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public IPBlock() {
     }

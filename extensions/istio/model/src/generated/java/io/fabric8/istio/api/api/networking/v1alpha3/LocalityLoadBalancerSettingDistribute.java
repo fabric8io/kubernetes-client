@@ -73,7 +73,6 @@ public class LocalityLoadBalancerSettingDistribute implements Editable<LocalityL
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public LocalityLoadBalancerSettingDistribute() {
     }

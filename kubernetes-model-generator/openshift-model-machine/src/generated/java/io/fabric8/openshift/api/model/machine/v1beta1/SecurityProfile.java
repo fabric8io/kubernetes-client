@@ -72,7 +72,6 @@ public class SecurityProfile implements Editable<SecurityProfileBuilder>, Kubern
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public SecurityProfile() {
     }

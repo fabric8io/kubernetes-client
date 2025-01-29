@@ -81,7 +81,6 @@ public class RedisSentinelStopSpec implements Editable<RedisSentinelStopSpecBuil
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public RedisSentinelStopSpec() {
     }

@@ -72,7 +72,6 @@ public class WebConfigFileFields implements Editable<WebConfigFileFieldsBuilder>
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public WebConfigFileFields() {
     }

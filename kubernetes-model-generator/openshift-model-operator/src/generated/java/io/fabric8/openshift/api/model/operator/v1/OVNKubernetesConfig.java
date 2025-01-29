@@ -102,7 +102,6 @@ public class OVNKubernetesConfig implements Editable<OVNKubernetesConfigBuilder>
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public OVNKubernetesConfig() {
     }

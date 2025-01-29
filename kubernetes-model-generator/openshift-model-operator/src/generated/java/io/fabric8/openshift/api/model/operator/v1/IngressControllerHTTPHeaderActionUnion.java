@@ -72,7 +72,6 @@ public class IngressControllerHTTPHeaderActionUnion implements Editable<IngressC
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public IngressControllerHTTPHeaderActionUnion() {
     }

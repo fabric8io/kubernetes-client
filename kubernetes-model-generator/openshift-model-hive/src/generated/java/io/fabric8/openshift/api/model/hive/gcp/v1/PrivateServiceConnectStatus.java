@@ -81,7 +81,6 @@ public class PrivateServiceConnectStatus implements Editable<PrivateServiceConne
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public PrivateServiceConnectStatus() {
     }

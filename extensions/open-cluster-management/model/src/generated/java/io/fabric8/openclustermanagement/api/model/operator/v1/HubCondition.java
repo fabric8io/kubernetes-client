@@ -84,7 +84,6 @@ public class HubCondition implements Editable<HubConditionBuilder>, KubernetesRe
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public HubCondition() {
     }

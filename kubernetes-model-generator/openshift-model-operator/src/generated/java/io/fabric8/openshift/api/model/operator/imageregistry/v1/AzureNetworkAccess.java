@@ -72,7 +72,6 @@ public class AzureNetworkAccess implements Editable<AzureNetworkAccessBuilder>, 
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public AzureNetworkAccess() {
     }

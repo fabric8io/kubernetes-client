@@ -78,7 +78,6 @@ public class DNSStatus implements Editable<DNSStatusBuilder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public DNSStatus() {
     }

@@ -81,7 +81,6 @@ public class MetaDataIndex implements Editable<MetaDataIndexBuilder>, Kubernetes
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public MetaDataIndex() {
     }

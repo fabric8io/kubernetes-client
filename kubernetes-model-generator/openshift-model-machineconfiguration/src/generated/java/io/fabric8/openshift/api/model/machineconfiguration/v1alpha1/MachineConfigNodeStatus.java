@@ -83,7 +83,6 @@ public class MachineConfigNodeStatus implements Editable<MachineConfigNodeStatus
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public MachineConfigNodeStatus() {
     }

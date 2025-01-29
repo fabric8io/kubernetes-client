@@ -78,7 +78,6 @@ public class RemoteClusterSpec implements Editable<RemoteClusterSpecBuilder>, Ku
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public RemoteClusterSpec() {
     }

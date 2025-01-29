@@ -87,7 +87,6 @@ public class PowerVSPlatformStatus implements Editable<PowerVSPlatformStatusBuil
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public PowerVSPlatformStatus() {
     }

@@ -85,7 +85,6 @@ public class GCPPlatformStatus implements Editable<GCPPlatformStatusBuilder>, Ku
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public GCPPlatformStatus() {
     }

@@ -84,7 +84,6 @@ public class Listener implements Editable<ListenerBuilder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public Listener() {
     }

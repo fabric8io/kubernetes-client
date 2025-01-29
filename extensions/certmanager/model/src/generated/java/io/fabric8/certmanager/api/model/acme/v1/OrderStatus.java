@@ -90,7 +90,6 @@ public class OrderStatus implements Editable<OrderStatusBuilder>, KubernetesReso
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public OrderStatus() {
     }

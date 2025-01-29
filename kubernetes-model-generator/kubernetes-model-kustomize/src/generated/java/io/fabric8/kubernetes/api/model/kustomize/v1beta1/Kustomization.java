@@ -195,7 +195,6 @@ public class Kustomization implements Editable<KustomizationBuilder>, Kubernetes
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public Kustomization() {
     }

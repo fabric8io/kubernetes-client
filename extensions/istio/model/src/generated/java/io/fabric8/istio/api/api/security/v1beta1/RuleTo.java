@@ -69,7 +69,6 @@ public class RuleTo implements Editable<RuleToBuilder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public RuleTo() {
     }

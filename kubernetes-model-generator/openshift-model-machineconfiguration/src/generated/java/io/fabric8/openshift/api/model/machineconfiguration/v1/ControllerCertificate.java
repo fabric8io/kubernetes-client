@@ -81,7 +81,6 @@ public class ControllerCertificate implements Editable<ControllerCertificateBuil
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ControllerCertificate() {
     }

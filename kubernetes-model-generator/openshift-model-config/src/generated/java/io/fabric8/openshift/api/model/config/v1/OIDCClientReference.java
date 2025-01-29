@@ -75,7 +75,6 @@ public class OIDCClientReference implements Editable<OIDCClientReferenceBuilder>
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public OIDCClientReference() {
     }

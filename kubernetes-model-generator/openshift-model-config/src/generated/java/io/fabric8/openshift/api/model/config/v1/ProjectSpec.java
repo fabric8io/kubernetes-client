@@ -72,7 +72,6 @@ public class ProjectSpec implements Editable<ProjectSpecBuilder>, KubernetesReso
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ProjectSpec() {
     }

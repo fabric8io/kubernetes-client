@@ -69,7 +69,6 @@ public class ServiceAttachment implements Editable<ServiceAttachmentBuilder>, Ku
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ServiceAttachment() {
     }

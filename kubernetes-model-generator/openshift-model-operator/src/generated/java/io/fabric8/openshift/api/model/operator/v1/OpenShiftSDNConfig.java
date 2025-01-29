@@ -81,7 +81,6 @@ public class OpenShiftSDNConfig implements Editable<OpenShiftSDNConfigBuilder>, 
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public OpenShiftSDNConfig() {
     }

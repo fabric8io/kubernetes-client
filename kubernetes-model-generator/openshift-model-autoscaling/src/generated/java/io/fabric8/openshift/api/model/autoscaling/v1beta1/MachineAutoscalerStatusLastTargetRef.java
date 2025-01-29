@@ -75,7 +75,6 @@ public class MachineAutoscalerStatusLastTargetRef implements Editable<MachineAut
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public MachineAutoscalerStatusLastTargetRef() {
     }

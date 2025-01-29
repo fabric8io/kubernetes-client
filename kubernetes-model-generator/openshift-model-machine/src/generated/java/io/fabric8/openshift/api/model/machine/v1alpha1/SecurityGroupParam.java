@@ -75,7 +75,6 @@ public class SecurityGroupParam implements Editable<SecurityGroupParamBuilder>, 
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public SecurityGroupParam() {
     }

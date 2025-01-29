@@ -77,16 +77,12 @@ public class MachineHealthCheck implements Editable<MachineHealthCheckBuilder>, 
 {
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "machine.openshift.io/v1beta1";
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "MachineHealthCheck";
@@ -101,7 +97,6 @@ public class MachineHealthCheck implements Editable<MachineHealthCheckBuilder>, 
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public MachineHealthCheck() {
     }
@@ -116,9 +111,7 @@ public class MachineHealthCheck implements Editable<MachineHealthCheckBuilder>, 
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -126,9 +119,7 @@ public class MachineHealthCheck implements Editable<MachineHealthCheckBuilder>, 
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -136,9 +127,7 @@ public class MachineHealthCheck implements Editable<MachineHealthCheckBuilder>, 
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -146,9 +135,7 @@ public class MachineHealthCheck implements Editable<MachineHealthCheckBuilder>, 
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

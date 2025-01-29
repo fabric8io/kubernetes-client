@@ -81,7 +81,6 @@ public class CertificateRequestStatus implements Editable<CertificateRequestStat
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public CertificateRequestStatus() {
     }

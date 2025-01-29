@@ -81,9 +81,7 @@ public class RoleBinding implements Editable<RoleBindingBuilder>, HasMetadata, N
 {
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "authorization.openshift.io/v1";
@@ -91,9 +89,7 @@ public class RoleBinding implements Editable<RoleBindingBuilder>, HasMetadata, N
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> groupNames = new ArrayList<>();
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "RoleBinding";
@@ -112,7 +108,6 @@ public class RoleBinding implements Editable<RoleBindingBuilder>, HasMetadata, N
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public RoleBinding() {
     }
@@ -129,9 +124,7 @@ public class RoleBinding implements Editable<RoleBindingBuilder>, HasMetadata, N
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -139,9 +132,7 @@ public class RoleBinding implements Editable<RoleBindingBuilder>, HasMetadata, N
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -160,9 +151,7 @@ public class RoleBinding implements Editable<RoleBindingBuilder>, HasMetadata, N
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -170,9 +159,7 @@ public class RoleBinding implements Editable<RoleBindingBuilder>, HasMetadata, N
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

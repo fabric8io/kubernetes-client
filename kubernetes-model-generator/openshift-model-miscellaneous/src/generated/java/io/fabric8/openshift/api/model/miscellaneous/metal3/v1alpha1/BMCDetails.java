@@ -75,7 +75,6 @@ public class BMCDetails implements Editable<BMCDetailsBuilder>, KubernetesResour
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public BMCDetails() {
     }

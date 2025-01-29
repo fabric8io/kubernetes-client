@@ -79,9 +79,7 @@ public class StorageStateList implements Editable<StorageStateListBuilder>, Kube
 {
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "migration.k8s.io/v1alpha1";
@@ -89,9 +87,7 @@ public class StorageStateList implements Editable<StorageStateListBuilder>, Kube
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<io.fabric8.openshift.api.model.storageversionmigrator.v1alpha1.StorageState> items = new ArrayList<>();
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "StorageStateList";
@@ -102,7 +98,6 @@ public class StorageStateList implements Editable<StorageStateListBuilder>, Kube
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public StorageStateList() {
     }
@@ -116,9 +111,7 @@ public class StorageStateList implements Editable<StorageStateListBuilder>, Kube
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -126,9 +119,7 @@ public class StorageStateList implements Editable<StorageStateListBuilder>, Kube
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -147,9 +138,7 @@ public class StorageStateList implements Editable<StorageStateListBuilder>, Kube
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -157,9 +146,7 @@ public class StorageStateList implements Editable<StorageStateListBuilder>, Kube
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

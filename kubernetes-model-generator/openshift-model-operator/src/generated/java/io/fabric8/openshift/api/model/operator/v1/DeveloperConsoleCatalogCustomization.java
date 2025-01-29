@@ -75,7 +75,6 @@ public class DeveloperConsoleCatalogCustomization implements Editable<DeveloperC
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public DeveloperConsoleCatalogCustomization() {
     }

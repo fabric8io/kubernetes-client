@@ -72,7 +72,6 @@ public class ResourceHint implements Editable<ResourceHintBuilder>, KubernetesRe
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ResourceHint() {
     }

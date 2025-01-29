@@ -78,7 +78,6 @@ public class BMC implements Editable<BMCBuilder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public BMC() {
     }

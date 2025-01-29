@@ -81,18 +81,14 @@ public class GCPProviderSpec implements Editable<GCPProviderSpecBuilder>, Kubern
 {
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "cloudcredential.openshift.io/v1";
     @JsonProperty("audience")
     private String audience;
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "GCPProviderSpec";
@@ -111,7 +107,6 @@ public class GCPProviderSpec implements Editable<GCPProviderSpecBuilder>, Kubern
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public GCPProviderSpec() {
     }
@@ -128,9 +123,7 @@ public class GCPProviderSpec implements Editable<GCPProviderSpecBuilder>, Kubern
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -138,9 +131,7 @@ public class GCPProviderSpec implements Editable<GCPProviderSpecBuilder>, Kubern
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -158,9 +149,7 @@ public class GCPProviderSpec implements Editable<GCPProviderSpecBuilder>, Kubern
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -168,9 +157,7 @@ public class GCPProviderSpec implements Editable<GCPProviderSpecBuilder>, Kubern
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

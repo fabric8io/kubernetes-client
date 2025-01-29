@@ -78,7 +78,6 @@ public class HostNetworkStrategy implements Editable<HostNetworkStrategyBuilder>
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public HostNetworkStrategy() {
     }

@@ -72,7 +72,6 @@ public class WebhookConfiguration implements Editable<WebhookConfigurationBuilde
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public WebhookConfiguration() {
     }

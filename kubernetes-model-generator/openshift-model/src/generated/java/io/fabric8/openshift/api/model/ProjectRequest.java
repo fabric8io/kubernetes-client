@@ -76,9 +76,7 @@ public class ProjectRequest implements Editable<ProjectRequestBuilder>, HasMetad
 {
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "project.openshift.io/v1";
@@ -87,9 +85,7 @@ public class ProjectRequest implements Editable<ProjectRequestBuilder>, HasMetad
     @JsonProperty("displayName")
     private String displayName;
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "ProjectRequest";
@@ -100,7 +96,6 @@ public class ProjectRequest implements Editable<ProjectRequestBuilder>, HasMetad
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ProjectRequest() {
     }
@@ -115,9 +110,7 @@ public class ProjectRequest implements Editable<ProjectRequestBuilder>, HasMetad
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -125,9 +118,7 @@ public class ProjectRequest implements Editable<ProjectRequestBuilder>, HasMetad
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -155,9 +146,7 @@ public class ProjectRequest implements Editable<ProjectRequestBuilder>, HasMetad
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -165,9 +154,7 @@ public class ProjectRequest implements Editable<ProjectRequestBuilder>, HasMetad
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

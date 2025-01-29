@@ -84,7 +84,6 @@ public class OpenIDClaims implements Editable<OpenIDClaimsBuilder>, KubernetesRe
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public OpenIDClaims() {
     }

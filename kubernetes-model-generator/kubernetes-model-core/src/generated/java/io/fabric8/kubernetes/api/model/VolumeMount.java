@@ -58,7 +58,6 @@ public class VolumeMount implements Editable<VolumeMountBuilder>, KubernetesReso
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public VolumeMount() {
     }

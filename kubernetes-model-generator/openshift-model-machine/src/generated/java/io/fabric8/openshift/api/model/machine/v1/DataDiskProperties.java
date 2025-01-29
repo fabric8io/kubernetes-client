@@ -90,7 +90,6 @@ public class DataDiskProperties implements Editable<DataDiskPropertiesBuilder>, 
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public DataDiskProperties() {
     }

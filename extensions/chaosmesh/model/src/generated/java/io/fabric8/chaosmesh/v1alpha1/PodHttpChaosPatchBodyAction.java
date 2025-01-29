@@ -72,7 +72,6 @@ public class PodHttpChaosPatchBodyAction implements Editable<PodHttpChaosPatchBo
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public PodHttpChaosPatchBodyAction() {
     }

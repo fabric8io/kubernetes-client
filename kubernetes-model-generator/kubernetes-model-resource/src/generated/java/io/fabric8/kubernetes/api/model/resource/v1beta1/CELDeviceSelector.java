@@ -69,7 +69,6 @@ public class CELDeviceSelector implements Editable<CELDeviceSelectorBuilder>, Ku
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public CELDeviceSelector() {
     }

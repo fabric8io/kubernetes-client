@@ -40,7 +40,6 @@ public class VolumeNodeAffinity implements Editable<VolumeNodeAffinityBuilder>, 
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public VolumeNodeAffinity() {
     }

@@ -52,7 +52,6 @@ public class Context implements Editable<ContextBuilder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public Context() {
     }

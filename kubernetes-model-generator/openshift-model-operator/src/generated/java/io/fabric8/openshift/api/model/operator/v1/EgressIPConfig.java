@@ -69,7 +69,6 @@ public class EgressIPConfig implements Editable<EgressIPConfigBuilder>, Kubernet
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public EgressIPConfig() {
     }

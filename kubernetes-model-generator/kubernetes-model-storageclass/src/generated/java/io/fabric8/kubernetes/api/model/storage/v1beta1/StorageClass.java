@@ -89,16 +89,12 @@ public class StorageClass implements Editable<StorageClassBuilder>, HasMetadata
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<TopologySelectorTerm> allowedTopologies = new ArrayList<>();
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "storage.k8s.io/v1beta1";
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "StorageClass";
@@ -121,7 +117,6 @@ public class StorageClass implements Editable<StorageClassBuilder>, HasMetadata
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public StorageClass() {
     }
@@ -162,9 +157,7 @@ public class StorageClass implements Editable<StorageClassBuilder>, HasMetadata
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -172,9 +165,7 @@ public class StorageClass implements Editable<StorageClassBuilder>, HasMetadata
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -182,9 +173,7 @@ public class StorageClass implements Editable<StorageClassBuilder>, HasMetadata
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -192,9 +181,7 @@ public class StorageClass implements Editable<StorageClassBuilder>, HasMetadata
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

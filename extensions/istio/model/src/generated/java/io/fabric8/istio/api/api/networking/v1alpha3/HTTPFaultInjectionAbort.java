@@ -74,7 +74,6 @@ public class HTTPFaultInjectionAbort implements Editable<HTTPFaultInjectionAbort
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public HTTPFaultInjectionAbort() {
     }

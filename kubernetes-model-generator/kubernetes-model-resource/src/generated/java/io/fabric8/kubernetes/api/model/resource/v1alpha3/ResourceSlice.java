@@ -75,16 +75,12 @@ public class ResourceSlice implements Editable<ResourceSliceBuilder>, HasMetadat
 {
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "resource.k8s.io/v1alpha3";
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "ResourceSlice";
@@ -97,7 +93,6 @@ public class ResourceSlice implements Editable<ResourceSliceBuilder>, HasMetadat
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ResourceSlice() {
     }
@@ -111,9 +106,7 @@ public class ResourceSlice implements Editable<ResourceSliceBuilder>, HasMetadat
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -121,9 +114,7 @@ public class ResourceSlice implements Editable<ResourceSliceBuilder>, HasMetadat
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -131,9 +122,7 @@ public class ResourceSlice implements Editable<ResourceSliceBuilder>, HasMetadat
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -141,9 +130,7 @@ public class ResourceSlice implements Editable<ResourceSliceBuilder>, HasMetadat
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

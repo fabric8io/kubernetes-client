@@ -72,7 +72,6 @@ public class FixedIPs implements Editable<FixedIPsBuilder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public FixedIPs() {
     }

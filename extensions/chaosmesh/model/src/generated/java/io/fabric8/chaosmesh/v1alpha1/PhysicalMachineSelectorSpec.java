@@ -88,7 +88,6 @@ public class PhysicalMachineSelectorSpec implements Editable<PhysicalMachineSele
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public PhysicalMachineSelectorSpec() {
     }

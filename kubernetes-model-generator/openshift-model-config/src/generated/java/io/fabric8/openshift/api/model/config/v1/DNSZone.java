@@ -73,7 +73,6 @@ public class DNSZone implements Editable<DNSZoneBuilder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public DNSZone() {
     }

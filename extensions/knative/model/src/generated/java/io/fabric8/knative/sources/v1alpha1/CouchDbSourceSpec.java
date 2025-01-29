@@ -82,7 +82,6 @@ public class CouchDbSourceSpec implements Editable<CouchDbSourceSpecBuilder>, Ku
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public CouchDbSourceSpec() {
     }

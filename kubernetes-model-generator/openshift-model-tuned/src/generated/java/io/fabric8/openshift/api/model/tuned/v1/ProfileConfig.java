@@ -81,7 +81,6 @@ public class ProfileConfig implements Editable<ProfileConfigBuilder>, Kubernetes
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ProfileConfig() {
     }

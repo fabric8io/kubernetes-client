@@ -77,16 +77,12 @@ public class RemoteCluster implements Editable<RemoteClusterBuilder>, HasMetadat
 {
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "chaos-mesh.org/v1alpha1";
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "RemoteCluster";
@@ -101,7 +97,6 @@ public class RemoteCluster implements Editable<RemoteClusterBuilder>, HasMetadat
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public RemoteCluster() {
     }
@@ -116,9 +111,7 @@ public class RemoteCluster implements Editable<RemoteClusterBuilder>, HasMetadat
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -126,9 +119,7 @@ public class RemoteCluster implements Editable<RemoteClusterBuilder>, HasMetadat
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -136,9 +127,7 @@ public class RemoteCluster implements Editable<RemoteClusterBuilder>, HasMetadat
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -146,9 +135,7 @@ public class RemoteCluster implements Editable<RemoteClusterBuilder>, HasMetadat
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

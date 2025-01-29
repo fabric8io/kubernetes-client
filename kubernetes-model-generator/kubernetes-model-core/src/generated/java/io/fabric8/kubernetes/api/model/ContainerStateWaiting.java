@@ -43,7 +43,6 @@ public class ContainerStateWaiting implements Editable<ContainerStateWaitingBuil
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ContainerStateWaiting() {
     }

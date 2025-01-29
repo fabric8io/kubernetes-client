@@ -76,7 +76,6 @@ public class ConfigSource implements Editable<ConfigSourceBuilder>, KubernetesRe
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ConfigSource() {
     }

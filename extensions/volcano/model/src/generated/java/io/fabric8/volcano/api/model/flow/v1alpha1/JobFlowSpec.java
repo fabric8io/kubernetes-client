@@ -75,7 +75,6 @@ public class JobFlowSpec implements Editable<JobFlowSpecBuilder>, KubernetesReso
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public JobFlowSpec() {
     }

@@ -76,7 +76,6 @@ public class Matrix implements Editable<MatrixBuilder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public Matrix() {
     }

@@ -81,7 +81,6 @@ public class AdditionalNetworkDefinition implements Editable<AdditionalNetworkDe
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public AdditionalNetworkDefinition() {
     }

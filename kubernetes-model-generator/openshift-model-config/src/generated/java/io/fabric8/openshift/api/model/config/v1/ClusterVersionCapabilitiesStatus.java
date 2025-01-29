@@ -76,7 +76,6 @@ public class ClusterVersionCapabilitiesStatus implements Editable<ClusterVersion
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ClusterVersionCapabilitiesStatus() {
     }

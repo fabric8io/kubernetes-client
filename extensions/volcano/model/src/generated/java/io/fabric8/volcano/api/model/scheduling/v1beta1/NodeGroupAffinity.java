@@ -76,7 +76,6 @@ public class NodeGroupAffinity implements Editable<NodeGroupAffinityBuilder>, Ku
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public NodeGroupAffinity() {
     }

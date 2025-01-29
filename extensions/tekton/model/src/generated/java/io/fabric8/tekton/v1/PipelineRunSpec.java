@@ -95,7 +95,6 @@ public class PipelineRunSpec implements Editable<PipelineRunSpecBuilder>, Kubern
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public PipelineRunSpec() {
     }

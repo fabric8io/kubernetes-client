@@ -75,7 +75,6 @@ public class ResourceAttribute implements Editable<ResourceAttributeBuilder>, Ku
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ResourceAttribute() {
     }

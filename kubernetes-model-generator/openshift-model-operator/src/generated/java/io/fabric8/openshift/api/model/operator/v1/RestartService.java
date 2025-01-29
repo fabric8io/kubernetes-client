@@ -69,7 +69,6 @@ public class RestartService implements Editable<RestartServiceBuilder>, Kubernet
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public RestartService() {
     }

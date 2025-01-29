@@ -72,7 +72,6 @@ public class EgressFirewallPort implements Editable<EgressFirewallPortBuilder>, 
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public EgressFirewallPort() {
     }

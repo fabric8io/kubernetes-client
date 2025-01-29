@@ -72,7 +72,6 @@ public class PodResourcePolicy implements Editable<PodResourcePolicyBuilder>, Ku
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public PodResourcePolicy() {
     }

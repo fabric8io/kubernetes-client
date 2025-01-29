@@ -79,16 +79,12 @@ public class HTTPRoute implements Editable<HTTPRouteBuilder>, HasMetadata, Names
 {
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "gateway.networking.k8s.io/v1beta1";
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "HTTPRoute";
@@ -103,7 +99,6 @@ public class HTTPRoute implements Editable<HTTPRouteBuilder>, HasMetadata, Names
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public HTTPRoute() {
     }
@@ -118,9 +113,7 @@ public class HTTPRoute implements Editable<HTTPRouteBuilder>, HasMetadata, Names
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -128,9 +121,7 @@ public class HTTPRoute implements Editable<HTTPRouteBuilder>, HasMetadata, Names
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -138,9 +129,7 @@ public class HTTPRoute implements Editable<HTTPRouteBuilder>, HasMetadata, Names
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -148,9 +137,7 @@ public class HTTPRoute implements Editable<HTTPRouteBuilder>, HasMetadata, Names
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

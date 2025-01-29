@@ -96,7 +96,6 @@ public class RawTrafficControl implements Editable<RawTrafficControlBuilder>, Ku
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public RawTrafficControl() {
     }

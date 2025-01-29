@@ -102,7 +102,6 @@ public class BrokerStatus implements Editable<BrokerStatusBuilder>, KubernetesRe
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public BrokerStatus() {
     }

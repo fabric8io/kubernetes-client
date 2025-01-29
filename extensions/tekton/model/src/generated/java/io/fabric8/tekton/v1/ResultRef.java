@@ -78,7 +78,6 @@ public class ResultRef implements Editable<ResultRefBuilder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ResultRef() {
     }

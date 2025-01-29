@@ -43,7 +43,6 @@ public class PodResourceClaimStatus implements Editable<PodResourceClaimStatusBu
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public PodResourceClaimStatus() {
     }

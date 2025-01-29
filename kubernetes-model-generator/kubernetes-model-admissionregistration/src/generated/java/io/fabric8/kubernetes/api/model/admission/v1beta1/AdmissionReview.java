@@ -75,16 +75,12 @@ public class AdmissionReview implements Editable<AdmissionReviewBuilder>, Kubern
 {
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "admission.k8s.io/v1beta1";
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "AdmissionReview";
@@ -97,7 +93,6 @@ public class AdmissionReview implements Editable<AdmissionReviewBuilder>, Kubern
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public AdmissionReview() {
     }
@@ -111,9 +106,7 @@ public class AdmissionReview implements Editable<AdmissionReviewBuilder>, Kubern
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -121,9 +114,7 @@ public class AdmissionReview implements Editable<AdmissionReviewBuilder>, Kubern
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -131,9 +122,7 @@ public class AdmissionReview implements Editable<AdmissionReviewBuilder>, Kubern
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -141,9 +130,7 @@ public class AdmissionReview implements Editable<AdmissionReviewBuilder>, Kubern
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

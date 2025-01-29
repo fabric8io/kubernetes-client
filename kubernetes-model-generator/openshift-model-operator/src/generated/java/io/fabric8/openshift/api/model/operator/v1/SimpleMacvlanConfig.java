@@ -78,7 +78,6 @@ public class SimpleMacvlanConfig implements Editable<SimpleMacvlanConfigBuilder>
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public SimpleMacvlanConfig() {
     }

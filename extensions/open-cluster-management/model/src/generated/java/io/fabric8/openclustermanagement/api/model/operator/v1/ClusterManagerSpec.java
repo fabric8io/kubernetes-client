@@ -96,7 +96,6 @@ public class ClusterManagerSpec implements Editable<ClusterManagerSpecBuilder>, 
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ClusterManagerSpec() {
     }

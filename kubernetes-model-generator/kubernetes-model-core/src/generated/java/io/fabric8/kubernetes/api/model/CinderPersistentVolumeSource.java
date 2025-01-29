@@ -49,7 +49,6 @@ public class CinderPersistentVolumeSource implements Editable<CinderPersistentVo
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public CinderPersistentVolumeSource() {
     }

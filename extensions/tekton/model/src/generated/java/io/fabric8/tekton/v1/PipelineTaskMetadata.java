@@ -74,7 +74,6 @@ public class PipelineTaskMetadata implements Editable<PipelineTaskMetadataBuilde
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public PipelineTaskMetadata() {
     }

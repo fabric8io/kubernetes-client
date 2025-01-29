@@ -75,7 +75,6 @@ public class FileAppendSpec implements Editable<FileAppendSpecBuilder>, Kubernet
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public FileAppendSpec() {
     }

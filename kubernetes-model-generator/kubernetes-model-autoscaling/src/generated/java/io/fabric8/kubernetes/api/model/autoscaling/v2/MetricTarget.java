@@ -79,7 +79,6 @@ public class MetricTarget implements Editable<MetricTargetBuilder>, KubernetesRe
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public MetricTarget() {
     }

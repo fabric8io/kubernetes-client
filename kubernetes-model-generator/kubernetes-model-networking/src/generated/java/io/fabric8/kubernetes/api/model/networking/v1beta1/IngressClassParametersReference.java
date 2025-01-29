@@ -81,7 +81,6 @@ public class IngressClassParametersReference implements Editable<IngressClassPar
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public IngressClassParametersReference() {
     }

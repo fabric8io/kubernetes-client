@@ -72,7 +72,6 @@ public class AlertingRuleSpec implements Editable<AlertingRuleSpecBuilder>, Kube
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public AlertingRuleSpec() {
     }

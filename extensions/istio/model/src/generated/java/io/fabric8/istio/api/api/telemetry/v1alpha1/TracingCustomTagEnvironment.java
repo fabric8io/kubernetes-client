@@ -69,7 +69,6 @@ public class TracingCustomTagEnvironment implements IsTracingCustomTagType, Edit
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public TracingCustomTagEnvironment() {
     }

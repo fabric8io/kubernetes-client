@@ -80,18 +80,14 @@ public class OAuthClientAuthorization implements Editable<OAuthClientAuthorizati
 {
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "oauth.openshift.io/v1";
     @JsonProperty("clientName")
     private String clientName;
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "OAuthClientAuthorization";
@@ -109,7 +105,6 @@ public class OAuthClientAuthorization implements Editable<OAuthClientAuthorizati
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public OAuthClientAuthorization() {
     }
@@ -126,9 +121,7 @@ public class OAuthClientAuthorization implements Editable<OAuthClientAuthorizati
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -136,9 +129,7 @@ public class OAuthClientAuthorization implements Editable<OAuthClientAuthorizati
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -156,9 +147,7 @@ public class OAuthClientAuthorization implements Editable<OAuthClientAuthorizati
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -166,9 +155,7 @@ public class OAuthClientAuthorization implements Editable<OAuthClientAuthorizati
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

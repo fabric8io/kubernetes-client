@@ -117,7 +117,6 @@ public class WebhookDescription implements Editable<WebhookDescriptionBuilder>, 
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public WebhookDescription() {
     }

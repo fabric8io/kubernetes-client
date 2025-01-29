@@ -87,7 +87,6 @@ public class StepResource implements Editable<StepResourceBuilder>, KubernetesRe
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public StepResource() {
     }

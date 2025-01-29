@@ -81,7 +81,6 @@ public class ClusterPoolReference implements Editable<ClusterPoolReferenceBuilde
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ClusterPoolReference() {
     }

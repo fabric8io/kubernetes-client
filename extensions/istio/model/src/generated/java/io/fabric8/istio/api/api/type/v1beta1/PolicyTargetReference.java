@@ -78,7 +78,6 @@ public class PolicyTargetReference implements Editable<PolicyTargetReferenceBuil
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public PolicyTargetReference() {
     }

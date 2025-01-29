@@ -69,7 +69,6 @@ public class PriorityLevelConfigurationReference implements Editable<PriorityLev
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public PriorityLevelConfigurationReference() {
     }

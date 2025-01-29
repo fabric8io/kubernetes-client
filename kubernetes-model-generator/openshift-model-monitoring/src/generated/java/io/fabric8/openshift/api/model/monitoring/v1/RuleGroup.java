@@ -91,7 +91,6 @@ public class RuleGroup implements Editable<RuleGroupBuilder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public RuleGroup() {
     }

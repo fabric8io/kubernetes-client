@@ -88,7 +88,6 @@ public class AlertmanagerGlobalConfig implements Editable<AlertmanagerGlobalConf
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public AlertmanagerGlobalConfig() {
     }

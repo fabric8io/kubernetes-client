@@ -84,7 +84,6 @@ public class RetentionConfig implements Editable<RetentionConfigBuilder>, Kubern
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public RetentionConfig() {
     }

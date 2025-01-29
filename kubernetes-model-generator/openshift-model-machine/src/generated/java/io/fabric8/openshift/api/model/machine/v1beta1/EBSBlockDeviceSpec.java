@@ -84,7 +84,6 @@ public class EBSBlockDeviceSpec implements Editable<EBSBlockDeviceSpecBuilder>, 
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public EBSBlockDeviceSpec() {
     }

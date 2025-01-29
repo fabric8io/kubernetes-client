@@ -72,7 +72,6 @@ public class Features implements Editable<FeaturesBuilder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public Features() {
     }

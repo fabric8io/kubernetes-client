@@ -69,7 +69,6 @@ public class HeaderMatch implements Editable<HeaderMatchBuilder>, KubernetesReso
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public HeaderMatch() {
     }

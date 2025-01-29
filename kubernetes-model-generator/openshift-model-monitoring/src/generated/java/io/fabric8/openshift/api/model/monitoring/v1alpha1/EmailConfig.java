@@ -113,7 +113,6 @@ public class EmailConfig implements Editable<EmailConfigBuilder>, KubernetesReso
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public EmailConfig() {
     }

@@ -69,7 +69,6 @@ public class HubTemplateOptions implements Editable<HubTemplateOptionsBuilder>, 
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public HubTemplateOptions() {
     }

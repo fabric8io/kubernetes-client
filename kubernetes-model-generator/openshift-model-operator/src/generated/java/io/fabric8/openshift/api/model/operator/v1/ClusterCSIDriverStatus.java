@@ -88,7 +88,6 @@ public class ClusterCSIDriverStatus implements Editable<ClusterCSIDriverStatusBu
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ClusterCSIDriverStatus() {
     }

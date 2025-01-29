@@ -79,7 +79,6 @@ public class SearchStatus implements Editable<SearchStatusBuilder>, KubernetesRe
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public SearchStatus() {
     }

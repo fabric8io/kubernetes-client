@@ -47,7 +47,6 @@ public class NodeSelectorTerm implements Editable<NodeSelectorTermBuilder>, Kube
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public NodeSelectorTerm() {
     }

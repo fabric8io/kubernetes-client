@@ -75,7 +75,6 @@ public class StorageResourceReference implements Editable<StorageResourceReferen
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public StorageResourceReference() {
     }

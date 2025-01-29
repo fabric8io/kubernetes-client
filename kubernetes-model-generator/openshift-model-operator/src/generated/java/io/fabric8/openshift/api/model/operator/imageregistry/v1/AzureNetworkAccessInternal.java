@@ -78,7 +78,6 @@ public class AzureNetworkAccessInternal implements Editable<AzureNetworkAccessIn
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public AzureNetworkAccessInternal() {
     }

@@ -86,7 +86,6 @@ public class KafkaChannelSpec implements Editable<KafkaChannelSpecBuilder>, Kube
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public KafkaChannelSpec() {
     }

@@ -78,7 +78,6 @@ public class StringSource implements Editable<StringSourceBuilder>, KubernetesRe
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public StringSource() {
     }

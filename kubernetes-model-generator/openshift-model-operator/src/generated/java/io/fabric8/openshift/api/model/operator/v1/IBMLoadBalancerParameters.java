@@ -69,7 +69,6 @@ public class IBMLoadBalancerParameters implements Editable<IBMLoadBalancerParame
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public IBMLoadBalancerParameters() {
     }

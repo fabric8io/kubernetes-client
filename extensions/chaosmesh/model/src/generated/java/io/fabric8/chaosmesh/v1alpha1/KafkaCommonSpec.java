@@ -81,7 +81,6 @@ public class KafkaCommonSpec implements Editable<KafkaCommonSpecBuilder>, Kubern
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public KafkaCommonSpec() {
     }

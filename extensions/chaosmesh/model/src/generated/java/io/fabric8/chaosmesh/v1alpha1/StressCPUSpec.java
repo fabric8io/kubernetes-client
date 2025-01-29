@@ -78,7 +78,6 @@ public class StressCPUSpec implements Editable<StressCPUSpecBuilder>, Kubernetes
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public StressCPUSpec() {
     }

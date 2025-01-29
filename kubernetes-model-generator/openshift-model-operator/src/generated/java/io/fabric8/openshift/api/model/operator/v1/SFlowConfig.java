@@ -72,7 +72,6 @@ public class SFlowConfig implements Editable<SFlowConfigBuilder>, KubernetesReso
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public SFlowConfig() {
     }

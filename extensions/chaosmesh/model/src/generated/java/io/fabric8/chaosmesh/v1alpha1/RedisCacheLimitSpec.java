@@ -78,7 +78,6 @@ public class RedisCacheLimitSpec implements Editable<RedisCacheLimitSpecBuilder>
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public RedisCacheLimitSpec() {
     }

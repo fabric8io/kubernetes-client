@@ -98,7 +98,6 @@ public class CouchDbSourceStatus implements Editable<CouchDbSourceStatusBuilder>
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public CouchDbSourceStatus() {
     }

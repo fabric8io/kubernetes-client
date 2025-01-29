@@ -144,7 +144,6 @@ public class RemoteWriteSpec implements Editable<RemoteWriteSpecBuilder>, Kubern
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public RemoteWriteSpec() {
     }

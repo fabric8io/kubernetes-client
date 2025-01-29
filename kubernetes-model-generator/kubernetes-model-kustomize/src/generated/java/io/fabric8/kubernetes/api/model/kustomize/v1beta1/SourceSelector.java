@@ -87,7 +87,6 @@ public class SourceSelector implements Editable<SourceSelectorBuilder>, Kubernet
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public SourceSelector() {
     }

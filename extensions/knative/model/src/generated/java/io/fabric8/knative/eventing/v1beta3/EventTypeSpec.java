@@ -79,7 +79,6 @@ public class EventTypeSpec implements Editable<EventTypeSpecBuilder>, Kubernetes
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public EventTypeSpec() {
     }

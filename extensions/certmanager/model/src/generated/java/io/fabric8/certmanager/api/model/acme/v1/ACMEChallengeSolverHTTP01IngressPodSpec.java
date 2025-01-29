@@ -94,7 +94,6 @@ public class ACMEChallengeSolverHTTP01IngressPodSpec implements Editable<ACMECha
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ACMEChallengeSolverHTTP01IngressPodSpec() {
     }

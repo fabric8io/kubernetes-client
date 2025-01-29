@@ -69,7 +69,6 @@ public class SupportedFeature implements Editable<SupportedFeatureBuilder>, Kube
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public SupportedFeature() {
     }

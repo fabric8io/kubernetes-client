@@ -64,7 +64,6 @@ public class RBDVolumeSource implements Editable<RBDVolumeSourceBuilder>, Kubern
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public RBDVolumeSource() {
     }

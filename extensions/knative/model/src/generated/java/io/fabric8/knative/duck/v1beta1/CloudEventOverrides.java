@@ -70,7 +70,6 @@ public class CloudEventOverrides implements Editable<CloudEventOverridesBuilder>
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public CloudEventOverrides() {
     }

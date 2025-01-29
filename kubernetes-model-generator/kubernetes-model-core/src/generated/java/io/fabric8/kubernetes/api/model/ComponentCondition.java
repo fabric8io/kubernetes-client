@@ -49,7 +49,6 @@ public class ComponentCondition implements Editable<ComponentConditionBuilder>, 
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ComponentCondition() {
     }

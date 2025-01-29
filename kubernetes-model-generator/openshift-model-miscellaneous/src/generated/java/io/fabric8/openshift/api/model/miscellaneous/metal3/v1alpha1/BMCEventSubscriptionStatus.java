@@ -72,7 +72,6 @@ public class BMCEventSubscriptionStatus implements Editable<BMCEventSubscription
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public BMCEventSubscriptionStatus() {
     }

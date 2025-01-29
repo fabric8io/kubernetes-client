@@ -72,7 +72,6 @@ public class SourceSpec implements Editable<SourceSpecBuilder>, KubernetesResour
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public SourceSpec() {
     }

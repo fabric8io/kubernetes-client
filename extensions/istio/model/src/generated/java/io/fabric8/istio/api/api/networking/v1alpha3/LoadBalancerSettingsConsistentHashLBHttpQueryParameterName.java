@@ -69,7 +69,6 @@ public class LoadBalancerSettingsConsistentHashLBHttpQueryParameterName implemen
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public LoadBalancerSettingsConsistentHashLBHttpQueryParameterName() {
     }

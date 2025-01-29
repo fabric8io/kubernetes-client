@@ -81,7 +81,6 @@ public class DaemonSetSpec implements Editable<DaemonSetSpecBuilder>, Kubernetes
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public DaemonSetSpec() {
     }
