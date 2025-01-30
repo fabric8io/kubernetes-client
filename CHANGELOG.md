@@ -1,5 +1,17 @@
 ## CHANGELOG
 
+### 7.2-SNAPSHOT
+
+#### Bugs
+
+#### Improvements
+
+#### Dependency Upgrade
+
+#### New Features
+
+#### _**Note**_: Breaking changes
+
 ### 7.1.0 (2025-01-30)
 
 #### Bugs
@@ -14,7 +26,6 @@
 * Fix #6777: Added Javadoc comments to all generated models
 * Fix #6802: (java-generator) Added support for required spec and status
 
-#### _**Note**_: Breaking changes
 
 ### 6.13.5 (2025-01-18)
 

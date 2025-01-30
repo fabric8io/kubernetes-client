@@ -22,7 +22,7 @@
   <parent>
     <artifactId>java-generator-parent</artifactId>
     <groupId>io.fabric8</groupId>
-    <version>7.1.0</version>
+    <version>7.2-SNAPSHOT</version>
   </parent>
 
   <artifactId>java-generator-maven-plugin</artifactId>

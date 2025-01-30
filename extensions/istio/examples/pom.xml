@@ -21,7 +21,7 @@
   <parent>
     <groupId>io.fabric8</groupId>
     <artifactId>istio-extension-pom</artifactId>
-    <version>7.1.0</version>
+    <version>7.2-SNAPSHOT</version>
   </parent>
 
   <artifactId>istio-examples</artifactId>
