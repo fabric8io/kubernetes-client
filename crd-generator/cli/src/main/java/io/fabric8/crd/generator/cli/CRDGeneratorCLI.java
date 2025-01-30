@@ -137,6 +137,15 @@ public class CRDGeneratorCLI implements Runnable {
 
   // spotless:off
   @CommandLine.Option(
+    names = {"--min-quotes"},
+    description = "If `true`, quotes will only be included where necessary",
+    defaultValue = "false"
+  )
+  // spotless:on
+  Boolean minQuotes;
+
+  // spotless:off
+  @CommandLine.Option(
     names = {"--include-package"},
     paramLabel = "<package>",
     description = "Filter Custom Resource classes after scanning by package inclusions."
@@ -218,6 +227,7 @@ public class CRDGeneratorCLI implements Runnable {
         .customResourceClasses(customResourceClasses)
         .withParallelGenerationEnabled(!parallelDisabled)
         .withImplicitPreserveUnknownFields(implicitPreserveUnknownFields)
+        .withMinQuotes(minQuotes)
         .inOutputDir(sanitizedOutputDirectory);
 
     crdGenerationInfo = crdGenerator.detailedGenerate();

@@ -60,6 +60,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import static io.fabric8.crdv2.generator.CRDGeneratorAssertions.assertFileEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -103,6 +104,7 @@ class CRDGeneratorTest {
   @Test
   void addingCustomResourceInfosShouldWork() {
     CRDGenerator generator = newCRDGenerator();
+
     assertTrue(generator.getCustomResourceInfos().isEmpty());
 
     generator.customResourceClasses();
@@ -471,6 +473,66 @@ class CRDGeneratorTest {
     assertNotNull(crdResource);
     final File expectedCrdFile = new File(crdResource.getFile());
     assertFileEquals(expectedCrdFile, crdFile);
+
+    // only delete the generated files if the test is successful
+    assertTrue(crdFile.delete());
+    assertTrue(outputDir.delete());
+  }
+
+  @Test
+  void checkMinQuotesDefault() throws Exception {
+    final File outputDir = Files.createTempDirectory("crd-").toFile();
+    final String crdName = CustomResourceInfo.fromClass(Complex.class).crdName();
+    CRDGenerationInfo crdInfo = newCRDGenerator()
+        .inOutputDir(outputDir)
+        .forCRDVersions("v1")
+        .customResourceClasses(Complex.class)
+        .detailedGenerate();
+
+    File crdFile = new File(crdInfo.getCRDInfos(crdName).get("v1").getFilePath());
+    String crd = Files.readString(crdFile.toPath());
+    assertTrue(crd.contains("\"complexkinds.example.com\""));
+
+    // only delete the generated files if the test is successful
+    assertTrue(crdFile.delete());
+    assertTrue(outputDir.delete());
+  }
+
+  @Test
+  void checkMinQuotesFalse() throws Exception {
+    final File outputDir = Files.createTempDirectory("crd-").toFile();
+    final String crdName = CustomResourceInfo.fromClass(Complex.class).crdName();
+    CRDGenerationInfo crdInfo = newCRDGenerator()
+        .inOutputDir(outputDir)
+        .forCRDVersions("v1")
+        .customResourceClasses(Complex.class)
+        .withMinQuotes(false)
+        .detailedGenerate();
+
+    File crdFile = new File(crdInfo.getCRDInfos(crdName).get("v1").getFilePath());
+    String crd = Files.readString(crdFile.toPath());
+    assertTrue(crd.contains("\"complexkinds.example.com\""));
+
+    // only delete the generated files if the test is successful
+    assertTrue(crdFile.delete());
+    assertTrue(outputDir.delete());
+  }
+
+  @Test
+  void checkMinQuotesTrue() throws Exception {
+    final File outputDir = Files.createTempDirectory("crd-").toFile();
+    final String crdName = CustomResourceInfo.fromClass(Complex.class).crdName();
+    CRDGenerationInfo crdInfo = newCRDGenerator()
+        .inOutputDir(outputDir)
+        .forCRDVersions("v1")
+        .customResourceClasses(Complex.class)
+        .withMinQuotes(true)
+        .detailedGenerate();
+
+    File crdFile = new File(crdInfo.getCRDInfos(crdName).get("v1").getFilePath());
+    String crd = Files.readString(crdFile.toPath());
+    assertTrue(crd.contains("complexkinds.example.com"));
+    assertFalse(crd.contains("\"complexkinds.example.com\""));
 
     // only delete the generated files if the test is successful
     assertTrue(crdFile.delete());
