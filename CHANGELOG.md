@@ -1,22 +1,18 @@
 ## CHANGELOG
 
-### 7.1-SNAPSHOT
+### 7.1.0 (2025-01-30)
 
 #### Bugs
+* Fix #6725: (crd-generator) CRD generator missing type for GenericKubernetesResource
 * Fix #6747: Preventing websocket error logs when the client is closed
 * Fix #6781: Allowing ipv6 entries to work in NO_PROXY
-* Fix #6725: CRD generator missing type for GenericKubernetesResource
 * Fix #6792: VertxHttpClient uses exclusive Vert.x instance by default
 
-#### Improvements
-
-#### Dependency Upgrade
-
 #### New Features
-* Fix #6802: Java generator support for required spec and status
 * Fix #5993: Support for Kubernetes v1.31 (elli)
 * Fix #6767: Support for Kubernetes v1.32 (penelope) 
 * Fix #6777: Added Javadoc comments to all generated models
+* Fix #6802: (java-generator) Added support for required spec and status
 
 #### _**Note**_: Breaking changes
 

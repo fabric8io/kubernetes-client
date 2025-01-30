@@ -22,7 +22,7 @@
   <parent>
     <groupId>io.fabric8</groupId>
     <artifactId>ovn</artifactId>
-    <version>7.1-SNAPSHOT</version>
+    <version>7.1.0</version>
   </parent>
 
   <artifactId>ovn-model</artifactId>
