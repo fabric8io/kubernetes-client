@@ -60,7 +60,8 @@
         "DefaultForbiddenEnv",
         "DefaultResolverType",
         "DefaultContainerResourceRequirements",
-        "DefaultImagePullBackOffTimeout"
+        "DefaultImagePullBackOffTimeout",
+        "DefaultMaximumResolutionTimeout"
       ],
       "properties": {
         "DefaultAAPodTemplate": {
@@ -96,6 +97,11 @@
         "DefaultMaxMatrixCombinationsCount": {
           "type": "integer",
           "format": "int32",
+          "default": 0
+        },
+        "DefaultMaximumResolutionTimeout": {
+          "type": "integer",
+          "format": "int64",
           "default": 0
         },
         "DefaultPodTemplate": {
