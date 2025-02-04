@@ -79,10 +79,10 @@ class KubernetesSerializationTest {
       String result = kubernetesSerialization.asYaml(crd);
       assertThat(result).asString().contains("\"widgets.test.fabric8.io\"");
 
-      result = kubernetesSerialization.asYaml(crd, new YamlDumpSettingsBuilder());
+      result = kubernetesSerialization.asYaml(crd, new YamlDumpSettingsBuilder().build());
       assertThat(result).asString().contains("\"widgets.test.fabric8.io\"");
 
-      result = kubernetesSerialization.asYaml(crd, new YamlDumpSettingsBuilder().setMinimizeQuotes(true));
+      result = kubernetesSerialization.asYaml(crd, new YamlDumpSettingsBuilder().setMinimizeQuotes(true).build());
       assertThat(result).asString().contains("widgets.test.fabric8.io").doesNotContain("\"widgets.test.fabric8.io\"");
     }
 

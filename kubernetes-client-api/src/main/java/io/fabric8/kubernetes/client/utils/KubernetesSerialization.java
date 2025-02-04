@@ -188,7 +188,7 @@ public class KubernetesSerialization {
    * @return a String containing a JSON representation of the provided object.
    */
   public <T> String asYaml(T object) {
-    return asYaml(object, new YamlDumpSettingsBuilder());
+    return asYaml(object, new YamlDumpSettingsBuilder().build());
   }
 
   /**
@@ -200,11 +200,11 @@ public class KubernetesSerialization {
    * be duplicated.
    *
    * @param object the object to serialize.
-   * @param yamlDumpSettingsBuilder builder for configuring YAML serialization.
+   * @param yamlDumpSettings configuration for YAML serialization.
    * @param <T> the type of the object being serialized.
    * @return a String containing a JSON representation of the provided object.
    */
-  public <T> String asYaml(T object, YamlDumpSettingsBuilder yamlDumpSettingsBuilder) {
+  public <T> String asYaml(T object, YamlDumpSettings yamlDumpSettings) {
     DumpSettings settings = DumpSettings.builder()
         .setExplicitStart(true).setDefaultFlowStyle(FlowStyle.BLOCK).build();
     final Dump yaml = new Dump(settings, new StandardRepresenter(settings) {
@@ -224,7 +224,7 @@ public class KubernetesSerialization {
           }
         }
         org.snakeyaml.engine.v2.nodes.Node nodeKey = representData(key);
-        quote = !yamlDumpSettingsBuilder.build().isMinQuotes();
+        quote = !yamlDumpSettings.isMinQuotes();
         return new NodeTuple(nodeKey, representData(entry.getValue()));
       }
 
