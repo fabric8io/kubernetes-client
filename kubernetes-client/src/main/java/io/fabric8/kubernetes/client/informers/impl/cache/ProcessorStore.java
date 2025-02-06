@@ -113,7 +113,7 @@ public class ProcessorStore<T extends HasMetadata> {
       }
     });
     if (cacheStateComplete != null) {
-      cacheStateComplete.accept(this.processor::executeIfPossible);
+      cacheStateComplete.accept(this.processor.getSerialExecutor()::execute);
     }
   }
 
