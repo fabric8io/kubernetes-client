@@ -8,6 +8,8 @@
 
 #### Improvements
 
+* Fix #6863: ensuring SerialExecutor does not throw RejectedExecutionException to prevent unnecessary error logs
+
 #### Dependency Upgrade
 
 #### New Features

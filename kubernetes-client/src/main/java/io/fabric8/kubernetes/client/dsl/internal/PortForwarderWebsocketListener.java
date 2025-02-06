@@ -32,7 +32,6 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.RejectedExecutionException;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.BooleanSupplier;
 
@@ -130,27 +129,23 @@ public class PortForwarderWebsocketListener implements WebSocket.Listener {
     } else {
       // Data
       if (out != null) {
-        try {
-          serialExecutor.execute(() -> {
-            try {
-              while (buffer.hasRemaining()) {
-                int written = out.write(buffer); // channel byte already skipped
-                if (written == 0) {
-                  // out is non-blocking, prevent a busy loop
-                  Thread.sleep(50);
-                }
+        serialExecutor.execute(() -> {
+          try {
+            while (buffer.hasRemaining()) {
+              int written = out.write(buffer); // channel byte already skipped
+              if (written == 0) {
+                // out is non-blocking, prevent a busy loop
+                Thread.sleep(50);
               }
-              webSocket.request();
-            } catch (IOException | InterruptedException e) {
-              if (e instanceof InterruptedException) {
-                Thread.currentThread().interrupt();
-              }
-              clientError(webSocket, "forwarding data to the client", e);
             }
-          });
-        } catch (RejectedExecutionException e) {
-          // just ignore 
-        }
+            webSocket.request();
+          } catch (IOException | InterruptedException e) {
+            if (e instanceof InterruptedException) {
+              Thread.currentThread().interrupt();
+            }
+            clientError(webSocket, "forwarding data to the client", e);
+          }
+        });
       }
     }
   }

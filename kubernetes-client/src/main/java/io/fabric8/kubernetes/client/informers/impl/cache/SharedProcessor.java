@@ -26,7 +26,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.Executor;
-import java.util.concurrent.RejectedExecutionException;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.function.Consumer;
@@ -108,20 +107,16 @@ public class SharedProcessor<T> {
     } finally {
       lock.readLock().unlock();
     }
-    try {
-      executor.execute(() -> {
-        for (ProcessorListener<T> listener : toCall) {
-          try {
-            operation.accept(listener);
-          } catch (Exception ex) {
-            log.error("{} failed invoking {} event handler: {}", informerDescription, listener.getHandler(), ex.getMessage(),
-                ex);
-          }
+    executor.execute(() -> {
+      for (ProcessorListener<T> listener : toCall) {
+        try {
+          operation.accept(listener);
+        } catch (Exception ex) {
+          log.error("{} failed invoking {} event handler: {}", informerDescription, listener.getHandler(), ex.getMessage(),
+              ex);
         }
-      });
-    } catch (RejectedExecutionException e) {
-      // do nothing
-    }
+      }
+    });
   }
 
   public boolean shouldResync() {
@@ -202,11 +197,8 @@ public class SharedProcessor<T> {
     }
   }
 
-  public void executeIfPossible(Runnable runnable) {
-    try {
-      this.executor.execute(runnable);
-    } catch (RejectedExecutionException e) {
-      // already shutdown
-    }
+  public SerialExecutor getSerialExecutor() {
+    return executor;
   }
+
 }
