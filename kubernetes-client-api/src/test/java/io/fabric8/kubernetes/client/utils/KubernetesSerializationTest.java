@@ -22,6 +22,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.model.GenericKubernetesResource;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
+import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinition;
 import io.fabric8.kubernetes.model.annotation.Group;
 import io.fabric8.kubernetes.model.annotation.Version;
 import org.junit.jupiter.api.BeforeEach;
@@ -33,6 +34,11 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -63,6 +69,29 @@ class KubernetesSerializationTest {
       kubernetesSerialization.registerKubernetesResource(io.fabric8.kubernetes.api.model.Pod.class);
       assertThat(kubernetesSerialization.<Object> unmarshal("{\"kind\":\"Pod\", \"apiVersion\":\"v1\"}"))
           .isInstanceOf(io.fabric8.kubernetes.api.model.Pod.class);
+    }
+
+    @Test
+    void asYaml() throws Exception {
+      final String input = readYamlToString("/serialization/test-crd-schema.yml");
+      final CustomResourceDefinition crd = Serialization.unmarshal(input, CustomResourceDefinition.class);
+
+      String result = kubernetesSerialization.asYaml(crd);
+      assertThat(result).asString().contains("\"widgets.test.fabric8.io\"");
+
+      result = kubernetesSerialization.asYaml(crd, new YamlDumpSettingsBuilder().build());
+      assertThat(result).asString().contains("\"widgets.test.fabric8.io\"");
+
+      result = kubernetesSerialization.asYaml(crd, new YamlDumpSettingsBuilder().setMinimizeQuotes(true).build());
+      assertThat(result).asString().contains("widgets.test.fabric8.io").doesNotContain("\"widgets.test.fabric8.io\"");
+    }
+
+    private String readYamlToString(String path) throws IOException {
+      return Files.readAllLines(
+          new File(KubernetesSerializationTest.class.getResource(path).getFile()).toPath(), StandardCharsets.UTF_8)
+          .stream()
+          .filter(line -> !line.startsWith("#"))
+          .collect(Collectors.joining("\n"));
     }
 
     @ParameterizedTest(name = "{index}: {0} {1} deserializes to {2}")

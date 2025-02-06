@@ -188,6 +188,23 @@ public class KubernetesSerialization {
    * @return a String containing a JSON representation of the provided object.
    */
   public <T> String asYaml(T object) {
+    return asYaml(object, new YamlDumpSettingsBuilder().build());
+  }
+
+  /**
+   * Returns a YAML representation of the given object.
+   *
+   * <p>
+   * If the provided object contains a JsonAnyGetter annotated method with a Map that contains an entry that
+   * overrides a field of the provided object, the Map entry will take precedence upon serialization. Properties won't
+   * be duplicated.
+   *
+   * @param object the object to serialize.
+   * @param yamlDumpSettings configuration for YAML serialization.
+   * @param <T> the type of the object being serialized.
+   * @return a String containing a JSON representation of the provided object.
+   */
+  public <T> String asYaml(T object, YamlDumpSettings yamlDumpSettings) {
     DumpSettings settings = DumpSettings.builder()
         .setExplicitStart(true).setDefaultFlowStyle(FlowStyle.BLOCK).build();
     final Dump yaml = new Dump(settings, new StandardRepresenter(settings) {
@@ -207,7 +224,7 @@ public class KubernetesSerialization {
           }
         }
         org.snakeyaml.engine.v2.nodes.Node nodeKey = representData(key);
-        quote = true;
+        quote = !yamlDumpSettings.isMinQuotes();
         return new NodeTuple(nodeKey, representData(entry.getValue()));
       }
 
