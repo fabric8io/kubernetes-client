@@ -39,7 +39,8 @@ import lombok.experimental.Accessors;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "clientID",
-    "resourceID"
+    "resourceID",
+    "tenantID"
 })
 @ToString
 @EqualsAndHashCode
@@ -70,6 +71,8 @@ public class AzureManagedIdentity implements Editable<AzureManagedIdentityBuilde
     private String clientID;
     @JsonProperty("resourceID")
     private String resourceID;
+    @JsonProperty("tenantID")
+    private String tenantID;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -79,10 +82,11 @@ public class AzureManagedIdentity implements Editable<AzureManagedIdentityBuilde
     public AzureManagedIdentity() {
     }
 
-    public AzureManagedIdentity(String clientID, String resourceID) {
+    public AzureManagedIdentity(String clientID, String resourceID, String tenantID) {
         super();
         this.clientID = clientID;
         this.resourceID = resourceID;
+        this.tenantID = tenantID;
     }
 
     /**
@@ -115,6 +119,22 @@ public class AzureManagedIdentity implements Editable<AzureManagedIdentityBuilde
     @JsonProperty("resourceID")
     public void setResourceID(String resourceID) {
         this.resourceID = resourceID;
+    }
+
+    /**
+     * tenant ID of the managed identity, can not be used at the same time as resourceID
+     */
+    @JsonProperty("tenantID")
+    public String getTenantID() {
+        return tenantID;
+    }
+
+    /**
+     * tenant ID of the managed identity, can not be used at the same time as resourceID
+     */
+    @JsonProperty("tenantID")
+    public void setTenantID(String tenantID) {
+        this.tenantID = tenantID;
     }
 
     @JsonIgnore
