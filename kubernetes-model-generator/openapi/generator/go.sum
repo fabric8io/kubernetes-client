@@ -785,10 +785,10 @@ github.com/matttproud/golang_protobuf_extensions v1.0.1/go.mod h1:D8He9yQNgCq6Z5
 github.com/matttproud/golang_protobuf_extensions v1.0.2-0.20181231171920-c182affec369/go.mod h1:BSXmuO+STAnVfrANrmjBb36TMTDstsz7MSK+HVaYKv4=
 github.com/metal3-io/baremetal-operator/pkg/hardwareutils v0.5.1 h1:X0+MWsJ+Gj/TAkmhGybvesvxk6zQKu3NQXzvC6l0iJs=
 github.com/metal3-io/baremetal-operator/pkg/hardwareutils v0.5.1/go.mod h1:399nvdaqoU9rTI25UdFw2EWcVjmJPpeZPIhfDAIx/XU=
-github.com/metal3-io/cluster-api-provider-metal3/api v1.9.1 h1:dDdGQIJJu72fMBSCXioEDnoJRzpA7rbK9D/KBcqD52k=
-github.com/metal3-io/cluster-api-provider-metal3/api v1.9.1/go.mod h1:ld5qUym7ChuOSOsvDVpISWJ+Fau6yZfkcn6rq6buotc=
-github.com/metal3-io/ip-address-manager/api v1.9.2 h1:8pFVk2jhs3zpijIbr9nKaqKPPvg323Z2QKLBNRrKL2Y=
-github.com/metal3-io/ip-address-manager/api v1.9.2/go.mod h1:l4tGHeMiR3VfwAxOKw1O7f+3y9waB1tDQ0AVbRp9zoc=
+github.com/metal3-io/cluster-api-provider-metal3/api v1.9.2 h1:K2YlClQB+O4bxQY4BgBUqBg/s6CgcebkXc5o7oCyJko=
+github.com/metal3-io/cluster-api-provider-metal3/api v1.9.2/go.mod h1:INC5OU2wyyrVgi4h4nWHxzKk5QfcBxF/CvgNhanzafE=
+github.com/metal3-io/ip-address-manager/api v1.9.3 h1:TsYqS6XNk8c+2OR4CBAezWnrPxsPdJcYYhkvulaXYdU=
+github.com/metal3-io/ip-address-manager/api v1.9.3/go.mod h1:mnb7TrTz2tToJCs6s4BXLea2xVo1zJK3Gid1ruahQIk=
 github.com/miekg/dns v1.0.14/go.mod h1:W1PPwlIAgtquWBMBEV9nkV9Cazfe8ScdGz/Lj7v3Nrg=
 github.com/miekg/dns v1.1.17/go.mod h1:WgzbA6oji13JREwiNsRDNfl7jYdPnmz+VEuLrA+/48M=
 github.com/mitchellh/cli v1.0.0/go.mod h1:hNIlj7HEI86fIcpObd7a0FcrxTWetlwJDGcceTlRvqc=
@@ -2087,8 +2087,8 @@ sigs.k8s.io/apiserver-network-proxy/konnectivity-client v0.31.1 h1:uOuSLOMBWkJH0
 sigs.k8s.io/apiserver-network-proxy/konnectivity-client v0.31.1/go.mod h1:Ve9uj1L+deCXFrPOk1LpFXqTg7LCFzFso6PA48q/XZw=
 sigs.k8s.io/cluster-api v1.9.4 h1:pa2Ho50F9Js/Vv/Jy11TcpmGiqY2ukXCoDj/dY25Y7M=
 sigs.k8s.io/cluster-api v1.9.4/go.mod h1:9DjpPCxJJo7/mH+KceINNJHr9c5X9S9HEp2B8JG3Uv8=
-sigs.k8s.io/controller-runtime v0.19.4 h1:SUmheabttt0nx8uJtoII4oIP27BVVvAKFvdvGFwV/Qo=
-sigs.k8s.io/controller-runtime v0.19.4/go.mod h1:iRmWllt8IlaLjvTTDLhRBXIEtkCK6hwVBJJsYS9Ajf4=
+sigs.k8s.io/controller-runtime v0.19.5 h1:rsE2cRYe0hK/rAAwiS1bwqgEcgCxTz9lavs3FMgLW0c=
+sigs.k8s.io/controller-runtime v0.19.5/go.mod h1:iRmWllt8IlaLjvTTDLhRBXIEtkCK6hwVBJJsYS9Ajf4=
 sigs.k8s.io/gateway-api v1.2.1 h1:fZZ/+RyRb+Y5tGkwxFKuYuSRQHu9dZtbjenblleOLHM=
 sigs.k8s.io/gateway-api v1.2.1/go.mod h1:EpNfEXNjiYfUJypf0eZ0P5iXA9ekSGWaS1WgPaM42X0=
 sigs.k8s.io/json v0.0.0-20211020170558-c049b76a60c6/go.mod h1:p4QtZmO4uMYipTQNzagwnNoseA6OxSUutVw05NhYDRs=
