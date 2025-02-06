@@ -34,13 +34,14 @@ import lombok.ToString;
 import lombok.experimental.Accessors;
 
 /**
- * JKS configures options for storing a JKS keystore in the `spec.secretName` Secret resource.
+ * JKS configures options for storing a JKS keystore in the target secret. Either PasswordSecretRef or Password must be provided.
  */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "alias",
     "create",
+    "password",
     "passwordSecretRef"
 })
 @ToString
@@ -72,6 +73,8 @@ public class JKSKeystore implements Editable<JKSKeystoreBuilder>, KubernetesReso
     private String alias;
     @JsonProperty("create")
     private Boolean create;
+    @JsonProperty("password")
+    private String password;
     @JsonProperty("passwordSecretRef")
     private SecretKeySelector passwordSecretRef;
     @JsonIgnore
@@ -83,10 +86,11 @@ public class JKSKeystore implements Editable<JKSKeystoreBuilder>, KubernetesReso
     public JKSKeystore() {
     }
 
-    public JKSKeystore(String alias, Boolean create, SecretKeySelector passwordSecretRef) {
+    public JKSKeystore(String alias, Boolean create, String password, SecretKeySelector passwordSecretRef) {
         super();
         this.alias = alias;
         this.create = create;
+        this.password = password;
         this.passwordSecretRef = passwordSecretRef;
     }
 
@@ -107,7 +111,7 @@ public class JKSKeystore implements Editable<JKSKeystoreBuilder>, KubernetesReso
     }
 
     /**
-     * Create enables JKS keystore creation for the Certificate. If true, a file named `keystore.jks` will be created in the target Secret resource, encrypted using the password stored in `passwordSecretRef`. The keystore file will be updated immediately. If the issuer provided a CA certificate, a file named `truststore.jks` will also be created in the target Secret resource, encrypted using the password stored in `passwordSecretRef` containing the issuing Certificate Authority
+     * Create enables JKS keystore creation for the Certificate. If true, a file named `keystore.jks` will be created in the target Secret resource, encrypted using the password stored in `passwordSecretRef` or `password`. The keystore file will be updated immediately. If the issuer provided a CA certificate, a file named `truststore.jks` will also be created in the target Secret resource, encrypted using the password stored in `passwordSecretRef` containing the issuing Certificate Authority
      */
     @JsonProperty("create")
     public Boolean getCreate() {
@@ -115,7 +119,7 @@ public class JKSKeystore implements Editable<JKSKeystoreBuilder>, KubernetesReso
     }
 
     /**
-     * Create enables JKS keystore creation for the Certificate. If true, a file named `keystore.jks` will be created in the target Secret resource, encrypted using the password stored in `passwordSecretRef`. The keystore file will be updated immediately. If the issuer provided a CA certificate, a file named `truststore.jks` will also be created in the target Secret resource, encrypted using the password stored in `passwordSecretRef` containing the issuing Certificate Authority
+     * Create enables JKS keystore creation for the Certificate. If true, a file named `keystore.jks` will be created in the target Secret resource, encrypted using the password stored in `passwordSecretRef` or `password`. The keystore file will be updated immediately. If the issuer provided a CA certificate, a file named `truststore.jks` will also be created in the target Secret resource, encrypted using the password stored in `passwordSecretRef` containing the issuing Certificate Authority
      */
     @JsonProperty("create")
     public void setCreate(Boolean create) {
@@ -123,7 +127,23 @@ public class JKSKeystore implements Editable<JKSKeystoreBuilder>, KubernetesReso
     }
 
     /**
-     * JKS configures options for storing a JKS keystore in the `spec.secretName` Secret resource.
+     * Password provides a literal password used to encrypt the JKS keystore. Mutually exclusive with passwordSecretRef. One of password or passwordSecretRef must provide a password with a non-zero length.
+     */
+    @JsonProperty("password")
+    public String getPassword() {
+        return password;
+    }
+
+    /**
+     * Password provides a literal password used to encrypt the JKS keystore. Mutually exclusive with passwordSecretRef. One of password or passwordSecretRef must provide a password with a non-zero length.
+     */
+    @JsonProperty("password")
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    /**
+     * JKS configures options for storing a JKS keystore in the target secret. Either PasswordSecretRef or Password must be provided.
      */
     @JsonProperty("passwordSecretRef")
     public SecretKeySelector getPasswordSecretRef() {
@@ -131,7 +151,7 @@ public class JKSKeystore implements Editable<JKSKeystoreBuilder>, KubernetesReso
     }
 
     /**
-     * JKS configures options for storing a JKS keystore in the `spec.secretName` Secret resource.
+     * JKS configures options for storing a JKS keystore in the target secret. Either PasswordSecretRef or Password must be provided.
      */
     @JsonProperty("passwordSecretRef")
     public void setPasswordSecretRef(SecretKeySelector passwordSecretRef) {
