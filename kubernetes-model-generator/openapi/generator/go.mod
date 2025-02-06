@@ -30,7 +30,7 @@ require (
 	github.com/stolostron/multiclusterhub-operator v1.0.1-2020-06-08-14-28-27
 	github.com/stolostron/search-v2-operator v0.0.0-20241029125341-1a376a062a45
 	github.com/tektoncd/pipeline v0.68.0
-	github.com/tektoncd/triggers v0.30.1
+	github.com/tektoncd/triggers v0.31.0
 	istio.io/client-go v1.24.2
 	k8s.io/api v0.32.1
 	k8s.io/apiextensions-apiserver v0.32.1
@@ -141,7 +141,7 @@ require (
 	github.com/gogo/protobuf v1.3.2 // indirect
 	github.com/golang/groupcache v0.0.0-20210331224755-41bb18bfe9da // indirect
 	github.com/golang/protobuf v1.5.4 // indirect
-	github.com/google/cel-go v0.23.1 // indirect
+	github.com/google/cel-go v0.23.2 // indirect
 	github.com/google/gnostic-models v0.6.9 // indirect
 	github.com/google/go-cmp v0.6.0 // indirect
 	github.com/google/go-containerregistry v0.20.2 // indirect
