@@ -40,6 +40,7 @@ import lombok.experimental.Accessors;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "create",
+    "password",
     "passwordSecretRef",
     "profile"
 })
@@ -70,6 +71,8 @@ public class PKCS12Keystore implements Editable<PKCS12KeystoreBuilder>, Kubernet
 
     @JsonProperty("create")
     private Boolean create;
+    @JsonProperty("password")
+    private String password;
     @JsonProperty("passwordSecretRef")
     private SecretKeySelector passwordSecretRef;
     @JsonProperty("profile")
@@ -83,15 +86,16 @@ public class PKCS12Keystore implements Editable<PKCS12KeystoreBuilder>, Kubernet
     public PKCS12Keystore() {
     }
 
-    public PKCS12Keystore(Boolean create, SecretKeySelector passwordSecretRef, String profile) {
+    public PKCS12Keystore(Boolean create, String password, SecretKeySelector passwordSecretRef, String profile) {
         super();
         this.create = create;
+        this.password = password;
         this.passwordSecretRef = passwordSecretRef;
         this.profile = profile;
     }
 
     /**
-     * Create enables PKCS12 keystore creation for the Certificate. If true, a file named `keystore.p12` will be created in the target Secret resource, encrypted using the password stored in `passwordSecretRef`. The keystore file will be updated immediately. If the issuer provided a CA certificate, a file named `truststore.p12` will also be created in the target Secret resource, encrypted using the password stored in `passwordSecretRef` containing the issuing Certificate Authority
+     * Create enables PKCS12 keystore creation for the Certificate. If true, a file named `keystore.p12` will be created in the target Secret resource, encrypted using the password stored in `passwordSecretRef` or in `password`. The keystore file will be updated immediately. If the issuer provided a CA certificate, a file named `truststore.p12` will also be created in the target Secret resource, encrypted using the password stored in `passwordSecretRef` containing the issuing Certificate Authority
      */
     @JsonProperty("create")
     public Boolean getCreate() {
@@ -99,11 +103,27 @@ public class PKCS12Keystore implements Editable<PKCS12KeystoreBuilder>, Kubernet
     }
 
     /**
-     * Create enables PKCS12 keystore creation for the Certificate. If true, a file named `keystore.p12` will be created in the target Secret resource, encrypted using the password stored in `passwordSecretRef`. The keystore file will be updated immediately. If the issuer provided a CA certificate, a file named `truststore.p12` will also be created in the target Secret resource, encrypted using the password stored in `passwordSecretRef` containing the issuing Certificate Authority
+     * Create enables PKCS12 keystore creation for the Certificate. If true, a file named `keystore.p12` will be created in the target Secret resource, encrypted using the password stored in `passwordSecretRef` or in `password`. The keystore file will be updated immediately. If the issuer provided a CA certificate, a file named `truststore.p12` will also be created in the target Secret resource, encrypted using the password stored in `passwordSecretRef` containing the issuing Certificate Authority
      */
     @JsonProperty("create")
     public void setCreate(Boolean create) {
         this.create = create;
+    }
+
+    /**
+     * Password provides a literal password used to encrypt the PKCS#12 keystore. Mutually exclusive with passwordSecretRef. One of password or passwordSecretRef must provide a password with a non-zero length.
+     */
+    @JsonProperty("password")
+    public String getPassword() {
+        return password;
+    }
+
+    /**
+     * Password provides a literal password used to encrypt the PKCS#12 keystore. Mutually exclusive with passwordSecretRef. One of password or passwordSecretRef must provide a password with a non-zero length.
+     */
+    @JsonProperty("password")
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     /**

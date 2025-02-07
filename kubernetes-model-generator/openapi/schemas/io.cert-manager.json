@@ -881,6 +881,10 @@
         "resourceID": {
           "description": "resource ID of the managed identity, can not be used at the same time as clientID Cannot be used for Azure Managed Service Identity",
           "type": "string"
+        },
+        "tenantID": {
+          "description": "tenant ID of the managed identity, can not be used at the same time as resourceID",
+          "type": "string"
         }
       },
       "x-fabric8-info": {
@@ -2374,11 +2378,10 @@
       }
     },
     "io.cert-manager.v1.JKSKeystore": {
-      "description": "JKS configures options for storing a JKS keystore in the `spec.secretName` Secret resource.",
+      "description": "JKS configures options for storing a JKS keystore in the target secret. Either PasswordSecretRef or Password must be provided.",
       "type": "object",
       "required": [
-        "create",
-        "passwordSecretRef"
+        "create"
       ],
       "properties": {
         "alias": {
@@ -2386,12 +2389,16 @@
           "type": "string"
         },
         "create": {
-          "description": "Create enables JKS keystore creation for the Certificate. If true, a file named `keystore.jks` will be created in the target Secret resource, encrypted using the password stored in `passwordSecretRef`. The keystore file will be updated immediately. If the issuer provided a CA certificate, a file named `truststore.jks` will also be created in the target Secret resource, encrypted using the password stored in `passwordSecretRef` containing the issuing Certificate Authority",
+          "description": "Create enables JKS keystore creation for the Certificate. If true, a file named `keystore.jks` will be created in the target Secret resource, encrypted using the password stored in `passwordSecretRef` or `password`. The keystore file will be updated immediately. If the issuer provided a CA certificate, a file named `truststore.jks` will also be created in the target Secret resource, encrypted using the password stored in `passwordSecretRef` containing the issuing Certificate Authority",
           "type": "boolean",
           "default": false
         },
+        "password": {
+          "description": "Password provides a literal password used to encrypt the JKS keystore. Mutually exclusive with passwordSecretRef. One of password or passwordSecretRef must provide a password with a non-zero length.",
+          "type": "string"
+        },
         "passwordSecretRef": {
-          "description": "PasswordSecretRef is a reference to a key in a Secret resource containing the password used to encrypt the JKS keystore.",
+          "description": "PasswordSecretRef is a reference to a non-empty key in a Secret resource containing the password used to encrypt the JKS keystore. Mutually exclusive with password. One of password or passwordSecretRef must provide a password with a non-zero length.",
           "default": {},
           "$ref": "#/definitions/io.cert-manager.meta.v1.SecretKeySelector"
         }
@@ -2497,17 +2504,20 @@
       "description": "PKCS12 configures options for storing a PKCS12 keystore in the `spec.secretName` Secret resource.",
       "type": "object",
       "required": [
-        "create",
-        "passwordSecretRef"
+        "create"
       ],
       "properties": {
         "create": {
-          "description": "Create enables PKCS12 keystore creation for the Certificate. If true, a file named `keystore.p12` will be created in the target Secret resource, encrypted using the password stored in `passwordSecretRef`. The keystore file will be updated immediately. If the issuer provided a CA certificate, a file named `truststore.p12` will also be created in the target Secret resource, encrypted using the password stored in `passwordSecretRef` containing the issuing Certificate Authority",
+          "description": "Create enables PKCS12 keystore creation for the Certificate. If true, a file named `keystore.p12` will be created in the target Secret resource, encrypted using the password stored in `passwordSecretRef` or in `password`. The keystore file will be updated immediately. If the issuer provided a CA certificate, a file named `truststore.p12` will also be created in the target Secret resource, encrypted using the password stored in `passwordSecretRef` containing the issuing Certificate Authority",
           "type": "boolean",
           "default": false
         },
+        "password": {
+          "description": "Password provides a literal password used to encrypt the PKCS#12 keystore. Mutually exclusive with passwordSecretRef. One of password or passwordSecretRef must provide a password with a non-zero length.",
+          "type": "string"
+        },
         "passwordSecretRef": {
-          "description": "PasswordSecretRef is a reference to a key in a Secret resource containing the password used to encrypt the PKCS12 keystore.",
+          "description": "PasswordSecretRef is a reference to a non-empty key in a Secret resource containing the password used to encrypt the PKCS#12 keystore. Mutually exclusive with password. One of password or passwordSecretRef must provide a password with a non-zero length.",
           "default": {},
           "$ref": "#/definitions/io.cert-manager.meta.v1.SecretKeySelector"
         },
