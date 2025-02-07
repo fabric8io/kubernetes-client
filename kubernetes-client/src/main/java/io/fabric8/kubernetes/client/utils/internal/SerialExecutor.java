@@ -15,6 +15,9 @@
  */
 package io.fabric8.kubernetes.client.utils.internal;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.Queue;
 import java.util.concurrent.Executor;
 import java.util.concurrent.LinkedBlockingDeque;
@@ -30,6 +33,9 @@ import java.util.concurrent.RejectedExecutionException;
  * Added shutdown support
  */
 public class SerialExecutor implements Executor {
+
+  private static final Logger log = LoggerFactory.getLogger(SerialExecutor.class);
+
   final Queue<Runnable> tasks = new LinkedBlockingDeque<>();
   final Executor executor;
   Runnable active;
@@ -41,10 +47,14 @@ public class SerialExecutor implements Executor {
     this.executor = executor;
   }
 
+  /**
+   * Executes the given command at some time in the future. Unlike a normal {@link Executor}, it will
+   * not throw a {@link RejectedExecutionException}
+   */
   @Override
   public synchronized void execute(final Runnable r) {
     if (shutdown) {
-      throw new RejectedExecutionException();
+      log.debug("Task submitted after the executor was shutdown");
     }
     tasks.offer(() -> {
       try {
@@ -72,7 +82,11 @@ public class SerialExecutor implements Executor {
 
   protected synchronized void scheduleNext() {
     if ((active = tasks.poll()) != null) {
-      executor.execute(active);
+      try {
+        executor.execute(active);
+      } catch (RejectedExecutionException e) {
+        log.debug("Underlying executor rejected execution", e);
+      }
     }
   }
 
@@ -94,4 +108,5 @@ public class SerialExecutor implements Executor {
   public boolean isShutdown() {
     return shutdown;
   }
+
 }
