@@ -34,11 +34,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
-import java.io.File;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -71,29 +67,6 @@ class KubernetesSerializationTest {
           .isInstanceOf(io.fabric8.kubernetes.api.model.Pod.class);
     }
 
-    @Test
-    void asYaml() throws Exception {
-      final String input = readYamlToString("/serialization/test-crd-schema.yml");
-      final CustomResourceDefinition crd = Serialization.unmarshal(input, CustomResourceDefinition.class);
-
-      String result = kubernetesSerialization.asYaml(crd);
-      assertThat(result).asString().contains("\"widgets.test.fabric8.io\"");
-
-      result = kubernetesSerialization.asYaml(crd, new YamlDumpSettingsBuilder().build());
-      assertThat(result).asString().contains("\"widgets.test.fabric8.io\"");
-
-      result = kubernetesSerialization.asYaml(crd, new YamlDumpSettingsBuilder().setMinimizeQuotes(true).build());
-      assertThat(result).asString().contains("widgets.test.fabric8.io").doesNotContain("\"widgets.test.fabric8.io\"");
-    }
-
-    private String readYamlToString(String path) throws IOException {
-      return Files.readAllLines(
-          new File(KubernetesSerializationTest.class.getResource(path).getFile()).toPath(), StandardCharsets.UTF_8)
-          .stream()
-          .filter(line -> !line.startsWith("#"))
-          .collect(Collectors.joining("\n"));
-    }
-
     @ParameterizedTest(name = "{index}: {0} {1} deserializes to {2}")
     @MethodSource("sameGVK")
     void withCollidingRegisteredKubernetesResourceShouldDeserializeAppropriate(
@@ -114,6 +87,42 @@ class KubernetesSerializationTest {
           Arguments.of("customs.core.kubernetes.io/v1", "Pod", GenericKubernetesResource.class),
           Arguments.of("custom.core.kubernetes.io/v1", "Pods", GenericKubernetesResource.class));
     }
+  }
+
+  @Nested
+  class AsYaml {
+
+    private CustomResourceDefinition inputResource;
+
+    @BeforeEach
+    void loadYamlAsString() throws IOException {
+      try (var is = KubernetesSerializationTest.class.getResourceAsStream("/serialization/test-crd-schema.yml")) {
+        inputResource = Serialization.unmarshal(new String(is.readAllBytes()), CustomResourceDefinition.class);
+      }
+    }
+
+    @Test
+    void asYamlWithDefaults() {
+      assertThat(new KubernetesSerialization().asYaml(inputResource))
+          .contains("\"widgets.test.fabric8.io\"");
+    }
+
+    @Test
+    void asYamlWithDefaultYamlDumpSettings() {
+      kubernetesSerialization = new KubernetesSerialization(new ObjectMapper(), true,
+          new YamlDumpSettingsBuilder().build());
+      assertThat(kubernetesSerialization.asYaml(inputResource))
+          .contains("\"widgets.test.fabric8.io\"");
+    }
+
+    @Test
+    void asYamlWithDefaultYamlDumpSettingsMinimizeQuotes() {
+      kubernetesSerialization = new KubernetesSerialization(new ObjectMapper(), true,
+          new YamlDumpSettingsBuilder().setMinimizeQuotes(true).build());
+      assertThat(kubernetesSerialization.asYaml(inputResource))
+          .contains("widgets.test.fabric8.io");
+    }
+
   }
 
   @Version("v1")

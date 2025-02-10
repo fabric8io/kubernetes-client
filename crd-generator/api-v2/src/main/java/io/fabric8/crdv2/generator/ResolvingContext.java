@@ -30,6 +30,8 @@ import com.fasterxml.jackson.module.jsonSchema.factories.VisitorContext;
 import com.fasterxml.jackson.module.jsonSchema.factories.WrapperFactory;
 import com.fasterxml.jackson.module.jsonSchema.types.ObjectSchema;
 import io.fabric8.kubernetes.client.utils.KubernetesSerialization;
+import io.fabric8.kubernetes.client.utils.YamlDumpSettings;
+import io.fabric8.kubernetes.client.utils.YamlDumpSettingsBuilder;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -92,15 +94,21 @@ public class ResolvingContext {
   final Map<String, GeneratorObjectSchema> uriToJacksonSchema;
   final boolean implicitPreserveUnknownFields;
 
-  private static KubernetesSerialization KUBERNETES_SERIALIZATION;
   private static ObjectMapper OBJECT_MAPPER;
 
   public static ResolvingContext defaultResolvingContext(boolean implicitPreserveUnknownFields) {
-    if (KUBERNETES_SERIALIZATION == null) {
+    return defaultResolvingContext(implicitPreserveUnknownFields, new YamlDumpSettingsBuilder().build());
+  }
+
+  public static ResolvingContext defaultResolvingContext(boolean implicitPreserveUnknownFields,
+      YamlDumpSettings yamlDumpSettings) {
+    if (OBJECT_MAPPER == null) {
       OBJECT_MAPPER = new ObjectMapper();
-      KUBERNETES_SERIALIZATION = new KubernetesSerialization(OBJECT_MAPPER, false);
     }
-    return new ResolvingContext(OBJECT_MAPPER, KUBERNETES_SERIALIZATION, implicitPreserveUnknownFields);
+    return new ResolvingContext(
+        OBJECT_MAPPER,
+        new KubernetesSerialization(OBJECT_MAPPER, false, yamlDumpSettings),
+        implicitPreserveUnknownFields);
   }
 
   public ResolvingContext forkContext() {

@@ -69,6 +69,7 @@ public class KubernetesSerialization {
   private final UnmatchedFieldTypeModule unmatchedFieldTypeModule = new UnmatchedFieldTypeModule();
   private KubernetesDeserializer kubernetesDeserializer;
   private final boolean searchClassloaders;
+  private final YamlDumpSettings yamlDumpSettings;
 
   /**
    * Creates a new instance with a fresh ObjectMapper
@@ -81,11 +82,25 @@ public class KubernetesSerialization {
    * Creates a new instance with the given ObjectMapper, which will be configured for use for
    * kubernetes resource serialization / deserialization.
    *
-   * @param searchClassloaders if {@link KubernetesResource} should be automatically discovered via {@link ServiceLoader}
+   * @param mapper the ObjectMapper to use.
+   * @param searchClassloaders if {@link KubernetesResource} should be automatically discovered via {@link ServiceLoader}.
    */
   public KubernetesSerialization(ObjectMapper mapper, boolean searchClassloaders) {
+    this(mapper, searchClassloaders, new YamlDumpSettingsBuilder().build());
+  }
+
+  /**
+   * Creates a new instance with the given ObjectMapper, which will be configured for use for
+   * kubernetes resource serialization / deserialization.
+   *
+   * @param mapper the ObjectMapper to use.
+   * @param searchClassloaders if {@link KubernetesResource} should be automatically discovered via {@link ServiceLoader}.
+   * @param yamlDumpSettings configuration for YAML serialization.
+   */
+  public KubernetesSerialization(ObjectMapper mapper, boolean searchClassloaders, YamlDumpSettings yamlDumpSettings) {
     this.mapper = mapper;
     this.searchClassloaders = searchClassloaders;
+    this.yamlDumpSettings = yamlDumpSettings;
     configureMapper(mapper);
   }
 
@@ -188,23 +203,6 @@ public class KubernetesSerialization {
    * @return a String containing a JSON representation of the provided object.
    */
   public <T> String asYaml(T object) {
-    return asYaml(object, new YamlDumpSettingsBuilder().build());
-  }
-
-  /**
-   * Returns a YAML representation of the given object.
-   *
-   * <p>
-   * If the provided object contains a JsonAnyGetter annotated method with a Map that contains an entry that
-   * overrides a field of the provided object, the Map entry will take precedence upon serialization. Properties won't
-   * be duplicated.
-   *
-   * @param object the object to serialize.
-   * @param yamlDumpSettings configuration for YAML serialization.
-   * @param <T> the type of the object being serialized.
-   * @return a String containing a JSON representation of the provided object.
-   */
-  public <T> String asYaml(T object, YamlDumpSettings yamlDumpSettings) {
     DumpSettings settings = DumpSettings.builder()
         .setExplicitStart(true).setDefaultFlowStyle(FlowStyle.BLOCK).build();
     final Dump yaml = new Dump(settings, new StandardRepresenter(settings) {

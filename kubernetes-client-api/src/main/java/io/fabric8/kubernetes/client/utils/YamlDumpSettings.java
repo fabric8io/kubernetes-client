@@ -20,7 +20,7 @@ package io.fabric8.kubernetes.client.utils;
  */
 public class YamlDumpSettings {
 
-  private boolean minQuotes;
+  private final boolean minQuotes;
 
   YamlDumpSettings(boolean minQuotes) {
     this.minQuotes = minQuotes;
