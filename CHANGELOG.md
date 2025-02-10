@@ -7,6 +7,7 @@
 #### Improvements
 
 * Fix #6863: ensuring SerialExecutor does not throw RejectedExecutionException to prevent unnecessary error logs
+* Fix #6763: CRDGenerator: YAML output customization
 
 #### Dependency Upgrade
 
