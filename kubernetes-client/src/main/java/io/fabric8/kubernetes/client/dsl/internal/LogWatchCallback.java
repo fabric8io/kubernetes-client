@@ -32,7 +32,9 @@ import java.nio.ByteBuffer;
 import java.nio.channels.Channels;
 import java.nio.channels.WritableByteChannel;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CompletionStage;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.function.Consumer;
 
 public class LogWatchCallback implements LogWatch, AutoCloseable {
 
@@ -41,9 +43,11 @@ public class LogWatchCallback implements LogWatch, AutoCloseable {
   private final OutputStream out;
   private WritableByteChannel outChannel;
   private volatile InputStream output;
+ 
 
   private final AtomicBoolean closed = new AtomicBoolean(false);
   private final CompletableFuture<AsyncBody> asyncBody = new CompletableFuture<>();
+  private final CompletableFuture<Throwable> onCloseFuture = new CompletableFuture<>();
   private final SerialExecutor serialExecutor;
 
   public LogWatchCallback(OutputStream out, OperationContext context) {
@@ -53,18 +57,26 @@ public class LogWatchCallback implements LogWatch, AutoCloseable {
     }
     this.serialExecutor = new SerialExecutor(context.getExecutor());
   }
+  
+  @Override
+  public CompletionStage<Throwable> onClose() {
+	return onCloseFuture.minimalCompletionStage();
+  }
 
   @Override
   public void close() {
-    cleanUp();
+    cleanUp(null);
   }
 
-  private void cleanUp() {
+  private void cleanUp(Throwable u) {
     if (!closed.compareAndSet(false, true)) {
       return;
     }
+   
     asyncBody.thenAccept(AsyncBody::cancel);
+    onCloseFuture.complete(u);
     serialExecutor.shutdownNow();
+   
   }
 
   public LogWatchCallback callAndWait(HttpClient client, URL url) {
@@ -111,7 +123,7 @@ public class LogWatchCallback implements LogWatch, AutoCloseable {
             if (t != null) {
               onFailure(t);
             } else {
-              cleanUp();
+              cleanUp(null);
             }
           }, serialExecutor));
         }
@@ -131,9 +143,9 @@ public class LogWatchCallback implements LogWatch, AutoCloseable {
     if (closed.get()) {
       return;
     }
-
+    
     LOGGER.error("Log Callback Failure.", u);
-    cleanUp();
+    cleanUp(u);
   }
 
 }

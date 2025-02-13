@@ -18,6 +18,8 @@ package io.fabric8.kubernetes.client.dsl;
 import java.io.Closeable;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.concurrent.CompletionStage;
+
 
 public interface LogWatch extends Closeable {
 
@@ -29,9 +31,21 @@ public interface LogWatch extends Closeable {
    */
   InputStream getOutput();
 
+  
+  /**
+   * Returns a {@link CompletionStage} released when the log stream is closed.
+   * If the stream is closed due to an exception (cf onFailure), 
+   * this exception will be passed as parameter, null otherwise 
+   * 
+   * @return a {@link CompletionStage} released when the log stream is closed
+   */
+  CompletionStage<Throwable> onClose();
+  
   /**
    * Close the Watch.
    */
   @Override
   void close();
+  
+  
 }
