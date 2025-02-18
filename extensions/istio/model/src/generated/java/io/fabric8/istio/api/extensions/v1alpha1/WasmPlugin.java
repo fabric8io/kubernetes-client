@@ -39,7 +39,7 @@ import lombok.ToString;
 import lombok.experimental.Accessors;
 
 /**
- * WasmPlugins provides a mechanism to extend the functionality provided by the Istio proxy through WebAssembly filters.<br><p> <br><p> &lt;!-- crd generation tags representing the server time when this object was created. It is not guaranteed to be set in happens-before order across separate operations. Clients may not set this value. It is represented in RFC3339 form and is in UTC. Populated by the system. Read-only. Null for lists. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#metadata" --&gt;<br><p> <br><p> &lt;!-- go code generation tags --&gt;
+ * WasmPlugin provides a mechanism to extend the functionality provided by the Istio proxy through WebAssembly filters.<br><p> <br><p> &lt;!-- crd generation tags representing the server time when this object was created. It is not guaranteed to be set in happens-before order across separate operations. Clients may not set this value. It is represented in RFC3339 form and is in UTC. Populated by the system. Read-only. Null for lists. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#metadata" --&gt;<br><p> <br><p> &lt;!-- go code generation tags --&gt;
  */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -141,7 +141,7 @@ public class WasmPlugin implements Editable<WasmPluginBuilder>, HasMetadata, Nam
     }
 
     /**
-     * WasmPlugins provides a mechanism to extend the functionality provided by the Istio proxy through WebAssembly filters.<br><p> <br><p> &lt;!-- crd generation tags representing the server time when this object was created. It is not guaranteed to be set in happens-before order across separate operations. Clients may not set this value. It is represented in RFC3339 form and is in UTC. Populated by the system. Read-only. Null for lists. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#metadata" --&gt;<br><p> <br><p> &lt;!-- go code generation tags --&gt;
+     * WasmPlugin provides a mechanism to extend the functionality provided by the Istio proxy through WebAssembly filters.<br><p> <br><p> &lt;!-- crd generation tags representing the server time when this object was created. It is not guaranteed to be set in happens-before order across separate operations. Clients may not set this value. It is represented in RFC3339 form and is in UTC. Populated by the system. Read-only. Null for lists. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#metadata" --&gt;<br><p> <br><p> &lt;!-- go code generation tags --&gt;
      */
     @JsonProperty("metadata")
     public ObjectMeta getMetadata() {
@@ -149,7 +149,7 @@ public class WasmPlugin implements Editable<WasmPluginBuilder>, HasMetadata, Nam
     }
 
     /**
-     * WasmPlugins provides a mechanism to extend the functionality provided by the Istio proxy through WebAssembly filters.<br><p> <br><p> &lt;!-- crd generation tags representing the server time when this object was created. It is not guaranteed to be set in happens-before order across separate operations. Clients may not set this value. It is represented in RFC3339 form and is in UTC. Populated by the system. Read-only. Null for lists. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#metadata" --&gt;<br><p> <br><p> &lt;!-- go code generation tags --&gt;
+     * WasmPlugin provides a mechanism to extend the functionality provided by the Istio proxy through WebAssembly filters.<br><p> <br><p> &lt;!-- crd generation tags representing the server time when this object was created. It is not guaranteed to be set in happens-before order across separate operations. Clients may not set this value. It is represented in RFC3339 form and is in UTC. Populated by the system. Read-only. Null for lists. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#metadata" --&gt;<br><p> <br><p> &lt;!-- go code generation tags --&gt;
      */
     @JsonProperty("metadata")
     public void setMetadata(ObjectMeta metadata) {
@@ -157,7 +157,7 @@ public class WasmPlugin implements Editable<WasmPluginBuilder>, HasMetadata, Nam
     }
 
     /**
-     * WasmPlugins provides a mechanism to extend the functionality provided by the Istio proxy through WebAssembly filters.<br><p> <br><p> &lt;!-- crd generation tags representing the server time when this object was created. It is not guaranteed to be set in happens-before order across separate operations. Clients may not set this value. It is represented in RFC3339 form and is in UTC. Populated by the system. Read-only. Null for lists. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#metadata" --&gt;<br><p> <br><p> &lt;!-- go code generation tags --&gt;
+     * WasmPlugin provides a mechanism to extend the functionality provided by the Istio proxy through WebAssembly filters.<br><p> <br><p> &lt;!-- crd generation tags representing the server time when this object was created. It is not guaranteed to be set in happens-before order across separate operations. Clients may not set this value. It is represented in RFC3339 form and is in UTC. Populated by the system. Read-only. Null for lists. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#metadata" --&gt;<br><p> <br><p> &lt;!-- go code generation tags --&gt;
      */
     @JsonProperty("spec")
     public io.fabric8.istio.api.api.extensions.v1alpha1.WasmPlugin getSpec() {
@@ -165,7 +165,7 @@ public class WasmPlugin implements Editable<WasmPluginBuilder>, HasMetadata, Nam
     }
 
     /**
-     * WasmPlugins provides a mechanism to extend the functionality provided by the Istio proxy through WebAssembly filters.<br><p> <br><p> &lt;!-- crd generation tags representing the server time when this object was created. It is not guaranteed to be set in happens-before order across separate operations. Clients may not set this value. It is represented in RFC3339 form and is in UTC. Populated by the system. Read-only. Null for lists. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#metadata" --&gt;<br><p> <br><p> &lt;!-- go code generation tags --&gt;
+     * WasmPlugin provides a mechanism to extend the functionality provided by the Istio proxy through WebAssembly filters.<br><p> <br><p> &lt;!-- crd generation tags representing the server time when this object was created. It is not guaranteed to be set in happens-before order across separate operations. Clients may not set this value. It is represented in RFC3339 form and is in UTC. Populated by the system. Read-only. Null for lists. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#metadata" --&gt;<br><p> <br><p> &lt;!-- go code generation tags --&gt;
      */
     @JsonProperty("spec")
     public void setSpec(io.fabric8.istio.api.api.extensions.v1alpha1.WasmPlugin spec) {
@@ -173,7 +173,7 @@ public class WasmPlugin implements Editable<WasmPluginBuilder>, HasMetadata, Nam
     }
 
     /**
-     * WasmPlugins provides a mechanism to extend the functionality provided by the Istio proxy through WebAssembly filters.<br><p> <br><p> &lt;!-- crd generation tags representing the server time when this object was created. It is not guaranteed to be set in happens-before order across separate operations. Clients may not set this value. It is represented in RFC3339 form and is in UTC. Populated by the system. Read-only. Null for lists. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#metadata" --&gt;<br><p> <br><p> &lt;!-- go code generation tags --&gt;
+     * WasmPlugin provides a mechanism to extend the functionality provided by the Istio proxy through WebAssembly filters.<br><p> <br><p> &lt;!-- crd generation tags representing the server time when this object was created. It is not guaranteed to be set in happens-before order across separate operations. Clients may not set this value. It is represented in RFC3339 form and is in UTC. Populated by the system. Read-only. Null for lists. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#metadata" --&gt;<br><p> <br><p> &lt;!-- go code generation tags --&gt;
      */
     @JsonProperty("status")
     public IstioStatus getStatus() {
@@ -181,7 +181,7 @@ public class WasmPlugin implements Editable<WasmPluginBuilder>, HasMetadata, Nam
     }
 
     /**
-     * WasmPlugins provides a mechanism to extend the functionality provided by the Istio proxy through WebAssembly filters.<br><p> <br><p> &lt;!-- crd generation tags representing the server time when this object was created. It is not guaranteed to be set in happens-before order across separate operations. Clients may not set this value. It is represented in RFC3339 form and is in UTC. Populated by the system. Read-only. Null for lists. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#metadata" --&gt;<br><p> <br><p> &lt;!-- go code generation tags --&gt;
+     * WasmPlugin provides a mechanism to extend the functionality provided by the Istio proxy through WebAssembly filters.<br><p> <br><p> &lt;!-- crd generation tags representing the server time when this object was created. It is not guaranteed to be set in happens-before order across separate operations. Clients may not set this value. It is represented in RFC3339 form and is in UTC. Populated by the system. Read-only. Null for lists. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#metadata" --&gt;<br><p> <br><p> &lt;!-- go code generation tags --&gt;
      */
     @JsonProperty("status")
     public void setStatus(IstioStatus status) {

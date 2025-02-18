@@ -226,7 +226,7 @@ public class OutlierDetection implements Editable<OutlierDetectionBuilder>, Kube
     }
 
     /**
-     * Outlier detection will be enabled as long as the associated load balancing pool has at least min_health_percent hosts in healthy mode. When the percentage of healthy hosts in the load balancing pool drops below this threshold, outlier detection will be disabled and the proxy will load balance across all hosts in the pool (healthy and unhealthy). The threshold can be disabled by setting it to 0%. The default is 0% as it's not typically applicable in k8s environments with few pods per service.
+     * Outlier detection will be enabled as long as the associated load balancing pool has at least `minHealthPercent` hosts in healthy mode. When the percentage of healthy hosts in the load balancing pool drops below this threshold, outlier detection will be disabled and the proxy will load balance across all hosts in the pool (healthy and unhealthy). The threshold can be disabled by setting it to 0%. The default is 0% as it's not typically applicable in k8s environments with few pods per service.
      */
     @JsonProperty("minHealthPercent")
     public Integer getMinHealthPercent() {
@@ -234,7 +234,7 @@ public class OutlierDetection implements Editable<OutlierDetectionBuilder>, Kube
     }
 
     /**
-     * Outlier detection will be enabled as long as the associated load balancing pool has at least min_health_percent hosts in healthy mode. When the percentage of healthy hosts in the load balancing pool drops below this threshold, outlier detection will be disabled and the proxy will load balance across all hosts in the pool (healthy and unhealthy). The threshold can be disabled by setting it to 0%. The default is 0% as it's not typically applicable in k8s environments with few pods per service.
+     * Outlier detection will be enabled as long as the associated load balancing pool has at least `minHealthPercent` hosts in healthy mode. When the percentage of healthy hosts in the load balancing pool drops below this threshold, outlier detection will be disabled and the proxy will load balance across all hosts in the pool (healthy and unhealthy). The threshold can be disabled by setting it to 0%. The default is 0% as it's not typically applicable in k8s environments with few pods per service.
      */
     @JsonProperty("minHealthPercent")
     public void setMinHealthPercent(Integer minHealthPercent) {
@@ -242,7 +242,7 @@ public class OutlierDetection implements Editable<OutlierDetectionBuilder>, Kube
     }
 
     /**
-     * Determines whether to distinguish local origin failures from external errors. If set to true consecutive_local_origin_failure is taken into account for outlier detection calculations. This should be used when you want to derive the outlier detection status based on the errors seen locally such as failure to connect, timeout while connecting etc. rather than the status code returned by upstream service. This is especially useful when the upstream service explicitly returns a 5xx for some requests and you want to ignore those responses from upstream service while determining the outlier detection status of a host. Defaults to false.
+     * Determines whether to distinguish local origin failures from external errors. If set to true `consecutiveLocalOriginFailures` is taken into account for outlier detection calculations. This should be used when you want to derive the outlier detection status based on the errors seen locally such as failure to connect, timeout while connecting etc. rather than the status code returned by upstream service. This is especially useful when the upstream service explicitly returns a 5xx for some requests and you want to ignore those responses from upstream service while determining the outlier detection status of a host. Defaults to false.
      */
     @JsonProperty("splitExternalLocalOriginErrors")
     public Boolean getSplitExternalLocalOriginErrors() {
@@ -250,7 +250,7 @@ public class OutlierDetection implements Editable<OutlierDetectionBuilder>, Kube
     }
 
     /**
-     * Determines whether to distinguish local origin failures from external errors. If set to true consecutive_local_origin_failure is taken into account for outlier detection calculations. This should be used when you want to derive the outlier detection status based on the errors seen locally such as failure to connect, timeout while connecting etc. rather than the status code returned by upstream service. This is especially useful when the upstream service explicitly returns a 5xx for some requests and you want to ignore those responses from upstream service while determining the outlier detection status of a host. Defaults to false.
+     * Determines whether to distinguish local origin failures from external errors. If set to true `consecutiveLocalOriginFailures` is taken into account for outlier detection calculations. This should be used when you want to derive the outlier detection status based on the errors seen locally such as failure to connect, timeout while connecting etc. rather than the status code returned by upstream service. This is especially useful when the upstream service explicitly returns a 5xx for some requests and you want to ignore those responses from upstream service while determining the outlier detection status of a host. Defaults to false.
      */
     @JsonProperty("splitExternalLocalOriginErrors")
     public void setSplitExternalLocalOriginErrors(Boolean splitExternalLocalOriginErrors) {

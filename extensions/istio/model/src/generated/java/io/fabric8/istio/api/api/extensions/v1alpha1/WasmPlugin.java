@@ -42,7 +42,7 @@ import lombok.ToString;
 import lombok.experimental.Accessors;
 
 /**
- * WasmPlugins provides a mechanism to extend the functionality provided by the Istio proxy through WebAssembly filters.<br><p> <br><p> &lt;!-- crd generation tags representing the server time when this object was created. It is not guaranteed to be set in happens-before order across separate operations. Clients may not set this value. It is represented in RFC3339 form and is in UTC. Populated by the system. Read-only. Null for lists. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#metadata" --&gt;<br><p> <br><p> &lt;!-- go code generation tags --&gt;
+ * WasmPlugin provides a mechanism to extend the functionality provided by the Istio proxy through WebAssembly filters.<br><p> <br><p> &lt;!-- crd generation tags representing the server time when this object was created. It is not guaranteed to be set in happens-before order across separate operations. Clients may not set this value. It is represented in RFC3339 form and is in UTC. Populated by the system. Read-only. Null for lists. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#metadata" --&gt;<br><p> <br><p> &lt;!-- go code generation tags --&gt;
  */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -159,7 +159,7 @@ public class WasmPlugin implements Editable<WasmPluginBuilder>, KubernetesResour
     }
 
     /**
-     * WasmPlugins provides a mechanism to extend the functionality provided by the Istio proxy through WebAssembly filters.<br><p> <br><p> &lt;!-- crd generation tags representing the server time when this object was created. It is not guaranteed to be set in happens-before order across separate operations. Clients may not set this value. It is represented in RFC3339 form and is in UTC. Populated by the system. Read-only. Null for lists. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#metadata" --&gt;<br><p> <br><p> &lt;!-- go code generation tags --&gt;
+     * WasmPlugin provides a mechanism to extend the functionality provided by the Istio proxy through WebAssembly filters.<br><p> <br><p> &lt;!-- crd generation tags representing the server time when this object was created. It is not guaranteed to be set in happens-before order across separate operations. Clients may not set this value. It is represented in RFC3339 form and is in UTC. Populated by the system. Read-only. Null for lists. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#metadata" --&gt;<br><p> <br><p> &lt;!-- go code generation tags --&gt;
      */
     @JsonProperty("failStrategy")
     public FailStrategy getFailStrategy() {
@@ -167,7 +167,7 @@ public class WasmPlugin implements Editable<WasmPluginBuilder>, KubernetesResour
     }
 
     /**
-     * WasmPlugins provides a mechanism to extend the functionality provided by the Istio proxy through WebAssembly filters.<br><p> <br><p> &lt;!-- crd generation tags representing the server time when this object was created. It is not guaranteed to be set in happens-before order across separate operations. Clients may not set this value. It is represented in RFC3339 form and is in UTC. Populated by the system. Read-only. Null for lists. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#metadata" --&gt;<br><p> <br><p> &lt;!-- go code generation tags --&gt;
+     * WasmPlugin provides a mechanism to extend the functionality provided by the Istio proxy through WebAssembly filters.<br><p> <br><p> &lt;!-- crd generation tags representing the server time when this object was created. It is not guaranteed to be set in happens-before order across separate operations. Clients may not set this value. It is represented in RFC3339 form and is in UTC. Populated by the system. Read-only. Null for lists. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#metadata" --&gt;<br><p> <br><p> &lt;!-- go code generation tags --&gt;
      */
     @JsonProperty("failStrategy")
     public void setFailStrategy(FailStrategy failStrategy) {
@@ -175,7 +175,7 @@ public class WasmPlugin implements Editable<WasmPluginBuilder>, KubernetesResour
     }
 
     /**
-     * WasmPlugins provides a mechanism to extend the functionality provided by the Istio proxy through WebAssembly filters.<br><p> <br><p> &lt;!-- crd generation tags representing the server time when this object was created. It is not guaranteed to be set in happens-before order across separate operations. Clients may not set this value. It is represented in RFC3339 form and is in UTC. Populated by the system. Read-only. Null for lists. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#metadata" --&gt;<br><p> <br><p> &lt;!-- go code generation tags --&gt;
+     * WasmPlugin provides a mechanism to extend the functionality provided by the Istio proxy through WebAssembly filters.<br><p> <br><p> &lt;!-- crd generation tags representing the server time when this object was created. It is not guaranteed to be set in happens-before order across separate operations. Clients may not set this value. It is represented in RFC3339 form and is in UTC. Populated by the system. Read-only. Null for lists. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#metadata" --&gt;<br><p> <br><p> &lt;!-- go code generation tags --&gt;
      */
     @JsonProperty("imagePullPolicy")
     public PullPolicy getImagePullPolicy() {
@@ -183,7 +183,7 @@ public class WasmPlugin implements Editable<WasmPluginBuilder>, KubernetesResour
     }
 
     /**
-     * WasmPlugins provides a mechanism to extend the functionality provided by the Istio proxy through WebAssembly filters.<br><p> <br><p> &lt;!-- crd generation tags representing the server time when this object was created. It is not guaranteed to be set in happens-before order across separate operations. Clients may not set this value. It is represented in RFC3339 form and is in UTC. Populated by the system. Read-only. Null for lists. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#metadata" --&gt;<br><p> <br><p> &lt;!-- go code generation tags --&gt;
+     * WasmPlugin provides a mechanism to extend the functionality provided by the Istio proxy through WebAssembly filters.<br><p> <br><p> &lt;!-- crd generation tags representing the server time when this object was created. It is not guaranteed to be set in happens-before order across separate operations. Clients may not set this value. It is represented in RFC3339 form and is in UTC. Populated by the system. Read-only. Null for lists. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#metadata" --&gt;<br><p> <br><p> &lt;!-- go code generation tags --&gt;
      */
     @JsonProperty("imagePullPolicy")
     public void setImagePullPolicy(PullPolicy imagePullPolicy) {
@@ -224,7 +224,7 @@ public class WasmPlugin implements Editable<WasmPluginBuilder>, KubernetesResour
     }
 
     /**
-     * WasmPlugins provides a mechanism to extend the functionality provided by the Istio proxy through WebAssembly filters.<br><p> <br><p> &lt;!-- crd generation tags representing the server time when this object was created. It is not guaranteed to be set in happens-before order across separate operations. Clients may not set this value. It is represented in RFC3339 form and is in UTC. Populated by the system. Read-only. Null for lists. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#metadata" --&gt;<br><p> <br><p> &lt;!-- go code generation tags --&gt;
+     * WasmPlugin provides a mechanism to extend the functionality provided by the Istio proxy through WebAssembly filters.<br><p> <br><p> &lt;!-- crd generation tags representing the server time when this object was created. It is not guaranteed to be set in happens-before order across separate operations. Clients may not set this value. It is represented in RFC3339 form and is in UTC. Populated by the system. Read-only. Null for lists. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#metadata" --&gt;<br><p> <br><p> &lt;!-- go code generation tags --&gt;
      */
     @JsonProperty("phase")
     public PluginPhase getPhase() {
@@ -232,7 +232,7 @@ public class WasmPlugin implements Editable<WasmPluginBuilder>, KubernetesResour
     }
 
     /**
-     * WasmPlugins provides a mechanism to extend the functionality provided by the Istio proxy through WebAssembly filters.<br><p> <br><p> &lt;!-- crd generation tags representing the server time when this object was created. It is not guaranteed to be set in happens-before order across separate operations. Clients may not set this value. It is represented in RFC3339 form and is in UTC. Populated by the system. Read-only. Null for lists. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#metadata" --&gt;<br><p> <br><p> &lt;!-- go code generation tags --&gt;
+     * WasmPlugin provides a mechanism to extend the functionality provided by the Istio proxy through WebAssembly filters.<br><p> <br><p> &lt;!-- crd generation tags representing the server time when this object was created. It is not guaranteed to be set in happens-before order across separate operations. Clients may not set this value. It is represented in RFC3339 form and is in UTC. Populated by the system. Read-only. Null for lists. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#metadata" --&gt;<br><p> <br><p> &lt;!-- go code generation tags --&gt;
      */
     @JsonProperty("phase")
     public void setPhase(PluginPhase phase) {
@@ -240,7 +240,7 @@ public class WasmPlugin implements Editable<WasmPluginBuilder>, KubernetesResour
     }
 
     /**
-     * WasmPlugins provides a mechanism to extend the functionality provided by the Istio proxy through WebAssembly filters.<br><p> <br><p> &lt;!-- crd generation tags representing the server time when this object was created. It is not guaranteed to be set in happens-before order across separate operations. Clients may not set this value. It is represented in RFC3339 form and is in UTC. Populated by the system. Read-only. Null for lists. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#metadata" --&gt;<br><p> <br><p> &lt;!-- go code generation tags --&gt;
+     * WasmPlugin provides a mechanism to extend the functionality provided by the Istio proxy through WebAssembly filters.<br><p> <br><p> &lt;!-- crd generation tags representing the server time when this object was created. It is not guaranteed to be set in happens-before order across separate operations. Clients may not set this value. It is represented in RFC3339 form and is in UTC. Populated by the system. Read-only. Null for lists. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#metadata" --&gt;<br><p> <br><p> &lt;!-- go code generation tags --&gt;
      */
     @JsonProperty("pluginConfig")
     public Object getPluginConfig() {
@@ -248,7 +248,7 @@ public class WasmPlugin implements Editable<WasmPluginBuilder>, KubernetesResour
     }
 
     /**
-     * WasmPlugins provides a mechanism to extend the functionality provided by the Istio proxy through WebAssembly filters.<br><p> <br><p> &lt;!-- crd generation tags representing the server time when this object was created. It is not guaranteed to be set in happens-before order across separate operations. Clients may not set this value. It is represented in RFC3339 form and is in UTC. Populated by the system. Read-only. Null for lists. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#metadata" --&gt;<br><p> <br><p> &lt;!-- go code generation tags --&gt;
+     * WasmPlugin provides a mechanism to extend the functionality provided by the Istio proxy through WebAssembly filters.<br><p> <br><p> &lt;!-- crd generation tags representing the server time when this object was created. It is not guaranteed to be set in happens-before order across separate operations. Clients may not set this value. It is represented in RFC3339 form and is in UTC. Populated by the system. Read-only. Null for lists. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#metadata" --&gt;<br><p> <br><p> &lt;!-- go code generation tags --&gt;
      */
     @JsonProperty("pluginConfig")
     @JsonDeserialize(using = io.fabric8.kubernetes.internal.KubernetesDeserializer.class)
@@ -273,7 +273,7 @@ public class WasmPlugin implements Editable<WasmPluginBuilder>, KubernetesResour
     }
 
     /**
-     * WasmPlugins provides a mechanism to extend the functionality provided by the Istio proxy through WebAssembly filters.<br><p> <br><p> &lt;!-- crd generation tags representing the server time when this object was created. It is not guaranteed to be set in happens-before order across separate operations. Clients may not set this value. It is represented in RFC3339 form and is in UTC. Populated by the system. Read-only. Null for lists. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#metadata" --&gt;<br><p> <br><p> &lt;!-- go code generation tags --&gt;
+     * WasmPlugin provides a mechanism to extend the functionality provided by the Istio proxy through WebAssembly filters.<br><p> <br><p> &lt;!-- crd generation tags representing the server time when this object was created. It is not guaranteed to be set in happens-before order across separate operations. Clients may not set this value. It is represented in RFC3339 form and is in UTC. Populated by the system. Read-only. Null for lists. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#metadata" --&gt;<br><p> <br><p> &lt;!-- go code generation tags --&gt;
      */
     @JsonProperty("priority")
     public Integer getPriority() {
@@ -281,7 +281,7 @@ public class WasmPlugin implements Editable<WasmPluginBuilder>, KubernetesResour
     }
 
     /**
-     * WasmPlugins provides a mechanism to extend the functionality provided by the Istio proxy through WebAssembly filters.<br><p> <br><p> &lt;!-- crd generation tags representing the server time when this object was created. It is not guaranteed to be set in happens-before order across separate operations. Clients may not set this value. It is represented in RFC3339 form and is in UTC. Populated by the system. Read-only. Null for lists. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#metadata" --&gt;<br><p> <br><p> &lt;!-- go code generation tags --&gt;
+     * WasmPlugin provides a mechanism to extend the functionality provided by the Istio proxy through WebAssembly filters.<br><p> <br><p> &lt;!-- crd generation tags representing the server time when this object was created. It is not guaranteed to be set in happens-before order across separate operations. Clients may not set this value. It is represented in RFC3339 form and is in UTC. Populated by the system. Read-only. Null for lists. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#metadata" --&gt;<br><p> <br><p> &lt;!-- go code generation tags --&gt;
      */
     @JsonProperty("priority")
     public void setPriority(Integer priority) {
@@ -289,7 +289,7 @@ public class WasmPlugin implements Editable<WasmPluginBuilder>, KubernetesResour
     }
 
     /**
-     * WasmPlugins provides a mechanism to extend the functionality provided by the Istio proxy through WebAssembly filters.<br><p> <br><p> &lt;!-- crd generation tags representing the server time when this object was created. It is not guaranteed to be set in happens-before order across separate operations. Clients may not set this value. It is represented in RFC3339 form and is in UTC. Populated by the system. Read-only. Null for lists. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#metadata" --&gt;<br><p> <br><p> &lt;!-- go code generation tags --&gt;
+     * WasmPlugin provides a mechanism to extend the functionality provided by the Istio proxy through WebAssembly filters.<br><p> <br><p> &lt;!-- crd generation tags representing the server time when this object was created. It is not guaranteed to be set in happens-before order across separate operations. Clients may not set this value. It is represented in RFC3339 form and is in UTC. Populated by the system. Read-only. Null for lists. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#metadata" --&gt;<br><p> <br><p> &lt;!-- go code generation tags --&gt;
      */
     @JsonProperty("selector")
     public WorkloadSelector getSelector() {
@@ -297,7 +297,7 @@ public class WasmPlugin implements Editable<WasmPluginBuilder>, KubernetesResour
     }
 
     /**
-     * WasmPlugins provides a mechanism to extend the functionality provided by the Istio proxy through WebAssembly filters.<br><p> <br><p> &lt;!-- crd generation tags representing the server time when this object was created. It is not guaranteed to be set in happens-before order across separate operations. Clients may not set this value. It is represented in RFC3339 form and is in UTC. Populated by the system. Read-only. Null for lists. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#metadata" --&gt;<br><p> <br><p> &lt;!-- go code generation tags --&gt;
+     * WasmPlugin provides a mechanism to extend the functionality provided by the Istio proxy through WebAssembly filters.<br><p> <br><p> &lt;!-- crd generation tags representing the server time when this object was created. It is not guaranteed to be set in happens-before order across separate operations. Clients may not set this value. It is represented in RFC3339 form and is in UTC. Populated by the system. Read-only. Null for lists. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#metadata" --&gt;<br><p> <br><p> &lt;!-- go code generation tags --&gt;
      */
     @JsonProperty("selector")
     public void setSelector(WorkloadSelector selector) {
@@ -321,7 +321,7 @@ public class WasmPlugin implements Editable<WasmPluginBuilder>, KubernetesResour
     }
 
     /**
-     * WasmPlugins provides a mechanism to extend the functionality provided by the Istio proxy through WebAssembly filters.<br><p> <br><p> &lt;!-- crd generation tags representing the server time when this object was created. It is not guaranteed to be set in happens-before order across separate operations. Clients may not set this value. It is represented in RFC3339 form and is in UTC. Populated by the system. Read-only. Null for lists. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#metadata" --&gt;<br><p> <br><p> &lt;!-- go code generation tags --&gt;
+     * WasmPlugin provides a mechanism to extend the functionality provided by the Istio proxy through WebAssembly filters.<br><p> <br><p> &lt;!-- crd generation tags representing the server time when this object was created. It is not guaranteed to be set in happens-before order across separate operations. Clients may not set this value. It is represented in RFC3339 form and is in UTC. Populated by the system. Read-only. Null for lists. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#metadata" --&gt;<br><p> <br><p> &lt;!-- go code generation tags --&gt;
      */
     @JsonProperty("targetRef")
     public PolicyTargetReference getTargetRef() {
@@ -329,7 +329,7 @@ public class WasmPlugin implements Editable<WasmPluginBuilder>, KubernetesResour
     }
 
     /**
-     * WasmPlugins provides a mechanism to extend the functionality provided by the Istio proxy through WebAssembly filters.<br><p> <br><p> &lt;!-- crd generation tags representing the server time when this object was created. It is not guaranteed to be set in happens-before order across separate operations. Clients may not set this value. It is represented in RFC3339 form and is in UTC. Populated by the system. Read-only. Null for lists. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#metadata" --&gt;<br><p> <br><p> &lt;!-- go code generation tags --&gt;
+     * WasmPlugin provides a mechanism to extend the functionality provided by the Istio proxy through WebAssembly filters.<br><p> <br><p> &lt;!-- crd generation tags representing the server time when this object was created. It is not guaranteed to be set in happens-before order across separate operations. Clients may not set this value. It is represented in RFC3339 form and is in UTC. Populated by the system. Read-only. Null for lists. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#metadata" --&gt;<br><p> <br><p> &lt;!-- go code generation tags --&gt;
      */
     @JsonProperty("targetRef")
     public void setTargetRef(PolicyTargetReference targetRef) {
@@ -354,7 +354,7 @@ public class WasmPlugin implements Editable<WasmPluginBuilder>, KubernetesResour
     }
 
     /**
-     * WasmPlugins provides a mechanism to extend the functionality provided by the Istio proxy through WebAssembly filters.<br><p> <br><p> &lt;!-- crd generation tags representing the server time when this object was created. It is not guaranteed to be set in happens-before order across separate operations. Clients may not set this value. It is represented in RFC3339 form and is in UTC. Populated by the system. Read-only. Null for lists. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#metadata" --&gt;<br><p> <br><p> &lt;!-- go code generation tags --&gt;
+     * WasmPlugin provides a mechanism to extend the functionality provided by the Istio proxy through WebAssembly filters.<br><p> <br><p> &lt;!-- crd generation tags representing the server time when this object was created. It is not guaranteed to be set in happens-before order across separate operations. Clients may not set this value. It is represented in RFC3339 form and is in UTC. Populated by the system. Read-only. Null for lists. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#metadata" --&gt;<br><p> <br><p> &lt;!-- go code generation tags --&gt;
      */
     @JsonProperty("type")
     public PluginType getType() {
@@ -362,7 +362,7 @@ public class WasmPlugin implements Editable<WasmPluginBuilder>, KubernetesResour
     }
 
     /**
-     * WasmPlugins provides a mechanism to extend the functionality provided by the Istio proxy through WebAssembly filters.<br><p> <br><p> &lt;!-- crd generation tags representing the server time when this object was created. It is not guaranteed to be set in happens-before order across separate operations. Clients may not set this value. It is represented in RFC3339 form and is in UTC. Populated by the system. Read-only. Null for lists. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#metadata" --&gt;<br><p> <br><p> &lt;!-- go code generation tags --&gt;
+     * WasmPlugin provides a mechanism to extend the functionality provided by the Istio proxy through WebAssembly filters.<br><p> <br><p> &lt;!-- crd generation tags representing the server time when this object was created. It is not guaranteed to be set in happens-before order across separate operations. Clients may not set this value. It is represented in RFC3339 form and is in UTC. Populated by the system. Read-only. Null for lists. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#metadata" --&gt;<br><p> <br><p> &lt;!-- go code generation tags --&gt;
      */
     @JsonProperty("type")
     public void setType(PluginType type) {
@@ -402,7 +402,7 @@ public class WasmPlugin implements Editable<WasmPluginBuilder>, KubernetesResour
     }
 
     /**
-     * WasmPlugins provides a mechanism to extend the functionality provided by the Istio proxy through WebAssembly filters.<br><p> <br><p> &lt;!-- crd generation tags representing the server time when this object was created. It is not guaranteed to be set in happens-before order across separate operations. Clients may not set this value. It is represented in RFC3339 form and is in UTC. Populated by the system. Read-only. Null for lists. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#metadata" --&gt;<br><p> <br><p> &lt;!-- go code generation tags --&gt;
+     * WasmPlugin provides a mechanism to extend the functionality provided by the Istio proxy through WebAssembly filters.<br><p> <br><p> &lt;!-- crd generation tags representing the server time when this object was created. It is not guaranteed to be set in happens-before order across separate operations. Clients may not set this value. It is represented in RFC3339 form and is in UTC. Populated by the system. Read-only. Null for lists. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#metadata" --&gt;<br><p> <br><p> &lt;!-- go code generation tags --&gt;
      */
     @JsonProperty("vmConfig")
     public VmConfig getVmConfig() {
@@ -410,7 +410,7 @@ public class WasmPlugin implements Editable<WasmPluginBuilder>, KubernetesResour
     }
 
     /**
-     * WasmPlugins provides a mechanism to extend the functionality provided by the Istio proxy through WebAssembly filters.<br><p> <br><p> &lt;!-- crd generation tags representing the server time when this object was created. It is not guaranteed to be set in happens-before order across separate operations. Clients may not set this value. It is represented in RFC3339 form and is in UTC. Populated by the system. Read-only. Null for lists. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#metadata" --&gt;<br><p> <br><p> &lt;!-- go code generation tags --&gt;
+     * WasmPlugin provides a mechanism to extend the functionality provided by the Istio proxy through WebAssembly filters.<br><p> <br><p> &lt;!-- crd generation tags representing the server time when this object was created. It is not guaranteed to be set in happens-before order across separate operations. Clients may not set this value. It is represented in RFC3339 form and is in UTC. Populated by the system. Read-only. Null for lists. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#metadata" --&gt;<br><p> <br><p> &lt;!-- go code generation tags --&gt;
      */
     @JsonProperty("vmConfig")
     public void setVmConfig(VmConfig vmConfig) {

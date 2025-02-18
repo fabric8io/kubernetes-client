@@ -222,7 +222,7 @@ public class ConnectionPoolSettingsHTTPSettings implements Editable<ConnectionPo
     }
 
     /**
-     * If set to true, client protocol will be preserved while initiating connection to backend. Note that when this is set to true, h2_upgrade_policy will be ineffective i.e. the client connections will not be upgraded to http2.
+     * If set to true, client protocol will be preserved while initiating connection to backend. Note that when this is set to true, `h2UpgradePolicy` will be ineffective i.e. the client connections will not be upgraded to http2.
      */
     @JsonProperty("useClientProtocol")
     public Boolean getUseClientProtocol() {
@@ -230,7 +230,7 @@ public class ConnectionPoolSettingsHTTPSettings implements Editable<ConnectionPo
     }
 
     /**
-     * If set to true, client protocol will be preserved while initiating connection to backend. Note that when this is set to true, h2_upgrade_policy will be ineffective i.e. the client connections will not be upgraded to http2.
+     * If set to true, client protocol will be preserved while initiating connection to backend. Note that when this is set to true, `h2UpgradePolicy` will be ineffective i.e. the client connections will not be upgraded to http2.
      */
     @JsonProperty("useClientProtocol")
     public void setUseClientProtocol(Boolean useClientProtocol) {

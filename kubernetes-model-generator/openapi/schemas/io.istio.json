@@ -280,7 +280,7 @@
       }
     },
     "io.istio.api.extensions.v1alpha1.WasmPlugin": {
-      "description": "WasmPlugins provides a mechanism to extend the functionality provided by the Istio proxy through WebAssembly filters.\n\n\u003c!-- crd generation tags representing the server time when this object was created. It is not guaranteed to be set in happens-before order across separate operations. Clients may not set this value. It is represented in RFC3339 form and is in UTC. Populated by the system. Read-only. Null for lists. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#metadata\" --\u003e\n\n\u003c!-- go code generation tags --\u003e",
+      "description": "WasmPlugin provides a mechanism to extend the functionality provided by the Istio proxy through WebAssembly filters.\n\n\u003c!-- crd generation tags representing the server time when this object was created. It is not guaranteed to be set in happens-before order across separate operations. Clients may not set this value. It is represented in RFC3339 form and is in UTC. Populated by the system. Read-only. Null for lists. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#metadata\" --\u003e\n\n\u003c!-- go code generation tags --\u003e",
       "type": "object",
       "properties": {
         "failStrategy": {
@@ -517,7 +517,7 @@
           "type": "string"
         },
         "subjectAltNames": {
-          "description": "A list of alternate names to verify the subject identity in the certificate. If specified, the proxy will verify that the server certificate's subject alt name matches one of the specified values. If specified, this list overrides the value of subject_alt_names from the ServiceEntry. If unspecified, automatic validation of upstream presented certificate for new upstream connections will be done based on the downstream HTTP host/authority header.",
+          "description": "A list of alternate names to verify the subject identity in the certificate. If specified, the proxy will verify that the server certificate's subject alt name matches one of the specified values. If specified, this list overrides the value of `subjectAltNames` from the `ServiceEntry`. If unspecified, automatic validation of upstream presented certificate for new upstream connections will be done based on the downstream HTTP host/authority header.",
           "type": "array",
           "items": {
             "type": "string",
@@ -606,7 +606,7 @@
           "format": "int32"
         },
         "useClientProtocol": {
-          "description": "If set to true, client protocol will be preserved while initiating connection to backend. Note that when this is set to true, h2_upgrade_policy will be ineffective i.e. the client connections will not be upgraded to http2.",
+          "description": "If set to true, client protocol will be preserved while initiating connection to backend. Note that when this is set to true, `h2UpgradePolicy` will be ineffective i.e. the client connections will not be upgraded to http2.",
           "type": "boolean"
         }
       },
@@ -636,7 +636,7 @@
       "type": "object",
       "properties": {
         "connectTimeout": {
-          "description": "TCP connection timeout. format: 1h/1m/1s/1ms. MUST BE \u003e=1ms. Default is 10s.",
+          "description": "TCP connection timeout. format: 1h/1m/1s/1ms. MUST be \u003e=1ms. Default is 10s.",
           "$ref": "#/definitions/org.golang.google.protobuf.types.known.durationpb.Duration"
         },
         "idleTimeout": {
@@ -644,7 +644,7 @@
           "$ref": "#/definitions/org.golang.google.protobuf.types.known.durationpb.Duration"
         },
         "maxConnectionDuration": {
-          "description": "The maximum duration of a connection. The duration is defined as the period since a connection was established. If not set, there is no max duration. When max_connection_duration is reached the connection will be closed. Duration must be at least 1ms.",
+          "description": "The maximum duration of a connection. The duration is defined as the period since a connection was established. If not set, there is no max duration. When `maxConnectionDuration` is reached the connection will be closed. Duration must be at least 1ms.",
           "$ref": "#/definitions/org.golang.google.protobuf.types.known.durationpb.Duration"
         },
         "maxConnections": {
@@ -827,7 +827,7 @@
           }
         },
         "host": {
-          "description": "The name of a service from the service registry. Service names are looked up from the platform's service registry (e.g., Kubernetes services, Consul services, etc.) and from the hosts declared by [ServiceEntries](https://istio.io/docs/reference/config/networking/service-entry/#ServiceEntry). Rules defined for services that do not exist in the service registry will be ignored.\n\n*Note for Kubernetes users*: When short names are used (e.g. \"reviews\" instead of \"reviews.default.svc.cluster.local\"), Istio will interpret the short name based on the namespace of the rule, not the service. A rule in the \"default\" namespace containing a host \"reviews\" will be interpreted as \"reviews.default.svc.cluster.local\", irrespective of the actual namespace associated with the reviews service. _To avoid potential misconfigurations, it is recommended to always use fully qualified domain names over short names._\n\nNote that the host field applies to both HTTP and TCP services.",
+          "description": "The name of a service from the service registry. Service names are looked up from the platform's service registry (e.g., Kubernetes services, Consul services, etc.) and from the hosts declared by [ServiceEntries](https://istio.io/docs/reference/config/networking/service-entry/#ServiceEntry). Rules defined for services that do not exist in the service registry will be ignored.\n\n*Note for Kubernetes users*: When short names are used (e.g. \"reviews\" instead of \"reviews.default.svc.cluster.local\"), Istio will interpret the short name based on the namespace of the rule, not the service. A rule in the \"default\" namespace containing a host \"reviews\" will be interpreted as \"reviews.default.svc.cluster.local\", irrespective of the actual namespace associated with the reviews service. To avoid potential misconfigurations, it is recommended to always use fully qualified domain names over short names.\n\nNote that the host field applies to both HTTP and TCP services.",
           "type": "string"
         },
         "subsets": {
@@ -855,7 +855,7 @@
       }
     },
     "io.istio.api.networking.v1alpha3.EnvoyFilter": {
-      "description": "EnvoyFilter provides a mechanism to customize the Envoy configuration generated by Istio Pilot.\n\n\u003c!-- crd generation tags --\u003e\n\n\u003c!-- go code generation tags --\u003e",
+      "description": "EnvoyFilter provides a mechanism to customize the Envoy configuration generated by istiod.\n\n\u003c!-- crd generation tags --\u003e\n\n\u003c!-- go code generation tags --\u003e",
       "type": "object",
       "properties": {
         "configPatches": {
@@ -946,7 +946,7 @@
           "$ref": "#/definitions/io.istio.api.networking.v1alpha3.IsEnvoyFilter_EnvoyConfigObjectMatch_ObjectTypes"
         },
         "context": {
-          "description": "The specific config generation context to match on. Istio Pilot generates envoy configuration in the context of a gateway, inbound traffic to sidecar and outbound traffic from sidecar.",
+          "description": "The specific config generation context to match on. istiod generates envoy configuration in the context of a gateway, inbound traffic to sidecar and outbound traffic from sidecar.",
           "default": {},
           "$ref": "#/definitions/io.istio.api.networking.v1alpha3.EnvoyFilter_PatchContext"
         },
@@ -1063,7 +1063,7 @@
           "type": "string"
         },
         "name": {
-          "description": "Match a specific listener by its name. The listeners generated by Pilot are typically named as IP:Port.",
+          "description": "Match a specific listener by its name. The listeners generated by istiod are typically named as IP:Port.",
           "type": "string"
         },
         "portName": {
@@ -1231,7 +1231,7 @@
       "type": "object",
       "properties": {
         "metadata": {
-          "description": "Match on the node metadata supplied by a proxy when connecting to Istio Pilot. Note that while Envoy's node metadata is of type Struct, only string key-value pairs are processed by Pilot. All keys specified in the metadata must match with exact values. The match will fail if any of the specified keys are absent or the values fail to match.",
+          "description": "Match on the node metadata supplied by a proxy when connecting to istiod. Note that while Envoy's node metadata is of type Struct, only string key-value pairs are processed by istiod. All keys specified in the metadata must match with exact values. The match will fail if any of the specified keys are absent or the values fail to match.",
           "type": "object",
           "additionalProperties": {
             "type": "string",
@@ -1239,7 +1239,7 @@
           }
         },
         "proxyVersion": {
-          "description": "A regular expression in golang regex format (RE2) that can be used to select proxies using a specific version of istio proxy. The Istio version for a given proxy is obtained from the node metadata field `ISTIO_VERSION` supplied by the proxy when connecting to Pilot. This value is embedded as an environment variable (`ISTIO_META_ISTIO_VERSION`) in the Istio proxy docker image. Custom proxy implementations should provide this metadata variable to take advantage of the Istio version check option.",
+          "description": "A regular expression in golang regex format (RE2) that can be used to select proxies using a specific version of istio proxy. The Istio version for a given proxy is obtained from the node metadata field `ISTIO_VERSION` supplied by the proxy when connecting to istiod. This value is embedded as an environment variable (`ISTIO_META_ISTIO_VERSION`) in the Istio proxy docker image. Custom proxy implementations should provide this metadata variable to take advantage of the Istio version check option.",
           "type": "string"
         }
       },
@@ -1928,12 +1928,12 @@
       "type": "object",
       "properties": {
         "attempts": {
-          "description": "Number of retries to be allowed for a given request. The interval between retries will be determined automatically (25ms+). When request `timeout` of the [HTTP route](https://istio.io/docs/reference/config/networking/virtual-service/#HTTPRoute) or `per_try_timeout` is configured, the actual number of retries attempted also depends on the specified request `timeout` and `per_try_timeout` values. MUST BE \u003e= 0. If `0`, retries will be disabled. The maximum possible number of requests made will be 1 + `attempts`.",
+          "description": "Number of retries to be allowed for a given request. The interval between retries will be determined automatically (25ms+). When request `timeout` of the [HTTP route](https://istio.io/docs/reference/config/networking/virtual-service/#HTTPRoute) or `per_try_timeout` is configured, the actual number of retries attempted also depends on the specified request `timeout` and `per_try_timeout` values. MUST be \u003e= 0. If `0`, retries will be disabled. The maximum possible number of requests made will be 1 + `attempts`.",
           "type": "integer",
           "format": "int32"
         },
         "perTryTimeout": {
-          "description": "Timeout per attempt for a given request, including the initial call and any retries. Format: 1h/1m/1s/1ms. MUST BE \u003e=1ms. Default is same value as request `timeout` of the [HTTP route](https://istio.io/docs/reference/config/networking/virtual-service/#HTTPRoute), which means no timeout.",
+          "description": "Timeout per attempt for a given request, including the initial call and any retries. Format: 1h/1m/1s/1ms. MUST be \u003e=1ms. Default is same value as request `timeout` of the [HTTP route](https://istio.io/docs/reference/config/networking/virtual-service/#HTTPRoute), which means no timeout.",
           "$ref": "#/definitions/org.golang.google.protobuf.types.known.durationpb.Duration"
         },
         "retryOn": {
@@ -2403,7 +2403,7 @@
           "$ref": "#/definitions/io.istio.api.networking.v1alpha3.IsLoadBalancerSettings_LbPolicy"
         },
         "localityLbSetting": {
-          "description": "Locality load balancer settings, this will override mesh wide settings in entirety, meaning no merging would be performed between this object and the object one in MeshConfig",
+          "description": "Locality load balancer settings, this will override mesh-wide settings in entirety, meaning no merging would be performed between this object and the object one in MeshConfig",
           "$ref": "#/definitions/io.istio.api.networking.v1alpha3.LocalityLoadBalancerSetting"
         },
         "warmup": {
@@ -2698,7 +2698,7 @@
       "x-kubernetes-fabric8-type": "enum"
     },
     "io.istio.api.networking.v1alpha3.LocalityLoadBalancerSetting": {
-      "description": "Locality-weighted load balancing allows administrators to control the distribution of traffic to endpoints based on the localities of where the traffic originates and where it will terminate. These localities are specified using arbitrary labels that designate a hierarchy of localities in {region}/{zone}/{sub-zone} form. For additional detail refer to [Locality Weight](https://www.envoyproxy.io/docs/envoy/latest/intro/arch_overview/upstream/load_balancing/locality_weight) The following example shows how to setup locality weights mesh-wide.\n\nGiven a mesh with workloads and their service deployed to \"us-west/zone1/*\" and \"us-west/zone2/*\". This example specifies that when traffic accessing a service originates from workloads in \"us-west/zone1/*\", 80% of the traffic will be sent to endpoints in \"us-west/zone1/*\", i.e the same zone, and the remaining 20% will go to endpoints in \"us-west/zone2/*\". This setup is intended to favor routing traffic to endpoints in the same locality. A similar setting is specified for traffic originating in \"us-west/zone2/*\".\n\n```yaml\n\n\tdistribute:\n\t  - from: us-west/zone1/*\n\t    to:\n\t      \"us-west/zone1/*\": 80\n\t      \"us-west/zone2/*\": 20\n\t  - from: us-west/zone2/*\n\t    to:\n\t      \"us-west/zone1/*\": 20\n\t      \"us-west/zone2/*\": 80\n\n```\n\nIf the goal of the operator is not to distribute load across zones and regions but rather to restrict the regionality of failover to meet other operational requirements an operator can set a 'failover' policy instead of a 'distribute' policy.\n\nThe following example sets up a locality failover policy for regions. Assume a service resides in zones within us-east, us-west \u0026 eu-west this example specifies that when endpoints within us-east become unhealthy traffic should failover to endpoints in any zone or sub-zone within eu-west and similarly us-west should failover to us-east.\n\n```yaml\n\n\tfailover:\n\t  - from: us-east\n\t    to: eu-west\n\t  - from: us-west\n\t    to: us-east\n\n``` Locality load balancing settings.",
+      "description": "Locality-weighted load balancing allows administrators to control the distribution of traffic to endpoints based on the localities of where the traffic originates and where it will terminate. These localities are specified using arbitrary labels that designate a hierarchy of localities in {region}/{zone}/{sub-zone} form. For additional detail refer to [Locality Weight](https://www.envoyproxy.io/docs/envoy/latest/intro/arch_overview/upstream/load_balancing/locality_weight) The following example shows how to setup locality weights mesh-wide.\n\nGiven a mesh with workloads and their service deployed to \"us-west/zone1/\\*\" and \"us-west/zone2/\\*\". This example specifies that when traffic accessing a service originates from workloads in \"us-west/zone1/\\*\", 80% of the traffic will be sent to endpoints in \"us-west/zone1/\\*\", i.e the same zone, and the remaining 20% will go to endpoints in \"us-west/zone2/\\*\". This setup is intended to favor routing traffic to endpoints in the same locality. A similar setting is specified for traffic originating in \"us-west/zone2/\\*\".\n\n```yaml\n\n\tdistribute:\n\t  - from: us-west/zone1/*\n\t    to:\n\t      \"us-west/zone1/*\": 80\n\t      \"us-west/zone2/*\": 20\n\t  - from: us-west/zone2/*\n\t    to:\n\t      \"us-west/zone1/*\": 20\n\t      \"us-west/zone2/*\": 80\n\n```\n\nIf the goal of the operator is not to distribute load across zones and regions but rather to restrict the regionality of failover to meet other operational requirements an operator can set a 'failover' policy instead of a 'distribute' policy.\n\nThe following example sets up a locality failover policy for regions. Assume a service resides in zones within us-east, us-west \u0026 eu-west this example specifies that when endpoints within us-east become unhealthy traffic should failover to endpoints in any zone or sub-zone within eu-west and similarly us-west should failover to us-east.\n\n```yaml\n\n\tfailover:\n\t  - from: us-east\n\t    to: eu-west\n\t  - from: us-west\n\t    to: us-east\n\n```",
       "type": "object",
       "properties": {
         "distribute": {
@@ -2709,7 +2709,7 @@
           }
         },
         "enabled": {
-          "description": "enable locality load balancing, this is DestinationRule-level and will override mesh wide settings in entirety. e.g. true means that turn on locality load balancing for this DestinationRule no matter what mesh wide settings is.",
+          "description": "Enable locality load balancing. This is DestinationRule-level and will override mesh-wide settings in entirety. e.g. true means that turn on locality load balancing for this DestinationRule no matter what mesh-wide settings is.",
           "$ref": "#/definitions/org.golang.google.protobuf.types.known.wrapperspb.BoolValue"
         },
         "failover": {
@@ -2821,11 +2821,11 @@
       "type": "object",
       "properties": {
         "baseEjectionTime": {
-          "description": "Minimum ejection duration. A host will remain ejected for a period equal to the product of minimum ejection duration and the number of times the host has been ejected. This technique allows the system to automatically increase the ejection period for unhealthy upstream servers. format: 1h/1m/1s/1ms. MUST BE \u003e=1ms. Default is 30s.",
+          "description": "Minimum ejection duration. A host will remain ejected for a period equal to the product of minimum ejection duration and the number of times the host has been ejected. This technique allows the system to automatically increase the ejection period for unhealthy upstream servers. format: 1h/1m/1s/1ms. MUST be \u003e=1ms. Default is 30s.",
           "$ref": "#/definitions/org.golang.google.protobuf.types.known.durationpb.Duration"
         },
         "consecutive5xxErrors": {
-          "description": "Number of 5xx errors before a host is ejected from the connection pool. When the upstream host is accessed over an opaque TCP connection, connect timeouts, connection error/failure and request failure events qualify as a 5xx error. This feature defaults to 5 but can be disabled by setting the value to 0.\n\nNote that consecutive_gateway_errors and consecutive_5xx_errors can be used separately or together. Because the errors counted by consecutive_gateway_errors are also included in consecutive_5xx_errors, if the value of consecutive_gateway_errors is greater than or equal to the value of consecutive_5xx_errors, consecutive_gateway_errors will have no effect.",
+          "description": "Number of 5xx errors before a host is ejected from the connection pool. When the upstream host is accessed over an opaque TCP connection, connect timeouts, connection error/failure and request failure events qualify as a 5xx error. This feature defaults to 5 but can be disabled by setting the value to 0.\n\nNote that `consecutiveGatewayErrors` and `consecutive5xxErrors` can be used separately or together. Because the errors counted by `consecutiveGatewayErrors` are also included in `consecutive5xxErrors`, if the value of `consecutiveGatewayErrors` is greater than or equal to the value of `consecutive5xxErrors`, `consecutiveGatewayErrors` will have no effect.",
           "$ref": "#/definitions/org.golang.google.protobuf.types.known.wrapperspb.UInt32Value"
         },
         "consecutiveErrors": {
@@ -2834,15 +2834,15 @@
           "format": "int32"
         },
         "consecutiveGatewayErrors": {
-          "description": "Number of gateway errors before a host is ejected from the connection pool. When the upstream host is accessed over HTTP, a 502, 503, or 504 return code qualifies as a gateway error. When the upstream host is accessed over an opaque TCP connection, connect timeouts and connection error/failure events qualify as a gateway error. This feature is disabled by default or when set to the value 0.\n\nNote that consecutive_gateway_errors and consecutive_5xx_errors can be used separately or together. Because the errors counted by consecutive_gateway_errors are also included in consecutive_5xx_errors, if the value of consecutive_gateway_errors is greater than or equal to the value of consecutive_5xx_errors, consecutive_gateway_errors will have no effect.",
+          "description": "Number of gateway errors before a host is ejected from the connection pool. When the upstream host is accessed over HTTP, a 502, 503, or 504 return code qualifies as a gateway error. When the upstream host is accessed over an opaque TCP connection, connect timeouts and connection error/failure events qualify as a gateway error. This feature is disabled by default or when set to the value 0.\n\nNote that `consecutiveGatewayErrors` and `consecutive5xxErrors` can be used separately or together. Because the errors counted by `consecutiveGatewayErrors` are also included in `consecutive5xxErrors`, if the value of `consecutiveGatewayErrors` is greater than or equal to the value of `consecutive5xxErrors`, `consecutiveGatewayErrors` will have no effect.",
           "$ref": "#/definitions/org.golang.google.protobuf.types.known.wrapperspb.UInt32Value"
         },
         "consecutiveLocalOriginFailures": {
-          "description": "The number of consecutive locally originated failures before ejection occurs. Defaults to 5. Parameter takes effect only when split_external_local_origin_errors is set to true.",
+          "description": "The number of consecutive locally originated failures before ejection occurs. Defaults to 5. Parameter takes effect only when `splitExternalLocalOriginErrors` is set to true.",
           "$ref": "#/definitions/org.golang.google.protobuf.types.known.wrapperspb.UInt32Value"
         },
         "interval": {
-          "description": "Time interval between ejection sweep analysis. format: 1h/1m/1s/1ms. MUST BE \u003e=1ms. Default is 10s.",
+          "description": "Time interval between ejection sweep analysis. format: 1h/1m/1s/1ms. MUST be \u003e=1ms. Default is 10s.",
           "$ref": "#/definitions/org.golang.google.protobuf.types.known.durationpb.Duration"
         },
         "maxEjectionPercent": {
@@ -2851,12 +2851,12 @@
           "format": "int32"
         },
         "minHealthPercent": {
-          "description": "Outlier detection will be enabled as long as the associated load balancing pool has at least min_health_percent hosts in healthy mode. When the percentage of healthy hosts in the load balancing pool drops below this threshold, outlier detection will be disabled and the proxy will load balance across all hosts in the pool (healthy and unhealthy). The threshold can be disabled by setting it to 0%. The default is 0% as it's not typically applicable in k8s environments with few pods per service.",
+          "description": "Outlier detection will be enabled as long as the associated load balancing pool has at least `minHealthPercent` hosts in healthy mode. When the percentage of healthy hosts in the load balancing pool drops below this threshold, outlier detection will be disabled and the proxy will load balance across all hosts in the pool (healthy and unhealthy). The threshold can be disabled by setting it to 0%. The default is 0% as it's not typically applicable in k8s environments with few pods per service.",
           "type": "integer",
           "format": "int32"
         },
         "splitExternalLocalOriginErrors": {
-          "description": "Determines whether to distinguish local origin failures from external errors. If set to true consecutive_local_origin_failure is taken into account for outlier detection calculations. This should be used when you want to derive the outlier detection status based on the errors seen locally such as failure to connect, timeout while connecting etc. rather than the status code returned by upstream service. This is especially useful when the upstream service explicitly returns a 5xx for some requests and you want to ignore those responses from upstream service while determining the outlier detection status of a host. Defaults to false.",
+          "description": "Determines whether to distinguish local origin failures from external errors. If set to true `consecutiveLocalOriginFailures` is taken into account for outlier detection calculations. This should be used when you want to derive the outlier detection status based on the errors seen locally such as failure to connect, timeout while connecting etc. rather than the status code returned by upstream service. This is especially useful when the upstream service explicitly returns a 5xx for some requests and you want to ignore those responses from upstream service while determining the outlier detection status of a host. Defaults to false.",
           "type": "boolean"
         }
       },
@@ -2899,7 +2899,7 @@
           "format": "int64"
         },
         "protocol": {
-          "description": "The protocol exposed on the port. MUST BE one of HTTP|HTTPS|GRPC|GRPC-WEB|HTTP2|MONGO|TCP|TLS. TLS can be either used to terminate non-HTTP based connections on a specific port or to route traffic based on SNI header to the destination without terminating the TLS connection.",
+          "description": "The protocol exposed on the port. MUST be one of HTTP|HTTPS|GRPC|GRPC-WEB|HTTP2|MONGO|TCP|TLS. TLS can be either used to terminate non-HTTP based connections on a specific port or to route traffic based on SNI header to the destination without terminating the TLS connection.",
           "type": "string"
         },
         "targetPort": {
@@ -3313,15 +3313,15 @@
       }
     },
     "io.istio.api.networking.v1alpha3.ServiceEntryAddress": {
-      "description": "minor abstraction to allow for adding hostnames if relevant",
+      "description": "A minor abstraction to allow for adding hostnames if relevant.",
       "type": "object",
       "properties": {
         "host": {
-          "description": "Host is the name associated with this address",
+          "description": "The host name associated with this address",
           "type": "string"
         },
         "value": {
-          "description": "Value is the address (192.168.0.2)",
+          "description": "The address (e.g. 192.168.0.2)",
           "type": "string"
         }
       },
@@ -3415,7 +3415,7 @@
           "format": "int64"
         },
         "protocol": {
-          "description": "The protocol exposed on the port. MUST BE one of HTTP|HTTPS|GRPC|HTTP2|MONGO|TCP|TLS. TLS implies the connection will be routed based on the SNI header to the destination without terminating the TLS connection.",
+          "description": "The protocol exposed on the port. MUST be one of HTTP|HTTPS|GRPC|HTTP2|MONGO|TCP|TLS. TLS implies the connection will be routed based on the SNI header to the destination without terminating the TLS connection.",
           "type": "string"
         },
         "targetPort": {
@@ -3485,7 +3485,7 @@
           "format": "int64"
         },
         "protocol": {
-          "description": "The protocol exposed on the port. MUST BE one of HTTP|HTTPS|GRPC|HTTP2|MONGO|TCP|TLS. TLS can be either used to terminate non-HTTP based connections on a specific port or to route traffic based on SNI header to the destination without terminating the TLS connection.",
+          "description": "The protocol exposed on the port. MUST be one of HTTP|HTTPS|GRPC|HTTP2|MONGO|TCP|TLS. TLS can be either used to terminate non-HTTP based connections on a specific port or to route traffic based on SNI header to the destination without terminating the TLS connection.",
           "type": "string"
         },
         "targetPort": {
@@ -3858,7 +3858,7 @@
       "type": "object",
       "properties": {
         "protocol": {
-          "description": "Specifies which protocol to use for tunneling the downstream connection. Supported protocols are:\n\n\tCONNECT - uses HTTP CONNECT;\n\tPOST - uses HTTP POST.\n\nCONNECT is used by default if not specified. HTTP version for upstream requests is determined by the service protocol defined for the proxy.",
+          "description": "Specifies which protocol to use for tunneling the downstream connection. Supported protocols are:\n  - CONNECT - uses HTTP CONNECT;\n  - POST - uses HTTP POST.\n\nCONNECT is used by default if not specified.\n\nHTTP version for upstream requests is determined by the service protocol defined for the proxy.",
           "type": "string"
         },
         "targetHost": {
@@ -4533,7 +4533,7 @@
       }
     },
     "io.istio.api.security.v1beta1.PeerAuthentication": {
-      "description": "PeerAuthentication defines mutual TLS (mTLS) requirements for incoming connections.\n\nIn sidecar mode, PeerAuthentication determines whether or not mTLS is allowed or required for connections to an Envoy proxy sidecar.\n\nIn ambient mode, security is transparently enabled for a pod by the ztunnel node agent. (Traffic between proxies uses the HBONE protocol, which includes encryption with mTLS.) Because of this, `DISABLE` mode is not supported. `STRICT` mode is useful to ensure that connections that bypass the mesh are not possible.\n\nExamples:\n\nPolicy to require mTLS traffic for all workloads under namespace `foo`: ```yaml apiVersion: security.istio.io/v1 kind: PeerAuthentication metadata:\n\n\tname: default\n\tnamespace: foo\n\nspec:\n\n\tmtls:\n\t  mode: STRICT\n\n``` For mesh level, put the policy in root-namespace according to your Istio installation.\n\nPolicies to allow both mTLS and plaintext traffic for all workloads under namespace `foo`, but require mTLS for workload `finance`. ```yaml apiVersion: security.istio.io/v1 kind: PeerAuthentication metadata:\n\n\tname: default\n\tnamespace: foo\n\nspec:\n\n\tmtls:\n\t  mode: PERMISSIVE",
+      "description": "\u003c!-- crd generation tags representing the server time when this object was created. It is not guaranteed to be set in happens-before order across separate operations. Clients may not set this value. It is represented in RFC3339 form and is in UTC. Populated by the system. Read-only. Null for lists. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#metadata\" --\u003e\n\n\u003c!-- go code generation tags --\u003e",
       "type": "object",
       "properties": {
         "mtls": {
@@ -4591,7 +4591,7 @@
       "x-kubernetes-fabric8-type": "enum"
     },
     "io.istio.api.security.v1beta1.RequestAuthentication": {
-      "description": "RequestAuthentication defines what request authentication methods are supported by a workload. It will reject a request if the request contains invalid authentication information, based on the configured authentication rules. A request that does not contain any authentication credentials will be accepted but will not have any authenticated identity. To restrict access to authenticated requests only, this should be accompanied by an authorization rule. Examples:\n\n- Require JWT for all request for workloads that have label `app:httpbin`\n\n```yaml apiVersion: security.istio.io/v1 kind: RequestAuthentication metadata:\n\n\tname: httpbin\n\tnamespace: foo\n\nspec:\n\n\tselector:\n\t  matchLabels:\n\t    app: httpbin\n\tjwtRules:\n\t- issuer: \"issuer-foo\"\n\t  jwksUri: https://example.com/.well-known/jwks.json",
+      "description": "\u003c!-- crd generation tags --\u003e\n\n\u003c!-- go code generation tags --\u003e",
       "type": "object",
       "properties": {
         "jwtRules": {
@@ -5399,7 +5399,7 @@
       }
     },
     "io.istio.extensions.v1alpha1.WasmPlugin": {
-      "description": "WasmPlugins provides a mechanism to extend the functionality provided by the Istio proxy through WebAssembly filters.\n\n\u003c!-- crd generation tags representing the server time when this object was created. It is not guaranteed to be set in happens-before order across separate operations. Clients may not set this value. It is represented in RFC3339 form and is in UTC. Populated by the system. Read-only. Null for lists. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#metadata\" --\u003e\n\n\u003c!-- go code generation tags --\u003e",
+      "description": "WasmPlugin provides a mechanism to extend the functionality provided by the Istio proxy through WebAssembly filters.\n\n\u003c!-- crd generation tags representing the server time when this object was created. It is not guaranteed to be set in happens-before order across separate operations. Clients may not set this value. It is represented in RFC3339 form and is in UTC. Populated by the system. Read-only. Null for lists. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#metadata\" --\u003e\n\n\u003c!-- go code generation tags --\u003e",
       "type": "object",
       "required": [
         "status"
@@ -6020,7 +6020,7 @@
       }
     },
     "io.istio.networking.v1alpha3.EnvoyFilter": {
-      "description": "EnvoyFilter provides a mechanism to customize the Envoy configuration generated by Istio Pilot.\n\n\u003c!-- crd generation tags --\u003e\n\n\u003c!-- go code generation tags --\u003e",
+      "description": "EnvoyFilter provides a mechanism to customize the Envoy configuration generated by istiod.\n\n\u003c!-- crd generation tags --\u003e\n\n\u003c!-- go code generation tags --\u003e",
       "type": "object",
       "required": [
         "status"
@@ -7124,7 +7124,7 @@
       }
     },
     "io.istio.security.v1.PeerAuthentication": {
-      "description": "PeerAuthentication defines mutual TLS (mTLS) requirements for incoming connections.\n\nIn sidecar mode, PeerAuthentication determines whether or not mTLS is allowed or required for connections to an Envoy proxy sidecar.\n\nIn ambient mode, security is transparently enabled for a pod by the ztunnel node agent. (Traffic between proxies uses the HBONE protocol, which includes encryption with mTLS.) Because of this, `DISABLE` mode is not supported. `STRICT` mode is useful to ensure that connections that bypass the mesh are not possible.\n\nExamples:\n\nPolicy to require mTLS traffic for all workloads under namespace `foo`: ```yaml apiVersion: security.istio.io/v1 kind: PeerAuthentication metadata:\n\n\tname: default\n\tnamespace: foo\n\nspec:\n\n\tmtls:\n\t  mode: STRICT\n\n``` For mesh level, put the policy in root-namespace according to your Istio installation.\n\nPolicies to allow both mTLS and plaintext traffic for all workloads under namespace `foo`, but require mTLS for workload `finance`. ```yaml apiVersion: security.istio.io/v1 kind: PeerAuthentication metadata:\n\n\tname: default\n\tnamespace: foo\n\nspec:\n\n\tmtls:\n\t  mode: PERMISSIVE",
+      "description": "\u003c!-- crd generation tags representing the server time when this object was created. It is not guaranteed to be set in happens-before order across separate operations. Clients may not set this value. It is represented in RFC3339 form and is in UTC. Populated by the system. Read-only. Null for lists. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#metadata\" --\u003e\n\n\u003c!-- go code generation tags --\u003e",
       "type": "object",
       "required": [
         "status"
@@ -7193,7 +7193,7 @@
       }
     },
     "io.istio.security.v1.RequestAuthentication": {
-      "description": "RequestAuthentication defines what request authentication methods are supported by a workload. It will reject a request if the request contains invalid authentication information, based on the configured authentication rules. A request that does not contain any authentication credentials will be accepted but will not have any authenticated identity. To restrict access to authenticated requests only, this should be accompanied by an authorization rule. Examples:\n\n- Require JWT for all request for workloads that have label `app:httpbin`\n\n```yaml apiVersion: security.istio.io/v1 kind: RequestAuthentication metadata:\n\n\tname: httpbin\n\tnamespace: foo\n\nspec:\n\n\tselector:\n\t  matchLabels:\n\t    app: httpbin\n\tjwtRules:\n\t- issuer: \"issuer-foo\"\n\t  jwksUri: https://example.com/.well-known/jwks.json",
+      "description": "\u003c!-- crd generation tags --\u003e\n\n\u003c!-- go code generation tags --\u003e",
       "type": "object",
       "required": [
         "status"
@@ -7331,7 +7331,7 @@
       }
     },
     "io.istio.security.v1beta1.PeerAuthentication": {
-      "description": "PeerAuthentication defines mutual TLS (mTLS) requirements for incoming connections.\n\nIn sidecar mode, PeerAuthentication determines whether or not mTLS is allowed or required for connections to an Envoy proxy sidecar.\n\nIn ambient mode, security is transparently enabled for a pod by the ztunnel node agent. (Traffic between proxies uses the HBONE protocol, which includes encryption with mTLS.) Because of this, `DISABLE` mode is not supported. `STRICT` mode is useful to ensure that connections that bypass the mesh are not possible.\n\nExamples:\n\nPolicy to require mTLS traffic for all workloads under namespace `foo`: ```yaml apiVersion: security.istio.io/v1 kind: PeerAuthentication metadata:\n\n\tname: default\n\tnamespace: foo\n\nspec:\n\n\tmtls:\n\t  mode: STRICT\n\n``` For mesh level, put the policy in root-namespace according to your Istio installation.\n\nPolicies to allow both mTLS and plaintext traffic for all workloads under namespace `foo`, but require mTLS for workload `finance`. ```yaml apiVersion: security.istio.io/v1 kind: PeerAuthentication metadata:\n\n\tname: default\n\tnamespace: foo\n\nspec:\n\n\tmtls:\n\t  mode: PERMISSIVE",
+      "description": "\u003c!-- crd generation tags representing the server time when this object was created. It is not guaranteed to be set in happens-before order across separate operations. Clients may not set this value. It is represented in RFC3339 form and is in UTC. Populated by the system. Read-only. Null for lists. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#metadata\" --\u003e\n\n\u003c!-- go code generation tags --\u003e",
       "type": "object",
       "required": [
         "status"
@@ -7400,7 +7400,7 @@
       }
     },
     "io.istio.security.v1beta1.RequestAuthentication": {
-      "description": "RequestAuthentication defines what request authentication methods are supported by a workload. It will reject a request if the request contains invalid authentication information, based on the configured authentication rules. A request that does not contain any authentication credentials will be accepted but will not have any authenticated identity. To restrict access to authenticated requests only, this should be accompanied by an authorization rule. Examples:\n\n- Require JWT for all request for workloads that have label `app:httpbin`\n\n```yaml apiVersion: security.istio.io/v1 kind: RequestAuthentication metadata:\n\n\tname: httpbin\n\tnamespace: foo\n\nspec:\n\n\tselector:\n\t  matchLabels:\n\t    app: httpbin\n\tjwtRules:\n\t- issuer: \"issuer-foo\"\n\t  jwksUri: https://example.com/.well-known/jwks.json",
+      "description": "\u003c!-- crd generation tags --\u003e\n\n\u003c!-- go code generation tags --\u003e",
       "type": "object",
       "required": [
         "status"

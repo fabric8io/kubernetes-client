@@ -39,7 +39,7 @@ import lombok.ToString;
 import lombok.experimental.Accessors;
 
 /**
- * RequestAuthentication defines what request authentication methods are supported by a workload. It will reject a request if the request contains invalid authentication information, based on the configured authentication rules. A request that does not contain any authentication credentials will be accepted but will not have any authenticated identity. To restrict access to authenticated requests only, this should be accompanied by an authorization rule. Examples:<br><p> <br><p> - Require JWT for all request for workloads that have label `app:httpbin`<br><p> <br><p> ```yaml apiVersion: security.istio.io/v1 kind: RequestAuthentication metadata:<br><p> <br><p> 	name: httpbin<br><p> 	namespace: foo<br><p> <br><p> spec:<br><p> <br><p> 	selector:<br><p> 	  matchLabels:<br><p> 	    app: httpbin<br><p> 	jwtRules:<br><p> 	- issuer: "issuer-foo"<br><p> 	  jwksUri: https://example.com/.well-known/jwks.json
+ * &lt;!-- crd generation tags --&gt;<br><p> <br><p> &lt;!-- go code generation tags --&gt;
  */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -141,7 +141,7 @@ public class RequestAuthentication implements Editable<RequestAuthenticationBuil
     }
 
     /**
-     * RequestAuthentication defines what request authentication methods are supported by a workload. It will reject a request if the request contains invalid authentication information, based on the configured authentication rules. A request that does not contain any authentication credentials will be accepted but will not have any authenticated identity. To restrict access to authenticated requests only, this should be accompanied by an authorization rule. Examples:<br><p> <br><p> - Require JWT for all request for workloads that have label `app:httpbin`<br><p> <br><p> ```yaml apiVersion: security.istio.io/v1 kind: RequestAuthentication metadata:<br><p> <br><p> 	name: httpbin<br><p> 	namespace: foo<br><p> <br><p> spec:<br><p> <br><p> 	selector:<br><p> 	  matchLabels:<br><p> 	    app: httpbin<br><p> 	jwtRules:<br><p> 	- issuer: "issuer-foo"<br><p> 	  jwksUri: https://example.com/.well-known/jwks.json
+     * &lt;!-- crd generation tags --&gt;<br><p> <br><p> &lt;!-- go code generation tags --&gt;
      */
     @JsonProperty("metadata")
     public ObjectMeta getMetadata() {
@@ -149,7 +149,7 @@ public class RequestAuthentication implements Editable<RequestAuthenticationBuil
     }
 
     /**
-     * RequestAuthentication defines what request authentication methods are supported by a workload. It will reject a request if the request contains invalid authentication information, based on the configured authentication rules. A request that does not contain any authentication credentials will be accepted but will not have any authenticated identity. To restrict access to authenticated requests only, this should be accompanied by an authorization rule. Examples:<br><p> <br><p> - Require JWT for all request for workloads that have label `app:httpbin`<br><p> <br><p> ```yaml apiVersion: security.istio.io/v1 kind: RequestAuthentication metadata:<br><p> <br><p> 	name: httpbin<br><p> 	namespace: foo<br><p> <br><p> spec:<br><p> <br><p> 	selector:<br><p> 	  matchLabels:<br><p> 	    app: httpbin<br><p> 	jwtRules:<br><p> 	- issuer: "issuer-foo"<br><p> 	  jwksUri: https://example.com/.well-known/jwks.json
+     * &lt;!-- crd generation tags --&gt;<br><p> <br><p> &lt;!-- go code generation tags --&gt;
      */
     @JsonProperty("metadata")
     public void setMetadata(ObjectMeta metadata) {
@@ -157,7 +157,7 @@ public class RequestAuthentication implements Editable<RequestAuthenticationBuil
     }
 
     /**
-     * RequestAuthentication defines what request authentication methods are supported by a workload. It will reject a request if the request contains invalid authentication information, based on the configured authentication rules. A request that does not contain any authentication credentials will be accepted but will not have any authenticated identity. To restrict access to authenticated requests only, this should be accompanied by an authorization rule. Examples:<br><p> <br><p> - Require JWT for all request for workloads that have label `app:httpbin`<br><p> <br><p> ```yaml apiVersion: security.istio.io/v1 kind: RequestAuthentication metadata:<br><p> <br><p> 	name: httpbin<br><p> 	namespace: foo<br><p> <br><p> spec:<br><p> <br><p> 	selector:<br><p> 	  matchLabels:<br><p> 	    app: httpbin<br><p> 	jwtRules:<br><p> 	- issuer: "issuer-foo"<br><p> 	  jwksUri: https://example.com/.well-known/jwks.json
+     * &lt;!-- crd generation tags --&gt;<br><p> <br><p> &lt;!-- go code generation tags --&gt;
      */
     @JsonProperty("spec")
     public io.fabric8.istio.api.api.security.v1beta1.RequestAuthentication getSpec() {
@@ -165,7 +165,7 @@ public class RequestAuthentication implements Editable<RequestAuthenticationBuil
     }
 
     /**
-     * RequestAuthentication defines what request authentication methods are supported by a workload. It will reject a request if the request contains invalid authentication information, based on the configured authentication rules. A request that does not contain any authentication credentials will be accepted but will not have any authenticated identity. To restrict access to authenticated requests only, this should be accompanied by an authorization rule. Examples:<br><p> <br><p> - Require JWT for all request for workloads that have label `app:httpbin`<br><p> <br><p> ```yaml apiVersion: security.istio.io/v1 kind: RequestAuthentication metadata:<br><p> <br><p> 	name: httpbin<br><p> 	namespace: foo<br><p> <br><p> spec:<br><p> <br><p> 	selector:<br><p> 	  matchLabels:<br><p> 	    app: httpbin<br><p> 	jwtRules:<br><p> 	- issuer: "issuer-foo"<br><p> 	  jwksUri: https://example.com/.well-known/jwks.json
+     * &lt;!-- crd generation tags --&gt;<br><p> <br><p> &lt;!-- go code generation tags --&gt;
      */
     @JsonProperty("spec")
     public void setSpec(io.fabric8.istio.api.api.security.v1beta1.RequestAuthentication spec) {
@@ -173,7 +173,7 @@ public class RequestAuthentication implements Editable<RequestAuthenticationBuil
     }
 
     /**
-     * RequestAuthentication defines what request authentication methods are supported by a workload. It will reject a request if the request contains invalid authentication information, based on the configured authentication rules. A request that does not contain any authentication credentials will be accepted but will not have any authenticated identity. To restrict access to authenticated requests only, this should be accompanied by an authorization rule. Examples:<br><p> <br><p> - Require JWT for all request for workloads that have label `app:httpbin`<br><p> <br><p> ```yaml apiVersion: security.istio.io/v1 kind: RequestAuthentication metadata:<br><p> <br><p> 	name: httpbin<br><p> 	namespace: foo<br><p> <br><p> spec:<br><p> <br><p> 	selector:<br><p> 	  matchLabels:<br><p> 	    app: httpbin<br><p> 	jwtRules:<br><p> 	- issuer: "issuer-foo"<br><p> 	  jwksUri: https://example.com/.well-known/jwks.json
+     * &lt;!-- crd generation tags --&gt;<br><p> <br><p> &lt;!-- go code generation tags --&gt;
      */
     @JsonProperty("status")
     public IstioStatus getStatus() {
@@ -181,7 +181,7 @@ public class RequestAuthentication implements Editable<RequestAuthenticationBuil
     }
 
     /**
-     * RequestAuthentication defines what request authentication methods are supported by a workload. It will reject a request if the request contains invalid authentication information, based on the configured authentication rules. A request that does not contain any authentication credentials will be accepted but will not have any authenticated identity. To restrict access to authenticated requests only, this should be accompanied by an authorization rule. Examples:<br><p> <br><p> - Require JWT for all request for workloads that have label `app:httpbin`<br><p> <br><p> ```yaml apiVersion: security.istio.io/v1 kind: RequestAuthentication metadata:<br><p> <br><p> 	name: httpbin<br><p> 	namespace: foo<br><p> <br><p> spec:<br><p> <br><p> 	selector:<br><p> 	  matchLabels:<br><p> 	    app: httpbin<br><p> 	jwtRules:<br><p> 	- issuer: "issuer-foo"<br><p> 	  jwksUri: https://example.com/.well-known/jwks.json
+     * &lt;!-- crd generation tags --&gt;<br><p> <br><p> &lt;!-- go code generation tags --&gt;
      */
     @JsonProperty("status")
     public void setStatus(IstioStatus status) {
