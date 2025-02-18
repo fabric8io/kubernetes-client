@@ -87,7 +87,7 @@ public class EnvoyFilterProxyMatch implements Editable<EnvoyFilterProxyMatchBuil
     }
 
     /**
-     * Match on the node metadata supplied by a proxy when connecting to Istio Pilot. Note that while Envoy's node metadata is of type Struct, only string key-value pairs are processed by Pilot. All keys specified in the metadata must match with exact values. The match will fail if any of the specified keys are absent or the values fail to match.
+     * Match on the node metadata supplied by a proxy when connecting to istiod. Note that while Envoy's node metadata is of type Struct, only string key-value pairs are processed by istiod. All keys specified in the metadata must match with exact values. The match will fail if any of the specified keys are absent or the values fail to match.
      */
     @JsonProperty("metadata")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -96,7 +96,7 @@ public class EnvoyFilterProxyMatch implements Editable<EnvoyFilterProxyMatchBuil
     }
 
     /**
-     * Match on the node metadata supplied by a proxy when connecting to Istio Pilot. Note that while Envoy's node metadata is of type Struct, only string key-value pairs are processed by Pilot. All keys specified in the metadata must match with exact values. The match will fail if any of the specified keys are absent or the values fail to match.
+     * Match on the node metadata supplied by a proxy when connecting to istiod. Note that while Envoy's node metadata is of type Struct, only string key-value pairs are processed by istiod. All keys specified in the metadata must match with exact values. The match will fail if any of the specified keys are absent or the values fail to match.
      */
     @JsonProperty("metadata")
     public void setMetadata(Map<String, String> metadata) {
@@ -104,7 +104,7 @@ public class EnvoyFilterProxyMatch implements Editable<EnvoyFilterProxyMatchBuil
     }
 
     /**
-     * A regular expression in golang regex format (RE2) that can be used to select proxies using a specific version of istio proxy. The Istio version for a given proxy is obtained from the node metadata field `ISTIO_VERSION` supplied by the proxy when connecting to Pilot. This value is embedded as an environment variable (`ISTIO_META_ISTIO_VERSION`) in the Istio proxy docker image. Custom proxy implementations should provide this metadata variable to take advantage of the Istio version check option.
+     * A regular expression in golang regex format (RE2) that can be used to select proxies using a specific version of istio proxy. The Istio version for a given proxy is obtained from the node metadata field `ISTIO_VERSION` supplied by the proxy when connecting to istiod. This value is embedded as an environment variable (`ISTIO_META_ISTIO_VERSION`) in the Istio proxy docker image. Custom proxy implementations should provide this metadata variable to take advantage of the Istio version check option.
      */
     @JsonProperty("proxyVersion")
     public String getProxyVersion() {
@@ -112,7 +112,7 @@ public class EnvoyFilterProxyMatch implements Editable<EnvoyFilterProxyMatchBuil
     }
 
     /**
-     * A regular expression in golang regex format (RE2) that can be used to select proxies using a specific version of istio proxy. The Istio version for a given proxy is obtained from the node metadata field `ISTIO_VERSION` supplied by the proxy when connecting to Pilot. This value is embedded as an environment variable (`ISTIO_META_ISTIO_VERSION`) in the Istio proxy docker image. Custom proxy implementations should provide this metadata variable to take advantage of the Istio version check option.
+     * A regular expression in golang regex format (RE2) that can be used to select proxies using a specific version of istio proxy. The Istio version for a given proxy is obtained from the node metadata field `ISTIO_VERSION` supplied by the proxy when connecting to istiod. This value is embedded as an environment variable (`ISTIO_META_ISTIO_VERSION`) in the Istio proxy docker image. Custom proxy implementations should provide this metadata variable to take advantage of the Istio version check option.
      */
     @JsonProperty("proxyVersion")
     public void setProxyVersion(String proxyVersion) {

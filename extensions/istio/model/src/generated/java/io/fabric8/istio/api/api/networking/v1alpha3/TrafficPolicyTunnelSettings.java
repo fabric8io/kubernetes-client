@@ -87,7 +87,7 @@ public class TrafficPolicyTunnelSettings implements Editable<TrafficPolicyTunnel
     }
 
     /**
-     * Specifies which protocol to use for tunneling the downstream connection. Supported protocols are:<br><p> <br><p> 	CONNECT - uses HTTP CONNECT;<br><p> 	POST - uses HTTP POST.<br><p> <br><p> CONNECT is used by default if not specified. HTTP version for upstream requests is determined by the service protocol defined for the proxy.
+     * Specifies which protocol to use for tunneling the downstream connection. Supported protocols are:<br><p>   - CONNECT - uses HTTP CONNECT;<br><p>   - POST - uses HTTP POST.<br><p> <br><p> CONNECT is used by default if not specified.<br><p> <br><p> HTTP version for upstream requests is determined by the service protocol defined for the proxy.
      */
     @JsonProperty("protocol")
     public String getProtocol() {
@@ -95,7 +95,7 @@ public class TrafficPolicyTunnelSettings implements Editable<TrafficPolicyTunnel
     }
 
     /**
-     * Specifies which protocol to use for tunneling the downstream connection. Supported protocols are:<br><p> <br><p> 	CONNECT - uses HTTP CONNECT;<br><p> 	POST - uses HTTP POST.<br><p> <br><p> CONNECT is used by default if not specified. HTTP version for upstream requests is determined by the service protocol defined for the proxy.
+     * Specifies which protocol to use for tunneling the downstream connection. Supported protocols are:<br><p>   - CONNECT - uses HTTP CONNECT;<br><p>   - POST - uses HTTP POST.<br><p> <br><p> CONNECT is used by default if not specified.<br><p> <br><p> HTTP version for upstream requests is determined by the service protocol defined for the proxy.
      */
     @JsonProperty("protocol")
     public void setProtocol(String protocol) {

@@ -126,7 +126,7 @@ public class SidecarPort implements Editable<SidecarPortBuilder>, KubernetesReso
     }
 
     /**
-     * The protocol exposed on the port. MUST BE one of HTTP|HTTPS|GRPC|HTTP2|MONGO|TCP|TLS. TLS can be either used to terminate non-HTTP based connections on a specific port or to route traffic based on SNI header to the destination without terminating the TLS connection.
+     * The protocol exposed on the port. MUST be one of HTTP|HTTPS|GRPC|HTTP2|MONGO|TCP|TLS. TLS can be either used to terminate non-HTTP based connections on a specific port or to route traffic based on SNI header to the destination without terminating the TLS connection.
      */
     @JsonProperty("protocol")
     public String getProtocol() {
@@ -134,7 +134,7 @@ public class SidecarPort implements Editable<SidecarPortBuilder>, KubernetesReso
     }
 
     /**
-     * The protocol exposed on the port. MUST BE one of HTTP|HTTPS|GRPC|HTTP2|MONGO|TCP|TLS. TLS can be either used to terminate non-HTTP based connections on a specific port or to route traffic based on SNI header to the destination without terminating the TLS connection.
+     * The protocol exposed on the port. MUST be one of HTTP|HTTPS|GRPC|HTTP2|MONGO|TCP|TLS. TLS can be either used to terminate non-HTTP based connections on a specific port or to route traffic based on SNI header to the destination without terminating the TLS connection.
      */
     @JsonProperty("protocol")
     public void setProtocol(String protocol) {

@@ -94,7 +94,7 @@ public class HTTPRetry implements Editable<HTTPRetryBuilder>, KubernetesResource
     }
 
     /**
-     * Number of retries to be allowed for a given request. The interval between retries will be determined automatically (25ms+). When request `timeout` of the [HTTP route](https://istio.io/docs/reference/config/networking/virtual-service/#HTTPRoute) or `per_try_timeout` is configured, the actual number of retries attempted also depends on the specified request `timeout` and `per_try_timeout` values. MUST BE &gt;= 0. If `0`, retries will be disabled. The maximum possible number of requests made will be 1 + `attempts`.
+     * Number of retries to be allowed for a given request. The interval between retries will be determined automatically (25ms+). When request `timeout` of the [HTTP route](https://istio.io/docs/reference/config/networking/virtual-service/#HTTPRoute) or `per_try_timeout` is configured, the actual number of retries attempted also depends on the specified request `timeout` and `per_try_timeout` values. MUST be &gt;= 0. If `0`, retries will be disabled. The maximum possible number of requests made will be 1 + `attempts`.
      */
     @JsonProperty("attempts")
     public Integer getAttempts() {
@@ -102,7 +102,7 @@ public class HTTPRetry implements Editable<HTTPRetryBuilder>, KubernetesResource
     }
 
     /**
-     * Number of retries to be allowed for a given request. The interval between retries will be determined automatically (25ms+). When request `timeout` of the [HTTP route](https://istio.io/docs/reference/config/networking/virtual-service/#HTTPRoute) or `per_try_timeout` is configured, the actual number of retries attempted also depends on the specified request `timeout` and `per_try_timeout` values. MUST BE &gt;= 0. If `0`, retries will be disabled. The maximum possible number of requests made will be 1 + `attempts`.
+     * Number of retries to be allowed for a given request. The interval between retries will be determined automatically (25ms+). When request `timeout` of the [HTTP route](https://istio.io/docs/reference/config/networking/virtual-service/#HTTPRoute) or `per_try_timeout` is configured, the actual number of retries attempted also depends on the specified request `timeout` and `per_try_timeout` values. MUST be &gt;= 0. If `0`, retries will be disabled. The maximum possible number of requests made will be 1 + `attempts`.
      */
     @JsonProperty("attempts")
     public void setAttempts(Integer attempts) {
