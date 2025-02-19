@@ -45,10 +45,9 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
-import java.util.Collections;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Future;
@@ -60,7 +59,7 @@ public abstract class RollingUpdater<T extends HasMetadata, L> {
 
   private static final Long DEFAULT_SERVER_GC_WAIT_TIMEOUT = 60 * 1000L; // 60 seconds
 
-  private static final transient Logger LOG = LoggerFactory.getLogger(RollingUpdater.class);
+  private static final Logger LOG = LoggerFactory.getLogger(RollingUpdater.class);
 
   protected final Client client;
   protected final String namespace;
@@ -186,33 +185,27 @@ public abstract class RollingUpdater<T extends HasMetadata, L> {
   }
 
   public static List<Object> requestPayLoadForRolloutPause() {
-    HashMap<String, Object> patch = new HashMap<>();
-    patch.put("op", "add");
-    patch.put("path", "/spec/paused");
-    patch.put("value", true);
-    return Collections.singletonList(patch);
+    return List.of(Map.of(
+        "op", "add",
+        "path", "/spec/paused",
+        "value", true));
   }
 
   public static List<Object> requestPayLoadForRolloutResume() {
-    HashMap<String, Object> patch = new HashMap<>();
-    patch.put("op", "remove");
-    patch.put("path", "/spec/paused");
-    return Collections.singletonList(patch);
+    return List.of(Map.of(
+        "op", "remove",
+        "path", "/spec/paused"));
   }
 
   public static List<Object> requestPayLoadForRolloutRestart() {
-    HashMap<String, Object> patch = new HashMap<>();
-    HashMap<String, Object> value = new HashMap<>();
-    patch.put("op", "replace");
-    patch.put("path", "/spec/template/metadata/annotations");
-    value.put("kubectl.kubernetes.io/restartedAt",
-        new Date().toInstant().atOffset(ZoneOffset.UTC).format(DateTimeFormatter.ISO_LOCAL_DATE_TIME));
-    patch.put("value", value);
-    return Collections.singletonList(patch);
+    return List.of(Map.of(
+        "op", "add",
+        "path", "/spec/template/metadata/annotations/kubectl.kubernetes.io~1restartedAt",
+        "value", new Date().toInstant().atOffset(ZoneOffset.UTC).format(DateTimeFormatter.ISO_LOCAL_DATE_TIME)));
   }
 
   /**
-   * Lets wait until there are enough Ready pods of the given RC
+   * Let's wait until there are enough Ready pods of the given RC
    */
   private void waitUntilPodsAreReady(final T obj, final String namespace, final int requiredPodCount) {
     final AtomicInteger podCount = new AtomicInteger(0);

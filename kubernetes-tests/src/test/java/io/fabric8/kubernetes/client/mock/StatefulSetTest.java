@@ -399,7 +399,7 @@ public class StatefulSetTest {
     RecordedRequest recordedRequest = server.getLastRequest();
     assertNotNull(deployment);
     assertEquals("PATCH", recordedRequest.getMethod());
-    assertTrue(recordedRequest.getBody().readUtf8().contains("kubectl.kubernetes.io/restartedAt"));
+    assertTrue(recordedRequest.getBody().readUtf8().contains("kubectl.kubernetes.io~1restartedAt"));
   }
 
   @Test

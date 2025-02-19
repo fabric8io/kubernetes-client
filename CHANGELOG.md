@@ -3,6 +3,7 @@
 ### 7.2-SNAPSHOT
 
 #### Bugs
+* Fix #6892: rolling().restart() doesn't remove preexistent pod template annotations
 
 #### Improvements
 
