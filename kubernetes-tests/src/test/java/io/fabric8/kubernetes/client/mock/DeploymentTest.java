@@ -47,6 +47,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -622,7 +623,8 @@ class DeploymentTest {
     // Then
     RecordedRequest recordedRequest = server.getLastRequest();
     assertEquals("PATCH", recordedRequest.getMethod());
-    assertEquals("[{\"op\":\"add\",\"path\":\"/spec/paused\",\"value\":true}]", recordedRequest.getBody().readUtf8());
+    assertThat(client.getKubernetesSerialization().unmarshal(recordedRequest.getBody().readUtf8(), List.class))
+        .isEqualTo(List.of(Map.of("op", "add", "path", "/spec/paused", "value", true)));
   }
 
   @Test
@@ -652,7 +654,8 @@ class DeploymentTest {
     RecordedRequest recordedRequest = server.getLastRequest();
     assertNotNull(deployment);
     assertEquals("PATCH", recordedRequest.getMethod());
-    assertEquals("[{\"op\":\"remove\",\"path\":\"/spec/paused\"}]", recordedRequest.getBody().readUtf8());
+    assertThat(client.getKubernetesSerialization().unmarshal(recordedRequest.getBody().readUtf8(), List.class))
+        .isEqualTo(List.of(Map.of("op", "remove", "path", "/spec/paused")));
   }
 
   @Test
@@ -682,7 +685,7 @@ class DeploymentTest {
     RecordedRequest recordedRequest = server.getLastRequest();
     assertNotNull(deployment);
     assertEquals("PATCH", recordedRequest.getMethod());
-    assertTrue(recordedRequest.getBody().readUtf8().contains("kubectl.kubernetes.io/restartedAt"));
+    assertTrue(recordedRequest.getBody().readUtf8().contains("kubectl.kubernetes.io~1restartedAt"));
   }
 
   @Test
