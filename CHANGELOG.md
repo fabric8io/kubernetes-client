@@ -14,6 +14,8 @@
 
 #### New Features
 
+* Fix #6827: Add CRDPostProcessor to process generated CRDs before they are written out
+
 #### _**Note**_: Breaking changes
 
 ### 7.1.0 (2025-01-30)
