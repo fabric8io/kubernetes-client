@@ -111,7 +111,7 @@
     <junit4.version>4.13.2</junit4.version>
     <junit.version>5.11.4</junit.version>
     <assertj.core.version>3.27.3</assertj.core.version>
-    <awaitility.version>4.2.2</awaitility.version>
+    <awaitility.version>4.3.0</awaitility.version>
     <approvaltests.version>24.17.0</approvaltests.version>
     <bouncycastle.version>1.80</bouncycastle.version>
     <bc-fips.version>2.1.0</bc-fips.version>
