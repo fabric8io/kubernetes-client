@@ -32,6 +32,7 @@ import java.nio.ByteBuffer;
 import java.nio.channels.Channels;
 import java.nio.channels.WritableByteChannel;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CompletionStage;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class LogWatchCallback implements LogWatch, AutoCloseable {
@@ -44,6 +45,7 @@ public class LogWatchCallback implements LogWatch, AutoCloseable {
 
   private final AtomicBoolean closed = new AtomicBoolean(false);
   private final CompletableFuture<AsyncBody> asyncBody = new CompletableFuture<>();
+  private final CompletableFuture<Throwable> onCloseFuture = new CompletableFuture<>();
   private final SerialExecutor serialExecutor;
 
   public LogWatchCallback(OutputStream out, OperationContext context) {
@@ -55,15 +57,21 @@ public class LogWatchCallback implements LogWatch, AutoCloseable {
   }
 
   @Override
-  public void close() {
-    cleanUp();
+  public CompletionStage<Throwable> onClose() {
+    return onCloseFuture.minimalCompletionStage();
   }
 
-  private void cleanUp() {
+  @Override
+  public void close() {
+    cleanUp(null);
+  }
+
+  private void cleanUp(Throwable u) {
     if (!closed.compareAndSet(false, true)) {
       return;
     }
     asyncBody.thenAccept(AsyncBody::cancel);
+    onCloseFuture.complete(u);
     serialExecutor.shutdownNow();
   }
 
@@ -111,7 +119,7 @@ public class LogWatchCallback implements LogWatch, AutoCloseable {
             if (t != null) {
               onFailure(t);
             } else {
-              cleanUp();
+              cleanUp(null);
             }
           }, serialExecutor));
         }
@@ -133,7 +141,7 @@ public class LogWatchCallback implements LogWatch, AutoCloseable {
     }
 
     LOGGER.error("Log Callback Failure.", u);
-    cleanUp();
+    cleanUp(u);
   }
 
 }
