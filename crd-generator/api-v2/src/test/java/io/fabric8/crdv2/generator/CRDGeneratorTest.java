@@ -38,6 +38,7 @@ import io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceDefinition
 import io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceValidation;
 import io.fabric8.kubernetes.api.model.apiextensions.v1.JSONSchemaProps;
 import io.fabric8.kubernetes.client.CustomResource;
+import io.fabric8.kubernetes.client.utils.KubernetesSerialization;
 import io.fabric8.kubernetes.client.utils.Serialization;
 import io.fabric8.kubernetes.model.Scope;
 import org.junit.jupiter.api.RepeatedTest;
@@ -49,6 +50,7 @@ import org.slf4j.LoggerFactory;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.net.URL;
 import java.nio.file.Files;
 import java.util.ArrayList;
@@ -589,6 +591,37 @@ class CRDGeneratorTest {
 
     final File expectedCrdFile = new File(crdResource.getFile());
     assertFileEquals(expectedCrdFile, crdFile);
+
+    // only delete the generated files if the test is successful
+    assertTrue(crdFile.delete());
+    assertTrue(outputDir.delete());
+  }
+
+  @Test
+  void checkPostProcessing() throws Exception {
+    // generated CRD
+    final File outputDir = Files.createTempDirectory("crd-").toFile();
+    final String crdName = CustomResourceInfo.fromClass(Simplest.class).crdName();
+
+    final CRDGenerationInfo crdInfo = newCRDGenerator()
+        .inOutputDir(outputDir)
+        .customResourceClasses(Simplest.class)
+        .forCRDVersions("v1")
+        .detailedGenerate(new CRDPostProcessor() {
+          @Override
+          public HasMetadata process(HasMetadata crd, String crdSpecVersion) {
+            final var meta = crd.getMetadata().edit().addToLabels("foo", "bar").build();
+            crd.setMetadata(meta);
+            return crd;
+          }
+        });
+
+    final File crdFile = new File(crdInfo.getCRDInfos(crdName).get("v1").getFilePath());
+    final var serialization = new KubernetesSerialization();
+    final var crd = serialization.unmarshal(new FileInputStream(crdFile), HasMetadata.class);
+    assertNotNull(crd);
+    assertEquals(crdName, crd.getMetadata().getName());
+    assertEquals("bar", crd.getMetadata().getLabels().get("foo"));
 
     // only delete the generated files if the test is successful
     assertTrue(crdFile.delete());

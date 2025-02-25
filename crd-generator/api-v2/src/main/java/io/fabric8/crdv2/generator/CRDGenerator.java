@@ -48,6 +48,8 @@ import java.util.stream.Collectors;
 public class CRDGenerator {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(CRDGenerator.class);
+  private static final CRDPostProcessor nullProcessor = new CRDPostProcessor() {
+  };
   private final Map<String, AbstractCustomResourceHandler> handlers = new HashMap<>(2);
   private CRDOutput<? extends OutputStream> output;
   private boolean parallel;
@@ -115,9 +117,7 @@ public class CRDGenerator {
     return handlers;
   }
 
-  // this is public API, so we cannot change the signature, so there is no way to prevent the possible heap pollution
-  // (we also cannot use @SafeVarargs, because that requires the method to be final, which is another signature change)
-  @SuppressWarnings("unchecked")
+  @SafeVarargs
   public final CRDGenerator customResourceClasses(Class<? extends HasMetadata>... crClasses) {
     if (crClasses == null) {
       return this;
@@ -163,7 +163,15 @@ public class CRDGenerator {
     return detailedGenerate().numberOfGeneratedCRDs();
   }
 
-  public CRDGenerationInfo detailedGenerate() {
+  /**
+   * Generates the CRDs with the provided configuration and returns detailed information about what was generated as a
+   * {@link CRDGenerationInfo} instance.
+   *
+   * @param processor a {@link CRDPostProcessor} implementation allowing to further process the generated CRDs before they are
+   *        written out to disk
+   * @return a {@link CRDGenerationInfo} providing detailed information about what was generated
+   */
+  public CRDGenerationInfo detailedGenerate(CRDPostProcessor processor) {
     if (getCustomResourceInfos().isEmpty()) {
       LOGGER.warn("No resources were registered with the 'customResources' method to be generated");
       return CRDGenerationInfo.EMPTY;
@@ -201,22 +209,40 @@ public class CRDGenerator {
 
         if (parallel) {
           handlers.values().stream().map(h -> ForkJoinPool.commonPool().submit(() -> h.handle(info, context.forkContext())))
-              .collect(Collectors.toList()).stream().forEach(ForkJoinTask::join);
+              .collect(Collectors.toList())
+              .forEach(ForkJoinTask::join);
         } else {
-          handlers.values().stream().forEach(h -> h.handle(info, context.forkContext()));
+          handlers.values().forEach(h -> h.handle(info, context.forkContext()));
         }
       }
     }
 
     final CRDGenerationInfo crdGenerationInfo = new CRDGenerationInfo();
     handlers.values().stream().flatMap(AbstractCustomResourceHandler::finish)
-        .forEach(crd -> emitCrd(crd.getKey(), crd.getValue(), crdGenerationInfo));
+        .forEach(crd -> emitCrd(crd.getKey(), crd.getValue(), crdGenerationInfo, processor));
     return crdGenerationInfo;
   }
 
+  public CRDGenerationInfo detailedGenerate() {
+    return detailedGenerate(nullProcessor);
+  }
+
+  /**
+   * @deprecated use {@link #emitCrd(HasMetadata, Set, CRDGenerationInfo, CRDPostProcessor)} instead
+   */
+  @Deprecated(forRemoval = true)
   public void emitCrd(HasMetadata crd, Set<String> dependentClassNames, CRDGenerationInfo crdGenerationInfo) {
+    emitCrd(crd, dependentClassNames, crdGenerationInfo, nullProcessor);
+  }
+
+  protected void emitCrd(HasMetadata crd, Set<String> dependentClassNames, CRDGenerationInfo crdGenerationInfo,
+      CRDPostProcessor processor) {
     final String version = ApiVersionUtil.trimVersion(crd.getApiVersion());
     final String crdName = crd.getMetadata().getName();
+
+    // post-process the CRD if needed
+    crd = processor.process(crd, version);
+
     try {
       final String outputName = getOutputName(crdName, version);
       try (final OutputStreamWriter writer = new OutputStreamWriter(output.outputFor(outputName), StandardCharsets.UTF_8)) {
