@@ -4,6 +4,7 @@
 
 #### Bugs
 * Fix #6892: rolling().restart() doesn't remove preexistent pod template annotations
+* Fix #6908: The Default annotation and JsonProperty default value should accept JSON values
 
 #### Improvements
 

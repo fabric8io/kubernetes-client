@@ -54,6 +54,7 @@ import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.Quantity;
 import io.fabric8.kubernetes.api.model.runtime.RawExtension;
+import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.utils.Utils;
 import io.fabric8.kubernetes.model.annotation.LabelSelector;
 import io.fabric8.kubernetes.model.annotation.SpecReplicas;
@@ -85,7 +86,6 @@ import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static io.fabric8.crdv2.generator.CRDUtils.toTargetType;
 import static java.util.Optional.ofNullable;
 
 /**
@@ -232,7 +232,7 @@ public abstract class AbstractJsonSchema<T extends KubernetesJSONSchemaProps, V 
 
     private boolean required;
     private final String description;
-    private final Object defaultValue;
+    private final JsonNode defaultValue;
     private Double min;
     private Boolean exclusiveMinimum;
     private Double max;
@@ -315,13 +315,22 @@ public abstract class AbstractJsonSchema<T extends KubernetesJSONSchemaProps, V 
       // TODO: should the following be deprecated?
       required = beanProperty.getAnnotation(Required.class) != null;
 
-      if (beanProperty.getMetadata().getDefaultValue() != null) {
-        defaultValue = toTargetType(beanProperty.getType(), beanProperty.getMetadata().getDefaultValue());
-      } else if (ofNullable(beanProperty.getAnnotation(Default.class)).map(Default::value).isPresent()) {
-        defaultValue = toTargetType(beanProperty.getType(),
-            ofNullable(beanProperty.getAnnotation(Default.class)).map(Default::value).get());
-      } else {
-        defaultValue = null;
+      Optional<String> defaultAnnotationValue = ofNullable(beanProperty.getAnnotation(Default.class)).map(Default::value);
+
+      defaultValue = toJsonNode(beanProperty.getType(),
+          defaultAnnotationValue.orElse(beanProperty.getMetadata().getDefaultValue()));
+    }
+
+    JsonNode toJsonNode(JavaType type, String value) {
+      if (value == null) {
+        return null;
+      }
+      Optional<Class<?>> rawType = Optional.ofNullable(type).map(JavaType::getRawClass);
+      try {
+        Object typedValue = resolvingContext.kubernetesSerialization.unmarshal(value, rawType.orElse(Object.class));
+        return resolvingContext.kubernetesSerialization.convertValue(typedValue, JsonNode.class);
+      } catch (KubernetesClientException e) {
+        throw new IllegalArgumentException("Cannot parse default value: '" + value + "' as valid YAML or JSON.", e);
       }
     }
 
@@ -355,14 +364,7 @@ public abstract class AbstractJsonSchema<T extends KubernetesJSONSchemaProps, V 
 
     public void updateSchema(T schema) {
       schema.setDescription(description);
-
-      if (defaultValue != null) {
-        try {
-          schema.setDefault(resolvingContext.kubernetesSerialization.convertValue(defaultValue, JsonNode.class));
-        } catch (IllegalArgumentException e) {
-          throw new IllegalArgumentException("Cannot parse default value: '" + defaultValue + "' as valid YAML.", e);
-        }
-      }
+      schema.setDefault(defaultValue);
       if (nullable) {
         schema.setNullable(true);
       }

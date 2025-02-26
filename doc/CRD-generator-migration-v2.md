@@ -98,10 +98,3 @@ myMap:
     type: "string"
   type: "object"
 ```
-
-## Default values for CRD fields can be numeric or boolean
-
-Previously default values defined by `@Default` could only be used on string fields. 
-With CRD Generator v2 defaults can be set on numeric and boolean fields, too.
-In the same way is `@JsonProperty(defaultValue)` now working.
-
