@@ -4,6 +4,7 @@
 
 #### Bugs
 * Fix #6892: rolling().restart() doesn't remove preexistent pod template annotations
+* Fix #6906: Knative VolatileTime should be serialized as String
 
 #### Improvements
 
