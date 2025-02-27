@@ -16,10 +16,17 @@
 
 package io.fabric8.kubernetes.client.dsl.internal;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.spy;
-import static org.mockito.Mockito.when;
+import io.fabric8.kubernetes.client.http.AsyncBody;
+import io.fabric8.kubernetes.client.http.HttpClient;
+import io.fabric8.kubernetes.client.http.HttpRequest;
+import io.fabric8.kubernetes.client.http.HttpResponse;
+import io.fabric8.kubernetes.client.http.TestAsyncBody;
+import io.fabric8.kubernetes.client.http.TestHttpResponse;
+import io.fabric8.kubernetes.client.impl.BaseClient;
+import io.fabric8.kubernetes.client.utils.KubernetesSerialization;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 
 import java.io.ByteArrayOutputStream;
 import java.net.HttpURLConnection;
@@ -31,32 +38,24 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.when;
 
-import io.fabric8.kubernetes.client.http.AsyncBody;
-import io.fabric8.kubernetes.client.http.HttpClient;
-import io.fabric8.kubernetes.client.http.HttpRequest;
-import io.fabric8.kubernetes.client.http.HttpResponse;
-import io.fabric8.kubernetes.client.http.TestAsyncBody;
-import io.fabric8.kubernetes.client.http.TestHttpResponse;
-import io.fabric8.kubernetes.client.impl.BaseClient;
-import io.fabric8.kubernetes.client.utils.KubernetesSerialization;
-
-public class LogWatchCallbackTest {
+class LogWatchCallbackTest {
   private OperationContext context;
   private Executor executor = Executors.newFixedThreadPool(2);
   private URL url;
   private HttpClient httpClientMock;
 
   @BeforeEach
-  public void setUp() throws MalformedURLException {
+  void setUp() throws MalformedURLException {
     BaseClient mock = mock(BaseClient.class, Mockito.RETURNS_SELF);
     Mockito.when(mock.adapt(BaseClient.class).getKubernetesSerialization()).thenReturn(new KubernetesSerialization());
-    final OperationContext context = new OperationContext().withClient(mock);
+    final OperationContext operationContext = new OperationContext().withClient(mock);
     when(mock.getExecutor()).thenReturn(this.executor);
-    this.context = context;
+    this.context = operationContext;
 
     this.url = new URL("http://url_called");
     this.httpClientMock = spy(HttpClient.class);
@@ -70,7 +69,7 @@ public class LogWatchCallbackTest {
   }
 
   @Test
-  public void withOutputStreamCloseEventTest() throws InterruptedException {
+  void withOutputStreamCloseEventTest() throws InterruptedException {
 
     var future = new CompletableFuture<HttpResponse<AsyncBody>>();
     var reached = new CountDownLatch(1);
@@ -92,7 +91,7 @@ public class LogWatchCallbackTest {
   }
 
   @Test
-  public void withOutputStreamCloseEventOnFailureTest() throws MalformedURLException, InterruptedException {
+  void withOutputStreamCloseEventOnFailureTest() throws InterruptedException {
 
     var future = new CompletableFuture<HttpResponse<AsyncBody>>();
     var reached = new CountDownLatch(1);
@@ -102,12 +101,12 @@ public class LogWatchCallbackTest {
     LogWatchCallback logWatch = new LogWatchCallback(new ByteArrayOutputStream(), this.context);
     logWatch.callAndWait(httpClientMock, url);
 
-    final Throwable tReturned[] = new Throwable[1];
+    final Throwable[] tReturned = new Throwable[1];
     logWatch.onClose().thenAccept((Throwable t) -> {
       tReturned[0] = t;
       reached.countDown();
     });
-   
+
     var th = new Throwable("any exception");
     future.completeExceptionally(th);
 
