@@ -71,7 +71,7 @@ public class Condition implements Editable<ConditionBuilder>, KubernetesResource
 {
 
     @JsonProperty("lastTransitionTime")
-    private VolatileTime lastTransitionTime;
+    private String lastTransitionTime;
     @JsonProperty("message")
     private String message;
     @JsonProperty("reason")
@@ -91,7 +91,7 @@ public class Condition implements Editable<ConditionBuilder>, KubernetesResource
     public Condition() {
     }
 
-    public Condition(VolatileTime lastTransitionTime, String message, String reason, String severity, String status, String type) {
+    public Condition(String lastTransitionTime, String message, String reason, String severity, String status, String type) {
         super();
         this.lastTransitionTime = lastTransitionTime;
         this.message = message;
@@ -105,7 +105,7 @@ public class Condition implements Editable<ConditionBuilder>, KubernetesResource
      * Condition defines a readiness condition for a Knative resource. See: https://github.com/kubernetes/community/blob/master/contributors/devel/sig-architecture/api-conventions.md#typical-status-properties
      */
     @JsonProperty("lastTransitionTime")
-    public VolatileTime getLastTransitionTime() {
+    public String getLastTransitionTime() {
         return lastTransitionTime;
     }
 
@@ -113,7 +113,7 @@ public class Condition implements Editable<ConditionBuilder>, KubernetesResource
      * Condition defines a readiness condition for a Knative resource. See: https://github.com/kubernetes/community/blob/master/contributors/devel/sig-architecture/api-conventions.md#typical-status-properties
      */
     @JsonProperty("lastTransitionTime")
-    public void setLastTransitionTime(VolatileTime lastTransitionTime) {
+    public void setLastTransitionTime(String lastTransitionTime) {
         this.lastTransitionTime = lastTransitionTime;
     }
 

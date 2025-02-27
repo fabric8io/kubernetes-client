@@ -70,8 +70,15 @@
                 </includeGenerationRegexes>
                 <skipGenerationRegexes>
                   <skipGenerationRegex>^dev\.knative\.pkg\.apis\.URL$</skipGenerationRegex>
+                  <skipGenerationRegex>^dev\.knative\.pkg\.apis\.VolatileTime$</skipGenerationRegex>
                   <skipGenerationRegex>^dev\.knative\.duck\.v1alpha1\.PlaceableList$</skipGenerationRegex>
                 </skipGenerationRegexes>
+                <refToJavaTypeMappings>
+                  <property>
+                    <name>#/components/schemas/dev.knative.pkg.apis.VolatileTime</name>
+                    <value>java.lang.String</value>
+                  </property>
+                </refToJavaTypeMappings>
               </settings>
             </configuration>
           </plugin>

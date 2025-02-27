@@ -16,7 +16,8 @@ _Deprecated since 7.0.0_
 _GA since 7.0.0_
 
 - **CRD Generator API v2** - `io.fabric8:crd-generator-api-v2`  
-  _Core implementation of the new generator, based on [Jackson/jsonSchema](https://github.com/FasterXML/jackson-module-jsonSchema)._
+  _Core implementation of the new generator, based
+  on [Jackson/jsonSchema](https://github.com/FasterXML/jackson-module-jsonSchema)._
 - **CRD Generator Collector** - `io.fabric8:crd-generator-collector`  
   _Shared component to find and load compiled Custom Resource classes in directories and Jar files._
 - **CRD Generator Maven Plugin** - `io.fabric8:crd-generator-maven-plugin`   
@@ -98,3 +99,8 @@ myMap:
     type: "string"
   type: "object"
 ```
+
+## Post-processing CRDs before they are written out to disk
+
+It is now possible to provide a `CRDPostProcessor` implementation when generating CRDs via the
+`CRDGenerator.detailedGenerate` method. This allows to process generated CRDs before they are written out to the disk.

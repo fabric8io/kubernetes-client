@@ -38,10 +38,13 @@ import io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceDefinition
 import io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceValidation;
 import io.fabric8.kubernetes.api.model.apiextensions.v1.JSONSchemaProps;
 import io.fabric8.kubernetes.client.CustomResource;
+import io.fabric8.kubernetes.client.utils.KubernetesSerialization;
 import io.fabric8.kubernetes.client.utils.Serialization;
 import io.fabric8.kubernetes.model.Scope;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 import org.opentest4j.AssertionFailedError;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -51,6 +54,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.net.URL;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -59,6 +63,7 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 import static io.fabric8.crdv2.generator.CRDGeneratorAssertions.assertFileEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -68,8 +73,15 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class CRDGeneratorTest {
 
-  private final TestCRDOutput output = new TestCRDOutput();
   protected boolean parallelCRDGeneration;
+  @TempDir
+  private File tempDir;
+  private TestCRDOutput output;
+
+  @BeforeEach
+  void setUp() {
+    output = new TestCRDOutput();
+  }
 
   @Test
   void choosingCRDVersionsShouldWork() {
@@ -456,12 +468,11 @@ class CRDGeneratorTest {
   }
 
   @Test
-  void checkGenerationIsDeterministic() throws Exception {
+  void checkGenerationIsDeterministic() {
     // generated CRD
-    final File outputDir = Files.createTempDirectory("crd-").toFile();
     final String crdName = CustomResourceInfo.fromClass(Complex.class).crdName();
     final CRDGenerationInfo crdInfo = newCRDGenerator()
-        .inOutputDir(outputDir)
+        .inOutputDir(tempDir)
         .forCRDVersions("v1")
         .customResourceClasses(Complex.class)
         .detailedGenerate();
@@ -473,18 +484,13 @@ class CRDGeneratorTest {
     assertNotNull(crdResource);
     final File expectedCrdFile = new File(crdResource.getFile());
     assertFileEquals(expectedCrdFile, crdFile);
-
-    // only delete the generated files if the test is successful
-    assertTrue(crdFile.delete());
-    assertTrue(outputDir.delete());
   }
 
   @Test
   void checkMinQuotesDefault() throws Exception {
-    final File outputDir = Files.createTempDirectory("crd-").toFile();
     final String crdName = CustomResourceInfo.fromClass(Complex.class).crdName();
     CRDGenerationInfo crdInfo = newCRDGenerator()
-        .inOutputDir(outputDir)
+        .inOutputDir(tempDir)
         .forCRDVersions("v1")
         .customResourceClasses(Complex.class)
         .detailedGenerate();
@@ -492,18 +498,13 @@ class CRDGeneratorTest {
     File crdFile = new File(crdInfo.getCRDInfos(crdName).get("v1").getFilePath());
     String crd = Files.readString(crdFile.toPath());
     assertTrue(crd.contains("\"complexkinds.example.com\""));
-
-    // only delete the generated files if the test is successful
-    assertTrue(crdFile.delete());
-    assertTrue(outputDir.delete());
   }
 
   @Test
   void checkMinQuotesFalse() throws Exception {
-    final File outputDir = Files.createTempDirectory("crd-").toFile();
     final String crdName = CustomResourceInfo.fromClass(Complex.class).crdName();
     CRDGenerationInfo crdInfo = newCRDGenerator()
-        .inOutputDir(outputDir)
+        .inOutputDir(tempDir)
         .forCRDVersions("v1")
         .customResourceClasses(Complex.class)
         .withMinQuotes(false)
@@ -512,18 +513,13 @@ class CRDGeneratorTest {
     File crdFile = new File(crdInfo.getCRDInfos(crdName).get("v1").getFilePath());
     String crd = Files.readString(crdFile.toPath());
     assertTrue(crd.contains("\"complexkinds.example.com\""));
-
-    // only delete the generated files if the test is successful
-    assertTrue(crdFile.delete());
-    assertTrue(outputDir.delete());
   }
 
   @Test
   void checkMinQuotesTrue() throws Exception {
-    final File outputDir = Files.createTempDirectory("crd-").toFile();
     final String crdName = CustomResourceInfo.fromClass(Complex.class).crdName();
     CRDGenerationInfo crdInfo = newCRDGenerator()
-        .inOutputDir(outputDir)
+        .inOutputDir(tempDir)
         .forCRDVersions("v1")
         .customResourceClasses(Complex.class)
         .withMinQuotes(true)
@@ -533,23 +529,18 @@ class CRDGeneratorTest {
     String crd = Files.readString(crdFile.toPath());
     assertTrue(crd.contains("complexkinds.example.com"));
     assertFalse(crd.contains("\"complexkinds.example.com\""));
-
-    // only delete the generated files if the test is successful
-    assertTrue(crdFile.delete());
-    assertTrue(outputDir.delete());
   }
 
   @RepeatedTest(value = 10)
   void checkGenerationMultipleVersionsOfCRDsIsDeterministic() throws Exception {
     // generated CRD
-    final File outputDir = Files.createTempDirectory("crd-").toFile();
     final CustomResourceInfo infoV1 = CustomResourceInfo.fromClass(Multiple.class);
     final CustomResourceInfo infoV2 = CustomResourceInfo.fromClass(io.fabric8.crdv2.example.multiple.v2.Multiple.class);
     assertEquals(infoV1.crdName(), infoV2.crdName());
     final String crdName = infoV1.crdName();
 
     final CRDGenerationInfo crdInfo = newCRDGenerator()
-        .inOutputDir(outputDir)
+        .inOutputDir(tempDir)
         .customResourceClasses(Multiple.class,
             io.fabric8.crdv2.example.multiple.v2.Multiple.class)
         .forCRDVersions("v1")
@@ -563,20 +554,15 @@ class CRDGeneratorTest {
 
     final File expectedCrdFile = new File(crdResource.getFile());
     assertFileEquals(expectedCrdFile, crdFile);
-
-    // only delete the generated files if the test is successful
-    assertTrue(crdFile.delete());
-    assertTrue(outputDir.delete());
   }
 
   @Test
   void checkK8sValidationRules() throws Exception {
     // generated CRD
-    final File outputDir = Files.createTempDirectory("crd-").toFile();
     final String crdName = CustomResourceInfo.fromClass(K8sValidation.class).crdName();
 
     final CRDGenerationInfo crdInfo = newCRDGenerator()
-        .inOutputDir(outputDir)
+        .inOutputDir(tempDir)
         .customResourceClasses(K8sValidation.class)
         .forCRDVersions("v1")
         .detailedGenerate();
@@ -589,10 +575,31 @@ class CRDGeneratorTest {
 
     final File expectedCrdFile = new File(crdResource.getFile());
     assertFileEquals(expectedCrdFile, crdFile);
+  }
 
-    // only delete the generated files if the test is successful
-    assertTrue(crdFile.delete());
-    assertTrue(outputDir.delete());
+  @Test
+  void checkPostProcessing() throws Exception {
+    // generated CRD
+    final String crdName = CustomResourceInfo.fromClass(Simplest.class).crdName();
+
+    final CRDGenerationInfo crdInfo = newCRDGenerator()
+        .inOutputDir(tempDir)
+        .customResourceClasses(Simplest.class)
+        .forCRDVersions("v1")
+        .withPostProcessor(new CRDPostProcessor() {
+          @Override
+          public HasMetadata process(HasMetadata crd, String crdSpecVersion) {
+            final var meta = crd.getMetadata().edit().addToLabels("foo", "bar").build();
+            crd.setMetadata(meta);
+            return crd;
+          }
+        })
+        .detailedGenerate();
+
+    assertThat(new KubernetesSerialization().unmarshal(
+        Files.newInputStream(Path.of(crdInfo.getCRDInfos(crdName).get("v1").getFilePath())), HasMetadata.class))
+        .hasFieldOrPropertyWithValue("metadata.name", crdName)
+        .hasFieldOrPropertyWithValue("metadata.labels.foo", "bar");
   }
 
   private CustomResourceDefinitionVersion checkCRD(Class<? extends CustomResource<?, ?>> customResource, String kind,

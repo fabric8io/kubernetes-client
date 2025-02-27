@@ -115,7 +115,7 @@
     <approvaltests.version>24.17.0</approvaltests.version>
     <bouncycastle.version>1.80</bouncycastle.version>
     <bc-fips.version>2.1.0</bc-fips.version>
-    <bcpkix-fips.version>2.1.8</bcpkix-fips.version>
+    <bcpkix-fips.version>2.1.9</bcpkix-fips.version>
     <keycloak.version>26.1.2</keycloak.version><!-- Used by CRD Generator integration tests for verifications -->
     <mockito.version>5.15.2</mockito.version>
     <mockito-inline.version>5.2.0</mockito-inline.version>
@@ -125,7 +125,7 @@
     <automaton.bundle.version>1.11-8_1</automaton.bundle.version>
     <aries-spifly.bundle.version>1.3.0</aries-spifly.bundle.version>
     <asm.bundle.version>8.0.1</asm.bundle.version>
-    <slf4j.version>2.0.16</slf4j.version>
+    <slf4j.version>2.0.17</slf4j.version>
     <log4j.version>2.24.3</log4j.version>
     <lombok.version>1.18.36</lombok.version>
     <commons-compress.version>1.27.1</commons-compress.version>
@@ -151,7 +151,7 @@
     <maven.javadoc.plugin.version>3.11.2</maven.javadoc.plugin.version>
     <maven.source.plugin.version>3.3.1</maven.source.plugin.version>
     <maven.enforcer.plugin.version>3.5.0</maven.enforcer.plugin.version>
-    <maven.deploy.plugin.version>3.1.3</maven.deploy.plugin.version>
+    <maven.deploy.plugin.version>3.1.4</maven.deploy.plugin.version>
     <maven.gpg.plugin.version>3.2.7</maven.gpg.plugin.version>
     <maven.antrun.plugin.version>3.1.0</maven.antrun.plugin.version>
     <maven.dependency.plugin.version>3.8.1</maven.dependency.plugin.version>
