@@ -6,15 +6,13 @@
 * Fix #6892: rolling().restart() doesn't remove preexistent pod template annotations
 
 #### Improvements
-
 * Fix #6863: ensuring SerialExecutor does not throw RejectedExecutionException to prevent unnecessary error logs
 * Fix #6763: (crd-generator) YAML output customization
 
 #### Dependency Upgrade
 
 #### New Features
-
-* Fix #6827: Add CRDPostProcessor to process generated CRDs before they are written out
+* Fix #6827: (crd-generator) Add CRDPostProcessor to process generated CRDs before they are written out
 
 #### _**Note**_: Breaking changes
 

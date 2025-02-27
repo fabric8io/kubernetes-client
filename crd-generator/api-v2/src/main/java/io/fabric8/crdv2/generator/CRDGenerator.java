@@ -48,8 +48,6 @@ import java.util.stream.Collectors;
 public class CRDGenerator {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(CRDGenerator.class);
-  private static final CRDPostProcessor nullProcessor = new CRDPostProcessor() {
-  };
   private final Map<String, AbstractCustomResourceHandler> handlers = new HashMap<>(2);
   private CRDOutput<? extends OutputStream> output;
   private boolean parallel;
@@ -58,7 +56,7 @@ public class CRDGenerator {
   private KubernetesSerialization kubernetesSerialization;
   private Map<String, CustomResourceInfo> infos;
   private boolean minQuotes = false;
-  private CRDPostProcessor postProcessor = nullProcessor;
+  private CRDPostProcessor postProcessor = CRDPostProcessor.nullProcessor;
 
   public CRDGenerator inOutputDir(File outputDir) {
     return withOutput(new DirCRDOutput(outputDir));
