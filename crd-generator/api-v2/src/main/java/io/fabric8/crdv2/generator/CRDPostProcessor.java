@@ -19,6 +19,9 @@ import io.fabric8.kubernetes.api.model.HasMetadata;
 
 public interface CRDPostProcessor {
 
+  CRDPostProcessor nullProcessor = new CRDPostProcessor() {
+  };
+
   /**
    * Processes the specified CRD (passed as {@link HasMetadata} to be able to handle multiple versions of the CRD spec) after
    * they are generated but before they are written out
