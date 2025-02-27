@@ -607,14 +607,15 @@ class CRDGeneratorTest {
         .inOutputDir(outputDir)
         .customResourceClasses(Simplest.class)
         .forCRDVersions("v1")
-        .detailedGenerate(new CRDPostProcessor() {
+        .withPostProcessor(new CRDPostProcessor() {
           @Override
           public HasMetadata process(HasMetadata crd, String crdSpecVersion) {
             final var meta = crd.getMetadata().edit().addToLabels("foo", "bar").build();
             crd.setMetadata(meta);
             return crd;
           }
-        });
+        })
+        .detailedGenerate();
 
     final File crdFile = new File(crdInfo.getCRDInfos(crdName).get("v1").getFilePath());
     final var serialization = new KubernetesSerialization();

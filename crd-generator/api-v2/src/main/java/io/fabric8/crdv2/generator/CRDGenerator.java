@@ -58,10 +58,10 @@ public class CRDGenerator {
   private KubernetesSerialization kubernetesSerialization;
   private Map<String, CustomResourceInfo> infos;
   private boolean minQuotes = false;
+  private CRDPostProcessor postProcessor = nullProcessor;
 
   public CRDGenerator inOutputDir(File outputDir) {
-    output = new DirCRDOutput(outputDir);
-    return this;
+    return withOutput(new DirCRDOutput(outputDir));
   }
 
   public CRDGenerator withOutput(CRDOutput<? extends OutputStream> output) {
@@ -87,6 +87,11 @@ public class CRDGenerator {
   public CRDGenerator withObjectMapper(ObjectMapper mapper, KubernetesSerialization kubernetesSerialization) {
     this.objectMapper = mapper;
     this.kubernetesSerialization = kubernetesSerialization;
+    return this;
+  }
+
+  public CRDGenerator withPostProcessor(CRDPostProcessor postProcessor) {
+    this.postProcessor = postProcessor;
     return this;
   }
 
@@ -167,11 +172,9 @@ public class CRDGenerator {
    * Generates the CRDs with the provided configuration and returns detailed information about what was generated as a
    * {@link CRDGenerationInfo} instance.
    *
-   * @param processor a {@link CRDPostProcessor} implementation allowing to further process the generated CRDs before they are
-   *        written out to disk
    * @return a {@link CRDGenerationInfo} providing detailed information about what was generated
    */
-  public CRDGenerationInfo detailedGenerate(CRDPostProcessor processor) {
+  public CRDGenerationInfo detailedGenerate() {
     if (getCustomResourceInfos().isEmpty()) {
       LOGGER.warn("No resources were registered with the 'customResources' method to be generated");
       return CRDGenerationInfo.EMPTY;
@@ -219,29 +222,16 @@ public class CRDGenerator {
 
     final CRDGenerationInfo crdGenerationInfo = new CRDGenerationInfo();
     handlers.values().stream().flatMap(AbstractCustomResourceHandler::finish)
-        .forEach(crd -> emitCrd(crd.getKey(), crd.getValue(), crdGenerationInfo, processor));
+        .forEach(crd -> emitCrd(crd.getKey(), crd.getValue(), crdGenerationInfo));
     return crdGenerationInfo;
   }
 
-  public CRDGenerationInfo detailedGenerate() {
-    return detailedGenerate(nullProcessor);
-  }
-
-  /**
-   * @deprecated use {@link #emitCrd(HasMetadata, Set, CRDGenerationInfo, CRDPostProcessor)} instead
-   */
-  @Deprecated(forRemoval = true)
   public void emitCrd(HasMetadata crd, Set<String> dependentClassNames, CRDGenerationInfo crdGenerationInfo) {
-    emitCrd(crd, dependentClassNames, crdGenerationInfo, nullProcessor);
-  }
-
-  protected void emitCrd(HasMetadata crd, Set<String> dependentClassNames, CRDGenerationInfo crdGenerationInfo,
-      CRDPostProcessor processor) {
     final String version = ApiVersionUtil.trimVersion(crd.getApiVersion());
     final String crdName = crd.getMetadata().getName();
 
     // post-process the CRD if needed
-    crd = processor.process(crd, version);
+    crd = postProcessor.process(crd, version);
 
     try {
       final String outputName = getOutputName(crdName, version);
