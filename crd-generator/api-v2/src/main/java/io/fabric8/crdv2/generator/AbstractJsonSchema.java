@@ -54,7 +54,6 @@ import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.Quantity;
 import io.fabric8.kubernetes.api.model.runtime.RawExtension;
-import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.utils.Utils;
 import io.fabric8.kubernetes.model.annotation.LabelSelector;
 import io.fabric8.kubernetes.model.annotation.SpecReplicas;
@@ -314,22 +313,26 @@ public abstract class AbstractJsonSchema<T extends KubernetesJSONSchemaProps, V 
 
       // TODO: should the following be deprecated?
       required = beanProperty.getAnnotation(Required.class) != null;
-
-      Optional<String> defaultAnnotationValue = ofNullable(beanProperty.getAnnotation(Default.class)).map(Default::value);
-
-      defaultValue = toJsonNode(beanProperty.getType(),
-          defaultAnnotationValue.orElse(beanProperty.getMetadata().getDefaultValue()));
+      defaultValue = toDefault(beanProperty);
     }
 
-    JsonNode toJsonNode(JavaType type, String value) {
+    JsonNode toDefault(BeanProperty beanProperty) {
+      Optional<String> defaultAnnotationValue = ofNullable(beanProperty.getAnnotation(Default.class)).map(Default::value);
+      String value = defaultAnnotationValue.orElse(beanProperty.getMetadata().getDefaultValue());
+
       if (value == null) {
         return null;
       }
-      Optional<Class<?>> rawType = Optional.ofNullable(type).map(JavaType::getRawClass);
+      Optional<Class<?>> rawType = Optional.ofNullable(beanProperty.getType()).map(JavaType::getRawClass);
       try {
         Object typedValue = resolvingContext.kubernetesSerialization.unmarshal(value, rawType.orElse(Object.class));
         return resolvingContext.kubernetesSerialization.convertValue(typedValue, JsonNode.class);
-      } catch (KubernetesClientException e) {
+      } catch (Exception e) {
+        if (defaultAnnotationValue.isEmpty()) {
+          LOGGER.warn("Cannot parse default value: '" + value
+              + "' from JsonProperty annotation as valid YAML or JSON, no default value will be used.");
+          return null;
+        }
         throw new IllegalArgumentException("Cannot parse default value: '" + value + "' as valid YAML or JSON.", e);
       }
     }

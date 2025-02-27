@@ -67,6 +67,9 @@ class JsonSchemaDefaultValueTest {
     @JsonProperty(defaultValue = "13.37")
     double defaultValueForDouble;
 
+    @JsonProperty(defaultValue = "invalid")
+    double invalidDefaultValueForDouble;
+
     @JsonProperty
     @Default("[]")
     double[] defaultValueForDoubleArray;
@@ -189,5 +192,13 @@ class JsonSchemaDefaultValueTest {
         .isInstanceOf(ArrayNode.class)
         .extracting(JsonNode::toPrettyString)
         .isEqualTo("[ ]");
+  }
+
+  @Test
+  @DisplayName("JsonProperty invalid defaultValue annotation not used")
+  void invalidDefaultFromJsonPropertyAnnotationNotUsed() {
+    assertThat(JsonSchema.from(ClassInTest.class).getProperties())
+        .extracting("invalidDefaultValueForDouble._default")
+        .isNull();
   }
 }

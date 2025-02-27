@@ -369,7 +369,7 @@ public class KubernetesSerialization {
    * Create a copy of the resource via serialization.
    *
    * @return a deep clone of the resource
-   * @throws IllegalArgumentException if the cloning cannot be performed
+   * @throws IllegalStateException if the cloning cannot be performed
    */
   public <T> T clone(T resource) {
     // if full serialization seems too expensive, there is also
