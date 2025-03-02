@@ -79,6 +79,23 @@ public abstract class AbstractHttpGetTest {
     }
   }
 
+  @Test
+  @DisplayName("Test that headers are case insensitive")
+  public void caseInsensitiveHeaders() throws Exception {
+    final var value = "values";
+    server.expect().withPath("/header").andReturn(200, value)
+        .withHeader("fakeheader", "firstvalue")
+        .withHeader("FAKEHEADER", "secondvalue")
+        .always();
+    // When
+    try (HttpClient client = getHttpClientFactory().newBuilder().build()) {
+      final var request = client.newHttpRequestBuilder().uri(server.url("/header")).build();
+      final var result = client.sendAsync(request, String.class).get(10, TimeUnit.SECONDS);
+      assertThat(result)
+          .satisfies(r -> assertThat(r.headers("FakeHeader")).isNotEmpty().containsExactly("firstvalue", "secondvalue"));
+    }
+  }
+
   @DisplayName("Supported response body types")
   @ParameterizedTest(name = "{index}: {0}")
   @ValueSource(classes = { String.class, byte[].class, Reader.class, InputStream.class })
