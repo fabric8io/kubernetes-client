@@ -552,6 +552,42 @@ class GeneratorTest {
   }
 
   @Test
+  void testBooleanEnum() {
+    // Arrange
+    Map<String, JSONSchemaProps> props = new HashMap<>();
+    JSONSchemaProps newEnum = new JSONSchemaProps();
+    newEnum.setType("boolean");
+    List<JsonNode> enumValues = new ArrayList<>();
+    enumValues.add(new TextNode("true"));
+    enumValues.add(new TextNode("false"));
+    props.put("e1", newEnum);
+    JEnum enu = new JEnum(
+        "t",
+        JAVA_PRIMITIVE_BOOLEAN,
+        enumValues,
+        defaultConfig,
+        null,
+        Boolean.FALSE,
+        null);
+
+    // Act
+    GeneratorResult res = enu.generateJava();
+
+    // Assert
+    assertEquals("T", enu.getType());
+    assertEquals(1, res.getInnerClasses().size());
+    assertEquals("T", res.getInnerClasses().get(0).getName());
+
+    Optional<EnumDeclaration> en = res.getInnerClasses().get(0).getEnumByName("T");
+    assertTrue(en.isPresent());
+    assertEquals(2, en.get().getEntries().size());
+    assertEquals("TRUE", en.get().getEntries().get(0).getName().asString());
+    assertEquals("FALSE", en.get().getEntries().get(1).getName().asString());
+    assertEquals("true", en.get().getEntries().get(0).getArgument(0).toString());
+    assertEquals("false", en.get().getEntries().get(1).getArgument(0).toString());
+  }
+
+  @Test
   void testNotUppercaseEnum() {
     // Arrange
     CompilationUnit cu = new CompilationUnit();

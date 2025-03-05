@@ -84,5 +84,6 @@ public class Keywords {
   public static final String JAVA_LANG_STRING = "java.lang.String";
   public static final String JAVA_LANG_LONG = "java.lang.Long";
   public static final String JAVA_LANG_INTEGER = "java.lang.Integer";
+  public static final String JAVA_PRIMITIVE_BOOLEAN = "boolean";
   public static final String ADDITIONAL_PROPERTIES = "additionalProperties";
 }
