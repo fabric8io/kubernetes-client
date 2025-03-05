@@ -5,6 +5,7 @@
 #### Bugs
 * Fix #6892: rolling().restart() doesn't remove preexistent pod template annotations
 * Fix #6906: Knative VolatileTime should be serialized as String
+* Fix #6930: Add support for Boolean enums in the java-generator
 
 #### Improvements
 * Fix #6863: ensuring SerialExecutor does not throw RejectedExecutionException to prevent unnecessary error logs

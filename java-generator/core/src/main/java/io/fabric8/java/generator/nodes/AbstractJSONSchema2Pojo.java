@@ -320,8 +320,11 @@ public abstract class AbstractJSONSchema2Pojo {
             break;
           case STRING_CRD_TYPE:
             break;
+          case BOOLEAN_CRD_TYPE:
+            enumType = JAVA_PRIMITIVE_BOOLEAN;
+            break;
           default:
-            throw new JavaGeneratorException("Unsupported enumeration type/format" + prop.getType() + "/" + prop.getFormat());
+            throw new JavaGeneratorException("Unsupported enumeration type/format: " + prop.getType() + "/" + prop.getFormat());
         }
         return new JEnum(
             key,

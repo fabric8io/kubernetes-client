@@ -18,8 +18,11 @@ package io.fabric8.it.certmanager;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.cert_manager.v1.CertificateRequest;
 import io.cert_manager.v1.CertificateRequestSpec;
+import io.cert_manager.v1.CertificateRequestSpec.BooleanEnum;
 import io.cert_manager.v1.CertificateRequestSpec.IntEnum;
 import io.cert_manager.v1.CertificateRequestSpec.LongEnum;
+import io.cert_manager.v1.CertificateRequestSpec.OnlyFalseBoolEnum;
+import io.cert_manager.v1.CertificateRequestSpec.OnlyTrueBoolEnum;
 import io.fabric8.java.generator.testing.KubernetesResourceDiff;
 import io.fabric8.kubernetes.client.utils.Serialization;
 import org.junit.jupiter.api.Test;
@@ -101,9 +104,41 @@ class TestSerialization {
   }
 
   @Test
+  void testBooleanEnum() {
+    // Arrange
+    CertificateRequest sample8 = Serialization.unmarshal(getClass().getResourceAsStream("/sample9.yaml"),
+        CertificateRequest.class);
+
+    // Act
+    BooleanEnum booleanValue = sample8.getSpec().getBooleanEnum();
+    OnlyFalseBoolEnum onlyFalse = sample8.getSpec().getOnlyFalseBoolEnum();
+    OnlyTrueBoolEnum onlyTrue = sample8.getSpec().getOnlyTrueBoolEnum();
+
+    // Assert
+    assertEquals(true, booleanValue.getValue());
+    assertEquals(true, onlyTrue.getValue());
+    assertEquals(false, onlyFalse.getValue());
+  }
+
+  @Test
   void testIntEnumSerDeser() throws Exception {
     // Arrange
     Path resPath = Paths.get(getClass().getResource("/sample8.yaml").toURI());
+    String yamlContent = new String(Files.readAllBytes(resPath), "UTF8");
+    CertificateRequest sample = Serialization.unmarshal(yamlContent, CertificateRequest.class);
+    KubernetesResourceDiff diff = new KubernetesResourceDiff(yamlContent, Serialization.asYaml(sample));
+
+    // Act
+    List<JsonNode> aggregatedDiffs = diff.getListOfDiffs();
+
+    // Assert
+    assertEquals(0, aggregatedDiffs.size());
+  }
+
+  @Test
+  void testBooleanEnumSerDeser() throws Exception {
+    // Arrange
+    Path resPath = Paths.get(getClass().getResource("/sample9.yaml").toURI());
     String yamlContent = new String(Files.readAllBytes(resPath), "UTF8");
     CertificateRequest sample = Serialization.unmarshal(yamlContent, CertificateRequest.class);
     KubernetesResourceDiff diff = new KubernetesResourceDiff(yamlContent, Serialization.asYaml(sample));

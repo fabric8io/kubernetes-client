@@ -21,7 +21,9 @@ import com.github.javaparser.ast.Modifier;
 import com.github.javaparser.ast.body.*;
 import com.github.javaparser.ast.expr.*;
 import com.github.javaparser.ast.stmt.BlockStmt;
+import com.github.javaparser.ast.stmt.IfStmt;
 import com.github.javaparser.ast.stmt.ReturnStmt;
+import com.github.javaparser.ast.stmt.Statement;
 import io.fabric8.java.generator.Config;
 
 import java.util.ArrayList;
@@ -35,6 +37,7 @@ import java.util.stream.Collectors;
 
 import static io.fabric8.java.generator.nodes.Keywords.JAVA_LANG_LONG;
 import static io.fabric8.java.generator.nodes.Keywords.JAVA_LANG_STRING;
+import static io.fabric8.java.generator.nodes.Keywords.JAVA_PRIMITIVE_BOOLEAN;
 
 public class JEnum extends AbstractJSONSchema2Pojo {
 
@@ -72,6 +75,22 @@ public class JEnum extends AbstractJSONSchema2Pojo {
     }
   }
 
+  private Statement generateBooleanCreator(boolean hasTrue, boolean hasFalse) {
+    IfStmt result = new IfStmt();
+    result.setCondition(new NameExpr("value"));
+    if (hasTrue) {
+      result.setThenStmt(new ReturnStmt(new NameExpr(this.type + ".TRUE")));
+    } else {
+      result.setThenStmt(new ReturnStmt(new NullLiteralExpr()));
+    }
+    if (hasFalse) {
+      result.setElseStmt(new ReturnStmt(new NameExpr(this.type + ".FALSE")));
+    } else {
+      result.setElseStmt(new ReturnStmt(new NullLiteralExpr()));
+    }
+    return result;
+  }
+
   @Override
   public GeneratorResult generateJava() {
     CompilationUnit cu = new CompilationUnit();
@@ -96,6 +115,28 @@ public class JEnum extends AbstractJSONSchema2Pojo {
     getValue
         .setBody(new BlockStmt().addStatement(new ReturnStmt(VALUE)));
     getValue.addAnnotation("com.fasterxml.jackson.annotation.JsonValue");
+
+    if (underlyingType.equals(JAVA_PRIMITIVE_BOOLEAN)) {
+      MethodDeclaration fromValue = en
+          .addMethod("fromValue", Modifier.Keyword.PUBLIC, Modifier.Keyword.STATIC);
+      fromValue.setType(this.type);
+      fromValue.addParameter(JAVA_PRIMITIVE_BOOLEAN, "value");
+      fromValue.addAnnotation("com.fasterxml.jackson.annotation.JsonCreator");
+
+      boolean hasTrue = false;
+      boolean hasFalse = false;
+      for (String v : values) {
+        boolean value = Boolean.valueOf(v);
+        if (value) {
+          hasTrue = true;
+        } else {
+          hasFalse = true;
+        }
+      }
+
+      fromValue.setBody(new BlockStmt().addStatement(
+          generateBooleanCreator(hasTrue, hasFalse)));
+    }
 
     Set<String> constantNames = new HashSet<>(values.size());
     for (String k : values) {
@@ -136,6 +177,7 @@ public class JEnum extends AbstractJSONSchema2Pojo {
       decl.setName(constantName);
       decl.addArgument(valueArgument);
       en.addEntry(decl);
+
     }
 
     return new GeneratorResult(

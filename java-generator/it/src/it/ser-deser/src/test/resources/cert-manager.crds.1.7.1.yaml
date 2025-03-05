@@ -136,6 +136,19 @@ spec:
                 uid:
                   description: UID contains the uid of the user that created the CertificateRequest. Populated by the cert-manager webhook on creation and immutable.
                   type: string
+                booleanEnum:
+                  type: boolean
+                  enum:
+                    - true
+                    - false
+                onlyTrueBoolEnum:
+                  type: boolean
+                  enum:
+                    - true
+                onlyFalseBoolEnum:
+                  type: boolean
+                  enum:
+                    - false
                 longEnum:
                   type: integer
                   enum:
