@@ -17,8 +17,11 @@ package io.fabric8.crdv2.generator.v1;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.BooleanNode;
 import com.fasterxml.jackson.databind.node.DoubleNode;
+import com.fasterxml.jackson.databind.node.FloatNode;
+import com.fasterxml.jackson.databind.node.IntNode;
 import com.fasterxml.jackson.databind.node.LongNode;
 import io.fabric8.generator.annotation.Default;
 import org.assertj.core.api.InstanceOfAssertFactories;
@@ -55,24 +58,31 @@ class JsonSchemaDefaultValueTest {
     @JsonProperty(defaultValue = "1337")
     int defaultValueForInt;
 
-    @JsonProperty(defaultValue = "1337L")
+    @JsonProperty(defaultValue = "1337")
     long defaultValueForLong;
 
     @JsonProperty(defaultValue = "13.37")
     float defaultValueForFloat;
 
-    @JsonProperty(defaultValue = "13.37d")
+    @JsonProperty(defaultValue = "13.37")
     double defaultValueForDouble;
+
+    @JsonProperty(defaultValue = "invalid")
+    double invalidDefaultValueForDouble;
+
+    @JsonProperty
+    @Default("[]")
+    double[] defaultValueForDoubleArray;
   }
 
   @Test
-  @DisplayName("JsonProperty default value should take precedence over Default annotation")
+  @DisplayName("Default annotation should take precedence over JsonProperty")
   void precedence() {
     assertThat(JsonSchema.from(ClassInTest.class).getProperties())
         .extracting("precedence._default")
         .asInstanceOf(InstanceOfAssertFactories.type(JsonNode.class))
         .extracting(JsonNode::asText)
-        .isEqualTo("precedence-from-json-property");
+        .isEqualTo("precedence-from-default-annotation");
   }
 
   @Test
@@ -135,7 +145,7 @@ class JsonSchemaDefaultValueTest {
     assertThat(JsonSchema.from(ClassInTest.class).getProperties())
         .extracting("defaultValueForInt._default")
         .asInstanceOf(InstanceOfAssertFactories.type(JsonNode.class))
-        .isInstanceOf(LongNode.class)
+        .isInstanceOf(IntNode.class)
         .extracting(JsonNode::asInt)
         .isEqualTo(1337);
   }
@@ -157,9 +167,9 @@ class JsonSchemaDefaultValueTest {
     assertThat(JsonSchema.from(ClassInTest.class).getProperties())
         .extracting("defaultValueForFloat._default")
         .asInstanceOf(InstanceOfAssertFactories.type(JsonNode.class))
-        .isInstanceOf(DoubleNode.class)
-        .extracting(JsonNode::asDouble)
-        .isEqualTo(13.37);
+        .isInstanceOf(FloatNode.class)
+        .extracting(JsonNode::asText)
+        .isEqualTo("13.37");
   }
 
   @Test
@@ -171,5 +181,24 @@ class JsonSchemaDefaultValueTest {
         .isInstanceOf(DoubleNode.class)
         .extracting(JsonNode::asDouble)
         .isEqualTo(13.37);
+  }
+
+  @Test
+  @DisplayName("JsonProperty defaultValue annotation for double array")
+  void doubleArrayFromJsonPropertyAnnotation() {
+    assertThat(JsonSchema.from(ClassInTest.class).getProperties())
+        .extracting("defaultValueForDoubleArray._default")
+        .asInstanceOf(InstanceOfAssertFactories.type(JsonNode.class))
+        .isInstanceOf(ArrayNode.class)
+        .extracting(JsonNode::toPrettyString)
+        .isEqualTo("[ ]");
+  }
+
+  @Test
+  @DisplayName("JsonProperty invalid defaultValue annotation not used")
+  void invalidDefaultFromJsonPropertyAnnotationNotUsed() {
+    assertThat(JsonSchema.from(ClassInTest.class).getProperties())
+        .extracting("invalidDefaultValueForDouble._default")
+        .isNull();
   }
 }
