@@ -207,6 +207,11 @@ class HasMetadataTest {
   }
 
   @Test
+  void apiVersionOfConfigMapShouldBeCorrect() {
+    assertEquals("v1", HasMetadata.getApiVersion(ConfigMap.class));
+  }
+
+  @Test
   void addingSameOwnerReferenceMultipleTimesShouldAddItOnlyOnce() {
     HasMetadata hasMetadata = new Default();
     HasMetadata owner = new Owner();
