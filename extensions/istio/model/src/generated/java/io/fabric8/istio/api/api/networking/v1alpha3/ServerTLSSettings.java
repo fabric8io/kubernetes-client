@@ -276,7 +276,7 @@ public class ServerTLSSettings implements Editable<ServerTLSSettingsBuilder>, Ku
     }
 
     /**
-     * A list of alternate names to verify the subject identity in the certificate presented by the client.
+     * A list of alternate names to verify the subject identity in the certificate presented by the client. Requires TLS mode to be set to `MUTUAL`.
      */
     @JsonProperty("subjectAltNames")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -285,7 +285,7 @@ public class ServerTLSSettings implements Editable<ServerTLSSettingsBuilder>, Ku
     }
 
     /**
-     * A list of alternate names to verify the subject identity in the certificate presented by the client.
+     * A list of alternate names to verify the subject identity in the certificate presented by the client. Requires TLS mode to be set to `MUTUAL`.
      */
     @JsonProperty("subjectAltNames")
     public void setSubjectAltNames(List<String> subjectAltNames) {

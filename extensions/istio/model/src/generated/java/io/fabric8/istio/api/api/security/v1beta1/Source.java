@@ -47,9 +47,11 @@ import lombok.experimental.Accessors;
     "notPrincipals",
     "notRemoteIpBlocks",
     "notRequestPrincipals",
+    "notServiceAccounts",
     "principals",
     "remoteIpBlocks",
-    "requestPrincipals"
+    "requestPrincipals",
+    "serviceAccounts"
 })
 @ToString
 @EqualsAndHashCode
@@ -97,6 +99,9 @@ public class Source implements Editable<SourceBuilder>, KubernetesResource
     @JsonProperty("notRequestPrincipals")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> notRequestPrincipals = new ArrayList<>();
+    @JsonProperty("notServiceAccounts")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<String> notServiceAccounts = new ArrayList<>();
     @JsonProperty("principals")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> principals = new ArrayList<>();
@@ -106,6 +111,9 @@ public class Source implements Editable<SourceBuilder>, KubernetesResource
     @JsonProperty("requestPrincipals")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> requestPrincipals = new ArrayList<>();
+    @JsonProperty("serviceAccounts")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<String> serviceAccounts = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -115,7 +123,7 @@ public class Source implements Editable<SourceBuilder>, KubernetesResource
     public Source() {
     }
 
-    public Source(List<String> ipBlocks, List<String> namespaces, List<String> notIpBlocks, List<String> notNamespaces, List<String> notPrincipals, List<String> notRemoteIpBlocks, List<String> notRequestPrincipals, List<String> principals, List<String> remoteIpBlocks, List<String> requestPrincipals) {
+    public Source(List<String> ipBlocks, List<String> namespaces, List<String> notIpBlocks, List<String> notNamespaces, List<String> notPrincipals, List<String> notRemoteIpBlocks, List<String> notRequestPrincipals, List<String> notServiceAccounts, List<String> principals, List<String> remoteIpBlocks, List<String> requestPrincipals, List<String> serviceAccounts) {
         super();
         this.ipBlocks = ipBlocks;
         this.namespaces = namespaces;
@@ -124,9 +132,11 @@ public class Source implements Editable<SourceBuilder>, KubernetesResource
         this.notPrincipals = notPrincipals;
         this.notRemoteIpBlocks = notRemoteIpBlocks;
         this.notRequestPrincipals = notRequestPrincipals;
+        this.notServiceAccounts = notServiceAccounts;
         this.principals = principals;
         this.remoteIpBlocks = remoteIpBlocks;
         this.requestPrincipals = requestPrincipals;
+        this.serviceAccounts = serviceAccounts;
     }
 
     /**
@@ -249,7 +259,24 @@ public class Source implements Editable<SourceBuilder>, KubernetesResource
     }
 
     /**
-     * Optional. A list of peer identities derived from the peer certificate. The peer identity is in the format of `"&lt;TRUST_DOMAIN&gt;/ns/&lt;NAMESPACE&gt;/sa/&lt;SERVICE_ACCOUNT&gt;"`, for example, `"cluster.local/ns/default/sa/productpage"`. This field requires mTLS enabled and is the same as the `source.principal` attribute.<br><p> <br><p> If not set, any principal is allowed.
+     * Optional. A list of negative match of Kubernetes service accounts.<br><p> <br><p> This takes the format `&lt;namespace&gt;/&lt;serviceaccount&gt;`. `&lt;serviceaccount&gt;` may also be used to use the same namespace as the `AuthorizationPolicy`.<br><p> <br><p> No form of wildcard (`&#42;`) is allowed.
+     */
+    @JsonProperty("notServiceAccounts")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public List<String> getNotServiceAccounts() {
+        return notServiceAccounts;
+    }
+
+    /**
+     * Optional. A list of negative match of Kubernetes service accounts.<br><p> <br><p> This takes the format `&lt;namespace&gt;/&lt;serviceaccount&gt;`. `&lt;serviceaccount&gt;` may also be used to use the same namespace as the `AuthorizationPolicy`.<br><p> <br><p> No form of wildcard (`&#42;`) is allowed.
+     */
+    @JsonProperty("notServiceAccounts")
+    public void setNotServiceAccounts(List<String> notServiceAccounts) {
+        this.notServiceAccounts = notServiceAccounts;
+    }
+
+    /**
+     * Optional. A list of peer identities derived from the peer certificate. The peer identity is in the format of `"&lt;TRUST_DOMAIN&gt;/ns/&lt;NAMESPACE&gt;/sa/&lt;SERVICE_ACCOUNT&gt;"`, for example, `"cluster.local/ns/default/sa/productpage"`. This field requires mTLS enabled and is the same as the `source.principal` attribute.<br><p> <br><p> Usage of `serviceAccounts` is typically simpler and offers the same functionality.<br><p> <br><p> If not set, any principal is allowed.
      */
     @JsonProperty("principals")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -258,7 +285,7 @@ public class Source implements Editable<SourceBuilder>, KubernetesResource
     }
 
     /**
-     * Optional. A list of peer identities derived from the peer certificate. The peer identity is in the format of `"&lt;TRUST_DOMAIN&gt;/ns/&lt;NAMESPACE&gt;/sa/&lt;SERVICE_ACCOUNT&gt;"`, for example, `"cluster.local/ns/default/sa/productpage"`. This field requires mTLS enabled and is the same as the `source.principal` attribute.<br><p> <br><p> If not set, any principal is allowed.
+     * Optional. A list of peer identities derived from the peer certificate. The peer identity is in the format of `"&lt;TRUST_DOMAIN&gt;/ns/&lt;NAMESPACE&gt;/sa/&lt;SERVICE_ACCOUNT&gt;"`, for example, `"cluster.local/ns/default/sa/productpage"`. This field requires mTLS enabled and is the same as the `source.principal` attribute.<br><p> <br><p> Usage of `serviceAccounts` is typically simpler and offers the same functionality.<br><p> <br><p> If not set, any principal is allowed.
      */
     @JsonProperty("principals")
     public void setPrincipals(List<String> principals) {
@@ -297,6 +324,23 @@ public class Source implements Editable<SourceBuilder>, KubernetesResource
     @JsonProperty("requestPrincipals")
     public void setRequestPrincipals(List<String> requestPrincipals) {
         this.requestPrincipals = requestPrincipals;
+    }
+
+    /**
+     * Optional. A list of Kubernetes service accounts derived from the peer certificate. This field requires mTLS enabled and is the same as the `source.serviceaccount` attribute.<br><p> <br><p> This takes the format `&lt;namespace&gt;/&lt;serviceaccount&gt;`. `&lt;serviceaccount&gt;` may also be used to use the same namespace as the `AuthorizationPolicy`.<br><p> <br><p> If not set, any service account is allowed.<br><p> <br><p> No form of wildcard (`&#42;`) is allowed. Cannot be set with `principals` or `namespaces`.
+     */
+    @JsonProperty("serviceAccounts")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public List<String> getServiceAccounts() {
+        return serviceAccounts;
+    }
+
+    /**
+     * Optional. A list of Kubernetes service accounts derived from the peer certificate. This field requires mTLS enabled and is the same as the `source.serviceaccount` attribute.<br><p> <br><p> This takes the format `&lt;namespace&gt;/&lt;serviceaccount&gt;`. `&lt;serviceaccount&gt;` may also be used to use the same namespace as the `AuthorizationPolicy`.<br><p> <br><p> If not set, any service account is allowed.<br><p> <br><p> No form of wildcard (`&#42;`) is allowed. Cannot be set with `principals` or `namespaces`.
+     */
+    @JsonProperty("serviceAccounts")
+    public void setServiceAccounts(List<String> serviceAccounts) {
+        this.serviceAccounts = serviceAccounts;
     }
 
     @JsonIgnore

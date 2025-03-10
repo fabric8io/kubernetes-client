@@ -38,6 +38,7 @@ import lombok.experimental.Accessors;
     "lastProbeTime",
     "lastTransitionTime",
     "message",
+    "observedGeneration",
     "reason",
     "status",
     "type"
@@ -73,6 +74,8 @@ public class IstioCondition implements Editable<IstioConditionBuilder>, Kubernet
     private String lastTransitionTime;
     @JsonProperty("message")
     private String message;
+    @JsonProperty("observedGeneration")
+    private Long observedGeneration;
     @JsonProperty("reason")
     private String reason;
     @JsonProperty("status")
@@ -88,11 +91,12 @@ public class IstioCondition implements Editable<IstioConditionBuilder>, Kubernet
     public IstioCondition() {
     }
 
-    public IstioCondition(String lastProbeTime, String lastTransitionTime, String message, String reason, String status, String type) {
+    public IstioCondition(String lastProbeTime, String lastTransitionTime, String message, Long observedGeneration, String reason, String status, String type) {
         super();
         this.lastProbeTime = lastProbeTime;
         this.lastTransitionTime = lastTransitionTime;
         this.message = message;
+        this.observedGeneration = observedGeneration;
         this.reason = reason;
         this.status = status;
         this.type = type;
@@ -132,6 +136,22 @@ public class IstioCondition implements Editable<IstioConditionBuilder>, Kubernet
     @JsonProperty("message")
     public void setMessage(String message) {
         this.message = message;
+    }
+
+    /**
+     * Resource Generation to which the Condition refers.
+     */
+    @JsonProperty("observedGeneration")
+    public Long getObservedGeneration() {
+        return observedGeneration;
+    }
+
+    /**
+     * Resource Generation to which the Condition refers.
+     */
+    @JsonProperty("observedGeneration")
+    public void setObservedGeneration(Long observedGeneration) {
+        this.observedGeneration = observedGeneration;
     }
 
     /**
