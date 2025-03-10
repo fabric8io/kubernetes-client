@@ -23,9 +23,12 @@ public interface HttpHeaders {
 
   /**
    * Returns a List of all the Header String values for the provided key/name.
+   * <p>
+   * key is case-insensitive as defined in RFC 2616.
    *
    * @param key The header key/name for which to provide the values.
    * @return the List of header values for the provided key.
+   * @see <a href="https://datatracker.ietf.org/doc/html/rfc2616#section-4.2">RFC 2616 Section 4.2</a>
    */
   List<String> headers(String key);
 
