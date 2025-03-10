@@ -180,6 +180,7 @@
         "ResultExtractionMethod",
         "MaxResultSize",
         "SetSecurityContext",
+        "SetSecurityContextReadOnlyRootFilesystem",
         "Coschedule",
         "EnableCELInWhenExpression",
         "EnableStepActions",
@@ -273,6 +274,10 @@
           "default": false
         },
         "SetSecurityContext": {
+          "type": "boolean",
+          "default": false
+        },
+        "SetSecurityContextReadOnlyRootFilesystem": {
           "type": "boolean",
           "default": false
         },
