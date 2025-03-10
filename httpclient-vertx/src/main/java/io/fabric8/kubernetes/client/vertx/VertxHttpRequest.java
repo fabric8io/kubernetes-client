@@ -16,9 +16,7 @@
 package io.fabric8.kubernetes.client.vertx;
 
 import io.fabric8.kubernetes.client.http.AsyncBody;
-import io.fabric8.kubernetes.client.http.HttpRequest;
 import io.fabric8.kubernetes.client.http.HttpResponse;
-import io.fabric8.kubernetes.client.http.StandardHttpHeaders;
 import io.fabric8.kubernetes.client.http.StandardHttpRequest;
 import io.fabric8.kubernetes.client.http.StandardHttpRequest.BodyContent;
 import io.vertx.core.Future;
@@ -35,44 +33,10 @@ import java.nio.ByteBuffer;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Function;
 
 class VertxHttpRequest {
-
-  private static final class VertxHttpResponse extends StandardHttpHeaders implements HttpResponse<AsyncBody> {
-    private final AsyncBody result;
-    private final HttpClientResponse resp;
-    private final HttpRequest request;
-
-    private VertxHttpResponse(AsyncBody result, HttpClientResponse resp, HttpRequest request) {
-      super(toHeadersMap(resp.headers()));
-      this.result = result;
-      this.resp = resp;
-      this.request = request;
-    }
-
-    @Override
-    public int code() {
-      return resp.statusCode();
-    }
-
-    @Override
-    public AsyncBody body() {
-      return result;
-    }
-
-    @Override
-    public HttpRequest request() {
-      return request;
-    }
-
-    @Override
-    public Optional<HttpResponse<?>> previousResponse() {
-      return Optional.empty();
-    }
-  }
 
   final Vertx vertx;
   private final RequestOptions options;
