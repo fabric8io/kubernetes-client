@@ -59,6 +59,7 @@ import lombok.experimental.Accessors;
     "RunningInEnvWithInjectedSidecars",
     "SendCloudEventsForRuns",
     "SetSecurityContext",
+    "SetSecurityContextReadOnlyRootFilesystem",
     "VerificationNoMatchPolicy"
 })
 @ToString
@@ -128,6 +129,8 @@ public class FeatureFlags implements Editable<FeatureFlagsBuilder>, KubernetesRe
     private Boolean sendCloudEventsForRuns;
     @JsonProperty("SetSecurityContext")
     private Boolean setSecurityContext;
+    @JsonProperty("SetSecurityContextReadOnlyRootFilesystem")
+    private Boolean setSecurityContextReadOnlyRootFilesystem;
     @JsonProperty("VerificationNoMatchPolicy")
     private String verificationNoMatchPolicy;
     @JsonIgnore
@@ -139,7 +142,7 @@ public class FeatureFlags implements Editable<FeatureFlagsBuilder>, KubernetesRe
     public FeatureFlags() {
     }
 
-    public FeatureFlags(Boolean awaitSidecarReadiness, String coschedule, Boolean disableAffinityAssistant, Boolean disableCredsInit, String disableInlineSpec, String enableAPIFields, Boolean enableArtifacts, Boolean enableCELInWhenExpression, Boolean enableConciseResolverSyntax, Boolean enableKeepPodOnCancel, Boolean enableKubernetesSidecar, Boolean enableParamEnum, Boolean enableProvenanceInStatus, Boolean enableStepActions, String enforceNonfalsifiability, Integer maxResultSize, Boolean requireGitSSHSecretKnownHosts, String resultExtractionMethod, Boolean runningInEnvWithInjectedSidecars, Boolean sendCloudEventsForRuns, Boolean setSecurityContext, String verificationNoMatchPolicy) {
+    public FeatureFlags(Boolean awaitSidecarReadiness, String coschedule, Boolean disableAffinityAssistant, Boolean disableCredsInit, String disableInlineSpec, String enableAPIFields, Boolean enableArtifacts, Boolean enableCELInWhenExpression, Boolean enableConciseResolverSyntax, Boolean enableKeepPodOnCancel, Boolean enableKubernetesSidecar, Boolean enableParamEnum, Boolean enableProvenanceInStatus, Boolean enableStepActions, String enforceNonfalsifiability, Integer maxResultSize, Boolean requireGitSSHSecretKnownHosts, String resultExtractionMethod, Boolean runningInEnvWithInjectedSidecars, Boolean sendCloudEventsForRuns, Boolean setSecurityContext, Boolean setSecurityContextReadOnlyRootFilesystem, String verificationNoMatchPolicy) {
         super();
         this.awaitSidecarReadiness = awaitSidecarReadiness;
         this.coschedule = coschedule;
@@ -162,6 +165,7 @@ public class FeatureFlags implements Editable<FeatureFlagsBuilder>, KubernetesRe
         this.runningInEnvWithInjectedSidecars = runningInEnvWithInjectedSidecars;
         this.sendCloudEventsForRuns = sendCloudEventsForRuns;
         this.setSecurityContext = setSecurityContext;
+        this.setSecurityContextReadOnlyRootFilesystem = setSecurityContextReadOnlyRootFilesystem;
         this.verificationNoMatchPolicy = verificationNoMatchPolicy;
     }
 
@@ -499,6 +503,22 @@ public class FeatureFlags implements Editable<FeatureFlagsBuilder>, KubernetesRe
     @JsonProperty("SetSecurityContext")
     public void setSetSecurityContext(Boolean setSecurityContext) {
         this.setSecurityContext = setSecurityContext;
+    }
+
+    /**
+     * FeatureFlags holds the features configurations
+     */
+    @JsonProperty("SetSecurityContextReadOnlyRootFilesystem")
+    public Boolean getSetSecurityContextReadOnlyRootFilesystem() {
+        return setSecurityContextReadOnlyRootFilesystem;
+    }
+
+    /**
+     * FeatureFlags holds the features configurations
+     */
+    @JsonProperty("SetSecurityContextReadOnlyRootFilesystem")
+    public void setSetSecurityContextReadOnlyRootFilesystem(Boolean setSecurityContextReadOnlyRootFilesystem) {
+        this.setSecurityContextReadOnlyRootFilesystem = setSecurityContextReadOnlyRootFilesystem;
     }
 
     /**
