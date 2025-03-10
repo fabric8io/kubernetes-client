@@ -14887,6 +14887,38 @@
         "Scope": "Namespaced"
       }
     },
+    "io.open-cluster-management.operator.v1.AwsIrsaConfig": {
+      "type": "object",
+      "properties": {
+        "autoApprovedIdentities": {
+          "description": "AutoApprovedIdentities represent a list of approved arn patterns",
+          "type": "array",
+          "items": {
+            "type": "string",
+            "default": ""
+          }
+        },
+        "hubClusterArn": {
+          "description": "This represents the hub cluster ARN Example - arn:eks:us-west-2:12345678910:cluster/hub-cluster1",
+          "type": "string"
+        },
+        "tags": {
+          "description": "List of tags to be added to AWS resources created by hub while processing awsirsa registration request Example - \"product:v1:tenant:app-name=My-App\"",
+          "type": "array",
+          "items": {
+            "type": "string",
+            "default": ""
+          }
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "operator.open-cluster-management.io",
+        "Version": "v1",
+        "Kind": "AwsIrsaConfig",
+        "Scope": "Namespaced"
+      }
+    },
     "io.open-cluster-management.operator.v1.BackupConfig": {
       "description": "BackupConfig contains settings for the Velero backup integration.",
       "type": "object",
@@ -14931,6 +14963,26 @@
         "Group": "operator.open-cluster-management.io",
         "Version": "v1",
         "Kind": "BootstrapKubeConfigs",
+        "Scope": "Namespaced"
+      }
+    },
+    "io.open-cluster-management.operator.v1.CSRConfig": {
+      "type": "object",
+      "properties": {
+        "autoApprovedIdentities": {
+          "description": "AutoApprovedIdentities represent a list of approved users",
+          "type": "array",
+          "items": {
+            "type": "string",
+            "default": ""
+          }
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "operator.open-cluster-management.io",
+        "Version": "v1",
+        "Kind": "CSRConfig",
         "Scope": "Namespaced"
       }
     },
@@ -16053,6 +16105,33 @@
         "Scope": "Namespaced"
       }
     },
+    "io.open-cluster-management.operator.v1.RegistrationDriverHub": {
+      "type": "object",
+      "required": [
+        "authType"
+      ],
+      "properties": {
+        "authType": {
+          "description": "Type of the authentication used by hub to initialize the Hub cluster. Possible values are csr and awsirsa.",
+          "type": "string"
+        },
+        "awsisra": {
+          "description": "AwsIrsa represents the configuration for awsisra driver.",
+          "$ref": "#/definitions/io.open-cluster-management.operator.v1.AwsIrsaConfig"
+        },
+        "csr": {
+          "description": "CSR represents the configuration for csr driver.",
+          "$ref": "#/definitions/io.open-cluster-management.operator.v1.CSRConfig"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "operator.open-cluster-management.io",
+        "Version": "v1",
+        "Kind": "RegistrationDriverHub",
+        "Scope": "Namespaced"
+      }
+    },
     "io.open-cluster-management.operator.v1.RegistrationHubConfiguration": {
       "type": "object",
       "properties": {
@@ -16071,6 +16150,18 @@
             "default": {},
             "$ref": "#/definitions/io.open-cluster-management.operator.v1.FeatureGate"
           }
+        },
+        "registrationDrivers": {
+          "description": "RegistrationDrivers represent the list of hub registration drivers that contain information used by hub to initialize the hub cluster A RegistrationDriverHub contains details of authentication type and the hub cluster ARN",
+          "type": "array",
+          "items": {
+            "default": {},
+            "$ref": "#/definitions/io.open-cluster-management.operator.v1.RegistrationDriverHub"
+          },
+          "x-kubernetes-list-map-keys": [
+            "authType"
+          ],
+          "x-kubernetes-list-type": "map"
         }
       },
       "x-fabric8-info": {
