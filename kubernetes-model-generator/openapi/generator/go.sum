@@ -2070,8 +2070,8 @@ knative.dev/reconciler-test v0.0.0-20211207070557-0d138a88867b/go.mod h1:dCq1Fuu
 knative.dev/reconciler-test v0.0.0-20220118183433-c8bfbe66bada/go.mod h1:XV4cghzCtdASkfUsfMYSnGfGRyd/naDjy9h7Tnae22g=
 knative.dev/serving v0.44.0 h1:c6TXhoSAI6eXt0/1ET3C69jMWYA4ES9FskSan/fBaac=
 knative.dev/serving v0.44.0/go.mod h1:9bFONngDZtkdYZkP5ko9LDS9ZelnFY9SaPoHKG0vFxs=
-open-cluster-management.io/api v0.15.0 h1:lRee1KOlGHZb2scTA7ff9E9Fxt2hJc7jpkHnaCbvkOU=
-open-cluster-management.io/api v0.15.0/go.mod h1:9erZEWEn4bEqh0nIX2wA7f/s3KCuFycQdBrPrRzi0QM=
+open-cluster-management.io/api v0.16.1 h1:mS+4UGxHLPQd7CRM0gdFQdVaz139Lo2bkLfqSE0CDNU=
+open-cluster-management.io/api v0.16.1/go.mod h1:9erZEWEn4bEqh0nIX2wA7f/s3KCuFycQdBrPrRzi0QM=
 open-cluster-management.io/governance-policy-propagator v0.15.0 h1:tSDJcq8p/UQHBDMFZmYhPstaBevPCnMJPuYiOH7MPbo=
 open-cluster-management.io/governance-policy-propagator v0.15.0/go.mod h1:I1LbX78mavWMv6W3YAeSjCq2YBfSS0RpOBWOskpbLng=
 open-cluster-management.io/multicloud-operators-channel v0.15.0 h1:5DjxcZrhQhS/+A+zYx0/tUqKqE8m4mped3Gb9aRt6CE=

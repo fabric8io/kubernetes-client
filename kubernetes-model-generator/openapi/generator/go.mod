@@ -50,7 +50,7 @@ require (
 	knative.dev/eventing-prometheus v0.28.0
 	knative.dev/networking v0.0.0-20250117155906-67d1c274ba6a
 	knative.dev/serving v0.44.0
-	open-cluster-management.io/api v0.15.0
+	open-cluster-management.io/api v0.16.1
 	open-cluster-management.io/governance-policy-propagator v0.15.0
 	open-cluster-management.io/multicloud-operators-channel v0.15.0
 	open-cluster-management.io/multicloud-operators-subscription v0.15.0
