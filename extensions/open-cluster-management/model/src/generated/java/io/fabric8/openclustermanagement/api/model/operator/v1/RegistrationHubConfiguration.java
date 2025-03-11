@@ -38,7 +38,8 @@ import lombok.experimental.Accessors;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "autoApproveUsers",
-    "featureGates"
+    "featureGates",
+    "registrationDrivers"
 })
 @ToString
 @EqualsAndHashCode
@@ -71,6 +72,9 @@ public class RegistrationHubConfiguration implements Editable<RegistrationHubCon
     @JsonProperty("featureGates")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<FeatureGate> featureGates = new ArrayList<>();
+    @JsonProperty("registrationDrivers")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<RegistrationDriverHub> registrationDrivers = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -80,10 +84,11 @@ public class RegistrationHubConfiguration implements Editable<RegistrationHubCon
     public RegistrationHubConfiguration() {
     }
 
-    public RegistrationHubConfiguration(List<String> autoApproveUsers, List<FeatureGate> featureGates) {
+    public RegistrationHubConfiguration(List<String> autoApproveUsers, List<FeatureGate> featureGates, List<RegistrationDriverHub> registrationDrivers) {
         super();
         this.autoApproveUsers = autoApproveUsers;
         this.featureGates = featureGates;
+        this.registrationDrivers = registrationDrivers;
     }
 
     /**
@@ -118,6 +123,23 @@ public class RegistrationHubConfiguration implements Editable<RegistrationHubCon
     @JsonProperty("featureGates")
     public void setFeatureGates(List<FeatureGate> featureGates) {
         this.featureGates = featureGates;
+    }
+
+    /**
+     * RegistrationDrivers represent the list of hub registration drivers that contain information used by hub to initialize the hub cluster A RegistrationDriverHub contains details of authentication type and the hub cluster ARN
+     */
+    @JsonProperty("registrationDrivers")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public List<RegistrationDriverHub> getRegistrationDrivers() {
+        return registrationDrivers;
+    }
+
+    /**
+     * RegistrationDrivers represent the list of hub registration drivers that contain information used by hub to initialize the hub cluster A RegistrationDriverHub contains details of authentication type and the hub cluster ARN
+     */
+    @JsonProperty("registrationDrivers")
+    public void setRegistrationDrivers(List<RegistrationDriverHub> registrationDrivers) {
+        this.registrationDrivers = registrationDrivers;
     }
 
     @JsonIgnore
