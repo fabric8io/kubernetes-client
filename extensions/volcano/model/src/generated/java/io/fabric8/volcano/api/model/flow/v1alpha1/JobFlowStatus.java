@@ -192,7 +192,7 @@ public class JobFlowStatus implements Editable<JobFlowStatusBuilder>, Kubernetes
     }
 
     /**
-     * JobFlowStatus defines the observed state of JobFlow
+     * INSERT ADDITIONAL STATUS FIELD - define observed state of cluster Important: Run "make" to regenerate code after modifying this file
      */
     @JsonProperty("pendingJobs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -201,7 +201,7 @@ public class JobFlowStatus implements Editable<JobFlowStatusBuilder>, Kubernetes
     }
 
     /**
-     * JobFlowStatus defines the observed state of JobFlow
+     * INSERT ADDITIONAL STATUS FIELD - define observed state of cluster Important: Run "make" to regenerate code after modifying this file
      */
     @JsonProperty("pendingJobs")
     public void setPendingJobs(List<String> pendingJobs) {
