@@ -82,7 +82,7 @@ replace (
 replace (
 	github.com/stolostron/multicluster-observability-operator => github.com/stolostron/multicluster-observability-operator v0.0.0-20241107140827-cef6b049dcef
 	github.com/stolostron/multiclusterhub-operator => github.com/stolostron/multiclusterhub-operator v0.0.0-20240626140553-4f1ed6be3b84
-	volcano.sh/apis => volcano.sh/apis v1.10.0
+	volcano.sh/apis => volcano.sh/apis v1.11.0
 )
 
 replace (
