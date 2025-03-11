@@ -20,14 +20,11 @@ require (
 	github.com/openshift/hive/apis v0.0.0-20240930213556-2d25383963db
 	github.com/openshift/installer v0.0.0-00010101000000-000000000000
 	github.com/operator-framework/api v0.29.0
-	github.com/operator-framework/operator-lifecycle-manager v0.22.0
 	github.com/ovn-org/ovn-kubernetes/go-controller v0.0.0-20241030140127-a68ef49d9441
 	github.com/prometheus-operator/prometheus-operator/pkg/apis/monitoring v0.79.2
 	github.com/spf13/cobra v1.9.1
 	github.com/stolostron/discovery v0.0.0-20241023180217-47cd9895f600
 	github.com/stolostron/klusterlet-addon-controller v0.0.0-20240912124113-fe0b6574a401
-	github.com/stolostron/multicluster-observability-operator v1.0.1-2020-06-08-14-28-27
-	github.com/stolostron/multiclusterhub-operator v1.0.1-2020-06-08-14-28-27
 	github.com/stolostron/search-v2-operator v0.0.0-20241029125341-1a376a062a45
 	github.com/tektoncd/pipeline v0.69.0
 	github.com/tektoncd/triggers v0.31.0
@@ -64,6 +61,7 @@ require (
 // Required by some openshift operator dependencies
 // Force usage of latest Kuberentes Version
 replace (
+	github.com/openshift/api => github.com/openshift/api v0.0.0-20250305013520-e7f23be12279 // Latest 4.18
 	github.com/openshift/assisted-service/api => github.com/openshift/assisted-service/api v0.0.0-20241003070528-341f9860c455
 	github.com/openshift/assisted-service/client => github.com/openshift/assisted-service/client v0.0.0-20241003070528-341f9860c455
 	github.com/openshift/assisted-service/models => github.com/openshift/assisted-service/models v0.0.0-20241003070528-341f9860c455
@@ -91,13 +89,17 @@ replace (
 	github.com/chaos-mesh/chaos-mesh/api => github.com/marcnuri-forks/chaos-mesh/api v0.0.0-20250107101005-a389b2cbf857
 	// TODO: WIP while this gets merged or fixed https://github.com/metal3-io/baremetal-operator/pull/1985
 	github.com/metal3-io/baremetal-operator/apis => github.com/marcnuri-forks/baremetal-operator/apis v0.0.0-20241004142039-6b123cc23349
-	// TODO: WIP while this gets merged or fixed https://github.com/openshift/api/pull/2050
-	github.com/openshift/api => github.com/marcnuri-forks/api v0.0.0-20240930125604-62d5277244a4
 	// TODO: WIP while this gets merged or fixed https://github.com/operator-framework/operator-lifecycle-manager/pull/3406
 	// For some reason v0.30.0 has been released with the fix but the downloaded sources don't match those in GitHub ????
 	github.com/operator-framework/operator-lifecycle-manager => github.com/marcnuri-forks/operator-lifecycle-manager v0.0.0-20241002090802-7539192fbf96
 	// TODO: WIP while this gets merged or fixed https://github.com/kubernetes/autoscaler/pull/7393 (Merged only pending release)
 	k8s.io/autoscaler/vertical-pod-autoscaler => github.com/marcnuri-forks/kubernetes-autoscaler/vertical-pod-autoscaler v0.0.0-20241015073945-66b859601d68
+)
+
+require (
+	github.com/operator-framework/operator-lifecycle-manager v0.22.0
+	github.com/stolostron/multicluster-observability-operator v0.0.0-00010101000000-000000000000
+	github.com/stolostron/multiclusterhub-operator v0.0.0-20240626140553-4f1ed6be3b84
 )
 
 require (

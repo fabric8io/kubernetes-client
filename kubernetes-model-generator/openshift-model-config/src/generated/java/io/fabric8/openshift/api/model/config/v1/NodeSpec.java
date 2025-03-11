@@ -36,6 +36,7 @@ import lombok.experimental.Accessors;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "cgroupMode",
+    "minimumKubeletVersion",
     "workerLatencyProfile"
 })
 @ToString
@@ -65,6 +66,8 @@ public class NodeSpec implements Editable<NodeSpecBuilder>, KubernetesResource
 
     @JsonProperty("cgroupMode")
     private String cgroupMode;
+    @JsonProperty("minimumKubeletVersion")
+    private String minimumKubeletVersion;
     @JsonProperty("workerLatencyProfile")
     private String workerLatencyProfile;
     @JsonIgnore
@@ -76,9 +79,10 @@ public class NodeSpec implements Editable<NodeSpecBuilder>, KubernetesResource
     public NodeSpec() {
     }
 
-    public NodeSpec(String cgroupMode, String workerLatencyProfile) {
+    public NodeSpec(String cgroupMode, String minimumKubeletVersion, String workerLatencyProfile) {
         super();
         this.cgroupMode = cgroupMode;
+        this.minimumKubeletVersion = minimumKubeletVersion;
         this.workerLatencyProfile = workerLatencyProfile;
     }
 
@@ -96,6 +100,22 @@ public class NodeSpec implements Editable<NodeSpecBuilder>, KubernetesResource
     @JsonProperty("cgroupMode")
     public void setCgroupMode(String cgroupMode) {
         this.cgroupMode = cgroupMode;
+    }
+
+    /**
+     * minimumKubeletVersion is the lowest version of a kubelet that can join the cluster. Specifically, the apiserver will deny most authorization requests of kubelets that are older than the specified version, only allowing the kubelet to get and update its node object, and perform subjectaccessreviews. This means any kubelet that attempts to join the cluster will not be able to run any assigned workloads, and will eventually be marked as not ready. Its max length is 8, so maximum version allowed is either "9.999.99" or "99.99.99". Since the kubelet reports the version of the kubernetes release, not Openshift, this field references the underlying kubernetes version this version of Openshift is based off of. In other words: if an admin wishes to ensure no nodes run an older version than Openshift 4.17, then they should set the minimumKubeletVersion to 1.30.0. When comparing versions, the kubelet's version is stripped of any contents outside of major.minor.patch version. Thus, a kubelet with version "1.0.0-ec.0" will be compatible with minimumKubeletVersion "1.0.0" or earlier.
+     */
+    @JsonProperty("minimumKubeletVersion")
+    public String getMinimumKubeletVersion() {
+        return minimumKubeletVersion;
+    }
+
+    /**
+     * minimumKubeletVersion is the lowest version of a kubelet that can join the cluster. Specifically, the apiserver will deny most authorization requests of kubelets that are older than the specified version, only allowing the kubelet to get and update its node object, and perform subjectaccessreviews. This means any kubelet that attempts to join the cluster will not be able to run any assigned workloads, and will eventually be marked as not ready. Its max length is 8, so maximum version allowed is either "9.999.99" or "99.99.99". Since the kubelet reports the version of the kubernetes release, not Openshift, this field references the underlying kubernetes version this version of Openshift is based off of. In other words: if an admin wishes to ensure no nodes run an older version than Openshift 4.17, then they should set the minimumKubeletVersion to 1.30.0. When comparing versions, the kubelet's version is stripped of any contents outside of major.minor.patch version. Thus, a kubelet with version "1.0.0-ec.0" will be compatible with minimumKubeletVersion "1.0.0" or earlier.
+     */
+    @JsonProperty("minimumKubeletVersion")
+    public void setMinimumKubeletVersion(String minimumKubeletVersion) {
+        this.minimumKubeletVersion = minimumKubeletVersion;
     }
 
     /**

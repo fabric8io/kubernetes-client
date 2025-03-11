@@ -48,6 +48,7 @@ import lombok.experimental.Accessors;
     "httpEmptyRequestsPolicy",
     "httpErrorCodePages",
     "httpHeaders",
+    "idleConnectionTerminationPolicy",
     "logging",
     "namespaceSelector",
     "nodePlacement",
@@ -99,6 +100,8 @@ public class IngressControllerSpec implements Editable<IngressControllerSpecBuil
     private ConfigMapNameReference httpErrorCodePages;
     @JsonProperty("httpHeaders")
     private IngressControllerHTTPHeaders httpHeaders;
+    @JsonProperty("idleConnectionTerminationPolicy")
+    private String idleConnectionTerminationPolicy;
     @JsonProperty("logging")
     private IngressControllerLogging logging;
     @JsonProperty("namespaceSelector")
@@ -127,7 +130,7 @@ public class IngressControllerSpec implements Editable<IngressControllerSpecBuil
     public IngressControllerSpec() {
     }
 
-    public IngressControllerSpec(ClientTLS clientTLS, LocalObjectReference defaultCertificate, String domain, EndpointPublishingStrategy endpointPublishingStrategy, HTTPCompressionPolicy httpCompression, String httpEmptyRequestsPolicy, ConfigMapNameReference httpErrorCodePages, IngressControllerHTTPHeaders httpHeaders, IngressControllerLogging logging, LabelSelector namespaceSelector, NodePlacement nodePlacement, Integer replicas, RouteAdmissionPolicy routeAdmission, LabelSelector routeSelector, TLSSecurityProfile tlsSecurityProfile, IngressControllerTuningOptions tuningOptions, Object unsupportedConfigOverrides) {
+    public IngressControllerSpec(ClientTLS clientTLS, LocalObjectReference defaultCertificate, String domain, EndpointPublishingStrategy endpointPublishingStrategy, HTTPCompressionPolicy httpCompression, String httpEmptyRequestsPolicy, ConfigMapNameReference httpErrorCodePages, IngressControllerHTTPHeaders httpHeaders, String idleConnectionTerminationPolicy, IngressControllerLogging logging, LabelSelector namespaceSelector, NodePlacement nodePlacement, Integer replicas, RouteAdmissionPolicy routeAdmission, LabelSelector routeSelector, TLSSecurityProfile tlsSecurityProfile, IngressControllerTuningOptions tuningOptions, Object unsupportedConfigOverrides) {
         super();
         this.clientTLS = clientTLS;
         this.defaultCertificate = defaultCertificate;
@@ -137,6 +140,7 @@ public class IngressControllerSpec implements Editable<IngressControllerSpecBuil
         this.httpEmptyRequestsPolicy = httpEmptyRequestsPolicy;
         this.httpErrorCodePages = httpErrorCodePages;
         this.httpHeaders = httpHeaders;
+        this.idleConnectionTerminationPolicy = idleConnectionTerminationPolicy;
         this.logging = logging;
         this.namespaceSelector = namespaceSelector;
         this.nodePlacement = nodePlacement;
@@ -274,6 +278,22 @@ public class IngressControllerSpec implements Editable<IngressControllerSpecBuil
     @JsonProperty("httpHeaders")
     public void setHttpHeaders(IngressControllerHTTPHeaders httpHeaders) {
         this.httpHeaders = httpHeaders;
+    }
+
+    /**
+     * idleConnectionTerminationPolicy maps directly to HAProxy's idle-close-on-response option and controls whether HAProxy keeps idle frontend connections open during a soft stop (router reload).<br><p> <br><p> Allowed values for this field are "Immediate" and "Deferred". The default value is "Deferred".<br><p> <br><p> When set to "Immediate", idle connections are closed immediately during router reloads. This ensures immediate propagation of route changes but may impact clients sensitive to connection resets.<br><p> <br><p> When set to "Deferred", HAProxy will maintain idle connections during a soft reload instead of closing them immediately. These connections remain open until any of the following occurs:<br><p> <br><p>   - A new request is received on the connection, in which<br><p>     case HAProxy handles it in the old process and closes<br><p>     the connection after sending the response.<br><p> <br><p>   - HAProxy's `timeout http-keep-alive` duration expires<br><p>     (300 seconds in OpenShift's configuration, not<br><p>     configurable).<br><p> <br><p>   - The client's keep-alive timeout expires, causing the<br><p>     client to close the connection.<br><p> <br><p> Setting Deferred can help prevent errors in clients or load balancers that do not properly handle connection resets. Additionally, this option allows you to retain the pre-2.4 HAProxy behaviour: in HAProxy version 2.2 (OpenShift versions &lt; 4.14), maintaining idle connections during a soft reload was the default behaviour, but starting with HAProxy 2.4, the default changed to closing idle connections immediately.<br><p> <br><p> Important Consideration:<br><p> <br><p>   - Using Deferred will result in temporary inconsistencies<br><p>     for the first request on each persistent connection<br><p>     after a route update and router reload. This request<br><p>     will be processed by the old HAProxy process using its<br><p>     old configuration. Subsequent requests will use the<br><p>     updated configuration.<br><p> <br><p> Operational Considerations:<br><p> <br><p>   - Keeping idle connections open during reloads may lead<br><p>     to an accumulation of old HAProxy processes if<br><p>     connections remain idle for extended periods,<br><p>     especially in environments where frequent reloads<br><p>     occur.<br><p> <br><p>   - Consider monitoring the number of HAProxy processes in<br><p>     the router pods when Deferred is set.<br><p> <br><p>   - You may need to enable or adjust the<br><p>     `ingress.operator.openshift.io/hard-stop-after`<br><p>     duration (configured via an annotation on the<br><p>     IngressController resource) in environments with<br><p>     frequent reloads to prevent resource exhaustion.
+     */
+    @JsonProperty("idleConnectionTerminationPolicy")
+    public String getIdleConnectionTerminationPolicy() {
+        return idleConnectionTerminationPolicy;
+    }
+
+    /**
+     * idleConnectionTerminationPolicy maps directly to HAProxy's idle-close-on-response option and controls whether HAProxy keeps idle frontend connections open during a soft stop (router reload).<br><p> <br><p> Allowed values for this field are "Immediate" and "Deferred". The default value is "Deferred".<br><p> <br><p> When set to "Immediate", idle connections are closed immediately during router reloads. This ensures immediate propagation of route changes but may impact clients sensitive to connection resets.<br><p> <br><p> When set to "Deferred", HAProxy will maintain idle connections during a soft reload instead of closing them immediately. These connections remain open until any of the following occurs:<br><p> <br><p>   - A new request is received on the connection, in which<br><p>     case HAProxy handles it in the old process and closes<br><p>     the connection after sending the response.<br><p> <br><p>   - HAProxy's `timeout http-keep-alive` duration expires<br><p>     (300 seconds in OpenShift's configuration, not<br><p>     configurable).<br><p> <br><p>   - The client's keep-alive timeout expires, causing the<br><p>     client to close the connection.<br><p> <br><p> Setting Deferred can help prevent errors in clients or load balancers that do not properly handle connection resets. Additionally, this option allows you to retain the pre-2.4 HAProxy behaviour: in HAProxy version 2.2 (OpenShift versions &lt; 4.14), maintaining idle connections during a soft reload was the default behaviour, but starting with HAProxy 2.4, the default changed to closing idle connections immediately.<br><p> <br><p> Important Consideration:<br><p> <br><p>   - Using Deferred will result in temporary inconsistencies<br><p>     for the first request on each persistent connection<br><p>     after a route update and router reload. This request<br><p>     will be processed by the old HAProxy process using its<br><p>     old configuration. Subsequent requests will use the<br><p>     updated configuration.<br><p> <br><p> Operational Considerations:<br><p> <br><p>   - Keeping idle connections open during reloads may lead<br><p>     to an accumulation of old HAProxy processes if<br><p>     connections remain idle for extended periods,<br><p>     especially in environments where frequent reloads<br><p>     occur.<br><p> <br><p>   - Consider monitoring the number of HAProxy processes in<br><p>     the router pods when Deferred is set.<br><p> <br><p>   - You may need to enable or adjust the<br><p>     `ingress.operator.openshift.io/hard-stop-after`<br><p>     duration (configured via an annotation on the<br><p>     IngressController resource) in environments with<br><p>     frequent reloads to prevent resource exhaustion.
+     */
+    @JsonProperty("idleConnectionTerminationPolicy")
+    public void setIdleConnectionTerminationPolicy(String idleConnectionTerminationPolicy) {
+        this.idleConnectionTerminationPolicy = idleConnectionTerminationPolicy;
     }
 
     /**

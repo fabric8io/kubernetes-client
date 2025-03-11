@@ -40,6 +40,7 @@ import lombok.experimental.Accessors;
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
+    "cloudLoadBalancerConfig",
     "region",
     "resourceTags",
     "serviceEndpoints"
@@ -69,6 +70,8 @@ import lombok.experimental.Accessors;
 public class AWSPlatformStatus implements Editable<AWSPlatformStatusBuilder>, KubernetesResource
 {
 
+    @JsonProperty("cloudLoadBalancerConfig")
+    private CloudLoadBalancerConfig cloudLoadBalancerConfig;
     @JsonProperty("region")
     private String region;
     @JsonProperty("resourceTags")
@@ -86,11 +89,28 @@ public class AWSPlatformStatus implements Editable<AWSPlatformStatusBuilder>, Ku
     public AWSPlatformStatus() {
     }
 
-    public AWSPlatformStatus(String region, List<AWSResourceTag> resourceTags, List<AWSServiceEndpoint> serviceEndpoints) {
+    public AWSPlatformStatus(CloudLoadBalancerConfig cloudLoadBalancerConfig, String region, List<AWSResourceTag> resourceTags, List<AWSServiceEndpoint> serviceEndpoints) {
         super();
+        this.cloudLoadBalancerConfig = cloudLoadBalancerConfig;
         this.region = region;
         this.resourceTags = resourceTags;
         this.serviceEndpoints = serviceEndpoints;
+    }
+
+    /**
+     * AWSPlatformStatus holds the current status of the Amazon Web Services infrastructure provider.
+     */
+    @JsonProperty("cloudLoadBalancerConfig")
+    public CloudLoadBalancerConfig getCloudLoadBalancerConfig() {
+        return cloudLoadBalancerConfig;
+    }
+
+    /**
+     * AWSPlatformStatus holds the current status of the Amazon Web Services infrastructure provider.
+     */
+    @JsonProperty("cloudLoadBalancerConfig")
+    public void setCloudLoadBalancerConfig(CloudLoadBalancerConfig cloudLoadBalancerConfig) {
+        this.cloudLoadBalancerConfig = cloudLoadBalancerConfig;
     }
 
     /**

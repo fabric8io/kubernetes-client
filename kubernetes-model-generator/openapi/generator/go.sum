@@ -757,8 +757,6 @@ github.com/mailru/easyjson v0.7.6/go.mod h1:xzfreul335JAWq5oZzymOObrkdz5UnU4kGfJ
 github.com/mailru/easyjson v0.7.7/go.mod h1:xzfreul335JAWq5oZzymOObrkdz5UnU4kGfJJLY9Nlc=
 github.com/mailru/easyjson v0.9.0 h1:PrnmzHw7262yW8sTBwxi1PdJA3Iw/EKBa8psRf7d9a4=
 github.com/mailru/easyjson v0.9.0/go.mod h1:1+xMtQp2MRNVL/V1bOzuP3aP8VNwRW55fQUto+XFtTU=
-github.com/marcnuri-forks/api v0.0.0-20240930125604-62d5277244a4 h1:OVm/tM0Io+jkCLhrYvDL4B6zJb9ueRBX36zt7q9KFOU=
-github.com/marcnuri-forks/api v0.0.0-20240930125604-62d5277244a4/go.mod h1:OOh6Qopf21pSzqNVCB5gomomBXb8o5sGKZxG2KNpaXM=
 github.com/marcnuri-forks/baremetal-operator/apis v0.0.0-20241004142039-6b123cc23349 h1:jSdEzmJMzBkCBT4Ft39OYARV+fgP82RlYcZc09Z8Ldk=
 github.com/marcnuri-forks/baremetal-operator/apis v0.0.0-20241004142039-6b123cc23349/go.mod h1:Qao+jEhzuKU8M763GkP70ZIdiZCaeC0H0LPyMw/l/O0=
 github.com/marcnuri-forks/chaos-mesh/api v0.0.0-20250107101005-a389b2cbf857 h1:Xl5Lm1Du3vzpTgEEgWPs/q34p8Zgb5rSre/WxJAtCE4=
@@ -908,6 +906,8 @@ github.com/opencontainers/image-spec v1.1.0 h1:8SG7/vwALn54lVB/0yZ/MMwhFrPYtpEHQ
 github.com/opencontainers/image-spec v1.1.0/go.mod h1:W4s4sFTMaBeK1BQLXbG4AdM2szdn85PY75RI83NrTrM=
 github.com/opencontainers/runtime-spec v1.2.0 h1:z97+pHb3uELt/yiAWD691HNHQIF07bE7dzrbT927iTk=
 github.com/opencontainers/runtime-spec v1.2.0/go.mod h1:jwyrGlmzljRJv/Fgzds9SsS/C5hL+LL3ko9hs6T5lQ0=
+github.com/openshift/api v0.0.0-20250305013520-e7f23be12279 h1:eYvpiSNyNl7P7kmtNH0d6zAMLlrziyz370m0q1tggJE=
+github.com/openshift/api v0.0.0-20250305013520-e7f23be12279/go.mod h1:Shkl4HanLwDiiBzakv+con/aMGnVE2MAGvoKp5oyYUo=
 github.com/openshift/cloud-credential-operator v0.0.0-20240910052617-d668c182b0e3 h1:WQH/wm0E1I3zrmCnHtpaeaYduJalzL9qpDwAFLLVTNk=
 github.com/openshift/cloud-credential-operator v0.0.0-20240910052617-d668c182b0e3/go.mod h1:4AWWBNPuWzPtT77xDONlObrazPlBCKXd+16lupnIrQc=
 github.com/openshift/cluster-network-operator v0.0.0-20240912134426-a3188633549d h1:9Xf/80gDpRc33FwCEJ6L2/DF1yU/4L6QjoYxKexDzvo=

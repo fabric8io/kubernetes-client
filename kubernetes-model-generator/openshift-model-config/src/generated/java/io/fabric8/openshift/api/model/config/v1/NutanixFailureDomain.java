@@ -125,7 +125,7 @@ public class NutanixFailureDomain implements Editable<NutanixFailureDomainBuilde
     }
 
     /**
-     * subnets holds a list of identifiers (one or more) of the cluster's network subnets for the Machine's VM to connect to. The subnet identifiers (uuid or name) can be obtained from the Prism Central console or using the prism_central API.
+     * subnets holds a list of identifiers (one or more) of the cluster's network subnets If the feature gate NutanixMultiSubnets is enabled, up to 32 subnets may be configured. for the Machine's VM to connect to. The subnet identifiers (uuid or name) can be obtained from the Prism Central console or using the prism_central API.
      */
     @JsonProperty("subnets")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -134,7 +134,7 @@ public class NutanixFailureDomain implements Editable<NutanixFailureDomainBuilde
     }
 
     /**
-     * subnets holds a list of identifiers (one or more) of the cluster's network subnets for the Machine's VM to connect to. The subnet identifiers (uuid or name) can be obtained from the Prism Central console or using the prism_central API.
+     * subnets holds a list of identifiers (one or more) of the cluster's network subnets If the feature gate NutanixMultiSubnets is enabled, up to 32 subnets may be configured. for the Machine's VM to connect to. The subnet identifiers (uuid or name) can be obtained from the Prism Central console or using the prism_central API.
      */
     @JsonProperty("subnets")
     public void setSubnets(List<NutanixResourceIdentifier> subnets) {

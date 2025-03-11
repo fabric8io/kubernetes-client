@@ -41,6 +41,7 @@ import lombok.experimental.Accessors;
     "aws",
     "gcp",
     "ibm",
+    "openstack",
     "type"
 })
 @ToString
@@ -74,6 +75,8 @@ public class ProviderLoadBalancerParameters implements Editable<ProviderLoadBala
     private GCPLoadBalancerParameters gcp;
     @JsonProperty("ibm")
     private IBMLoadBalancerParameters ibm;
+    @JsonProperty("openstack")
+    private OpenStackLoadBalancerParameters openstack;
     @JsonProperty("type")
     private String type;
     @JsonIgnore
@@ -85,11 +88,12 @@ public class ProviderLoadBalancerParameters implements Editable<ProviderLoadBala
     public ProviderLoadBalancerParameters() {
     }
 
-    public ProviderLoadBalancerParameters(AWSLoadBalancerParameters aws, GCPLoadBalancerParameters gcp, IBMLoadBalancerParameters ibm, String type) {
+    public ProviderLoadBalancerParameters(AWSLoadBalancerParameters aws, GCPLoadBalancerParameters gcp, IBMLoadBalancerParameters ibm, OpenStackLoadBalancerParameters openstack, String type) {
         super();
         this.aws = aws;
         this.gcp = gcp;
         this.ibm = ibm;
+        this.openstack = openstack;
         this.type = type;
     }
 
@@ -139,6 +143,22 @@ public class ProviderLoadBalancerParameters implements Editable<ProviderLoadBala
     @JsonProperty("ibm")
     public void setIbm(IBMLoadBalancerParameters ibm) {
         this.ibm = ibm;
+    }
+
+    /**
+     * ProviderLoadBalancerParameters holds desired load balancer information specific to the underlying infrastructure provider.
+     */
+    @JsonProperty("openstack")
+    public OpenStackLoadBalancerParameters getOpenstack() {
+        return openstack;
+    }
+
+    /**
+     * ProviderLoadBalancerParameters holds desired load balancer information specific to the underlying infrastructure provider.
+     */
+    @JsonProperty("openstack")
+    public void setOpenstack(OpenStackLoadBalancerParameters openstack) {
+        this.openstack = openstack;
     }
 
     /**
