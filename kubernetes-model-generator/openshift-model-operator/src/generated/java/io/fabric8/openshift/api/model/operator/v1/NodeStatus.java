@@ -117,7 +117,7 @@ public class NodeStatus implements Editable<NodeStatusBuilder>, KubernetesResour
     }
 
     /**
-     * currentRevision is the generation of the most recently successful deployment
+     * currentRevision is the generation of the most recently successful deployment. Can not be set on creation of a nodeStatus. Updates must only increase the value.
      */
     @JsonProperty("currentRevision")
     public Integer getCurrentRevision() {
@@ -125,7 +125,7 @@ public class NodeStatus implements Editable<NodeStatusBuilder>, KubernetesResour
     }
 
     /**
-     * currentRevision is the generation of the most recently successful deployment
+     * currentRevision is the generation of the most recently successful deployment. Can not be set on creation of a nodeStatus. Updates must only increase the value.
      */
     @JsonProperty("currentRevision")
     public void setCurrentRevision(Integer currentRevision) {
@@ -246,7 +246,7 @@ public class NodeStatus implements Editable<NodeStatusBuilder>, KubernetesResour
     }
 
     /**
-     * targetRevision is the generation of the deployment we're trying to apply
+     * targetRevision is the generation of the deployment we're trying to apply. Can not be set on creation of a nodeStatus.
      */
     @JsonProperty("targetRevision")
     public Integer getTargetRevision() {
@@ -254,7 +254,7 @@ public class NodeStatus implements Editable<NodeStatusBuilder>, KubernetesResour
     }
 
     /**
-     * targetRevision is the generation of the deployment we're trying to apply
+     * targetRevision is the generation of the deployment we're trying to apply. Can not be set on creation of a nodeStatus.
      */
     @JsonProperty("targetRevision")
     public void setTargetRevision(Integer targetRevision) {

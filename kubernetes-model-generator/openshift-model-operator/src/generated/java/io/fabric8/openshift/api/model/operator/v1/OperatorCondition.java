@@ -146,7 +146,7 @@ public class OperatorCondition implements Editable<OperatorConditionBuilder>, Ku
     }
 
     /**
-     * OperatorCondition is just the standard condition fields.
+     * status of the condition, one of True, False, Unknown.
      */
     @JsonProperty("status")
     public String getStatus() {
@@ -154,7 +154,7 @@ public class OperatorCondition implements Editable<OperatorConditionBuilder>, Ku
     }
 
     /**
-     * OperatorCondition is just the standard condition fields.
+     * status of the condition, one of True, False, Unknown.
      */
     @JsonProperty("status")
     public void setStatus(String status) {
@@ -162,7 +162,7 @@ public class OperatorCondition implements Editable<OperatorConditionBuilder>, Ku
     }
 
     /**
-     * OperatorCondition is just the standard condition fields.
+     * type of condition in CamelCase or in foo.example.com/CamelCase.
      */
     @JsonProperty("type")
     public String getType() {
@@ -170,7 +170,7 @@ public class OperatorCondition implements Editable<OperatorConditionBuilder>, Ku
     }
 
     /**
-     * OperatorCondition is just the standard condition fields.
+     * type of condition in CamelCase or in foo.example.com/CamelCase.
      */
     @JsonProperty("type")
     public void setType(String type) {

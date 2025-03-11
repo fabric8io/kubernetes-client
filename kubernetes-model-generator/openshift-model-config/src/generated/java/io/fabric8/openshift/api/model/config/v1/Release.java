@@ -40,6 +40,7 @@ import lombok.experimental.Accessors;
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
+    "architecture",
     "channels",
     "image",
     "url",
@@ -70,6 +71,8 @@ import lombok.experimental.Accessors;
 public class Release implements Editable<ReleaseBuilder>, KubernetesResource
 {
 
+    @JsonProperty("architecture")
+    private String architecture;
     @JsonProperty("channels")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> channels = new ArrayList<>();
@@ -88,12 +91,29 @@ public class Release implements Editable<ReleaseBuilder>, KubernetesResource
     public Release() {
     }
 
-    public Release(List<String> channels, String image, String url, String version) {
+    public Release(String architecture, List<String> channels, String image, String url, String version) {
         super();
+        this.architecture = architecture;
         this.channels = channels;
         this.image = image;
         this.url = url;
         this.version = version;
+    }
+
+    /**
+     * architecture is an optional field that indicates the value of the cluster architecture. In this context cluster architecture means either a single architecture or a multi architecture. Valid values are 'Multi' and empty.
+     */
+    @JsonProperty("architecture")
+    public String getArchitecture() {
+        return architecture;
+    }
+
+    /**
+     * architecture is an optional field that indicates the value of the cluster architecture. In this context cluster architecture means either a single architecture or a multi architecture. Valid values are 'Multi' and empty.
+     */
+    @JsonProperty("architecture")
+    public void setArchitecture(String architecture) {
+        this.architecture = architecture;
     }
 
     /**
