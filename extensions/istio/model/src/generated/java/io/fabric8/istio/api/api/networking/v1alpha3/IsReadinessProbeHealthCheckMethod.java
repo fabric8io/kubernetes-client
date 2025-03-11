@@ -14,6 +14,7 @@ import io.fabric8.kubernetes.api.model.KubernetesResource;
 @JsonTypeResolver(io.fabric8.kubernetes.model.jackson.UnwrappedTypeResolverBuilder.class)
 @JsonSubTypes({
     @JsonSubTypes.Type(ReadinessProbeExec.class),
+    @JsonSubTypes.Type(ReadinessProbeGrpc.class),
     @JsonSubTypes.Type(ReadinessProbeHttpGet.class),
     @JsonSubTypes.Type(ReadinessProbeTcpSocket.class),
 })
