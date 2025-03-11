@@ -25,7 +25,7 @@ public class ApiVersionUtil {
 
   /**
    * Extracts apiGroupName from apiGroupVersion when in resource for apiGroupName/apiGroupVersion combination
-   * 
+   *
    * @param <T> Template argument provided
    * @param item resource which is being used
    * @param apiGroup apiGroupName present if any
@@ -42,7 +42,7 @@ public class ApiVersionUtil {
 
   /**
    * Returns the api version falling back to the items apiGroupVersion if not null.
-   * 
+   *
    * @param <T> type of parameter
    * @param item item to be processed
    * @param apiVersion apiVersion string
@@ -59,7 +59,7 @@ public class ApiVersionUtil {
 
   /**
    * Separates apiGroupVersion for apiGroupName/apiGroupVersion combination.
-   * 
+   *
    * @param apiVersion The apiGroupVersion or apiGroupName/apiGroupVersion combo.
    * @return Just the apiGroupVersion part without the apiGroupName.
    */
@@ -75,7 +75,7 @@ public class ApiVersionUtil {
 
   /**
    * Separates apiGroupName for apiGroupName/apiGroupVersion combination.
-   * 
+   *
    * @param apiVersion The apiGroupVersion or apiGroupName/apiGroupVersion combo.
    * @return Just the apiGroupName part without the apiGroupName, or apiVersion if no separator is found.
    */
@@ -91,7 +91,7 @@ public class ApiVersionUtil {
 
   /**
    * Separates apiGroupName for apiGroupName/apiGroupVersion combination.
-   * 
+   *
    * @param apiVersion The apiGroupVersion or apiGroupName/apiGroupVersion combo.
    * @return Just the apiGroupName part without the apiGroupName, or null if no separator is found.
    */
@@ -110,9 +110,6 @@ public class ApiVersionUtil {
    * @return version if group is null or empty, joined string otherwise.
    */
   public static String joinApiGroupAndVersion(String group, String version) {
-    if (Utils.isNullOrEmpty(group)) {
-      return version;
-    }
-    return group + "/" + version;
+    return HasMetadata.getApiVersion(group, version);
   }
 }
