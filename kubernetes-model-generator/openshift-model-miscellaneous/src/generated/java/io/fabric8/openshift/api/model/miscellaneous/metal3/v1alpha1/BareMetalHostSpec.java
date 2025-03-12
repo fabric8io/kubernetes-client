@@ -387,7 +387,7 @@ public class BareMetalHostSpec implements Editable<BareMetalHostSpecBuilder>, Ku
     }
 
     /**
-     * Should the host be powered on? Changing this value will trigger a change in power state of the host.
+     * Should the host be powered on? If the host is currently in a stable state (e.g. provisioned), its power state will be forced to match this value.
      */
     @JsonProperty("online")
     public Boolean getOnline() {
@@ -395,7 +395,7 @@ public class BareMetalHostSpec implements Editable<BareMetalHostSpecBuilder>, Ku
     }
 
     /**
-     * Should the host be powered on? Changing this value will trigger a change in power state of the host.
+     * Should the host be powered on? If the host is currently in a stable state (e.g. provisioned), its power state will be forced to match this value.
      */
     @JsonProperty("online")
     public void setOnline(Boolean online) {

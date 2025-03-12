@@ -126,7 +126,7 @@ public class ProvisionStatus implements Editable<ProvisionStatusBuilder>, Kubern
     }
 
     /**
-     * BootMode indicates the boot mode used to provision the node
+     * BootMode indicates the boot mode used to provision the host.
      */
     @JsonProperty("bootMode")
     public String getBootMode() {
@@ -134,7 +134,7 @@ public class ProvisionStatus implements Editable<ProvisionStatusBuilder>, Kubern
     }
 
     /**
-     * BootMode indicates the boot mode used to provision the node
+     * BootMode indicates the boot mode used to provision the host.
      */
     @JsonProperty("bootMode")
     public void setBootMode(String bootMode) {
