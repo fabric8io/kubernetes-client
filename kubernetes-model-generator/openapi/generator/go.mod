@@ -78,15 +78,14 @@ replace (
 
 // Issues with dependabot, force pseudo-versions as replacements since dependabot will try to replace with invalid tagged major versions
 replace (
+	github.com/chaos-mesh/chaos-mesh => github.com/chaos-mesh/chaos-mesh v0.0.0-20250310144600-7518c60d5575
+	github.com/chaos-mesh/chaos-mesh/api => github.com/chaos-mesh/chaos-mesh/api v0.0.0-20250310144600-7518c60d5575
 	github.com/stolostron/multicluster-observability-operator => github.com/stolostron/multicluster-observability-operator v0.0.0-20241107140827-cef6b049dcef
 	github.com/stolostron/multiclusterhub-operator => github.com/stolostron/multiclusterhub-operator v0.0.0-20240626140553-4f1ed6be3b84
 	volcano.sh/apis => volcano.sh/apis v1.11.0
 )
 
 replace (
-	// TODO: WIP while this gets merged or fixed  https://github.com/chaos-mesh/chaos-mesh/pull/4525
-	github.com/chaos-mesh/chaos-mesh => github.com/marcnuri-forks/chaos-mesh v0.0.0-20250107101005-a389b2cbf857
-	github.com/chaos-mesh/chaos-mesh/api => github.com/marcnuri-forks/chaos-mesh/api v0.0.0-20250107101005-a389b2cbf857
 	// TODO: WIP while this gets merged or fixed https://github.com/metal3-io/baremetal-operator/pull/1985
 	github.com/metal3-io/baremetal-operator/apis => github.com/marcnuri-forks/baremetal-operator/apis v0.0.0-20241004142039-6b123cc23349
 	// TODO: WIP while this gets merged or fixed https://github.com/operator-framework/operator-lifecycle-manager/pull/3406
@@ -106,10 +105,9 @@ require (
 	cel.dev/expr v0.19.1 // indirect
 	contrib.go.opencensus.io/exporter/ocagent v0.7.1-0.20200907061046-05415f1de66d // indirect
 	contrib.go.opencensus.io/exporter/prometheus v0.4.2 // indirect
-	github.com/99designs/gqlgen v0.17.2 // indirect
+	github.com/99designs/gqlgen v0.17.63 // indirect
 	github.com/PaesslerAG/gval v1.0.0 // indirect
 	github.com/PaesslerAG/jsonpath v0.1.1 // indirect
-	github.com/agnivade/levenshtein v1.1.1 // indirect
 	github.com/alecthomas/units v0.0.0-20231202071711-9a357b53e9c9 // indirect
 	github.com/antlr/antlr4/runtime/Go/antlr v1.4.10 // indirect
 	github.com/antlr4-go/antlr/v4 v4.13.1 // indirect
@@ -126,12 +124,13 @@ require (
 	github.com/coreos/ignition/v2 v2.19.0 // indirect
 	github.com/coreos/vcontext v0.0.0-20231102161604-685dc7299dc5 // indirect
 	github.com/davecgh/go-spew v1.1.2-0.20180830191138-d8f796af33cc // indirect
+	github.com/docker/cli v27.5.1+incompatible // indirect
 	github.com/docker/go-units v0.5.0 // indirect
 	github.com/emicklei/go-restful/v3 v3.12.1 // indirect
 	github.com/evanphx/json-patch/v5 v5.9.0 // indirect
 	github.com/fsnotify/fsnotify v1.8.0 // indirect
 	github.com/fxamacker/cbor/v2 v2.7.0 // indirect
-	github.com/go-errors/errors v1.4.2 // indirect
+	github.com/go-errors/errors v1.5.1 // indirect
 	github.com/go-kit/log v0.2.1 // indirect
 	github.com/go-logfmt/logfmt v0.6.0 // indirect
 	github.com/go-logr/logr v1.4.2 // indirect
@@ -158,7 +157,6 @@ require (
 	github.com/hashicorp/go-cleanhttp v0.5.2 // indirect
 	github.com/hashicorp/go-multierror v1.1.1 // indirect
 	github.com/hashicorp/golang-lru v1.0.2 // indirect
-	github.com/hashicorp/golang-lru/v2 v2.0.6 // indirect
 	github.com/imdario/mergo v0.3.16 // indirect
 	github.com/inconshreveable/mousetrap v1.1.0 // indirect
 	github.com/josharian/intern v1.0.0 // indirect
@@ -170,6 +168,7 @@ require (
 	github.com/mattn/go-sqlite3 v2.0.3+incompatible // indirect
 	github.com/metal3-io/baremetal-operator/pkg/hardwareutils v0.5.1 // indirect
 	github.com/metal3-io/ip-address-manager/api v1.9.4 // indirect
+	github.com/moby/sys/sequential v0.6.0 // indirect
 	github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd // indirect
 	github.com/modern-go/reflect2 v1.0.2 // indirect
 	github.com/mohae/deepcopy v0.0.0-20170929034955-c48cc78d4826 // indirect
