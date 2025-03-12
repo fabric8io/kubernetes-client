@@ -32,7 +32,7 @@ require (
 	k8s.io/api v0.32.3
 	k8s.io/apiextensions-apiserver v0.32.3
 	k8s.io/apimachinery v0.32.3
-	k8s.io/autoscaler/vertical-pod-autoscaler v1.2.1
+	k8s.io/autoscaler/vertical-pod-autoscaler v1.3.0
 	k8s.io/client-go v12.0.0+incompatible
 	k8s.io/gengo/v2 v2.0.0-20240911193312-2b36238f13e9
 	k8s.io/kube-openapi v0.0.0-20241212222426-2c72e554b1e7
@@ -85,13 +85,9 @@ replace (
 	volcano.sh/apis => volcano.sh/apis v1.11.0
 )
 
-replace (
-	// TODO: WIP while this gets merged or fixed https://github.com/operator-framework/operator-lifecycle-manager/pull/3406
-	// For some reason v0.30.0 has been released with the fix but the downloaded sources don't match those in GitHub ????
-	github.com/operator-framework/operator-lifecycle-manager => github.com/marcnuri-forks/operator-lifecycle-manager v0.0.0-20241002090802-7539192fbf96
-	// TODO: WIP while this gets merged or fixed https://github.com/kubernetes/autoscaler/pull/7393 (Merged only pending release)
-	k8s.io/autoscaler/vertical-pod-autoscaler => github.com/marcnuri-forks/kubernetes-autoscaler/vertical-pod-autoscaler v0.0.0-20241015073945-66b859601d68
-)
+// TODO: WIP while this gets merged or fixed https://github.com/operator-framework/operator-lifecycle-manager/pull/3406
+// For some reason v0.30.0 has been released with the fix but the downloaded sources don't match those in GitHub ????
+replace github.com/operator-framework/operator-lifecycle-manager => github.com/marcnuri-forks/operator-lifecycle-manager v0.0.0-20241002090802-7539192fbf96
 
 require (
 	github.com/operator-framework/operator-lifecycle-manager v0.22.0
