@@ -3,12 +3,13 @@
 ### 7.2-SNAPSHOT
 
 #### Bugs
-* Fix #6892: rolling().restart() doesn't remove preexistent pod template annotations
-* Fix #6908: The Default annotation and JsonProperty default value should accept JSON values
-* Fix #6906: Knative VolatileTime should be serialized as String
-* Fix #6930: Add support for Boolean enums in the java-generator
 * Fix #6886: Remove invalid JUnit 4 references
+* Fix #6892: rolling().restart() doesn't remove preexistent pod template annotations
+* Fix #6906: Knative VolatileTime should be serialized as String
+* Fix #6908: The Default annotation and JsonProperty default value should accept JSON values
 * Fix #6917: Client does not authenticate correctly on OpenShift if the returned Location header is lower-case
+* Fix #6930: Add support for Boolean enums in the java-generator
+* Fix #6941: HasMetadata.getApiVersion no slash when empty group
 
 #### Improvements
 * Fix #6863: ensuring SerialExecutor does not throw RejectedExecutionException to prevent unnecessary error logs
@@ -35,7 +36,6 @@
 * Fix #6767: Support for Kubernetes v1.32 (penelope) 
 * Fix #6777: Added Javadoc comments to all generated models
 * Fix #6802: (java-generator) Added support for required spec and status
-
 
 ### 6.13.5 (2025-01-18)
 
