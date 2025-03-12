@@ -76,7 +76,7 @@ public interface HasMetadata extends KubernetesResource {
     final String group = getGroup(clazz);
     final String version = getVersion(clazz);
     if (group != null && version != null) {
-      return group + "/" + version;
+      return getApiVersion(group, version);
     }
     if (group != null || version != null) {
       throw new IllegalArgumentException(
@@ -84,6 +84,14 @@ public interface HasMetadata extends KubernetesResource {
               + " annotations if you specify either");
     }
     return null;
+  }
+
+  static String getApiVersion(String group, String version) {
+    Objects.requireNonNull(version);
+    if (group == null || group.isBlank()) {
+      return version;
+    }
+    return group + "/" + version;
   }
 
   /**
