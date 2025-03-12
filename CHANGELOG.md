@@ -12,6 +12,8 @@
 * Fix #6941: HasMetadata.getApiVersion no slash when empty group
 
 #### Improvements
+
+* Fix #6313: Add HasMetadata.getDefaultPluralFor method
 * Fix #6863: ensuring SerialExecutor does not throw RejectedExecutionException to prevent unnecessary error logs
 * Fix #6763: (crd-generator) YAML output customization
 * Fix #6880: LogWatch interface provides listeners on close stream event 
