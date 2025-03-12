@@ -270,7 +270,7 @@ public class BareMetalHostStatus implements Editable<BareMetalHostStatusBuilder>
     }
 
     /**
-     * Whether or not the host is currently powered on. This field may get briefly out of sync with the actual state of the hardware while provisioning processes are running.
+     * The currently detected power state of the host. This field may get briefly out of sync with the actual state of the hardware while provisioning processes are running.
      */
     @JsonProperty("poweredOn")
     public Boolean getPoweredOn() {
@@ -278,7 +278,7 @@ public class BareMetalHostStatus implements Editable<BareMetalHostStatusBuilder>
     }
 
     /**
-     * Whether or not the host is currently powered on. This field may get briefly out of sync with the actual state of the hardware while provisioning processes are running.
+     * The currently detected power state of the host. This field may get briefly out of sync with the actual state of the hardware while provisioning processes are running.
      */
     @JsonProperty("poweredOn")
     public void setPoweredOn(Boolean poweredOn) {

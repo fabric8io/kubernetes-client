@@ -10,7 +10,7 @@ require (
 	github.com/getkin/kin-openapi v0.129.0
 	github.com/k8snetworkplumbingwg/network-attachment-definition-client v1.7.5
 	github.com/kubernetes-csi/external-snapshotter/client/v8 v8.2.0
-	github.com/metal3-io/baremetal-operator/apis v0.4.0
+	github.com/metal3-io/baremetal-operator/apis v0.9.0
 	github.com/metal3-io/cluster-api-provider-metal3/api v1.9.3
 	// Match latest commit in the version branch (e.g. release-4.17)
 	github.com/openshift/api v3.9.0+incompatible
@@ -86,8 +86,6 @@ replace (
 )
 
 replace (
-	// TODO: WIP while this gets merged or fixed https://github.com/metal3-io/baremetal-operator/pull/1985
-	github.com/metal3-io/baremetal-operator/apis => github.com/marcnuri-forks/baremetal-operator/apis v0.0.0-20241004142039-6b123cc23349
 	// TODO: WIP while this gets merged or fixed https://github.com/operator-framework/operator-lifecycle-manager/pull/3406
 	// For some reason v0.30.0 has been released with the fix but the downloaded sources don't match those in GitHub ????
 	github.com/operator-framework/operator-lifecycle-manager => github.com/marcnuri-forks/operator-lifecycle-manager v0.0.0-20241002090802-7539192fbf96
