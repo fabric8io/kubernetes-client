@@ -51,7 +51,7 @@ require (
 	open-cluster-management.io/governance-policy-propagator v0.15.0
 	open-cluster-management.io/multicloud-operators-channel v0.16.0
 	open-cluster-management.io/multicloud-operators-subscription v0.16.0
-	sigs.k8s.io/cluster-api v1.9.5
+	sigs.k8s.io/cluster-api v1.9.6
 	sigs.k8s.io/gateway-api v1.2.1
 	sigs.k8s.io/kustomize/api v0.19.0
 	// This version is older than v1.10.0 see replacements below
