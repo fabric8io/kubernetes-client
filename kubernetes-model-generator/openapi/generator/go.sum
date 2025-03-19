@@ -2078,8 +2078,8 @@ open-cluster-management.io/governance-policy-propagator v0.15.0 h1:tSDJcq8p/UQHB
 open-cluster-management.io/governance-policy-propagator v0.15.0/go.mod h1:I1LbX78mavWMv6W3YAeSjCq2YBfSS0RpOBWOskpbLng=
 open-cluster-management.io/multicloud-operators-channel v0.16.0 h1:9gi8M5ojsRK+2EMtUMC/1g1I4H4bl0+lS7CKtRCtp44=
 open-cluster-management.io/multicloud-operators-channel v0.16.0/go.mod h1:FCYH3p9NVhsUP5eks0bXDUKdnQ/N/BgGoP18kX/Q52U=
-open-cluster-management.io/multicloud-operators-subscription v0.15.0 h1:/FPaCfTn8PaDQCYMAhDw7xdH4TsaQlV6Ufi9zyWwyYw=
-open-cluster-management.io/multicloud-operators-subscription v0.15.0/go.mod h1:lDMnGyFWoyWFjrAJRrnnWz5Gz2IUsqRsvPV44ll7zXc=
+open-cluster-management.io/multicloud-operators-subscription v0.16.0 h1:rsup8obE4AYZmhJHjZznQqFX3FUII9o200uRinmgbqg=
+open-cluster-management.io/multicloud-operators-subscription v0.16.0/go.mod h1:STpELsVS/jEHuc/GlnILVV0Wii4/i7twUpsiS8HFoTE=
 pgregory.net/rapid v0.3.3/go.mod h1:UYpPVyjFHzYBGHIxLFoupi8vwk6rXNzRY9OMvVxFIOU=
 rsc.io/binaryregexp v0.2.0/go.mod h1:qTv7/COck+e2FymRvadv62gMdZztPaShugOCi3I+8D8=
 rsc.io/quote/v3 v3.1.0/go.mod h1:yEA65RcK8LyAZtP9Kv3t0HmxON59tX3rD+tICJqUlj0=
