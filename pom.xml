@@ -116,7 +116,7 @@
     <bouncycastle.version>1.80</bouncycastle.version>
     <bc-fips.version>2.1.0</bc-fips.version>
     <bcpkix-fips.version>2.1.9</bcpkix-fips.version>
-    <keycloak.version>26.1.3</keycloak.version><!-- Used by CRD Generator integration tests for verifications -->
+    <keycloak.version>26.1.4</keycloak.version><!-- Used by CRD Generator integration tests for verifications -->
     <mockito.version>5.16.1</mockito.version>
     <mockito-inline.version>5.2.0</mockito-inline.version>
     <spock.version>2.4-M5-groovy-4.0</spock.version>
