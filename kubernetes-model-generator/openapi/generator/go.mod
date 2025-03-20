@@ -7,7 +7,7 @@ toolchain go1.23.1
 require (
 	github.com/cert-manager/cert-manager v1.17.1
 	github.com/chaos-mesh/chaos-mesh/api v0.0.0
-	github.com/getkin/kin-openapi v0.130.0
+	github.com/getkin/kin-openapi v0.131.0
 	github.com/k8snetworkplumbingwg/network-attachment-definition-client v1.7.5
 	github.com/kubernetes-csi/external-snapshotter/client/v8 v8.2.0
 	github.com/metal3-io/baremetal-operator/apis v0.9.1
