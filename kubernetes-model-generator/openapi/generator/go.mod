@@ -20,11 +20,14 @@ require (
 	github.com/openshift/hive/apis v0.0.0-20240930213556-2d25383963db
 	github.com/openshift/installer v0.0.0-00010101000000-000000000000
 	github.com/operator-framework/api v0.29.0
+	github.com/operator-framework/operator-lifecycle-manager v0.31.0
 	github.com/ovn-org/ovn-kubernetes/go-controller v0.0.0-20241030140127-a68ef49d9441
 	github.com/prometheus-operator/prometheus-operator/pkg/apis/monitoring v0.79.2
 	github.com/spf13/cobra v1.9.1
 	github.com/stolostron/discovery v0.0.0-20241023180217-47cd9895f600
 	github.com/stolostron/klusterlet-addon-controller v0.0.0-20240912124113-fe0b6574a401
+	github.com/stolostron/multicluster-observability-operator v0.0.0-00010101000000-000000000000
+	github.com/stolostron/multiclusterhub-operator v0.0.0-20240626140553-4f1ed6be3b84
 	github.com/stolostron/search-v2-operator v0.0.0-20241029125341-1a376a062a45
 	github.com/tektoncd/pipeline v0.69.0
 	github.com/tektoncd/triggers v0.31.0
@@ -83,16 +86,6 @@ replace (
 	github.com/stolostron/multicluster-observability-operator => github.com/stolostron/multicluster-observability-operator v0.0.0-20241107140827-cef6b049dcef
 	github.com/stolostron/multiclusterhub-operator => github.com/stolostron/multiclusterhub-operator v0.0.0-20240626140553-4f1ed6be3b84
 	volcano.sh/apis => volcano.sh/apis v1.11.0
-)
-
-// TODO: WIP while this gets merged or fixed https://github.com/operator-framework/operator-lifecycle-manager/pull/3406
-// For some reason v0.30.0 has been released with the fix but the downloaded sources don't match those in GitHub ????
-replace github.com/operator-framework/operator-lifecycle-manager => github.com/marcnuri-forks/operator-lifecycle-manager v0.0.0-20241002090802-7539192fbf96
-
-require (
-	github.com/operator-framework/operator-lifecycle-manager v0.22.0
-	github.com/stolostron/multicluster-observability-operator v0.0.0-00010101000000-000000000000
-	github.com/stolostron/multiclusterhub-operator v0.0.0-20240626140553-4f1ed6be3b84
 )
 
 require (
@@ -173,7 +166,7 @@ require (
 	github.com/onsi/gomega v1.36.2 // indirect
 	github.com/opencontainers/go-digest v1.0.0 // indirect
 	github.com/openshift/custom-resource-status v1.1.3-0.20220503160415-f2fdb4999d87 // indirect
-	github.com/operator-framework/operator-registry v1.47.0 // indirect
+	github.com/operator-framework/operator-registry v1.50.0 // indirect
 	github.com/perimeterx/marshmallow v1.1.5 // indirect
 	github.com/phayes/freeport v0.0.0-20220201140144-74d24b5ae9f5 // indirect
 	github.com/pkg/errors v0.9.1 // indirect
