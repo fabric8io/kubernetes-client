@@ -16778,6 +16778,16 @@
         "Scope": "Namespaced"
       }
     },
+    "io.open-cluster-management.policy.v1.PolicyCustomValidator": {
+      "type": "object",
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "policy.open-cluster-management.io",
+        "Version": "v1",
+        "Kind": "PolicyCustomValidator",
+        "Scope": "Namespaced"
+      }
+    },
     "io.open-cluster-management.policy.v1.PolicyDependency": {
       "description": "Each PolicyDependency defines an object reference which must be in a certain compliance state before the policy should be created.",
       "type": "object",
