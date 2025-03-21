@@ -29,7 +29,7 @@ require (
 	github.com/stolostron/multicluster-observability-operator v0.0.0-00010101000000-000000000000
 	github.com/stolostron/multiclusterhub-operator v0.0.0-20240626140553-4f1ed6be3b84
 	github.com/stolostron/search-v2-operator v0.0.0-20241029125341-1a376a062a45
-	github.com/tektoncd/pipeline v0.69.0
+	github.com/tektoncd/pipeline v0.69.1
 	github.com/tektoncd/triggers v0.31.0
 	istio.io/client-go v1.25.0
 	k8s.io/api v0.32.3
