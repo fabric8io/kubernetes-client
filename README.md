@@ -292,8 +292,7 @@ Calling close() on any of the adapt() managed instances or the original instance
 
 ## Mocking Kubernetes
 
-Along with the client this project also provides a kubernetes mock server that you can use for testing purposes.
-The mock server is based on `https://github.com/square/okhttp/tree/master/mockwebserver` but is empowered by the DSL and features provided by `https://github.com/fabric8io/mockwebserver`.
+Along with the client this project also provides a Kubernetes Mock Server that you can use for testing purposes.
 
 The Mock Web Server has two modes of operation:
 
@@ -302,34 +301,58 @@ The Mock Web Server has two modes of operation:
 
 ### Expectations mode
 
-It's the typical mode where you first set which are the expected http requests and which should be the responses for each request.
-More details on usage can be found at: https://github.com/fabric8io/mockwebserver
+In this mode, you can set up expectations for the server to respond to HTTP and websocket requests.
 
-This mode has been extensively used for testing the client itself. Make sure you check [kubernetes-test](kubernetes-tests/src/test/java/io/fabric8/kubernetes/client/mock).
+This mode has been extensively used for testing the client itself.
+Make sure you check [kubernetes-test](kubernetes-tests/src/test/java/io/fabric8/kubernetes/client/mock).
 
 To add a Kubernetes server to your test:
 ```java
-@Rule
-public KubernetesServer server = new KubernetesServer();
+@EnableKubernetesMockClient
+class MyTestSuite {
+  KubernetesMockServer server;
+}
 ```
+
+Then you can use the server to define the expectations and the client to perform the regular kubernetes operations:
+```java
+class MyTestSuite {
+  KubernetesMockServer server;
+  KubernetesClient client;
+
+  @Test
+  void myTest() {
+    server.expect().get()
+      .withPath("/api/v1/namespaces/my-namespace/pods/my-pod")
+      .andReturn(200, new PodBuilder().build())
+      .always();
+    Pod pod = client.pods().inNamespace("my-namespace").withName("my-pod").get();
+  }
+}
+```
+
 ### CRUD mode
 
-Defining every single request and response can become tiresome. Given that in most cases the mock webserver is used to perform simple crud based operations, a crud mode has been added.
-When using the crud mode, the mock web server will store, read, update and delete kubernetes resources using an in memory map and will appear as a real api server.
+Defining every single request and response can become tiresome.
+Given that in most cases the Mock Server is mostly used to perform simple CRUD based operations, a CRUD mode is also available.
+
+When using the CRUD mode, the mock web server will store, read, update and delete kubernetes resources using an in memory map and will appear as a real API server.
 
 To add a Kubernetes Server in crud mode to your test:
 ```java
-@Rule
-public KubernetesServer server = new KubernetesServer(true, true);
+@EnableKubernetesMockClient(crud = true)
+class MyTestSuite {
+  KubernetesClient client;
+}
 ```
-Then you can use the server like:
-```java
-@Test
-public void testInCrudMode() {
-    KubernetesClient client = server.getClient();
-    final CountDownLatch deleteLatch = new CountDownLatch(1);
-    final CountDownLatch closeLatch = new CountDownLatch(1);
 
+Then you can use the client to perform the regular kubernetes operations:
+```java
+class MyTestSuite {
+  KubernetesClient client;
+
+  @Test
+  public void myCrudTest() {
     //CREATE
     client.pods().inNamespace("ns1").create(new PodBuilder().withNewMetadata().withName("pod1").endMetadata().build());
 
@@ -337,67 +360,7 @@ public void testInCrudMode() {
     podList = client.pods().inNamespace("ns1").list();
     assertNotNull(podList);
     assertEquals(1, podList.getItems().size());
-
-    //WATCH
-    Watch watch = client.pods().inNamespace("ns1").withName("pod1").watch(new Watcher<>() {
-        @Override
-        public void eventReceived(Action action, Pod resource) {
-            switch (action) {
-                case DELETED:
-                    deleteLatch.countDown();
-                    break;
-                default:
-                    throw new AssertionFailedError(action.toString().concat(" isn't recognised."));
-            }
-        }
-
-        @Override
-        public void onClose(WatcherException cause) {
-            closeLatch.countDown();
-        }
-    });
-
-    //DELETE
-    client.pods().inNamespace("ns1").withName("pod1").delete();
-
-    //READ AGAIN
-    podList = client.pods().inNamespace("ns1").list();
-    assertNotNull(podList);
-    assertEquals(0, podList.getItems().size());
-
-    assertTrue(deleteLatch.await(1, TimeUnit.MINUTES));
-    watch.close();
-    assertTrue(closeLatch.await(1, TimeUnit.MINUTES));
-}
-```
-### JUnit5 support through extension
-
-You can use KubernetesClient mocking mechanism with JUnit5. Since it doesn't support `@Rule` and `@ClassRule` there is dedicated annotation `@EnableKubernetesMockClient`.
-If you would like to create instance of mocked `KubernetesClient` for each test (JUnit4 `@Rule`) you need to declare instance of `KubernetesClient` as shown below.
-```java
-@EnableKubernetesMockClient
-class ExampleTest {
-
-    KubernetesClient client;
-
-    @Test
-    public void testInStandardMode() {
-            ...
-    }
-}
-```
-In case you would like to define static instance of mocked server per all the test (JUnit4 `@ClassRule`) you need to declare instance of `KubernetesClient` as shown below.
-You can also enable crudMode by using annotation field `crud`.
-```java
-@EnableKubernetesMockClient(crud = true)
-class ExampleTest {
-
-    static KubernetesClient client;
-
-    @Test
-    public void testInCrudMode() {
-            // ...
-    }
+  }
 }
 ```
 
