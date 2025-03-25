@@ -10,6 +10,7 @@
 * Fix #6917: Client does not authenticate correctly on OpenShift if the returned Location header is lower-case
 * Fix #6930: Add support for Boolean enums in the java-generator
 * Fix #6941: HasMetadata.getApiVersion no slash when empty group
+* Fix #6829: Mixed-case enums are properly supported by the java-generator
 
 #### Improvements
 * Fix #6863: ensuring SerialExecutor does not throw RejectedExecutionException to prevent unnecessary error logs
@@ -17,6 +18,8 @@
 * Fix #6880: LogWatch interface provides listeners on close stream event 
 
 #### Dependency Upgrade
+
+* Fix #6829: Sundrio was upgraded to 0.200.3. In some rare circumstances nested method names will need to be changed.
 
 #### New Features
 * Fix #6827: (crd-generator) Add CRDPostProcessor to process generated CRDs before they are written out
