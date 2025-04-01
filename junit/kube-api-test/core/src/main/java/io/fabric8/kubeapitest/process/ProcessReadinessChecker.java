@@ -41,6 +41,7 @@ import java.util.function.BooleanSupplier;
 
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLEngine;
+import javax.net.ssl.SSLException;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509ExtendedTrustManager;
 
@@ -123,7 +124,10 @@ public class ProcessReadinessChecker {
           response.statusCode(), processName,
           port);
       return response.statusCode() == 200;
-    } catch (ConnectException e) {
+      // It has been reported that in rare circumstances this call might
+      // result in a javax.net.ssl.SSLException: Unrecognized SSL message
+      // in that case we still want to retry, assuming this error goes away.
+    } catch (ConnectException | SSLException e) {
       // still want to retry
       log.debug("Cannot connect to the server", e);
       return false;
