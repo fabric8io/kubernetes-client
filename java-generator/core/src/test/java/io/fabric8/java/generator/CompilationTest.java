@@ -74,7 +74,8 @@ class CompilationTest {
         Arguments.of("folder", 6),
         Arguments.of("calico-ippool-crd.yml", 3),
         Arguments.of("emissary-crds.yaml", 242),
-        Arguments.of("colliding-enums-crd.yml", 2));
+        Arguments.of("colliding-enums-crd.yml", 2),
+        Arguments.of("gateway.envoyproxy.io_backendtrafficpolicies.yaml", 76));
   }
 
   @ParameterizedTest(name = "{0} should generate {1} source files and compile OK")
