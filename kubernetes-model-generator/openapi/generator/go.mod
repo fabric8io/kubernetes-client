@@ -2,7 +2,7 @@ module github.com/fabric8io/kubernetes-client/kubernetes-model-generator/openapi
 
 go 1.23.6
 
-toolchain go1.23.7
+toolchain go1.24.1
 
 require (
 	github.com/cert-manager/cert-manager v1.17.1
@@ -29,7 +29,7 @@ require (
 	github.com/stolostron/multicluster-observability-operator v0.0.0-20250321140711-00cca27614da
 	github.com/stolostron/multiclusterhub-operator v0.0.0-20250322143527-658d33b90f05
 	github.com/stolostron/search-v2-operator v0.0.0-20250319134305-e19cee08aaa5
-	github.com/tektoncd/pipeline v0.69.1
+	github.com/tektoncd/pipeline v0.70.0
 	github.com/tektoncd/triggers v0.31.0
 	istio.io/client-go v1.25.0
 	k8s.io/api v0.32.3
@@ -129,7 +129,7 @@ require (
 	github.com/gogo/protobuf v1.3.2 // indirect
 	github.com/golang/groupcache v0.0.0-20210331224755-41bb18bfe9da // indirect
 	github.com/golang/protobuf v1.5.4 // indirect
-	github.com/google/cel-go v0.23.2 // indirect
+	github.com/google/cel-go v0.24.1 // indirect
 	github.com/google/gnostic-models v0.6.9 // indirect
 	github.com/google/go-cmp v0.7.0 // indirect
 	github.com/google/go-containerregistry v0.20.2 // indirect
