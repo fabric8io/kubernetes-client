@@ -11,6 +11,7 @@
 * Fix #6930: Add support for Boolean enums in the java-generator
 * Fix #6941: HasMetadata.getApiVersion no slash when empty group
 * Fix #6829: Mixed-case enums are properly supported by the java-generator
+* FIX #6987: Kube API Test startup fails on readiness SSL check
 
 #### Improvements
 * Fix #6863: ensuring SerialExecutor does not throw RejectedExecutionException to prevent unnecessary error logs
