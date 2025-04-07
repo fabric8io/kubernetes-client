@@ -13,16 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8.istio.api.examples.v1beta1;
+package io.fabric8.istio.api.examples.v1;
 
-import io.fabric8.istio.api.networking.v1beta1.WorkloadEntryBuilder;
-import io.fabric8.istio.api.networking.v1beta1.WorkloadEntryList;
+import io.fabric8.istio.api.api.networking.v1alpha3.PortBuilder;
+import io.fabric8.istio.api.api.networking.v1alpha3.ServerBuilder;
+import io.fabric8.istio.api.api.networking.v1alpha3.ServerTLSSettingsBuilder;
+import io.fabric8.istio.api.networking.v1.GatewayBuilder;
+import io.fabric8.istio.api.networking.v1.GatewayList;
 import io.fabric8.istio.client.IstioClient;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 
 import java.util.Collections;
 
-public class WorkloadEntryExample {
+public class GatewayExample {
   private static final String NAMESPACE = "test";
 
   public static void main(String[] args) {
@@ -37,20 +40,24 @@ public class WorkloadEntryExample {
   }
 
   public static void createResource(IstioClient client) {
-    System.out.println("Creating a workload entry");
-    // Example from: https://istio.io/latest/docs/reference/config/networking/workload-entry/
-    client.v1beta1().workloadEntries().inNamespace(NAMESPACE).create(new WorkloadEntryBuilder()
+    System.out.println("Creating a gateway");
+    // Example from: https://istio.io/latest/docs/reference/config/networking/gateway/
+    client.v1().gateways().inNamespace(NAMESPACE).resource(new GatewayBuilder()
         .withNewMetadata()
-        .withName("details-svc")
+        .withName("my-gateway")
         .endMetadata()
         .withNewSpec()
-        .withServiceAccount("details-legacy")
-        .withLabels(Collections.singletonMap("app", "details-legacy"))
+        .withSelector(Collections.singletonMap("app", "my-gateway-controller"))
+        .withServers(new ServerBuilder()
+            .withPort(new PortBuilder().withNumber(80L).withProtocol("HTTP").withName("http").build())
+            .withHosts("uk.bookinfo.com", "eu.bookinfo.com")
+            .withTls(new ServerTLSSettingsBuilder().withHttpsRedirect(true).build())
+            .build())
         .endSpec()
-        .build());
+        .build()).create();
 
-    System.out.println("Listing workload entry instances:");
-    WorkloadEntryList list = client.v1beta1().workloadEntries().inNamespace(NAMESPACE).list();
+    System.out.println("Listing gateway instances:");
+    GatewayList list = client.v1().gateways().inNamespace(NAMESPACE).list();
     list.getItems().forEach(b -> System.out.println(b.getMetadata().getName()));
     System.out.println("Done");
   }

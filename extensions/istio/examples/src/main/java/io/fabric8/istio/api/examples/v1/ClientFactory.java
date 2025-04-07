@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8.istio.api.examples.v1beta1;
+package io.fabric8.istio.api.examples.v1;
 
 import io.fabric8.istio.client.DefaultIstioClient;
 import io.fabric8.istio.client.IstioClient;

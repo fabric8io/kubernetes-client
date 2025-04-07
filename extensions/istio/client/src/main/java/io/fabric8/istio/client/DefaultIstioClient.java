@@ -48,6 +48,11 @@ public class DefaultIstioClient extends ExtensionRootClientAdapter<DefaultIstioC
   }
 
   @Override
+  public V1APIGroupDSL v1() {
+    return adapt(V1APIGroupDSL.class);
+  }
+
+  @Override
   public V1alpha3APIGroupDSL v1alpha3() {
     return adapt(V1alpha3APIGroupClient.class);
   }

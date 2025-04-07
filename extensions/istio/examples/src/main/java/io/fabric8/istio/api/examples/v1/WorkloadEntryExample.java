@@ -13,17 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8.istio.api.examples.v1beta1;
+package io.fabric8.istio.api.examples.v1;
 
-import io.fabric8.istio.api.api.security.v1beta1.PeerAuthenticationMutualTLSBuilder;
-import io.fabric8.istio.api.api.security.v1beta1.PeerAuthenticationMutualTLSMode;
-import io.fabric8.istio.api.api.type.v1beta1.WorkloadSelectorBuilder;
-import io.fabric8.istio.api.security.v1beta1.PeerAuthenticationBuilder;
-import io.fabric8.istio.api.security.v1beta1.PeerAuthenticationList;
+import io.fabric8.istio.api.networking.v1.WorkloadEntryBuilder;
+import io.fabric8.istio.api.networking.v1.WorkloadEntryList;
 import io.fabric8.istio.client.IstioClient;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 
-public class PeerAuthenticationExample {
+import java.util.Collections;
+
+public class WorkloadEntryExample {
   private static final String NAMESPACE = "test";
 
   public static void main(String[] args) {
@@ -38,19 +37,20 @@ public class PeerAuthenticationExample {
   }
 
   public static void createResource(IstioClient client) {
-    System.out.println("Creating a PeerAuthentication entry");
-    client.v1beta1().peerAuthentications().inNamespace(NAMESPACE).create(new PeerAuthenticationBuilder()
+    System.out.println("Creating a workload entry");
+    // Example from: https://istio.io/latest/docs/reference/config/networking/workload-entry/
+    client.v1().workloadEntries().inNamespace(NAMESPACE).resource(new WorkloadEntryBuilder()
         .withNewMetadata()
         .withName("details-svc")
         .endMetadata()
         .withNewSpec()
-        .withSelector(new WorkloadSelectorBuilder().addToMatchLabels("app", "reviews").build())
-        .withMtls(new PeerAuthenticationMutualTLSBuilder().withMode(PeerAuthenticationMutualTLSMode.DISABLE).build())
+        .withServiceAccount("details-legacy")
+        .withLabels(Collections.singletonMap("app", "details-legacy"))
         .endSpec()
-        .build());
+        .build()).create();
 
     System.out.println("Listing workload entry instances:");
-    PeerAuthenticationList list = client.v1beta1().peerAuthentications().inNamespace(NAMESPACE).list();
+    WorkloadEntryList list = client.v1().workloadEntries().inNamespace(NAMESPACE).list();
     list.getItems().forEach(b -> System.out.println(b.getMetadata().getName()));
     System.out.println("Done");
   }

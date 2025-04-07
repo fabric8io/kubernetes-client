@@ -13,10 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8.istio.api.examples.v1beta1;
+package io.fabric8.istio.api.examples.v1;
 
-import io.fabric8.istio.api.networking.v1beta1.VirtualServiceBuilder;
-import io.fabric8.istio.api.networking.v1beta1.VirtualServiceList;
+import io.fabric8.istio.api.networking.v1.VirtualServiceBuilder;
+import io.fabric8.istio.api.networking.v1.VirtualServiceList;
 import io.fabric8.istio.client.IstioClient;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 
@@ -39,7 +39,7 @@ public class VirtualServiceExample {
     System.out.println("Creating a virtual service");
     // Example from: https://istio.io/latest/docs/reference/config/networking/virtual-service/
     final String reviewsHost = "reviews.prod.svc.cluster.local";
-    client.v1beta1().virtualServices().inNamespace(NAMESPACE).create(new VirtualServiceBuilder()
+    client.v1().virtualServices().inNamespace(NAMESPACE).resource(new VirtualServiceBuilder()
         .withNewMetadata()
         .withName("reviews-route")
         .endMetadata()
@@ -61,10 +61,10 @@ public class VirtualServiceExample {
         .endRoute()
         .endHttp()
         .endSpec()
-        .build());
+        .build()).create();
 
     System.out.println("Listing Virtual Service Instances:");
-    VirtualServiceList list = client.v1beta1().virtualServices().inNamespace(NAMESPACE).list();
+    VirtualServiceList list = client.v1().virtualServices().inNamespace(NAMESPACE).list();
     list.getItems().forEach(b -> System.out.println(b.getMetadata().getName()));
     System.out.println("Done");
   }

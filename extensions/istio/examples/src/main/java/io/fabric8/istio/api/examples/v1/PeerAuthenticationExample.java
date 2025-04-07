@@ -13,17 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8.istio.api.examples.v1beta1;
+package io.fabric8.istio.api.examples.v1;
 
-import io.fabric8.istio.api.api.networking.v1alpha3.LoadBalancerSettingsBuilder;
-import io.fabric8.istio.api.api.networking.v1alpha3.LoadBalancerSettingsSimple;
-import io.fabric8.istio.api.api.networking.v1alpha3.LoadBalancerSettingsSimpleLB;
-import io.fabric8.istio.api.networking.v1beta1.DestinationRuleBuilder;
-import io.fabric8.istio.api.networking.v1beta1.DestinationRuleList;
+import io.fabric8.istio.api.api.security.v1beta1.PeerAuthenticationMutualTLSBuilder;
+import io.fabric8.istio.api.api.security.v1beta1.PeerAuthenticationMutualTLSMode;
+import io.fabric8.istio.api.api.type.v1beta1.WorkloadSelectorBuilder;
+import io.fabric8.istio.api.security.v1.PeerAuthenticationBuilder;
+import io.fabric8.istio.api.security.v1.PeerAuthenticationList;
 import io.fabric8.istio.client.IstioClient;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 
-public class DestinationRuleExample {
+public class PeerAuthenticationExample {
   private static final String NAMESPACE = "test";
 
   public static void main(String[] args) {
@@ -38,24 +38,19 @@ public class DestinationRuleExample {
   }
 
   public static void createResource(IstioClient client) {
-    System.out.println("Creating a destination rule");
-    // Example from: https://istio.io/latest/docs/reference/config/networking/destination-rule/
-    client.v1beta1().destinationRules().inNamespace(NAMESPACE).create(new DestinationRuleBuilder()
+    System.out.println("Creating a PeerAuthentication entry");
+    client.v1().peerAuthentications().inNamespace(NAMESPACE).resource(new PeerAuthenticationBuilder()
         .withNewMetadata()
-        .withName("reviews-route")
+        .withName("details-svc")
         .endMetadata()
         .withNewSpec()
-        .withHost("ratings.prod.svc.cluster.local")
-        .withNewTrafficPolicy()
-        .withLoadBalancer(
-            new LoadBalancerSettingsBuilder().withLbPolicy(new LoadBalancerSettingsSimple(LoadBalancerSettingsSimpleLB.RANDOM))
-                .build())
-        .endTrafficPolicy()
+        .withSelector(new WorkloadSelectorBuilder().addToMatchLabels("app", "reviews").build())
+        .withMtls(new PeerAuthenticationMutualTLSBuilder().withMode(PeerAuthenticationMutualTLSMode.DISABLE).build())
         .endSpec()
-        .build());
+        .build()).create();
 
-    System.out.println("Listing destination rules instances:");
-    DestinationRuleList list = client.v1beta1().destinationRules().inNamespace(NAMESPACE).list();
+    System.out.println("Listing workload entry instances:");
+    PeerAuthenticationList list = client.v1().peerAuthentications().inNamespace(NAMESPACE).list();
     list.getItems().forEach(b -> System.out.println(b.getMetadata().getName()));
     System.out.println("Done");
   }

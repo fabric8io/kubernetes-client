@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8.istio.api.examples.v1beta1;
+package io.fabric8.istio.api.examples.v1;
 
 import io.fabric8.istio.api.api.security.v1beta1.AuthorizationPolicyAction;
 import io.fabric8.istio.api.api.security.v1beta1.ConditionBuilder;
@@ -23,8 +23,8 @@ import io.fabric8.istio.api.api.security.v1beta1.RuleFromBuilder;
 import io.fabric8.istio.api.api.security.v1beta1.RuleToBuilder;
 import io.fabric8.istio.api.api.security.v1beta1.SourceBuilder;
 import io.fabric8.istio.api.api.type.v1beta1.WorkloadSelectorBuilder;
-import io.fabric8.istio.api.security.v1beta1.AuthorizationPolicyBuilder;
-import io.fabric8.istio.api.security.v1beta1.AuthorizationPolicyList;
+import io.fabric8.istio.api.security.v1.AuthorizationPolicyBuilder;
+import io.fabric8.istio.api.security.v1.AuthorizationPolicyList;
 import io.fabric8.istio.client.IstioClient;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 
@@ -46,7 +46,7 @@ public class AuthorizationPolicyExample {
 
   public static void createResource(IstioClient client) {
     System.out.println("Creating a AuthorizationPolicy entry");
-    client.v1beta1().authorizationPolicies().inNamespace(NAMESPACE).create(new AuthorizationPolicyBuilder()
+    client.v1().authorizationPolicies().inNamespace(NAMESPACE).create(new AuthorizationPolicyBuilder()
         .withNewMetadata()
         .withName("httpbin")
         .endMetadata()
@@ -67,7 +67,7 @@ public class AuthorizationPolicyExample {
         .build());
 
     System.out.println("Listing AuthorizationPolicy instances:");
-    AuthorizationPolicyList list = client.v1beta1().authorizationPolicies().inNamespace(NAMESPACE).list();
+    AuthorizationPolicyList list = client.v1().authorizationPolicies().inNamespace(NAMESPACE).list();
     list.getItems().forEach(b -> System.out.println(b.getMetadata().getName()));
     System.out.println("Done");
   }
