@@ -218,7 +218,7 @@ public class CustomRunStatus implements Editable<CustomRunStatusBuilder>, Kubern
     }
 
     /**
-     * RetriesStatus contains the history of CustomRunStatus, in case of a retry.
+     * RetriesStatus contains the history of CustomRunStatus, in case of a retry. See CustomRun.status (API version: tekton.dev/v1beta1)
      */
     @JsonProperty("retriesStatus")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -227,7 +227,7 @@ public class CustomRunStatus implements Editable<CustomRunStatusBuilder>, Kubern
     }
 
     /**
-     * RetriesStatus contains the history of CustomRunStatus, in case of a retry.
+     * RetriesStatus contains the history of CustomRunStatus, in case of a retry. See CustomRun.status (API version: tekton.dev/v1beta1)
      */
     @JsonProperty("retriesStatus")
     public void setRetriesStatus(List<io.fabric8.tekton.v1beta1.CustomRunStatus> retriesStatus) {

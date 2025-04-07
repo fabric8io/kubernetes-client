@@ -38,29 +38,29 @@ import lombok.experimental.Accessors;
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "AwaitSidecarReadiness",
-    "Coschedule",
-    "DisableAffinityAssistant",
-    "DisableCredsInit",
-    "DisableInlineSpec",
-    "EnableAPIFields",
-    "EnableArtifacts",
-    "EnableCELInWhenExpression",
-    "EnableConciseResolverSyntax",
-    "EnableKeepPodOnCancel",
-    "EnableKubernetesSidecar",
-    "EnableParamEnum",
-    "EnableProvenanceInStatus",
-    "EnableStepActions",
-    "EnforceNonfalsifiability",
-    "MaxResultSize",
-    "RequireGitSSHSecretKnownHosts",
-    "ResultExtractionMethod",
-    "RunningInEnvWithInjectedSidecars",
-    "SendCloudEventsForRuns",
-    "SetSecurityContext",
-    "SetSecurityContextReadOnlyRootFilesystem",
-    "VerificationNoMatchPolicy"
+    "awaitSidecarReadiness",
+    "coschedule",
+    "disableAffinityAssistant",
+    "disableCredsInit",
+    "disableInlineSpec",
+    "enableAPIFields",
+    "enableArtifacts",
+    "enableCELInWhenExpression",
+    "enableConciseResolverSyntax",
+    "enableKeepPodOnCancel",
+    "enableKubernetesSidecar",
+    "enableParamEnum",
+    "enableProvenanceInStatus",
+    "enableStepActions",
+    "enforceNonfalsifiability",
+    "maxResultSize",
+    "requireGitSSHSecretKnownHosts",
+    "resultExtractionMethod",
+    "runningInEnvWithInjectedSidecars",
+    "sendCloudEventsForRuns",
+    "setSecurityContext",
+    "setSecurityContextReadOnlyRootFilesystem",
+    "verificationNoMatchPolicy"
 })
 @ToString
 @EqualsAndHashCode
@@ -87,51 +87,51 @@ import lombok.experimental.Accessors;
 public class FeatureFlags implements Editable<FeatureFlagsBuilder>, KubernetesResource
 {
 
-    @JsonProperty("AwaitSidecarReadiness")
+    @JsonProperty("awaitSidecarReadiness")
     private Boolean awaitSidecarReadiness;
-    @JsonProperty("Coschedule")
+    @JsonProperty("coschedule")
     private String coschedule;
-    @JsonProperty("DisableAffinityAssistant")
+    @JsonProperty("disableAffinityAssistant")
     private Boolean disableAffinityAssistant;
-    @JsonProperty("DisableCredsInit")
+    @JsonProperty("disableCredsInit")
     private Boolean disableCredsInit;
-    @JsonProperty("DisableInlineSpec")
+    @JsonProperty("disableInlineSpec")
     private String disableInlineSpec;
-    @JsonProperty("EnableAPIFields")
+    @JsonProperty("enableAPIFields")
     private String enableAPIFields;
-    @JsonProperty("EnableArtifacts")
+    @JsonProperty("enableArtifacts")
     private Boolean enableArtifacts;
-    @JsonProperty("EnableCELInWhenExpression")
+    @JsonProperty("enableCELInWhenExpression")
     private Boolean enableCELInWhenExpression;
-    @JsonProperty("EnableConciseResolverSyntax")
+    @JsonProperty("enableConciseResolverSyntax")
     private Boolean enableConciseResolverSyntax;
-    @JsonProperty("EnableKeepPodOnCancel")
+    @JsonProperty("enableKeepPodOnCancel")
     private Boolean enableKeepPodOnCancel;
-    @JsonProperty("EnableKubernetesSidecar")
+    @JsonProperty("enableKubernetesSidecar")
     private Boolean enableKubernetesSidecar;
-    @JsonProperty("EnableParamEnum")
+    @JsonProperty("enableParamEnum")
     private Boolean enableParamEnum;
-    @JsonProperty("EnableProvenanceInStatus")
+    @JsonProperty("enableProvenanceInStatus")
     private Boolean enableProvenanceInStatus;
-    @JsonProperty("EnableStepActions")
+    @JsonProperty("enableStepActions")
     private Boolean enableStepActions;
-    @JsonProperty("EnforceNonfalsifiability")
+    @JsonProperty("enforceNonfalsifiability")
     private String enforceNonfalsifiability;
-    @JsonProperty("MaxResultSize")
+    @JsonProperty("maxResultSize")
     private Integer maxResultSize;
-    @JsonProperty("RequireGitSSHSecretKnownHosts")
+    @JsonProperty("requireGitSSHSecretKnownHosts")
     private Boolean requireGitSSHSecretKnownHosts;
-    @JsonProperty("ResultExtractionMethod")
+    @JsonProperty("resultExtractionMethod")
     private String resultExtractionMethod;
-    @JsonProperty("RunningInEnvWithInjectedSidecars")
+    @JsonProperty("runningInEnvWithInjectedSidecars")
     private Boolean runningInEnvWithInjectedSidecars;
-    @JsonProperty("SendCloudEventsForRuns")
+    @JsonProperty("sendCloudEventsForRuns")
     private Boolean sendCloudEventsForRuns;
-    @JsonProperty("SetSecurityContext")
+    @JsonProperty("setSecurityContext")
     private Boolean setSecurityContext;
-    @JsonProperty("SetSecurityContextReadOnlyRootFilesystem")
+    @JsonProperty("setSecurityContextReadOnlyRootFilesystem")
     private Boolean setSecurityContextReadOnlyRootFilesystem;
-    @JsonProperty("VerificationNoMatchPolicy")
+    @JsonProperty("verificationNoMatchPolicy")
     private String verificationNoMatchPolicy;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
@@ -172,7 +172,7 @@ public class FeatureFlags implements Editable<FeatureFlagsBuilder>, KubernetesRe
     /**
      * FeatureFlags holds the features configurations
      */
-    @JsonProperty("AwaitSidecarReadiness")
+    @JsonProperty("awaitSidecarReadiness")
     public Boolean getAwaitSidecarReadiness() {
         return awaitSidecarReadiness;
     }
@@ -180,7 +180,7 @@ public class FeatureFlags implements Editable<FeatureFlagsBuilder>, KubernetesRe
     /**
      * FeatureFlags holds the features configurations
      */
-    @JsonProperty("AwaitSidecarReadiness")
+    @JsonProperty("awaitSidecarReadiness")
     public void setAwaitSidecarReadiness(Boolean awaitSidecarReadiness) {
         this.awaitSidecarReadiness = awaitSidecarReadiness;
     }
@@ -188,7 +188,7 @@ public class FeatureFlags implements Editable<FeatureFlagsBuilder>, KubernetesRe
     /**
      * FeatureFlags holds the features configurations
      */
-    @JsonProperty("Coschedule")
+    @JsonProperty("coschedule")
     public String getCoschedule() {
         return coschedule;
     }
@@ -196,7 +196,7 @@ public class FeatureFlags implements Editable<FeatureFlagsBuilder>, KubernetesRe
     /**
      * FeatureFlags holds the features configurations
      */
-    @JsonProperty("Coschedule")
+    @JsonProperty("coschedule")
     public void setCoschedule(String coschedule) {
         this.coschedule = coschedule;
     }
@@ -204,7 +204,7 @@ public class FeatureFlags implements Editable<FeatureFlagsBuilder>, KubernetesRe
     /**
      * FeatureFlags holds the features configurations
      */
-    @JsonProperty("DisableAffinityAssistant")
+    @JsonProperty("disableAffinityAssistant")
     public Boolean getDisableAffinityAssistant() {
         return disableAffinityAssistant;
     }
@@ -212,7 +212,7 @@ public class FeatureFlags implements Editable<FeatureFlagsBuilder>, KubernetesRe
     /**
      * FeatureFlags holds the features configurations
      */
-    @JsonProperty("DisableAffinityAssistant")
+    @JsonProperty("disableAffinityAssistant")
     public void setDisableAffinityAssistant(Boolean disableAffinityAssistant) {
         this.disableAffinityAssistant = disableAffinityAssistant;
     }
@@ -220,7 +220,7 @@ public class FeatureFlags implements Editable<FeatureFlagsBuilder>, KubernetesRe
     /**
      * FeatureFlags holds the features configurations
      */
-    @JsonProperty("DisableCredsInit")
+    @JsonProperty("disableCredsInit")
     public Boolean getDisableCredsInit() {
         return disableCredsInit;
     }
@@ -228,7 +228,7 @@ public class FeatureFlags implements Editable<FeatureFlagsBuilder>, KubernetesRe
     /**
      * FeatureFlags holds the features configurations
      */
-    @JsonProperty("DisableCredsInit")
+    @JsonProperty("disableCredsInit")
     public void setDisableCredsInit(Boolean disableCredsInit) {
         this.disableCredsInit = disableCredsInit;
     }
@@ -236,7 +236,7 @@ public class FeatureFlags implements Editable<FeatureFlagsBuilder>, KubernetesRe
     /**
      * FeatureFlags holds the features configurations
      */
-    @JsonProperty("DisableInlineSpec")
+    @JsonProperty("disableInlineSpec")
     public String getDisableInlineSpec() {
         return disableInlineSpec;
     }
@@ -244,23 +244,23 @@ public class FeatureFlags implements Editable<FeatureFlagsBuilder>, KubernetesRe
     /**
      * FeatureFlags holds the features configurations
      */
-    @JsonProperty("DisableInlineSpec")
+    @JsonProperty("disableInlineSpec")
     public void setDisableInlineSpec(String disableInlineSpec) {
         this.disableInlineSpec = disableInlineSpec;
     }
 
     /**
-     * EnableTektonOCIBundles           bool // Deprecated: this is now ignored ScopeWhenExpressionsToTask       bool // Deprecated: this is now ignored
+     * FeatureFlags holds the features configurations
      */
-    @JsonProperty("EnableAPIFields")
+    @JsonProperty("enableAPIFields")
     public String getEnableAPIFields() {
         return enableAPIFields;
     }
 
     /**
-     * EnableTektonOCIBundles           bool // Deprecated: this is now ignored ScopeWhenExpressionsToTask       bool // Deprecated: this is now ignored
+     * FeatureFlags holds the features configurations
      */
-    @JsonProperty("EnableAPIFields")
+    @JsonProperty("enableAPIFields")
     public void setEnableAPIFields(String enableAPIFields) {
         this.enableAPIFields = enableAPIFields;
     }
@@ -268,7 +268,7 @@ public class FeatureFlags implements Editable<FeatureFlagsBuilder>, KubernetesRe
     /**
      * FeatureFlags holds the features configurations
      */
-    @JsonProperty("EnableArtifacts")
+    @JsonProperty("enableArtifacts")
     public Boolean getEnableArtifacts() {
         return enableArtifacts;
     }
@@ -276,7 +276,7 @@ public class FeatureFlags implements Editable<FeatureFlagsBuilder>, KubernetesRe
     /**
      * FeatureFlags holds the features configurations
      */
-    @JsonProperty("EnableArtifacts")
+    @JsonProperty("enableArtifacts")
     public void setEnableArtifacts(Boolean enableArtifacts) {
         this.enableArtifacts = enableArtifacts;
     }
@@ -284,7 +284,7 @@ public class FeatureFlags implements Editable<FeatureFlagsBuilder>, KubernetesRe
     /**
      * FeatureFlags holds the features configurations
      */
-    @JsonProperty("EnableCELInWhenExpression")
+    @JsonProperty("enableCELInWhenExpression")
     public Boolean getEnableCELInWhenExpression() {
         return enableCELInWhenExpression;
     }
@@ -292,7 +292,7 @@ public class FeatureFlags implements Editable<FeatureFlagsBuilder>, KubernetesRe
     /**
      * FeatureFlags holds the features configurations
      */
-    @JsonProperty("EnableCELInWhenExpression")
+    @JsonProperty("enableCELInWhenExpression")
     public void setEnableCELInWhenExpression(Boolean enableCELInWhenExpression) {
         this.enableCELInWhenExpression = enableCELInWhenExpression;
     }
@@ -300,7 +300,7 @@ public class FeatureFlags implements Editable<FeatureFlagsBuilder>, KubernetesRe
     /**
      * FeatureFlags holds the features configurations
      */
-    @JsonProperty("EnableConciseResolverSyntax")
+    @JsonProperty("enableConciseResolverSyntax")
     public Boolean getEnableConciseResolverSyntax() {
         return enableConciseResolverSyntax;
     }
@@ -308,7 +308,7 @@ public class FeatureFlags implements Editable<FeatureFlagsBuilder>, KubernetesRe
     /**
      * FeatureFlags holds the features configurations
      */
-    @JsonProperty("EnableConciseResolverSyntax")
+    @JsonProperty("enableConciseResolverSyntax")
     public void setEnableConciseResolverSyntax(Boolean enableConciseResolverSyntax) {
         this.enableConciseResolverSyntax = enableConciseResolverSyntax;
     }
@@ -316,7 +316,7 @@ public class FeatureFlags implements Editable<FeatureFlagsBuilder>, KubernetesRe
     /**
      * FeatureFlags holds the features configurations
      */
-    @JsonProperty("EnableKeepPodOnCancel")
+    @JsonProperty("enableKeepPodOnCancel")
     public Boolean getEnableKeepPodOnCancel() {
         return enableKeepPodOnCancel;
     }
@@ -324,7 +324,7 @@ public class FeatureFlags implements Editable<FeatureFlagsBuilder>, KubernetesRe
     /**
      * FeatureFlags holds the features configurations
      */
-    @JsonProperty("EnableKeepPodOnCancel")
+    @JsonProperty("enableKeepPodOnCancel")
     public void setEnableKeepPodOnCancel(Boolean enableKeepPodOnCancel) {
         this.enableKeepPodOnCancel = enableKeepPodOnCancel;
     }
@@ -332,7 +332,7 @@ public class FeatureFlags implements Editable<FeatureFlagsBuilder>, KubernetesRe
     /**
      * FeatureFlags holds the features configurations
      */
-    @JsonProperty("EnableKubernetesSidecar")
+    @JsonProperty("enableKubernetesSidecar")
     public Boolean getEnableKubernetesSidecar() {
         return enableKubernetesSidecar;
     }
@@ -340,7 +340,7 @@ public class FeatureFlags implements Editable<FeatureFlagsBuilder>, KubernetesRe
     /**
      * FeatureFlags holds the features configurations
      */
-    @JsonProperty("EnableKubernetesSidecar")
+    @JsonProperty("enableKubernetesSidecar")
     public void setEnableKubernetesSidecar(Boolean enableKubernetesSidecar) {
         this.enableKubernetesSidecar = enableKubernetesSidecar;
     }
@@ -348,7 +348,7 @@ public class FeatureFlags implements Editable<FeatureFlagsBuilder>, KubernetesRe
     /**
      * FeatureFlags holds the features configurations
      */
-    @JsonProperty("EnableParamEnum")
+    @JsonProperty("enableParamEnum")
     public Boolean getEnableParamEnum() {
         return enableParamEnum;
     }
@@ -356,7 +356,7 @@ public class FeatureFlags implements Editable<FeatureFlagsBuilder>, KubernetesRe
     /**
      * FeatureFlags holds the features configurations
      */
-    @JsonProperty("EnableParamEnum")
+    @JsonProperty("enableParamEnum")
     public void setEnableParamEnum(Boolean enableParamEnum) {
         this.enableParamEnum = enableParamEnum;
     }
@@ -364,7 +364,7 @@ public class FeatureFlags implements Editable<FeatureFlagsBuilder>, KubernetesRe
     /**
      * FeatureFlags holds the features configurations
      */
-    @JsonProperty("EnableProvenanceInStatus")
+    @JsonProperty("enableProvenanceInStatus")
     public Boolean getEnableProvenanceInStatus() {
         return enableProvenanceInStatus;
     }
@@ -372,7 +372,7 @@ public class FeatureFlags implements Editable<FeatureFlagsBuilder>, KubernetesRe
     /**
      * FeatureFlags holds the features configurations
      */
-    @JsonProperty("EnableProvenanceInStatus")
+    @JsonProperty("enableProvenanceInStatus")
     public void setEnableProvenanceInStatus(Boolean enableProvenanceInStatus) {
         this.enableProvenanceInStatus = enableProvenanceInStatus;
     }
@@ -380,7 +380,7 @@ public class FeatureFlags implements Editable<FeatureFlagsBuilder>, KubernetesRe
     /**
      * FeatureFlags holds the features configurations
      */
-    @JsonProperty("EnableStepActions")
+    @JsonProperty("enableStepActions")
     public Boolean getEnableStepActions() {
         return enableStepActions;
     }
@@ -388,7 +388,7 @@ public class FeatureFlags implements Editable<FeatureFlagsBuilder>, KubernetesRe
     /**
      * FeatureFlags holds the features configurations
      */
-    @JsonProperty("EnableStepActions")
+    @JsonProperty("enableStepActions")
     public void setEnableStepActions(Boolean enableStepActions) {
         this.enableStepActions = enableStepActions;
     }
@@ -396,7 +396,7 @@ public class FeatureFlags implements Editable<FeatureFlagsBuilder>, KubernetesRe
     /**
      * FeatureFlags holds the features configurations
      */
-    @JsonProperty("EnforceNonfalsifiability")
+    @JsonProperty("enforceNonfalsifiability")
     public String getEnforceNonfalsifiability() {
         return enforceNonfalsifiability;
     }
@@ -404,7 +404,7 @@ public class FeatureFlags implements Editable<FeatureFlagsBuilder>, KubernetesRe
     /**
      * FeatureFlags holds the features configurations
      */
-    @JsonProperty("EnforceNonfalsifiability")
+    @JsonProperty("enforceNonfalsifiability")
     public void setEnforceNonfalsifiability(String enforceNonfalsifiability) {
         this.enforceNonfalsifiability = enforceNonfalsifiability;
     }
@@ -412,7 +412,7 @@ public class FeatureFlags implements Editable<FeatureFlagsBuilder>, KubernetesRe
     /**
      * FeatureFlags holds the features configurations
      */
-    @JsonProperty("MaxResultSize")
+    @JsonProperty("maxResultSize")
     public Integer getMaxResultSize() {
         return maxResultSize;
     }
@@ -420,7 +420,7 @@ public class FeatureFlags implements Editable<FeatureFlagsBuilder>, KubernetesRe
     /**
      * FeatureFlags holds the features configurations
      */
-    @JsonProperty("MaxResultSize")
+    @JsonProperty("maxResultSize")
     public void setMaxResultSize(Integer maxResultSize) {
         this.maxResultSize = maxResultSize;
     }
@@ -428,7 +428,7 @@ public class FeatureFlags implements Editable<FeatureFlagsBuilder>, KubernetesRe
     /**
      * FeatureFlags holds the features configurations
      */
-    @JsonProperty("RequireGitSSHSecretKnownHosts")
+    @JsonProperty("requireGitSSHSecretKnownHosts")
     public Boolean getRequireGitSSHSecretKnownHosts() {
         return requireGitSSHSecretKnownHosts;
     }
@@ -436,7 +436,7 @@ public class FeatureFlags implements Editable<FeatureFlagsBuilder>, KubernetesRe
     /**
      * FeatureFlags holds the features configurations
      */
-    @JsonProperty("RequireGitSSHSecretKnownHosts")
+    @JsonProperty("requireGitSSHSecretKnownHosts")
     public void setRequireGitSSHSecretKnownHosts(Boolean requireGitSSHSecretKnownHosts) {
         this.requireGitSSHSecretKnownHosts = requireGitSSHSecretKnownHosts;
     }
@@ -444,7 +444,7 @@ public class FeatureFlags implements Editable<FeatureFlagsBuilder>, KubernetesRe
     /**
      * FeatureFlags holds the features configurations
      */
-    @JsonProperty("ResultExtractionMethod")
+    @JsonProperty("resultExtractionMethod")
     public String getResultExtractionMethod() {
         return resultExtractionMethod;
     }
@@ -452,7 +452,7 @@ public class FeatureFlags implements Editable<FeatureFlagsBuilder>, KubernetesRe
     /**
      * FeatureFlags holds the features configurations
      */
-    @JsonProperty("ResultExtractionMethod")
+    @JsonProperty("resultExtractionMethod")
     public void setResultExtractionMethod(String resultExtractionMethod) {
         this.resultExtractionMethod = resultExtractionMethod;
     }
@@ -460,7 +460,7 @@ public class FeatureFlags implements Editable<FeatureFlagsBuilder>, KubernetesRe
     /**
      * FeatureFlags holds the features configurations
      */
-    @JsonProperty("RunningInEnvWithInjectedSidecars")
+    @JsonProperty("runningInEnvWithInjectedSidecars")
     public Boolean getRunningInEnvWithInjectedSidecars() {
         return runningInEnvWithInjectedSidecars;
     }
@@ -468,7 +468,7 @@ public class FeatureFlags implements Editable<FeatureFlagsBuilder>, KubernetesRe
     /**
      * FeatureFlags holds the features configurations
      */
-    @JsonProperty("RunningInEnvWithInjectedSidecars")
+    @JsonProperty("runningInEnvWithInjectedSidecars")
     public void setRunningInEnvWithInjectedSidecars(Boolean runningInEnvWithInjectedSidecars) {
         this.runningInEnvWithInjectedSidecars = runningInEnvWithInjectedSidecars;
     }
@@ -476,7 +476,7 @@ public class FeatureFlags implements Editable<FeatureFlagsBuilder>, KubernetesRe
     /**
      * FeatureFlags holds the features configurations
      */
-    @JsonProperty("SendCloudEventsForRuns")
+    @JsonProperty("sendCloudEventsForRuns")
     public Boolean getSendCloudEventsForRuns() {
         return sendCloudEventsForRuns;
     }
@@ -484,7 +484,7 @@ public class FeatureFlags implements Editable<FeatureFlagsBuilder>, KubernetesRe
     /**
      * FeatureFlags holds the features configurations
      */
-    @JsonProperty("SendCloudEventsForRuns")
+    @JsonProperty("sendCloudEventsForRuns")
     public void setSendCloudEventsForRuns(Boolean sendCloudEventsForRuns) {
         this.sendCloudEventsForRuns = sendCloudEventsForRuns;
     }
@@ -492,7 +492,7 @@ public class FeatureFlags implements Editable<FeatureFlagsBuilder>, KubernetesRe
     /**
      * FeatureFlags holds the features configurations
      */
-    @JsonProperty("SetSecurityContext")
+    @JsonProperty("setSecurityContext")
     public Boolean getSetSecurityContext() {
         return setSecurityContext;
     }
@@ -500,7 +500,7 @@ public class FeatureFlags implements Editable<FeatureFlagsBuilder>, KubernetesRe
     /**
      * FeatureFlags holds the features configurations
      */
-    @JsonProperty("SetSecurityContext")
+    @JsonProperty("setSecurityContext")
     public void setSetSecurityContext(Boolean setSecurityContext) {
         this.setSecurityContext = setSecurityContext;
     }
@@ -508,7 +508,7 @@ public class FeatureFlags implements Editable<FeatureFlagsBuilder>, KubernetesRe
     /**
      * FeatureFlags holds the features configurations
      */
-    @JsonProperty("SetSecurityContextReadOnlyRootFilesystem")
+    @JsonProperty("setSecurityContextReadOnlyRootFilesystem")
     public Boolean getSetSecurityContextReadOnlyRootFilesystem() {
         return setSecurityContextReadOnlyRootFilesystem;
     }
@@ -516,7 +516,7 @@ public class FeatureFlags implements Editable<FeatureFlagsBuilder>, KubernetesRe
     /**
      * FeatureFlags holds the features configurations
      */
-    @JsonProperty("SetSecurityContextReadOnlyRootFilesystem")
+    @JsonProperty("setSecurityContextReadOnlyRootFilesystem")
     public void setSetSecurityContextReadOnlyRootFilesystem(Boolean setSecurityContextReadOnlyRootFilesystem) {
         this.setSecurityContextReadOnlyRootFilesystem = setSecurityContextReadOnlyRootFilesystem;
     }
@@ -524,7 +524,7 @@ public class FeatureFlags implements Editable<FeatureFlagsBuilder>, KubernetesRe
     /**
      * VerificationNoMatchPolicy is the feature flag for "trusted-resources-verification-no-match-policy" VerificationNoMatchPolicy can be set to "ignore", "warn" and "fail" values. ignore: skip trusted resources verification when no matching verification policies found warn: skip trusted resources verification when no matching verification policies found and log a warning fail: fail the taskrun or pipelines run if no matching verification policies found
      */
-    @JsonProperty("VerificationNoMatchPolicy")
+    @JsonProperty("verificationNoMatchPolicy")
     public String getVerificationNoMatchPolicy() {
         return verificationNoMatchPolicy;
     }
@@ -532,7 +532,7 @@ public class FeatureFlags implements Editable<FeatureFlagsBuilder>, KubernetesRe
     /**
      * VerificationNoMatchPolicy is the feature flag for "trusted-resources-verification-no-match-policy" VerificationNoMatchPolicy can be set to "ignore", "warn" and "fail" values. ignore: skip trusted resources verification when no matching verification policies found warn: skip trusted resources verification when no matching verification policies found and log a warning fail: fail the taskrun or pipelines run if no matching verification policies found
      */
-    @JsonProperty("VerificationNoMatchPolicy")
+    @JsonProperty("verificationNoMatchPolicy")
     public void setVerificationNoMatchPolicy(String verificationNoMatchPolicy) {
         this.verificationNoMatchPolicy = verificationNoMatchPolicy;
     }

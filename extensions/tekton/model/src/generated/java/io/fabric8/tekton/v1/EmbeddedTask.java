@@ -320,7 +320,7 @@ public class EmbeddedTask implements Editable<EmbeddedTaskBuilder>, KubernetesRe
     }
 
     /**
-     * Volumes is a collection of volumes that are available to mount into the steps of the build.
+     * Volumes is a collection of volumes that are available to mount into the steps of the build. See Pod.spec.volumes (API version: v1)
      */
     @JsonProperty("volumes")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -329,7 +329,7 @@ public class EmbeddedTask implements Editable<EmbeddedTaskBuilder>, KubernetesRe
     }
 
     /**
-     * Volumes is a collection of volumes that are available to mount into the steps of the build.
+     * Volumes is a collection of volumes that are available to mount into the steps of the build. See Pod.spec.volumes (API version: v1)
      */
     @JsonProperty("volumes")
     public void setVolumes(List<Volume> volumes) {
