@@ -13,12 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8.istio.api.examples.v1beta1;
+package io.fabric8.istio.api.examples.v1;
 
 import io.fabric8.istio.api.api.networking.v1alpha3.ServiceEntryLocation;
 import io.fabric8.istio.api.api.networking.v1alpha3.ServicePortBuilder;
-import io.fabric8.istio.api.networking.v1beta1.ServiceEntryBuilder;
-import io.fabric8.istio.api.networking.v1beta1.ServiceEntryList;
+import io.fabric8.istio.api.networking.v1.ServiceEntryBuilder;
+import io.fabric8.istio.api.networking.v1.ServiceEntryList;
 import io.fabric8.istio.client.IstioClient;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 
@@ -39,7 +39,7 @@ public class ServiceEntryExample {
   public static void createResource(IstioClient client) {
     System.out.println("Creating a service entry");
     // Example from: https://istio.io/latest/docs/reference/config/networking/service-entry/
-    client.v1beta1().serviceEntries().inNamespace(NAMESPACE).create(new ServiceEntryBuilder()
+    client.v1().serviceEntries().inNamespace(NAMESPACE).resource(new ServiceEntryBuilder()
         .withNewMetadata()
         .withName("external-svc-https")
         .endMetadata()
@@ -48,10 +48,10 @@ public class ServiceEntryExample {
         .withLocation(ServiceEntryLocation.MESH_INTERNAL)
         .withPorts(new ServicePortBuilder().withName("https").withProtocol("TLS").withNumber(443L).build())
         .endSpec()
-        .build());
+        .build()).create();
 
     System.out.println("Listing Virtual Service Instances:");
-    ServiceEntryList list = client.v1beta1().serviceEntries().inNamespace(NAMESPACE).list();
+    ServiceEntryList list = client.v1().serviceEntries().inNamespace(NAMESPACE).list();
     list.getItems().forEach(b -> System.out.println(b.getMetadata().getName()));
     System.out.println("Done");
   }

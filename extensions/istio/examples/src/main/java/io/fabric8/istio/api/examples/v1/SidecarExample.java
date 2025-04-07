@@ -13,11 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8.istio.api.examples.v1beta1;
+package io.fabric8.istio.api.examples.v1;
 
 import io.fabric8.istio.api.api.networking.v1alpha3.IstioEgressListenerBuilder;
-import io.fabric8.istio.api.networking.v1beta1.SidecarBuilder;
-import io.fabric8.istio.api.networking.v1beta1.SidecarList;
+import io.fabric8.istio.api.networking.v1.SidecarBuilder;
+import io.fabric8.istio.api.networking.v1.SidecarList;
 import io.fabric8.istio.client.IstioClient;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 
@@ -38,7 +38,7 @@ public class SidecarExample {
   public static void createResource(IstioClient client) {
     System.out.println("Creating a sidecar");
     // Example from: https://istio.io/latest/docs/reference/config/networking/sidecar/
-    client.v1beta1().sidecars().inNamespace(NAMESPACE).create(new SidecarBuilder()
+    client.v1().sidecars().inNamespace(NAMESPACE).resource(new SidecarBuilder()
         .withNewMetadata()
         .withName("default")
         .endMetadata()
@@ -46,10 +46,10 @@ public class SidecarExample {
         .withEgress(new IstioEgressListenerBuilder()
             .withHosts("./*", "istio-system/*").build())
         .endSpec()
-        .build());
+        .build()).create();
 
     System.out.println("Listing sidecar instances:");
-    SidecarList list = client.v1beta1().sidecars().inNamespace(NAMESPACE).list();
+    SidecarList list = client.v1().sidecars().inNamespace(NAMESPACE).list();
     list.getItems().forEach(b -> System.out.println(b.getMetadata().getName()));
     System.out.println("Done");
   }

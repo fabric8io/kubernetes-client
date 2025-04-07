@@ -21,6 +21,14 @@ import io.fabric8.kubernetes.client.Client;
  * Main interface for Istio Client.
  */
 public interface IstioClient extends Client {
+
+  /**
+   * API entrypoint for istio.io/v1 API group resources
+   *
+   * @return {@link V1APIGroupDSL} for Istio resource operations in this API group.
+   */
+  V1APIGroupDSL v1();
+
   /**
    * API entrypoint for istio.io/v1beta1 API group resources
    *
