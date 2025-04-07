@@ -165,126 +165,77 @@
     "com.github.tektoncd.pipeline.pkg.apis.config.FeatureFlags": {
       "description": "FeatureFlags holds the features configurations",
       "type": "object",
-      "required": [
-        "DisableAffinityAssistant",
-        "DisableCredsInit",
-        "RunningInEnvWithInjectedSidecars",
-        "RequireGitSSHSecretKnownHosts",
-        "EnableAPIFields",
-        "SendCloudEventsForRuns",
-        "AwaitSidecarReadiness",
-        "EnforceNonfalsifiability",
-        "EnableKeepPodOnCancel",
-        "VerificationNoMatchPolicy",
-        "EnableProvenanceInStatus",
-        "ResultExtractionMethod",
-        "MaxResultSize",
-        "SetSecurityContext",
-        "SetSecurityContextReadOnlyRootFilesystem",
-        "Coschedule",
-        "EnableCELInWhenExpression",
-        "EnableStepActions",
-        "EnableParamEnum",
-        "EnableArtifacts",
-        "DisableInlineSpec",
-        "EnableConciseResolverSyntax",
-        "EnableKubernetesSidecar"
-      ],
       "properties": {
-        "AwaitSidecarReadiness": {
-          "type": "boolean",
-          "default": false
+        "awaitSidecarReadiness": {
+          "type": "boolean"
         },
-        "Coschedule": {
-          "type": "string",
-          "default": ""
+        "coschedule": {
+          "type": "string"
         },
-        "DisableAffinityAssistant": {
-          "type": "boolean",
-          "default": false
+        "disableAffinityAssistant": {
+          "type": "boolean"
         },
-        "DisableCredsInit": {
-          "type": "boolean",
-          "default": false
+        "disableCredsInit": {
+          "type": "boolean"
         },
-        "DisableInlineSpec": {
-          "type": "string",
-          "default": ""
+        "disableInlineSpec": {
+          "type": "string"
         },
-        "EnableAPIFields": {
-          "description": "EnableTektonOCIBundles           bool // Deprecated: this is now ignored ScopeWhenExpressionsToTask       bool // Deprecated: this is now ignored",
-          "type": "string",
-          "default": ""
+        "enableAPIFields": {
+          "type": "string"
         },
-        "EnableArtifacts": {
-          "type": "boolean",
-          "default": false
+        "enableArtifacts": {
+          "type": "boolean"
         },
-        "EnableCELInWhenExpression": {
-          "type": "boolean",
-          "default": false
+        "enableCELInWhenExpression": {
+          "type": "boolean"
         },
-        "EnableConciseResolverSyntax": {
-          "type": "boolean",
-          "default": false
+        "enableConciseResolverSyntax": {
+          "type": "boolean"
         },
-        "EnableKeepPodOnCancel": {
-          "type": "boolean",
-          "default": false
+        "enableKeepPodOnCancel": {
+          "type": "boolean"
         },
-        "EnableKubernetesSidecar": {
-          "type": "boolean",
-          "default": false
+        "enableKubernetesSidecar": {
+          "type": "boolean"
         },
-        "EnableParamEnum": {
-          "type": "boolean",
-          "default": false
+        "enableParamEnum": {
+          "type": "boolean"
         },
-        "EnableProvenanceInStatus": {
-          "type": "boolean",
-          "default": false
+        "enableProvenanceInStatus": {
+          "type": "boolean"
         },
-        "EnableStepActions": {
-          "type": "boolean",
-          "default": false
+        "enableStepActions": {
+          "type": "boolean"
         },
-        "EnforceNonfalsifiability": {
-          "type": "string",
-          "default": ""
+        "enforceNonfalsifiability": {
+          "type": "string"
         },
-        "MaxResultSize": {
+        "maxResultSize": {
           "type": "integer",
-          "format": "int32",
-          "default": 0
+          "format": "int32"
         },
-        "RequireGitSSHSecretKnownHosts": {
-          "type": "boolean",
-          "default": false
+        "requireGitSSHSecretKnownHosts": {
+          "type": "boolean"
         },
-        "ResultExtractionMethod": {
-          "type": "string",
-          "default": ""
+        "resultExtractionMethod": {
+          "type": "string"
         },
-        "RunningInEnvWithInjectedSidecars": {
-          "type": "boolean",
-          "default": false
+        "runningInEnvWithInjectedSidecars": {
+          "type": "boolean"
         },
-        "SendCloudEventsForRuns": {
-          "type": "boolean",
-          "default": false
+        "sendCloudEventsForRuns": {
+          "type": "boolean"
         },
-        "SetSecurityContext": {
-          "type": "boolean",
-          "default": false
+        "setSecurityContext": {
+          "type": "boolean"
         },
-        "SetSecurityContextReadOnlyRootFilesystem": {
-          "type": "boolean",
-          "default": false
+        "setSecurityContextReadOnlyRootFilesystem": {
+          "type": "boolean"
         },
-        "VerificationNoMatchPolicy": {
+        "verificationNoMatchPolicy": {
           "description": "VerificationNoMatchPolicy is the feature flag for \"trusted-resources-verification-no-match-policy\" VerificationNoMatchPolicy can be set to \"ignore\", \"warn\" and \"fail\" values. ignore: skip trusted resources verification when no matching verification policies found warn: skip trusted resources verification when no matching verification policies found and log a warning fail: fail the taskrun or pipelines run if no matching verification policies found",
-          "type": "string",
-          "default": ""
+          "type": "string"
         }
       },
       "x-fabric8-info": {
@@ -431,6 +382,287 @@
         "Scope": "Namespaced"
       }
     },
+    "com.github.tektoncd.pipeline.pkg.apis.pipeline.v1.types.Artifact": {
+      "description": "TaskRunStepArtifact represents an artifact produced or used by a step within a task run. It directly uses the Artifact type for its structure.",
+      "type": "object",
+      "properties": {
+        "buildOutput": {
+          "description": "Indicate if the artifact is a build output or a by-product",
+          "type": "boolean"
+        },
+        "name": {
+          "description": "The artifact's identifying category name",
+          "type": "string"
+        },
+        "values": {
+          "description": "A collection of values related to the artifact",
+          "type": "array",
+          "items": {
+            "default": {},
+            "$ref": "#/definitions/com.github.tektoncd.pipeline.pkg.apis.pipeline.v1.types.ArtifactValue"
+          }
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "",
+        "Version": "types",
+        "Kind": "Artifact",
+        "Scope": "Namespaced"
+      }
+    },
+    "com.github.tektoncd.pipeline.pkg.apis.pipeline.v1.types.ArtifactValue": {
+      "description": "ArtifactValue represents a specific value or data element within an Artifact.",
+      "type": "object",
+      "properties": {
+        "digest": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string",
+            "default": ""
+          }
+        },
+        "uri": {
+          "description": "Algorithm-specific digests for verifying the content (e.g., SHA256)",
+          "type": "string"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "",
+        "Version": "types",
+        "Kind": "ArtifactValue",
+        "Scope": "Namespaced"
+      }
+    },
+    "com.github.tektoncd.pipeline.pkg.apis.pipeline.v1.types.Artifacts": {
+      "description": "Artifacts represents the collection of input and output artifacts associated with a task run or a similar process. Artifacts in this context are units of data or resources that the process either consumes as input or produces as output.",
+      "type": "object",
+      "properties": {
+        "inputs": {
+          "type": "array",
+          "items": {
+            "default": {},
+            "$ref": "#/definitions/com.github.tektoncd.pipeline.pkg.apis.pipeline.v1.types.Artifact"
+          }
+        },
+        "outputs": {
+          "type": "array",
+          "items": {
+            "default": {},
+            "$ref": "#/definitions/com.github.tektoncd.pipeline.pkg.apis.pipeline.v1.types.Artifact"
+          }
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "",
+        "Version": "types",
+        "Kind": "Artifacts",
+        "Scope": "Namespaced"
+      }
+    },
+    "com.github.tektoncd.pipeline.pkg.apis.pipeline.v1.types.ParamValue": {
+      "description": "ResultValue is a type alias of ParamValue",
+      "type": "object",
+      "required": [
+        "Type",
+        "StringVal",
+        "ArrayVal",
+        "ObjectVal"
+      ],
+      "properties": {
+        "ArrayVal": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "default": ""
+          },
+          "x-kubernetes-list-type": "atomic"
+        },
+        "ObjectVal": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string",
+            "default": ""
+          }
+        },
+        "StringVal": {
+          "description": "Represents the stored type of ParamValues.",
+          "type": "string",
+          "default": ""
+        },
+        "Type": {
+          "type": "string",
+          "default": ""
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "",
+        "Version": "types",
+        "Kind": "ParamValue",
+        "Scope": "Namespaced"
+      }
+    },
+    "com.github.tektoncd.pipeline.pkg.apis.pipeline.v1.types.PropertySpec": {
+      "description": "PropertySpec defines the struct for object keys",
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "",
+        "Version": "types",
+        "Kind": "PropertySpec",
+        "Scope": "Namespaced"
+      }
+    },
+    "com.github.tektoncd.pipeline.pkg.apis.pipeline.v1.types.StepResult": {
+      "description": "StepResult used to describe the Results of a Step.\n\nThis is field is at an BETA stability level and gated by \"enable-step-actions\" feature flag.",
+      "type": "object",
+      "required": [
+        "name"
+      ],
+      "properties": {
+        "description": {
+          "description": "Description is a human-readable description of the result",
+          "type": "string"
+        },
+        "name": {
+          "description": "Name the given name",
+          "type": "string",
+          "default": ""
+        },
+        "properties": {
+          "description": "Properties is the JSON Schema properties to support key-value pairs results.",
+          "type": "object",
+          "additionalProperties": {
+            "default": {},
+            "$ref": "#/definitions/com.github.tektoncd.pipeline.pkg.apis.pipeline.v1.types.PropertySpec"
+          }
+        },
+        "type": {
+          "description": "The possible types are 'string', 'array', and 'object', with 'string' as the default.",
+          "type": "string"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "",
+        "Version": "types",
+        "Kind": "StepResult",
+        "Scope": "Namespaced"
+      }
+    },
+    "com.github.tektoncd.pipeline.pkg.apis.pipeline.v1.types.TaskResult": {
+      "description": "TaskResult used to describe the results of a task",
+      "type": "object",
+      "required": [
+        "name"
+      ],
+      "properties": {
+        "description": {
+          "description": "Description is a human-readable description of the result",
+          "type": "string"
+        },
+        "name": {
+          "description": "Name the given name",
+          "type": "string",
+          "default": ""
+        },
+        "properties": {
+          "description": "Properties is the JSON Schema properties to support key-value pairs results.",
+          "type": "object",
+          "additionalProperties": {
+            "default": {},
+            "$ref": "#/definitions/com.github.tektoncd.pipeline.pkg.apis.pipeline.v1.types.PropertySpec"
+          }
+        },
+        "type": {
+          "description": "Type is the user-specified type of the result. The possible type is currently \"string\" and will support \"array\" in following work.",
+          "type": "string"
+        },
+        "value": {
+          "description": "Value the expression used to retrieve the value of the result from an underlying Step.",
+          "$ref": "#/definitions/com.github.tektoncd.pipeline.pkg.apis.pipeline.v1.types.ParamValue"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "",
+        "Version": "types",
+        "Kind": "TaskResult",
+        "Scope": "Namespaced"
+      }
+    },
+    "com.github.tektoncd.pipeline.pkg.apis.pipeline.v1.types.TaskRunResult": {
+      "description": "TaskRunStepResult is a type alias of TaskRunResult",
+      "type": "object",
+      "required": [
+        "name",
+        "value"
+      ],
+      "properties": {
+        "name": {
+          "description": "Name the given name",
+          "type": "string",
+          "default": ""
+        },
+        "type": {
+          "description": "Type is the user-specified type of the result. The possible type is currently \"string\" and will support \"array\" in following work.",
+          "type": "string"
+        },
+        "value": {
+          "description": "Value the given value of the result",
+          "$ref": "#/definitions/com.github.tektoncd.pipeline.pkg.apis.pipeline.v1.types.ParamValue"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "",
+        "Version": "types",
+        "Kind": "TaskRunResult",
+        "Scope": "Namespaced"
+      }
+    },
+    "com.github.tektoncd.pipeline.pkg.apis.pipeline.v1.types.WhenExpression": {
+      "description": "WhenExpression allows a PipelineTask to declare expressions to be evaluated before the Task is run to determine whether the Task should be executed or skipped",
+      "type": "object",
+      "properties": {
+        "cel": {
+          "description": "CEL is a string of Common Language Expression, which can be used to conditionally execute the task based on the result of the expression evaluation More info about CEL syntax: https://github.com/google/cel-spec/blob/master/doc/langdef.md",
+          "type": "string"
+        },
+        "input": {
+          "description": "Input is the string for guard checking which can be a static input or an output from a parent Task",
+          "type": "string"
+        },
+        "operator": {
+          "description": "Operator that represents an Input's relationship to the values",
+          "type": "string"
+        },
+        "values": {
+          "description": "Values is an array of strings, which is compared against the input, for guard checking It must be non-empty",
+          "type": "array",
+          "items": {
+            "type": "string",
+            "default": ""
+          },
+          "x-kubernetes-list-type": "atomic"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "",
+        "Version": "types",
+        "Kind": "WhenExpression",
+        "Scope": "Namespaced"
+      }
+    },
     "com.github.tektoncd.pipeline.pkg.result.RunResult": {
       "description": "RunResult is used to write key/value pairs to TaskRun pod termination messages. The key/value pairs may come from the entrypoint binary, or represent a TaskRunResult. If they represent a TaskRunResult, the key is the name of the result and the value is the JSON-serialized value of the result.",
       "type": "object",
@@ -516,7 +748,7 @@
       "type": "object",
       "properties": {
         "affinity": {
-          "description": "If specified, the pod's scheduling constraints",
+          "description": "If specified, the pod's scheduling constraints. See Pod.spec.affinity (API version: v1)",
           "$ref": "#/definitions/io.k8s.api.core.v1.Affinity"
         },
         "automountServiceAccountToken": {
@@ -611,7 +843,7 @@
           "x-kubernetes-list-type": "atomic"
         },
         "volumes": {
-          "description": "List of volumes that can be mounted by containers belonging to the pod. More info: https://kubernetes.io/docs/concepts/storage/volumes",
+          "description": "List of volumes that can be mounted by containers belonging to the pod. More info: https://kubernetes.io/docs/concepts/storage/volumes See Pod.spec.volumes (API version: v1)",
           "type": "array",
           "items": {
             "default": {},
@@ -3724,14 +3956,16 @@
           "items": {
             "default": {},
             "$ref": "#/definitions/dev.tekton.v1.Artifact"
-          }
+          },
+          "x-kubernetes-list-type": "atomic"
         },
         "outputs": {
           "type": "array",
           "items": {
             "default": {},
             "$ref": "#/definitions/dev.tekton.v1.Artifact"
-          }
+          },
+          "x-kubernetes-list-type": "atomic"
         }
       },
       "x-fabric8-info": {
@@ -3849,7 +4083,7 @@
           "x-kubernetes-list-type": "atomic"
         },
         "volumes": {
-          "description": "Volumes is a collection of volumes that are available to mount into the steps of the build.",
+          "description": "Volumes is a collection of volumes that are available to mount into the steps of the build. See Pod.spec.volumes (API version: v1)",
           "type": "array",
           "items": {
             "default": {},
@@ -4307,7 +4541,7 @@
           "$ref": "#/definitions/dev.tekton.v1.PipelineRef"
         },
         "pipelineSpec": {
-          "description": "Specifying PipelineSpec can be disabled by setting `disable-inline-spec` feature flag..",
+          "description": "Specifying PipelineSpec can be disabled by setting `disable-inline-spec` feature flag. See Pipeline.spec (API version: tekton.dev/v1)",
           "$ref": "#/definitions/dev.tekton.v1.PipelineSpec"
         },
         "status": {
@@ -4395,7 +4629,7 @@
           "format": "int64"
         },
         "pipelineSpec": {
-          "description": "PipelineRunSpec contains the exact spec used to instantiate the run",
+          "description": "PipelineSpec contains the exact spec used to instantiate the run. See Pipeline.spec (API version: tekton.dev/v1)",
           "$ref": "#/definitions/dev.tekton.v1.PipelineSpec"
         },
         "provenance": {
@@ -4463,7 +4697,7 @@
           "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.Time"
         },
         "pipelineSpec": {
-          "description": "PipelineRunSpec contains the exact spec used to instantiate the run",
+          "description": "PipelineSpec contains the exact spec used to instantiate the run. See Pipeline.spec (API version: tekton.dev/v1)",
           "$ref": "#/definitions/dev.tekton.v1.PipelineSpec"
         },
         "provenance": {
@@ -4643,7 +4877,7 @@
           "$ref": "#/definitions/dev.tekton.v1.PipelineRef"
         },
         "pipelineSpec": {
-          "description": "PipelineSpec is a specification of a pipeline Note: PipelineSpec is in preview mode and not yet supported Specifying PipelineSpec can be disabled by setting `disable-inline-spec` feature flag..",
+          "description": "PipelineSpec is a specification of a pipeline Note: PipelineSpec is in preview mode and not yet supported Specifying PipelineSpec can be disabled by setting `disable-inline-spec` feature flag. See Pipeline.spec (API version: tekton.dev/v1)",
           "$ref": "#/definitions/dev.tekton.v1.PipelineSpec"
         },
         "retries": {
@@ -4665,7 +4899,7 @@
           "$ref": "#/definitions/dev.tekton.v1.TaskRef"
         },
         "taskSpec": {
-          "description": "TaskSpec is a specification of a task Specifying TaskSpec can be disabled by setting `disable-inline-spec` feature flag..",
+          "description": "TaskSpec is a specification of a task Specifying TaskSpec can be disabled by setting `disable-inline-spec` feature flag. See Task.spec (API version: tekton.dev/v1)",
           "$ref": "#/definitions/dev.tekton.v1.EmbeddedTask"
         },
         "timeout": {
@@ -5994,7 +6228,7 @@
           "$ref": "#/definitions/dev.tekton.v1.TaskRef"
         },
         "taskSpec": {
-          "description": "Specifying PipelineSpec can be disabled by setting `disable-inline-spec` feature flag..",
+          "description": "Specifying TaskSpec can be disabled by setting `disable-inline-spec` feature flag. See Task.spec (API version: tekton.dev/v1)",
           "$ref": "#/definitions/dev.tekton.v1.TaskSpec"
         },
         "timeout": {
@@ -6294,7 +6528,7 @@
           "x-kubernetes-list-type": "atomic"
         },
         "volumes": {
-          "description": "Volumes is a collection of volumes that are available to mount into the steps of the build.",
+          "description": "Volumes is a collection of volumes that are available to mount into the steps of the build. See Pod.spec.volumes (API version: v1)",
           "type": "array",
           "items": {
             "default": {},
@@ -6420,7 +6654,7 @@
           "type": "string"
         },
         "volumeClaimTemplate": {
-          "description": "VolumeClaimTemplate is a template for a claim that will be created in the same namespace. The PipelineRun controller is responsible for creating a unique claim for each instance of PipelineRun.",
+          "description": "VolumeClaimTemplate is a template for a claim that will be created in the same namespace. The PipelineRun controller is responsible for creating a unique claim for each instance of PipelineRun. See PersistentVolumeClaim (API version: v1)",
           "$ref": "#/definitions/io.k8s.api.core.v1.PersistentVolumeClaim"
         }
       },
@@ -7832,7 +8066,7 @@
           }
         },
         "retriesStatus": {
-          "description": "RetriesStatus contains the history of CustomRunStatus, in case of a retry.",
+          "description": "RetriesStatus contains the history of CustomRunStatus, in case of a retry. See CustomRun.status (API version: tekton.dev/v1beta1)",
           "type": "array",
           "items": {
             "default": {},
@@ -7873,7 +8107,7 @@
           }
         },
         "retriesStatus": {
-          "description": "RetriesStatus contains the history of CustomRunStatus, in case of a retry.",
+          "description": "RetriesStatus contains the history of CustomRunStatus, in case of a retry. See CustomRun.status (API version: tekton.dev/v1beta1)",
           "type": "array",
           "items": {
             "default": {},
@@ -7991,7 +8225,7 @@
           "x-kubernetes-list-type": "atomic"
         },
         "volumes": {
-          "description": "Volumes is a collection of volumes that are available to mount into the steps of the build.",
+          "description": "Volumes is a collection of volumes that are available to mount into the steps of the build. See Pod.spec.volumes (API version: v1)",
           "type": "array",
           "items": {
             "default": {},
@@ -8572,7 +8806,7 @@
           "$ref": "#/definitions/dev.tekton.v1beta1.PipelineRef"
         },
         "pipelineSpec": {
-          "description": "Specifying PipelineSpec can be disabled by setting `disable-inline-spec` feature flag..",
+          "description": "Specifying PipelineSpec can be disabled by setting `disable-inline-spec` feature flag. See Pipeline.spec (API version: tekton.dev/v1beta1)",
           "$ref": "#/definitions/dev.tekton.v1beta1.PipelineSpec"
         },
         "podTemplate": {
@@ -8684,7 +8918,7 @@
           "x-kubernetes-list-type": "atomic"
         },
         "pipelineSpec": {
-          "description": "PipelineRunSpec contains the exact spec used to instantiate the run",
+          "description": "PipelineSpec contains the exact spec used to instantiate the run. See Pipeline.spec (API version: tekton.dev/v1beta1)",
           "$ref": "#/definitions/dev.tekton.v1beta1.PipelineSpec"
         },
         "provenance": {
@@ -8766,7 +9000,7 @@
           "x-kubernetes-list-type": "atomic"
         },
         "pipelineSpec": {
-          "description": "PipelineRunSpec contains the exact spec used to instantiate the run",
+          "description": "PipelineSpec contains the exact spec used to instantiate the run. See Pipeline.spec (API version: tekton.dev/v1beta1)",
           "$ref": "#/definitions/dev.tekton.v1beta1.PipelineSpec"
         },
         "provenance": {
@@ -8960,7 +9194,7 @@
           "$ref": "#/definitions/dev.tekton.v1beta1.PipelineRef"
         },
         "pipelineSpec": {
-          "description": "PipelineSpec is a specification of a pipeline Note: PipelineSpec is in preview mode and not yet supported Specifying TaskSpec can be disabled by setting `disable-inline-spec` feature flag..",
+          "description": "PipelineSpec is a specification of a pipeline Note: PipelineSpec is in preview mode and not yet supported Specifying PipelineSpec can be disabled by setting `disable-inline-spec` feature flag. See Pipeline.spec (API version: tekton.dev/v1beta1)",
           "$ref": "#/definitions/dev.tekton.v1beta1.PipelineSpec"
         },
         "resources": {
@@ -8986,7 +9220,7 @@
           "$ref": "#/definitions/dev.tekton.v1beta1.TaskRef"
         },
         "taskSpec": {
-          "description": "TaskSpec is a specification of a task Specifying TaskSpec can be disabled by setting `disable-inline-spec` feature flag..",
+          "description": "TaskSpec is a specification of a task Specifying TaskSpec can be disabled by setting `disable-inline-spec` feature flag. See Task.spec (API version: tekton.dev/v1beta1)",
           "$ref": "#/definitions/dev.tekton.v1beta1.EmbeddedTask"
         },
         "timeout": {
@@ -10791,7 +11025,7 @@
           "$ref": "#/definitions/dev.tekton.v1beta1.TaskRef"
         },
         "taskSpec": {
-          "description": "Specifying PipelineSpec can be disabled by setting `disable-inline-spec` feature flag..",
+          "description": "Specifying TaskSpec can be disabled by setting `disable-inline-spec` feature flag. See Task.spec (API version: tekton.dev/v1beta1)",
           "$ref": "#/definitions/dev.tekton.v1beta1.TaskSpec"
         },
         "timeout": {
@@ -10878,7 +11112,7 @@
           "x-kubernetes-list-type": "atomic"
         },
         "retriesStatus": {
-          "description": "RetriesStatus contains the history of TaskRunStatus in case of a retry in order to keep record of failures. All TaskRunStatus stored in RetriesStatus will have no date within the RetriesStatus as is redundant.",
+          "description": "RetriesStatus contains the history of TaskRunStatus in case of a retry in order to keep record of failures. All TaskRunStatus stored in RetriesStatus will have no date within the RetriesStatus as is redundant. See TaskRun.status (API version: tekton.dev/v1beta1)",
           "type": "array",
           "items": {
             "default": {},
@@ -10926,7 +11160,7 @@
           "x-kubernetes-list-type": "atomic"
         },
         "taskSpec": {
-          "description": "TaskSpec contains the Spec from the dereferenced Task definition used to instantiate this TaskRun.",
+          "description": "TaskSpec contains the Spec from the dereferenced Task definition used to instantiate this TaskRun. See Task.spec (API version tekton.dev/v1beta1)",
           "$ref": "#/definitions/dev.tekton.v1beta1.TaskSpec"
         }
       },
@@ -10977,7 +11211,7 @@
           "x-kubernetes-list-type": "atomic"
         },
         "retriesStatus": {
-          "description": "RetriesStatus contains the history of TaskRunStatus in case of a retry in order to keep record of failures. All TaskRunStatus stored in RetriesStatus will have no date within the RetriesStatus as is redundant.",
+          "description": "RetriesStatus contains the history of TaskRunStatus in case of a retry in order to keep record of failures. All TaskRunStatus stored in RetriesStatus will have no date within the RetriesStatus as is redundant. See TaskRun.status (API version: tekton.dev/v1beta1)",
           "type": "array",
           "items": {
             "default": {},
@@ -11025,7 +11259,7 @@
           "x-kubernetes-list-type": "atomic"
         },
         "taskSpec": {
-          "description": "TaskSpec contains the Spec from the dereferenced Task definition used to instantiate this TaskRun.",
+          "description": "TaskSpec contains the Spec from the dereferenced Task definition used to instantiate this TaskRun. See Task.spec (API version tekton.dev/v1beta1)",
           "$ref": "#/definitions/dev.tekton.v1beta1.TaskSpec"
         }
       },
@@ -11121,7 +11355,7 @@
           "x-kubernetes-list-type": "atomic"
         },
         "volumes": {
-          "description": "Volumes is a collection of volumes that are available to mount into the steps of the build.",
+          "description": "Volumes is a collection of volumes that are available to mount into the steps of the build. See Pod.spec.volumes (API version: v1)",
           "type": "array",
           "items": {
             "default": {},
@@ -11247,7 +11481,7 @@
           "type": "string"
         },
         "volumeClaimTemplate": {
-          "description": "VolumeClaimTemplate is a template for a claim that will be created in the same namespace. The PipelineRun controller is responsible for creating a unique claim for each instance of PipelineRun.",
+          "description": "VolumeClaimTemplate is a template for a claim that will be created in the same namespace. The PipelineRun controller is responsible for creating a unique claim for each instance of PipelineRun. See PersistentVolumeClaim (API version: v1)",
           "$ref": "#/definitions/io.k8s.api.core.v1.PersistentVolumeClaim"
         }
       },

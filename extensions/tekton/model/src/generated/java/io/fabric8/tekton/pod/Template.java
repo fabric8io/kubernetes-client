@@ -423,7 +423,7 @@ public class Template implements Editable<TemplateBuilder>, KubernetesResource
     }
 
     /**
-     * List of volumes that can be mounted by containers belonging to the pod. More info: https://kubernetes.io/docs/concepts/storage/volumes
+     * List of volumes that can be mounted by containers belonging to the pod. More info: https://kubernetes.io/docs/concepts/storage/volumes See Pod.spec.volumes (API version: v1)
      */
     @JsonProperty("volumes")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -432,7 +432,7 @@ public class Template implements Editable<TemplateBuilder>, KubernetesResource
     }
 
     /**
-     * List of volumes that can be mounted by containers belonging to the pod. More info: https://kubernetes.io/docs/concepts/storage/volumes
+     * List of volumes that can be mounted by containers belonging to the pod. More info: https://kubernetes.io/docs/concepts/storage/volumes See Pod.spec.volumes (API version: v1)
      */
     @JsonProperty("volumes")
     public void setVolumes(List<Volume> volumes) {

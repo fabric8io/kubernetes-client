@@ -283,7 +283,7 @@ public class TaskRunStatus implements Editable<TaskRunStatusBuilder>, Kubernetes
     }
 
     /**
-     * RetriesStatus contains the history of TaskRunStatus in case of a retry in order to keep record of failures. All TaskRunStatus stored in RetriesStatus will have no date within the RetriesStatus as is redundant.
+     * RetriesStatus contains the history of TaskRunStatus in case of a retry in order to keep record of failures. All TaskRunStatus stored in RetriesStatus will have no date within the RetriesStatus as is redundant. See TaskRun.status (API version: tekton.dev/v1beta1)
      */
     @JsonProperty("retriesStatus")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -292,7 +292,7 @@ public class TaskRunStatus implements Editable<TaskRunStatusBuilder>, Kubernetes
     }
 
     /**
-     * RetriesStatus contains the history of TaskRunStatus in case of a retry in order to keep record of failures. All TaskRunStatus stored in RetriesStatus will have no date within the RetriesStatus as is redundant.
+     * RetriesStatus contains the history of TaskRunStatus in case of a retry in order to keep record of failures. All TaskRunStatus stored in RetriesStatus will have no date within the RetriesStatus as is redundant. See TaskRun.status (API version: tekton.dev/v1beta1)
      */
     @JsonProperty("retriesStatus")
     public void setRetriesStatus(List<io.fabric8.tekton.v1beta1.TaskRunStatus> retriesStatus) {

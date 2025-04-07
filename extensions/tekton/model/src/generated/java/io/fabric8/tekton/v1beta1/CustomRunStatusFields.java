@@ -153,7 +153,7 @@ public class CustomRunStatusFields implements Editable<CustomRunStatusFieldsBuil
     }
 
     /**
-     * RetriesStatus contains the history of CustomRunStatus, in case of a retry.
+     * RetriesStatus contains the history of CustomRunStatus, in case of a retry. See CustomRun.status (API version: tekton.dev/v1beta1)
      */
     @JsonProperty("retriesStatus")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -162,7 +162,7 @@ public class CustomRunStatusFields implements Editable<CustomRunStatusFieldsBuil
     }
 
     /**
-     * RetriesStatus contains the history of CustomRunStatus, in case of a retry.
+     * RetriesStatus contains the history of CustomRunStatus, in case of a retry. See CustomRun.status (API version: tekton.dev/v1beta1)
      */
     @JsonProperty("retriesStatus")
     public void setRetriesStatus(List<CustomRunStatus> retriesStatus) {
