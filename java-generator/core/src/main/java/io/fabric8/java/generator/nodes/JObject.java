@@ -361,6 +361,8 @@ public class JObject extends AbstractJSONSchema2Pojo implements JObjectExtraAnno
         return new LongLiteralExpr(value + "L");
       } else if (prop.getClassType().equals("Float") && prop.getDefaultValue().isFloatingPointNumber()) {
         return new DoubleLiteralExpr(value + "f");
+      } else if (prop.getClassType().equals("Double") && prop.getDefaultValue().isNumber()) {
+        return new DoubleLiteralExpr(value + "d");
       } else if (prop.getClassType().equals("Boolean") && prop.getDefaultValue().isBoolean()) {
         return new BooleanLiteralExpr(prop.getDefaultValue().booleanValue());
       } else if (prop.getClassType().equals(DATETIME_NAME) && prop.getDefaultValue().isTextual()) {
