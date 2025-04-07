@@ -131,6 +131,18 @@ public interface HasMetadata extends KubernetesResource {
   }
 
   /**
+   * Retrieves the default plural form associated with the specified kind. Note that this is a best-effort attempt based on only
+   * the provided kind and might not correspond to the actual plural form if defined in a different way than the linguistic
+   * plural derived from the kind.
+   *
+   * @param kind the kind which default plural form we want to retrieve
+   * @return the default plural form associated with the specified kind
+   */
+  static String getDefaultPluralFor(String kind) {
+    return kind != null ? Pluralize.toPlural(kind.toLowerCase(Locale.ROOT)) : null;
+  }
+
+  /**
    * Retrieves the singular form associated with the specified class as defined by the
    * {@link Singular} annotation or computes a default value (lower-cased version of the value
    * returned by {@link HasMetadata#getKind(Class)}) if the annotation is not present.

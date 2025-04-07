@@ -15,6 +15,8 @@
 * FIX #6987: Kube API Test startup fails on readiness SSL check
 
 #### Improvements
+
+* Fix #6313: Add HasMetadata.getDefaultPluralFor method
 * Fix #6863: ensuring SerialExecutor does not throw RejectedExecutionException to prevent unnecessary error logs
 * Fix #6763: (crd-generator) YAML output customization
 * Fix #6880: LogWatch interface provides listeners on close stream event 
