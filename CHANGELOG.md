@@ -3,6 +3,7 @@
 ### 7.2-SNAPSHOT
 
 #### Bugs
+* Fix #6829: Mixed-case enums are properly supported by the java-generator
 * Fix #6886: Remove invalid JUnit 4 references
 * Fix #6892: rolling().restart() doesn't remove preexistent pod template annotations
 * Fix #6906: Knative VolatileTime should be serialized as String
@@ -10,7 +11,7 @@
 * Fix #6917: Client does not authenticate correctly on OpenShift if the returned Location header is lower-case
 * Fix #6930: Add support for Boolean enums in the java-generator
 * Fix #6941: HasMetadata.getApiVersion no slash when empty group
-* Fix #6829: Mixed-case enums are properly supported by the java-generator
+* Fix #6982: (java-generator) Double default field values with `d` suffix
 * FIX #6987: Kube API Test startup fails on readiness SSL check
 
 #### Improvements
