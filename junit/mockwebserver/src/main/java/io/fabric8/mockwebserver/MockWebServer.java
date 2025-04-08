@@ -240,6 +240,18 @@ public class MockWebServer implements Closeable {
     this.protocols = protocols;
   }
 
+  /**
+   * Returns the MockWebServer to its initial state by:
+   * <ul>
+   * <li>Clearing the request count.</li>
+   * <li>Clearing the request queue.</li>
+   * </ul>
+   */
+  public final void reset() {
+    requestCount.set(0);
+    requestQueue.clear();
+  }
+
   private static <T> T await(Future<T> vertxFuture, String errorMessage) {
     final CompletableFuture<T> future = new CompletableFuture<>();
     vertxFuture.onComplete(r -> {

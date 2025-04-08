@@ -3,6 +3,7 @@
 ### 7.2-SNAPSHOT
 
 #### Bugs
+* Fix #6750: KubernetesMockServer.reset resets lastRequest related variables
 * Fix #6829: Mixed-case enums are properly supported by the java-generator
 * Fix #6886: Remove invalid JUnit 4 references
 * Fix #6892: rolling().restart() doesn't remove preexistent pod template annotations
