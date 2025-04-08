@@ -70,4 +70,42 @@ class KubernetesMockServerTest {
     // Then
     assertThat(client.getKubernetesVersion()).isNull();
   }
+
+  @Test
+  @DisplayName("reset, removes expectation")
+  void resetRemovesExpectation() {
+    // Given
+    server.expect().get().withPath("/test").andReturn(200, "OK").always();
+    assertThat(client.raw("/test")).isEqualTo("OK");
+    // When
+    server.reset();
+    // Then
+    assertThat(client.raw("/test")).isNull();
+  }
+
+  @Test
+  @DisplayName("reset, sets request count to 0")
+  void resetSetsRequestCountToZero() {
+    // Given
+    server.expect().get().withPath("/test").andReturn(200, "OK").always();
+    client.raw("/test");
+    assertThat(server.getRequestCount()).isEqualTo(1);
+    // When
+    server.reset();
+    // Then
+    assertThat(server.getRequestCount()).isEqualTo(0);
+  }
+
+  @Test
+  @DisplayName("reset, resets last request")
+  void resetResetsLastRequest() throws Exception {
+    // Given
+    server.expect().get().withPath("/test").andReturn(200, "OK").always();
+    client.raw("/test");
+    assertThat(server.getLastRequest()).isNotNull();
+    // When
+    server.reset();
+    // Then
+    assertThat(server.getLastRequest()).isNull();
+  }
 }

@@ -111,7 +111,52 @@ class MockWebServerTest extends Specification {
 		server.getRequestCount() == 2
 	}
 
+	def "getRequestCount, with multiple and reset, should return valid request count"() {
+		given:
+		server.enqueue(new MockResponse().setResponseCode(200))
+		server.enqueue(new MockResponse().setResponseCode(200))
+		def all = Future.all(
+				client.get(server.port, server.getHostName(), "/").send(),
+				client.get(server.port, server.getHostName(), "/one").send()
+				)
+		and: "An instance of PollingConditions"
+		def conditions = new PollingConditions(timeout: 10)
+
+		when: "The request is sent and completed"
+		conditions.eventually {
+			assert all.isComplete()
+		}
+		and: "Reset the server"
+		server.reset()
+
+		then: "Expect the result to be completed in the specified time"
+		server.getRequestCount() == 0
+	}
+
 	def "takeRequest, with timeout and no requests, should return null and don't block -after timeout-"() {
+		when:
+		def result = server.takeRequest(1, TimeUnit.MICROSECONDS)
+
+		then:
+		assert result == null
+	}
+
+	def "takeRequest, with multiple and reset and timeout, should return null"() {
+		given:
+		server.enqueue(new MockResponse().setResponseCode(200))
+		server.enqueue(new MockResponse().setResponseCode(200))
+		def all = Future.all(
+				client.get(server.port, server.getHostName(), "/").send(),
+				client.get(server.port, server.getHostName(), "/one").send()
+				)
+		and: "An instance of PollingConditions"
+		def conditions = new PollingConditions(timeout: 10)
+		and: "The request is sent and completed"
+		conditions.eventually {
+			assert all.isComplete()
+		}
+		and: "Reset the server"
+		server.reset()
 		when:
 		def result = server.takeRequest(1, TimeUnit.MICROSECONDS)
 

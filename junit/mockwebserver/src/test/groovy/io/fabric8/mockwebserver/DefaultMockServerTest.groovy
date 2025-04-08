@@ -194,6 +194,27 @@ class DefaultMockServerTest extends Specification {
 		}
 	}
 
+	def "getLastRequest, with multiple requests and reset, should return null"() {
+		given:
+		def all = client.get(server.port, server.getHostName(), "/").send()
+				.compose { _ -> client.get(server.port, server.getHostName(), "/one").send()}
+				.compose { _ -> client.get(server.port, server.getHostName(), "/two").send()}
+		and: "An instance of PollingConditions"
+		def conditions = new PollingConditions(timeout: 10)
+
+		when: "The requests are completed"
+		conditions.eventually {
+			all.each { request ->
+				assert request.isComplete()
+			}
+		}
+		and:
+		server.reset()
+
+		then: "Expect getLastRequest to return null"
+		assert  server.getLastRequest() == null
+	}
+
 	def "takeRequest, with timeout and no requests, should return null and don't block after timeout"() {
 		when:
 		def result = server.takeRequest(1, TimeUnit.MICROSECONDS)

@@ -129,7 +129,7 @@ public class KubernetesMockServer extends DefaultMockServer implements Resetable
   }
 
   /**
-   * Creates a client using the cusotmized {@link KubernetesClientBuilder} provided in the {@link Consumer} parameter.
+   * Creates a client using the customized {@link KubernetesClientBuilder} provided in the {@link Consumer} parameter.
    * <p>
    * The function is invoked using an initial {@link Config} instance that is initialized with the mock server's
    * URL and the {@link TlsVersion} to use.
@@ -228,6 +228,7 @@ public class KubernetesMockServer extends DefaultMockServer implements Resetable
 
   @Override
   public void reset() {
+    super.reset();
     clearExpectations();
     onStart();
     unsupportedPatterns.clear();

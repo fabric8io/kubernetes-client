@@ -111,6 +111,13 @@ public class DefaultMockServer implements MockServer {
     }
   }
 
+  public void reset() {
+    server.reset();
+    responses.clear();
+    lastRequest.set(null);
+    lastRequestCount.set(0);
+  }
+
   /**
    * {@inheritDoc}
    */
