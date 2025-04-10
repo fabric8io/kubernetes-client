@@ -93,6 +93,7 @@ public class ResolvingContext {
   final KubernetesSerialization kubernetesSerialization;
   final Map<String, GeneratorObjectSchema> uriToJacksonSchema;
   final boolean implicitPreserveUnknownFields;
+  final boolean ignoreJSONSchemaAnnotation;
 
   private static ObjectMapper OBJECT_MAPPER;
 
@@ -112,21 +113,27 @@ public class ResolvingContext {
   }
 
   public ResolvingContext forkContext() {
-    return new ResolvingContext(objectMapper, kubernetesSerialization, uriToJacksonSchema, implicitPreserveUnknownFields);
+    return new ResolvingContext(objectMapper, kubernetesSerialization, uriToJacksonSchema, implicitPreserveUnknownFields, ignoreJSONSchemaAnnotation);
+  }
+
+  public ResolvingContext forkContext(boolean ignoreJSONSchemaAnnotation) {
+    return new ResolvingContext(objectMapper, kubernetesSerialization, uriToJacksonSchema, implicitPreserveUnknownFields, ignoreJSONSchemaAnnotation);
   }
 
   public ResolvingContext(ObjectMapper mapper, KubernetesSerialization kubernetesSerialization,
       boolean implicitPreserveUnknownFields) {
-    this(mapper, kubernetesSerialization, new ConcurrentHashMap<>(), implicitPreserveUnknownFields);
+    this(mapper, kubernetesSerialization, new ConcurrentHashMap<>(), implicitPreserveUnknownFields, false);
   }
 
   private ResolvingContext(ObjectMapper mapper, KubernetesSerialization kubernetesSerialization,
       Map<String, GeneratorObjectSchema> uriToJacksonSchema,
-      boolean implicitPreserveUnknownFields) {
+      boolean implicitPreserveUnknownFields,
+      boolean ignoreJSONSchemaAnnotation) {
     this.uriToJacksonSchema = uriToJacksonSchema;
     this.objectMapper = mapper;
     this.kubernetesSerialization = kubernetesSerialization;
     this.implicitPreserveUnknownFields = implicitPreserveUnknownFields;
+    this.ignoreJSONSchemaAnnotation = ignoreJSONSchemaAnnotation;
     generator = new JsonSchemaGenerator(mapper, new WrapperFactory() {
 
       @Override
