@@ -116,8 +116,9 @@ public class JsonSchema extends AbstractJsonSchema<V1JSONSchemaProps, V1Validati
   }
 
   @Override
-  protected V1JSONSchemaProps fromAnnotation(Class<?> targetType, JSONSchema schema) {
-      V1JSONSchemaProps result = super.fromAnnotation(targetType, schema);
+  protected V1JSONSchemaProps fromAnnotation(Class<?> rawClass, boolean isTargetType, JSONSchema schema) {
+      V1JSONSchemaProps result = super.fromAnnotation(rawClass, isTargetType, schema);
+      // maybe override the type if it was determined by reading the optional `implementation`
       setIfDefined(mapDefined(schema.type()), result::setType);
       setIfDefined(mapDefined(schema.$ref()), result::set$ref);
       setIfDefined(mapDefined(schema.$schema()), result::set$schema);
@@ -127,8 +128,8 @@ public class JsonSchema extends AbstractJsonSchema<V1JSONSchemaProps, V1Validati
       setIfDefined(mapSchemaList(schema.anyOf()), result::setAnyOf);
       setIfDefined(mapSchemaMap(schema.definitions()), result::setDefinitions);
       setIfDefined(mapDependencies(schema.dependencies()), result::setDependencies);
-      setIfDefined(mapEnumeration(schema.enumeration(), targetType), result::setEnum);
-      setIfDefined(mapDefined(schema.example(), targetType), result::setExample);
+      setIfDefined(mapEnumeration(schema.enumeration(), rawClass), result::setEnum);
+      setIfDefined(mapDefined(schema.example(), rawClass), result::setExample);
       setIfDefined(mapExternalDocs(schema.externalDocs()), result::setExternalDocs);
       setIfDefined(mapDefined(schema.id()), result::setId);
       setIfDefined(mapSchemaOrArray(schema.items()), result::setItems);
@@ -149,11 +150,11 @@ public class JsonSchema extends AbstractJsonSchema<V1JSONSchemaProps, V1Validati
   }
 
   @Override
-  protected V1JSONSchemaProps mapImplementation(Class<?> value) {
+  protected V1JSONSchemaProps mapImplementation(Class<?> value, boolean isTargetType) {
     if (value == JSONSchema.Undefined.class) {
       return null; // NOSONAR
     }
-    return new JsonSchema(resolvingContext.forkContext(true), value).getSchema();
+    return new JsonSchema(resolvingContext.forkContext(isTargetType), value).getSchema();
   }
 
   private JSONSchemaProps mapSchema(Class<?> value) {

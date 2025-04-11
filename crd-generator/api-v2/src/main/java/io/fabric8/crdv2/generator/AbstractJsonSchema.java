@@ -435,7 +435,7 @@ public abstract class AbstractJsonSchema<T extends KubernetesJSONSchemaProps, V 
     collectDependentClasses(rawClass);
 
     JSONSchema schemaAnnotation = resolvingContext.ignoreJSONSchemaAnnotation ? null : rawClass.getDeclaredAnnotation(JSONSchema.class);
-    T classSchema = mapAnnotation(schemaAnnotation, schema -> fromAnnotation(rawClass, schema));
+    T classSchema = mapAnnotation(schemaAnnotation, schema -> fromAnnotation(rawClass, true, schema));
 
     if (classSchema != null) {
       return classSchema;
@@ -461,7 +461,7 @@ public abstract class AbstractJsonSchema<T extends KubernetesJSONSchemaProps, V 
 
       Class<?> propRawClass = beanProperty.getType().getRawClass();
       JSONSchema propSchemaAnnotation = beanProperty.getAnnotation(JSONSchema.class);
-      T propSchema = mapAnnotation(propSchemaAnnotation, schema -> fromAnnotation(propRawClass, schema));
+      T propSchema = mapAnnotation(propSchemaAnnotation, schema -> fromAnnotation(propRawClass, false, schema));
 
       if (propSchema != null) {
         addProperty(name, objectSchema, propSchema);
@@ -705,14 +705,14 @@ public abstract class AbstractJsonSchema<T extends KubernetesJSONSchemaProps, V 
     return toIgnore;
   }
 
-  protected T fromAnnotation(Class<?> targetType, JSONSchema schema) {
-      T result = mapImplementation(schema.implementation());
+  protected T fromAnnotation(Class<?> rawClass, boolean isTargetType, JSONSchema schema) {
+      T result = mapImplementation(schema.implementation(), isTargetType);
 
       if (result == null) {
         result = singleProperty(mapDefined(schema.type()));
       }
 
-      setIfDefined(mapDefined(schema.defaultValue(), targetType), result::setDefault);
+      setIfDefined(mapDefined(schema.defaultValue(), rawClass), result::setDefault);
       setIfDefined(mapDefined(schema.description()), result::setDescription);
       setIfDefined(mapBoolean(schema.exclusiveMaximum()), result::setExclusiveMaximum);
       setIfDefined(mapBoolean(schema.exclusiveMinimum()), result::setExclusiveMinimum);
@@ -795,7 +795,7 @@ public abstract class AbstractJsonSchema<T extends KubernetesJSONSchemaProps, V 
     return Utils.isNullOrEmpty(s) ? null : s;
   }
 
-  protected abstract T mapImplementation(Class<?> value);
+  protected abstract T mapImplementation(Class<?> value, boolean isTargetType);
 
   protected abstract V newKubernetesValidationRule();
 
