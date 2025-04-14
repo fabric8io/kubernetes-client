@@ -246,7 +246,10 @@ public @interface JSONSchema {
    * present in the schemas that are set in the properties in step 1.</li>
    * </ol>
    *
-   * @see https://kubernetes.io/docs/tasks/extend-kubernetes/custom-resources/custom-resource-definitions/#specifying-a-structural-schema
+   * @see <a href=
+   *      "https://kubernetes.io/docs/tasks/extend-kubernetes/custom-resources/custom-resource-definitions/#specifying-a-structural-schema">Extend
+   *      the Kubernetes API with CustomResourceDefinitions: Specifying a structural schema</a>
+   *
    */
   boolean structural() default false;
 
