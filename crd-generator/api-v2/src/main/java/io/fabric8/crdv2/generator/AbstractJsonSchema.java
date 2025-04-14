@@ -167,14 +167,6 @@ public abstract class AbstractJsonSchema<T extends KubernetesJSONSchemaProps, V 
         resolvingContext.objectMapper.getSerializationConfig().constructType(definition), schema, null);
   }
 
-  private <A extends Annotation> T mapAnnotation(A annotation,
-      Function<A, T> mapper) {
-    if (annotation != null) {
-      return mapper.apply(annotation);
-    }
-    return null;
-  }
-
   /**
    * Walks up the class hierarchy to consume the repeating annotation
    */
