@@ -113,11 +113,13 @@ public class ResolvingContext {
   }
 
   public ResolvingContext forkContext() {
-    return new ResolvingContext(objectMapper, kubernetesSerialization, uriToJacksonSchema, implicitPreserveUnknownFields, ignoreJSONSchemaAnnotation);
+    return new ResolvingContext(objectMapper, kubernetesSerialization, uriToJacksonSchema, implicitPreserveUnknownFields,
+        ignoreJSONSchemaAnnotation);
   }
 
   public ResolvingContext forkContext(boolean ignoreJSONSchemaAnnotation) {
-    return new ResolvingContext(objectMapper, kubernetesSerialization, uriToJacksonSchema, implicitPreserveUnknownFields, ignoreJSONSchemaAnnotation);
+    return new ResolvingContext(objectMapper, kubernetesSerialization, uriToJacksonSchema, implicitPreserveUnknownFields,
+        ignoreJSONSchemaAnnotation);
   }
 
   public ResolvingContext(ObjectMapper mapper, KubernetesSerialization kubernetesSerialization,

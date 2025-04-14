@@ -23,8 +23,16 @@ import io.fabric8.kubernetes.api.model.apiextensions.v1.JSONSchemaPropsOrStringA
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -75,7 +83,8 @@ class JsonSchemaAnnotationTest {
     assertNotNull(target.getItems());
     List<JSONSchemaProps> itemsSchemas = target.getItems().getJSONSchemas();
     assertEquals(2, itemsSchemas.size());
-    assertTrue(itemsSchemas.stream().allMatch(s -> s.getProperties().keySet().containsAll(List.of("field1", "field2"))));
+    assertEquals(Set.of("field1", "field2"), itemsSchemas.get(0).getProperties().keySet());
+    assertEquals(Set.of("field1", "field2"), itemsSchemas.get(1).getProperties().keySet());
 
     assertEquals(Boolean.TRUE, itemsSchemas.get(0).getAdditionalProperties().getAllows());
     assertNull(itemsSchemas.get(0).getAdditionalProperties().getSchema());
@@ -92,11 +101,12 @@ class JsonSchemaAnnotationTest {
   }
 
   @Test
-  void testObjectEnumerationWithDefault() {
+  void testObjectEnumerationWithDefaultAndExample() {
     JSONSchemaProps target = schema.getProperties().get("spec").getProperties().get("objectEnumeration");
     ObjectNode expected1 = JsonNodeFactory.instance.objectNode().put("field1", "allowedValue1").put("field2", 1);
     ObjectNode expected2 = JsonNodeFactory.instance.objectNode().put("field1", "allowedValue2").put("field2", 2);
     assertEquals(expected1, target.getDefault());
+    assertEquals(expected2, target.getExample());
     assertEquals(List.of(expected1, expected2), target.getEnum());
   }
 
@@ -107,7 +117,7 @@ class JsonSchemaAnnotationTest {
     assertNull(field1Deps.getSchema());
     assertEquals(List.of("field2"), field1Deps.getProperty());
     JSONSchemaPropsOrStringArray field2Deps = target.getDependencies().get("field2");
-    assertNull(field2Deps.getProperty());
+    assertEquals(Collections.emptyList(), field2Deps.getProperty());
     assertEquals("integer", field2Deps.getSchema().getType());
     assertEquals(Boolean.TRUE, field2Deps.getSchema().getNullable());
     assertEquals(Double.valueOf(0), field2Deps.getSchema().getMinimum());
@@ -116,5 +126,84 @@ class JsonSchemaAnnotationTest {
     assertEquals(Boolean.TRUE, field2Deps.getSchema().getExclusiveMaximum());
   }
 
-}
+  static class RecursiveTypeChecker {
+    final AtomicInteger count = new AtomicInteger(0);
+    final BiConsumer<JSONSchemaProps, JSONSchemaProps> assertion;
 
+    RecursiveTypeChecker(BiConsumer<JSONSchemaProps, JSONSchemaProps> assertion) {
+      this.assertion = assertion;
+    }
+
+    Stream<JSONSchemaProps> itemsToSchemas(JSONSchemaProps schema) {
+      return Optional.ofNullable(schema.getItems())
+          .map(items -> Stream
+              .concat(
+                  Optional.ofNullable(items.getJSONSchemas())
+                      .map(List::stream)
+                      .orElseGet(Stream::empty),
+                  Stream.of(items.getSchema()))
+              .filter(Objects::nonNull))
+          .orElseGet(Stream::empty);
+    }
+
+    void accept(JSONSchemaProps schema, boolean checkProperties) {
+      List<JSONSchemaProps> directSchemas = Stream.of(
+          schema.getAllOf().stream(),
+          schema.getAnyOf().stream(),
+          Stream.of(schema.getNot()),
+          schema.getOneOf().stream(),
+          checkProperties ? itemsToSchemas(schema) : Stream.<JSONSchemaProps> empty(),
+          checkProperties ? schema.getProperties().values().stream() : Stream.<JSONSchemaProps> empty())
+          .flatMap(Function.identity())
+          .filter(Objects::nonNull)
+          .collect(Collectors.toList());
+
+      for (JSONSchemaProps s : directSchemas) {
+        assertion.accept(s, schema);
+        accept(s, true);
+        count.incrementAndGet();
+      }
+    }
+  }
+
+  @Test
+  void testStructuralSchemaJunctorRemovedTypes() {
+    JSONSchemaProps target = schema.getProperties().get("spec").getProperties().get("structural");
+    RecursiveTypeChecker checker = new RecursiveTypeChecker((childSchema, parentSchema) -> {
+      // Type is allowed with a schema having `x-kubernetes-int-or-string: true`
+      if (!Boolean.TRUE.equals(parentSchema.getXKubernetesIntOrString())) {
+        assertNull(childSchema.getType());
+      }
+    });
+    checker.accept(target, false);
+    assertEquals(20, checker.count.get());
+  }
+
+  @Test
+  void testStructuralSchemaJunctorPropertiesCopied() {
+    JSONSchemaProps target = schema.getProperties().get("spec").getProperties().get("structural");
+    assertEquals(9, target.getProperties().size());
+    assertEquals("string", target.getProperties().get("string1").getType());
+    assertEquals("string", target.getProperties().get("string2").getType());
+    assertEquals("string", target.getProperties().get("string3").getType());
+    assertEquals("object", target.getProperties().get("structural3").getType());
+    assertEquals("array", target.getProperties().get("string4").getType());
+    assertEquals("string", target.getProperties().get("string4").getItems().getSchema().getType());
+    assertEquals("string", target.getProperties().get("string5").getType());
+    assertEquals("string", target.getProperties().get("string6").getType());
+    assertEquals("string", target.getProperties().get("string7").getType());
+  }
+
+  @Test
+  void testStructuralSchemaJunctorIntOrString() {
+    JSONSchemaProps target = schema.getProperties().get("spec").getProperties().get("structural");
+    assertEquals(2, target.getOneOf().size());
+    JSONSchemaProps intOrStringSchema = target.getOneOf().get(1).getProperties().get("intOrString7");
+    assertNull(intOrStringSchema.getType());
+    assertEquals(Boolean.TRUE, intOrStringSchema.getXKubernetesIntOrString());
+    assertEquals(2, intOrStringSchema.getAnyOf().size());
+    assertEquals("integer", intOrStringSchema.getAnyOf().get(0).getType());
+    assertEquals("string", intOrStringSchema.getAnyOf().get(1).getType());
+  }
+
+}

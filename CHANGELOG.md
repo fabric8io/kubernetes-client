@@ -34,6 +34,7 @@
 * Fix #6880: LogWatch interface provides listeners on close stream event
 * Fix #6971: Exposed Istio v1 models in Istio Client DSL
 * Fix #6998: Removed unneeded dependency on javax.annotation:javax.annotation-api
+* Fix #6999: (crd-generator) introduce JSONSchema annotation for increased control of schema output
 
 #### Dependency Upgrade
 * Fix #6829: Sundrio was upgraded to 0.200.3. In some rare circumstances nested method names will need to be changed.
@@ -54,7 +55,7 @@
 
 #### New Features
 * Fix #5993: Support for Kubernetes v1.31 (elli)
-* Fix #6767: Support for Kubernetes v1.32 (penelope) 
+* Fix #6767: Support for Kubernetes v1.32 (penelope)
 * Fix #6777: Added Javadoc comments to all generated models
 * Fix #6802: (java-generator) Added support for required spec and status
 
@@ -225,7 +226,7 @@
 * Fix #5357: adding additional Quantity methods
 * Fix #5635: refined LeaderElector lifecycle and logging
 * Fix #5787: (crd-generator) add support for deprecated versions for generated CRDs
-* Fix #5788: (crd-generator) add support for Kubernetes validation rules 
+* Fix #5788: (crd-generator) add support for Kubernetes validation rules
 * Fix #5735: Replace usages of `UUID.randomUUID()` with UUID created via AtomicLong
 
 #### New Features
@@ -309,7 +310,7 @@
 * Fix #5220: refinements and clarifications to the validation of names
 
 #### Dependency Upgrade
-* Fix #5286: Update Fabric8 OpenShift Model as per OpenShift 4.13.12 
+* Fix #5286: Update Fabric8 OpenShift Model as per OpenShift 4.13.12
 * Fix #5373: Gradle base API based on v8.2.1
 * Fix #5401: Upgrade Fabric8 Kubernetes Model to Kubernetes v1.28.2
 

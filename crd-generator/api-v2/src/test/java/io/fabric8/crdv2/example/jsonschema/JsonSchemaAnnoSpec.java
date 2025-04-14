@@ -17,6 +17,7 @@ package io.fabric8.crdv2.example.jsonschema;
 
 import io.fabric8.generator.annotation.JSONSchema;
 import io.fabric8.generator.annotation.JSONSchema.ExternalDocumentation;
+import io.fabric8.generator.annotation.ValidationRule;
 import lombok.Data;
 
 import java.util.List;
@@ -91,7 +92,7 @@ public class JsonSchemaAnnoSpec {
   @JSONSchema(type = "object", implementation = ObjectEnumerationSchema.class, defaultValue = "{ \"field1\": \"allowedValue1\", \"field2\": 1 }", enumeration = {
       "{ \"field1\": \"allowedValue1\", \"field2\": 1 }",
       "{ \"field1\": \"allowedValue2\", \"field2\": 2 }",
-  })
+  }, example = "{ \"field1\": \"allowedValue2\", \"field2\": 2 }")
   private OverriddenPropertiesSchema objectEnumeration;
 
   /* *********************************************************************** */
@@ -113,5 +114,76 @@ public class JsonSchemaAnnoSpec {
   }
 
   private DependentPropertiesSchema dependentProperties;
+
+  /* *********************************************************************** */
+
+  @Data
+  @JSONSchema(implementation = SuppressionSchema.class, additionalProperties = String.class, minProperties = 1, maxProperties = 10, example = "{ \"field2\": 42 }", xKubernetesValidations = @ValidationRule("some rule"))
+  static class SuppressionSchema {
+    String field1;
+    Integer field2;
+    @JSONSchema(minItems = 3)
+    List<String> field3;
+  }
+
+  @JSONSchema(implementation = SuppressionSchema.class, additionalProperties = JSONSchema.Suppressed.class, minProperties = JSONSchema.Suppressed.LONG, example = JSONSchema.Suppressed.STRING, xKubernetesValidations = {})
+  private SuppressionSchema suppression;
+
+  /* *********************************************************************** */
+
+  @Data
+  static class StructuralSchema1 {
+    String string1;
+  }
+
+  @Data
+  static class StructuralSchema2 {
+    String string2;
+  }
+
+  @Data
+  static class StructuralSchema3 {
+    String string3;
+    StructuralSchema1 structural3;
+  }
+
+  @Data
+  static class StructuralSchema4 {
+    List<String> string4;
+  }
+
+  @Data
+  static class StructuralSchema5 {
+    String string5;
+  }
+
+  @Data
+  static class StructuralSchema6 {
+    String string6;
+  }
+
+  @Data
+  static class StructuralSchema7 {
+    String string7;
+    StructuralSchema8 intOrString7;
+  }
+
+  @Data
+  @JSONSchema(xKubernetesIntOrString = JSONSchema.True.class, anyOf = { Integer.class, String.class })
+  static class StructuralSchema8 {
+    String string8;
+    Integer integer8;
+  }
+
+  @Data
+  @JSONSchema(structural = true, allOf = { StructuralSchema4.class, StructuralSchema5.class }, anyOf = {
+      StructuralSchema1.class,
+      StructuralSchema3.class }, not = StructuralSchema2.class, oneOf = { StructuralSchema6.class, StructuralSchema7.class })
+  static class StructuralSchema {
+    String string;
+    Integer integer;
+  }
+
+  private StructuralSchema structural;
 
 }
