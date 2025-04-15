@@ -1,7 +1,7 @@
 
 package io.fabric8.istio.api.api.extensions.v1alpha1;
 
-import javax.annotation.Generated;
+import javax.annotation.processing.Generated;
 import com.fasterxml.jackson.annotation.JsonCreator;
 
 /**

@@ -295,7 +295,7 @@ class ModelGenerator {
 
   private static Set<String> initDefaultImports() {
     return new HashSet<>(Collections.singletonList(
-        "javax.annotation.Generated"));
+        "javax.annotation.processing.Generated"));
   }
 
 }

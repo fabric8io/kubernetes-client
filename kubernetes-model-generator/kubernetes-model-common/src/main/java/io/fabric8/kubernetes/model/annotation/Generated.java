@@ -23,7 +23,7 @@ import static java.lang.annotation.ElementType.*;
 import static java.lang.annotation.RetentionPolicy.SOURCE;
 
 /**
- * Drop-in replacement for javax.annotation.Generated, meant to be used itnernally to avoid bringin in the whole jar.
+ * Drop-in replacement for javax.annotation.Generated, meant to be used internally to avoid bringing in the whole jar.
  */
 @Documented
 @Retention(SOURCE)
