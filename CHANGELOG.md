@@ -20,6 +20,7 @@
 * Fix #6863: ensuring SerialExecutor does not throw RejectedExecutionException to prevent unnecessary error logs
 * Fix #6880: LogWatch interface provides listeners on close stream event
 * Fix #6971: Exposed Istio v1 models in Istio Client DSL
+* Fix #6998: Removed unneeded dependency on javax.annotation:javax.annotation-api
 
 #### Dependency Upgrade
 
