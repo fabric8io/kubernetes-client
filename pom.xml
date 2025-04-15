@@ -119,7 +119,7 @@
     <keycloak.version>26.2.0</keycloak.version><!-- Used by CRD Generator integration tests for verifications -->
     <mockito.version>5.17.0</mockito.version>
     <mockito-inline.version>5.2.0</mockito-inline.version>
-    <spock.version>2.4-M5-groovy-4.0</spock.version>
+    <spock.version>2.4-M6-groovy-4.0</spock.version>
 
     <conscrypt-openjdk-uber.bundle.version>1.4.2_1</conscrypt-openjdk-uber.bundle.version>
     <automaton.bundle.version>1.11-8_1</automaton.bundle.version>
