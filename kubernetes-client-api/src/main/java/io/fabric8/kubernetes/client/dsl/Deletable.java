@@ -28,6 +28,13 @@ public interface Deletable extends Timeoutable {
    * <p>
    * It is not guaranteed that the returned list will contain all values marked for deletion
    * - see <a href="https://github.com/fabric8io/kubernetes-client/pull/3058">Issue #3058</a>
+   * <p>
+   * To make sure that a resource is completely deleted and not only marked for deletion,
+   * use {@link #withTimeout(long, TimeUnit)} to perform a blocking delete operation.
+   *
+   * <pre>{@code
+   *   client.pods().inNamespace("ns").withName("pod1").withTimeout(10, TimeUnit.SECONDS).delete();
+   * }</pre>
    *
    * @throws io.fabric8.kubernetes.client.KubernetesClientException if an error occurs.
    */
