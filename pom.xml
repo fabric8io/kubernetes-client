@@ -134,7 +134,7 @@
     <osgi.annotations.version>1.5.1</osgi.annotations.version>
     <felix.scr.version>2.0.6</felix.scr.version>
     <jmustache.version>1.16</jmustache.version>
-    <picocli.version>4.7.6</picocli.version>
+    <picocli.version>4.7.7</picocli.version>
     <swagger-request-validator-core.version>2.44.1</swagger-request-validator-core.version>
     <swagger-parser.version>2.1.26</swagger-parser.version>
 
