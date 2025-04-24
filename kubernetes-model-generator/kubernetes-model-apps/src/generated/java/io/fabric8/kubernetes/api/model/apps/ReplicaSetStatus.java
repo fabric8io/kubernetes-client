@@ -45,7 +45,8 @@ import lombok.experimental.Accessors;
     "fullyLabeledReplicas",
     "observedGeneration",
     "readyReplicas",
-    "replicas"
+    "replicas",
+    "terminatingReplicas"
 })
 @ToString
 @EqualsAndHashCode
@@ -85,6 +86,8 @@ public class ReplicaSetStatus implements Editable<ReplicaSetStatusBuilder>, Kube
     private Integer readyReplicas;
     @JsonProperty("replicas")
     private Integer replicas;
+    @JsonProperty("terminatingReplicas")
+    private Integer terminatingReplicas;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -94,7 +97,7 @@ public class ReplicaSetStatus implements Editable<ReplicaSetStatusBuilder>, Kube
     public ReplicaSetStatus() {
     }
 
-    public ReplicaSetStatus(Integer availableReplicas, List<ReplicaSetCondition> conditions, Integer fullyLabeledReplicas, Long observedGeneration, Integer readyReplicas, Integer replicas) {
+    public ReplicaSetStatus(Integer availableReplicas, List<ReplicaSetCondition> conditions, Integer fullyLabeledReplicas, Long observedGeneration, Integer readyReplicas, Integer replicas, Integer terminatingReplicas) {
         super();
         this.availableReplicas = availableReplicas;
         this.conditions = conditions;
@@ -102,10 +105,11 @@ public class ReplicaSetStatus implements Editable<ReplicaSetStatusBuilder>, Kube
         this.observedGeneration = observedGeneration;
         this.readyReplicas = readyReplicas;
         this.replicas = replicas;
+        this.terminatingReplicas = terminatingReplicas;
     }
 
     /**
-     * The number of available replicas (ready for at least minReadySeconds) for this replica set.
+     * The number of available non-terminating pods (ready for at least minReadySeconds) for this replica set.
      */
     @JsonProperty("availableReplicas")
     public Integer getAvailableReplicas() {
@@ -113,7 +117,7 @@ public class ReplicaSetStatus implements Editable<ReplicaSetStatusBuilder>, Kube
     }
 
     /**
-     * The number of available replicas (ready for at least minReadySeconds) for this replica set.
+     * The number of available non-terminating pods (ready for at least minReadySeconds) for this replica set.
      */
     @JsonProperty("availableReplicas")
     public void setAvailableReplicas(Integer availableReplicas) {
@@ -138,7 +142,7 @@ public class ReplicaSetStatus implements Editable<ReplicaSetStatusBuilder>, Kube
     }
 
     /**
-     * The number of pods that have labels matching the labels of the pod template of the replicaset.
+     * The number of non-terminating pods that have labels matching the labels of the pod template of the replicaset.
      */
     @JsonProperty("fullyLabeledReplicas")
     public Integer getFullyLabeledReplicas() {
@@ -146,7 +150,7 @@ public class ReplicaSetStatus implements Editable<ReplicaSetStatusBuilder>, Kube
     }
 
     /**
-     * The number of pods that have labels matching the labels of the pod template of the replicaset.
+     * The number of non-terminating pods that have labels matching the labels of the pod template of the replicaset.
      */
     @JsonProperty("fullyLabeledReplicas")
     public void setFullyLabeledReplicas(Integer fullyLabeledReplicas) {
@@ -170,7 +174,7 @@ public class ReplicaSetStatus implements Editable<ReplicaSetStatusBuilder>, Kube
     }
 
     /**
-     * readyReplicas is the number of pods targeted by this ReplicaSet with a Ready Condition.
+     * The number of non-terminating pods targeted by this ReplicaSet with a Ready Condition.
      */
     @JsonProperty("readyReplicas")
     public Integer getReadyReplicas() {
@@ -178,7 +182,7 @@ public class ReplicaSetStatus implements Editable<ReplicaSetStatusBuilder>, Kube
     }
 
     /**
-     * readyReplicas is the number of pods targeted by this ReplicaSet with a Ready Condition.
+     * The number of non-terminating pods targeted by this ReplicaSet with a Ready Condition.
      */
     @JsonProperty("readyReplicas")
     public void setReadyReplicas(Integer readyReplicas) {
@@ -186,7 +190,7 @@ public class ReplicaSetStatus implements Editable<ReplicaSetStatusBuilder>, Kube
     }
 
     /**
-     * Replicas is the most recently observed number of replicas. More info: https://kubernetes.io/docs/concepts/workloads/controllers/replicationcontroller/#what-is-a-replicationcontroller
+     * Replicas is the most recently observed number of non-terminating pods. More info: https://kubernetes.io/docs/concepts/workloads/controllers/replicaset
      */
     @JsonProperty("replicas")
     public Integer getReplicas() {
@@ -194,11 +198,27 @@ public class ReplicaSetStatus implements Editable<ReplicaSetStatusBuilder>, Kube
     }
 
     /**
-     * Replicas is the most recently observed number of replicas. More info: https://kubernetes.io/docs/concepts/workloads/controllers/replicationcontroller/#what-is-a-replicationcontroller
+     * Replicas is the most recently observed number of non-terminating pods. More info: https://kubernetes.io/docs/concepts/workloads/controllers/replicaset
      */
     @JsonProperty("replicas")
     public void setReplicas(Integer replicas) {
         this.replicas = replicas;
+    }
+
+    /**
+     * The number of terminating pods for this replica set. Terminating pods have a non-null .metadata.deletionTimestamp and have not yet reached the Failed or Succeeded .status.phase.<br><p> <br><p> This is an alpha field. Enable DeploymentReplicaSetTerminatingReplicas to be able to use this field.
+     */
+    @JsonProperty("terminatingReplicas")
+    public Integer getTerminatingReplicas() {
+        return terminatingReplicas;
+    }
+
+    /**
+     * The number of terminating pods for this replica set. Terminating pods have a non-null .metadata.deletionTimestamp and have not yet reached the Failed or Succeeded .status.phase.<br><p> <br><p> This is an alpha field. Enable DeploymentReplicaSetTerminatingReplicas to be able to use this field.
+     */
+    @JsonProperty("terminatingReplicas")
+    public void setTerminatingReplicas(Integer terminatingReplicas) {
+        this.terminatingReplicas = terminatingReplicas;
     }
 
     @JsonIgnore

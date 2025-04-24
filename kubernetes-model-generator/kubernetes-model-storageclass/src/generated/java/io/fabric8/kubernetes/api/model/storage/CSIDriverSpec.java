@@ -42,6 +42,7 @@ import lombok.experimental.Accessors;
 @JsonPropertyOrder({
     "attachRequired",
     "fsGroupPolicy",
+    "nodeAllocatableUpdatePeriodSeconds",
     "podInfoOnMount",
     "requiresRepublish",
     "seLinuxMount",
@@ -78,6 +79,8 @@ public class CSIDriverSpec implements Editable<CSIDriverSpecBuilder>, Kubernetes
     private Boolean attachRequired;
     @JsonProperty("fsGroupPolicy")
     private String fsGroupPolicy;
+    @JsonProperty("nodeAllocatableUpdatePeriodSeconds")
+    private Long nodeAllocatableUpdatePeriodSeconds;
     @JsonProperty("podInfoOnMount")
     private Boolean podInfoOnMount;
     @JsonProperty("requiresRepublish")
@@ -101,10 +104,11 @@ public class CSIDriverSpec implements Editable<CSIDriverSpecBuilder>, Kubernetes
     public CSIDriverSpec() {
     }
 
-    public CSIDriverSpec(Boolean attachRequired, String fsGroupPolicy, Boolean podInfoOnMount, Boolean requiresRepublish, Boolean seLinuxMount, Boolean storageCapacity, List<TokenRequest> tokenRequests, List<String> volumeLifecycleModes) {
+    public CSIDriverSpec(Boolean attachRequired, String fsGroupPolicy, Long nodeAllocatableUpdatePeriodSeconds, Boolean podInfoOnMount, Boolean requiresRepublish, Boolean seLinuxMount, Boolean storageCapacity, List<TokenRequest> tokenRequests, List<String> volumeLifecycleModes) {
         super();
         this.attachRequired = attachRequired;
         this.fsGroupPolicy = fsGroupPolicy;
+        this.nodeAllocatableUpdatePeriodSeconds = nodeAllocatableUpdatePeriodSeconds;
         this.podInfoOnMount = podInfoOnMount;
         this.requiresRepublish = requiresRepublish;
         this.seLinuxMount = seLinuxMount;
@@ -143,6 +147,22 @@ public class CSIDriverSpec implements Editable<CSIDriverSpecBuilder>, Kubernetes
     @JsonProperty("fsGroupPolicy")
     public void setFsGroupPolicy(String fsGroupPolicy) {
         this.fsGroupPolicy = fsGroupPolicy;
+    }
+
+    /**
+     * nodeAllocatableUpdatePeriodSeconds specifies the interval between periodic updates of the CSINode allocatable capacity for this driver. When set, both periodic updates and updates triggered by capacity-related failures are enabled. If not set, no updates occur (neither periodic nor upon detecting capacity-related failures), and the allocatable.count remains static. The minimum allowed value for this field is 10 seconds.<br><p> <br><p> This is an alpha feature and requires the MutableCSINodeAllocatableCount feature gate to be enabled.<br><p> <br><p> This field is mutable.
+     */
+    @JsonProperty("nodeAllocatableUpdatePeriodSeconds")
+    public Long getNodeAllocatableUpdatePeriodSeconds() {
+        return nodeAllocatableUpdatePeriodSeconds;
+    }
+
+    /**
+     * nodeAllocatableUpdatePeriodSeconds specifies the interval between periodic updates of the CSINode allocatable capacity for this driver. When set, both periodic updates and updates triggered by capacity-related failures are enabled. If not set, no updates occur (neither periodic nor upon detecting capacity-related failures), and the allocatable.count remains static. The minimum allowed value for this field is 10 seconds.<br><p> <br><p> This is an alpha feature and requires the MutableCSINodeAllocatableCount feature gate to be enabled.<br><p> <br><p> This field is mutable.
+     */
+    @JsonProperty("nodeAllocatableUpdatePeriodSeconds")
+    public void setNodeAllocatableUpdatePeriodSeconds(Long nodeAllocatableUpdatePeriodSeconds) {
+        this.nodeAllocatableUpdatePeriodSeconds = nodeAllocatableUpdatePeriodSeconds;
     }
 
     /**

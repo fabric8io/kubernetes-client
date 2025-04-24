@@ -24,7 +24,8 @@ import lombok.experimental.Accessors;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "postStart",
-    "preStop"
+    "preStop",
+    "stopSignal"
 })
 @ToString
 @EqualsAndHashCode
@@ -41,6 +42,8 @@ public class Lifecycle implements Editable<LifecycleBuilder>, KubernetesResource
     private LifecycleHandler postStart;
     @JsonProperty("preStop")
     private LifecycleHandler preStop;
+    @JsonProperty("stopSignal")
+    private String stopSignal;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -50,10 +53,11 @@ public class Lifecycle implements Editable<LifecycleBuilder>, KubernetesResource
     public Lifecycle() {
     }
 
-    public Lifecycle(LifecycleHandler postStart, LifecycleHandler preStop) {
+    public Lifecycle(LifecycleHandler postStart, LifecycleHandler preStop, String stopSignal) {
         super();
         this.postStart = postStart;
         this.preStop = preStop;
+        this.stopSignal = stopSignal;
     }
 
     /**
@@ -86,6 +90,22 @@ public class Lifecycle implements Editable<LifecycleBuilder>, KubernetesResource
     @JsonProperty("preStop")
     public void setPreStop(LifecycleHandler preStop) {
         this.preStop = preStop;
+    }
+
+    /**
+     * StopSignal defines which signal will be sent to a container when it is being stopped. If not specified, the default is defined by the container runtime in use. StopSignal can only be set for Pods with a non-empty .spec.os.name
+     */
+    @JsonProperty("stopSignal")
+    public String getStopSignal() {
+        return stopSignal;
+    }
+
+    /**
+     * StopSignal defines which signal will be sent to a container when it is being stopped. If not specified, the default is defined by the container runtime in use. StopSignal can only be set for Pods with a non-empty .spec.os.name
+     */
+    @JsonProperty("stopSignal")
+    public void setStopSignal(String stopSignal) {
+        this.stopSignal = stopSignal;
     }
 
     @JsonIgnore

@@ -15,12 +15,16 @@
  */
 package io.fabric8.kubernetes.client;
 
+import io.fabric8.kubernetes.api.model.networking.v1.IPAddress;
+import io.fabric8.kubernetes.api.model.networking.v1.IPAddressList;
 import io.fabric8.kubernetes.api.model.networking.v1.Ingress;
 import io.fabric8.kubernetes.api.model.networking.v1.IngressClass;
 import io.fabric8.kubernetes.api.model.networking.v1.IngressClassList;
 import io.fabric8.kubernetes.api.model.networking.v1.IngressList;
 import io.fabric8.kubernetes.api.model.networking.v1.NetworkPolicy;
 import io.fabric8.kubernetes.api.model.networking.v1.NetworkPolicyList;
+import io.fabric8.kubernetes.api.model.networking.v1.ServiceCIDR;
+import io.fabric8.kubernetes.api.model.networking.v1.ServiceCIDRList;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.NonNamespaceOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
@@ -31,4 +35,8 @@ public interface V1NetworkAPIGroupDSL extends Client {
   MixedOperation<Ingress, IngressList, Resource<Ingress>> ingresses();
 
   NonNamespaceOperation<IngressClass, IngressClassList, Resource<IngressClass>> ingressClasses();
+
+  NonNamespaceOperation<IPAddress, IPAddressList, Resource<IPAddress>> ipAddresses();
+
+  NonNamespaceOperation<ServiceCIDR, ServiceCIDRList, Resource<ServiceCIDR>> serviceCIDRs();
 }

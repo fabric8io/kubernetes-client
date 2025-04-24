@@ -32,6 +32,7 @@ import lombok.experimental.Accessors;
     "machineID",
     "operatingSystem",
     "osImage",
+    "swap",
     "systemUUID"
 })
 @ToString
@@ -63,6 +64,8 @@ public class NodeSystemInfo implements Editable<NodeSystemInfoBuilder>, Kubernet
     private String operatingSystem;
     @JsonProperty("osImage")
     private String osImage;
+    @JsonProperty("swap")
+    private NodeSwapStatus swap;
     @JsonProperty("systemUUID")
     private String systemUUID;
     @JsonIgnore
@@ -74,7 +77,7 @@ public class NodeSystemInfo implements Editable<NodeSystemInfoBuilder>, Kubernet
     public NodeSystemInfo() {
     }
 
-    public NodeSystemInfo(String architecture, String bootID, String containerRuntimeVersion, String kernelVersion, String kubeProxyVersion, String kubeletVersion, String machineID, String operatingSystem, String osImage, String systemUUID) {
+    public NodeSystemInfo(String architecture, String bootID, String containerRuntimeVersion, String kernelVersion, String kubeProxyVersion, String kubeletVersion, String machineID, String operatingSystem, String osImage, NodeSwapStatus swap, String systemUUID) {
         super();
         this.architecture = architecture;
         this.bootID = bootID;
@@ -85,6 +88,7 @@ public class NodeSystemInfo implements Editable<NodeSystemInfoBuilder>, Kubernet
         this.machineID = machineID;
         this.operatingSystem = operatingSystem;
         this.osImage = osImage;
+        this.swap = swap;
         this.systemUUID = systemUUID;
     }
 
@@ -230,6 +234,22 @@ public class NodeSystemInfo implements Editable<NodeSystemInfoBuilder>, Kubernet
     @JsonProperty("osImage")
     public void setOsImage(String osImage) {
         this.osImage = osImage;
+    }
+
+    /**
+     * NodeSystemInfo is a set of ids/uuids to uniquely identify the node.
+     */
+    @JsonProperty("swap")
+    public NodeSwapStatus getSwap() {
+        return swap;
+    }
+
+    /**
+     * NodeSystemInfo is a set of ids/uuids to uniquely identify the node.
+     */
+    @JsonProperty("swap")
+    public void setSwap(NodeSwapStatus swap) {
+        this.swap = swap;
     }
 
     /**

@@ -33,6 +33,7 @@ import lombok.experimental.Accessors;
     "initContainerStatuses",
     "message",
     "nominatedNodeName",
+    "observedGeneration",
     "phase",
     "podIP",
     "podIPs",
@@ -74,6 +75,8 @@ public class PodStatus implements Editable<PodStatusBuilder>, KubernetesResource
     private String message;
     @JsonProperty("nominatedNodeName")
     private String nominatedNodeName;
+    @JsonProperty("observedGeneration")
+    private Long observedGeneration;
     @JsonProperty("phase")
     private String phase;
     @JsonProperty("podIP")
@@ -101,7 +104,7 @@ public class PodStatus implements Editable<PodStatusBuilder>, KubernetesResource
     public PodStatus() {
     }
 
-    public PodStatus(List<PodCondition> conditions, List<ContainerStatus> containerStatuses, List<ContainerStatus> ephemeralContainerStatuses, String hostIP, List<HostIP> hostIPs, List<ContainerStatus> initContainerStatuses, String message, String nominatedNodeName, String phase, String podIP, List<PodIP> podIPs, String qosClass, String reason, String resize, List<PodResourceClaimStatus> resourceClaimStatuses, String startTime) {
+    public PodStatus(List<PodCondition> conditions, List<ContainerStatus> containerStatuses, List<ContainerStatus> ephemeralContainerStatuses, String hostIP, List<HostIP> hostIPs, List<ContainerStatus> initContainerStatuses, String message, String nominatedNodeName, Long observedGeneration, String phase, String podIP, List<PodIP> podIPs, String qosClass, String reason, String resize, List<PodResourceClaimStatus> resourceClaimStatuses, String startTime) {
         super();
         this.conditions = conditions;
         this.containerStatuses = containerStatuses;
@@ -111,6 +114,7 @@ public class PodStatus implements Editable<PodStatusBuilder>, KubernetesResource
         this.initContainerStatuses = initContainerStatuses;
         this.message = message;
         this.nominatedNodeName = nominatedNodeName;
+        this.observedGeneration = observedGeneration;
         this.phase = phase;
         this.podIP = podIP;
         this.podIPs = podIPs;
@@ -255,6 +259,22 @@ public class PodStatus implements Editable<PodStatusBuilder>, KubernetesResource
     }
 
     /**
+     * If set, this represents the .metadata.generation that the pod status was set based upon. This is an alpha field. Enable PodObservedGenerationTracking to be able to use this field.
+     */
+    @JsonProperty("observedGeneration")
+    public Long getObservedGeneration() {
+        return observedGeneration;
+    }
+
+    /**
+     * If set, this represents the .metadata.generation that the pod status was set based upon. This is an alpha field. Enable PodObservedGenerationTracking to be able to use this field.
+     */
+    @JsonProperty("observedGeneration")
+    public void setObservedGeneration(Long observedGeneration) {
+        this.observedGeneration = observedGeneration;
+    }
+
+    /**
      * The phase of a Pod is a simple, high-level summary of where the Pod is in its lifecycle. The conditions array, the reason and message fields, and the individual container status arrays contain more detail about the pod's status. There are five possible phase values:<br><p> <br><p> Pending: The pod has been accepted by the Kubernetes system, but one or more of the container images has not been created. This includes time before being scheduled as well as time spent downloading images over the network, which could take a while. Running: The pod has been bound to a node, and all of the containers have been created. At least one container is still running, or is in the process of starting or restarting. Succeeded: All containers in the pod have terminated in success, and will not be restarted. Failed: All containers in the pod have terminated, and at least one container has terminated in failure. The container either exited with non-zero status or was terminated by the system. Unknown: For some reason the state of the pod could not be obtained, typically due to an error in communicating with the host of the pod.<br><p> <br><p> More info: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#pod-phase
      */
     @JsonProperty("phase")
@@ -336,7 +356,7 @@ public class PodStatus implements Editable<PodStatusBuilder>, KubernetesResource
     }
 
     /**
-     * Status of resources resize desired for pod's containers. It is empty if no resources resize is pending. Any changes to container resources will automatically set this to "Proposed"
+     * Status of resources resize desired for pod's containers. It is empty if no resources resize is pending. Any changes to container resources will automatically set this to "Proposed" Deprecated: Resize status is moved to two pod conditions PodResizePending and PodResizeInProgress. PodResizePending will track states where the spec has been resized, but the Kubelet has not yet allocated the resources. PodResizeInProgress will track in-progress resizes, and should be present whenever allocated resources != acknowledged resources.
      */
     @JsonProperty("resize")
     public String getResize() {
@@ -344,7 +364,7 @@ public class PodStatus implements Editable<PodStatusBuilder>, KubernetesResource
     }
 
     /**
-     * Status of resources resize desired for pod's containers. It is empty if no resources resize is pending. Any changes to container resources will automatically set this to "Proposed"
+     * Status of resources resize desired for pod's containers. It is empty if no resources resize is pending. Any changes to container resources will automatically set this to "Proposed" Deprecated: Resize status is moved to two pod conditions PodResizePending and PodResizeInProgress. PodResizePending will track states where the spec has been resized, but the Kubelet has not yet allocated the resources. PodResizeInProgress will track in-progress resizes, and should be present whenever allocated resources != acknowledged resources.
      */
     @JsonProperty("resize")
     public void setResize(String resize) {

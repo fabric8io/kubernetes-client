@@ -1,7 +1,9 @@
 
 package io.fabric8.kubernetes.api.model.resource.v1beta1;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import javax.annotation.processing.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
@@ -42,7 +44,8 @@ import lombok.experimental.Accessors;
     "device",
     "driver",
     "pool",
-    "request"
+    "request",
+    "tolerations"
 })
 @ToString
 @EqualsAndHashCode
@@ -79,6 +82,9 @@ public class DeviceRequestAllocationResult implements Editable<DeviceRequestAllo
     private String pool;
     @JsonProperty("request")
     private String request;
+    @JsonProperty("tolerations")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<DeviceToleration> tolerations = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -88,13 +94,14 @@ public class DeviceRequestAllocationResult implements Editable<DeviceRequestAllo
     public DeviceRequestAllocationResult() {
     }
 
-    public DeviceRequestAllocationResult(Boolean adminAccess, String device, String driver, String pool, String request) {
+    public DeviceRequestAllocationResult(Boolean adminAccess, String device, String driver, String pool, String request, List<DeviceToleration> tolerations) {
         super();
         this.adminAccess = adminAccess;
         this.device = device;
         this.driver = driver;
         this.pool = pool;
         this.request = request;
+        this.tolerations = tolerations;
     }
 
     /**
@@ -162,7 +169,7 @@ public class DeviceRequestAllocationResult implements Editable<DeviceRequestAllo
     }
 
     /**
-     * Request is the name of the request in the claim which caused this device to be allocated. Multiple devices may have been allocated per request.
+     * Request is the name of the request in the claim which caused this device to be allocated. If it references a subrequest in the firstAvailable list on a DeviceRequest, this field must include both the name of the main request and the subrequest using the format &lt;main request&gt;/&lt;subrequest&gt;.<br><p> <br><p> Multiple devices may have been allocated per request.
      */
     @JsonProperty("request")
     public String getRequest() {
@@ -170,11 +177,28 @@ public class DeviceRequestAllocationResult implements Editable<DeviceRequestAllo
     }
 
     /**
-     * Request is the name of the request in the claim which caused this device to be allocated. Multiple devices may have been allocated per request.
+     * Request is the name of the request in the claim which caused this device to be allocated. If it references a subrequest in the firstAvailable list on a DeviceRequest, this field must include both the name of the main request and the subrequest using the format &lt;main request&gt;/&lt;subrequest&gt;.<br><p> <br><p> Multiple devices may have been allocated per request.
      */
     @JsonProperty("request")
     public void setRequest(String request) {
         this.request = request;
+    }
+
+    /**
+     * A copy of all tolerations specified in the request at the time when the device got allocated.<br><p> <br><p> The maximum number of tolerations is 16.<br><p> <br><p> This is an alpha field and requires enabling the DRADeviceTaints feature gate.
+     */
+    @JsonProperty("tolerations")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public List<DeviceToleration> getTolerations() {
+        return tolerations;
+    }
+
+    /**
+     * A copy of all tolerations specified in the request at the time when the device got allocated.<br><p> <br><p> The maximum number of tolerations is 16.<br><p> <br><p> This is an alpha field and requires enabling the DRADeviceTaints feature gate.
+     */
+    @JsonProperty("tolerations")
+    public void setTolerations(List<DeviceToleration> tolerations) {
+        this.tolerations = tolerations;
     }
 
     @JsonIgnore

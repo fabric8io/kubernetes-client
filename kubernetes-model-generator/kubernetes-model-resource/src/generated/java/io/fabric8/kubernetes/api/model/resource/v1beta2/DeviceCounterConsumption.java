@@ -1,5 +1,5 @@
 
-package io.fabric8.kubernetes.api.model.authentication.v1beta1;
+package io.fabric8.kubernetes.api.model.resource.v1beta2;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -26,7 +26,6 @@ import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
 import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
-import io.fabric8.kubernetes.api.model.authentication.UserInfo;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
@@ -34,12 +33,13 @@ import lombok.ToString;
 import lombok.experimental.Accessors;
 
 /**
- * SelfSubjectReviewStatus is filled by the kube-apiserver and sent back to a user.
+ * DeviceCounterConsumption defines a set of counters that a device will consume from a CounterSet.
  */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "userInfo"
+    "counterSet",
+    "counters"
 })
 @ToString
 @EqualsAndHashCode
@@ -63,48 +63,69 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class SelfSubjectReviewStatus implements Editable<SelfSubjectReviewStatusBuilder>, KubernetesResource
+public class DeviceCounterConsumption implements Editable<DeviceCounterConsumptionBuilder>, KubernetesResource
 {
 
-    @JsonProperty("userInfo")
-    private UserInfo userInfo;
+    @JsonProperty("counterSet")
+    private String counterSet;
+    @JsonProperty("counters")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private Map<String, Counter> counters = new LinkedHashMap<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
      */
-    public SelfSubjectReviewStatus() {
+    public DeviceCounterConsumption() {
     }
 
-    public SelfSubjectReviewStatus(UserInfo userInfo) {
+    public DeviceCounterConsumption(String counterSet, Map<String, Counter> counters) {
         super();
-        this.userInfo = userInfo;
+        this.counterSet = counterSet;
+        this.counters = counters;
     }
 
     /**
-     * SelfSubjectReviewStatus is filled by the kube-apiserver and sent back to a user.
+     * CounterSet is the name of the set from which the counters defined will be consumed.
      */
-    @JsonProperty("userInfo")
-    public UserInfo getUserInfo() {
-        return userInfo;
+    @JsonProperty("counterSet")
+    public String getCounterSet() {
+        return counterSet;
     }
 
     /**
-     * SelfSubjectReviewStatus is filled by the kube-apiserver and sent back to a user.
+     * CounterSet is the name of the set from which the counters defined will be consumed.
      */
-    @JsonProperty("userInfo")
-    public void setUserInfo(UserInfo userInfo) {
-        this.userInfo = userInfo;
+    @JsonProperty("counterSet")
+    public void setCounterSet(String counterSet) {
+        this.counterSet = counterSet;
+    }
+
+    /**
+     * Counters defines the counters that will be consumed by the device.<br><p> <br><p> The maximum number counters in a device is 32. In addition, the maximum number of all counters in all devices is 1024 (for example, 64 devices with 16 counters each).
+     */
+    @JsonProperty("counters")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public Map<String, Counter> getCounters() {
+        return counters;
+    }
+
+    /**
+     * Counters defines the counters that will be consumed by the device.<br><p> <br><p> The maximum number counters in a device is 32. In addition, the maximum number of all counters in all devices is 1024 (for example, 64 devices with 16 counters each).
+     */
+    @JsonProperty("counters")
+    public void setCounters(Map<String, Counter> counters) {
+        this.counters = counters;
     }
 
     @JsonIgnore
-    public SelfSubjectReviewStatusBuilder edit() {
-        return new SelfSubjectReviewStatusBuilder(this);
+    public DeviceCounterConsumptionBuilder edit() {
+        return new DeviceCounterConsumptionBuilder(this);
     }
 
     @JsonIgnore
-    public SelfSubjectReviewStatusBuilder toBuilder() {
+    public DeviceCounterConsumptionBuilder toBuilder() {
         return edit();
     }
 

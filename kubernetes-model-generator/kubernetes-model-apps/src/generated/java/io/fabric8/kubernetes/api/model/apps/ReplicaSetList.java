@@ -124,7 +124,7 @@ public class ReplicaSetList implements Editable<ReplicaSetListBuilder>, Kubernet
     }
 
     /**
-     * List of ReplicaSets. More info: https://kubernetes.io/docs/concepts/workloads/controllers/replicationcontroller
+     * List of ReplicaSets. More info: https://kubernetes.io/docs/concepts/workloads/controllers/replicaset
      */
     @JsonProperty("items")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -133,7 +133,7 @@ public class ReplicaSetList implements Editable<ReplicaSetListBuilder>, Kubernet
     }
 
     /**
-     * List of ReplicaSets. More info: https://kubernetes.io/docs/concepts/workloads/controllers/replicationcontroller
+     * List of ReplicaSets. More info: https://kubernetes.io/docs/concepts/workloads/controllers/replicaset
      */
     @JsonProperty("items")
     public void setItems(List<io.fabric8.kubernetes.api.model.apps.ReplicaSet> items) {

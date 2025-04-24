@@ -26,6 +26,7 @@ import lombok.experimental.Accessors;
     "lastProbeTime",
     "lastTransitionTime",
     "message",
+    "observedGeneration",
     "reason",
     "status",
     "type"
@@ -47,6 +48,8 @@ public class PodCondition implements Editable<PodConditionBuilder>, KubernetesRe
     private String lastTransitionTime;
     @JsonProperty("message")
     private String message;
+    @JsonProperty("observedGeneration")
+    private Long observedGeneration;
     @JsonProperty("reason")
     private String reason;
     @JsonProperty("status")
@@ -62,11 +65,12 @@ public class PodCondition implements Editable<PodConditionBuilder>, KubernetesRe
     public PodCondition() {
     }
 
-    public PodCondition(String lastProbeTime, String lastTransitionTime, String message, String reason, String status, String type) {
+    public PodCondition(String lastProbeTime, String lastTransitionTime, String message, Long observedGeneration, String reason, String status, String type) {
         super();
         this.lastProbeTime = lastProbeTime;
         this.lastTransitionTime = lastTransitionTime;
         this.message = message;
+        this.observedGeneration = observedGeneration;
         this.reason = reason;
         this.status = status;
         this.type = type;
@@ -118,6 +122,22 @@ public class PodCondition implements Editable<PodConditionBuilder>, KubernetesRe
     @JsonProperty("message")
     public void setMessage(String message) {
         this.message = message;
+    }
+
+    /**
+     * If set, this represents the .metadata.generation that the pod condition was set based upon. This is an alpha field. Enable PodObservedGenerationTracking to be able to use this field.
+     */
+    @JsonProperty("observedGeneration")
+    public Long getObservedGeneration() {
+        return observedGeneration;
+    }
+
+    /**
+     * If set, this represents the .metadata.generation that the pod condition was set based upon. This is an alpha field. Enable PodObservedGenerationTracking to be able to use this field.
+     */
+    @JsonProperty("observedGeneration")
+    public void setObservedGeneration(Long observedGeneration) {
+        this.observedGeneration = observedGeneration;
     }
 
     /**

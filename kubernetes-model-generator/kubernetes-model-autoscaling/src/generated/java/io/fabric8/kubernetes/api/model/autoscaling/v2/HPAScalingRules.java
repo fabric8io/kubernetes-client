@@ -25,6 +25,7 @@ import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
+import io.fabric8.kubernetes.api.model.Quantity;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
 import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
@@ -35,14 +36,15 @@ import lombok.ToString;
 import lombok.experimental.Accessors;
 
 /**
- * HPAScalingRules configures the scaling behavior for one direction. These Rules are applied after calculating DesiredReplicas from metrics for the HPA. They can limit the scaling velocity by specifying scaling policies. They can prevent flapping by specifying the stabilization window, so that the number of replicas is not set instantly, instead, the safest value from the stabilization window is chosen.
+ * HPAScalingRules configures the scaling behavior for one direction via scaling Policy Rules and a configurable metric tolerance.<br><p> <br><p> Scaling Policy Rules are applied after calculating DesiredReplicas from metrics for the HPA. They can limit the scaling velocity by specifying scaling policies. They can prevent flapping by specifying the stabilization window, so that the number of replicas is not set instantly, instead, the safest value from the stabilization window is chosen.<br><p> <br><p> The tolerance is applied to the metric values and prevents scaling too eagerly for small metric variations. (Note that setting a tolerance requires enabling the alpha HPAConfigurableTolerance feature gate.)
  */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "policies",
     "selectPolicy",
-    "stabilizationWindowSeconds"
+    "stabilizationWindowSeconds",
+    "tolerance"
 })
 @ToString
 @EqualsAndHashCode
@@ -76,6 +78,8 @@ public class HPAScalingRules implements Editable<HPAScalingRulesBuilder>, Kubern
     private String selectPolicy;
     @JsonProperty("stabilizationWindowSeconds")
     private Integer stabilizationWindowSeconds;
+    @JsonProperty("tolerance")
+    private Quantity tolerance;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -85,15 +89,16 @@ public class HPAScalingRules implements Editable<HPAScalingRulesBuilder>, Kubern
     public HPAScalingRules() {
     }
 
-    public HPAScalingRules(List<HPAScalingPolicy> policies, String selectPolicy, Integer stabilizationWindowSeconds) {
+    public HPAScalingRules(List<HPAScalingPolicy> policies, String selectPolicy, Integer stabilizationWindowSeconds, Quantity tolerance) {
         super();
         this.policies = policies;
         this.selectPolicy = selectPolicy;
         this.stabilizationWindowSeconds = stabilizationWindowSeconds;
+        this.tolerance = tolerance;
     }
 
     /**
-     * policies is a list of potential scaling polices which can be used during scaling. At least one policy must be specified, otherwise the HPAScalingRules will be discarded as invalid
+     * policies is a list of potential scaling polices which can be used during scaling. If not set, use the default values: - For scale up: allow doubling the number of pods, or an absolute change of 4 pods in a 15s window. - For scale down: allow all pods to be removed in a 15s window.
      */
     @JsonProperty("policies")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -102,7 +107,7 @@ public class HPAScalingRules implements Editable<HPAScalingRulesBuilder>, Kubern
     }
 
     /**
-     * policies is a list of potential scaling polices which can be used during scaling. At least one policy must be specified, otherwise the HPAScalingRules will be discarded as invalid
+     * policies is a list of potential scaling polices which can be used during scaling. If not set, use the default values: - For scale up: allow doubling the number of pods, or an absolute change of 4 pods in a 15s window. - For scale down: allow all pods to be removed in a 15s window.
      */
     @JsonProperty("policies")
     public void setPolicies(List<HPAScalingPolicy> policies) {
@@ -139,6 +144,22 @@ public class HPAScalingRules implements Editable<HPAScalingRulesBuilder>, Kubern
     @JsonProperty("stabilizationWindowSeconds")
     public void setStabilizationWindowSeconds(Integer stabilizationWindowSeconds) {
         this.stabilizationWindowSeconds = stabilizationWindowSeconds;
+    }
+
+    /**
+     * HPAScalingRules configures the scaling behavior for one direction via scaling Policy Rules and a configurable metric tolerance.<br><p> <br><p> Scaling Policy Rules are applied after calculating DesiredReplicas from metrics for the HPA. They can limit the scaling velocity by specifying scaling policies. They can prevent flapping by specifying the stabilization window, so that the number of replicas is not set instantly, instead, the safest value from the stabilization window is chosen.<br><p> <br><p> The tolerance is applied to the metric values and prevents scaling too eagerly for small metric variations. (Note that setting a tolerance requires enabling the alpha HPAConfigurableTolerance feature gate.)
+     */
+    @JsonProperty("tolerance")
+    public Quantity getTolerance() {
+        return tolerance;
+    }
+
+    /**
+     * HPAScalingRules configures the scaling behavior for one direction via scaling Policy Rules and a configurable metric tolerance.<br><p> <br><p> Scaling Policy Rules are applied after calculating DesiredReplicas from metrics for the HPA. They can limit the scaling velocity by specifying scaling policies. They can prevent flapping by specifying the stabilization window, so that the number of replicas is not set instantly, instead, the safest value from the stabilization window is chosen.<br><p> <br><p> The tolerance is applied to the metric values and prevents scaling too eagerly for small metric variations. (Note that setting a tolerance requires enabling the alpha HPAConfigurableTolerance feature gate.)
+     */
+    @JsonProperty("tolerance")
+    public void setTolerance(Quantity tolerance) {
+        this.tolerance = tolerance;
     }
 
     @JsonIgnore

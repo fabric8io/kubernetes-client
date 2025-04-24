@@ -107,7 +107,7 @@ public class AllocatedDeviceStatus implements Editable<AllocatedDeviceStatusBuil
     }
 
     /**
-     * Conditions contains the latest observation of the device's state. If the device has been configured according to the class and claim config references, the `Ready` condition should be True.
+     * Conditions contains the latest observation of the device's state. If the device has been configured according to the class and claim config references, the `Ready` condition should be True.<br><p> <br><p> Must not contain more than 8 entries.
      */
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -116,7 +116,7 @@ public class AllocatedDeviceStatus implements Editable<AllocatedDeviceStatusBuil
     }
 
     /**
-     * Conditions contains the latest observation of the device's state. If the device has been configured according to the class and claim config references, the `Ready` condition should be True.
+     * Conditions contains the latest observation of the device's state. If the device has been configured according to the class and claim config references, the `Ready` condition should be True.<br><p> <br><p> Must not contain more than 8 entries.
      */
     @JsonProperty("conditions")
     public void setConditions(List<Condition> conditions) {
