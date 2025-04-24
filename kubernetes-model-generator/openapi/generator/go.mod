@@ -34,11 +34,11 @@ require (
 	istio.io/client-go v1.25.2
 	k8s.io/api v0.32.4
 	k8s.io/apiextensions-apiserver v0.32.3
-	k8s.io/apimachinery v0.32.4
+	k8s.io/apimachinery v0.33.0
 	k8s.io/autoscaler/vertical-pod-autoscaler v1.3.0
 	k8s.io/client-go v12.0.0+incompatible
 	k8s.io/gengo/v2 v2.0.0-20240911193312-2b36238f13e9
-	k8s.io/kube-openapi v0.0.0-20241212222426-2c72e554b1e7
+	k8s.io/kube-openapi v0.0.0-20250318190949-c8a335a9a2ff
 	k8s.io/metrics v0.32.4
 	knative.dev/caching v0.0.0-20250415164313-8f20a1163dbf
 	knative.dev/eventing v0.44.5
@@ -213,6 +213,7 @@ require (
 	sigs.k8s.io/controller-runtime v0.19.7 // indirect
 	sigs.k8s.io/json v0.0.0-20241014173422-cfa47c3a1cc8 // indirect
 	sigs.k8s.io/kustomize/kyaml v0.19.0 // indirect
-	sigs.k8s.io/structured-merge-diff/v4 v4.5.0 // indirect
+	sigs.k8s.io/randfill v1.0.0 // indirect
+	sigs.k8s.io/structured-merge-diff/v4 v4.6.0 // indirect
 	sigs.k8s.io/yaml v1.4.0 // indirect
 )
