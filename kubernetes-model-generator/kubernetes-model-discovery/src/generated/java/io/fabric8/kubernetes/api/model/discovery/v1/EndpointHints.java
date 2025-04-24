@@ -40,6 +40,7 @@ import lombok.experimental.Accessors;
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
+    "forNodes",
     "forZones"
 })
 @ToString
@@ -67,6 +68,9 @@ import lombok.experimental.Accessors;
 public class EndpointHints implements Editable<EndpointHintsBuilder>, KubernetesResource
 {
 
+    @JsonProperty("forNodes")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<ForNode> forNodes = new ArrayList<>();
     @JsonProperty("forZones")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<ForZone> forZones = new ArrayList<>();
@@ -79,13 +83,31 @@ public class EndpointHints implements Editable<EndpointHintsBuilder>, Kubernetes
     public EndpointHints() {
     }
 
-    public EndpointHints(List<ForZone> forZones) {
+    public EndpointHints(List<ForNode> forNodes, List<ForZone> forZones) {
         super();
+        this.forNodes = forNodes;
         this.forZones = forZones;
     }
 
     /**
-     * forZones indicates the zone(s) this endpoint should be consumed by to enable topology aware routing.
+     * forNodes indicates the node(s) this endpoint should be consumed by when using topology aware routing. May contain a maximum of 8 entries. This is an Alpha feature and is only used when the PreferSameTrafficDistribution feature gate is enabled.
+     */
+    @JsonProperty("forNodes")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public List<ForNode> getForNodes() {
+        return forNodes;
+    }
+
+    /**
+     * forNodes indicates the node(s) this endpoint should be consumed by when using topology aware routing. May contain a maximum of 8 entries. This is an Alpha feature and is only used when the PreferSameTrafficDistribution feature gate is enabled.
+     */
+    @JsonProperty("forNodes")
+    public void setForNodes(List<ForNode> forNodes) {
+        this.forNodes = forNodes;
+    }
+
+    /**
+     * forZones indicates the zone(s) this endpoint should be consumed by when using topology aware routing. May contain a maximum of 8 entries.
      */
     @JsonProperty("forZones")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -94,7 +116,7 @@ public class EndpointHints implements Editable<EndpointHintsBuilder>, Kubernetes
     }
 
     /**
-     * forZones indicates the zone(s) this endpoint should be consumed by to enable topology aware routing.
+     * forZones indicates the zone(s) this endpoint should be consumed by when using topology aware routing. May contain a maximum of 8 entries.
      */
     @JsonProperty("forZones")
     public void setForZones(List<ForZone> forZones) {

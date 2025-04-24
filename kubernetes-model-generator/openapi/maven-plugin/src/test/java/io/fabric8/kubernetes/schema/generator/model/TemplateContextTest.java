@@ -40,7 +40,7 @@ class TemplateContextTest {
   void setUp(@TempDir File tempDir) {
     settings = GeneratorSettings.builder()
         .outputDirectory(tempDir)
-        .schema(new File("../schemas/kubernetes-1.32.4.json"))
+        .schema(new File("../schemas/kubernetes-1.33.0.json"))
         .packageName("io.fabric8.kubernetes.api.model")
         .packageMapping(
             "io.k8s.api.core.v1", "io.fabric8.kubernetes.api.model")

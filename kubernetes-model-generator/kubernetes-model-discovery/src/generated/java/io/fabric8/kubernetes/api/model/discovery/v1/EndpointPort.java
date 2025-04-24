@@ -126,7 +126,7 @@ public class EndpointPort implements Editable<EndpointPortBuilder>, KubernetesRe
     }
 
     /**
-     * port represents the port number of the endpoint. If this is not specified, ports are not restricted and must be interpreted in the context of the specific consumer.
+     * port represents the port number of the endpoint. If the EndpointSlice is derived from a Kubernetes service, this must be set to the service's target port. EndpointSlices used for other purposes may have a nil port.
      */
     @JsonProperty("port")
     public Integer getPort() {
@@ -134,7 +134,7 @@ public class EndpointPort implements Editable<EndpointPortBuilder>, KubernetesRe
     }
 
     /**
-     * port represents the port number of the endpoint. If this is not specified, ports are not restricted and must be interpreted in the context of the specific consumer.
+     * port represents the port number of the endpoint. If the EndpointSlice is derived from a Kubernetes service, this must be set to the service's target port. EndpointSlices used for other purposes may have a nil port.
      */
     @JsonProperty("port")
     public void setPort(Integer port) {

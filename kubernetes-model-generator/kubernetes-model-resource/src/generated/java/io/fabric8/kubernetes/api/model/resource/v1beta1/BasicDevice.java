@@ -1,7 +1,9 @@
 
 package io.fabric8.kubernetes.api.model.resource.v1beta1;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import javax.annotation.processing.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
@@ -19,6 +21,7 @@ import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.LabelSelector;
 import io.fabric8.kubernetes.api.model.LocalObjectReference;
+import io.fabric8.kubernetes.api.model.NodeSelector;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
@@ -38,8 +41,13 @@ import lombok.experimental.Accessors;
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
+    "allNodes",
     "attributes",
-    "capacity"
+    "capacity",
+    "consumesCounters",
+    "nodeName",
+    "nodeSelector",
+    "taints"
 })
 @ToString
 @EqualsAndHashCode
@@ -66,12 +74,24 @@ import lombok.experimental.Accessors;
 public class BasicDevice implements Editable<BasicDeviceBuilder>, KubernetesResource
 {
 
+    @JsonProperty("allNodes")
+    private Boolean allNodes;
     @JsonProperty("attributes")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Map<String, DeviceAttribute> attributes = new LinkedHashMap<>();
     @JsonProperty("capacity")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Map<String, DeviceCapacity> capacity = new LinkedHashMap<>();
+    @JsonProperty("consumesCounters")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<DeviceCounterConsumption> consumesCounters = new ArrayList<>();
+    @JsonProperty("nodeName")
+    private String nodeName;
+    @JsonProperty("nodeSelector")
+    private NodeSelector nodeSelector;
+    @JsonProperty("taints")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<DeviceTaint> taints = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -81,10 +101,31 @@ public class BasicDevice implements Editable<BasicDeviceBuilder>, KubernetesReso
     public BasicDevice() {
     }
 
-    public BasicDevice(Map<String, DeviceAttribute> attributes, Map<String, DeviceCapacity> capacity) {
+    public BasicDevice(Boolean allNodes, Map<String, DeviceAttribute> attributes, Map<String, DeviceCapacity> capacity, List<DeviceCounterConsumption> consumesCounters, String nodeName, NodeSelector nodeSelector, List<DeviceTaint> taints) {
         super();
+        this.allNodes = allNodes;
         this.attributes = attributes;
         this.capacity = capacity;
+        this.consumesCounters = consumesCounters;
+        this.nodeName = nodeName;
+        this.nodeSelector = nodeSelector;
+        this.taints = taints;
+    }
+
+    /**
+     * AllNodes indicates that all nodes have access to the device.<br><p> <br><p> Must only be set if Spec.PerDeviceNodeSelection is set to true. At most one of NodeName, NodeSelector and AllNodes can be set.
+     */
+    @JsonProperty("allNodes")
+    public Boolean getAllNodes() {
+        return allNodes;
+    }
+
+    /**
+     * AllNodes indicates that all nodes have access to the device.<br><p> <br><p> Must only be set if Spec.PerDeviceNodeSelection is set to true. At most one of NodeName, NodeSelector and AllNodes can be set.
+     */
+    @JsonProperty("allNodes")
+    public void setAllNodes(Boolean allNodes) {
+        this.allNodes = allNodes;
     }
 
     /**
@@ -119,6 +160,72 @@ public class BasicDevice implements Editable<BasicDeviceBuilder>, KubernetesReso
     @JsonProperty("capacity")
     public void setCapacity(Map<String, DeviceCapacity> capacity) {
         this.capacity = capacity;
+    }
+
+    /**
+     * ConsumesCounters defines a list of references to sharedCounters and the set of counters that the device will consume from those counter sets.<br><p> <br><p> There can only be a single entry per counterSet.<br><p> <br><p> The total number of device counter consumption entries must be &lt;= 32. In addition, the total number in the entire ResourceSlice must be &lt;= 1024 (for example, 64 devices with 16 counters each).
+     */
+    @JsonProperty("consumesCounters")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public List<DeviceCounterConsumption> getConsumesCounters() {
+        return consumesCounters;
+    }
+
+    /**
+     * ConsumesCounters defines a list of references to sharedCounters and the set of counters that the device will consume from those counter sets.<br><p> <br><p> There can only be a single entry per counterSet.<br><p> <br><p> The total number of device counter consumption entries must be &lt;= 32. In addition, the total number in the entire ResourceSlice must be &lt;= 1024 (for example, 64 devices with 16 counters each).
+     */
+    @JsonProperty("consumesCounters")
+    public void setConsumesCounters(List<DeviceCounterConsumption> consumesCounters) {
+        this.consumesCounters = consumesCounters;
+    }
+
+    /**
+     * NodeName identifies the node where the device is available.<br><p> <br><p> Must only be set if Spec.PerDeviceNodeSelection is set to true. At most one of NodeName, NodeSelector and AllNodes can be set.
+     */
+    @JsonProperty("nodeName")
+    public String getNodeName() {
+        return nodeName;
+    }
+
+    /**
+     * NodeName identifies the node where the device is available.<br><p> <br><p> Must only be set if Spec.PerDeviceNodeSelection is set to true. At most one of NodeName, NodeSelector and AllNodes can be set.
+     */
+    @JsonProperty("nodeName")
+    public void setNodeName(String nodeName) {
+        this.nodeName = nodeName;
+    }
+
+    /**
+     * BasicDevice defines one device instance.
+     */
+    @JsonProperty("nodeSelector")
+    public NodeSelector getNodeSelector() {
+        return nodeSelector;
+    }
+
+    /**
+     * BasicDevice defines one device instance.
+     */
+    @JsonProperty("nodeSelector")
+    public void setNodeSelector(NodeSelector nodeSelector) {
+        this.nodeSelector = nodeSelector;
+    }
+
+    /**
+     * If specified, these are the driver-defined taints.<br><p> <br><p> The maximum number of taints is 4.<br><p> <br><p> This is an alpha field and requires enabling the DRADeviceTaints feature gate.
+     */
+    @JsonProperty("taints")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public List<DeviceTaint> getTaints() {
+        return taints;
+    }
+
+    /**
+     * If specified, these are the driver-defined taints.<br><p> <br><p> The maximum number of taints is 4.<br><p> <br><p> This is an alpha field and requires enabling the DRADeviceTaints feature gate.
+     */
+    @JsonProperty("taints")
+    public void setTaints(List<DeviceTaint> taints) {
+        this.taints = taints;
     }
 
     @JsonIgnore

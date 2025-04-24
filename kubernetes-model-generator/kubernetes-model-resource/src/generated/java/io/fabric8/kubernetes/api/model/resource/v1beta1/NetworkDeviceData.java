@@ -125,7 +125,7 @@ public class NetworkDeviceData implements Editable<NetworkDeviceDataBuilder>, Ku
     }
 
     /**
-     * IPs lists the network addresses assigned to the device's network interface. This can include both IPv4 and IPv6 addresses. The IPs are in the CIDR notation, which includes both the address and the associated subnet mask. e.g.: "192.0.2.5/24" for IPv4 and "2001:db8::5/64" for IPv6.
+     * IPs lists the network addresses assigned to the device's network interface. This can include both IPv4 and IPv6 addresses. The IPs are in the CIDR notation, which includes both the address and the associated subnet mask. e.g.: "192.0.2.5/24" for IPv4 and "2001:db8::5/64" for IPv6.<br><p> <br><p> Must not contain more than 16 entries.
      */
     @JsonProperty("ips")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -134,7 +134,7 @@ public class NetworkDeviceData implements Editable<NetworkDeviceDataBuilder>, Ku
     }
 
     /**
-     * IPs lists the network addresses assigned to the device's network interface. This can include both IPv4 and IPv6 addresses. The IPs are in the CIDR notation, which includes both the address and the associated subnet mask. e.g.: "192.0.2.5/24" for IPv4 and "2001:db8::5/64" for IPv6.
+     * IPs lists the network addresses assigned to the device's network interface. This can include both IPv4 and IPv6 addresses. The IPs are in the CIDR notation, which includes both the address and the associated subnet mask. e.g.: "192.0.2.5/24" for IPv4 and "2001:db8::5/64" for IPv6.<br><p> <br><p> Must not contain more than 16 entries.
      */
     @JsonProperty("ips")
     public void setIps(List<String> ips) {

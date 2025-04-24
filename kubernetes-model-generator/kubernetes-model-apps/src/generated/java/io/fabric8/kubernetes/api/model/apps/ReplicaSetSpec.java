@@ -110,7 +110,7 @@ public class ReplicaSetSpec implements Editable<ReplicaSetSpecBuilder>, Kubernet
     }
 
     /**
-     * Replicas is the number of desired replicas. This is a pointer to distinguish between explicit zero and unspecified. Defaults to 1. More info: https://kubernetes.io/docs/concepts/workloads/controllers/replicationcontroller/#what-is-a-replicationcontroller
+     * Replicas is the number of desired pods. This is a pointer to distinguish between explicit zero and unspecified. Defaults to 1. More info: https://kubernetes.io/docs/concepts/workloads/controllers/replicaset
      */
     @JsonProperty("replicas")
     public Integer getReplicas() {
@@ -118,7 +118,7 @@ public class ReplicaSetSpec implements Editable<ReplicaSetSpecBuilder>, Kubernet
     }
 
     /**
-     * Replicas is the number of desired replicas. This is a pointer to distinguish between explicit zero and unspecified. Defaults to 1. More info: https://kubernetes.io/docs/concepts/workloads/controllers/replicationcontroller/#what-is-a-replicationcontroller
+     * Replicas is the number of desired pods. This is a pointer to distinguish between explicit zero and unspecified. Defaults to 1. More info: https://kubernetes.io/docs/concepts/workloads/controllers/replicaset
      */
     @JsonProperty("replicas")
     public void setReplicas(Integer replicas) {

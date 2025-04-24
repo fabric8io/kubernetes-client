@@ -26,11 +26,15 @@ import lombok.experimental.Accessors;
 @JsonPropertyOrder({
     "buildDate",
     "compiler",
+    "emulationMajor",
+    "emulationMinor",
     "gitCommit",
     "gitTreeState",
     "gitVersion",
     "goVersion",
     "major",
+    "minCompatibilityMajor",
+    "minCompatibilityMinor",
     "minor",
     "platform"
 })
@@ -49,6 +53,10 @@ public class Info implements Editable<InfoBuilder>, KubernetesResource
     private String buildDate;
     @JsonProperty("compiler")
     private String compiler;
+    @JsonProperty("emulationMajor")
+    private String emulationMajor;
+    @JsonProperty("emulationMinor")
+    private String emulationMinor;
     @JsonProperty("gitCommit")
     private String gitCommit;
     @JsonProperty("gitTreeState")
@@ -59,6 +67,10 @@ public class Info implements Editable<InfoBuilder>, KubernetesResource
     private String goVersion;
     @JsonProperty("major")
     private String major;
+    @JsonProperty("minCompatibilityMajor")
+    private String minCompatibilityMajor;
+    @JsonProperty("minCompatibilityMinor")
+    private String minCompatibilityMinor;
     @JsonProperty("minor")
     private String minor;
     @JsonProperty("platform")
@@ -72,15 +84,19 @@ public class Info implements Editable<InfoBuilder>, KubernetesResource
     public Info() {
     }
 
-    public Info(String buildDate, String compiler, String gitCommit, String gitTreeState, String gitVersion, String goVersion, String major, String minor, String platform) {
+    public Info(String buildDate, String compiler, String emulationMajor, String emulationMinor, String gitCommit, String gitTreeState, String gitVersion, String goVersion, String major, String minCompatibilityMajor, String minCompatibilityMinor, String minor, String platform) {
         super();
         this.buildDate = buildDate;
         this.compiler = compiler;
+        this.emulationMajor = emulationMajor;
+        this.emulationMinor = emulationMinor;
         this.gitCommit = gitCommit;
         this.gitTreeState = gitTreeState;
         this.gitVersion = gitVersion;
         this.goVersion = goVersion;
         this.major = major;
+        this.minCompatibilityMajor = minCompatibilityMajor;
+        this.minCompatibilityMinor = minCompatibilityMinor;
         this.minor = minor;
         this.platform = platform;
     }
@@ -115,6 +131,38 @@ public class Info implements Editable<InfoBuilder>, KubernetesResource
     @JsonProperty("compiler")
     public void setCompiler(String compiler) {
         this.compiler = compiler;
+    }
+
+    /**
+     * EmulationMajor is the major version of the emulation version
+     */
+    @JsonProperty("emulationMajor")
+    public String getEmulationMajor() {
+        return emulationMajor;
+    }
+
+    /**
+     * EmulationMajor is the major version of the emulation version
+     */
+    @JsonProperty("emulationMajor")
+    public void setEmulationMajor(String emulationMajor) {
+        this.emulationMajor = emulationMajor;
+    }
+
+    /**
+     * EmulationMinor is the minor version of the emulation version
+     */
+    @JsonProperty("emulationMinor")
+    public String getEmulationMinor() {
+        return emulationMinor;
+    }
+
+    /**
+     * EmulationMinor is the minor version of the emulation version
+     */
+    @JsonProperty("emulationMinor")
+    public void setEmulationMinor(String emulationMinor) {
+        this.emulationMinor = emulationMinor;
     }
 
     /**
@@ -182,7 +230,7 @@ public class Info implements Editable<InfoBuilder>, KubernetesResource
     }
 
     /**
-     * Info contains versioning information. how we'll want to distribute that information.
+     * Major is the major version of the binary version
      */
     @JsonProperty("major")
     public String getMajor() {
@@ -190,7 +238,7 @@ public class Info implements Editable<InfoBuilder>, KubernetesResource
     }
 
     /**
-     * Info contains versioning information. how we'll want to distribute that information.
+     * Major is the major version of the binary version
      */
     @JsonProperty("major")
     public void setMajor(String major) {
@@ -198,7 +246,39 @@ public class Info implements Editable<InfoBuilder>, KubernetesResource
     }
 
     /**
-     * Info contains versioning information. how we'll want to distribute that information.
+     * MinCompatibilityMajor is the major version of the minimum compatibility version
+     */
+    @JsonProperty("minCompatibilityMajor")
+    public String getMinCompatibilityMajor() {
+        return minCompatibilityMajor;
+    }
+
+    /**
+     * MinCompatibilityMajor is the major version of the minimum compatibility version
+     */
+    @JsonProperty("minCompatibilityMajor")
+    public void setMinCompatibilityMajor(String minCompatibilityMajor) {
+        this.minCompatibilityMajor = minCompatibilityMajor;
+    }
+
+    /**
+     * MinCompatibilityMinor is the minor version of the minimum compatibility version
+     */
+    @JsonProperty("minCompatibilityMinor")
+    public String getMinCompatibilityMinor() {
+        return minCompatibilityMinor;
+    }
+
+    /**
+     * MinCompatibilityMinor is the minor version of the minimum compatibility version
+     */
+    @JsonProperty("minCompatibilityMinor")
+    public void setMinCompatibilityMinor(String minCompatibilityMinor) {
+        this.minCompatibilityMinor = minCompatibilityMinor;
+    }
+
+    /**
+     * Minor is the minor version of the binary version
      */
     @JsonProperty("minor")
     public String getMinor() {
@@ -206,7 +286,7 @@ public class Info implements Editable<InfoBuilder>, KubernetesResource
     }
 
     /**
-     * Info contains versioning information. how we'll want to distribute that information.
+     * Minor is the minor version of the binary version
      */
     @JsonProperty("minor")
     public void setMinor(String minor) {

@@ -46,7 +46,9 @@ import lombok.experimental.Accessors;
     "driver",
     "nodeName",
     "nodeSelector",
-    "pool"
+    "perDeviceNodeSelection",
+    "pool",
+    "sharedCounters"
 })
 @ToString
 @EqualsAndHashCode
@@ -84,8 +86,13 @@ public class ResourceSliceSpec implements Editable<ResourceSliceSpecBuilder>, Ku
     private String nodeName;
     @JsonProperty("nodeSelector")
     private NodeSelector nodeSelector;
+    @JsonProperty("perDeviceNodeSelection")
+    private Boolean perDeviceNodeSelection;
     @JsonProperty("pool")
     private ResourcePool pool;
+    @JsonProperty("sharedCounters")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<CounterSet> sharedCounters = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -95,18 +102,20 @@ public class ResourceSliceSpec implements Editable<ResourceSliceSpecBuilder>, Ku
     public ResourceSliceSpec() {
     }
 
-    public ResourceSliceSpec(Boolean allNodes, List<Device> devices, String driver, String nodeName, NodeSelector nodeSelector, ResourcePool pool) {
+    public ResourceSliceSpec(Boolean allNodes, List<Device> devices, String driver, String nodeName, NodeSelector nodeSelector, Boolean perDeviceNodeSelection, ResourcePool pool, List<CounterSet> sharedCounters) {
         super();
         this.allNodes = allNodes;
         this.devices = devices;
         this.driver = driver;
         this.nodeName = nodeName;
         this.nodeSelector = nodeSelector;
+        this.perDeviceNodeSelection = perDeviceNodeSelection;
         this.pool = pool;
+        this.sharedCounters = sharedCounters;
     }
 
     /**
-     * AllNodes indicates that all nodes have access to the resources in the pool.<br><p> <br><p> Exactly one of NodeName, NodeSelector and AllNodes must be set.
+     * AllNodes indicates that all nodes have access to the resources in the pool.<br><p> <br><p> Exactly one of NodeName, NodeSelector, AllNodes, and PerDeviceNodeSelection must be set.
      */
     @JsonProperty("allNodes")
     public Boolean getAllNodes() {
@@ -114,7 +123,7 @@ public class ResourceSliceSpec implements Editable<ResourceSliceSpecBuilder>, Ku
     }
 
     /**
-     * AllNodes indicates that all nodes have access to the resources in the pool.<br><p> <br><p> Exactly one of NodeName, NodeSelector and AllNodes must be set.
+     * AllNodes indicates that all nodes have access to the resources in the pool.<br><p> <br><p> Exactly one of NodeName, NodeSelector, AllNodes, and PerDeviceNodeSelection must be set.
      */
     @JsonProperty("allNodes")
     public void setAllNodes(Boolean allNodes) {
@@ -155,7 +164,7 @@ public class ResourceSliceSpec implements Editable<ResourceSliceSpecBuilder>, Ku
     }
 
     /**
-     * NodeName identifies the node which provides the resources in this pool. A field selector can be used to list only ResourceSlice objects belonging to a certain node.<br><p> <br><p> This field can be used to limit access from nodes to ResourceSlices with the same node name. It also indicates to autoscalers that adding new nodes of the same type as some old node might also make new resources available.<br><p> <br><p> Exactly one of NodeName, NodeSelector and AllNodes must be set. This field is immutable.
+     * NodeName identifies the node which provides the resources in this pool. A field selector can be used to list only ResourceSlice objects belonging to a certain node.<br><p> <br><p> This field can be used to limit access from nodes to ResourceSlices with the same node name. It also indicates to autoscalers that adding new nodes of the same type as some old node might also make new resources available.<br><p> <br><p> Exactly one of NodeName, NodeSelector, AllNodes, and PerDeviceNodeSelection must be set. This field is immutable.
      */
     @JsonProperty("nodeName")
     public String getNodeName() {
@@ -163,7 +172,7 @@ public class ResourceSliceSpec implements Editable<ResourceSliceSpecBuilder>, Ku
     }
 
     /**
-     * NodeName identifies the node which provides the resources in this pool. A field selector can be used to list only ResourceSlice objects belonging to a certain node.<br><p> <br><p> This field can be used to limit access from nodes to ResourceSlices with the same node name. It also indicates to autoscalers that adding new nodes of the same type as some old node might also make new resources available.<br><p> <br><p> Exactly one of NodeName, NodeSelector and AllNodes must be set. This field is immutable.
+     * NodeName identifies the node which provides the resources in this pool. A field selector can be used to list only ResourceSlice objects belonging to a certain node.<br><p> <br><p> This field can be used to limit access from nodes to ResourceSlices with the same node name. It also indicates to autoscalers that adding new nodes of the same type as some old node might also make new resources available.<br><p> <br><p> Exactly one of NodeName, NodeSelector, AllNodes, and PerDeviceNodeSelection must be set. This field is immutable.
      */
     @JsonProperty("nodeName")
     public void setNodeName(String nodeName) {
@@ -187,6 +196,22 @@ public class ResourceSliceSpec implements Editable<ResourceSliceSpecBuilder>, Ku
     }
 
     /**
+     * PerDeviceNodeSelection defines whether the access from nodes to resources in the pool is set on the ResourceSlice level or on each device. If it is set to true, every device defined the ResourceSlice must specify this individually.<br><p> <br><p> Exactly one of NodeName, NodeSelector, AllNodes, and PerDeviceNodeSelection must be set.
+     */
+    @JsonProperty("perDeviceNodeSelection")
+    public Boolean getPerDeviceNodeSelection() {
+        return perDeviceNodeSelection;
+    }
+
+    /**
+     * PerDeviceNodeSelection defines whether the access from nodes to resources in the pool is set on the ResourceSlice level or on each device. If it is set to true, every device defined the ResourceSlice must specify this individually.<br><p> <br><p> Exactly one of NodeName, NodeSelector, AllNodes, and PerDeviceNodeSelection must be set.
+     */
+    @JsonProperty("perDeviceNodeSelection")
+    public void setPerDeviceNodeSelection(Boolean perDeviceNodeSelection) {
+        this.perDeviceNodeSelection = perDeviceNodeSelection;
+    }
+
+    /**
      * ResourceSliceSpec contains the information published by the driver in one ResourceSlice.
      */
     @JsonProperty("pool")
@@ -200,6 +225,23 @@ public class ResourceSliceSpec implements Editable<ResourceSliceSpecBuilder>, Ku
     @JsonProperty("pool")
     public void setPool(ResourcePool pool) {
         this.pool = pool;
+    }
+
+    /**
+     * SharedCounters defines a list of counter sets, each of which has a name and a list of counters available.<br><p> <br><p> The names of the SharedCounters must be unique in the ResourceSlice.<br><p> <br><p> The maximum number of SharedCounters is 32.
+     */
+    @JsonProperty("sharedCounters")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public List<CounterSet> getSharedCounters() {
+        return sharedCounters;
+    }
+
+    /**
+     * SharedCounters defines a list of counter sets, each of which has a name and a list of counters available.<br><p> <br><p> The names of the SharedCounters must be unique in the ResourceSlice.<br><p> <br><p> The maximum number of SharedCounters is 32.
+     */
+    @JsonProperty("sharedCounters")
+    public void setSharedCounters(List<CounterSet> sharedCounters) {
+        this.sharedCounters = sharedCounters;
     }
 
     @JsonIgnore

@@ -18,7 +18,7 @@ import lombok.ToString;
 import lombok.experimental.Accessors;
 
 /**
- * EnvFromSource represents the source of a set of ConfigMaps
+ * EnvFromSource represents the source of a set of ConfigMaps or Secrets
  */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -61,7 +61,7 @@ public class EnvFromSource implements Editable<EnvFromSourceBuilder>, Kubernetes
     }
 
     /**
-     * EnvFromSource represents the source of a set of ConfigMaps
+     * EnvFromSource represents the source of a set of ConfigMaps or Secrets
      */
     @JsonProperty("configMapRef")
     public ConfigMapEnvSource getConfigMapRef() {
@@ -69,7 +69,7 @@ public class EnvFromSource implements Editable<EnvFromSourceBuilder>, Kubernetes
     }
 
     /**
-     * EnvFromSource represents the source of a set of ConfigMaps
+     * EnvFromSource represents the source of a set of ConfigMaps or Secrets
      */
     @JsonProperty("configMapRef")
     public void setConfigMapRef(ConfigMapEnvSource configMapRef) {
@@ -77,7 +77,7 @@ public class EnvFromSource implements Editable<EnvFromSourceBuilder>, Kubernetes
     }
 
     /**
-     * An optional identifier to prepend to each key in the ConfigMap. Must be a C_IDENTIFIER.
+     * Optional text to prepend to the name of each environment variable. Must be a C_IDENTIFIER.
      */
     @JsonProperty("prefix")
     public String getPrefix() {
@@ -85,7 +85,7 @@ public class EnvFromSource implements Editable<EnvFromSourceBuilder>, Kubernetes
     }
 
     /**
-     * An optional identifier to prepend to each key in the ConfigMap. Must be a C_IDENTIFIER.
+     * Optional text to prepend to the name of each environment variable. Must be a C_IDENTIFIER.
      */
     @JsonProperty("prefix")
     public void setPrefix(String prefix) {
@@ -93,7 +93,7 @@ public class EnvFromSource implements Editable<EnvFromSourceBuilder>, Kubernetes
     }
 
     /**
-     * EnvFromSource represents the source of a set of ConfigMaps
+     * EnvFromSource represents the source of a set of ConfigMaps or Secrets
      */
     @JsonProperty("secretRef")
     public SecretEnvSource getSecretRef() {
@@ -101,7 +101,7 @@ public class EnvFromSource implements Editable<EnvFromSourceBuilder>, Kubernetes
     }
 
     /**
-     * EnvFromSource represents the source of a set of ConfigMaps
+     * EnvFromSource represents the source of a set of ConfigMaps or Secrets
      */
     @JsonProperty("secretRef")
     public void setSecretRef(SecretEnvSource secretRef) {

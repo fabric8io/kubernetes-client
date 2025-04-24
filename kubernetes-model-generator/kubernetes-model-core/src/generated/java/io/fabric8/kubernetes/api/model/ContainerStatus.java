@@ -37,6 +37,7 @@ import lombok.experimental.Accessors;
     "restartCount",
     "started",
     "state",
+    "stopSignal",
     "user",
     "volumeMounts"
 })
@@ -77,6 +78,8 @@ public class ContainerStatus implements Editable<ContainerStatusBuilder>, Kubern
     private Boolean started;
     @JsonProperty("state")
     private ContainerState state;
+    @JsonProperty("stopSignal")
+    private String stopSignal;
     @JsonProperty("user")
     private ContainerUser user;
     @JsonProperty("volumeMounts")
@@ -91,7 +94,7 @@ public class ContainerStatus implements Editable<ContainerStatusBuilder>, Kubern
     public ContainerStatus() {
     }
 
-    public ContainerStatus(Map<String, Quantity> allocatedResources, List<ResourceStatus> allocatedResourcesStatus, String containerID, String image, String imageID, ContainerState lastState, String name, Boolean ready, ResourceRequirements resources, Integer restartCount, Boolean started, ContainerState state, ContainerUser user, List<VolumeMountStatus> volumeMounts) {
+    public ContainerStatus(Map<String, Quantity> allocatedResources, List<ResourceStatus> allocatedResourcesStatus, String containerID, String image, String imageID, ContainerState lastState, String name, Boolean ready, ResourceRequirements resources, Integer restartCount, Boolean started, ContainerState state, String stopSignal, ContainerUser user, List<VolumeMountStatus> volumeMounts) {
         super();
         this.allocatedResources = allocatedResources;
         this.allocatedResourcesStatus = allocatedResourcesStatus;
@@ -105,6 +108,7 @@ public class ContainerStatus implements Editable<ContainerStatusBuilder>, Kubern
         this.restartCount = restartCount;
         this.started = started;
         this.state = state;
+        this.stopSignal = stopSignal;
         this.user = user;
         this.volumeMounts = volumeMounts;
     }
@@ -301,6 +305,22 @@ public class ContainerStatus implements Editable<ContainerStatusBuilder>, Kubern
     @JsonProperty("state")
     public void setState(ContainerState state) {
         this.state = state;
+    }
+
+    /**
+     * StopSignal reports the effective stop signal for this container
+     */
+    @JsonProperty("stopSignal")
+    public String getStopSignal() {
+        return stopSignal;
+    }
+
+    /**
+     * StopSignal reports the effective stop signal for this container
+     */
+    @JsonProperty("stopSignal")
+    public void setStopSignal(String stopSignal) {
+        this.stopSignal = stopSignal;
     }
 
     /**

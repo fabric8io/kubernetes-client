@@ -15,14 +15,19 @@
  */
 package io.fabric8.kubernetes.client.impl;
 
+import io.fabric8.kubernetes.api.model.networking.v1.IPAddress;
+import io.fabric8.kubernetes.api.model.networking.v1.IPAddressList;
 import io.fabric8.kubernetes.api.model.networking.v1.Ingress;
 import io.fabric8.kubernetes.api.model.networking.v1.IngressClass;
 import io.fabric8.kubernetes.api.model.networking.v1.IngressClassList;
 import io.fabric8.kubernetes.api.model.networking.v1.IngressList;
 import io.fabric8.kubernetes.api.model.networking.v1.NetworkPolicy;
 import io.fabric8.kubernetes.api.model.networking.v1.NetworkPolicyList;
+import io.fabric8.kubernetes.api.model.networking.v1.ServiceCIDR;
+import io.fabric8.kubernetes.api.model.networking.v1.ServiceCIDRList;
 import io.fabric8.kubernetes.client.V1NetworkAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
+import io.fabric8.kubernetes.client.dsl.NonNamespaceOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.extension.ClientAdapter;
 
@@ -39,8 +44,18 @@ public class V1NetworkAPIGroupClient extends ClientAdapter<V1NetworkAPIGroupClie
   }
 
   @Override
-  public MixedOperation<IngressClass, IngressClassList, Resource<IngressClass>> ingressClasses() {
+  public NonNamespaceOperation<IngressClass, IngressClassList, Resource<IngressClass>> ingressClasses() {
     return resources(IngressClass.class, IngressClassList.class);
+  }
+
+  @Override
+  public NonNamespaceOperation<IPAddress, IPAddressList, Resource<IPAddress>> ipAddresses() {
+    return resources(IPAddress.class, IPAddressList.class);
+  }
+
+  @Override
+  public NonNamespaceOperation<ServiceCIDR, ServiceCIDRList, Resource<ServiceCIDR>> serviceCIDRs() {
+    return resources(ServiceCIDR.class, ServiceCIDRList.class);
   }
 
   @Override

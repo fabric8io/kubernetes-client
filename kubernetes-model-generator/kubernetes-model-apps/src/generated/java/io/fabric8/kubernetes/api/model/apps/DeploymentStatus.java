@@ -46,6 +46,7 @@ import lombok.experimental.Accessors;
     "observedGeneration",
     "readyReplicas",
     "replicas",
+    "terminatingReplicas",
     "unavailableReplicas",
     "updatedReplicas"
 })
@@ -87,6 +88,8 @@ public class DeploymentStatus implements Editable<DeploymentStatusBuilder>, Kube
     private Integer readyReplicas;
     @JsonProperty("replicas")
     private Integer replicas;
+    @JsonProperty("terminatingReplicas")
+    private Integer terminatingReplicas;
     @JsonProperty("unavailableReplicas")
     private Integer unavailableReplicas;
     @JsonProperty("updatedReplicas")
@@ -100,7 +103,7 @@ public class DeploymentStatus implements Editable<DeploymentStatusBuilder>, Kube
     public DeploymentStatus() {
     }
 
-    public DeploymentStatus(Integer availableReplicas, Integer collisionCount, List<DeploymentCondition> conditions, Long observedGeneration, Integer readyReplicas, Integer replicas, Integer unavailableReplicas, Integer updatedReplicas) {
+    public DeploymentStatus(Integer availableReplicas, Integer collisionCount, List<DeploymentCondition> conditions, Long observedGeneration, Integer readyReplicas, Integer replicas, Integer terminatingReplicas, Integer unavailableReplicas, Integer updatedReplicas) {
         super();
         this.availableReplicas = availableReplicas;
         this.collisionCount = collisionCount;
@@ -108,12 +111,13 @@ public class DeploymentStatus implements Editable<DeploymentStatusBuilder>, Kube
         this.observedGeneration = observedGeneration;
         this.readyReplicas = readyReplicas;
         this.replicas = replicas;
+        this.terminatingReplicas = terminatingReplicas;
         this.unavailableReplicas = unavailableReplicas;
         this.updatedReplicas = updatedReplicas;
     }
 
     /**
-     * Total number of available pods (ready for at least minReadySeconds) targeted by this deployment.
+     * Total number of available non-terminating pods (ready for at least minReadySeconds) targeted by this deployment.
      */
     @JsonProperty("availableReplicas")
     public Integer getAvailableReplicas() {
@@ -121,7 +125,7 @@ public class DeploymentStatus implements Editable<DeploymentStatusBuilder>, Kube
     }
 
     /**
-     * Total number of available pods (ready for at least minReadySeconds) targeted by this deployment.
+     * Total number of available non-terminating pods (ready for at least minReadySeconds) targeted by this deployment.
      */
     @JsonProperty("availableReplicas")
     public void setAvailableReplicas(Integer availableReplicas) {
@@ -178,7 +182,7 @@ public class DeploymentStatus implements Editable<DeploymentStatusBuilder>, Kube
     }
 
     /**
-     * readyReplicas is the number of pods targeted by this Deployment with a Ready Condition.
+     * Total number of non-terminating pods targeted by this Deployment with a Ready Condition.
      */
     @JsonProperty("readyReplicas")
     public Integer getReadyReplicas() {
@@ -186,7 +190,7 @@ public class DeploymentStatus implements Editable<DeploymentStatusBuilder>, Kube
     }
 
     /**
-     * readyReplicas is the number of pods targeted by this Deployment with a Ready Condition.
+     * Total number of non-terminating pods targeted by this Deployment with a Ready Condition.
      */
     @JsonProperty("readyReplicas")
     public void setReadyReplicas(Integer readyReplicas) {
@@ -194,7 +198,7 @@ public class DeploymentStatus implements Editable<DeploymentStatusBuilder>, Kube
     }
 
     /**
-     * Total number of non-terminated pods targeted by this deployment (their labels match the selector).
+     * Total number of non-terminating pods targeted by this deployment (their labels match the selector).
      */
     @JsonProperty("replicas")
     public Integer getReplicas() {
@@ -202,11 +206,27 @@ public class DeploymentStatus implements Editable<DeploymentStatusBuilder>, Kube
     }
 
     /**
-     * Total number of non-terminated pods targeted by this deployment (their labels match the selector).
+     * Total number of non-terminating pods targeted by this deployment (their labels match the selector).
      */
     @JsonProperty("replicas")
     public void setReplicas(Integer replicas) {
         this.replicas = replicas;
+    }
+
+    /**
+     * Total number of terminating pods targeted by this deployment. Terminating pods have a non-null .metadata.deletionTimestamp and have not yet reached the Failed or Succeeded .status.phase.<br><p> <br><p> This is an alpha field. Enable DeploymentReplicaSetTerminatingReplicas to be able to use this field.
+     */
+    @JsonProperty("terminatingReplicas")
+    public Integer getTerminatingReplicas() {
+        return terminatingReplicas;
+    }
+
+    /**
+     * Total number of terminating pods targeted by this deployment. Terminating pods have a non-null .metadata.deletionTimestamp and have not yet reached the Failed or Succeeded .status.phase.<br><p> <br><p> This is an alpha field. Enable DeploymentReplicaSetTerminatingReplicas to be able to use this field.
+     */
+    @JsonProperty("terminatingReplicas")
+    public void setTerminatingReplicas(Integer terminatingReplicas) {
+        this.terminatingReplicas = terminatingReplicas;
     }
 
     /**
@@ -226,7 +246,7 @@ public class DeploymentStatus implements Editable<DeploymentStatusBuilder>, Kube
     }
 
     /**
-     * Total number of non-terminated pods targeted by this deployment that have the desired template spec.
+     * Total number of non-terminating pods targeted by this deployment that have the desired template spec.
      */
     @JsonProperty("updatedReplicas")
     public Integer getUpdatedReplicas() {
@@ -234,7 +254,7 @@ public class DeploymentStatus implements Editable<DeploymentStatusBuilder>, Kube
     }
 
     /**
-     * Total number of non-terminated pods targeted by this deployment that have the desired template spec.
+     * Total number of non-terminating pods targeted by this deployment that have the desired template spec.
      */
     @JsonProperty("updatedReplicas")
     public void setUpdatedReplicas(Integer updatedReplicas) {

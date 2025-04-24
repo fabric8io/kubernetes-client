@@ -38,6 +38,7 @@ import lombok.experimental.Accessors;
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
+    "errorCode",
     "message",
     "time"
 })
@@ -66,6 +67,8 @@ import lombok.experimental.Accessors;
 public class VolumeError implements Editable<VolumeErrorBuilder>, KubernetesResource
 {
 
+    @JsonProperty("errorCode")
+    private Integer errorCode;
     @JsonProperty("message")
     private String message;
     @JsonProperty("time")
@@ -79,10 +82,27 @@ public class VolumeError implements Editable<VolumeErrorBuilder>, KubernetesReso
     public VolumeError() {
     }
 
-    public VolumeError(String message, String time) {
+    public VolumeError(Integer errorCode, String message, String time) {
         super();
+        this.errorCode = errorCode;
         this.message = message;
         this.time = time;
+    }
+
+    /**
+     * errorCode is a numeric gRPC code representing the error encountered during Attach or Detach operations.<br><p> <br><p> This is an optional, alpha field that requires the MutableCSINodeAllocatableCount feature gate being enabled to be set.
+     */
+    @JsonProperty("errorCode")
+    public Integer getErrorCode() {
+        return errorCode;
+    }
+
+    /**
+     * errorCode is a numeric gRPC code representing the error encountered during Attach or Detach operations.<br><p> <br><p> This is an optional, alpha field that requires the MutableCSINodeAllocatableCount feature gate being enabled to be set.
+     */
+    @JsonProperty("errorCode")
+    public void setErrorCode(Integer errorCode) {
+        this.errorCode = errorCode;
     }
 
     /**

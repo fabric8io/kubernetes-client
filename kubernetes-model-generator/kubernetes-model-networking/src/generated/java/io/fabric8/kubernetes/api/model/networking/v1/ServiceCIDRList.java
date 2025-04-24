@@ -1,7 +1,9 @@
 
-package io.fabric8.kubernetes.api.model.authentication.v1beta1;
+package io.fabric8.kubernetes.api.model.networking.v1;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import javax.annotation.processing.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
@@ -15,9 +17,11 @@ import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvVar;
-import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.IntOrString;
+import io.fabric8.kubernetes.api.model.KubernetesResource;
+import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 import io.fabric8.kubernetes.api.model.LabelSelector;
+import io.fabric8.kubernetes.api.model.ListMeta;
 import io.fabric8.kubernetes.api.model.LocalObjectReference;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.ObjectReference;
@@ -37,7 +41,7 @@ import lombok.ToString;
 import lombok.experimental.Accessors;
 
 /**
- * SelfSubjectReview contains the user information that the kube-apiserver has about the user making this request. When using impersonation, users will receive the user info of the user being impersonated.  If impersonation or request header authentication is used, any extra keys will have their case ignored and returned as lowercase.
+ * ServiceCIDRList contains a list of ServiceCIDR objects.
  */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -45,7 +49,7 @@ import lombok.experimental.Accessors;
     "apiVersion",
     "kind",
     "metadata",
-    "status"
+    "items"
 })
 @ToString
 @EqualsAndHashCode
@@ -71,35 +75,36 @@ import lombok.experimental.Accessors;
 @TemplateTransformations({
     @TemplateTransformation(value = "/manifest.vm", outputPath = "META-INF/services/io.fabric8.kubernetes.api.model.KubernetesResource", gather = true)
 })
-@Version("v1beta1")
-@Group("authentication.k8s.io")
+@Version("v1")
+@Group("networking.k8s.io")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class SelfSubjectReview implements Editable<SelfSubjectReviewBuilder>, HasMetadata
+public class ServiceCIDRList implements Editable<ServiceCIDRListBuilder>, KubernetesResource, KubernetesResourceList<io.fabric8.kubernetes.api.model.networking.v1.ServiceCIDR>
 {
 
     @JsonProperty("apiVersion")
-    private String apiVersion = "authentication.k8s.io/v1beta1";
+    private String apiVersion = "networking.k8s.io/v1";
+    @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<io.fabric8.kubernetes.api.model.networking.v1.ServiceCIDR> items = new ArrayList<>();
     @JsonProperty("kind")
-    private String kind = "SelfSubjectReview";
+    private String kind = "ServiceCIDRList";
     @JsonProperty("metadata")
-    private ObjectMeta metadata;
-    @JsonProperty("status")
-    private SelfSubjectReviewStatus status;
+    private ListMeta metadata;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
      */
-    public SelfSubjectReview() {
+    public ServiceCIDRList() {
     }
 
-    public SelfSubjectReview(String apiVersion, String kind, ObjectMeta metadata, SelfSubjectReviewStatus status) {
+    public ServiceCIDRList(String apiVersion, List<io.fabric8.kubernetes.api.model.networking.v1.ServiceCIDR> items, String kind, ListMeta metadata) {
         super();
         this.apiVersion = apiVersion;
+        this.items = items;
         this.kind = kind;
         this.metadata = metadata;
-        this.status = status;
     }
 
     /**
@@ -119,6 +124,23 @@ public class SelfSubjectReview implements Editable<SelfSubjectReviewBuilder>, Ha
     }
 
     /**
+     * items is the list of ServiceCIDRs.
+     */
+    @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public List<io.fabric8.kubernetes.api.model.networking.v1.ServiceCIDR> getItems() {
+        return items;
+    }
+
+    /**
+     * items is the list of ServiceCIDRs.
+     */
+    @JsonProperty("items")
+    public void setItems(List<io.fabric8.kubernetes.api.model.networking.v1.ServiceCIDR> items) {
+        this.items = items;
+    }
+
+    /**
      * Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
      */
     @JsonProperty("kind")
@@ -135,44 +157,28 @@ public class SelfSubjectReview implements Editable<SelfSubjectReviewBuilder>, Ha
     }
 
     /**
-     * SelfSubjectReview contains the user information that the kube-apiserver has about the user making this request. When using impersonation, users will receive the user info of the user being impersonated.  If impersonation or request header authentication is used, any extra keys will have their case ignored and returned as lowercase.
+     * ServiceCIDRList contains a list of ServiceCIDR objects.
      */
     @JsonProperty("metadata")
-    public ObjectMeta getMetadata() {
+    public ListMeta getMetadata() {
         return metadata;
     }
 
     /**
-     * SelfSubjectReview contains the user information that the kube-apiserver has about the user making this request. When using impersonation, users will receive the user info of the user being impersonated.  If impersonation or request header authentication is used, any extra keys will have their case ignored and returned as lowercase.
+     * ServiceCIDRList contains a list of ServiceCIDR objects.
      */
     @JsonProperty("metadata")
-    public void setMetadata(ObjectMeta metadata) {
+    public void setMetadata(ListMeta metadata) {
         this.metadata = metadata;
     }
 
-    /**
-     * SelfSubjectReview contains the user information that the kube-apiserver has about the user making this request. When using impersonation, users will receive the user info of the user being impersonated.  If impersonation or request header authentication is used, any extra keys will have their case ignored and returned as lowercase.
-     */
-    @JsonProperty("status")
-    public SelfSubjectReviewStatus getStatus() {
-        return status;
-    }
-
-    /**
-     * SelfSubjectReview contains the user information that the kube-apiserver has about the user making this request. When using impersonation, users will receive the user info of the user being impersonated.  If impersonation or request header authentication is used, any extra keys will have their case ignored and returned as lowercase.
-     */
-    @JsonProperty("status")
-    public void setStatus(SelfSubjectReviewStatus status) {
-        this.status = status;
+    @JsonIgnore
+    public ServiceCIDRListBuilder edit() {
+        return new ServiceCIDRListBuilder(this);
     }
 
     @JsonIgnore
-    public SelfSubjectReviewBuilder edit() {
-        return new SelfSubjectReviewBuilder(this);
-    }
-
-    @JsonIgnore
-    public SelfSubjectReviewBuilder toBuilder() {
+    public ServiceCIDRListBuilder toBuilder() {
         return edit();
     }
 

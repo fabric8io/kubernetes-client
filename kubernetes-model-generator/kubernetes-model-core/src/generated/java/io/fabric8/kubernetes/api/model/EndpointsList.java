@@ -24,7 +24,7 @@ import lombok.ToString;
 import lombok.experimental.Accessors;
 
 /**
- * EndpointsList is a list of endpoints.
+ * EndpointsList is a list of endpoints. Deprecated: This API is deprecated in v1.33+.
  */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -126,7 +126,7 @@ public class EndpointsList implements Editable<EndpointsListBuilder>, Kubernetes
     }
 
     /**
-     * EndpointsList is a list of endpoints.
+     * EndpointsList is a list of endpoints. Deprecated: This API is deprecated in v1.33+.
      */
     @JsonProperty("metadata")
     public ListMeta getMetadata() {
@@ -134,7 +134,7 @@ public class EndpointsList implements Editable<EndpointsListBuilder>, Kubernetes
     }
 
     /**
-     * EndpointsList is a list of endpoints.
+     * EndpointsList is a list of endpoints. Deprecated: This API is deprecated in v1.33+.
      */
     @JsonProperty("metadata")
     public void setMetadata(ListMeta metadata) {

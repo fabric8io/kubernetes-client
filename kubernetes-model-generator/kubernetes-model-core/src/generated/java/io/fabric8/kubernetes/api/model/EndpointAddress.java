@@ -18,7 +18,7 @@ import lombok.ToString;
 import lombok.experimental.Accessors;
 
 /**
- * EndpointAddress is a tuple that describes single IP address.
+ * EndpointAddress is a tuple that describes single IP address. Deprecated: This API is deprecated in v1.33+.
  */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -113,7 +113,7 @@ public class EndpointAddress implements Editable<EndpointAddressBuilder>, Kubern
     }
 
     /**
-     * EndpointAddress is a tuple that describes single IP address.
+     * EndpointAddress is a tuple that describes single IP address. Deprecated: This API is deprecated in v1.33+.
      */
     @JsonProperty("targetRef")
     public ObjectReference getTargetRef() {
@@ -121,7 +121,7 @@ public class EndpointAddress implements Editable<EndpointAddressBuilder>, Kubern
     }
 
     /**
-     * EndpointAddress is a tuple that describes single IP address.
+     * EndpointAddress is a tuple that describes single IP address. Deprecated: This API is deprecated in v1.33+.
      */
     @JsonProperty("targetRef")
     public void setTargetRef(ObjectReference targetRef) {

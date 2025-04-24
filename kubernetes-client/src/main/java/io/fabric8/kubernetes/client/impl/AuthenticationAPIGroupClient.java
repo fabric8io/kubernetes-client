@@ -17,7 +17,6 @@ package io.fabric8.kubernetes.client.impl;
 
 import io.fabric8.kubernetes.client.V1AuthenticationAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.AuthenticationAPIGroupDSL;
-import io.fabric8.kubernetes.client.dsl.V1Beta1AuthenticationAPIGroupDSL;
 import io.fabric8.kubernetes.client.extension.ClientAdapter;
 
 public class AuthenticationAPIGroupClient extends ClientAdapter<AuthenticationAPIGroupClient>
@@ -25,11 +24,6 @@ public class AuthenticationAPIGroupClient extends ClientAdapter<AuthenticationAP
   @Override
   public V1AuthenticationAPIGroupDSL v1() {
     return adapt(V1AuthenticationAPIGroupClient.class);
-  }
-
-  @Override
-  public V1Beta1AuthenticationAPIGroupDSL v1beta1() {
-    return adapt(V1Beta1AuthenticationAPIGroupClient.class);
   }
 
   @Override
