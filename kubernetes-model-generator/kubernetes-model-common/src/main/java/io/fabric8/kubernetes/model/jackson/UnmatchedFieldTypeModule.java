@@ -20,10 +20,13 @@ import com.fasterxml.jackson.databind.DeserializationConfig;
 import com.fasterxml.jackson.databind.SerializationConfig;
 import com.fasterxml.jackson.databind.deser.BeanDeserializerBuilder;
 import com.fasterxml.jackson.databind.deser.BeanDeserializerModifier;
+import com.fasterxml.jackson.databind.introspect.AnnotatedMember;
 import com.fasterxml.jackson.databind.module.SimpleModule;
+import com.fasterxml.jackson.databind.ser.BeanPropertyWriter;
 import com.fasterxml.jackson.databind.ser.BeanSerializerBuilder;
 import com.fasterxml.jackson.databind.ser.BeanSerializerModifier;
 
+import java.util.List;
 import java.util.stream.Collectors;
 
 /**
@@ -64,10 +67,20 @@ public class UnmatchedFieldTypeModule extends SimpleModule {
       @Override
       public BeanSerializerBuilder updateBuilder(SerializationConfig config, BeanDescription beanDesc,
           BeanSerializerBuilder builder) {
-        builder.setProperties(builder.getProperties().stream()
-            .map(p -> new BeanPropertyWriterDelegate(p, builder.getBeanDescription().findAnyGetter(),
-                UnmatchedFieldTypeModule.this::isLogWarnings))
-            .collect(Collectors.toList()));
+        AnnotatedMember anyGetter = beanDesc.findAnyGetter();
+
+        List<BeanPropertyWriter> originalWriters = builder.getProperties();
+
+        List<BeanPropertyWriter> newWriters = originalWriters.stream()
+            .map(writer -> {
+              if ("additionalProperties".equals(writer.getName())) {
+                return writer;
+              }
+              return new BeanPropertyWriterDelegate(writer, anyGetter, UnmatchedFieldTypeModule.this::isLogWarnings);
+            })
+            .collect(Collectors.toList());
+
+        builder.setProperties(newWriters);
         return builder;
       }
     });
