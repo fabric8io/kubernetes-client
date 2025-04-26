@@ -57,8 +57,10 @@ import java.io.IOException;
 import java.lang.reflect.AccessibleObject;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
@@ -475,7 +477,7 @@ class SettableBeanPropertyDelegatingTest {
   class ReflectionTest {
 
     @Test
-    @DisplayName("all methods from superclass (SettableBeanProperty) are implemented by delegating class (SettableBeanPropertyDelegate)")
+    @DisplayName("All concrete superclass methods are implemented by SettableBeanPropertyDelegating")
     void allMethodsFromSuperclassAreImplementedByDelegatingClass() {
       final Map<MethodSignature, Boolean> superclassMethods = Stream.of(SettableBeanProperty.class.getDeclaredMethods())
           .filter(m -> !Modifier.isFinal(m.getModifiers()))
@@ -484,15 +486,23 @@ class SettableBeanPropertyDelegatingTest {
           .filter(m -> !m.getName().startsWith("_"))
           .map(MethodSignature::from)
           .collect(Collectors.toMap(ms -> ms, ms -> false));
+
       Stream.concat(
           Stream.of(SettableBeanProperty.Delegating.class.getDeclaredMethods()),
           Stream.of(SettableBeanPropertyDelegating.class.getDeclaredMethods()))
           .map(MethodSignature::from)
           .forEach(ms -> superclassMethods.computeIfPresent(ms, (k, v) -> true));
-      assertThat(superclassMethods)
-          .values()
-          .containsOnly(true);
+
+      List<MethodSignature> missing = superclassMethods.entrySet().stream()
+          .filter(e -> !e.getValue())
+          .map(Map.Entry::getKey)
+          .collect(Collectors.toList());
+
+      assertThat(missing)
+          .withFailMessage("Missing method overrides: %s", missing)
+          .isEmpty();
     }
+
   }
 
   @JsonIgnoreProperties(ignoreUnknown = true)
@@ -530,5 +540,12 @@ class SettableBeanPropertyDelegatingTest {
       return new MethodSignature(m.getReturnType(), m.getName(), m.getParameterTypes());
     }
 
+    @Override
+    public String toString() {
+      String params = Arrays.stream(parameterTypes)
+          .map(Class::getSimpleName)
+          .collect(Collectors.joining(", "));
+      return returnType.getSimpleName() + " " + name + "(" + params + ")";
+    }
   }
 }
