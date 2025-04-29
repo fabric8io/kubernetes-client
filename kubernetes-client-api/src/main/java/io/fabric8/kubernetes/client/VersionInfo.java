@@ -15,144 +15,163 @@
  */
 package io.fabric8.kubernetes.client;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.Getter;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
+@Getter
 public class VersionInfo {
   public static final class VersionKeys {
     private VersionKeys() {
     }
 
-    public static final String BUILD_DATE = "buildDate";
-    public static final String GIT_COMMIT = "gitCommit";
-    public static final String GIT_VERSION = "gitVersion";
-    public static final String MAJOR = "major";
-    public static final String MINOR = "minor";
-    public static final String GIT_TREE_STATE = "gitTreeState";
-    public static final String PLATFORM = "platform";
-    public static final String GO_VERSION = "goVersion";
-    public static final String COMPILER = "compiler";
     public static final String BUILD_DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ssX";
   }
 
-  private Date buildDate;
-  private String gitCommit;
-  private String gitVersion;
   private String major;
   private String minor;
+  private Integer emulationMajor;
+  private Integer emulationMinor;
+  private Integer minCompatibilityMajor;
+  private Integer minCompatibilityMinor;
+  private String gitCommit;
+  private String gitVersion;
   private String gitTreeState;
-  private String platform;
+  private Date buildDate;
   private String goVersion;
   private String compiler;
-
-  public Date getBuildDate() {
-    return buildDate;
-  }
-
-  public String getGitCommit() {
-    return gitCommit;
-  }
-
-  public String getGitVersion() {
-    return gitVersion;
-  }
-
-  public String getMajor() {
-    return major;
-  }
-
-  public String getMinor() {
-    return minor;
-  }
-
-  public String getGitTreeState() {
-    return gitTreeState;
-  }
-
-  public String getPlatform() {
-    return platform;
-  }
-
-  public String getGoVersion() {
-    return goVersion;
-  }
-
-  public String getCompiler() {
-    return compiler;
-  }
+  private String platform;
 
   private VersionInfo() {
   }
 
-  public static class Builder {
-    private VersionInfo versionInfo = new VersionInfo();
+  public static final class Builder {
+    private String major;
+    private String minor;
+    private Integer emulationMajor;
+    private Integer emulationMinor;
+    private Integer minCompatibilityMajor;
+    private Integer minCompatibilityMinor;
+    private String gitCommit;
+    private String gitVersion;
+    private String gitTreeState;
+    private Date buildDate;
+    private String goVersion;
+    private String compiler;
+    private String platform;
 
     public Builder() {
     }
 
     public Builder(VersionInfo versionInfo) {
       if (versionInfo != null) {
-        this.versionInfo.buildDate = versionInfo.getBuildDate();
-        this.versionInfo.gitCommit = versionInfo.getGitCommit();
-        this.versionInfo.gitVersion = versionInfo.getGitVersion();
-        this.versionInfo.major = versionInfo.getMajor();
-        this.versionInfo.minor = versionInfo.getMinor();
-        this.versionInfo.gitTreeState = versionInfo.getGitTreeState();
-        this.versionInfo.platform = versionInfo.getPlatform();
-        this.versionInfo.goVersion = versionInfo.getGoVersion();
-        this.versionInfo.compiler = versionInfo.getCompiler();
+        this.major = versionInfo.getMajor();
+        this.minor = versionInfo.getMinor();
+        this.emulationMajor = versionInfo.getEmulationMajor();
+        this.emulationMinor = versionInfo.getEmulationMinor();
+        this.minCompatibilityMajor = versionInfo.getMinCompatibilityMajor();
+        this.minCompatibilityMinor = versionInfo.getMinCompatibilityMinor();
+        this.gitCommit = versionInfo.getGitCommit();
+        this.gitVersion = versionInfo.getGitVersion();
+        this.gitTreeState = versionInfo.getGitTreeState();
+        this.buildDate = versionInfo.getBuildDate();
+        this.goVersion = versionInfo.getGoVersion();
+        this.compiler = versionInfo.getCompiler();
+        this.platform = versionInfo.getPlatform();
       }
     }
 
     public Builder withBuildDate(String buildDate) throws ParseException {
       if (buildDate != null) {
-        this.versionInfo.buildDate = new SimpleDateFormat(VersionKeys.BUILD_DATE_FORMAT).parse(buildDate);
+        this.buildDate = new SimpleDateFormat(VersionKeys.BUILD_DATE_FORMAT).parse(buildDate);
       }
       return this;
     }
 
-    public Builder withGitCommit(String gitCommit) {
-      this.versionInfo.gitCommit = gitCommit;
-      return this;
-    }
-
-    public Builder withGitVersion(String gitVersion) {
-      this.versionInfo.gitVersion = gitVersion;
-      return this;
-    }
-
     public Builder withMajor(String major) {
-      this.versionInfo.major = major;
+      this.major = major;
       return this;
     }
 
     public Builder withMinor(String minor) {
-      this.versionInfo.minor = minor;
+      this.minor = minor;
+      return this;
+    }
+
+    public Builder withEmulationMajor(Integer emulationMajor) {
+      this.emulationMajor = emulationMajor;
+      return this;
+    }
+
+    public Builder withEmulationMinor(Integer emulationMinor) {
+      this.emulationMinor = emulationMinor;
+      return this;
+    }
+
+    public Builder withMinCompatibilityMajor(Integer minCompatibilityMajor) {
+      this.minCompatibilityMajor = minCompatibilityMajor;
+      return this;
+    }
+
+    public Builder withMinCompatibilityMinor(Integer minCompatibilityMinor) {
+      this.minCompatibilityMinor = minCompatibilityMinor;
+      return this;
+    }
+
+    public Builder withGitCommit(String gitCommit) {
+      this.gitCommit = gitCommit;
+      return this;
+    }
+
+    public Builder withGitVersion(String gitVersion) {
+      this.gitVersion = gitVersion;
       return this;
     }
 
     public Builder withGitTreeState(String gitTreeState) {
-      this.versionInfo.gitTreeState = gitTreeState;
+      this.gitTreeState = gitTreeState;
       return this;
     }
 
-    public Builder withPlatform(String platform) {
-      this.versionInfo.platform = platform;
+    public Builder withBuildDate(Date buildDate) {
+      this.buildDate = buildDate;
       return this;
     }
 
     public Builder withGoVersion(String goVersion) {
-      this.versionInfo.goVersion = goVersion;
+      this.goVersion = goVersion;
       return this;
     }
 
     public Builder withCompiler(String compiler) {
-      this.versionInfo.compiler = compiler;
+      this.compiler = compiler;
+      return this;
+    }
+
+    public Builder withPlatform(String platform) {
+      this.platform = platform;
       return this;
     }
 
     public VersionInfo build() {
+      VersionInfo versionInfo = new VersionInfo();
+      versionInfo.compiler = this.compiler;
+      versionInfo.gitCommit = this.gitCommit;
+      versionInfo.minCompatibilityMajor = this.minCompatibilityMajor;
+      versionInfo.goVersion = this.goVersion;
+      versionInfo.platform = this.platform;
+      versionInfo.gitVersion = this.gitVersion;
+      versionInfo.major = this.major;
+      versionInfo.emulationMajor = this.emulationMajor;
+      versionInfo.emulationMinor = this.emulationMinor;
+      versionInfo.minor = this.minor;
+      versionInfo.minCompatibilityMinor = this.minCompatibilityMinor;
+      versionInfo.gitTreeState = this.gitTreeState;
+      versionInfo.buildDate = this.buildDate;
       return versionInfo;
     }
   }

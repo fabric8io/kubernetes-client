@@ -13,7 +13,8 @@
 * Fix #6930: Add support for Boolean enums in the java-generator
 * Fix #6941: HasMetadata.getApiVersion no slash when empty group
 * Fix #6982: (java-generator) Double default field values with `d` suffix
-* FIX #6987: Kube API Test startup fails on readiness SSL check
+* Fix #6987: Kube API Test startup fails on readiness SSL check
+* Fix #7037: getKubernetesVersion works in Kubernetes v1.33.0
 
 #### Improvements
 * Fix #6763: (crd-generator) YAML output customization
