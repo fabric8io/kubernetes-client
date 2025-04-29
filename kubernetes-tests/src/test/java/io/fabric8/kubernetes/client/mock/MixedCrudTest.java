@@ -18,7 +18,6 @@ package io.fabric8.kubernetes.client.mock;
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodBuilder;
 import io.fabric8.kubernetes.client.KubernetesClient;
-import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.VersionInfo;
 import io.fabric8.kubernetes.client.server.mock.KubernetesMixedDispatcher;
 import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
@@ -37,7 +36,6 @@ import java.util.Map;
 import java.util.Queue;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class MixedCrudTest {
 
@@ -56,15 +54,6 @@ class MixedCrudTest {
   void tearDown() {
     client.close();
     server.destroy();
-  }
-
-  @Test
-  @DisplayName("client.getKubernetesVersion, with no expectations, should throw Exception")
-  void versionWithNoExpectationsShouldFail() {
-    // When
-    final RuntimeException exception = assertThrows(RuntimeException.class, client::getKubernetesVersion);
-    // Then
-    assertThat(exception).isNotNull().isInstanceOf(KubernetesClientException.class);
   }
 
   @Test

@@ -46,16 +46,24 @@ class VersionInfoTest {
         "    \"gitCommit\": \"e6301f88a8\"," +
         "    \"gitVersion\": \"v1.6.1+5115d708d7\"," +
         "    \"major\": \"3\"," +
-        "    \"minor\": \"6\"" +
+        "    \"minor\": \"6\"," +
+        "    \"emulationMajor\": \"1\"," +
+        "    \"emulationMinor\": \"33\"," +
+        "    \"minCompatibilityMajor\": \"1\"," +
+        "    \"minCompatibilityMinor\": \"32\"" +
         "}").always();
 
-    assertEquals("v1.6.1+5115d708d7", client.getVersion().getGitVersion());
-    assertEquals("e6301f88a8", client.getVersion().getGitCommit());
-    assertEquals("3", client.getVersion().getMajor());
-    assertEquals("6", client.getVersion().getMinor());
-    assertEquals(118, client.getVersion().getBuildDate().getYear());
+    assertEquals("v1.6.1+5115d708d7", client.getKubernetesVersion().getGitVersion());
+    assertEquals("e6301f88a8", client.getKubernetesVersion().getGitCommit());
+    assertEquals("3", client.getKubernetesVersion().getMajor());
+    assertEquals("6", client.getKubernetesVersion().getMinor());
+    assertEquals(1, client.getKubernetesVersion().getEmulationMajor());
+    assertEquals(33, client.getKubernetesVersion().getEmulationMinor());
+    assertEquals(1, client.getKubernetesVersion().getMinCompatibilityMajor());
+    assertEquals(32, client.getKubernetesVersion().getMinCompatibilityMinor());
+    assertEquals(118, client.getKubernetesVersion().getBuildDate().getYear());
     assertEquals(new SimpleDateFormat(VersionInfo.VersionKeys.BUILD_DATE_FORMAT).parse("2018-03-01T14:27:17Z").getTime(),
-        client.getVersion().getBuildDate().getTime());
+        client.getKubernetesVersion().getBuildDate().getTime());
   }
 
   @Test
