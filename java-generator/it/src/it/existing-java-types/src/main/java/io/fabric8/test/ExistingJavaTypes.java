@@ -17,10 +17,12 @@ package io.fabric8.test;
 
 import com.example.v1.ExistingJavaTypeSpec;
 import io.fabric8.kubernetes.api.model.Affinity;
+import io.fabric8.kubernetes.api.model.DeletionPropagation;
 
 public class ExistingJavaTypes {
   public void example() {
     ExistingJavaTypeSpec existingJavaTypeSpec = new ExistingJavaTypeSpec();
     existingJavaTypeSpec.setAffinity(new Affinity());
+    existingJavaTypeSpec.setDeletionPropagation(DeletionPropagation.ORPHAN);
   }
 }
