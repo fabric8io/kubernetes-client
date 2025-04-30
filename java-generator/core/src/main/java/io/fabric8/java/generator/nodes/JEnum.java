@@ -61,6 +61,15 @@ public class JEnum extends AbstractJSONSchema2Pojo {
     this.pkgPrefixedType = createPackagePrefixedType(pkg, this.type);
   }
 
+  /**
+   * @deprecated use {@link #JEnum(String, String, String, List, Config, String, boolean, JsonNode)}
+   */
+  @Deprecated
+  public JEnum(String type, String underlyingType, List<JsonNode> values, Config config, String description,
+      final boolean isNullable, JsonNode defaultValue) {
+    this(null, type, underlyingType, values, config, description, isNullable, defaultValue);
+  }
+
   private String createPackagePrefixedType(String pkg, String type) {
     String p = (pkg == null) ? "" : pkg.trim();
     String pkgPrefix = (p.isEmpty()) ? p : p + ".";

@@ -630,6 +630,32 @@ class GeneratorTest {
   }
 
   @Test
+  void testEnumDeprecatedConstructor() {
+    // Arrange
+    JSONSchemaProps newEnum = new JSONSchemaProps();
+    newEnum.setType("string");
+    JEnum enu = new JEnum(
+        "t",
+        JAVA_LANG_STRING,
+        List.of(),
+        defaultConfig,
+        null,
+        Boolean.FALSE,
+        null);
+
+    // Act
+    GeneratorResult res = enu.generateJava();
+
+    // Assert
+    assertEquals("T", enu.getType());
+    assertEquals(1, res.getInnerClasses().size());
+    assertEquals("T", res.getInnerClasses().get(0).getName());
+
+    Optional<EnumDeclaration> en = res.getInnerClasses().get(0).getEnumByName("T");
+    assertTrue(en.isPresent());
+  }
+
+  @Test
   void testArrayOfObjects() {
     // Arrange
     JArray array = new JArray(
