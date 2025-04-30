@@ -40,6 +40,7 @@
 
 #### New Features
 * Fix #6827: (crd-generator) Add CRDPostProcessor to process generated CRDs before they are written out
+* Fix #7025: Support for Kubernetes v1.33 (Octarine)
 
 #### _**Note**_: Breaking changes
 
