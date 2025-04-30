@@ -1,6 +1,6 @@
 ## CHANGELOG
 
-### 7.2-SNAPSHOT
+### 7.2.0 (2025-04-30)
 
 #### Bugs
 * Fix #6750: KubernetesMockServer.reset resets lastRequest related variables
@@ -24,7 +24,6 @@
 * Fix #6998: Removed unneeded dependency on javax.annotation:javax.annotation-api
 
 #### Dependency Upgrade
-
 * Fix #6829: Sundrio was upgraded to 0.200.3. In some rare circumstances nested method names will need to be changed.
 
 #### New Features

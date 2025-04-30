@@ -22,7 +22,7 @@
   <parent>
     <artifactId>kubernetes-extensions</artifactId>
     <groupId>io.fabric8</groupId>
-    <version>7.2-SNAPSHOT</version>
+    <version>7.2.0</version>
   </parent>
 
   <artifactId>ovn</artifactId>
