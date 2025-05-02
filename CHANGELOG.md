@@ -26,6 +26,7 @@
 * Fix #6941: HasMetadata.getApiVersion no slash when empty group
 * Fix #6982: (java-generator) Double default field values with `d` suffix
 * Fix #6987: Kube API Test startup fails on readiness SSL check
+* Fix #7036: Resolve serialization errors after Jackson 2.19.0 upgrade (breaks older versions)
 * Fix #7037: getKubernetesVersion works in Kubernetes v1.33.0
 
 #### Improvements
