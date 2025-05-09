@@ -39,8 +39,8 @@ import java.util.Queue;
 
 /**
  * The class that implements JUnit5 extension mechanism. You can use it directly in your JUnit test
- * by annotating it with <code>@ExtendWith(KubernetesMockExtension.class)</code> or through
- * <code>@EnableKubernetesMock</code> annotation
+ * by annotating it with <code>@ExtendWith(KubernetesMockServerExtension.class)</code> or through
+ * <code>@EnableKubernetesMockClient</code> annotation
  */
 public class KubernetesMockServerExtension
     implements AfterEachCallback, AfterAllCallback, BeforeEachCallback, BeforeAllCallback {
