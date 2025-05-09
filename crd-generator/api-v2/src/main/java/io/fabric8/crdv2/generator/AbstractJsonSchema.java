@@ -41,6 +41,7 @@ import io.fabric8.crd.generator.annotation.SelectableField;
 import io.fabric8.crdv2.generator.InternalSchemaSwaps.SwapResult;
 import io.fabric8.crdv2.generator.ResolvingContext.GeneratorObjectSchema;
 import io.fabric8.generator.annotation.Default;
+import io.fabric8.generator.annotation.JSONSchema;
 import io.fabric8.generator.annotation.Max;
 import io.fabric8.generator.annotation.Min;
 import io.fabric8.generator.annotation.Nullable;
@@ -73,7 +74,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
-import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -82,6 +82,8 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.function.Consumer;
+import java.util.function.Function;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -97,7 +99,7 @@ public abstract class AbstractJsonSchema<T extends KubernetesJSONSchemaProps, V 
 
   private static final Logger LOGGER = LoggerFactory.getLogger(AbstractJsonSchema.class);
 
-  private final ResolvingContext resolvingContext;
+  protected final ResolvingContext resolvingContext;
   private final T root;
   private final Set<String> dependentClasses = new HashSet<>();
   private final Set<AdditionalPrinterColumn> additionalPrinterColumns = new HashSet<>();
@@ -409,10 +411,8 @@ public abstract class AbstractJsonSchema<T extends KubernetesJSONSchemaProps, V 
 
   private T resolveObject(LinkedHashMap<String, String> visited, InternalSchemaSwaps schemaSwaps, JsonSchema jacksonSchema,
       String... ignore) {
-    Set<String> ignores = ignore.length > 0 ? new LinkedHashSet<>(Arrays.asList(ignore)) : Collections.emptySet();
 
-    final T objectSchema = singleProperty("object");
-
+    Set<String> ignores = Set.of(ignore);
     schemaSwaps = schemaSwaps.branchAnnotations();
     final InternalSchemaSwaps swaps = schemaSwaps;
 
@@ -426,6 +426,16 @@ public abstract class AbstractJsonSchema<T extends KubernetesJSONSchemaProps, V 
     Class<?> rawClass = gos.javaType.getRawClass();
     collectDependentClasses(rawClass);
 
+    T classSchema = resolveSchemaAnnotation(
+        rawClass.getDeclaredAnnotation(JSONSchema.class),
+        rawClass,
+        true,
+        resolvingContext.ignoreJSONSchemaAnnotation);
+
+    if (classSchema != null) {
+      return classSchema;
+    }
+
     consumeRepeatingAnnotation(rawClass, SchemaSwap.class, ss -> {
       swaps.registerSwap(rawClass,
           ss.originalType(),
@@ -434,21 +444,30 @@ public abstract class AbstractJsonSchema<T extends KubernetesJSONSchemaProps, V 
     });
 
     List<String> required = new ArrayList<>();
+    final T objectSchema = singleProperty("object");
 
-    for (Map.Entry<String, JsonSchema> property : new TreeMap<>(gos.getProperties()).entrySet()) {
+    for (Map.Entry<String, JsonSchema> property : visibleProperties(gos.getProperties(), ignores).entrySet()) {
       String name = property.getKey();
-      if (ignores.contains(name)) {
+      BeanProperty beanProperty = gos.beanProperties.get(property.getKey());
+      Utils.checkNotNull(beanProperty, "CRD generation works only with bean properties");
+
+      T propSchema = resolveSchemaAnnotation(
+          beanProperty.getAnnotation(JSONSchema.class),
+          beanProperty.getType().getRawClass(),
+          false,
+          false);
+
+      if (propSchema != null) {
+        addProperty(name, objectSchema, propSchema);
         continue;
       }
+
       schemaSwaps = schemaSwaps.branchDepths();
       SwapResult swapResult = schemaSwaps.lookupAndMark(rawClass, name);
       LinkedHashMap<String, String> savedVisited = visited;
       if (swapResult.onGoing) {
         visited = new LinkedHashMap<>();
       }
-
-      BeanProperty beanProperty = gos.beanProperties.get(property.getKey());
-      Utils.checkNotNull(beanProperty, "CRD generation works only with bean properties");
 
       JsonSchema propertySchema = property.getValue();
       PropertyMetadata propertyMetadata = new PropertyMetadata(propertySchema, beanProperty);
@@ -498,6 +517,20 @@ public abstract class AbstractJsonSchema<T extends KubernetesJSONSchemaProps, V 
         v -> validationRules.add(from(v)));
     addToValidationRules(objectSchema, validationRules);
     return objectSchema;
+  }
+
+  private T resolveSchemaAnnotation(JSONSchema annotation, Class<?> rawClass, boolean isTargetType, boolean ignoreAnnotation) {
+    if (annotation != null && !ignoreAnnotation) {
+      return fromAnnotation(rawClass, isTargetType, annotation);
+    }
+    return null;
+  }
+
+  private static Map<String, JsonSchema> visibleProperties(Map<String, JsonSchema> properties, Set<String> ignores) {
+    return new TreeMap<>(
+        properties.entrySet().stream()
+            .filter(e -> !ignores.contains(e.getKey()))
+            .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue)));
   }
 
   private void collectDependentClasses(Class<?> rawClass) {
@@ -680,7 +713,73 @@ public abstract class AbstractJsonSchema<T extends KubernetesJSONSchemaProps, V 
     return toIgnore;
   }
 
-  V from(ValidationRule validationRule) {
+  protected T fromAnnotation(Class<?> rawClass, boolean isTargetType, JSONSchema schema) {
+    T result = mapImplementation(schema.implementation(), isTargetType);
+
+    if (result == null) {
+      result = singleProperty(null);
+    }
+
+    setIfDefined(schema.defaultValue(), v -> parseJson(v, rawClass), result::setDefault);
+    setIfDefined(schema.description(), result::setDescription);
+    setIfDefined(schema.exclusiveMaximum(), this::mapBoolean, result::setExclusiveMaximum);
+    setIfDefined(schema.exclusiveMinimum(), this::mapBoolean, result::setExclusiveMinimum);
+    setIfDefined(schema.format(), result::setFormat);
+    setIfDefined(schema.maximum(), result::setMaximum);
+    setIfDefined(schema.maxItems(), result::setMaxItems);
+    setIfDefined(schema.maxLength(), result::setMaxLength);
+    setIfDefined(schema.maxProperties(), result::setMaxProperties);
+    setIfDefined(schema.minimum(), result::setMinimum);
+    setIfDefined(schema.minItems(), result::setMinItems);
+    setIfDefined(schema.minLength(), result::setMinLength);
+    setIfDefined(schema.minProperties(), result::setMinProperties);
+    setIfDefined(schema.nullable(), this::mapBoolean, result::setNullable);
+    setIfDefined(schema.pattern(), result::setPattern);
+    setIfDefined(schema.required(), ArrayList::new, Arrays::asList, result::setRequired);
+    setIfDefined(schema.xKubernetesPreserveUnknownFields(), this::mapBoolean, result::setXKubernetesPreserveUnknownFields);
+    return result;
+  }
+
+  protected static <A, M> void setIfDefined(A value, Function<A, M> transformer, Consumer<M> mutator) {
+    setIfDefined(value, () -> null, transformer, mutator);
+  }
+
+  protected static <A> void setIfDefined(A value, Consumer<A> mutator) {
+    setIfDefined(value, () -> null, Function.identity(), mutator);
+  }
+
+  protected static <A, M> void setIfDefined(A value, Supplier<M> defaultValue, Function<A, M> transformer,
+      Consumer<M> mutator) {
+    if (JSONSchema.Undefined.isUndefined(value)) {
+      // Not defined in the annotation (the default), don't touch the model.
+    } else if (JSONSchema.Suppressed.isSuppressed(value)) {
+      // Suppressed in the annotation, return the model back to the default value.
+      mutator.accept(defaultValue.get());
+    } else {
+      mutator.accept(transformer.apply(value));
+    }
+  }
+
+  protected JsonNode parseJson(String value, Class<?> targetType) {
+    Optional<Class<?>> rawType = Optional.ofNullable(targetType);
+
+    try {
+      Object typedValue = resolvingContext.kubernetesSerialization.unmarshal(value, rawType.orElse(Object.class));
+      return resolvingContext.kubernetesSerialization.convertValue(typedValue, JsonNode.class);
+    } catch (Exception e) {
+      throw new IllegalArgumentException("Cannot parse value '" + value + "' as valid YAML or JSON.", e);
+    }
+  }
+
+  protected List<JsonNode> parseJson(String[] values, Class<?> targetType) {
+    return Arrays.stream(values).map(value -> parseJson(value, targetType)).collect(Collectors.toList());
+  }
+
+  protected <A extends JSONSchema.Boolean> Boolean mapBoolean(Class<A> value) {
+    return value == JSONSchema.True.class ? Boolean.TRUE : Boolean.FALSE;
+  }
+
+  protected V from(ValidationRule validationRule) {
     V result = newKubernetesValidationRule();
     result.setRule(validationRule.value());
     result.setReason(mapNotEmpty(validationRule.reason()));
@@ -694,6 +793,8 @@ public abstract class AbstractJsonSchema<T extends KubernetesJSONSchemaProps, V 
   private static String mapNotEmpty(String s) {
     return Utils.isNullOrEmpty(s) ? null : s;
   }
+
+  protected abstract T mapImplementation(Class<?> value, boolean isTargetType);
 
   protected abstract V newKubernetesValidationRule();
 
