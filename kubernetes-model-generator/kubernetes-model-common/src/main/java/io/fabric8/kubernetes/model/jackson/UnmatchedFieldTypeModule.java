@@ -156,7 +156,7 @@ public class UnmatchedFieldTypeModule extends SimpleModule {
    * @param anyGetterMember the reflective member (method or field) marked with {@code @JsonAnyGetter}, if available
    * @return {@code true} if the writer represents the any-getter property; {@code false} otherwise
    */
-  private boolean isAnyGetterWriter(BeanPropertyWriter writer, Member anyGetterMember) {
+  private static boolean isAnyGetterWriter(BeanPropertyWriter writer, Member anyGetterMember) {
     if (writer == null || anyGetterMember == null) {
       return false;
     }
