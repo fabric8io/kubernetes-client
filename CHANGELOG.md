@@ -3,6 +3,7 @@
 ### 7.3-SNAPSHOT
 
 #### Bugs
+* Fix #7036: Resolve serialization errors after Jackson 2.19.0 upgrade (breaks older versions)
 
 #### Improvements
 
@@ -11,6 +12,7 @@
 #### New Features
 
 #### _**Note**_: Breaking changes
+* Fix #7036: This release is not backwards-compatible with previous versions of Jackson, you'll need to use Jackson 2.19.0 in your project for a correct behavior of the Kubernetes Client.
 
 ### 7.2.0 (2025-04-30)
 
@@ -26,7 +28,6 @@
 * Fix #6941: HasMetadata.getApiVersion no slash when empty group
 * Fix #6982: (java-generator) Double default field values with `d` suffix
 * Fix #6987: Kube API Test startup fails on readiness SSL check
-* Fix #7036: Resolve serialization errors after Jackson 2.19.0 upgrade (breaks older versions)
 * Fix #7037: getKubernetesVersion works in Kubernetes v1.33.0
 
 #### Improvements
