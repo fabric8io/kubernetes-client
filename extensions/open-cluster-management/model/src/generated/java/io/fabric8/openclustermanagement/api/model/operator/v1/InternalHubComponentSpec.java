@@ -1,5 +1,5 @@
 
-package io.fabric8.openclustermanagement.api.model.observability.v1beta2;
+package io.fabric8.openclustermanagement.api.model.operator.v1;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -8,7 +8,6 @@ import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
@@ -32,15 +31,10 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
-/**
- * UserWorkloadCapabilitiesSpec defines the spec for user workload observability capabilities managed by the addon.
- */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "logs",
-    "metrics",
-    "traces"
+
 })
 @ToString
 @EqualsAndHashCode
@@ -64,86 +58,19 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class UserWorkloadCapabilitiesSpec implements Editable<UserWorkloadCapabilitiesSpecBuilder>, KubernetesResource
+public class InternalHubComponentSpec implements Editable<InternalHubComponentSpecBuilder>, KubernetesResource
 {
 
-    @JsonProperty("logs")
-    private UserWorkloadLogsSpec logs;
-    @JsonProperty("metrics")
-    private UserWorkloadMetricsSpec metrics;
-    @JsonProperty("traces")
-    private UserWorkloadTracesSpec traces;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
-    /**
-     * No args constructor for use in serialization
-     */
-    public UserWorkloadCapabilitiesSpec() {
-    }
-
-    public UserWorkloadCapabilitiesSpec(UserWorkloadLogsSpec logs, UserWorkloadMetricsSpec metrics, UserWorkloadTracesSpec traces) {
-        super();
-        this.logs = logs;
-        this.metrics = metrics;
-        this.traces = traces;
-    }
-
-    /**
-     * UserWorkloadCapabilitiesSpec defines the spec for user workload observability capabilities managed by the addon.
-     */
-    @JsonProperty("logs")
-    public UserWorkloadLogsSpec getLogs() {
-        return logs;
-    }
-
-    /**
-     * UserWorkloadCapabilitiesSpec defines the spec for user workload observability capabilities managed by the addon.
-     */
-    @JsonProperty("logs")
-    public void setLogs(UserWorkloadLogsSpec logs) {
-        this.logs = logs;
-    }
-
-    /**
-     * UserWorkloadCapabilitiesSpec defines the spec for user workload observability capabilities managed by the addon.
-     */
-    @JsonProperty("metrics")
-    public UserWorkloadMetricsSpec getMetrics() {
-        return metrics;
-    }
-
-    /**
-     * UserWorkloadCapabilitiesSpec defines the spec for user workload observability capabilities managed by the addon.
-     */
-    @JsonProperty("metrics")
-    public void setMetrics(UserWorkloadMetricsSpec metrics) {
-        this.metrics = metrics;
-    }
-
-    /**
-     * UserWorkloadCapabilitiesSpec defines the spec for user workload observability capabilities managed by the addon.
-     */
-    @JsonProperty("traces")
-    public UserWorkloadTracesSpec getTraces() {
-        return traces;
-    }
-
-    /**
-     * UserWorkloadCapabilitiesSpec defines the spec for user workload observability capabilities managed by the addon.
-     */
-    @JsonProperty("traces")
-    public void setTraces(UserWorkloadTracesSpec traces) {
-        this.traces = traces;
+    @JsonIgnore
+    public InternalHubComponentSpecBuilder edit() {
+        return new InternalHubComponentSpecBuilder(this);
     }
 
     @JsonIgnore
-    public UserWorkloadCapabilitiesSpecBuilder edit() {
-        return new UserWorkloadCapabilitiesSpecBuilder(this);
-    }
-
-    @JsonIgnore
-    public UserWorkloadCapabilitiesSpecBuilder toBuilder() {
+    public InternalHubComponentSpecBuilder toBuilder() {
         return edit();
     }
 

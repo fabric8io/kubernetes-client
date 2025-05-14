@@ -14433,14 +14433,41 @@
         "Scope": "Namespaced"
       }
     },
+    "io.open-cluster-management.observability.v1beta2.PlatformAnalyticsSpec": {
+      "type": "object",
+      "properties": {
+        "incidentDetection": {
+          "description": "Incident detecion defines the configuration spec for the incident detection feature delivered via the cluster observability operator. If enabled, adds incidents UI to `Observe` section of OpenShift Console Platform",
+          "default": {},
+          "$ref": "#/definitions/io.open-cluster-management.observability.v1beta2.PlatformIncidentDetectionSpec"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "observability.open-cluster-management.io",
+        "Version": "v1beta2",
+        "Kind": "PlatformAnalyticsSpec",
+        "Scope": "Namespaced"
+      }
+    },
     "io.open-cluster-management.observability.v1beta2.PlatformCapabilitiesSpec": {
       "description": "PlatformCapabilitiesSpec defines the observability capabilities managed by the addon for platform components.",
       "type": "object",
       "properties": {
+        "analytics": {
+          "description": "Analytics provides the configuration for the analytics features",
+          "default": {},
+          "$ref": "#/definitions/io.open-cluster-management.observability.v1beta2.PlatformAnalyticsSpec"
+        },
         "logs": {
           "description": "Logs defines the configuration spec for collecting and storing logs from platform components running on fleet managed clusters.",
           "default": {},
           "$ref": "#/definitions/io.open-cluster-management.observability.v1beta2.PlatformLogsSpec"
+        },
+        "metrics": {
+          "description": "Metrics defines the configuration spec for collecting and storing metrics from platform components running on fleet managed clusters.",
+          "default": {},
+          "$ref": "#/definitions/io.open-cluster-management.observability.v1beta2.PlatformMetricsSpec"
         }
       },
       "x-fabric8-info": {
@@ -14448,6 +14475,22 @@
         "Group": "observability.open-cluster-management.io",
         "Version": "v1beta2",
         "Kind": "PlatformCapabilitiesSpec",
+        "Scope": "Namespaced"
+      }
+    },
+    "io.open-cluster-management.observability.v1beta2.PlatformIncidentDetectionSpec": {
+      "type": "object",
+      "properties": {
+        "enabled": {
+          "description": "Enabled defines a flag to enable/disable the incident detection.",
+          "type": "boolean"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "observability.open-cluster-management.io",
+        "Version": "v1beta2",
+        "Kind": "PlatformIncidentDetectionSpec",
         "Scope": "Namespaced"
       }
     },
@@ -14483,6 +14526,41 @@
         "Group": "observability.open-cluster-management.io",
         "Version": "v1beta2",
         "Kind": "PlatformLogsSpec",
+        "Scope": "Namespaced"
+      }
+    },
+    "io.open-cluster-management.observability.v1beta2.PlatformMetricsCollectionSpec": {
+      "description": "PlatformMetricsCollectionSpec defines the spec for the addon to collect and forward metrics from fleet managed clusters.",
+      "type": "object",
+      "properties": {
+        "enabled": {
+          "description": "Enabled defines a flag to enable/disable the platform metrics collection.",
+          "type": "boolean"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "observability.open-cluster-management.io",
+        "Version": "v1beta2",
+        "Kind": "PlatformMetricsCollectionSpec",
+        "Scope": "Namespaced"
+      }
+    },
+    "io.open-cluster-management.observability.v1beta2.PlatformMetricsSpec": {
+      "description": "PlatformMetricsSpec defines the spec for the addon to collect, forward and store metrics from fleet managed clusters.",
+      "type": "object",
+      "properties": {
+        "collection": {
+          "description": "Collection defines the spec for the addon to collect and forward metrics from fleet managed clusters.",
+          "default": {},
+          "$ref": "#/definitions/io.open-cluster-management.observability.v1beta2.PlatformMetricsCollectionSpec"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "observability.open-cluster-management.io",
+        "Version": "v1beta2",
+        "Kind": "PlatformMetricsSpec",
         "Scope": "Namespaced"
       }
     },
@@ -14773,6 +14851,11 @@
           "default": {},
           "$ref": "#/definitions/io.open-cluster-management.observability.v1beta2.UserWorkloadLogsSpec"
         },
+        "metrics": {
+          "description": "Metrics defines the spec for the addon to collect, forward and store metrics from user workloads hosted on fleet managed clusters.",
+          "default": {},
+          "$ref": "#/definitions/io.open-cluster-management.observability.v1beta2.UserWorkloadMetricsSpec"
+        },
         "traces": {
           "description": "Traces defines the spec for the addon to collect, forward and store traces from user workloads hosted on fleet managed clusters.",
           "default": {},
@@ -14820,6 +14903,41 @@
         "Group": "observability.open-cluster-management.io",
         "Version": "v1beta2",
         "Kind": "UserWorkloadLogsSpec",
+        "Scope": "Namespaced"
+      }
+    },
+    "io.open-cluster-management.observability.v1beta2.UserWorkloadMetricsCollectionSpec": {
+      "description": "UserWorkloadLogsSpec defines the spec for the addon to collect,forward and store logs from user workloads hosted on fleet managed clusters.",
+      "type": "object",
+      "properties": {
+        "enabled": {
+          "description": "Enabled defines a flag to enable/disable the platform metrics collection.",
+          "type": "boolean"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "observability.open-cluster-management.io",
+        "Version": "v1beta2",
+        "Kind": "UserWorkloadMetricsCollectionSpec",
+        "Scope": "Namespaced"
+      }
+    },
+    "io.open-cluster-management.observability.v1beta2.UserWorkloadMetricsSpec": {
+      "description": "UserWorkloadMetricsSpec defines the spec for the addon to collect, forward and store metrics from user workloads hosted on fleet managed clusters.",
+      "type": "object",
+      "properties": {
+        "collection": {
+          "description": "Collection defines the spec for the addon to collect and forward metrics from user workloads hosted on fleet managed clusters.",
+          "default": {},
+          "$ref": "#/definitions/io.open-cluster-management.observability.v1beta2.UserWorkloadMetricsCollectionSpec"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "observability.open-cluster-management.io",
+        "Version": "v1beta2",
+        "Kind": "UserWorkloadMetricsSpec",
         "Scope": "Namespaced"
       }
     },
@@ -14939,6 +15057,52 @@
         "Group": "operator.open-cluster-management.io",
         "Version": "v1",
         "Kind": "BackupConfig",
+        "Scope": "Namespaced"
+      }
+    },
+    "io.open-cluster-management.operator.v1.BlockDeletionResource": {
+      "type": "object",
+      "required": [
+        "Name",
+        "GVK",
+        "ExceptionTotal",
+        "NameExceptions",
+        "LabelExceptions"
+      ],
+      "properties": {
+        "ExceptionTotal": {
+          "type": "integer",
+          "format": "int32",
+          "default": 0
+        },
+        "GVK": {
+          "default": {},
+          "$ref": "#/definitions/io.k8s.apimachinery.pkg.runtime.schema.GroupVersionKind"
+        },
+        "LabelExceptions": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string",
+            "default": ""
+          }
+        },
+        "Name": {
+          "type": "string",
+          "default": ""
+        },
+        "NameExceptions": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "default": ""
+          }
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "operator.open-cluster-management.io",
+        "Version": "v1",
+        "Kind": "BlockDeletionResource",
         "Scope": "Namespaced"
       }
     },
@@ -15189,15 +15353,22 @@
       "description": "ComponentConfig provides optional configuration items for individual components",
       "type": "object",
       "required": [
-        "name",
-        "enabled"
+        "enabled",
+        "name"
       ],
       "properties": {
+        "configOverrides": {
+          "description": "ConfigOverrides contains optional configuration overrides for deployments and containers.",
+          "default": {},
+          "$ref": "#/definitions/io.open-cluster-management.operator.v1.ConfigOverride"
+        },
         "enabled": {
+          "description": "Enabled specifies whether the component is enabled or disabled.",
           "type": "boolean",
           "default": false
         },
         "name": {
+          "description": "Name denotes the name of the component being configured.",
           "type": "string",
           "default": ""
         }
@@ -15207,6 +15378,108 @@
         "Group": "operator.open-cluster-management.io",
         "Version": "v1",
         "Kind": "ComponentConfig",
+        "Scope": "Namespaced"
+      }
+    },
+    "io.open-cluster-management.operator.v1.ConfigOverride": {
+      "description": "ConfigOverride holds overrides for configurations specific to deployments and containers.",
+      "type": "object",
+      "properties": {
+        "deployments": {
+          "description": "Deployments is a list of deployment specific configuration overrides.",
+          "type": "array",
+          "items": {
+            "default": {},
+            "$ref": "#/definitions/io.open-cluster-management.operator.v1.DeploymentConfig"
+          }
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "operator.open-cluster-management.io",
+        "Version": "v1",
+        "Kind": "ConfigOverride",
+        "Scope": "Namespaced"
+      }
+    },
+    "io.open-cluster-management.operator.v1.ContainerConfig": {
+      "description": "ContainerConfig holds configuration details for a specific container within a deployment.",
+      "type": "object",
+      "required": [
+        "name",
+        "env"
+      ],
+      "properties": {
+        "env": {
+          "description": "Env is a list of environment variable overrides for the container.",
+          "type": "array",
+          "items": {
+            "default": {},
+            "$ref": "#/definitions/io.open-cluster-management.operator.v1.EnvConfig"
+          }
+        },
+        "name": {
+          "description": "Name specifies the name of the container being configured.",
+          "type": "string",
+          "default": ""
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "operator.open-cluster-management.io",
+        "Version": "v1",
+        "Kind": "ContainerConfig",
+        "Scope": "Namespaced"
+      }
+    },
+    "io.open-cluster-management.operator.v1.DeploymentConfig": {
+      "description": "DeploymentConfig provides configuration details for a specific deployment.",
+      "type": "object",
+      "required": [
+        "name",
+        "containers"
+      ],
+      "properties": {
+        "containers": {
+          "description": "Containers is a list of container specific configurations within the deployment.",
+          "type": "array",
+          "items": {
+            "default": {},
+            "$ref": "#/definitions/io.open-cluster-management.operator.v1.ContainerConfig"
+          }
+        },
+        "name": {
+          "description": "Name specifies the name of the deployment being configured.",
+          "type": "string",
+          "default": ""
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "operator.open-cluster-management.io",
+        "Version": "v1",
+        "Kind": "DeploymentConfig",
+        "Scope": "Namespaced"
+      }
+    },
+    "io.open-cluster-management.operator.v1.EnvConfig": {
+      "description": "EnvConfig represents an override for an environment variable within a container.",
+      "type": "object",
+      "properties": {
+        "name": {
+          "description": "Name specifies the name of the environment variable.",
+          "type": "string"
+        },
+        "value": {
+          "description": "Value specifies the value of the environment variable.",
+          "type": "string"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "operator.open-cluster-management.io",
+        "Version": "v1",
+        "Kind": "EnvConfig",
         "Scope": "Namespaced"
       }
     },
@@ -15532,6 +15805,78 @@
         "Group": "operator.open-cluster-management.io",
         "Version": "v1",
         "Kind": "IngressSpec",
+        "Scope": "Namespaced"
+      }
+    },
+    "io.open-cluster-management.operator.v1.InternalHubComponent": {
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
+          "type": "string"
+        },
+        "kind": {
+          "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
+          "type": "string"
+        },
+        "metadata": {
+          "default": {},
+          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta"
+        },
+        "spec": {
+          "default": {},
+          "$ref": "#/definitions/io.open-cluster-management.operator.v1.InternalHubComponentSpec"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "object",
+        "Group": "operator.open-cluster-management.io",
+        "Version": "v1",
+        "Kind": "InternalHubComponent",
+        "Scope": "Namespaced"
+      }
+    },
+    "io.open-cluster-management.operator.v1.InternalHubComponentList": {
+      "type": "object",
+      "required": [
+        "items"
+      ],
+      "properties": {
+        "apiVersion": {
+          "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
+          "type": "string"
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "default": {},
+            "$ref": "#/definitions/io.open-cluster-management.operator.v1.InternalHubComponent"
+          }
+        },
+        "kind": {
+          "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
+          "type": "string"
+        },
+        "metadata": {
+          "default": {},
+          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ListMeta"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "list",
+        "Group": "operator.open-cluster-management.io",
+        "Version": "v1",
+        "Kind": "InternalHubComponentList",
+        "Scope": "Namespaced"
+      }
+    },
+    "io.open-cluster-management.operator.v1.InternalHubComponentSpec": {
+      "type": "object",
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "operator.open-cluster-management.io",
+        "Version": "v1",
+        "Kind": "InternalHubComponentSpec",
         "Scope": "Namespaced"
       }
     },
@@ -15898,6 +16243,10 @@
           "description": "(Deprecated) Configuration options for ingress management",
           "default": {},
           "$ref": "#/definitions/io.open-cluster-management.operator.v1.IngressSpec"
+        },
+        "localClusterName": {
+          "description": "The name of the local-cluster resource",
+          "type": "string"
         },
         "nodeSelector": {
           "description": "Set the nodeselectors",

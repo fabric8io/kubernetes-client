@@ -50,6 +50,7 @@ import lombok.experimental.Accessors;
     "hive",
     "imagePullSecret",
     "ingress",
+    "localClusterName",
     "nodeSelector",
     "overrides",
     "separateCertificateManagement",
@@ -98,6 +99,8 @@ public class MultiClusterHubSpec implements Editable<MultiClusterHubSpecBuilder>
     private String imagePullSecret;
     @JsonProperty("ingress")
     private IngressSpec ingress;
+    @JsonProperty("localClusterName")
+    private String localClusterName;
     @JsonProperty("nodeSelector")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Map<String, String> nodeSelector = new LinkedHashMap<>();
@@ -117,7 +120,7 @@ public class MultiClusterHubSpec implements Editable<MultiClusterHubSpecBuilder>
     public MultiClusterHubSpec() {
     }
 
-    public MultiClusterHubSpec(String availabilityConfig, String customCAConfigmap, Boolean disableHubSelfManagement, Boolean disableUpdateClusterImageSets, Boolean enableClusterBackup, Boolean enableClusterProxyAddon, HiveConfigSpec hive, String imagePullSecret, IngressSpec ingress, Map<String, String> nodeSelector, Overrides overrides, Boolean separateCertificateManagement, List<Toleration> tolerations) {
+    public MultiClusterHubSpec(String availabilityConfig, String customCAConfigmap, Boolean disableHubSelfManagement, Boolean disableUpdateClusterImageSets, Boolean enableClusterBackup, Boolean enableClusterProxyAddon, HiveConfigSpec hive, String imagePullSecret, IngressSpec ingress, String localClusterName, Map<String, String> nodeSelector, Overrides overrides, Boolean separateCertificateManagement, List<Toleration> tolerations) {
         super();
         this.availabilityConfig = availabilityConfig;
         this.customCAConfigmap = customCAConfigmap;
@@ -128,6 +131,7 @@ public class MultiClusterHubSpec implements Editable<MultiClusterHubSpecBuilder>
         this.hive = hive;
         this.imagePullSecret = imagePullSecret;
         this.ingress = ingress;
+        this.localClusterName = localClusterName;
         this.nodeSelector = nodeSelector;
         this.overrides = overrides;
         this.separateCertificateManagement = separateCertificateManagement;
@@ -276,6 +280,22 @@ public class MultiClusterHubSpec implements Editable<MultiClusterHubSpecBuilder>
     @JsonProperty("ingress")
     public void setIngress(IngressSpec ingress) {
         this.ingress = ingress;
+    }
+
+    /**
+     * The name of the local-cluster resource
+     */
+    @JsonProperty("localClusterName")
+    public String getLocalClusterName() {
+        return localClusterName;
+    }
+
+    /**
+     * The name of the local-cluster resource
+     */
+    @JsonProperty("localClusterName")
+    public void setLocalClusterName(String localClusterName) {
+        this.localClusterName = localClusterName;
     }
 
     /**

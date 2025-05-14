@@ -38,7 +38,9 @@ import lombok.experimental.Accessors;
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "logs"
+    "analytics",
+    "logs",
+    "metrics"
 })
 @ToString
 @EqualsAndHashCode
@@ -65,8 +67,12 @@ import lombok.experimental.Accessors;
 public class PlatformCapabilitiesSpec implements Editable<PlatformCapabilitiesSpecBuilder>, KubernetesResource
 {
 
+    @JsonProperty("analytics")
+    private PlatformAnalyticsSpec analytics;
     @JsonProperty("logs")
     private PlatformLogsSpec logs;
+    @JsonProperty("metrics")
+    private PlatformMetricsSpec metrics;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -76,9 +82,27 @@ public class PlatformCapabilitiesSpec implements Editable<PlatformCapabilitiesSp
     public PlatformCapabilitiesSpec() {
     }
 
-    public PlatformCapabilitiesSpec(PlatformLogsSpec logs) {
+    public PlatformCapabilitiesSpec(PlatformAnalyticsSpec analytics, PlatformLogsSpec logs, PlatformMetricsSpec metrics) {
         super();
+        this.analytics = analytics;
         this.logs = logs;
+        this.metrics = metrics;
+    }
+
+    /**
+     * PlatformCapabilitiesSpec defines the observability capabilities managed by the addon for platform components.
+     */
+    @JsonProperty("analytics")
+    public PlatformAnalyticsSpec getAnalytics() {
+        return analytics;
+    }
+
+    /**
+     * PlatformCapabilitiesSpec defines the observability capabilities managed by the addon for platform components.
+     */
+    @JsonProperty("analytics")
+    public void setAnalytics(PlatformAnalyticsSpec analytics) {
+        this.analytics = analytics;
     }
 
     /**
@@ -95,6 +119,22 @@ public class PlatformCapabilitiesSpec implements Editable<PlatformCapabilitiesSp
     @JsonProperty("logs")
     public void setLogs(PlatformLogsSpec logs) {
         this.logs = logs;
+    }
+
+    /**
+     * PlatformCapabilitiesSpec defines the observability capabilities managed by the addon for platform components.
+     */
+    @JsonProperty("metrics")
+    public PlatformMetricsSpec getMetrics() {
+        return metrics;
+    }
+
+    /**
+     * PlatformCapabilitiesSpec defines the observability capabilities managed by the addon for platform components.
+     */
+    @JsonProperty("metrics")
+    public void setMetrics(PlatformMetricsSpec metrics) {
+        this.metrics = metrics;
     }
 
     @JsonIgnore

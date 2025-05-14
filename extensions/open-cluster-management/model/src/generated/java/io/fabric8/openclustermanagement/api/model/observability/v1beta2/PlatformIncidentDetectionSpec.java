@@ -32,15 +32,10 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
-/**
- * UserWorkloadCapabilitiesSpec defines the spec for user workload observability capabilities managed by the addon.
- */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "logs",
-    "metrics",
-    "traces"
+    "enabled"
 })
 @ToString
 @EqualsAndHashCode
@@ -64,86 +59,48 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class UserWorkloadCapabilitiesSpec implements Editable<UserWorkloadCapabilitiesSpecBuilder>, KubernetesResource
+public class PlatformIncidentDetectionSpec implements Editable<PlatformIncidentDetectionSpecBuilder>, KubernetesResource
 {
 
-    @JsonProperty("logs")
-    private UserWorkloadLogsSpec logs;
-    @JsonProperty("metrics")
-    private UserWorkloadMetricsSpec metrics;
-    @JsonProperty("traces")
-    private UserWorkloadTracesSpec traces;
+    @JsonProperty("enabled")
+    private Boolean enabled;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
      */
-    public UserWorkloadCapabilitiesSpec() {
+    public PlatformIncidentDetectionSpec() {
     }
 
-    public UserWorkloadCapabilitiesSpec(UserWorkloadLogsSpec logs, UserWorkloadMetricsSpec metrics, UserWorkloadTracesSpec traces) {
+    public PlatformIncidentDetectionSpec(Boolean enabled) {
         super();
-        this.logs = logs;
-        this.metrics = metrics;
-        this.traces = traces;
+        this.enabled = enabled;
     }
 
     /**
-     * UserWorkloadCapabilitiesSpec defines the spec for user workload observability capabilities managed by the addon.
+     * Enabled defines a flag to enable/disable the incident detection.
      */
-    @JsonProperty("logs")
-    public UserWorkloadLogsSpec getLogs() {
-        return logs;
+    @JsonProperty("enabled")
+    public Boolean getEnabled() {
+        return enabled;
     }
 
     /**
-     * UserWorkloadCapabilitiesSpec defines the spec for user workload observability capabilities managed by the addon.
+     * Enabled defines a flag to enable/disable the incident detection.
      */
-    @JsonProperty("logs")
-    public void setLogs(UserWorkloadLogsSpec logs) {
-        this.logs = logs;
-    }
-
-    /**
-     * UserWorkloadCapabilitiesSpec defines the spec for user workload observability capabilities managed by the addon.
-     */
-    @JsonProperty("metrics")
-    public UserWorkloadMetricsSpec getMetrics() {
-        return metrics;
-    }
-
-    /**
-     * UserWorkloadCapabilitiesSpec defines the spec for user workload observability capabilities managed by the addon.
-     */
-    @JsonProperty("metrics")
-    public void setMetrics(UserWorkloadMetricsSpec metrics) {
-        this.metrics = metrics;
-    }
-
-    /**
-     * UserWorkloadCapabilitiesSpec defines the spec for user workload observability capabilities managed by the addon.
-     */
-    @JsonProperty("traces")
-    public UserWorkloadTracesSpec getTraces() {
-        return traces;
-    }
-
-    /**
-     * UserWorkloadCapabilitiesSpec defines the spec for user workload observability capabilities managed by the addon.
-     */
-    @JsonProperty("traces")
-    public void setTraces(UserWorkloadTracesSpec traces) {
-        this.traces = traces;
+    @JsonProperty("enabled")
+    public void setEnabled(Boolean enabled) {
+        this.enabled = enabled;
     }
 
     @JsonIgnore
-    public UserWorkloadCapabilitiesSpecBuilder edit() {
-        return new UserWorkloadCapabilitiesSpecBuilder(this);
+    public PlatformIncidentDetectionSpecBuilder edit() {
+        return new PlatformIncidentDetectionSpecBuilder(this);
     }
 
     @JsonIgnore
-    public UserWorkloadCapabilitiesSpecBuilder toBuilder() {
+    public PlatformIncidentDetectionSpecBuilder toBuilder() {
         return edit();
     }
 

@@ -6,7 +6,7 @@ toolchain go1.24.1
 
 require (
 	github.com/cert-manager/cert-manager v1.17.2
-	github.com/chaos-mesh/chaos-mesh/api v0.0.0
+	github.com/chaos-mesh/chaos-mesh/api v0.0.0-20250513055240-4db47f53978c
 	github.com/getkin/kin-openapi v0.131.0
 	github.com/k8snetworkplumbingwg/network-attachment-definition-client v1.7.6
 	github.com/kubernetes-csi/external-snapshotter/client/v8 v8.2.0
@@ -26,9 +26,9 @@ require (
 	github.com/spf13/cobra v1.9.1
 	github.com/stolostron/discovery v0.0.0-20250318172401-0420e4bb969d
 	github.com/stolostron/klusterlet-addon-controller v0.0.0-20250324045714-0d7e21c66660
-	github.com/stolostron/multicluster-observability-operator v0.0.0-20250321140711-00cca27614da
-	github.com/stolostron/multiclusterhub-operator v0.0.0-20250322143527-658d33b90f05
-	github.com/stolostron/search-v2-operator v0.0.0-20250319134305-e19cee08aaa5
+	github.com/stolostron/multicluster-observability-operator v0.0.0-20250514110222-f012fb274292
+	github.com/stolostron/multiclusterhub-operator v0.0.0-20250512195158-bdd641abff01
+	github.com/stolostron/search-v2-operator v0.0.0-20250328175715-c789830f4144
 	github.com/tektoncd/pipeline v0.70.0
 	github.com/tektoncd/triggers v0.31.0
 	istio.io/client-go v1.25.2
@@ -81,10 +81,10 @@ replace (
 
 // Issues with dependabot, force pseudo-versions as replacements since dependabot will try to replace with invalid tagged major versions
 replace (
-	github.com/chaos-mesh/chaos-mesh => github.com/chaos-mesh/chaos-mesh v0.0.0-20250310144600-7518c60d5575
-	github.com/chaos-mesh/chaos-mesh/api => github.com/chaos-mesh/chaos-mesh/api v0.0.0-20250310144600-7518c60d5575
-	github.com/stolostron/multicluster-observability-operator => github.com/stolostron/multicluster-observability-operator v0.0.0-20241107140827-cef6b049dcef
-	github.com/stolostron/multiclusterhub-operator => github.com/stolostron/multiclusterhub-operator v0.0.0-20240626140553-4f1ed6be3b84
+	github.com/chaos-mesh/chaos-mesh => github.com/chaos-mesh/chaos-mesh v0.0.0-20250513055240-4db47f53978c
+	github.com/chaos-mesh/chaos-mesh/api => github.com/chaos-mesh/chaos-mesh/api v0.0.0-20250513055240-4db47f53978c
+	github.com/stolostron/multicluster-observability-operator => github.com/stolostron/multicluster-observability-operator v0.0.0-20250514110222-f012fb274292
+	github.com/stolostron/multiclusterhub-operator => github.com/stolostron/multiclusterhub-operator v0.0.0-20250512195158-bdd641abff01
 	volcano.sh/apis => volcano.sh/apis v1.11.0
 )
 
@@ -179,6 +179,7 @@ require (
 	github.com/sirupsen/logrus v1.9.3 // indirect
 	github.com/spf13/pflag v1.0.6 // indirect
 	github.com/stoewer/go-strcase v1.3.0 // indirect
+	github.com/stolostron/backplane-operator v0.0.0-20250403142233-0078b1b2dc60 // indirect
 	github.com/stolostron/cluster-lifecycle-api v0.0.0-20240813023109-42b5c115d0a3 // indirect
 	github.com/vincent-petithory/dataurl v1.0.0 // indirect
 	github.com/x448/float16 v0.8.4 // indirect
@@ -199,7 +200,7 @@ require (
 	gomodules.xyz/jsonpatch/v2 v2.5.0 // indirect
 	google.golang.org/api v0.217.0 // indirect
 	google.golang.org/genproto/googleapis/api v0.0.0-20250207221924-e9438ea467c6 // indirect
-	google.golang.org/genproto/googleapis/rpc v0.0.0-20250207221924-e9438ea467c6 // indirect
+	google.golang.org/genproto/googleapis/rpc v0.0.0-20250324211829-b45e905df463 // indirect
 	google.golang.org/grpc v1.71.1 // indirect
 	google.golang.org/protobuf v1.36.6 // indirect
 	gopkg.in/inf.v0 v0.9.1 // indirect

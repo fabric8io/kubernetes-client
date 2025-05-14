@@ -1,7 +1,9 @@
 
-package io.fabric8.openclustermanagement.api.model.observability.v1beta2;
+package io.fabric8.openclustermanagement.api.model.operator.v1;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import javax.annotation.processing.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
@@ -33,14 +35,12 @@ import lombok.ToString;
 import lombok.experimental.Accessors;
 
 /**
- * UserWorkloadCapabilitiesSpec defines the spec for user workload observability capabilities managed by the addon.
+ * ConfigOverride holds overrides for configurations specific to deployments and containers.
  */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "logs",
-    "metrics",
-    "traces"
+    "deployments"
 })
 @ToString
 @EqualsAndHashCode
@@ -64,86 +64,50 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class UserWorkloadCapabilitiesSpec implements Editable<UserWorkloadCapabilitiesSpecBuilder>, KubernetesResource
+public class ConfigOverride implements Editable<ConfigOverrideBuilder>, KubernetesResource
 {
 
-    @JsonProperty("logs")
-    private UserWorkloadLogsSpec logs;
-    @JsonProperty("metrics")
-    private UserWorkloadMetricsSpec metrics;
-    @JsonProperty("traces")
-    private UserWorkloadTracesSpec traces;
+    @JsonProperty("deployments")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<DeploymentConfig> deployments = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
      */
-    public UserWorkloadCapabilitiesSpec() {
+    public ConfigOverride() {
     }
 
-    public UserWorkloadCapabilitiesSpec(UserWorkloadLogsSpec logs, UserWorkloadMetricsSpec metrics, UserWorkloadTracesSpec traces) {
+    public ConfigOverride(List<DeploymentConfig> deployments) {
         super();
-        this.logs = logs;
-        this.metrics = metrics;
-        this.traces = traces;
+        this.deployments = deployments;
     }
 
     /**
-     * UserWorkloadCapabilitiesSpec defines the spec for user workload observability capabilities managed by the addon.
+     * Deployments is a list of deployment specific configuration overrides.
      */
-    @JsonProperty("logs")
-    public UserWorkloadLogsSpec getLogs() {
-        return logs;
+    @JsonProperty("deployments")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public List<DeploymentConfig> getDeployments() {
+        return deployments;
     }
 
     /**
-     * UserWorkloadCapabilitiesSpec defines the spec for user workload observability capabilities managed by the addon.
+     * Deployments is a list of deployment specific configuration overrides.
      */
-    @JsonProperty("logs")
-    public void setLogs(UserWorkloadLogsSpec logs) {
-        this.logs = logs;
-    }
-
-    /**
-     * UserWorkloadCapabilitiesSpec defines the spec for user workload observability capabilities managed by the addon.
-     */
-    @JsonProperty("metrics")
-    public UserWorkloadMetricsSpec getMetrics() {
-        return metrics;
-    }
-
-    /**
-     * UserWorkloadCapabilitiesSpec defines the spec for user workload observability capabilities managed by the addon.
-     */
-    @JsonProperty("metrics")
-    public void setMetrics(UserWorkloadMetricsSpec metrics) {
-        this.metrics = metrics;
-    }
-
-    /**
-     * UserWorkloadCapabilitiesSpec defines the spec for user workload observability capabilities managed by the addon.
-     */
-    @JsonProperty("traces")
-    public UserWorkloadTracesSpec getTraces() {
-        return traces;
-    }
-
-    /**
-     * UserWorkloadCapabilitiesSpec defines the spec for user workload observability capabilities managed by the addon.
-     */
-    @JsonProperty("traces")
-    public void setTraces(UserWorkloadTracesSpec traces) {
-        this.traces = traces;
+    @JsonProperty("deployments")
+    public void setDeployments(List<DeploymentConfig> deployments) {
+        this.deployments = deployments;
     }
 
     @JsonIgnore
-    public UserWorkloadCapabilitiesSpecBuilder edit() {
-        return new UserWorkloadCapabilitiesSpecBuilder(this);
+    public ConfigOverrideBuilder edit() {
+        return new ConfigOverrideBuilder(this);
     }
 
     @JsonIgnore
-    public UserWorkloadCapabilitiesSpecBuilder toBuilder() {
+    public ConfigOverrideBuilder toBuilder() {
         return edit();
     }
 

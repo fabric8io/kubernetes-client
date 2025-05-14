@@ -32,15 +32,10 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
-/**
- * UserWorkloadCapabilitiesSpec defines the spec for user workload observability capabilities managed by the addon.
- */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "logs",
-    "metrics",
-    "traces"
+    "incidentDetection"
 })
 @ToString
 @EqualsAndHashCode
@@ -64,86 +59,42 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class UserWorkloadCapabilitiesSpec implements Editable<UserWorkloadCapabilitiesSpecBuilder>, KubernetesResource
+public class PlatformAnalyticsSpec implements Editable<PlatformAnalyticsSpecBuilder>, KubernetesResource
 {
 
-    @JsonProperty("logs")
-    private UserWorkloadLogsSpec logs;
-    @JsonProperty("metrics")
-    private UserWorkloadMetricsSpec metrics;
-    @JsonProperty("traces")
-    private UserWorkloadTracesSpec traces;
+    @JsonProperty("incidentDetection")
+    private PlatformIncidentDetectionSpec incidentDetection;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
      */
-    public UserWorkloadCapabilitiesSpec() {
+    public PlatformAnalyticsSpec() {
     }
 
-    public UserWorkloadCapabilitiesSpec(UserWorkloadLogsSpec logs, UserWorkloadMetricsSpec metrics, UserWorkloadTracesSpec traces) {
+    public PlatformAnalyticsSpec(PlatformIncidentDetectionSpec incidentDetection) {
         super();
-        this.logs = logs;
-        this.metrics = metrics;
-        this.traces = traces;
+        this.incidentDetection = incidentDetection;
     }
 
-    /**
-     * UserWorkloadCapabilitiesSpec defines the spec for user workload observability capabilities managed by the addon.
-     */
-    @JsonProperty("logs")
-    public UserWorkloadLogsSpec getLogs() {
-        return logs;
+    @JsonProperty("incidentDetection")
+    public PlatformIncidentDetectionSpec getIncidentDetection() {
+        return incidentDetection;
     }
 
-    /**
-     * UserWorkloadCapabilitiesSpec defines the spec for user workload observability capabilities managed by the addon.
-     */
-    @JsonProperty("logs")
-    public void setLogs(UserWorkloadLogsSpec logs) {
-        this.logs = logs;
-    }
-
-    /**
-     * UserWorkloadCapabilitiesSpec defines the spec for user workload observability capabilities managed by the addon.
-     */
-    @JsonProperty("metrics")
-    public UserWorkloadMetricsSpec getMetrics() {
-        return metrics;
-    }
-
-    /**
-     * UserWorkloadCapabilitiesSpec defines the spec for user workload observability capabilities managed by the addon.
-     */
-    @JsonProperty("metrics")
-    public void setMetrics(UserWorkloadMetricsSpec metrics) {
-        this.metrics = metrics;
-    }
-
-    /**
-     * UserWorkloadCapabilitiesSpec defines the spec for user workload observability capabilities managed by the addon.
-     */
-    @JsonProperty("traces")
-    public UserWorkloadTracesSpec getTraces() {
-        return traces;
-    }
-
-    /**
-     * UserWorkloadCapabilitiesSpec defines the spec for user workload observability capabilities managed by the addon.
-     */
-    @JsonProperty("traces")
-    public void setTraces(UserWorkloadTracesSpec traces) {
-        this.traces = traces;
+    @JsonProperty("incidentDetection")
+    public void setIncidentDetection(PlatformIncidentDetectionSpec incidentDetection) {
+        this.incidentDetection = incidentDetection;
     }
 
     @JsonIgnore
-    public UserWorkloadCapabilitiesSpecBuilder edit() {
-        return new UserWorkloadCapabilitiesSpecBuilder(this);
+    public PlatformAnalyticsSpecBuilder edit() {
+        return new PlatformAnalyticsSpecBuilder(this);
     }
 
     @JsonIgnore
-    public UserWorkloadCapabilitiesSpecBuilder toBuilder() {
+    public PlatformAnalyticsSpecBuilder toBuilder() {
         return edit();
     }
 
