@@ -38,6 +38,7 @@ import lombok.experimental.Accessors;
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
+    "configOverrides",
     "enabled",
     "name"
 })
@@ -66,6 +67,8 @@ import lombok.experimental.Accessors;
 public class ComponentConfig implements Editable<ComponentConfigBuilder>, KubernetesResource
 {
 
+    @JsonProperty("configOverrides")
+    private ConfigOverride configOverrides;
     @JsonProperty("enabled")
     private Boolean enabled;
     @JsonProperty("name")
@@ -79,8 +82,9 @@ public class ComponentConfig implements Editable<ComponentConfigBuilder>, Kubern
     public ComponentConfig() {
     }
 
-    public ComponentConfig(Boolean enabled, String name) {
+    public ComponentConfig(ConfigOverride configOverrides, Boolean enabled, String name) {
         super();
+        this.configOverrides = configOverrides;
         this.enabled = enabled;
         this.name = name;
     }
@@ -88,13 +92,29 @@ public class ComponentConfig implements Editable<ComponentConfigBuilder>, Kubern
     /**
      * ComponentConfig provides optional configuration items for individual components
      */
+    @JsonProperty("configOverrides")
+    public ConfigOverride getConfigOverrides() {
+        return configOverrides;
+    }
+
+    /**
+     * ComponentConfig provides optional configuration items for individual components
+     */
+    @JsonProperty("configOverrides")
+    public void setConfigOverrides(ConfigOverride configOverrides) {
+        this.configOverrides = configOverrides;
+    }
+
+    /**
+     * Enabled specifies whether the component is enabled or disabled.
+     */
     @JsonProperty("enabled")
     public Boolean getEnabled() {
         return enabled;
     }
 
     /**
-     * ComponentConfig provides optional configuration items for individual components
+     * Enabled specifies whether the component is enabled or disabled.
      */
     @JsonProperty("enabled")
     public void setEnabled(Boolean enabled) {
@@ -102,7 +122,7 @@ public class ComponentConfig implements Editable<ComponentConfigBuilder>, Kubern
     }
 
     /**
-     * ComponentConfig provides optional configuration items for individual components
+     * Name denotes the name of the component being configured.
      */
     @JsonProperty("name")
     public String getName() {
@@ -110,7 +130,7 @@ public class ComponentConfig implements Editable<ComponentConfigBuilder>, Kubern
     }
 
     /**
-     * ComponentConfig provides optional configuration items for individual components
+     * Name denotes the name of the component being configured.
      */
     @JsonProperty("name")
     public void setName(String name) {

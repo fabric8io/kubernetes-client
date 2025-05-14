@@ -178,6 +178,7 @@
                 <io.k8s.api.core.v1>io.fabric8.kubernetes.api.model</io.k8s.api.core.v1>
                 <io.k8s.apimachinery.pkg>io.fabric8.kubernetes.api.model</io.k8s.apimachinery.pkg>
                 <io.k8s.apimachinery.pkg.apis.meta.v1>io.fabric8.kubernetes.api.model</io.k8s.apimachinery.pkg.apis.meta.v1>
+                <io.k8s.apimachinery.pkg.runtime.schema>io.fabric8.kubernetes.api.model</io.k8s.apimachinery.pkg.runtime.schema>
                 <io.k8s.api>io.fabric8.kubernetes.api.model</io.k8s.api>
                 <io.k8s.api.apps.v1>io.fabric8.kubernetes.api.model.apps</io.k8s.api.apps.v1>
                 <io.k8s.api.rbac.v1>io.fabric8.kubernetes.api.model.rbac</io.k8s.api.rbac.v1>

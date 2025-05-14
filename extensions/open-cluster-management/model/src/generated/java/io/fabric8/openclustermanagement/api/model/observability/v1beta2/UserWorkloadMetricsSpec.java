@@ -33,14 +33,12 @@ import lombok.ToString;
 import lombok.experimental.Accessors;
 
 /**
- * UserWorkloadCapabilitiesSpec defines the spec for user workload observability capabilities managed by the addon.
+ * UserWorkloadMetricsSpec defines the spec for the addon to collect, forward and store metrics from user workloads hosted on fleet managed clusters.
  */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "logs",
-    "metrics",
-    "traces"
+    "collection"
 })
 @ToString
 @EqualsAndHashCode
@@ -64,86 +62,48 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class UserWorkloadCapabilitiesSpec implements Editable<UserWorkloadCapabilitiesSpecBuilder>, KubernetesResource
+public class UserWorkloadMetricsSpec implements Editable<UserWorkloadMetricsSpecBuilder>, KubernetesResource
 {
 
-    @JsonProperty("logs")
-    private UserWorkloadLogsSpec logs;
-    @JsonProperty("metrics")
-    private UserWorkloadMetricsSpec metrics;
-    @JsonProperty("traces")
-    private UserWorkloadTracesSpec traces;
+    @JsonProperty("collection")
+    private UserWorkloadMetricsCollectionSpec collection;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
      */
-    public UserWorkloadCapabilitiesSpec() {
+    public UserWorkloadMetricsSpec() {
     }
 
-    public UserWorkloadCapabilitiesSpec(UserWorkloadLogsSpec logs, UserWorkloadMetricsSpec metrics, UserWorkloadTracesSpec traces) {
+    public UserWorkloadMetricsSpec(UserWorkloadMetricsCollectionSpec collection) {
         super();
-        this.logs = logs;
-        this.metrics = metrics;
-        this.traces = traces;
+        this.collection = collection;
     }
 
     /**
-     * UserWorkloadCapabilitiesSpec defines the spec for user workload observability capabilities managed by the addon.
+     * UserWorkloadMetricsSpec defines the spec for the addon to collect, forward and store metrics from user workloads hosted on fleet managed clusters.
      */
-    @JsonProperty("logs")
-    public UserWorkloadLogsSpec getLogs() {
-        return logs;
+    @JsonProperty("collection")
+    public UserWorkloadMetricsCollectionSpec getCollection() {
+        return collection;
     }
 
     /**
-     * UserWorkloadCapabilitiesSpec defines the spec for user workload observability capabilities managed by the addon.
+     * UserWorkloadMetricsSpec defines the spec for the addon to collect, forward and store metrics from user workloads hosted on fleet managed clusters.
      */
-    @JsonProperty("logs")
-    public void setLogs(UserWorkloadLogsSpec logs) {
-        this.logs = logs;
-    }
-
-    /**
-     * UserWorkloadCapabilitiesSpec defines the spec for user workload observability capabilities managed by the addon.
-     */
-    @JsonProperty("metrics")
-    public UserWorkloadMetricsSpec getMetrics() {
-        return metrics;
-    }
-
-    /**
-     * UserWorkloadCapabilitiesSpec defines the spec for user workload observability capabilities managed by the addon.
-     */
-    @JsonProperty("metrics")
-    public void setMetrics(UserWorkloadMetricsSpec metrics) {
-        this.metrics = metrics;
-    }
-
-    /**
-     * UserWorkloadCapabilitiesSpec defines the spec for user workload observability capabilities managed by the addon.
-     */
-    @JsonProperty("traces")
-    public UserWorkloadTracesSpec getTraces() {
-        return traces;
-    }
-
-    /**
-     * UserWorkloadCapabilitiesSpec defines the spec for user workload observability capabilities managed by the addon.
-     */
-    @JsonProperty("traces")
-    public void setTraces(UserWorkloadTracesSpec traces) {
-        this.traces = traces;
+    @JsonProperty("collection")
+    public void setCollection(UserWorkloadMetricsCollectionSpec collection) {
+        this.collection = collection;
     }
 
     @JsonIgnore
-    public UserWorkloadCapabilitiesSpecBuilder edit() {
-        return new UserWorkloadCapabilitiesSpecBuilder(this);
+    public UserWorkloadMetricsSpecBuilder edit() {
+        return new UserWorkloadMetricsSpecBuilder(this);
     }
 
     @JsonIgnore
-    public UserWorkloadCapabilitiesSpecBuilder toBuilder() {
+    public UserWorkloadMetricsSpecBuilder toBuilder() {
         return edit();
     }
 

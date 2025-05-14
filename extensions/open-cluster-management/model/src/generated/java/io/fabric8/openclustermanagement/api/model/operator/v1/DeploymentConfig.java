@@ -1,7 +1,9 @@
 
-package io.fabric8.openclustermanagement.api.model.observability.v1beta2;
+package io.fabric8.openclustermanagement.api.model.operator.v1;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import javax.annotation.processing.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
@@ -33,14 +35,13 @@ import lombok.ToString;
 import lombok.experimental.Accessors;
 
 /**
- * UserWorkloadCapabilitiesSpec defines the spec for user workload observability capabilities managed by the addon.
+ * DeploymentConfig provides configuration details for a specific deployment.
  */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "logs",
-    "metrics",
-    "traces"
+    "containers",
+    "name"
 })
 @ToString
 @EqualsAndHashCode
@@ -64,86 +65,69 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class UserWorkloadCapabilitiesSpec implements Editable<UserWorkloadCapabilitiesSpecBuilder>, KubernetesResource
+public class DeploymentConfig implements Editable<DeploymentConfigBuilder>, KubernetesResource
 {
 
-    @JsonProperty("logs")
-    private UserWorkloadLogsSpec logs;
-    @JsonProperty("metrics")
-    private UserWorkloadMetricsSpec metrics;
-    @JsonProperty("traces")
-    private UserWorkloadTracesSpec traces;
+    @JsonProperty("containers")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<ContainerConfig> containers = new ArrayList<>();
+    @JsonProperty("name")
+    private String name;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
      */
-    public UserWorkloadCapabilitiesSpec() {
+    public DeploymentConfig() {
     }
 
-    public UserWorkloadCapabilitiesSpec(UserWorkloadLogsSpec logs, UserWorkloadMetricsSpec metrics, UserWorkloadTracesSpec traces) {
+    public DeploymentConfig(List<ContainerConfig> containers, String name) {
         super();
-        this.logs = logs;
-        this.metrics = metrics;
-        this.traces = traces;
+        this.containers = containers;
+        this.name = name;
     }
 
     /**
-     * UserWorkloadCapabilitiesSpec defines the spec for user workload observability capabilities managed by the addon.
+     * Containers is a list of container specific configurations within the deployment.
      */
-    @JsonProperty("logs")
-    public UserWorkloadLogsSpec getLogs() {
-        return logs;
+    @JsonProperty("containers")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public List<ContainerConfig> getContainers() {
+        return containers;
     }
 
     /**
-     * UserWorkloadCapabilitiesSpec defines the spec for user workload observability capabilities managed by the addon.
+     * Containers is a list of container specific configurations within the deployment.
      */
-    @JsonProperty("logs")
-    public void setLogs(UserWorkloadLogsSpec logs) {
-        this.logs = logs;
+    @JsonProperty("containers")
+    public void setContainers(List<ContainerConfig> containers) {
+        this.containers = containers;
     }
 
     /**
-     * UserWorkloadCapabilitiesSpec defines the spec for user workload observability capabilities managed by the addon.
+     * Name specifies the name of the deployment being configured.
      */
-    @JsonProperty("metrics")
-    public UserWorkloadMetricsSpec getMetrics() {
-        return metrics;
+    @JsonProperty("name")
+    public String getName() {
+        return name;
     }
 
     /**
-     * UserWorkloadCapabilitiesSpec defines the spec for user workload observability capabilities managed by the addon.
+     * Name specifies the name of the deployment being configured.
      */
-    @JsonProperty("metrics")
-    public void setMetrics(UserWorkloadMetricsSpec metrics) {
-        this.metrics = metrics;
-    }
-
-    /**
-     * UserWorkloadCapabilitiesSpec defines the spec for user workload observability capabilities managed by the addon.
-     */
-    @JsonProperty("traces")
-    public UserWorkloadTracesSpec getTraces() {
-        return traces;
-    }
-
-    /**
-     * UserWorkloadCapabilitiesSpec defines the spec for user workload observability capabilities managed by the addon.
-     */
-    @JsonProperty("traces")
-    public void setTraces(UserWorkloadTracesSpec traces) {
-        this.traces = traces;
+    @JsonProperty("name")
+    public void setName(String name) {
+        this.name = name;
     }
 
     @JsonIgnore
-    public UserWorkloadCapabilitiesSpecBuilder edit() {
-        return new UserWorkloadCapabilitiesSpecBuilder(this);
+    public DeploymentConfigBuilder edit() {
+        return new DeploymentConfigBuilder(this);
     }
 
     @JsonIgnore
-    public UserWorkloadCapabilitiesSpecBuilder toBuilder() {
+    public DeploymentConfigBuilder toBuilder() {
         return edit();
     }
 
