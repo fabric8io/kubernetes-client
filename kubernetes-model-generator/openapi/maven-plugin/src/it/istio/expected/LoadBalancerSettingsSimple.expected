@@ -99,6 +99,7 @@ public class LoadBalancerSettingsSimple implements IsLoadBalancerSettingsLbPolic
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

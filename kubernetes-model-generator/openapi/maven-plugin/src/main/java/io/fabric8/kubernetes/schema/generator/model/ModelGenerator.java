@@ -174,6 +174,7 @@ class ModelGenerator {
       ret.put("additionalProperties", true);
       ret.addImport("java.util.LinkedHashMap");
       ret.addImport("java.util.Map");
+      ret.addImport("com.fasterxml.jackson.annotation.JsonIgnore");
       ret.addImport("com.fasterxml.jackson.annotation.JsonAnyGetter");
       ret.addImport("com.fasterxml.jackson.annotation.JsonAnySetter");
     }

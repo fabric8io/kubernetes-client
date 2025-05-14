@@ -101,6 +101,7 @@ public class WatchEvent implements Editable<WatchEventBuilder>, KubernetesResour
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

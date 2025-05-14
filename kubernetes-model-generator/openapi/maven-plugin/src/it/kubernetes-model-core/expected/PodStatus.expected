@@ -415,6 +415,7 @@ public class PodStatus implements Editable<PodStatusBuilder>, KubernetesResource
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
