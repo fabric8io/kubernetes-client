@@ -325,6 +325,7 @@ public class StepActionSpec implements Editable<StepActionSpecBuilder>, Kubernet
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

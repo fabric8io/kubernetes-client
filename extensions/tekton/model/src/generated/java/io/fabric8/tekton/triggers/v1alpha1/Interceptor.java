@@ -198,6 +198,7 @@ public class Interceptor implements Editable<InterceptorBuilder>, HasMetadata, N
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

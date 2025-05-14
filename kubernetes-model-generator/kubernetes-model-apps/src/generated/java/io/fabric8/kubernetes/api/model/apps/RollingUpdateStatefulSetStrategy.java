@@ -128,6 +128,7 @@ public class RollingUpdateStatefulSetStrategy implements Editable<RollingUpdateS
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

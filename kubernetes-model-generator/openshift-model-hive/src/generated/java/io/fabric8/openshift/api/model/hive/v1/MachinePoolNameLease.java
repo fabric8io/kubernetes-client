@@ -198,6 +198,7 @@ public class MachinePoolNameLease implements Editable<MachinePoolNameLeaseBuilde
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

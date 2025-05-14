@@ -199,6 +199,7 @@ public class Telemetry implements Editable<TelemetryBuilder>, HasMetadata, Names
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

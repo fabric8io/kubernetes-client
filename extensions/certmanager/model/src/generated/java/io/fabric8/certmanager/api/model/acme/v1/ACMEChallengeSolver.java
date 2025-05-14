@@ -148,6 +148,7 @@ public class ACMEChallengeSolver implements Editable<ACMEChallengeSolverBuilder>
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -128,6 +128,7 @@ public class LoadBalancerReference implements Editable<LoadBalancerReferenceBuil
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

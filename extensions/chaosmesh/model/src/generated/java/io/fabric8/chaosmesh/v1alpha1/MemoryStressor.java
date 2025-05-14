@@ -172,6 +172,7 @@ public class MemoryStressor implements Editable<MemoryStressorBuilder>, Kubernet
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

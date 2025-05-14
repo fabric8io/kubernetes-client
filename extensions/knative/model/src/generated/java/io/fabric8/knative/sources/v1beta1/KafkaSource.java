@@ -198,6 +198,7 @@ public class KafkaSource implements Editable<KafkaSourceBuilder>, HasMetadata, N
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

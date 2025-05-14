@@ -297,6 +297,7 @@ public class OAuth2 implements Editable<OAuth2Builder>, KubernetesResource
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

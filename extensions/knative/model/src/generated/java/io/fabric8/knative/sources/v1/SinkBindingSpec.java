@@ -151,6 +151,7 @@ public class SinkBindingSpec implements Editable<SinkBindingSpecBuilder>, Kubern
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

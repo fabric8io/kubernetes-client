@@ -198,6 +198,7 @@ public class Trigger implements Editable<TriggerBuilder>, HasMetadata, Namespace
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

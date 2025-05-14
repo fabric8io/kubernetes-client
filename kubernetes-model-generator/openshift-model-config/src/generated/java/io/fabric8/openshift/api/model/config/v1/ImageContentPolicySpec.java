@@ -112,6 +112,7 @@ public class ImageContentPolicySpec implements Editable<ImageContentPolicySpecBu
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

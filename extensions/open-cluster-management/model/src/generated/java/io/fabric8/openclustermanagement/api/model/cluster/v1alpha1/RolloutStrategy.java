@@ -168,6 +168,7 @@ public class RolloutStrategy implements Editable<RolloutStrategyBuilder>, Kubern
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

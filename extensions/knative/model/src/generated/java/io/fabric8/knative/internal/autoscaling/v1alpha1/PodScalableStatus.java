@@ -108,6 +108,7 @@ public class PodScalableStatus implements Editable<PodScalableStatusBuilder>, Ku
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

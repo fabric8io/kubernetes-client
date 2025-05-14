@@ -108,6 +108,7 @@ public class Metal3ClusterTemplateResource implements Editable<Metal3ClusterTemp
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

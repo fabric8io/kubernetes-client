@@ -198,6 +198,7 @@ public class PrometheusSource implements Editable<PrometheusSourceBuilder>, HasM
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

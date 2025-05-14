@@ -168,6 +168,7 @@ public class NamespacedPolicyTargetReference implements Editable<NamespacedPolic
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -268,6 +268,7 @@ public class StatusCheckTemplate implements Editable<StatusCheckTemplateBuilder>
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

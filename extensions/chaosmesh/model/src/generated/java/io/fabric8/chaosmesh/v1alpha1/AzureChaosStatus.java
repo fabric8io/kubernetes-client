@@ -132,6 +132,7 @@ public class AzureChaosStatus implements Editable<AzureChaosStatusBuilder>, Kube
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

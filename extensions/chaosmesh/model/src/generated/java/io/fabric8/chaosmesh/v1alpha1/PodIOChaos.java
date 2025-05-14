@@ -198,6 +198,7 @@ public class PodIOChaos implements Editable<PodIOChaosBuilder>, HasMetadata, Nam
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

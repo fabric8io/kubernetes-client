@@ -128,6 +128,7 @@ public class Maintainer implements Editable<MaintainerBuilder>, KubernetesResour
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

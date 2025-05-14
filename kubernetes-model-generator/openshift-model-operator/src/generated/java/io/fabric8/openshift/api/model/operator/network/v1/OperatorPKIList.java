@@ -183,6 +183,7 @@ public class OperatorPKIList implements Editable<OperatorPKIListBuilder>, Kubern
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

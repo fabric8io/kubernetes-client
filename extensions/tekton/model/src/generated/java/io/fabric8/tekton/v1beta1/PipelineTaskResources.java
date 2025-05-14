@@ -134,6 +134,7 @@ public class PipelineTaskResources implements Editable<PipelineTaskResourcesBuil
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

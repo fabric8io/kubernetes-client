@@ -108,6 +108,7 @@ public class HTTPBodyBytes implements IsHTTPBodySpecifier, Editable<HTTPBodyByte
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

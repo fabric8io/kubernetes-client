@@ -183,6 +183,7 @@ public class DaemonSetList implements Editable<DaemonSetListBuilder>, Kubernetes
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

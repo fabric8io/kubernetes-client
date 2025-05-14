@@ -198,6 +198,7 @@ public class GitHubSource implements Editable<GitHubSourceBuilder>, HasMetadata,
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

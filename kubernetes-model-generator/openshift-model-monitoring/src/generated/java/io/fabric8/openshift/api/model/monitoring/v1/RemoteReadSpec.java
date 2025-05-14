@@ -456,6 +456,7 @@ public class RemoteReadSpec implements Editable<RemoteReadSpecBuilder>, Kubernet
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

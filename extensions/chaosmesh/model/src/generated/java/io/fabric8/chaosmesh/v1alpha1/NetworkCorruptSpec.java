@@ -245,6 +245,7 @@ public class NetworkCorruptSpec implements Editable<NetworkCorruptSpecBuilder>, 
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

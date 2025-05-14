@@ -212,6 +212,7 @@ public class NetworkDataLinkBond implements Editable<NetworkDataLinkBondBuilder>
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -125,6 +125,7 @@ public class RegexRewrite implements Editable<RegexRewriteBuilder>, KubernetesRe
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

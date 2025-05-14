@@ -128,6 +128,7 @@ public class PrioritizerConfig implements Editable<PrioritizerConfigBuilder>, Ku
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

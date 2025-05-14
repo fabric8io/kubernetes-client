@@ -325,6 +325,7 @@ public class PodSecurityContext implements Editable<PodSecurityContextBuilder>, 
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

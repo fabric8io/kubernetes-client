@@ -188,6 +188,7 @@ public class ImageRegistryConfigStorageIBMCOS implements Editable<ImageRegistryC
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

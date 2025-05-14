@@ -175,6 +175,7 @@ public class NameConstraintItem implements Editable<NameConstraintItemBuilder>, 
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

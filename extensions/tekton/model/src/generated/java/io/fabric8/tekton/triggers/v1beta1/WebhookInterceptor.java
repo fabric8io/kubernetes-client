@@ -153,6 +153,7 @@ public class WebhookInterceptor implements Editable<WebhookInterceptorBuilder>, 
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

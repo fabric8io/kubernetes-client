@@ -198,6 +198,7 @@ public class Metal3DataClaim implements Editable<Metal3DataClaimBuilder>, HasMet
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

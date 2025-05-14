@@ -613,6 +613,7 @@ public class Kustomization implements Editable<KustomizationBuilder>, Kubernetes
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

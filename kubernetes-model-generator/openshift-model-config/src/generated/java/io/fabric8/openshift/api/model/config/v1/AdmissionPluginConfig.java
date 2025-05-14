@@ -130,6 +130,7 @@ public class AdmissionPluginConfig implements Editable<AdmissionPluginConfigBuil
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

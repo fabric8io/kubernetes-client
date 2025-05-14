@@ -113,6 +113,7 @@ public class KafkaNetSpec implements Editable<KafkaNetSpecBuilder>, KubernetesRe
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

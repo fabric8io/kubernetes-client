@@ -232,6 +232,7 @@ public class KernelChaosSpec implements Editable<KernelChaosSpecBuilder>, Kubern
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

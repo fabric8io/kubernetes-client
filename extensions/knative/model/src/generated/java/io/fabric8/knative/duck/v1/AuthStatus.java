@@ -132,6 +132,7 @@ public class AuthStatus implements Editable<AuthStatusBuilder>, KubernetesResour
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

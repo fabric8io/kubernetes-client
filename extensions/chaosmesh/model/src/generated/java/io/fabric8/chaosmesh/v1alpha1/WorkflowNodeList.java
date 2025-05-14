@@ -168,6 +168,7 @@ public class WorkflowNodeList implements Editable<WorkflowNodeListBuilder>, Kube
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

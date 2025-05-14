@@ -215,6 +215,7 @@ public class AllocatedDeviceStatus implements Editable<AllocatedDeviceStatusBuil
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

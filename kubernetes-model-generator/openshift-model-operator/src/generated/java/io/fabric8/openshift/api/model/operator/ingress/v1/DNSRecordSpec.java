@@ -192,6 +192,7 @@ public class DNSRecordSpec implements Editable<DNSRecordSpecBuilder>, Kubernetes
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

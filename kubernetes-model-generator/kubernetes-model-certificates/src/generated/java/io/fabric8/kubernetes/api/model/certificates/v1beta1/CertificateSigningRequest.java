@@ -197,6 +197,7 @@ public class CertificateSigningRequest implements Editable<CertificateSigningReq
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

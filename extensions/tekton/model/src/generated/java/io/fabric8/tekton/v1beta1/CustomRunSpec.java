@@ -275,6 +275,7 @@ public class CustomRunSpec implements Editable<CustomRunSpecBuilder>, Kubernetes
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

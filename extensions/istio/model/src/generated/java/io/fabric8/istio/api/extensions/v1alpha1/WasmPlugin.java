@@ -199,6 +199,7 @@ public class WasmPlugin implements Editable<WasmPluginBuilder>, HasMetadata, Nam
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

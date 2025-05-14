@@ -128,6 +128,7 @@ public class RollingUpdateDeployment implements Editable<RollingUpdateDeployment
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

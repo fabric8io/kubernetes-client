@@ -153,6 +153,7 @@ public class LoadBalancerSettingsConsistentHashLB implements Editable<LoadBalanc
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

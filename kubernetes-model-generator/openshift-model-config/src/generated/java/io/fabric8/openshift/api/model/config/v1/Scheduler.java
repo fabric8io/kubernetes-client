@@ -197,6 +197,7 @@ public class Scheduler implements Editable<SchedulerBuilder>, HasMetadata
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -198,6 +198,7 @@ public class CustomRun implements Editable<CustomRunBuilder>, HasMetadata, Names
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

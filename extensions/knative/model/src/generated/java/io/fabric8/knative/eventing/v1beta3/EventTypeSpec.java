@@ -144,6 +144,7 @@ public class EventTypeSpec implements Editable<EventTypeSpecBuilder>, Kubernetes
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

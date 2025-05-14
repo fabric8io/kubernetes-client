@@ -134,6 +134,7 @@ public class ExternalIPPolicy implements Editable<ExternalIPPolicyBuilder>, Kube
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -295,6 +295,7 @@ public class ConsoleCustomization implements Editable<ConsoleCustomizationBuilde
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

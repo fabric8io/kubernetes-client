@@ -148,6 +148,7 @@ public class NetworkLinkEthernetMac implements Editable<NetworkLinkEthernetMacBu
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -168,6 +168,7 @@ public class BasicAuthIdentityProvider implements Editable<BasicAuthIdentityProv
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

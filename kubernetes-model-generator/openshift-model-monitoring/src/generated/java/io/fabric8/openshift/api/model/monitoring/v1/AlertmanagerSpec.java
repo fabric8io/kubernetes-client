@@ -1161,6 +1161,7 @@ public class AlertmanagerSpec implements Editable<AlertmanagerSpecBuilder>, Kube
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

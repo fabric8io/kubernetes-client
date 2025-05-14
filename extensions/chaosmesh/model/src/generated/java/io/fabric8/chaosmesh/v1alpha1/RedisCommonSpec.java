@@ -125,6 +125,7 @@ public class RedisCommonSpec implements Editable<RedisCommonSpecBuilder>, Kubern
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

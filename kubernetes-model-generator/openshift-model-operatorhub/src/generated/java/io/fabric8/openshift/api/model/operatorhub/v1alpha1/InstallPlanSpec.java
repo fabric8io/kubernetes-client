@@ -212,6 +212,7 @@ public class InstallPlanSpec implements Editable<InstallPlanSpecBuilder>, Kubern
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

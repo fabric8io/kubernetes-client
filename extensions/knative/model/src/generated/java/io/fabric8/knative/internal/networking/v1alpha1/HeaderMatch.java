@@ -108,6 +108,7 @@ public class HeaderMatch implements Editable<HeaderMatchBuilder>, KubernetesReso
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

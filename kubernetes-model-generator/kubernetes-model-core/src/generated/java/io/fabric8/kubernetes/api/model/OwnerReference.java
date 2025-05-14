@@ -188,6 +188,7 @@ public class OwnerReference implements Editable<OwnerReferenceBuilder>, Kubernet
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

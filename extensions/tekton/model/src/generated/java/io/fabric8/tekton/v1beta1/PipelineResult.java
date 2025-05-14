@@ -168,6 +168,7 @@ public class PipelineResult implements Editable<PipelineResultBuilder>, Kubernet
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

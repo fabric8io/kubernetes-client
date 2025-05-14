@@ -156,6 +156,7 @@ public class HeadersHeaderOperations implements Editable<HeadersHeaderOperations
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

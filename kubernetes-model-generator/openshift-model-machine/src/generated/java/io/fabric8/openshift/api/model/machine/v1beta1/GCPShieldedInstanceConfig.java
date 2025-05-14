@@ -148,6 +148,7 @@ public class GCPShieldedInstanceConfig implements Editable<GCPShieldedInstanceCo
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

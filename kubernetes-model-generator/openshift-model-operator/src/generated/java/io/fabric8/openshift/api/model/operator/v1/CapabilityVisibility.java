@@ -108,6 +108,7 @@ public class CapabilityVisibility implements Editable<CapabilityVisibilityBuilde
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -175,6 +175,7 @@ public class OperatorGroupStatus implements Editable<OperatorGroupStatusBuilder>
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

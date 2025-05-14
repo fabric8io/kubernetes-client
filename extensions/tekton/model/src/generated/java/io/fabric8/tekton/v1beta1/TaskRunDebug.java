@@ -108,6 +108,7 @@ public class TaskRunDebug implements Editable<TaskRunDebugBuilder>, KubernetesRe
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

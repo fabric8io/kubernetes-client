@@ -148,6 +148,7 @@ public class MistakeSpec implements Editable<MistakeSpecBuilder>, KubernetesReso
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

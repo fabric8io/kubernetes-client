@@ -260,6 +260,7 @@ public class CorsPolicy implements Editable<CorsPolicyBuilder>, KubernetesResour
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

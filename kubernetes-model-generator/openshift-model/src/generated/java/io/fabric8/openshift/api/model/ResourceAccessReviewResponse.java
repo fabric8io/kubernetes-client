@@ -224,6 +224,7 @@ public class ResourceAccessReviewResponse implements Editable<ResourceAccessRevi
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

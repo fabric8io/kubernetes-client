@@ -221,6 +221,7 @@ public class NetNamespace implements Editable<NetNamespaceBuilder>, HasMetadata
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

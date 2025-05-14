@@ -128,6 +128,7 @@ public class AzureResourceTag implements Editable<AzureResourceTagBuilder>, Kube
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

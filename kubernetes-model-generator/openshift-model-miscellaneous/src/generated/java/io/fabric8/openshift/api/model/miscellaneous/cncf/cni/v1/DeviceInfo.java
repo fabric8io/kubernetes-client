@@ -208,6 +208,7 @@ public class DeviceInfo implements Editable<DeviceInfoBuilder>, KubernetesResour
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

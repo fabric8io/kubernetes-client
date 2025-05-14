@@ -183,6 +183,7 @@ public class PodScalableList implements Editable<PodScalableListBuilder>, Kubern
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

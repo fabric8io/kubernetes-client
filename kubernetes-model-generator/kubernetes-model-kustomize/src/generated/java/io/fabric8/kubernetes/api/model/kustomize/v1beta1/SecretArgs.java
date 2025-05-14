@@ -219,6 +219,7 @@ public class SecretArgs implements Editable<SecretArgsBuilder>, KubernetesResour
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

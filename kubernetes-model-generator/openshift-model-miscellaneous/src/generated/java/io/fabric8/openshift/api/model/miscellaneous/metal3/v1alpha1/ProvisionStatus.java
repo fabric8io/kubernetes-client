@@ -248,6 +248,7 @@ public class ProvisionStatus implements Editable<ProvisionStatusBuilder>, Kubern
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -174,6 +174,7 @@ public class UserInfo implements Editable<UserInfoBuilder>, KubernetesResource
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -323,6 +323,7 @@ public class ImageSignature implements Editable<ImageSignatureBuilder>, HasMetad
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -198,6 +198,7 @@ public class GitLabSource implements Editable<GitLabSourceBuilder>, HasMetadata,
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -99,6 +99,7 @@ public class PhotonPersistentDiskVolumeSource implements Editable<PhotonPersiste
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

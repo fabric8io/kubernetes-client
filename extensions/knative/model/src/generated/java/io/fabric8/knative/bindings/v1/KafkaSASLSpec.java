@@ -141,6 +141,7 @@ public class KafkaSASLSpec implements Editable<KafkaSASLSpecBuilder>, Kubernetes
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

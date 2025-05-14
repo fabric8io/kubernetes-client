@@ -130,6 +130,7 @@ public class ResourceRequest implements Editable<ResourceRequestBuilder>, Kubern
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

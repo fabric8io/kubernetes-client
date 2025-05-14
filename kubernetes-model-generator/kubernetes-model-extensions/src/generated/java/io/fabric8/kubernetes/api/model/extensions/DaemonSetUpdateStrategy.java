@@ -119,6 +119,7 @@ public class DaemonSetUpdateStrategy implements Editable<DaemonSetUpdateStrategy
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

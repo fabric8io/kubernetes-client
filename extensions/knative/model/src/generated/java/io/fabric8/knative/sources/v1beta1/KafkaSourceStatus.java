@@ -362,6 +362,7 @@ public class KafkaSourceStatus implements Editable<KafkaSourceStatusBuilder>, Ku
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

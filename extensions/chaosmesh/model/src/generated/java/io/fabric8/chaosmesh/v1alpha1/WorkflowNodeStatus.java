@@ -182,6 +182,7 @@ public class WorkflowNodeStatus implements Editable<WorkflowNodeStatusBuilder>, 
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

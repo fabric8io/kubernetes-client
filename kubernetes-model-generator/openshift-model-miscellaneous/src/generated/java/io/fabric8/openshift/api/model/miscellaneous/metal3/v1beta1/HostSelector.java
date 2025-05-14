@@ -134,6 +134,7 @@ public class HostSelector implements Editable<HostSelectorBuilder>, KubernetesRe
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

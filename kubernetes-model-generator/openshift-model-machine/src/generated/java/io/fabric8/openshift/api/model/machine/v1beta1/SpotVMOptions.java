@@ -109,6 +109,7 @@ public class SpotVMOptions implements Editable<SpotVMOptionsBuilder>, Kubernetes
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

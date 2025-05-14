@@ -183,6 +183,7 @@ public class ClusterImageSetList implements Editable<ClusterImageSetListBuilder>
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

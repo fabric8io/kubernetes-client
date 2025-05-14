@@ -189,6 +189,7 @@ public class MachineConfigNodeStatusPinnedImageSet implements Editable<MachineCo
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

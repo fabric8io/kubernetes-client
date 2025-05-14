@@ -188,6 +188,7 @@ public class ProviderLoadBalancerParameters implements Editable<ProviderLoadBala
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -78,6 +78,7 @@ public class HostUpdatePolicyStatus implements Editable<HostUpdatePolicyStatusBu
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

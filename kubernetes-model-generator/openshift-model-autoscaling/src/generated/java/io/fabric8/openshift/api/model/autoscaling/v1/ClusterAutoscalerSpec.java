@@ -314,6 +314,7 @@ public class ClusterAutoscalerSpec implements Editable<ClusterAutoscalerSpecBuil
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -108,6 +108,7 @@ public class MachineAutoscalerStatus implements Editable<MachineAutoscalerStatus
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

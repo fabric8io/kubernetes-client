@@ -172,6 +172,7 @@ public class DeploymentTriggerImageChangeParams implements Editable<DeploymentTr
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

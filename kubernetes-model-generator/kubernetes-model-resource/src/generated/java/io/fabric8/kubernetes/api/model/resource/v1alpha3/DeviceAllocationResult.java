@@ -134,6 +134,7 @@ public class DeviceAllocationResult implements Editable<DeviceAllocationResultBu
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

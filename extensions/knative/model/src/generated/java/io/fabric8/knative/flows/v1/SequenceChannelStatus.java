@@ -114,6 +114,7 @@ public class SequenceChannelStatus implements Editable<SequenceChannelStatusBuil
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

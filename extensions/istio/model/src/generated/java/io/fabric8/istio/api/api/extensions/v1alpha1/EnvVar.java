@@ -138,6 +138,7 @@ public class EnvVar implements Editable<EnvVarBuilder>, KubernetesResource
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

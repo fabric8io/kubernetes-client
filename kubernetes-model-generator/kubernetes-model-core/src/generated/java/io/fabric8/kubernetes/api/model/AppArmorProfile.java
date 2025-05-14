@@ -99,6 +99,7 @@ public class AppArmorProfile implements Editable<AppArmorProfileBuilder>, Kubern
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

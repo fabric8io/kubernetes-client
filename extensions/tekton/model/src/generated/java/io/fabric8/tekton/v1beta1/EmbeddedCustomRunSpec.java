@@ -170,6 +170,7 @@ public class EmbeddedCustomRunSpec implements Editable<EmbeddedCustomRunSpecBuil
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

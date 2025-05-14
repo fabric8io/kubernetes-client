@@ -183,6 +183,7 @@ public class ImageStreamTagList implements Editable<ImageStreamTagListBuilder>, 
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

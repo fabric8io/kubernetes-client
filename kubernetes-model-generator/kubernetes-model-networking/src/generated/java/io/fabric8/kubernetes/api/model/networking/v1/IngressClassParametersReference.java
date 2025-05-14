@@ -188,6 +188,7 @@ public class IngressClassParametersReference implements Editable<IngressClassPar
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

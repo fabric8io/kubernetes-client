@@ -198,6 +198,7 @@ public class Subscription implements Editable<SubscriptionBuilder>, HasMetadata,
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

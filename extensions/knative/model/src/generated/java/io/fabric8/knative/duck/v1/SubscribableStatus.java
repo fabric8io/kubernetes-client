@@ -112,6 +112,7 @@ public class SubscribableStatus implements Editable<SubscribableStatusBuilder>, 
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

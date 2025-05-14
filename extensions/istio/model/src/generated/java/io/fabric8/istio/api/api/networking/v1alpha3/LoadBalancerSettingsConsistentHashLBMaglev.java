@@ -108,6 +108,7 @@ public class LoadBalancerSettingsConsistentHashLBMaglev implements IsLoadBalance
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

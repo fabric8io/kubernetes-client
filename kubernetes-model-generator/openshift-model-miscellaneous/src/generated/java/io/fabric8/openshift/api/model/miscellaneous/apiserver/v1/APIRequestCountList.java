@@ -183,6 +183,7 @@ public class APIRequestCountList implements Editable<APIRequestCountListBuilder>
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -128,6 +128,7 @@ public class ExternalDNSConfig implements Editable<ExternalDNSConfigBuilder>, Ku
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

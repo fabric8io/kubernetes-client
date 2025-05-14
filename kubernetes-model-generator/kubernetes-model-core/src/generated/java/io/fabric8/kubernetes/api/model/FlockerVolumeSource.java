@@ -99,6 +99,7 @@ public class FlockerVolumeSource implements Editable<FlockerVolumeSourceBuilder>
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

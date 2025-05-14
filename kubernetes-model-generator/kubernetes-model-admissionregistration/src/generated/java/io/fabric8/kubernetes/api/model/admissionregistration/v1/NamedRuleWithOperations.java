@@ -220,6 +220,7 @@ public class NamedRuleWithOperations implements Editable<NamedRuleWithOperations
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

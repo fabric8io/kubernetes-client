@@ -267,6 +267,7 @@ public class NetworkParam implements Editable<NetworkParamBuilder>, KubernetesRe
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

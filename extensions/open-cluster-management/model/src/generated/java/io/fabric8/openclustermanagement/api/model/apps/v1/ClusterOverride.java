@@ -78,6 +78,7 @@ public class ClusterOverride implements Editable<ClusterOverrideBuilder>, Kubern
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

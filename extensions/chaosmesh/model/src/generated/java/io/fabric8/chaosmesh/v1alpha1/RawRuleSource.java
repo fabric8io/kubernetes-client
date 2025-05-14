@@ -108,6 +108,7 @@ public class RawRuleSource implements Editable<RawRuleSourceBuilder>, Kubernetes
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

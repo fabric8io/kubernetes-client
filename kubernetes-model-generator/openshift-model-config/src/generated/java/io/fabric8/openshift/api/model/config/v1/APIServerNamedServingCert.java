@@ -132,6 +132,7 @@ public class APIServerNamedServingCert implements Editable<APIServerNamedServing
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

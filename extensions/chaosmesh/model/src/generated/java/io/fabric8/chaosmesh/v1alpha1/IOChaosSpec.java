@@ -394,6 +394,7 @@ public class IOChaosSpec implements Editable<IOChaosSpecBuilder>, KubernetesReso
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

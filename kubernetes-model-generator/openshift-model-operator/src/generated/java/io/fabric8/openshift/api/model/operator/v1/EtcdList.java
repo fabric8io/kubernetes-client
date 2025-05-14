@@ -183,6 +183,7 @@ public class EtcdList implements Editable<EtcdListBuilder>, KubernetesResource, 
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

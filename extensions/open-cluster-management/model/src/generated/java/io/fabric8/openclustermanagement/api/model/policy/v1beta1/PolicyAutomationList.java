@@ -183,6 +183,7 @@ public class PolicyAutomationList implements Editable<PolicyAutomationListBuilde
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -274,6 +274,7 @@ public class CustomResourceDefinitionVersion implements Editable<CustomResourceD
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

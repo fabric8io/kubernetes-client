@@ -218,6 +218,7 @@ public class TLSMatchAttributes implements Editable<TLSMatchAttributesBuilder>, 
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

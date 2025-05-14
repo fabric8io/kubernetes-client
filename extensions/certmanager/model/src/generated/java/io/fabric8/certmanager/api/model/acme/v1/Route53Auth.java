@@ -108,6 +108,7 @@ public class Route53Auth implements Editable<Route53AuthBuilder>, KubernetesReso
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

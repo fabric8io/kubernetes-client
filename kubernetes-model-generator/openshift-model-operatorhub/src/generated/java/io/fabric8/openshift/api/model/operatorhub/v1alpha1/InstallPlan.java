@@ -198,6 +198,7 @@ public class InstallPlan implements Editable<InstallPlanBuilder>, HasMetadata, N
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

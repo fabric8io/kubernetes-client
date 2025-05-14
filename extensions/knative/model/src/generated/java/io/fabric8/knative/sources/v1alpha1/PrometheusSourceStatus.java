@@ -259,6 +259,7 @@ public class PrometheusSourceStatus implements Editable<PrometheusSourceStatusBu
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

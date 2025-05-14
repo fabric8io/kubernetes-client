@@ -154,6 +154,7 @@ public class BuildPostCommitSpec implements Editable<BuildPostCommitSpecBuilder>
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -79,6 +79,7 @@ public class NodeFeatures implements Editable<NodeFeaturesBuilder>, KubernetesRe
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

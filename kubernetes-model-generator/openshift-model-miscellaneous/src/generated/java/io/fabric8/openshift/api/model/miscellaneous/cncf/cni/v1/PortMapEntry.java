@@ -168,6 +168,7 @@ public class PortMapEntry implements Editable<PortMapEntryBuilder>, KubernetesRe
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

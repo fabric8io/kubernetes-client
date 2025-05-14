@@ -283,6 +283,7 @@ public class ISCSIPersistentVolumeSource implements Editable<ISCSIPersistentVolu
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -183,6 +183,7 @@ public class WorkloadGroupList implements Editable<WorkloadGroupListBuilder>, Ku
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

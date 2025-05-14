@@ -210,6 +210,7 @@ public class AutomationDef implements Editable<AutomationDefBuilder>, Kubernetes
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

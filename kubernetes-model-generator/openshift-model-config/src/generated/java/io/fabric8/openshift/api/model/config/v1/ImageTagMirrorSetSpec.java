@@ -112,6 +112,7 @@ public class ImageTagMirrorSetSpec implements Editable<ImageTagMirrorSetSpecBuil
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -128,6 +128,7 @@ public class ConsolePluginProxyEndpoint implements Editable<ConsolePluginProxyEn
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -198,6 +198,7 @@ public class TriggerTemplate implements Editable<TriggerTemplateBuilder>, HasMet
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

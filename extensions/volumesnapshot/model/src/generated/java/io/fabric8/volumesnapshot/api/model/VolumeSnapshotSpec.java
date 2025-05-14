@@ -128,6 +128,7 @@ public class VolumeSnapshotSpec implements Editable<VolumeSnapshotSpecBuilder>, 
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

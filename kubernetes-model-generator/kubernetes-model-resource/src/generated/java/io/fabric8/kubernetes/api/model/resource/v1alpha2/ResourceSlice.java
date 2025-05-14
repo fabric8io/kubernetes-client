@@ -217,6 +217,7 @@ public class ResourceSlice implements Editable<ResourceSliceBuilder>, HasMetadat
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

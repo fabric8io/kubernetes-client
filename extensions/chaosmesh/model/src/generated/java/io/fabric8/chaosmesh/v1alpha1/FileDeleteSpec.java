@@ -125,6 +125,7 @@ public class FileDeleteSpec implements Editable<FileDeleteSpecBuilder>, Kubernet
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

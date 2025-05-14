@@ -99,6 +99,7 @@ public class ContainerStateWaiting implements Editable<ContainerStateWaitingBuil
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -153,6 +153,7 @@ public class RouteStatusFields implements Editable<RouteStatusFieldsBuilder>, Ku
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

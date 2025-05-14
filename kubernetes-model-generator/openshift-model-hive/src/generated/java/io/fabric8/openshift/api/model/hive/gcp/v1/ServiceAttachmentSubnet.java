@@ -128,6 +128,7 @@ public class ServiceAttachmentSubnet implements Editable<ServiceAttachmentSubnet
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -189,6 +189,7 @@ public class IssuerSpec implements Editable<IssuerSpecBuilder>, KubernetesResour
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

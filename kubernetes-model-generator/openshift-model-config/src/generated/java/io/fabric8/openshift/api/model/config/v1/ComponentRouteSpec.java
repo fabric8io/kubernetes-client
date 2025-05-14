@@ -168,6 +168,7 @@ public class ComponentRouteSpec implements Editable<ComponentRouteSpecBuilder>, 
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

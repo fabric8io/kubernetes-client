@@ -162,6 +162,7 @@ public class IBMCloudProviderSpec implements Editable<IBMCloudProviderSpecBuilde
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

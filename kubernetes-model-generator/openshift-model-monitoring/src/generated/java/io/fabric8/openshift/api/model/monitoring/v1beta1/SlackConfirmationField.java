@@ -168,6 +168,7 @@ public class SlackConfirmationField implements Editable<SlackConfirmationFieldBu
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

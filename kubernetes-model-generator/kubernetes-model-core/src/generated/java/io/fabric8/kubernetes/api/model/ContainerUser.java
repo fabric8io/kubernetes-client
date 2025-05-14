@@ -79,6 +79,7 @@ public class ContainerUser implements Editable<ContainerUserBuilder>, Kubernetes
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

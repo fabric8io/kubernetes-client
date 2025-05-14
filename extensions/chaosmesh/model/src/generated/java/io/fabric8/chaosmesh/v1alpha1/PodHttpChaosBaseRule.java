@@ -148,6 +148,7 @@ public class PodHttpChaosBaseRule implements Editable<PodHttpChaosBaseRuleBuilde
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

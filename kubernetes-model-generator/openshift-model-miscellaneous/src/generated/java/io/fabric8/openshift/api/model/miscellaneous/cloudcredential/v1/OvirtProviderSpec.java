@@ -138,6 +138,7 @@ public class OvirtProviderSpec implements Editable<OvirtProviderSpecBuilder>, Ku
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

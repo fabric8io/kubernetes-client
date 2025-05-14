@@ -108,6 +108,7 @@ public class IBMLoadBalancerParameters implements Editable<IBMLoadBalancerParame
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

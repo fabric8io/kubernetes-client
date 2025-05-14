@@ -109,6 +109,7 @@ public class NetworkInfo implements Editable<NetworkInfoBuilder>, KubernetesReso
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -150,6 +150,7 @@ public class HistogramCheckpoint implements Editable<HistogramCheckpointBuilder>
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

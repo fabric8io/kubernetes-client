@@ -108,6 +108,7 @@ public class EC2Metadata implements Editable<EC2MetadataBuilder>, KubernetesReso
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

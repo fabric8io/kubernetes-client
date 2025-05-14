@@ -108,6 +108,7 @@ public class CustomDeploy implements Editable<CustomDeployBuilder>, KubernetesRe
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

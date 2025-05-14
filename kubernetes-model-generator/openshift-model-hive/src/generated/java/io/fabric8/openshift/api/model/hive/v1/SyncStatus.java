@@ -232,6 +232,7 @@ public class SyncStatus implements Editable<SyncStatusBuilder>, KubernetesResour
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

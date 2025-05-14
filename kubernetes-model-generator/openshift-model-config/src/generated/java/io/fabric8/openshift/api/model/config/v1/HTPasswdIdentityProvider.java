@@ -108,6 +108,7 @@ public class HTPasswdIdentityProvider implements Editable<HTPasswdIdentityProvid
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

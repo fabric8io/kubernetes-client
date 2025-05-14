@@ -189,6 +189,7 @@ public class ContainerRuntimeConfiguration implements Editable<ContainerRuntimeC
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

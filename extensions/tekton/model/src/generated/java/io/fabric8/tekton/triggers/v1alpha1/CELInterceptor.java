@@ -132,6 +132,7 @@ public class CELInterceptor implements Editable<CELInterceptorBuilder>, Kubernet
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

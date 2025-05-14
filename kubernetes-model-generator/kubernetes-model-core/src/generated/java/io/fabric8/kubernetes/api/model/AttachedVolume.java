@@ -99,6 +99,7 @@ public class AttachedVolume implements Editable<AttachedVolumeBuilder>, Kubernet
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

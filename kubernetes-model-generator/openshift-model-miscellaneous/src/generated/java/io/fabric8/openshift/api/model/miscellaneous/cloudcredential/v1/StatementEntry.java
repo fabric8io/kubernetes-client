@@ -174,6 +174,7 @@ public class StatementEntry implements Editable<StatementEntryBuilder>, Kubernet
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

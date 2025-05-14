@@ -198,6 +198,7 @@ public class IOChaos implements Editable<IOChaosBuilder>, HasMetadata, Namespace
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

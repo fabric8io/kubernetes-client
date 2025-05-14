@@ -165,6 +165,7 @@ public class KafkaIOSpec implements Editable<KafkaIOSpecBuilder>, KubernetesReso
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

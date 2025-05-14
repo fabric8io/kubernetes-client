@@ -163,6 +163,7 @@ public class HTTPGetAction implements Editable<HTTPGetActionBuilder>, Kubernetes
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

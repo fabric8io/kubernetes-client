@@ -161,6 +161,7 @@ public class CSIVolumeSource implements Editable<CSIVolumeSourceBuilder>, Kubern
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

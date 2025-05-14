@@ -200,6 +200,7 @@ public class EmbeddedPersistentVolumeClaim implements Editable<EmbeddedPersisten
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

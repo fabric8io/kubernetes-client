@@ -78,6 +78,7 @@ public class OldTLSProfile implements Editable<OldTLSProfileBuilder>, Kubernetes
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

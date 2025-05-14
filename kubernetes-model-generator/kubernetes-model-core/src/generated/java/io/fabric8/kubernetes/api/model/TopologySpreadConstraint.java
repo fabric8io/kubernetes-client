@@ -223,6 +223,7 @@ public class TopologySpreadConstraint implements Editable<TopologySpreadConstrai
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -148,6 +148,7 @@ public class MachineManager implements Editable<MachineManagerBuilder>, Kubernet
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

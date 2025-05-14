@@ -119,6 +119,7 @@ public class EventPolicySpecFrom implements Editable<EventPolicySpecFromBuilder>
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -156,6 +156,7 @@ public class IPPoolList implements Editable<IPPoolListBuilder>, KubernetesResour
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

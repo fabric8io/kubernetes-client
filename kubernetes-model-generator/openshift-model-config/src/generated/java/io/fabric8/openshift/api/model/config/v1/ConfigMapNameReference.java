@@ -108,6 +108,7 @@ public class ConfigMapNameReference implements Editable<ConfigMapNameReferenceBu
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

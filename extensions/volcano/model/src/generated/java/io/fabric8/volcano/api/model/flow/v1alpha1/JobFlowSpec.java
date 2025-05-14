@@ -132,6 +132,7 @@ public class JobFlowSpec implements Editable<JobFlowSpecBuilder>, KubernetesReso
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

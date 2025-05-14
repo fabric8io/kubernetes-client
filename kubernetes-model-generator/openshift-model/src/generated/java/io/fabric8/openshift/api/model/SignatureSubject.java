@@ -148,6 +148,7 @@ public class SignatureSubject implements Editable<SignatureSubjectBuilder>, Kube
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

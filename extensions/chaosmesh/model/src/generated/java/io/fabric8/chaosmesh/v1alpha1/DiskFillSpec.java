@@ -145,6 +145,7 @@ public class DiskFillSpec implements Editable<DiskFillSpecBuilder>, KubernetesRe
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

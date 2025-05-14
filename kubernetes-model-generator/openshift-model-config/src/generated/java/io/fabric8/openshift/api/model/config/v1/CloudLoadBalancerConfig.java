@@ -128,6 +128,7 @@ public class CloudLoadBalancerConfig implements Editable<CloudLoadBalancerConfig
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

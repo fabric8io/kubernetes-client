@@ -188,6 +188,7 @@ public class AdditionalNetworkDefinition implements Editable<AdditionalNetworkDe
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

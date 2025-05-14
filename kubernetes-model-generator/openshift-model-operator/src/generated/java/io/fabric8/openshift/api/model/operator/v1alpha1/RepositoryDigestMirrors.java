@@ -132,6 +132,7 @@ public class RepositoryDigestMirrors implements Editable<RepositoryDigestMirrors
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

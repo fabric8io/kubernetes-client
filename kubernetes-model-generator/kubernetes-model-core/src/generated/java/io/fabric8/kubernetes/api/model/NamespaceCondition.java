@@ -159,6 +159,7 @@ public class NamespaceCondition implements Editable<NamespaceConditionBuilder>, 
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

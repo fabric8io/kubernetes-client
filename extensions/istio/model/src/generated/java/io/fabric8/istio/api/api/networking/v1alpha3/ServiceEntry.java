@@ -292,6 +292,7 @@ public class ServiceEntry implements Editable<ServiceEntryBuilder>, KubernetesRe
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

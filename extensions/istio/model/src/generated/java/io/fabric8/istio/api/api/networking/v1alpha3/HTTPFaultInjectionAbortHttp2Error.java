@@ -108,6 +108,7 @@ public class HTTPFaultInjectionAbortHttp2Error implements IsHTTPFaultInjectionAb
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

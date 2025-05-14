@@ -152,6 +152,7 @@ public class SkippedTask implements Editable<SkippedTaskBuilder>, KubernetesReso
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

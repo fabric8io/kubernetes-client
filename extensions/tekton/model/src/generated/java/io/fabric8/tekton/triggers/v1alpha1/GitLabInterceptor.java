@@ -132,6 +132,7 @@ public class GitLabInterceptor implements Editable<GitLabInterceptorBuilder>, Ku
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

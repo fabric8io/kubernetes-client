@@ -163,6 +163,7 @@ public class SubnetParam implements Editable<SubnetParamBuilder>, KubernetesReso
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

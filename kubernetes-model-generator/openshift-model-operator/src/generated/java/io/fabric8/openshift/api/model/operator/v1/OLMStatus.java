@@ -211,6 +211,7 @@ public class OLMStatus implements Editable<OLMStatusBuilder>, KubernetesResource
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

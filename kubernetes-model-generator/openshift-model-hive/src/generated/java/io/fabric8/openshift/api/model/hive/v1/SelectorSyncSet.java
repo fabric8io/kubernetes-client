@@ -197,6 +197,7 @@ public class SelectorSyncSet implements Editable<SelectorSyncSetBuilder>, HasMet
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

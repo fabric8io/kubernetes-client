@@ -154,6 +154,7 @@ public class CustomDeploymentStrategyParams implements Editable<CustomDeployment
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

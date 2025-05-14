@@ -172,6 +172,7 @@ public class LoadBalancerStrategy implements Editable<LoadBalancerStrategyBuilde
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

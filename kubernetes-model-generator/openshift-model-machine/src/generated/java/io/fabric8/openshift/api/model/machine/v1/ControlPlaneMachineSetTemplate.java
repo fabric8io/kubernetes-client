@@ -128,6 +128,7 @@ public class ControlPlaneMachineSetTemplate implements Editable<ControlPlaneMach
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

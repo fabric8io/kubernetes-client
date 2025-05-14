@@ -148,6 +148,7 @@ public class BMCDetails implements Editable<BMCDetailsBuilder>, KubernetesResour
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

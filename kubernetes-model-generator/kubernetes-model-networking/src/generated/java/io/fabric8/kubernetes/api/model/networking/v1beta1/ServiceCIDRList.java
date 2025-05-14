@@ -183,6 +183,7 @@ public class ServiceCIDRList implements Editable<ServiceCIDRListBuilder>, Kubern
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

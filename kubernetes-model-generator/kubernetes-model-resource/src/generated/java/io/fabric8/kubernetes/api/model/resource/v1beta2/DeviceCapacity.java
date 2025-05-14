@@ -109,6 +109,7 @@ public class DeviceCapacity implements Editable<DeviceCapacityBuilder>, Kubernet
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

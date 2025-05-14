@@ -198,6 +198,7 @@ public class Placement implements Editable<PlacementBuilder>, HasMetadata, Names
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

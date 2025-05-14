@@ -78,6 +78,7 @@ public class MachinePoolNameLeaseStatus implements Editable<MachinePoolNameLease
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

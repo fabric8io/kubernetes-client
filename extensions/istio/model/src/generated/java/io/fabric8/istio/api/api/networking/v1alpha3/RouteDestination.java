@@ -128,6 +128,7 @@ public class RouteDestination implements Editable<RouteDestinationBuilder>, Kube
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

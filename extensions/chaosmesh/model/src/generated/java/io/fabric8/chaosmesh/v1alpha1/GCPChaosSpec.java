@@ -252,6 +252,7 @@ public class GCPChaosSpec implements Editable<GCPChaosSpecBuilder>, KubernetesRe
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

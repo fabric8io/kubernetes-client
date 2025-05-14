@@ -168,6 +168,7 @@ public class GCPNetworkInterface implements Editable<GCPNetworkInterfaceBuilder>
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

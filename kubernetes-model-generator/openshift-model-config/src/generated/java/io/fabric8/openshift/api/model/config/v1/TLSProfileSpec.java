@@ -132,6 +132,7 @@ public class TLSProfileSpec implements Editable<TLSProfileSpecBuilder>, Kubernet
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

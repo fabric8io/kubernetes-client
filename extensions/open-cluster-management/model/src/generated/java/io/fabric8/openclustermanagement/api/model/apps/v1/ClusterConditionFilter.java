@@ -128,6 +128,7 @@ public class ClusterConditionFilter implements Editable<ClusterConditionFilterBu
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

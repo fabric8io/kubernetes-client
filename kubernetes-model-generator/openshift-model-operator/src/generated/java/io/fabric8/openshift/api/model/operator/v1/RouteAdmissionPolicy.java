@@ -128,6 +128,7 @@ public class RouteAdmissionPolicy implements Editable<RouteAdmissionPolicyBuilde
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

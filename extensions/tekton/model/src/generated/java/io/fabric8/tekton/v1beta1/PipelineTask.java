@@ -419,6 +419,7 @@ public class PipelineTask implements Editable<PipelineTaskBuilder>, KubernetesRe
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

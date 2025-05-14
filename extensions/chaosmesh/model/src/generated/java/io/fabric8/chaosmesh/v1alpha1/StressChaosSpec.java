@@ -252,6 +252,7 @@ public class StressChaosSpec implements Editable<StressChaosSpecBuilder>, Kubern
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

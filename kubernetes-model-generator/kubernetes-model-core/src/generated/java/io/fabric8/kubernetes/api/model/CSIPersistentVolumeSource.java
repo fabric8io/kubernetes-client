@@ -261,6 +261,7 @@ public class CSIPersistentVolumeSource implements Editable<CSIPersistentVolumeSo
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

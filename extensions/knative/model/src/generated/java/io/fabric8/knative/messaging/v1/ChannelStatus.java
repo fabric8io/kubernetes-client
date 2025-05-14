@@ -325,6 +325,7 @@ public class ChannelStatus implements Editable<ChannelStatusBuilder>, Kubernetes
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

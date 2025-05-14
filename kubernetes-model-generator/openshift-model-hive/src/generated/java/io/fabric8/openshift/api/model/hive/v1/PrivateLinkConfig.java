@@ -108,6 +108,7 @@ public class PrivateLinkConfig implements Editable<PrivateLinkConfigBuilder>, Ku
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

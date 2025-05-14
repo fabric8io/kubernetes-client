@@ -129,6 +129,7 @@ public class SELinuxStrategyOptions implements Editable<SELinuxStrategyOptionsBu
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

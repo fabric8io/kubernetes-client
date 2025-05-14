@@ -183,6 +183,7 @@ public class DeploymentConfigList implements Editable<DeploymentConfigListBuilde
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

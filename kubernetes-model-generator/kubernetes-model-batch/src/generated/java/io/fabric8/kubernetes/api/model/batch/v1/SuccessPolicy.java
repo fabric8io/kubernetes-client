@@ -112,6 +112,7 @@ public class SuccessPolicy implements Editable<SuccessPolicyBuilder>, Kubernetes
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

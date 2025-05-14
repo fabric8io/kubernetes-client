@@ -183,6 +183,7 @@ public class ConfigurationList implements Editable<ConfigurationListBuilder>, Ku
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -183,6 +183,7 @@ public class AuthorizationPolicyList implements Editable<AuthorizationPolicyList
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

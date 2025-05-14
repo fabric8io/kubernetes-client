@@ -105,6 +105,7 @@ public class OAuthAPIServerStatus implements Editable<OAuthAPIServerStatusBuilde
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

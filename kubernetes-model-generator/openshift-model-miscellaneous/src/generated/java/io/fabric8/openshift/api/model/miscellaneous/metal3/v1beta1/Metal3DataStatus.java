@@ -128,6 +128,7 @@ public class Metal3DataStatus implements Editable<Metal3DataStatusBuilder>, Kube
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -112,6 +112,7 @@ public class PrometheusRuleSpec implements Editable<PrometheusRuleSpecBuilder>, 
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

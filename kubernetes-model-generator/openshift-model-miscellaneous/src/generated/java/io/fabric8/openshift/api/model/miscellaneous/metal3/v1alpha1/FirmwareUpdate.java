@@ -128,6 +128,7 @@ public class FirmwareUpdate implements Editable<FirmwareUpdateBuilder>, Kubernet
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

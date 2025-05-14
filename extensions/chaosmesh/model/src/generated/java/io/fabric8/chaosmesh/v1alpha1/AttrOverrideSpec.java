@@ -328,6 +328,7 @@ public class AttrOverrideSpec implements Editable<AttrOverrideSpecBuilder>, Kube
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

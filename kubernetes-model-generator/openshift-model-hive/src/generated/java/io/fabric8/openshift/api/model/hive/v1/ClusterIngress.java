@@ -209,6 +209,7 @@ public class ClusterIngress implements Editable<ClusterIngressBuilder>, Kubernet
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -254,6 +254,7 @@ public class ServingInfo implements Editable<ServingInfoBuilder>, KubernetesReso
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

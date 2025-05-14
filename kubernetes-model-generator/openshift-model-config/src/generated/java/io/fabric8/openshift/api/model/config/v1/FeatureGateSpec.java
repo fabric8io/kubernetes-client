@@ -119,6 +119,7 @@ public class FeatureGateSpec implements Editable<FeatureGateSpecBuilder>, Kubern
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

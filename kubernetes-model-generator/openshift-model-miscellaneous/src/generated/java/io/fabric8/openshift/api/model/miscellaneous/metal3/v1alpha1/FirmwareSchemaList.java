@@ -183,6 +183,7 @@ public class FirmwareSchemaList implements Editable<FirmwareSchemaListBuilder>, 
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

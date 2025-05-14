@@ -183,6 +183,7 @@ public class ClusterTaskList implements Editable<ClusterTaskListBuilder>, Kubern
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

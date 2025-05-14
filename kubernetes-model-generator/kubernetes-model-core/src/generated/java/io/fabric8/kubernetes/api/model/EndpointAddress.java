@@ -139,6 +139,7 @@ public class EndpointAddress implements Editable<EndpointAddressBuilder>, Kubern
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

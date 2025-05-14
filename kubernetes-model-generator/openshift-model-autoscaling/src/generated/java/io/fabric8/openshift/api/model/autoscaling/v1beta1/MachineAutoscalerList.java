@@ -156,6 +156,7 @@ public class MachineAutoscalerList implements Editable<MachineAutoscalerListBuil
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

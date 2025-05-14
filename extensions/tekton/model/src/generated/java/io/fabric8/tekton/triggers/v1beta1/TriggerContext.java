@@ -145,6 +145,7 @@ public class TriggerContext implements Editable<TriggerContextBuilder>, Kubernet
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

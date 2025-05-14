@@ -128,6 +128,7 @@ public class APIEndpoint implements Editable<APIEndpointBuilder>, KubernetesReso
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

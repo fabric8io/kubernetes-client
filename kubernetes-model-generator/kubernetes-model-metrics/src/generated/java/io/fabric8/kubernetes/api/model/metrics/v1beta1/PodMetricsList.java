@@ -156,6 +156,7 @@ public class PodMetricsList implements Editable<PodMetricsListBuilder>, Kubernet
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

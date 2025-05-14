@@ -83,6 +83,7 @@ public class APIServiceStatus implements Editable<APIServiceStatusBuilder>, Kube
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -208,6 +208,7 @@ public class ClusterProvisionCondition implements Editable<ClusterProvisionCondi
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

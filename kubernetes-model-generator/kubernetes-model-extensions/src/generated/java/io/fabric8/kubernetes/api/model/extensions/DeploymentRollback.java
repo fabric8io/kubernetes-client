@@ -190,6 +190,7 @@ public class DeploymentRollback implements Editable<DeploymentRollbackBuilder>, 
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

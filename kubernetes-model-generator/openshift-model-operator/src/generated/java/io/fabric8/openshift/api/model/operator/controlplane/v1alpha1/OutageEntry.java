@@ -194,6 +194,7 @@ public class OutageEntry implements Editable<OutageEntryBuilder>, KubernetesReso
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

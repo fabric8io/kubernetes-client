@@ -128,6 +128,7 @@ public class GCPGPUConfig implements Editable<GCPGPUConfigBuilder>, KubernetesRe
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

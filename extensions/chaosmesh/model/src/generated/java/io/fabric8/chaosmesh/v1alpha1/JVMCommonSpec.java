@@ -128,6 +128,7 @@ public class JVMCommonSpec implements Editable<JVMCommonSpecBuilder>, Kubernetes
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -184,6 +184,7 @@ public class PodMetrics implements Editable<PodMetricsBuilder>, HasMetadata, Nam
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

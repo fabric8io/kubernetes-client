@@ -179,6 +179,7 @@ public class ServicePort implements Editable<ServicePortBuilder>, KubernetesReso
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

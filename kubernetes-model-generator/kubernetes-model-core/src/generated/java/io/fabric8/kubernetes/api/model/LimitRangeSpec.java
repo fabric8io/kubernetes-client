@@ -83,6 +83,7 @@ public class LimitRangeSpec implements Editable<LimitRangeSpecBuilder>, Kubernet
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

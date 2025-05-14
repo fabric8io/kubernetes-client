@@ -234,6 +234,7 @@ public class SourceBuildStrategy implements Editable<SourceBuildStrategyBuilder>
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

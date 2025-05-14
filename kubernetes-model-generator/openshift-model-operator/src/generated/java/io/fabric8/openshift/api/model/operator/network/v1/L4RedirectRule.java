@@ -168,6 +168,7 @@ public class L4RedirectRule implements Editable<L4RedirectRuleBuilder>, Kubernet
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

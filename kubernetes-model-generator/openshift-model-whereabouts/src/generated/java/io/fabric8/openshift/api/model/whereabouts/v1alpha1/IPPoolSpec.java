@@ -130,6 +130,7 @@ public class IPPoolSpec implements Editable<IPPoolSpecBuilder>, KubernetesResour
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -198,6 +198,7 @@ public class ReplicaSet implements Editable<ReplicaSetBuilder>, HasMetadata, Nam
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

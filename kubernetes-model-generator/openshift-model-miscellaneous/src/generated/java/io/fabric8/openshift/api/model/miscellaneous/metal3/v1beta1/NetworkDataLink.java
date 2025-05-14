@@ -156,6 +156,7 @@ public class NetworkDataLink implements Editable<NetworkDataLinkBuilder>, Kubern
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

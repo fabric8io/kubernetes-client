@@ -154,6 +154,7 @@ public class DeveloperConsoleCatalogTypes implements Editable<DeveloperConsoleCa
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -145,6 +145,7 @@ public class FeaturesMigration implements Editable<FeaturesMigrationBuilder>, Ku
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

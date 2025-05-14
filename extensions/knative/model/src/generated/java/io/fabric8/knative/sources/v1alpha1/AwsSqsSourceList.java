@@ -183,6 +183,7 @@ public class AwsSqsSourceList implements Editable<AwsSqsSourceListBuilder>, Kube
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

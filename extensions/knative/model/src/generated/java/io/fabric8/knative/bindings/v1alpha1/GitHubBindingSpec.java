@@ -129,6 +129,7 @@ public class GitHubBindingSpec implements Editable<GitHubBindingSpecBuilder>, Ku
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -145,6 +145,7 @@ public class NetworkDNSSpec implements Editable<NetworkDNSSpecBuilder>, Kubernet
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

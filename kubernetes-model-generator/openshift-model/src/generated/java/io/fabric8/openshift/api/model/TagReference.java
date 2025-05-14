@@ -230,6 +230,7 @@ public class TagReference implements Editable<TagReferenceBuilder>, KubernetesRe
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

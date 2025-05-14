@@ -148,6 +148,7 @@ public class HTTPIngressPath implements Editable<HTTPIngressPathBuilder>, Kubern
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

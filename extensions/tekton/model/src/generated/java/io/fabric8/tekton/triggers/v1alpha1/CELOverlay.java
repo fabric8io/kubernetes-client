@@ -128,6 +128,7 @@ public class CELOverlay implements Editable<CELOverlayBuilder>, KubernetesResour
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

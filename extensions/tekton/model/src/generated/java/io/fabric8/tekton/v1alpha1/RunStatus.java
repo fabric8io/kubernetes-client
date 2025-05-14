@@ -261,6 +261,7 @@ public class RunStatus implements Editable<RunStatusBuilder>, KubernetesResource
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

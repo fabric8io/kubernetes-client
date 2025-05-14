@@ -193,6 +193,7 @@ public class ACMEChallengeSolverHTTP01Ingress implements Editable<ACMEChallengeS
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

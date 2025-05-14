@@ -85,6 +85,7 @@ public class MachineDeletionStatus implements Editable<MachineDeletionStatusBuil
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

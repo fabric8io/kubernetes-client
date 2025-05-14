@@ -108,6 +108,7 @@ public class OpenStackLoadBalancerParameters implements Editable<OpenStackLoadBa
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

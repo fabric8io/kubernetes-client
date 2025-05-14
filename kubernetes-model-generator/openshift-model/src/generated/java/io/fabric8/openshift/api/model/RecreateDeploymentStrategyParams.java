@@ -168,6 +168,7 @@ public class RecreateDeploymentStrategyParams implements Editable<RecreateDeploy
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

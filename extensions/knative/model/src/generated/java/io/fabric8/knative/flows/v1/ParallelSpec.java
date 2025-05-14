@@ -139,6 +139,7 @@ public class ParallelSpec implements Editable<ParallelSpecBuilder>, KubernetesRe
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

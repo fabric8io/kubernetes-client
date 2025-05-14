@@ -332,6 +332,7 @@ public class MetaData implements Editable<MetaDataBuilder>, KubernetesResource
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

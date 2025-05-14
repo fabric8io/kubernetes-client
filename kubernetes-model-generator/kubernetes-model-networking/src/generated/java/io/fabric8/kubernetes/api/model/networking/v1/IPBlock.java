@@ -132,6 +132,7 @@ public class IPBlock implements Editable<IPBlockBuilder>, KubernetesResource
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

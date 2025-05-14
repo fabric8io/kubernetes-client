@@ -211,6 +211,7 @@ public class ServiceCatalogAPIServerStatus implements Editable<ServiceCatalogAPI
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

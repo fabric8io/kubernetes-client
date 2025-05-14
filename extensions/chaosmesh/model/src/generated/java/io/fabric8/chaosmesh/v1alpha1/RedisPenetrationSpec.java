@@ -145,6 +145,7 @@ public class RedisPenetrationSpec implements Editable<RedisPenetrationSpecBuilde
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

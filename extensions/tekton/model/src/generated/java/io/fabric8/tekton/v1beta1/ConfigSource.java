@@ -150,6 +150,7 @@ public class ConfigSource implements Editable<ConfigSourceBuilder>, KubernetesRe
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

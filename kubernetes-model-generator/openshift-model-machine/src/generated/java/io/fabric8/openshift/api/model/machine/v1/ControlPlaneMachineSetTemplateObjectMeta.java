@@ -132,6 +132,7 @@ public class ControlPlaneMachineSetTemplateObjectMeta implements Editable<Contro
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

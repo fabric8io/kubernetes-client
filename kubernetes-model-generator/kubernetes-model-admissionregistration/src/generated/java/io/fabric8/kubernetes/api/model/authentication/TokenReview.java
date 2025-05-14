@@ -197,6 +197,7 @@ public class TokenReview implements Editable<TokenReviewBuilder>, HasMetadata
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

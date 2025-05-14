@@ -149,6 +149,7 @@ public class PodsMetricStatus implements Editable<PodsMetricStatusBuilder>, Kube
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

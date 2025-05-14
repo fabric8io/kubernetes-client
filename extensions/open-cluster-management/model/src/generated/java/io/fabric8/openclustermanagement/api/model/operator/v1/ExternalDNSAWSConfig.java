@@ -108,6 +108,7 @@ public class ExternalDNSAWSConfig implements Editable<ExternalDNSAWSConfigBuilde
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

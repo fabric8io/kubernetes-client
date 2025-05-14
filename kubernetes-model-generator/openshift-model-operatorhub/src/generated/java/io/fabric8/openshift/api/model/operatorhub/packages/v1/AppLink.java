@@ -128,6 +128,7 @@ public class AppLink implements Editable<AppLinkBuilder>, KubernetesResource
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

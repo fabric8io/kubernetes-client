@@ -128,6 +128,7 @@ public class MTUMigrationValues implements Editable<MTUMigrationValuesBuilder>, 
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

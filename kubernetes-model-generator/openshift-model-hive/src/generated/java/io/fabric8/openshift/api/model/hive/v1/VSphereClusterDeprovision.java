@@ -148,6 +148,7 @@ public class VSphereClusterDeprovision implements Editable<VSphereClusterDeprovi
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

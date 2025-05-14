@@ -248,6 +248,7 @@ public class DataDiskProperties implements Editable<DataDiskPropertiesBuilder>, 
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

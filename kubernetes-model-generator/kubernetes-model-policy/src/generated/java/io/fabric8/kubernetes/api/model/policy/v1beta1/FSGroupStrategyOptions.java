@@ -132,6 +132,7 @@ public class FSGroupStrategyOptions implements Editable<FSGroupStrategyOptionsBu
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -134,6 +134,7 @@ public class RouteHTTPHeaderActions implements Editable<RouteHTTPHeaderActionsBu
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

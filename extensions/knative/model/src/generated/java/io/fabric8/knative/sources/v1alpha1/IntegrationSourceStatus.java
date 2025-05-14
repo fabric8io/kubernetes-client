@@ -259,6 +259,7 @@ public class IntegrationSourceStatus implements Editable<IntegrationSourceStatus
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -192,6 +192,7 @@ public class ConfigMap implements Editable<ConfigMapBuilder>, HasMetadata, Names
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

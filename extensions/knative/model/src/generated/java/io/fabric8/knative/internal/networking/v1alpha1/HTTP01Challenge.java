@@ -168,6 +168,7 @@ public class HTTP01Challenge implements Editable<HTTP01ChallengeBuilder>, Kubern
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

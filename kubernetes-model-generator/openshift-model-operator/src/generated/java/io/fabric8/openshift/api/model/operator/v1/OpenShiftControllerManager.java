@@ -197,6 +197,7 @@ public class OpenShiftControllerManager implements Editable<OpenShiftControllerM
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

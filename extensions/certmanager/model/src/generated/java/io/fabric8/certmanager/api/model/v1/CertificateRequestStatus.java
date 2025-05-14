@@ -172,6 +172,7 @@ public class CertificateRequestStatus implements Editable<CertificateRequestStat
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

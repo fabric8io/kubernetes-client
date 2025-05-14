@@ -108,6 +108,7 @@ public class NamedResourcesAllocationResult implements Editable<NamedResourcesAl
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

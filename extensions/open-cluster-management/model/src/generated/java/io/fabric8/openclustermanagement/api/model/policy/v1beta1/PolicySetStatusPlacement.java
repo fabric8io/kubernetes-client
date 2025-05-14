@@ -148,6 +148,7 @@ public class PolicySetStatusPlacement implements Editable<PolicySetStatusPlaceme
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

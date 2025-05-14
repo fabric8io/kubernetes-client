@@ -128,6 +128,7 @@ public class HubApiServerHostAlias implements Editable<HubApiServerHostAliasBuil
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

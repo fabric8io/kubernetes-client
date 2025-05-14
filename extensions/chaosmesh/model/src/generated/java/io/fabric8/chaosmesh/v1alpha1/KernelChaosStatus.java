@@ -132,6 +132,7 @@ public class KernelChaosStatus implements Editable<KernelChaosStatusBuilder>, Ku
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

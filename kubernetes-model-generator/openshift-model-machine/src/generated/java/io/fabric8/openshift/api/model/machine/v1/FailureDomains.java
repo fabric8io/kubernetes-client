@@ -242,6 +242,7 @@ public class FailureDomains implements Editable<FailureDomainsBuilder>, Kubernet
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

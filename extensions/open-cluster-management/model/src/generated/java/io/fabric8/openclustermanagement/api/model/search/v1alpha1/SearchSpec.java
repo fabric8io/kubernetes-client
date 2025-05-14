@@ -275,6 +275,7 @@ public class SearchSpec implements Editable<SearchSpecBuilder>, KubernetesResour
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

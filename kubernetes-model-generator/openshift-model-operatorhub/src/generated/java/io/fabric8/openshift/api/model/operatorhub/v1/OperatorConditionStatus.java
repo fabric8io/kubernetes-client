@@ -113,6 +113,7 @@ public class OperatorConditionStatus implements Editable<OperatorConditionStatus
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

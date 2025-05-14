@@ -532,6 +532,7 @@ public class JVMChaosSpec implements Editable<JVMChaosSpecBuilder>, KubernetesRe
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

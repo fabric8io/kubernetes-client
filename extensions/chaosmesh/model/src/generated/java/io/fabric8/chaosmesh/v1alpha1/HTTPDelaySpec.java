@@ -229,6 +229,7 @@ public class HTTPDelaySpec implements Editable<HTTPDelaySpecBuilder>, Kubernetes
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

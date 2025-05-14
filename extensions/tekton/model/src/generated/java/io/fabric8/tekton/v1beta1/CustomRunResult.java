@@ -128,6 +128,7 @@ public class CustomRunResult implements Editable<CustomRunResultBuilder>, Kubern
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

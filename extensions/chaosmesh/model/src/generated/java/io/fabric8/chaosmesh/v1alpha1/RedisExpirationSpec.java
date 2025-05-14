@@ -185,6 +185,7 @@ public class RedisExpirationSpec implements Editable<RedisExpirationSpecBuilder>
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

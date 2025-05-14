@@ -128,6 +128,7 @@ public class BlockDeviceVolume implements Editable<BlockDeviceVolumeBuilder>, Ku
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

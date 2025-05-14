@@ -132,6 +132,7 @@ public class ResourceClaimSchedulingStatus implements Editable<ResourceClaimSche
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

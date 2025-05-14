@@ -125,6 +125,7 @@ public class ResourceQuotaSpec implements Editable<ResourceQuotaSpecBuilder>, Ku
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

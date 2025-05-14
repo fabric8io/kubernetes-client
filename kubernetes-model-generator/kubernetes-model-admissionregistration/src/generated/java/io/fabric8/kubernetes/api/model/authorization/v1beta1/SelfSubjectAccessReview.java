@@ -197,6 +197,7 @@ public class SelfSubjectAccessReview implements Editable<SelfSubjectAccessReview
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

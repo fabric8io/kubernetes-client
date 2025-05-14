@@ -255,6 +255,7 @@ public class ResourceSliceSpec implements Editable<ResourceSliceSpecBuilder>, Ku
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

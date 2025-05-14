@@ -400,6 +400,7 @@ public class TaskRunSpec implements Editable<TaskRunSpecBuilder>, KubernetesReso
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

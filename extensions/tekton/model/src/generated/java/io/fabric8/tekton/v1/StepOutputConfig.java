@@ -108,6 +108,7 @@ public class StepOutputConfig implements Editable<StepOutputConfigBuilder>, Kube
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

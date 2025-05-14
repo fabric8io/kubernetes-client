@@ -112,6 +112,7 @@ public class AlertingRuleSpec implements Editable<AlertingRuleSpecBuilder>, Kube
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

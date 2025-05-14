@@ -145,6 +145,7 @@ public class TrafficPolicyTunnelSettings implements Editable<TrafficPolicyTunnel
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

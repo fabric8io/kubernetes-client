@@ -183,6 +183,7 @@ public class KafkaSinkList implements Editable<KafkaSinkListBuilder>, Kubernetes
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

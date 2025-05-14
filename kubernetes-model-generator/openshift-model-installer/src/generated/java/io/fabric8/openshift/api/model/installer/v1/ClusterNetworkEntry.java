@@ -148,6 +148,7 @@ public class ClusterNetworkEntry implements Editable<ClusterNetworkEntryBuilder>
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

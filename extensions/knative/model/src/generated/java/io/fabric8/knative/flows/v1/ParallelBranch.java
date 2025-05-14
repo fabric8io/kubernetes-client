@@ -143,6 +143,7 @@ public class ParallelBranch implements Editable<ParallelBranchBuilder>, Kubernet
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

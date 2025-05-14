@@ -98,6 +98,7 @@ public class StatusCause implements Editable<StatusCauseBuilder>, KubernetesReso
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

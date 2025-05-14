@@ -152,6 +152,7 @@ public class GatherStatus implements Editable<GatherStatusBuilder>, KubernetesRe
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

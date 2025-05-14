@@ -128,6 +128,7 @@ public class StorageStateSpecResource implements Editable<StorageStateSpecResour
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

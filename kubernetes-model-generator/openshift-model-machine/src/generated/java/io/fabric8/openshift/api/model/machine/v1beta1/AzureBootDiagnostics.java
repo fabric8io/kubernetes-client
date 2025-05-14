@@ -128,6 +128,7 @@ public class AzureBootDiagnostics implements Editable<AzureBootDiagnosticsBuilde
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

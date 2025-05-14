@@ -152,6 +152,7 @@ public class DeviceAllocationConfiguration implements Editable<DeviceAllocationC
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

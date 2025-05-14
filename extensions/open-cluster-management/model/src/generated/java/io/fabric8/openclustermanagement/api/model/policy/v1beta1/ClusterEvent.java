@@ -128,6 +128,7 @@ public class ClusterEvent implements Editable<ClusterEventBuilder>, KubernetesRe
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

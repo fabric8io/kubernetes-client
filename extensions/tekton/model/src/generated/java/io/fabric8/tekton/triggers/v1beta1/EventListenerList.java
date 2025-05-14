@@ -183,6 +183,7 @@ public class EventListenerList implements Editable<EventListenerListBuilder>, Ku
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

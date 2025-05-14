@@ -183,6 +183,7 @@ public class StatefulSetList implements Editable<StatefulSetListBuilder>, Kubern
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

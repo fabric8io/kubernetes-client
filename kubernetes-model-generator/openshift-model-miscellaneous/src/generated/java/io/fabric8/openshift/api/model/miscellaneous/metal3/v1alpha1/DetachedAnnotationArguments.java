@@ -105,6 +105,7 @@ public class DetachedAnnotationArguments implements Editable<DetachedAnnotationA
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -128,6 +128,7 @@ public class CertInfo implements Editable<CertInfoBuilder>, KubernetesResource
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

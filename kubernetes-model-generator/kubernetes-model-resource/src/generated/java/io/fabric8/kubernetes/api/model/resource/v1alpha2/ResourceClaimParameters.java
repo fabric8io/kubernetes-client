@@ -222,6 +222,7 @@ public class ResourceClaimParameters implements Editable<ResourceClaimParameters
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

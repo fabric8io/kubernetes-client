@@ -128,6 +128,7 @@ public class ScaleStatus implements Editable<ScaleStatusBuilder>, KubernetesReso
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -139,6 +139,7 @@ public class CreateOptions implements Editable<CreateOptionsBuilder>, Kubernetes
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

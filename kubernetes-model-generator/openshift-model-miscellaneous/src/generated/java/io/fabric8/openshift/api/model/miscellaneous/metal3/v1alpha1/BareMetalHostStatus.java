@@ -328,6 +328,7 @@ public class BareMetalHostStatus implements Editable<BareMetalHostStatusBuilder>
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

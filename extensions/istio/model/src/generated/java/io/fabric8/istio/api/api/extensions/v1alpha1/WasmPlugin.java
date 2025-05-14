@@ -428,6 +428,7 @@ public class WasmPlugin implements Editable<WasmPluginBuilder>, KubernetesResour
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

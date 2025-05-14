@@ -132,6 +132,7 @@ public class RunAsUserStrategyOptions implements Editable<RunAsUserStrategyOptio
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

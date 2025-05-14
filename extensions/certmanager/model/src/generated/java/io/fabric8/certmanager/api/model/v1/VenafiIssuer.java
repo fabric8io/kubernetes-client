@@ -148,6 +148,7 @@ public class VenafiIssuer implements Editable<VenafiIssuerBuilder>, KubernetesRe
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -256,6 +256,7 @@ public class StaticPodOperatorStatus implements Editable<StaticPodOperatorStatus
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -228,6 +228,7 @@ public class SlackAction implements Editable<SlackActionBuilder>, KubernetesReso
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

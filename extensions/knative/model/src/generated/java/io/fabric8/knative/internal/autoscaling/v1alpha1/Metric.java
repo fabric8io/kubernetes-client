@@ -198,6 +198,7 @@ public class Metric implements Editable<MetricBuilder>, HasMetadata, Namespaced
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

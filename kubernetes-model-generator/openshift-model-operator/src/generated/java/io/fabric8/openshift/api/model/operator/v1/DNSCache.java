@@ -128,6 +128,7 @@ public class DNSCache implements Editable<DNSCacheBuilder>, KubernetesResource
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

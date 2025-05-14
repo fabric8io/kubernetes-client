@@ -108,6 +108,7 @@ public class DeviceSelector implements Editable<DeviceSelectorBuilder>, Kubernet
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

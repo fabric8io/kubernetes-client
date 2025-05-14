@@ -78,6 +78,7 @@ public class AlibabaCloudPlatformSpec implements Editable<AlibabaCloudPlatformSp
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

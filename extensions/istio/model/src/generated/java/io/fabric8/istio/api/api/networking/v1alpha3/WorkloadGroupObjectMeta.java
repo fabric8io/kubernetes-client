@@ -132,6 +132,7 @@ public class WorkloadGroupObjectMeta implements Editable<WorkloadGroupObjectMeta
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

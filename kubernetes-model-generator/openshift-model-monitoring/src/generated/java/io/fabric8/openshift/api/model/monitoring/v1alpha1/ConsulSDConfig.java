@@ -583,6 +583,7 @@ public class ConsulSDConfig implements Editable<ConsulSDConfigBuilder>, Kubernet
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

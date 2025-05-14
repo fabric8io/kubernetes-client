@@ -358,6 +358,7 @@ public class BuildLogOptions implements Editable<BuildLogOptionsBuilder>, Kubern
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

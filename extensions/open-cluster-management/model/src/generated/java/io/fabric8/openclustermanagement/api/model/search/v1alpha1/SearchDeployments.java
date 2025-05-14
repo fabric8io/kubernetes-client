@@ -141,6 +141,7 @@ public class SearchDeployments implements Editable<SearchDeploymentsBuilder>, Ku
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

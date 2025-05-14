@@ -171,6 +171,7 @@ public class EmbeddedRunSpec implements Editable<EmbeddedRunSpecBuilder>, Kubern
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

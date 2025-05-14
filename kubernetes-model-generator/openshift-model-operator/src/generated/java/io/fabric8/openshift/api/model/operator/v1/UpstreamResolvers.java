@@ -172,6 +172,7 @@ public class UpstreamResolvers implements Editable<UpstreamResolversBuilder>, Ku
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

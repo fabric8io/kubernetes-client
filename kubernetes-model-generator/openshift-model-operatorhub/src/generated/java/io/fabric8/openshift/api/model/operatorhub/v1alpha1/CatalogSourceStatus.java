@@ -206,6 +206,7 @@ public class CatalogSourceStatus implements Editable<CatalogSourceStatusBuilder>
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

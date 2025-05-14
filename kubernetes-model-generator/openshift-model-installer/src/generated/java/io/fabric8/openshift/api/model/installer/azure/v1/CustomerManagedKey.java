@@ -128,6 +128,7 @@ public class CustomerManagedKey implements Editable<CustomerManagedKeyBuilder>, 
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -113,6 +113,7 @@ public class OLMConfigStatus implements Editable<OLMConfigStatusBuilder>, Kubern
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

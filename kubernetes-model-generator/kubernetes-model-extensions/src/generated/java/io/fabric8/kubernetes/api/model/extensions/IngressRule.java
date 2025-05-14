@@ -128,6 +128,7 @@ public class IngressRule implements Editable<IngressRuleBuilder>, KubernetesReso
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

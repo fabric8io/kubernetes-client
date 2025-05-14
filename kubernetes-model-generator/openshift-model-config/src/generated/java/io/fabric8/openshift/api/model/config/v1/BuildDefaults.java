@@ -173,6 +173,7 @@ public class BuildDefaults implements Editable<BuildDefaultsBuilder>, Kubernetes
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

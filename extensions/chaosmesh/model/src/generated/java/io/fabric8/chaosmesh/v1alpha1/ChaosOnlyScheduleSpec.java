@@ -468,6 +468,7 @@ public class ChaosOnlyScheduleSpec implements Editable<ChaosOnlyScheduleSpecBuil
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -129,6 +129,7 @@ public class ResourceQuotaStatusByNamespace implements Editable<ResourceQuotaSta
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

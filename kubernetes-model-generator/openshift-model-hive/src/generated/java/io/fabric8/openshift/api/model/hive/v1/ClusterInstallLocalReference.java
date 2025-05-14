@@ -168,6 +168,7 @@ public class ClusterInstallLocalReference implements Editable<ClusterInstallLoca
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -148,6 +148,7 @@ public class ImageRegistryConfigRoute implements Editable<ImageRegistryConfigRou
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

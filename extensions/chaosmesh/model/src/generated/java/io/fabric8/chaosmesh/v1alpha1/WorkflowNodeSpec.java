@@ -447,6 +447,7 @@ public class WorkflowNodeSpec implements Editable<WorkflowNodeSpecBuilder>, Kube
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

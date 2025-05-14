@@ -172,6 +172,7 @@ public class ClusterPoolStatus implements Editable<ClusterPoolStatusBuilder>, Ku
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

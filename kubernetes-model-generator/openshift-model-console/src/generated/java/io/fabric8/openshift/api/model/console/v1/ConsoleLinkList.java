@@ -183,6 +183,7 @@ public class ConsoleLinkList implements Editable<ConsoleLinkListBuilder>, Kubern
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

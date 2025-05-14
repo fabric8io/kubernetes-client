@@ -293,6 +293,7 @@ public class ACMEIssuer implements Editable<ACMEIssuerBuilder>, KubernetesResour
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

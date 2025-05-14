@@ -148,6 +148,7 @@ public class ACMEChallenge implements Editable<ACMEChallengeBuilder>, Kubernetes
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

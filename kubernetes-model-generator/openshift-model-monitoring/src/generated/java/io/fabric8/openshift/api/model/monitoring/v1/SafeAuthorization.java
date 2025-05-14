@@ -129,6 +129,7 @@ public class SafeAuthorization implements Editable<SafeAuthorizationBuilder>, Ku
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -172,6 +172,7 @@ public class AlibabaResourceReference implements Editable<AlibabaResourceReferen
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

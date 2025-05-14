@@ -108,6 +108,7 @@ public class TracingTracingSelector implements Editable<TracingTracingSelectorBu
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

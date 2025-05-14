@@ -183,6 +183,7 @@ public class TriggerBindingList implements Editable<TriggerBindingListBuilder>, 
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

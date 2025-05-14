@@ -128,6 +128,7 @@ public class IPAMConfig implements Editable<IPAMConfigBuilder>, KubernetesResour
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

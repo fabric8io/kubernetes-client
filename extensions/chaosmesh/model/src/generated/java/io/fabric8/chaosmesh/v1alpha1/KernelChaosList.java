@@ -183,6 +183,7 @@ public class KernelChaosList implements Editable<KernelChaosListBuilder>, Kubern
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

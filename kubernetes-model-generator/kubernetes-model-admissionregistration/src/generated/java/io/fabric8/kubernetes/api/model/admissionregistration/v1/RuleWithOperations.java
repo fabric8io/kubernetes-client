@@ -198,6 +198,7 @@ public class RuleWithOperations implements Editable<RuleWithOperationsBuilder>, 
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

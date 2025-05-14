@@ -252,6 +252,7 @@ public class SettingSchema implements Editable<SettingSchemaBuilder>, Kubernetes
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

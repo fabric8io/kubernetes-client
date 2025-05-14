@@ -214,6 +214,7 @@ public class ClusterCSIDriverStatus implements Editable<ClusterCSIDriverStatusBu
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

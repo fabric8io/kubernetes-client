@@ -198,6 +198,7 @@ public class HTTPRoute implements Editable<HTTPRouteBuilder>, HasMetadata, Names
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

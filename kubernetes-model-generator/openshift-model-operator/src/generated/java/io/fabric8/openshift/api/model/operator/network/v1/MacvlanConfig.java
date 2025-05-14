@@ -128,6 +128,7 @@ public class MacvlanConfig implements Editable<MacvlanConfigBuilder>, Kubernetes
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

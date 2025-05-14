@@ -128,6 +128,7 @@ public class CertificateKeystores implements Editable<CertificateKeystoresBuilde
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

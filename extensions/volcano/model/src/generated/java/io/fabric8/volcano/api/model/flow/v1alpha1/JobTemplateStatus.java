@@ -112,6 +112,7 @@ public class JobTemplateStatus implements Editable<JobTemplateStatusBuilder>, Ku
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

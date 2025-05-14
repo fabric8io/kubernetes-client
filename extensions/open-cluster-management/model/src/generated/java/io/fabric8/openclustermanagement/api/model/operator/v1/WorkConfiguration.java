@@ -129,6 +129,7 @@ public class WorkConfiguration implements Editable<WorkConfigurationBuilder>, Ku
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

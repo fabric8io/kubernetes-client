@@ -108,6 +108,7 @@ public class PrometheusRuleRef implements Editable<PrometheusRuleRefBuilder>, Ku
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

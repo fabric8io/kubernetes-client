@@ -192,6 +192,7 @@ public class ProxySpec implements Editable<ProxySpecBuilder>, KubernetesResource
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -108,6 +108,7 @@ public class ScaleSpec implements Editable<ScaleSpecBuilder>, KubernetesResource
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

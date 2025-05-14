@@ -200,6 +200,7 @@ public class TimeInterval implements Editable<TimeIntervalBuilder>, KubernetesRe
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

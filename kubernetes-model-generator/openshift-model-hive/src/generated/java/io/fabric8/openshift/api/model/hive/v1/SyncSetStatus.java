@@ -78,6 +78,7 @@ public class SyncSetStatus implements Editable<SyncSetStatusBuilder>, Kubernetes
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

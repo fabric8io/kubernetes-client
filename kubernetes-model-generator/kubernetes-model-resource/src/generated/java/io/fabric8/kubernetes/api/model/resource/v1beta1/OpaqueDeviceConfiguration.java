@@ -130,6 +130,7 @@ public class OpaqueDeviceConfiguration implements Editable<OpaqueDeviceConfigura
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

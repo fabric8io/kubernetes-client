@@ -189,6 +189,7 @@ public class ObjectMetricSource implements Editable<ObjectMetricSourceBuilder>, 
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

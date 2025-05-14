@@ -108,6 +108,7 @@ public class PlatformLogsSpec implements Editable<PlatformLogsSpecBuilder>, Kube
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

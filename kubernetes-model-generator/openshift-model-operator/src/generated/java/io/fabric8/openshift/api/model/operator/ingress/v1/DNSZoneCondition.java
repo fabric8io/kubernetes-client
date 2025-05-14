@@ -188,6 +188,7 @@ public class DNSZoneCondition implements Editable<DNSZoneConditionBuilder>, Kube
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -278,6 +278,7 @@ public class CRDDescription implements Editable<CRDDescriptionBuilder>, Kubernet
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -103,6 +103,7 @@ public class VolumeResourceRequirements implements Editable<VolumeResourceRequir
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

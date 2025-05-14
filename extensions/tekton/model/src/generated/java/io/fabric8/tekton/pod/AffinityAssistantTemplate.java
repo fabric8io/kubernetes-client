@@ -198,6 +198,7 @@ public class AffinityAssistantTemplate implements Editable<AffinityAssistantTemp
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

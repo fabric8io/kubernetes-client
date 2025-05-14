@@ -148,6 +148,7 @@ public class GCPResourceTag implements Editable<GCPResourceTagBuilder>, Kubernet
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

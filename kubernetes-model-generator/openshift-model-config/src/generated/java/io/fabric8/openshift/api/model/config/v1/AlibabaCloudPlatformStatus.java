@@ -152,6 +152,7 @@ public class AlibabaCloudPlatformStatus implements Editable<AlibabaCloudPlatform
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

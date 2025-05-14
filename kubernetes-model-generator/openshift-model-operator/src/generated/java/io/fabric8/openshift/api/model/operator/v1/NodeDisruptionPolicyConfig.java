@@ -154,6 +154,7 @@ public class NodeDisruptionPolicyConfig implements Editable<NodeDisruptionPolicy
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

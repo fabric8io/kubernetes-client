@@ -99,6 +99,7 @@ public class EmptyDirVolumeSource implements Editable<EmptyDirVolumeSourceBuilde
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

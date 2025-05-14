@@ -175,6 +175,7 @@ public class ServiceEntryStatus implements Editable<ServiceEntryStatusBuilder>, 
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

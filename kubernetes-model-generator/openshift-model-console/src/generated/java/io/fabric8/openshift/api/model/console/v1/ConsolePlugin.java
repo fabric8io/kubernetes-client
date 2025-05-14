@@ -177,6 +177,7 @@ public class ConsolePlugin implements Editable<ConsolePluginBuilder>, HasMetadat
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

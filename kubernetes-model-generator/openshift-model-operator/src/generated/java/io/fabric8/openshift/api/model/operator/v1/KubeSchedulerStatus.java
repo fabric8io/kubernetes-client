@@ -253,6 +253,7 @@ public class KubeSchedulerStatus implements Editable<KubeSchedulerStatusBuilder>
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -128,6 +128,7 @@ public class PrismEndpoint implements Editable<PrismEndpointBuilder>, Kubernetes
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

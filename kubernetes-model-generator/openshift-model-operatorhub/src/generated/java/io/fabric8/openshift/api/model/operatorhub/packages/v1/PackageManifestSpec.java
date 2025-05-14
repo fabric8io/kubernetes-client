@@ -78,6 +78,7 @@ public class PackageManifestSpec implements Editable<PackageManifestSpecBuilder>
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -183,6 +183,7 @@ public class OLMConfigList implements Editable<OLMConfigListBuilder>, Kubernetes
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

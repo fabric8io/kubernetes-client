@@ -175,6 +175,7 @@ public class MachineConfigNodeStatus implements Editable<MachineConfigNodeStatus
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

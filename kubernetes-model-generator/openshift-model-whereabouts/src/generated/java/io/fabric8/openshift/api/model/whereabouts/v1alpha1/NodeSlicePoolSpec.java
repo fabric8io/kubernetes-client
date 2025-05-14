@@ -128,6 +128,7 @@ public class NodeSlicePoolSpec implements Editable<NodeSlicePoolSpecBuilder>, Ku
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

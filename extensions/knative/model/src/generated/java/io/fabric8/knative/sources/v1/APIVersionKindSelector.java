@@ -148,6 +148,7 @@ public class APIVersionKindSelector implements Editable<APIVersionKindSelectorBu
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

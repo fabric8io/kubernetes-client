@@ -99,6 +99,7 @@ public class ServerAddressByClientCIDR implements Editable<ServerAddressByClient
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

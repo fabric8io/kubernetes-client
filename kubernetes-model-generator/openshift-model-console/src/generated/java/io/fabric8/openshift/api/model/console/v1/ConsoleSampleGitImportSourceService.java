@@ -108,6 +108,7 @@ public class ConsoleSampleGitImportSourceService implements Editable<ConsoleSamp
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

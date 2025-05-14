@@ -132,6 +132,7 @@ public class FileSDConfig implements Editable<FileSDConfigBuilder>, KubernetesRe
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

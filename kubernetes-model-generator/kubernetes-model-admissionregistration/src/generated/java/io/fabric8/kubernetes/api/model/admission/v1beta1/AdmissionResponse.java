@@ -190,6 +190,7 @@ public class AdmissionResponse implements Editable<AdmissionResponseBuilder>, Ku
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

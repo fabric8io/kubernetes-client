@@ -129,6 +129,7 @@ public class VenafiCloud implements Editable<VenafiCloudBuilder>, KubernetesReso
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

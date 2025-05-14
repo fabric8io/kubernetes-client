@@ -259,6 +259,7 @@ public class StatusCheckSpec implements Editable<StatusCheckSpecBuilder>, Kubern
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

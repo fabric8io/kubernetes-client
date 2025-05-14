@@ -125,6 +125,7 @@ public class FileModifyPrivilegeSpec implements Editable<FileModifyPrivilegeSpec
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

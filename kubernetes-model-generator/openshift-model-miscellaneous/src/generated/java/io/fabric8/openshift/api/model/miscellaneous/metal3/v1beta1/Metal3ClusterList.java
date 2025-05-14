@@ -183,6 +183,7 @@ public class Metal3ClusterList implements Editable<Metal3ClusterListBuilder>, Ku
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

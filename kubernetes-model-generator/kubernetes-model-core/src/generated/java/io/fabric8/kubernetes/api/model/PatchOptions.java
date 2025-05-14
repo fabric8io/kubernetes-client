@@ -153,6 +153,7 @@ public class PatchOptions implements Editable<PatchOptionsBuilder>, KubernetesRe
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

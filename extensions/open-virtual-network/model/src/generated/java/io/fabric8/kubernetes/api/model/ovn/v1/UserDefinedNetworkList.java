@@ -183,6 +183,7 @@ public class UserDefinedNetworkList implements Editable<UserDefinedNetworkListBu
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

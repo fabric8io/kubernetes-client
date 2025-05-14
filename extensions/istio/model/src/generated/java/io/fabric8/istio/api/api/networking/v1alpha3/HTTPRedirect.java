@@ -191,6 +191,7 @@ public class HTTPRedirect implements Editable<HTTPRedirectBuilder>, KubernetesRe
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

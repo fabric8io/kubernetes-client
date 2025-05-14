@@ -153,6 +153,7 @@ public class PodIOChaosStatus implements Editable<PodIOChaosStatusBuilder>, Kube
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

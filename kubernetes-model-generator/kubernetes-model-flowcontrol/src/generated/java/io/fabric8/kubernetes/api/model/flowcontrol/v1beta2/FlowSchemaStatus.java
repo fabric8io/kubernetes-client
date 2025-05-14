@@ -112,6 +112,7 @@ public class FlowSchemaStatus implements Editable<FlowSchemaStatusBuilder>, Kube
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

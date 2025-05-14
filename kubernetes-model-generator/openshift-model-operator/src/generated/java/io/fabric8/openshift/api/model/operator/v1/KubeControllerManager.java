@@ -197,6 +197,7 @@ public class KubeControllerManager implements Editable<KubeControllerManagerBuil
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

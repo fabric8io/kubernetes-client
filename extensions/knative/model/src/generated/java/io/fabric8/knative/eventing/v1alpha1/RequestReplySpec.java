@@ -175,6 +175,7 @@ public class RequestReplySpec implements Editable<RequestReplySpecBuilder>, Kube
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

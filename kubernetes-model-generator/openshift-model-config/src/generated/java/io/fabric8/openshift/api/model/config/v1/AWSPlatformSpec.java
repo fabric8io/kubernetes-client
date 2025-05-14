@@ -112,6 +112,7 @@ public class AWSPlatformSpec implements Editable<AWSPlatformSpecBuilder>, Kubern
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

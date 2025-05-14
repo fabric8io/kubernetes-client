@@ -128,6 +128,7 @@ public class AuditAnnotation implements Editable<AuditAnnotationBuilder>, Kubern
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

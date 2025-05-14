@@ -128,6 +128,7 @@ public class MachineConfigNodeStatusMachineConfigVersion implements Editable<Mac
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

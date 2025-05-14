@@ -128,6 +128,7 @@ public class IBMCloudServiceEndpoint implements Editable<IBMCloudServiceEndpoint
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

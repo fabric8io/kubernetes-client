@@ -168,6 +168,7 @@ public class EnvoyFilterClusterMatch implements Editable<EnvoyFilterClusterMatch
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

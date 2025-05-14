@@ -108,6 +108,7 @@ public class MCOObjectReference implements Editable<MCOObjectReferenceBuilder>, 
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

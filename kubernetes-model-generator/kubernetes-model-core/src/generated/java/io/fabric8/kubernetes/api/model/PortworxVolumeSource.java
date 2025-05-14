@@ -119,6 +119,7 @@ public class PortworxVolumeSource implements Editable<PortworxVolumeSourceBuilde
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

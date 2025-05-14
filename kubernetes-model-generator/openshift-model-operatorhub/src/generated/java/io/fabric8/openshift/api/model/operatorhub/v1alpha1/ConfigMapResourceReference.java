@@ -155,6 +155,7 @@ public class ConfigMapResourceReference implements Editable<ConfigMapResourceRef
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -169,6 +169,7 @@ public class ImageRegistryConfigStorageS3CloudFront implements Editable<ImageReg
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

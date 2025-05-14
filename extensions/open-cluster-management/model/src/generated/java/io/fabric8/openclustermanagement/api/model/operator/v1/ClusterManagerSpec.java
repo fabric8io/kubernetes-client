@@ -288,6 +288,7 @@ public class ClusterManagerSpec implements Editable<ClusterManagerSpecBuilder>, 
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

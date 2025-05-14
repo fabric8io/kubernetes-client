@@ -188,6 +188,7 @@ public class ConnectionPoolSettingsTCPSettings implements Editable<ConnectionPoo
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

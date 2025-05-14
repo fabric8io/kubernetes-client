@@ -198,6 +198,7 @@ public class AzureChaos implements Editable<AzureChaosBuilder>, HasMetadata, Nam
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

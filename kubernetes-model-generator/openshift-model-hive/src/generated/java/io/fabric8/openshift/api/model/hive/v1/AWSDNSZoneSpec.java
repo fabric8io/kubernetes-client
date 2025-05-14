@@ -173,6 +173,7 @@ public class AWSDNSZoneSpec implements Editable<AWSDNSZoneSpecBuilder>, Kubernet
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

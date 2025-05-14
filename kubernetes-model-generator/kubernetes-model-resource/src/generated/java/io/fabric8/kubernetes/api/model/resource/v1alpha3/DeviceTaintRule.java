@@ -177,6 +177,7 @@ public class DeviceTaintRule implements Editable<DeviceTaintRuleBuilder>, HasMet
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

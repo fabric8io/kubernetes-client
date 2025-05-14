@@ -128,6 +128,7 @@ public class ExtractContentConfig implements Editable<ExtractContentConfigBuilde
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

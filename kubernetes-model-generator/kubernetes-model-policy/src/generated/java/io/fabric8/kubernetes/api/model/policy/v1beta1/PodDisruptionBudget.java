@@ -198,6 +198,7 @@ public class PodDisruptionBudget implements Editable<PodDisruptionBudgetBuilder>
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

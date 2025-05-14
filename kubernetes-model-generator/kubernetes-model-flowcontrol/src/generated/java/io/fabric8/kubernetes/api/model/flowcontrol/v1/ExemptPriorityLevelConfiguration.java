@@ -128,6 +128,7 @@ public class ExemptPriorityLevelConfiguration implements Editable<ExemptPriority
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -119,6 +119,7 @@ public class ResourceFieldSelector implements Editable<ResourceFieldSelectorBuil
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

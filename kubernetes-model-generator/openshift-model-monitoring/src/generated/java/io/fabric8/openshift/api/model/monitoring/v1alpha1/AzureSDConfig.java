@@ -269,6 +269,7 @@ public class AzureSDConfig implements Editable<AzureSDConfigBuilder>, Kubernetes
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

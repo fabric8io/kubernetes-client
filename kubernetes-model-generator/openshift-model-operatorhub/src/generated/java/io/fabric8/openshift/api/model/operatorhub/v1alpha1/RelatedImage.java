@@ -113,6 +113,7 @@ public class RelatedImage implements Editable<RelatedImageBuilder>, KubernetesRe
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

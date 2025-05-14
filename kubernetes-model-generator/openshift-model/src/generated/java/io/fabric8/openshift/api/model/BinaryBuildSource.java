@@ -108,6 +108,7 @@ public class BinaryBuildSource implements Editable<BinaryBuildSourceBuilder>, Ku
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

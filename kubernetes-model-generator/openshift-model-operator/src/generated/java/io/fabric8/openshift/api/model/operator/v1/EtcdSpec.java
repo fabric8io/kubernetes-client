@@ -277,6 +277,7 @@ public class EtcdSpec implements Editable<EtcdSpecBuilder>, KubernetesResource
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -183,6 +183,7 @@ public class Metal3MachineList implements Editable<Metal3MachineListBuilder>, Ku
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -382,6 +382,7 @@ public class PowerVSMachineProviderConfig implements Editable<PowerVSMachineProv
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

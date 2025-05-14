@@ -119,6 +119,7 @@ public class KeyToPath implements Editable<KeyToPathBuilder>, KubernetesResource
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

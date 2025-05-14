@@ -128,6 +128,7 @@ public class MaxAgePolicy implements Editable<MaxAgePolicyBuilder>, KubernetesRe
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

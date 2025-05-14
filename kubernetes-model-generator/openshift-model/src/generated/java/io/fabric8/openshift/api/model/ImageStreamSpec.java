@@ -152,6 +152,7 @@ public class ImageStreamSpec implements Editable<ImageStreamSpecBuilder>, Kubern
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

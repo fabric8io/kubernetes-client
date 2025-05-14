@@ -128,6 +128,7 @@ public class UserWorkloadCapabilitiesSpec implements Editable<UserWorkloadCapabi
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

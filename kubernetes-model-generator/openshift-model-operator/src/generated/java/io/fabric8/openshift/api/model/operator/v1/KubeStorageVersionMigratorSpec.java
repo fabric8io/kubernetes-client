@@ -177,6 +177,7 @@ public class KubeStorageVersionMigratorSpec implements Editable<KubeStorageVersi
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

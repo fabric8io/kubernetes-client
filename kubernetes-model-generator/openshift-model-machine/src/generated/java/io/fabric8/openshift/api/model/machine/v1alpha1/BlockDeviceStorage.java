@@ -128,6 +128,7 @@ public class BlockDeviceStorage implements Editable<BlockDeviceStorageBuilder>, 
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

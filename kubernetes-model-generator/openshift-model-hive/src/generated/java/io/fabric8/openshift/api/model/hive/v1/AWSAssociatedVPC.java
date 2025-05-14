@@ -148,6 +148,7 @@ public class AWSAssociatedVPC implements Editable<AWSAssociatedVPCBuilder>, Kube
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

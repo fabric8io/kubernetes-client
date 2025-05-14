@@ -214,6 +214,7 @@ public class PolicySpec implements Editable<PolicySpecBuilder>, KubernetesResour
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

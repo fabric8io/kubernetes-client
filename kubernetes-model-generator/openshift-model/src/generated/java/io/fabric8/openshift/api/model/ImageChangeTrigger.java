@@ -148,6 +148,7 @@ public class ImageChangeTrigger implements Editable<ImageChangeTriggerBuilder>, 
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

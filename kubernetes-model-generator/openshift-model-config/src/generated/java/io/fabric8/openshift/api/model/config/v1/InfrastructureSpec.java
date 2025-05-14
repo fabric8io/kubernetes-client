@@ -128,6 +128,7 @@ public class InfrastructureSpec implements Editable<InfrastructureSpecBuilder>, 
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

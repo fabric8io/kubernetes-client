@@ -108,6 +108,7 @@ public class IBMCloudCSIDriverConfigSpec implements Editable<IBMCloudCSIDriverCo
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -99,6 +99,7 @@ public class AuthorizationPolicyProvider implements IsAuthorizationPolicyActionD
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -148,6 +148,7 @@ public class VaultClientCertificateAuth implements Editable<VaultClientCertifica
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

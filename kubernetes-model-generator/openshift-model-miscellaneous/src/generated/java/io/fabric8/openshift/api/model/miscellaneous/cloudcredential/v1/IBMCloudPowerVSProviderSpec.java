@@ -162,6 +162,7 @@ public class IBMCloudPowerVSProviderSpec implements Editable<IBMCloudPowerVSProv
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

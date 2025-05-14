@@ -178,6 +178,7 @@ public class PlaceableType implements Editable<PlaceableTypeBuilder>, HasMetadat
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

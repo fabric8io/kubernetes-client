@@ -132,6 +132,7 @@ public class PipelineTaskMetadata implements Editable<PipelineTaskMetadataBuilde
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

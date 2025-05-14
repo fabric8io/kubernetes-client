@@ -83,6 +83,7 @@ public class LoadBalancerStatus implements Editable<LoadBalancerStatusBuilder>, 
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

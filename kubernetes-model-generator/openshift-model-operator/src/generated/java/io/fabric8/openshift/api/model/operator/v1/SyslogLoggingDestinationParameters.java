@@ -168,6 +168,7 @@ public class SyslogLoggingDestinationParameters implements Editable<SyslogLoggin
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

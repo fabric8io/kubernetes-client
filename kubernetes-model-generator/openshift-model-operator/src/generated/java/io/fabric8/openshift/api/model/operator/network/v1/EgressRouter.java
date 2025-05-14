@@ -198,6 +198,7 @@ public class EgressRouter implements Editable<EgressRouterBuilder>, HasMetadata,
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

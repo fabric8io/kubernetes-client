@@ -200,6 +200,7 @@ public class ControllerRevision implements Editable<ControllerRevisionBuilder>, 
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

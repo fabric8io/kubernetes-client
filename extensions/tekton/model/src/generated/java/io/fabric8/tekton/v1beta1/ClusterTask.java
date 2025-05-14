@@ -177,6 +177,7 @@ public class ClusterTask implements Editable<ClusterTaskBuilder>, HasMetadata
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

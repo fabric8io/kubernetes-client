@@ -208,6 +208,7 @@ public class CredentialsRequestCondition implements Editable<CredentialsRequestC
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

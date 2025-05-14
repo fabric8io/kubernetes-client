@@ -75,6 +75,7 @@ public class DNSStatus implements Editable<DNSStatusBuilder>, KubernetesResource
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -108,6 +108,7 @@ public class ConsoleSpec implements Editable<ConsoleSpecBuilder>, KubernetesReso
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

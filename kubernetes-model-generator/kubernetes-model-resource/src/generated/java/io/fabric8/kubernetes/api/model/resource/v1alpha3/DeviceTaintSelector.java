@@ -192,6 +192,7 @@ public class DeviceTaintSelector implements Editable<DeviceTaintSelectorBuilder>
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

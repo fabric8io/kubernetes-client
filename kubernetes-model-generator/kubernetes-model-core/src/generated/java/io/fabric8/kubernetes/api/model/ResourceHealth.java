@@ -99,6 +99,7 @@ public class ResourceHealth implements Editable<ResourceHealthBuilder>, Kubernet
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -78,6 +78,7 @@ public class TriggerBindingStatus implements Editable<TriggerBindingStatusBuilde
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

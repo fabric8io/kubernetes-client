@@ -168,6 +168,7 @@ public class KMSKeyReference implements Editable<KMSKeyReferenceBuilder>, Kubern
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

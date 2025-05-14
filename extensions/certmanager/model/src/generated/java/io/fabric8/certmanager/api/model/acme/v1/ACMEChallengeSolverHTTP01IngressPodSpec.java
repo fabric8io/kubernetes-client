@@ -223,6 +223,7 @@ public class ACMEChallengeSolverHTTP01IngressPodSpec implements Editable<ACMECha
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

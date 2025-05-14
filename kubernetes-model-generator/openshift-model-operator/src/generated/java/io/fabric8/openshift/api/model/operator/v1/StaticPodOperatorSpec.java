@@ -252,6 +252,7 @@ public class StaticPodOperatorSpec implements Editable<StaticPodOperatorSpecBuil
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

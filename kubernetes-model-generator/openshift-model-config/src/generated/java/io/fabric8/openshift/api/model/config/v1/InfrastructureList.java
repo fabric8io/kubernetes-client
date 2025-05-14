@@ -183,6 +183,7 @@ public class InfrastructureList implements Editable<InfrastructureListBuilder>, 
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -189,6 +189,7 @@ public class HTTPHealthCheckConfig implements Editable<HTTPHealthCheckConfigBuil
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

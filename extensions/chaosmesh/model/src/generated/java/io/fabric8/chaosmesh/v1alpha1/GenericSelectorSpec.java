@@ -178,6 +178,7 @@ public class GenericSelectorSpec implements Editable<GenericSelectorSpecBuilder>
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

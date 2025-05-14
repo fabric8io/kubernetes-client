@@ -119,6 +119,7 @@ public class ContainerState implements Editable<ContainerStateBuilder>, Kubernet
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -436,6 +436,7 @@ public class ScalewaySDConfig implements Editable<ScalewaySDConfigBuilder>, Kube
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

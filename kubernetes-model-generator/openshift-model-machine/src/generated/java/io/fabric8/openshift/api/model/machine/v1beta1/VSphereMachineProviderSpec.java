@@ -402,6 +402,7 @@ public class VSphereMachineProviderSpec implements Editable<VSphereMachineProvid
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

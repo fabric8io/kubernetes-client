@@ -229,6 +229,7 @@ public class ACMEIssuerDNS01ProviderRoute53 implements Editable<ACMEIssuerDNS01P
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

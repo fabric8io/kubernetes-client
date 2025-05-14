@@ -176,6 +176,7 @@ public class LocalityLoadBalancerSetting implements Editable<LocalityLoadBalance
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

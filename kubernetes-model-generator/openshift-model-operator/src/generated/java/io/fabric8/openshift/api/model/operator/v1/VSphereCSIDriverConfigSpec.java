@@ -172,6 +172,7 @@ public class VSphereCSIDriverConfigSpec implements Editable<VSphereCSIDriverConf
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

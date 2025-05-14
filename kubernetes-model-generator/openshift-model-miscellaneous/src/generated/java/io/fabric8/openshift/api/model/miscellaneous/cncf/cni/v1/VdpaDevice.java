@@ -169,6 +169,7 @@ public class VdpaDevice implements Editable<VdpaDeviceBuilder>, KubernetesResour
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

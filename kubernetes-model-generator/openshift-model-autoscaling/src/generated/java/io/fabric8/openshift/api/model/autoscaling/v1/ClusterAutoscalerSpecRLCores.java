@@ -128,6 +128,7 @@ public class ClusterAutoscalerSpecRLCores implements Editable<ClusterAutoscalerS
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

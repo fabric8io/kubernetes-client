@@ -188,6 +188,7 @@ public class FirmwareComponentStatus implements Editable<FirmwareComponentStatus
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

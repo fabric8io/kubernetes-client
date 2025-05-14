@@ -128,6 +128,7 @@ public class AlibabaCloudResourceTag implements Editable<AlibabaCloudResourceTag
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

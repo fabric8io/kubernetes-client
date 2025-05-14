@@ -477,6 +477,7 @@ public class AlertmanagerEndpoints implements Editable<AlertmanagerEndpointsBuil
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

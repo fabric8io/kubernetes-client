@@ -108,6 +108,7 @@ public class DataImageSpec implements Editable<DataImageSpecBuilder>, Kubernetes
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

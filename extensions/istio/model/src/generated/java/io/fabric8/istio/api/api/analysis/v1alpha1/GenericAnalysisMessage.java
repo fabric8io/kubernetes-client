@@ -154,6 +154,7 @@ public class GenericAnalysisMessage implements Editable<GenericAnalysisMessageBu
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

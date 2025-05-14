@@ -154,6 +154,7 @@ public class NetworkChaosStatus implements Editable<NetworkChaosStatusBuilder>, 
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

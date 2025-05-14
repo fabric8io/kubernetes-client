@@ -194,6 +194,7 @@ public class GlobalValues implements Editable<GlobalValuesBuilder>, KubernetesRe
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

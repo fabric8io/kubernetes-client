@@ -134,6 +134,7 @@ public class APIServiceDefinitions implements Editable<APIServiceDefinitionsBuil
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

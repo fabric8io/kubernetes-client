@@ -148,6 +148,7 @@ public class PagerDutyImageConfig implements Editable<PagerDutyImageConfigBuilde
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

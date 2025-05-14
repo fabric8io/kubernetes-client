@@ -189,6 +189,7 @@ public class CouchDbSourceSpec implements Editable<CouchDbSourceSpecBuilder>, Ku
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

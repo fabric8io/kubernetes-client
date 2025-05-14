@@ -152,6 +152,7 @@ public class EgressIPSpec implements Editable<EgressIPSpecBuilder>, KubernetesRe
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

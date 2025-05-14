@@ -99,6 +99,7 @@ public class ImageVolumeSource implements Editable<ImageVolumeSourceBuilder>, Ku
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

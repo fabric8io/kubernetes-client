@@ -183,6 +183,7 @@ public class ValidatingAdmissionPolicyBindingList implements Editable<Validating
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

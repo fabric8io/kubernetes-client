@@ -263,6 +263,7 @@ public class HostSubnet implements Editable<HostSubnetBuilder>, HasMetadata
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

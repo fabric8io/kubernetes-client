@@ -168,6 +168,7 @@ public class GatewayConfig implements Editable<GatewayConfigBuilder>, Kubernetes
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

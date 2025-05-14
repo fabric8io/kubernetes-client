@@ -153,6 +153,7 @@ public class MachineOSConfigStatus implements Editable<MachineOSConfigStatusBuil
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

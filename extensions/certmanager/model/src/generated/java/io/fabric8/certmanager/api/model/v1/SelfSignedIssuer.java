@@ -112,6 +112,7 @@ public class SelfSignedIssuer implements Editable<SelfSignedIssuerBuilder>, Kube
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

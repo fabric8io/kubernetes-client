@@ -84,6 +84,7 @@ public class NamedCluster implements Editable<NamedClusterBuilder>, KubernetesRe
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

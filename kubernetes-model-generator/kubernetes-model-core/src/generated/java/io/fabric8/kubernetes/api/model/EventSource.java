@@ -99,6 +99,7 @@ public class EventSource implements Editable<EventSourceBuilder>, KubernetesReso
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

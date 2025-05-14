@@ -336,6 +336,7 @@ public class EurekaSDConfig implements Editable<EurekaSDConfigBuilder>, Kubernet
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

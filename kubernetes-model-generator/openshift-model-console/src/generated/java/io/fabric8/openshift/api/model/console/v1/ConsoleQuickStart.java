@@ -177,6 +177,7 @@ public class ConsoleQuickStart implements Editable<ConsoleQuickStartBuilder>, Ha
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

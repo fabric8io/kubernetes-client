@@ -108,6 +108,7 @@ public class AccessLoggingFilter implements Editable<AccessLoggingFilterBuilder>
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

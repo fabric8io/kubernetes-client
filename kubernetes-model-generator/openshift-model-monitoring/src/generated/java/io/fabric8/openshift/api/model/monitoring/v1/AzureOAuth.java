@@ -149,6 +149,7 @@ public class AzureOAuth implements Editable<AzureOAuthBuilder>, KubernetesResour
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

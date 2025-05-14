@@ -194,6 +194,7 @@ public class GatewaySpec implements Editable<GatewaySpecBuilder>, KubernetesReso
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

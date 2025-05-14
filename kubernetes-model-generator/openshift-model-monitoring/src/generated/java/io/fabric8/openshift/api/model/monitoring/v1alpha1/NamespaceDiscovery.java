@@ -132,6 +132,7 @@ public class NamespaceDiscovery implements Editable<NamespaceDiscoveryBuilder>, 
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -128,6 +128,7 @@ public class MetaDataString implements Editable<MetaDataStringBuilder>, Kubernet
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

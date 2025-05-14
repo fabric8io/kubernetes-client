@@ -183,6 +183,7 @@ public class OAuthList implements Editable<OAuthListBuilder>, KubernetesResource
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

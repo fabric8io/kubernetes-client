@@ -128,6 +128,7 @@ public class AllowedHostPath implements Editable<AllowedHostPathBuilder>, Kubern
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

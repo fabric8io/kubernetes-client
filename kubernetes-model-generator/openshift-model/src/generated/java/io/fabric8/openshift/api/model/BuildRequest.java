@@ -344,6 +344,7 @@ public class BuildRequest implements Editable<BuildRequestBuilder>, HasMetadata,
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

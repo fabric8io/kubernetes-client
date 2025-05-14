@@ -262,6 +262,7 @@ public class ACMEChallengeSolverHTTP01IngressPodSecurityContext implements Edita
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

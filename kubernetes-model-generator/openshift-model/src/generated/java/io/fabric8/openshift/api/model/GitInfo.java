@@ -292,6 +292,7 @@ public class GitInfo implements Editable<GitInfoBuilder>, KubernetesResource
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

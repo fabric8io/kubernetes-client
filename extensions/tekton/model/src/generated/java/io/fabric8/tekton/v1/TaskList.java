@@ -183,6 +183,7 @@ public class TaskList implements Editable<TaskListBuilder>, KubernetesResource, 
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

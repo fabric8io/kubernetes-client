@@ -172,6 +172,7 @@ public class ForwardPlugin implements Editable<ForwardPluginBuilder>, Kubernetes
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

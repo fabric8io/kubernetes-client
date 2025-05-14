@@ -197,6 +197,7 @@ public class HiveConfig implements Editable<HiveConfigBuilder>, HasMetadata
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

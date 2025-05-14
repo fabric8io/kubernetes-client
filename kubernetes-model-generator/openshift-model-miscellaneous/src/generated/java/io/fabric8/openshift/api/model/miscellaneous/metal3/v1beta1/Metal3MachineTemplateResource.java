@@ -108,6 +108,7 @@ public class Metal3MachineTemplateResource implements Editable<Metal3MachineTemp
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

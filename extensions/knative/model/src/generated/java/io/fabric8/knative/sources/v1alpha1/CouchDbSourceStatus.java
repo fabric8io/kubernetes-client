@@ -259,6 +259,7 @@ public class CouchDbSourceStatus implements Editable<CouchDbSourceStatusBuilder>
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

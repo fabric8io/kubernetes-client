@@ -128,6 +128,7 @@ public class OpenTelemetryCollectionSpec implements Editable<OpenTelemetryCollec
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

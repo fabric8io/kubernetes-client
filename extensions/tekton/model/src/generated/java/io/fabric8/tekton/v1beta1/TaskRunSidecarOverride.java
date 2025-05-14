@@ -128,6 +128,7 @@ public class TaskRunSidecarOverride implements Editable<TaskRunSidecarOverrideBu
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

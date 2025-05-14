@@ -108,6 +108,7 @@ public class ClusterPredicate implements Editable<ClusterPredicateBuilder>, Kube
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

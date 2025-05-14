@@ -148,6 +148,7 @@ public class ContainerResourceMetricSource implements Editable<ContainerResource
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

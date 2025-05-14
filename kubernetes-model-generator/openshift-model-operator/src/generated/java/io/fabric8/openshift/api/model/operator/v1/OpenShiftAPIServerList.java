@@ -183,6 +183,7 @@ public class OpenShiftAPIServerList implements Editable<OpenShiftAPIServerListBu
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

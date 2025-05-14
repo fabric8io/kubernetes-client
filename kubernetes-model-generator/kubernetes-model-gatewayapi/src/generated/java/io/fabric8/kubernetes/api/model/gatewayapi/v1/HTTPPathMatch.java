@@ -128,6 +128,7 @@ public class HTTPPathMatch implements Editable<HTTPPathMatchBuilder>, Kubernetes
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

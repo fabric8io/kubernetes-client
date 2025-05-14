@@ -174,6 +174,7 @@ public class CredentialsRequestSpec implements Editable<CredentialsRequestSpecBu
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

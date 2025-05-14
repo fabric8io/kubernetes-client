@@ -198,6 +198,7 @@ public class TLSRoute implements Editable<TLSRouteBuilder>, HasMetadata, Namespa
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

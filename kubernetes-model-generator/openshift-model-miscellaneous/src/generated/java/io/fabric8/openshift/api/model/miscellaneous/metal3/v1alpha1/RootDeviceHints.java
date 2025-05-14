@@ -288,6 +288,7 @@ public class RootDeviceHints implements Editable<RootDeviceHintsBuilder>, Kubern
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

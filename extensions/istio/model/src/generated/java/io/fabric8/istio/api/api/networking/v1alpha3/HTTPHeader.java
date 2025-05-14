@@ -125,6 +125,7 @@ public class HTTPHeader implements Editable<HTTPHeaderBuilder>, KubernetesResour
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

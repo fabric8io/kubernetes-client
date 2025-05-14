@@ -128,6 +128,7 @@ public class TaskRunSidecarSpec implements Editable<TaskRunSidecarSpecBuilder>, 
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

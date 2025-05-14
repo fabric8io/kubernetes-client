@@ -108,6 +108,7 @@ public class AzureCustomerManagedBootDiagnostics implements Editable<AzureCustom
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -78,6 +78,7 @@ public class OperatorPKIStatus implements Editable<OperatorPKIStatusBuilder>, Ku
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

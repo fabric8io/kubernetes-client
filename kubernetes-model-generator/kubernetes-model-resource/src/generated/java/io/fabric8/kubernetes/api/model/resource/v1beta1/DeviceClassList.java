@@ -183,6 +183,7 @@ public class DeviceClassList implements Editable<DeviceClassListBuilder>, Kubern
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

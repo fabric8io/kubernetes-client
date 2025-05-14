@@ -188,6 +188,7 @@ public class WebHTTPHeaders implements Editable<WebHTTPHeadersBuilder>, Kubernet
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

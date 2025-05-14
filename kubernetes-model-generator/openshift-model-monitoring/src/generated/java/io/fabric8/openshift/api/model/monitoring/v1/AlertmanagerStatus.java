@@ -232,6 +232,7 @@ public class AlertmanagerStatus implements Editable<AlertmanagerStatusBuilder>, 
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -108,6 +108,7 @@ public class ClusterInterceptorSpec implements Editable<ClusterInterceptorSpecBu
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

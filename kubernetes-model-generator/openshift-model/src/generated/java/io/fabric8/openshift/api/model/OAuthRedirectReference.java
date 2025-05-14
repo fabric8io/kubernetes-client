@@ -178,6 +178,7 @@ public class OAuthRedirectReference implements Editable<OAuthRedirectReferenceBu
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

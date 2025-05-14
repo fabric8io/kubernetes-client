@@ -168,6 +168,7 @@ public class GitSourceRevision implements Editable<GitSourceRevisionBuilder>, Ku
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

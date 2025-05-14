@@ -134,6 +134,7 @@ public class LifecycleHooks implements Editable<LifecycleHooksBuilder>, Kubernet
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

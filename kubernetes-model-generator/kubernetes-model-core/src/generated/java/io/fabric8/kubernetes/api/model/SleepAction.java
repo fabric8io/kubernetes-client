@@ -79,6 +79,7 @@ public class SleepAction implements Editable<SleepActionBuilder>, KubernetesReso
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -169,6 +169,7 @@ public class ACMEIssuerDNS01ProviderRFC2136 implements Editable<ACMEIssuerDNS01P
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

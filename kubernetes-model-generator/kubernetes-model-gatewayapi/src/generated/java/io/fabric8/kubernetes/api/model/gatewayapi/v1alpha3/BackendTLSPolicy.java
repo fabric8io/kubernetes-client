@@ -199,6 +199,7 @@ public class BackendTLSPolicy implements Editable<BackendTLSPolicyBuilder>, HasM
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

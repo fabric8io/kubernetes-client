@@ -128,6 +128,7 @@ public class GCPResourceLabel implements Editable<GCPResourceLabelBuilder>, Kube
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

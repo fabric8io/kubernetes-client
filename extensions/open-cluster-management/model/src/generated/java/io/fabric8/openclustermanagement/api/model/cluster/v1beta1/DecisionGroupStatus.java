@@ -172,6 +172,7 @@ public class DecisionGroupStatus implements Editable<DecisionGroupStatusBuilder>
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

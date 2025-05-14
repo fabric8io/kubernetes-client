@@ -148,6 +148,7 @@ public class StorageResourceReference implements Editable<StorageResourceReferen
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

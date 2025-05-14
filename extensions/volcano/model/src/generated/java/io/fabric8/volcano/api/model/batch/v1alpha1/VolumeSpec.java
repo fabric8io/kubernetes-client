@@ -149,6 +149,7 @@ public class VolumeSpec implements Editable<VolumeSpecBuilder>, KubernetesResour
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

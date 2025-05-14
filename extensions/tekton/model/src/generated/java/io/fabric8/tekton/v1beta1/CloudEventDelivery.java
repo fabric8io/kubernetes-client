@@ -128,6 +128,7 @@ public class CloudEventDelivery implements Editable<CloudEventDeliveryBuilder>, 
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

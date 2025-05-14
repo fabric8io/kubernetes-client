@@ -165,6 +165,7 @@ public class FCVolumeSource implements Editable<FCVolumeSourceBuilder>, Kubernet
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

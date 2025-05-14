@@ -232,6 +232,7 @@ public class ReplicaSetStatus implements Editable<ReplicaSetStatusBuilder>, Kube
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

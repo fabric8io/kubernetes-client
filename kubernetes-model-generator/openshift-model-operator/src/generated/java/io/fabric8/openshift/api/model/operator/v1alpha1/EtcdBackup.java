@@ -197,6 +197,7 @@ public class EtcdBackup implements Editable<EtcdBackupBuilder>, HasMetadata
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

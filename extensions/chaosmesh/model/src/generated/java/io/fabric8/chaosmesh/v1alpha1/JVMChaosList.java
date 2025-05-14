@@ -183,6 +183,7 @@ public class JVMChaosList implements Editable<JVMChaosListBuilder>, KubernetesRe
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

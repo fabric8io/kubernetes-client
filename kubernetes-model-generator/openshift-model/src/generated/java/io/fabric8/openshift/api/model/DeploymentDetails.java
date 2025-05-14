@@ -132,6 +132,7 @@ public class DeploymentDetails implements Editable<DeploymentDetailsBuilder>, Ku
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

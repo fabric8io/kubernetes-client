@@ -108,6 +108,7 @@ public class Metal3RemediationSpec implements Editable<Metal3RemediationSpecBuil
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

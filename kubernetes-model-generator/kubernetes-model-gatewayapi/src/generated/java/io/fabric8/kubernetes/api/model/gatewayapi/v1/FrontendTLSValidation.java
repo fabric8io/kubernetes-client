@@ -112,6 +112,7 @@ public class FrontendTLSValidation implements Editable<FrontendTLSValidationBuil
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -134,6 +134,7 @@ public class NonResourcePolicyRule implements Editable<NonResourcePolicyRuleBuil
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

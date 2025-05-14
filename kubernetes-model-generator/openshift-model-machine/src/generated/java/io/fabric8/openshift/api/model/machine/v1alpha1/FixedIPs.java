@@ -125,6 +125,7 @@ public class FixedIPs implements Editable<FixedIPsBuilder>, KubernetesResource
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

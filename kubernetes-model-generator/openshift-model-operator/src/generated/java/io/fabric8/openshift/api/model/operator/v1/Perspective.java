@@ -152,6 +152,7 @@ public class Perspective implements Editable<PerspectiveBuilder>, KubernetesReso
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

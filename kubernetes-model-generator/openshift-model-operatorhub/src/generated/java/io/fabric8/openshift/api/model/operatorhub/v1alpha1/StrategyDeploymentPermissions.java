@@ -133,6 +133,7 @@ public class StrategyDeploymentPermissions implements Editable<StrategyDeploymen
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

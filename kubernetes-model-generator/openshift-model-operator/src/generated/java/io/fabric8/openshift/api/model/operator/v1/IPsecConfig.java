@@ -105,6 +105,7 @@ public class IPsecConfig implements Editable<IPsecConfigBuilder>, KubernetesReso
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

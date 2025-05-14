@@ -132,6 +132,7 @@ public class TokenReviewSpec implements Editable<TokenReviewSpecBuilder>, Kubern
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

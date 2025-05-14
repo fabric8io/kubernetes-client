@@ -197,6 +197,7 @@ public class Infrastructure implements Editable<InfrastructureBuilder>, HasMetad
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

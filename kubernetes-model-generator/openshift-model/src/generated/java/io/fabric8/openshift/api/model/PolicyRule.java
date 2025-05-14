@@ -222,6 +222,7 @@ public class PolicyRule implements Editable<PolicyRuleBuilder>, KubernetesResour
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -128,6 +128,7 @@ public class ServiceAccountReference implements Editable<ServiceAccountReference
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -188,6 +188,7 @@ public class DockerImageReference implements Editable<DockerImageReferenceBuilde
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

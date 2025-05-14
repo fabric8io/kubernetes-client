@@ -132,6 +132,7 @@ public class GroupStrategy implements Editable<GroupStrategyBuilder>, Kubernetes
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

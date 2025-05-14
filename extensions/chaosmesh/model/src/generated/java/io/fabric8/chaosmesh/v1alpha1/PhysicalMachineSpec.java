@@ -108,6 +108,7 @@ public class PhysicalMachineSpec implements Editable<PhysicalMachineSpecBuilder>
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -178,6 +178,7 @@ public class PodMonitor implements Editable<PodMonitorBuilder>, HasMetadata, Nam
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

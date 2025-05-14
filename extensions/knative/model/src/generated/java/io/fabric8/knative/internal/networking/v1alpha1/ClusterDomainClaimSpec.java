@@ -108,6 +108,7 @@ public class ClusterDomainClaimSpec implements Editable<ClusterDomainClaimSpecBu
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

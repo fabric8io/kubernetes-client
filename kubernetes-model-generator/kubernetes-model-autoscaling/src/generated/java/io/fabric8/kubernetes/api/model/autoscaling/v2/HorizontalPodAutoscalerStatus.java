@@ -214,6 +214,7 @@ public class HorizontalPodAutoscalerStatus implements Editable<HorizontalPodAuto
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

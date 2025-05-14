@@ -105,6 +105,7 @@ public class KubeConfigSecret implements Editable<KubeConfigSecretBuilder>, Kube
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

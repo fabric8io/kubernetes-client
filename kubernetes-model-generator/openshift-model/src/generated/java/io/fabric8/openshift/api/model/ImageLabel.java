@@ -128,6 +128,7 @@ public class ImageLabel implements Editable<ImageLabelBuilder>, KubernetesResour
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

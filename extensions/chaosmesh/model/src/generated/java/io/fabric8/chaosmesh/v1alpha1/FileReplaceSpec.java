@@ -165,6 +165,7 @@ public class FileReplaceSpec implements Editable<FileReplaceSpecBuilder>, Kubern
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

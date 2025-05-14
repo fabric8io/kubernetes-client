@@ -103,6 +103,7 @@ public class ResourceQuotaStatus implements Editable<ResourceQuotaStatusBuilder>
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

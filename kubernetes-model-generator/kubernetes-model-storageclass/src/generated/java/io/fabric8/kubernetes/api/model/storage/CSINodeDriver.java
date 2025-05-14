@@ -172,6 +172,7 @@ public class CSINodeDriver implements Editable<CSINodeDriverBuilder>, Kubernetes
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

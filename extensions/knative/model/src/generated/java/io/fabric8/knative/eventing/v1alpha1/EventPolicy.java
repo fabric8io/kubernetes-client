@@ -198,6 +198,7 @@ public class EventPolicy implements Editable<EventPolicyBuilder>, HasMetadata, N
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

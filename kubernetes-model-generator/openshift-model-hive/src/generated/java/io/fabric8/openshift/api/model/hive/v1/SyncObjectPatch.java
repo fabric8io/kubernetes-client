@@ -208,6 +208,7 @@ public class SyncObjectPatch implements Editable<SyncObjectPatchBuilder>, Kubern
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

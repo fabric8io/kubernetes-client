@@ -144,6 +144,7 @@ public class MachineConfigurationStatus implements Editable<MachineConfiguration
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

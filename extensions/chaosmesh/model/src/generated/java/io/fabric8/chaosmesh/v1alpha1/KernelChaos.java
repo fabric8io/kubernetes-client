@@ -198,6 +198,7 @@ public class KernelChaos implements Editable<KernelChaosBuilder>, HasMetadata, N
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

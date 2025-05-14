@@ -134,6 +134,7 @@ public class TemplateInstanceStatus implements Editable<TemplateInstanceStatusBu
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

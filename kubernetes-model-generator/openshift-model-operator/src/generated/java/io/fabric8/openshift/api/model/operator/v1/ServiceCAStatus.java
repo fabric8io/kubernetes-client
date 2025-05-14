@@ -211,6 +211,7 @@ public class ServiceCAStatus implements Editable<ServiceCAStatusBuilder>, Kubern
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

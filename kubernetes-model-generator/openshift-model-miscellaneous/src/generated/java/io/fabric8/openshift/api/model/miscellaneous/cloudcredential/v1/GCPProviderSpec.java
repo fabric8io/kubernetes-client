@@ -244,6 +244,7 @@ public class GCPProviderSpec implements Editable<GCPProviderSpecBuilder>, Kubern
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

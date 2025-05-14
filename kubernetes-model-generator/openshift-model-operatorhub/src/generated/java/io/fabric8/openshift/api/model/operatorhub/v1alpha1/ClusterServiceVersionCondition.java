@@ -188,6 +188,7 @@ public class ClusterServiceVersionCondition implements Editable<ClusterServiceVe
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

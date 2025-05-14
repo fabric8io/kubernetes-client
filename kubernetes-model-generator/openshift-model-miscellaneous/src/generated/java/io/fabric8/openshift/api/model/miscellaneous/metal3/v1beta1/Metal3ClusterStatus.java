@@ -193,6 +193,7 @@ public class Metal3ClusterStatus implements Editable<Metal3ClusterStatusBuilder>
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

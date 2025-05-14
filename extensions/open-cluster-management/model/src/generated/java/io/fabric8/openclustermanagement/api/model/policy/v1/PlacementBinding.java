@@ -262,6 +262,7 @@ public class PlacementBinding implements Editable<PlacementBindingBuilder>, HasM
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

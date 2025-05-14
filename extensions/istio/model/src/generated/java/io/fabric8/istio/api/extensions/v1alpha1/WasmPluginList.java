@@ -183,6 +183,7 @@ public class WasmPluginList implements Editable<WasmPluginListBuilder>, Kubernet
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

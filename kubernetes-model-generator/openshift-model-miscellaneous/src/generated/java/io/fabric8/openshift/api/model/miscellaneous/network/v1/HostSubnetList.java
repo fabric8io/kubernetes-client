@@ -183,6 +183,7 @@ public class HostSubnetList implements Editable<HostSubnetListBuilder>, Kubernet
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

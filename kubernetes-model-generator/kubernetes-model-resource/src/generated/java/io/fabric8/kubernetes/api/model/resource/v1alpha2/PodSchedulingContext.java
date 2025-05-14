@@ -198,6 +198,7 @@ public class PodSchedulingContext implements Editable<PodSchedulingContextBuilde
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

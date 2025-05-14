@@ -112,6 +112,7 @@ public class PodSchedulingContextStatus implements Editable<PodSchedulingContext
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

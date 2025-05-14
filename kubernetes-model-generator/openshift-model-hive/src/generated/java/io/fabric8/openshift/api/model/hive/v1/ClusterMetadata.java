@@ -188,6 +188,7 @@ public class ClusterMetadata implements Editable<ClusterMetadataBuilder>, Kubern
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

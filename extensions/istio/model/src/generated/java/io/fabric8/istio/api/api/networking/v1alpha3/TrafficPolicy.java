@@ -232,6 +232,7 @@ public class TrafficPolicy implements Editable<TrafficPolicyBuilder>, Kubernetes
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -173,6 +173,7 @@ public class HPAScalingRules implements Editable<HPAScalingRulesBuilder>, Kubern
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -156,6 +156,7 @@ public class BareMetalPlatformSpec implements Editable<BareMetalPlatformSpecBuil
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

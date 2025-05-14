@@ -148,6 +148,7 @@ public class AzureClusterDeprovision implements Editable<AzureClusterDeprovision
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

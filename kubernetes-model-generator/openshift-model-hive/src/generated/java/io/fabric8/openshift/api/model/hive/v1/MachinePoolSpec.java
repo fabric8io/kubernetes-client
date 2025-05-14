@@ -257,6 +257,7 @@ public class MachinePoolSpec implements Editable<MachinePoolSpecBuilder>, Kubern
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -128,6 +128,7 @@ public class NetworkFilter implements Editable<NetworkFilterBuilder>, Kubernetes
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -113,6 +113,7 @@ public class TLSRouteStatus implements Editable<TLSRouteStatusBuilder>, Kubernet
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

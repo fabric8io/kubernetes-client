@@ -183,6 +183,7 @@ public class ClusterIssuerList implements Editable<ClusterIssuerListBuilder>, Ku
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

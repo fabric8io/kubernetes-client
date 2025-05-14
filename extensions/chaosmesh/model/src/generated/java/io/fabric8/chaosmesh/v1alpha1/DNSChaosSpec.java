@@ -254,6 +254,7 @@ public class DNSChaosSpec implements Editable<DNSChaosSpecBuilder>, KubernetesRe
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

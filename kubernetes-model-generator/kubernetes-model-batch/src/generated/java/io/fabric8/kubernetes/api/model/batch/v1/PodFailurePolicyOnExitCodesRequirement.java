@@ -152,6 +152,7 @@ public class PodFailurePolicyOnExitCodesRequirement implements Editable<PodFailu
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -405,6 +405,7 @@ public class HTTPChaosSpec implements Editable<HTTPChaosSpecBuilder>, Kubernetes
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

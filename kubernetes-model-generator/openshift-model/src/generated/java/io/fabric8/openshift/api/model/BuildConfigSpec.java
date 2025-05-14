@@ -374,6 +374,7 @@ public class BuildConfigSpec implements Editable<BuildConfigSpecBuilder>, Kubern
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

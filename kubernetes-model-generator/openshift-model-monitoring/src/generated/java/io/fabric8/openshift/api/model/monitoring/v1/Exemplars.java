@@ -105,6 +105,7 @@ public class Exemplars implements Editable<ExemplarsBuilder>, KubernetesResource
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

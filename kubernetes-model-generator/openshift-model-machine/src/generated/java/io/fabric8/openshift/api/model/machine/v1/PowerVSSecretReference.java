@@ -108,6 +108,7 @@ public class PowerVSSecretReference implements Editable<PowerVSSecretReferenceBu
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -128,6 +128,7 @@ public class MTUMigration implements Editable<MTUMigrationBuilder>, KubernetesRe
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -112,6 +112,7 @@ public class ListMeta implements Editable<ListMetaBuilder>, KubernetesResource
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

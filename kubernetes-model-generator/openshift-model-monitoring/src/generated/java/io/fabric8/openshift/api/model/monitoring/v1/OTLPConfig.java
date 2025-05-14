@@ -132,6 +132,7 @@ public class OTLPConfig implements Editable<OTLPConfigBuilder>, KubernetesResour
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -163,6 +163,7 @@ public class NetworkAttachmentDefinition implements Editable<NetworkAttachmentDe
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

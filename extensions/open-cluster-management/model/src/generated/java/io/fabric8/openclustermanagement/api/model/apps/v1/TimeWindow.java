@@ -174,6 +174,7 @@ public class TimeWindow implements Editable<TimeWindowBuilder>, KubernetesResour
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

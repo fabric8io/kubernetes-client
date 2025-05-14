@@ -168,6 +168,7 @@ public class BlockDeviceMappingSpec implements Editable<BlockDeviceMappingSpecBu
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

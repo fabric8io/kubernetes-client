@@ -175,6 +175,7 @@ public class ACMEChallengeSolverHTTP01GatewayHTTPRoute implements Editable<ACMEC
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

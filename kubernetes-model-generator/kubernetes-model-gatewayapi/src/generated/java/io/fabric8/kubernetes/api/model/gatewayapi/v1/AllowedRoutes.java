@@ -132,6 +132,7 @@ public class AllowedRoutes implements Editable<AllowedRoutesBuilder>, Kubernetes
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -128,6 +128,7 @@ public class SourceControlUser implements Editable<SourceControlUserBuilder>, Ku
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

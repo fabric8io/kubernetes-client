@@ -128,6 +128,7 @@ public class ReleaseImageVerificationConfigMapReference implements Editable<Rele
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

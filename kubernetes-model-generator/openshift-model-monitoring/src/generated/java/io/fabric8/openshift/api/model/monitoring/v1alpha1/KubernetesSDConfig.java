@@ -399,6 +399,7 @@ public class KubernetesSDConfig implements Editable<KubernetesSDConfigBuilder>, 
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -79,6 +79,7 @@ public class EphemeralVolumeSource implements Editable<EphemeralVolumeSourceBuil
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -128,6 +128,7 @@ public class BandwidthProperties implements Editable<BandwidthPropertiesBuilder>
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -105,6 +105,7 @@ public class LabelSelector implements Editable<LabelSelectorBuilder>, Kubernetes
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

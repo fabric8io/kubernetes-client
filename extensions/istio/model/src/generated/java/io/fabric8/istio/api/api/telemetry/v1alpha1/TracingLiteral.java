@@ -105,6 +105,7 @@ public class TracingLiteral implements Editable<TracingLiteralBuilder>, Kubernet
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

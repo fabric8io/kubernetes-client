@@ -105,6 +105,7 @@ public class FeatureGateAttributes implements Editable<FeatureGateAttributesBuil
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

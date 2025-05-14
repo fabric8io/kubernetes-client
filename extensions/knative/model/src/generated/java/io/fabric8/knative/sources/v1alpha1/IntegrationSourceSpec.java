@@ -170,6 +170,7 @@ public class IntegrationSourceSpec implements Editable<IntegrationSourceSpecBuil
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

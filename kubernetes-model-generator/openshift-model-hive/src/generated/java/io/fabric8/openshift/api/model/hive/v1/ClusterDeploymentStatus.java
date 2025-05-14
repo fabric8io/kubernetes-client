@@ -354,6 +354,7 @@ public class ClusterDeploymentStatus implements Editable<ClusterDeploymentStatus
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

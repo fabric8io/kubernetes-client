@@ -108,6 +108,7 @@ public class IPv4GatewayConfig implements Editable<IPv4GatewayConfigBuilder>, Ku
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

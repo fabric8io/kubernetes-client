@@ -417,6 +417,7 @@ public class PortOpts implements Editable<PortOptsBuilder>, KubernetesResource
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

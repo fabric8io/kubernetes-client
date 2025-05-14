@@ -163,6 +163,7 @@ public class PhysicalMachineSelector implements Editable<PhysicalMachineSelector
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

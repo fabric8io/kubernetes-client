@@ -128,6 +128,7 @@ public class NutanixPrismEndpoint implements Editable<NutanixPrismEndpointBuilde
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

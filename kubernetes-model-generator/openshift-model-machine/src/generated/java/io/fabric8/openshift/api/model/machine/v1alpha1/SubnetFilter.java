@@ -505,6 +505,7 @@ public class SubnetFilter implements Editable<SubnetFilterBuilder>, KubernetesRe
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

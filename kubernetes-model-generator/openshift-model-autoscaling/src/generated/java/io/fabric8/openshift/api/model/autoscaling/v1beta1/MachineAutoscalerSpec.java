@@ -148,6 +148,7 @@ public class MachineAutoscalerSpec implements Editable<MachineAutoscalerSpecBuil
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -183,6 +183,7 @@ public class CredentialsRequestList implements Editable<CredentialsRequestListBu
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

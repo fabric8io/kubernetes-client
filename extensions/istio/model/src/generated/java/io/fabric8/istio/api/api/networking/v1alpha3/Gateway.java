@@ -144,6 +144,7 @@ public class Gateway implements Editable<GatewayBuilder>, KubernetesResource, Na
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

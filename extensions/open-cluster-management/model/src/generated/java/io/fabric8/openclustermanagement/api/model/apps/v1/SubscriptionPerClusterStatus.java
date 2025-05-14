@@ -110,6 +110,7 @@ public class SubscriptionPerClusterStatus implements Editable<SubscriptionPerClu
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

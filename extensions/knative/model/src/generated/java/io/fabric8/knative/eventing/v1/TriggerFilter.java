@@ -107,6 +107,7 @@ public class TriggerFilter implements Editable<TriggerFilterBuilder>, Kubernetes
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

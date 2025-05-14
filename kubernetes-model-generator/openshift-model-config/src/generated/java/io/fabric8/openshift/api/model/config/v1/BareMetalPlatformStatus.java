@@ -236,6 +236,7 @@ public class BareMetalPlatformStatus implements Editable<BareMetalPlatformStatus
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

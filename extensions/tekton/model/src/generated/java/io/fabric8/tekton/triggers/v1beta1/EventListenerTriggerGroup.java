@@ -152,6 +152,7 @@ public class EventListenerTriggerGroup implements Editable<EventListenerTriggerG
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

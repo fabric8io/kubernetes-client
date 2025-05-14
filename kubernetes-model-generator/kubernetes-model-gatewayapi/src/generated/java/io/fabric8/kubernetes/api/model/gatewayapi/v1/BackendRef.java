@@ -208,6 +208,7 @@ public class BackendRef implements Editable<BackendRefBuilder>, KubernetesResour
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

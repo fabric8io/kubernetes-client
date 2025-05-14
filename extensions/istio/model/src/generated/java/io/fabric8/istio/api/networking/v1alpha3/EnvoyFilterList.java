@@ -183,6 +183,7 @@ public class EnvoyFilterList implements Editable<EnvoyFilterListBuilder>, Kubern
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

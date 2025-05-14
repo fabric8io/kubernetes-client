@@ -128,6 +128,7 @@ public class ArgoCDConfig implements Editable<ArgoCDConfigBuilder>, KubernetesRe
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

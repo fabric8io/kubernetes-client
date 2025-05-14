@@ -252,6 +252,7 @@ public class BuildInputs implements Editable<BuildInputsBuilder>, KubernetesReso
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

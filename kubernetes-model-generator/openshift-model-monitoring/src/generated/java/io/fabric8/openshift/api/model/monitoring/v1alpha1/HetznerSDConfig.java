@@ -356,6 +356,7 @@ public class HetznerSDConfig implements Editable<HetznerSDConfigBuilder>, Kubern
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

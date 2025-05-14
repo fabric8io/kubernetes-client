@@ -679,6 +679,7 @@ public class SecurityContextConstraints implements Editable<SecurityContextConst
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -112,6 +112,7 @@ public class NamedResourcesIntSlice implements Editable<NamedResourcesIntSliceBu
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -108,6 +108,7 @@ public class VerticalPodAutoscalerRecommenderSelector implements Editable<Vertic
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -108,6 +108,7 @@ public class PlatformLogsCollectionSpec implements Editable<PlatformLogsCollecti
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

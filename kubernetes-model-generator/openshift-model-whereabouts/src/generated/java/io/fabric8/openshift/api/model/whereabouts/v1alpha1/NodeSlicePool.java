@@ -198,6 +198,7 @@ public class NodeSlicePool implements Editable<NodeSlicePoolBuilder>, HasMetadat
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

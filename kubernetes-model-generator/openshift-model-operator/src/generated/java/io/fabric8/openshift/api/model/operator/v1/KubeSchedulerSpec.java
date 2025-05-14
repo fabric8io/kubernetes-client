@@ -237,6 +237,7 @@ public class KubeSchedulerSpec implements Editable<KubeSchedulerSpecBuilder>, Ku
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

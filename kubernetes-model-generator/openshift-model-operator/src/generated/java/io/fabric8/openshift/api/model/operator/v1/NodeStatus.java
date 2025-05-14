@@ -272,6 +272,7 @@ public class NodeStatus implements Editable<NodeStatusBuilder>, KubernetesResour
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

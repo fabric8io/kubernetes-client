@@ -108,6 +108,7 @@ public class RenderedMachineConfigReference implements Editable<RenderedMachineC
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

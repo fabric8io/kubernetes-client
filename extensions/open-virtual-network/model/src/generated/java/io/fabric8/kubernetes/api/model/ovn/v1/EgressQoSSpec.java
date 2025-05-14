@@ -112,6 +112,7 @@ public class EgressQoSSpec implements Editable<EgressQoSSpecBuilder>, Kubernetes
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

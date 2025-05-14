@@ -183,6 +183,7 @@ public class JobList implements Editable<JobListBuilder>, KubernetesResource, Ku
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

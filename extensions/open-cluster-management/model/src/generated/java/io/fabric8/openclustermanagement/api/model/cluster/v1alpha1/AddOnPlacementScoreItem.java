@@ -128,6 +128,7 @@ public class AddOnPlacementScoreItem implements Editable<AddOnPlacementScoreItem
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

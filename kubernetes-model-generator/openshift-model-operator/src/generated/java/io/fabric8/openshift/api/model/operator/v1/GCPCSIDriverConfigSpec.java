@@ -108,6 +108,7 @@ public class GCPCSIDriverConfigSpec implements Editable<GCPCSIDriverConfigSpecBu
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

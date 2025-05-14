@@ -83,6 +83,7 @@ public class ScopeSelector implements Editable<ScopeSelectorBuilder>, Kubernetes
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

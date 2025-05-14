@@ -128,6 +128,7 @@ public class NetworkPolicyPort implements Editable<NetworkPolicyPortBuilder>, Ku
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

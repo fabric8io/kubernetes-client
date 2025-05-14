@@ -288,6 +288,7 @@ public class ACMEChallengeSolverDNS01 implements Editable<ACMEChallengeSolverDNS
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

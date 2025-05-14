@@ -150,6 +150,7 @@ public class ChannelGate implements Editable<ChannelGateBuilder>, KubernetesReso
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

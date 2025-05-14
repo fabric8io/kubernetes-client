@@ -128,6 +128,7 @@ public class AWSCSIDriverConfigSpec implements Editable<AWSCSIDriverConfigSpecBu
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

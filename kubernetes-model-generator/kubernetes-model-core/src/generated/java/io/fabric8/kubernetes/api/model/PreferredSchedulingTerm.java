@@ -99,6 +99,7 @@ public class PreferredSchedulingTerm implements Editable<PreferredSchedulingTerm
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

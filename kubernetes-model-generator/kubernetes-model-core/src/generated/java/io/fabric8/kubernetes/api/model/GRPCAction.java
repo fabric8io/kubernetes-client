@@ -99,6 +99,7 @@ public class GRPCAction implements Editable<GRPCActionBuilder>, KubernetesResour
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

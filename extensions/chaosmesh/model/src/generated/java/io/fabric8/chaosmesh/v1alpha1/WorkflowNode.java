@@ -177,6 +177,7 @@ public class WorkflowNode implements Editable<WorkflowNodeBuilder>, HasMetadata,
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

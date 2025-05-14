@@ -525,6 +525,7 @@ public class ImageRegistrySpec implements Editable<ImageRegistrySpecBuilder>, Ku
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

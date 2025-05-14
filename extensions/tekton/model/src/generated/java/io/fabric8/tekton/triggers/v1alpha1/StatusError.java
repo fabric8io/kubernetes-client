@@ -75,6 +75,7 @@ public class StatusError implements Editable<StatusErrorBuilder>, KubernetesReso
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

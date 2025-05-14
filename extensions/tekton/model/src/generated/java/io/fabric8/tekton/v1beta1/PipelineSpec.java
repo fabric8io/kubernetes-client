@@ -262,6 +262,7 @@ public class PipelineSpec implements Editable<PipelineSpecBuilder>, KubernetesRe
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

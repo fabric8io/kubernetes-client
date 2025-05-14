@@ -175,6 +175,7 @@ public class ListenerStatus implements Editable<ListenerStatusBuilder>, Kubernet
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

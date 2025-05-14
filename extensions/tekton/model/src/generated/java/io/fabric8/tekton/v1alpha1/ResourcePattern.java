@@ -108,6 +108,7 @@ public class ResourcePattern implements Editable<ResourcePatternBuilder>, Kubern
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

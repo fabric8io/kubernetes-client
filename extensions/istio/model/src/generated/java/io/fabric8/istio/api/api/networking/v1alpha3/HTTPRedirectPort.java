@@ -108,6 +108,7 @@ public class HTTPRedirectPort implements IsHTTPRedirectRedirectPort, Editable<HT
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

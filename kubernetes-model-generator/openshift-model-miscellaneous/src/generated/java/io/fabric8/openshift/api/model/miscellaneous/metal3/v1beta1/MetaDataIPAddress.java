@@ -188,6 +188,7 @@ public class MetaDataIPAddress implements Editable<MetaDataIPAddressBuilder>, Ku
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

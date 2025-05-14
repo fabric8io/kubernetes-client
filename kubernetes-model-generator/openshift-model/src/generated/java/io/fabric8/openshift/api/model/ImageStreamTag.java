@@ -262,6 +262,7 @@ public class ImageStreamTag implements Editable<ImageStreamTagBuilder>, HasMetad
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

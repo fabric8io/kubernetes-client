@@ -128,6 +128,7 @@ public class EncryptionKeyReference implements Editable<EncryptionKeyReferenceBu
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

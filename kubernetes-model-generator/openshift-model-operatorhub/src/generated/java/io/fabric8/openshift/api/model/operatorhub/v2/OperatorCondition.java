@@ -198,6 +198,7 @@ public class OperatorCondition implements Editable<OperatorConditionBuilder>, Ha
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

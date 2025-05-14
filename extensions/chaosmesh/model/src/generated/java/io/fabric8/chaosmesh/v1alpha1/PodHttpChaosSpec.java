@@ -132,6 +132,7 @@ public class PodHttpChaosSpec implements Editable<PodHttpChaosSpecBuilder>, Kube
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -275,6 +275,7 @@ public class HelmChartArgs implements Editable<HelmChartArgsBuilder>, Kubernetes
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

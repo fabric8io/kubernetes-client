@@ -112,6 +112,7 @@ public class OperatorHubStatus implements Editable<OperatorHubStatusBuilder>, Ku
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

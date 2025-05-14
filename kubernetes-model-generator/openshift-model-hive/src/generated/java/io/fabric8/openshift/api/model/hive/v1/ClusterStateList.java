@@ -183,6 +183,7 @@ public class ClusterStateList implements Editable<ClusterStateListBuilder>, Kube
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

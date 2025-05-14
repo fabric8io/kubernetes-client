@@ -156,6 +156,7 @@ public class CloudLoadBalancerIPs implements Editable<CloudLoadBalancerIPsBuilde
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

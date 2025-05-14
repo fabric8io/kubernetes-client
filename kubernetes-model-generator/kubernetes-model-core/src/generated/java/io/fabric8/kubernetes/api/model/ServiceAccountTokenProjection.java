@@ -119,6 +119,7 @@ public class ServiceAccountTokenProjection implements Editable<ServiceAccountTok
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

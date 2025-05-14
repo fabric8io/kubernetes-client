@@ -156,6 +156,7 @@ public class InhibitRule implements Editable<InhibitRuleBuilder>, KubernetesReso
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

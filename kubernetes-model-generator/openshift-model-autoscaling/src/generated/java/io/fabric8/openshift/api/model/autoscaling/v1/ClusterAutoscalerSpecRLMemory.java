@@ -128,6 +128,7 @@ public class ClusterAutoscalerSpecRLMemory implements Editable<ClusterAutoscaler
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

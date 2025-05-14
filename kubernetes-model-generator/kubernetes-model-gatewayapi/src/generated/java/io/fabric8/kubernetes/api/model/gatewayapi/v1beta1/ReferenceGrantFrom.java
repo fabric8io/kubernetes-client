@@ -148,6 +148,7 @@ public class ReferenceGrantFrom implements Editable<ReferenceGrantFromBuilder>, 
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

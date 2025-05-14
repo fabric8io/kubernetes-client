@@ -108,6 +108,7 @@ public class NutanixPlatformLoadBalancer implements Editable<NutanixPlatformLoad
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

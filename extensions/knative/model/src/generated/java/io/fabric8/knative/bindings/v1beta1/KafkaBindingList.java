@@ -183,6 +183,7 @@ public class KafkaBindingList implements Editable<KafkaBindingListBuilder>, Kube
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

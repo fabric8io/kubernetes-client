@@ -148,6 +148,7 @@ public class IBMClusterDeprovision implements Editable<IBMClusterDeprovisionBuil
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -183,6 +183,7 @@ public class PhysicalMachineChaosList implements Editable<PhysicalMachineChaosLi
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

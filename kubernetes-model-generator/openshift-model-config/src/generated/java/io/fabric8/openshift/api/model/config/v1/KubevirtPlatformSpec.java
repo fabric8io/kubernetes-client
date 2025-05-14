@@ -78,6 +78,7 @@ public class KubevirtPlatformSpec implements Editable<KubevirtPlatformSpecBuilde
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

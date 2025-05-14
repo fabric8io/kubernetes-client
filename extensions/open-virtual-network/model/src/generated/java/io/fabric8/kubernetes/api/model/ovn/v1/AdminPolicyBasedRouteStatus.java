@@ -152,6 +152,7 @@ public class AdminPolicyBasedRouteStatus implements Editable<AdminPolicyBasedRou
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

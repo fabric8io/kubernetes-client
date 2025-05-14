@@ -183,6 +183,7 @@ public class Metal3DataTemplateList implements Editable<Metal3DataTemplateListBu
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

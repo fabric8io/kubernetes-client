@@ -168,6 +168,7 @@ public class ParametersReference implements Editable<ParametersReferenceBuilder>
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

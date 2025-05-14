@@ -252,6 +252,7 @@ public class ConsoleSampleSpec implements Editable<ConsoleSampleSpecBuilder>, Ku
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

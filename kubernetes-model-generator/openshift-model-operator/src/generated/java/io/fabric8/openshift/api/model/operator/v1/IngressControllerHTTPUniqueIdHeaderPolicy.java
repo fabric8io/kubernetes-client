@@ -128,6 +128,7 @@ public class IngressControllerHTTPUniqueIdHeaderPolicy implements Editable<Ingre
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

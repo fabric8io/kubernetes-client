@@ -108,6 +108,7 @@ public class StatefulSetOrdinals implements Editable<StatefulSetOrdinalsBuilder>
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

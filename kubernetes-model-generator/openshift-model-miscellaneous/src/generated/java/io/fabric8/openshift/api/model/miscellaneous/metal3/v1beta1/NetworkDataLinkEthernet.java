@@ -168,6 +168,7 @@ public class NetworkDataLinkEthernet implements Editable<NetworkDataLinkEthernet
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

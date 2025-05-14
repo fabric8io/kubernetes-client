@@ -128,6 +128,7 @@ public class PlatformStatus implements Editable<PlatformStatusBuilder>, Kubernet
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

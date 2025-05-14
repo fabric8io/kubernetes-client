@@ -183,6 +183,7 @@ public class ConsoleCLIDownloadList implements Editable<ConsoleCLIDownloadListBu
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

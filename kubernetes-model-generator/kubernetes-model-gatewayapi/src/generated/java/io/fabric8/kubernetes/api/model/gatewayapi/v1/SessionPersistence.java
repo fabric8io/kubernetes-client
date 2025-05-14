@@ -188,6 +188,7 @@ public class SessionPersistence implements Editable<SessionPersistenceBuilder>, 
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

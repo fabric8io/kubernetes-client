@@ -188,6 +188,7 @@ public class ImageImportSpec implements Editable<ImageImportSpecBuilder>, Kubern
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

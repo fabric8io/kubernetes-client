@@ -188,6 +188,7 @@ public class KeystoneIdentityProvider implements Editable<KeystoneIdentityProvid
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

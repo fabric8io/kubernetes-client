@@ -178,6 +178,7 @@ public class EgressNetworkPolicy implements Editable<EgressNetworkPolicyBuilder>
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -272,6 +272,7 @@ public class DeploymentConfigStatus implements Editable<DeploymentConfigStatusBu
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

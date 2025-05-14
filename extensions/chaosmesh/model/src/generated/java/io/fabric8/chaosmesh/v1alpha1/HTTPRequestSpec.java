@@ -148,6 +148,7 @@ public class HTTPRequestSpec implements Editable<HTTPRequestSpecBuilder>, Kubern
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -133,6 +133,7 @@ public class ConversionRequest implements Editable<ConversionRequestBuilder>, Ku
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

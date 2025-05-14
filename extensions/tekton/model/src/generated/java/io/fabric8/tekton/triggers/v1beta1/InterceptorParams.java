@@ -129,6 +129,7 @@ public class InterceptorParams implements Editable<InterceptorParamsBuilder>, Ku
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

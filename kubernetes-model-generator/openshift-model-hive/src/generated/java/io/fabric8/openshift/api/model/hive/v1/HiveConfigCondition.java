@@ -208,6 +208,7 @@ public class HiveConfigCondition implements Editable<HiveConfigConditionBuilder>
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

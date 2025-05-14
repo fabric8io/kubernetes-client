@@ -125,6 +125,7 @@ public class Layer3Subnet implements Editable<Layer3SubnetBuilder>, KubernetesRe
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

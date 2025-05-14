@@ -376,6 +376,7 @@ public class EC2SDConfig implements Editable<EC2SDConfigBuilder>, KubernetesReso
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -259,6 +259,7 @@ public class PingSourceStatus implements Editable<PingSourceStatusBuilder>, Kube
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

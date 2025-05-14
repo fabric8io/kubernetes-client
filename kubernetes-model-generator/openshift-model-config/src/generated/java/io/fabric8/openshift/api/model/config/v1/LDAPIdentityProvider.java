@@ -208,6 +208,7 @@ public class LDAPIdentityProvider implements Editable<LDAPIdentityProviderBuilde
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

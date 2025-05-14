@@ -108,6 +108,7 @@ public class StatuspageProvider implements Editable<StatuspageProviderBuilder>, 
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

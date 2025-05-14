@@ -113,6 +113,7 @@ public class TcpSocket implements Editable<TcpSocketBuilder>, KubernetesResource
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

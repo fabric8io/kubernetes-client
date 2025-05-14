@@ -168,6 +168,7 @@ public class LastOperation implements Editable<LastOperationBuilder>, Kubernetes
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -78,6 +78,7 @@ public class AzureDNSZoneStatus implements Editable<AzureDNSZoneStatusBuilder>, 
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

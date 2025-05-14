@@ -192,6 +192,7 @@ public class RouteIngress implements Editable<RouteIngressBuilder>, KubernetesRe
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

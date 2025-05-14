@@ -399,6 +399,7 @@ public class DockerSwarmSDConfig implements Editable<DockerSwarmSDConfigBuilder>
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

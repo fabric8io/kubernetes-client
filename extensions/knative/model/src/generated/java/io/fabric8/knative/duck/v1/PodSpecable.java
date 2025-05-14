@@ -129,6 +129,7 @@ public class PodSpecable implements Editable<PodSpecableBuilder>, KubernetesReso
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

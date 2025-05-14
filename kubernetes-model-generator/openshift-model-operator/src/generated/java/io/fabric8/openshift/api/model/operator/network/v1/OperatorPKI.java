@@ -198,6 +198,7 @@ public class OperatorPKI implements Editable<OperatorPKIBuilder>, HasMetadata, N
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

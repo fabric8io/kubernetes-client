@@ -209,6 +209,7 @@ public class HTTPAbortSpec implements Editable<HTTPAbortSpecBuilder>, Kubernetes
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

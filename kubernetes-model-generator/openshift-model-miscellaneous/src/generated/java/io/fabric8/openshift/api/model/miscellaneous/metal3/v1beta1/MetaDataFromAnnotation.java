@@ -148,6 +148,7 @@ public class MetaDataFromAnnotation implements Editable<MetaDataFromAnnotationBu
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

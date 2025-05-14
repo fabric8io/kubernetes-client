@@ -188,6 +188,7 @@ public class PodHttpChaosRule implements Editable<PodHttpChaosRuleBuilder>, Kube
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -75,6 +75,7 @@ public class SchedulerStatus implements Editable<SchedulerStatusBuilder>, Kubern
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

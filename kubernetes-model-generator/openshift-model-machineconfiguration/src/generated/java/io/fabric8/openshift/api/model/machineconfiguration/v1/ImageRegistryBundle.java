@@ -128,6 +128,7 @@ public class ImageRegistryBundle implements Editable<ImageRegistryBundleBuilder>
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -188,6 +188,7 @@ public class MachineConfigPoolCondition implements Editable<MachineConfigPoolCon
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

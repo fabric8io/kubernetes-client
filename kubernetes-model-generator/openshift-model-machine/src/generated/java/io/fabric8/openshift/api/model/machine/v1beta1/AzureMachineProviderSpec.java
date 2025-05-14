@@ -727,6 +727,7 @@ public class AzureMachineProviderSpec implements Editable<AzureMachineProviderSp
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

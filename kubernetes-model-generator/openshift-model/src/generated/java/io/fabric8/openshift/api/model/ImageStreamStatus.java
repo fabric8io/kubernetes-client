@@ -152,6 +152,7 @@ public class ImageStreamStatus implements Editable<ImageStreamStatusBuilder>, Ku
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

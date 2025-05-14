@@ -148,6 +148,7 @@ public class GatewayClassSpec implements Editable<GatewayClassSpecBuilder>, Kube
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

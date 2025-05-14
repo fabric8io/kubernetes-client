@@ -179,6 +179,7 @@ public class ProfileConfig implements Editable<ProfileConfigBuilder>, Kubernetes
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

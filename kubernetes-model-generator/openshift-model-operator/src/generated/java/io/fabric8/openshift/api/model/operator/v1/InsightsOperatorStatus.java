@@ -239,6 +239,7 @@ public class InsightsOperatorStatus implements Editable<InsightsOperatorStatusBu
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

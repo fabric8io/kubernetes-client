@@ -128,6 +128,7 @@ public class ConsoleSampleContainerImportSource implements Editable<ConsoleSampl
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

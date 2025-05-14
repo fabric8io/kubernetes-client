@@ -152,6 +152,7 @@ public class CertificateSpec implements Editable<CertificateSpecBuilder>, Kubern
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

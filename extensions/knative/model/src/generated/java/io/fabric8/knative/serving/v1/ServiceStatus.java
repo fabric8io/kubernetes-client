@@ -258,6 +258,7 @@ public class ServiceStatus implements Editable<ServiceStatusBuilder>, Kubernetes
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

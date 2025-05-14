@@ -98,6 +98,7 @@ public class GroupVersionKind implements Editable<GroupVersionKindBuilder>, Kube
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

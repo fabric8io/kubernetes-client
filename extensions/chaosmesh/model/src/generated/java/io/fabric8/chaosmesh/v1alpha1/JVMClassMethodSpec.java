@@ -128,6 +128,7 @@ public class JVMClassMethodSpec implements Editable<JVMClassMethodSpecBuilder>, 
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

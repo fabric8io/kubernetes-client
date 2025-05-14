@@ -129,6 +129,7 @@ public class DomainMappingSpec implements Editable<DomainMappingSpecBuilder>, Ku
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -201,6 +201,7 @@ public class ClusterRoleBinding implements Editable<ClusterRoleBindingBuilder>, 
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

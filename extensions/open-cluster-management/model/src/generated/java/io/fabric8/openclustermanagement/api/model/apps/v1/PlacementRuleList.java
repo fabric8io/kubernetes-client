@@ -183,6 +183,7 @@ public class PlacementRuleList implements Editable<PlacementRuleListBuilder>, Ku
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -173,6 +173,7 @@ public class TaskResourceBinding implements Editable<TaskResourceBindingBuilder>
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

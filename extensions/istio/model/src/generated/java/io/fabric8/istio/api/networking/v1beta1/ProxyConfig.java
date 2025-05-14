@@ -199,6 +199,7 @@ public class ProxyConfig implements Editable<ProxyConfigBuilder>, HasMetadata, N
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

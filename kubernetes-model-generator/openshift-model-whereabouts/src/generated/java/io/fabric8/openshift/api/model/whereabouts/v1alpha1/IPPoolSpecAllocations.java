@@ -148,6 +148,7 @@ public class IPPoolSpecAllocations implements Editable<IPPoolSpecAllocationsBuil
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

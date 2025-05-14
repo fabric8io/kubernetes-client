@@ -108,6 +108,7 @@ public class ClusterImageSetReference implements Editable<ClusterImageSetReferen
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

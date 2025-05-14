@@ -79,6 +79,7 @@ public class PodSchedulingGate implements Editable<PodSchedulingGateBuilder>, Ku
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -112,6 +112,7 @@ public class PolicyStatus implements Editable<PolicyStatusBuilder>, KubernetesRe
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

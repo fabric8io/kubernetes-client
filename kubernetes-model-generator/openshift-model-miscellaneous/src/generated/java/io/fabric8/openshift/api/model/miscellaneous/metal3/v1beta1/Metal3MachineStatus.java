@@ -317,6 +317,7 @@ public class Metal3MachineStatus implements Editable<Metal3MachineStatusBuilder>
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

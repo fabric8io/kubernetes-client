@@ -223,6 +223,7 @@ public class AlibabaCloudMachineProviderStatus implements Editable<AlibabaCloudM
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

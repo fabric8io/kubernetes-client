@@ -198,6 +198,7 @@ public class BlockChaos implements Editable<BlockChaosBuilder>, HasMetadata, Nam
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

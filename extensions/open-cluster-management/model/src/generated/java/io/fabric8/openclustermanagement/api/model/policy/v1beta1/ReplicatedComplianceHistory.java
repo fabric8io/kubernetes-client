@@ -128,6 +128,7 @@ public class ReplicatedComplianceHistory implements Editable<ReplicatedComplianc
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

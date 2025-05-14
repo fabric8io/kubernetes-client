@@ -128,6 +128,7 @@ public class SignatureGenericEntity implements Editable<SignatureGenericEntityBu
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

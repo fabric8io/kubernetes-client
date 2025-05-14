@@ -112,6 +112,7 @@ public class HTTPRouteStatus implements Editable<HTTPRouteStatusBuilder>, Kubern
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

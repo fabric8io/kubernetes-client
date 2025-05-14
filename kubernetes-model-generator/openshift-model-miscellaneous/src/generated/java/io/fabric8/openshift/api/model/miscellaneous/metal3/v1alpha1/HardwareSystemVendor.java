@@ -148,6 +148,7 @@ public class HardwareSystemVendor implements Editable<HardwareSystemVendorBuilde
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

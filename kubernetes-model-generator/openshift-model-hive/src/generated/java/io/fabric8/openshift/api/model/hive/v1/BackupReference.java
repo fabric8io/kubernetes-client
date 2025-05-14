@@ -128,6 +128,7 @@ public class BackupReference implements Editable<BackupReferenceBuilder>, Kubern
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

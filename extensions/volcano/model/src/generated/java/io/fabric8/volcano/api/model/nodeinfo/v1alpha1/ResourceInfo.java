@@ -128,6 +128,7 @@ public class ResourceInfo implements Editable<ResourceInfoBuilder>, KubernetesRe
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

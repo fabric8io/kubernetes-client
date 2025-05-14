@@ -169,6 +169,7 @@ public class KeyRef implements Editable<KeyRefBuilder>, KubernetesResource
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

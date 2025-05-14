@@ -274,6 +274,7 @@ public class GitHubSourceSpec implements Editable<GitHubSourceSpecBuilder>, Kube
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -239,6 +239,7 @@ public class ComponentRouteStatus implements Editable<ComponentRouteStatusBuilde
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

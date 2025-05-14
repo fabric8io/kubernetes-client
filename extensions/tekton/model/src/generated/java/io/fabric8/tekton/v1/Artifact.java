@@ -152,6 +152,7 @@ public class Artifact implements Editable<ArtifactBuilder>, KubernetesResource
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -188,6 +188,7 @@ public class ControllerCertificate implements Editable<ControllerCertificateBuil
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

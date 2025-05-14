@@ -99,6 +99,7 @@ public class NodeRuntimeHandlerFeatures implements Editable<NodeRuntimeHandlerFe
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -128,6 +128,7 @@ public class KeyValue implements Editable<KeyValueBuilder>, KubernetesResource
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

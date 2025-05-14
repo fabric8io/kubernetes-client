@@ -108,6 +108,7 @@ public class HTTPRedirectDerivePort implements IsHTTPRedirectRedirectPort, Edita
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

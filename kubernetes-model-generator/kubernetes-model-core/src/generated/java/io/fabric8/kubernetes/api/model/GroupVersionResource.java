@@ -98,6 +98,7 @@ public class GroupVersionResource implements Editable<GroupVersionResourceBuilde
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

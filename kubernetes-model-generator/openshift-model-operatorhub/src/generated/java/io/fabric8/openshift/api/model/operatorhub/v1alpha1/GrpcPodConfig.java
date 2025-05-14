@@ -237,6 +237,7 @@ public class GrpcPodConfig implements Editable<GrpcPodConfigBuilder>, Kubernetes
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

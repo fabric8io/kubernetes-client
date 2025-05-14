@@ -165,6 +165,7 @@ public class AzureNetworkAccessInternal implements Editable<AzureNetworkAccessIn
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

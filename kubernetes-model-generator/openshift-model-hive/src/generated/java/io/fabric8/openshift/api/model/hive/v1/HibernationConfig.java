@@ -99,6 +99,7 @@ public class HibernationConfig implements Editable<HibernationConfigBuilder>, Ku
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -183,6 +183,7 @@ public class TaskRunList implements Editable<TaskRunListBuilder>, KubernetesReso
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -123,6 +123,7 @@ public class ExperimentStatus implements Editable<ExperimentStatusBuilder>, Kube
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

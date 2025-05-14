@@ -341,6 +341,7 @@ public class OAuthAccessToken implements Editable<OAuthAccessTokenBuilder>, HasM
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

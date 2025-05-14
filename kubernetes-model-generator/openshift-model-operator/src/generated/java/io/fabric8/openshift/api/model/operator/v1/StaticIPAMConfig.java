@@ -154,6 +154,7 @@ public class StaticIPAMConfig implements Editable<StaticIPAMConfigBuilder>, Kube
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

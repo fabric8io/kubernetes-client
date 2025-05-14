@@ -148,6 +148,7 @@ public class WorkspacePipelineTaskBinding implements Editable<WorkspacePipelineT
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

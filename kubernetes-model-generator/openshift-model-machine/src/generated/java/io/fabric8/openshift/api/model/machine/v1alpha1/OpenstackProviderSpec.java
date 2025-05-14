@@ -593,6 +593,7 @@ public class OpenstackProviderSpec implements Editable<OpenstackProviderSpecBuil
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

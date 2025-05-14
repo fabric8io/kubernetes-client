@@ -137,6 +137,7 @@ public class RemoteClusterStatus implements Editable<RemoteClusterStatusBuilder>
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

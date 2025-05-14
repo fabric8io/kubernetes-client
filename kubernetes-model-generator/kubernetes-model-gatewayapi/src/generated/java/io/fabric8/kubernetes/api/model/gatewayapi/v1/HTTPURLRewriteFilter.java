@@ -128,6 +128,7 @@ public class HTTPURLRewriteFilter implements Editable<HTTPURLRewriteFilterBuilde
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

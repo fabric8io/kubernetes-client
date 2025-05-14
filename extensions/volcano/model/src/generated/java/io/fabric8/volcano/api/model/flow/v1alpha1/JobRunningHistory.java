@@ -127,6 +127,7 @@ public class JobRunningHistory implements Editable<JobRunningHistoryBuilder>, Ku
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

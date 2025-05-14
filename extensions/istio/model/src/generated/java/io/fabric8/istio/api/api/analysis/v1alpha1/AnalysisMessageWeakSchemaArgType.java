@@ -125,6 +125,7 @@ public class AnalysisMessageWeakSchemaArgType implements Editable<AnalysisMessag
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

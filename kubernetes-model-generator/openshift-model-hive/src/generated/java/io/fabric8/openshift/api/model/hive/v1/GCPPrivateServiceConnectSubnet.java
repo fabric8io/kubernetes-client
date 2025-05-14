@@ -128,6 +128,7 @@ public class GCPPrivateServiceConnectSubnet implements Editable<GCPPrivateServic
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -128,6 +128,7 @@ public class AlertingRuleStatus implements Editable<AlertingRuleStatusBuilder>, 
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

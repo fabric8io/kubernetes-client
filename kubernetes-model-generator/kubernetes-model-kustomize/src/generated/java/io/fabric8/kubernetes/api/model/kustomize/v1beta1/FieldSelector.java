@@ -99,6 +99,7 @@ public class FieldSelector implements Editable<FieldSelectorBuilder>, Kubernetes
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

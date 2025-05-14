@@ -292,6 +292,7 @@ public class MachineSetStatus implements Editable<MachineSetStatusBuilder>, Kube
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

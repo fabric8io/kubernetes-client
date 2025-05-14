@@ -148,6 +148,7 @@ public class NutanixResourceIdentifier implements Editable<NutanixResourceIdenti
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

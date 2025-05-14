@@ -232,6 +232,7 @@ public class HTTPBackendRef implements Editable<HTTPBackendRefBuilder>, Kubernet
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

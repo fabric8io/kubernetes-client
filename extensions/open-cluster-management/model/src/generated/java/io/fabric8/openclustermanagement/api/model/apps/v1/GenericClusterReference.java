@@ -108,6 +108,7 @@ public class GenericClusterReference implements Editable<GenericClusterReference
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -198,6 +198,7 @@ public class Metal3RemediationTemplate implements Editable<Metal3RemediationTemp
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

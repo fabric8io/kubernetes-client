@@ -228,6 +228,7 @@ public class HTTPRouteFilter implements Editable<HTTPRouteFilterBuilder>, Kubern
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

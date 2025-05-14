@@ -129,6 +129,7 @@ public class JobTemplateSpec implements Editable<JobTemplateSpecBuilder>, Kubern
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

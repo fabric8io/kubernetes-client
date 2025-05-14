@@ -183,6 +183,7 @@ public class GRPCRouteList implements Editable<GRPCRouteListBuilder>, Kubernetes
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

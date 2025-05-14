@@ -198,6 +198,7 @@ public class PipelineRun implements Editable<PipelineRunBuilder>, HasMetadata, N
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

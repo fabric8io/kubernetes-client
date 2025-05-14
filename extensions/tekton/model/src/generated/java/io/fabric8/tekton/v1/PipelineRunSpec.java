@@ -256,6 +256,7 @@ public class PipelineRunSpec implements Editable<PipelineRunSpecBuilder>, Kubern
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

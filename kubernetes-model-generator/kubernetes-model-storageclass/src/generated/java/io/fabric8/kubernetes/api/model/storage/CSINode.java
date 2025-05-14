@@ -177,6 +177,7 @@ public class CSINode implements Editable<CSINodeBuilder>, HasMetadata
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

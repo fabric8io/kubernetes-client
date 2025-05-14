@@ -212,6 +212,7 @@ public class ChildStatusReference implements Editable<ChildStatusReferenceBuilde
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

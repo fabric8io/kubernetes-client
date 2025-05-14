@@ -243,6 +243,7 @@ public class CoreV1TopologySpreadConstraint implements Editable<CoreV1TopologySp
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

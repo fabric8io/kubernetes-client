@@ -78,6 +78,7 @@ public class TriggerTemplateStatus implements Editable<TriggerTemplateStatusBuil
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

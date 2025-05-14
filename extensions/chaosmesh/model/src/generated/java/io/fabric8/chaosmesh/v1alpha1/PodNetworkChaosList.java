@@ -183,6 +183,7 @@ public class PodNetworkChaosList implements Editable<PodNetworkChaosListBuilder>
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

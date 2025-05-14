@@ -148,6 +148,7 @@ public class AnalysisMessageBase implements Editable<AnalysisMessageBaseBuilder>
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

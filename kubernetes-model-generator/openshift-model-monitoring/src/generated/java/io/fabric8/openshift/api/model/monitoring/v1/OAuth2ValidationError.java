@@ -75,6 +75,7 @@ public class OAuth2ValidationError implements Editable<OAuth2ValidationErrorBuil
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

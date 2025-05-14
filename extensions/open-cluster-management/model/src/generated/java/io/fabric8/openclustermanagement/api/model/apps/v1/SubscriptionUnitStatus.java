@@ -190,6 +190,7 @@ public class SubscriptionUnitStatus implements Editable<SubscriptionUnitStatusBu
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

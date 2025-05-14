@@ -198,6 +198,7 @@ public class VolumeSnapshot implements Editable<VolumeSnapshotBuilder>, HasMetad
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

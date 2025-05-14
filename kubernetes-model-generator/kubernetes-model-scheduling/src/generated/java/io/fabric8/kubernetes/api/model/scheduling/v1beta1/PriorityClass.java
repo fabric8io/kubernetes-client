@@ -237,6 +237,7 @@ public class PriorityClass implements Editable<PriorityClassBuilder>, HasMetadat
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

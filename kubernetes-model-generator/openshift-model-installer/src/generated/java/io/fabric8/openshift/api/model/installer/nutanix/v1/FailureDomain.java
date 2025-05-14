@@ -196,6 +196,7 @@ public class FailureDomain implements Editable<FailureDomainBuilder>, Kubernetes
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

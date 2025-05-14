@@ -458,6 +458,7 @@ public class ClusterPoolSpec implements Editable<ClusterPoolSpecBuilder>, Kubern
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

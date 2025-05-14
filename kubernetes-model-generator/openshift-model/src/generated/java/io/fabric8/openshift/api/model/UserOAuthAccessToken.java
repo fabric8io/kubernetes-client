@@ -341,6 +341,7 @@ public class UserOAuthAccessToken implements Editable<UserOAuthAccessTokenBuilde
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

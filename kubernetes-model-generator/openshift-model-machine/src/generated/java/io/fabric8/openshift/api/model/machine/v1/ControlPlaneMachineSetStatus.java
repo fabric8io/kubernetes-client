@@ -213,6 +213,7 @@ public class ControlPlaneMachineSetStatus implements Editable<ControlPlaneMachin
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

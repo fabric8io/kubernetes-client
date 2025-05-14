@@ -148,6 +148,7 @@ public class LimitRange implements Editable<LimitRangeBuilder>, HasMetadata, Nam
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -183,6 +183,7 @@ public class IngressClassList implements Editable<IngressClassListBuilder>, Kube
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

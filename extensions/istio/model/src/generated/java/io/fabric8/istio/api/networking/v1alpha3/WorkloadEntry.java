@@ -199,6 +199,7 @@ public class WorkloadEntry implements Editable<WorkloadEntryBuilder>, HasMetadat
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

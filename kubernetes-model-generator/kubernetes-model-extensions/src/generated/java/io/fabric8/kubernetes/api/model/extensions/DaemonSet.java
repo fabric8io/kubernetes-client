@@ -198,6 +198,7 @@ public class DaemonSet implements Editable<DaemonSetBuilder>, HasMetadata, Names
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -197,6 +197,7 @@ public class MachineOSBuild implements Editable<MachineOSBuildBuilder>, HasMetad
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

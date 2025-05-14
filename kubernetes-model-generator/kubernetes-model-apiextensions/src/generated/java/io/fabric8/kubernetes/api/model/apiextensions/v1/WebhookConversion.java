@@ -132,6 +132,7 @@ public class WebhookConversion implements Editable<WebhookConversionBuilder>, Ku
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

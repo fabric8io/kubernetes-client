@@ -208,6 +208,7 @@ public class TcParameter implements Editable<TcParameterBuilder>, KubernetesReso
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

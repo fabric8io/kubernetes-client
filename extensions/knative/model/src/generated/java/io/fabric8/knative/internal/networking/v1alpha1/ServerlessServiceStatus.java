@@ -195,6 +195,7 @@ public class ServerlessServiceStatus implements Editable<ServerlessServiceStatus
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

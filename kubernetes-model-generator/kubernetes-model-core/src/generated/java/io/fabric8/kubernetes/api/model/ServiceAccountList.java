@@ -152,6 +152,7 @@ public class ServiceAccountList implements Editable<ServiceAccountListBuilder>, 
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -148,6 +148,7 @@ public class ImageRegistryConfigProxy implements Editable<ImageRegistryConfigPro
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

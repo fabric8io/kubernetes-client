@@ -168,6 +168,7 @@ public class SidecarPort implements Editable<SidecarPortBuilder>, KubernetesReso
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

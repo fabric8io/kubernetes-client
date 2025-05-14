@@ -259,6 +259,7 @@ public class RevisionStatus implements Editable<RevisionStatusBuilder>, Kubernet
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

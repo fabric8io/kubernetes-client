@@ -199,6 +199,7 @@ public class PeerAuthentication implements Editable<PeerAuthenticationBuilder>, 
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

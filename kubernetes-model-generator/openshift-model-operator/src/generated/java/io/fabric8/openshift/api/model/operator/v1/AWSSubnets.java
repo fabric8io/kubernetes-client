@@ -134,6 +134,7 @@ public class AWSSubnets implements Editable<AWSSubnetsBuilder>, KubernetesResour
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

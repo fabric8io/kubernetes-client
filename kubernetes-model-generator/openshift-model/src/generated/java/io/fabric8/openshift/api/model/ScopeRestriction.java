@@ -132,6 +132,7 @@ public class ScopeRestriction implements Editable<ScopeRestrictionBuilder>, Kube
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

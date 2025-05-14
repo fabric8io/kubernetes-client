@@ -212,6 +212,7 @@ public class ThanosRulerStatus implements Editable<ThanosRulerStatusBuilder>, Ku
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

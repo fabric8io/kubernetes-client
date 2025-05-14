@@ -208,6 +208,7 @@ public class BuildTriggerPolicy implements Editable<BuildTriggerPolicyBuilder>, 
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

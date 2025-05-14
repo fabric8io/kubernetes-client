@@ -192,6 +192,7 @@ public class SpecDescriptor implements Editable<SpecDescriptorBuilder>, Kubernet
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

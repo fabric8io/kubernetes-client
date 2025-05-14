@@ -131,6 +131,7 @@ public class ReplacementField implements Editable<ReplacementFieldBuilder>, Kube
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

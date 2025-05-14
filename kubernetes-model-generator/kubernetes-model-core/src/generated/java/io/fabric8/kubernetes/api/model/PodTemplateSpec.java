@@ -99,6 +99,7 @@ public class PodTemplateSpec implements Editable<PodTemplateSpecBuilder>, Kubern
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

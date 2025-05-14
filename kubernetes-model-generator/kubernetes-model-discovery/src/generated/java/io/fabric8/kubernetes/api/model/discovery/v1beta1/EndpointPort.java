@@ -168,6 +168,7 @@ public class EndpointPort implements Editable<EndpointPortBuilder>, KubernetesRe
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

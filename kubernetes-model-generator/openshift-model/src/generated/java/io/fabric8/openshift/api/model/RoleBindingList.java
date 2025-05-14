@@ -183,6 +183,7 @@ public class RoleBindingList implements Editable<RoleBindingListBuilder>, Kubern
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

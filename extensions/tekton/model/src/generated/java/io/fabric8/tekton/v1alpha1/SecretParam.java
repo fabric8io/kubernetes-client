@@ -148,6 +148,7 @@ public class SecretParam implements Editable<SecretParamBuilder>, KubernetesReso
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

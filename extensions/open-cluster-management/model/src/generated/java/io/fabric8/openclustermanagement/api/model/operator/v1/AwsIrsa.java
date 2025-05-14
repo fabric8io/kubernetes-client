@@ -125,6 +125,7 @@ public class AwsIrsa implements Editable<AwsIrsaBuilder>, KubernetesResource
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

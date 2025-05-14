@@ -139,6 +139,7 @@ public class TypedObjectReference implements Editable<TypedObjectReferenceBuilde
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -168,6 +168,7 @@ public class OSDisk implements Editable<OSDiskBuilder>, KubernetesResource
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

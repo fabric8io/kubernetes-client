@@ -188,6 +188,7 @@ public class BackendObjectReference implements Editable<BackendObjectReferenceBu
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

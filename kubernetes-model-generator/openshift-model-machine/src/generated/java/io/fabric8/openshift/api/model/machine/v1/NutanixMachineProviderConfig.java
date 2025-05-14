@@ -469,6 +469,7 @@ public class NutanixMachineProviderConfig implements Editable<NutanixMachineProv
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

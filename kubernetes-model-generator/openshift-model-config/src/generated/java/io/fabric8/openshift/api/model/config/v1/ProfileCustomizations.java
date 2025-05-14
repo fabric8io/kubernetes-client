@@ -108,6 +108,7 @@ public class ProfileCustomizations implements Editable<ProfileCustomizationsBuil
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

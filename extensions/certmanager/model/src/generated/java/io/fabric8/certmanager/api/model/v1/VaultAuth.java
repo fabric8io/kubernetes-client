@@ -169,6 +169,7 @@ public class VaultAuth implements Editable<VaultAuthBuilder>, KubernetesResource
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -123,6 +123,7 @@ public class FieldSelectorRequirement implements Editable<FieldSelectorRequireme
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

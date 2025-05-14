@@ -188,6 +188,7 @@ public class ProfileStatusCondition implements Editable<ProfileStatusConditionBu
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -108,6 +108,7 @@ public class VSpherePlatformLoadBalancer implements Editable<VSpherePlatformLoad
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

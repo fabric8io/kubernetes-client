@@ -123,6 +123,7 @@ public class LabelSelectorRequirement implements Editable<LabelSelectorRequireme
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

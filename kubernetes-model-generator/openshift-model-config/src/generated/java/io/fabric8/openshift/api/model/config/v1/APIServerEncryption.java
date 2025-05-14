@@ -105,6 +105,7 @@ public class APIServerEncryption implements Editable<APIServerEncryptionBuilder>
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

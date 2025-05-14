@@ -197,6 +197,7 @@ public class ServiceCatalogAPIServer implements Editable<ServiceCatalogAPIServer
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -148,6 +148,7 @@ public class EndpointConditions implements Editable<EndpointConditionsBuilder>, 
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

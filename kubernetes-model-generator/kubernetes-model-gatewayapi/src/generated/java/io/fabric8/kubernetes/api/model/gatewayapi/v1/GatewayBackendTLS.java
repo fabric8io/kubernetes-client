@@ -108,6 +108,7 @@ public class GatewayBackendTLS implements Editable<GatewayBackendTLSBuilder>, Ku
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

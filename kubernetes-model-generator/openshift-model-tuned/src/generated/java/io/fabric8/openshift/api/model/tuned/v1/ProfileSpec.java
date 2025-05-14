@@ -123,6 +123,7 @@ public class ProfileSpec implements Editable<ProfileSpecBuilder>, KubernetesReso
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

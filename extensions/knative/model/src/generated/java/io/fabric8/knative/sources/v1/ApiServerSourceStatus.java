@@ -281,6 +281,7 @@ public class ApiServerSourceStatus implements Editable<ApiServerSourceStatusBuil
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

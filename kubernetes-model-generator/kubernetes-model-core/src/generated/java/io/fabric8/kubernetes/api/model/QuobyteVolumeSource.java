@@ -179,6 +179,7 @@ public class QuobyteVolumeSource implements Editable<QuobyteVolumeSourceBuilder>
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

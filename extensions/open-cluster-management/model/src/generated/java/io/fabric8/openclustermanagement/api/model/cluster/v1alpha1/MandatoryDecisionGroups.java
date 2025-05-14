@@ -112,6 +112,7 @@ public class MandatoryDecisionGroups implements Editable<MandatoryDecisionGroups
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

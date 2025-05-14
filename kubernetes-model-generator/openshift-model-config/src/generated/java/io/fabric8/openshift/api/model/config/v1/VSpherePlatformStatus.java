@@ -236,6 +236,7 @@ public class VSpherePlatformStatus implements Editable<VSpherePlatformStatusBuil
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

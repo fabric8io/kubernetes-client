@@ -198,6 +198,7 @@ public class ClusterClaim implements Editable<ClusterClaimBuilder>, HasMetadata,
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

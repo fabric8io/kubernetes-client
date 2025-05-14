@@ -191,6 +191,7 @@ public class AwsSqsSourceSpec implements Editable<AwsSqsSourceSpecBuilder>, Kube
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

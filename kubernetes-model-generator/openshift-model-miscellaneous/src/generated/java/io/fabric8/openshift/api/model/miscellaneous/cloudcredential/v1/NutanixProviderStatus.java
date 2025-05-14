@@ -138,6 +138,7 @@ public class NutanixProviderStatus implements Editable<NutanixProviderStatusBuil
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

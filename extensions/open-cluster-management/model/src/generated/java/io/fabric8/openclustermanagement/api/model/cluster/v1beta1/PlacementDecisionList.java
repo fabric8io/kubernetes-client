@@ -183,6 +183,7 @@ public class PlacementDecisionList implements Editable<PlacementDecisionListBuil
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -108,6 +108,7 @@ public class AttachedImageReference implements Editable<AttachedImageReferenceBu
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

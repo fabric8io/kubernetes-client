@@ -174,6 +174,7 @@ public class AWSPlatformStatus implements Editable<AWSPlatformStatusBuilder>, Ku
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

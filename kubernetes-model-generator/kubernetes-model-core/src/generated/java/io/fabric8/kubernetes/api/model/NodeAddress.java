@@ -99,6 +99,7 @@ public class NodeAddress implements Editable<NodeAddressBuilder>, KubernetesReso
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

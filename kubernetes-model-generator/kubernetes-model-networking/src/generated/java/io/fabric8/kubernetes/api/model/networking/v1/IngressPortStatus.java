@@ -148,6 +148,7 @@ public class IngressPortStatus implements Editable<IngressPortStatusBuilder>, Ku
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

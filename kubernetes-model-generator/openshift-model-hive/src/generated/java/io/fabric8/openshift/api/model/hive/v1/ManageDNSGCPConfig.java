@@ -108,6 +108,7 @@ public class ManageDNSGCPConfig implements Editable<ManageDNSGCPConfigBuilder>, 
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

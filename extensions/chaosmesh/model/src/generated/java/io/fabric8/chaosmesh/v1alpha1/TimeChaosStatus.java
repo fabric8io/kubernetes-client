@@ -132,6 +132,7 @@ public class TimeChaosStatus implements Editable<TimeChaosStatusBuilder>, Kubern
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

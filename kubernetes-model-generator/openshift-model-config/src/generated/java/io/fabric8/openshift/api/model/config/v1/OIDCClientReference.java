@@ -145,6 +145,7 @@ public class OIDCClientReference implements Editable<OIDCClientReferenceBuilder>
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

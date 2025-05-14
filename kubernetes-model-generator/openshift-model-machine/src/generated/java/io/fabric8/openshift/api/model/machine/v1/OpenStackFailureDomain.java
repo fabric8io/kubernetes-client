@@ -128,6 +128,7 @@ public class OpenStackFailureDomain implements Editable<OpenStackFailureDomainBu
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

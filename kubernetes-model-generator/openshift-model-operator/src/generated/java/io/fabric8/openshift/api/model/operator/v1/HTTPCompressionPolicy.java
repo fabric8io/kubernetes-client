@@ -112,6 +112,7 @@ public class HTTPCompressionPolicy implements Editable<HTTPCompressionPolicyBuil
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

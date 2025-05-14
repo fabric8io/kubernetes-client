@@ -307,6 +307,7 @@ public class SubscriptionConfig implements Editable<SubscriptionConfigBuilder>, 
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

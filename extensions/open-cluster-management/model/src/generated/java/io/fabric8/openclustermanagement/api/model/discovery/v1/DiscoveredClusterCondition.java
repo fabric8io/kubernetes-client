@@ -153,6 +153,7 @@ public class DiscoveredClusterCondition implements Editable<DiscoveredClusterCon
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

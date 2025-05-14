@@ -183,6 +183,7 @@ public class AlibabaCloudMachineProviderConfigList implements Editable<AlibabaCl
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

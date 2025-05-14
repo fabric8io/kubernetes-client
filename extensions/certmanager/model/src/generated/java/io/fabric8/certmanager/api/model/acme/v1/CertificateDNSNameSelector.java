@@ -156,6 +156,7 @@ public class CertificateDNSNameSelector implements Editable<CertificateDNSNameSe
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

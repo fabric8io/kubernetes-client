@@ -129,6 +129,7 @@ public class ConsoleConfigRoute implements Editable<ConsoleConfigRouteBuilder>, 
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -128,6 +128,7 @@ public class ImageChangeCause implements Editable<ImageChangeCauseBuilder>, Kube
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -119,6 +119,7 @@ public class EnvFromSource implements Editable<EnvFromSourceBuilder>, Kubernetes
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

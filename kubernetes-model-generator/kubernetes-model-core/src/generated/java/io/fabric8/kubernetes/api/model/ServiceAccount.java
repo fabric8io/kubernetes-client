@@ -194,6 +194,7 @@ public class ServiceAccount implements Editable<ServiceAccountBuilder>, HasMetad
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

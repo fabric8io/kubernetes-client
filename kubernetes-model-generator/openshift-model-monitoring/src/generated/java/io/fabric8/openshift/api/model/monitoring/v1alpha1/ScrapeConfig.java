@@ -178,6 +178,7 @@ public class ScrapeConfig implements Editable<ScrapeConfigBuilder>, HasMetadata,
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

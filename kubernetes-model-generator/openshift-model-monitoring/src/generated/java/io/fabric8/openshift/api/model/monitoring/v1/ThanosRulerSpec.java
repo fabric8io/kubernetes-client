@@ -1187,6 +1187,7 @@ public class ThanosRulerSpec implements Editable<ThanosRulerSpecBuilder>, Kubern
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -179,6 +179,7 @@ public class ReferenceGrant implements Editable<ReferenceGrantBuilder>, HasMetad
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

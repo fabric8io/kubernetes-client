@@ -192,6 +192,7 @@ public class PackageChannel implements Editable<PackageChannelBuilder>, Kubernet
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

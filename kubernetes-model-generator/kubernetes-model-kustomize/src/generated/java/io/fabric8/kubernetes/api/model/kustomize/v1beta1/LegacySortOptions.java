@@ -119,6 +119,7 @@ public class LegacySortOptions implements Editable<LegacySortOptionsBuilder>, Ku
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

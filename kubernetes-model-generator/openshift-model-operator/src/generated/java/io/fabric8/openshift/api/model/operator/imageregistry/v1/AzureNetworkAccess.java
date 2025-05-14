@@ -128,6 +128,7 @@ public class AzureNetworkAccess implements Editable<AzureNetworkAccessBuilder>, 
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

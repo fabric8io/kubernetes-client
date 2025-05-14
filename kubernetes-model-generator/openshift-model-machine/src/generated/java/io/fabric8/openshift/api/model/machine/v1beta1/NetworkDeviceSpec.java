@@ -196,6 +196,7 @@ public class NetworkDeviceSpec implements Editable<NetworkDeviceSpecBuilder>, Ku
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -128,6 +128,7 @@ public class DecisionGroup implements Editable<DecisionGroupBuilder>, Kubernetes
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

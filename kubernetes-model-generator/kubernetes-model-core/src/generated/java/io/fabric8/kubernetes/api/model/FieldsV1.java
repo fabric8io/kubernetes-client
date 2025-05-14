@@ -49,6 +49,7 @@ public class FieldsV1 implements Editable<FieldsV1Builder>, KubernetesResource
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -222,6 +222,7 @@ public class DeploymentRequest implements Editable<DeploymentRequestBuilder>, Ku
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

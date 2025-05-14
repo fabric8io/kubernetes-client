@@ -85,6 +85,7 @@ public class MachineAddress implements Editable<MachineAddressBuilder>, Kubernet
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -152,6 +152,7 @@ public class SoftwareRAIDVolume implements Editable<SoftwareRAIDVolumeBuilder>, 
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

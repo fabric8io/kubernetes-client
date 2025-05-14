@@ -141,6 +141,7 @@ public class ResourceGVK implements Editable<ResourceGVKBuilder>, KubernetesReso
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

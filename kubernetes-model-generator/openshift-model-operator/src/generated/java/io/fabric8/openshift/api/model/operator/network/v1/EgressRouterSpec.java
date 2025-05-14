@@ -172,6 +172,7 @@ public class EgressRouterSpec implements Editable<EgressRouterSpecBuilder>, Kube
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

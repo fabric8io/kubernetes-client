@@ -273,6 +273,7 @@ public class EtcdStatus implements Editable<EtcdStatusBuilder>, KubernetesResour
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

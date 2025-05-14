@@ -188,6 +188,7 @@ public class TrafficPolicyPortTrafficPolicy implements Editable<TrafficPolicyPor
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

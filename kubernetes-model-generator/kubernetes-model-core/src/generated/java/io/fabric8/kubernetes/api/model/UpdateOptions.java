@@ -139,6 +139,7 @@ public class UpdateOptions implements Editable<UpdateOptionsBuilder>, Kubernetes
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

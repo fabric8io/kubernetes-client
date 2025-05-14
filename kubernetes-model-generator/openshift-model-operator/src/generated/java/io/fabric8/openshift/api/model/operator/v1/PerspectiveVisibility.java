@@ -128,6 +128,7 @@ public class PerspectiveVisibility implements Editable<PerspectiveVisibilityBuil
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -132,6 +132,7 @@ public class DeviceClaimConfiguration implements Editable<DeviceClaimConfigurati
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

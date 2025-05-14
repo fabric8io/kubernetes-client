@@ -257,6 +257,7 @@ public class SourceStatus implements Editable<SourceStatusBuilder>, KubernetesRe
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

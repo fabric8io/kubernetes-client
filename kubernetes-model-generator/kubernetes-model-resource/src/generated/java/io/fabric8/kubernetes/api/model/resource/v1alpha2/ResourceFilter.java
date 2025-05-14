@@ -128,6 +128,7 @@ public class ResourceFilter implements Editable<ResourceFilterBuilder>, Kubernet
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -198,6 +198,7 @@ public class BuildConfig implements Editable<BuildConfigBuilder>, HasMetadata, N
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

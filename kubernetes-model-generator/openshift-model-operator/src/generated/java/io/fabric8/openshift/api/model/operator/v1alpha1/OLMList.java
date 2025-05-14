@@ -183,6 +183,7 @@ public class OLMList implements Editable<OLMListBuilder>, KubernetesResource, Ku
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -108,6 +108,7 @@ public class TargetStatus implements Editable<TargetStatusBuilder>, KubernetesRe
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

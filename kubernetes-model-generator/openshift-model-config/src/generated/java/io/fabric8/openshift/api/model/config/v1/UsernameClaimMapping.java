@@ -139,6 +139,7 @@ public class UsernameClaimMapping implements Editable<UsernameClaimMappingBuilde
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

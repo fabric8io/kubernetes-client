@@ -148,6 +148,7 @@ public class AdditionalBlockDevice implements Editable<AdditionalBlockDeviceBuil
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

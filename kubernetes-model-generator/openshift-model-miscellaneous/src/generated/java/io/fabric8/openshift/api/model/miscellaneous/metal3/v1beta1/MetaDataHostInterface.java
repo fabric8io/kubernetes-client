@@ -128,6 +128,7 @@ public class MetaDataHostInterface implements Editable<MetaDataHostInterfaceBuil
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

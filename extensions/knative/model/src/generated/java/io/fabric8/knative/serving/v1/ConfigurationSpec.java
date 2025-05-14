@@ -108,6 +108,7 @@ public class ConfigurationSpec implements Editable<ConfigurationSpecBuilder>, Ku
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

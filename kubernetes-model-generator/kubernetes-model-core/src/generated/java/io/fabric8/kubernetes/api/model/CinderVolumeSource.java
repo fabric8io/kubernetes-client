@@ -139,6 +139,7 @@ public class CinderVolumeSource implements Editable<CinderVolumeSourceBuilder>, 
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

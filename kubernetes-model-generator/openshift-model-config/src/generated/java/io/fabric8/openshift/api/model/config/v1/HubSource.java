@@ -128,6 +128,7 @@ public class HubSource implements Editable<HubSourceBuilder>, KubernetesResource
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

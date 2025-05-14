@@ -198,6 +198,7 @@ public class HTTPChaos implements Editable<HTTPChaosBuilder>, HasMetadata, Names
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

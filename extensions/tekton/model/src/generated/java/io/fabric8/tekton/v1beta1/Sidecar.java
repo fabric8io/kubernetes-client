@@ -611,6 +611,7 @@ public class Sidecar implements Editable<SidecarBuilder>, KubernetesResource
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

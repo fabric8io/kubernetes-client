@@ -129,6 +129,7 @@ public class HybridOverlayConfig implements Editable<HybridOverlayConfigBuilder>
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

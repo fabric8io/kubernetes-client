@@ -108,6 +108,7 @@ public class TrustedLaunch implements Editable<TrustedLaunchBuilder>, Kubernetes
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

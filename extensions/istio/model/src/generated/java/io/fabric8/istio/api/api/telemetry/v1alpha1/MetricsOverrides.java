@@ -150,6 +150,7 @@ public class MetricsOverrides implements Editable<MetricsOverridesBuilder>, Kube
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -198,6 +198,7 @@ public class BackendLBPolicy implements Editable<BackendLBPolicyBuilder>, HasMet
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

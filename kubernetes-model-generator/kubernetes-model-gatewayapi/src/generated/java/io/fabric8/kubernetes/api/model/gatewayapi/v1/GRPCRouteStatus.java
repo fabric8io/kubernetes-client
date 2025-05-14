@@ -112,6 +112,7 @@ public class GRPCRouteStatus implements Editable<GRPCRouteStatusBuilder>, Kubern
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

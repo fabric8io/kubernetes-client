@@ -78,6 +78,7 @@ public class AzurePlatformSpec implements Editable<AzurePlatformSpecBuilder>, Ku
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

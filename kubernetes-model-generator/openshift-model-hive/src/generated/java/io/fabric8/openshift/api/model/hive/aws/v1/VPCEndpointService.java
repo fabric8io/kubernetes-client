@@ -157,6 +157,7 @@ public class VPCEndpointService implements Editable<VPCEndpointServiceBuilder>, 
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

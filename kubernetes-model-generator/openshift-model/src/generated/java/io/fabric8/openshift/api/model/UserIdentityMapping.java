@@ -197,6 +197,7 @@ public class UserIdentityMapping implements Editable<UserIdentityMappingBuilder>
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

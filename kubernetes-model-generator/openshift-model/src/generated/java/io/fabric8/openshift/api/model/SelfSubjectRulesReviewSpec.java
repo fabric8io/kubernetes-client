@@ -112,6 +112,7 @@ public class SelfSubjectRulesReviewSpec implements Editable<SelfSubjectRulesRevi
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

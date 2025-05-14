@@ -161,6 +161,7 @@ public class FlexVolumeSource implements Editable<FlexVolumeSourceBuilder>, Kube
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

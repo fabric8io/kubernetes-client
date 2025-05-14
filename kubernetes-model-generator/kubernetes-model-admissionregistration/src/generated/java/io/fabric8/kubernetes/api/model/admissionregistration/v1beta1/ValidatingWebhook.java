@@ -294,6 +294,7 @@ public class ValidatingWebhook implements Editable<ValidatingWebhookBuilder>, Ku
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

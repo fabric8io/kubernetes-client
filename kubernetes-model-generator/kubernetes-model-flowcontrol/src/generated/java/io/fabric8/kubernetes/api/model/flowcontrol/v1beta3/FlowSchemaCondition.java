@@ -188,6 +188,7 @@ public class FlowSchemaCondition implements Editable<FlowSchemaConditionBuilder>
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

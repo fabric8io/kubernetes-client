@@ -168,6 +168,7 @@ public class NetworkDataRoutev4 implements Editable<NetworkDataRoutev4Builder>, 
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

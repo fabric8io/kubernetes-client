@@ -194,6 +194,7 @@ public class NutanixPlatformStatus implements Editable<NutanixPlatformStatusBuil
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

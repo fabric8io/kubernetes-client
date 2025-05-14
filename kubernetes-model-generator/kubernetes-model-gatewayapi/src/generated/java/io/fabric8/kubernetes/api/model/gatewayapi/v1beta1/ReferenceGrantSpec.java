@@ -134,6 +134,7 @@ public class ReferenceGrantSpec implements Editable<ReferenceGrantSpecBuilder>, 
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

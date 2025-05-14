@@ -128,6 +128,7 @@ public class EgressIPStatusItem implements Editable<EgressIPStatusItemBuilder>, 
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

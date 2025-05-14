@@ -112,6 +112,7 @@ public class PlacementRuleStatus implements Editable<PlacementRuleStatusBuilder>
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

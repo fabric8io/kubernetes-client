@@ -209,6 +209,7 @@ public class HTTPCommonSpec implements Editable<HTTPCommonSpecBuilder>, Kubernet
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -108,6 +108,7 @@ public class ReadinessProbeExec implements IsReadinessProbeHealthCheckMethod, Ed
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

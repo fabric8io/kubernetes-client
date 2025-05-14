@@ -108,6 +108,7 @@ public class EventListenerConfig implements Editable<EventListenerConfigBuilder>
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

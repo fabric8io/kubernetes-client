@@ -182,6 +182,7 @@ public class AWSProviderSpec implements Editable<AWSProviderSpecBuilder>, Kubern
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -223,6 +223,7 @@ public class VSphereMachineProviderStatus implements Editable<VSphereMachineProv
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -419,6 +419,7 @@ public class DockerSDConfig implements Editable<DockerSDConfigBuilder>, Kubernet
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -429,6 +429,7 @@ public class PushoverConfig implements Editable<PushoverConfigBuilder>, Kubernet
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

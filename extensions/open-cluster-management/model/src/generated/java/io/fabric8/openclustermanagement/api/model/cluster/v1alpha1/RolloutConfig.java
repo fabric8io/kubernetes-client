@@ -149,6 +149,7 @@ public class RolloutConfig implements Editable<RolloutConfigBuilder>, Kubernetes
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

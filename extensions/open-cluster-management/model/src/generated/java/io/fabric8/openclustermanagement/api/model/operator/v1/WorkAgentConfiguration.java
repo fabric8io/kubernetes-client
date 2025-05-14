@@ -164,6 +164,7 @@ public class WorkAgentConfiguration implements Editable<WorkAgentConfigurationBu
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

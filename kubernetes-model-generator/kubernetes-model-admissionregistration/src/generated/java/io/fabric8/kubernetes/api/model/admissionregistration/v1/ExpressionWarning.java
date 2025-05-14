@@ -128,6 +128,7 @@ public class ExpressionWarning implements Editable<ExpressionWarningBuilder>, Ku
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

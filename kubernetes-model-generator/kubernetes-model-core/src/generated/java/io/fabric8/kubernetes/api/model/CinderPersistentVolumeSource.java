@@ -139,6 +139,7 @@ public class CinderPersistentVolumeSource implements Editable<CinderPersistentVo
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

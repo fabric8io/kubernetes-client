@@ -275,6 +275,7 @@ public class KubeAPIServerStatus implements Editable<KubeAPIServerStatusBuilder>
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -198,6 +198,7 @@ public class PodAutoscaler implements Editable<PodAutoscalerBuilder>, HasMetadat
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

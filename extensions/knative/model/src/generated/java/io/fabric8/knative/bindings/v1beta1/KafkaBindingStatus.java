@@ -155,6 +155,7 @@ public class KafkaBindingStatus implements Editable<KafkaBindingStatusBuilder>, 
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

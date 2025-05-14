@@ -135,6 +135,7 @@ public class Scheduling implements Editable<SchedulingBuilder>, KubernetesResour
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

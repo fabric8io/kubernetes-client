@@ -168,6 +168,7 @@ public class RepositoryImportSpec implements Editable<RepositoryImportSpecBuilde
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

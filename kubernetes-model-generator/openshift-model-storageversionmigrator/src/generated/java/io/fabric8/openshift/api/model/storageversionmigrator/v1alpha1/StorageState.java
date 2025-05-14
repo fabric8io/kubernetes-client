@@ -197,6 +197,7 @@ public class StorageState implements Editable<StorageStateBuilder>, HasMetadata
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

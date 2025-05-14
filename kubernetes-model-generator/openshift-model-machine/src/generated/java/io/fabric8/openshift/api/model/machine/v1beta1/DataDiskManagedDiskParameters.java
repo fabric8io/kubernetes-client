@@ -128,6 +128,7 @@ public class DataDiskManagedDiskParameters implements Editable<DataDiskManagedDi
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

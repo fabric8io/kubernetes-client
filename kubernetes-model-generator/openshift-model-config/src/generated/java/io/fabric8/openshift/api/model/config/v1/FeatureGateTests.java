@@ -129,6 +129,7 @@ public class FeatureGateTests implements Editable<FeatureGateTestsBuilder>, Kube
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

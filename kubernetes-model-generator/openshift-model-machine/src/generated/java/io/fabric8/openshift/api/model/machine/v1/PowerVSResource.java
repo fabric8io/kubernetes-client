@@ -168,6 +168,7 @@ public class PowerVSResource implements Editable<PowerVSResourceBuilder>, Kubern
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

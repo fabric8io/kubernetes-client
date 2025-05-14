@@ -108,6 +108,7 @@ public class VolumeNodeResources implements Editable<VolumeNodeResourcesBuilder>
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

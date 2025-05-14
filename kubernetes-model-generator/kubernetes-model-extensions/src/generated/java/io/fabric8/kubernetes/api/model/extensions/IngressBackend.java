@@ -128,6 +128,7 @@ public class IngressBackend implements Editable<IngressBackendBuilder>, Kubernet
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

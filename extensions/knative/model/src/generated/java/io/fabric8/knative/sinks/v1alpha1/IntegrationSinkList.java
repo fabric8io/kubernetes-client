@@ -183,6 +183,7 @@ public class IntegrationSinkList implements Editable<IntegrationSinkListBuilder>
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

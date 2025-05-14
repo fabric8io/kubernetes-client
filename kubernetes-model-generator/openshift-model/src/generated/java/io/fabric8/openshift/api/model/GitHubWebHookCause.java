@@ -128,6 +128,7 @@ public class GitHubWebHookCause implements Editable<GitHubWebHookCauseBuilder>, 
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

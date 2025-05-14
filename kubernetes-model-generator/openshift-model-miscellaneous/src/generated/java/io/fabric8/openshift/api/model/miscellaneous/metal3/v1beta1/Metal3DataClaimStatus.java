@@ -128,6 +128,7 @@ public class Metal3DataClaimStatus implements Editable<Metal3DataClaimStatusBuil
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -198,6 +198,7 @@ public class DNSRecord implements Editable<DNSRecordBuilder>, HasMetadata, Names
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

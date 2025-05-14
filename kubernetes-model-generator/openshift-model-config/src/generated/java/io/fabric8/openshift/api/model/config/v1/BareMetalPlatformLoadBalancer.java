@@ -108,6 +108,7 @@ public class BareMetalPlatformLoadBalancer implements Editable<BareMetalPlatform
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

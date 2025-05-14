@@ -105,6 +105,7 @@ public class PodAffinity implements Editable<PodAffinityBuilder>, KubernetesReso
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

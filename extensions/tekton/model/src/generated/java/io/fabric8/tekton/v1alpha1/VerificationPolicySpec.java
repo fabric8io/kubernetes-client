@@ -154,6 +154,7 @@ public class VerificationPolicySpec implements Editable<VerificationPolicySpecBu
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

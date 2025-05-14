@@ -128,6 +128,7 @@ public class ConsolePluginBackend implements Editable<ConsolePluginBackendBuilde
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

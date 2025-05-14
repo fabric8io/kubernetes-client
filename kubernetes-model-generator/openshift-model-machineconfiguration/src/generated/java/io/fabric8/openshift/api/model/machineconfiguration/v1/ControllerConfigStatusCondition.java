@@ -188,6 +188,7 @@ public class ControllerConfigStatusCondition implements Editable<ControllerConfi
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

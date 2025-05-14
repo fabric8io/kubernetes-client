@@ -125,6 +125,7 @@ public class UserDefinedSpec implements Editable<UserDefinedSpecBuilder>, Kubern
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

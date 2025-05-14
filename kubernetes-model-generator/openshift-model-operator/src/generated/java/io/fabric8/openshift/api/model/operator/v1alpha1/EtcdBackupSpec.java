@@ -105,6 +105,7 @@ public class EtcdBackupSpec implements Editable<EtcdBackupSpecBuilder>, Kubernet
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

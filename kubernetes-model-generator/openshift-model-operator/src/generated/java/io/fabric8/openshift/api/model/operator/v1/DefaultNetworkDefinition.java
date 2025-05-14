@@ -148,6 +148,7 @@ public class DefaultNetworkDefinition implements Editable<DefaultNetworkDefiniti
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

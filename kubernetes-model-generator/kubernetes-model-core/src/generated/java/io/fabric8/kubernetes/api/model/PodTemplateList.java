@@ -152,6 +152,7 @@ public class PodTemplateList implements Editable<PodTemplateListBuilder>, Kubern
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

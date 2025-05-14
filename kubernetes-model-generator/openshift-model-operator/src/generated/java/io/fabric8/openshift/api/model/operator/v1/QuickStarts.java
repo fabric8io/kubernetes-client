@@ -112,6 +112,7 @@ public class QuickStarts implements Editable<QuickStartsBuilder>, KubernetesReso
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

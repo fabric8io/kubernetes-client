@@ -109,6 +109,7 @@ public class ACMEIssuerDNS01ProviderDigitalOcean implements Editable<ACMEIssuerD
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

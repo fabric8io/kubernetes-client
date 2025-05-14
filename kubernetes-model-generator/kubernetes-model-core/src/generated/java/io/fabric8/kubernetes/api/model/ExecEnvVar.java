@@ -84,6 +84,7 @@ public class ExecEnvVar implements Editable<ExecEnvVarBuilder>, KubernetesResour
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -152,6 +152,7 @@ public class AWSResourceReference implements Editable<AWSResourceReferenceBuilde
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

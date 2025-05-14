@@ -165,6 +165,7 @@ public class RedisCacheLimitSpec implements Editable<RedisCacheLimitSpecBuilder>
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

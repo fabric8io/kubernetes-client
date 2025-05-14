@@ -197,6 +197,7 @@ public class MachineOSConfig implements Editable<MachineOSConfigBuilder>, HasMet
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

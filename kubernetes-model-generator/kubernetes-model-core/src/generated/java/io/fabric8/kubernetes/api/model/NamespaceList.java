@@ -152,6 +152,7 @@ public class NamespaceList implements Editable<NamespaceListBuilder>, Kubernetes
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

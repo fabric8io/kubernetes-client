@@ -128,6 +128,7 @@ public class ConfigMapBuildSource implements Editable<ConfigMapBuildSourceBuilde
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

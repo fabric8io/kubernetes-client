@@ -128,6 +128,7 @@ public class VeleroBackupConfig implements Editable<VeleroBackupConfigBuilder>, 
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

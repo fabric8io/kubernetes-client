@@ -188,6 +188,7 @@ public class ReplicaSetCondition implements Editable<ReplicaSetConditionBuilder>
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

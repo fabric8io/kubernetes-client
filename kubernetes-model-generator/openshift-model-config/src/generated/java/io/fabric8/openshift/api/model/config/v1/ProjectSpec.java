@@ -128,6 +128,7 @@ public class ProjectSpec implements Editable<ProjectSpecBuilder>, KubernetesReso
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

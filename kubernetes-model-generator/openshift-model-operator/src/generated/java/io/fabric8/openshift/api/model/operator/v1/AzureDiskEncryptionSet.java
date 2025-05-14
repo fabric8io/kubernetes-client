@@ -148,6 +148,7 @@ public class AzureDiskEncryptionSet implements Editable<AzureDiskEncryptionSetBu
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

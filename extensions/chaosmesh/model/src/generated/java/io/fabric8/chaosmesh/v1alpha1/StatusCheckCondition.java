@@ -155,6 +155,7 @@ public class StatusCheckCondition implements Editable<StatusCheckConditionBuilde
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -113,6 +113,7 @@ public class ManagedClusterSetBindingStatus implements Editable<ManagedClusterSe
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

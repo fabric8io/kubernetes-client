@@ -134,6 +134,7 @@ public class ServiceAccountRestriction implements Editable<ServiceAccountRestric
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

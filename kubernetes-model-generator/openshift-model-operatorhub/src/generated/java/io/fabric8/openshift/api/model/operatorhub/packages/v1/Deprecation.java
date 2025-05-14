@@ -108,6 +108,7 @@ public class Deprecation implements Editable<DeprecationBuilder>, KubernetesReso
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -198,6 +198,7 @@ public class TimeChaos implements Editable<TimeChaosBuilder>, HasMetadata, Names
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

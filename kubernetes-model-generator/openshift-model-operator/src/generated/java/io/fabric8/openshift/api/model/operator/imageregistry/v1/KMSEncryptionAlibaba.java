@@ -105,6 +105,7 @@ public class KMSEncryptionAlibaba implements Editable<KMSEncryptionAlibabaBuilde
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

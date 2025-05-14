@@ -155,6 +155,7 @@ public class PciDevice implements Editable<PciDeviceBuilder>, KubernetesResource
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

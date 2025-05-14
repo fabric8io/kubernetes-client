@@ -183,6 +183,7 @@ public class OAuthAuthorizeTokenList implements Editable<OAuthAuthorizeTokenList
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

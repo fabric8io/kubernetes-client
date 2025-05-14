@@ -108,6 +108,7 @@ public class BootVolume implements Editable<BootVolumeBuilder>, KubernetesResour
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

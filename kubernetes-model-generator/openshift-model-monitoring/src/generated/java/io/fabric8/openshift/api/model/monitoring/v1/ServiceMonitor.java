@@ -178,6 +178,7 @@ public class ServiceMonitor implements Editable<ServiceMonitorBuilder>, HasMetad
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

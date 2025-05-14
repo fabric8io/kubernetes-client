@@ -128,6 +128,7 @@ public class ClusterPoolClaimLifetime implements Editable<ClusterPoolClaimLifeti
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -128,6 +128,7 @@ public class KlusterletAddonAgentConfigSpec implements Editable<KlusterletAddonA
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

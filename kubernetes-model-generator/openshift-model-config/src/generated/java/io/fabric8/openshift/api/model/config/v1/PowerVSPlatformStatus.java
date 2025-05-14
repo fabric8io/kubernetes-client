@@ -212,6 +212,7 @@ public class PowerVSPlatformStatus implements Editable<PowerVSPlatformStatusBuil
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

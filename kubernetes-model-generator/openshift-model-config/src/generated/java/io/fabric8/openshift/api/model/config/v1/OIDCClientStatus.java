@@ -194,6 +194,7 @@ public class OIDCClientStatus implements Editable<OIDCClientStatusBuilder>, Kube
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

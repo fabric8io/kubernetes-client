@@ -579,6 +579,7 @@ public class HiveConfigSpec implements Editable<HiveConfigSpecBuilder>, Kubernet
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

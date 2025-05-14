@@ -281,6 +281,7 @@ public class EmbedChaos implements Editable<EmbedChaosBuilder>, KubernetesResour
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

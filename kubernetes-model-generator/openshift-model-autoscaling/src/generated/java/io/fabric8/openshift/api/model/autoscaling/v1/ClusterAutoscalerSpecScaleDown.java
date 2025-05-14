@@ -208,6 +208,7 @@ public class ClusterAutoscalerSpecScaleDown implements Editable<ClusterAutoscale
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

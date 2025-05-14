@@ -213,6 +213,7 @@ public class IstioCondition implements Editable<IstioConditionBuilder>, Kubernet
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

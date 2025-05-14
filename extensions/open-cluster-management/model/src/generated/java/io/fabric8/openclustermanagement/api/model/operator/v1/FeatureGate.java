@@ -125,6 +125,7 @@ public class FeatureGate implements Editable<FeatureGateBuilder>, KubernetesReso
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

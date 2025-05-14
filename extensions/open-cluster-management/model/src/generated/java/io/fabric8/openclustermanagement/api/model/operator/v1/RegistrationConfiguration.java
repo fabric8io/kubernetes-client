@@ -219,6 +219,7 @@ public class RegistrationConfiguration implements Editable<RegistrationConfigura
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

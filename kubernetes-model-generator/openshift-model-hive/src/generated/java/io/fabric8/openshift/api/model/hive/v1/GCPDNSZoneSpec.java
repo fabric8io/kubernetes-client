@@ -108,6 +108,7 @@ public class GCPDNSZoneSpec implements Editable<GCPDNSZoneSpecBuilder>, Kubernet
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

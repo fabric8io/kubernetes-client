@@ -197,6 +197,7 @@ public class SelectorSyncIdentityProvider implements Editable<SelectorSyncIdenti
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

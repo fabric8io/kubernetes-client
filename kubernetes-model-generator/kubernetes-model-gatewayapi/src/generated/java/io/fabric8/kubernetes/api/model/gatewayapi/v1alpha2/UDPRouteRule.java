@@ -133,6 +133,7 @@ public class UDPRouteRule implements Editable<UDPRouteRuleBuilder>, KubernetesRe
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

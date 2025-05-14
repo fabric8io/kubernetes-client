@@ -155,6 +155,7 @@ public class EventTypeStatus implements Editable<EventTypeStatusBuilder>, Kubern
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

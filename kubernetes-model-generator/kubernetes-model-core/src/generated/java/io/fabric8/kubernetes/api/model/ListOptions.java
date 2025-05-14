@@ -233,6 +233,7 @@ public class ListOptions implements Editable<ListOptionsBuilder>, KubernetesReso
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

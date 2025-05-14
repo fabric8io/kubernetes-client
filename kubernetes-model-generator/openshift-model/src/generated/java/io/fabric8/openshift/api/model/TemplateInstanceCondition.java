@@ -188,6 +188,7 @@ public class TemplateInstanceCondition implements Editable<TemplateInstanceCondi
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

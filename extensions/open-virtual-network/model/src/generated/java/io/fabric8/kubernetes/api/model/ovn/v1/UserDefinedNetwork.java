@@ -198,6 +198,7 @@ public class UserDefinedNetwork implements Editable<UserDefinedNetworkBuilder>, 
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

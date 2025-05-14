@@ -112,6 +112,7 @@ public class NodeDisruptionPolicySpecSSHKey implements Editable<NodeDisruptionPo
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

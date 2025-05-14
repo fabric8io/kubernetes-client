@@ -112,6 +112,7 @@ public class EgressRouterStatus implements Editable<EgressRouterStatusBuilder>, 
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -128,6 +128,7 @@ public class MetricsWithDuration implements Editable<MetricsWithDurationBuilder>
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

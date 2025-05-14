@@ -84,6 +84,7 @@ public class NamedAuthInfo implements Editable<NamedAuthInfoBuilder>, Kubernetes
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

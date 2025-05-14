@@ -198,6 +198,7 @@ public class HostUpdatePolicy implements Editable<HostUpdatePolicyBuilder>, HasM
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

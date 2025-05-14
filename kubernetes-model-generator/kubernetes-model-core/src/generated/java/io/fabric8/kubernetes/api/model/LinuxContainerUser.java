@@ -123,6 +123,7 @@ public class LinuxContainerUser implements Editable<LinuxContainerUserBuilder>, 
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

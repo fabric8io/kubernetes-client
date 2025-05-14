@@ -152,6 +152,7 @@ public class PerNodeAPIRequestLog implements Editable<PerNodeAPIRequestLogBuilde
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

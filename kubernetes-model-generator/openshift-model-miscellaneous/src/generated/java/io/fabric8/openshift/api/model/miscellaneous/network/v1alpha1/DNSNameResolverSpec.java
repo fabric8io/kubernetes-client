@@ -108,6 +108,7 @@ public class DNSNameResolverSpec implements Editable<DNSNameResolverSpecBuilder>
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -128,6 +128,7 @@ public class MetaDataObjectName implements Editable<MetaDataObjectNameBuilder>, 
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

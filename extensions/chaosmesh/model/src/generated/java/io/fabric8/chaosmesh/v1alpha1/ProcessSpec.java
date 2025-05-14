@@ -145,6 +145,7 @@ public class ProcessSpec implements Editable<ProcessSpecBuilder>, KubernetesReso
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

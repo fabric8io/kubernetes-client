@@ -128,6 +128,7 @@ public class ServiceAccountSubject implements Editable<ServiceAccountSubjectBuil
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -108,6 +108,7 @@ public class LoadBalancerSettingsConsistentHashLBRingHash implements IsLoadBalan
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

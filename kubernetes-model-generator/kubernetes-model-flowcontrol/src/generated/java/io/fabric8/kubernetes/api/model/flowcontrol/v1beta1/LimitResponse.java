@@ -128,6 +128,7 @@ public class LimitResponse implements Editable<LimitResponseBuilder>, Kubernetes
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

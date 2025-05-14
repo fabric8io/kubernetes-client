@@ -292,6 +292,7 @@ public class DaemonSetStatus implements Editable<DaemonSetStatusBuilder>, Kubern
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -148,6 +148,7 @@ public class OpenStackClusterDeprovision implements Editable<OpenStackClusterDep
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

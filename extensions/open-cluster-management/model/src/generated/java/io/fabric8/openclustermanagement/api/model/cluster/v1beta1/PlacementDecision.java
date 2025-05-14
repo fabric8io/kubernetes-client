@@ -178,6 +178,7 @@ public class PlacementDecision implements Editable<PlacementDecisionBuilder>, Ha
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

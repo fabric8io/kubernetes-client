@@ -177,6 +177,7 @@ public class IngressClass implements Editable<IngressClassBuilder>, HasMetadata
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

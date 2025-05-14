@@ -197,6 +197,7 @@ public class VolumeAttachment implements Editable<VolumeAttachmentBuilder>, HasM
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -109,6 +109,7 @@ public class NetFlowConfig implements Editable<NetFlowConfigBuilder>, Kubernetes
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

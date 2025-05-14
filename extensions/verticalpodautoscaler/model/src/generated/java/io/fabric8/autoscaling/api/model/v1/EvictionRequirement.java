@@ -132,6 +132,7 @@ public class EvictionRequirement implements Editable<EvictionRequirementBuilder>
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

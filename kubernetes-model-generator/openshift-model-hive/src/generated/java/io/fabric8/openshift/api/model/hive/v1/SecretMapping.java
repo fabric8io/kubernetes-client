@@ -128,6 +128,7 @@ public class SecretMapping implements Editable<SecretMappingBuilder>, Kubernetes
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

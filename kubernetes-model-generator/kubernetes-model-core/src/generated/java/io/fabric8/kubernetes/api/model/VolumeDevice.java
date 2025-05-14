@@ -99,6 +99,7 @@ public class VolumeDevice implements Editable<VolumeDeviceBuilder>, KubernetesRe
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -128,6 +128,7 @@ public class NamedRole implements Editable<NamedRoleBuilder>, KubernetesResource
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

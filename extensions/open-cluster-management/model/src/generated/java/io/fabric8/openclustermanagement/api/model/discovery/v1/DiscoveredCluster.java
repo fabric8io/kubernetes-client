@@ -198,6 +198,7 @@ public class DiscoveredCluster implements Editable<DiscoveredClusterBuilder>, Ha
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

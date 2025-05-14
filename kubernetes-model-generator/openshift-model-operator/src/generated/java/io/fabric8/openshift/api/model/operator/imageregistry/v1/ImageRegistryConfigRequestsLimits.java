@@ -148,6 +148,7 @@ public class ImageRegistryConfigRequestsLimits implements Editable<ImageRegistry
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

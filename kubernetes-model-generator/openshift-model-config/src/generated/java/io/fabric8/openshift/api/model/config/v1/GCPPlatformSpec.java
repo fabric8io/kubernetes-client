@@ -78,6 +78,7 @@ public class GCPPlatformSpec implements Editable<GCPPlatformSpecBuilder>, Kubern
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

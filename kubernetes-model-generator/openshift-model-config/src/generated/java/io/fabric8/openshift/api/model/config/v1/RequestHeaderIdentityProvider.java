@@ -260,6 +260,7 @@ public class RequestHeaderIdentityProvider implements Editable<RequestHeaderIden
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

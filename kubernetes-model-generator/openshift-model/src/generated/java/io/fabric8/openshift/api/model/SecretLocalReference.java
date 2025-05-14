@@ -108,6 +108,7 @@ public class SecretLocalReference implements Editable<SecretLocalReferenceBuilde
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

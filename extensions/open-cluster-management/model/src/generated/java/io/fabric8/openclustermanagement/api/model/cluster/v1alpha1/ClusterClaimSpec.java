@@ -105,6 +105,7 @@ public class ClusterClaimSpec implements Editable<ClusterClaimSpecBuilder>, Kube
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

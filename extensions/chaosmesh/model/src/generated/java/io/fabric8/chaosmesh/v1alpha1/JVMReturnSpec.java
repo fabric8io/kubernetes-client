@@ -185,6 +185,7 @@ public class JVMReturnSpec implements Editable<JVMReturnSpecBuilder>, Kubernetes
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -134,6 +134,7 @@ public class TaskResources implements Editable<TaskResourcesBuilder>, Kubernetes
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -228,6 +228,7 @@ public class RollingDeploymentStrategyParams implements Editable<RollingDeployme
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

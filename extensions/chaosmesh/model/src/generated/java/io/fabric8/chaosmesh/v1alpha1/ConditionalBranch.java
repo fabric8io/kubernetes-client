@@ -125,6 +125,7 @@ public class ConditionalBranch implements Editable<ConditionalBranchBuilder>, Ku
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

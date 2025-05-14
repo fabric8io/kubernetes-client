@@ -143,6 +143,7 @@ public class SecretVolumeSource implements Editable<SecretVolumeSourceBuilder>, 
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -138,6 +138,7 @@ public class KubevirtProviderSpec implements Editable<KubevirtProviderSpecBuilde
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

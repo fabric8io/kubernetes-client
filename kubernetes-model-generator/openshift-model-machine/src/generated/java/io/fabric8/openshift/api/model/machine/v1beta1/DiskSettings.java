@@ -108,6 +108,7 @@ public class DiskSettings implements Editable<DiskSettingsBuilder>, KubernetesRe
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

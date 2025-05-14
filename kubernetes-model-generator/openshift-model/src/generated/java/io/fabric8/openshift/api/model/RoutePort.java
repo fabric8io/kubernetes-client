@@ -108,6 +108,7 @@ public class RoutePort implements Editable<RoutePortBuilder>, KubernetesResource
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

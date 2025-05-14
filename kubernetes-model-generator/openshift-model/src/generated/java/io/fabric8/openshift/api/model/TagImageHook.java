@@ -128,6 +128,7 @@ public class TagImageHook implements Editable<TagImageHookBuilder>, KubernetesRe
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -78,6 +78,7 @@ public class DiscoveredClusterStatus implements Editable<DiscoveredClusterStatus
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

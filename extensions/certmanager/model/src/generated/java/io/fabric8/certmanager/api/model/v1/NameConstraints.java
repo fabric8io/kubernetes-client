@@ -148,6 +148,7 @@ public class NameConstraints implements Editable<NameConstraintsBuilder>, Kubern
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

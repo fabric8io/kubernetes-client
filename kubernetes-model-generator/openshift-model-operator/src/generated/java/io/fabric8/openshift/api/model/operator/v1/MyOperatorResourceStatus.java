@@ -211,6 +211,7 @@ public class MyOperatorResourceStatus implements Editable<MyOperatorResourceStat
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

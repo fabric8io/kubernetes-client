@@ -139,6 +139,7 @@ public class GlusterfsPersistentVolumeSource implements Editable<GlusterfsPersis
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

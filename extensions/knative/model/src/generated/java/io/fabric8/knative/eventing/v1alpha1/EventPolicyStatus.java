@@ -177,6 +177,7 @@ public class EventPolicyStatus implements Editable<EventPolicyStatusBuilder>, Ku
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

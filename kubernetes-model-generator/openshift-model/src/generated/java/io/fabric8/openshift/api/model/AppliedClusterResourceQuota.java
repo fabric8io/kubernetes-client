@@ -198,6 +198,7 @@ public class AppliedClusterResourceQuota implements Editable<AppliedClusterResou
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

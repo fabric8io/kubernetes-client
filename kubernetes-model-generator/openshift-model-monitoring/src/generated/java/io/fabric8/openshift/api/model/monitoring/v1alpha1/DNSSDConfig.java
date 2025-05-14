@@ -172,6 +172,7 @@ public class DNSSDConfig implements Editable<DNSSDConfigBuilder>, KubernetesReso
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

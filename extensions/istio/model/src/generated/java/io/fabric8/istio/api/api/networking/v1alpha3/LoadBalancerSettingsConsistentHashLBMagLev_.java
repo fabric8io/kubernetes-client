@@ -105,6 +105,7 @@ public class LoadBalancerSettingsConsistentHashLBMagLev_ implements Editable<Loa
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

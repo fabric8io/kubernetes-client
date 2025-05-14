@@ -199,6 +199,7 @@ public class JobTemplate implements Editable<JobTemplateBuilder>, HasMetadata, N
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

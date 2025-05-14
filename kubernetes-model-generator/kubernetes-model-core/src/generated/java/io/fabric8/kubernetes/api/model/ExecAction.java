@@ -83,6 +83,7 @@ public class ExecAction implements Editable<ExecActionBuilder>, KubernetesResour
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

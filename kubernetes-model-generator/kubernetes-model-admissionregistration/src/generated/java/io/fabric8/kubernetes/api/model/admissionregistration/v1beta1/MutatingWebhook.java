@@ -314,6 +314,7 @@ public class MutatingWebhook implements Editable<MutatingWebhookBuilder>, Kubern
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -143,6 +143,7 @@ public class LoadBalancerIngress implements Editable<LoadBalancerIngressBuilder>
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

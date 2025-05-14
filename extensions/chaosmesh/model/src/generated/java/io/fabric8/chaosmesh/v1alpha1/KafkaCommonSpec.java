@@ -185,6 +185,7 @@ public class KafkaCommonSpec implements Editable<KafkaCommonSpecBuilder>, Kubern
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

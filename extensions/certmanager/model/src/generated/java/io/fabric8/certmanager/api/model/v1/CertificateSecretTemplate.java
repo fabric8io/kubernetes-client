@@ -132,6 +132,7 @@ public class CertificateSecretTemplate implements Editable<CertificateSecretTemp
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -301,6 +301,7 @@ public class ChannelableStatus implements Editable<ChannelableStatusBuilder>, Ku
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

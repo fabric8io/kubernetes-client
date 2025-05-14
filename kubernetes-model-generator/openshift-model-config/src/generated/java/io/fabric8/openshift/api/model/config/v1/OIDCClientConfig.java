@@ -183,6 +183,7 @@ public class OIDCClientConfig implements Editable<OIDCClientConfigBuilder>, Kube
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

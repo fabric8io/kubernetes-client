@@ -78,6 +78,7 @@ public class PlacementBindingStatus implements Editable<PlacementBindingStatusBu
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

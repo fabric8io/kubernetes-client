@@ -183,6 +183,7 @@ public class KafkaChannelList implements Editable<KafkaChannelListBuilder>, Kube
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

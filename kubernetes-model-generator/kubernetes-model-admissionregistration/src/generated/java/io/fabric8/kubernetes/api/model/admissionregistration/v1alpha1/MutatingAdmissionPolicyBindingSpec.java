@@ -148,6 +148,7 @@ public class MutatingAdmissionPolicyBindingSpec implements Editable<MutatingAdmi
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

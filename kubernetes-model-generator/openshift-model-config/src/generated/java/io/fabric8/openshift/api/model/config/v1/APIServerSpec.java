@@ -179,6 +179,7 @@ public class APIServerSpec implements Editable<APIServerSpecBuilder>, Kubernetes
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

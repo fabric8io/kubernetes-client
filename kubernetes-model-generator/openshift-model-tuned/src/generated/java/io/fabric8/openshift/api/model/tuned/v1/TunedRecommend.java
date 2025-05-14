@@ -194,6 +194,7 @@ public class TunedRecommend implements Editable<TunedRecommendBuilder>, Kubernet
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

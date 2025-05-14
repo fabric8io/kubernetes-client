@@ -113,6 +113,7 @@ public class HelmGlobals implements Editable<HelmGlobalsBuilder>, KubernetesReso
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

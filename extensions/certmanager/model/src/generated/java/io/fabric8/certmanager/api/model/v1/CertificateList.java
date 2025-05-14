@@ -183,6 +183,7 @@ public class CertificateList implements Editable<CertificateListBuilder>, Kubern
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -199,6 +199,7 @@ public class EnvoyFilter implements Editable<EnvoyFilterBuilder>, HasMetadata, N
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

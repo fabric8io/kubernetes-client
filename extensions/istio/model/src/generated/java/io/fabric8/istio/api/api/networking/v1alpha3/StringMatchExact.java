@@ -108,6 +108,7 @@ public class StringMatchExact implements IsStringMatchMatchType, Editable<String
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

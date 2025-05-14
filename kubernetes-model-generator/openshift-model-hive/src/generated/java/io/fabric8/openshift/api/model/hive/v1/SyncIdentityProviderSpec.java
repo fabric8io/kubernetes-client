@@ -135,6 +135,7 @@ public class SyncIdentityProviderSpec implements Editable<SyncIdentityProviderSp
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

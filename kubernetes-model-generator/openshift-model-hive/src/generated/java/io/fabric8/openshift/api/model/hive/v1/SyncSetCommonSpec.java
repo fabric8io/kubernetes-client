@@ -218,6 +218,7 @@ public class SyncSetCommonSpec implements Editable<SyncSetCommonSpecBuilder>, Ku
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
