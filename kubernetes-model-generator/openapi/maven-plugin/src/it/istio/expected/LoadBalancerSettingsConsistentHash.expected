@@ -99,6 +99,7 @@ public class LoadBalancerSettingsConsistentHash implements IsLoadBalancerSetting
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
