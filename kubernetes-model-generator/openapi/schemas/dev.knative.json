@@ -4782,6 +4782,222 @@
         "Scope": "Namespaced"
       }
     },
+    "dev.knative.eventing.v1alpha1.EventTransform": {
+      "description": "EventTransform represents an even transformation.",
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
+          "type": "string"
+        },
+        "kind": {
+          "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
+          "type": "string"
+        },
+        "metadata": {
+          "default": {},
+          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta"
+        },
+        "spec": {
+          "description": "Spec defines the desired state of the EventTransform.",
+          "default": {},
+          "$ref": "#/definitions/dev.knative.eventing.v1alpha1.EventTransformSpec"
+        },
+        "status": {
+          "description": "Status represents the current state of the EventTransform. This data may be out of date.",
+          "default": {},
+          "$ref": "#/definitions/dev.knative.eventing.v1alpha1.EventTransformStatus"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "object",
+        "Group": "eventing.knative.dev",
+        "Version": "v1alpha1",
+        "Kind": "EventTransform",
+        "Scope": "Namespaced"
+      }
+    },
+    "dev.knative.eventing.v1alpha1.EventTransformList": {
+      "description": "EventTransformList is a collection of EventTransform.",
+      "type": "object",
+      "required": [
+        "items"
+      ],
+      "properties": {
+        "apiVersion": {
+          "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
+          "type": "string"
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "default": {},
+            "$ref": "#/definitions/dev.knative.eventing.v1alpha1.EventTransform"
+          }
+        },
+        "kind": {
+          "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
+          "type": "string"
+        },
+        "metadata": {
+          "default": {},
+          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ListMeta"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "list",
+        "Group": "eventing.knative.dev",
+        "Version": "v1alpha1",
+        "Kind": "EventTransformList",
+        "Scope": "Namespaced"
+      }
+    },
+    "dev.knative.eventing.v1alpha1.EventTransformSpec": {
+      "type": "object",
+      "properties": {
+        "jsonata": {
+          "$ref": "#/definitions/dev.knative.eventing.v1alpha1.JsonataEventTransformationSpec"
+        },
+        "reply": {
+          "description": "Reply is the configuration on how to handle responses from Sink. It can only be set if Sink is set.",
+          "$ref": "#/definitions/dev.knative.eventing.v1alpha1.ReplySpec"
+        },
+        "sink": {
+          "description": "Sink is a reference to an object that will resolve to a uri to use as the sink.\n\nIf not present, the transformation will send back the transformed event as response, this is useful to leverage the built-in Broker reply feature to re-publish a transformed event back to the broker.",
+          "$ref": "#/definitions/dev.knative.duck.v1.Destination"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "eventing.knative.dev",
+        "Version": "v1alpha1",
+        "Kind": "EventTransformSpec",
+        "Scope": "Namespaced"
+      }
+    },
+    "dev.knative.eventing.v1alpha1.EventTransformStatus": {
+      "description": "EventTransformStatus represents the current state of a EventTransform.",
+      "type": "object",
+      "properties": {
+        "address": {
+          "description": "Address is a single Addressable address. If Addresses is present, Address will be ignored by clients.",
+          "$ref": "#/definitions/dev.knative.duck.v1.Addressable"
+        },
+        "addresses": {
+          "description": "Addresses is a list of addresses for different protocols (HTTP and HTTPS) If Addresses is present, Address must be ignored by clients.",
+          "type": "array",
+          "items": {
+            "default": {},
+            "$ref": "#/definitions/dev.knative.duck.v1.Addressable"
+          }
+        },
+        "annotations": {
+          "description": "Annotations is additional Status fields for the Resource to save some additional State as well as convey more information to the user. This is roughly akin to Annotations on any k8s resource, just the reconciler conveying richer information outwards.",
+          "type": "object",
+          "additionalProperties": {
+            "type": "string",
+            "default": ""
+          }
+        },
+        "auth": {
+          "description": "Auth defines the attributes that provide the generated service account name in the resource status.",
+          "$ref": "#/definitions/dev.knative.duck.v1.AuthStatus"
+        },
+        "ceAttributes": {
+          "description": "CloudEventAttributes are the specific attributes that the Source uses as part of its CloudEvents.",
+          "type": "array",
+          "items": {
+            "default": {},
+            "$ref": "#/definitions/dev.knative.duck.v1.CloudEventAttributes"
+          }
+        },
+        "conditions": {
+          "description": "Conditions the latest available observations of a resource's current state.",
+          "type": "array",
+          "items": {
+            "default": {},
+            "$ref": "#/definitions/dev.knative.pkg.apis.Condition"
+          },
+          "x-kubernetes-patch-merge-key": "type",
+          "x-kubernetes-patch-strategy": "merge"
+        },
+        "jsonata": {
+          "description": "JsonataTransformationStatus is the status associated with JsonataEventTransformationSpec.",
+          "$ref": "#/definitions/dev.knative.eventing.v1alpha1.JsonataEventTransformationStatus"
+        },
+        "observedGeneration": {
+          "description": "ObservedGeneration is the 'Generation' of the Service that was last processed by the controller.",
+          "type": "integer",
+          "format": "int64"
+        },
+        "sinkAudience": {
+          "description": "SinkAudience is the OIDC audience of the sink.",
+          "type": "string"
+        },
+        "sinkCACerts": {
+          "description": "SinkCACerts are Certification Authority (CA) certificates in PEM format according to https://www.rfc-editor.org/rfc/rfc7468.",
+          "type": "string"
+        },
+        "sinkUri": {
+          "description": "SinkURI is the current active sink URI that has been configured for the Source.",
+          "$ref": "#/definitions/dev.knative.pkg.apis.URL"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "eventing.knative.dev",
+        "Version": "v1alpha1",
+        "Kind": "EventTransformStatus",
+        "Scope": "Namespaced"
+      }
+    },
+    "dev.knative.eventing.v1alpha1.EventTransformations": {
+      "type": "object",
+      "properties": {
+        "jsonata": {
+          "$ref": "#/definitions/dev.knative.eventing.v1alpha1.JsonataEventTransformationSpec"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "eventing.knative.dev",
+        "Version": "v1alpha1",
+        "Kind": "EventTransformations",
+        "Scope": "Namespaced"
+      }
+    },
+    "dev.knative.eventing.v1alpha1.JsonataEventTransformationSpec": {
+      "type": "object",
+      "properties": {
+        "expression": {
+          "description": "Expression is the JSONata expression.",
+          "type": "string"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "eventing.knative.dev",
+        "Version": "v1alpha1",
+        "Kind": "JsonataEventTransformationSpec",
+        "Scope": "Namespaced"
+      }
+    },
+    "dev.knative.eventing.v1alpha1.JsonataEventTransformationStatus": {
+      "type": "object",
+      "properties": {
+        "deployment": {
+          "default": {},
+          "$ref": "#/definitions/io.k8s.api.apps.v1.DeploymentStatus"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "eventing.knative.dev",
+        "Version": "v1alpha1",
+        "Kind": "JsonataEventTransformationStatus",
+        "Scope": "Namespaced"
+      }
+    },
     "dev.knative.eventing.v1alpha1.KafkaSink": {
       "description": "KafkaSink is an addressable resource that represent a Kafka topic.",
       "type": "object",
@@ -4949,6 +5165,26 @@
         "Group": "eventing.knative.dev",
         "Version": "v1alpha1",
         "Kind": "KafkaSinkStatus",
+        "Scope": "Namespaced"
+      }
+    },
+    "dev.knative.eventing.v1alpha1.ReplySpec": {
+      "description": "ReplySpec is the configurations on how to handle responses from Sink.",
+      "type": "object",
+      "properties": {
+        "discard": {
+          "description": "Discard discards responses from Sink and return empty response body.\n\nWhen set to false, it returns the exact sink response body. When set to true, Discard is mutually exclusive with EventTransformations in the reply section, it can either be discarded or transformed.\n\nDefault: false.",
+          "type": "boolean"
+        },
+        "jsonata": {
+          "$ref": "#/definitions/dev.knative.eventing.v1alpha1.JsonataEventTransformationSpec"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "eventing.knative.dev",
+        "Version": "v1alpha1",
+        "Kind": "ReplySpec",
         "Scope": "Namespaced"
       }
     },
