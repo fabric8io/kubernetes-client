@@ -208,6 +208,7 @@ public class TrafficTarget implements Editable<TrafficTargetBuilder>, Kubernetes
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

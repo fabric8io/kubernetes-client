@@ -148,6 +148,7 @@ public class PipelineWorkspaceDeclaration implements Editable<PipelineWorkspaceD
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -123,6 +123,7 @@ public class KafkaAuthSpec implements Editable<KafkaAuthSpecBuilder>, Kubernetes
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

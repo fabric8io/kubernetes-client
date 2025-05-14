@@ -198,6 +198,7 @@ public class NetworkChaos implements Editable<NetworkChaosBuilder>, HasMetadata,
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -153,6 +153,7 @@ public class ValidatingAdmissionPolicyStatus implements Editable<ValidatingAdmis
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

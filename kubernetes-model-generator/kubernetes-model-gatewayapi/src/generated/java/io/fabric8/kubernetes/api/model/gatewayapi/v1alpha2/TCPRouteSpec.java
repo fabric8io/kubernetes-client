@@ -135,6 +135,7 @@ public class TCPRouteSpec implements Editable<TCPRouteSpecBuilder>, KubernetesRe
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

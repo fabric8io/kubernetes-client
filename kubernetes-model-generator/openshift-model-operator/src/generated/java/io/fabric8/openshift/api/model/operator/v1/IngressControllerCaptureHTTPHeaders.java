@@ -134,6 +134,7 @@ public class IngressControllerCaptureHTTPHeaders implements Editable<IngressCont
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

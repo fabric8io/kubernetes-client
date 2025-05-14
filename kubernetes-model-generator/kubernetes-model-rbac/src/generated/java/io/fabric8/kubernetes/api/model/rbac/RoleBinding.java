@@ -202,6 +202,7 @@ public class RoleBinding implements Editable<RoleBindingBuilder>, HasMetadata, N
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

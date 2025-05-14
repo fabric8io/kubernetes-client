@@ -112,6 +112,7 @@ public class NamespaceSelector implements Editable<NamespaceSelectorBuilder>, Ku
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -128,6 +128,7 @@ public class InventoryEntry implements Editable<InventoryEntryBuilder>, Kubernet
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

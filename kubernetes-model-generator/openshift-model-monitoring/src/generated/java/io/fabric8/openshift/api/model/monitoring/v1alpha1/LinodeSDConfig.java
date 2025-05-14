@@ -355,6 +355,7 @@ public class LinodeSDConfig implements Editable<LinodeSDConfigBuilder>, Kubernet
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -148,6 +148,7 @@ public class HTTPRewrite implements Editable<HTTPRewriteBuilder>, KubernetesReso
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

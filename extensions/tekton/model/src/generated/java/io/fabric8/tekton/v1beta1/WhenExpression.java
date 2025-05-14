@@ -172,6 +172,7 @@ public class WhenExpression implements Editable<WhenExpressionBuilder>, Kubernet
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

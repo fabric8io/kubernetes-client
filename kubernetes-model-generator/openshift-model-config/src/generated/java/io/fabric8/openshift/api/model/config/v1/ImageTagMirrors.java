@@ -152,6 +152,7 @@ public class ImageTagMirrors implements Editable<ImageTagMirrorsBuilder>, Kubern
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

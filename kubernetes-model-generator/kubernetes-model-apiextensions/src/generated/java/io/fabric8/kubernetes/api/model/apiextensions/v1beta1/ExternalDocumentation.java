@@ -113,6 +113,7 @@ public class ExternalDocumentation implements Editable<ExternalDocumentationBuil
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

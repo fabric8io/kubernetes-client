@@ -183,6 +183,7 @@ public class DataImageList implements Editable<DataImageListBuilder>, Kubernetes
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

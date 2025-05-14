@@ -134,6 +134,7 @@ public class NonResourceRule implements Editable<NonResourceRuleBuilder>, Kubern
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

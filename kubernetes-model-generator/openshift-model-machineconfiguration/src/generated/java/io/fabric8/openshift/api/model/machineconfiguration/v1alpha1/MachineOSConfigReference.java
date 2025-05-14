@@ -108,6 +108,7 @@ public class MachineOSConfigReference implements Editable<MachineOSConfigReferen
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

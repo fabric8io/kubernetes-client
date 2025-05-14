@@ -215,6 +215,7 @@ public class MachineOSBuildStatus implements Editable<MachineOSBuildStatusBuilde
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -145,6 +145,7 @@ public class DiskPayloadSpec implements Editable<DiskPayloadSpecBuilder>, Kubern
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

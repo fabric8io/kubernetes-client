@@ -108,6 +108,7 @@ public class DeploymentCauseImageTrigger implements Editable<DeploymentCauseImag
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

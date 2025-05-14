@@ -234,6 +234,7 @@ public class CustomBuildStrategy implements Editable<CustomBuildStrategyBuilder>
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

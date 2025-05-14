@@ -112,6 +112,7 @@ public class TriggerBindingSpec implements Editable<TriggerBindingSpecBuilder>, 
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

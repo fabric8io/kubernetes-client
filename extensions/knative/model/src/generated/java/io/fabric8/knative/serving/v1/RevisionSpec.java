@@ -988,6 +988,7 @@ public class RevisionSpec implements Editable<RevisionSpecBuilder>, KubernetesRe
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

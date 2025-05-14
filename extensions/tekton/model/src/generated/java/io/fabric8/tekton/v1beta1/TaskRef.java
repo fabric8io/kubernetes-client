@@ -168,6 +168,7 @@ public class TaskRef implements Editable<TaskRefBuilder>, KubernetesResource
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

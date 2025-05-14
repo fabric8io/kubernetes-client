@@ -183,6 +183,7 @@ public class BareMetalHostList implements Editable<BareMetalHostListBuilder>, Ku
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -189,6 +189,7 @@ public class Sigv4 implements Editable<Sigv4Builder>, KubernetesResource
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

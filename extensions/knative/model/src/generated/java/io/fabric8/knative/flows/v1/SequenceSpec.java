@@ -139,6 +139,7 @@ public class SequenceSpec implements Editable<SequenceSpecBuilder>, KubernetesRe
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

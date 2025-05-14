@@ -128,6 +128,7 @@ public class MetricsOverridesTagOverride implements Editable<MetricsOverridesTag
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

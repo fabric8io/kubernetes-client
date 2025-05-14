@@ -152,6 +152,7 @@ public class BuildOutput implements Editable<BuildOutputBuilder>, KubernetesReso
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

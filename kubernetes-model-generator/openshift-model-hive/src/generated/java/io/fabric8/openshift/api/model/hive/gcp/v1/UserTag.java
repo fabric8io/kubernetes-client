@@ -148,6 +148,7 @@ public class UserTag implements Editable<UserTagBuilder>, KubernetesResource
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

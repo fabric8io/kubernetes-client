@@ -150,6 +150,7 @@ public class ConversionReview implements Editable<ConversionReviewBuilder>, Kube
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

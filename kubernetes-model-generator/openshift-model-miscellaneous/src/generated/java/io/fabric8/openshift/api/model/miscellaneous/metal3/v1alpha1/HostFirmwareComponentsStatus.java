@@ -177,6 +177,7 @@ public class HostFirmwareComponentsStatus implements Editable<HostFirmwareCompon
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

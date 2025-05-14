@@ -108,6 +108,7 @@ public class DeviceClassConfiguration implements Editable<DeviceClassConfigurati
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

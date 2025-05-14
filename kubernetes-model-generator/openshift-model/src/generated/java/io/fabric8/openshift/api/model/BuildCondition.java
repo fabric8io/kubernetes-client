@@ -208,6 +208,7 @@ public class BuildCondition implements Editable<BuildConditionBuilder>, Kubernet
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

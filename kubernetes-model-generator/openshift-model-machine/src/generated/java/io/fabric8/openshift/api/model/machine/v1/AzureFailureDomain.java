@@ -128,6 +128,7 @@ public class AzureFailureDomain implements Editable<AzureFailureDomainBuilder>, 
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

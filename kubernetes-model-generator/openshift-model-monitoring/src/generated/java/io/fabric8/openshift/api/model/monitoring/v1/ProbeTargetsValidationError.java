@@ -78,6 +78,7 @@ public class ProbeTargetsValidationError implements Editable<ProbeTargetsValidat
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

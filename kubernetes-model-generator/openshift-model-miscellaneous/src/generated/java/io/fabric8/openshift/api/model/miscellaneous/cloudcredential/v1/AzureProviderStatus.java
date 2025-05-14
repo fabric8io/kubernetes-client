@@ -198,6 +198,7 @@ public class AzureProviderStatus implements Editable<AzureProviderStatusBuilder>
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

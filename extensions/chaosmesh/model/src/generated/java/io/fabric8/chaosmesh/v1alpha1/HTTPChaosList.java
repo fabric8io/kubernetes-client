@@ -183,6 +183,7 @@ public class HTTPChaosList implements Editable<HTTPChaosListBuilder>, Kubernetes
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

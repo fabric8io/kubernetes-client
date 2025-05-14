@@ -152,6 +152,7 @@ public class APIServiceList implements Editable<APIServiceListBuilder>, Kubernet
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

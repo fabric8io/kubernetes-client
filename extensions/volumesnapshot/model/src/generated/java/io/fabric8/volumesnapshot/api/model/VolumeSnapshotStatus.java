@@ -209,6 +209,7 @@ public class VolumeSnapshotStatus implements Editable<VolumeSnapshotStatusBuilde
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

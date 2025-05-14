@@ -174,6 +174,7 @@ public class BackendTLSPolicyValidation implements Editable<BackendTLSPolicyVali
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -112,6 +112,7 @@ public class ProjectAccess implements Editable<ProjectAccessBuilder>, Kubernetes
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

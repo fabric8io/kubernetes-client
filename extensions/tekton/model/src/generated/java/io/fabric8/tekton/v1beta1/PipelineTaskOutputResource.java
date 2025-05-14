@@ -128,6 +128,7 @@ public class PipelineTaskOutputResource implements Editable<PipelineTaskOutputRe
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

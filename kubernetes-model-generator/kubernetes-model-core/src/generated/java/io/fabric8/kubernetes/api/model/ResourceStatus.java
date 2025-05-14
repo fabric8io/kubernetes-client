@@ -103,6 +103,7 @@ public class ResourceStatus implements Editable<ResourceStatusBuilder>, Kubernet
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

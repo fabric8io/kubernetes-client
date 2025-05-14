@@ -148,6 +148,7 @@ public class AddressesFromPool implements Editable<AddressesFromPoolBuilder>, Ku
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

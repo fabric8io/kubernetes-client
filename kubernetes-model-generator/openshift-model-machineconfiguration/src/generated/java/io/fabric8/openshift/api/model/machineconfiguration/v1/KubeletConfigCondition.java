@@ -188,6 +188,7 @@ public class KubeletConfigCondition implements Editable<KubeletConfigConditionBu
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

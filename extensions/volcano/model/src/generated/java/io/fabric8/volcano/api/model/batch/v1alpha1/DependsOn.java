@@ -132,6 +132,7 @@ public class DependsOn implements Editable<DependsOnBuilder>, KubernetesResource
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -198,6 +198,7 @@ public class PackageManifest implements Editable<PackageManifestBuilder>, HasMet
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

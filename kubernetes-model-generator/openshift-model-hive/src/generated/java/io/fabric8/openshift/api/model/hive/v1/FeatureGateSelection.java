@@ -128,6 +128,7 @@ public class FeatureGateSelection implements Editable<FeatureGateSelectionBuilde
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

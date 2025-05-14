@@ -168,6 +168,7 @@ public class OpsGenieConfigResponder implements Editable<OpsGenieConfigResponder
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

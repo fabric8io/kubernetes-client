@@ -113,6 +113,7 @@ public class ConditionalBranchStatus implements Editable<ConditionalBranchStatus
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

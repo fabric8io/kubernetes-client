@@ -148,6 +148,7 @@ public class GRPCHeaderMatch implements Editable<GRPCHeaderMatchBuilder>, Kubern
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

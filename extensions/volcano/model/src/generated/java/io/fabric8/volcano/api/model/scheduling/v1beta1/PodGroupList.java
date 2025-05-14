@@ -183,6 +183,7 @@ public class PodGroupList implements Editable<PodGroupListBuilder>, KubernetesRe
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

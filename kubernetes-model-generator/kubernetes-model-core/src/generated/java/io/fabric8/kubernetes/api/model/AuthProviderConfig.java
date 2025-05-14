@@ -86,6 +86,7 @@ public class AuthProviderConfig implements Editable<AuthProviderConfigBuilder>, 
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

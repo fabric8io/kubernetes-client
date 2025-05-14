@@ -198,6 +198,7 @@ public class TriggerBinding implements Editable<TriggerBindingBuilder>, HasMetad
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

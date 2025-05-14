@@ -157,6 +157,7 @@ public class TLSRouteSpec implements Editable<TLSRouteSpecBuilder>, KubernetesRe
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

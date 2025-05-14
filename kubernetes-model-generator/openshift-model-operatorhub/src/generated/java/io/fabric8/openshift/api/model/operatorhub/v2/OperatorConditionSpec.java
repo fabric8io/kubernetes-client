@@ -179,6 +179,7 @@ public class OperatorConditionSpec implements Editable<OperatorConditionSpecBuil
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

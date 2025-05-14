@@ -198,6 +198,7 @@ public class AlertRelabelConfig implements Editable<AlertRelabelConfigBuilder>, 
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

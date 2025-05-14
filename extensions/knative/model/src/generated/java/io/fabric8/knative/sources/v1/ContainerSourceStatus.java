@@ -259,6 +259,7 @@ public class ContainerSourceStatus implements Editable<ContainerSourceStatusBuil
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

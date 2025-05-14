@@ -259,6 +259,7 @@ public class AwsSqsSourceStatus implements Editable<AwsSqsSourceStatusBuilder>, 
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

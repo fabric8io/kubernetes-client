@@ -128,6 +128,7 @@ public class HTTPDirectResponse implements Editable<HTTPDirectResponseBuilder>, 
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

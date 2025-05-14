@@ -183,6 +183,7 @@ public class VerticalPodAutoscalerCheckpointList implements Editable<VerticalPod
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -198,6 +198,7 @@ public class DomainMapping implements Editable<DomainMappingBuilder>, HasMetadat
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

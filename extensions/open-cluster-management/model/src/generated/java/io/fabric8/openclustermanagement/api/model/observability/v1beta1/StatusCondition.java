@@ -188,6 +188,7 @@ public class StatusCondition implements Editable<StatusConditionBuilder>, Kubern
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

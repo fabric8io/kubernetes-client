@@ -132,6 +132,7 @@ public class OperatorHubSpec implements Editable<OperatorHubSpecBuilder>, Kubern
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

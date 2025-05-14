@@ -79,6 +79,7 @@ public class SessionAffinityConfig implements Editable<SessionAffinityConfigBuil
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

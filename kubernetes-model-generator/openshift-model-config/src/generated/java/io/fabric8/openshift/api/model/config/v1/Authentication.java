@@ -197,6 +197,7 @@ public class Authentication implements Editable<AuthenticationBuilder>, HasMetad
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

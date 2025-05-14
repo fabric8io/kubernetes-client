@@ -178,6 +178,7 @@ public class Config implements Editable<ConfigBuilder>, KubernetesResource
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

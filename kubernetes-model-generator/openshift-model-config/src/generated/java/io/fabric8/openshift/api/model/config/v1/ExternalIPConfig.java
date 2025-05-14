@@ -132,6 +132,7 @@ public class ExternalIPConfig implements Editable<ExternalIPConfigBuilder>, Kube
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

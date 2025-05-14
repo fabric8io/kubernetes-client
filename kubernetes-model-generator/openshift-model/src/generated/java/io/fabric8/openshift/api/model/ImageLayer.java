@@ -148,6 +148,7 @@ public class ImageLayer implements Editable<ImageLayerBuilder>, KubernetesResour
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

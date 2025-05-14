@@ -188,6 +188,7 @@ public class BuildStrategy implements Editable<BuildStrategyBuilder>, Kubernetes
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

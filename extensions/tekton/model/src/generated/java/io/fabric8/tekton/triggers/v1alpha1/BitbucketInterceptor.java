@@ -132,6 +132,7 @@ public class BitbucketInterceptor implements Editable<BitbucketInterceptorBuilde
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

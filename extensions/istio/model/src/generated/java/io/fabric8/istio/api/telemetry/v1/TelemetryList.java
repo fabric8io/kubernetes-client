@@ -183,6 +183,7 @@ public class TelemetryList implements Editable<TelemetryListBuilder>, Kubernetes
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

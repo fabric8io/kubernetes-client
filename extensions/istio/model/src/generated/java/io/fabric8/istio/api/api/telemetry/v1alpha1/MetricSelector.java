@@ -131,6 +131,7 @@ public class MetricSelector implements Editable<MetricSelectorBuilder>, Kubernet
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

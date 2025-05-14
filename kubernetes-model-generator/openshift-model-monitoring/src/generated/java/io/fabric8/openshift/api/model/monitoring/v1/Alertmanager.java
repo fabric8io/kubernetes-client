@@ -198,6 +198,7 @@ public class Alertmanager implements Editable<AlertmanagerBuilder>, HasMetadata,
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

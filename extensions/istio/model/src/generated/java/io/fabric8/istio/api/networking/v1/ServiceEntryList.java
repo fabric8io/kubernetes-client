@@ -183,6 +183,7 @@ public class ServiceEntryList implements Editable<ServiceEntryListBuilder>, Kube
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

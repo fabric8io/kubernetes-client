@@ -108,6 +108,7 @@ public class ManagedClusterVersion implements Editable<ManagedClusterVersionBuil
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

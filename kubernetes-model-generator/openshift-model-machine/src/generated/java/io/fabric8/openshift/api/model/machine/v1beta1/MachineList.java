@@ -183,6 +183,7 @@ public class MachineList implements Editable<MachineListBuilder>, KubernetesReso
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

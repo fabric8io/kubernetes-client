@@ -396,6 +396,7 @@ public class PuppetDBSDConfig implements Editable<PuppetDBSDConfigBuilder>, Kube
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

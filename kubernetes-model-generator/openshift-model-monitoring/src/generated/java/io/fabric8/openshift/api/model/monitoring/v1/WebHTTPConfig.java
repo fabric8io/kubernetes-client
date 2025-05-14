@@ -128,6 +128,7 @@ public class WebHTTPConfig implements Editable<WebHTTPConfigBuilder>, Kubernetes
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

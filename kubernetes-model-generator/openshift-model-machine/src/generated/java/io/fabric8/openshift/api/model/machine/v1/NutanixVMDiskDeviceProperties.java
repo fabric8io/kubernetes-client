@@ -148,6 +148,7 @@ public class NutanixVMDiskDeviceProperties implements Editable<NutanixVMDiskDevi
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

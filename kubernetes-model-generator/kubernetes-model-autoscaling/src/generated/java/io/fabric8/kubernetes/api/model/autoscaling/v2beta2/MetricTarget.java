@@ -169,6 +169,7 @@ public class MetricTarget implements Editable<MetricTargetBuilder>, KubernetesRe
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

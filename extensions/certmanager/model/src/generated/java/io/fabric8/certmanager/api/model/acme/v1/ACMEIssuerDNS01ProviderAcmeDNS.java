@@ -129,6 +129,7 @@ public class ACMEIssuerDNS01ProviderAcmeDNS implements Editable<ACMEIssuerDNS01P
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

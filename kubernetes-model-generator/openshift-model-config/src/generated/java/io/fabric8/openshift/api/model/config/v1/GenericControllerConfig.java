@@ -168,6 +168,7 @@ public class GenericControllerConfig implements Editable<GenericControllerConfig
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

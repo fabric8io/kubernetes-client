@@ -148,6 +148,7 @@ public class Metal3RemediationStatus implements Editable<Metal3RemediationStatus
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -199,6 +199,7 @@ public class ManagedFieldsEntry implements Editable<ManagedFieldsEntryBuilder>, 
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

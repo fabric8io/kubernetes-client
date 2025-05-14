@@ -208,6 +208,7 @@ public class GCESDConfig implements Editable<GCESDConfigBuilder>, KubernetesReso
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

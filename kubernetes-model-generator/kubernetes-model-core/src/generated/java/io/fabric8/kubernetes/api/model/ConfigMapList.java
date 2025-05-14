@@ -152,6 +152,7 @@ public class ConfigMapList implements Editable<ConfigMapListBuilder>, Kubernetes
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -148,6 +148,7 @@ public class MachineAutoscalerSpecScaleTargetRef implements Editable<MachineAuto
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

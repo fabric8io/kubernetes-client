@@ -169,6 +169,7 @@ public class NutanixVMDisk implements Editable<NutanixVMDiskBuilder>, Kubernetes
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

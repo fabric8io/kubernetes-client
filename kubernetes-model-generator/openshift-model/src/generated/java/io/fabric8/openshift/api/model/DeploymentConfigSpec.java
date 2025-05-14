@@ -274,6 +274,7 @@ public class DeploymentConfigSpec implements Editable<DeploymentConfigSpecBuilde
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

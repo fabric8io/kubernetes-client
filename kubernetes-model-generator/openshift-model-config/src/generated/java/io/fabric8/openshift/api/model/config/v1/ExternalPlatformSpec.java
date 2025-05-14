@@ -108,6 +108,7 @@ public class ExternalPlatformSpec implements Editable<ExternalPlatformSpecBuilde
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

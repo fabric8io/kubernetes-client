@@ -108,6 +108,7 @@ public class SpotMarketOptions implements Editable<SpotMarketOptionsBuilder>, Ku
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

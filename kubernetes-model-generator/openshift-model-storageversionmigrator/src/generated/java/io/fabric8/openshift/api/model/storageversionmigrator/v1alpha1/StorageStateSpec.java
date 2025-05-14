@@ -108,6 +108,7 @@ public class StorageStateSpec implements Editable<StorageStateSpecBuilder>, Kube
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

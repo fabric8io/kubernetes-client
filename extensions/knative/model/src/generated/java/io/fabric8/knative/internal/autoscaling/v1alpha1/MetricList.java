@@ -183,6 +183,7 @@ public class MetricList implements Editable<MetricListBuilder>, KubernetesResour
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

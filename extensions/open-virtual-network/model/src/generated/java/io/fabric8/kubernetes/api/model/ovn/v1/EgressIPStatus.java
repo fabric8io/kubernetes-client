@@ -109,6 +109,7 @@ public class EgressIPStatus implements Editable<EgressIPStatusBuilder>, Kubernet
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

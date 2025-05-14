@@ -105,6 +105,7 @@ public class AuthorizationPolicyExtensionProvider implements Editable<Authorizat
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

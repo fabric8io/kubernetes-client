@@ -198,6 +198,7 @@ public class OperatorGroup implements Editable<OperatorGroupBuilder>, HasMetadat
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

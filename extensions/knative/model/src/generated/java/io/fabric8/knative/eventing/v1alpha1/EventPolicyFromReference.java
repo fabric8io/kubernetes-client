@@ -165,6 +165,7 @@ public class EventPolicyFromReference implements Editable<EventPolicyFromReferen
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -148,6 +148,7 @@ public class PodTemplate implements Editable<PodTemplateBuilder>, HasMetadata, N
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

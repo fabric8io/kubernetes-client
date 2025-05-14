@@ -183,6 +183,7 @@ public class PodIOChaosList implements Editable<PodIOChaosListBuilder>, Kubernet
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -128,6 +128,7 @@ public class ACMEChallengeSolverHTTP01 implements Editable<ACMEChallengeSolverHT
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

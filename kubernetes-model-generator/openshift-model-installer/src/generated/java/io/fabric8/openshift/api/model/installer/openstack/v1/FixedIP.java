@@ -108,6 +108,7 @@ public class FixedIP implements Editable<FixedIPBuilder>, KubernetesResource
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

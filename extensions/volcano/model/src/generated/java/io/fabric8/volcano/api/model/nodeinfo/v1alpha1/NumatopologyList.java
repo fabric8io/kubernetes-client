@@ -183,6 +183,7 @@ public class NumatopologyList implements Editable<NumatopologyListBuilder>, Kube
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

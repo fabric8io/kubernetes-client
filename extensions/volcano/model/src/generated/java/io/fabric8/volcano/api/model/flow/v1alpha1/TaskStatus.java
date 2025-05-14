@@ -113,6 +113,7 @@ public class TaskStatus implements Editable<TaskStatusBuilder>, KubernetesResour
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

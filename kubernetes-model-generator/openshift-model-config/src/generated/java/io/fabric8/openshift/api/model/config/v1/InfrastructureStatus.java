@@ -268,6 +268,7 @@ public class InfrastructureStatus implements Editable<InfrastructureStatusBuilde
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

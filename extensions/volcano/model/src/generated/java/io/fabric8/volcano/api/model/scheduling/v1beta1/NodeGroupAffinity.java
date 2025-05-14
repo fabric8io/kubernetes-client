@@ -119,6 +119,7 @@ public class NodeGroupAffinity implements Editable<NodeGroupAffinityBuilder>, Ku
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -188,6 +188,7 @@ public class OpenShiftSDNConfig implements Editable<OpenShiftSDNConfigBuilder>, 
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

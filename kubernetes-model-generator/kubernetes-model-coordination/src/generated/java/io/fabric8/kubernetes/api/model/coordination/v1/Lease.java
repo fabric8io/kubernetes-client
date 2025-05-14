@@ -178,6 +178,7 @@ public class Lease implements Editable<LeaseBuilder>, HasMetadata, Namespaced
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

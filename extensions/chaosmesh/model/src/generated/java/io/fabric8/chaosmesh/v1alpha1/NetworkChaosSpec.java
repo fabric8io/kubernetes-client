@@ -432,6 +432,7 @@ public class NetworkChaosSpec implements Editable<NetworkChaosSpecBuilder>, Kube
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

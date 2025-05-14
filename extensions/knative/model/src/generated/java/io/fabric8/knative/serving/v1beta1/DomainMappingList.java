@@ -183,6 +183,7 @@ public class DomainMappingList implements Editable<DomainMappingListBuilder>, Ku
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -208,6 +208,7 @@ public class IstioIngressListener implements Editable<IstioIngressListenerBuilde
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -148,6 +148,7 @@ public class VolumeAttachmentSpec implements Editable<VolumeAttachmentSpecBuilde
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

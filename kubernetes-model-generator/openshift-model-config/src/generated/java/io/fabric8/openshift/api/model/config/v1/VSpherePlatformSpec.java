@@ -220,6 +220,7 @@ public class VSpherePlatformSpec implements Editable<VSpherePlatformSpecBuilder>
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

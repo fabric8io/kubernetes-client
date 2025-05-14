@@ -178,6 +178,7 @@ public class NetworkPolicy implements Editable<NetworkPolicyBuilder>, HasMetadat
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

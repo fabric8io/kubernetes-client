@@ -128,6 +128,7 @@ public class MetadataConfig implements Editable<MetadataConfigBuilder>, Kubernet
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

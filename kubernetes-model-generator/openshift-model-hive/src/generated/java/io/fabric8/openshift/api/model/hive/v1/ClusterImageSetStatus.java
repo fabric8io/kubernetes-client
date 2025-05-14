@@ -78,6 +78,7 @@ public class ClusterImageSetStatus implements Editable<ClusterImageSetStatusBuil
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

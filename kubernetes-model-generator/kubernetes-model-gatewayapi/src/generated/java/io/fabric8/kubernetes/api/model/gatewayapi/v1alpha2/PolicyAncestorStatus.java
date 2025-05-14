@@ -154,6 +154,7 @@ public class PolicyAncestorStatus implements Editable<PolicyAncestorStatusBuilde
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

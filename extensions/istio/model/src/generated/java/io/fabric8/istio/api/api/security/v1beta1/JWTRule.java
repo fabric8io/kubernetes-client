@@ -320,6 +320,7 @@ public class JWTRule implements Editable<JWTRuleBuilder>, KubernetesResource
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

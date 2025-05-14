@@ -128,6 +128,7 @@ public class DayOfMonthRange implements Editable<DayOfMonthRangeBuilder>, Kubern
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

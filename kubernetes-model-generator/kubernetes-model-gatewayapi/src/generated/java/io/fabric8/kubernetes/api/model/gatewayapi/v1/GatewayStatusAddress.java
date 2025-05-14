@@ -128,6 +128,7 @@ public class GatewayStatusAddress implements Editable<GatewayStatusAddressBuilde
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

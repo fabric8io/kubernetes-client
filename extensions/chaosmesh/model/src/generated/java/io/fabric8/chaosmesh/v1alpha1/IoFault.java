@@ -128,6 +128,7 @@ public class IoFault implements Editable<IoFaultBuilder>, KubernetesResource
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

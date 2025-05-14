@@ -192,6 +192,7 @@ public class ACMEAuthorization implements Editable<ACMEAuthorizationBuilder>, Ku
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

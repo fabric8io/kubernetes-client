@@ -198,6 +198,7 @@ public class Metal3Machine implements Editable<Metal3MachineBuilder>, HasMetadat
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

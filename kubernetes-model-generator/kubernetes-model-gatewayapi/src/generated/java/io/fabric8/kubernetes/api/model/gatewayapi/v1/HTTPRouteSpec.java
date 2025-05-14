@@ -156,6 +156,7 @@ public class HTTPRouteSpec implements Editable<HTTPRouteSpecBuilder>, Kubernetes
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

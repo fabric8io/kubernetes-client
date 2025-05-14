@@ -188,6 +188,7 @@ public class RelatedResourceMeta implements Editable<RelatedResourceMetaBuilder>
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

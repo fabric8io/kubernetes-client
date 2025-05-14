@@ -153,6 +153,7 @@ public class RouteParentStatus implements Editable<RouteParentStatusBuilder>, Ku
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

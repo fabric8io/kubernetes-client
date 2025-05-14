@@ -183,6 +183,7 @@ public class JobSinkList implements Editable<JobSinkListBuilder>, KubernetesReso
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

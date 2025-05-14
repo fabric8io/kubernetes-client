@@ -148,6 +148,7 @@ public class SecuritySettings implements Editable<SecuritySettingsBuilder>, Kube
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

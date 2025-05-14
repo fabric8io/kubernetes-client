@@ -148,6 +148,7 @@ public class EgressServiceSpec implements Editable<EgressServiceSpecBuilder>, Ku
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -148,6 +148,7 @@ public class PipelineRef implements Editable<PipelineRefBuilder>, KubernetesReso
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

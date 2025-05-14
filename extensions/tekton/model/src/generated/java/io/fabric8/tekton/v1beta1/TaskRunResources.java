@@ -134,6 +134,7 @@ public class TaskRunResources implements Editable<TaskRunResourcesBuilder>, Kube
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

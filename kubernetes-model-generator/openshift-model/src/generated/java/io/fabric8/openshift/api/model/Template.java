@@ -248,6 +248,7 @@ public class Template implements Editable<TemplateBuilder>, HasMetadata, Namespa
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

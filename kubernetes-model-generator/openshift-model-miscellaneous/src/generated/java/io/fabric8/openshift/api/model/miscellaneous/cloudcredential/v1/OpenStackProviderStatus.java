@@ -138,6 +138,7 @@ public class OpenStackProviderStatus implements Editable<OpenStackProviderStatus
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

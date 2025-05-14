@@ -148,6 +148,7 @@ public class ResourceHandle implements Editable<ResourceHandleBuilder>, Kubernet
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

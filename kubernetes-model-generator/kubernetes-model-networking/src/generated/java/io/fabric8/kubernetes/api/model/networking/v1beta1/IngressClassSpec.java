@@ -128,6 +128,7 @@ public class IngressClassSpec implements Editable<IngressClassSpecBuilder>, Kube
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

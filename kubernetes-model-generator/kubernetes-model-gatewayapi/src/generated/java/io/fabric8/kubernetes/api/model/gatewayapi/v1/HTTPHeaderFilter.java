@@ -156,6 +156,7 @@ public class HTTPHeaderFilter implements Editable<HTTPHeaderFilterBuilder>, Kube
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

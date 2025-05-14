@@ -183,6 +183,7 @@ public class DestinationRuleList implements Editable<DestinationRuleListBuilder>
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

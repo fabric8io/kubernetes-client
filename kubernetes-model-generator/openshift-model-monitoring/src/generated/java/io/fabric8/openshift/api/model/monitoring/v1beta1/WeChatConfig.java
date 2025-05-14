@@ -308,6 +308,7 @@ public class WeChatConfig implements Editable<WeChatConfigBuilder>, KubernetesRe
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

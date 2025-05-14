@@ -224,6 +224,7 @@ public class EndpointSlice implements Editable<EndpointSliceBuilder>, HasMetadat
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

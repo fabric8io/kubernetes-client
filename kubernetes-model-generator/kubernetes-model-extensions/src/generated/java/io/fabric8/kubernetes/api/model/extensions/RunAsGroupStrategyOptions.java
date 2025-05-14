@@ -132,6 +132,7 @@ public class RunAsGroupStrategyOptions implements Editable<RunAsGroupStrategyOpt
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -188,6 +188,7 @@ public class MetaDataIndex implements Editable<MetaDataIndexBuilder>, Kubernetes
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

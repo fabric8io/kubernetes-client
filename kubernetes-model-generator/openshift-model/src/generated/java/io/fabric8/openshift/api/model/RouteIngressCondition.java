@@ -188,6 +188,7 @@ public class RouteIngressCondition implements Editable<RouteIngressConditionBuil
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

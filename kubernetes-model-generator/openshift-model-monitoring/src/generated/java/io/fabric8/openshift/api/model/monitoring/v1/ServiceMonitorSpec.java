@@ -519,6 +519,7 @@ public class ServiceMonitorSpec implements Editable<ServiceMonitorSpecBuilder>, 
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -119,6 +119,7 @@ public class KubeClientConfig implements Editable<KubeClientConfigBuilder>, Kube
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

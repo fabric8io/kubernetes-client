@@ -225,6 +225,7 @@ public class AzureSelector implements Editable<AzureSelectorBuilder>, Kubernetes
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -192,6 +192,7 @@ public class ContainerNodeVolumePathSelector implements Editable<ContainerNodeVo
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

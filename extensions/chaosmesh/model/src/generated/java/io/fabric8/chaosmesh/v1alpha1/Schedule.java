@@ -198,6 +198,7 @@ public class Schedule implements Editable<ScheduleBuilder>, HasMetadata, Namespa
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

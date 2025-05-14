@@ -279,6 +279,7 @@ public class GitHubSourceStatus implements Editable<GitHubSourceStatusBuilder>, 
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

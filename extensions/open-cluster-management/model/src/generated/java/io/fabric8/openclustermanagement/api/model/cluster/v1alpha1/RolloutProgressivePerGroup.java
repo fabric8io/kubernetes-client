@@ -173,6 +173,7 @@ public class RolloutProgressivePerGroup implements Editable<RolloutProgressivePe
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

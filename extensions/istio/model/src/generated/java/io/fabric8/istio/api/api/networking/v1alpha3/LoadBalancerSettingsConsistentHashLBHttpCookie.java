@@ -108,6 +108,7 @@ public class LoadBalancerSettingsConsistentHashLBHttpCookie implements IsLoadBal
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

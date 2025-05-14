@@ -132,6 +132,7 @@ public class DockerStrategyOptions implements Editable<DockerStrategyOptionsBuil
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

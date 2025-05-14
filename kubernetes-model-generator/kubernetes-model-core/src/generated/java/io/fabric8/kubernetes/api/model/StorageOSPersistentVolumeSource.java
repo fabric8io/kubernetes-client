@@ -159,6 +159,7 @@ public class StorageOSPersistentVolumeSource implements Editable<StorageOSPersis
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

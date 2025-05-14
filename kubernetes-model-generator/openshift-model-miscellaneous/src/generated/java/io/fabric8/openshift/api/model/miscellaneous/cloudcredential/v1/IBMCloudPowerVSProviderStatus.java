@@ -138,6 +138,7 @@ public class IBMCloudPowerVSProviderStatus implements Editable<IBMCloudPowerVSPr
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

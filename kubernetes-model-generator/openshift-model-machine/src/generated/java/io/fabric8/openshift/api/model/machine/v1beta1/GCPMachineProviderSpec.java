@@ -618,6 +618,7 @@ public class GCPMachineProviderSpec implements Editable<GCPMachineProviderSpecBu
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

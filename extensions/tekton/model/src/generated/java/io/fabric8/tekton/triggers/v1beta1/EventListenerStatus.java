@@ -218,6 +218,7 @@ public class EventListenerStatus implements Editable<EventListenerStatusBuilder>
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

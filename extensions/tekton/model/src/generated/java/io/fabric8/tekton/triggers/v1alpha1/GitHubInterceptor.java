@@ -132,6 +132,7 @@ public class GitHubInterceptor implements Editable<GitHubInterceptorBuilder>, Ku
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

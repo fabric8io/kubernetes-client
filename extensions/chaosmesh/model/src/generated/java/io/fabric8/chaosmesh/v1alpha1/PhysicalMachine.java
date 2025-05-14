@@ -178,6 +178,7 @@ public class PhysicalMachine implements Editable<PhysicalMachineBuilder>, HasMet
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

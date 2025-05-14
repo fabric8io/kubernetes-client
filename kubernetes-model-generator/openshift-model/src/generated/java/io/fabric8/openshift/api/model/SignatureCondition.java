@@ -208,6 +208,7 @@ public class SignatureCondition implements Editable<SignatureConditionBuilder>, 
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

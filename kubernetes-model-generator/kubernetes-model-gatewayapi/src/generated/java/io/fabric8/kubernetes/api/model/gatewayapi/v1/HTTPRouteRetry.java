@@ -152,6 +152,7 @@ public class HTTPRouteRetry implements Editable<HTTPRouteRetryBuilder>, Kubernet
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

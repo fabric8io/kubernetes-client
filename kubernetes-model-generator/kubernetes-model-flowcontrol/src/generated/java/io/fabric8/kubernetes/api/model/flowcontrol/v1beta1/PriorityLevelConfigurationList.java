@@ -183,6 +183,7 @@ public class PriorityLevelConfigurationList implements Editable<PriorityLevelCon
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

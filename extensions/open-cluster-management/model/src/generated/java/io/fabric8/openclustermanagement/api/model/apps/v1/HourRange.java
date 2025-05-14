@@ -128,6 +128,7 @@ public class HourRange implements Editable<HourRangeBuilder>, KubernetesResource
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

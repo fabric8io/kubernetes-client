@@ -182,6 +182,7 @@ public class Role implements Editable<RoleBuilder>, HasMetadata, Namespaced
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -125,6 +125,7 @@ public class TCPHealthCheckConfig implements Editable<TCPHealthCheckConfigBuilde
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

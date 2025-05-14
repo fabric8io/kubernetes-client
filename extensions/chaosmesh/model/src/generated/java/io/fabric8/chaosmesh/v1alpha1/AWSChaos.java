@@ -198,6 +198,7 @@ public class AWSChaos implements Editable<AWSChaosBuilder>, HasMetadata, Namespa
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

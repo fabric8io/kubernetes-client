@@ -112,6 +112,7 @@ public class TaskRunOutputs implements Editable<TaskRunOutputsBuilder>, Kubernet
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

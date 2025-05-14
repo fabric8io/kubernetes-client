@@ -150,6 +150,7 @@ public class ContainerSourceSpec implements Editable<ContainerSourceSpecBuilder>
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -272,6 +272,7 @@ public class PackageManifestStatus implements Editable<PackageManifestStatusBuil
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

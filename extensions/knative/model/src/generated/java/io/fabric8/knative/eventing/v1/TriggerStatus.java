@@ -296,6 +296,7 @@ public class TriggerStatus implements Editable<TriggerStatusBuilder>, Kubernetes
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

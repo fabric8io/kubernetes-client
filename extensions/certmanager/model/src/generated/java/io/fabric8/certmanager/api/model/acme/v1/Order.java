@@ -198,6 +198,7 @@ public class Order implements Editable<OrderBuilder>, HasMetadata, Namespaced
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

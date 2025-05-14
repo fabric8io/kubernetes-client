@@ -112,6 +112,7 @@ public class SpreadPolicy implements Editable<SpreadPolicyBuilder>, KubernetesRe
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

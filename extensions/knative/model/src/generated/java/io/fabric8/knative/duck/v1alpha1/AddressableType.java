@@ -178,6 +178,7 @@ public class AddressableType implements Editable<AddressableTypeBuilder>, HasMet
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

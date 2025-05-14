@@ -108,6 +108,7 @@ public class ConsolePluginI18n implements Editable<ConsolePluginI18nBuilder>, Ku
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

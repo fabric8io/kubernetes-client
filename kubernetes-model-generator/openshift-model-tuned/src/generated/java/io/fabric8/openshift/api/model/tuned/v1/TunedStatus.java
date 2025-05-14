@@ -78,6 +78,7 @@ public class TunedStatus implements Editable<TunedStatusBuilder>, KubernetesReso
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

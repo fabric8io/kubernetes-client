@@ -141,6 +141,7 @@ public class WorkflowCondition implements Editable<WorkflowConditionBuilder>, Ku
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

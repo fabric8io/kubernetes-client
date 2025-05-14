@@ -128,6 +128,7 @@ public class RevisionTemplateSpec implements Editable<RevisionTemplateSpecBuilde
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

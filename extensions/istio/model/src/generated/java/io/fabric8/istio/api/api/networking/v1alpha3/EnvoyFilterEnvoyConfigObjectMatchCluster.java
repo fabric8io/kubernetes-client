@@ -99,6 +99,7 @@ public class EnvoyFilterEnvoyConfigObjectMatchCluster implements IsEnvoyFilterEn
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

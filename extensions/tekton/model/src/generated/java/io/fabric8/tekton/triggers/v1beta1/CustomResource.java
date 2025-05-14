@@ -75,6 +75,7 @@ public class CustomResource implements Editable<CustomResourceBuilder>, Kubernet
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

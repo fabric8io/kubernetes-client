@@ -183,6 +183,7 @@ public class PreprovisioningImageList implements Editable<PreprovisioningImageLi
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -129,6 +129,7 @@ public class DNSOverTLSConfig implements Editable<DNSOverTLSConfigBuilder>, Kube
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

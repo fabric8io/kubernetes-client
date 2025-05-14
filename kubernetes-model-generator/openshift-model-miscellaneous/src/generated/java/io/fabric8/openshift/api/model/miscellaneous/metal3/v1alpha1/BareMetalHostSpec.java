@@ -494,6 +494,7 @@ public class BareMetalHostSpec implements Editable<BareMetalHostSpecBuilder>, Ku
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

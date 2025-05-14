@@ -169,6 +169,7 @@ public class ValidationRule implements Editable<ValidationRuleBuilder>, Kubernet
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

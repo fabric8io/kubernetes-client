@@ -338,6 +338,7 @@ public class DeploymentLogOptions implements Editable<DeploymentLogOptionsBuilde
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

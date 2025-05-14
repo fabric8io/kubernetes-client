@@ -83,6 +83,7 @@ public class TopologySelectorTerm implements Editable<TopologySelectorTermBuilde
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

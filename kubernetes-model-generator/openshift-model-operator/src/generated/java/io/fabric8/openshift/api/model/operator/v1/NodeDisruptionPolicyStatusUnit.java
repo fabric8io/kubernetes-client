@@ -132,6 +132,7 @@ public class NodeDisruptionPolicyStatusUnit implements Editable<NodeDisruptionPo
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

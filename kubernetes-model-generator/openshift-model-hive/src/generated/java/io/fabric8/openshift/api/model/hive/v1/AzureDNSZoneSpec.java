@@ -148,6 +148,7 @@ public class AzureDNSZoneSpec implements Editable<AzureDNSZoneSpecBuilder>, Kube
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

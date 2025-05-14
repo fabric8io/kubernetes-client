@@ -119,6 +119,7 @@ public class RegistrationDriver implements Editable<RegistrationDriverBuilder>, 
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

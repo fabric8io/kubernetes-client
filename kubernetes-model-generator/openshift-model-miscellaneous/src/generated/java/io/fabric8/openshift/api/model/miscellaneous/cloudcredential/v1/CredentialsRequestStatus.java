@@ -214,6 +214,7 @@ public class CredentialsRequestStatus implements Editable<CredentialsRequestStat
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

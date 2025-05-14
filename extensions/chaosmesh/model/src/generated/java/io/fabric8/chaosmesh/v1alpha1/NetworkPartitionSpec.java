@@ -205,6 +205,7 @@ public class NetworkPartitionSpec implements Editable<NetworkPartitionSpecBuilde
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

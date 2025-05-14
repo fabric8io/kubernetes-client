@@ -99,6 +99,7 @@ public class TracingCustomTagLiteral implements IsTracingCustomTagType, Editable
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

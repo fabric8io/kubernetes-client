@@ -132,6 +132,7 @@ public class ProfileStatus implements Editable<ProfileStatusBuilder>, Kubernetes
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

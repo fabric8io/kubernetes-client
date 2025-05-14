@@ -112,6 +112,7 @@ public class PodFailurePolicy implements Editable<PodFailurePolicyBuilder>, Kube
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

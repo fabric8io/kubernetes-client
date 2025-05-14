@@ -128,6 +128,7 @@ public class TokenRequestStatus implements Editable<TokenRequestStatusBuilder>, 
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -245,6 +245,7 @@ public class NetworkLossSpec implements Editable<NetworkLossSpecBuilder>, Kubern
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

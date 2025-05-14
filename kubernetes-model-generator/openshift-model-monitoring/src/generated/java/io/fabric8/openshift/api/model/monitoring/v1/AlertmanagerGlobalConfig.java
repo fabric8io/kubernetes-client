@@ -229,6 +229,7 @@ public class AlertmanagerGlobalConfig implements Editable<AlertmanagerGlobalConf
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

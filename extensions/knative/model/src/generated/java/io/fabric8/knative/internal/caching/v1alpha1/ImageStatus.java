@@ -155,6 +155,7 @@ public class ImageStatus implements Editable<ImageStatusBuilder>, KubernetesReso
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

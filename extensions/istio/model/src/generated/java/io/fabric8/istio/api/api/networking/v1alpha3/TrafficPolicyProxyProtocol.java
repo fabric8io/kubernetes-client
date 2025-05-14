@@ -99,6 +99,7 @@ public class TrafficPolicyProxyProtocol implements Editable<TrafficPolicyProxyPr
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

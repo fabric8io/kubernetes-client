@@ -328,6 +328,7 @@ public class OVNKubernetesConfig implements Editable<OVNKubernetesConfigBuilder>
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

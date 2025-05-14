@@ -108,6 +108,7 @@ public class ManagedClusterSetSpec implements Editable<ManagedClusterSetSpecBuil
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

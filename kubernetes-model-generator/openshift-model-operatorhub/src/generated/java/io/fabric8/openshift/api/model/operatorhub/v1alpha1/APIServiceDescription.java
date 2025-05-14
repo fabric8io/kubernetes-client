@@ -338,6 +338,7 @@ public class APIServiceDescription implements Editable<APIServiceDescriptionBuil
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

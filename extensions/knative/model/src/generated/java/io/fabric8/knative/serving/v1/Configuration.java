@@ -198,6 +198,7 @@ public class Configuration implements Editable<ConfigurationBuilder>, HasMetadat
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

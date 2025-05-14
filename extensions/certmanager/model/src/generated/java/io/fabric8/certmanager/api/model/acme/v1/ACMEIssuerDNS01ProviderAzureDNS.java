@@ -249,6 +249,7 @@ public class ACMEIssuerDNS01ProviderAzureDNS implements Editable<ACMEIssuerDNS01
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

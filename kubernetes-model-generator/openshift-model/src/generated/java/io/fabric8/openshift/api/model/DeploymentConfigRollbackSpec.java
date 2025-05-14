@@ -208,6 +208,7 @@ public class DeploymentConfigRollbackSpec implements Editable<DeploymentConfigRo
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

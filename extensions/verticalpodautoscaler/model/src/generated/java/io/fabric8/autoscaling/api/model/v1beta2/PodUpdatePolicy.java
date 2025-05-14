@@ -108,6 +108,7 @@ public class PodUpdatePolicy implements Editable<PodUpdatePolicyBuilder>, Kubern
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

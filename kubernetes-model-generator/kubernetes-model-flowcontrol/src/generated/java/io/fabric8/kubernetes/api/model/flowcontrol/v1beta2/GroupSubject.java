@@ -108,6 +108,7 @@ public class GroupSubject implements Editable<GroupSubjectBuilder>, KubernetesRe
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

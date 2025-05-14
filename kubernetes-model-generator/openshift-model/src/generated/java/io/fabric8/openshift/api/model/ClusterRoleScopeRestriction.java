@@ -154,6 +154,7 @@ public class ClusterRoleScopeRestriction implements Editable<ClusterRoleScopeRes
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

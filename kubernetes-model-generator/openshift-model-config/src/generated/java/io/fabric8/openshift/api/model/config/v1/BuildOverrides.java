@@ -174,6 +174,7 @@ public class BuildOverrides implements Editable<BuildOverridesBuilder>, Kubernet
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

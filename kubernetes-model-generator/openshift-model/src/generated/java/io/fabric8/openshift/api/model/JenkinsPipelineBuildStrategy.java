@@ -152,6 +152,7 @@ public class JenkinsPipelineBuildStrategy implements Editable<JenkinsPipelineBui
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

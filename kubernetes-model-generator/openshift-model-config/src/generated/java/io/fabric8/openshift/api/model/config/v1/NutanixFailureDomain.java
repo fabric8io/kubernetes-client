@@ -152,6 +152,7 @@ public class NutanixFailureDomain implements Editable<NutanixFailureDomainBuilde
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

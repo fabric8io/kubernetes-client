@@ -148,6 +148,7 @@ public class LocalParametersReference implements Editable<LocalParametersReferen
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

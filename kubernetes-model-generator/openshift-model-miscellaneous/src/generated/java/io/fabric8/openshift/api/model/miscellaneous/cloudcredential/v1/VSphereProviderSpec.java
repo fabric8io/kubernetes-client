@@ -162,6 +162,7 @@ public class VSphereProviderSpec implements Editable<VSphereProviderSpecBuilder>
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

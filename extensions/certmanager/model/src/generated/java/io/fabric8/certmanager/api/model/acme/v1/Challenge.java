@@ -198,6 +198,7 @@ public class Challenge implements Editable<ChallengeBuilder>, HasMetadata, Names
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

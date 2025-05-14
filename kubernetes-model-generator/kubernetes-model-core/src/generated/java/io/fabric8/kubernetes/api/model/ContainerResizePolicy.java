@@ -99,6 +99,7 @@ public class ContainerResizePolicy implements Editable<ContainerResizePolicyBuil
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -178,6 +178,7 @@ public class ImageStreamImage implements Editable<ImageStreamImageBuilder>, HasM
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

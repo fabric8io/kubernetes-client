@@ -148,6 +148,7 @@ public class CompliancePerClusterStatus implements Editable<CompliancePerCluster
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

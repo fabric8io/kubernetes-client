@@ -108,6 +108,7 @@ public class AllowedCSIDriver implements Editable<AllowedCSIDriverBuilder>, Kube
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

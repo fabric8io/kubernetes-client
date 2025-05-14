@@ -125,6 +125,7 @@ public class FileRenameSpec implements Editable<FileRenameSpecBuilder>, Kubernet
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

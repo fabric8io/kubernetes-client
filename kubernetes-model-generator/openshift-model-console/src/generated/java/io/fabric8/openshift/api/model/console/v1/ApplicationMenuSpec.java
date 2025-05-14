@@ -128,6 +128,7 @@ public class ApplicationMenuSpec implements Editable<ApplicationMenuSpecBuilder>
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

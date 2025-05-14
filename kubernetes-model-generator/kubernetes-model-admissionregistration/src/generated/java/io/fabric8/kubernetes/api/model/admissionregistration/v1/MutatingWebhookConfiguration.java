@@ -181,6 +181,7 @@ public class MutatingWebhookConfiguration implements Editable<MutatingWebhookCon
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

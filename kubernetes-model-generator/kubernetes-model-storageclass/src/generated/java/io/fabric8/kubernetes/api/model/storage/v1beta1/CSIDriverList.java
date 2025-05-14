@@ -183,6 +183,7 @@ public class CSIDriverList implements Editable<CSIDriverListBuilder>, Kubernetes
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

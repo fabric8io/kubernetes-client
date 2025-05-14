@@ -132,6 +132,7 @@ public class GCPPrivateServiceConnectInventory implements Editable<GCPPrivateSer
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

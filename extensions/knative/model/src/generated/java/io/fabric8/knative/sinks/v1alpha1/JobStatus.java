@@ -99,6 +99,7 @@ public class JobStatus implements Editable<JobStatusBuilder>, KubernetesResource
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

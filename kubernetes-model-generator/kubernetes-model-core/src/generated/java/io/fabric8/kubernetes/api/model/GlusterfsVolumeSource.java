@@ -119,6 +119,7 @@ public class GlusterfsVolumeSource implements Editable<GlusterfsVolumeSourceBuil
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

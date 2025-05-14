@@ -172,6 +172,7 @@ public class AccessLogging implements Editable<AccessLoggingBuilder>, Kubernetes
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

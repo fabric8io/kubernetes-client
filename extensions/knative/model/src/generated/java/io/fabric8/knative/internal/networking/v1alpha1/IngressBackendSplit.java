@@ -190,6 +190,7 @@ public class IngressBackendSplit implements Editable<IngressBackendSplitBuilder>
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

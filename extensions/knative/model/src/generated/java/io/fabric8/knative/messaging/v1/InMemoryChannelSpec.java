@@ -134,6 +134,7 @@ public class InMemoryChannelSpec implements Editable<InMemoryChannelSpecBuilder>
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

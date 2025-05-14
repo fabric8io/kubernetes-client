@@ -198,6 +198,7 @@ public class PlacementRule implements Editable<PlacementRuleBuilder>, HasMetadat
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

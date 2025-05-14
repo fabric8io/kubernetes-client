@@ -183,6 +183,7 @@ public class CheckpointList implements Editable<CheckpointListBuilder>, Kubernet
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -188,6 +188,7 @@ public class EnvoyFilterListenerMatch implements Editable<EnvoyFilterListenerMat
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

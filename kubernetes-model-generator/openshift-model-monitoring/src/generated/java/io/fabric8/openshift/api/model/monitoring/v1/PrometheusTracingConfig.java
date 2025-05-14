@@ -236,6 +236,7 @@ public class PrometheusTracingConfig implements Editable<PrometheusTracingConfig
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

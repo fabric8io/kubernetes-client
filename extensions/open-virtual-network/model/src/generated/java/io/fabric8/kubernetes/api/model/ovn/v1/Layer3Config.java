@@ -171,6 +171,7 @@ public class Layer3Config implements Editable<Layer3ConfigBuilder>, KubernetesRe
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

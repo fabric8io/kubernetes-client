@@ -159,6 +159,7 @@ public class RecordEvent implements Editable<RecordEventBuilder>, KubernetesReso
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -148,6 +148,7 @@ public class K8SSelectorConfig implements Editable<K8SSelectorConfigBuilder>, Ku
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

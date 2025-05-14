@@ -169,6 +169,7 @@ public class JKSKeystore implements Editable<JKSKeystoreBuilder>, KubernetesReso
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -129,6 +129,7 @@ public class EventSeries implements Editable<EventSeriesBuilder>, KubernetesReso
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

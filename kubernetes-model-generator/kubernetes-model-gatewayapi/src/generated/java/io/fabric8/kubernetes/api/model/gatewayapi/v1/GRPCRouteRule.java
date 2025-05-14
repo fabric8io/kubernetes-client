@@ -196,6 +196,7 @@ public class GRPCRouteRule implements Editable<GRPCRouteRuleBuilder>, Kubernetes
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

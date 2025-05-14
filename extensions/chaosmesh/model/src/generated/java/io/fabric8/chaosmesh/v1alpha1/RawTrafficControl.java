@@ -288,6 +288,7 @@ public class RawTrafficControl implements Editable<RawTrafficControlBuilder>, Ku
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

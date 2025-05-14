@@ -183,6 +183,7 @@ public class InterceptorList implements Editable<InterceptorListBuilder>, Kubern
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

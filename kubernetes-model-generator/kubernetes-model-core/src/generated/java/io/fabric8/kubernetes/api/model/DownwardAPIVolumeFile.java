@@ -139,6 +139,7 @@ public class DownwardAPIVolumeFile implements Editable<DownwardAPIVolumeFileBuil
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

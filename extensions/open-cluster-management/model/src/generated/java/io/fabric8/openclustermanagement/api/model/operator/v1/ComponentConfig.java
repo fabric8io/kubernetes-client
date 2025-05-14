@@ -128,6 +128,7 @@ public class ComponentConfig implements Editable<ComponentConfigBuilder>, Kubern
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

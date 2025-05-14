@@ -128,6 +128,7 @@ public class AddOnScore implements Editable<AddOnScoreBuilder>, KubernetesResour
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

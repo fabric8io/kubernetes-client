@@ -105,6 +105,7 @@ public class MetricSelectorCustomMetric implements IsMetricSelectorMetricMatch, 
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

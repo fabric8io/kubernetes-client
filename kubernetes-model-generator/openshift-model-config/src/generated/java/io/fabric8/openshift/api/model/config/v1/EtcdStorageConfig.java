@@ -189,6 +189,7 @@ public class EtcdStorageConfig implements Editable<EtcdStorageConfigBuilder>, Ku
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

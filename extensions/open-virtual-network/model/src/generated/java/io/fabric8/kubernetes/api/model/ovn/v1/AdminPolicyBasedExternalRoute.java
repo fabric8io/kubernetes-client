@@ -197,6 +197,7 @@ public class AdminPolicyBasedExternalRoute implements Editable<AdminPolicyBasedE
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

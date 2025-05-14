@@ -168,6 +168,7 @@ public class ResultRef implements Editable<ResultRefBuilder>, KubernetesResource
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

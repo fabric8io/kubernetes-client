@@ -128,6 +128,7 @@ public class ResourceParam implements Editable<ResourceParamBuilder>, Kubernetes
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

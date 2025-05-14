@@ -183,6 +183,7 @@ public class PrometheusList implements Editable<PrometheusListBuilder>, Kubernet
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

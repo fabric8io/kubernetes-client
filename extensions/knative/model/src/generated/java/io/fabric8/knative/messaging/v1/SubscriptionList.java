@@ -183,6 +183,7 @@ public class SubscriptionList implements Editable<SubscriptionListBuilder>, Kube
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

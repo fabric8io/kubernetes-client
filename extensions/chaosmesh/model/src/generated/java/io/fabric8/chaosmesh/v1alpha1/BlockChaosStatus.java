@@ -154,6 +154,7 @@ public class BlockChaosStatus implements Editable<BlockChaosStatusBuilder>, Kube
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

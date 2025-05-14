@@ -223,6 +223,7 @@ public class AzureMachineProviderStatus implements Editable<AzureMachineProvider
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

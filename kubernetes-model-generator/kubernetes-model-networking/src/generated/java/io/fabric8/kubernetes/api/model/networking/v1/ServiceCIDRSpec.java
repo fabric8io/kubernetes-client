@@ -112,6 +112,7 @@ public class ServiceCIDRSpec implements Editable<ServiceCIDRSpecBuilder>, Kubern
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

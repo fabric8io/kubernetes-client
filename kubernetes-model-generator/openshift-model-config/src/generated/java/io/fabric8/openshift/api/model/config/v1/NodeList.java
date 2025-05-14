@@ -183,6 +183,7 @@ public class NodeList implements Editable<NodeListBuilder>, KubernetesResource, 
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

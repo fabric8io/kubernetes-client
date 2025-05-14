@@ -183,6 +183,7 @@ public class PhysicalMachineList implements Editable<PhysicalMachineListBuilder>
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

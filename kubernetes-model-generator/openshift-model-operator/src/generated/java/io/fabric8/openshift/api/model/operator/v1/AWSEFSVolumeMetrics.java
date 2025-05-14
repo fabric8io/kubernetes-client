@@ -128,6 +128,7 @@ public class AWSEFSVolumeMetrics implements Editable<AWSEFSVolumeMetricsBuilder>
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

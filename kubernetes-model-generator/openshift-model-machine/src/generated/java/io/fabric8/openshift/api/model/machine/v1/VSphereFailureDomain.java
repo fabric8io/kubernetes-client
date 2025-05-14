@@ -108,6 +108,7 @@ public class VSphereFailureDomain implements Editable<VSphereFailureDomainBuilde
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

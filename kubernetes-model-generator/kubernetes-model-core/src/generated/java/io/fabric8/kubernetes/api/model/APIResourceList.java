@@ -152,6 +152,7 @@ public class APIResourceList implements Editable<APIResourceListBuilder>, Kubern
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

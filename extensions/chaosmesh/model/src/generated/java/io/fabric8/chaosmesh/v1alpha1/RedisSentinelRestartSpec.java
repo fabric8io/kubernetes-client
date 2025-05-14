@@ -185,6 +185,7 @@ public class RedisSentinelRestartSpec implements Editable<RedisSentinelRestartSp
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

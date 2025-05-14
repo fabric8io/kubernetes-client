@@ -234,6 +234,7 @@ public class OpenIDIdentityProvider implements Editable<OpenIDIdentityProviderBu
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

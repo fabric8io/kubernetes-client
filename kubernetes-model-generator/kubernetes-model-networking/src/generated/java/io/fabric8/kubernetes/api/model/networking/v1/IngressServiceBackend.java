@@ -128,6 +128,7 @@ public class IngressServiceBackend implements Editable<IngressServiceBackendBuil
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

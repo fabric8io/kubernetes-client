@@ -128,6 +128,7 @@ public class PipelineTaskParam implements Editable<PipelineTaskParamBuilder>, Ku
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

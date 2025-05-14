@@ -128,6 +128,7 @@ public class ManagedClusterClaim implements Editable<ManagedClusterClaimBuilder>
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -112,6 +112,7 @@ public class AlertingSpec implements Editable<AlertingSpecBuilder>, KubernetesRe
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

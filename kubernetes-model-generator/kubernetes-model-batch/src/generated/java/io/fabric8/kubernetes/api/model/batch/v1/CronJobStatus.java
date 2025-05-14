@@ -152,6 +152,7 @@ public class CronJobStatus implements Editable<CronJobStatusBuilder>, Kubernetes
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

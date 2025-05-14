@@ -218,6 +218,7 @@ public class SyncSetObjectStatus implements Editable<SyncSetObjectStatusBuilder>
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

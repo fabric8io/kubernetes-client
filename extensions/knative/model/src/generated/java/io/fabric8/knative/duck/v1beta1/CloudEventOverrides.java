@@ -110,6 +110,7 @@ public class CloudEventOverrides implements Editable<CloudEventOverridesBuilder>
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

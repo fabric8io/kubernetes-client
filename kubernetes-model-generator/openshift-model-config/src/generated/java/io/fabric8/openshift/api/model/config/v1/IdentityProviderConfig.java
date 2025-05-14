@@ -288,6 +288,7 @@ public class IdentityProviderConfig implements Editable<IdentityProviderConfigBu
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

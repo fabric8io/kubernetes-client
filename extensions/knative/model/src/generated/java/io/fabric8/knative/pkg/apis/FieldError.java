@@ -172,6 +172,7 @@ public class FieldError implements Editable<FieldErrorBuilder>, KubernetesResour
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

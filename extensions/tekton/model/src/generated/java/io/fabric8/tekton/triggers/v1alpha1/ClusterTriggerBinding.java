@@ -197,6 +197,7 @@ public class ClusterTriggerBinding implements Editable<ClusterTriggerBindingBuil
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

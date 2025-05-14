@@ -135,6 +135,7 @@ public class NetworkDiagnosticsSourcePlacement implements Editable<NetworkDiagno
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

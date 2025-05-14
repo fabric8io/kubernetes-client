@@ -188,6 +188,7 @@ public class DaemonSetCondition implements Editable<DaemonSetConditionBuilder>, 
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

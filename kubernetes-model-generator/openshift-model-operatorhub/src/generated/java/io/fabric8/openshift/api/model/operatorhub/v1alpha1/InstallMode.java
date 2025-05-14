@@ -128,6 +128,7 @@ public class InstallMode implements Editable<InstallModeBuilder>, KubernetesReso
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

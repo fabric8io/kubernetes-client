@@ -84,6 +84,7 @@ public class Preconditions implements Editable<PreconditionsBuilder>, Kubernetes
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

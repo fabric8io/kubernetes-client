@@ -159,6 +159,7 @@ public class ConfigMapNodeConfigSource implements Editable<ConfigMapNodeConfigSo
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

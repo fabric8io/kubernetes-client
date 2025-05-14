@@ -140,6 +140,7 @@ public class Authorization implements Editable<AuthorizationBuilder>, Kubernetes
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

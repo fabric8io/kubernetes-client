@@ -86,6 +86,7 @@ public class NamedExtension implements Editable<NamedExtensionBuilder>, Kubernet
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

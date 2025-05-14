@@ -148,6 +148,7 @@ public class OAuthTemplates implements Editable<OAuthTemplatesBuilder>, Kubernet
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

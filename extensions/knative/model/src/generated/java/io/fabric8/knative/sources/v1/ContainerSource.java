@@ -198,6 +198,7 @@ public class ContainerSource implements Editable<ContainerSourceBuilder>, HasMet
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

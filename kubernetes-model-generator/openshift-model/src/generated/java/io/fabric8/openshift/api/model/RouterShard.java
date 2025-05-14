@@ -128,6 +128,7 @@ public class RouterShard implements Editable<RouterShardBuilder>, KubernetesReso
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

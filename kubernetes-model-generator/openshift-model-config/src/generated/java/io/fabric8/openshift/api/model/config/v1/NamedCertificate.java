@@ -152,6 +152,7 @@ public class NamedCertificate implements Editable<NamedCertificateBuilder>, Kube
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

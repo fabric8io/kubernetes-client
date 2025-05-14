@@ -129,6 +129,7 @@ public class ACMEChallengeSolverHTTP01IngressObjectMeta implements Editable<ACME
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

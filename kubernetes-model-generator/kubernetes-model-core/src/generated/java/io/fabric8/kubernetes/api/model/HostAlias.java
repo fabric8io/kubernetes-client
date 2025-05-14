@@ -103,6 +103,7 @@ public class HostAlias implements Editable<HostAliasBuilder>, KubernetesResource
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

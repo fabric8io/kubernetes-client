@@ -198,6 +198,7 @@ public class UDPRoute implements Editable<UDPRouteBuilder>, HasMetadata, Namespa
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

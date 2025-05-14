@@ -264,6 +264,7 @@ public class X509Subject implements Editable<X509SubjectBuilder>, KubernetesReso
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

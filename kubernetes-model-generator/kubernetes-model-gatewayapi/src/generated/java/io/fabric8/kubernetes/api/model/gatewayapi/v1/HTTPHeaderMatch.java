@@ -148,6 +148,7 @@ public class HTTPHeaderMatch implements Editable<HTTPHeaderMatchBuilder>, Kubern
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

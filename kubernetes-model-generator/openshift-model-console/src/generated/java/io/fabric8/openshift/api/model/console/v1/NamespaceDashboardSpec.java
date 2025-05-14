@@ -132,6 +132,7 @@ public class NamespaceDashboardSpec implements Editable<NamespaceDashboardSpecBu
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

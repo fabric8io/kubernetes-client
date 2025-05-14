@@ -294,6 +294,7 @@ public class HTTPServingInfo implements Editable<HTTPServingInfoBuilder>, Kubern
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

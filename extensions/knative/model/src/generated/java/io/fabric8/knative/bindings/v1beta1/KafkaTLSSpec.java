@@ -141,6 +141,7 @@ public class KafkaTLSSpec implements Editable<KafkaTLSSpecBuilder>, KubernetesRe
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

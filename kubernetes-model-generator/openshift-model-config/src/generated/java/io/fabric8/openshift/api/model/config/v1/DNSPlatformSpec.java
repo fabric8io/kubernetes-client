@@ -128,6 +128,7 @@ public class DNSPlatformSpec implements Editable<DNSPlatformSpecBuilder>, Kubern
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

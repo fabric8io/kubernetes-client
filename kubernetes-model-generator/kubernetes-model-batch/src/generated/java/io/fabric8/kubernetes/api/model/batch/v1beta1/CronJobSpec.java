@@ -228,6 +228,7 @@ public class CronJobSpec implements Editable<CronJobSpecBuilder>, KubernetesReso
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

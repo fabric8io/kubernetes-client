@@ -108,6 +108,7 @@ public class RateSpec implements Editable<RateSpecBuilder>, KubernetesResource
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -128,6 +128,7 @@ public class EventListenerTriggerSelector implements Editable<EventListenerTrigg
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

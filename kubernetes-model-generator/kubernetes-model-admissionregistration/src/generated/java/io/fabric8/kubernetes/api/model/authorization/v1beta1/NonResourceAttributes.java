@@ -128,6 +128,7 @@ public class NonResourceAttributes implements Editable<NonResourceAttributesBuil
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

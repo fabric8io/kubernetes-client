@@ -176,6 +176,7 @@ public class NetworkPolicySpec implements Editable<NetworkPolicySpecBuilder>, Ku
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

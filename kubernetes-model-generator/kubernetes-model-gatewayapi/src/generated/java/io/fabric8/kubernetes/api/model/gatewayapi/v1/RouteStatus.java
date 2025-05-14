@@ -112,6 +112,7 @@ public class RouteStatus implements Editable<RouteStatusBuilder>, KubernetesReso
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

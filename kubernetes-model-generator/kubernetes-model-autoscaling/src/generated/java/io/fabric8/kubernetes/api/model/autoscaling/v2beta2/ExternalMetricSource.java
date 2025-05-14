@@ -128,6 +128,7 @@ public class ExternalMetricSource implements Editable<ExternalMetricSourceBuilde
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

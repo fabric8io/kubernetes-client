@@ -148,6 +148,7 @@ public class FirmwareConfig implements Editable<FirmwareConfigBuilder>, Kubernet
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

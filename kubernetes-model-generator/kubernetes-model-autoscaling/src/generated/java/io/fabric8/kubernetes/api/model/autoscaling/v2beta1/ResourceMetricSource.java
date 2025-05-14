@@ -149,6 +149,7 @@ public class ResourceMetricSource implements Editable<ResourceMetricSourceBuilde
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

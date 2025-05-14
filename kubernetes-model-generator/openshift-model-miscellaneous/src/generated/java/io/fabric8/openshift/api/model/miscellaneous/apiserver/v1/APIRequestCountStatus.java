@@ -186,6 +186,7 @@ public class APIRequestCountStatus implements Editable<APIRequestCountStatusBuil
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

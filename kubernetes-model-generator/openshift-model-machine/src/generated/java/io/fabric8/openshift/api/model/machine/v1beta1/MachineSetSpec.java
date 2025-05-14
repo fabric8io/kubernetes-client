@@ -208,6 +208,7 @@ public class MachineSetSpec implements Editable<MachineSetSpecBuilder>, Kubernet
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

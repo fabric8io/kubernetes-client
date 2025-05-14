@@ -183,6 +183,7 @@ public class ReferenceGrantList implements Editable<ReferenceGrantListBuilder>, 
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

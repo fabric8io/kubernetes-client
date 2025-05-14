@@ -127,6 +127,7 @@ public class EndpointSubset implements Editable<EndpointSubsetBuilder>, Kubernet
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

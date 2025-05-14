@@ -133,6 +133,7 @@ public class ProjectStatus implements Editable<ProjectStatusBuilder>, Kubernetes
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

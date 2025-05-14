@@ -108,6 +108,7 @@ public class WithPodSpec implements Editable<WithPodSpecBuilder>, KubernetesReso
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

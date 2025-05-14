@@ -128,6 +128,7 @@ public class TaskRunStepOverride implements Editable<TaskRunStepOverrideBuilder>
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

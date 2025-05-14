@@ -128,6 +128,7 @@ public class OperatorPublishingStrategy implements Editable<OperatorPublishingSt
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

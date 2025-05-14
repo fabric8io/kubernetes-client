@@ -128,6 +128,7 @@ public class CannotConvertError implements Editable<CannotConvertErrorBuilder>, 
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

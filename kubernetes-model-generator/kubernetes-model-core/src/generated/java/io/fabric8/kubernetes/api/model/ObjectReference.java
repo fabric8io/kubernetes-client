@@ -199,6 +199,7 @@ public class ObjectReference implements Editable<ObjectReferenceBuilder>, Kubern
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

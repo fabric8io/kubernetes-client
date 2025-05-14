@@ -182,6 +182,7 @@ public class NodeMetrics implements Editable<NodeMetricsBuilder>, HasMetadata
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

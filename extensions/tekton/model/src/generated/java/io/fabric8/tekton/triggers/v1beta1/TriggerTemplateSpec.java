@@ -134,6 +134,7 @@ public class TriggerTemplateSpec implements Editable<TriggerTemplateSpecBuilder>
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

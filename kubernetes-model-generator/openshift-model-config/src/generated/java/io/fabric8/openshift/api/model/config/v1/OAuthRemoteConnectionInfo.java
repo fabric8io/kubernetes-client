@@ -168,6 +168,7 @@ public class OAuthRemoteConnectionInfo implements Editable<OAuthRemoteConnection
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

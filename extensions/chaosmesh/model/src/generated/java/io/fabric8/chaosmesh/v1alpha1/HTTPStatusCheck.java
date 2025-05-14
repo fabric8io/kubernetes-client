@@ -158,6 +158,7 @@ public class HTTPStatusCheck implements Editable<HTTPStatusCheckBuilder>, Kubern
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

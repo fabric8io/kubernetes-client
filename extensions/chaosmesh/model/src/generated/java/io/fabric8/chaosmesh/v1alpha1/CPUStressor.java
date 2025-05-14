@@ -152,6 +152,7 @@ public class CPUStressor implements Editable<CPUStressorBuilder>, KubernetesReso
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

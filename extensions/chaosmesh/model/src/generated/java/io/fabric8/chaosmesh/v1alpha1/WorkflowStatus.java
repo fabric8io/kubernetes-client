@@ -151,6 +151,7 @@ public class WorkflowStatus implements Editable<WorkflowStatusBuilder>, Kubernet
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

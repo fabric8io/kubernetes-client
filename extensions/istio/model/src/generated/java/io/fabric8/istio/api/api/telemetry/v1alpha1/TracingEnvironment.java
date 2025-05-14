@@ -125,6 +125,7 @@ public class TracingEnvironment implements Editable<TracingEnvironmentBuilder>, 
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

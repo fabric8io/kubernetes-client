@@ -110,6 +110,7 @@ public class ResolutionRequestSpec implements Editable<ResolutionRequestSpecBuil
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

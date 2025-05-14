@@ -198,6 +198,7 @@ public class PipelineResource implements Editable<PipelineResourceBuilder>, HasM
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

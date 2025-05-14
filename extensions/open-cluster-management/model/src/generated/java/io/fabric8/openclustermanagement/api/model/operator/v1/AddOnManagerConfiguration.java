@@ -109,6 +109,7 @@ public class AddOnManagerConfiguration implements Editable<AddOnManagerConfigura
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

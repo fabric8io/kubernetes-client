@@ -99,6 +99,7 @@ public class SecretEnvSource implements Editable<SecretEnvSourceBuilder>, Kubern
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

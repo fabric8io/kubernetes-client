@@ -148,6 +148,7 @@ public class HTTPRequestMirrorFilter implements Editable<HTTPRequestMirrorFilter
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

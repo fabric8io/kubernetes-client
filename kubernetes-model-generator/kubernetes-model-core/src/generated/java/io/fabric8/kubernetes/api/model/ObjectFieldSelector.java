@@ -99,6 +99,7 @@ public class ObjectFieldSelector implements Editable<ObjectFieldSelectorBuilder>
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

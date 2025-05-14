@@ -128,6 +128,7 @@ public class MachineOSBuilderReference implements Editable<MachineOSBuilderRefer
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

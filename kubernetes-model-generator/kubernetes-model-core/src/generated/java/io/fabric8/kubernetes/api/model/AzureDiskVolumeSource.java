@@ -179,6 +179,7 @@ public class AzureDiskVolumeSource implements Editable<AzureDiskVolumeSourceBuil
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

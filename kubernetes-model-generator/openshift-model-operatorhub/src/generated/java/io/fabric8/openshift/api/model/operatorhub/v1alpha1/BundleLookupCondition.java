@@ -193,6 +193,7 @@ public class BundleLookupCondition implements Editable<BundleLookupConditionBuil
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

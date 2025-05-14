@@ -178,6 +178,7 @@ public class FirmwareSchema implements Editable<FirmwareSchemaBuilder>, HasMetad
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

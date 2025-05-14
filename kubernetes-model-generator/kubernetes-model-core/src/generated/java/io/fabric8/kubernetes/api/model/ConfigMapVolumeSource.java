@@ -143,6 +143,7 @@ public class ConfigMapVolumeSource implements Editable<ConfigMapVolumeSourceBuil
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

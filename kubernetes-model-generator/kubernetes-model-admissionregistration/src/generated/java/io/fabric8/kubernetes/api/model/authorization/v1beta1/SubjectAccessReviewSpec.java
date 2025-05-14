@@ -214,6 +214,7 @@ public class SubjectAccessReviewSpec implements Editable<SubjectAccessReviewSpec
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

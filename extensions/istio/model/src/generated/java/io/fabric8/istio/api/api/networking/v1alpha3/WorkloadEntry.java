@@ -242,6 +242,7 @@ public class WorkloadEntry implements Editable<WorkloadEntryBuilder>, Kubernetes
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -177,6 +177,7 @@ public class BrokerTemplateInstance implements Editable<BrokerTemplateInstanceBu
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

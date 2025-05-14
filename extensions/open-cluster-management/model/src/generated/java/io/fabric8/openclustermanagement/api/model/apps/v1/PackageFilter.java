@@ -170,6 +170,7 @@ public class PackageFilter implements Editable<PackageFilterBuilder>, Kubernetes
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -128,6 +128,7 @@ public class JobCondition implements Editable<JobConditionBuilder>, KubernetesRe
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

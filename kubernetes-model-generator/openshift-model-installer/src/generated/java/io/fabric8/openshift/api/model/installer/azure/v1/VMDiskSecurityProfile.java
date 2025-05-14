@@ -128,6 +128,7 @@ public class VMDiskSecurityProfile implements Editable<VMDiskSecurityProfileBuil
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

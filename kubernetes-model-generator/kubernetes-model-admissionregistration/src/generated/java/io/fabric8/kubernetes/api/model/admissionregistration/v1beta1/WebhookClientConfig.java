@@ -148,6 +148,7 @@ public class WebhookClientConfig implements Editable<WebhookClientConfigBuilder>
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

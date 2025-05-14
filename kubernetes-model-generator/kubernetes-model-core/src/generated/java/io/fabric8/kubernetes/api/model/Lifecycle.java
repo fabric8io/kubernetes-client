@@ -119,6 +119,7 @@ public class Lifecycle implements Editable<LifecycleBuilder>, KubernetesResource
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

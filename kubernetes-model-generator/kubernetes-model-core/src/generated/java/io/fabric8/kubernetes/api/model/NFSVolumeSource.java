@@ -119,6 +119,7 @@ public class NFSVolumeSource implements Editable<NFSVolumeSourceBuilder>, Kubern
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

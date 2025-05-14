@@ -128,6 +128,7 @@ public class ThanosRulerWebSpec implements Editable<ThanosRulerWebSpecBuilder>, 
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -99,6 +99,7 @@ public class GroupVersionForDiscovery implements Editable<GroupVersionForDiscove
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

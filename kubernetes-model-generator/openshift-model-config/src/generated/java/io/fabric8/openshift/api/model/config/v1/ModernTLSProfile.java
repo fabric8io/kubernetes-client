@@ -78,6 +78,7 @@ public class ModernTLSProfile implements Editable<ModernTLSProfileBuilder>, Kube
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

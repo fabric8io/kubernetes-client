@@ -128,6 +128,7 @@ public class UEFISettings implements Editable<UEFISettingsBuilder>, KubernetesRe
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

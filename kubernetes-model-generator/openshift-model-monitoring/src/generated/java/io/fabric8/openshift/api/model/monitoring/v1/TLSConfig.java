@@ -289,6 +289,7 @@ public class TLSConfig implements Editable<TLSConfigBuilder>, KubernetesResource
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

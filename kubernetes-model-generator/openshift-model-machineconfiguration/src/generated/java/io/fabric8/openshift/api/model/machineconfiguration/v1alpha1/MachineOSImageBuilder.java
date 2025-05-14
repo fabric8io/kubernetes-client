@@ -105,6 +105,7 @@ public class MachineOSImageBuilder implements Editable<MachineOSImageBuilderBuil
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

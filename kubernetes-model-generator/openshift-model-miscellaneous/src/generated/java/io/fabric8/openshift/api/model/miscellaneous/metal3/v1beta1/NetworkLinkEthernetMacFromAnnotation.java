@@ -128,6 +128,7 @@ public class NetworkLinkEthernetMacFromAnnotation implements Editable<NetworkLin
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

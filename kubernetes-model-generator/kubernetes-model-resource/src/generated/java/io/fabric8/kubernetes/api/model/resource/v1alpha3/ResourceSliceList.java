@@ -183,6 +183,7 @@ public class ResourceSliceList implements Editable<ResourceSliceListBuilder>, Ku
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

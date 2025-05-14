@@ -78,6 +78,7 @@ public class ImageRegistryConfigStorageEmptyDir implements Editable<ImageRegistr
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

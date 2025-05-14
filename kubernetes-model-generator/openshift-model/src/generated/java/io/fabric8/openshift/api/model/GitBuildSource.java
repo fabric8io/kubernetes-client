@@ -188,6 +188,7 @@ public class GitBuildSource implements Editable<GitBuildSourceBuilder>, Kubernet
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

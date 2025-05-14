@@ -128,6 +128,7 @@ public class EnvoyFilterRouteConfigurationMatchRouteMatch implements Editable<En
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

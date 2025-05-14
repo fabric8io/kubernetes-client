@@ -119,6 +119,7 @@ public class BootstrapKubeConfigs implements Editable<BootstrapKubeConfigsBuilde
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

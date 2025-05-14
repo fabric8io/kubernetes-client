@@ -139,6 +139,7 @@ public class VolumeMountStatus implements Editable<VolumeMountStatusBuilder>, Ku
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

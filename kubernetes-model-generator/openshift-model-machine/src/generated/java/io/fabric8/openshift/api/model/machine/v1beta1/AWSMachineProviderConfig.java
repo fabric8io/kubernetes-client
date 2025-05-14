@@ -568,6 +568,7 @@ public class AWSMachineProviderConfig implements Editable<AWSMachineProviderConf
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -185,6 +185,7 @@ public class JVMLatencySpec implements Editable<JVMLatencySpecBuilder>, Kubernet
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

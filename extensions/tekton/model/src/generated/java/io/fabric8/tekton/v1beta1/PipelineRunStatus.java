@@ -387,6 +387,7 @@ public class PipelineRunStatus implements Editable<PipelineRunStatusBuilder>, Ku
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -198,6 +198,7 @@ public class PingSource implements Editable<PingSourceBuilder>, HasMetadata, Nam
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

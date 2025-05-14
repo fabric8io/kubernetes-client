@@ -125,6 +125,7 @@ public class TracingRequestHeader implements Editable<TracingRequestHeaderBuilde
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -183,6 +183,7 @@ public class VerificationPolicyList implements Editable<VerificationPolicyListBu
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -79,6 +79,7 @@ public class NodeSwapStatus implements Editable<NodeSwapStatusBuilder>, Kubernet
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

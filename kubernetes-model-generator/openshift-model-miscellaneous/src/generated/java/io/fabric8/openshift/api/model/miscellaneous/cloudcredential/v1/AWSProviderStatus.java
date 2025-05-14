@@ -178,6 +178,7 @@ public class AWSProviderStatus implements Editable<AWSProviderStatusBuilder>, Ku
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

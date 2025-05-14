@@ -198,6 +198,7 @@ public class RemoteCluster implements Editable<RemoteClusterBuilder>, HasMetadat
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

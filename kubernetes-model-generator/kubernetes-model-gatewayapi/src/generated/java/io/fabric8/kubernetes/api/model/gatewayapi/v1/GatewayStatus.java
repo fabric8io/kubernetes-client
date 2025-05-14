@@ -157,6 +157,7 @@ public class GatewayStatus implements Editable<GatewayStatusBuilder>, Kubernetes
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -79,6 +79,7 @@ public class NodeDaemonEndpoints implements Editable<NodeDaemonEndpointsBuilder>
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

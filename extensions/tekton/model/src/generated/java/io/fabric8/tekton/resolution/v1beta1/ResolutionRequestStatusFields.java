@@ -149,6 +149,7 @@ public class ResolutionRequestStatusFields implements Editable<ResolutionRequest
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

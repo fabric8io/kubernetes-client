@@ -129,6 +129,7 @@ public class LocalSecretsConfig implements Editable<LocalSecretsConfigBuilder>, 
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -197,6 +197,7 @@ public class ClusterVersion implements Editable<ClusterVersionBuilder>, HasMetad
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

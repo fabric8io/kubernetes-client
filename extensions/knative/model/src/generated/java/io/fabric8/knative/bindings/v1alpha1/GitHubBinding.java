@@ -198,6 +198,7 @@ public class GitHubBinding implements Editable<GitHubBindingBuilder>, HasMetadat
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

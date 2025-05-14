@@ -168,6 +168,7 @@ public class SimpleMacvlanConfig implements Editable<SimpleMacvlanConfigBuilder>
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

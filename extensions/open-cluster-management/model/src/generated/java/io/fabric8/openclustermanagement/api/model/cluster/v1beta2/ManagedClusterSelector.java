@@ -128,6 +128,7 @@ public class ManagedClusterSelector implements Editable<ManagedClusterSelectorBu
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

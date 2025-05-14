@@ -200,6 +200,7 @@ public class NetworkDataNetwork implements Editable<NetworkDataNetworkBuilder>, 
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -108,6 +108,7 @@ public class OperatorStatus implements Editable<OperatorStatusBuilder>, Kubernet
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

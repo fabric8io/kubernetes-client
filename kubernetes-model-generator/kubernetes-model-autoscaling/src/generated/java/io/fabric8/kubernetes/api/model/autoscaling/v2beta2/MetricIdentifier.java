@@ -128,6 +128,7 @@ public class MetricIdentifier implements Editable<MetricIdentifierBuilder>, Kube
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

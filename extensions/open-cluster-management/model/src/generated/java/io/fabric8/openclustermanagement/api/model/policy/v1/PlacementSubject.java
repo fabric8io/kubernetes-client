@@ -148,6 +148,7 @@ public class PlacementSubject implements Editable<PlacementSubjectBuilder>, Kube
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

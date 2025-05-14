@@ -189,6 +189,7 @@ public class DiscordConfig implements Editable<DiscordConfigBuilder>, Kubernetes
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

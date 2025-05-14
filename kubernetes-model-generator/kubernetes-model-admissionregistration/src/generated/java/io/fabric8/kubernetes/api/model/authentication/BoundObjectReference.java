@@ -168,6 +168,7 @@ public class BoundObjectReference implements Editable<BoundObjectReferenceBuilde
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -189,6 +189,7 @@ public class ConsoleYAMLSampleSpec implements Editable<ConsoleYAMLSampleSpecBuil
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

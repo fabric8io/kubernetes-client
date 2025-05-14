@@ -183,6 +183,7 @@ public class HTTPRouteList implements Editable<HTTPRouteListBuilder>, Kubernetes
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -183,6 +183,7 @@ public class DNSZoneList implements Editable<DNSZoneListBuilder>, KubernetesReso
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

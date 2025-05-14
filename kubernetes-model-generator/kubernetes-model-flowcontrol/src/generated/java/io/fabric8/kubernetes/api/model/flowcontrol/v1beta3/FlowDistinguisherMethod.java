@@ -108,6 +108,7 @@ public class FlowDistinguisherMethod implements Editable<FlowDistinguisherMethod
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

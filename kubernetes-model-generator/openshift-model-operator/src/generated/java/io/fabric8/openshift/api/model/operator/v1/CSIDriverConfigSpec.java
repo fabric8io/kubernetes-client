@@ -208,6 +208,7 @@ public class CSIDriverConfigSpec implements Editable<CSIDriverConfigSpecBuilder>
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -369,6 +369,7 @@ public class Image implements Editable<ImageBuilder>, HasMetadata
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

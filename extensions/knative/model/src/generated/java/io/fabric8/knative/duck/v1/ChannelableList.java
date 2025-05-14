@@ -183,6 +183,7 @@ public class ChannelableList implements Editable<ChannelableListBuilder>, Kubern
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

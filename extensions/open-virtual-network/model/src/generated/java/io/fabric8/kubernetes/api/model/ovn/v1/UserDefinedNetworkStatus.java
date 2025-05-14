@@ -113,6 +113,7 @@ public class UserDefinedNetworkStatus implements Editable<UserDefinedNetworkStat
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

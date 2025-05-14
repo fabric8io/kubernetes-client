@@ -79,6 +79,7 @@ public class ContainerStateRunning implements Editable<ContainerStateRunningBuil
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

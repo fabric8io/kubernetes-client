@@ -99,6 +99,7 @@ public class SeccompProfile implements Editable<SeccompProfileBuilder>, Kubernet
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

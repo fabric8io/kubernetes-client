@@ -183,6 +183,7 @@ public class TemplateList implements Editable<TemplateListBuilder>, KubernetesRe
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

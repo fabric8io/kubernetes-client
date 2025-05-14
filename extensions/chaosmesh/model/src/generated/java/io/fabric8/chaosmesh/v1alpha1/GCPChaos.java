@@ -198,6 +198,7 @@ public class GCPChaos implements Editable<GCPChaosBuilder>, HasMetadata, Namespa
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

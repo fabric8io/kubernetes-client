@@ -183,6 +183,7 @@ public class FlowSchemaList implements Editable<FlowSchemaListBuilder>, Kubernet
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

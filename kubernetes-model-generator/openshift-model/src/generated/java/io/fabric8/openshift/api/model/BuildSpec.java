@@ -314,6 +314,7 @@ public class BuildSpec implements Editable<BuildSpecBuilder>, KubernetesResource
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -128,6 +128,7 @@ public class AppliedEventPolicyRef implements Editable<AppliedEventPolicyRefBuil
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

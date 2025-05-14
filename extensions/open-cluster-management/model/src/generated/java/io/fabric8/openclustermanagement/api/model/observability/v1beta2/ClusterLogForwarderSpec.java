@@ -108,6 +108,7 @@ public class ClusterLogForwarderSpec implements Editable<ClusterLogForwarderSpec
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

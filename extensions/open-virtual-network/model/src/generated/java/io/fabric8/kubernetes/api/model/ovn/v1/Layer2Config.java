@@ -191,6 +191,7 @@ public class Layer2Config implements Editable<Layer2ConfigBuilder>, KubernetesRe
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -112,6 +112,7 @@ public class ClusterDeploymentCustomizationSpec implements Editable<ClusterDeplo
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

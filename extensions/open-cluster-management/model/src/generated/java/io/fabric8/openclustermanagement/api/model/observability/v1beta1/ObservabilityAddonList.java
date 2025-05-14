@@ -183,6 +183,7 @@ public class ObservabilityAddonList implements Editable<ObservabilityAddonListBu
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

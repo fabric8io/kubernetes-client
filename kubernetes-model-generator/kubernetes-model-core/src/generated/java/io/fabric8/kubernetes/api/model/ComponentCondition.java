@@ -139,6 +139,7 @@ public class ComponentCondition implements Editable<ComponentConditionBuilder>, 
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

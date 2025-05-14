@@ -133,6 +133,7 @@ public class LabelSelectorAttributes implements Editable<LabelSelectorAttributes
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

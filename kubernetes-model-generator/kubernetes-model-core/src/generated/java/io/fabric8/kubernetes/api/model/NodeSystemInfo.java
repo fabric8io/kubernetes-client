@@ -279,6 +279,7 @@ public class NodeSystemInfo implements Editable<NodeSystemInfoBuilder>, Kubernet
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

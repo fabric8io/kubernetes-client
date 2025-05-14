@@ -108,6 +108,7 @@ public class IPAddressSpec implements Editable<IPAddressSpecBuilder>, Kubernetes
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

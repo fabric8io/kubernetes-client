@@ -155,6 +155,7 @@ public class FieldSpec implements Editable<FieldSpecBuilder>, KubernetesResource
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

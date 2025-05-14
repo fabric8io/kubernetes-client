@@ -151,6 +151,7 @@ public class TunedSpec implements Editable<TunedSpecBuilder>, KubernetesResource
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

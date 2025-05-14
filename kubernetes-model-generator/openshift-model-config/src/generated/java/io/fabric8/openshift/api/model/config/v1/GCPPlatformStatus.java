@@ -194,6 +194,7 @@ public class GCPPlatformStatus implements Editable<GCPPlatformStatusBuilder>, Ku
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -201,6 +201,7 @@ public class RequirementStatus implements Editable<RequirementStatusBuilder>, Ku
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

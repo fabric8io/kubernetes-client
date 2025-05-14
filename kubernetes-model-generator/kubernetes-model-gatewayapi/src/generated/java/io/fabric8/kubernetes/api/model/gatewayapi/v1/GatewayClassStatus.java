@@ -135,6 +135,7 @@ public class GatewayClassStatus implements Editable<GatewayClassStatusBuilder>, 
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

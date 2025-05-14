@@ -159,6 +159,7 @@ public class ReplicationControllerCondition implements Editable<ReplicationContr
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

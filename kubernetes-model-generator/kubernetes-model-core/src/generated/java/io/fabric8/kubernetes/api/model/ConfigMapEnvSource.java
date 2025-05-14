@@ -99,6 +99,7 @@ public class ConfigMapEnvSource implements Editable<ConfigMapEnvSourceBuilder>, 
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

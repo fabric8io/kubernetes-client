@@ -108,6 +108,7 @@ public class NoK8sNetworkError implements Editable<NoK8sNetworkErrorBuilder>, Ku
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

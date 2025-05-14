@@ -108,6 +108,7 @@ public class MachineConfigNodeSpecMachineConfigVersion implements Editable<Machi
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

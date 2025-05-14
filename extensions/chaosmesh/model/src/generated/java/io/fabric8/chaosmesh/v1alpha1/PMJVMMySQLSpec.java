@@ -245,6 +245,7 @@ public class PMJVMMySQLSpec implements Editable<PMJVMMySQLSpecBuilder>, Kubernet
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -183,6 +183,7 @@ public class KlusterletList implements Editable<KlusterletListBuilder>, Kubernet
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

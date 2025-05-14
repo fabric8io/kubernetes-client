@@ -148,6 +148,7 @@ public class HTTPQueryParamMatch implements Editable<HTTPQueryParamMatchBuilder>
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

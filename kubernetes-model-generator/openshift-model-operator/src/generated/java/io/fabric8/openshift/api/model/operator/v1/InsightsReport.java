@@ -132,6 +132,7 @@ public class InsightsReport implements Editable<InsightsReportBuilder>, Kubernet
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

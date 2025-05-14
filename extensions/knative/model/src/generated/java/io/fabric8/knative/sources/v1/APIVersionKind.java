@@ -128,6 +128,7 @@ public class APIVersionKind implements Editable<APIVersionKindBuilder>, Kubernet
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

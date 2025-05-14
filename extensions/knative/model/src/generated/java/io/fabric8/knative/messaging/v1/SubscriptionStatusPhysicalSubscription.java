@@ -268,6 +268,7 @@ public class SubscriptionStatusPhysicalSubscription implements Editable<Subscrip
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

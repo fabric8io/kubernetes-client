@@ -128,6 +128,7 @@ public class SecretRef implements Editable<SecretRefBuilder>, KubernetesResource
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

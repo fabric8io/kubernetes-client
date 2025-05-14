@@ -267,6 +267,7 @@ public class APIResource implements Editable<APIResourceBuilder>, KubernetesReso
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

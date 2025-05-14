@@ -149,6 +149,7 @@ public class TimeoutFields implements Editable<TimeoutFieldsBuilder>, Kubernetes
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

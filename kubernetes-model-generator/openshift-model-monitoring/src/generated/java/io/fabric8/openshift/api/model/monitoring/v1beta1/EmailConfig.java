@@ -373,6 +373,7 @@ public class EmailConfig implements Editable<EmailConfigBuilder>, KubernetesReso
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

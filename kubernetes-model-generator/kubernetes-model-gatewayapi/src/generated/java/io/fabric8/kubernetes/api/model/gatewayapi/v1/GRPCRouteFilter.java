@@ -188,6 +188,7 @@ public class GRPCRouteFilter implements Editable<GRPCRouteFilterBuilder>, Kubern
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -112,6 +112,7 @@ public class AppliedEventPoliciesStatus implements Editable<AppliedEventPolicies
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

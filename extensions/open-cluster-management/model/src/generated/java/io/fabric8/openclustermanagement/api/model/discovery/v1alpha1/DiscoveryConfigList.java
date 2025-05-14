@@ -183,6 +183,7 @@ public class DiscoveryConfigList implements Editable<DiscoveryConfigListBuilder>
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

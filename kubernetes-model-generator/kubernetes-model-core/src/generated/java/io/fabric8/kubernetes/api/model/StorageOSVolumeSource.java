@@ -159,6 +159,7 @@ public class StorageOSVolumeSource implements Editable<StorageOSVolumeSourceBuil
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

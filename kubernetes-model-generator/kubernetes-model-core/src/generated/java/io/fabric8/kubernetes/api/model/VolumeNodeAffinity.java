@@ -79,6 +79,7 @@ public class VolumeNodeAffinity implements Editable<VolumeNodeAffinityBuilder>, 
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

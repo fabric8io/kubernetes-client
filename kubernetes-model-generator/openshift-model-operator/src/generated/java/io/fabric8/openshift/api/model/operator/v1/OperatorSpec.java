@@ -192,6 +192,7 @@ public class OperatorSpec implements Editable<OperatorSpecBuilder>, KubernetesRe
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

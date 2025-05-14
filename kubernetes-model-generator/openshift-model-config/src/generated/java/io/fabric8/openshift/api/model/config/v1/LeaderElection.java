@@ -208,6 +208,7 @@ public class LeaderElection implements Editable<LeaderElectionBuilder>, Kubernet
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

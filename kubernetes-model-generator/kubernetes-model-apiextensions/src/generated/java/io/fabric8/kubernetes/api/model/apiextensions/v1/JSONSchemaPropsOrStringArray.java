@@ -119,6 +119,7 @@ public class JSONSchemaPropsOrStringArray implements Editable<JSONSchemaPropsOrS
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -133,6 +133,7 @@ public class IssuerStatus implements Editable<IssuerStatusBuilder>, KubernetesRe
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

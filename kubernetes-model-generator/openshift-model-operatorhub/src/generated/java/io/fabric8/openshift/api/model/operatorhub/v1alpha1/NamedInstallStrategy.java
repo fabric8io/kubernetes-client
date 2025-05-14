@@ -128,6 +128,7 @@ public class NamedInstallStrategy implements Editable<NamedInstallStrategyBuilde
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

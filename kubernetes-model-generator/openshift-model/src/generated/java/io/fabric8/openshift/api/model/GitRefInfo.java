@@ -268,6 +268,7 @@ public class GitRefInfo implements Editable<GitRefInfoBuilder>, KubernetesResour
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

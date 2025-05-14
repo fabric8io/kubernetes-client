@@ -108,6 +108,7 @@ public class CustomResourceValidation implements Editable<CustomResourceValidati
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

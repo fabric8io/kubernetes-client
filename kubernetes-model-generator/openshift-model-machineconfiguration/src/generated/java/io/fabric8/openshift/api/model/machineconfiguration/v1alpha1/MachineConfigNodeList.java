@@ -183,6 +183,7 @@ public class MachineConfigNodeList implements Editable<MachineConfigNodeListBuil
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -110,6 +110,7 @@ public class ProviderSpec implements Editable<ProviderSpecBuilder>, KubernetesRe
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

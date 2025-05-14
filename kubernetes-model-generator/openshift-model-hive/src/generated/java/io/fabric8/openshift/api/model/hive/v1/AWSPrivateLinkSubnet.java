@@ -128,6 +128,7 @@ public class AWSPrivateLinkSubnet implements Editable<AWSPrivateLinkSubnetBuilde
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

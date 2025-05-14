@@ -385,6 +385,7 @@ public class AWSS3 implements Editable<AWSS3Builder>, KubernetesResource
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

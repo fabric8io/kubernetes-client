@@ -248,6 +248,7 @@ public class ImageRegistryConfigStorageSwift implements Editable<ImageRegistryCo
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

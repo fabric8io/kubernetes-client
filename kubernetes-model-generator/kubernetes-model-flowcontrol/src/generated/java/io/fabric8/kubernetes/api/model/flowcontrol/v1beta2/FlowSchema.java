@@ -197,6 +197,7 @@ public class FlowSchema implements Editable<FlowSchemaBuilder>, HasMetadata
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

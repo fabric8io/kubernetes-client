@@ -216,6 +216,7 @@ public class RawIPSet implements Editable<RawIPSetBuilder>, KubernetesResource
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

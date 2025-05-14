@@ -128,6 +128,7 @@ public class DNSTransportConfig implements Editable<DNSTransportConfigBuilder>, 
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

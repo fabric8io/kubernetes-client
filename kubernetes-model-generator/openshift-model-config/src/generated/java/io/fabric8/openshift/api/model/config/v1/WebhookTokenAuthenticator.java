@@ -108,6 +108,7 @@ public class WebhookTokenAuthenticator implements Editable<WebhookTokenAuthentic
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

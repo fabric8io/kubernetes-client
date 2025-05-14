@@ -212,6 +212,7 @@ public class BundleLookup implements Editable<BundleLookupBuilder>, KubernetesRe
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

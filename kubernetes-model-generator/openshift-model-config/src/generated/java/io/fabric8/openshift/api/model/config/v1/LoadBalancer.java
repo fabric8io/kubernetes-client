@@ -99,6 +99,7 @@ public class LoadBalancer implements Editable<LoadBalancerBuilder>, KubernetesRe
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

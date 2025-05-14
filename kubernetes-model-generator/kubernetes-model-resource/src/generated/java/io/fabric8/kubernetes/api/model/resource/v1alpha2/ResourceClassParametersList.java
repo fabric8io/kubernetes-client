@@ -183,6 +183,7 @@ public class ResourceClassParametersList implements Editable<ResourceClassParame
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

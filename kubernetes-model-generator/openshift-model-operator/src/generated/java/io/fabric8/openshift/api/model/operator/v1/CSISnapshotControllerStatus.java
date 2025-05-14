@@ -214,6 +214,7 @@ public class CSISnapshotControllerStatus implements Editable<CSISnapshotControll
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

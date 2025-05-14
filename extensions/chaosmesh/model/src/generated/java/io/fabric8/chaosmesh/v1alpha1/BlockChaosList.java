@@ -183,6 +183,7 @@ public class BlockChaosList implements Editable<BlockChaosListBuilder>, Kubernet
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

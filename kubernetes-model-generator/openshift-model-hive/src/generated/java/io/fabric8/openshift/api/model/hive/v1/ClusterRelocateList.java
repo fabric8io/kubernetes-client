@@ -183,6 +183,7 @@ public class ClusterRelocateList implements Editable<ClusterRelocateListBuilder>
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -99,6 +99,7 @@ public class ResourceClaim implements Editable<ResourceClaimBuilder>, Kubernetes
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

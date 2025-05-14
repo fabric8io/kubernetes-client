@@ -548,6 +548,7 @@ public class FeatureFlags implements Editable<FeatureFlagsBuilder>, KubernetesRe
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

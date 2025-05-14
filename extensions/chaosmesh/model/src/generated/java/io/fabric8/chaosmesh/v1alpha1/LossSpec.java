@@ -128,6 +128,7 @@ public class LossSpec implements Editable<LossSpecBuilder>, KubernetesResource
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

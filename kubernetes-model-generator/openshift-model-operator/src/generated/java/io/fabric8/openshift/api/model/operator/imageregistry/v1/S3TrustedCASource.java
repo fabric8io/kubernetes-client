@@ -108,6 +108,7 @@ public class S3TrustedCASource implements Editable<S3TrustedCASourceBuilder>, Ku
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

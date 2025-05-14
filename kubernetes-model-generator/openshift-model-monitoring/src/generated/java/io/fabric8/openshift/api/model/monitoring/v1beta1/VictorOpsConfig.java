@@ -292,6 +292,7 @@ public class VictorOpsConfig implements Editable<VictorOpsConfigBuilder>, Kubern
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

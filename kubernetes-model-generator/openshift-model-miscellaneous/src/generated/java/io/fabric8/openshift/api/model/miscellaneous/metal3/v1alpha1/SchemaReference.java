@@ -125,6 +125,7 @@ public class SchemaReference implements Editable<SchemaReferenceBuilder>, Kubern
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

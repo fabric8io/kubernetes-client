@@ -115,6 +115,7 @@ public class BrokerSpec implements Editable<BrokerSpecBuilder>, KubernetesResour
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

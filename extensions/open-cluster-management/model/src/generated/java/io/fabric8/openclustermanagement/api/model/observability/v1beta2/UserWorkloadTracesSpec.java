@@ -108,6 +108,7 @@ public class UserWorkloadTracesSpec implements Editable<UserWorkloadTracesSpecBu
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

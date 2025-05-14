@@ -134,6 +134,7 @@ public class EndpointHints implements Editable<EndpointHintsBuilder>, Kubernetes
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

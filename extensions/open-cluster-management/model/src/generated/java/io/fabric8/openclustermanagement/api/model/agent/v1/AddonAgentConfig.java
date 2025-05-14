@@ -211,6 +211,7 @@ public class AddonAgentConfig implements Editable<AddonAgentConfigBuilder>, Kube
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

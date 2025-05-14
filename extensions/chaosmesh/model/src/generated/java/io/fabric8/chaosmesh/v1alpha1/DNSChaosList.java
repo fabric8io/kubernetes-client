@@ -183,6 +183,7 @@ public class DNSChaosList implements Editable<DNSChaosListBuilder>, KubernetesRe
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

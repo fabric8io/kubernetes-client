@@ -99,6 +99,7 @@ public class MetricSelectorMetric implements IsMetricSelectorMetricMatch, Editab
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

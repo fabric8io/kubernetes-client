@@ -183,6 +183,7 @@ public class ResourceClassList implements Editable<ResourceClassListBuilder>, Ku
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

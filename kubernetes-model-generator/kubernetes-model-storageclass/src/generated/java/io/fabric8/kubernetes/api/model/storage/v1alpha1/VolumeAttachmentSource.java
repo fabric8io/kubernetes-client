@@ -129,6 +129,7 @@ public class VolumeAttachmentSource implements Editable<VolumeAttachmentSourceBu
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

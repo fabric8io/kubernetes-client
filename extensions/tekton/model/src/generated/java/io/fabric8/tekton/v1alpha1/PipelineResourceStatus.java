@@ -78,6 +78,7 @@ public class PipelineResourceStatus implements Editable<PipelineResourceStatusBu
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

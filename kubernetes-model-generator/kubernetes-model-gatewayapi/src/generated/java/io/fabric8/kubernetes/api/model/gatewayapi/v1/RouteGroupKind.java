@@ -128,6 +128,7 @@ public class RouteGroupKind implements Editable<RouteGroupKindBuilder>, Kubernet
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

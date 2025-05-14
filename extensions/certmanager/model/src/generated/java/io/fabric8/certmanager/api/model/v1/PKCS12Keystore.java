@@ -169,6 +169,7 @@ public class PKCS12Keystore implements Editable<PKCS12KeystoreBuilder>, Kubernet
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

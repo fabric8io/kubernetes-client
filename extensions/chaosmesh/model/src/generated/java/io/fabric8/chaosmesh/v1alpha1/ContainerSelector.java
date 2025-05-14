@@ -163,6 +163,7 @@ public class ContainerSelector implements Editable<ContainerSelectorBuilder>, Ku
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

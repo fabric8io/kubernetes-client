@@ -430,6 +430,7 @@ public class CSVDescription implements Editable<CSVDescriptionBuilder>, Kubernet
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

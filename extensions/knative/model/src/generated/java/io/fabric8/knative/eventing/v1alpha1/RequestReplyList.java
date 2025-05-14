@@ -183,6 +183,7 @@ public class RequestReplyList implements Editable<RequestReplyListBuilder>, Kube
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

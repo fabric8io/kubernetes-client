@@ -177,6 +177,7 @@ public class ImageContentSourcePolicy implements Editable<ImageContentSourcePoli
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

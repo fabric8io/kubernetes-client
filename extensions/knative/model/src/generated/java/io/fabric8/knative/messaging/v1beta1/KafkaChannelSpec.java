@@ -194,6 +194,7 @@ public class KafkaChannelSpec implements Editable<KafkaChannelSpecBuilder>, Kube
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

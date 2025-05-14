@@ -183,6 +183,7 @@ public class AddressableTypeList implements Editable<AddressableTypeListBuilder>
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -132,6 +132,7 @@ public class GRPCRouteMatch implements Editable<GRPCRouteMatchBuilder>, Kubernet
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

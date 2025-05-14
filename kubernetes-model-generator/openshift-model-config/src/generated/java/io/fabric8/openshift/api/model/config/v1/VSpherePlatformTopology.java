@@ -232,6 +232,7 @@ public class VSpherePlatformTopology implements Editable<VSpherePlatformTopology
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

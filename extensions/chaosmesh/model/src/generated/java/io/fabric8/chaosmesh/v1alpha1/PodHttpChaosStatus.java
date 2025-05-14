@@ -168,6 +168,7 @@ public class PodHttpChaosStatus implements Editable<PodHttpChaosStatusBuilder>, 
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

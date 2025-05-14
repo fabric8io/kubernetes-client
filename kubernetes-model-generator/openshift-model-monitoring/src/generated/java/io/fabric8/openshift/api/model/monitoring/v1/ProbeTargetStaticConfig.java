@@ -156,6 +156,7 @@ public class ProbeTargetStaticConfig implements Editable<ProbeTargetStaticConfig
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

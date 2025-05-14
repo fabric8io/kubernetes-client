@@ -132,6 +132,7 @@ public class DNSRecordStatus implements Editable<DNSRecordStatusBuilder>, Kubern
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

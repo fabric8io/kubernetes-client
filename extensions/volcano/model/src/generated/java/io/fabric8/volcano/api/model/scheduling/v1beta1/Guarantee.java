@@ -111,6 +111,7 @@ public class Guarantee implements Editable<GuaranteeBuilder>, KubernetesResource
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

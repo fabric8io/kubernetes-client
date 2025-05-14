@@ -249,6 +249,7 @@ public class VaultIssuer implements Editable<VaultIssuerBuilder>, KubernetesReso
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

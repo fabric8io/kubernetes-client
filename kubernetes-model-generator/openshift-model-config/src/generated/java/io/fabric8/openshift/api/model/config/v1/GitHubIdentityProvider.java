@@ -214,6 +214,7 @@ public class GitHubIdentityProvider implements Editable<GitHubIdentityProviderBu
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -198,6 +198,7 @@ public class ClusterProvision implements Editable<ClusterProvisionBuilder>, HasM
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -202,6 +202,7 @@ public class ReadinessProbe implements Editable<ReadinessProbeBuilder>, Kubernet
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -198,6 +198,7 @@ public class EgressFirewall implements Editable<EgressFirewallBuilder>, HasMetad
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

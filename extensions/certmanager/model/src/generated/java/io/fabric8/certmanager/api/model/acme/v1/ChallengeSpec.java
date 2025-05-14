@@ -253,6 +253,7 @@ public class ChallengeSpec implements Editable<ChallengeSpecBuilder>, Kubernetes
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

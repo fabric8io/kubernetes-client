@@ -183,6 +183,7 @@ public class IntegrationSourceList implements Editable<IntegrationSourceListBuil
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

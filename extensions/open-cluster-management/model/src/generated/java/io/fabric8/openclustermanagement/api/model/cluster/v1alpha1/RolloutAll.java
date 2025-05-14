@@ -149,6 +149,7 @@ public class RolloutAll implements Editable<RolloutAllBuilder>, KubernetesResour
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

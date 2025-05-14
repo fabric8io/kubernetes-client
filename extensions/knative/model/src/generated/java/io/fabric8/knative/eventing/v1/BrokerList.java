@@ -183,6 +183,7 @@ public class BrokerList implements Editable<BrokerListBuilder>, KubernetesResour
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

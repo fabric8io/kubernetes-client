@@ -108,6 +108,7 @@ public class RouteSetHTTPHeader implements Editable<RouteSetHTTPHeaderBuilder>, 
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

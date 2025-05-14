@@ -113,6 +113,7 @@ public class VhostDevice implements Editable<VhostDeviceBuilder>, KubernetesReso
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

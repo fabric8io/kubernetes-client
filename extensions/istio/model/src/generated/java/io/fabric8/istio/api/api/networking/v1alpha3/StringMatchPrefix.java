@@ -108,6 +108,7 @@ public class StringMatchPrefix implements IsStringMatchMatchType, Editable<Strin
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

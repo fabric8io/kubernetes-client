@@ -131,6 +131,7 @@ public class MetricsConfig implements Editable<MetricsConfigBuilder>, Kubernetes
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

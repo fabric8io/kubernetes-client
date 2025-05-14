@@ -416,6 +416,7 @@ public class NomadSDConfig implements Editable<NomadSDConfigBuilder>, Kubernetes
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

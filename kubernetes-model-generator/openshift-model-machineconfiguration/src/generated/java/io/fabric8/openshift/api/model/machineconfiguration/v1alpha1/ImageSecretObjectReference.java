@@ -108,6 +108,7 @@ public class ImageSecretObjectReference implements Editable<ImageSecretObjectRef
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

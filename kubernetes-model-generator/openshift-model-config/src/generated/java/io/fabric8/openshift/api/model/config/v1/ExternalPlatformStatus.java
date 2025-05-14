@@ -108,6 +108,7 @@ public class ExternalPlatformStatus implements Editable<ExternalPlatformStatusBu
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

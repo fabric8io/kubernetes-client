@@ -376,6 +376,7 @@ public class KumaSDConfig implements Editable<KumaSDConfigBuilder>, KubernetesRe
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

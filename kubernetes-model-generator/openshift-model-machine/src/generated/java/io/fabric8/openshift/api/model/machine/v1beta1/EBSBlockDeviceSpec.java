@@ -208,6 +208,7 @@ public class EBSBlockDeviceSpec implements Editable<EBSBlockDeviceSpecBuilder>, 
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

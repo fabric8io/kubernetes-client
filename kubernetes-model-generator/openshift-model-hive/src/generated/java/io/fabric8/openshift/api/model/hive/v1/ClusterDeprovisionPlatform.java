@@ -228,6 +228,7 @@ public class ClusterDeprovisionPlatform implements Editable<ClusterDeprovisionPl
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

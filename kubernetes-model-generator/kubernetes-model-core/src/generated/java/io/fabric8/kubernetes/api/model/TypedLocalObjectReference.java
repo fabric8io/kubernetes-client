@@ -119,6 +119,7 @@ public class TypedLocalObjectReference implements Editable<TypedLocalObjectRefer
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -108,6 +108,7 @@ public class ManagedIdentity implements Editable<ManagedIdentityBuilder>, Kubern
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

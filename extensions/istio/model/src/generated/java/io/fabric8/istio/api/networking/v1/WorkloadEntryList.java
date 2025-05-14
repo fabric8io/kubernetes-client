@@ -183,6 +183,7 @@ public class WorkloadEntryList implements Editable<WorkloadEntryListBuilder>, Ku
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

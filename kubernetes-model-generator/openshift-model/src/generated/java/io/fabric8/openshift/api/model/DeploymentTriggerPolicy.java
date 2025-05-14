@@ -128,6 +128,7 @@ public class DeploymentTriggerPolicy implements Editable<DeploymentTriggerPolicy
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

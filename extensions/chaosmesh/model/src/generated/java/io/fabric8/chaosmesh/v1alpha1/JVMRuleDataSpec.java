@@ -145,6 +145,7 @@ public class JVMRuleDataSpec implements Editable<JVMRuleDataSpecBuilder>, Kubern
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

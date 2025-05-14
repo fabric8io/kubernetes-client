@@ -78,6 +78,7 @@ public class PackageOverride implements Editable<PackageOverrideBuilder>, Kubern
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

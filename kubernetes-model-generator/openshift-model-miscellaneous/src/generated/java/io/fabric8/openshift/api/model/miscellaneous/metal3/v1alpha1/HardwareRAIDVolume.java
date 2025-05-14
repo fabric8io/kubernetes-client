@@ -232,6 +232,7 @@ public class HardwareRAIDVolume implements Editable<HardwareRAIDVolumeBuilder>, 
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

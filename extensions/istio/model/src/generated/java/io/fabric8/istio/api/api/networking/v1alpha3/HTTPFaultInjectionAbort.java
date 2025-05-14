@@ -131,6 +131,7 @@ public class HTTPFaultInjectionAbort implements Editable<HTTPFaultInjectionAbort
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

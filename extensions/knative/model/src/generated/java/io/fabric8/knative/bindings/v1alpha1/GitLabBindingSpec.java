@@ -129,6 +129,7 @@ public class GitLabBindingSpec implements Editable<GitLabBindingSpecBuilder>, Ku
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

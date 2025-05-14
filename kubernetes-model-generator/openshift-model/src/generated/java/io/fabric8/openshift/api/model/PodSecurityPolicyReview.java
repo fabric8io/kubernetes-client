@@ -198,6 +198,7 @@ public class PodSecurityPolicyReview implements Editable<PodSecurityPolicyReview
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

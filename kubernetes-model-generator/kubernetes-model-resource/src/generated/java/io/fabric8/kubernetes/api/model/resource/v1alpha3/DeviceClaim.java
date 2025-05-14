@@ -156,6 +156,7 @@ public class DeviceClaim implements Editable<DeviceClaimBuilder>, KubernetesReso
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

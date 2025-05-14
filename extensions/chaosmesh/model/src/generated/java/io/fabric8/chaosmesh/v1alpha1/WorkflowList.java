@@ -168,6 +168,7 @@ public class WorkflowList implements Editable<WorkflowListBuilder>, KubernetesRe
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

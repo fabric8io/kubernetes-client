@@ -194,6 +194,7 @@ public class MatchResources implements Editable<MatchResourcesBuilder>, Kubernet
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

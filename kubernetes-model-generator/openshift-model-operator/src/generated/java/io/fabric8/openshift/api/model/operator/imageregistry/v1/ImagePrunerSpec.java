@@ -356,6 +356,7 @@ public class ImagePrunerSpec implements Editable<ImagePrunerSpecBuilder>, Kubern
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -304,6 +304,7 @@ public class AdmissionRequest implements Editable<AdmissionRequestBuilder>, Kube
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

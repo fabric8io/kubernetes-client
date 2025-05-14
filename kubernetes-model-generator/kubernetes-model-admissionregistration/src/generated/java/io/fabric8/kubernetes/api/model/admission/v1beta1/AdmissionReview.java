@@ -150,6 +150,7 @@ public class AdmissionReview implements Editable<AdmissionReviewBuilder>, Kubern
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

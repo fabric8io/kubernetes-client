@@ -128,6 +128,7 @@ public class PagerDutyLinkConfig implements Editable<PagerDutyLinkConfigBuilder>
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

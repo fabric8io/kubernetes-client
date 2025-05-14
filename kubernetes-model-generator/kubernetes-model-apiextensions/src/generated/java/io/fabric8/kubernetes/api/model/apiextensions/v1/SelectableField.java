@@ -108,6 +108,7 @@ public class SelectableField implements Editable<SelectableFieldBuilder>, Kubern
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

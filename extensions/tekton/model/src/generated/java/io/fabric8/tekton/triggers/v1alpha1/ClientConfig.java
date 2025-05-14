@@ -148,6 +148,7 @@ public class ClientConfig implements Editable<ClientConfigBuilder>, KubernetesRe
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

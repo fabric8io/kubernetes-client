@@ -108,6 +108,7 @@ public class Metal3ClusterTemplateSpec implements Editable<Metal3ClusterTemplate
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

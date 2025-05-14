@@ -113,6 +113,7 @@ public class AddressPair implements Editable<AddressPairBuilder>, KubernetesReso
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

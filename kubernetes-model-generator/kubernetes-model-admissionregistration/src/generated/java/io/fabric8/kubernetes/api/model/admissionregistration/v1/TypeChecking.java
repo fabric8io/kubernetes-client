@@ -112,6 +112,7 @@ public class TypeChecking implements Editable<TypeCheckingBuilder>, KubernetesRe
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

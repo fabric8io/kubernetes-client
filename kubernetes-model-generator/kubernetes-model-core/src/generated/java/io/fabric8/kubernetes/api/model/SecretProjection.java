@@ -123,6 +123,7 @@ public class SecretProjection implements Editable<SecretProjectionBuilder>, Kube
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

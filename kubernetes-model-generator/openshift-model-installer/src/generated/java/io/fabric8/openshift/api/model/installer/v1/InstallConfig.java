@@ -588,6 +588,7 @@ public class InstallConfig implements Editable<InstallConfigBuilder>, HasMetadat
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

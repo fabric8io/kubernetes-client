@@ -214,6 +214,7 @@ public class ExactDeviceRequest implements Editable<ExactDeviceRequestBuilder>, 
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

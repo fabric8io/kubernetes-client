@@ -99,6 +99,7 @@ public class ModifyVolumeStatus implements Editable<ModifyVolumeStatusBuilder>, 
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

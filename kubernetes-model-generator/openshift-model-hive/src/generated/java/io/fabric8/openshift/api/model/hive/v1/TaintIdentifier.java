@@ -128,6 +128,7 @@ public class TaintIdentifier implements Editable<TaintIdentifierBuilder>, Kubern
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -183,6 +183,7 @@ public class AlertmanagerConfigList implements Editable<AlertmanagerConfigListBu
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -237,6 +237,7 @@ public class KubeAPIServerSpec implements Editable<KubeAPIServerSpecBuilder>, Ku
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

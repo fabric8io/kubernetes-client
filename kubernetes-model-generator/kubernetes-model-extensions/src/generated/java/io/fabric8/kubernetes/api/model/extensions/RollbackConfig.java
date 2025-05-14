@@ -108,6 +108,7 @@ public class RollbackConfig implements Editable<RollbackConfigBuilder>, Kubernet
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

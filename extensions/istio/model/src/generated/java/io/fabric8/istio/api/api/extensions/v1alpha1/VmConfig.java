@@ -112,6 +112,7 @@ public class VmConfig implements Editable<VmConfigBuilder>, KubernetesResource
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

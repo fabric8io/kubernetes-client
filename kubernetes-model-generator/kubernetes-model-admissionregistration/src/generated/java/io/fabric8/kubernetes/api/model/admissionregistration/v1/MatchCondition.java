@@ -128,6 +128,7 @@ public class MatchCondition implements Editable<MatchConditionBuilder>, Kubernet
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

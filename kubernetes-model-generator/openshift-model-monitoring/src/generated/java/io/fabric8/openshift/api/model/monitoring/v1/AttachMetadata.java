@@ -105,6 +105,7 @@ public class AttachMetadata implements Editable<AttachMetadataBuilder>, Kubernet
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

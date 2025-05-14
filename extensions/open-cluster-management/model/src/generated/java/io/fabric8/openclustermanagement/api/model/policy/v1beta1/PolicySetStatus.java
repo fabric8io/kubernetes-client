@@ -152,6 +152,7 @@ public class PolicySetStatus implements Editable<PolicySetStatusBuilder>, Kubern
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -128,6 +128,7 @@ public class CidrAndPort implements Editable<CidrAndPortBuilder>, KubernetesReso
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

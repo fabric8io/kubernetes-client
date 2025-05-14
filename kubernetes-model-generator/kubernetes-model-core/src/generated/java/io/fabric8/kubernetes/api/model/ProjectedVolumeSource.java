@@ -103,6 +103,7 @@ public class ProjectedVolumeSource implements Editable<ProjectedVolumeSourceBuil
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

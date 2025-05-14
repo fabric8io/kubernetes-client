@@ -168,6 +168,7 @@ public class PersistentVolume implements Editable<PersistentVolumeBuilder>, HasM
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

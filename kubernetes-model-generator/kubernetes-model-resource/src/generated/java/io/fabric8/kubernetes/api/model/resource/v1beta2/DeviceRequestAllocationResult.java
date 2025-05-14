@@ -212,6 +212,7 @@ public class DeviceRequestAllocationResult implements Editable<DeviceRequestAllo
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

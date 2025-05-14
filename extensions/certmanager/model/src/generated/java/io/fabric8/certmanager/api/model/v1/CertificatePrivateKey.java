@@ -168,6 +168,7 @@ public class CertificatePrivateKey implements Editable<CertificatePrivateKeyBuil
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

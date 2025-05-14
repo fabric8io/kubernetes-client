@@ -141,6 +141,7 @@ public class ReplicationControllerSpec implements Editable<ReplicationController
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

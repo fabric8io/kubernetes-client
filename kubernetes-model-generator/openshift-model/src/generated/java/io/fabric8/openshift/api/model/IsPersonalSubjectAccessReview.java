@@ -138,6 +138,7 @@ public class IsPersonalSubjectAccessReview implements Editable<IsPersonalSubject
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

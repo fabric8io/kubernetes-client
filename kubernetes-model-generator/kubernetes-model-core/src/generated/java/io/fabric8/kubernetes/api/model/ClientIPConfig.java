@@ -79,6 +79,7 @@ public class ClientIPConfig implements Editable<ClientIPConfigBuilder>, Kubernet
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

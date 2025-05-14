@@ -149,6 +149,7 @@ public class StorageConfigObject implements Editable<StorageConfigObjectBuilder>
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

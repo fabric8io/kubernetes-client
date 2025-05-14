@@ -148,6 +148,7 @@ public class ParallelBranchStatus implements Editable<ParallelBranchStatusBuilde
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

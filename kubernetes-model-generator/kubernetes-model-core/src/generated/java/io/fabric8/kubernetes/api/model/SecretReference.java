@@ -99,6 +99,7 @@ public class SecretReference implements Editable<SecretReferenceBuilder>, Kubern
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

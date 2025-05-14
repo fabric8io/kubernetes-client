@@ -129,6 +129,7 @@ public class Provenance implements Editable<ProvenanceBuilder>, KubernetesResour
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

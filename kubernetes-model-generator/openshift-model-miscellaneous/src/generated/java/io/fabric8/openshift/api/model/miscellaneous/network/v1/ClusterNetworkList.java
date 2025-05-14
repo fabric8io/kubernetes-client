@@ -183,6 +183,7 @@ public class ClusterNetworkList implements Editable<ClusterNetworkListBuilder>, 
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -245,6 +245,7 @@ public class KafkaFillSpec implements Editable<KafkaFillSpecBuilder>, Kubernetes
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

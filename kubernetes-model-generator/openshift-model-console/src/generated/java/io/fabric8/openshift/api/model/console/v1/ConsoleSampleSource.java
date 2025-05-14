@@ -148,6 +148,7 @@ public class ConsoleSampleSource implements Editable<ConsoleSampleSourceBuilder>
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

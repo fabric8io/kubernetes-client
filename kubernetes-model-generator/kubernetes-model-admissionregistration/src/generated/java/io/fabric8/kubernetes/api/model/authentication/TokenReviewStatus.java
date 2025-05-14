@@ -172,6 +172,7 @@ public class TokenReviewStatus implements Editable<TokenReviewStatusBuilder>, Ku
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

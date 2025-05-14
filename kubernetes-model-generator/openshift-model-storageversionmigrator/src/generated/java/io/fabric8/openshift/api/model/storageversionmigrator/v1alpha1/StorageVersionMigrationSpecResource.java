@@ -148,6 +148,7 @@ public class StorageVersionMigrationSpecResource implements Editable<StorageVers
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

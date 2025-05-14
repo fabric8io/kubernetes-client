@@ -111,6 +111,7 @@ public class TracingCustomTag implements Editable<TracingCustomTagBuilder>, Kube
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -225,6 +225,7 @@ public class PoolSynchronizerStatus implements Editable<PoolSynchronizerStatusBu
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

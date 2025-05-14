@@ -128,6 +128,7 @@ public class StaticIPAMRoutes implements Editable<StaticIPAMRoutesBuilder>, Kube
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

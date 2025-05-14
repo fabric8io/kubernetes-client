@@ -256,6 +256,7 @@ public class ImageRegistryStatus implements Editable<ImageRegistryStatusBuilder>
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

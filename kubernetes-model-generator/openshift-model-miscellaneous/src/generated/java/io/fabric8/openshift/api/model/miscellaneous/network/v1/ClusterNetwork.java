@@ -301,6 +301,7 @@ public class ClusterNetwork implements Editable<ClusterNetworkBuilder>, HasMetad
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

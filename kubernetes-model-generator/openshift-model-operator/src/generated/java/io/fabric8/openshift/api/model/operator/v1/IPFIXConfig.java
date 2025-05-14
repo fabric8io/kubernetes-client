@@ -109,6 +109,7 @@ public class IPFIXConfig implements Editable<IPFIXConfigBuilder>, KubernetesReso
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

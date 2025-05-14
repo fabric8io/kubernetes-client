@@ -197,6 +197,7 @@ public class NetworkBandwidthSpec implements Editable<NetworkBandwidthSpecBuilde
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

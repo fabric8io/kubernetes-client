@@ -198,6 +198,7 @@ public class Metal3Cluster implements Editable<Metal3ClusterBuilder>, HasMetadat
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

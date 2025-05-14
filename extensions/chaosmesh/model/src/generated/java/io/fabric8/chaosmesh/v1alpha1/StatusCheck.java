@@ -177,6 +177,7 @@ public class StatusCheck implements Editable<StatusCheckBuilder>, HasMetadata, N
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

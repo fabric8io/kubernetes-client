@@ -139,6 +139,7 @@ public class SELinuxOptions implements Editable<SELinuxOptionsBuilder>, Kubernet
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

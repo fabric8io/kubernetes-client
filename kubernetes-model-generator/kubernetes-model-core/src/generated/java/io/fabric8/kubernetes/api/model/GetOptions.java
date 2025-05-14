@@ -107,6 +107,7 @@ public class GetOptions implements Editable<GetOptionsBuilder>, KubernetesResour
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

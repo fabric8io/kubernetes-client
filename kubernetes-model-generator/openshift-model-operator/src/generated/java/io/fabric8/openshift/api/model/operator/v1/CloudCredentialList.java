@@ -183,6 +183,7 @@ public class CloudCredentialList implements Editable<CloudCredentialListBuilder>
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

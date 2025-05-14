@@ -112,6 +112,7 @@ public class PinnedImageSetSpec implements Editable<PinnedImageSetSpecBuilder>, 
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -174,6 +174,7 @@ public class RootVolume implements Editable<RootVolumeBuilder>, KubernetesResour
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

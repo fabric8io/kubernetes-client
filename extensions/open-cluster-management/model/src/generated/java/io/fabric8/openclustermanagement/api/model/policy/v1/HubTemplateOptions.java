@@ -105,6 +105,7 @@ public class HubTemplateOptions implements Editable<HubTemplateOptionsBuilder>, 
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

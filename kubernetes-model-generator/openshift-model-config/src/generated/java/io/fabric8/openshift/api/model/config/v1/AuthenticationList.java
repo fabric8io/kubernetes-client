@@ -183,6 +183,7 @@ public class AuthenticationList implements Editable<AuthenticationListBuilder>, 
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

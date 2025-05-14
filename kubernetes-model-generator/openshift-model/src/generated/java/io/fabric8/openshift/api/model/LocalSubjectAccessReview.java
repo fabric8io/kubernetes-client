@@ -406,6 +406,7 @@ public class LocalSubjectAccessReview implements Editable<LocalSubjectAccessRevi
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

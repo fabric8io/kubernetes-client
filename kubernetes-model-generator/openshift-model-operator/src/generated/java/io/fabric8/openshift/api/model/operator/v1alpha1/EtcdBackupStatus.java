@@ -124,6 +124,7 @@ public class EtcdBackupStatus implements Editable<EtcdBackupStatusBuilder>, Kube
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

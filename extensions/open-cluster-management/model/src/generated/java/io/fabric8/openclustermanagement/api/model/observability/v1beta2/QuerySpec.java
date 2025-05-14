@@ -194,6 +194,7 @@ public class QuerySpec implements Editable<QuerySpecBuilder>, KubernetesResource
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

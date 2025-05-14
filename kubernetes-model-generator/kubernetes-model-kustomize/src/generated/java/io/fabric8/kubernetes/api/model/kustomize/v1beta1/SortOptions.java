@@ -113,6 +113,7 @@ public class SortOptions implements Editable<SortOptionsBuilder>, KubernetesReso
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

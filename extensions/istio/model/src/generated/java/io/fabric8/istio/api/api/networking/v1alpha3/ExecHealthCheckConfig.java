@@ -109,6 +109,7 @@ public class ExecHealthCheckConfig implements Editable<ExecHealthCheckConfigBuil
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -198,6 +198,7 @@ public class RequestReply implements Editable<RequestReplyBuilder>, HasMetadata,
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

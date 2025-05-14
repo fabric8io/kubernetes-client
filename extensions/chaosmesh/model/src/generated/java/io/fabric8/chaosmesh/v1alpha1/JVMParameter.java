@@ -388,6 +388,7 @@ public class JVMParameter implements Editable<JVMParameterBuilder>, KubernetesRe
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

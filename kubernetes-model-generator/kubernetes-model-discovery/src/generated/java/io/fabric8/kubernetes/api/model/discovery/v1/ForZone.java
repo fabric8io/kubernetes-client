@@ -108,6 +108,7 @@ public class ForZone implements Editable<ForZoneBuilder>, KubernetesResource
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

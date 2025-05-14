@@ -128,6 +128,7 @@ public class EquinixMetalPlatformStatus implements Editable<EquinixMetalPlatform
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

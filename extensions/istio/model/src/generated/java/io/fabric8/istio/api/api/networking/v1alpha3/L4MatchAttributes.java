@@ -216,6 +216,7 @@ public class L4MatchAttributes implements Editable<L4MatchAttributesBuilder>, Ku
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

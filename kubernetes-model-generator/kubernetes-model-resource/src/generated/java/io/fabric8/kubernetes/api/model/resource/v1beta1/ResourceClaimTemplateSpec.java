@@ -128,6 +128,7 @@ public class ResourceClaimTemplateSpec implements Editable<ResourceClaimTemplate
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

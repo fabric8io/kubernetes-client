@@ -108,6 +108,7 @@ public class IngressControllerLogging implements Editable<IngressControllerLoggi
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

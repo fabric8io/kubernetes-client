@@ -176,6 +176,7 @@ public class NumatopoSpec implements Editable<NumatopoSpecBuilder>, KubernetesRe
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

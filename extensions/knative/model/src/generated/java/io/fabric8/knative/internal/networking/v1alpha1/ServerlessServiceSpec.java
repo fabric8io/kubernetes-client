@@ -168,6 +168,7 @@ public class ServerlessServiceSpec implements Editable<ServerlessServiceSpecBuil
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

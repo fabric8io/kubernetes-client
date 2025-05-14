@@ -183,6 +183,7 @@ public class PolicySetList implements Editable<PolicySetListBuilder>, Kubernetes
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -112,6 +112,7 @@ public class AggregationRule implements Editable<AggregationRuleBuilder>, Kubern
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

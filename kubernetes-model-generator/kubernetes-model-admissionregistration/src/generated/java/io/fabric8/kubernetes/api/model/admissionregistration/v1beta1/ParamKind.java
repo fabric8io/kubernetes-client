@@ -128,6 +128,7 @@ public class ParamKind implements Editable<ParamKindBuilder>, KubernetesResource
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

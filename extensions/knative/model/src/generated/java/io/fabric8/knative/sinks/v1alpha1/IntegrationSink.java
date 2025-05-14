@@ -198,6 +198,7 @@ public class IntegrationSink implements Editable<IntegrationSinkBuilder>, HasMet
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

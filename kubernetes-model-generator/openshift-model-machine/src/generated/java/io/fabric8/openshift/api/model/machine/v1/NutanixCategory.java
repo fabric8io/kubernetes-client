@@ -128,6 +128,7 @@ public class NutanixCategory implements Editable<NutanixCategoryBuilder>, Kubern
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

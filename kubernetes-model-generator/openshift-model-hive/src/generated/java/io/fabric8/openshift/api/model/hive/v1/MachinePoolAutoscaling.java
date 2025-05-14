@@ -128,6 +128,7 @@ public class MachinePoolAutoscaling implements Editable<MachinePoolAutoscalingBu
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -108,6 +108,7 @@ public class InstrumentationSpec implements Editable<InstrumentationSpecBuilder>
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

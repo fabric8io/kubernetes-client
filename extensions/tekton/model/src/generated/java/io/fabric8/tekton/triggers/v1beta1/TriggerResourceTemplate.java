@@ -78,6 +78,7 @@ public class TriggerResourceTemplate implements Editable<TriggerResourceTemplate
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

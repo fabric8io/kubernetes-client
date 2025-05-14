@@ -148,6 +148,7 @@ public class WebHookTrigger implements Editable<WebHookTriggerBuilder>, Kubernet
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

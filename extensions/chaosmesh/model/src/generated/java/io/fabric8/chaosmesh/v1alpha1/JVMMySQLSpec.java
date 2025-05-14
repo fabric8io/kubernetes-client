@@ -168,6 +168,7 @@ public class JVMMySQLSpec implements Editable<JVMMySQLSpecBuilder>, KubernetesRe
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

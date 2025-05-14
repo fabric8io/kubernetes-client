@@ -268,6 +268,7 @@ public class AWSChaosSpec implements Editable<AWSChaosSpecBuilder>, KubernetesRe
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

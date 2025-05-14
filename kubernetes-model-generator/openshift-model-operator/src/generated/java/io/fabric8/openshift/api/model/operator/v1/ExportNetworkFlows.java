@@ -127,6 +127,7 @@ public class ExportNetworkFlows implements Editable<ExportNetworkFlowsBuilder>, 
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

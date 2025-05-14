@@ -110,6 +110,7 @@ public class HostFirmwareSettingsSpec implements Editable<HostFirmwareSettingsSp
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

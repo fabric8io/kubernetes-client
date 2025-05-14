@@ -108,6 +108,7 @@ public class OvirtPlatformLoadBalancer implements Editable<OvirtPlatformLoadBala
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

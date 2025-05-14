@@ -135,6 +135,7 @@ public class UDPRouteSpec implements Editable<UDPRouteSpecBuilder>, KubernetesRe
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

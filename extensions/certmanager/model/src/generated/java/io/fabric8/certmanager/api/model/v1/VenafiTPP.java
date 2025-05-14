@@ -169,6 +169,7 @@ public class VenafiTPP implements Editable<VenafiTPPBuilder>, KubernetesResource
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

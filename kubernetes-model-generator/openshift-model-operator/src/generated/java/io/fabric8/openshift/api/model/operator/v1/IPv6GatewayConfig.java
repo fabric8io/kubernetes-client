@@ -108,6 +108,7 @@ public class IPv6GatewayConfig implements Editable<IPv6GatewayConfigBuilder>, Ku
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

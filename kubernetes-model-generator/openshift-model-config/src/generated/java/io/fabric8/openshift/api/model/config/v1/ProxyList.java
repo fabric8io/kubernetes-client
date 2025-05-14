@@ -183,6 +183,7 @@ public class ProxyList implements Editable<ProxyListBuilder>, KubernetesResource
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

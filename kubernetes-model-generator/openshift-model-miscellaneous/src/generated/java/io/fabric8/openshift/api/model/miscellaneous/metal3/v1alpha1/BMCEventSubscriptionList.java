@@ -183,6 +183,7 @@ public class BMCEventSubscriptionList implements Editable<BMCEventSubscriptionLi
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -198,6 +198,7 @@ public class TemplateInstance implements Editable<TemplateInstanceBuilder>, HasM
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

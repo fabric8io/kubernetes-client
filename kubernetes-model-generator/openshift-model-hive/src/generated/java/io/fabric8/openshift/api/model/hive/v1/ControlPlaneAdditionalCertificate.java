@@ -128,6 +128,7 @@ public class ControlPlaneAdditionalCertificate implements Editable<ControlPlaneA
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

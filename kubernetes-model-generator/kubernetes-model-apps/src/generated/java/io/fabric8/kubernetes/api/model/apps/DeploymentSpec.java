@@ -248,6 +248,7 @@ public class DeploymentSpec implements Editable<DeploymentSpecBuilder>, Kubernet
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

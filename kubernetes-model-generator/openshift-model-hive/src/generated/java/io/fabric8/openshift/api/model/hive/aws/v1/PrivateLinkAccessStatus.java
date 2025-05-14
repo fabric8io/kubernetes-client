@@ -148,6 +148,7 @@ public class PrivateLinkAccessStatus implements Editable<PrivateLinkAccessStatus
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

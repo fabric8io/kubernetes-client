@@ -108,6 +108,7 @@ public class CloudPrivateIPConfigSpec implements Editable<CloudPrivateIPConfigSp
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

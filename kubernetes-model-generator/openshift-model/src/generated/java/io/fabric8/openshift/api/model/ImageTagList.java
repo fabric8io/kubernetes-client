@@ -183,6 +183,7 @@ public class ImageTagList implements Editable<ImageTagListBuilder>, KubernetesRe
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

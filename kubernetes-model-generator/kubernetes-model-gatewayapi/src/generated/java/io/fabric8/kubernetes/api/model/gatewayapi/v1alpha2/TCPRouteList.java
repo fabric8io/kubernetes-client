@@ -183,6 +183,7 @@ public class TCPRouteList implements Editable<TCPRouteListBuilder>, KubernetesRe
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

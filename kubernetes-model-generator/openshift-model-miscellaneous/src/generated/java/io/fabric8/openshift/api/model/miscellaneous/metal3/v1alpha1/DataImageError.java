@@ -128,6 +128,7 @@ public class DataImageError implements Editable<DataImageErrorBuilder>, Kubernet
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

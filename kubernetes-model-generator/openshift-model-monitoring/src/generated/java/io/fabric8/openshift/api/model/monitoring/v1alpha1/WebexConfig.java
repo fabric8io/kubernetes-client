@@ -188,6 +188,7 @@ public class WebexConfig implements Editable<WebexConfigBuilder>, KubernetesReso
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

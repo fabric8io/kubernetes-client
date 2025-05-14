@@ -183,6 +183,7 @@ public class RunList implements Editable<RunListBuilder>, KubernetesResource, Ku
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -238,6 +238,7 @@ public class ResourceClass implements Editable<ResourceClassBuilder>, HasMetadat
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

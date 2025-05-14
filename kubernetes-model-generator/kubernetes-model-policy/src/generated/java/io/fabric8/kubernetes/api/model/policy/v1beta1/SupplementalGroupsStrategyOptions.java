@@ -132,6 +132,7 @@ public class SupplementalGroupsStrategyOptions implements Editable<SupplementalG
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

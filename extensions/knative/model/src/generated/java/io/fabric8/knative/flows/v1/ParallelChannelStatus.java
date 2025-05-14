@@ -114,6 +114,7 @@ public class ParallelChannelStatus implements Editable<ParallelChannelStatusBuil
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

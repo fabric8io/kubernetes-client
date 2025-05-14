@@ -198,6 +198,7 @@ public class ApiServerSource implements Editable<ApiServerSourceBuilder>, HasMet
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

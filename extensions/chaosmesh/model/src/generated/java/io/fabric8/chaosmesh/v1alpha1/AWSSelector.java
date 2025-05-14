@@ -185,6 +185,7 @@ public class AWSSelector implements Editable<AWSSelectorBuilder>, KubernetesReso
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

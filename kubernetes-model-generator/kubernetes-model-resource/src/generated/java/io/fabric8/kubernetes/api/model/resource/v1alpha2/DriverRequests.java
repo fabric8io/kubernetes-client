@@ -154,6 +154,7 @@ public class DriverRequests implements Editable<DriverRequestsBuilder>, Kubernet
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

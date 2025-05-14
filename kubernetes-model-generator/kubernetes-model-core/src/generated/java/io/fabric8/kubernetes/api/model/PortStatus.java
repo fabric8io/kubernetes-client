@@ -119,6 +119,7 @@ public class PortStatus implements Editable<PortStatusBuilder>, KubernetesResour
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

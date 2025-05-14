@@ -198,6 +198,7 @@ public class VerticalPodAutoscaler implements Editable<VerticalPodAutoscalerBuil
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

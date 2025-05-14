@@ -179,6 +179,7 @@ public class StatusCheckStatus implements Editable<StatusCheckStatusBuilder>, Ku
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

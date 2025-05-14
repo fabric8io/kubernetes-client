@@ -76,6 +76,7 @@ public class MachineV1Beta2Status implements Editable<MachineV1Beta2StatusBuilde
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

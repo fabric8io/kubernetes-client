@@ -473,6 +473,7 @@ public class ServiceSpec implements Editable<ServiceSpecBuilder>, KubernetesReso
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

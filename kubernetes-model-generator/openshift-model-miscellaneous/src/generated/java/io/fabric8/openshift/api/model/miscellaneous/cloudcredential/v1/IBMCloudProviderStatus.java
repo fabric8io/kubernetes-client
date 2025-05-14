@@ -138,6 +138,7 @@ public class IBMCloudProviderStatus implements Editable<IBMCloudProviderStatusBu
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

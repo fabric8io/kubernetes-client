@@ -116,6 +116,7 @@ public class ContainerMetrics implements Editable<ContainerMetricsBuilder>, Kube
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

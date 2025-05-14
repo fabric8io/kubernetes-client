@@ -183,6 +183,7 @@ public class MachineConfigPoolList implements Editable<MachineConfigPoolListBuil
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

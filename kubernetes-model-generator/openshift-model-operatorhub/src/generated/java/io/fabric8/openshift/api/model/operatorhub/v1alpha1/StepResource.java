@@ -228,6 +228,7 @@ public class StepResource implements Editable<StepResourceBuilder>, KubernetesRe
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

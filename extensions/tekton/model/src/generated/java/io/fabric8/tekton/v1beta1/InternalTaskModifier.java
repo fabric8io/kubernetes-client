@@ -156,6 +156,7 @@ public class InternalTaskModifier implements Editable<InternalTaskModifierBuilde
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

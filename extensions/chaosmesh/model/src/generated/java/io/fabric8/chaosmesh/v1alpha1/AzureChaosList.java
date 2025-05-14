@@ -183,6 +183,7 @@ public class AzureChaosList implements Editable<AzureChaosListBuilder>, Kubernet
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

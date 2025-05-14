@@ -177,6 +177,7 @@ public class ClusterManagerStatus implements Editable<ClusterManagerStatusBuilde
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

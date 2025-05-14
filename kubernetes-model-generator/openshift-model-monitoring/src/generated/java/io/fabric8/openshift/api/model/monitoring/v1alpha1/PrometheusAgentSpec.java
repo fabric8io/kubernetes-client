@@ -1970,6 +1970,7 @@ public class PrometheusAgentSpec implements Editable<PrometheusAgentSpecBuilder>
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

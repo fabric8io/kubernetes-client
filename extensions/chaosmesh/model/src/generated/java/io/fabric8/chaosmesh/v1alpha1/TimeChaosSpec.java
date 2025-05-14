@@ -254,6 +254,7 @@ public class TimeChaosSpec implements Editable<TimeChaosSpecBuilder>, Kubernetes
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

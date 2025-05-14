@@ -259,6 +259,7 @@ public class ScaleIOPersistentVolumeSource implements Editable<ScaleIOPersistent
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

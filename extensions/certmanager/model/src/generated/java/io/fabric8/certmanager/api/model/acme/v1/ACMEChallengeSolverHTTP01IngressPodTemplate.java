@@ -113,6 +113,7 @@ public class ACMEChallengeSolverHTTP01IngressPodTemplate implements Editable<ACM
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

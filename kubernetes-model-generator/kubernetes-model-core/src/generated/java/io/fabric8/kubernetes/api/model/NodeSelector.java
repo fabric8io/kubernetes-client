@@ -83,6 +83,7 @@ public class NodeSelector implements Editable<NodeSelectorBuilder>, KubernetesRe
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -183,6 +183,7 @@ public class CSINodeList implements Editable<CSINodeListBuilder>, KubernetesReso
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

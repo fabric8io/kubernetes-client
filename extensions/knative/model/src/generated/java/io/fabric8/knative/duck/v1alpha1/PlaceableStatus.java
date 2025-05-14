@@ -117,6 +117,7 @@ public class PlaceableStatus implements Editable<PlaceableStatusBuilder>, Kubern
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

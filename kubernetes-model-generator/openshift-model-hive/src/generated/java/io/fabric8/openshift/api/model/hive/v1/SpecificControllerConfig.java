@@ -128,6 +128,7 @@ public class SpecificControllerConfig implements Editable<SpecificControllerConf
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

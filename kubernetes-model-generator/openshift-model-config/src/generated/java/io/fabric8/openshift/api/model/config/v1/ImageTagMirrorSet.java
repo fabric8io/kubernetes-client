@@ -197,6 +197,7 @@ public class ImageTagMirrorSet implements Editable<ImageTagMirrorSetBuilder>, Ha
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

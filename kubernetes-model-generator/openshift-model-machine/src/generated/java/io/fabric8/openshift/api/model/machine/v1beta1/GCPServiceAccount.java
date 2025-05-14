@@ -132,6 +132,7 @@ public class GCPServiceAccount implements Editable<GCPServiceAccountBuilder>, Ku
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

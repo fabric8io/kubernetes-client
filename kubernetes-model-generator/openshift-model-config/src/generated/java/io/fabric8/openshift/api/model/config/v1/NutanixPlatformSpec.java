@@ -154,6 +154,7 @@ public class NutanixPlatformSpec implements Editable<NutanixPlatformSpecBuilder>
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

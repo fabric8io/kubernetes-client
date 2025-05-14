@@ -149,6 +149,7 @@ public class ACMEIssuerDNS01ProviderCloudflare implements Editable<ACMEIssuerDNS
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

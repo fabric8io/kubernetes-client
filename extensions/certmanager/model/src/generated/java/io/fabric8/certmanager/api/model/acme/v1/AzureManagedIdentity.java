@@ -148,6 +148,7 @@ public class AzureManagedIdentity implements Editable<AzureManagedIdentityBuilde
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

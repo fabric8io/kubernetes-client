@@ -183,6 +183,7 @@ public class PrometheusAgentList implements Editable<PrometheusAgentListBuilder>
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

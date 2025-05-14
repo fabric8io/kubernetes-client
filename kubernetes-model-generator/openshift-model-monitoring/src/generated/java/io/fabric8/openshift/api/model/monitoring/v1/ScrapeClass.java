@@ -213,6 +213,7 @@ public class ScrapeClass implements Editable<ScrapeClassBuilder>, KubernetesReso
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

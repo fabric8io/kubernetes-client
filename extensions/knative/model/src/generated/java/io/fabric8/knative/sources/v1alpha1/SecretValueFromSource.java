@@ -109,6 +109,7 @@ public class SecretValueFromSource implements Editable<SecretValueFromSourceBuil
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

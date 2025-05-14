@@ -183,6 +183,7 @@ public class ClusterDeploymentList implements Editable<ClusterDeploymentListBuil
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

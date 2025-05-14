@@ -128,6 +128,7 @@ public class OperationMetric implements Editable<OperationMetricBuilder>, Kubern
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

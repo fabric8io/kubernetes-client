@@ -155,6 +155,7 @@ public class RepositoryImportStatus implements Editable<RepositoryImportStatusBu
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

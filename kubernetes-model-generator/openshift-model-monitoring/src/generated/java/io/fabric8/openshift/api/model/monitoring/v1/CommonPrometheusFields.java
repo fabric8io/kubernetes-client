@@ -1935,6 +1935,7 @@ public class CommonPrometheusFields implements Editable<CommonPrometheusFieldsBu
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

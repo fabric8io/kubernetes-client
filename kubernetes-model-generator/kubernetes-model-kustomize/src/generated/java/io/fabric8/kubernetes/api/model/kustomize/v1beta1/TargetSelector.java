@@ -147,6 +147,7 @@ public class TargetSelector implements Editable<TargetSelectorBuilder>, Kubernet
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -198,6 +198,7 @@ public class PodHttpChaos implements Editable<PodHttpChaosBuilder>, HasMetadata,
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

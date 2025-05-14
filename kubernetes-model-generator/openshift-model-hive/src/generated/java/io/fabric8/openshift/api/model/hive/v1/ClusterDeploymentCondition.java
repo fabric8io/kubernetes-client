@@ -208,6 +208,7 @@ public class ClusterDeploymentCondition implements Editable<ClusterDeploymentCon
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

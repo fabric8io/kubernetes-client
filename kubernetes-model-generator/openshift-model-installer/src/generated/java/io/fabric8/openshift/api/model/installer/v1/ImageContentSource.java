@@ -132,6 +132,7 @@ public class ImageContentSource implements Editable<ImageContentSourceBuilder>, 
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

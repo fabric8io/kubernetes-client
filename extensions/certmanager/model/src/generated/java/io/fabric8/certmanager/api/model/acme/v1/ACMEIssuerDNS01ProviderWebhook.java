@@ -149,6 +149,7 @@ public class ACMEIssuerDNS01ProviderWebhook implements Editable<ACMEIssuerDNS01P
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

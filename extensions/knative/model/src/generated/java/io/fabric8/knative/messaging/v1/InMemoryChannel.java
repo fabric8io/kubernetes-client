@@ -198,6 +198,7 @@ public class InMemoryChannel implements Editable<InMemoryChannelBuilder>, HasMet
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

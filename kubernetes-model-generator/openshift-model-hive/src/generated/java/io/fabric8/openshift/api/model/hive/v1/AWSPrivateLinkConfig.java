@@ -174,6 +174,7 @@ public class AWSPrivateLinkConfig implements Editable<AWSPrivateLinkConfigBuilde
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

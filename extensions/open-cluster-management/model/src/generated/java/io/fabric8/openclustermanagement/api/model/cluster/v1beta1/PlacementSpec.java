@@ -236,6 +236,7 @@ public class PlacementSpec implements Editable<PlacementSpecBuilder>, Kubernetes
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

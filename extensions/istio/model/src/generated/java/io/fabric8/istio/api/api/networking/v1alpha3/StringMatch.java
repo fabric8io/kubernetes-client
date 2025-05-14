@@ -111,6 +111,7 @@ public class StringMatch implements Editable<StringMatchBuilder>, KubernetesReso
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

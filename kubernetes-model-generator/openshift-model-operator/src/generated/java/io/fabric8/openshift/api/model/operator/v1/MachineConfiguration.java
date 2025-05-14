@@ -197,6 +197,7 @@ public class MachineConfiguration implements Editable<MachineConfigurationBuilde
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

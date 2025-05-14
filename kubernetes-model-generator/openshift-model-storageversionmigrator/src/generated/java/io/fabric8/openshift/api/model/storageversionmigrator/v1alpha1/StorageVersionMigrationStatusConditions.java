@@ -188,6 +188,7 @@ public class StorageVersionMigrationStatusConditions implements Editable<Storage
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

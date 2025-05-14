@@ -234,6 +234,7 @@ public class ClusterVersionSpec implements Editable<ClusterVersionSpecBuilder>, 
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

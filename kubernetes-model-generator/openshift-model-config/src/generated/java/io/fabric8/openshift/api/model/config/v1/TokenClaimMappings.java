@@ -113,6 +113,7 @@ public class TokenClaimMappings implements Editable<TokenClaimMappingsBuilder>, 
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

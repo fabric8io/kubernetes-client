@@ -127,6 +127,7 @@ public class ResourceRequirements implements Editable<ResourceRequirementsBuilde
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

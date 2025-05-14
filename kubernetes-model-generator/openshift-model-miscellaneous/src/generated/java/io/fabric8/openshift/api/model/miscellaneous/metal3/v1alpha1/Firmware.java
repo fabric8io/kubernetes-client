@@ -108,6 +108,7 @@ public class Firmware implements Editable<FirmwareBuilder>, KubernetesResource
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

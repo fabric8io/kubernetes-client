@@ -183,6 +183,7 @@ public class ControllerConfigList implements Editable<ControllerConfigListBuilde
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

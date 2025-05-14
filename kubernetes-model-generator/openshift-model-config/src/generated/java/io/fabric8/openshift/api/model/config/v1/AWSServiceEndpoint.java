@@ -128,6 +128,7 @@ public class AWSServiceEndpoint implements Editable<AWSServiceEndpointBuilder>, 
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

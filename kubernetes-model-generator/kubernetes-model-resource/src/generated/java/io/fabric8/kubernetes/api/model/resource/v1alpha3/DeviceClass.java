@@ -177,6 +177,7 @@ public class DeviceClass implements Editable<DeviceClassBuilder>, HasMetadata
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

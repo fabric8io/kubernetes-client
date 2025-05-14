@@ -138,6 +138,7 @@ public class OvirtProviderStatus implements Editable<OvirtProviderStatusBuilder>
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

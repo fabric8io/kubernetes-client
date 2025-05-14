@@ -129,6 +129,7 @@ public class PipelineTaskRunTemplate implements Editable<PipelineTaskRunTemplate
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -168,6 +168,7 @@ public class DeviceAttribute implements Editable<DeviceAttributeBuilder>, Kubern
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

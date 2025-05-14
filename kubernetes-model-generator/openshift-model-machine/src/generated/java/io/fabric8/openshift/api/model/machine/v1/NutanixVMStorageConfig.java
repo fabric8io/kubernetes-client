@@ -128,6 +128,7 @@ public class NutanixVMStorageConfig implements Editable<NutanixVMStorageConfigBu
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

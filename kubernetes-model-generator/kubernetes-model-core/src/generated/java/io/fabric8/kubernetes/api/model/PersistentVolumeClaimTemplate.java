@@ -99,6 +99,7 @@ public class PersistentVolumeClaimTemplate implements Editable<PersistentVolumeC
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

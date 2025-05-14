@@ -199,6 +199,7 @@ public class VirtualService implements Editable<VirtualServiceBuilder>, HasMetad
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

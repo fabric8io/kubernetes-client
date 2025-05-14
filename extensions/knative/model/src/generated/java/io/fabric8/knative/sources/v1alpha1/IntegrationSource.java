@@ -198,6 +198,7 @@ public class IntegrationSource implements Editable<IntegrationSourceBuilder>, Ha
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

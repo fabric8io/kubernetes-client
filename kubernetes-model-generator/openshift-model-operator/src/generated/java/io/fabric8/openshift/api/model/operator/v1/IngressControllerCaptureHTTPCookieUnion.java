@@ -148,6 +148,7 @@ public class IngressControllerCaptureHTTPCookieUnion implements Editable<Ingress
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

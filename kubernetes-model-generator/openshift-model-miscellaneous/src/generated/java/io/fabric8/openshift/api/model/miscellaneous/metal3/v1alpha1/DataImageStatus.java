@@ -148,6 +148,7 @@ public class DataImageStatus implements Editable<DataImageStatusBuilder>, Kubern
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

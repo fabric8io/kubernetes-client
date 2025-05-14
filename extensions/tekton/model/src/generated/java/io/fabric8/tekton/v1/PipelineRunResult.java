@@ -128,6 +128,7 @@ public class PipelineRunResult implements Editable<PipelineRunResultBuilder>, Ku
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

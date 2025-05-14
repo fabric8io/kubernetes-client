@@ -125,6 +125,7 @@ public class IPv6OVNKubernetesConfig implements Editable<IPv6OVNKubernetesConfig
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

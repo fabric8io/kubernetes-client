@@ -108,6 +108,7 @@ public class RestartService implements Editable<RestartServiceBuilder>, Kubernet
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -225,6 +225,7 @@ public class NetworkCommonSpec implements Editable<NetworkCommonSpecBuilder>, Ku
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

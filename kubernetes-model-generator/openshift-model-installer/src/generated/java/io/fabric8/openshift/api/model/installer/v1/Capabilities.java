@@ -132,6 +132,7 @@ public class Capabilities implements Editable<CapabilitiesBuilder>, KubernetesRe
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

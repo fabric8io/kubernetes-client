@@ -188,6 +188,7 @@ public class Workspace implements Editable<WorkspaceBuilder>, KubernetesResource
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

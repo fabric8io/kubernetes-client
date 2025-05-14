@@ -108,6 +108,7 @@ public class RuntimeConfig implements Editable<RuntimeConfigBuilder>, Kubernetes
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

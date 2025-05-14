@@ -208,6 +208,7 @@ public class GenerationStatus implements Editable<GenerationStatusBuilder>, Kube
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

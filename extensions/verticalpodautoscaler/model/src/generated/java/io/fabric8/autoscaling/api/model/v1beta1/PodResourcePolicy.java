@@ -112,6 +112,7 @@ public class PodResourcePolicy implements Editable<PodResourcePolicyBuilder>, Ku
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

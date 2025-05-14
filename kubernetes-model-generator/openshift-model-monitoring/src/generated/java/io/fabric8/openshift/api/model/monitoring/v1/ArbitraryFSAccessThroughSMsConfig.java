@@ -108,6 +108,7 @@ public class ArbitraryFSAccessThroughSMsConfig implements Editable<ArbitraryFSAc
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -112,6 +112,7 @@ public class AdditionalRoutingCapabilities implements Editable<AdditionalRouting
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

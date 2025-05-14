@@ -125,6 +125,7 @@ public class OtherName implements Editable<OtherNameBuilder>, KubernetesResource
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

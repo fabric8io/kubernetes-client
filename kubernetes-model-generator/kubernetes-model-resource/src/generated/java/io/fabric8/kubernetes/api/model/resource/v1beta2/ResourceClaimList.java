@@ -183,6 +183,7 @@ public class ResourceClaimList implements Editable<ResourceClaimListBuilder>, Ku
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

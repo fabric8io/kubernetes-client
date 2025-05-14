@@ -155,6 +155,7 @@ public class ConditionalUpdate implements Editable<ConditionalUpdateBuilder>, Ku
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

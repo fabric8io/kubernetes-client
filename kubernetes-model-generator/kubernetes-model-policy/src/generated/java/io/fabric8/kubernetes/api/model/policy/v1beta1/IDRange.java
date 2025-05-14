@@ -128,6 +128,7 @@ public class IDRange implements Editable<IDRangeBuilder>, KubernetesResource
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -183,6 +183,7 @@ public class StorageClassList implements Editable<StorageClassListBuilder>, Kube
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

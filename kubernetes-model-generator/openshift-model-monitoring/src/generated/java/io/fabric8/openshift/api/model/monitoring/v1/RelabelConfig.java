@@ -232,6 +232,7 @@ public class RelabelConfig implements Editable<RelabelConfigBuilder>, Kubernetes
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

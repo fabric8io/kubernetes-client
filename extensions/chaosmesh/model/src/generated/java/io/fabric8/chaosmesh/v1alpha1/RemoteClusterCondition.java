@@ -127,6 +127,7 @@ public class RemoteClusterCondition implements Editable<RemoteClusterConditionBu
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

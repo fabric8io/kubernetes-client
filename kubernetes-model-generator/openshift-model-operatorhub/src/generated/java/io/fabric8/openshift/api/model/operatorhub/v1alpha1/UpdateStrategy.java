@@ -108,6 +108,7 @@ public class UpdateStrategy implements Editable<UpdateStrategyBuilder>, Kubernet
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

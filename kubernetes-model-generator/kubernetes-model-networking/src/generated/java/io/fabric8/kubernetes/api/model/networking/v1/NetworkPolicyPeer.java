@@ -148,6 +148,7 @@ public class NetworkPolicyPeer implements Editable<NetworkPolicyPeerBuilder>, Ku
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

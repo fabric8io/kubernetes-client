@@ -108,6 +108,7 @@ public class AWSDNSSpec implements Editable<AWSDNSSpecBuilder>, KubernetesResour
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

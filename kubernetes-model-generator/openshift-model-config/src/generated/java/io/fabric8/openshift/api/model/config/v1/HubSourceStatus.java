@@ -128,6 +128,7 @@ public class HubSourceStatus implements Editable<HubSourceStatusBuilder>, Kubern
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

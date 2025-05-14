@@ -119,6 +119,7 @@ public class ServiceAccountIssuerStatus implements Editable<ServiceAccountIssuer
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

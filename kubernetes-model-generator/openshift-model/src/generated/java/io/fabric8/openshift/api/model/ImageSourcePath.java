@@ -128,6 +128,7 @@ public class ImageSourcePath implements Editable<ImageSourcePathBuilder>, Kubern
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

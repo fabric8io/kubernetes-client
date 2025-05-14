@@ -151,6 +151,7 @@ public class StrategyDeploymentSpec implements Editable<StrategyDeploymentSpecBu
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

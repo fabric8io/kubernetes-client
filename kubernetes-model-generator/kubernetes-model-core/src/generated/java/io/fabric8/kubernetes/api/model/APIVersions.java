@@ -154,6 +154,7 @@ public class APIVersions implements Editable<APIVersionsBuilder>, KubernetesReso
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

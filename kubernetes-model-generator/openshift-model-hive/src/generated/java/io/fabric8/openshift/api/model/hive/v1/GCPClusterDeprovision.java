@@ -148,6 +148,7 @@ public class GCPClusterDeprovision implements Editable<GCPClusterDeprovisionBuil
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

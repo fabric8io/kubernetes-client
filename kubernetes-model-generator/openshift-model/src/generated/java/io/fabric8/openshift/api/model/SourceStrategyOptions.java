@@ -108,6 +108,7 @@ public class SourceStrategyOptions implements Editable<SourceStrategyOptionsBuil
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

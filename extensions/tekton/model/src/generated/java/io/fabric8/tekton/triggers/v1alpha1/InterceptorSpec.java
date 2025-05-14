@@ -108,6 +108,7 @@ public class InterceptorSpec implements Editable<InterceptorSpecBuilder>, Kubern
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

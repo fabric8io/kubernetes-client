@@ -188,6 +188,7 @@ public class StatefulSetCondition implements Editable<StatefulSetConditionBuilde
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

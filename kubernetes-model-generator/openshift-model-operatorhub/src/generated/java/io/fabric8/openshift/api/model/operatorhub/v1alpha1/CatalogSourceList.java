@@ -183,6 +183,7 @@ public class CatalogSourceList implements Editable<CatalogSourceListBuilder>, Ku
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

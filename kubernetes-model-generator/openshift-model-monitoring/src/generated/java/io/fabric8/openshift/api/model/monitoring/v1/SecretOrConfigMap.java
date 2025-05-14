@@ -130,6 +130,7 @@ public class SecretOrConfigMap implements Editable<SecretOrConfigMapBuilder>, Ku
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

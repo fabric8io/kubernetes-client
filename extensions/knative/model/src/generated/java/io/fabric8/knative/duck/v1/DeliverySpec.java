@@ -228,6 +228,7 @@ public class DeliverySpec implements Editable<DeliverySpecBuilder>, KubernetesRe
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

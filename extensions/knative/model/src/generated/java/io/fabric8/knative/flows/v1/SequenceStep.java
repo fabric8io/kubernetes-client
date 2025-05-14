@@ -169,6 +169,7 @@ public class SequenceStep implements Editable<SequenceStepBuilder>, KubernetesRe
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

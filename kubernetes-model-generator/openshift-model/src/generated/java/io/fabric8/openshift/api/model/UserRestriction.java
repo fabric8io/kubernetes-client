@@ -156,6 +156,7 @@ public class UserRestriction implements Editable<UserRestrictionBuilder>, Kubern
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

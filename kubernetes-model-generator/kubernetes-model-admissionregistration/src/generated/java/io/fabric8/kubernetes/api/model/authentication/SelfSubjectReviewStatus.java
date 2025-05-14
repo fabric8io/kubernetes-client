@@ -108,6 +108,7 @@ public class SelfSubjectReviewStatus implements Editable<SelfSubjectReviewStatus
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

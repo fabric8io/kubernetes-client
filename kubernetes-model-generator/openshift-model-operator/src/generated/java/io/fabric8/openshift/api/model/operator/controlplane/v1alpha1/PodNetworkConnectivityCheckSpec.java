@@ -140,6 +140,7 @@ public class PodNetworkConnectivityCheckSpec implements Editable<PodNetworkConne
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

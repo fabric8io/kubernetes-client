@@ -108,6 +108,7 @@ public class GCPFailureDomain implements Editable<GCPFailureDomainBuilder>, Kube
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

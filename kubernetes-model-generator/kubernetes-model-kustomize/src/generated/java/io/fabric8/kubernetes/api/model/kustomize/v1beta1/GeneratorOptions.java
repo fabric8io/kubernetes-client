@@ -145,6 +145,7 @@ public class GeneratorOptions implements Editable<GeneratorOptionsBuilder>, Kube
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

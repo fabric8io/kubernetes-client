@@ -113,6 +113,7 @@ public class PinnedImageSetStatus implements Editable<PinnedImageSetStatusBuilde
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

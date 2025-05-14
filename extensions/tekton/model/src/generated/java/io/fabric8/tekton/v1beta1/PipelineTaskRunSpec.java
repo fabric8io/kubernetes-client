@@ -235,6 +235,7 @@ public class PipelineTaskRunSpec implements Editable<PipelineTaskRunSpecBuilder>
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -168,6 +168,7 @@ public class ImageRegistryConfigStorageGCS implements Editable<ImageRegistryConf
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

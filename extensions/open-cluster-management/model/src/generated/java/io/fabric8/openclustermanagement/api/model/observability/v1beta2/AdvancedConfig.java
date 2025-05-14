@@ -321,6 +321,7 @@ public class AdvancedConfig implements Editable<AdvancedConfigBuilder>, Kubernet
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

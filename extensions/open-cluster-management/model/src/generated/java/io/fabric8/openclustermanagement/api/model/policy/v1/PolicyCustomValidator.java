@@ -75,6 +75,7 @@ public class PolicyCustomValidator implements Editable<PolicyCustomValidatorBuil
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

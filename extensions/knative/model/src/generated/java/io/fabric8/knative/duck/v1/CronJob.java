@@ -179,6 +179,7 @@ public class CronJob implements Editable<CronJobBuilder>, HasMetadata, Namespace
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

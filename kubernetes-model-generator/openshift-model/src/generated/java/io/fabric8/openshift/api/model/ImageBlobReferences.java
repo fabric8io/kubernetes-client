@@ -174,6 +174,7 @@ public class ImageBlobReferences implements Editable<ImageBlobReferencesBuilder>
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

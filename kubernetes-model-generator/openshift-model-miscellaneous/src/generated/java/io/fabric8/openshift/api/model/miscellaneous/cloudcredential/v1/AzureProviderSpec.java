@@ -286,6 +286,7 @@ public class AzureProviderSpec implements Editable<AzureProviderSpecBuilder>, Ku
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

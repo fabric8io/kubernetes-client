@@ -105,6 +105,7 @@ public class TokenClaimMapping implements Editable<TokenClaimMappingBuilder>, Ku
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

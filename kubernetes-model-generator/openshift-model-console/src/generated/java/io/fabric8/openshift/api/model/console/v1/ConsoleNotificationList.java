@@ -183,6 +183,7 @@ public class ConsoleNotificationList implements Editable<ConsoleNotificationList
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

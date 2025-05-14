@@ -577,6 +577,7 @@ public class EphemeralContainer implements Editable<EphemeralContainerBuilder>, 
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

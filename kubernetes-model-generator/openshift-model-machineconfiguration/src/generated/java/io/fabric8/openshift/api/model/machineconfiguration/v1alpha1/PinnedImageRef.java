@@ -105,6 +105,7 @@ public class PinnedImageRef implements Editable<PinnedImageRefBuilder>, Kubernet
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

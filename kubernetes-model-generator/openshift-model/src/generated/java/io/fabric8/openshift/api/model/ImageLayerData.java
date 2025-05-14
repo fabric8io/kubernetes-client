@@ -128,6 +128,7 @@ public class ImageLayerData implements Editable<ImageLayerDataBuilder>, Kubernet
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

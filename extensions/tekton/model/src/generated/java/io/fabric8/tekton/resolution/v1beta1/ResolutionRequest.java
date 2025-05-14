@@ -198,6 +198,7 @@ public class ResolutionRequest implements Editable<ResolutionRequestBuilder>, Ha
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

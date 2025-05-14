@@ -197,6 +197,7 @@ public class ManagedCluster implements Editable<ManagedClusterBuilder>, HasMetad
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -128,6 +128,7 @@ public class ResourceHint implements Editable<ResourceHintBuilder>, KubernetesRe
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

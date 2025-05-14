@@ -134,6 +134,7 @@ public class GroupRestriction implements Editable<GroupRestrictionBuilder>, Kube
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

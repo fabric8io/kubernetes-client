@@ -128,6 +128,7 @@ public class DedicatedHost implements Editable<DedicatedHostBuilder>, Kubernetes
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

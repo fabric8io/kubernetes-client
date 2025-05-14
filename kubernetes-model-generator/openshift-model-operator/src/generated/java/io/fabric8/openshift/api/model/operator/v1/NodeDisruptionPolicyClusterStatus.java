@@ -154,6 +154,7 @@ public class NodeDisruptionPolicyClusterStatus implements Editable<NodeDisruptio
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

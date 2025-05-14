@@ -261,6 +261,7 @@ public class CustomRunStatus implements Editable<CustomRunStatusBuilder>, Kubern
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -148,6 +148,7 @@ public class EnvoyFilterRouteConfigurationMatchVirtualHostMatch implements Edita
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

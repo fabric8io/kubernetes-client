@@ -148,6 +148,7 @@ public class LocalPolicyTargetReference implements Editable<LocalPolicyTargetRef
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

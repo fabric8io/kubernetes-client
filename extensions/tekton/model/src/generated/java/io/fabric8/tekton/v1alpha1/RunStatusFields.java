@@ -196,6 +196,7 @@ public class RunStatusFields implements Editable<RunStatusFieldsBuilder>, Kubern
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

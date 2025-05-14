@@ -161,6 +161,7 @@ public class FlexPersistentVolumeSource implements Editable<FlexPersistentVolume
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

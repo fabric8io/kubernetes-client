@@ -159,6 +159,7 @@ public class APIServiceCondition implements Editable<APIServiceConditionBuilder>
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

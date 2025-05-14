@@ -113,6 +113,7 @@ public class ClusterQuota implements Editable<ClusterQuotaBuilder>, KubernetesRe
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

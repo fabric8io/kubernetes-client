@@ -265,6 +265,7 @@ public class MachineConfigurationSpec implements Editable<MachineConfigurationSp
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

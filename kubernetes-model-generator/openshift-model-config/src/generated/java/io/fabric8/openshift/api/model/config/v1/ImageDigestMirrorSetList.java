@@ -183,6 +183,7 @@ public class ImageDigestMirrorSetList implements Editable<ImageDigestMirrorSetLi
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

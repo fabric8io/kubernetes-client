@@ -148,6 +148,7 @@ public class RemediationStrategy implements Editable<RemediationStrategyBuilder>
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

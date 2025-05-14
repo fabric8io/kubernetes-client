@@ -289,6 +289,7 @@ public class ClusterPlatformMetadata implements Editable<ClusterPlatformMetadata
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -177,6 +177,7 @@ public class SelfSubjectReview implements Editable<SelfSubjectReviewBuilder>, Ha
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

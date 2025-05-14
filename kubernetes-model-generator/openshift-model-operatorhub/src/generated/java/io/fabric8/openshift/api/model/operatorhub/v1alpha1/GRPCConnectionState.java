@@ -127,6 +127,7 @@ public class GRPCConnectionState implements Editable<GRPCConnectionStateBuilder>
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

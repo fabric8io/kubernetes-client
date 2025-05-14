@@ -169,6 +169,7 @@ public class AWSClusterDeprovision implements Editable<AWSClusterDeprovisionBuil
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -152,6 +152,7 @@ public class EgressFirewallRule implements Editable<EgressFirewallRuleBuilder>, 
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

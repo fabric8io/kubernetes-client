@@ -139,6 +139,7 @@ public class SecurityGroupParam implements Editable<SecurityGroupParamBuilder>, 
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

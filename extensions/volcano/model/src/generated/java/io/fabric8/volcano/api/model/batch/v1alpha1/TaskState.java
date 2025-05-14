@@ -110,6 +110,7 @@ public class TaskState implements Editable<TaskStateBuilder>, KubernetesResource
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

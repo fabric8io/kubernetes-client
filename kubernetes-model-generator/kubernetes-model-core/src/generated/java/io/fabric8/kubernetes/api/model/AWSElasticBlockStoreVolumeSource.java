@@ -139,6 +139,7 @@ public class AWSElasticBlockStoreVolumeSource implements Editable<AWSElasticBloc
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

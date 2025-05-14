@@ -211,6 +211,7 @@ public class OpenShiftAPIServerStatus implements Editable<OpenShiftAPIServerStat
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

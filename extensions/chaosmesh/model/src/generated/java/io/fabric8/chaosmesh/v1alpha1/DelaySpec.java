@@ -168,6 +168,7 @@ public class DelaySpec implements Editable<DelaySpecBuilder>, KubernetesResource
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

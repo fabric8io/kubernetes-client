@@ -102,6 +102,7 @@ public class HTTPBody implements Editable<HTTPBodyBuilder>, KubernetesResource
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -108,6 +108,7 @@ public class PropertySpec implements Editable<PropertySpecBuilder>, KubernetesRe
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

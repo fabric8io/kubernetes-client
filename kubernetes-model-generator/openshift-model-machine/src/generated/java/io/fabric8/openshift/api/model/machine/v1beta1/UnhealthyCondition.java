@@ -148,6 +148,7 @@ public class UnhealthyCondition implements Editable<UnhealthyConditionBuilder>, 
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

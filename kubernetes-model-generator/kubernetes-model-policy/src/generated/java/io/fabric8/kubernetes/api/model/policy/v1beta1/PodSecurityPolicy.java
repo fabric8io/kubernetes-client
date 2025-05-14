@@ -177,6 +177,7 @@ public class PodSecurityPolicy implements Editable<PodSecurityPolicyBuilder>, Ha
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

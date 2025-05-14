@@ -108,6 +108,7 @@ public class UserWorkloadLogsCollectionSpec implements Editable<UserWorkloadLogs
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -154,6 +154,7 @@ public class EventPolicySpec implements Editable<EventPolicySpecBuilder>, Kubern
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

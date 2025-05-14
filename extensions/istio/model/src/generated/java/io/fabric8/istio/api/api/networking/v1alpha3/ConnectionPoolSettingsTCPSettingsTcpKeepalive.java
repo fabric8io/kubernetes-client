@@ -148,6 +148,7 @@ public class ConnectionPoolSettingsTCPSettingsTcpKeepalive implements Editable<C
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

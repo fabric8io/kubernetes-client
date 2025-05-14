@@ -212,6 +212,7 @@ public class CloudCredentialSpec implements Editable<CloudCredentialSpecBuilder>
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

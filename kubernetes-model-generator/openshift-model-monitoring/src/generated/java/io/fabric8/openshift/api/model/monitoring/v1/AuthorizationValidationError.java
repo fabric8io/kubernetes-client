@@ -78,6 +78,7 @@ public class AuthorizationValidationError implements Editable<AuthorizationValid
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

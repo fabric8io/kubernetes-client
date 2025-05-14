@@ -108,6 +108,7 @@ public class HTTPBodyString implements IsHTTPBodySpecifier, Editable<HTTPBodyStr
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

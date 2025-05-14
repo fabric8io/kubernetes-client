@@ -183,6 +183,7 @@ public class MachineHealthCheckList implements Editable<MachineHealthCheckListBu
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -194,6 +194,7 @@ public class APIGroup implements Editable<APIGroupBuilder>, KubernetesResource
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

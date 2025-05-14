@@ -183,6 +183,7 @@ public class APIServerList implements Editable<APIServerListBuilder>, Kubernetes
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

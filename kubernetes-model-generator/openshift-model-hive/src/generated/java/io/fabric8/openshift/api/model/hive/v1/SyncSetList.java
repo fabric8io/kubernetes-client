@@ -183,6 +183,7 @@ public class SyncSetList implements Editable<SyncSetListBuilder>, KubernetesReso
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

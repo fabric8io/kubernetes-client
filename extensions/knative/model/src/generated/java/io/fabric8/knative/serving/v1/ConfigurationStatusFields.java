@@ -128,6 +128,7 @@ public class ConfigurationStatusFields implements Editable<ConfigurationStatusFi
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

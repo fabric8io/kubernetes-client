@@ -112,6 +112,7 @@ public class DNSNameResolverStatus implements Editable<DNSNameResolverStatusBuil
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -371,6 +371,7 @@ public class ClusterProvisionSpec implements Editable<ClusterProvisionSpecBuilde
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

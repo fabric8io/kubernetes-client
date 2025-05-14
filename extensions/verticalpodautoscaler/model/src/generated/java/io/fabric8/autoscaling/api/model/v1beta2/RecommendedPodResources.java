@@ -112,6 +112,7 @@ public class RecommendedPodResources implements Editable<RecommendedPodResources
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

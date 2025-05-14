@@ -108,6 +108,7 @@ public class TuneDConfig implements Editable<TuneDConfigBuilder>, KubernetesReso
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

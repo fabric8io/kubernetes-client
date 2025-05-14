@@ -183,6 +183,7 @@ public class RemoteClusterList implements Editable<RemoteClusterListBuilder>, Ku
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

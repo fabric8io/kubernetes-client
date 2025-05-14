@@ -152,6 +152,7 @@ public class ComponentStatus implements Editable<ComponentStatusBuilder>, HasMet
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

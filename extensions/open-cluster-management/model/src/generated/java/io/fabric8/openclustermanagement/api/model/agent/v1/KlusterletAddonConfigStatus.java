@@ -133,6 +133,7 @@ public class KlusterletAddonConfigStatus implements Editable<KlusterletAddonConf
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

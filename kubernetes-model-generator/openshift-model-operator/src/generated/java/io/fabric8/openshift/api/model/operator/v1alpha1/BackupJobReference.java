@@ -128,6 +128,7 @@ public class BackupJobReference implements Editable<BackupJobReferenceBuilder>, 
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

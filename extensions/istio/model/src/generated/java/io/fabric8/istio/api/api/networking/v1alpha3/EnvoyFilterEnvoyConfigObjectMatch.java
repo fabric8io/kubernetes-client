@@ -151,6 +151,7 @@ public class EnvoyFilterEnvoyConfigObjectMatch implements Editable<EnvoyFilterEn
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

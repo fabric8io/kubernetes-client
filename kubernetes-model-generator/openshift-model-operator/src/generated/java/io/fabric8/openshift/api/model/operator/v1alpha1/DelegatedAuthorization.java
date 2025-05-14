@@ -108,6 +108,7 @@ public class DelegatedAuthorization implements Editable<DelegatedAuthorizationBu
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -208,6 +208,7 @@ public class DeploymentCondition implements Editable<DeploymentConditionBuilder>
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

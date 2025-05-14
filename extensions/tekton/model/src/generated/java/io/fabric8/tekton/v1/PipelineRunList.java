@@ -183,6 +183,7 @@ public class PipelineRunList implements Editable<PipelineRunListBuilder>, Kubern
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

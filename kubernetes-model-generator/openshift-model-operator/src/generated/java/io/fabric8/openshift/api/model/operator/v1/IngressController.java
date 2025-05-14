@@ -198,6 +198,7 @@ public class IngressController implements Editable<IngressControllerBuilder>, Ha
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

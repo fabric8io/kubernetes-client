@@ -130,6 +130,7 @@ public class DriverAllocationResult implements Editable<DriverAllocationResultBu
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -78,6 +78,7 @@ public class ChaosKind implements Editable<ChaosKindBuilder>, KubernetesResource
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

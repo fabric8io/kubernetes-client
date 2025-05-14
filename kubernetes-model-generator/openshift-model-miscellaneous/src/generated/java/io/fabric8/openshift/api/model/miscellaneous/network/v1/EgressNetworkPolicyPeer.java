@@ -128,6 +128,7 @@ public class EgressNetworkPolicyPeer implements Editable<EgressNetworkPolicyPeer
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

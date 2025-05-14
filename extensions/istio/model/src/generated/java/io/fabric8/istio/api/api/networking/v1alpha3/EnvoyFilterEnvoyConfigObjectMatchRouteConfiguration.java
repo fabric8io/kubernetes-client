@@ -99,6 +99,7 @@ public class EnvoyFilterEnvoyConfigObjectMatchRouteConfiguration implements IsEn
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

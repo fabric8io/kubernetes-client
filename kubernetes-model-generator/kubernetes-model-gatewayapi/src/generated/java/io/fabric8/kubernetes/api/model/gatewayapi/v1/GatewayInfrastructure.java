@@ -152,6 +152,7 @@ public class GatewayInfrastructure implements Editable<GatewayInfrastructureBuil
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

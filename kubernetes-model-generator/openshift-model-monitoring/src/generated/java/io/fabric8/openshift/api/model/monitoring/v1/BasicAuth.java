@@ -129,6 +129,7 @@ public class BasicAuth implements Editable<BasicAuthBuilder>, KubernetesResource
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

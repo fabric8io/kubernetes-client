@@ -183,6 +183,7 @@ public class ChallengeList implements Editable<ChallengeListBuilder>, Kubernetes
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

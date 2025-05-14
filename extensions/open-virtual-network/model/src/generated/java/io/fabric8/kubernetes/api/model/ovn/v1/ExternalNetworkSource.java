@@ -108,6 +108,7 @@ public class ExternalNetworkSource implements Editable<ExternalNetworkSourceBuil
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

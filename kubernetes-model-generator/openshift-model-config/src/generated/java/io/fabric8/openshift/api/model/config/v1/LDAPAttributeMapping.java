@@ -178,6 +178,7 @@ public class LDAPAttributeMapping implements Editable<LDAPAttributeMappingBuilde
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -128,6 +128,7 @@ public class ProbeTargets implements Editable<ProbeTargetsBuilder>, KubernetesRe
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -128,6 +128,7 @@ public class CommonWebHookCause implements Editable<CommonWebHookCauseBuilder>, 
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

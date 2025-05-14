@@ -75,6 +75,7 @@ public class SchemaSettingError implements Editable<SchemaSettingErrorBuilder>, 
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

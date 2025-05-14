@@ -138,6 +138,7 @@ public class KubevirtProviderStatus implements Editable<KubevirtProviderStatusBu
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

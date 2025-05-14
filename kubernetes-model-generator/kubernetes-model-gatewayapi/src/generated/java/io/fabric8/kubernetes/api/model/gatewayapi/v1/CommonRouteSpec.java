@@ -112,6 +112,7 @@ public class CommonRouteSpec implements Editable<CommonRouteSpecBuilder>, Kubern
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

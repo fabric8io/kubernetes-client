@@ -225,6 +225,7 @@ public class AuthenticationStatus implements Editable<AuthenticationStatusBuilde
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

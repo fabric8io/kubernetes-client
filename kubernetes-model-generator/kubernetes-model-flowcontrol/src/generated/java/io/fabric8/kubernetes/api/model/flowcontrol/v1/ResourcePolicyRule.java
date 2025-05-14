@@ -198,6 +198,7 @@ public class ResourcePolicyRule implements Editable<ResourcePolicyRuleBuilder>, 
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

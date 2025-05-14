@@ -128,6 +128,7 @@ public class SignatureIssuer implements Editable<SignatureIssuerBuilder>, Kubern
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

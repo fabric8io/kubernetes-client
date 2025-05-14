@@ -108,6 +108,7 @@ public class CELDeviceSelector implements Editable<CELDeviceSelectorBuilder>, Ku
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

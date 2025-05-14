@@ -232,6 +232,7 @@ public class VirtualService implements Editable<VirtualServiceBuilder>, Kubernet
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

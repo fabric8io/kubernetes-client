@@ -183,6 +183,7 @@ public class LeaseCandidateList implements Editable<LeaseCandidateListBuilder>, 
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

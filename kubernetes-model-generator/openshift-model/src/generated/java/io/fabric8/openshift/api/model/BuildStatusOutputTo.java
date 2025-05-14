@@ -108,6 +108,7 @@ public class BuildStatusOutputTo implements Editable<BuildStatusOutputToBuilder>
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

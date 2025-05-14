@@ -208,6 +208,7 @@ public class SubscriptionCondition implements Editable<SubscriptionConditionBuil
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

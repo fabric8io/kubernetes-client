@@ -128,6 +128,7 @@ public class IngressControllerHTTPHeaderActionUnion implements Editable<IngressC
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

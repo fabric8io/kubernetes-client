@@ -249,6 +249,7 @@ public class GlobalSMTPConfig implements Editable<GlobalSMTPConfigBuilder>, Kube
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

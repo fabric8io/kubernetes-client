@@ -128,6 +128,7 @@ public class AuditCustomRule implements Editable<AuditCustomRuleBuilder>, Kubern
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

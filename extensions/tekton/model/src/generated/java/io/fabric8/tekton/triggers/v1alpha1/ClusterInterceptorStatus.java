@@ -198,6 +198,7 @@ public class ClusterInterceptorStatus implements Editable<ClusterInterceptorStat
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

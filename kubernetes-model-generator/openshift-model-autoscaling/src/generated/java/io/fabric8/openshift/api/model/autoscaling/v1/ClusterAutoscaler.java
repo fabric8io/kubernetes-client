@@ -199,6 +199,7 @@ public class ClusterAutoscaler implements Editable<ClusterAutoscalerBuilder>, Ha
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

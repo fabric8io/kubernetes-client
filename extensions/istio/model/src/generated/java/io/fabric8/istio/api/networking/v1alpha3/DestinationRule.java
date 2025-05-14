@@ -199,6 +199,7 @@ public class DestinationRule implements Editable<DestinationRuleBuilder>, HasMet
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

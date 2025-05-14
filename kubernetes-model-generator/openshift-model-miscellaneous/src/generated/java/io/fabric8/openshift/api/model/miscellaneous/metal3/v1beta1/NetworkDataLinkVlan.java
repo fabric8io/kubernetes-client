@@ -188,6 +188,7 @@ public class NetworkDataLinkVlan implements Editable<NetworkDataLinkVlanBuilder>
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

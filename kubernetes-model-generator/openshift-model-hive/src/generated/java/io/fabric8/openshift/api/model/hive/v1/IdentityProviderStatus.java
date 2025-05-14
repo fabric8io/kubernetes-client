@@ -78,6 +78,7 @@ public class IdentityProviderStatus implements Editable<IdentityProviderStatusBu
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

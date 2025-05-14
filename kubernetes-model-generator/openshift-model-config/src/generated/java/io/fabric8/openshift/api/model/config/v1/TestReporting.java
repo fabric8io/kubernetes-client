@@ -198,6 +198,7 @@ public class TestReporting implements Editable<TestReportingBuilder>, HasMetadat
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

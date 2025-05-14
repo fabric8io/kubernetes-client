@@ -108,6 +108,7 @@ public class AccessLoggingLogSelector implements Editable<AccessLoggingLogSelect
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

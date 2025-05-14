@@ -198,6 +198,7 @@ public class DNSChaos implements Editable<DNSChaosBuilder>, HasMetadata, Namespa
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

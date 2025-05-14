@@ -132,6 +132,7 @@ public class ClusterOverrides implements Editable<ClusterOverridesBuilder>, Kube
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

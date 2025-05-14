@@ -197,6 +197,7 @@ public class PinnedImageSet implements Editable<PinnedImageSetBuilder>, HasMetad
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

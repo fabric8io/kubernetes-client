@@ -197,6 +197,7 @@ public class ServiceCatalogControllerManager implements Editable<ServiceCatalogC
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

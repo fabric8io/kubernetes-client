@@ -128,6 +128,7 @@ public class IngressPlatformSpec implements Editable<IngressPlatformSpecBuilder>
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

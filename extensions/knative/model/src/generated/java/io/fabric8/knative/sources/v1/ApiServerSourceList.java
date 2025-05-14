@@ -183,6 +183,7 @@ public class ApiServerSourceList implements Editable<ApiServerSourceListBuilder>
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

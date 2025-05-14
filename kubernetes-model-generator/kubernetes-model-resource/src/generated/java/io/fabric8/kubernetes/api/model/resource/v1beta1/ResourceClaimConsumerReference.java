@@ -168,6 +168,7 @@ public class ResourceClaimConsumerReference implements Editable<ResourceClaimCon
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

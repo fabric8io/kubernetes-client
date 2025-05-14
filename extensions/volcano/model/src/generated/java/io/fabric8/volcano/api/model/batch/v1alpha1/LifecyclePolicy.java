@@ -193,6 +193,7 @@ public class LifecyclePolicy implements Editable<LifecyclePolicyBuilder>, Kubern
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

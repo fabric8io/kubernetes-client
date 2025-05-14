@@ -171,6 +171,7 @@ public class BuildVolumeSource implements Editable<BuildVolumeSourceBuilder>, Ku
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

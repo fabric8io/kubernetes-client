@@ -108,6 +108,7 @@ public class PipelineTaskRun implements Editable<PipelineTaskRunBuilder>, Kubern
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

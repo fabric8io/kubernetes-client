@@ -294,6 +294,7 @@ public class ClusterServiceVersionStatus implements Editable<ClusterServiceVersi
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -133,6 +133,7 @@ public class TLSRouteRule implements Editable<TLSRouteRuleBuilder>, KubernetesRe
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

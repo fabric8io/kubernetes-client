@@ -198,6 +198,7 @@ public class MultiClusterHub implements Editable<MultiClusterHubBuilder>, HasMet
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

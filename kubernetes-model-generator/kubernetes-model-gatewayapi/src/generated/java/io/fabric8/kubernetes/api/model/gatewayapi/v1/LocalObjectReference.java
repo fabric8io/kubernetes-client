@@ -147,6 +147,7 @@ public class LocalObjectReference implements Editable<LocalObjectReferenceBuilde
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

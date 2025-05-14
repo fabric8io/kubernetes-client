@@ -168,6 +168,7 @@ public class RemoteConnectionInfo implements Editable<RemoteConnectionInfoBuilde
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

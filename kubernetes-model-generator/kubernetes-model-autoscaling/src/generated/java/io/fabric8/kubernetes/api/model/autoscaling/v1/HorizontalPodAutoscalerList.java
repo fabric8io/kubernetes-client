@@ -183,6 +183,7 @@ public class HorizontalPodAutoscalerList implements Editable<HorizontalPodAutosc
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

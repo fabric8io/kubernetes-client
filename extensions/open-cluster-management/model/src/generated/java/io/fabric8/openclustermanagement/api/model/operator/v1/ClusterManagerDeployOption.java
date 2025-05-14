@@ -128,6 +128,7 @@ public class ClusterManagerDeployOption implements Editable<ClusterManagerDeploy
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

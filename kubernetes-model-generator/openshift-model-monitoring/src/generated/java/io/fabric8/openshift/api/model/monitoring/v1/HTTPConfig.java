@@ -292,6 +292,7 @@ public class HTTPConfig implements Editable<HTTPConfigBuilder>, KubernetesResour
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -148,6 +148,7 @@ public class Upstream implements Editable<UpstreamBuilder>, KubernetesResource
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

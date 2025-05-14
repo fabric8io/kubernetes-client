@@ -198,6 +198,7 @@ public class KafkaBinding implements Editable<KafkaBindingBuilder>, HasMetadata,
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

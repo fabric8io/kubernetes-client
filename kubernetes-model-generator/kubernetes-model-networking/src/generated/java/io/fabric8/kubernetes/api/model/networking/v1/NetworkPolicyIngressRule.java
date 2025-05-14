@@ -134,6 +134,7 @@ public class NetworkPolicyIngressRule implements Editable<NetworkPolicyIngressRu
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

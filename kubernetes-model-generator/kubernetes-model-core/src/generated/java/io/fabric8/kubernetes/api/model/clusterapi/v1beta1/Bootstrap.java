@@ -86,6 +86,7 @@ public class Bootstrap implements Editable<BootstrapBuilder>, KubernetesResource
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

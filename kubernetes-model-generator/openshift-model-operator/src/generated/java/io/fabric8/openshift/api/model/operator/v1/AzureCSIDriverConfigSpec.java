@@ -108,6 +108,7 @@ public class AzureCSIDriverConfigSpec implements Editable<AzureCSIDriverConfigSp
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

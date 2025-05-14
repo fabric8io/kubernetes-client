@@ -183,6 +183,7 @@ public class HelmChartRepositoryList implements Editable<HelmChartRepositoryList
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

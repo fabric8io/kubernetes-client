@@ -129,6 +129,7 @@ public class CredentialsStatus implements Editable<CredentialsStatusBuilder>, Ku
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

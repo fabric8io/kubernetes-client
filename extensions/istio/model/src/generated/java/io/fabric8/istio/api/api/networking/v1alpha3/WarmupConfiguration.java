@@ -127,6 +127,7 @@ public class WarmupConfiguration implements Editable<WarmupConfigurationBuilder>
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

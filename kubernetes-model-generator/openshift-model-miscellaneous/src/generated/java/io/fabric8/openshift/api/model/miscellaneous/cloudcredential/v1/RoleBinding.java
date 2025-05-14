@@ -108,6 +108,7 @@ public class RoleBinding implements Editable<RoleBindingBuilder>, KubernetesReso
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

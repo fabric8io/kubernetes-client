@@ -84,6 +84,7 @@ public class NamedContext implements Editable<NamedContextBuilder>, KubernetesRe
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

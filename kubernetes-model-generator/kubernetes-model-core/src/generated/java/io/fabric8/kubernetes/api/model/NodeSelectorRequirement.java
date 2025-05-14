@@ -123,6 +123,7 @@ public class NodeSelectorRequirement implements Editable<NodeSelectorRequirement
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

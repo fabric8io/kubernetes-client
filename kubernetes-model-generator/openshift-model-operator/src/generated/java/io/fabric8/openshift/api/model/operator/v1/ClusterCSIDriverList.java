@@ -183,6 +183,7 @@ public class ClusterCSIDriverList implements Editable<ClusterCSIDriverListBuilde
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

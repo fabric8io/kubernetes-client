@@ -388,6 +388,7 @@ public class PlatformSpec implements Editable<PlatformSpecBuilder>, KubernetesRe
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

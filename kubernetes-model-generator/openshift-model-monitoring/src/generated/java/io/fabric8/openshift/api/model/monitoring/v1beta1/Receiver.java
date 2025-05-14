@@ -396,6 +396,7 @@ public class Receiver implements Editable<ReceiverBuilder>, KubernetesResource
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

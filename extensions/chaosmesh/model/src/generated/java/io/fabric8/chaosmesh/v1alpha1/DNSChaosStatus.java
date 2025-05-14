@@ -132,6 +132,7 @@ public class DNSChaosStatus implements Editable<DNSChaosStatusBuilder>, Kubernet
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

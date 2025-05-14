@@ -178,6 +178,7 @@ public class HardwareData implements Editable<HardwareDataBuilder>, HasMetadata,
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

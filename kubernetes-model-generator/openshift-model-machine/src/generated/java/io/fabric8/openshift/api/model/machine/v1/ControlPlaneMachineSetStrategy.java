@@ -108,6 +108,7 @@ public class ControlPlaneMachineSetStrategy implements Editable<ControlPlaneMach
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

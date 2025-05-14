@@ -183,6 +183,7 @@ public class ConsoleExternalLogLinkList implements Editable<ConsoleExternalLogLi
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

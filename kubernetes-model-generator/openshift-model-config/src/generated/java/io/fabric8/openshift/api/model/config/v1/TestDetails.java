@@ -105,6 +105,7 @@ public class TestDetails implements Editable<TestDetailsBuilder>, KubernetesReso
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

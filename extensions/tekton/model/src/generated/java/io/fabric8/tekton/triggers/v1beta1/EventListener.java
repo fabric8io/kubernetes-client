@@ -198,6 +198,7 @@ public class EventListener implements Editable<EventListenerBuilder>, HasMetadat
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

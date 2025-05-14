@@ -172,6 +172,7 @@ public class StageInfo implements Editable<StageInfoBuilder>, KubernetesResource
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

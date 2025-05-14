@@ -128,6 +128,7 @@ public class MachineOSContainerfile implements Editable<MachineOSContainerfileBu
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

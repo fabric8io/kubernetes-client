@@ -183,6 +183,7 @@ public class EventTypeList implements Editable<EventTypeListBuilder>, Kubernetes
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -128,6 +128,7 @@ public class ClusterTrustBundleSpec implements Editable<ClusterTrustBundleSpecBu
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

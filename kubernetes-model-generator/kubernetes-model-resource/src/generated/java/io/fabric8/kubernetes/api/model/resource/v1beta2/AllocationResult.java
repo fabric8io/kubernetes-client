@@ -129,6 +129,7 @@ public class AllocationResult implements Editable<AllocationResultBuilder>, Kube
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

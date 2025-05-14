@@ -128,6 +128,7 @@ public class ClusterSelector implements Editable<ClusterSelectorBuilder>, Kubern
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

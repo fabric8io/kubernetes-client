@@ -168,6 +168,7 @@ public class AlertmanagerWebSpec implements Editable<AlertmanagerWebSpecBuilder>
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

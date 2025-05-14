@@ -208,6 +208,7 @@ public class CustomResourceColumnDefinition implements Editable<CustomResourceCo
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

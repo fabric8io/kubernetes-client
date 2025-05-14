@@ -128,6 +128,7 @@ public class AWSResourceTag implements Editable<AWSResourceTagBuilder>, Kubernet
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

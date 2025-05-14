@@ -183,6 +183,7 @@ public class KubeletConfigList implements Editable<KubeletConfigListBuilder>, Ku
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

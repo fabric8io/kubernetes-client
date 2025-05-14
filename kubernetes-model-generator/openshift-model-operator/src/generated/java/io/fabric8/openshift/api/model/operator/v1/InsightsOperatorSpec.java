@@ -177,6 +177,7 @@ public class InsightsOperatorSpec implements Editable<InsightsOperatorSpecBuilde
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -308,6 +308,7 @@ public class EndpointsJSON implements Editable<EndpointsJSONBuilder>, Kubernetes
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

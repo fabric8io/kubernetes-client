@@ -174,6 +174,7 @@ public class ReceiveSpec implements Editable<ReceiveSpecBuilder>, KubernetesReso
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

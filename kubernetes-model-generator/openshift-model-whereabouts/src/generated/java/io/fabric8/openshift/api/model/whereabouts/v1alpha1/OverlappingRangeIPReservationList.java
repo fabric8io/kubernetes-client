@@ -156,6 +156,7 @@ public class OverlappingRangeIPReservationList implements Editable<OverlappingRa
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

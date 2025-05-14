@@ -148,6 +148,7 @@ public class ReferenceGrantTo implements Editable<ReferenceGrantToBuilder>, Kube
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

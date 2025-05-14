@@ -129,6 +129,7 @@ public class StressMemorySpec implements Editable<StressMemorySpecBuilder>, Kube
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -198,6 +198,7 @@ public class EgressService implements Editable<EgressServiceBuilder>, HasMetadat
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

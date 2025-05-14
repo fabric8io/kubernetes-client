@@ -183,6 +183,7 @@ public class IPAddressList implements Editable<IPAddressListBuilder>, Kubernetes
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

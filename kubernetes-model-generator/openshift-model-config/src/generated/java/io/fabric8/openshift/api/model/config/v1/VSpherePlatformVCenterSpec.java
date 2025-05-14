@@ -152,6 +152,7 @@ public class VSpherePlatformVCenterSpec implements Editable<VSpherePlatformVCent
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

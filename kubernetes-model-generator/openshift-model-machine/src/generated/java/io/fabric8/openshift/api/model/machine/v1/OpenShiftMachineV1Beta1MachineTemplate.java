@@ -149,6 +149,7 @@ public class OpenShiftMachineV1Beta1MachineTemplate implements Editable<OpenShif
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

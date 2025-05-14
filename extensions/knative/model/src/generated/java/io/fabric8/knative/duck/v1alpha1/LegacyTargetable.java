@@ -108,6 +108,7 @@ public class LegacyTargetable implements Editable<LegacyTargetableBuilder>, Kube
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -168,6 +168,7 @@ public class ResourceQuota implements Editable<ResourceQuotaBuilder>, HasMetadat
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

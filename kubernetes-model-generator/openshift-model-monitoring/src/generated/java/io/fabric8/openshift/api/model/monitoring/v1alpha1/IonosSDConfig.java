@@ -314,6 +314,7 @@ public class IonosSDConfig implements Editable<IonosSDConfigBuilder>, Kubernetes
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

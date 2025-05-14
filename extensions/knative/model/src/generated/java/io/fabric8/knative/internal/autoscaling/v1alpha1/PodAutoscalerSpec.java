@@ -168,6 +168,7 @@ public class PodAutoscalerSpec implements Editable<PodAutoscalerSpecBuilder>, Ku
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

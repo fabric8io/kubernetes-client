@@ -188,6 +188,7 @@ public class WebhookConfig implements Editable<WebhookConfigBuilder>, Kubernetes
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

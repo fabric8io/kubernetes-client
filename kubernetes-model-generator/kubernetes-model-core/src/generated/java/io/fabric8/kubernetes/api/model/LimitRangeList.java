@@ -152,6 +152,7 @@ public class LimitRangeList implements Editable<LimitRangeListBuilder>, Kubernet
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

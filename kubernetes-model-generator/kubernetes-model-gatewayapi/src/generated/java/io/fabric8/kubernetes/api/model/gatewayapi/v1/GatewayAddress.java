@@ -128,6 +128,7 @@ public class GatewayAddress implements Editable<GatewayAddressBuilder>, Kubernet
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

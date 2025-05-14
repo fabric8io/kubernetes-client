@@ -198,6 +198,7 @@ public class ClusterPool implements Editable<ClusterPoolBuilder>, HasMetadata, N
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

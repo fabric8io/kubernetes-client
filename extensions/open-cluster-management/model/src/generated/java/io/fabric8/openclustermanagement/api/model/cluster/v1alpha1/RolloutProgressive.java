@@ -193,6 +193,7 @@ public class RolloutProgressive implements Editable<RolloutProgressiveBuilder>, 
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

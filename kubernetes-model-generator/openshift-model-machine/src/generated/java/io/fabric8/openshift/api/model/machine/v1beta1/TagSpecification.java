@@ -128,6 +128,7 @@ public class TagSpecification implements Editable<TagSpecificationBuilder>, Kube
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

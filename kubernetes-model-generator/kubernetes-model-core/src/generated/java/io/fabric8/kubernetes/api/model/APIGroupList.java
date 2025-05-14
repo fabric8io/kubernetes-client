@@ -132,6 +132,7 @@ public class APIGroupList implements Editable<APIGroupListBuilder>, KubernetesRe
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

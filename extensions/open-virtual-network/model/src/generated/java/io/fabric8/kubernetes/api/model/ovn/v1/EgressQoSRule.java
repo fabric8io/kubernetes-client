@@ -139,6 +139,7 @@ public class EgressQoSRule implements Editable<EgressQoSRuleBuilder>, Kubernetes
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

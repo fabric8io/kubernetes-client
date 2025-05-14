@@ -183,6 +183,7 @@ public class KResourceList implements Editable<KResourceListBuilder>, Kubernetes
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -148,6 +148,7 @@ public class KeyVault implements Editable<KeyVaultBuilder>, KubernetesResource
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

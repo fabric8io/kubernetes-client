@@ -183,6 +183,7 @@ public class PipelineResourceList implements Editable<PipelineResourceListBuilde
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -78,6 +78,7 @@ public class CheckpointStatus implements Editable<CheckpointStatusBuilder>, Kube
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

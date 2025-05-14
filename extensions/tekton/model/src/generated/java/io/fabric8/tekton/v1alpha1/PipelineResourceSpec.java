@@ -174,6 +174,7 @@ public class PipelineResourceSpec implements Editable<PipelineResourceSpecBuilde
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

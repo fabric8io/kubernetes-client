@@ -194,6 +194,7 @@ public class FailKernRequest implements Editable<FailKernRequestBuilder>, Kubern
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

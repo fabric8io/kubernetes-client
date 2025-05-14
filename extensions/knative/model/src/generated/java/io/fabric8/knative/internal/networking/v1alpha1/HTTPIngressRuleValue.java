@@ -112,6 +112,7 @@ public class HTTPIngressRuleValue implements Editable<HTTPIngressRuleValueBuilde
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -179,6 +179,7 @@ public class OIDCProvider implements Editable<OIDCProviderBuilder>, KubernetesRe
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -154,6 +154,7 @@ public class PodHttpChaosPatchActions implements Editable<PodHttpChaosPatchActio
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

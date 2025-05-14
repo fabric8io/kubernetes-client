@@ -252,6 +252,7 @@ public class DeploymentStatus implements Editable<DeploymentStatusBuilder>, Kube
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

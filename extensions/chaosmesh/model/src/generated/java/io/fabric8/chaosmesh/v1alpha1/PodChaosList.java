@@ -183,6 +183,7 @@ public class PodChaosList implements Editable<PodChaosListBuilder>, KubernetesRe
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

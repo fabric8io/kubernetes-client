@@ -152,6 +152,7 @@ public class NetworkDataIPv4DHCP implements Editable<NetworkDataIPv4DHCPBuilder>
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

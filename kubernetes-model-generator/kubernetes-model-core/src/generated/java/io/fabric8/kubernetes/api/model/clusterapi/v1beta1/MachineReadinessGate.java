@@ -71,6 +71,7 @@ public class MachineReadinessGate implements Editable<MachineReadinessGateBuilde
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

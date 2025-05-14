@@ -150,6 +150,7 @@ public class FirmwareSchemaSpec implements Editable<FirmwareSchemaSpecBuilder>, 
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

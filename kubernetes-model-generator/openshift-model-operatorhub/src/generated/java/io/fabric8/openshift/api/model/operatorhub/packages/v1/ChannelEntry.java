@@ -148,6 +148,7 @@ public class ChannelEntry implements Editable<ChannelEntryBuilder>, KubernetesRe
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

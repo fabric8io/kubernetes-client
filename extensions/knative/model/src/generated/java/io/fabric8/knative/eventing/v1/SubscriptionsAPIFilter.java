@@ -240,6 +240,7 @@ public class SubscriptionsAPIFilter implements Editable<SubscriptionsAPIFilterBu
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

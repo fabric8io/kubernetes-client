@@ -177,6 +177,7 @@ public class MyOperatorResourceSpec implements Editable<MyOperatorResourceSpecBu
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

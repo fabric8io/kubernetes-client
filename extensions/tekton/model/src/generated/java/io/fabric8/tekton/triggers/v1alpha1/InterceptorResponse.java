@@ -152,6 +152,7 @@ public class InterceptorResponse implements Editable<InterceptorResponseBuilder>
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

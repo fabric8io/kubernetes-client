@@ -78,6 +78,7 @@ public class SelectorSyncSetStatus implements Editable<SelectorSyncSetStatusBuil
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

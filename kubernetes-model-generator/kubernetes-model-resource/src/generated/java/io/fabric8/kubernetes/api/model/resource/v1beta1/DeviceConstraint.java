@@ -132,6 +132,7 @@ public class DeviceConstraint implements Editable<DeviceConstraintBuilder>, Kube
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

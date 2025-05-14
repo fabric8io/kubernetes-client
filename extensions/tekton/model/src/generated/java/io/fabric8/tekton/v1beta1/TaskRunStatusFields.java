@@ -345,6 +345,7 @@ public class TaskRunStatusFields implements Editable<TaskRunStatusFieldsBuilder>
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

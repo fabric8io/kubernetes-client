@@ -99,6 +99,7 @@ public class SupportedFeature implements Editable<SupportedFeatureBuilder>, Kube
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

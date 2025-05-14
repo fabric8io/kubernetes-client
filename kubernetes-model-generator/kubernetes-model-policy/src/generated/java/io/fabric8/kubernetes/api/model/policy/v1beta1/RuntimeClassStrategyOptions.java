@@ -132,6 +132,7 @@ public class RuntimeClassStrategyOptions implements Editable<RuntimeClassStrateg
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

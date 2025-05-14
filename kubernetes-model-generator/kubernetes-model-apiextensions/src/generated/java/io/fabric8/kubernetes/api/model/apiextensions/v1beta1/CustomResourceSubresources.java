@@ -128,6 +128,7 @@ public class CustomResourceSubresources implements Editable<CustomResourceSubres
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

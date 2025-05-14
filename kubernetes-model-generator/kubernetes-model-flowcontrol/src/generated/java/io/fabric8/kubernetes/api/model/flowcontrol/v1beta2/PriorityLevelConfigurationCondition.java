@@ -188,6 +188,7 @@ public class PriorityLevelConfigurationCondition implements Editable<PriorityLev
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

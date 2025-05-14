@@ -152,6 +152,7 @@ public class PodFailurePolicyRule implements Editable<PodFailurePolicyRuleBuilde
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

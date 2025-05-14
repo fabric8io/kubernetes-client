@@ -133,6 +133,7 @@ public class NetworkDiagnostics implements Editable<NetworkDiagnosticsBuilder>, 
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

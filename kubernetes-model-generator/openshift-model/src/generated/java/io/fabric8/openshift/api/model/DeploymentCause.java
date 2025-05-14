@@ -128,6 +128,7 @@ public class DeploymentCause implements Editable<DeploymentCauseBuilder>, Kubern
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

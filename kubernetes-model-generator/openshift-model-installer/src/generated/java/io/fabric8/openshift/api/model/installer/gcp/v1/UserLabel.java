@@ -128,6 +128,7 @@ public class UserLabel implements Editable<UserLabelBuilder>, KubernetesResource
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

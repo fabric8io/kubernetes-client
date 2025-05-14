@@ -108,6 +108,7 @@ public class ReadinessProbeHttpGet implements IsReadinessProbeHealthCheckMethod,
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

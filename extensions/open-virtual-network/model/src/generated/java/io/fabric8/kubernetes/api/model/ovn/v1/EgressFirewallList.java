@@ -183,6 +183,7 @@ public class EgressFirewallList implements Editable<EgressFirewallListBuilder>, 
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

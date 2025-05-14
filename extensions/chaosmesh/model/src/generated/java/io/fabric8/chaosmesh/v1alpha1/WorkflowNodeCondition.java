@@ -127,6 +127,7 @@ public class WorkflowNodeCondition implements Editable<WorkflowNodeConditionBuil
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

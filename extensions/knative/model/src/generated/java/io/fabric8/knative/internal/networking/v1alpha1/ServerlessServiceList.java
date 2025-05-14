@@ -183,6 +183,7 @@ public class ServerlessServiceList implements Editable<ServerlessServiceListBuil
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

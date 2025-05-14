@@ -128,6 +128,7 @@ public class StatefulSetPersistentVolumeClaimRetentionPolicy implements Editable
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

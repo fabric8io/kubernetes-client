@@ -119,6 +119,7 @@ public class AzureFileVolumeSource implements Editable<AzureFileVolumeSourceBuil
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

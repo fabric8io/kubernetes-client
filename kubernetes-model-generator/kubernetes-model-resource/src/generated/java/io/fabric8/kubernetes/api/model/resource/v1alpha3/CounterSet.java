@@ -130,6 +130,7 @@ public class CounterSet implements Editable<CounterSetBuilder>, KubernetesResour
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

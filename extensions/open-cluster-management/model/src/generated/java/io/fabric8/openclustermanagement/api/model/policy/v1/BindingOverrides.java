@@ -108,6 +108,7 @@ public class BindingOverrides implements Editable<BindingOverridesBuilder>, Kube
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

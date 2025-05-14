@@ -132,6 +132,7 @@ public class ServiceAccountRef implements Editable<ServiceAccountRefBuilder>, Ku
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

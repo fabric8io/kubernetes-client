@@ -108,6 +108,7 @@ public class PartialSelector implements Editable<PartialSelectorBuilder>, Kubern
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

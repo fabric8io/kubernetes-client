@@ -185,6 +185,7 @@ public class PolicyAuditConfig implements Editable<PolicyAuditConfigBuilder>, Ku
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

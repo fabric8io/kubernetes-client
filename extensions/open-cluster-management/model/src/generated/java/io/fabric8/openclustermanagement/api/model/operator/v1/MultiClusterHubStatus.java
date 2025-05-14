@@ -194,6 +194,7 @@ public class MultiClusterHubStatus implements Editable<MultiClusterHubStatusBuil
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

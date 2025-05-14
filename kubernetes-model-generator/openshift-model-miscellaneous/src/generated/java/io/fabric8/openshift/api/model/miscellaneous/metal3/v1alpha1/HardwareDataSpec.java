@@ -108,6 +108,7 @@ public class HardwareDataSpec implements Editable<HardwareDataSpecBuilder>, Kube
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

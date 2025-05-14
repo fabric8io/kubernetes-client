@@ -148,6 +148,7 @@ public class ControlPlaneConfigSpec implements Editable<ControlPlaneConfigSpecBu
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

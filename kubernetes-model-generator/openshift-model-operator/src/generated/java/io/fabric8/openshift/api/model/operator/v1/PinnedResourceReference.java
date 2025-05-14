@@ -148,6 +148,7 @@ public class PinnedResourceReference implements Editable<PinnedResourceReference
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

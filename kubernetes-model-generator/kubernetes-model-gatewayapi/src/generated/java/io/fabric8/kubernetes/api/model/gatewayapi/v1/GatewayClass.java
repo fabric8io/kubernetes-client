@@ -197,6 +197,7 @@ public class GatewayClass implements Editable<GatewayClassBuilder>, HasMetadata
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -199,6 +199,7 @@ public class Sidecar implements Editable<SidecarBuilder>, HasMetadata, Namespace
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

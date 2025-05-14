@@ -113,6 +113,7 @@ public class ServiceCIDRStatus implements Editable<ServiceCIDRStatusBuilder>, Ku
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

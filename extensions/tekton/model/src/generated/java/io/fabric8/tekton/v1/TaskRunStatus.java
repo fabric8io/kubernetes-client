@@ -385,6 +385,7 @@ public class TaskRunStatus implements Editable<TaskRunStatusBuilder>, Kubernetes
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -88,6 +88,7 @@ public class Preferences implements Editable<PreferencesBuilder>, KubernetesReso
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -174,6 +174,7 @@ public class HTTPRouteMatch implements Editable<HTTPRouteMatchBuilder>, Kubernet
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

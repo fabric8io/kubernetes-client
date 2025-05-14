@@ -123,6 +123,7 @@ public class ChaosStatus implements Editable<ChaosStatusBuilder>, KubernetesReso
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

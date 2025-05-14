@@ -315,6 +315,7 @@ public class DigitalOceanSDConfig implements Editable<DigitalOceanSDConfigBuilde
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

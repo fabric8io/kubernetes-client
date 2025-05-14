@@ -108,6 +108,7 @@ public class BuildVolumeMount implements Editable<BuildVolumeMountBuilder>, Kube
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

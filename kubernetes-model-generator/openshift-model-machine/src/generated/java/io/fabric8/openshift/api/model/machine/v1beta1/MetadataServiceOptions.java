@@ -108,6 +108,7 @@ public class MetadataServiceOptions implements Editable<MetadataServiceOptionsBu
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

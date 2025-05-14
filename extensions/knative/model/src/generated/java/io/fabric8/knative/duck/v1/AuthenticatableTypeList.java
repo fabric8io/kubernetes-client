@@ -183,6 +183,7 @@ public class AuthenticatableTypeList implements Editable<AuthenticatableTypeList
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

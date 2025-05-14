@@ -99,6 +99,7 @@ public class Sysctl implements Editable<SysctlBuilder>, KubernetesResource
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -259,6 +259,7 @@ public class GitHubBindingStatus implements Editable<GitHubBindingStatusBuilder>
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

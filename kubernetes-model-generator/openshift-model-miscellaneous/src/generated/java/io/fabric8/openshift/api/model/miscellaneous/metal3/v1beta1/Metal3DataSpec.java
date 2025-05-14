@@ -209,6 +209,7 @@ public class Metal3DataSpec implements Editable<Metal3DataSpecBuilder>, Kubernet
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

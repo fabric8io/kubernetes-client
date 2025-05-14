@@ -108,6 +108,7 @@ public class NamedResourcesFilter implements Editable<NamedResourcesFilterBuilde
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

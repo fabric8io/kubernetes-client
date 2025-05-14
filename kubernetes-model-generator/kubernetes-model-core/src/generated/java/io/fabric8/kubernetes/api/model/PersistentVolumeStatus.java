@@ -139,6 +139,7 @@ public class PersistentVolumeStatus implements Editable<PersistentVolumeStatusBu
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

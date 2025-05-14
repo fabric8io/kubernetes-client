@@ -165,6 +165,7 @@ public class ClientConnectionOverrides implements Editable<ClientConnectionOverr
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

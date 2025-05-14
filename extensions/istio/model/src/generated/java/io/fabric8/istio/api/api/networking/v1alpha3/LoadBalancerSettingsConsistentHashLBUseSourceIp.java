@@ -108,6 +108,7 @@ public class LoadBalancerSettingsConsistentHashLBUseSourceIp implements IsLoadBa
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

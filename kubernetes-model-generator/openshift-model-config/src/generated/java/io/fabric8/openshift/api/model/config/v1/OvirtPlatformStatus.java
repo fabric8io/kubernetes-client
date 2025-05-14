@@ -214,6 +214,7 @@ public class OvirtPlatformStatus implements Editable<OvirtPlatformStatusBuilder>
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

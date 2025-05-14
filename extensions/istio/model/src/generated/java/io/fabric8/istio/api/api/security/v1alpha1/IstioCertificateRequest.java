@@ -150,6 +150,7 @@ public class IstioCertificateRequest implements Editable<IstioCertificateRequest
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

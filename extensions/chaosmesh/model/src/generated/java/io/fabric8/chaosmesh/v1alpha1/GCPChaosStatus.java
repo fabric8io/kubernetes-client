@@ -154,6 +154,7 @@ public class GCPChaosStatus implements Editable<GCPChaosStatusBuilder>, Kubernet
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

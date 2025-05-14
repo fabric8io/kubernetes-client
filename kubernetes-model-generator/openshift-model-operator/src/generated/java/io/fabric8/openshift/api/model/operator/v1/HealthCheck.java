@@ -168,6 +168,7 @@ public class HealthCheck implements Editable<HealthCheckBuilder>, KubernetesReso
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

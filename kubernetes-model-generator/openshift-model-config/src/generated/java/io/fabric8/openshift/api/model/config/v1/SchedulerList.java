@@ -183,6 +183,7 @@ public class SchedulerList implements Editable<SchedulerListBuilder>, Kubernetes
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

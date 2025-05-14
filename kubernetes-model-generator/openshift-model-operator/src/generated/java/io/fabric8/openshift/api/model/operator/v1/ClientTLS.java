@@ -153,6 +153,7 @@ public class ClientTLS implements Editable<ClientTLSBuilder>, KubernetesResource
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

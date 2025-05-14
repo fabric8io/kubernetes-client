@@ -183,6 +183,7 @@ public class ValidatingWebhookConfigurationList implements Editable<ValidatingWe
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

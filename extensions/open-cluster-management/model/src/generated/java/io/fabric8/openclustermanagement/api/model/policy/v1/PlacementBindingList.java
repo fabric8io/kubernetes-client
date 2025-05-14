@@ -183,6 +183,7 @@ public class PlacementBindingList implements Editable<PlacementBindingListBuilde
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

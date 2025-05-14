@@ -132,6 +132,7 @@ public class CustomTLSProfile implements Editable<CustomTLSProfileBuilder>, Kube
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -168,6 +168,7 @@ public class EC2RootVolume implements Editable<EC2RootVolumeBuilder>, Kubernetes
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

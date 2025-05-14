@@ -103,6 +103,7 @@ public class NodeAffinity implements Editable<NodeAffinityBuilder>, KubernetesRe
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -198,6 +198,7 @@ public class AwsSqsSource implements Editable<AwsSqsSourceBuilder>, HasMetadata,
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

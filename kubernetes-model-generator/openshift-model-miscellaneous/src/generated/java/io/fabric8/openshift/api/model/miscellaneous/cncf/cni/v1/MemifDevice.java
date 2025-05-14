@@ -127,6 +127,7 @@ public class MemifDevice implements Editable<MemifDeviceBuilder>, KubernetesReso
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

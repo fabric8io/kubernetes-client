@@ -130,6 +130,7 @@ public class Metal3DataTemplateStatus implements Editable<Metal3DataTemplateStat
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

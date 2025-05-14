@@ -99,6 +99,7 @@ public class WeightedPodAffinityTerm implements Editable<WeightedPodAffinityTerm
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

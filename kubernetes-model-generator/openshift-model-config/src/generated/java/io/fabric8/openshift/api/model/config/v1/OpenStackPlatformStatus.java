@@ -256,6 +256,7 @@ public class OpenStackPlatformStatus implements Editable<OpenStackPlatformStatus
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

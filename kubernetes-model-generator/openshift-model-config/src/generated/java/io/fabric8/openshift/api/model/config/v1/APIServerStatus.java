@@ -75,6 +75,7 @@ public class APIServerStatus implements Editable<APIServerStatusBuilder>, Kubern
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

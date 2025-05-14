@@ -128,6 +128,7 @@ public class SecretKeySelector implements Editable<SecretKeySelectorBuilder>, Ku
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

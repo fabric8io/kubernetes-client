@@ -172,6 +172,7 @@ public class EtcdConnectionInfo implements Editable<EtcdConnectionInfoBuilder>, 
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

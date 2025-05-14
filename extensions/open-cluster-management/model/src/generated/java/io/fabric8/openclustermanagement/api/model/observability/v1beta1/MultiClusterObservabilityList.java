@@ -183,6 +183,7 @@ public class MultiClusterObservabilityList implements Editable<MultiClusterObser
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

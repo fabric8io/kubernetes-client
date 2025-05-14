@@ -494,6 +494,7 @@ public class IOChaosAction implements Editable<IOChaosActionBuilder>, Kubernetes
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

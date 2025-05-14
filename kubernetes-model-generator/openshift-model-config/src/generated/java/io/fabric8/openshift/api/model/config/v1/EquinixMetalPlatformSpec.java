@@ -78,6 +78,7 @@ public class EquinixMetalPlatformSpec implements Editable<EquinixMetalPlatformSp
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

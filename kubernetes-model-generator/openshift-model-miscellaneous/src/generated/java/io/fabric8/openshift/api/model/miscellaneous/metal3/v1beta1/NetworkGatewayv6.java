@@ -128,6 +128,7 @@ public class NetworkGatewayv6 implements Editable<NetworkGatewayv6Builder>, Kube
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

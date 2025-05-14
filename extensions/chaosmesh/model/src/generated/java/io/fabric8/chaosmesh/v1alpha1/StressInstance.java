@@ -168,6 +168,7 @@ public class StressInstance implements Editable<StressInstanceBuilder>, Kubernet
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

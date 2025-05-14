@@ -183,6 +183,7 @@ public class ClusterOperatorList implements Editable<ClusterOperatorListBuilder>
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

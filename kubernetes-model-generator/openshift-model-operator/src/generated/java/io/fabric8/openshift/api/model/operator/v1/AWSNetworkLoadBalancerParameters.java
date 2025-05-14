@@ -132,6 +132,7 @@ public class AWSNetworkLoadBalancerParameters implements Editable<AWSNetworkLoad
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

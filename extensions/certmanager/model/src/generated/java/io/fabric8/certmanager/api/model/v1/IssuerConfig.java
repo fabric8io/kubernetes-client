@@ -189,6 +189,7 @@ public class IssuerConfig implements Editable<IssuerConfigBuilder>, KubernetesRe
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

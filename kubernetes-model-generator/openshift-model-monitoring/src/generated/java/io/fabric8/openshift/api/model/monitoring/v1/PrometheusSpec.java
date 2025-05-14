@@ -2379,6 +2379,7 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder>, Kubernet
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

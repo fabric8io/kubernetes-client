@@ -108,6 +108,7 @@ public class UserSubject implements Editable<UserSubjectBuilder>, KubernetesReso
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

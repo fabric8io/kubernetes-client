@@ -128,6 +128,7 @@ public class PrometheusRuleExcludeConfig implements Editable<PrometheusRuleExclu
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -245,6 +245,7 @@ public class NetworkDuplicateSpec implements Editable<NetworkDuplicateSpecBuilde
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

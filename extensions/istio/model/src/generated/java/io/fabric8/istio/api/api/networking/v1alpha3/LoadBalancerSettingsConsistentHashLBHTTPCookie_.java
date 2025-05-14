@@ -148,6 +148,7 @@ public class LoadBalancerSettingsConsistentHashLBHTTPCookie_ implements Editable
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

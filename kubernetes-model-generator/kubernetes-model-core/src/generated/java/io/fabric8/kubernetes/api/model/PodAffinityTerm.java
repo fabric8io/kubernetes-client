@@ -187,6 +187,7 @@ public class PodAffinityTerm implements Editable<PodAffinityTermBuilder>, Kubern
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

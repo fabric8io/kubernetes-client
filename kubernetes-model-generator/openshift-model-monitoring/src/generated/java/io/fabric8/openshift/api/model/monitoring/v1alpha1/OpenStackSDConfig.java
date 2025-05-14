@@ -450,6 +450,7 @@ public class OpenStackSDConfig implements Editable<OpenStackSDConfigBuilder>, Ku
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

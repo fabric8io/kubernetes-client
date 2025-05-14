@@ -138,6 +138,7 @@ public class BuildLog implements Editable<BuildLogBuilder>, KubernetesResource, 
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -148,6 +148,7 @@ public class TagImportPolicy implements Editable<TagImportPolicyBuilder>, Kubern
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -183,6 +183,7 @@ public class MachinePoolList implements Editable<MachinePoolListBuilder>, Kubern
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

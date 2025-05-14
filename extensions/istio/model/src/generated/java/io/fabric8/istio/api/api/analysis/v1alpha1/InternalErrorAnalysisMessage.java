@@ -128,6 +128,7 @@ public class InternalErrorAnalysisMessage implements Editable<InternalErrorAnaly
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

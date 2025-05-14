@@ -108,6 +108,7 @@ public class GCPLoadBalancerParameters implements Editable<GCPLoadBalancerParame
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

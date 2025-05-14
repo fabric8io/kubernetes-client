@@ -223,6 +223,7 @@ public class RBDPersistentVolumeSource implements Editable<RBDPersistentVolumeSo
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

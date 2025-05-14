@@ -132,6 +132,7 @@ public class ClusterProvisionStatus implements Editable<ClusterProvisionStatusBu
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

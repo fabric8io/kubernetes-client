@@ -123,6 +123,7 @@ public class ScopedResourceSelectorRequirement implements Editable<ScopedResourc
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -130,6 +130,7 @@ public class VendorParameters implements Editable<VendorParametersBuilder>, Kube
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

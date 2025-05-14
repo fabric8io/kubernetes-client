@@ -132,6 +132,7 @@ public class FeatureGateStatus implements Editable<FeatureGateStatusBuilder>, Ku
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

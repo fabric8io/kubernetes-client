@@ -173,6 +173,7 @@ public class ImageImportStatus implements Editable<ImageImportStatusBuilder>, Ku
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

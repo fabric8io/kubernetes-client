@@ -103,6 +103,7 @@ public class TopologySelectorLabelRequirement implements Editable<TopologySelect
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

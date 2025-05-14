@@ -179,6 +179,7 @@ public class NodeCondition implements Editable<NodeConditionBuilder>, Kubernetes
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

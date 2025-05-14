@@ -128,6 +128,7 @@ public class SecretBuildSource implements Editable<SecretBuildSourceBuilder>, Ku
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -108,6 +108,7 @@ public class RuleTo implements Editable<RuleToBuilder>, KubernetesResource
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

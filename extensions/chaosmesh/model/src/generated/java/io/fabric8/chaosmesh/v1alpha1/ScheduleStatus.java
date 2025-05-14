@@ -132,6 +132,7 @@ public class ScheduleStatus implements Editable<ScheduleStatusBuilder>, Kubernet
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

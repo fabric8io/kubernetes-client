@@ -105,6 +105,7 @@ public class PinnedImageSetRef implements Editable<PinnedImageSetRefBuilder>, Ku
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

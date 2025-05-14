@@ -172,6 +172,7 @@ public class ResourceClaimStatus implements Editable<ResourceClaimStatusBuilder>
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -174,6 +174,7 @@ public class GatewayTLSConfig implements Editable<GatewayTLSConfigBuilder>, Kube
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -154,6 +154,7 @@ public class NamedTagEventList implements Editable<NamedTagEventListBuilder>, Ku
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

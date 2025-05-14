@@ -169,6 +169,7 @@ public class ExternalMetricStatus implements Editable<ExternalMetricStatusBuilde
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

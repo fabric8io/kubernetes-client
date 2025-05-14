@@ -132,6 +132,7 @@ public class NetworkDataServicev4 implements Editable<NetworkDataServicev4Builde
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

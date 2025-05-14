@@ -322,6 +322,7 @@ public class PipelineRunStatusFields implements Editable<PipelineRunStatusFields
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

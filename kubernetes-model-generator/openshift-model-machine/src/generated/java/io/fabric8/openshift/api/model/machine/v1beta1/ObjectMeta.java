@@ -216,6 +216,7 @@ public class ObjectMeta implements Editable<ObjectMetaBuilder>, KubernetesResour
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

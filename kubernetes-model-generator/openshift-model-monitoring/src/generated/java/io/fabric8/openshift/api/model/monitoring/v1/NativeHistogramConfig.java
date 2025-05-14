@@ -149,6 +149,7 @@ public class NativeHistogramConfig implements Editable<NativeHistogramConfigBuil
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

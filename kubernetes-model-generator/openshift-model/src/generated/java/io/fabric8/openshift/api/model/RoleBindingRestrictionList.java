@@ -183,6 +183,7 @@ public class RoleBindingRestrictionList implements Editable<RoleBindingRestricti
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

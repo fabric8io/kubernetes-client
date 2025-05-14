@@ -196,6 +196,7 @@ public class DomainMappingStatus implements Editable<DomainMappingStatusBuilder>
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

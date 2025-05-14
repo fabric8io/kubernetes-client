@@ -325,6 +325,7 @@ public class OAuthClient implements Editable<OAuthClientBuilder>, HasMetadata
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

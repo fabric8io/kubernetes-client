@@ -128,6 +128,7 @@ public class NetworkMigration implements Editable<NetworkMigrationBuilder>, Kube
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

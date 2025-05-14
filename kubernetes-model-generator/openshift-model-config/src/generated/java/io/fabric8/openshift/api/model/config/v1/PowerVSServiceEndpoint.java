@@ -128,6 +128,7 @@ public class PowerVSServiceEndpoint implements Editable<PowerVSServiceEndpointBu
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

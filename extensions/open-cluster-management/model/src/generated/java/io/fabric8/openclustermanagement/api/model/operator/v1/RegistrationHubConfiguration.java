@@ -153,6 +153,7 @@ public class RegistrationHubConfiguration implements Editable<RegistrationHubCon
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

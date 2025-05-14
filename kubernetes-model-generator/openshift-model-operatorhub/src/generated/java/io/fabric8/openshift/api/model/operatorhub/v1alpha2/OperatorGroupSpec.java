@@ -172,6 +172,7 @@ public class OperatorGroupSpec implements Editable<OperatorGroupSpecBuilder>, Ku
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -199,6 +199,7 @@ public class KafkaSinkStatus implements Editable<KafkaSinkStatusBuilder>, Kubern
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

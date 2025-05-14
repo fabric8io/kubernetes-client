@@ -320,6 +320,7 @@ public class NetworkSelectionElement implements Editable<NetworkSelectionElement
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

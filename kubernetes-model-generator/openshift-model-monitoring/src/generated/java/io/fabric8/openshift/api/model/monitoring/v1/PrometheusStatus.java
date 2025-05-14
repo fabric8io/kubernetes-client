@@ -274,6 +274,7 @@ public class PrometheusStatus implements Editable<PrometheusStatusBuilder>, Kube
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

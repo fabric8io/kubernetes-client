@@ -183,6 +183,7 @@ public class PrometheusRuleList implements Editable<PrometheusRuleListBuilder>, 
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

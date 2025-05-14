@@ -128,6 +128,7 @@ public class GCPEncryptionKeyReference implements Editable<GCPEncryptionKeyRefer
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

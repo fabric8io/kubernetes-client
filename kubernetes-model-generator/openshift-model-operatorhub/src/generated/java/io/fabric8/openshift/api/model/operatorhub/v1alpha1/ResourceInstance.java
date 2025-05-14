@@ -119,6 +119,7 @@ public class ResourceInstance implements Editable<ResourceInstanceBuilder>, Kube
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -198,6 +198,7 @@ public class GRPCRoute implements Editable<GRPCRouteBuilder>, HasMetadata, Names
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

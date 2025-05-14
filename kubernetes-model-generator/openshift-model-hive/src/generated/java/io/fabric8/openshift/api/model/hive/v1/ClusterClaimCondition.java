@@ -208,6 +208,7 @@ public class ClusterClaimCondition implements Editable<ClusterClaimConditionBuil
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

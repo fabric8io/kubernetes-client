@@ -128,6 +128,7 @@ public class RouteNamespaces implements Editable<RouteNamespacesBuilder>, Kubern
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -229,6 +229,7 @@ public class SafeTLSConfig implements Editable<SafeTLSConfigBuilder>, Kubernetes
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

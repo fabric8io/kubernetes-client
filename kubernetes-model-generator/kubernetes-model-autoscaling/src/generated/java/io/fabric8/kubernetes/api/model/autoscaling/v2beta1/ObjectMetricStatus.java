@@ -189,6 +189,7 @@ public class ObjectMetricStatus implements Editable<ObjectMetricStatusBuilder>, 
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

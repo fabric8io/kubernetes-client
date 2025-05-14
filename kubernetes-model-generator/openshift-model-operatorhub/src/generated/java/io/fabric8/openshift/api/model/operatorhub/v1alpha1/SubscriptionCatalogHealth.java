@@ -148,6 +148,7 @@ public class SubscriptionCatalogHealth implements Editable<SubscriptionCatalogHe
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

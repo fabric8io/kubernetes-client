@@ -168,6 +168,7 @@ public class BandwidthEntry implements Editable<BandwidthEntryBuilder>, Kubernet
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

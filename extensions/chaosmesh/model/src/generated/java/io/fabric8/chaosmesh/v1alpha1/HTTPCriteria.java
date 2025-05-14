@@ -105,6 +105,7 @@ public class HTTPCriteria implements Editable<HTTPCriteriaBuilder>, KubernetesRe
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

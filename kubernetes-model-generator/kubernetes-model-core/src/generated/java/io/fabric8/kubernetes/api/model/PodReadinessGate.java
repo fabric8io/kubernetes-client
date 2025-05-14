@@ -79,6 +79,7 @@ public class PodReadinessGate implements Editable<PodReadinessGateBuilder>, Kube
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

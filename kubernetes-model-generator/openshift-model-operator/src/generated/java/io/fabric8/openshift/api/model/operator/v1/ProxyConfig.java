@@ -151,6 +151,7 @@ public class ProxyConfig implements Editable<ProxyConfigBuilder>, KubernetesReso
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

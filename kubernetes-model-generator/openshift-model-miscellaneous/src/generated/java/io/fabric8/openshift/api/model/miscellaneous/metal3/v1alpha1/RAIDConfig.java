@@ -134,6 +134,7 @@ public class RAIDConfig implements Editable<RAIDConfigBuilder>, KubernetesResour
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

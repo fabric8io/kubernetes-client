@@ -198,6 +198,7 @@ public class ThanosRuler implements Editable<ThanosRulerBuilder>, HasMetadata, N
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

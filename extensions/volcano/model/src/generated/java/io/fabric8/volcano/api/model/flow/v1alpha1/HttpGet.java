@@ -142,6 +142,7 @@ public class HttpGet implements Editable<HttpGetBuilder>, KubernetesResource
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

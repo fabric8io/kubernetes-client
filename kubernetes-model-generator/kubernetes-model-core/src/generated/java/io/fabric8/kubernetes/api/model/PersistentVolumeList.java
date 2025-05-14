@@ -152,6 +152,7 @@ public class PersistentVolumeList implements Editable<PersistentVolumeListBuilde
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

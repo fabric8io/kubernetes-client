@@ -188,6 +188,7 @@ public class SubscriberStatus implements Editable<SubscriberStatusBuilder>, Kube
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

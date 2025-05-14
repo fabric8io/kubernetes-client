@@ -172,6 +172,7 @@ public class TunedMatch implements Editable<TunedMatchBuilder>, KubernetesResour
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

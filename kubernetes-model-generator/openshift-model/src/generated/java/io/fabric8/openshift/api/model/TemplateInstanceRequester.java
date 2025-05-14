@@ -174,6 +174,7 @@ public class TemplateInstanceRequester implements Editable<TemplateInstanceReque
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

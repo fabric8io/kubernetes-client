@@ -117,6 +117,7 @@ public class WorkflowSpec implements Editable<WorkflowSpecBuilder>, KubernetesRe
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

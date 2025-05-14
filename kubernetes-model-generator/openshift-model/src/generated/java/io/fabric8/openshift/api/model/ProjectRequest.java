@@ -197,6 +197,7 @@ public class ProjectRequest implements Editable<ProjectRequestBuilder>, HasMetad
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

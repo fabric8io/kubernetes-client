@@ -178,6 +178,7 @@ public class OpenIDClaims implements Editable<OpenIDClaimsBuilder>, KubernetesRe
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

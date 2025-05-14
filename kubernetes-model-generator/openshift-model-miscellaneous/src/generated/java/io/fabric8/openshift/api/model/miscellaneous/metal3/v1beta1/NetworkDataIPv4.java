@@ -193,6 +193,7 @@ public class NetworkDataIPv4 implements Editable<NetworkDataIPv4Builder>, Kubern
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

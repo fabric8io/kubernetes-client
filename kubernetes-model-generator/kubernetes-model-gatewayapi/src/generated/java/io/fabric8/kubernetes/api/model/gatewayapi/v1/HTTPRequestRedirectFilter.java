@@ -188,6 +188,7 @@ public class HTTPRequestRedirectFilter implements Editable<HTTPRequestRedirectFi
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

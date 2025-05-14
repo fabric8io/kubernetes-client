@@ -549,6 +549,7 @@ public class StepTemplate implements Editable<StepTemplateBuilder>, KubernetesRe
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

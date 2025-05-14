@@ -108,6 +108,7 @@ public class CertificateAdditionalOutputFormat implements Editable<CertificateAd
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

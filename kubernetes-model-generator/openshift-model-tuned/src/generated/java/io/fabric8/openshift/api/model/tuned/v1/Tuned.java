@@ -198,6 +198,7 @@ public class Tuned implements Editable<TunedBuilder>, HasMetadata, Namespaced
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -198,6 +198,7 @@ public class StressChaos implements Editable<StressChaosBuilder>, HasMetadata, N
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

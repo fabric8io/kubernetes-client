@@ -83,6 +83,7 @@ public class DownwardAPIProjection implements Editable<DownwardAPIProjectionBuil
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
