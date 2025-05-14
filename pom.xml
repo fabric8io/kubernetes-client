@@ -100,7 +100,7 @@
     <vertx.version>4.5.14</vertx.version>
     <jandex.version>3.3.1</jandex.version>
     <snakeyaml.version>2.9</snakeyaml.version>
-    <snakeyaml.bundle.version>2.3</snakeyaml.bundle.version> <!-- Transitive Jackson -->
+    <snakeyaml.bundle.version>2.4</snakeyaml.bundle.version> <!-- Transitive Jackson -->
 
     <!-- API versions -->
     <jsr305.version>3.0.2</jsr305.version>
