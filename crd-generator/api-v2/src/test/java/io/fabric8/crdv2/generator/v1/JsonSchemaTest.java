@@ -21,7 +21,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyDescription;
 import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
@@ -113,7 +112,7 @@ class JsonSchemaTest {
   }
 
   @Test
-  void shouldAugmentPropertiesSchemaFromAnnotations() throws JsonProcessingException {
+  void shouldAugmentPropertiesSchemaFromAnnotations() {
     JSONSchemaProps schema = JsonSchema.from(Annotated.class);
     assertNotNull(schema);
     Map<String, JSONSchemaProps> properties = assertSchemaHasNumberOfProperties(schema, 2);
@@ -333,6 +332,7 @@ class JsonSchemaTest {
     private Map<String, Object> values = new HashMap<>();
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
       return this.values;
     }
