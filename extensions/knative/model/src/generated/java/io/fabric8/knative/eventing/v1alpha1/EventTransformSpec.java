@@ -128,6 +128,7 @@ public class EventTransformSpec implements Editable<EventTransformSpecBuilder>, 
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

@@ -322,6 +322,7 @@ public class EventTransformStatus implements Editable<EventTransformStatusBuilde
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

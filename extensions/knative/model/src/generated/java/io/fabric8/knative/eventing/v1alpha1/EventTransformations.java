@@ -99,6 +99,7 @@ public class EventTransformations implements Editable<EventTransformationsBuilde
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

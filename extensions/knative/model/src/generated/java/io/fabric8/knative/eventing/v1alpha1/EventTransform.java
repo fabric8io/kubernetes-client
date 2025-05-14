@@ -198,6 +198,7 @@ public class EventTransform implements Editable<EventTransformBuilder>, HasMetad
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

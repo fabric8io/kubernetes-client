@@ -183,6 +183,7 @@ public class EventTransformList implements Editable<EventTransformListBuilder>, 
     }
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
