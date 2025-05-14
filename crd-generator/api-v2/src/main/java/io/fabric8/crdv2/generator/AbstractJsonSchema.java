@@ -447,8 +447,11 @@ public abstract class AbstractJsonSchema<T extends KubernetesJSONSchemaProps, V 
         visited = new LinkedHashMap<>();
       }
 
-      BeanProperty beanProperty = gos.beanProperties.get(property.getKey());
+      final BeanProperty beanProperty = gos.beanProperties.get(property.getKey());
       Utils.checkNotNull(beanProperty, "CRD generation works only with bean properties");
+      if (beanProperty.getAnnotation(JsonIgnore.class) != null) {
+        continue;
+      }
 
       JsonSchema propertySchema = property.getValue();
       PropertyMetadata propertyMetadata = new PropertyMetadata(propertySchema, beanProperty);
