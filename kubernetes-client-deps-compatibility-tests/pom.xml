@@ -23,7 +23,7 @@
   <parent>
     <groupId>io.fabric8</groupId>
     <artifactId>kubernetes-client-project</artifactId>
-    <version>7.3.0</version>
+    <version>7.4-SNAPSHOT</version>
   </parent>
 
   <name>Fabric8 :: Kubernetes :: Dependency Compatibility :: Tests</name>
