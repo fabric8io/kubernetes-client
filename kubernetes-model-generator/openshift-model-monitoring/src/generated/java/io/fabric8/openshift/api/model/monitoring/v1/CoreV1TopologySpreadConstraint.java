@@ -169,7 +169,7 @@ public class CoreV1TopologySpreadConstraint implements Editable<CoreV1TopologySp
     }
 
     /**
-     * NodeAffinityPolicy indicates how we will treat Pod's nodeAffinity/nodeSelector when calculating pod topology spread skew. Options are: - Honor: only nodes matching nodeAffinity/nodeSelector are included in the calculations. - Ignore: nodeAffinity/nodeSelector are ignored. All nodes are included in the calculations.<br><p> <br><p> If this value is nil, the behavior is equivalent to the Honor policy. This is a beta-level feature default enabled by the NodeInclusionPolicyInPodTopologySpread feature flag.<br><p> <br><p> Possible enum values:<br><p>  - `"Honor"` means use this scheduling directive when calculating pod topology spread skew.<br><p>  - `"Ignore"` means ignore this scheduling directive when calculating pod topology spread skew.
+     * NodeAffinityPolicy indicates how we will treat Pod's nodeAffinity/nodeSelector when calculating pod topology spread skew. Options are: - Honor: only nodes matching nodeAffinity/nodeSelector are included in the calculations. - Ignore: nodeAffinity/nodeSelector are ignored. All nodes are included in the calculations.<br><p> <br><p> If this value is nil, the behavior is equivalent to the Honor policy.<br><p> <br><p> Possible enum values:<br><p>  - `"Honor"` means use this scheduling directive when calculating pod topology spread skew.<br><p>  - `"Ignore"` means ignore this scheduling directive when calculating pod topology spread skew.
      */
     @JsonProperty("nodeAffinityPolicy")
     public String getNodeAffinityPolicy() {
@@ -177,7 +177,7 @@ public class CoreV1TopologySpreadConstraint implements Editable<CoreV1TopologySp
     }
 
     /**
-     * NodeAffinityPolicy indicates how we will treat Pod's nodeAffinity/nodeSelector when calculating pod topology spread skew. Options are: - Honor: only nodes matching nodeAffinity/nodeSelector are included in the calculations. - Ignore: nodeAffinity/nodeSelector are ignored. All nodes are included in the calculations.<br><p> <br><p> If this value is nil, the behavior is equivalent to the Honor policy. This is a beta-level feature default enabled by the NodeInclusionPolicyInPodTopologySpread feature flag.<br><p> <br><p> Possible enum values:<br><p>  - `"Honor"` means use this scheduling directive when calculating pod topology spread skew.<br><p>  - `"Ignore"` means ignore this scheduling directive when calculating pod topology spread skew.
+     * NodeAffinityPolicy indicates how we will treat Pod's nodeAffinity/nodeSelector when calculating pod topology spread skew. Options are: - Honor: only nodes matching nodeAffinity/nodeSelector are included in the calculations. - Ignore: nodeAffinity/nodeSelector are ignored. All nodes are included in the calculations.<br><p> <br><p> If this value is nil, the behavior is equivalent to the Honor policy.<br><p> <br><p> Possible enum values:<br><p>  - `"Honor"` means use this scheduling directive when calculating pod topology spread skew.<br><p>  - `"Ignore"` means ignore this scheduling directive when calculating pod topology spread skew.
      */
     @JsonProperty("nodeAffinityPolicy")
     public void setNodeAffinityPolicy(String nodeAffinityPolicy) {
@@ -185,7 +185,7 @@ public class CoreV1TopologySpreadConstraint implements Editable<CoreV1TopologySp
     }
 
     /**
-     * NodeTaintsPolicy indicates how we will treat node taints when calculating pod topology spread skew. Options are: - Honor: nodes without taints, along with tainted nodes for which the incoming pod has a toleration, are included. - Ignore: node taints are ignored. All nodes are included.<br><p> <br><p> If this value is nil, the behavior is equivalent to the Ignore policy. This is a beta-level feature default enabled by the NodeInclusionPolicyInPodTopologySpread feature flag.<br><p> <br><p> Possible enum values:<br><p>  - `"Honor"` means use this scheduling directive when calculating pod topology spread skew.<br><p>  - `"Ignore"` means ignore this scheduling directive when calculating pod topology spread skew.
+     * NodeTaintsPolicy indicates how we will treat node taints when calculating pod topology spread skew. Options are: - Honor: nodes without taints, along with tainted nodes for which the incoming pod has a toleration, are included. - Ignore: node taints are ignored. All nodes are included.<br><p> <br><p> If this value is nil, the behavior is equivalent to the Ignore policy.<br><p> <br><p> Possible enum values:<br><p>  - `"Honor"` means use this scheduling directive when calculating pod topology spread skew.<br><p>  - `"Ignore"` means ignore this scheduling directive when calculating pod topology spread skew.
      */
     @JsonProperty("nodeTaintsPolicy")
     public String getNodeTaintsPolicy() {
@@ -193,7 +193,7 @@ public class CoreV1TopologySpreadConstraint implements Editable<CoreV1TopologySp
     }
 
     /**
-     * NodeTaintsPolicy indicates how we will treat node taints when calculating pod topology spread skew. Options are: - Honor: nodes without taints, along with tainted nodes for which the incoming pod has a toleration, are included. - Ignore: node taints are ignored. All nodes are included.<br><p> <br><p> If this value is nil, the behavior is equivalent to the Ignore policy. This is a beta-level feature default enabled by the NodeInclusionPolicyInPodTopologySpread feature flag.<br><p> <br><p> Possible enum values:<br><p>  - `"Honor"` means use this scheduling directive when calculating pod topology spread skew.<br><p>  - `"Ignore"` means ignore this scheduling directive when calculating pod topology spread skew.
+     * NodeTaintsPolicy indicates how we will treat node taints when calculating pod topology spread skew. Options are: - Honor: nodes without taints, along with tainted nodes for which the incoming pod has a toleration, are included. - Ignore: node taints are ignored. All nodes are included.<br><p> <br><p> If this value is nil, the behavior is equivalent to the Ignore policy.<br><p> <br><p> Possible enum values:<br><p>  - `"Honor"` means use this scheduling directive when calculating pod topology spread skew.<br><p>  - `"Ignore"` means ignore this scheduling directive when calculating pod topology spread skew.
      */
     @JsonProperty("nodeTaintsPolicy")
     public void setNodeTaintsPolicy(String nodeTaintsPolicy) {

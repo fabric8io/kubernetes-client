@@ -9222,7 +9222,7 @@
           "x-kubernetes-patch-strategy": "merge"
         },
         "initContainers": {
-          "description": "List of initialization containers belonging to the pod. Init containers are executed in order prior to containers being started. If any init container fails, the pod is considered to have failed and is handled according to its restartPolicy. The name for an init container or normal container must be unique among all containers. Init containers may not have Lifecycle actions, Readiness probes, Liveness probes, or Startup probes. The resourceRequirements of an init container are taken into account during scheduling by finding the highest request/limit for each resource type, and then using the max of of that value or the sum of the normal containers. Limits are applied to init containers in a similar fashion. Init containers cannot currently be added or removed. Cannot be updated. More info: https://kubernetes.io/docs/concepts/workloads/pods/init-containers/",
+          "description": "List of initialization containers belonging to the pod. Init containers are executed in order prior to containers being started. If any init container fails, the pod is considered to have failed and is handled according to its restartPolicy. The name for an init container or normal container must be unique among all containers. Init containers may not have Lifecycle actions, Readiness probes, Liveness probes, or Startup probes. The resourceRequirements of an init container are taken into account during scheduling by finding the highest request/limit for each resource type, and then using the max of that value or the sum of the normal containers. Limits are applied to init containers in a similar fashion. Init containers cannot currently be added or removed. Cannot be updated. More info: https://kubernetes.io/docs/concepts/workloads/pods/init-containers/",
           "type": "array",
           "items": {
             "default": {},
@@ -9294,6 +9294,10 @@
           "x-kubernetes-list-type": "map",
           "x-kubernetes-patch-merge-key": "name",
           "x-kubernetes-patch-strategy": "merge,retainKeys"
+        },
+        "resources": {
+          "description": "Resources is the total amount of CPU and Memory resources required by all containers in the pod. It supports specifying Requests and Limits for \"cpu\" and \"memory\" resource names only. ResourceClaims are not supported.\n\nThis field enables fine-grained control over resource allocation for the entire pod, allowing resource sharing among containers in a pod.\n\nThis is an alpha field and requires enabling the PodLevelResources feature gate.",
+          "$ref": "#/definitions/io.k8s.api.core.v1.ResourceRequirements"
         },
         "responseStartTimeoutSeconds": {
           "description": "ResponseStartTimeoutSeconds is the maximum duration in seconds that the request routing layer will wait for a request delivered to a container to begin sending any network traffic.",

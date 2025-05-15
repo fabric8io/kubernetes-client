@@ -79,6 +79,7 @@ import lombok.experimental.Accessors;
     "priorityClassName",
     "readinessGates",
     "resourceClaims",
+    "resources",
     "responseStartTimeoutSeconds",
     "restartPolicy",
     "runtimeClassName",
@@ -184,6 +185,8 @@ public class RevisionSpec implements Editable<RevisionSpecBuilder>, KubernetesRe
     @JsonProperty("resourceClaims")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<PodResourceClaim> resourceClaims = new ArrayList<>();
+    @JsonProperty("resources")
+    private ResourceRequirements resources;
     @JsonProperty("responseStartTimeoutSeconds")
     private Long responseStartTimeoutSeconds;
     @JsonProperty("restartPolicy")
@@ -229,7 +232,7 @@ public class RevisionSpec implements Editable<RevisionSpecBuilder>, KubernetesRe
     public RevisionSpec() {
     }
 
-    public RevisionSpec(Long activeDeadlineSeconds, Affinity affinity, Boolean automountServiceAccountToken, Long containerConcurrency, List<Container> containers, PodDNSConfig dnsConfig, String dnsPolicy, Boolean enableServiceLinks, List<EphemeralContainer> ephemeralContainers, List<HostAlias> hostAliases, Boolean hostIPC, Boolean hostNetwork, Boolean hostPID, Boolean hostUsers, String hostname, Long idleTimeoutSeconds, List<LocalObjectReference> imagePullSecrets, List<Container> initContainers, String nodeName, Map<String, String> nodeSelector, PodOS os, Map<String, Quantity> overhead, String preemptionPolicy, Integer priority, String priorityClassName, List<PodReadinessGate> readinessGates, List<PodResourceClaim> resourceClaims, Long responseStartTimeoutSeconds, String restartPolicy, String runtimeClassName, String schedulerName, List<PodSchedulingGate> schedulingGates, PodSecurityContext securityContext, String serviceAccount, String serviceAccountName, Boolean setHostnameAsFQDN, Boolean shareProcessNamespace, String subdomain, Long terminationGracePeriodSeconds, Long timeoutSeconds, List<Toleration> tolerations, List<TopologySpreadConstraint> topologySpreadConstraints, List<Volume> volumes) {
+    public RevisionSpec(Long activeDeadlineSeconds, Affinity affinity, Boolean automountServiceAccountToken, Long containerConcurrency, List<Container> containers, PodDNSConfig dnsConfig, String dnsPolicy, Boolean enableServiceLinks, List<EphemeralContainer> ephemeralContainers, List<HostAlias> hostAliases, Boolean hostIPC, Boolean hostNetwork, Boolean hostPID, Boolean hostUsers, String hostname, Long idleTimeoutSeconds, List<LocalObjectReference> imagePullSecrets, List<Container> initContainers, String nodeName, Map<String, String> nodeSelector, PodOS os, Map<String, Quantity> overhead, String preemptionPolicy, Integer priority, String priorityClassName, List<PodReadinessGate> readinessGates, List<PodResourceClaim> resourceClaims, ResourceRequirements resources, Long responseStartTimeoutSeconds, String restartPolicy, String runtimeClassName, String schedulerName, List<PodSchedulingGate> schedulingGates, PodSecurityContext securityContext, String serviceAccount, String serviceAccountName, Boolean setHostnameAsFQDN, Boolean shareProcessNamespace, String subdomain, Long terminationGracePeriodSeconds, Long timeoutSeconds, List<Toleration> tolerations, List<TopologySpreadConstraint> topologySpreadConstraints, List<Volume> volumes) {
         super();
         this.activeDeadlineSeconds = activeDeadlineSeconds;
         this.affinity = affinity;
@@ -258,6 +261,7 @@ public class RevisionSpec implements Editable<RevisionSpecBuilder>, KubernetesRe
         this.priorityClassName = priorityClassName;
         this.readinessGates = readinessGates;
         this.resourceClaims = resourceClaims;
+        this.resources = resources;
         this.responseStartTimeoutSeconds = responseStartTimeoutSeconds;
         this.restartPolicy = restartPolicy;
         this.runtimeClassName = runtimeClassName;
@@ -553,7 +557,7 @@ public class RevisionSpec implements Editable<RevisionSpecBuilder>, KubernetesRe
     }
 
     /**
-     * List of initialization containers belonging to the pod. Init containers are executed in order prior to containers being started. If any init container fails, the pod is considered to have failed and is handled according to its restartPolicy. The name for an init container or normal container must be unique among all containers. Init containers may not have Lifecycle actions, Readiness probes, Liveness probes, or Startup probes. The resourceRequirements of an init container are taken into account during scheduling by finding the highest request/limit for each resource type, and then using the max of of that value or the sum of the normal containers. Limits are applied to init containers in a similar fashion. Init containers cannot currently be added or removed. Cannot be updated. More info: https://kubernetes.io/docs/concepts/workloads/pods/init-containers/
+     * List of initialization containers belonging to the pod. Init containers are executed in order prior to containers being started. If any init container fails, the pod is considered to have failed and is handled according to its restartPolicy. The name for an init container or normal container must be unique among all containers. Init containers may not have Lifecycle actions, Readiness probes, Liveness probes, or Startup probes. The resourceRequirements of an init container are taken into account during scheduling by finding the highest request/limit for each resource type, and then using the max of that value or the sum of the normal containers. Limits are applied to init containers in a similar fashion. Init containers cannot currently be added or removed. Cannot be updated. More info: https://kubernetes.io/docs/concepts/workloads/pods/init-containers/
      */
     @JsonProperty("initContainers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -562,7 +566,7 @@ public class RevisionSpec implements Editable<RevisionSpecBuilder>, KubernetesRe
     }
 
     /**
-     * List of initialization containers belonging to the pod. Init containers are executed in order prior to containers being started. If any init container fails, the pod is considered to have failed and is handled according to its restartPolicy. The name for an init container or normal container must be unique among all containers. Init containers may not have Lifecycle actions, Readiness probes, Liveness probes, or Startup probes. The resourceRequirements of an init container are taken into account during scheduling by finding the highest request/limit for each resource type, and then using the max of of that value or the sum of the normal containers. Limits are applied to init containers in a similar fashion. Init containers cannot currently be added or removed. Cannot be updated. More info: https://kubernetes.io/docs/concepts/workloads/pods/init-containers/
+     * List of initialization containers belonging to the pod. Init containers are executed in order prior to containers being started. If any init container fails, the pod is considered to have failed and is handled according to its restartPolicy. The name for an init container or normal container must be unique among all containers. Init containers may not have Lifecycle actions, Readiness probes, Liveness probes, or Startup probes. The resourceRequirements of an init container are taken into account during scheduling by finding the highest request/limit for each resource type, and then using the max of that value or the sum of the normal containers. Limits are applied to init containers in a similar fashion. Init containers cannot currently be added or removed. Cannot be updated. More info: https://kubernetes.io/docs/concepts/workloads/pods/init-containers/
      */
     @JsonProperty("initContainers")
     public void setInitContainers(List<Container> initContainers) {
@@ -715,6 +719,22 @@ public class RevisionSpec implements Editable<RevisionSpecBuilder>, KubernetesRe
     @JsonProperty("resourceClaims")
     public void setResourceClaims(List<PodResourceClaim> resourceClaims) {
         this.resourceClaims = resourceClaims;
+    }
+
+    /**
+     * RevisionSpec holds the desired state of the Revision (from the client).
+     */
+    @JsonProperty("resources")
+    public ResourceRequirements getResources() {
+        return resources;
+    }
+
+    /**
+     * RevisionSpec holds the desired state of the Revision (from the client).
+     */
+    @JsonProperty("resources")
+    public void setResources(ResourceRequirements resources) {
+        this.resources = resources;
     }
 
     /**

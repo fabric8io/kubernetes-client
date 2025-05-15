@@ -415,6 +415,138 @@
         "Scope": "Namespaced"
       }
     },
+    "io.k8s.api.admissionregistration.v1alpha1.MutatingAdmissionPolicy": {
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
+          "type": "string"
+        },
+        "kind": {
+          "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
+          "type": "string"
+        },
+        "metadata": {
+          "description": "Standard object metadata; More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata.",
+          "default": {},
+          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta"
+        },
+        "spec": {
+          "description": "Specification of the desired behavior of the MutatingAdmissionPolicy.",
+          "default": {},
+          "$ref": "#/definitions/io.k8s.api.admissionregistration.v1alpha1.MutatingAdmissionPolicySpec"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "object",
+        "Group": "admissionregistration.k8s.io",
+        "Version": "v1alpha1",
+        "Kind": "MutatingAdmissionPolicy",
+        "Scope": "Clustered"
+      }
+    },
+    "io.k8s.api.admissionregistration.v1alpha1.MutatingAdmissionPolicyBinding": {
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
+          "type": "string"
+        },
+        "kind": {
+          "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
+          "type": "string"
+        },
+        "metadata": {
+          "description": "Standard object metadata; More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata.",
+          "default": {},
+          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta"
+        },
+        "spec": {
+          "description": "Specification of the desired behavior of the MutatingAdmissionPolicyBinding.",
+          "default": {},
+          "$ref": "#/definitions/io.k8s.api.admissionregistration.v1alpha1.MutatingAdmissionPolicyBindingSpec"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "object",
+        "Group": "admissionregistration.k8s.io",
+        "Version": "v1alpha1",
+        "Kind": "MutatingAdmissionPolicyBinding",
+        "Scope": "Clustered"
+      }
+    },
+    "io.k8s.api.admissionregistration.v1alpha1.MutatingAdmissionPolicyBindingList": {
+      "type": "object",
+      "required": [
+        "items"
+      ],
+      "properties": {
+        "apiVersion": {
+          "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
+          "type": "string"
+        },
+        "items": {
+          "description": "List of PolicyBinding.",
+          "type": "array",
+          "items": {
+            "default": {},
+            "$ref": "#/definitions/io.k8s.api.admissionregistration.v1alpha1.MutatingAdmissionPolicyBinding"
+          }
+        },
+        "kind": {
+          "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
+          "type": "string"
+        },
+        "metadata": {
+          "description": "Standard list metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
+          "default": {},
+          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ListMeta"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "list",
+        "Group": "admissionregistration.k8s.io",
+        "Version": "v1alpha1",
+        "Kind": "MutatingAdmissionPolicyBindingList",
+        "Scope": "Namespaced"
+      }
+    },
+    "io.k8s.api.admissionregistration.v1alpha1.MutatingAdmissionPolicyList": {
+      "type": "object",
+      "required": [
+        "items"
+      ],
+      "properties": {
+        "apiVersion": {
+          "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
+          "type": "string"
+        },
+        "items": {
+          "description": "List of ValidatingAdmissionPolicy.",
+          "type": "array",
+          "items": {
+            "default": {},
+            "$ref": "#/definitions/io.k8s.api.admissionregistration.v1alpha1.MutatingAdmissionPolicy"
+          }
+        },
+        "kind": {
+          "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
+          "type": "string"
+        },
+        "metadata": {
+          "description": "Standard list metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
+          "default": {},
+          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ListMeta"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "list",
+        "Group": "admissionregistration.k8s.io",
+        "Version": "v1alpha1",
+        "Kind": "MutatingAdmissionPolicyList",
+        "Scope": "Namespaced"
+      }
+    },
     "io.k8s.api.admissionregistration.v1alpha1.ValidatingAdmissionPolicy": {
       "type": "object",
       "properties": {
@@ -1176,7 +1308,7 @@
           "type": "string"
         },
         "items": {
-          "description": "List of ReplicaSets. More info: https://kubernetes.io/docs/concepts/workloads/controllers/replicationcontroller",
+          "description": "List of ReplicaSets. More info: https://kubernetes.io/docs/concepts/workloads/controllers/replicaset",
           "type": "array",
           "items": {
             "default": {},
@@ -1747,7 +1879,7 @@
           "type": "string"
         },
         "items": {
-          "description": "List of ReplicaSets. More info: https://kubernetes.io/docs/concepts/workloads/controllers/replicationcontroller",
+          "description": "List of ReplicaSets. More info: https://kubernetes.io/docs/concepts/workloads/controllers/replicaset",
           "type": "array",
           "items": {
             "default": {},
@@ -3127,6 +3259,75 @@
         "Scope": "Namespaced"
       }
     },
+    "io.k8s.api.certificates.v1beta1.ClusterTrustBundle": {
+      "type": "object",
+      "required": [
+        "spec"
+      ],
+      "properties": {
+        "apiVersion": {
+          "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
+          "type": "string"
+        },
+        "kind": {
+          "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
+          "type": "string"
+        },
+        "metadata": {
+          "description": "metadata contains the object metadata.",
+          "default": {},
+          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta"
+        },
+        "spec": {
+          "description": "spec contains the signer (if any) and trust anchors.",
+          "default": {},
+          "$ref": "#/definitions/io.k8s.api.certificates.v1beta1.ClusterTrustBundleSpec"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "object",
+        "Group": "certificates.k8s.io",
+        "Version": "v1beta1",
+        "Kind": "ClusterTrustBundle",
+        "Scope": "Clustered"
+      }
+    },
+    "io.k8s.api.certificates.v1beta1.ClusterTrustBundleList": {
+      "type": "object",
+      "required": [
+        "items"
+      ],
+      "properties": {
+        "apiVersion": {
+          "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
+          "type": "string"
+        },
+        "items": {
+          "description": "items is a collection of ClusterTrustBundle objects",
+          "type": "array",
+          "items": {
+            "default": {},
+            "$ref": "#/definitions/io.k8s.api.certificates.v1beta1.ClusterTrustBundle"
+          }
+        },
+        "kind": {
+          "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
+          "type": "string"
+        },
+        "metadata": {
+          "description": "metadata contains the list metadata.",
+          "default": {},
+          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ListMeta"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "list",
+        "Group": "certificates.k8s.io",
+        "Version": "v1beta1",
+        "Kind": "ClusterTrustBundleList",
+        "Scope": "Namespaced"
+      }
+    },
     "io.k8s.api.coordination.v1.Lease": {
       "type": "object",
       "properties": {
@@ -3193,7 +3394,7 @@
         "Scope": "Namespaced"
       }
     },
-    "io.k8s.api.coordination.v1alpha1.LeaseCandidate": {
+    "io.k8s.api.coordination.v1alpha2.LeaseCandidate": {
       "type": "object",
       "properties": {
         "apiVersion": {
@@ -3212,18 +3413,18 @@
         "spec": {
           "description": "spec contains the specification of the Lease. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#spec-and-status",
           "default": {},
-          "$ref": "#/definitions/io.k8s.api.coordination.v1alpha1.LeaseCandidateSpec"
+          "$ref": "#/definitions/io.k8s.api.coordination.v1alpha2.LeaseCandidateSpec"
         }
       },
       "x-fabric8-info": {
         "Type": "object",
         "Group": "coordination.k8s.io",
-        "Version": "v1alpha1",
+        "Version": "v1alpha2",
         "Kind": "LeaseCandidate",
         "Scope": "Namespaced"
       }
     },
-    "io.k8s.api.coordination.v1alpha1.LeaseCandidateList": {
+    "io.k8s.api.coordination.v1alpha2.LeaseCandidateList": {
       "type": "object",
       "required": [
         "items"
@@ -3238,7 +3439,7 @@
           "type": "array",
           "items": {
             "default": {},
-            "$ref": "#/definitions/io.k8s.api.coordination.v1alpha1.LeaseCandidate"
+            "$ref": "#/definitions/io.k8s.api.coordination.v1alpha2.LeaseCandidate"
           }
         },
         "kind": {
@@ -3254,7 +3455,7 @@
       "x-fabric8-info": {
         "Type": "list",
         "Group": "coordination.k8s.io",
-        "Version": "v1alpha1",
+        "Version": "v1alpha2",
         "Kind": "LeaseCandidateList",
         "Scope": "Namespaced"
       }
@@ -3286,6 +3487,72 @@
         "Group": "coordination.k8s.io",
         "Version": "v1beta1",
         "Kind": "Lease",
+        "Scope": "Namespaced"
+      }
+    },
+    "io.k8s.api.coordination.v1beta1.LeaseCandidate": {
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
+          "type": "string"
+        },
+        "kind": {
+          "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
+          "type": "string"
+        },
+        "metadata": {
+          "description": "More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata",
+          "default": {},
+          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta"
+        },
+        "spec": {
+          "description": "spec contains the specification of the Lease. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#spec-and-status",
+          "default": {},
+          "$ref": "#/definitions/io.k8s.api.coordination.v1beta1.LeaseCandidateSpec"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "object",
+        "Group": "coordination.k8s.io",
+        "Version": "v1beta1",
+        "Kind": "LeaseCandidate",
+        "Scope": "Namespaced"
+      }
+    },
+    "io.k8s.api.coordination.v1beta1.LeaseCandidateList": {
+      "type": "object",
+      "required": [
+        "items"
+      ],
+      "properties": {
+        "apiVersion": {
+          "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
+          "type": "string"
+        },
+        "items": {
+          "description": "items is a list of schema objects.",
+          "type": "array",
+          "items": {
+            "default": {},
+            "$ref": "#/definitions/io.k8s.api.coordination.v1beta1.LeaseCandidate"
+          }
+        },
+        "kind": {
+          "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
+          "type": "string"
+        },
+        "metadata": {
+          "description": "Standard list metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata",
+          "default": {},
+          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ListMeta"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "list",
+        "Group": "coordination.k8s.io",
+        "Version": "v1beta1",
+        "Kind": "LeaseCandidateList",
         "Scope": "Namespaced"
       }
     },
@@ -4172,8 +4439,12 @@
           "description": "An RFC3339 timestamp from which to show logs. If this value precedes the time a pod was started, only logs since the pod start will be returned. If this value is in the future, no logs will be returned. Only one of sinceSeconds or sinceTime may be specified.",
           "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.Time"
         },
+        "stream": {
+          "description": "Specify which container log stream to return to the client. Acceptable values are \"All\", \"Stdout\" and \"Stderr\". If not specified, \"All\" is used, and both stdout and stderr are returned interleaved. Note that when \"TailLines\" is specified, \"Stream\" can only be set to nil or \"All\".",
+          "type": "string"
+        },
         "tailLines": {
-          "description": "If set, the number of lines from the end of the logs to show. If not specified, logs are shown from the creation of the container or sinceSeconds or sinceTime",
+          "description": "If set, the number of lines from the end of the logs to show. If not specified, logs are shown from the creation of the container or sinceSeconds or sinceTime. Note that when \"TailLines\" is specified, \"Stream\" can only be set to nil or \"All\".",
           "type": "integer",
           "format": "int64"
         },
@@ -4548,7 +4819,7 @@
           "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta"
         },
         "secrets": {
-          "description": "Secrets is a list of the secrets in the same namespace that pods running using this ServiceAccount are allowed to use. Pods are only limited to this list if this service account has a \"kubernetes.io/enforce-mountable-secrets\" annotation set to \"true\". This field should not be used to find auto-generated service account token secrets for use outside of pods. Instead, tokens can be requested directly using the TokenRequest API, or service account token secrets can be manually created. More info: https://kubernetes.io/docs/concepts/configuration/secret",
+          "description": "Secrets is a list of the secrets in the same namespace that pods running using this ServiceAccount are allowed to use. Pods are only limited to this list if this service account has a \"kubernetes.io/enforce-mountable-secrets\" annotation set to \"true\". The \"kubernetes.io/enforce-mountable-secrets\" annotation is deprecated since v1.32. Prefer separate namespaces to isolate access to mounted secrets. This field should not be used to find auto-generated service account token secrets for use outside of pods. Instead, tokens can be requested directly using the TokenRequest API, or service account token secrets can be manually created. More info: https://kubernetes.io/docs/concepts/configuration/secret",
           "type": "array",
           "items": {
             "default": {},
@@ -4650,7 +4921,7 @@
       ],
       "properties": {
         "addressType": {
-          "description": "addressType specifies the type of address carried by this EndpointSlice. All addresses in this slice must be the same type. This field is immutable after creation. The following address types are currently supported: * IPv4: Represents an IPv4 Address. * IPv6: Represents an IPv6 Address. * FQDN: Represents a Fully Qualified Domain Name.",
+          "description": "addressType specifies the type of address carried by this EndpointSlice. All addresses in this slice must be the same type. This field is immutable after creation. The following address types are currently supported: * IPv4: Represents an IPv4 Address. * IPv6: Represents an IPv6 Address. * FQDN: Represents a Fully Qualified Domain Name. (Deprecated) The EndpointSlice controller only generates, and kube-proxy only processes, slices of addressType \"IPv4\" and \"IPv6\". No semantics are defined for the \"FQDN\" type.",
           "type": "string",
           "default": ""
         },
@@ -4677,7 +4948,7 @@
           "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta"
         },
         "ports": {
-          "description": "ports specifies the list of network ports exposed by each endpoint in this slice. Each port must have a unique name. When ports is empty, it indicates that there are no defined ports. When a port is defined with a nil port value, it indicates \"all ports\". Each slice may include a maximum of 100 ports.",
+          "description": "ports specifies the list of network ports exposed by each endpoint in this slice. Each port must have a unique name. Each slice may include a maximum of 100 ports. Services always have at least 1 port, so EndpointSlices generated by the EndpointSlice controller will likewise always have at least 1 port. EndpointSlices used for other purposes may have an empty ports list.",
           "type": "array",
           "items": {
             "default": {},
@@ -5431,7 +5702,7 @@
           "type": "string"
         },
         "items": {
-          "description": "List of ReplicaSets. More info: https://kubernetes.io/docs/concepts/workloads/controllers/replicationcontroller",
+          "description": "List of ReplicaSets. More info: https://kubernetes.io/docs/concepts/workloads/controllers/replicaset",
           "type": "array",
           "items": {
             "default": {},
@@ -6059,6 +6330,72 @@
         "Scope": "Namespaced"
       }
     },
+    "io.k8s.api.networking.v1.IPAddress": {
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
+          "type": "string"
+        },
+        "kind": {
+          "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
+          "type": "string"
+        },
+        "metadata": {
+          "description": "Standard object's metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata",
+          "default": {},
+          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta"
+        },
+        "spec": {
+          "description": "spec is the desired state of the IPAddress. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#spec-and-status",
+          "default": {},
+          "$ref": "#/definitions/io.k8s.api.networking.v1.IPAddressSpec"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "object",
+        "Group": "networking.k8s.io",
+        "Version": "v1",
+        "Kind": "IPAddress",
+        "Scope": "Clustered"
+      }
+    },
+    "io.k8s.api.networking.v1.IPAddressList": {
+      "type": "object",
+      "required": [
+        "items"
+      ],
+      "properties": {
+        "apiVersion": {
+          "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
+          "type": "string"
+        },
+        "items": {
+          "description": "items is the list of IPAddresses.",
+          "type": "array",
+          "items": {
+            "default": {},
+            "$ref": "#/definitions/io.k8s.api.networking.v1.IPAddress"
+          }
+        },
+        "kind": {
+          "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
+          "type": "string"
+        },
+        "metadata": {
+          "description": "Standard object's metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata",
+          "default": {},
+          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ListMeta"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "list",
+        "Group": "networking.k8s.io",
+        "Version": "v1",
+        "Kind": "IPAddressList",
+        "Scope": "Namespaced"
+      }
+    },
     "io.k8s.api.networking.v1.Ingress": {
       "type": "object",
       "properties": {
@@ -6259,6 +6596,77 @@
         "Group": "networking.k8s.io",
         "Version": "v1",
         "Kind": "NetworkPolicyList",
+        "Scope": "Namespaced"
+      }
+    },
+    "io.k8s.api.networking.v1.ServiceCIDR": {
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
+          "type": "string"
+        },
+        "kind": {
+          "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
+          "type": "string"
+        },
+        "metadata": {
+          "description": "Standard object's metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata",
+          "default": {},
+          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta"
+        },
+        "spec": {
+          "description": "spec is the desired state of the ServiceCIDR. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#spec-and-status",
+          "default": {},
+          "$ref": "#/definitions/io.k8s.api.networking.v1.ServiceCIDRSpec"
+        },
+        "status": {
+          "description": "status represents the current state of the ServiceCIDR. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#spec-and-status",
+          "default": {},
+          "$ref": "#/definitions/io.k8s.api.networking.v1.ServiceCIDRStatus"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "object",
+        "Group": "networking.k8s.io",
+        "Version": "v1",
+        "Kind": "ServiceCIDR",
+        "Scope": "Clustered"
+      }
+    },
+    "io.k8s.api.networking.v1.ServiceCIDRList": {
+      "type": "object",
+      "required": [
+        "items"
+      ],
+      "properties": {
+        "apiVersion": {
+          "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
+          "type": "string"
+        },
+        "items": {
+          "description": "items is the list of ServiceCIDRs.",
+          "type": "array",
+          "items": {
+            "default": {},
+            "$ref": "#/definitions/io.k8s.api.networking.v1.ServiceCIDR"
+          }
+        },
+        "kind": {
+          "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
+          "type": "string"
+        },
+        "metadata": {
+          "description": "Standard object's metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata",
+          "default": {},
+          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ListMeta"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "list",
+        "Group": "networking.k8s.io",
+        "Version": "v1",
+        "Kind": "ServiceCIDRList",
         "Scope": "Namespaced"
       }
     },
@@ -8065,7 +8473,7 @@
         "Scope": "Namespaced"
       }
     },
-    "io.k8s.api.resource.v1alpha3.PodSchedulingContext": {
+    "io.k8s.api.resource.v1alpha3.DeviceTaintRule": {
       "type": "object",
       "required": [
         "spec"
@@ -8085,25 +8493,20 @@
           "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta"
         },
         "spec": {
-          "description": "Spec describes where resources for the Pod are needed.",
+          "description": "Spec specifies the selector and one taint.\n\nChanging the spec automatically increments the metadata.generation number.",
           "default": {},
-          "$ref": "#/definitions/io.k8s.api.resource.v1alpha3.PodSchedulingContextSpec"
-        },
-        "status": {
-          "description": "Status describes where resources for the Pod can be allocated.",
-          "default": {},
-          "$ref": "#/definitions/io.k8s.api.resource.v1alpha3.PodSchedulingContextStatus"
+          "$ref": "#/definitions/io.k8s.api.resource.v1alpha3.DeviceTaintRuleSpec"
         }
       },
       "x-fabric8-info": {
         "Type": "object",
         "Group": "resource.k8s.io",
         "Version": "v1alpha3",
-        "Kind": "PodSchedulingContext",
-        "Scope": "Namespaced"
+        "Kind": "DeviceTaintRule",
+        "Scope": "Clustered"
       }
     },
-    "io.k8s.api.resource.v1alpha3.PodSchedulingContextList": {
+    "io.k8s.api.resource.v1alpha3.DeviceTaintRuleList": {
       "type": "object",
       "required": [
         "items"
@@ -8114,11 +8517,11 @@
           "type": "string"
         },
         "items": {
-          "description": "Items is the list of PodSchedulingContext objects.",
+          "description": "Items is the list of DeviceTaintRules.",
           "type": "array",
           "items": {
             "default": {},
-            "$ref": "#/definitions/io.k8s.api.resource.v1alpha3.PodSchedulingContext"
+            "$ref": "#/definitions/io.k8s.api.resource.v1alpha3.DeviceTaintRule"
           }
         },
         "kind": {
@@ -8135,7 +8538,7 @@
         "Type": "list",
         "Group": "resource.k8s.io",
         "Version": "v1alpha3",
-        "Kind": "PodSchedulingContextList",
+        "Kind": "DeviceTaintRuleList",
         "Scope": "Namespaced"
       }
     },
@@ -8347,6 +8750,568 @@
         "Type": "list",
         "Group": "resource.k8s.io",
         "Version": "v1alpha3",
+        "Kind": "ResourceSliceList",
+        "Scope": "Namespaced"
+      }
+    },
+    "io.k8s.api.resource.v1beta1.DeviceClass": {
+      "type": "object",
+      "required": [
+        "spec"
+      ],
+      "properties": {
+        "apiVersion": {
+          "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
+          "type": "string"
+        },
+        "kind": {
+          "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
+          "type": "string"
+        },
+        "metadata": {
+          "description": "Standard object metadata",
+          "default": {},
+          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta"
+        },
+        "spec": {
+          "description": "Spec defines what can be allocated and how to configure it.\n\nThis is mutable. Consumers have to be prepared for classes changing at any time, either because they get updated or replaced. Claim allocations are done once based on whatever was set in classes at the time of allocation.\n\nChanging the spec automatically increments the metadata.generation number.",
+          "default": {},
+          "$ref": "#/definitions/io.k8s.api.resource.v1beta1.DeviceClassSpec"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "object",
+        "Group": "resource.k8s.io",
+        "Version": "v1beta1",
+        "Kind": "DeviceClass",
+        "Scope": "Clustered"
+      }
+    },
+    "io.k8s.api.resource.v1beta1.DeviceClassList": {
+      "type": "object",
+      "required": [
+        "items"
+      ],
+      "properties": {
+        "apiVersion": {
+          "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
+          "type": "string"
+        },
+        "items": {
+          "description": "Items is the list of resource classes.",
+          "type": "array",
+          "items": {
+            "default": {},
+            "$ref": "#/definitions/io.k8s.api.resource.v1beta1.DeviceClass"
+          }
+        },
+        "kind": {
+          "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
+          "type": "string"
+        },
+        "metadata": {
+          "description": "Standard list metadata",
+          "default": {},
+          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ListMeta"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "list",
+        "Group": "resource.k8s.io",
+        "Version": "v1beta1",
+        "Kind": "DeviceClassList",
+        "Scope": "Namespaced"
+      }
+    },
+    "io.k8s.api.resource.v1beta1.ResourceClaim": {
+      "type": "object",
+      "required": [
+        "spec"
+      ],
+      "properties": {
+        "apiVersion": {
+          "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
+          "type": "string"
+        },
+        "kind": {
+          "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
+          "type": "string"
+        },
+        "metadata": {
+          "description": "Standard object metadata",
+          "default": {},
+          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta"
+        },
+        "spec": {
+          "description": "Spec describes what is being requested and how to configure it. The spec is immutable.",
+          "default": {},
+          "$ref": "#/definitions/io.k8s.api.resource.v1beta1.ResourceClaimSpec"
+        },
+        "status": {
+          "description": "Status describes whether the claim is ready to use and what has been allocated.",
+          "default": {},
+          "$ref": "#/definitions/io.k8s.api.resource.v1beta1.ResourceClaimStatus"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "object",
+        "Group": "resource.k8s.io",
+        "Version": "v1beta1",
+        "Kind": "ResourceClaim",
+        "Scope": "Namespaced"
+      }
+    },
+    "io.k8s.api.resource.v1beta1.ResourceClaimList": {
+      "type": "object",
+      "required": [
+        "items"
+      ],
+      "properties": {
+        "apiVersion": {
+          "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
+          "type": "string"
+        },
+        "items": {
+          "description": "Items is the list of resource claims.",
+          "type": "array",
+          "items": {
+            "default": {},
+            "$ref": "#/definitions/io.k8s.api.resource.v1beta1.ResourceClaim"
+          }
+        },
+        "kind": {
+          "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
+          "type": "string"
+        },
+        "metadata": {
+          "description": "Standard list metadata",
+          "default": {},
+          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ListMeta"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "list",
+        "Group": "resource.k8s.io",
+        "Version": "v1beta1",
+        "Kind": "ResourceClaimList",
+        "Scope": "Namespaced"
+      }
+    },
+    "io.k8s.api.resource.v1beta1.ResourceClaimTemplate": {
+      "type": "object",
+      "required": [
+        "spec"
+      ],
+      "properties": {
+        "apiVersion": {
+          "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
+          "type": "string"
+        },
+        "kind": {
+          "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
+          "type": "string"
+        },
+        "metadata": {
+          "description": "Standard object metadata",
+          "default": {},
+          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta"
+        },
+        "spec": {
+          "description": "Describes the ResourceClaim that is to be generated.\n\nThis field is immutable. A ResourceClaim will get created by the control plane for a Pod when needed and then not get updated anymore.",
+          "default": {},
+          "$ref": "#/definitions/io.k8s.api.resource.v1beta1.ResourceClaimTemplateSpec"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "object",
+        "Group": "resource.k8s.io",
+        "Version": "v1beta1",
+        "Kind": "ResourceClaimTemplate",
+        "Scope": "Namespaced"
+      }
+    },
+    "io.k8s.api.resource.v1beta1.ResourceClaimTemplateList": {
+      "type": "object",
+      "required": [
+        "items"
+      ],
+      "properties": {
+        "apiVersion": {
+          "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
+          "type": "string"
+        },
+        "items": {
+          "description": "Items is the list of resource claim templates.",
+          "type": "array",
+          "items": {
+            "default": {},
+            "$ref": "#/definitions/io.k8s.api.resource.v1beta1.ResourceClaimTemplate"
+          }
+        },
+        "kind": {
+          "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
+          "type": "string"
+        },
+        "metadata": {
+          "description": "Standard list metadata",
+          "default": {},
+          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ListMeta"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "list",
+        "Group": "resource.k8s.io",
+        "Version": "v1beta1",
+        "Kind": "ResourceClaimTemplateList",
+        "Scope": "Namespaced"
+      }
+    },
+    "io.k8s.api.resource.v1beta1.ResourceSlice": {
+      "type": "object",
+      "required": [
+        "spec"
+      ],
+      "properties": {
+        "apiVersion": {
+          "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
+          "type": "string"
+        },
+        "kind": {
+          "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
+          "type": "string"
+        },
+        "metadata": {
+          "description": "Standard object metadata",
+          "default": {},
+          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta"
+        },
+        "spec": {
+          "description": "Contains the information published by the driver.\n\nChanging the spec automatically increments the metadata.generation number.",
+          "default": {},
+          "$ref": "#/definitions/io.k8s.api.resource.v1beta1.ResourceSliceSpec"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "object",
+        "Group": "resource.k8s.io",
+        "Version": "v1beta1",
+        "Kind": "ResourceSlice",
+        "Scope": "Clustered"
+      }
+    },
+    "io.k8s.api.resource.v1beta1.ResourceSliceList": {
+      "type": "object",
+      "required": [
+        "items"
+      ],
+      "properties": {
+        "apiVersion": {
+          "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
+          "type": "string"
+        },
+        "items": {
+          "description": "Items is the list of resource ResourceSlices.",
+          "type": "array",
+          "items": {
+            "default": {},
+            "$ref": "#/definitions/io.k8s.api.resource.v1beta1.ResourceSlice"
+          }
+        },
+        "kind": {
+          "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
+          "type": "string"
+        },
+        "metadata": {
+          "description": "Standard list metadata",
+          "default": {},
+          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ListMeta"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "list",
+        "Group": "resource.k8s.io",
+        "Version": "v1beta1",
+        "Kind": "ResourceSliceList",
+        "Scope": "Namespaced"
+      }
+    },
+    "io.k8s.api.resource.v1beta2.DeviceClass": {
+      "type": "object",
+      "required": [
+        "spec"
+      ],
+      "properties": {
+        "apiVersion": {
+          "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
+          "type": "string"
+        },
+        "kind": {
+          "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
+          "type": "string"
+        },
+        "metadata": {
+          "description": "Standard object metadata",
+          "default": {},
+          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta"
+        },
+        "spec": {
+          "description": "Spec defines what can be allocated and how to configure it.\n\nThis is mutable. Consumers have to be prepared for classes changing at any time, either because they get updated or replaced. Claim allocations are done once based on whatever was set in classes at the time of allocation.\n\nChanging the spec automatically increments the metadata.generation number.",
+          "default": {},
+          "$ref": "#/definitions/io.k8s.api.resource.v1beta2.DeviceClassSpec"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "object",
+        "Group": "resource.k8s.io",
+        "Version": "v1beta2",
+        "Kind": "DeviceClass",
+        "Scope": "Clustered"
+      }
+    },
+    "io.k8s.api.resource.v1beta2.DeviceClassList": {
+      "type": "object",
+      "required": [
+        "items"
+      ],
+      "properties": {
+        "apiVersion": {
+          "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
+          "type": "string"
+        },
+        "items": {
+          "description": "Items is the list of resource classes.",
+          "type": "array",
+          "items": {
+            "default": {},
+            "$ref": "#/definitions/io.k8s.api.resource.v1beta2.DeviceClass"
+          }
+        },
+        "kind": {
+          "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
+          "type": "string"
+        },
+        "metadata": {
+          "description": "Standard list metadata",
+          "default": {},
+          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ListMeta"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "list",
+        "Group": "resource.k8s.io",
+        "Version": "v1beta2",
+        "Kind": "DeviceClassList",
+        "Scope": "Namespaced"
+      }
+    },
+    "io.k8s.api.resource.v1beta2.ResourceClaim": {
+      "type": "object",
+      "required": [
+        "spec"
+      ],
+      "properties": {
+        "apiVersion": {
+          "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
+          "type": "string"
+        },
+        "kind": {
+          "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
+          "type": "string"
+        },
+        "metadata": {
+          "description": "Standard object metadata",
+          "default": {},
+          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta"
+        },
+        "spec": {
+          "description": "Spec describes what is being requested and how to configure it. The spec is immutable.",
+          "default": {},
+          "$ref": "#/definitions/io.k8s.api.resource.v1beta2.ResourceClaimSpec"
+        },
+        "status": {
+          "description": "Status describes whether the claim is ready to use and what has been allocated.",
+          "default": {},
+          "$ref": "#/definitions/io.k8s.api.resource.v1beta2.ResourceClaimStatus"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "object",
+        "Group": "resource.k8s.io",
+        "Version": "v1beta2",
+        "Kind": "ResourceClaim",
+        "Scope": "Namespaced"
+      }
+    },
+    "io.k8s.api.resource.v1beta2.ResourceClaimList": {
+      "type": "object",
+      "required": [
+        "items"
+      ],
+      "properties": {
+        "apiVersion": {
+          "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
+          "type": "string"
+        },
+        "items": {
+          "description": "Items is the list of resource claims.",
+          "type": "array",
+          "items": {
+            "default": {},
+            "$ref": "#/definitions/io.k8s.api.resource.v1beta2.ResourceClaim"
+          }
+        },
+        "kind": {
+          "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
+          "type": "string"
+        },
+        "metadata": {
+          "description": "Standard list metadata",
+          "default": {},
+          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ListMeta"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "list",
+        "Group": "resource.k8s.io",
+        "Version": "v1beta2",
+        "Kind": "ResourceClaimList",
+        "Scope": "Namespaced"
+      }
+    },
+    "io.k8s.api.resource.v1beta2.ResourceClaimTemplate": {
+      "type": "object",
+      "required": [
+        "spec"
+      ],
+      "properties": {
+        "apiVersion": {
+          "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
+          "type": "string"
+        },
+        "kind": {
+          "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
+          "type": "string"
+        },
+        "metadata": {
+          "description": "Standard object metadata",
+          "default": {},
+          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta"
+        },
+        "spec": {
+          "description": "Describes the ResourceClaim that is to be generated.\n\nThis field is immutable. A ResourceClaim will get created by the control plane for a Pod when needed and then not get updated anymore.",
+          "default": {},
+          "$ref": "#/definitions/io.k8s.api.resource.v1beta2.ResourceClaimTemplateSpec"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "object",
+        "Group": "resource.k8s.io",
+        "Version": "v1beta2",
+        "Kind": "ResourceClaimTemplate",
+        "Scope": "Namespaced"
+      }
+    },
+    "io.k8s.api.resource.v1beta2.ResourceClaimTemplateList": {
+      "type": "object",
+      "required": [
+        "items"
+      ],
+      "properties": {
+        "apiVersion": {
+          "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
+          "type": "string"
+        },
+        "items": {
+          "description": "Items is the list of resource claim templates.",
+          "type": "array",
+          "items": {
+            "default": {},
+            "$ref": "#/definitions/io.k8s.api.resource.v1beta2.ResourceClaimTemplate"
+          }
+        },
+        "kind": {
+          "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
+          "type": "string"
+        },
+        "metadata": {
+          "description": "Standard list metadata",
+          "default": {},
+          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ListMeta"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "list",
+        "Group": "resource.k8s.io",
+        "Version": "v1beta2",
+        "Kind": "ResourceClaimTemplateList",
+        "Scope": "Namespaced"
+      }
+    },
+    "io.k8s.api.resource.v1beta2.ResourceSlice": {
+      "type": "object",
+      "required": [
+        "spec"
+      ],
+      "properties": {
+        "apiVersion": {
+          "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
+          "type": "string"
+        },
+        "kind": {
+          "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
+          "type": "string"
+        },
+        "metadata": {
+          "description": "Standard object metadata",
+          "default": {},
+          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta"
+        },
+        "spec": {
+          "description": "Contains the information published by the driver.\n\nChanging the spec automatically increments the metadata.generation number.",
+          "default": {},
+          "$ref": "#/definitions/io.k8s.api.resource.v1beta2.ResourceSliceSpec"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "object",
+        "Group": "resource.k8s.io",
+        "Version": "v1beta2",
+        "Kind": "ResourceSlice",
+        "Scope": "Clustered"
+      }
+    },
+    "io.k8s.api.resource.v1beta2.ResourceSliceList": {
+      "type": "object",
+      "required": [
+        "items"
+      ],
+      "properties": {
+        "apiVersion": {
+          "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
+          "type": "string"
+        },
+        "items": {
+          "description": "Items is the list of resource ResourceSlices.",
+          "type": "array",
+          "items": {
+            "default": {},
+            "$ref": "#/definitions/io.k8s.api.resource.v1beta2.ResourceSlice"
+          }
+        },
+        "kind": {
+          "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
+          "type": "string"
+        },
+        "metadata": {
+          "description": "Standard list metadata",
+          "default": {},
+          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ListMeta"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "list",
+        "Group": "resource.k8s.io",
+        "Version": "v1beta2",
         "Kind": "ResourceSliceList",
         "Scope": "Namespaced"
       }
