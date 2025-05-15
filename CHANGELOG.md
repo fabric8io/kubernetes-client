@@ -1,15 +1,12 @@
 ## CHANGELOG
 
-### 7.3-SNAPSHOT
+### 7.3.0 (2025-05-15)
 
 #### Bugs
 * Fix #7036: Resolve serialization errors after Jackson 2.19.0 upgrade (breaks older versions)
 
-#### Improvements
-
 #### Dependency Upgrade
-
-#### New Features
+* Fix #7036: Jackson upgraded from v2.18.3 to v2.19.0
 
 #### _**Note**_: Breaking changes
 * Fix #7036: This release is not backwards-compatible with previous versions of Jackson, you'll need to use Jackson 2.19.0 in your project for a correct behavior of the Kubernetes Client.
