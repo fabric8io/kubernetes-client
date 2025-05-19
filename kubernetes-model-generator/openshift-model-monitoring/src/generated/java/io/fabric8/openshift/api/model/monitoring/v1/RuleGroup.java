@@ -22,7 +22,6 @@ import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.LabelSelector;
 import io.fabric8.kubernetes.api.model.LocalObjectReference;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
-import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
@@ -35,17 +34,13 @@ import lombok.ToString;
 import lombok.experimental.Accessors;
 
 /**
- * RuleGroup is a list of sequentially evaluated recording and alerting rules.
+ * RuleGroup is a list of sequentially evaluated alerting rules.
  */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "interval",
-    "labels",
-    "limit",
     "name",
-    "partial_response_strategy",
-    "query_offset",
     "rules"
 })
 @ToString
@@ -61,7 +56,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(PodTemplateSpec.class),
     @BuildableReference(ResourceRequirements.class),
     @BuildableReference(IntOrString.class),
-    @BuildableReference(ObjectReference.class),
+    @BuildableReference(io.fabric8.kubernetes.api.model.ObjectReference.class),
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class),
     @BuildableReference(EnvVar.class),
@@ -75,17 +70,8 @@ public class RuleGroup implements Editable<RuleGroupBuilder>, KubernetesResource
 
     @JsonProperty("interval")
     private String interval;
-    @JsonProperty("labels")
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, String> labels = new LinkedHashMap<>();
-    @JsonProperty("limit")
-    private Integer limit;
     @JsonProperty("name")
     private String name;
-    @JsonProperty("partial_response_strategy")
-    private String partialResponseStrategy;
-    @JsonProperty("query_offset")
-    private String queryOffset;
     @JsonProperty("rules")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<Rule> rules = new ArrayList<>();
@@ -98,19 +84,15 @@ public class RuleGroup implements Editable<RuleGroupBuilder>, KubernetesResource
     public RuleGroup() {
     }
 
-    public RuleGroup(String interval, Map<String, String> labels, Integer limit, String name, String partialResponseStrategy, String queryOffset, List<Rule> rules) {
+    public RuleGroup(String interval, String name, List<Rule> rules) {
         super();
         this.interval = interval;
-        this.labels = labels;
-        this.limit = limit;
         this.name = name;
-        this.partialResponseStrategy = partialResponseStrategy;
-        this.queryOffset = queryOffset;
         this.rules = rules;
     }
 
     /**
-     * Interval determines how often rules in the group are evaluated.
+     * interval is how often rules in the group are evaluated.  If not specified, it defaults to the global.evaluation_interval configured in Prometheus, which itself defaults to 30 seconds.  You can check if this value has been modified from the default on your cluster by inspecting the platform Prometheus configuration: The relevant field in that resource is: spec.evaluationInterval
      */
     @JsonProperty("interval")
     public String getInterval() {
@@ -118,7 +100,7 @@ public class RuleGroup implements Editable<RuleGroupBuilder>, KubernetesResource
     }
 
     /**
-     * Interval determines how often rules in the group are evaluated.
+     * interval is how often rules in the group are evaluated.  If not specified, it defaults to the global.evaluation_interval configured in Prometheus, which itself defaults to 30 seconds.  You can check if this value has been modified from the default on your cluster by inspecting the platform Prometheus configuration: The relevant field in that resource is: spec.evaluationInterval
      */
     @JsonProperty("interval")
     public void setInterval(String interval) {
@@ -126,40 +108,7 @@ public class RuleGroup implements Editable<RuleGroupBuilder>, KubernetesResource
     }
 
     /**
-     * Labels to add or overwrite before storing the result for its rules. The labels defined at the rule level take precedence.<br><p> <br><p> It requires Prometheus &gt;= 3.0.0. The field is ignored for Thanos Ruler.
-     */
-    @JsonProperty("labels")
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public Map<String, String> getLabels() {
-        return labels;
-    }
-
-    /**
-     * Labels to add or overwrite before storing the result for its rules. The labels defined at the rule level take precedence.<br><p> <br><p> It requires Prometheus &gt;= 3.0.0. The field is ignored for Thanos Ruler.
-     */
-    @JsonProperty("labels")
-    public void setLabels(Map<String, String> labels) {
-        this.labels = labels;
-    }
-
-    /**
-     * Limit the number of alerts an alerting rule and series a recording rule can produce. Limit is supported starting with Prometheus &gt;= 2.31 and Thanos Ruler &gt;= 0.24.
-     */
-    @JsonProperty("limit")
-    public Integer getLimit() {
-        return limit;
-    }
-
-    /**
-     * Limit the number of alerts an alerting rule and series a recording rule can produce. Limit is supported starting with Prometheus &gt;= 2.31 and Thanos Ruler &gt;= 0.24.
-     */
-    @JsonProperty("limit")
-    public void setLimit(Integer limit) {
-        this.limit = limit;
-    }
-
-    /**
-     * Name of the rule group.
+     * name is the name of the group.
      */
     @JsonProperty("name")
     public String getName() {
@@ -167,7 +116,7 @@ public class RuleGroup implements Editable<RuleGroupBuilder>, KubernetesResource
     }
 
     /**
-     * Name of the rule group.
+     * name is the name of the group.
      */
     @JsonProperty("name")
     public void setName(String name) {
@@ -175,39 +124,7 @@ public class RuleGroup implements Editable<RuleGroupBuilder>, KubernetesResource
     }
 
     /**
-     * PartialResponseStrategy is only used by ThanosRuler and will be ignored by Prometheus instances. More info: https://github.com/thanos-io/thanos/blob/main/docs/components/rule.md#partial-response
-     */
-    @JsonProperty("partial_response_strategy")
-    public String getPartialResponseStrategy() {
-        return partialResponseStrategy;
-    }
-
-    /**
-     * PartialResponseStrategy is only used by ThanosRuler and will be ignored by Prometheus instances. More info: https://github.com/thanos-io/thanos/blob/main/docs/components/rule.md#partial-response
-     */
-    @JsonProperty("partial_response_strategy")
-    public void setPartialResponseStrategy(String partialResponseStrategy) {
-        this.partialResponseStrategy = partialResponseStrategy;
-    }
-
-    /**
-     * Defines the offset the rule evaluation timestamp of this particular group by the specified duration into the past.<br><p> <br><p> It requires Prometheus &gt;= v2.53.0. It is not supported for ThanosRuler.
-     */
-    @JsonProperty("query_offset")
-    public String getQueryOffset() {
-        return queryOffset;
-    }
-
-    /**
-     * Defines the offset the rule evaluation timestamp of this particular group by the specified duration into the past.<br><p> <br><p> It requires Prometheus &gt;= v2.53.0. It is not supported for ThanosRuler.
-     */
-    @JsonProperty("query_offset")
-    public void setQueryOffset(String queryOffset) {
-        this.queryOffset = queryOffset;
-    }
-
-    /**
-     * List of alerting and recording rules.
+     * rules is a list of sequentially evaluated alerting rules.  Prometheus may process rule groups in parallel, but rules within a single group are always processed sequentially, and all rules are processed.
      */
     @JsonProperty("rules")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -216,7 +133,7 @@ public class RuleGroup implements Editable<RuleGroupBuilder>, KubernetesResource
     }
 
     /**
-     * List of alerting and recording rules.
+     * rules is a list of sequentially evaluated alerting rules.  Prometheus may process rule groups in parallel, but rules within a single group are always processed sequentially, and all rules are processed.
      */
     @JsonProperty("rules")
     public void setRules(List<Rule> rules) {

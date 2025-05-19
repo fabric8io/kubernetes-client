@@ -78,24 +78,25 @@ class ModelGenerator {
     final Map<String, Schema<?>> schemas = utils.extractComponentSchemas();
     settings.getLogger().info(String.format("Found %s schemas", schemas.size()));
     final AtomicInteger generatedClasses = new AtomicInteger();
-    schemas.entrySet().stream()
+    final Map<String, Schema<?>> entries = schemas.entrySet().stream()
         .filter(GeneratorUtils.filter(settings))
         .filter(entry -> entry.getValue() instanceof ObjectSchema)
-        .forEach(classEntry -> {
-          final TemplateContext templateContext = new TemplateContext(settings, classEntry);
-          if (hasOverride(templateContext)) {
-            settings.getLogger().fine(String.format("Skipping %s since it has an override",
-                templateContext.getClassInformation().getClassName()));
-            return;
-          }
-          settings.getLogger()
-              .fine(String.format("Generating %ss", templateContext.getClassInformation().getClassName()));
-          mkPackageDirectories(templateContext);
-          processTemplate(templateContext);
-          final String fileContents = modelTemplate.execute(templateContext.getContext());
-          writeFile(templateContext, fileContents);
-          generatedClasses.incrementAndGet();
-        });
+        .collect(Collectors.toMap(Map.Entry::getKey, Entry::getValue));
+    for (final var classEntry : entries.entrySet()) {
+      final TemplateContext templateContext = new TemplateContext(settings, classEntry, entries.keySet());
+      if (templateContext.getClassInformation().hasOverride()) {
+        settings.getLogger().fine(String.format("Skipping %s since it has an override",
+            templateContext.getClassInformation().getClassName()));
+        continue;
+      }
+      settings.getLogger()
+          .fine(String.format("Generating %ss", templateContext.getClassInformation().getClassName()));
+      mkPackageDirectories(templateContext);
+      processTemplate(templateContext);
+      final String fileContents = modelTemplate.execute(templateContext.getContext());
+      writeFile(templateContext, fileContents);
+      generatedClasses.incrementAndGet();
+    }
     settings.getLogger().info(String.format("Generated %s model entries", generatedClasses.get()));
   }
 
@@ -252,13 +253,6 @@ class ModelGenerator {
     }
   }
 
-  private boolean hasOverride(TemplateContext templateContext) {
-    return settings.getOverridesDirectory().toPath()
-        .resolve(templateContext.getPackageName().replace('.', File.separatorChar))
-        .resolve(templateContext.getClassInformation().getClassSimpleName().concat(".java"))
-        .toFile().exists();
-  }
-
   private Path resolvePackageDirectory(TemplateContext templateContext) {
     return settings.getGeneratedSourcesDirectory().toPath()
         .resolve(templateContext.getPackageName().replace('.', File.separatorChar));
@@ -275,11 +269,18 @@ class ModelGenerator {
     return Collections.singletonMap("refs", references.stream()
         .map(r -> {
           final String referenceSimpleClass = r.substring(r.lastIndexOf('.') + 1);
+          // Don't add import if the current class is the same as the reference class
           if (templateContext.getClassInformation().getClassSimpleName().equals(referenceSimpleClass)) {
             return r;
           }
           // Don't add import if there's an import for a class with the same name e.g. ObjectReference in k8s core and monitoring
-          if (!templateContext.getImports().contains(r) && templateContext.hasSimpleClassName(referenceSimpleClass)) {
+          if (!templateContext.getClassInformation().getImports().contains(r)
+              && templateContext.hasSimpleClassName(referenceSimpleClass)) {
+            return r;
+          }
+          // Don't add import if the package contains a class with the same name e.g. LocalObjectReference in k8s core and gatewayapi
+          if (templateContext.getClassInformation().getPackageClasses()
+              .contains(templateContext.getPackageName() + "." + referenceSimpleClass)) {
             return r;
           }
           templateContext.addImport(r);

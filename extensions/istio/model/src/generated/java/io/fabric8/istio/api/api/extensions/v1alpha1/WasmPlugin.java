@@ -18,7 +18,6 @@ import io.fabric8.istio.api.api.type.v1beta1.WorkloadSelector;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
-import io.fabric8.kubernetes.api.model.EnvVar;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.LabelSelector;
@@ -80,7 +79,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(ObjectReference.class),
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class),
-    @BuildableReference(EnvVar.class),
+    @BuildableReference(io.fabric8.kubernetes.api.model.EnvVar.class),
     @BuildableReference(ContainerPort.class),
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
