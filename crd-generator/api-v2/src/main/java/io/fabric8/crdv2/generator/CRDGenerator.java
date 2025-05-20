@@ -89,7 +89,11 @@ public class CRDGenerator {
   }
 
   public CRDGenerator withPostProcessor(CRDPostProcessor postProcessor) {
-    this.postProcessor = postProcessor;
+    if (postProcessor == null) {
+      LOGGER.warn("CRDPostProcessor is null, using default CRDPostProcessor instead");
+    } else {
+      this.postProcessor = postProcessor;
+    }
     return this;
   }
 
@@ -229,7 +233,9 @@ public class CRDGenerator {
     final String crdName = crd.getMetadata().getName();
 
     // post-process the CRD if needed
-    crd = postProcessor.process(crd, version);
+    if (postProcessor != null) {
+      crd = postProcessor.process(crd, version);
+    }
 
     try {
       final String outputName = getOutputName(crdName, version);

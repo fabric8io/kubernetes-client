@@ -3,6 +3,7 @@
 ### 7.4-SNAPSHOT
 
 #### Bugs
+* Fix #7080: Avoid NPE in CRDGenerator if post-processor is set to null
 
 #### Improvements
 
