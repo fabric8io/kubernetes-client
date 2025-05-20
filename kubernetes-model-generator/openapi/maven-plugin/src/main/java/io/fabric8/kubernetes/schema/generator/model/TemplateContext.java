@@ -26,6 +26,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 @Getter
 final class TemplateContext implements ImportManager {
@@ -36,12 +37,12 @@ final class TemplateContext implements ImportManager {
   private final ClassInformation classInformation;
   private final Map<String, Object> context;
 
-  TemplateContext(GeneratorSettings settings, Map.Entry<String, Schema<?>> clazz) {
+  TemplateContext(GeneratorSettings settings, Map.Entry<String, Schema<?>> clazz, Set<String> processedEntries) {
     final SchemaUtils schemaUtils = new SchemaUtils(settings);
     classKey = clazz.getKey();
     classSchema = clazz.getValue();
     apiVersion = settings.getApiVersions().get(classKey);
-    classInformation = new ClassInformation(schemaUtils, clazz);
+    classInformation = new ClassInformation(schemaUtils, clazz, processedEntries);
     context = new HashMap<>();
     context.put("imports", classInformation.getImports());
     context.put("classInformation", classInformation);

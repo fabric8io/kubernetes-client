@@ -3,6 +3,7 @@
 ### 7.4-SNAPSHOT
 
 #### Bugs
+* Fix #7071: Buildable reference imports don't override local package class references
 
 #### Improvements
 

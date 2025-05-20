@@ -23,8 +23,14 @@ import org.assertj.core.api.InstanceOfAssertFactories;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.util.Collections;
 import java.util.Map;
+import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -42,7 +48,7 @@ public class ClassInformationTest {
       schema.addExtension("x-kubernetes-fabric8-type", "interface");
       schema.addExtension("x-kubernetes-fabric8-implementation", "InterfaceImplementationOne,InterfaceImplementationTwo");
       final Map.Entry<String, Schema<?>> clazz = Map.entry("io.fabric8.kubernetes.Interface", schema);
-      classInformation = new ClassInformation(schemaUtils, clazz);
+      classInformation = new ClassInformation(schemaUtils, clazz, Collections.emptySet());
     }
 
     @Test
@@ -129,7 +135,7 @@ public class ClassInformationTest {
       schema.addExtension("x-kubernetes-fabric8-type", "enum");
       schema.addExtension("x-kubernetes-fabric8-enum-values", "ACTIVE(0),INACTIVE(1),AUTO(2)");
       final Map.Entry<String, Schema<?>> clazz = Map.entry("io.fabric8.kubernetes.Mode", schema);
-      classInformation = new ClassInformation(schemaUtils, clazz);
+      classInformation = new ClassInformation(schemaUtils, clazz, Collections.emptySet());
     }
 
     @Test
@@ -197,6 +203,69 @@ public class ClassInformationTest {
       assertThat(classInformation.getImports())
           .containsExactly(
               "com.fasterxml.jackson.annotation.JsonCreator");
+    }
+  }
+
+  @Nested
+  class HasOverride {
+
+    @TempDir
+    File overridesDirectory;
+
+    @BeforeEach
+    void setUp() {
+      final var schemaUtils = new SchemaUtils(GeneratorSettings.builder()
+          .overridesDirectory(overridesDirectory)
+          .build());
+      final var schema = new ObjectSchema();
+      final Map.Entry<String, Schema<?>> clazz = Map.entry("io.fabric8.kubernetes.ClassWithOverride", schema);
+      classInformation = new ClassInformation(schemaUtils, clazz, Collections.emptySet());
+    }
+
+    @Test
+    void withoutOverride() {
+      assertThat(classInformation.hasOverride()).isFalse();
+    }
+
+    @Test
+    void withOverride() throws IOException {
+      Files.createFile(
+          Files.createDirectories(overridesDirectory.toPath().resolve("io").resolve("fabric8").resolve("kubernetes"))
+              .resolve("ClassWithOverride.java"));
+      assertThat(classInformation.hasOverride()).isTrue();
+    }
+  }
+
+  @Nested
+  class PackageClasses {
+    @BeforeEach
+    void setUp() {
+      final var schemaUtils = new SchemaUtils(GeneratorSettings.builder()
+          .packageMapping("io.k8s", "io.fabric8.kubernetes")
+          .build());
+      final var schema = new ObjectSchema();
+      final Map.Entry<String, Schema<?>> clazz = Map.entry("io.fabric8.kubernetes.ClassInTest", schema);
+      classInformation = new ClassInformation(schemaUtils, clazz, Set.of(
+          "io.fabric8.kubernetes.ClassInPackage",
+          "io.fabric8.kubernetes.other.ClassInOtherPackage",
+          "io.k8s.ClassInMappedPackage"));
+    }
+
+    @Test
+    void hasClassInPackage() {
+      assertThat(classInformation.getPackageClasses()).contains("io.fabric8.kubernetes.ClassInPackage");
+    }
+
+    @Test
+    void hasClassInMappedPackage() {
+      assertThat(classInformation.getPackageClasses()).contains("io.fabric8.kubernetes.ClassInMappedPackage");
+    }
+
+    @Test
+    void doesNotHaveClassInOtherPackage() {
+      assertThat(classInformation.getPackageClasses())
+          .hasSize(2)
+          .doesNotContain("io.fabric8.kubernetes.other.ClassInOtherPackage");
     }
   }
 }

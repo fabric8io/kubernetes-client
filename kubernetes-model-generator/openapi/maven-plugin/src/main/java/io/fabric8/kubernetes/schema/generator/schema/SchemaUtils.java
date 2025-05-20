@@ -188,7 +188,13 @@ public class SchemaUtils {
         .replace("_", "");
   }
 
-  private String refToModelPackage(String ref) {
+  /**
+   * Returns the complete class name associated to the provided Schema reference.
+   *
+   * @param ref the reference to extract the complete class name from.
+   * @return the complete class name associated to the provided Schema reference.
+   */
+  public String refToModelPackage(String ref) {
     final String packageName = ref.substring(ref.lastIndexOf('/') + 1, ref.lastIndexOf('.'));
     return toModelPackage(packageName).concat(".").concat(refToClassName(ref));
   }

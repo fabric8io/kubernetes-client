@@ -21,6 +21,7 @@ import io.fabric8.kubernetes.schema.generator.schema.SchemaUtils;
 import io.swagger.v3.oas.models.media.Schema;
 import lombok.Getter;
 
+import java.io.File;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
@@ -32,6 +33,7 @@ public class ClassInformation implements ImportManager {
   private final Set<String> imports;
   private final String kubernetesListType;
   private final String packageName;
+  private final Set<String> packageClasses;
   private final boolean inRootPackage;
   private final boolean isEnum;
   private final String enumValues;
@@ -44,7 +46,7 @@ public class ClassInformation implements ImportManager {
   private final String implementsExtends;
   private final JsonSubTypes jsonSubTypes;
 
-  ClassInformation(SchemaUtils schemaUtils, Map.Entry<String, Schema<?>> clazz) {
+  ClassInformation(SchemaUtils schemaUtils, Map.Entry<String, Schema<?>> clazz, Set<String> processedEntries) {
     this.schemaUtils = schemaUtils;
     imports = new TreeSet<>(new ImportOrderComparator());
     final var classKey = clazz.getKey();
@@ -52,6 +54,7 @@ public class ClassInformation implements ImportManager {
     final var apiVersion = schemaUtils.getSettings().getApiVersions().get(classKey);
     // packageName must be resolved first, since the rest of computed fields depend on it
     packageName = schemaUtils.toModelPackage(classKey.substring(0, classKey.lastIndexOf('.')));
+    packageClasses = resolvePackageClasses(processedEntries);
     kubernetesListType = apiVersion == null ? null : schemaUtils.kubernetesListType(this, classSchema);
     inRootPackage = getPackageName().equals(schemaUtils.getSettings().getPackageName());
     isEnum = SchemaUtils.isEnum(classSchema);
@@ -94,6 +97,17 @@ public class ClassInformation implements ImportManager {
 
   public final String getBuilderName() {
     return getClassSimpleName() + "Builder";
+  }
+
+  private Set<String> resolvePackageClasses(Set<String> processedEntries) {
+    final Set<String> ret = new TreeSet<>();
+    for (String entry : processedEntries) {
+      final String entryClassName = schemaUtils.refToModelPackage(entry);
+      if (entryClassName.substring(0, entryClassName.lastIndexOf('.')).equals(packageName)) {
+        ret.add(entryClassName);
+      }
+    }
+    return ret;
   }
 
   private String resolveImplementsExtends(Schema<?> classSchema) {
@@ -153,5 +167,18 @@ public class ClassInformation implements ImportManager {
           .append(">");
     }
     return implementsExtends.toString();
+  }
+
+  /**
+   * Returns true if the class represented by this ClassInformation has a non-generated class
+   * in the overrides directory.
+   *
+   * @return true if the class has an override, false otherwise.
+   */
+  boolean hasOverride() {
+    return schemaUtils.getSettings().getOverridesDirectory().toPath()
+        .resolve(getPackageName().replace('.', File.separatorChar))
+        .resolve(getClassSimpleName().concat(".java"))
+        .toFile().exists();
   }
 }
