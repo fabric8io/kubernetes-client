@@ -602,6 +602,23 @@ class CRDGeneratorTest {
         .hasFieldOrPropertyWithValue("metadata.labels.foo", "bar");
   }
 
+  @Test
+  void nullPostProcessorShouldNotFailGeneration() throws Exception {
+    // generated CRD
+    final String crdName = CustomResourceInfo.fromClass(Simplest.class).crdName();
+
+    final CRDGenerationInfo crdInfo = newCRDGenerator()
+        .inOutputDir(tempDir)
+        .customResourceClasses(Simplest.class)
+        .forCRDVersions("v1")
+        .withPostProcessor(null)
+        .detailedGenerate();
+
+    assertThat(new KubernetesSerialization().unmarshal(
+        Files.newInputStream(Path.of(crdInfo.getCRDInfos(crdName).get("v1").getFilePath())), HasMetadata.class))
+        .isNotNull();
+  }
+
   private CustomResourceDefinitionVersion checkCRD(Class<? extends CustomResource<?, ?>> customResource, String kind,
       String plural,
       Scope scope) {
