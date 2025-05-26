@@ -8239,6 +8239,203 @@
         "Scope": "Namespaced"
       }
     },
+    "dev.knative.messaging.v1.KafkaChannel": {
+      "description": "KafkaChannel is a resource representing a Kafka Channel.",
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
+          "type": "string"
+        },
+        "kind": {
+          "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
+          "type": "string"
+        },
+        "metadata": {
+          "default": {},
+          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta"
+        },
+        "spec": {
+          "description": "Spec defines the desired state of the Channel.",
+          "default": {},
+          "$ref": "#/definitions/dev.knative.messaging.v1.KafkaChannelSpec"
+        },
+        "status": {
+          "description": "Status represents the current state of the KafkaChannel. This data may be out of date.",
+          "default": {},
+          "$ref": "#/definitions/dev.knative.messaging.v1.KafkaChannelStatus"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "object",
+        "Group": "messaging.knative.dev",
+        "Version": "v1",
+        "Kind": "KafkaChannel",
+        "Scope": "Namespaced"
+      }
+    },
+    "dev.knative.messaging.v1.KafkaChannelList": {
+      "description": "KafkaChannelList is a collection of KafkaChannels.",
+      "type": "object",
+      "required": [
+        "items"
+      ],
+      "properties": {
+        "apiVersion": {
+          "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
+          "type": "string"
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "default": {},
+            "$ref": "#/definitions/dev.knative.messaging.v1.KafkaChannel"
+          }
+        },
+        "kind": {
+          "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
+          "type": "string"
+        },
+        "metadata": {
+          "default": {},
+          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ListMeta"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "list",
+        "Group": "messaging.knative.dev",
+        "Version": "v1",
+        "Kind": "KafkaChannelList",
+        "Scope": "Namespaced"
+      }
+    },
+    "dev.knative.messaging.v1.KafkaChannelSpec": {
+      "description": "KafkaChannelSpec defines the specification for a KafkaChannel.",
+      "type": "object",
+      "required": [
+        "numPartitions",
+        "replicationFactor",
+        "retentionDuration"
+      ],
+      "properties": {
+        "delivery": {
+          "description": "DeliverySpec contains the default delivery spec for each subscription to this Channelable. Each subscription delivery spec, if any, overrides this global delivery spec.",
+          "$ref": "#/definitions/dev.knative.duck.v1.DeliverySpec"
+        },
+        "numPartitions": {
+          "description": "NumPartitions is the number of partitions of a Kafka topic. By default, it is set to 1.",
+          "type": "integer",
+          "format": "int32",
+          "default": 0
+        },
+        "replicationFactor": {
+          "description": "ReplicationFactor is the replication factor of a Kafka topic. By default, it is set to 1.",
+          "type": "integer",
+          "format": "int32",
+          "default": 0
+        },
+        "retentionDuration": {
+          "description": "RetentionDuration is the duration for which events will be retained in the Kafka Topic. By default, it is set to 168 hours, which is the precise form for 7 days. More information on Duration format:\n - https://www.iso.org/iso-8601-date-and-time-format.html\n - https://en.wikipedia.org/wiki/ISO_8601",
+          "type": "string",
+          "default": ""
+        },
+        "subscribers": {
+          "description": "This is the list of subscriptions for this subscribable.",
+          "type": "array",
+          "items": {
+            "default": {},
+            "$ref": "#/definitions/dev.knative.duck.v1.SubscriberSpec"
+          },
+          "x-kubernetes-patch-merge-key": "uid",
+          "x-kubernetes-patch-strategy": "merge"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "messaging.knative.dev",
+        "Version": "v1",
+        "Kind": "KafkaChannelSpec",
+        "Scope": "Namespaced"
+      }
+    },
+    "dev.knative.messaging.v1.KafkaChannelStatus": {
+      "description": "KafkaChannelStatus represents the current state of a KafkaChannel.",
+      "type": "object",
+      "properties": {
+        "address": {
+          "description": "Address is a single Addressable address. If Addresses is present, Address will be ignored by clients.",
+          "$ref": "#/definitions/dev.knative.duck.v1.Addressable"
+        },
+        "addresses": {
+          "description": "Addresses is a list of addresses for different protocols (HTTP and HTTPS) If Addresses is present, Address must be ignored by clients.",
+          "type": "array",
+          "items": {
+            "default": {},
+            "$ref": "#/definitions/dev.knative.duck.v1.Addressable"
+          }
+        },
+        "annotations": {
+          "description": "Annotations is additional Status fields for the Resource to save some additional State as well as convey more information to the user. This is roughly akin to Annotations on any k8s resource, just the reconciler conveying richer information outwards.",
+          "type": "object",
+          "additionalProperties": {
+            "type": "string",
+            "default": ""
+          }
+        },
+        "conditions": {
+          "description": "Conditions the latest available observations of a resource's current state.",
+          "type": "array",
+          "items": {
+            "default": {},
+            "$ref": "#/definitions/dev.knative.pkg.apis.Condition"
+          },
+          "x-kubernetes-patch-merge-key": "type",
+          "x-kubernetes-patch-strategy": "merge"
+        },
+        "deadLetterSinkAudience": {
+          "description": "DeadLetterSinkAudience is the OIDC audience of the DeadLetterSink",
+          "type": "string"
+        },
+        "deadLetterSinkCACerts": {
+          "description": "DeadLetterSinkCACerts are Certification Authority (CA) certificates in PEM format according to https://www.rfc-editor.org/rfc/rfc7468.",
+          "type": "string"
+        },
+        "deadLetterSinkUri": {
+          "description": "DeadLetterSink is a KReference that is the reference to the native, platform specific channel where failed events are sent to.",
+          "$ref": "#/definitions/dev.knative.pkg.apis.URL"
+        },
+        "observedGeneration": {
+          "description": "ObservedGeneration is the 'Generation' of the Service that was last processed by the controller.",
+          "type": "integer",
+          "format": "int64"
+        },
+        "policies": {
+          "description": "Policies holds the list of applied EventPolicies",
+          "type": "array",
+          "items": {
+            "default": {},
+            "$ref": "#/definitions/dev.knative.duck.v1.AppliedEventPolicyRef"
+          }
+        },
+        "subscribers": {
+          "description": "This is the list of subscription's statuses for this channel.",
+          "type": "array",
+          "items": {
+            "default": {},
+            "$ref": "#/definitions/dev.knative.duck.v1.SubscriberStatus"
+          },
+          "x-kubernetes-patch-merge-key": "uid",
+          "x-kubernetes-patch-strategy": "merge"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "messaging.knative.dev",
+        "Version": "v1",
+        "Kind": "KafkaChannelStatus",
+        "Scope": "Namespaced"
+      }
+    },
     "dev.knative.messaging.v1.Subscription": {
       "description": "Subscription routes events received on a Channel to a DNS name and corresponds to the subscriptions.channels.knative.dev CRD.",
       "type": "object",
