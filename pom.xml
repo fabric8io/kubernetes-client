@@ -166,7 +166,7 @@
     <sonar-maven-plugin.version>4.0.0.4121</sonar-maven-plugin.version>
     <nexus-staging-maven-plugin.version>1.7.0</nexus-staging-maven-plugin.version>
     <properties.maven.plugin.version>1.0.0</properties.maven.plugin.version>
-    <spotless-maven-plugin.version>2.44.4</spotless-maven-plugin.version>
+    <spotless-maven-plugin.version>2.44.5</spotless-maven-plugin.version>
     <really-executable-jar-maven-plugin.version>2.1.1</really-executable-jar-maven-plugin.version>
 
     <!-- Other options -->
