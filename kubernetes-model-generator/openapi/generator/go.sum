@@ -2089,8 +2089,8 @@ knative.dev/caching v0.0.0-20250415164313-8f20a1163dbf h1:qQnKB6mx+beHzsoKU8aKrR
 knative.dev/caching v0.0.0-20250415164313-8f20a1163dbf/go.mod h1:q8ma7YxJ8Dofr+5kf3qR72A/7Zxl9uqQlOdMwNgCXY4=
 knative.dev/eventing v0.28.0/go.mod h1:zxoB37kQxEkfCvKA7wZuHOPYInz6SFJzrhmG9IAd/iY=
 knative.dev/eventing v0.29.0/go.mod h1:u5T5NZTDUsLR7yJwp5MDnBnDX5MhywD3yK3Rq+7gTtI=
-knative.dev/eventing v0.45.0 h1:LwNmhsw94isfEFOtjN1tpcduD5EzTKo4nbenTxSLd4o=
-knative.dev/eventing v0.45.0/go.mod h1:Fz5VjV/vWVN93UfTX3lzc+uFrvJ9wxiiKrRIPhQxoj8=
+knative.dev/eventing v0.45.1 h1:XhGrwcRaROkqgGnB/njAyMnpdSaWI01QQvCpjQ7Mz+4=
+knative.dev/eventing v0.45.1/go.mod h1:Fz5VjV/vWVN93UfTX3lzc+uFrvJ9wxiiKrRIPhQxoj8=
 knative.dev/eventing-awssqs v0.29.0 h1:3g9zaBMuSVpwj6BOFFQl/XbCVX9dIljqhoWKdLfDVp4=
 knative.dev/eventing-awssqs v0.29.0/go.mod h1:jtY5Pd4QrwbLyiviNWav7FMtx9NWaABY3EqGGz3NBNA=
 knative.dev/eventing-couchdb v0.28.0 h1:wdwmonQ1cOEx/I9Ev8IhKUIkBth4L/r5wTpDggGacls=
