@@ -33,7 +33,7 @@ require (
 	github.com/tektoncd/triggers v0.31.0
 	istio.io/client-go v1.25.2
 	k8s.io/api v0.33.1
-	k8s.io/apiextensions-apiserver v0.33.0
+	k8s.io/apiextensions-apiserver v0.33.1
 	k8s.io/apimachinery v0.33.1
 	k8s.io/autoscaler/vertical-pod-autoscaler v1.4.0
 	k8s.io/client-go v12.0.0+incompatible
@@ -183,6 +183,7 @@ require (
 	github.com/vincent-petithory/dataurl v1.0.0 // indirect
 	github.com/x448/float16 v0.8.4 // indirect
 	go.opencensus.io v0.24.0 // indirect
+	go.opentelemetry.io/otel/metric v1.35.0 // indirect
 	go.uber.org/multierr v1.11.0 // indirect
 	go.uber.org/zap v1.27.0 // indirect
 	golang.org/x/crypto v0.37.0 // indirect
