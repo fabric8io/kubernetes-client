@@ -2095,8 +2095,8 @@ knative.dev/eventing-awssqs v0.29.0 h1:3g9zaBMuSVpwj6BOFFQl/XbCVX9dIljqhoWKdLfDV
 knative.dev/eventing-awssqs v0.29.0/go.mod h1:jtY5Pd4QrwbLyiviNWav7FMtx9NWaABY3EqGGz3NBNA=
 knative.dev/eventing-couchdb v0.28.0 h1:wdwmonQ1cOEx/I9Ev8IhKUIkBth4L/r5wTpDggGacls=
 knative.dev/eventing-couchdb v0.28.0/go.mod h1:kUoJgfUkPBWJFA/0meZCZzuX/3003hEBctN+7xyKKMo=
-knative.dev/eventing-github v0.44.0 h1:F6vaUWuPmmvEWtPBXpBoDm0eUu26f996AeWIjqWTP8s=
-knative.dev/eventing-github v0.44.0/go.mod h1:gOzPGCmZnNxrmwroPrQMNnadTT2wk2CgcY63tLeqEzQ=
+knative.dev/eventing-github v0.45.0 h1:g7wYhOZiaJvNkQei+UkpSB6TArSWfzASRXICidSvWGE=
+knative.dev/eventing-github v0.45.0/go.mod h1:8fGrDAfBGXg7ckxcEQxYwQ9/Tn7IvT376tUbGd1ABt0=
 knative.dev/eventing-gitlab v0.45.0 h1:PxCxqGNwZfY3RwhyGucLyuwthRgoDUGiB1hUzPcqqAI=
 knative.dev/eventing-gitlab v0.45.0/go.mod h1:DuPMWbY7FnH5boAc1o8ohcYUBZ/97kak5ss5RJx0BEQ=
 knative.dev/eventing-kafka-broker v0.45.0 h1:wJAxUYfsFeyldht0ikXzFDGZYP2vPYM3D2yPKwNwZ6w=
