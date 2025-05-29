@@ -25,36 +25,35 @@ import org.slf4j.LoggerFactory;
 
 /**
  * This example is Java equivalent to `kubectl events --for job/jobName`, or
- * `kubectl get events --field-selector involvedObject.kind=Job,involvedObject.name=jobName,involvedObject.apiVersion=batch/v1`. 
+ * `kubectl get events --field-selector involvedObject.kind=Job,involvedObject.name=jobName,involvedObject.apiVersion=batch/v1`.
  * It gets events related to a specified Job in a Kubernetes cluster.
  * <p>
- *   This example demonstrates how to retrieve events for a specific Kubernetes resource.
- *   The same approach can be adapted to fetch events for other resource types,
- *   such as Pods, Deployments, or Services, by modifying the {@link ObjectReference}
- *   to point to the desired resource. You would need to change the `apiVersion`,
- *   `kind`, and `name` fields in the {@link ObjectReferenceBuilder} accordingly.
+ * This example demonstrates how to retrieve events for a specific Kubernetes resource.
+ * The same approach can be adapted to fetch events for other resource types,
+ * such as Pods, Deployments, or Services, by modifying the {@link ObjectReference}
+ * to point to the desired resource. You would need to change the `apiVersion`,
+ * `kind`, and `name` fields in the {@link ObjectReferenceBuilder} accordingly.
  * </p>
  */
-public class EventsGetForJobEquivalent
-{
+public class EventsGetForJobEquivalent {
   private static final Logger logger = LoggerFactory.getLogger(EventsGetForJobEquivalent.class);
 
   public static void main(String[] args) {
     try (final KubernetesClient k8s = new KubernetesClientBuilder().build()) {
       ObjectReference objectReference = new ObjectReferenceBuilder().withApiVersion("batch/v1")
-                                                                    .withKind("Job")
-                                                                    .withName("jobName")
-                                                                    .build();
+          .withKind("Job")
+          .withName("jobName")
+          .build();
 
       k8s.v1()
-         .events()
-         .inNamespace("default")
-         .withInvolvedObject(objectReference)
-         .list()
-         .getItems()
-         .stream()
-         .map(Event::getMessage)
-         .forEach(logger::info);
+          .events()
+          .inNamespace("default")
+          .withInvolvedObject(objectReference)
+          .list()
+          .getItems()
+          .stream()
+          .map(Event::getMessage)
+          .forEach(logger::info);
     }
   }
 }
