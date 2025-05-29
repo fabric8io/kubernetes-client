@@ -24,8 +24,16 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * This example is Java equivalent to `kubectl get events --for job/jobName`. It gets
- * events related to specified namespace in a Kubernetes Cluster.
+ * This example is Java equivalent to `kubectl events --for job/jobName`, or
+ * `kubectl get events --field-selector involvedObject.kind=Job,involvedObject.name=jobName,involvedObject.apiVersion=batch/v1`. 
+ * It gets events related to a specified Job in a Kubernetes cluster.
+ * <p>
+ *   This example demonstrates how to retrieve events for a specific Kubernetes resource.
+ *   The same approach can be adapted to fetch events for other resource types,
+ *   such as Pods, Deployments, or Services, by modifying the {@link ObjectReference}
+ *   to point to the desired resource. You would need to change the `apiVersion`,
+ *   `kind`, and `name` fields in the {@link ObjectReferenceBuilder} accordingly.
+ * </p>
  */
 public class EventsGetForJobEquivalent
 {
