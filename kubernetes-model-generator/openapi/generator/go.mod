@@ -29,7 +29,7 @@ require (
 	github.com/stolostron/multicluster-observability-operator v0.0.0-20250514110222-f012fb274292
 	github.com/stolostron/multiclusterhub-operator v0.0.0-20250512195158-bdd641abff01
 	github.com/stolostron/search-v2-operator v0.0.0-20250328175715-c789830f4144
-	github.com/tektoncd/pipeline v0.70.0
+	github.com/tektoncd/pipeline v1.0.0
 	github.com/tektoncd/triggers v0.31.0
 	istio.io/client-go v1.25.2
 	k8s.io/api v0.33.1
@@ -183,7 +183,6 @@ require (
 	github.com/vincent-petithory/dataurl v1.0.0 // indirect
 	github.com/x448/float16 v0.8.4 // indirect
 	go.opencensus.io v0.24.0 // indirect
-	go.opentelemetry.io/otel/metric v1.35.0 // indirect
 	go.uber.org/multierr v1.11.0 // indirect
 	go.uber.org/zap v1.27.0 // indirect
 	golang.org/x/crypto v0.37.0 // indirect
