@@ -11,6 +11,8 @@
 
 #### New Features
 
+* Fix #7045: (java-generator)  Extend the existingJavaTypes to support use of existing enumerations
+
 #### _**Note**_: Breaking changes
 
 ### 7.3.1 (2025-05-20)
