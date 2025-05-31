@@ -33,8 +33,8 @@ public class Config {
   public static final Map<String, String> DEFAULT_PACKAGE_OVERRIDES = new HashMap<>();
   public static final List<String> DEFAULT_FILES_SUFFIXES = Arrays.asList(".yaml", ".yml", ".json");
   // RFC 3339 - from: https://swagger.io/docs/specification/data-models/data-types/
-  public static final String DEFAULT_SER_DATETIME_FORMAT = "yyyy-MM-dd'T'HH:mm:ssVV";
-  public static final String DEFAULT_DESER_DATETIME_FORMAT = "yyyy-MM-dd'T'HH:mm:ss[XXX][VV]";
+  public static final String DEFAULT_SER_DATETIME_FORMAT = "yyyy-MM-dd'T'HH:mm:ssXXX";
+  public static final String DEFAULT_DESER_DATETIME_FORMAT = "yyyy-MM-dd'T'HH:mm:ssXXX";
   public static final Map<String, String> DEFAULT_EXISTING_JAVA_TYPES_OVERRIDES = new HashMap<>();
 
   private Boolean uppercaseEnums = DEFAULT_UPPERCASE_ENUM;

@@ -147,7 +147,7 @@ public class AnnotatedSpec {
     return numInt;
   }
 
-  @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ssVV")
+  @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ssXXX")
   public java.time.ZonedDateTime getIssuedAt() {
     return issuedAt;
   }
