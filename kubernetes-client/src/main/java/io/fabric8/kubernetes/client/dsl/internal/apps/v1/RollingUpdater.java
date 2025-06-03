@@ -184,9 +184,10 @@ public abstract class RollingUpdater<T extends HasMetadata, L> {
     try {
       return applyPatch(resource, RollingUpdater.requestPayLoadForRolloutRestart(), resource.getKubernetesSerialization());
     } catch (KubernetesClientException e) {
-      if (e.getCode() == 422 /*HTTP_UNPROCESSABLE_ENTITY*/) {
+      if (e.getCode() == 422 /* HTTP_UNPROCESSABLE_ENTITY */) {
         LOG.debug("Annotations path missing, retrying with full annotations patch.");
-        return applyPatch(resource, RollingUpdater.requestPayLoadForRolloutRestartAndCreateAnnotations(), resource.getKubernetesSerialization());
+        return applyPatch(resource, RollingUpdater.requestPayLoadForRolloutRestartAndCreateAnnotations(),
+            resource.getKubernetesSerialization());
       } else {
         throw e;
       }
@@ -219,9 +220,9 @@ public abstract class RollingUpdater<T extends HasMetadata, L> {
 
   public static List<Object> requestPayLoadForRolloutRestartAndCreateAnnotations() {
     return List.of(Map.of(
-      "op", "add",
-      "path", "/spec/template/metadata/annotations",
-      "value", Map.of("kubectl.kubernetes.io/restartedAt", nowAsRestartTimestamp())));
+        "op", "add",
+        "path", "/spec/template/metadata/annotations",
+        "value", Map.of("kubectl.kubernetes.io/restartedAt", nowAsRestartTimestamp())));
   }
 
   /**
