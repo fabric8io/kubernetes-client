@@ -181,7 +181,16 @@ public abstract class RollingUpdater<T extends HasMetadata, L> {
   }
 
   public static <T extends HasMetadata> T restart(RollableScalableResourceOperation<T, ?, ?> resource) {
-    return applyPatch(resource, RollingUpdater.requestPayLoadForRolloutRestart(), resource.getKubernetesSerialization());
+    try {
+      return applyPatch(resource, RollingUpdater.requestPayLoadForRolloutRestart(), resource.getKubernetesSerialization());
+    } catch (KubernetesClientException e) {
+      if (e.getCode() == 422 /*HTTP_UNPROCESSABLE_ENTITY*/) {
+        LOG.debug("Annotations path missing, retrying with full annotations patch.");
+        return applyPatch(resource, RollingUpdater.requestPayLoadForRolloutRestartAndCreateAnnotations(), resource.getKubernetesSerialization());
+      } else {
+        throw e;
+      }
+    }
   }
 
   public static List<Object> requestPayLoadForRolloutPause() {
@@ -197,11 +206,22 @@ public abstract class RollingUpdater<T extends HasMetadata, L> {
         "path", "/spec/paused"));
   }
 
+  private static String nowAsRestartTimestamp() {
+    return new Date().toInstant().atOffset(ZoneOffset.UTC).format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+  }
+
   public static List<Object> requestPayLoadForRolloutRestart() {
     return List.of(Map.of(
         "op", "add",
         "path", "/spec/template/metadata/annotations/kubectl.kubernetes.io~1restartedAt",
-        "value", new Date().toInstant().atOffset(ZoneOffset.UTC).format(DateTimeFormatter.ISO_LOCAL_DATE_TIME)));
+        "value", nowAsRestartTimestamp()));
+  }
+
+  public static List<Object> requestPayLoadForRolloutRestartAndCreateAnnotations() {
+    return List.of(Map.of(
+      "op", "add",
+      "path", "/spec/template/metadata/annotations",
+      "value", Map.of("kubectl.kubernetes.io/restartedAt", nowAsRestartTimestamp())));
   }
 
   /**
