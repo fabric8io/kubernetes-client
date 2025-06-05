@@ -143,7 +143,7 @@
     <exec.maven-plugin.version>3.5.1</exec.maven-plugin.version>
     <maven.compiler.plugin.version>3.14.0</maven.compiler.plugin.version>
     <maven.bundle.plugin.version>5.1.9</maven.bundle.plugin.version>
-    <maven.buildhelper.plugin.version>3.6.0</maven.buildhelper.plugin.version>
+    <maven.buildhelper.plugin.version>3.6.1</maven.buildhelper.plugin.version>
     <maven.jar.plugin.version>3.4.2</maven.jar.plugin.version>
     <maven.surefire.plugin.version>3.5.3</maven.surefire.plugin.version>
     <maven.resources.plugin.version>3.3.1</maven.resources.plugin.version>
