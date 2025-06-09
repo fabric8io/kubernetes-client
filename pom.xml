@@ -23,7 +23,7 @@
 
   <groupId>io.fabric8</groupId>
   <artifactId>kubernetes-client-project</artifactId>
-  <version>6.13.5</version>
+  <version>6.14-SNAPSHOT</version>
   <packaging>pom</packaging>
 
   <name>Fabric8 :: Kubernetes :: Project</name>
