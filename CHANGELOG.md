@@ -1,5 +1,11 @@
 ## CHANGELOG
 
+### 6.14.0 (TBD)
+* Fix #7107: Jackson 2.19.0+ support
+
+#### _**Note**_: Breaking changes
+* Fix #7107: This release is not backwards-compatible with previous versions of Jackson, you'll need to use Jackson 2.19.0 in your project for a correct behavior of the Kubernetes Client.
+
 ### 6.13.5 (2025-01-18)
 
 #### Bugs

@@ -27,6 +27,7 @@ import com.fasterxml.jackson.databind.deser.SettableBeanProperty;
 import com.fasterxml.jackson.databind.exc.MismatchedInputException;
 import com.fasterxml.jackson.databind.introspect.ObjectIdInfo;
 import com.fasterxml.jackson.databind.jsonFormatVisitors.JsonObjectFormatVisitor;
+import com.fasterxml.jackson.databind.util.NameTransformer;
 
 import java.io.IOException;
 import java.lang.annotation.Annotation;
@@ -145,6 +146,14 @@ public class SettableBeanPropertyDelegate extends SettableBeanProperty.Delegatin
   @Override
   public SettableBeanProperty withSimpleName(String simpleName) {
     return _with(delegate.withSimpleName(simpleName));
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public SettableBeanProperty unwrapped(NameTransformer unwrapper) {
+    return _with(delegate.unwrapped(unwrapper));
   }
 
   /**

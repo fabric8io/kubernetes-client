@@ -325,6 +325,7 @@ class JsonSchemaTest {
     private Map<String, Object> values = new HashMap<>();
 
     @JsonAnyGetter
+    @JsonIgnore
     public Map<String, Object> getAdditionalProperties() {
       return this.values;
     }

@@ -95,7 +95,7 @@
     <okhttp.bundle.version>3.12.1_1</okhttp.bundle.version>
     <okio.version>1.17.6</okio.version>
     <okio.bundle.version>1.15.0_1</okio.bundle.version>
-    <jackson.version>2.17.1</jackson.version>
+    <jackson.version>2.19.0</jackson.version>
     <jetty.version>11.0.21</jetty.version>
     <maven-core.version>3.9.7</maven-core.version>
     <maven-plugin-annotations.version>3.13.0</maven-plugin-annotations.version>
@@ -127,8 +127,8 @@
     <slf4j.version>2.0.13</slf4j.version>
     <log4j.version>2.23.1</log4j.version>
     <lombok.version>1.18.32</lombok.version>
-    <snakeyaml.version>2.7</snakeyaml.version>
-    <snakeyaml.bundle.version>2.2</snakeyaml.bundle.version> <!-- Transitive Jackson -->
+    <snakeyaml.version>2.9</snakeyaml.version>
+    <snakeyaml.bundle.version>2.4</snakeyaml.bundle.version> <!-- Transitive Jackson -->
     <bouncycastle.version>1.78.1</bouncycastle.version>
     <bc-fips.version>1.0.2.5</bc-fips.version>
     <bcpkix-fips.version>1.0.7</bcpkix-fips.version>
