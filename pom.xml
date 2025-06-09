@@ -109,7 +109,7 @@
 
     <!-- Testing versions -->
     <junit4.version>4.13.2</junit4.version>
-    <junit.version>5.13.0</junit.version>
+    <junit.version>5.13.1</junit.version>
     <assertj.core.version>3.27.3</assertj.core.version>
     <awaitility.version>4.3.0</awaitility.version>
     <approvaltests.version>24.22.0</approvaltests.version>
