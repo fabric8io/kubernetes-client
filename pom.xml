@@ -64,9 +64,9 @@
 
   <distributionManagement>
     <snapshotRepository>
-      <id>ossrh</id>
-      <name>Sonatype OSS Repository (Snapshots)</name>
-      <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+      <id>central-portal</id>
+      <name>Central Portal (Snapshots)</name>
+      <url>https://central.sonatype.com/repository/maven-snapshots/</url>
     </snapshotRepository>
     <repository>
       <id>ossrh</id>
@@ -169,7 +169,7 @@
     <jacoco-maven-plugin.version>0.8.12</jacoco-maven-plugin.version>
     <jkube.version>1.16.2</jkube.version>
     <sonar-maven-plugin.version>3.11.0.3922</sonar-maven-plugin.version>
-    <nexus-staging-maven-plugin>1.7.0</nexus-staging-maven-plugin>
+    <central-publishing-maven-plugin>0.7.0</central-publishing-maven-plugin>
     <spotless-maven-plugin.version>2.43.0</spotless-maven-plugin.version>
 
     <!-- Other options -->
@@ -1343,14 +1343,14 @@
             </configuration>
           </plugin>
           <plugin>
-            <groupId>org.sonatype.plugins</groupId>
-            <artifactId>nexus-staging-maven-plugin</artifactId>
-            <version>${nexus-staging-maven-plugin}</version>
+            <groupId>org.sonatype.central</groupId>
+            <artifactId>central-publishing-maven-plugin</artifactId>
+            <version>${central-publishing-maven-plugin}</version>
             <extensions>true</extensions>
             <configuration>
+              <publishingServerId>central-portal</publishingServerId>
+              <autoPublish>false</autoPublish>
               <serverId>ossrh</serverId>
-              <nexusUrl>https://oss.sonatype.org/</nexusUrl>
-              <autoReleaseAfterClose>false</autoReleaseAfterClose>
             </configuration>
           </plugin>
           <plugin>
