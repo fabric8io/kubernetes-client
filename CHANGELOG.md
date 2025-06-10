@@ -14,6 +14,12 @@
 
 #### _**Note**_: Breaking changes
 
+### 6.14.0 (2025-06-10)
+* Fix #7107: Jackson 2.19.0+ support
+
+#### _**Note**_: Breaking changes
+* Fix #7107: This release is not backwards-compatible with previous versions of Jackson, you'll need to use Jackson 2.19.0 in your project for a correct behavior of the Kubernetes Client.
+
 ### 7.3.1 (2025-05-20)
 
 #### Bugs
