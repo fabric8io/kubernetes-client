@@ -15,6 +15,8 @@
 #### _**Note**_: Breaking changes
 
 ### 6.14.0 (2025-06-10)
+
+#### Bugs
 * Fix #7107: Jackson 2.19.0+ support
 
 #### _**Note**_: Breaking changes
