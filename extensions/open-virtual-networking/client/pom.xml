@@ -28,6 +28,7 @@
   </parent>
 
   <artifactId>open-virtual-networking-client</artifactId>
+  <name>Fabric8 :: Open Virtual Networking :: Client</name>
 
   <properties>
     <useIncrementalCompilation>false</useIncrementalCompilation>
