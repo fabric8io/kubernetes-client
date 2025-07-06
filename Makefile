@@ -65,6 +65,15 @@ sonar: clean
 	# $(MAVEN_ARGS) ---> -T 1C won't work with sonar analysis (yet)
 	mvn -Psonar install sonar:sonar
 
+.PHONY: sonar-pr-report
+sonar-pr-report: clean
+	mvn -Psonar install sonar:sonar \
+		-Dsonar.login=${SONAR_LOGIN_TOKEN} \
+		-Dsonar.pullrequest.key=${PR_NUMBER} \
+		-Dsonar.pullrequest.branch=${PR_BRANCH} \
+		-Dsonar.pullrequest.base=${BASE_BRANCH} \
+		-Dsonar.pullrequest.provider=GitHub
+
 .PHONY: javadoc
 javadoc: clean
 	mvn $(MAVEN_ARGS) install javadoc:jar -DskipTests -Pjavadoc-test
