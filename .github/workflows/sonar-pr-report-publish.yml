@@ -14,12 +14,13 @@
 # limitations under the License.
 #
 
-name: Sonar Scanner
+name: Sonar PR Report Publish
 
 on:
-  push:
-    branches:
-      - main
+  workflow_run:
+    workflows: [Sonar PR Report Request]
+    types:
+      - completed
 
 concurrency:
   # Only run once for latest commit per ref and cancel other (previous) runs.
@@ -35,6 +36,10 @@ jobs:
     runs-on: ubuntu-latest
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      BASE_BRANCH: main
+      PR_BRANCH: ${{ github.event.workflow_run.head_branch }}
+      PR_AUTHOR: ${{ github.event.sender.login }}
+      GITHUB_REPO: ${{ github.repository }}
       SONAR_LOGIN_TOKEN: ${{ secrets.SONAR_LOGIN_TOKEN }}
     steps:
       - name: Checkout
@@ -47,5 +52,14 @@ jobs:
         with:
           java-version: '17'
           distribution: 'temurin'
+      - name: Get PR number
+        run: |
+          PR_QUERY_RESULT=$(curl -s -H "Authorization: token $GITHUB_TOKEN" \
+            "https://api.github.com/repos/$GITHUB_REPO/pulls?head=$PR_AUTHOR:$PR_BRANCH&state=open" | jq '.[0].number')
+          if [ "$PR_QUERY_RESULT" = "null" ] || [ -z "$PR_QUERY_RESULT" ]; then
+            echo "Could not find PR number for $PR_AUTHOR:$PR_BRANCH"
+            exit 1
+          fi
+          echo "PR_NUMBER=$PR_QUERY_RESULT" >> $GITHUB_ENV
       - name: Sonar
-        run: make sonar
+        run: make sonar-pr-report
