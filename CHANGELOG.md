@@ -1,11 +1,12 @@
 ## CHANGELOG
 
 ### 7.4-SNAPSHOT
-* Fix #7116: (java-generator) Use timezone format compatible with Kubernetes
 
 #### Bugs
 * Fix #7087: Avoid possible NPE in OkHttp websocket handlinger
 * Fix #7080: Avoid NPE in CRDGenerator if post-processor is set to null
+* Fix #7116: (java-generator) Use timezone format compatible with Kubernetes
+* Fix #7163: Ensure that streams are notified of errors
 
 #### Improvements
 
