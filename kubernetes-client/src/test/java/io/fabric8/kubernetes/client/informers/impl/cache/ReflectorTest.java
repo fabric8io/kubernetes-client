@@ -70,13 +70,16 @@ class ReflectorTest {
     };
     reflector.setExceptionHandler((b, t) -> true);
 
+    AbstractWatchManager manager = Mockito.mock(AbstractWatchManager.class);
+    Mockito.when(manager.isWatching()).thenReturn(true);
+
     assertFalse(reflector.isWatching());
     assertFalse(reflector.isStopped());
 
     // throw an exception, then watch normally
     Mockito.when(mock.submitWatch(Mockito.any(), Mockito.any()))
         .thenThrow(new KubernetesClientException("error"))
-        .thenReturn(CompletableFuture.completedFuture(Mockito.mock(AbstractWatchManager.class)));
+        .thenReturn(CompletableFuture.completedFuture(manager));
 
     CompletableFuture<Void> future = reflector.start();
 
@@ -123,6 +126,25 @@ class ReflectorTest {
   }
 
   @Test
+  void testNotActuallyWatching() {
+    ListerWatcher<Pod, PodList> mock = Mockito.mock(ListerWatcher.class);
+    PodList list = new PodListBuilder().withNewMetadata().withResourceVersion("1").endMetadata().build();
+    Mockito.when(mock.submitList(Mockito.any())).thenReturn(CompletableFuture.completedFuture(list));
+
+    Reflector<Pod, PodList> reflector = new Reflector<>(mock, mockStore);
+
+    AbstractWatchManager manager = Mockito.mock(AbstractWatchManager.class);
+    Mockito.when(manager.isWatching()).thenReturn(false);
+
+    Mockito.when(mock.submitWatch(Mockito.any(), Mockito.any()))
+        .thenReturn(CompletableFuture.completedFuture(manager));
+
+    reflector.start();
+
+    assertFalse(reflector.isWatching());
+  }
+
+  @Test
   void testNonHttpGone() {
     ListerWatcher<Pod, PodList> mock = Mockito.mock(ListerWatcher.class);
     PodList list = new PodListBuilder().withNewMetadata().withResourceVersion("1").endMetadata().build();
@@ -130,8 +152,11 @@ class ReflectorTest {
 
     Reflector<Pod, PodList> reflector = new Reflector<>(mock, mockStore);
 
+    AbstractWatchManager manager = Mockito.mock(AbstractWatchManager.class);
+    Mockito.when(manager.isWatching()).thenReturn(true);
+
     Mockito.when(mock.submitWatch(Mockito.any(), Mockito.any()))
-        .thenReturn(CompletableFuture.completedFuture(Mockito.mock(AbstractWatchManager.class)));
+        .thenReturn(CompletableFuture.completedFuture(manager));
 
     reflector.start();
 
@@ -160,6 +185,7 @@ class ReflectorTest {
     reflector.setMinTimeout(1);
 
     AbstractWatchManager manager = Mockito.mock(AbstractWatchManager.class);
+    Mockito.when(manager.isWatching()).thenReturn(true);
     Mockito.when(mock.submitWatch(Mockito.any(), Mockito.any()))
         .thenReturn(CompletableFuture.completedFuture(manager));
 
