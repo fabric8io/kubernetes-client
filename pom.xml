@@ -164,7 +164,7 @@
     <jacoco-maven-plugin.version>0.8.13</jacoco-maven-plugin.version>
     <jkube.version>1.18.1</jkube.version>
     <sonar-maven-plugin.version>4.0.0.4121</sonar-maven-plugin.version>
-    <central-publishing-maven-plugin>0.7.0</central-publishing-maven-plugin>
+    <central-publishing-maven-plugin>0.8.0</central-publishing-maven-plugin>
     <properties.maven.plugin.version>1.0.0</properties.maven.plugin.version>
     <spotless-maven-plugin.version>2.44.5</spotless-maven-plugin.version>
     <really-executable-jar-maven-plugin.version>2.1.1</really-executable-jar-maven-plugin.version>
