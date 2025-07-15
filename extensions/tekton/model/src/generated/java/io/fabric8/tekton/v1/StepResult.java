@@ -33,7 +33,7 @@ import lombok.ToString;
 import lombok.experimental.Accessors;
 
 /**
- * StepResult used to describe the Results of a Step.<br><p> <br><p> This is field is at an BETA stability level and gated by "enable-step-actions" feature flag.
+ * StepResult used to describe the Results of a Step.
  */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)

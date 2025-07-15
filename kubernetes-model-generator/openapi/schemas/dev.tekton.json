@@ -172,9 +172,6 @@
         "coschedule": {
           "type": "string"
         },
-        "disableAffinityAssistant": {
-          "type": "boolean"
-        },
         "disableCredsInit": {
           "type": "boolean"
         },
@@ -206,6 +203,7 @@
           "type": "boolean"
         },
         "enableStepActions": {
+          "description": "EnableStepActions is a no-op flag since StepActions are stable",
           "type": "boolean"
         },
         "enforceNonfalsifiability": {
@@ -522,7 +520,7 @@
       }
     },
     "com.github.tektoncd.pipeline.pkg.apis.pipeline.v1.types.StepResult": {
-      "description": "StepResult used to describe the Results of a Step.\n\nThis is field is at an BETA stability level and gated by \"enable-step-actions\" feature flag.",
+      "description": "StepResult used to describe the Results of a Step.",
       "type": "object",
       "required": [
         "name"
@@ -821,7 +819,7 @@
           "type": "string"
         },
         "securityContext": {
-          "description": "SecurityContext holds pod-level security attributes and common container settings. Optional: Defaults to empty.  See type description for default values of each field.",
+          "description": "SecurityContext holds pod-level security attributes and common container settings. Optional: Defaults to empty.  See type description for default values of each field. See Pod.spec.securityContext (API version: v1)",
           "$ref": "#/definitions/io.k8s.api.core.v1.PodSecurityContext"
         },
         "tolerations": {
@@ -5558,7 +5556,7 @@
           "$ref": "#/definitions/dev.tekton.v1.Ref"
         },
         "results": {
-          "description": "Results declares StepResults produced by the Step.\n\nThis is field is at an ALPHA stability level and gated by \"enable-step-actions\" feature flag.\n\nIt can be used in an inlined Step when used to store Results to $(step.results.resultName.path). It cannot be used when referencing StepActions using [v1.Step.Ref]. The Results declared by the StepActions will be stored here instead.",
+          "description": "Results declares StepResults produced by the Step.\n\nIt can be used in an inlined Step when used to store Results to $(step.results.resultName.path). It cannot be used when referencing StepActions using [v1.Step.Ref]. The Results declared by the StepActions will be stored here instead.",
           "type": "array",
           "items": {
             "default": {},
@@ -5656,7 +5654,7 @@
       }
     },
     "dev.tekton.v1.StepResult": {
-      "description": "StepResult used to describe the Results of a Step.\n\nThis is field is at an BETA stability level and gated by \"enable-step-actions\" feature flag.",
+      "description": "StepResult used to describe the Results of a Step.",
       "type": "object",
       "required": [
         "name"
@@ -7772,71 +7770,6 @@
         "Group": "tekton.dev",
         "Version": "v1beta1",
         "Kind": "CloudEventDeliveryState",
-        "Scope": "Namespaced"
-      }
-    },
-    "dev.tekton.v1beta1.ClusterTask": {
-      "description": "ClusterTask is a Task with a cluster scope. ClusterTasks are used to represent Tasks that should be publicly addressable from any namespace in the cluster.\n\nDeprecated: Please use the cluster resolver instead.",
-      "type": "object",
-      "properties": {
-        "apiVersion": {
-          "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
-          "type": "string"
-        },
-        "kind": {
-          "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
-          "type": "string"
-        },
-        "metadata": {
-          "default": {},
-          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta"
-        },
-        "spec": {
-          "description": "Spec holds the desired state of the Task from the client",
-          "default": {},
-          "$ref": "#/definitions/dev.tekton.v1beta1.TaskSpec"
-        }
-      },
-      "x-fabric8-info": {
-        "Type": "object",
-        "Group": "tekton.dev",
-        "Version": "v1beta1",
-        "Kind": "ClusterTask",
-        "Scope": "Clustered"
-      }
-    },
-    "dev.tekton.v1beta1.ClusterTaskList": {
-      "description": "ClusterTaskList contains a list of ClusterTask",
-      "type": "object",
-      "required": [
-        "items"
-      ],
-      "properties": {
-        "apiVersion": {
-          "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
-          "type": "string"
-        },
-        "items": {
-          "type": "array",
-          "items": {
-            "default": {},
-            "$ref": "#/definitions/dev.tekton.v1beta1.ClusterTask"
-          }
-        },
-        "kind": {
-          "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
-          "type": "string"
-        },
-        "metadata": {
-          "default": {},
-          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ListMeta"
-        }
-      },
-      "x-fabric8-info": {
-        "Type": "list",
-        "Group": "tekton.dev",
-        "Version": "v1beta1",
-        "Kind": "ClusterTaskList",
         "Scope": "Namespaced"
       }
     },
@@ -9985,7 +9918,7 @@
           "$ref": "#/definitions/io.k8s.api.core.v1.ResourceRequirements"
         },
         "results": {
-          "description": "Results declares StepResults produced by the Step.\n\nThis is field is at an ALPHA stability level and gated by \"enable-step-actions\" feature flag.\n\nIt can be used in an inlined Step when used to store Results to $(step.results.resultName.path). It cannot be used when referencing StepActions using [v1beta1.Step.Ref]. The Results declared by the StepActions will be stored here instead.",
+          "description": "Results declares StepResults produced by the Step.\n\nIt can be used in an inlined Step when used to store Results to $(step.results.resultName.path). It cannot be used when referencing StepActions using [v1beta1.Step.Ref]. The Results declared by the StepActions will be stored here instead.",
           "type": "array",
           "items": {
             "default": {},
@@ -10575,7 +10508,7 @@
           "type": "string"
         },
         "kind": {
-          "description": "TaskKind indicates the Kind of the Task: 1. Namespaced Task when Kind is set to \"Task\". If Kind is \"\", it defaults to \"Task\". 2. Cluster-Scoped Task when Kind is set to \"ClusterTask\" 3. Custom Task when Kind is non-empty and APIVersion is non-empty",
+          "description": "TaskKind indicates the Kind of the Task: 1. Namespaced Task when Kind is set to \"Task\". If Kind is \"\", it defaults to \"Task\". 2. Custom Task when Kind is non-empty and APIVersion is non-empty",
           "type": "string"
         },
         "name": {

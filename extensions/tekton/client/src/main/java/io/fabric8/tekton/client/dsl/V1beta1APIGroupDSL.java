@@ -31,8 +31,6 @@ import io.fabric8.tekton.triggers.v1beta1.TriggerBindingList;
 import io.fabric8.tekton.triggers.v1beta1.TriggerList;
 import io.fabric8.tekton.triggers.v1beta1.TriggerTemplate;
 import io.fabric8.tekton.triggers.v1beta1.TriggerTemplateList;
-import io.fabric8.tekton.v1beta1.ClusterTask;
-import io.fabric8.tekton.v1beta1.ClusterTaskList;
 import io.fabric8.tekton.v1beta1.CustomRun;
 import io.fabric8.tekton.v1beta1.CustomRunList;
 import io.fabric8.tekton.v1beta1.Pipeline;
@@ -79,13 +77,6 @@ public interface V1beta1APIGroupDSL extends Client {
    * @return MixedOperation for CustomRun class
    */
   MixedOperation<CustomRun, CustomRunList, Resource<CustomRun>> customRuns();
-
-  /**
-   * API entrypoint for ClusterTask(tekton.dev/v1beta1)
-   *
-   * @return MixedOperation for ClusterTask class
-   */
-  NonNamespaceOperation<ClusterTask, ClusterTaskList, Resource<ClusterTask>> clusterTasks();
 
   /**
    * API entrypoint for Trigger(triggers.tekton.dev/v1beta1)
