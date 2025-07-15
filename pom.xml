@@ -159,7 +159,7 @@
     <maven.install.plugin.version>3.1.4</maven.install.plugin.version>
     <maven.invoker.plugin.version>3.9.1</maven.invoker.plugin.version>
     <maven.plugin.plugin.version>3.15.1</maven.plugin.plugin.version>
-    <gmavenplus-plugin.version>4.2.0</gmavenplus-plugin.version>
+    <gmavenplus-plugin.version>4.2.1</gmavenplus-plugin.version>
     <gradle-api-maven-plugin.version>0.0.7</gradle-api-maven-plugin.version>
     <jacoco-maven-plugin.version>0.8.13</jacoco-maven-plugin.version>
     <jkube.version>1.18.1</jkube.version>
