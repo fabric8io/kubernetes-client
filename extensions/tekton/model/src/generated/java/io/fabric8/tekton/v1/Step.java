@@ -363,7 +363,7 @@ public class Step implements Editable<StepBuilder>, KubernetesResource
     }
 
     /**
-     * Results declares StepResults produced by the Step.<br><p> <br><p> This is field is at an ALPHA stability level and gated by "enable-step-actions" feature flag.<br><p> <br><p> It can be used in an inlined Step when used to store Results to $(step.results.resultName.path). It cannot be used when referencing StepActions using [v1.Step.Ref]. The Results declared by the StepActions will be stored here instead.
+     * Results declares StepResults produced by the Step.<br><p> <br><p> It can be used in an inlined Step when used to store Results to $(step.results.resultName.path). It cannot be used when referencing StepActions using [v1.Step.Ref]. The Results declared by the StepActions will be stored here instead.
      */
     @JsonProperty("results")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -372,7 +372,7 @@ public class Step implements Editable<StepBuilder>, KubernetesResource
     }
 
     /**
-     * Results declares StepResults produced by the Step.<br><p> <br><p> This is field is at an ALPHA stability level and gated by "enable-step-actions" feature flag.<br><p> <br><p> It can be used in an inlined Step when used to store Results to $(step.results.resultName.path). It cannot be used when referencing StepActions using [v1.Step.Ref]. The Results declared by the StepActions will be stored here instead.
+     * Results declares StepResults produced by the Step.<br><p> <br><p> It can be used in an inlined Step when used to store Results to $(step.results.resultName.path). It cannot be used when referencing StepActions using [v1.Step.Ref]. The Results declared by the StepActions will be stored here instead.
      */
     @JsonProperty("results")
     public void setResults(List<StepResult> results) {

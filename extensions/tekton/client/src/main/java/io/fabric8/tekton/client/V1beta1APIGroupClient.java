@@ -32,8 +32,6 @@ import io.fabric8.tekton.triggers.v1beta1.TriggerBindingList;
 import io.fabric8.tekton.triggers.v1beta1.TriggerList;
 import io.fabric8.tekton.triggers.v1beta1.TriggerTemplate;
 import io.fabric8.tekton.triggers.v1beta1.TriggerTemplateList;
-import io.fabric8.tekton.v1beta1.ClusterTask;
-import io.fabric8.tekton.v1beta1.ClusterTaskList;
 import io.fabric8.tekton.v1beta1.CustomRun;
 import io.fabric8.tekton.v1beta1.CustomRunList;
 import io.fabric8.tekton.v1beta1.Pipeline;
@@ -75,11 +73,6 @@ public class V1beta1APIGroupClient extends ClientAdapter<V1beta1APIGroupClient> 
   @Override
   public MixedOperation<CustomRun, CustomRunList, Resource<CustomRun>> customRuns() {
     return resources(CustomRun.class, CustomRunList.class);
-  }
-
-  @Override
-  public NonNamespaceOperation<ClusterTask, ClusterTaskList, Resource<ClusterTask>> clusterTasks() {
-    return resources(ClusterTask.class, ClusterTaskList.class);
   }
 
   @Override

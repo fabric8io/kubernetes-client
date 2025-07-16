@@ -126,7 +126,7 @@ public class TaskRef implements Editable<TaskRefBuilder>, KubernetesResource
     }
 
     /**
-     * TaskKind indicates the Kind of the Task: 1. Namespaced Task when Kind is set to "Task". If Kind is "", it defaults to "Task". 2. Cluster-Scoped Task when Kind is set to "ClusterTask" 3. Custom Task when Kind is non-empty and APIVersion is non-empty
+     * TaskKind indicates the Kind of the Task: 1. Namespaced Task when Kind is set to "Task". If Kind is "", it defaults to "Task". 2. Custom Task when Kind is non-empty and APIVersion is non-empty
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -134,7 +134,7 @@ public class TaskRef implements Editable<TaskRefBuilder>, KubernetesResource
     }
 
     /**
-     * TaskKind indicates the Kind of the Task: 1. Namespaced Task when Kind is set to "Task". If Kind is "", it defaults to "Task". 2. Cluster-Scoped Task when Kind is set to "ClusterTask" 3. Custom Task when Kind is non-empty and APIVersion is non-empty
+     * TaskKind indicates the Kind of the Task: 1. Namespaced Task when Kind is set to "Task". If Kind is "", it defaults to "Task". 2. Custom Task when Kind is non-empty and APIVersion is non-empty
      */
     @JsonProperty("kind")
     public void setKind(String kind) {
