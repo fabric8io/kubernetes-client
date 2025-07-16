@@ -95,7 +95,7 @@
     <jackson.version>2.19.1</jackson.version>
     <jackson.bundle.version>${jackson.version}</jackson.bundle.version>
     <jetty.version>11.0.25</jetty.version>
-    <maven-core.version>3.9.10</maven-core.version>
+    <maven-core.version>3.9.11</maven-core.version>
     <maven-plugin-annotations.version>3.15.1</maven-plugin-annotations.version>
     <vertx.version>4.5.14</vertx.version>
     <jandex.version>3.3.1</jandex.version>
