@@ -4,6 +4,7 @@
 * Fix #7116: (java-generator) Use timezone format compatible with Kubernetes
 
 #### Bugs
+- Fix #7167: Allow Informer.isWatching to see underlying Watch state
 * Fix #7080: Avoid NPE in CRDGenerator if post-processor is set to null
 
 #### Improvements

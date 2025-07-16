@@ -52,6 +52,7 @@ public class WatchHTTPManager<T extends HasMetadata, L extends KubernetesResourc
     headers.forEach(builder::header);
     StringBuffer buffer = new StringBuffer();
     call = client.consumeBytes(builder.build(), (b, a) -> {
+      state.started.set(true);
       for (ByteBuffer content : b) {
         for (char c : StandardCharsets.UTF_8.decode(content).array()) {
           if (c == '\n') {

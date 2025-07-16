@@ -94,6 +94,7 @@ public class WatchConnectionManager<T extends HasMetadata, L extends KubernetesR
           }
         }
       }
+      state.started.set(true);
       this.ready = true;
       return w;
     });

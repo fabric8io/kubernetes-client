@@ -258,7 +258,15 @@ public class Reflector<T extends HasMetadata, L extends KubernetesResourceList<T
   }
 
   public boolean isWatching() {
-    return watching;
+    return watching && Optional.of(watchFuture).map(f -> {
+      if (f.isDone()) {
+        if (f.isCompletedExceptionally()) {
+          return null;
+        }
+        return f.getNow(null);
+      }
+      return null;
+    }).map(AbstractWatchManager::isWatching).orElse(false);
   }
 
   class ReflectorWatcher implements Watcher<T> {
