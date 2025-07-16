@@ -55,6 +55,9 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+      - name: Set open files (threads) limit
+        run: |
+          sudo prlimit --pid $$ --nofile=500000:500000
       - name: Setup Java
         uses: actions/setup-java@v4
         with:
