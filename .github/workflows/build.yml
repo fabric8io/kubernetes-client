@@ -47,9 +47,9 @@ jobs:
           - java: 11
             os: ubuntu-latest
           - java: 17
-            os: macos-latest
+            os: ubuntu-latest
           - java: 21
-            os: macos-latest
+            os: ubuntu-latest
     name: Java ${{ matrix.environment.java }} Maven
     runs-on: ${{ matrix.environment.os }}
     steps:
