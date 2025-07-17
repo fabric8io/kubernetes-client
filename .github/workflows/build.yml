@@ -40,23 +40,32 @@ permissions:
 
 jobs:
   build:
-    name: Java ${{ matrix.java }} Maven
-    runs-on: ubuntu-latest
     strategy:
+      fail-fast: false
       matrix:
-        java: [11,17,21]
+        environment:
+          - java: 11
+            os: ubuntu-latest
+          - java: 17
+            os: ubuntu-latest
+          - java: 21
+            os: ubuntu-latest
+    name: Java ${{ matrix.environment.java }} Maven
+    runs-on: ${{ matrix.environment.os }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+      - name: Set open files (threads) limit
+        run: |
+          sudo prlimit --pid $$ --nofile=500000:500000
       - name: Setup Java
         uses: actions/setup-java@v4
         with:
-          java-version: ${{ matrix.java }}
+          java-version: ${{ matrix.environment.java  }}
           distribution: 'temurin'
       - name: Build Project
         #run: make install MAVEN_ARGS="${MAVEN_ARGS}"
         run: mvn ${MAVEN_ARGS} install
-
       - name: Check java-generator CLI
         run: |
           chmod a+x java-generator/cli/target/java-gen
