@@ -448,6 +448,7 @@ class GeneratorTest {
     enumValues.add(new TextNode("baz"));
     props.put("e1", newEnum);
     JEnum enu = new JEnum(
+        "pkg",
         "t",
         JAVA_LANG_STRING,
         enumValues,
@@ -484,6 +485,7 @@ class GeneratorTest {
     enumValues.add(new TextNode("3"));
     props.put("e1", newEnum);
     JEnum enu = new JEnum(
+        "pkg",
         "t",
         JAVA_LANG_LONG,
         enumValues,
@@ -524,6 +526,7 @@ class GeneratorTest {
     enumValues.add(new TextNode("3"));
     props.put("e1", newEnum);
     JEnum enu = new JEnum(
+        "pkg",
         "t",
         JAVA_LANG_INTEGER,
         enumValues,
@@ -562,6 +565,7 @@ class GeneratorTest {
     enumValues.add(new TextNode("false"));
     props.put("e1", newEnum);
     JEnum enu = new JEnum(
+        "pkg",
         "t",
         JAVA_PRIMITIVE_BOOLEAN,
         enumValues,
@@ -600,6 +604,7 @@ class GeneratorTest {
     enumValues.add(new TextNode("baz"));
     props.put("e1", newEnum);
     JEnum enu = new JEnum(
+        "pkg",
         "t",
         JAVA_LANG_STRING,
         enumValues,
@@ -622,6 +627,32 @@ class GeneratorTest {
     assertEquals("foo", en.get().getEntries().get(0).getName().asString());
     assertEquals("bar", en.get().getEntries().get(1).getName().asString());
     assertEquals("baz", en.get().getEntries().get(2).getName().asString());
+  }
+
+  @Test
+  void testEnumDeprecatedConstructor() {
+    // Arrange
+    JSONSchemaProps newEnum = new JSONSchemaProps();
+    newEnum.setType("string");
+    JEnum enu = new JEnum(
+        "t",
+        JAVA_LANG_STRING,
+        List.of(),
+        defaultConfig,
+        null,
+        Boolean.FALSE,
+        null);
+
+    // Act
+    GeneratorResult res = enu.generateJava();
+
+    // Assert
+    assertEquals("T", enu.getType());
+    assertEquals(1, res.getInnerClasses().size());
+    assertEquals("T", res.getInnerClasses().get(0).getName());
+
+    Optional<EnumDeclaration> en = res.getInnerClasses().get(0).getEnumByName("T");
+    assertTrue(en.isPresent());
   }
 
   @Test
@@ -1085,6 +1116,29 @@ class GeneratorTest {
 
     // Assert
     assertEquals("org.test.ExistingJavaType", obj.getType());
+    assertEquals(0, res.getTopLevelClasses().size());
+  }
+
+  @Test
+  void testExistingJavaTypeEnum() {
+    // Arrange
+    Config config = Config.builder()
+        .existingJavaTypes(Collections.singletonMap("v1alpha1.E", "org.test.ExistingJavaEnum")).build();
+    JEnum obj = new JEnum(
+        "v1alpha1",
+        "E",
+        JAVA_LANG_STRING,
+        List.of(),
+        config,
+        null,
+        Boolean.FALSE,
+        null);
+
+    // Act
+    GeneratorResult res = obj.generateJava();
+
+    // Assert
+    assertEquals("org.test.ExistingJavaEnum", obj.getType());
     assertEquals(0, res.getTopLevelClasses().size());
   }
 }

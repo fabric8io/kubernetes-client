@@ -47,20 +47,38 @@ public class JEnum extends AbstractJSONSchema2Pojo {
   private final String underlyingType;
   private final Set<String> values; //Let's prevent duplicates
 
-  public JEnum(String type, String underlyingType, List<JsonNode> values, Config config, String description,
-      final boolean isNullable,
-      JsonNode defaultValue) {
+  // Used for matching against existing types.
+  private final String pkgPrefixedType;
+
+  public JEnum(String pkg, String type, String underlyingType, List<JsonNode> values, Config config, String description,
+      final boolean isNullable, JsonNode defaultValue) {
     super(config, description, isNullable, defaultValue, null);
     this.type = AbstractJSONSchema2Pojo.sanitizeString(
         type.substring(0, 1).toUpperCase() + type.substring(1));
     this.underlyingType = underlyingType;
     //Tests assume order so let's use LinkedHashSet instead of just using Collectors.toSet()
     this.values = values.stream().map(JsonNode::asText).collect(Collectors.toCollection(LinkedHashSet::new));
+    this.pkgPrefixedType = createPackagePrefixedType(pkg, this.type);
+  }
+
+  /**
+   * @deprecated use {@link #JEnum(String, String, String, List, Config, String, boolean, JsonNode)}
+   */
+  @Deprecated
+  public JEnum(String type, String underlyingType, List<JsonNode> values, Config config, String description,
+      final boolean isNullable, JsonNode defaultValue) {
+    this(null, type, underlyingType, values, config, description, isNullable, defaultValue);
+  }
+
+  private String createPackagePrefixedType(String pkg, String type) {
+    String p = (pkg == null) ? "" : pkg.trim();
+    String pkgPrefix = (p.isEmpty()) ? p : p + ".";
+    return pkgPrefix + type;
   }
 
   @Override
   public String getType() {
-    return this.type;
+    return config.getExistingJavaTypes().getOrDefault(this.pkgPrefixedType, this.type);
   }
 
   private String sanitizeEnumEntry(final String str) {
@@ -93,6 +111,10 @@ public class JEnum extends AbstractJSONSchema2Pojo {
 
   @Override
   public GeneratorResult generateJava() {
+    if (config.getExistingJavaTypes().containsKey(pkgPrefixedType)) {
+      return new GeneratorResult(Collections.emptyList());
+    }
+
     CompilationUnit cu = new CompilationUnit();
     EnumDeclaration en = cu.addEnum(this.type);
 
