@@ -75,9 +75,9 @@ public class VertxHttpClientBuilder<F extends HttpClient.Factory>
     PoolOptions poolOptions = new PoolOptions()
         .setHttp1MaxSize(MAX_CONNECTIONS)
         .setHttp2MaxSize(MAX_CONNECTIONS);
-    
+
     HttpClientOptions options = new HttpClientOptions();
-    
+
     options.setIdleTimeoutUnit(TimeUnit.SECONDS);
 
     if (this.connectTimeout != null) {
@@ -133,10 +133,11 @@ public class VertxHttpClientBuilder<F extends HttpClient.Factory>
         }
       });
     }
-    
+
     WebSocketClientOptions wsOptions = createWebSocketClientOptions();
-    
-    return new VertxHttpClient<>(this, new AtomicBoolean(), vertx.createHttpClient(options, poolOptions), wsOptions, closeVertx);
+
+    return new VertxHttpClient<>(this, new AtomicBoolean(), vertx.createHttpClient(options, poolOptions), wsOptions,
+        closeVertx);
   }
 
   @Override
@@ -146,7 +147,7 @@ public class VertxHttpClientBuilder<F extends HttpClient.Factory>
 
   private WebSocketClientOptions createWebSocketClientOptions() {
     WebSocketClientOptions wsOptions = new WebSocketClientOptions();
-    
+
     wsOptions.setMaxConnections(MAX_CONNECTIONS);
 
     // the api-server does not seem to fragment messages, so the frames can be very large
@@ -175,7 +176,7 @@ public class VertxHttpClientBuilder<F extends HttpClient.Factory>
         }
       });
     }
-    
+
     return wsOptions;
   }
 

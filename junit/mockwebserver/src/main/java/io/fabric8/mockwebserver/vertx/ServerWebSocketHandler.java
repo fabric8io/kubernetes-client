@@ -44,7 +44,8 @@ public class ServerWebSocketHandler implements Handler<ServerWebSocket> {
     serverWebSocket.fetch(1);
   }
 
-  public void configureWebSocket(ServerWebSocket serverWebSocket, VertxMockWebSocket mockWebSocket, WebSocketListener wsListener) {
+  public void configureWebSocket(ServerWebSocket serverWebSocket, VertxMockWebSocket mockWebSocket,
+      WebSocketListener wsListener) {
     serverWebSocket.textMessageHandler(text -> {
       wsListener.onMessage(mockWebSocket, text);
       serverWebSocket.fetch(1);
