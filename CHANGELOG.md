@@ -11,6 +11,7 @@
 #### Improvements
 
 #### Dependency Upgrade
+* Fix #7174: Vert.x upgraded from v4.5.14 to v5.0.1
 
 #### New Features
 

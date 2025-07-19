@@ -63,8 +63,8 @@ class MockWebServerWebSocketTest extends Specification {
 		def condition = new PollingConditions(timeout: 10)
 
 		when: "The request is sent and a text message is written"
-		wsReq.onComplete { ws ->
-			ws.result().writeTextMessage("A text message from the client")
+		wsReq.onSuccess { ws ->
+			ws.writeTextMessage("A text message from the client")
 		}
 
 		then: "Expect the message to be received"
@@ -92,12 +92,12 @@ class MockWebServerWebSocketTest extends Specification {
 
 		when: "The request is sent and a text message is expected from server"
 		String receivedMessage = null
-		wsReq.onComplete { ws ->
-			ws.result().textMessageHandler { text ->
+		wsReq.onSuccess { ws ->
+			ws.textMessageHandler { text ->
 				receivedMessage = text
 			}
-			ws.result().fetch(Long.MAX_VALUE)
-			ws.result().writeTextMessage("Send me something")
+			ws.fetch(Long.MAX_VALUE)
+			ws.writeTextMessage("Send me something")
 		}
 
 		then: "Expect the message to be received by the client"
@@ -124,8 +124,8 @@ class MockWebServerWebSocketTest extends Specification {
 		def condition = new PollingConditions(timeout: 10)
 
 		when: "The request is sent and a binary message is written"
-		wsReq.onComplete { ws ->
-			ws.result().writeBinaryMessage(Buffer.buffer([1, 2, 3] as byte[]))
+		wsReq.onSuccess { ws ->
+			ws.writeBinaryMessage(Buffer.buffer([1, 2, 3] as byte[]))
 		}
 
 		then: "Expect the message to be received"
@@ -145,7 +145,7 @@ class MockWebServerWebSocketTest extends Specification {
 					@Override
 					void onMessage(WebSocket webSocket, String text) {
 						// Send the message after we make sure that the client wsRequest is established
-						wsReq.onComplete {
+						wsReq.onSuccess {
 							webSocket.send([1, 2, 3] as byte[])
 						}
 					}
@@ -155,12 +155,12 @@ class MockWebServerWebSocketTest extends Specification {
 
 		when: "The request is sent and a binary message is expected from server"
 		byte[] receivedMessage
-		wsReq.onComplete { ws ->
-			ws.result().binaryMessageHandler { buffer ->
+		wsReq.onSuccess { ws ->
+			ws.binaryMessageHandler { buffer ->
 				receivedMessage = buffer.getBytes()
 			}
-			ws.result().fetch(Long.MAX_VALUE)
-			ws.result().writeTextMessage("Send me something")
+			ws.fetch(Long.MAX_VALUE)
+			ws.writeTextMessage("Send me something")
 		}
 
 		then: "Expect the message to be received by the client"
@@ -189,8 +189,8 @@ class MockWebServerWebSocketTest extends Specification {
 		def condition = new PollingConditions(timeout: 10)
 
 		when: "The request is sent and a close message is written"
-		wsReq.onComplete { ws ->
-			ws.result().close(1000 as short, "Normal closure")
+		wsReq.onSuccess { ws ->
+			ws.close(1000 as short, "Normal closure")
 		}
 
 		then: "Expect the message to be received"

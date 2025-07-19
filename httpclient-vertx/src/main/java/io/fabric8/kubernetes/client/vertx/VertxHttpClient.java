@@ -28,6 +28,8 @@ import io.vertx.core.http.HttpClient;
 import io.vertx.core.http.HttpMethod;
 import io.vertx.core.http.RequestOptions;
 import io.vertx.core.http.UpgradeRejectedException;
+import io.vertx.core.http.WebSocketClient;
+import io.vertx.core.http.WebSocketClientOptions;
 import io.vertx.core.http.WebSocketConnectOptions;
 
 import java.nio.ByteBuffer;
@@ -44,6 +46,7 @@ public class VertxHttpClient<F extends io.fabric8.kubernetes.client.http.HttpCli
 
   private final Vertx vertx;
   private final HttpClient client;
+  private final WebSocketClient webSocketClient;
   private final boolean closeVertx;
 
   /**
@@ -59,6 +62,25 @@ public class VertxHttpClient<F extends io.fabric8.kubernetes.client.http.HttpCli
     super(vertxHttpClientBuilder, closed);
     this.vertx = vertxHttpClientBuilder.vertx;
     this.client = client;
+    this.webSocketClient = vertx.createWebSocketClient();
+    this.closeVertx = closeVertx;
+  }
+
+  /**
+   * Create a new VertxHttpClient instance.
+   *
+   * @param vertxHttpClientBuilder the builder that created this client.
+   * @param closed a flag to indicate if the client has been closed.
+   * @param client the Vert.x HttpClient instance (will be closed alongside the client).
+   * @param wsOptions the WebSocketClientOptions for configuring WebSocket connections.
+   * @param closeVertx whether the Vert.x instance should be closed when the client is closed.
+   */
+  VertxHttpClient(VertxHttpClientBuilder<F> vertxHttpClientBuilder, AtomicBoolean closed, HttpClient client,
+      WebSocketClientOptions wsOptions, boolean closeVertx) {
+    super(vertxHttpClientBuilder, closed);
+    this.vertx = vertxHttpClientBuilder.vertx;
+    this.client = client;
+    this.webSocketClient = vertx.createWebSocketClient(wsOptions);
     this.closeVertx = closeVertx;
   }
 
@@ -81,14 +103,13 @@ public class VertxHttpClient<F extends io.fabric8.kubernetes.client.http.HttpCli
       options.setTimeout(request.getTimeout().toMillis());
     }
 
-    request.headers().entrySet()
-        .forEach(e -> e.getValue().stream().forEach(v -> options.addHeader(e.getKey(), v)));
+    request.headers().forEach((key, value) -> value.forEach(v -> options.addHeader(key, v)));
     options.setAbsoluteURI(WebSocket.toWebSocketUri(request.uri()).toString());
 
     CompletableFuture<WebSocketResponse> response = new CompletableFuture<>();
 
-    client
-        .webSocket(options)
+    webSocketClient
+        .connect(options)
         .onSuccess(ws -> {
           VertxWebSocket ret = new VertxWebSocket(ws, listener);
           ret.init();
@@ -135,6 +156,7 @@ public class VertxHttpClient<F extends io.fabric8.kubernetes.client.http.HttpCli
   public void doClose() {
     try {
       client.close();
+      webSocketClient.close();
     } finally {
       if (closeVertx) {
         vertx.close();

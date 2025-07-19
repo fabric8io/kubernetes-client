@@ -25,12 +25,14 @@ import io.netty.handler.ssl.JdkSslContext;
 import io.vertx.core.Vertx;
 import io.vertx.core.VertxOptions;
 import io.vertx.core.file.FileSystemOptions;
+import io.vertx.core.http.HttpClientOptions;
 import io.vertx.core.http.HttpVersion;
+import io.vertx.core.http.PoolOptions;
+import io.vertx.core.http.WebSocketClientOptions;
 import io.vertx.core.net.JdkSSLEngineOptions;
 import io.vertx.core.net.ProxyOptions;
 import io.vertx.core.net.ProxyType;
 import io.vertx.core.spi.tls.SslContextFactory;
-import io.vertx.ext.web.client.WebClientOptions;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -39,7 +41,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Stream;
 
 import static io.fabric8.kubernetes.client.utils.HttpClientUtils.decodeBasicCredentials;
-import static io.vertx.core.spi.resolver.ResolverProvider.DISABLE_DNS_RESOLVER_PROP_NAME;
+import static io.vertx.core.impl.SysProps.DISABLE_DNS_RESOLVER;
 
 public class VertxHttpClientBuilder<F extends HttpClient.Factory>
     extends StandardHttpClientBuilder<VertxHttpClient<F>, F, VertxHttpClientBuilder<F>> {
@@ -70,21 +72,16 @@ public class VertxHttpClientBuilder<F extends HttpClient.Factory>
       return new VertxHttpClient<>(this, this.client.getClosed(), this.client.getClient(), closeVertx);
     }
 
-    WebClientOptions options = new WebClientOptions();
+    PoolOptions poolOptions = new PoolOptions()
+        .setHttp1MaxSize(MAX_CONNECTIONS)
+        .setHttp2MaxSize(MAX_CONNECTIONS);
 
-    options.setMaxPoolSize(MAX_CONNECTIONS);
-    options.setMaxWebSockets(MAX_CONNECTIONS);
+    HttpClientOptions options = new HttpClientOptions();
+
     options.setIdleTimeoutUnit(TimeUnit.SECONDS);
-    // the api-server does not seem to fragment messages, so the frames can be very large
-    options.setMaxWebSocketFrameSize(MAX_WS_MESSAGE_SIZE);
-    options.setMaxWebSocketMessageSize(MAX_WS_MESSAGE_SIZE);
 
     if (this.connectTimeout != null) {
       options.setConnectTimeout((int) this.connectTimeout.toMillis());
-    }
-
-    if (this.followRedirects) {
-      options.setFollowRedirects(followRedirects);
     }
 
     if (this.proxyType != HttpClient.ProxyType.DIRECT && this.proxyAddress != null) {
@@ -136,12 +133,51 @@ public class VertxHttpClientBuilder<F extends HttpClient.Factory>
         }
       });
     }
-    return new VertxHttpClient<>(this, new AtomicBoolean(), vertx.createHttpClient(options), closeVertx);
+
+    WebSocketClientOptions wsOptions = createWebSocketClientOptions();
+
+    return new VertxHttpClient<>(this, new AtomicBoolean(), vertx.createHttpClient(options, poolOptions), wsOptions,
+        closeVertx);
   }
 
   @Override
   protected VertxHttpClientBuilder<F> newInstance(F clientFactory) {
     return new VertxHttpClientBuilder<>(clientFactory, vertx, closeVertx);
+  }
+
+  private WebSocketClientOptions createWebSocketClientOptions() {
+    WebSocketClientOptions wsOptions = new WebSocketClientOptions();
+
+    wsOptions.setMaxConnections(MAX_CONNECTIONS);
+
+    // the api-server does not seem to fragment messages, so the frames can be very large
+    wsOptions.setMaxFrameSize(MAX_WS_MESSAGE_SIZE);
+    wsOptions.setMaxMessageSize(MAX_WS_MESSAGE_SIZE);
+
+    if (this.sslContext != null) {
+      wsOptions.setSsl(true);
+      wsOptions.setSslEngineOptions(new JdkSSLEngineOptions() {
+        @Override
+        public JdkSSLEngineOptions copy() {
+          return this;
+        }
+
+        @Override
+        public SslContextFactory sslContextFactory() {
+          return () -> new JdkSslContext(
+              sslContext,
+              true,
+              null,
+              IdentityCipherSuiteFilter.INSTANCE,
+              ApplicationProtocolConfig.DISABLED,
+              io.netty.handler.ssl.ClientAuth.NONE,
+              null,
+              false);
+        }
+      });
+    }
+
+    return wsOptions;
   }
 
   private ProxyType convertProxyType() {
@@ -162,19 +198,19 @@ public class VertxHttpClientBuilder<F extends HttpClient.Factory>
     // This is done using the DISABLE_DNS_RESOLVER_PROP_NAME system property.
     // The DNS resolver used by vert.x is configured during the (synchronous) initialization.
     // So, we just need to disable the async resolver around the Vert.x instance creation.
-    final String originalValue = System.getProperty(DISABLE_DNS_RESOLVER_PROP_NAME);
+    final String originalValue = DISABLE_DNS_RESOLVER.get();
     Vertx vertx;
     try {
-      System.setProperty(DISABLE_DNS_RESOLVER_PROP_NAME, "true");
+      System.setProperty(DISABLE_DNS_RESOLVER.name, "true");
       vertx = Vertx.vertx(new VertxOptions()
           .setFileSystemOptions(new FileSystemOptions().setFileCachingEnabled(false).setClassPathResolvingEnabled(false))
           .setUseDaemonThread(true));
     } finally {
       // Restore the original value
       if (originalValue == null) {
-        System.clearProperty(DISABLE_DNS_RESOLVER_PROP_NAME);
+        System.clearProperty(DISABLE_DNS_RESOLVER.name);
       } else {
-        System.setProperty(DISABLE_DNS_RESOLVER_PROP_NAME, originalValue);
+        System.setProperty(DISABLE_DNS_RESOLVER.name, originalValue);
       }
     }
     return vertx;
