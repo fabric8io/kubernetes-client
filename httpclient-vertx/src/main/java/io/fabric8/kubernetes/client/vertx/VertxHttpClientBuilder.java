@@ -25,13 +25,14 @@ import io.netty.handler.ssl.JdkSslContext;
 import io.vertx.core.Vertx;
 import io.vertx.core.VertxOptions;
 import io.vertx.core.file.FileSystemOptions;
+import io.vertx.core.http.HttpClientOptions;
 import io.vertx.core.http.HttpVersion;
+import io.vertx.core.http.PoolOptions;
 import io.vertx.core.http.WebSocketClientOptions;
 import io.vertx.core.net.JdkSSLEngineOptions;
 import io.vertx.core.net.ProxyOptions;
 import io.vertx.core.net.ProxyType;
 import io.vertx.core.spi.tls.SslContextFactory;
-import io.vertx.ext.web.client.WebClientOptions;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -71,16 +72,16 @@ public class VertxHttpClientBuilder<F extends HttpClient.Factory>
       return new VertxHttpClient<>(this, this.client.getClosed(), this.client.getClient(), closeVertx);
     }
 
-    WebClientOptions options = new WebClientOptions();
+    PoolOptions poolOptions = new PoolOptions()
+        .setHttp1MaxSize(MAX_CONNECTIONS)
+        .setHttp2MaxSize(MAX_CONNECTIONS);
+    
+    HttpClientOptions options = new HttpClientOptions();
     
     options.setIdleTimeoutUnit(TimeUnit.SECONDS);
 
     if (this.connectTimeout != null) {
       options.setConnectTimeout((int) this.connectTimeout.toMillis());
-    }
-
-    if (this.followRedirects) {
-      options.setFollowRedirects(followRedirects);
     }
 
     if (this.proxyType != HttpClient.ProxyType.DIRECT && this.proxyAddress != null) {
@@ -135,7 +136,7 @@ public class VertxHttpClientBuilder<F extends HttpClient.Factory>
     
     WebSocketClientOptions wsOptions = createWebSocketClientOptions();
     
-    return new VertxHttpClient<>(this, new AtomicBoolean(), vertx.createHttpClient(options), wsOptions, closeVertx);
+    return new VertxHttpClient<>(this, new AtomicBoolean(), vertx.createHttpClient(options, poolOptions), wsOptions, closeVertx);
   }
 
   @Override
@@ -152,7 +153,6 @@ public class VertxHttpClientBuilder<F extends HttpClient.Factory>
     wsOptions.setMaxFrameSize(MAX_WS_MESSAGE_SIZE);
     wsOptions.setMaxMessageSize(MAX_WS_MESSAGE_SIZE);
 
-    // Apply SSL settings if configured
     if (this.sslContext != null) {
       wsOptions.setSsl(true);
       wsOptions.setSslEngineOptions(new JdkSSLEngineOptions() {
