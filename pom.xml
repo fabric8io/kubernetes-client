@@ -97,7 +97,8 @@
     <jetty.version>11.0.25</jetty.version>
     <maven-core.version>3.9.11</maven-core.version>
     <maven-plugin-annotations.version>3.15.1</maven-plugin-annotations.version>
-    <vertx.version>4.5.14</vertx.version>
+    <vertx4.version>4.5.14</vertx4.version>
+    <vertx5.version>5.0.1</vertx5.version>
     <jandex.version>3.3.1</jandex.version>
     <snakeyaml.version>2.9</snakeyaml.version>
     <snakeyaml.bundle.version>2.4</snakeyaml.bundle.version> <!-- Transitive Jackson -->
@@ -215,6 +216,7 @@
     <module>httpclient-jetty</module>
     <module>httpclient-okhttp</module>
     <module>httpclient-vertx</module>
+    <module>httpclient-vertx5</module>
     <module>kubernetes-client</module>
     <module>junit/mockwebserver</module>
     <module>junit/kubernetes-junit-jupiter</module>
@@ -481,6 +483,11 @@
       <dependency>
         <groupId>io.fabric8</groupId>
         <artifactId>kubernetes-httpclient-vertx</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>io.fabric8</groupId>
+        <artifactId>kubernetes-httpclient-vertx5</artifactId>
         <version>${project.version}</version>
       </dependency>
       <dependency>
@@ -753,12 +760,12 @@
       <dependency>
         <groupId>io.vertx</groupId>
         <artifactId>vertx-core</artifactId>
-        <version>${vertx.version}</version>
+        <version>${vertx4.version}</version>
       </dependency>
       <dependency>
         <groupId>io.vertx</groupId>
         <artifactId>vertx-web-client</artifactId>
-        <version>${vertx.version}</version>
+        <version>${vertx4.version}</version>
         <exclusions>
           <exclusion>
             <groupId>io.vertx</groupId>
@@ -769,7 +776,7 @@
       <dependency>
         <groupId>io.vertx</groupId>
         <artifactId>vertx-web</artifactId>
-        <version>${vertx.version}</version>
+        <version>${vertx4.version}</version>
       </dependency>
       <dependency>
         <groupId>info.picocli</groupId>

@@ -57,7 +57,7 @@
     <dependency>
       <groupId>io.vertx</groupId>
       <artifactId>vertx-uri-template</artifactId>
-      <version>${vertx.version}</version>
+      <version>${vertx4.version}</version>
       <scope>test</scope>
     </dependency>
     <dependency>
