@@ -15,8 +15,10 @@
  */
 package io.fabric8.kubernetes.client.vertx;
 
+import io.vertx.core.Future;
 import io.vertx.core.Handler;
 import io.vertx.core.buffer.Buffer;
+import io.vertx.core.buffer.impl.VertxByteBufAllocator;
 import io.vertx.core.http.HttpClientRequest;
 import io.vertx.core.streams.ReadStream;
 import io.vertx.core.streams.impl.InboundBuffer;
@@ -52,14 +54,21 @@ class InputStreamReadStream implements ReadStream<Buffer> {
     return this;
   }
 
-  final ThreadLocal<AtomicInteger> counter = ThreadLocal.withInitial(AtomicInteger::new);
+  final ThreadLocal<AtomicInteger> counter = new ThreadLocal<AtomicInteger>() {
+    @Override
+    protected AtomicInteger initialValue() {
+      return new AtomicInteger();
+    }
+  };
 
   @Override
   public ReadStream<Buffer> handler(Handler<Buffer> handler) {
     boolean start = inboundBuffer == null && handler != null;
     if (start) {
       inboundBuffer = new InboundBuffer<>(vertxHttpRequest.vertx.getOrCreateContext());
-      inboundBuffer.drainHandler(v -> readChunk());
+      inboundBuffer.drainHandler(v -> {
+        readChunk();
+      });
     }
     if (handler != null) {
       inboundBuffer.handler(buff -> {
@@ -95,7 +104,7 @@ class InputStreamReadStream implements ReadStream<Buffer> {
   }
 
   private void readChunk2() {
-    vertxHttpRequest.vertx.executeBlocking(() -> {
+    Future<Buffer> fut = vertxHttpRequest.vertx.executeBlocking(p -> {
       if (bytes == null) {
         bytes = new byte[CHUNK_SIZE];
       }
@@ -103,20 +112,25 @@ class InputStreamReadStream implements ReadStream<Buffer> {
       try {
         amount = is.read(bytes);
       } catch (IOException e) {
-        throw new RuntimeException(e);
+        p.fail(e);
+        return;
       }
       if (amount == -1) {
-        return null;
+        p.complete();
       } else {
-        return Buffer.buffer().appendBytes(bytes, 0, amount);
+        p.complete(
+            Buffer.buffer(VertxByteBufAllocator.DEFAULT.heapBuffer(amount, Integer.MAX_VALUE).writeBytes(bytes, 0, amount)));
       }
-    }).onComplete(ar -> {
+    });
+    fut.onComplete(ar -> {
       if (ar.succeeded()) {
         Buffer chunk = ar.result();
         if (chunk != null) {
           boolean writable = inboundBuffer.write(chunk);
           if (writable) {
             readChunk();
+          } else {
+            // Full
           }
         } else {
           inboundBuffer.write(endSentinel);

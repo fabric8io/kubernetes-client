@@ -16,6 +16,7 @@
 package io.fabric8.kubernetes.client.vertx;
 
 import io.fabric8.kubernetes.client.http.WebSocket;
+import io.netty.buffer.Unpooled;
 import io.netty.handler.codec.http.websocketx.CorruptedWebSocketFrameException;
 import io.vertx.core.Future;
 import io.vertx.core.buffer.Buffer;
@@ -44,7 +45,7 @@ class VertxWebSocket implements WebSocket {
   void init() {
     ws.binaryMessageHandler(msg -> {
       ws.pause();
-      listener.onMessage(this, ByteBuffer.wrap(msg.getBytes()));
+      listener.onMessage(this, msg.getByteBuf().nioBuffer());
     });
     ws.textMessageHandler(msg -> {
       ws.pause();
@@ -72,9 +73,7 @@ class VertxWebSocket implements WebSocket {
 
   @Override
   public boolean send(ByteBuffer buffer) {
-    byte[] bytes = new byte[buffer.remaining()];
-    buffer.get(bytes);
-    Buffer vertxBuffer = Buffer.buffer(bytes);
+    Buffer vertxBuffer = Buffer.buffer(Unpooled.copiedBuffer(buffer));
     int len = vertxBuffer.length();
     pending.addAndGet(len);
     Future<Void> res = ws.writeBinaryMessage(vertxBuffer);

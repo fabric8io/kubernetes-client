@@ -97,7 +97,7 @@
     <jetty.version>11.0.25</jetty.version>
     <maven-core.version>3.9.11</maven-core.version>
     <maven-plugin-annotations.version>3.15.1</maven-plugin-annotations.version>
-    <vertx.version>5.0.1</vertx.version>
+    <vertx.version>4.5.14</vertx.version>
     <jandex.version>3.3.1</jandex.version>
     <snakeyaml.version>2.9</snakeyaml.version>
     <snakeyaml.bundle.version>2.4</snakeyaml.bundle.version> <!-- Transitive Jackson -->
