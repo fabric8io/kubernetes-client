@@ -129,7 +129,7 @@
     <log4j.version>2.25.1</log4j.version>
     <lombok.version>1.18.38</lombok.version>
     <commons-compress.version>1.27.1</commons-compress.version>
-    <commons-io.version>2.19.0</commons-io.version> <!-- Required by Gradle Testing Toolkit -->
+    <commons-io.version>2.20.0</commons-io.version> <!-- Required by Gradle Testing Toolkit -->
     <guava.version>33.4.8-jre</guava.version> <!-- Required by Gradle Testing Toolkit -->
     <osgi.annotations.version>1.5.1</osgi.annotations.version>
     <felix.scr.version>2.0.6</felix.scr.version>
