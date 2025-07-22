@@ -98,11 +98,10 @@ class InputStreamReadStream implements ReadStream<Buffer> {
   }
 
   private void handleReadError(final Throwable cause) {
+    request.reset(0, cause);
     if (exceptionHandler != null) {
       exceptionHandler.handle(cause);
     }
-    request.reset(0, cause);
-    // No cleanup needed with stack-based approach
   }
 
   @Override
