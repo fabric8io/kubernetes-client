@@ -27,7 +27,7 @@ class InputStreamReadStream implements ReadStream<Buffer> {
   private final VertxHttpRequest vertxHttpRequest;
   private final HttpClientRequest request;
   private final AsyncInputReader reader;
-  private final RecursionGuard recursionGuard;
+  private final StackBasedRecursionGuard recursionGuard;
   private final StreamFlowController flowController;
 
   private Handler<Throwable> exceptionHandler;
@@ -36,7 +36,7 @@ class InputStreamReadStream implements ReadStream<Buffer> {
     this.vertxHttpRequest = vertxHttpRequest;
     this.request = request;
     this.reader = new AsyncInputReader(vertxHttpRequest.vertx, inputStream);
-    this.recursionGuard = new RecursionGuard();
+    this.recursionGuard = new StackBasedRecursionGuard();
     this.flowController = new StreamFlowController();
   }
 
@@ -90,7 +90,7 @@ class InputStreamReadStream implements ReadStream<Buffer> {
         // If buffer is full, readChunk will be called by drain handler
       } else {
         flowController.writeEndSentinel();
-        recursionGuard.cleanup();
+        // No cleanup needed with stack-based approach
       }
     } else {
       handleReadError(result.cause());
@@ -102,7 +102,7 @@ class InputStreamReadStream implements ReadStream<Buffer> {
       exceptionHandler.handle(cause);
     }
     request.reset(0, cause);
-    recursionGuard.cleanup();
+    // No cleanup needed with stack-based approach
   }
 
   @Override
