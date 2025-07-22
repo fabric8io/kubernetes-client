@@ -143,7 +143,11 @@ public class VertxHttpClientBuilder<F extends HttpClient.Factory>
   @Override
   public VertxHttpClient<F> build() {
     if (this.client != null) {
-      return new VertxHttpClient<>(this, this.client.getClosed(), this.client.getHttpClient(), closeVertx);
+      return VertxHttpClient.createWithDefaults(
+          this,
+          this.client.getClosed(),
+          this.client.getHttpClient(),
+          closeVertx);
     }
 
     final PoolOptions poolOptions = createPoolOptions();
@@ -163,7 +167,7 @@ public class VertxHttpClientBuilder<F extends HttpClient.Factory>
 
     final WebSocketClientOptions wsOptions = createWebSocketClientOptions(protocols);
 
-    return new VertxHttpClient<>(
+    return VertxHttpClient.createWithWebSocketOptions(
         this,
         new AtomicBoolean(),
         vertx.createHttpClient(httpOptions, poolOptions),

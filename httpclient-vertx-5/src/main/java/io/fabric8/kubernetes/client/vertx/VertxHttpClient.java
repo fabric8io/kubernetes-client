@@ -53,39 +53,59 @@ public class VertxHttpClient<F extends io.fabric8.kubernetes.client.http.HttpCli
   private final boolean closeVertx;
 
   /**
-   * Create a new VertxHttpClient instance.
+   * Create a new VertxHttpClient instance using configuration object.
+   * This eliminates constructor ambiguity and provides clear instantiation path.
    *
-   * @param vertxHttpClientBuilder the builder that created this httpClient.
-   * @param closed a flag to indicate if the httpClient has been closed.
-   * @param httpClient the Vert.x HttpClient instance (will be closed alongside the httpClient).
-   * @param closeVertx whether the Vert.x instance should be closed when the httpClient is closed.
+   * @param config configuration containing all required parameters
    */
-  VertxHttpClient(final VertxHttpClientBuilder<F> vertxHttpClientBuilder, final AtomicBoolean closed,
-      final HttpClient httpClient,
-      final WebSocketClientOptions wsOptions, final boolean closeVertx) {
-    super(vertxHttpClientBuilder, closed);
-    this.vertx = vertxHttpClientBuilder.vertx;
-    this.httpClient = httpClient;
-    this.webSocketClient = vertx.createWebSocketClient(wsOptions);
-    this.closeVertx = closeVertx;
+  VertxHttpClient(final VertxHttpClientConfiguration<F> config) {
+    super(config.getClientBuilder(), config.getClosed());
+    this.vertx = config.getClientBuilder().vertx;
+    this.httpClient = config.getHttpClient();
+    this.webSocketClient = createWebSocketClient(config);
+    this.closeVertx = config.isCloseVertx();
   }
 
   /**
-   * Create a new VertxHttpClient instance.
-   *
-   * @param vertxHttpClientBuilder the builder that created this httpClient.
-   * @param closed a flag to indicate if the httpClient has been closed.
-   * @param httpClient the Vert.x HttpClient instance (will be closed alongside the httpClient).
-   * @param closeVertx whether the Vert.x instance should be closed when the httpClient is closed.
+   * Creates WebSocket client based on configuration.
+   * Uses custom options if provided, otherwise creates with defaults.
    */
-  VertxHttpClient(final VertxHttpClientBuilder<F> vertxHttpClientBuilder, final AtomicBoolean closed,
+  private WebSocketClient createWebSocketClient(final VertxHttpClientConfiguration<F> config) {
+    final WebSocketClientOptions options = config.getWebSocketOptions();
+    return options != null
+        ? vertx.createWebSocketClient(options)
+        : vertx.createWebSocketClient();
+  }
+
+  /**
+   * Creates VertxHttpClient with default WebSocket configuration.
+   * For internal use by VertxHttpClientBuilder.
+   */
+  static <F extends io.fabric8.kubernetes.client.http.HttpClient.Factory> VertxHttpClient<F> createWithDefaults(
+      final VertxHttpClientBuilder<F> builder,
+      final AtomicBoolean closed,
       final HttpClient httpClient,
       final boolean closeVertx) {
-    super(vertxHttpClientBuilder, closed);
-    this.vertx = vertxHttpClientBuilder.vertx;
-    this.httpClient = httpClient;
-    this.webSocketClient = vertx.createWebSocketClient();
-    this.closeVertx = closeVertx;
+
+    final VertxHttpClientConfiguration<F> config = VertxHttpClientConfiguration.withDefaultWebSocket(builder, closed,
+        httpClient, closeVertx);
+    return new VertxHttpClient<>(config);
+  }
+
+  /**
+   * Creates VertxHttpClient with custom WebSocket configuration.
+   * For internal use by VertxHttpClientBuilder.
+   */
+  static <F extends io.fabric8.kubernetes.client.http.HttpClient.Factory> VertxHttpClient<F> createWithWebSocketOptions(
+      final VertxHttpClientBuilder<F> builder,
+      final AtomicBoolean closed,
+      final HttpClient httpClient,
+      final WebSocketClientOptions wsOptions,
+      final boolean closeVertx) {
+
+    final VertxHttpClientConfiguration<F> config = VertxHttpClientConfiguration.withCustomWebSocket(
+        builder, closed, httpClient, wsOptions, closeVertx);
+    return new VertxHttpClient<>(config);
   }
 
   @Override
