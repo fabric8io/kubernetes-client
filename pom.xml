@@ -166,7 +166,7 @@
     <sonar-maven-plugin.version>4.0.0.4121</sonar-maven-plugin.version>
     <central-publishing-maven-plugin>0.8.0</central-publishing-maven-plugin>
     <properties.maven.plugin.version>1.0.0</properties.maven.plugin.version>
-    <spotless-maven-plugin.version>2.46.0</spotless-maven-plugin.version>
+    <spotless-maven-plugin.version>2.46.1</spotless-maven-plugin.version>
     <really-executable-jar-maven-plugin.version>2.1.1</really-executable-jar-maven-plugin.version>
 
     <!-- Other options -->
