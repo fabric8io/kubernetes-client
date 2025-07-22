@@ -12,6 +12,7 @@
 
 #### New Features
 * Fix #7385: Support for Kubernetes v1.35 (Timbernetes)
+* Fix #7174: Added Vert.x 5 HTTP client implementation with improved async handling and WebSocket separation
 
 #### _**Note**_: Breaking changes
 
@@ -138,6 +139,8 @@ Fix #7204: Rationalized config constructors
 #### New Features
 * Fix #6827: (crd-generator) Add CRDPostProcessor to process generated CRDs before they are written out
 * Fix #7025: Support for Kubernetes v1.33 (Octarine)
+
+#### _**Note**_: Breaking changes
 
 ### 7.1.0 (2025-01-30)
 

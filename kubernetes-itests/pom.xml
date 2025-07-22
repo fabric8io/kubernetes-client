@@ -156,5 +156,25 @@
         </dependency>
       </dependencies>
     </profile>
+    <profile>
+      <id>httpclient-vertx-5</id>
+      <dependencies>
+        <dependency>
+          <groupId>io.fabric8</groupId>
+          <artifactId>openshift-client</artifactId>
+          <scope>test</scope>
+          <exclusions>
+            <exclusion>
+              <groupId>io.fabric8</groupId>
+              <artifactId>kubernetes-httpclient-vertx</artifactId>
+            </exclusion>
+          </exclusions>
+        </dependency>
+        <dependency>
+          <groupId>io.fabric8</groupId>
+          <artifactId>kubernetes-httpclient-vertx-5</artifactId>
+        </dependency>
+      </dependencies>
+    </profile>
   </profiles>
 </project>
