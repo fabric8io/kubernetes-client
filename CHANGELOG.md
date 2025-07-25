@@ -13,6 +13,7 @@
 #### Dependency Upgrade
 
 #### New Features
+* Feat #7092: Add support for @Annotations and @Labels in CRD generation - CRD generator now includes annotations and labels specified via these annotations in the generated CRD metadata
 
 #### _**Note**_: Breaking changes
 
