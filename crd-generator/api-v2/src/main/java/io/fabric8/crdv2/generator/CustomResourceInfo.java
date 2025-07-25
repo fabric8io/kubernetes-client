@@ -199,13 +199,15 @@ public class CustomResourceInfo {
         served = cr.isServed();
       }
 
+      final String[] annotations = CRDUtils.getAnnotations(customResource);
+      final String[] labels = CRDUtils.getLabels(customResource);
+
       return new CustomResourceInfo(rdc.getGroup(), rdc.getVersion(), rdc.getKind(),
           singular, rdc.getPlural(), shortNames, categories, storage, served,
           deprecated, deprecationWarning,
           scope, customResource,
           customResource.getCanonicalName(), specAndStatus.getSpecClassName(),
-          specAndStatus.getStatusClassName(), toStringArray(instance.getMetadata().getAnnotations()),
-          toStringArray(instance.getMetadata().getLabels()));
+          specAndStatus.getStatusClassName(), annotations, labels);
     } catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
       throw KubernetesClientException.launderThrowable(e);
     }
@@ -238,17 +240,6 @@ public class CustomResourceInfo {
           "Modified constructor for CustomResource class {} to make it accessible.", customResource.getCanonicalName());
     }
     return (HasMetadata) defaultConstructor.newInstance();
-  }
-
-  public static String[] toStringArray(Map<String, String> map) {
-    String[] res = new String[map.size()];
-    Set<Map.Entry<String, String>> entrySet = map.entrySet();
-    int i = 0;
-    for (Map.Entry<String, String> e : entrySet) {
-      res[i] = e.getKey() + "=" + e.getValue();
-      i++;
-    }
-    return res;
   }
 
   @Override

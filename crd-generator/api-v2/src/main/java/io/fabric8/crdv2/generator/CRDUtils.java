@@ -19,6 +19,8 @@ import com.fasterxml.jackson.databind.BeanDescription;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationConfig;
 import com.fasterxml.jackson.databind.introspect.BeanPropertyDefinition;
+import io.fabric8.crd.generator.annotation.Annotations;
+import io.fabric8.crd.generator.annotation.Labels;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -92,4 +94,31 @@ public class CRDUtils {
     return res;
   }
 
+  /**
+   * Retrieves the annotations associated with this class or an empty array if none was provided
+   *
+   * @param clazz the class for which the annotations are to be retrieved
+   * @return the annotations associated with this class or an empty array if none was provided
+   */
+  public static String[] getAnnotations(Class<?> clazz) {
+    Annotations annotations = clazz.getAnnotation(Annotations.class);
+    if (annotations != null) {
+      return annotations.value();
+    }
+    return new String[] {};
+  }
+
+  /**
+   * Retrieves the labels associated with this class or an empty array if none was provided
+   *
+   * @param clazz the class for which the labels are to be retrieved
+   * @return the labels associated with this class or an empty array if none was provided
+   */
+  public static String[] getLabels(Class<?> clazz) {
+    Labels labels = clazz.getAnnotation(Labels.class);
+    if (labels != null) {
+      return labels.value();
+    }
+    return new String[] {};
+  }
 }
