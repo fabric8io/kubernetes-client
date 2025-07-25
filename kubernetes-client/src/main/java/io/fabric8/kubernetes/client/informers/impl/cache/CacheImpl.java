@@ -16,11 +16,9 @@
 package io.fabric8.kubernetes.client.informers.impl.cache;
 
 import io.fabric8.kubernetes.api.model.HasMetadata;
-import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.client.informers.cache.BasicItemStore;
 import io.fabric8.kubernetes.client.informers.cache.Cache;
 import io.fabric8.kubernetes.client.informers.cache.ItemStore;
-import io.fabric8.kubernetes.client.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -45,36 +43,14 @@ import java.util.stream.Collectors;
  */
 public class CacheImpl<T extends HasMetadata> implements Cache<T> {
 
-  private static class Index {
-    private Map<Object, Set<String>> values = new ConcurrentHashMap<Object, Set<String>>();
-
-    public void update(String indexKey, String key, boolean remove) {
-      if (remove) {
-        values.computeIfPresent(indexKey == null ? this : indexKey, (k, v) -> {
-          v.remove(key);
-          return v.isEmpty() ? null : v;
-        });
-      } else {
-        values.computeIfAbsent(indexKey == null ? this : indexKey, k -> ConcurrentHashMap.newKeySet()).add(key);
-      }
-    }
-
-    public Set<String> get(String indexKey) {
-      return values.getOrDefault(indexKey == null ? this : indexKey, Collections.emptySet());
-    }
-  }
-
   // NAMESPACE_INDEX is the default index function for caching objects
   public static final String NAMESPACE_INDEX = "namespace";
-
   // indexers stores index functions by their names
   private final Map<String, Function<T, List<String>>> indexers = Collections.synchronizedMap(new HashMap<>());
-
-  // items stores object instances
-  private ItemStore<T> items;
-
   // indices stores objects' key by their indices
   private final ConcurrentMap<String, Index> indices = new ConcurrentHashMap<>();
+  // items stores object instances
+  private ItemStore<T> items;
 
   public CacheImpl() {
     this(NAMESPACE_INDEX, Cache::metaNamespaceIndexFunc, Cache::metaNamespaceKeyFunc);
@@ -83,6 +59,30 @@ public class CacheImpl<T extends HasMetadata> implements Cache<T> {
   public CacheImpl(String indexName, Function<T, List<String>> indexFunc, Function<T, String> keyFunc) {
     this.items = new BasicItemStore<>(keyFunc);
     addIndexFunc(indexName, indexFunc);
+  }
+
+  /**
+   * @deprecated use {@link Cache#metaNamespaceKeyFunc(HasMetadata)} instead
+   */
+  public static String metaNamespaceKeyFunc(Object obj) {
+    if (obj == null) {
+      return "";
+    }
+    return Cache.metaNamespaceKeyFunc((HasMetadata) obj);
+  }
+
+  /**
+   * @deprecated Use {@link Cache#namespaceKeyFunc(String, String)} instead
+   */
+  public static String namespaceKeyFunc(String objectNamespace, String objectName) {
+    return Cache.namespaceKeyFunc(objectNamespace, objectName);
+  }
+
+  /**
+   * @deprecated Use {@link Cache#metaNamespaceKeyFunc(HasMetadata)} instead
+   */
+  public static List<String> metaNamespaceIndexFunc(Object obj) {
+    return Cache.metaNamespaceIndexFunc((HasMetadata) obj);
   }
 
   public void setItemStore(ItemStore<T> items) {
@@ -263,7 +263,6 @@ public class CacheImpl<T extends HasMetadata> implements Cache<T> {
    * UpdateIndices modifies the objects location in the managed indexes, if there is
    * an update, you must provide an oldObj
    *
-   *
    * @param oldObj old object
    * @param newObj new object
    * @param key the key
@@ -312,63 +311,6 @@ public class CacheImpl<T extends HasMetadata> implements Cache<T> {
     return this;
   }
 
-  /**
-   * It's is a convenient default KeyFunc which know show to make keys for API
-   * objects which implement HasMetadata interface. The key uses the format
-   * namespace/name unless namespace is empty, then it's just name
-   *
-   * @param obj specific object
-   * @return the key
-   */
-  public static String metaNamespaceKeyFunc(Object obj) {
-    if (obj == null) {
-      return "";
-    }
-    ObjectMeta metadata = null;
-    if (obj instanceof String) {
-      return (String) obj;
-    } else if (obj instanceof ObjectMeta) {
-      metadata = (ObjectMeta) obj;
-    } else if (obj instanceof HasMetadata) {
-      metadata = ((HasMetadata) obj).getMetadata();
-    }
-    if (metadata == null) {
-      throw new RuntimeException("Object is bad :" + obj);
-    }
-
-    return namespaceKeyFunc(metadata.getNamespace(), metadata.getName());
-  }
-
-  /**
-   * Default index function that indexes based on an object's namespace and name.
-   *
-   * @see #metaNamespaceKeyFunc
-   */
-  public static String namespaceKeyFunc(String objectNamespace, String objectName) {
-    if (Utils.isNullOrEmpty(objectNamespace)) {
-      return objectName;
-    }
-    return objectNamespace + "/" + objectName;
-  }
-
-  /**
-   * It is a default index function that indexes based on an object's namespace
-   *
-   * @param obj the specific object
-   * @return the indexed value
-   */
-  public static List<String> metaNamespaceIndexFunc(Object obj) {
-    final ObjectMeta metadata;
-    if (obj instanceof HasMetadata) {
-      metadata = ((HasMetadata) obj).getMetadata();
-    } else if (obj instanceof ObjectMeta) {
-      metadata = (ObjectMeta) obj;
-    } else {
-      metadata = null;
-    }
-    return metadata == null ? Collections.emptyList() : Collections.singletonList(metadata.getNamespace());
-  }
-
   @Override
   public synchronized void removeIndexer(String name) {
     this.indices.remove(name);
@@ -381,6 +323,25 @@ public class CacheImpl<T extends HasMetadata> implements Cache<T> {
 
   public Object getLockObject() {
     return this;
+  }
+
+  private static class Index {
+    private final Map<Object, Set<String>> values = new ConcurrentHashMap<>();
+
+    public void update(String indexKey, String key, boolean remove) {
+      if (remove) {
+        values.computeIfPresent(indexKey == null ? this : indexKey, (k, v) -> {
+          v.remove(key);
+          return v.isEmpty() ? null : v;
+        });
+      } else {
+        values.computeIfAbsent(indexKey == null ? this : indexKey, k -> ConcurrentHashMap.newKeySet()).add(key);
+      }
+    }
+
+    public Set<String> get(String indexKey) {
+      return values.getOrDefault(indexKey == null ? this : indexKey, Collections.emptySet());
+    }
   }
 
 }
