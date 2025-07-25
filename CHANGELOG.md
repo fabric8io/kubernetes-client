@@ -13,6 +13,7 @@
 #### Dependency Upgrade
 
 #### New Features
+* Fix #7174: Added Vert.x 5 HTTP client implementation with improved async handling and WebSocket separation
 
 #### _**Note**_: Breaking changes
 
