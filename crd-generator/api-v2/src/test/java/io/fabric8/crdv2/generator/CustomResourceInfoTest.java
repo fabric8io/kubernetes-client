@@ -15,6 +15,8 @@
  */
 package io.fabric8.crdv2.generator;
 
+import io.fabric8.crd.generator.annotation.Annotations;
+import io.fabric8.crd.generator.annotation.Labels;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.Namespaced;
 import io.fabric8.kubernetes.client.CustomResource;
@@ -75,6 +77,13 @@ public class CustomResourceInfoTest {
     }
   }
 
+  @Group(GROUP)
+  @Version(VERSION)
+  @Annotations({"test-annotation=test-value", "another-annotation=another-value"})
+  @Labels({"test-label=test-value", "another-label=another-value"})
+  public static class AnnotatedCR extends io.fabric8.kubernetes.client.CustomResource<Spec, Status> {
+  }
+
   @Test
   void shouldBeProperlyScoped() {
     CustomResourceInfo info = CustomResourceInfo.fromClass(ClusteredCR.class);
@@ -132,5 +141,16 @@ public class CustomResourceInfoTest {
   void shouldFailForMissingDefaultConstructor() {
     assertThrows(IllegalStateException.class,
         () -> CustomResourceInfo.fromClass(NoDefaultConstructorCustomResource.class));
+  }
+
+  @Test
+  void shouldIncludeAnnotationsAndLabelsInCustomResourceInfo() {
+    CustomResourceInfo info = CustomResourceInfo.fromClass(AnnotatedCR.class);
+
+    String[] expectedAnnotations = {"test-annotation=test-value", "another-annotation=another-value"};
+    String[] expectedLabels = {"test-label=test-value", "another-label=another-value"};
+
+    assertArrayEquals(expectedAnnotations, info.annotations());
+    assertArrayEquals(expectedLabels, info.labels());
   }
 }
