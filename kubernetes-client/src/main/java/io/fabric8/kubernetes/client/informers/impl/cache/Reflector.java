@@ -63,15 +63,15 @@ public class Reflector<T extends HasMetadata, L extends KubernetesResourceList<T
   private CompletableFuture<Void> timeoutFuture;
 
   private boolean cachedListing = true;
- 
-  private static class StreamingListState {
+
+  private static class WatchListState {
     Set<String> nextKeys = new ConcurrentSkipListSet<>();
     private CompletableFuture<Void> listDone = new CompletableFuture<>();
   }
- 
-  private boolean streamingList;
-  private volatile StreamingListState streamingListState;
-  
+
+  private boolean watchList;
+  private volatile WatchListState watchListState;
+
   public Reflector(ListerWatcher<T, L> listerWatcher, ProcessorStore<T> store) {
     this(listerWatcher, store, Runnable::run);
   }
@@ -130,11 +130,11 @@ public class Reflector<T extends HasMetadata, L extends KubernetesResourceList<T
     if (isStopped()) {
       return CompletableFuture.completedFuture(null);
     }
-    
+
     CompletableFuture<Void> theFuture = null;
-    if (streamingList) {
-      streamingListState = new StreamingListState(); 
-      CompletableFuture<Void> cf = streamingListState.listDone;
+    if (watchList) {
+      watchListState = new WatchListState();
+      CompletableFuture<Void> cf = watchListState.listDone;
       theFuture = establishWatch(startWatcher(lastSyncResourceVersion)).thenCompose(ignored -> cf);
     } else {
       Set<String> nextKeys = new ConcurrentSkipListSet<>();
@@ -155,7 +155,7 @@ public class Reflector<T extends HasMetadata, L extends KubernetesResourceList<T
       });
       theFuture = establishWatch(startWatcher);
     }
-    
+
     theFuture.whenComplete((v, t) -> {
       if (t != null) {
         onException("listSyncAndWatch", t);
@@ -247,9 +247,9 @@ public class Reflector<T extends HasMetadata, L extends KubernetesResourceList<T
             // so instead we'll terminate below and set a fail-safe here
             // .withTimeoutSeconds((long) ((Math.random() + 1) * minTimeout))
             .withTimeoutSeconds(minTimeout * 2)
-            .withAllowWatchBookmarks(true)
-            .withSendInitialEvents(streamingListState != null)
-            .withResourceVersionMatch(streamingListState != null ? "NotOlderThan" : null)
+            .withAllowWatchBookmarks(true) // should always allow bookmarks to process the lastResourceVersion here
+            .withSendInitialEvents(watchListState != null ? true : null)
+            .withResourceVersionMatch(watchListState != null ? "NotOlderThan" : null)
             .build(),
         watcher);
 
@@ -303,26 +303,28 @@ public class Reflector<T extends HasMetadata, L extends KubernetesResourceList<T
             resource.getKind(),
             resource.getMetadata().getResourceVersion(), Reflector.this);
       }
-      
-      if (streamingListState != null) {
+
+      if (watchListState != null) {
         switch (action) {
-        case ADDED:
-          String key = store.getKey(resource);
-          streamingListState.nextKeys.add(key);
-          break;
-        case BOOKMARK:
-          // done with the initial events, trigger that we are ready and switch to regular
-          // watching
-          log.debug("Listing items ({}) for {} at v{}", streamingListState.nextKeys.size(), this, resource.getMetadata().getResourceVersion());
-          store.retainAll(streamingListState.nextKeys, ignored -> streamingListState.listDone.complete(null));
-          streamingListState = null;
-          break;
-        case MODIFIED:
-        case DELETED:
-          throw new KubernetesClientException("Unexpected event");
+          case ADDED:
+            String key = store.getKey(resource);
+            watchListState.nextKeys.add(key);
+            break;
+          case BOOKMARK:
+            // done with the initial events, trigger that we are ready and switch to regular
+            // watching
+            log.debug("Listing items ({}) for {} at v{}", watchListState.nextKeys.size(), this,
+                resource.getMetadata().getResourceVersion());
+            store.retainAll(watchListState.nextKeys, ignored -> watchListState.listDone.complete(null));
+            watchListState = null;
+            break;
+          case MODIFIED:
+          case DELETED:
+            onClose(new WatcherException("Unexpected event before list ending bookmark: " + action));
+            return;
         }
       }
-      
+
       switch (action) {
         case ERROR:
           throw new KubernetesClientException("ERROR event");
@@ -387,9 +389,9 @@ public class Reflector<T extends HasMetadata, L extends KubernetesResourceList<T
   public void usingInitialState() {
     this.cachedListing = false;
   }
-  
-  public void setStreamingList(boolean streamingList) {
-    this.streamingList = streamingList;
-  }  
+
+  public void setWatchList(boolean watchList) {
+    this.watchList = watchList;
+  }
 
 }

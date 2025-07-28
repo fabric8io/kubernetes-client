@@ -73,7 +73,8 @@ public class ConfigFluent<A extends ConfigFluent<A>> extends SundrioConfigFluent
       this.withRequestRetryBackoffLimit(instance.getRequestRetryBackoffLimit());
       this.withRequestRetryBackoffInterval(instance.getRequestRetryBackoffInterval());
       this.withUploadRequestTimeout(instance.getUploadRequestTimeout());
-      this.withOnlyHttpWatches(instance.isOnlyHttpWatches());
+      this.withOnlyHttpWatches(instance.getOnlyHttpWatches());
+      this.withWatchList(instance.getWatchList());
       this.withCurrentContext(instance.getCurrentContext());
       this.withContexts(instance.getContexts());
       this.withAutoConfigure(instance.getAutoConfigure());
@@ -141,6 +142,10 @@ public class ConfigFluent<A extends ConfigFluent<A>> extends SundrioConfigFluent
 
   public A withOnlyHttpWatches(boolean onlyHttpWatches) {
     return this.withOnlyHttpWatches(Boolean.valueOf(onlyHttpWatches));
+  }
+
+  public A withWatchList(boolean watchList) {
+    return this.withWatchList(Boolean.valueOf(watchList));
   }
 
   public A withAutoConfigure(boolean autoConfigure) {
