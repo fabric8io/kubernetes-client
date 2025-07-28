@@ -63,7 +63,15 @@ public class Reflector<T extends HasMetadata, L extends KubernetesResourceList<T
   private CompletableFuture<Void> timeoutFuture;
 
   private boolean cachedListing = true;
-
+ 
+  private static class StreamingListState {
+    Set<String> nextKeys = new ConcurrentSkipListSet<>();
+    private CompletableFuture<Void> listDone = new CompletableFuture<>();
+  }
+ 
+  private boolean streamingList;
+  private volatile StreamingListState streamingListState;
+  
   public Reflector(ListerWatcher<T, L> listerWatcher, ProcessorStore<T> store) {
     this(listerWatcher, store, Runnable::run);
   }
@@ -122,22 +130,45 @@ public class Reflector<T extends HasMetadata, L extends KubernetesResourceList<T
     if (isStopped()) {
       return CompletableFuture.completedFuture(null);
     }
-    Set<String> nextKeys = new ConcurrentSkipListSet<>();
-    CompletableFuture<Void> theFuture = processList(nextKeys, null).thenCompose(result -> {
-      final String latestResourceVersion = result.getMetadata().getResourceVersion();
-      log.debug("Listing items ({}) for {} at v{}", nextKeys.size(), this, latestResourceVersion);
-      CompletableFuture<?> cf = new CompletableFuture<>();
-      store.retainAll(nextKeys, executor -> {
-        boolean startWatchImmediately = cachedListing && lastSyncResourceVersion == null;
-        lastSyncResourceVersion = latestResourceVersion;
-        if (startWatchImmediately) {
-          cf.complete(null);
-        } else {
-          executor.execute(() -> cf.complete(null));
-        }
+    
+    CompletableFuture<Void> theFuture = null;
+    if (streamingList) {
+      streamingListState = new StreamingListState(); 
+      CompletableFuture<Void> cf = streamingListState.listDone;
+      theFuture = establishWatch(startWatcher(lastSyncResourceVersion)).thenCompose(ignored -> cf);
+    } else {
+      Set<String> nextKeys = new ConcurrentSkipListSet<>();
+      CompletableFuture<? extends Watch> startWatcher = processList(nextKeys, null).thenCompose(result -> {
+        final String latestResourceVersion = result.getMetadata().getResourceVersion();
+        log.debug("Listing items ({}) for {} at v{}", nextKeys.size(), this, latestResourceVersion);
+        CompletableFuture<?> cf = new CompletableFuture<>();
+        store.retainAll(nextKeys, executor -> {
+          boolean startWatchImmediately = cachedListing && lastSyncResourceVersion == null;
+          lastSyncResourceVersion = latestResourceVersion;
+          if (startWatchImmediately) {
+            cf.complete(null);
+          } else {
+            executor.execute(() -> cf.complete(null));
+          }
+        });
+        return cf.thenCompose(ignored -> startWatcher(latestResourceVersion));
       });
-      return cf.thenCompose(ignored -> startWatcher(latestResourceVersion));
-    }).thenAccept(w -> {
+      theFuture = establishWatch(startWatcher);
+    }
+    
+    theFuture.whenComplete((v, t) -> {
+      if (t != null) {
+        onException("listSyncAndWatch", t);
+      } else {
+        startFuture.complete(null);
+        retryIntervalCalculator.resetReconnectAttempts();
+      }
+    });
+    return theFuture;
+  }
+
+  private CompletableFuture<Void> establishWatch(CompletableFuture<? extends Watch> future) {
+    return future.thenAccept(w -> {
       if (w != null) {
         if (!isStopped()) {
           if (log.isDebugEnabled()) {
@@ -149,15 +180,6 @@ public class Reflector<T extends HasMetadata, L extends KubernetesResourceList<T
         }
       }
     });
-    theFuture.whenComplete((v, t) -> {
-      if (t != null) {
-        onException("listSyncAndWatch", t);
-      } else {
-        startFuture.complete(null);
-        retryIntervalCalculator.resetReconnectAttempts();
-      }
-    });
-    return theFuture;
   }
 
   private void onException(String operation, Throwable t) {
@@ -225,6 +247,9 @@ public class Reflector<T extends HasMetadata, L extends KubernetesResourceList<T
             // so instead we'll terminate below and set a fail-safe here
             // .withTimeoutSeconds((long) ((Math.random() + 1) * minTimeout))
             .withTimeoutSeconds(minTimeout * 2)
+            .withAllowWatchBookmarks(true)
+            .withSendInitialEvents(streamingListState != null)
+            .withResourceVersionMatch(streamingListState != null ? "NotOlderThan" : null)
             .build(),
         watcher);
 
@@ -278,6 +303,26 @@ public class Reflector<T extends HasMetadata, L extends KubernetesResourceList<T
             resource.getKind(),
             resource.getMetadata().getResourceVersion(), Reflector.this);
       }
+      
+      if (streamingListState != null) {
+        switch (action) {
+        case ADDED:
+          String key = store.getKey(resource);
+          streamingListState.nextKeys.add(key);
+          break;
+        case BOOKMARK:
+          // done with the initial events, trigger that we are ready and switch to regular
+          // watching
+          log.debug("Listing items ({}) for {} at v{}", streamingListState.nextKeys.size(), this, resource.getMetadata().getResourceVersion());
+          store.retainAll(streamingListState.nextKeys, ignored -> streamingListState.listDone.complete(null));
+          streamingListState = null;
+          break;
+        case MODIFIED:
+        case DELETED:
+          throw new KubernetesClientException("Unexpected event");
+        }
+      }
+      
       switch (action) {
         case ERROR:
           throw new KubernetesClientException("ERROR event");
@@ -342,5 +387,9 @@ public class Reflector<T extends HasMetadata, L extends KubernetesResourceList<T
   public void usingInitialState() {
     this.cachedListing = false;
   }
+  
+  public void setStreamingList(boolean streamingList) {
+    this.streamingList = streamingList;
+  }  
 
 }
