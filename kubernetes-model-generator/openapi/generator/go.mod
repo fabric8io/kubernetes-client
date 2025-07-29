@@ -31,7 +31,7 @@ require (
 	github.com/stolostron/search-v2-operator v0.0.0-20250328175715-c789830f4144
 	github.com/tektoncd/pipeline v1.0.0
 	github.com/tektoncd/triggers v0.32.0
-	istio.io/client-go v1.25.2
+	istio.io/client-go v1.26.3
 	k8s.io/api v0.33.1
 	k8s.io/apiextensions-apiserver v0.33.1
 	k8s.io/apimachinery v0.33.1
@@ -198,7 +198,7 @@ require (
 	golang.org/x/tools v0.32.0 // indirect
 	gomodules.xyz/jsonpatch/v2 v2.5.0 // indirect
 	google.golang.org/api v0.217.0 // indirect
-	google.golang.org/genproto/googleapis/api v0.0.0-20250218202821-56aae31c358a // indirect
+	google.golang.org/genproto/googleapis/api v0.0.0-20250324211829-b45e905df463 // indirect
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20250324211829-b45e905df463 // indirect
 	google.golang.org/grpc v1.72.0 // indirect
 	google.golang.org/protobuf v1.36.6 // indirect
@@ -206,7 +206,7 @@ require (
 	gopkg.in/inf.v0 v0.9.1 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
-	istio.io/api v1.25.2-0.20250410212420-84c271001f68 // indirect
+	istio.io/api v1.26.3-0.20250708203130-20827773ee1b // indirect
 	k8s.io/klog/v2 v2.130.1 // indirect
 	k8s.io/utils v0.0.0-20250502105355-0f33e8f1c979 // indirect
 	knative.dev/pkg v0.0.0-20250415155312-ed3e2158b883 // indirect
