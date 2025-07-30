@@ -162,7 +162,7 @@ public class JWTRule implements Editable<JWTRuleBuilder>, KubernetesResource
     }
 
     /**
-     * List of cookie names from which JWT is expected.	// For example, if config is:<br><p> <br><p> ``` yaml<br><p> <br><p> 	from_cookies:<br><p> 	- auth-token<br><p> <br><p> ``` Then JWT will be extracted from "auth-token" cookie in the request.<br><p> <br><p> Note: Requests with multiple tokens (at different locations) are not supported, the output principal of such requests is undefined.
+     * List of cookie names from which JWT is expected.	// For example, if config is:<br><p> <br><p> ``` yaml<br><p> <br><p> 	from_cookies:<br><p> 	- auth-token<br><p> <br><p> ``` Then JWT will be extracted from `auth-token` cookie in the request.<br><p> <br><p> Note: Requests with multiple tokens (at different locations) are not supported, the output principal of such requests is undefined.
      */
     @JsonProperty("fromCookies")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -171,7 +171,7 @@ public class JWTRule implements Editable<JWTRuleBuilder>, KubernetesResource
     }
 
     /**
-     * List of cookie names from which JWT is expected.	// For example, if config is:<br><p> <br><p> ``` yaml<br><p> <br><p> 	from_cookies:<br><p> 	- auth-token<br><p> <br><p> ``` Then JWT will be extracted from "auth-token" cookie in the request.<br><p> <br><p> Note: Requests with multiple tokens (at different locations) are not supported, the output principal of such requests is undefined.
+     * List of cookie names from which JWT is expected.	// For example, if config is:<br><p> <br><p> ``` yaml<br><p> <br><p> 	from_cookies:<br><p> 	- auth-token<br><p> <br><p> ``` Then JWT will be extracted from `auth-token` cookie in the request.<br><p> <br><p> Note: Requests with multiple tokens (at different locations) are not supported, the output principal of such requests is undefined.
      */
     @JsonProperty("fromCookies")
     public void setFromCookies(List<String> fromCookies) {
