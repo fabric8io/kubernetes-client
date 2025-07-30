@@ -15,6 +15,7 @@
  */
 package io.fabric8.crdv2.generator;
 
+import io.fabric8.crdv2.example.annotated.AnnotationsAndLabels;
 import io.fabric8.crdv2.example.basic.Basic;
 import io.fabric8.crdv2.example.complex.Complex;
 import io.fabric8.crdv2.example.cyclic.Cyclic;
@@ -617,6 +618,30 @@ class CRDGeneratorTest {
     assertThat(new KubernetesSerialization().unmarshal(
         Files.newInputStream(Path.of(crdInfo.getCRDInfos(crdName).get("v1").getFilePath())), HasMetadata.class))
         .isNotNull();
+  }
+
+  @Test
+  void shouldIncludeClassAnnotationsAndLabelsInGeneratedCRD() throws Exception {
+    final String crdName = CustomResourceInfo.fromClass(AnnotationsAndLabels.class).crdName();
+
+    final CRDGenerationInfo crdInfo = newCRDGenerator()
+        .inOutputDir(tempDir)
+        .customResourceClasses(AnnotationsAndLabels.class)
+        .forCRDVersions("v1")
+        .detailedGenerate();
+
+    CustomResourceDefinition definition = new KubernetesSerialization().unmarshal(
+        Files.newInputStream(Path.of(crdInfo.getCRDInfos(crdName).get("v1").getFilePath())),
+        CustomResourceDefinition.class);
+
+    assertNotNull(definition.getMetadata().getAnnotations());
+    assertNotNull(definition.getMetadata().getLabels());
+
+    assertEquals("fabric8", definition.getMetadata().getAnnotations().get("example.io/processed-by"));
+    assertEquals("v1.0.0", definition.getMetadata().getAnnotations().get("example.io/version"));
+
+    assertEquals("fabric8", definition.getMetadata().getLabels().get("app.kubernetes.io/managed-by"));
+    assertEquals("crd", definition.getMetadata().getLabels().get("app.kubernetes.io/component"));
   }
 
   private CustomResourceDefinitionVersion checkCRD(Class<? extends CustomResource<?, ?>> customResource, String kind,

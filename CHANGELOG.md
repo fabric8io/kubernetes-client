@@ -7,6 +7,7 @@
 * Fix #7080: Avoid NPE in CRDGenerator if post-processor is set to null
 * Fix #7116: (java-generator) Use timezone format compatible with Kubernetes
 * Fix #7163: Ensure that streams are notified of errors
+* Fix #7092: (crd-generator) Add support for @Annotations and @Labels in CRD generation - CRD generator now includes annotations and labels specified via these annotations in the generated CRD metadata
 
 #### Improvements
 
