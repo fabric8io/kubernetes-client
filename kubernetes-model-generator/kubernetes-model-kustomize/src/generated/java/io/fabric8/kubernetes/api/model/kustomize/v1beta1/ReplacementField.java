@@ -39,6 +39,7 @@ import lombok.experimental.Accessors;
 @JsonPropertyOrder({
     "path",
     "source",
+    "sourceValue",
     "targets"
 })
 @ToString
@@ -70,6 +71,8 @@ public class ReplacementField implements Editable<ReplacementFieldBuilder>, Kube
     private String path;
     @JsonProperty("source")
     private SourceSelector source;
+    @JsonProperty("sourceValue")
+    private String sourceValue;
     @JsonProperty("targets")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<TargetSelector> targets = new ArrayList<>();
@@ -82,10 +85,11 @@ public class ReplacementField implements Editable<ReplacementFieldBuilder>, Kube
     public ReplacementField() {
     }
 
-    public ReplacementField(String path, SourceSelector source, List<TargetSelector> targets) {
+    public ReplacementField(String path, SourceSelector source, String sourceValue, List<TargetSelector> targets) {
         super();
         this.path = path;
         this.source = source;
+        this.sourceValue = sourceValue;
         this.targets = targets;
     }
 
@@ -107,6 +111,16 @@ public class ReplacementField implements Editable<ReplacementFieldBuilder>, Kube
     @JsonProperty("source")
     public void setSource(SourceSelector source) {
         this.source = source;
+    }
+
+    @JsonProperty("sourceValue")
+    public String getSourceValue() {
+        return sourceValue;
+    }
+
+    @JsonProperty("sourceValue")
+    public void setSourceValue(String sourceValue) {
+        this.sourceValue = sourceValue;
     }
 
     @JsonProperty("targets")
