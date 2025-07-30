@@ -79,8 +79,8 @@ public class CustomResourceInfoTest {
 
   @Group(GROUP)
   @Version(VERSION)
-  @Annotations({"test-annotation=test-value", "another-annotation=another-value"})
-  @Labels({"test-label=test-value", "another-label=another-value"})
+  @Annotations({ "test-annotation=test-value", "another-annotation=another-value" })
+  @Labels({ "test-label=test-value", "another-label=another-value" })
   public static class AnnotatedCR extends io.fabric8.kubernetes.client.CustomResource<Spec, Status> {
   }
 
@@ -147,8 +147,8 @@ public class CustomResourceInfoTest {
   void shouldIncludeAnnotationsAndLabelsInCustomResourceInfo() {
     CustomResourceInfo info = CustomResourceInfo.fromClass(AnnotatedCR.class);
 
-    String[] expectedAnnotations = {"test-annotation=test-value", "another-annotation=another-value"};
-    String[] expectedLabels = {"test-label=test-value", "another-label=another-value"};
+    String[] expectedAnnotations = { "test-annotation=test-value", "another-annotation=another-value" };
+    String[] expectedLabels = { "test-label=test-value", "another-label=another-value" };
 
     assertArrayEquals(expectedAnnotations, info.annotations());
     assertArrayEquals(expectedLabels, info.labels());

@@ -23,8 +23,8 @@ import io.fabric8.kubernetes.model.annotation.Version;
 
 @Group("samples.fabric8.io")
 @Version("v1alpha1")
-@Annotations({"example.io/processed-by=fabric8", "example.io/version=v1.0.0"})
-@Labels({"app.kubernetes.io/managed-by=fabric8", "app.kubernetes.io/component=crd"})
+@Annotations({ "example.io/processed-by=fabric8", "example.io/version=v1.0.0" })
+@Labels({ "app.kubernetes.io/managed-by=fabric8", "app.kubernetes.io/component=crd" })
 public class AnnotationsAndLabels extends CustomResource<AnnotatedSpec, Void> {
 
-} 
+}

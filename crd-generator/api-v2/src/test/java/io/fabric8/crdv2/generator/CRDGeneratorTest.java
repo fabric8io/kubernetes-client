@@ -625,14 +625,14 @@ class CRDGeneratorTest {
     final String crdName = CustomResourceInfo.fromClass(AnnotationsAndLabels.class).crdName();
 
     final CRDGenerationInfo crdInfo = newCRDGenerator()
-      .inOutputDir(tempDir)
-      .customResourceClasses(AnnotationsAndLabels.class)
-      .forCRDVersions("v1")
-      .detailedGenerate();
+        .inOutputDir(tempDir)
+        .customResourceClasses(AnnotationsAndLabels.class)
+        .forCRDVersions("v1")
+        .detailedGenerate();
 
     CustomResourceDefinition definition = new KubernetesSerialization().unmarshal(
-      Files.newInputStream(Path.of(crdInfo.getCRDInfos(crdName).get("v1").getFilePath())),
-      CustomResourceDefinition.class);
+        Files.newInputStream(Path.of(crdInfo.getCRDInfos(crdName).get("v1").getFilePath())),
+        CustomResourceDefinition.class);
 
     assertNotNull(definition.getMetadata().getAnnotations());
     assertNotNull(definition.getMetadata().getLabels());
