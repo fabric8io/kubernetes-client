@@ -32,9 +32,9 @@ require (
 	github.com/tektoncd/pipeline v1.2.0
 	github.com/tektoncd/triggers v0.32.0
 	istio.io/client-go v1.26.3
-	k8s.io/api v0.33.1
-	k8s.io/apiextensions-apiserver v0.33.1
-	k8s.io/apimachinery v0.33.1
+	k8s.io/api v0.33.3
+	k8s.io/apiextensions-apiserver v0.33.3
+	k8s.io/apimachinery v0.33.3
 	k8s.io/autoscaler/vertical-pod-autoscaler v1.4.0
 	k8s.io/client-go v12.0.0+incompatible
 	k8s.io/gengo/v2 v2.0.0-20250207200755-1244d31929d7
