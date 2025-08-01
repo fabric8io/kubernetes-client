@@ -45,7 +45,7 @@ require (
 	knative.dev/eventing-awssqs v0.29.0
 	knative.dev/eventing-couchdb v0.28.0
 	knative.dev/eventing-github v0.46.0
-	knative.dev/eventing-gitlab v0.45.0
+	knative.dev/eventing-gitlab v0.46.0
 	knative.dev/eventing-kafka-broker v0.46.0
 	knative.dev/eventing-prometheus v0.28.0
 	knative.dev/networking v0.0.0-20250716125000-edb1a4a0c863
