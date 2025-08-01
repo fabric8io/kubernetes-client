@@ -327,6 +327,7 @@ public abstract class AbstractJSONSchema2Pojo {
             throw new JavaGeneratorException("Unsupported enumeration type/format: " + prop.getType() + "/" + prop.getFormat());
         }
         return new JEnum(
+            parentPkg,
             key,
             enumType,
             prop.getEnum(),
