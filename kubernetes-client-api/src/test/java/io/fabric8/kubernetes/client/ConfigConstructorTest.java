@@ -93,7 +93,7 @@ class ConfigConstructorTest {
             null,
             null, null, null, null, null,
             null, null, null,
-            null, null, null,
+            null, null, null, null,
             null, null, null, null,
             null, null, false)));
   }
@@ -197,7 +197,7 @@ class ConfigConstructorTest {
           null,
           null, null, null, null, null,
           null, null, null,
-          null, null, null,
+          null, null, null, null,
           null, null, null, null,
           null, true, true);
 
@@ -206,7 +206,7 @@ class ConfigConstructorTest {
           .isNotNull()
           // Default values
           .hasFieldOrPropertyWithValue("apiVersion", "v1")
-          .hasFieldOrPropertyWithValue("onlyHttpWatches", false)
+          .hasFieldOrPropertyWithValue("onlyHttpWatches", null)
           .hasFieldOrPropertyWithValue("http2Disable", false)
           .hasFieldOrPropertyWithValue("userAgent", "fabric8-kubernetes-client/" + Version.clientVersion())
           // Auto Configured values
@@ -264,14 +264,14 @@ class ConfigConstructorTest {
           null,
           null, null, null, null, null,
           null, null, null,
-          null, null, null,
+          null, null, null, null,
           null, null, null, null,
           null, false, true);
 
       assertThat(config)
           .isNotNull()
           .hasFieldOrPropertyWithValue("apiVersion", "v1")
-          .hasFieldOrPropertyWithValue("onlyHttpWatches", false)
+          .hasFieldOrPropertyWithValue("onlyHttpWatches", null)
           .hasFieldOrPropertyWithValue("http2Disable", false)
           .hasFieldOrPropertyWithValue("userAgent", "fabric8-kubernetes-client/" + Version.clientVersion())
           .hasFieldOrPropertyWithValue("trustCerts", false)
@@ -373,7 +373,7 @@ class ConfigConstructorTest {
               null,
               null, null, null, null, null,
               null, null, null,
-              null, null, null,
+              null, null, null, null,
               null, null, null, null,
               null, true, true);
 
@@ -382,7 +382,7 @@ class ConfigConstructorTest {
               .isNotNull()
               // Default values
               .hasFieldOrPropertyWithValue("apiVersion", "v1")
-              .hasFieldOrPropertyWithValue("onlyHttpWatches", false)
+              .hasFieldOrPropertyWithValue("onlyHttpWatches", null)
               .hasFieldOrPropertyWithValue("http2Disable", false)
               .hasFieldOrPropertyWithValue("userAgent", "fabric8-kubernetes-client/" + Version.clientVersion())
               // Auto Configured values
@@ -481,7 +481,7 @@ class ConfigConstructorTest {
               null,
               null, null, null, null, null,
               null, null, null,
-              null, null, null,
+              null, null, null, null,
               null, null, null, null,
               null, true, true);
 
@@ -522,7 +522,7 @@ class ConfigConstructorTest {
               null,
               null, null, null, null, null,
               null, null, null,
-              null, null, null,
+              null, null, null, null,
               null, null, null, null,
               null, true, true);
 
@@ -572,7 +572,7 @@ class ConfigConstructorTest {
                   null,
                   null, null, null, null, null,
                   null, null, null,
-                  null, null, null,
+                  null, null, null, null,
                   null, null, null, null,
                   null, true, false));
         } finally {
