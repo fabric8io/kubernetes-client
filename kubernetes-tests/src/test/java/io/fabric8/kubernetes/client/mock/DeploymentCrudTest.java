@@ -15,10 +15,12 @@
  */
 package io.fabric8.kubernetes.client.mock;
 
+import io.fabric8.kubernetes.api.model.StatusBuilder;
 import io.fabric8.kubernetes.api.model.apps.Deployment;
 import io.fabric8.kubernetes.api.model.apps.DeploymentBuilder;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
+import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
 import org.assertj.core.api.InstanceOfAssertFactories;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -36,6 +38,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 class DeploymentCrudTest {
 
   KubernetesClient client;
+  KubernetesMockServer server;
 
   @Test
   void listInAnyNamespace() {
@@ -234,6 +237,30 @@ class DeploymentCrudTest {
         .asInstanceOf(InstanceOfAssertFactories.map(String.class, String.class))
         .hasFieldOrPropertyWithValue("original", "annotation")
         .extracting(annotations -> annotations.get("kubectl.kubernetes.io/restartedAt"))
+        .asString().isNotBlank();
+  }
+
+  @Test
+  @DisplayName("Should retry rollout restart if annotations are missing")
+  void testRolloutRestartWithRetry() {
+    // Given
+    client.apps().deployments()
+        .resource(new DeploymentBuilder().withNewMetadata().withName("deployment-to-restart").endMetadata().build())
+        .create();
+    // Simulate PATCH returning 422 on first attempt
+    server.expect()
+        .patch()
+        .withPath("/apis/apps/v1/namespaces/test/deployments/deployment-to-restart")
+        .andReturn(422, new StatusBuilder()
+            .withCode(422)
+            .withMessage("Unprocessable Entity")
+            .build())
+        .once();
+    // When
+    client.apps().deployments().withName("deployment-to-restart").rolling().restart();
+    // Then
+    assertThat(client.apps().deployments().withName("deployment-to-restart").get())
+        .extracting(d -> d.getSpec().getTemplate().getMetadata().getAnnotations().get("kubectl.kubernetes.io/restartedAt"))
         .asString().isNotBlank();
   }
 }
