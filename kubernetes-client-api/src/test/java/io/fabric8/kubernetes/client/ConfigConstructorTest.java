@@ -82,20 +82,7 @@ class ConfigConstructorTest {
 
   static Stream<Arguments> blankConfigurationProviders() {
     return Stream.of(
-        Arguments.of(new Config(null, null, null, null, null,
-            null, null, null, null, null,
-            null, null, null, null, null,
-            null, null, null, null, null,
-            null, null, null, null,
-            null,
-            null, null, null, null,
-            null, null, null,
-            null,
-            null, null, null, null, null,
-            null, null, null,
-            null, null, null,
-            null, null, null, null,
-            null, null, false)));
+        Arguments.of(new Config()));
   }
 
   @Nested
@@ -186,20 +173,7 @@ class ConfigConstructorTest {
     void whenAutoConfigureEnabled_thenUseBothDefaultAndAutoConfiguredValues() {
       // Given
       // When
-      Config config = new Config(null, null, null, null, null,
-          null, null, null, null, null,
-          null, null, null, null, null,
-          null, null, null, null, null,
-          null, null, null, null,
-          null,
-          null, null, null, null,
-          null, null, null,
-          null,
-          null, null, null, null, null,
-          null, null, null,
-          null, null, null,
-          null, null, null, null,
-          null, true, true);
+      Config config = new Config(new SundrioConfigBuilder().withAutoConfigure().build(), true);
 
       // Then
       assertThat(config)
@@ -253,20 +227,7 @@ class ConfigConstructorTest {
     @Test
     @DisplayName("when autoConfigure disabled, then auto configured values are ignored")
     void whenAutoConfigureDisabled_thenOnlyUseDefaultValues() {
-      Config config = new Config(null, null, null, null, null,
-          null, null, null, null, null,
-          null, null, null, null, null,
-          null, null, null, null, null,
-          null, null, null, null,
-          null,
-          null, null, null, null,
-          null, null, null,
-          null,
-          null, null, null, null, null,
-          null, null, null,
-          null, null, null,
-          null, null, null, null,
-          null, false, true);
+      Config config = new Config(new SundrioConfigBuilder().withAutoConfigure(false).build(), true);
 
       assertThat(config)
           .isNotNull()
@@ -362,20 +323,7 @@ class ConfigConstructorTest {
           System.setProperty("proxy.password", "autoconfigured-proxyPassword");
 
           // When
-          Config config = new Config(null, null, null, null, null,
-              null, null, null, null, null,
-              null, null, null, null, null,
-              null, null, null, null, null,
-              null, null, null, null,
-              null,
-              null, null, null, null,
-              null, null, null,
-              null,
-              null, null, null, null, null,
-              null, null, null,
-              null, null, null,
-              null, null, null, null,
-              null, true, true);
+          Config config = new Config(new SundrioConfigBuilder().withAutoConfigure().build(), true);
 
           // Then
           assertThat(config)
@@ -470,20 +418,7 @@ class ConfigConstructorTest {
           String kubeConfigFilePath = Utils.filePath(ConfigConstructorTest.class.getResource("/test-kubeconfig"));
           System.setProperty("kubeconfig", kubeConfigFilePath);
           // When
-          Config config = new Config(null, null, null, null, null,
-              null, null, null, null, null,
-              null, null, null, null, null,
-              null, null, null, null, null,
-              null, null, null, null,
-              null,
-              null, null, null, null,
-              null, null, null,
-              null,
-              null, null, null, null, null,
-              null, null, null,
-              null, null, null,
-              null, null, null, null,
-              null, true, true);
+          Config config = new Config(new SundrioConfigBuilder().withAutoConfigure().build(), true);
 
           // Then
           assertThat(config)
@@ -511,20 +446,7 @@ class ConfigConstructorTest {
           System.setProperty("kubenamespace",
               Utils.filePath(ConfigConstructorTest.class.getResource("/config-source-precedence/serviceaccount/namespace")));
           // When
-          Config config = new Config(null, null, null, null, null,
-              null, null, null, null, null,
-              null, null, null, null, null,
-              null, null, null, null, null,
-              null, null, null, null,
-              null,
-              null, null, null, null,
-              null, null, null,
-              null,
-              null, null, null, null, null,
-              null, null, null,
-              null, null, null,
-              null, null, null, null,
-              null, true, true);
+          Config config = new Config(new SundrioConfigBuilder().withAutoConfigure().build(), true);
 
           // Then
           assertThat(config)
@@ -561,20 +483,7 @@ class ConfigConstructorTest {
           // When
           // Then
           assertThatExceptionOfType(NullPointerException.class)
-              .isThrownBy(() -> new Config(null, null, null, null, null,
-                  null, null, null, null, null,
-                  null, null, null, null, null,
-                  null, null, null, null, null,
-                  null, null, null, null,
-                  null,
-                  null, null, null, null,
-                  null, null, null,
-                  null,
-                  null, null, null, null, null,
-                  null, null, null,
-                  null, null, null,
-                  null, null, null, null,
-                  null, true, false));
+              .isThrownBy(() -> new Config(new SundrioConfigBuilder().withAutoConfigure().build(), false));
         } finally {
           System.clearProperty("kubeconfig");
         }
