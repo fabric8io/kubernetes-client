@@ -29,8 +29,7 @@ class SundrioConfigBuilderTest {
     assertThat(Arrays.stream(SundrioConfigFluent.class.getDeclaredFields())
         .filter(f -> !Modifier.isStatic(f.getModifiers()))
         .collect(Collectors.toList()))
-        .withFailMessage("You've probably modified Config and SundrioConfig constructor annotated with @Buildable," +
-            "please update the ConfigFluent.copyInstance method too")
-        .hasSize(51);
+        .withFailMessage("You've probably modified SundrioConfig, please update the Config copy constructor as well")
+        .hasSize(53);
   }
 }

@@ -398,6 +398,15 @@ class ConfigTest {
         .isEqualTo(30000L);
   }
 
+  @Test
+  void testBuilderAdditionalProperties() {
+    // Given + When
+    Config config = new ConfigBuilder().withAdditionalProperties(Map.of("a", "b")).build();
+    // Then
+    assertThat(config.getAdditionalProperties())
+        .isEqualTo(Map.of("a", "b"));
+  }
+
   @Nested
   @DisplayName("Inside Kubernetes cluster")
   class InCluster {
