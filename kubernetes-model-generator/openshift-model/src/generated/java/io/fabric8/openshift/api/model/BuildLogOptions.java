@@ -235,7 +235,7 @@ public class BuildLogOptions implements Editable<BuildLogOptionsBuilder>, Kubern
     }
 
     /**
-     * noWait if true causes the call to return immediately even if the build is not available yet. Otherwise the server will wait until the build has started.
+     * nowait if true causes the call to return immediately even if the build is not available yet. Otherwise the server will wait until the build has started.
      */
     @JsonProperty("nowait")
     public Boolean getNowait() {
@@ -243,7 +243,7 @@ public class BuildLogOptions implements Editable<BuildLogOptionsBuilder>, Kubern
     }
 
     /**
-     * noWait if true causes the call to return immediately even if the build is not available yet. Otherwise the server will wait until the build has started.
+     * nowait if true causes the call to return immediately even if the build is not available yet. Otherwise the server will wait until the build has started.
      */
     @JsonProperty("nowait")
     public void setNowait(Boolean nowait) {

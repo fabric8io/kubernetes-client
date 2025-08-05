@@ -123,7 +123,7 @@ public class GroupList implements Editable<GroupListBuilder>, KubernetesResource
     }
 
     /**
-     * Items is the list of groups
+     * items is the list of groups
      */
     @JsonProperty("items")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -132,7 +132,7 @@ public class GroupList implements Editable<GroupListBuilder>, KubernetesResource
     }
 
     /**
-     * Items is the list of groups
+     * items is the list of groups
      */
     @JsonProperty("items")
     public void setItems(List<io.fabric8.openshift.api.model.Group> items) {

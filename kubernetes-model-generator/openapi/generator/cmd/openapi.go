@@ -18,6 +18,8 @@ package main
 
 import (
 	"fmt"
+	"time"
+
 	"github.com/fabric8io/kubernetes-client/kubernetes-model-generator/openapi/generator/cmd/generated_autoscaling_openapi"
 	"github.com/fabric8io/kubernetes-client/kubernetes-model-generator/openapi/generator/cmd/generated_certmanager_openapi"
 	"github.com/fabric8io/kubernetes-client/kubernetes-model-generator/openapi/generator/cmd/generated_chaosmesh_openapi"
@@ -34,7 +36,6 @@ import (
 	"github.com/fabric8io/kubernetes-client/kubernetes-model-generator/openapi/generator/pkg/packages"
 	"github.com/spf13/cobra"
 	"k8s.io/kube-openapi/pkg/common"
-	"time"
 )
 
 var openApi = &cobra.Command{

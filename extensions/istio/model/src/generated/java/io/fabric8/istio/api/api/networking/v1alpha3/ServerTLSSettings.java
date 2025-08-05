@@ -41,6 +41,7 @@ import lombok.experimental.Accessors;
     "caCrl",
     "cipherSuites",
     "credentialName",
+    "credentialNames",
     "httpsRedirect",
     "maxProtocolVersion",
     "minProtocolVersion",
@@ -48,6 +49,7 @@ import lombok.experimental.Accessors;
     "privateKey",
     "serverCertificate",
     "subjectAltNames",
+    "tlsCertificates",
     "verifyCertificateHash",
     "verifyCertificateSpki"
 })
@@ -85,6 +87,9 @@ public class ServerTLSSettings implements Editable<ServerTLSSettingsBuilder>, Ku
     private List<String> cipherSuites = new ArrayList<>();
     @JsonProperty("credentialName")
     private String credentialName;
+    @JsonProperty("credentialNames")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<String> credentialNames = new ArrayList<>();
     @JsonProperty("httpsRedirect")
     private Boolean httpsRedirect;
     @JsonProperty("maxProtocolVersion")
@@ -100,6 +105,9 @@ public class ServerTLSSettings implements Editable<ServerTLSSettingsBuilder>, Ku
     @JsonProperty("subjectAltNames")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> subjectAltNames = new ArrayList<>();
+    @JsonProperty("tlsCertificates")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<ServerTLSSettingsTLSCertificate> tlsCertificates = new ArrayList<>();
     @JsonProperty("verifyCertificateHash")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> verifyCertificateHash = new ArrayList<>();
@@ -115,12 +123,13 @@ public class ServerTLSSettings implements Editable<ServerTLSSettingsBuilder>, Ku
     public ServerTLSSettings() {
     }
 
-    public ServerTLSSettings(String caCertificates, String caCrl, List<String> cipherSuites, String credentialName, Boolean httpsRedirect, ServerTLSSettingsTLSProtocol maxProtocolVersion, ServerTLSSettingsTLSProtocol minProtocolVersion, ServerTLSSettingsTLSmode mode, String privateKey, String serverCertificate, List<String> subjectAltNames, List<String> verifyCertificateHash, List<String> verifyCertificateSpki) {
+    public ServerTLSSettings(String caCertificates, String caCrl, List<String> cipherSuites, String credentialName, List<String> credentialNames, Boolean httpsRedirect, ServerTLSSettingsTLSProtocol maxProtocolVersion, ServerTLSSettingsTLSProtocol minProtocolVersion, ServerTLSSettingsTLSmode mode, String privateKey, String serverCertificate, List<String> subjectAltNames, List<ServerTLSSettingsTLSCertificate> tlsCertificates, List<String> verifyCertificateHash, List<String> verifyCertificateSpki) {
         super();
         this.caCertificates = caCertificates;
         this.caCrl = caCrl;
         this.cipherSuites = cipherSuites;
         this.credentialName = credentialName;
+        this.credentialNames = credentialNames;
         this.httpsRedirect = httpsRedirect;
         this.maxProtocolVersion = maxProtocolVersion;
         this.minProtocolVersion = minProtocolVersion;
@@ -128,6 +137,7 @@ public class ServerTLSSettings implements Editable<ServerTLSSettingsBuilder>, Ku
         this.privateKey = privateKey;
         this.serverCertificate = serverCertificate;
         this.subjectAltNames = subjectAltNames;
+        this.tlsCertificates = tlsCertificates;
         this.verifyCertificateHash = verifyCertificateHash;
         this.verifyCertificateSpki = verifyCertificateSpki;
     }
@@ -195,6 +205,23 @@ public class ServerTLSSettings implements Editable<ServerTLSSettingsBuilder>, Ku
     @JsonProperty("credentialName")
     public void setCredentialName(String credentialName) {
         this.credentialName = credentialName;
+    }
+
+    /**
+     * Same as CredentialName but for multiple certificates. Mainly used for specifying RSA and ECDSA certificates for the same server.
+     */
+    @JsonProperty("credentialNames")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public List<String> getCredentialNames() {
+        return credentialNames;
+    }
+
+    /**
+     * Same as CredentialName but for multiple certificates. Mainly used for specifying RSA and ECDSA certificates for the same server.
+     */
+    @JsonProperty("credentialNames")
+    public void setCredentialNames(List<String> credentialNames) {
+        this.credentialNames = credentialNames;
     }
 
     /**
@@ -276,7 +303,7 @@ public class ServerTLSSettings implements Editable<ServerTLSSettingsBuilder>, Ku
     }
 
     /**
-     * A list of alternate names to verify the subject identity in the certificate presented by the client. Requires TLS mode to be set to `MUTUAL`.
+     * A list of alternate names to verify the subject identity in the certificate presented by the client. Requires TLS mode to be set to `MUTUAL`. When multiple certificates are provided via `credential_names` or `tls_certificates`, the subject alternate names are validated against the selected certificate.
      */
     @JsonProperty("subjectAltNames")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -285,11 +312,28 @@ public class ServerTLSSettings implements Editable<ServerTLSSettingsBuilder>, Ku
     }
 
     /**
-     * A list of alternate names to verify the subject identity in the certificate presented by the client. Requires TLS mode to be set to `MUTUAL`.
+     * A list of alternate names to verify the subject identity in the certificate presented by the client. Requires TLS mode to be set to `MUTUAL`. When multiple certificates are provided via `credential_names` or `tls_certificates`, the subject alternate names are validated against the selected certificate.
      */
     @JsonProperty("subjectAltNames")
     public void setSubjectAltNames(List<String> subjectAltNames) {
         this.subjectAltNames = subjectAltNames;
+    }
+
+    /**
+     * Only one of `server_certificate`, `private_key`, `ca_certificates` or `credential_name` or `credential_names` or `tls_certificates` should be specified. This is mainly used for specifying RSA and ECDSA certificates for the same server.
+     */
+    @JsonProperty("tlsCertificates")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public List<ServerTLSSettingsTLSCertificate> getTlsCertificates() {
+        return tlsCertificates;
+    }
+
+    /**
+     * Only one of `server_certificate`, `private_key`, `ca_certificates` or `credential_name` or `credential_names` or `tls_certificates` should be specified. This is mainly used for specifying RSA and ECDSA certificates for the same server.
+     */
+    @JsonProperty("tlsCertificates")
+    public void setTlsCertificates(List<ServerTLSSettingsTLSCertificate> tlsCertificates) {
+        this.tlsCertificates = tlsCertificates;
     }
 
     /**

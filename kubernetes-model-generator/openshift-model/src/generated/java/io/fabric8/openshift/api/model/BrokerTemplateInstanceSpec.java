@@ -92,7 +92,7 @@ public class BrokerTemplateInstanceSpec implements Editable<BrokerTemplateInstan
     }
 
     /**
-     * bindingids is a list of 'binding_id's provided during successive bind calls to the template service broker.
+     * bindingIDs is a list of 'binding_id's provided during successive bind calls to the template service broker.
      */
     @JsonProperty("bindingIDs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -101,7 +101,7 @@ public class BrokerTemplateInstanceSpec implements Editable<BrokerTemplateInstan
     }
 
     /**
-     * bindingids is a list of 'binding_id's provided during successive bind calls to the template service broker.
+     * bindingIDs is a list of 'binding_id's provided during successive bind calls to the template service broker.
      */
     @JsonProperty("bindingIDs")
     public void setBindingIDs(List<String> bindingIDs) {

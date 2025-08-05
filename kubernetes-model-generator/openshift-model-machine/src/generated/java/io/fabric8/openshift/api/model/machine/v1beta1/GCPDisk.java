@@ -106,7 +106,7 @@ public class GCPDisk implements Editable<GCPDiskBuilder>, KubernetesResource
     }
 
     /**
-     * AutoDelete indicates if the disk will be auto-deleted when the instance is deleted (default false).
+     * autoDelete indicates if the disk will be auto-deleted when the instance is deleted (default false).
      */
     @JsonProperty("autoDelete")
     public Boolean getAutoDelete() {
@@ -114,7 +114,7 @@ public class GCPDisk implements Editable<GCPDiskBuilder>, KubernetesResource
     }
 
     /**
-     * AutoDelete indicates if the disk will be auto-deleted when the instance is deleted (default false).
+     * autoDelete indicates if the disk will be auto-deleted when the instance is deleted (default false).
      */
     @JsonProperty("autoDelete")
     public void setAutoDelete(Boolean autoDelete) {
@@ -122,7 +122,7 @@ public class GCPDisk implements Editable<GCPDiskBuilder>, KubernetesResource
     }
 
     /**
-     * Boot indicates if this is a boot disk (default false).
+     * boot indicates if this is a boot disk (default false).
      */
     @JsonProperty("boot")
     public Boolean getBoot() {
@@ -130,7 +130,7 @@ public class GCPDisk implements Editable<GCPDiskBuilder>, KubernetesResource
     }
 
     /**
-     * Boot indicates if this is a boot disk (default false).
+     * boot indicates if this is a boot disk (default false).
      */
     @JsonProperty("boot")
     public void setBoot(Boolean boot) {
@@ -154,7 +154,7 @@ public class GCPDisk implements Editable<GCPDiskBuilder>, KubernetesResource
     }
 
     /**
-     * Image is the source image to create this disk.
+     * image is the source image to create this disk.
      */
     @JsonProperty("image")
     public String getImage() {
@@ -162,7 +162,7 @@ public class GCPDisk implements Editable<GCPDiskBuilder>, KubernetesResource
     }
 
     /**
-     * Image is the source image to create this disk.
+     * image is the source image to create this disk.
      */
     @JsonProperty("image")
     public void setImage(String image) {
@@ -170,7 +170,7 @@ public class GCPDisk implements Editable<GCPDiskBuilder>, KubernetesResource
     }
 
     /**
-     * Labels list of labels to apply to the disk.
+     * labels list of labels to apply to the disk.
      */
     @JsonProperty("labels")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -179,7 +179,7 @@ public class GCPDisk implements Editable<GCPDiskBuilder>, KubernetesResource
     }
 
     /**
-     * Labels list of labels to apply to the disk.
+     * labels list of labels to apply to the disk.
      */
     @JsonProperty("labels")
     public void setLabels(Map<String, String> labels) {
@@ -187,7 +187,7 @@ public class GCPDisk implements Editable<GCPDiskBuilder>, KubernetesResource
     }
 
     /**
-     * SizeGB is the size of the disk (in GB).
+     * sizeGb is the size of the disk (in GB).
      */
     @JsonProperty("sizeGb")
     public Long getSizeGb() {
@@ -195,7 +195,7 @@ public class GCPDisk implements Editable<GCPDiskBuilder>, KubernetesResource
     }
 
     /**
-     * SizeGB is the size of the disk (in GB).
+     * sizeGb is the size of the disk (in GB).
      */
     @JsonProperty("sizeGb")
     public void setSizeGb(Long sizeGb) {
@@ -203,7 +203,7 @@ public class GCPDisk implements Editable<GCPDiskBuilder>, KubernetesResource
     }
 
     /**
-     * Type is the type of the disk (eg: pd-standard).
+     * type is the type of the disk (eg: pd-standard).
      */
     @JsonProperty("type")
     public String getType() {
@@ -211,7 +211,7 @@ public class GCPDisk implements Editable<GCPDiskBuilder>, KubernetesResource
     }
 
     /**
-     * Type is the type of the disk (eg: pd-standard).
+     * type is the type of the disk (eg: pd-standard).
      */
     @JsonProperty("type")
     public void setType(String type) {

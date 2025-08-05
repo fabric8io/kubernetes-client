@@ -81,7 +81,8 @@ class VertxHttpRequest {
           resp.request().reset();
           result.done().completeExceptionally(e);
         }
-      }).endHandler(end -> result.done().complete(null));
+      }).endHandler(end -> result.done().complete(null))
+          .exceptionHandler(ex -> result.done().completeExceptionally(ex));
       return new VertxHttpResponse(result, resp, request);
     };
     return client.request(options).compose(request -> {

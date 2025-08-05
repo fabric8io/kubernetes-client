@@ -113,7 +113,7 @@ public class ImageImportStatus implements Editable<ImageImportStatusBuilder>, Ku
     }
 
     /**
-     * Manifests holds sub-manifests metadata when importing a manifest list
+     * manifests holds sub-manifests metadata when importing a manifest list
      */
     @JsonProperty("manifests")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -122,7 +122,7 @@ public class ImageImportStatus implements Editable<ImageImportStatusBuilder>, Ku
     }
 
     /**
-     * Manifests holds sub-manifests metadata when importing a manifest list
+     * manifests holds sub-manifests metadata when importing a manifest list
      */
     @JsonProperty("manifests")
     public void setManifests(List<Image> manifests) {
@@ -146,7 +146,7 @@ public class ImageImportStatus implements Editable<ImageImportStatusBuilder>, Ku
     }
 
     /**
-     * Tag is the tag this image was located under, if any
+     * tag is the tag this image was located under, if any
      */
     @JsonProperty("tag")
     public String getTag() {
@@ -154,7 +154,7 @@ public class ImageImportStatus implements Editable<ImageImportStatusBuilder>, Ku
     }
 
     /**
-     * Tag is the tag this image was located under, if any
+     * tag is the tag this image was located under, if any
      */
     @JsonProperty("tag")
     public void setTag(String tag) {

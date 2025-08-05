@@ -93,7 +93,7 @@ public class RemoteConnectionInfo implements Editable<RemoteConnectionInfoBuilde
     }
 
     /**
-     * CA is the CA for verifying TLS connections
+     * ca is the CA for verifying TLS connections
      */
     @JsonProperty("ca")
     public String getCa() {
@@ -101,7 +101,7 @@ public class RemoteConnectionInfo implements Editable<RemoteConnectionInfoBuilde
     }
 
     /**
-     * CA is the CA for verifying TLS connections
+     * ca is the CA for verifying TLS connections
      */
     @JsonProperty("ca")
     public void setCa(String ca) {
@@ -109,7 +109,7 @@ public class RemoteConnectionInfo implements Editable<RemoteConnectionInfoBuilde
     }
 
     /**
-     * CertFile is a file containing a PEM-encoded certificate
+     * certFile is a file containing a PEM-encoded certificate
      */
     @JsonProperty("certFile")
     public String getCertFile() {
@@ -117,7 +117,7 @@ public class RemoteConnectionInfo implements Editable<RemoteConnectionInfoBuilde
     }
 
     /**
-     * CertFile is a file containing a PEM-encoded certificate
+     * certFile is a file containing a PEM-encoded certificate
      */
     @JsonProperty("certFile")
     public void setCertFile(String certFile) {
@@ -125,7 +125,7 @@ public class RemoteConnectionInfo implements Editable<RemoteConnectionInfoBuilde
     }
 
     /**
-     * KeyFile is a file containing a PEM-encoded private key for the certificate specified by CertFile
+     * keyFile is a file containing a PEM-encoded private key for the certificate specified by CertFile
      */
     @JsonProperty("keyFile")
     public String getKeyFile() {
@@ -133,7 +133,7 @@ public class RemoteConnectionInfo implements Editable<RemoteConnectionInfoBuilde
     }
 
     /**
-     * KeyFile is a file containing a PEM-encoded private key for the certificate specified by CertFile
+     * keyFile is a file containing a PEM-encoded private key for the certificate specified by CertFile
      */
     @JsonProperty("keyFile")
     public void setKeyFile(String keyFile) {
@@ -141,7 +141,7 @@ public class RemoteConnectionInfo implements Editable<RemoteConnectionInfoBuilde
     }
 
     /**
-     * URL is the remote URL to connect to
+     * url is the remote URL to connect to
      */
     @JsonProperty("url")
     public String getUrl() {
@@ -149,7 +149,7 @@ public class RemoteConnectionInfo implements Editable<RemoteConnectionInfoBuilde
     }
 
     /**
-     * URL is the remote URL to connect to
+     * url is the remote URL to connect to
      */
     @JsonProperty("url")
     public void setUrl(String url) {

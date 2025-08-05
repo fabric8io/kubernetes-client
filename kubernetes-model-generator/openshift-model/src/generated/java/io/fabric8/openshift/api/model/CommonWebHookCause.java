@@ -101,7 +101,7 @@ public class CommonWebHookCause implements Editable<CommonWebHookCauseBuilder>, 
     }
 
     /**
-     * Secret is the obfuscated webhook secret that triggered a build.
+     * secret is the obfuscated webhook secret that triggered a build.
      */
     @JsonProperty("secret")
     public String getSecret() {
@@ -109,7 +109,7 @@ public class CommonWebHookCause implements Editable<CommonWebHookCauseBuilder>, 
     }
 
     /**
-     * Secret is the obfuscated webhook secret that triggered a build.
+     * secret is the obfuscated webhook secret that triggered a build.
      */
     @JsonProperty("secret")
     public void setSecret(String secret) {

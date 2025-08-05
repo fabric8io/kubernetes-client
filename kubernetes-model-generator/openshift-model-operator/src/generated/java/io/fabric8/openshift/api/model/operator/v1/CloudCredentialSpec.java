@@ -104,7 +104,7 @@ public class CloudCredentialSpec implements Editable<CloudCredentialSpecBuilder>
     }
 
     /**
-     * CredentialsMode allows informing CCO that it should not attempt to dynamically determine the root cloud credentials capabilities, and it should just run in the specified mode. It also allows putting the operator into "manual" mode if desired. Leaving the field in default mode runs CCO so that the cluster's cloud credentials will be dynamically probed for capabilities (on supported clouds/platforms). Supported modes:<br><p>   AWS/Azure/GCP: "" (Default), "Mint", "Passthrough", "Manual"<br><p>   Others: Do not set value as other platforms only support running in "Passthrough"
+     * credentialsMode allows informing CCO that it should not attempt to dynamically determine the root cloud credentials capabilities, and it should just run in the specified mode. It also allows putting the operator into "manual" mode if desired. Leaving the field in default mode runs CCO so that the cluster's cloud credentials will be dynamically probed for capabilities (on supported clouds/platforms). Supported modes:<br><p>   AWS/Azure/GCP: "" (Default), "Mint", "Passthrough", "Manual"<br><p>   Others: Do not set value as other platforms only support running in "Passthrough"
      */
     @JsonProperty("credentialsMode")
     public String getCredentialsMode() {
@@ -112,7 +112,7 @@ public class CloudCredentialSpec implements Editable<CloudCredentialSpecBuilder>
     }
 
     /**
-     * CredentialsMode allows informing CCO that it should not attempt to dynamically determine the root cloud credentials capabilities, and it should just run in the specified mode. It also allows putting the operator into "manual" mode if desired. Leaving the field in default mode runs CCO so that the cluster's cloud credentials will be dynamically probed for capabilities (on supported clouds/platforms). Supported modes:<br><p>   AWS/Azure/GCP: "" (Default), "Mint", "Passthrough", "Manual"<br><p>   Others: Do not set value as other platforms only support running in "Passthrough"
+     * credentialsMode allows informing CCO that it should not attempt to dynamically determine the root cloud credentials capabilities, and it should just run in the specified mode. It also allows putting the operator into "manual" mode if desired. Leaving the field in default mode runs CCO so that the cluster's cloud credentials will be dynamically probed for capabilities (on supported clouds/platforms). Supported modes:<br><p>   AWS/Azure/GCP: "" (Default), "Mint", "Passthrough", "Manual"<br><p>   Others: Do not set value as other platforms only support running in "Passthrough"
      */
     @JsonProperty("credentialsMode")
     public void setCredentialsMode(String credentialsMode) {

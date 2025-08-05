@@ -89,7 +89,7 @@ public class TagImportPolicy implements Editable<TagImportPolicyBuilder>, Kubern
     }
 
     /**
-     * ImportMode describes how to import an image manifest.
+     * importMode describes how to import an image manifest.
      */
     @JsonProperty("importMode")
     public String getImportMode() {
@@ -97,7 +97,7 @@ public class TagImportPolicy implements Editable<TagImportPolicyBuilder>, Kubern
     }
 
     /**
-     * ImportMode describes how to import an image manifest.
+     * importMode describes how to import an image manifest.
      */
     @JsonProperty("importMode")
     public void setImportMode(String importMode) {
@@ -105,7 +105,7 @@ public class TagImportPolicy implements Editable<TagImportPolicyBuilder>, Kubern
     }
 
     /**
-     * Insecure is true if the server may bypass certificate verification or connect directly over HTTP during image import.
+     * insecure is true if the server may bypass certificate verification or connect directly over HTTP during image import.
      */
     @JsonProperty("insecure")
     public Boolean getInsecure() {
@@ -113,7 +113,7 @@ public class TagImportPolicy implements Editable<TagImportPolicyBuilder>, Kubern
     }
 
     /**
-     * Insecure is true if the server may bypass certificate verification or connect directly over HTTP during image import.
+     * insecure is true if the server may bypass certificate verification or connect directly over HTTP during image import.
      */
     @JsonProperty("insecure")
     public void setInsecure(Boolean insecure) {
@@ -121,7 +121,7 @@ public class TagImportPolicy implements Editable<TagImportPolicyBuilder>, Kubern
     }
 
     /**
-     * Scheduled indicates to the server that this tag should be periodically checked to ensure it is up to date, and imported
+     * scheduled indicates to the server that this tag should be periodically checked to ensure it is up to date, and imported
      */
     @JsonProperty("scheduled")
     public Boolean getScheduled() {
@@ -129,7 +129,7 @@ public class TagImportPolicy implements Editable<TagImportPolicyBuilder>, Kubern
     }
 
     /**
-     * Scheduled indicates to the server that this tag should be periodically checked to ensure it is up to date, and imported
+     * scheduled indicates to the server that this tag should be periodically checked to ensure it is up to date, and imported
      */
     @JsonProperty("scheduled")
     public void setScheduled(Boolean scheduled) {

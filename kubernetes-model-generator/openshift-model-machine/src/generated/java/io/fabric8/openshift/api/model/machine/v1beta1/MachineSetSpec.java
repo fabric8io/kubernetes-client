@@ -117,7 +117,7 @@ public class MachineSetSpec implements Editable<MachineSetSpecBuilder>, Kubernet
     }
 
     /**
-     * DeletePolicy defines the policy used to identify nodes to delete when downscaling. Defaults to "Random".  Valid values are "Random, "Newest", "Oldest"
+     * deletePolicy defines the policy used to identify nodes to delete when downscaling. Defaults to "Random".  Valid values are "Random, "Newest", "Oldest"
      */
     @JsonProperty("deletePolicy")
     public String getDeletePolicy() {
@@ -125,7 +125,7 @@ public class MachineSetSpec implements Editable<MachineSetSpecBuilder>, Kubernet
     }
 
     /**
-     * DeletePolicy defines the policy used to identify nodes to delete when downscaling. Defaults to "Random".  Valid values are "Random, "Newest", "Oldest"
+     * deletePolicy defines the policy used to identify nodes to delete when downscaling. Defaults to "Random".  Valid values are "Random, "Newest", "Oldest"
      */
     @JsonProperty("deletePolicy")
     public void setDeletePolicy(String deletePolicy) {
@@ -133,7 +133,7 @@ public class MachineSetSpec implements Editable<MachineSetSpecBuilder>, Kubernet
     }
 
     /**
-     * MinReadySeconds is the minimum number of seconds for which a newly created machine should be ready. Defaults to 0 (machine will be considered available as soon as it is ready)
+     * minReadySeconds is the minimum number of seconds for which a newly created machine should be ready. Defaults to 0 (machine will be considered available as soon as it is ready)
      */
     @JsonProperty("minReadySeconds")
     public Integer getMinReadySeconds() {
@@ -141,7 +141,7 @@ public class MachineSetSpec implements Editable<MachineSetSpecBuilder>, Kubernet
     }
 
     /**
-     * MinReadySeconds is the minimum number of seconds for which a newly created machine should be ready. Defaults to 0 (machine will be considered available as soon as it is ready)
+     * minReadySeconds is the minimum number of seconds for which a newly created machine should be ready. Defaults to 0 (machine will be considered available as soon as it is ready)
      */
     @JsonProperty("minReadySeconds")
     public void setMinReadySeconds(Integer minReadySeconds) {
@@ -149,7 +149,7 @@ public class MachineSetSpec implements Editable<MachineSetSpecBuilder>, Kubernet
     }
 
     /**
-     * Replicas is the number of desired replicas. This is a pointer to distinguish between explicit zero and unspecified. Defaults to 1.
+     * replicas is the number of desired replicas. This is a pointer to distinguish between explicit zero and unspecified. Defaults to 1.
      */
     @JsonProperty("replicas")
     public Integer getReplicas() {
@@ -157,7 +157,7 @@ public class MachineSetSpec implements Editable<MachineSetSpecBuilder>, Kubernet
     }
 
     /**
-     * Replicas is the number of desired replicas. This is a pointer to distinguish between explicit zero and unspecified. Defaults to 1.
+     * replicas is the number of desired replicas. This is a pointer to distinguish between explicit zero and unspecified. Defaults to 1.
      */
     @JsonProperty("replicas")
     public void setReplicas(Integer replicas) {

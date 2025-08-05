@@ -86,7 +86,7 @@ public class ControlPlaneMachineSetTemplate implements Editable<ControlPlaneMach
     }
 
     /**
-     * MachineType determines the type of Machines that should be managed by the ControlPlaneMachineSet. Currently, the only valid value is machines_v1beta1_machine_openshift_io.
+     * machineType determines the type of Machines that should be managed by the ControlPlaneMachineSet. Currently, the only valid value is machines_v1beta1_machine_openshift_io.
      */
     @JsonProperty("machineType")
     public String getMachineType() {
@@ -94,7 +94,7 @@ public class ControlPlaneMachineSetTemplate implements Editable<ControlPlaneMach
     }
 
     /**
-     * MachineType determines the type of Machines that should be managed by the ControlPlaneMachineSet. Currently, the only valid value is machines_v1beta1_machine_openshift_io.
+     * machineType determines the type of Machines that should be managed by the ControlPlaneMachineSet. Currently, the only valid value is machines_v1beta1_machine_openshift_io.
      */
     @JsonProperty("machineType")
     public void setMachineType(String machineType) {

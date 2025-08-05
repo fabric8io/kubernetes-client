@@ -86,7 +86,7 @@ public class NodeSpec implements Editable<NodeSpecBuilder>, KubernetesResource
     }
 
     /**
-     * CgroupMode determines the cgroups version on the node
+     * cgroupMode determines the cgroups version on the node
      */
     @JsonProperty("cgroupMode")
     public String getCgroupMode() {
@@ -94,7 +94,7 @@ public class NodeSpec implements Editable<NodeSpecBuilder>, KubernetesResource
     }
 
     /**
-     * CgroupMode determines the cgroups version on the node
+     * cgroupMode determines the cgroups version on the node
      */
     @JsonProperty("cgroupMode")
     public void setCgroupMode(String cgroupMode) {
@@ -118,7 +118,7 @@ public class NodeSpec implements Editable<NodeSpecBuilder>, KubernetesResource
     }
 
     /**
-     * WorkerLatencyProfile determins the how fast the kubelet is updating the status and corresponding reaction of the cluster
+     * workerLatencyProfile determins the how fast the kubelet is updating the status and corresponding reaction of the cluster
      */
     @JsonProperty("workerLatencyProfile")
     public String getWorkerLatencyProfile() {
@@ -126,7 +126,7 @@ public class NodeSpec implements Editable<NodeSpecBuilder>, KubernetesResource
     }
 
     /**
-     * WorkerLatencyProfile determins the how fast the kubelet is updating the status and corresponding reaction of the cluster
+     * workerLatencyProfile determins the how fast the kubelet is updating the status and corresponding reaction of the cluster
      */
     @JsonProperty("workerLatencyProfile")
     public void setWorkerLatencyProfile(String workerLatencyProfile) {

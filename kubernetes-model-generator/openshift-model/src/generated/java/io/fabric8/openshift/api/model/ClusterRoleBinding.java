@@ -135,7 +135,7 @@ public class ClusterRoleBinding implements Editable<ClusterRoleBindingBuilder>, 
     }
 
     /**
-     * GroupNames holds all the groups directly bound to the role. This field should only be specified when supporting legacy clients and servers. See Subjects for further details.
+     * groupNames holds all the groups directly bound to the role. This field should only be specified when supporting legacy clients and servers. See Subjects for further details.
      */
     @JsonProperty("groupNames")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -144,7 +144,7 @@ public class ClusterRoleBinding implements Editable<ClusterRoleBindingBuilder>, 
     }
 
     /**
-     * GroupNames holds all the groups directly bound to the role. This field should only be specified when supporting legacy clients and servers. See Subjects for further details.
+     * groupNames holds all the groups directly bound to the role. This field should only be specified when supporting legacy clients and servers. See Subjects for further details.
      */
     @JsonProperty("groupNames")
     public void setGroupNames(List<String> groupNames) {
@@ -200,7 +200,7 @@ public class ClusterRoleBinding implements Editable<ClusterRoleBindingBuilder>, 
     }
 
     /**
-     * Subjects hold object references to authorize with this rule. This field is ignored if UserNames or GroupNames are specified to support legacy clients and servers. Thus newer clients that do not need to support backwards compatibility should send only fully qualified Subjects and should omit the UserNames and GroupNames fields. Clients that need to support backwards compatibility can use this field to build the UserNames and GroupNames.
+     * subjects hold object references to authorize with this rule. This field is ignored if UserNames or GroupNames are specified to support legacy clients and servers. Thus newer clients that do not need to support backwards compatibility should send only fully qualified Subjects and should omit the UserNames and GroupNames fields. Clients that need to support backwards compatibility can use this field to build the UserNames and GroupNames.
      */
     @JsonProperty("subjects")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -209,7 +209,7 @@ public class ClusterRoleBinding implements Editable<ClusterRoleBindingBuilder>, 
     }
 
     /**
-     * Subjects hold object references to authorize with this rule. This field is ignored if UserNames or GroupNames are specified to support legacy clients and servers. Thus newer clients that do not need to support backwards compatibility should send only fully qualified Subjects and should omit the UserNames and GroupNames fields. Clients that need to support backwards compatibility can use this field to build the UserNames and GroupNames.
+     * subjects hold object references to authorize with this rule. This field is ignored if UserNames or GroupNames are specified to support legacy clients and servers. Thus newer clients that do not need to support backwards compatibility should send only fully qualified Subjects and should omit the UserNames and GroupNames fields. Clients that need to support backwards compatibility can use this field to build the UserNames and GroupNames.
      */
     @JsonProperty("subjects")
     public void setSubjects(List<ObjectReference> subjects) {
@@ -217,7 +217,7 @@ public class ClusterRoleBinding implements Editable<ClusterRoleBindingBuilder>, 
     }
 
     /**
-     * UserNames holds all the usernames directly bound to the role. This field should only be specified when supporting legacy clients and servers. See Subjects for further details.
+     * userNames holds all the usernames directly bound to the role. This field should only be specified when supporting legacy clients and servers. See Subjects for further details.
      */
     @JsonProperty("userNames")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -226,7 +226,7 @@ public class ClusterRoleBinding implements Editable<ClusterRoleBindingBuilder>, 
     }
 
     /**
-     * UserNames holds all the usernames directly bound to the role. This field should only be specified when supporting legacy clients and servers. See Subjects for further details.
+     * userNames holds all the usernames directly bound to the role. This field should only be specified when supporting legacy clients and servers. See Subjects for further details.
      */
     @JsonProperty("userNames")
     public void setUserNames(List<String> userNames) {

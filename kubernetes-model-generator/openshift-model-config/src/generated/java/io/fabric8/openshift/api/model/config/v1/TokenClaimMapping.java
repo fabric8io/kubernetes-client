@@ -78,7 +78,7 @@ public class TokenClaimMapping implements Editable<TokenClaimMappingBuilder>, Ku
     }
 
     /**
-     * Claim is a JWT token claim to be used in the mapping
+     * claim is a JWT token claim to be used in the mapping
      */
     @JsonProperty("claim")
     public String getClaim() {
@@ -86,7 +86,7 @@ public class TokenClaimMapping implements Editable<TokenClaimMappingBuilder>, Ku
     }
 
     /**
-     * Claim is a JWT token claim to be used in the mapping
+     * claim is a JWT token claim to be used in the mapping
      */
     @JsonProperty("claim")
     public void setClaim(String claim) {

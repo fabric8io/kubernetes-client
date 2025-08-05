@@ -94,7 +94,7 @@ public class UserRestriction implements Editable<UserRestrictionBuilder>, Kubern
     }
 
     /**
-     * Groups specifies a list of literal group names.
+     * groups specifies a list of literal group names.
      */
     @JsonProperty("groups")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -103,7 +103,7 @@ public class UserRestriction implements Editable<UserRestrictionBuilder>, Kubern
     }
 
     /**
-     * Groups specifies a list of literal group names.
+     * groups specifies a list of literal group names.
      */
     @JsonProperty("groups")
     public void setGroups(List<String> groups) {
@@ -128,7 +128,7 @@ public class UserRestriction implements Editable<UserRestrictionBuilder>, Kubern
     }
 
     /**
-     * Users specifies a list of literal user names.
+     * users specifies a list of literal user names.
      */
     @JsonProperty("users")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -137,7 +137,7 @@ public class UserRestriction implements Editable<UserRestrictionBuilder>, Kubern
     }
 
     /**
-     * Users specifies a list of literal user names.
+     * users specifies a list of literal user names.
      */
     @JsonProperty("users")
     public void setUsers(List<String> users) {

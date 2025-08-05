@@ -24,6 +24,7 @@ import org.eclipse.jetty.client.api.Result;
 import org.eclipse.jetty.util.Callback;
 
 import java.nio.ByteBuffer;
+import java.util.Optional;
 import java.util.concurrent.CancellationException;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.LongConsumer;
@@ -75,7 +76,8 @@ public abstract class JettyAsyncResponseListener extends Response.Listener.Adapt
     if (result.isSucceeded()) {
       asyncBodyDone.complete(null);
     } else {
-      asyncBodyDone.completeExceptionally(result.getRequestFailure());
+      asyncBodyDone.completeExceptionally(
+          Optional.ofNullable(result.getFailure()).orElse(new RuntimeException("Request failed, but no failure was given")));
     }
   }
 

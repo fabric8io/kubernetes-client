@@ -86,7 +86,7 @@ public class ApplicationMenuSpec implements Editable<ApplicationMenuSpecBuilder>
     }
 
     /**
-     * imageUrl is the URL for the icon used in front of the link in the application menu. The URL must be an HTTPS URL or a Data URI. The image should be square and will be shown at 24x24 pixels.
+     * imageURL is the URL for the icon used in front of the link in the application menu. The URL must be an HTTPS URL or a Data URI. The image should be square and will be shown at 24x24 pixels.
      */
     @JsonProperty("imageURL")
     public String getImageURL() {
@@ -94,7 +94,7 @@ public class ApplicationMenuSpec implements Editable<ApplicationMenuSpecBuilder>
     }
 
     /**
-     * imageUrl is the URL for the icon used in front of the link in the application menu. The URL must be an HTTPS URL or a Data URI. The image should be square and will be shown at 24x24 pixels.
+     * imageURL is the URL for the icon used in front of the link in the application menu. The URL must be an HTTPS URL or a Data URI. The image should be square and will be shown at 24x24 pixels.
      */
     @JsonProperty("imageURL")
     public void setImageURL(String imageURL) {

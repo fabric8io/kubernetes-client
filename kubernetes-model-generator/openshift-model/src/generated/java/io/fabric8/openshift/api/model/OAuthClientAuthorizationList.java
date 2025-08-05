@@ -123,7 +123,7 @@ public class OAuthClientAuthorizationList implements Editable<OAuthClientAuthori
     }
 
     /**
-     * Items is the list of OAuth client authorizations
+     * items is the list of OAuth client authorizations
      */
     @JsonProperty("items")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -132,7 +132,7 @@ public class OAuthClientAuthorizationList implements Editable<OAuthClientAuthori
     }
 
     /**
-     * Items is the list of OAuth client authorizations
+     * items is the list of OAuth client authorizations
      */
     @JsonProperty("items")
     public void setItems(List<io.fabric8.openshift.api.model.OAuthClientAuthorization> items) {

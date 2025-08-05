@@ -92,7 +92,7 @@ public class NamedCertificate implements Editable<NamedCertificateBuilder>, Kube
     }
 
     /**
-     * CertFile is a file containing a PEM-encoded certificate
+     * certFile is a file containing a PEM-encoded certificate
      */
     @JsonProperty("certFile")
     public String getCertFile() {
@@ -100,7 +100,7 @@ public class NamedCertificate implements Editable<NamedCertificateBuilder>, Kube
     }
 
     /**
-     * CertFile is a file containing a PEM-encoded certificate
+     * certFile is a file containing a PEM-encoded certificate
      */
     @JsonProperty("certFile")
     public void setCertFile(String certFile) {
@@ -108,7 +108,7 @@ public class NamedCertificate implements Editable<NamedCertificateBuilder>, Kube
     }
 
     /**
-     * KeyFile is a file containing a PEM-encoded private key for the certificate specified by CertFile
+     * keyFile is a file containing a PEM-encoded private key for the certificate specified by CertFile
      */
     @JsonProperty("keyFile")
     public String getKeyFile() {
@@ -116,7 +116,7 @@ public class NamedCertificate implements Editable<NamedCertificateBuilder>, Kube
     }
 
     /**
-     * KeyFile is a file containing a PEM-encoded private key for the certificate specified by CertFile
+     * keyFile is a file containing a PEM-encoded private key for the certificate specified by CertFile
      */
     @JsonProperty("keyFile")
     public void setKeyFile(String keyFile) {
@@ -124,7 +124,7 @@ public class NamedCertificate implements Editable<NamedCertificateBuilder>, Kube
     }
 
     /**
-     * Names is a list of DNS names this certificate should be used to secure A name can be a normal DNS name, or can contain leading wildcard segments.
+     * names is a list of DNS names this certificate should be used to secure A name can be a normal DNS name, or can contain leading wildcard segments.
      */
     @JsonProperty("names")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -133,7 +133,7 @@ public class NamedCertificate implements Editable<NamedCertificateBuilder>, Kube
     }
 
     /**
-     * Names is a list of DNS names this certificate should be used to secure A name can be a normal DNS name, or can contain leading wildcard segments.
+     * names is a list of DNS names this certificate should be used to secure A name can be a normal DNS name, or can contain leading wildcard segments.
      */
     @JsonProperty("names")
     public void setNames(List<String> names) {

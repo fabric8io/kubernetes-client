@@ -35,6 +35,7 @@ import lombok.experimental.Accessors;
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
+    "full",
     "mode"
 })
 @ToString
@@ -62,6 +63,8 @@ import lombok.experimental.Accessors;
 public class IPsecConfig implements Editable<IPsecConfigBuilder>, KubernetesResource
 {
 
+    @JsonProperty("full")
+    private IPsecFullModeConfig full;
     @JsonProperty("mode")
     private String mode;
     @JsonIgnore
@@ -73,9 +76,20 @@ public class IPsecConfig implements Editable<IPsecConfigBuilder>, KubernetesReso
     public IPsecConfig() {
     }
 
-    public IPsecConfig(String mode) {
+    public IPsecConfig(IPsecFullModeConfig full, String mode) {
         super();
+        this.full = full;
         this.mode = mode;
+    }
+
+    @JsonProperty("full")
+    public IPsecFullModeConfig getFull() {
+        return full;
+    }
+
+    @JsonProperty("full")
+    public void setFull(IPsecFullModeConfig full) {
+        this.full = full;
     }
 
     /**

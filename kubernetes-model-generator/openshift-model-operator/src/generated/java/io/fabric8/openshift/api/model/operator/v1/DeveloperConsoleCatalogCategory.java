@@ -98,7 +98,7 @@ public class DeveloperConsoleCatalogCategory implements Editable<DeveloperConsol
     }
 
     /**
-     * ID is an identifier used in the URL to enable deep linking in console. ID is required and must have 1-32 URL safe (A-Z, a-z, 0-9, - and _) characters.
+     * id is an identifier used in the URL to enable deep linking in console. ID is required and must have 1-32 URL safe (A-Z, a-z, 0-9, - and _) characters.
      */
     @JsonProperty("id")
     public String getId() {
@@ -106,7 +106,7 @@ public class DeveloperConsoleCatalogCategory implements Editable<DeveloperConsol
     }
 
     /**
-     * ID is an identifier used in the URL to enable deep linking in console. ID is required and must have 1-32 URL safe (A-Z, a-z, 0-9, - and _) characters.
+     * id is an identifier used in the URL to enable deep linking in console. ID is required and must have 1-32 URL safe (A-Z, a-z, 0-9, - and _) characters.
      */
     @JsonProperty("id")
     public void setId(String id) {

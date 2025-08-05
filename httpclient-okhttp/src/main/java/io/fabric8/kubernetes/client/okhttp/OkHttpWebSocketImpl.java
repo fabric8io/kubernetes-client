@@ -75,13 +75,10 @@ class OkHttpWebSocketImpl implements WebSocket {
 
       @Override
       public void onFailure(okhttp3.WebSocket webSocket, Throwable t, Response response) {
-        if (response != null) {
-          response.close();
-        }
+        // Ensure response body is always closed (leak)
+        Optional.ofNullable(response).map(Response::body).ifPresent(ResponseBody::close);
         if (!opened) {
           if (response != null) {
-            // Ensure response body is always closed (leak)
-            Optional.ofNullable(response.body()).ifPresent(ResponseBody::close);
             final WebSocketUpgradeResponse upgradeResponse = new WebSocketUpgradeResponse(
                 fabric8Request, response.code(), response.headers().toMultimap());
             future.complete(new WebSocketResponse(upgradeResponse, t));

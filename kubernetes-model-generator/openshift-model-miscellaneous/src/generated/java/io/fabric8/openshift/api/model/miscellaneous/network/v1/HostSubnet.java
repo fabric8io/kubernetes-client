@@ -139,7 +139,7 @@ public class HostSubnet implements Editable<HostSubnetBuilder>, HasMetadata
     }
 
     /**
-     * EgressCIDRs is the list of CIDR ranges available for automatically assigning egress IPs to this node from. If this field is set then EgressIPs should be treated as read-only.
+     * egressCIDRs is the list of CIDR ranges available for automatically assigning egress IPs to this node from. If this field is set then EgressIPs should be treated as read-only.
      */
     @JsonProperty("egressCIDRs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -148,7 +148,7 @@ public class HostSubnet implements Editable<HostSubnetBuilder>, HasMetadata
     }
 
     /**
-     * EgressCIDRs is the list of CIDR ranges available for automatically assigning egress IPs to this node from. If this field is set then EgressIPs should be treated as read-only.
+     * egressCIDRs is the list of CIDR ranges available for automatically assigning egress IPs to this node from. If this field is set then EgressIPs should be treated as read-only.
      */
     @JsonProperty("egressCIDRs")
     public void setEgressCIDRs(List<String> egressCIDRs) {
@@ -156,7 +156,7 @@ public class HostSubnet implements Editable<HostSubnetBuilder>, HasMetadata
     }
 
     /**
-     * EgressIPs is the list of automatic egress IP addresses currently hosted by this node. If EgressCIDRs is empty, this can be set by hand; if EgressCIDRs is set then the master will overwrite the value here with its own allocation of egress IPs.
+     * egressIPs is the list of automatic egress IP addresses currently hosted by this node. If EgressCIDRs is empty, this can be set by hand; if EgressCIDRs is set then the master will overwrite the value here with its own allocation of egress IPs.
      */
     @JsonProperty("egressIPs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -165,7 +165,7 @@ public class HostSubnet implements Editable<HostSubnetBuilder>, HasMetadata
     }
 
     /**
-     * EgressIPs is the list of automatic egress IP addresses currently hosted by this node. If EgressCIDRs is empty, this can be set by hand; if EgressCIDRs is set then the master will overwrite the value here with its own allocation of egress IPs.
+     * egressIPs is the list of automatic egress IP addresses currently hosted by this node. If EgressCIDRs is empty, this can be set by hand; if EgressCIDRs is set then the master will overwrite the value here with its own allocation of egress IPs.
      */
     @JsonProperty("egressIPs")
     public void setEgressIPs(List<String> egressIPs) {
@@ -173,7 +173,7 @@ public class HostSubnet implements Editable<HostSubnetBuilder>, HasMetadata
     }
 
     /**
-     * Host is the name of the node. (This is the same as the object's name, but both fields must be set.)
+     * host is the name of the node. (This is the same as the object's name, but both fields must be set.)
      */
     @JsonProperty("host")
     public String getHost() {
@@ -181,7 +181,7 @@ public class HostSubnet implements Editable<HostSubnetBuilder>, HasMetadata
     }
 
     /**
-     * Host is the name of the node. (This is the same as the object's name, but both fields must be set.)
+     * host is the name of the node. (This is the same as the object's name, but both fields must be set.)
      */
     @JsonProperty("host")
     public void setHost(String host) {
@@ -189,7 +189,7 @@ public class HostSubnet implements Editable<HostSubnetBuilder>, HasMetadata
     }
 
     /**
-     * HostIP is the IP address to be used as a VTEP by other nodes in the overlay network
+     * hostIP is the IP address to be used as a VTEP by other nodes in the overlay network
      */
     @JsonProperty("hostIP")
     public String getHostIP() {
@@ -197,7 +197,7 @@ public class HostSubnet implements Editable<HostSubnetBuilder>, HasMetadata
     }
 
     /**
-     * HostIP is the IP address to be used as a VTEP by other nodes in the overlay network
+     * hostIP is the IP address to be used as a VTEP by other nodes in the overlay network
      */
     @JsonProperty("hostIP")
     public void setHostIP(String hostIP) {
@@ -237,7 +237,7 @@ public class HostSubnet implements Editable<HostSubnetBuilder>, HasMetadata
     }
 
     /**
-     * Subnet is the CIDR range of the overlay network assigned to the node for its pods
+     * subnet is the CIDR range of the overlay network assigned to the node for its pods
      */
     @JsonProperty("subnet")
     public String getSubnet() {
@@ -245,7 +245,7 @@ public class HostSubnet implements Editable<HostSubnetBuilder>, HasMetadata
     }
 
     /**
-     * Subnet is the CIDR range of the overlay network assigned to the node for its pods
+     * subnet is the CIDR range of the overlay network assigned to the node for its pods
      */
     @JsonProperty("subnet")
     public void setSubnet(String subnet) {

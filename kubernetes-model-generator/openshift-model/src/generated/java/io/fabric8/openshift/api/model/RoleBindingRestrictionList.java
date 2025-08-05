@@ -123,7 +123,7 @@ public class RoleBindingRestrictionList implements Editable<RoleBindingRestricti
     }
 
     /**
-     * Items is a list of RoleBindingRestriction objects.
+     * items is a list of RoleBindingRestriction objects.
      */
     @JsonProperty("items")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -132,7 +132,7 @@ public class RoleBindingRestrictionList implements Editable<RoleBindingRestricti
     }
 
     /**
-     * Items is a list of RoleBindingRestriction objects.
+     * items is a list of RoleBindingRestriction objects.
      */
     @JsonProperty("items")
     public void setItems(List<io.fabric8.openshift.api.model.RoleBindingRestriction> items) {

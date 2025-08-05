@@ -126,7 +126,7 @@ public class NetworkParam implements Editable<NetworkParamBuilder>, KubernetesRe
     }
 
     /**
-     * A fixed IPv4 address for the NIC.
+     * A fixed IPv4 address for the NIC. Deprecated: fixedIP is silently ignored. Use subnets instead.
      */
     @JsonProperty("fixedIp")
     public String getFixedIp() {
@@ -134,7 +134,7 @@ public class NetworkParam implements Editable<NetworkParamBuilder>, KubernetesRe
     }
 
     /**
-     * A fixed IPv4 address for the NIC.
+     * A fixed IPv4 address for the NIC. Deprecated: fixedIP is silently ignored. Use subnets instead.
      */
     @JsonProperty("fixedIp")
     public void setFixedIp(String fixedIp) {
@@ -142,7 +142,7 @@ public class NetworkParam implements Editable<NetworkParamBuilder>, KubernetesRe
     }
 
     /**
-     * NoAllowedAddressPairs disables creation of allowed address pairs for the network ports
+     * noAllowedAddressPairs disables creation of allowed address pairs for the network ports
      */
     @JsonProperty("noAllowedAddressPairs")
     public Boolean getNoAllowedAddressPairs() {
@@ -150,7 +150,7 @@ public class NetworkParam implements Editable<NetworkParamBuilder>, KubernetesRe
     }
 
     /**
-     * NoAllowedAddressPairs disables creation of allowed address pairs for the network ports
+     * noAllowedAddressPairs disables creation of allowed address pairs for the network ports
      */
     @JsonProperty("noAllowedAddressPairs")
     public void setNoAllowedAddressPairs(Boolean noAllowedAddressPairs) {
@@ -158,7 +158,7 @@ public class NetworkParam implements Editable<NetworkParamBuilder>, KubernetesRe
     }
 
     /**
-     * PortSecurity optionally enables or disables security on ports managed by OpenStack
+     * portSecurity optionally enables or disables security on ports managed by OpenStack
      */
     @JsonProperty("portSecurity")
     public Boolean getPortSecurity() {
@@ -166,7 +166,7 @@ public class NetworkParam implements Editable<NetworkParamBuilder>, KubernetesRe
     }
 
     /**
-     * PortSecurity optionally enables or disables security on ports managed by OpenStack
+     * portSecurity optionally enables or disables security on ports managed by OpenStack
      */
     @JsonProperty("portSecurity")
     public void setPortSecurity(Boolean portSecurity) {
@@ -174,7 +174,7 @@ public class NetworkParam implements Editable<NetworkParamBuilder>, KubernetesRe
     }
 
     /**
-     * PortTags allows users to specify a list of tags to add to ports created in a given network
+     * portTags allows users to specify a list of tags to add to ports created in a given network
      */
     @JsonProperty("portTags")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -183,7 +183,7 @@ public class NetworkParam implements Editable<NetworkParamBuilder>, KubernetesRe
     }
 
     /**
-     * PortTags allows users to specify a list of tags to add to ports created in a given network
+     * portTags allows users to specify a list of tags to add to ports created in a given network
      */
     @JsonProperty("portTags")
     public void setPortTags(List<String> portTags) {

@@ -162,7 +162,7 @@ public class DiscoveredClusterSpec implements Editable<DiscoveredClusterSpecBuil
     }
 
     /**
-     * APIURL ...
+     * APIURL is the endpoint used to access the cluster's API server.
      */
     @JsonProperty("apiUrl")
     public String getApiUrl() {
@@ -170,7 +170,7 @@ public class DiscoveredClusterSpec implements Editable<DiscoveredClusterSpecBuil
     }
 
     /**
-     * APIURL ...
+     * APIURL is the endpoint used to access the cluster's API server.
      */
     @JsonProperty("apiUrl")
     public void setApiUrl(String apiUrl) {
@@ -178,7 +178,7 @@ public class DiscoveredClusterSpec implements Editable<DiscoveredClusterSpecBuil
     }
 
     /**
-     * CloudProvider ...
+     * CloudProvider specifies the cloud provider where the cluster is hosted (e.g., AWS, Azure, GCP).
      */
     @JsonProperty("cloudProvider")
     public String getCloudProvider() {
@@ -186,7 +186,7 @@ public class DiscoveredClusterSpec implements Editable<DiscoveredClusterSpecBuil
     }
 
     /**
-     * CloudProvider ...
+     * CloudProvider specifies the cloud provider where the cluster is hosted (e.g., AWS, Azure, GCP).
      */
     @JsonProperty("cloudProvider")
     public void setCloudProvider(String cloudProvider) {
@@ -194,7 +194,7 @@ public class DiscoveredClusterSpec implements Editable<DiscoveredClusterSpecBuil
     }
 
     /**
-     * Console ...
+     * Console provides the URL of the cluster's web-based console.
      */
     @JsonProperty("console")
     public String getConsole() {
@@ -202,7 +202,7 @@ public class DiscoveredClusterSpec implements Editable<DiscoveredClusterSpecBuil
     }
 
     /**
-     * Console ...
+     * Console provides the URL of the cluster's web-based console.
      */
     @JsonProperty("console")
     public void setConsole(String console) {
@@ -242,7 +242,7 @@ public class DiscoveredClusterSpec implements Editable<DiscoveredClusterSpecBuil
     }
 
     /**
-     * DisplayName ...
+     * DisplayName is a human-readable name assigned to the cluster.
      */
     @JsonProperty("displayName")
     public String getDisplayName() {
@@ -250,7 +250,7 @@ public class DiscoveredClusterSpec implements Editable<DiscoveredClusterSpecBuil
     }
 
     /**
-     * DisplayName ...
+     * DisplayName is a human-readable name assigned to the cluster.
      */
     @JsonProperty("displayName")
     public void setDisplayName(String displayName) {
@@ -258,7 +258,7 @@ public class DiscoveredClusterSpec implements Editable<DiscoveredClusterSpecBuil
     }
 
     /**
-     * ImportAsManagedCluster ...
+     * ImportAsManagedCluster determines whether the discovered cluster should be automatically imported as a managed cluster.
      */
     @JsonProperty("importAsManagedCluster")
     public Boolean getImportAsManagedCluster() {
@@ -266,7 +266,7 @@ public class DiscoveredClusterSpec implements Editable<DiscoveredClusterSpecBuil
     }
 
     /**
-     * ImportAsManagedCluster ...
+     * ImportAsManagedCluster determines whether the discovered cluster should be automatically imported as a managed cluster.
      */
     @JsonProperty("importAsManagedCluster")
     public void setImportAsManagedCluster(Boolean importAsManagedCluster) {
@@ -274,7 +274,7 @@ public class DiscoveredClusterSpec implements Editable<DiscoveredClusterSpecBuil
     }
 
     /**
-     * IsManagedCluster ...
+     * IsManagedCluster indicates whether the cluster is currently managed.
      */
     @JsonProperty("isManagedCluster")
     public Boolean getIsManagedCluster() {
@@ -282,7 +282,7 @@ public class DiscoveredClusterSpec implements Editable<DiscoveredClusterSpecBuil
     }
 
     /**
-     * IsManagedCluster ...
+     * IsManagedCluster indicates whether the cluster is currently managed.
      */
     @JsonProperty("isManagedCluster")
     public void setIsManagedCluster(Boolean isManagedCluster) {
@@ -290,7 +290,7 @@ public class DiscoveredClusterSpec implements Editable<DiscoveredClusterSpecBuil
     }
 
     /**
-     * Name ...
+     * Name represents the unique identifier of the discovered cluster.
      */
     @JsonProperty("name")
     public String getName() {
@@ -298,7 +298,7 @@ public class DiscoveredClusterSpec implements Editable<DiscoveredClusterSpecBuil
     }
 
     /**
-     * Name ...
+     * Name represents the unique identifier of the discovered cluster.
      */
     @JsonProperty("name")
     public void setName(String name) {
@@ -306,7 +306,7 @@ public class DiscoveredClusterSpec implements Editable<DiscoveredClusterSpecBuil
     }
 
     /**
-     * OCPClusterID ...
+     * OCPClusterID contains the unique identifier assigned by OpenShift to the cluster.
      */
     @JsonProperty("ocpClusterId")
     public String getOcpClusterId() {
@@ -314,7 +314,7 @@ public class DiscoveredClusterSpec implements Editable<DiscoveredClusterSpecBuil
     }
 
     /**
-     * OCPClusterID ...
+     * OCPClusterID contains the unique identifier assigned by OpenShift to the cluster.
      */
     @JsonProperty("ocpClusterId")
     public void setOcpClusterId(String ocpClusterId) {
@@ -322,7 +322,7 @@ public class DiscoveredClusterSpec implements Editable<DiscoveredClusterSpecBuil
     }
 
     /**
-     * OpenshiftVersion ...
+     * OpenshiftVersion specifies the OpenShift version running on the cluster.
      */
     @JsonProperty("openshiftVersion")
     public String getOpenshiftVersion() {
@@ -330,7 +330,7 @@ public class DiscoveredClusterSpec implements Editable<DiscoveredClusterSpecBuil
     }
 
     /**
-     * OpenshiftVersion ...
+     * OpenshiftVersion specifies the OpenShift version running on the cluster.
      */
     @JsonProperty("openshiftVersion")
     public void setOpenshiftVersion(String openshiftVersion) {
@@ -338,7 +338,7 @@ public class DiscoveredClusterSpec implements Editable<DiscoveredClusterSpecBuil
     }
 
     /**
-     * Owner ...
+     * Owner identifies the owner or organization responsible for the cluster.
      */
     @JsonProperty("owner")
     public String getOwner() {
@@ -346,7 +346,7 @@ public class DiscoveredClusterSpec implements Editable<DiscoveredClusterSpecBuil
     }
 
     /**
-     * Owner ...
+     * Owner identifies the owner or organization responsible for the cluster.
      */
     @JsonProperty("owner")
     public void setOwner(String owner) {
@@ -354,7 +354,7 @@ public class DiscoveredClusterSpec implements Editable<DiscoveredClusterSpecBuil
     }
 
     /**
-     * Region ...
+     * Region specifies the geographical region where the cluster is deployed.
      */
     @JsonProperty("region")
     public String getRegion() {
@@ -362,7 +362,7 @@ public class DiscoveredClusterSpec implements Editable<DiscoveredClusterSpecBuil
     }
 
     /**
-     * Region ...
+     * Region specifies the geographical region where the cluster is deployed.
      */
     @JsonProperty("region")
     public void setRegion(String region) {
@@ -370,7 +370,7 @@ public class DiscoveredClusterSpec implements Editable<DiscoveredClusterSpecBuil
     }
 
     /**
-     * RHOCMClusterID ...
+     * RHOCMClusterID contains the cluster ID from Red Hat OpenShift Cluster Manager.
      */
     @JsonProperty("rhocmClusterId")
     public String getRhocmClusterId() {
@@ -378,7 +378,7 @@ public class DiscoveredClusterSpec implements Editable<DiscoveredClusterSpecBuil
     }
 
     /**
-     * RHOCMClusterID ...
+     * RHOCMClusterID contains the cluster ID from Red Hat OpenShift Cluster Manager.
      */
     @JsonProperty("rhocmClusterId")
     public void setRhocmClusterId(String rhocmClusterId) {
@@ -386,7 +386,7 @@ public class DiscoveredClusterSpec implements Editable<DiscoveredClusterSpecBuil
     }
 
     /**
-     * Status ...
+     * Status represents the current state of the discovered cluster (e.g Active, Stale).
      */
     @JsonProperty("status")
     public String getStatus() {
@@ -394,7 +394,7 @@ public class DiscoveredClusterSpec implements Editable<DiscoveredClusterSpecBuil
     }
 
     /**
-     * Status ...
+     * Status represents the current state of the discovered cluster (e.g Active, Stale).
      */
     @JsonProperty("status")
     public void setStatus(String status) {
@@ -402,7 +402,7 @@ public class DiscoveredClusterSpec implements Editable<DiscoveredClusterSpecBuil
     }
 
     /**
-     * Type ...
+     * Type defines the type of cluster, such as OpenShift, Kubernetes, or a specific managed service type.
      */
     @JsonProperty("type")
     public String getType() {
@@ -410,7 +410,7 @@ public class DiscoveredClusterSpec implements Editable<DiscoveredClusterSpecBuil
     }
 
     /**
-     * Type ...
+     * Type defines the type of cluster, such as OpenShift, Kubernetes, or a specific managed service type.
      */
     @JsonProperty("type")
     public void setType(String type) {

@@ -40,7 +40,9 @@ import lombok.experimental.Accessors;
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
+    "bootDiagnostics",
     "encryptionAtHost",
+    "identity",
     "osDisk",
     "osImage",
     "settings",
@@ -74,8 +76,12 @@ import lombok.experimental.Accessors;
 public class MachinePool implements Editable<MachinePoolBuilder>, KubernetesResource
 {
 
+    @JsonProperty("bootDiagnostics")
+    private BootDiagnostics bootDiagnostics;
     @JsonProperty("encryptionAtHost")
     private Boolean encryptionAtHost;
+    @JsonProperty("identity")
+    private VMIdentity identity;
     @JsonProperty("osDisk")
     private OSDisk osDisk;
     @JsonProperty("osImage")
@@ -100,9 +106,11 @@ public class MachinePool implements Editable<MachinePoolBuilder>, KubernetesReso
     public MachinePool() {
     }
 
-    public MachinePool(Boolean encryptionAtHost, OSDisk osDisk, OSImage osImage, SecuritySettings settings, String type, String ultraSSDCapability, String vmNetworkingType, List<String> zones) {
+    public MachinePool(BootDiagnostics bootDiagnostics, Boolean encryptionAtHost, VMIdentity identity, OSDisk osDisk, OSImage osImage, SecuritySettings settings, String type, String ultraSSDCapability, String vmNetworkingType, List<String> zones) {
         super();
+        this.bootDiagnostics = bootDiagnostics;
         this.encryptionAtHost = encryptionAtHost;
+        this.identity = identity;
         this.osDisk = osDisk;
         this.osImage = osImage;
         this.settings = settings;
@@ -110,6 +118,22 @@ public class MachinePool implements Editable<MachinePoolBuilder>, KubernetesReso
         this.ultraSSDCapability = ultraSSDCapability;
         this.vmNetworkingType = vmNetworkingType;
         this.zones = zones;
+    }
+
+    /**
+     * MachinePool stores the configuration for a machine pool installed on Azure.
+     */
+    @JsonProperty("bootDiagnostics")
+    public BootDiagnostics getBootDiagnostics() {
+        return bootDiagnostics;
+    }
+
+    /**
+     * MachinePool stores the configuration for a machine pool installed on Azure.
+     */
+    @JsonProperty("bootDiagnostics")
+    public void setBootDiagnostics(BootDiagnostics bootDiagnostics) {
+        this.bootDiagnostics = bootDiagnostics;
     }
 
     /**
@@ -126,6 +150,22 @@ public class MachinePool implements Editable<MachinePoolBuilder>, KubernetesReso
     @JsonProperty("encryptionAtHost")
     public void setEncryptionAtHost(Boolean encryptionAtHost) {
         this.encryptionAtHost = encryptionAtHost;
+    }
+
+    /**
+     * MachinePool stores the configuration for a machine pool installed on Azure.
+     */
+    @JsonProperty("identity")
+    public VMIdentity getIdentity() {
+        return identity;
+    }
+
+    /**
+     * MachinePool stores the configuration for a machine pool installed on Azure.
+     */
+    @JsonProperty("identity")
+    public void setIdentity(VMIdentity identity) {
+        this.identity = identity;
     }
 
     /**

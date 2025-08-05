@@ -89,7 +89,7 @@ public class AWSResourceFilter implements Editable<AWSResourceFilterBuilder>, Ku
     }
 
     /**
-     * Name of the filter. Filter names are case-sensitive.
+     * name of the filter. Filter names are case-sensitive.
      */
     @JsonProperty("name")
     public String getName() {
@@ -97,7 +97,7 @@ public class AWSResourceFilter implements Editable<AWSResourceFilterBuilder>, Ku
     }
 
     /**
-     * Name of the filter. Filter names are case-sensitive.
+     * name of the filter. Filter names are case-sensitive.
      */
     @JsonProperty("name")
     public void setName(String name) {
@@ -105,7 +105,7 @@ public class AWSResourceFilter implements Editable<AWSResourceFilterBuilder>, Ku
     }
 
     /**
-     * Values includes one or more filter values. Filter values are case-sensitive.
+     * values includes one or more filter values. Filter values are case-sensitive.
      */
     @JsonProperty("values")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -114,7 +114,7 @@ public class AWSResourceFilter implements Editable<AWSResourceFilterBuilder>, Ku
     }
 
     /**
-     * Values includes one or more filter values. Filter values are case-sensitive.
+     * values includes one or more filter values. Filter values are case-sensitive.
      */
     @JsonProperty("values")
     public void setValues(List<String> values) {

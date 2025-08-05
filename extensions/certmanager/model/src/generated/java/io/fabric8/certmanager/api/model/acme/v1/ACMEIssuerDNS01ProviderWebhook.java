@@ -123,7 +123,7 @@ public class ACMEIssuerDNS01ProviderWebhook implements Editable<ACMEIssuerDNS01P
     }
 
     /**
-     * The name of the solver to use, as defined in the webhook provider implementation. This will typically be the name of the provider, e.g. 'cloudflare'.
+     * The name of the solver to use, as defined in the webhook provider implementation. This will typically be the name of the provider, e.g., 'cloudflare'.
      */
     @JsonProperty("solverName")
     public String getSolverName() {
@@ -131,7 +131,7 @@ public class ACMEIssuerDNS01ProviderWebhook implements Editable<ACMEIssuerDNS01P
     }
 
     /**
-     * The name of the solver to use, as defined in the webhook provider implementation. This will typically be the name of the provider, e.g. 'cloudflare'.
+     * The name of the solver to use, as defined in the webhook provider implementation. This will typically be the name of the provider, e.g., 'cloudflare'.
      */
     @JsonProperty("solverName")
     public void setSolverName(String solverName) {

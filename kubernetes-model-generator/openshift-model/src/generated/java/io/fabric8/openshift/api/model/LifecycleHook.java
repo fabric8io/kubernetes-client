@@ -108,7 +108,7 @@ public class LifecycleHook implements Editable<LifecycleHookBuilder>, Kubernetes
     }
 
     /**
-     * FailurePolicy specifies what action to take if the hook fails.
+     * failurePolicy specifies what action to take if the hook fails.
      */
     @JsonProperty("failurePolicy")
     public String getFailurePolicy() {
@@ -116,7 +116,7 @@ public class LifecycleHook implements Editable<LifecycleHookBuilder>, Kubernetes
     }
 
     /**
-     * FailurePolicy specifies what action to take if the hook fails.
+     * failurePolicy specifies what action to take if the hook fails.
      */
     @JsonProperty("failurePolicy")
     public void setFailurePolicy(String failurePolicy) {
@@ -124,7 +124,7 @@ public class LifecycleHook implements Editable<LifecycleHookBuilder>, Kubernetes
     }
 
     /**
-     * TagImages instructs the deployer to tag the current image referenced under a container onto an image stream tag.
+     * tagImages instructs the deployer to tag the current image referenced under a container onto an image stream tag.
      */
     @JsonProperty("tagImages")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -133,7 +133,7 @@ public class LifecycleHook implements Editable<LifecycleHookBuilder>, Kubernetes
     }
 
     /**
-     * TagImages instructs the deployer to tag the current image referenced under a container onto an image stream tag.
+     * tagImages instructs the deployer to tag the current image referenced under a container onto an image stream tag.
      */
     @JsonProperty("tagImages")
     public void setTagImages(List<TagImageHook> tagImages) {

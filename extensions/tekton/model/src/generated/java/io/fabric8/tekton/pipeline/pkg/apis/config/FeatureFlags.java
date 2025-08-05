@@ -40,7 +40,6 @@ import lombok.experimental.Accessors;
 @JsonPropertyOrder({
     "awaitSidecarReadiness",
     "coschedule",
-    "disableAffinityAssistant",
     "disableCredsInit",
     "disableInlineSpec",
     "enableAPIFields",
@@ -91,8 +90,6 @@ public class FeatureFlags implements Editable<FeatureFlagsBuilder>, KubernetesRe
     private Boolean awaitSidecarReadiness;
     @JsonProperty("coschedule")
     private String coschedule;
-    @JsonProperty("disableAffinityAssistant")
-    private Boolean disableAffinityAssistant;
     @JsonProperty("disableCredsInit")
     private Boolean disableCredsInit;
     @JsonProperty("disableInlineSpec")
@@ -142,11 +139,10 @@ public class FeatureFlags implements Editable<FeatureFlagsBuilder>, KubernetesRe
     public FeatureFlags() {
     }
 
-    public FeatureFlags(Boolean awaitSidecarReadiness, String coschedule, Boolean disableAffinityAssistant, Boolean disableCredsInit, String disableInlineSpec, String enableAPIFields, Boolean enableArtifacts, Boolean enableCELInWhenExpression, Boolean enableConciseResolverSyntax, Boolean enableKeepPodOnCancel, Boolean enableKubernetesSidecar, Boolean enableParamEnum, Boolean enableProvenanceInStatus, Boolean enableStepActions, String enforceNonfalsifiability, Integer maxResultSize, Boolean requireGitSSHSecretKnownHosts, String resultExtractionMethod, Boolean runningInEnvWithInjectedSidecars, Boolean sendCloudEventsForRuns, Boolean setSecurityContext, Boolean setSecurityContextReadOnlyRootFilesystem, String verificationNoMatchPolicy) {
+    public FeatureFlags(Boolean awaitSidecarReadiness, String coschedule, Boolean disableCredsInit, String disableInlineSpec, String enableAPIFields, Boolean enableArtifacts, Boolean enableCELInWhenExpression, Boolean enableConciseResolverSyntax, Boolean enableKeepPodOnCancel, Boolean enableKubernetesSidecar, Boolean enableParamEnum, Boolean enableProvenanceInStatus, Boolean enableStepActions, String enforceNonfalsifiability, Integer maxResultSize, Boolean requireGitSSHSecretKnownHosts, String resultExtractionMethod, Boolean runningInEnvWithInjectedSidecars, Boolean sendCloudEventsForRuns, Boolean setSecurityContext, Boolean setSecurityContextReadOnlyRootFilesystem, String verificationNoMatchPolicy) {
         super();
         this.awaitSidecarReadiness = awaitSidecarReadiness;
         this.coschedule = coschedule;
-        this.disableAffinityAssistant = disableAffinityAssistant;
         this.disableCredsInit = disableCredsInit;
         this.disableInlineSpec = disableInlineSpec;
         this.enableAPIFields = enableAPIFields;
@@ -199,22 +195,6 @@ public class FeatureFlags implements Editable<FeatureFlagsBuilder>, KubernetesRe
     @JsonProperty("coschedule")
     public void setCoschedule(String coschedule) {
         this.coschedule = coschedule;
-    }
-
-    /**
-     * FeatureFlags holds the features configurations
-     */
-    @JsonProperty("disableAffinityAssistant")
-    public Boolean getDisableAffinityAssistant() {
-        return disableAffinityAssistant;
-    }
-
-    /**
-     * FeatureFlags holds the features configurations
-     */
-    @JsonProperty("disableAffinityAssistant")
-    public void setDisableAffinityAssistant(Boolean disableAffinityAssistant) {
-        this.disableAffinityAssistant = disableAffinityAssistant;
     }
 
     /**
@@ -378,7 +358,7 @@ public class FeatureFlags implements Editable<FeatureFlagsBuilder>, KubernetesRe
     }
 
     /**
-     * FeatureFlags holds the features configurations
+     * EnableStepActions is a no-op flag since StepActions are stable
      */
     @JsonProperty("enableStepActions")
     public Boolean getEnableStepActions() {
@@ -386,7 +366,7 @@ public class FeatureFlags implements Editable<FeatureFlagsBuilder>, KubernetesRe
     }
 
     /**
-     * FeatureFlags holds the features configurations
+     * EnableStepActions is a no-op flag since StepActions are stable
      */
     @JsonProperty("enableStepActions")
     public void setEnableStepActions(Boolean enableStepActions) {

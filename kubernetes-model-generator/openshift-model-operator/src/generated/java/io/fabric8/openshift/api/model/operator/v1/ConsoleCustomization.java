@@ -36,7 +36,7 @@ import lombok.ToString;
 import lombok.experimental.Accessors;
 
 /**
- * ConsoleCustomization defines a list of optional configuration for the console UI.
+ * ConsoleCustomization defines a list of optional configuration for the console UI. Ensure that Logos and CustomLogoFile cannot be set at the same time.
  */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -48,6 +48,7 @@ import lombok.experimental.Accessors;
     "customProductName",
     "developerCatalog",
     "documentationBaseURL",
+    "logos",
     "perspectives",
     "projectAccess",
     "quickStarts"
@@ -92,6 +93,9 @@ public class ConsoleCustomization implements Editable<ConsoleCustomizationBuilde
     private DeveloperConsoleCatalogCustomization developerCatalog;
     @JsonProperty("documentationBaseURL")
     private String documentationBaseURL;
+    @JsonProperty("logos")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<Logo> logos = new ArrayList<>();
     @JsonProperty("perspectives")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<Perspective> perspectives = new ArrayList<>();
@@ -108,7 +112,7 @@ public class ConsoleCustomization implements Editable<ConsoleCustomizationBuilde
     public ConsoleCustomization() {
     }
 
-    public ConsoleCustomization(AddPage addPage, String brand, List<Capability> capabilities, ConfigMapFileReference customLogoFile, String customProductName, DeveloperConsoleCatalogCustomization developerCatalog, String documentationBaseURL, List<Perspective> perspectives, ProjectAccess projectAccess, QuickStarts quickStarts) {
+    public ConsoleCustomization(AddPage addPage, String brand, List<Capability> capabilities, ConfigMapFileReference customLogoFile, String customProductName, DeveloperConsoleCatalogCustomization developerCatalog, String documentationBaseURL, List<Logo> logos, List<Perspective> perspectives, ProjectAccess projectAccess, QuickStarts quickStarts) {
         super();
         this.addPage = addPage;
         this.brand = brand;
@@ -117,13 +121,14 @@ public class ConsoleCustomization implements Editable<ConsoleCustomizationBuilde
         this.customProductName = customProductName;
         this.developerCatalog = developerCatalog;
         this.documentationBaseURL = documentationBaseURL;
+        this.logos = logos;
         this.perspectives = perspectives;
         this.projectAccess = projectAccess;
         this.quickStarts = quickStarts;
     }
 
     /**
-     * ConsoleCustomization defines a list of optional configuration for the console UI.
+     * ConsoleCustomization defines a list of optional configuration for the console UI. Ensure that Logos and CustomLogoFile cannot be set at the same time.
      */
     @JsonProperty("addPage")
     public AddPage getAddPage() {
@@ -131,7 +136,7 @@ public class ConsoleCustomization implements Editable<ConsoleCustomizationBuilde
     }
 
     /**
-     * ConsoleCustomization defines a list of optional configuration for the console UI.
+     * ConsoleCustomization defines a list of optional configuration for the console UI. Ensure that Logos and CustomLogoFile cannot be set at the same time.
      */
     @JsonProperty("addPage")
     public void setAddPage(AddPage addPage) {
@@ -172,7 +177,7 @@ public class ConsoleCustomization implements Editable<ConsoleCustomizationBuilde
     }
 
     /**
-     * ConsoleCustomization defines a list of optional configuration for the console UI.
+     * ConsoleCustomization defines a list of optional configuration for the console UI. Ensure that Logos and CustomLogoFile cannot be set at the same time.
      */
     @JsonProperty("customLogoFile")
     public ConfigMapFileReference getCustomLogoFile() {
@@ -180,7 +185,7 @@ public class ConsoleCustomization implements Editable<ConsoleCustomizationBuilde
     }
 
     /**
-     * ConsoleCustomization defines a list of optional configuration for the console UI.
+     * ConsoleCustomization defines a list of optional configuration for the console UI. Ensure that Logos and CustomLogoFile cannot be set at the same time.
      */
     @JsonProperty("customLogoFile")
     public void setCustomLogoFile(ConfigMapFileReference customLogoFile) {
@@ -204,7 +209,7 @@ public class ConsoleCustomization implements Editable<ConsoleCustomizationBuilde
     }
 
     /**
-     * ConsoleCustomization defines a list of optional configuration for the console UI.
+     * ConsoleCustomization defines a list of optional configuration for the console UI. Ensure that Logos and CustomLogoFile cannot be set at the same time.
      */
     @JsonProperty("developerCatalog")
     public DeveloperConsoleCatalogCustomization getDeveloperCatalog() {
@@ -212,7 +217,7 @@ public class ConsoleCustomization implements Editable<ConsoleCustomizationBuilde
     }
 
     /**
-     * ConsoleCustomization defines a list of optional configuration for the console UI.
+     * ConsoleCustomization defines a list of optional configuration for the console UI. Ensure that Logos and CustomLogoFile cannot be set at the same time.
      */
     @JsonProperty("developerCatalog")
     public void setDeveloperCatalog(DeveloperConsoleCatalogCustomization developerCatalog) {
@@ -236,6 +241,23 @@ public class ConsoleCustomization implements Editable<ConsoleCustomizationBuilde
     }
 
     /**
+     * logos is used to replace the OpenShift Masthead and Favicon logos in the console UI with custom logos. logos is an optional field that allows a list of logos. Only one of logos or customLogoFile can be set at a time. If logos is set, customLogoFile must be unset. When specified, there must be at least one entry and no more than 2 entries. Each type must appear only once in the list.
+     */
+    @JsonProperty("logos")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public List<Logo> getLogos() {
+        return logos;
+    }
+
+    /**
+     * logos is used to replace the OpenShift Masthead and Favicon logos in the console UI with custom logos. logos is an optional field that allows a list of logos. Only one of logos or customLogoFile can be set at a time. If logos is set, customLogoFile must be unset. When specified, there must be at least one entry and no more than 2 entries. Each type must appear only once in the list.
+     */
+    @JsonProperty("logos")
+    public void setLogos(List<Logo> logos) {
+        this.logos = logos;
+    }
+
+    /**
      * perspectives allows enabling/disabling of perspective(s) that user can see in the Perspective switcher dropdown.
      */
     @JsonProperty("perspectives")
@@ -253,7 +275,7 @@ public class ConsoleCustomization implements Editable<ConsoleCustomizationBuilde
     }
 
     /**
-     * ConsoleCustomization defines a list of optional configuration for the console UI.
+     * ConsoleCustomization defines a list of optional configuration for the console UI. Ensure that Logos and CustomLogoFile cannot be set at the same time.
      */
     @JsonProperty("projectAccess")
     public ProjectAccess getProjectAccess() {
@@ -261,7 +283,7 @@ public class ConsoleCustomization implements Editable<ConsoleCustomizationBuilde
     }
 
     /**
-     * ConsoleCustomization defines a list of optional configuration for the console UI.
+     * ConsoleCustomization defines a list of optional configuration for the console UI. Ensure that Logos and CustomLogoFile cannot be set at the same time.
      */
     @JsonProperty("projectAccess")
     public void setProjectAccess(ProjectAccess projectAccess) {
@@ -269,7 +291,7 @@ public class ConsoleCustomization implements Editable<ConsoleCustomizationBuilde
     }
 
     /**
-     * ConsoleCustomization defines a list of optional configuration for the console UI.
+     * ConsoleCustomization defines a list of optional configuration for the console UI. Ensure that Logos and CustomLogoFile cannot be set at the same time.
      */
     @JsonProperty("quickStarts")
     public QuickStarts getQuickStarts() {
@@ -277,7 +299,7 @@ public class ConsoleCustomization implements Editable<ConsoleCustomizationBuilde
     }
 
     /**
-     * ConsoleCustomization defines a list of optional configuration for the console UI.
+     * ConsoleCustomization defines a list of optional configuration for the console UI. Ensure that Logos and CustomLogoFile cannot be set at the same time.
      */
     @JsonProperty("quickStarts")
     public void setQuickStarts(QuickStarts quickStarts) {

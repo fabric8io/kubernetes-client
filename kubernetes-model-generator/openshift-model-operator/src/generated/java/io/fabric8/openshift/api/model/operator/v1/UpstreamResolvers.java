@@ -97,7 +97,7 @@ public class UpstreamResolvers implements Editable<UpstreamResolversBuilder>, Ku
     }
 
     /**
-     * Policy is used to determine the order in which upstream servers are selected for querying. Any one of the following values may be specified:<br><p> <br><p> &#42; "Random" picks a random upstream server for each query. &#42; "RoundRobin" picks upstream servers in a round-robin order, moving to the next server for each new query. &#42; "Sequential" tries querying upstream servers in a sequential order until one responds, starting with the first server for each new query.<br><p> <br><p> The default value is "Sequential"
+     * policy is used to determine the order in which upstream servers are selected for querying. Any one of the following values may be specified:<br><p> <br><p> &#42; "Random" picks a random upstream server for each query. &#42; "RoundRobin" picks upstream servers in a round-robin order, moving to the next server for each new query. &#42; "Sequential" tries querying upstream servers in a sequential order until one responds, starting with the first server for each new query.<br><p> <br><p> The default value is "Sequential"
      */
     @JsonProperty("policy")
     public String getPolicy() {
@@ -105,7 +105,7 @@ public class UpstreamResolvers implements Editable<UpstreamResolversBuilder>, Ku
     }
 
     /**
-     * Policy is used to determine the order in which upstream servers are selected for querying. Any one of the following values may be specified:<br><p> <br><p> &#42; "Random" picks a random upstream server for each query. &#42; "RoundRobin" picks upstream servers in a round-robin order, moving to the next server for each new query. &#42; "Sequential" tries querying upstream servers in a sequential order until one responds, starting with the first server for each new query.<br><p> <br><p> The default value is "Sequential"
+     * policy is used to determine the order in which upstream servers are selected for querying. Any one of the following values may be specified:<br><p> <br><p> &#42; "Random" picks a random upstream server for each query. &#42; "RoundRobin" picks upstream servers in a round-robin order, moving to the next server for each new query. &#42; "Sequential" tries querying upstream servers in a sequential order until one responds, starting with the first server for each new query.<br><p> <br><p> The default value is "Sequential"
      */
     @JsonProperty("policy")
     public void setPolicy(String policy) {
@@ -145,7 +145,7 @@ public class UpstreamResolvers implements Editable<UpstreamResolversBuilder>, Ku
     }
 
     /**
-     * Upstreams is a list of resolvers to forward name queries for the "." domain. Each instance of CoreDNS performs health checking of Upstreams. When a healthy upstream returns an error during the exchange, another resolver is tried from Upstreams. The Upstreams are selected in the order specified in Policy.<br><p> <br><p> A maximum of 15 upstreams is allowed per ForwardPlugin. If no Upstreams are specified, /etc/resolv.conf is used by default
+     * upstreams is a list of resolvers to forward name queries for the "." domain. Each instance of CoreDNS performs health checking of Upstreams. When a healthy upstream returns an error during the exchange, another resolver is tried from Upstreams. The Upstreams are selected in the order specified in Policy.<br><p> <br><p> A maximum of 15 upstreams is allowed per ForwardPlugin. If no Upstreams are specified, /etc/resolv.conf is used by default
      */
     @JsonProperty("upstreams")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -154,7 +154,7 @@ public class UpstreamResolvers implements Editable<UpstreamResolversBuilder>, Ku
     }
 
     /**
-     * Upstreams is a list of resolvers to forward name queries for the "." domain. Each instance of CoreDNS performs health checking of Upstreams. When a healthy upstream returns an error during the exchange, another resolver is tried from Upstreams. The Upstreams are selected in the order specified in Policy.<br><p> <br><p> A maximum of 15 upstreams is allowed per ForwardPlugin. If no Upstreams are specified, /etc/resolv.conf is used by default
+     * upstreams is a list of resolvers to forward name queries for the "." domain. Each instance of CoreDNS performs health checking of Upstreams. When a healthy upstream returns an error during the exchange, another resolver is tried from Upstreams. The Upstreams are selected in the order specified in Policy.<br><p> <br><p> A maximum of 15 upstreams is allowed per ForwardPlugin. If no Upstreams are specified, /etc/resolv.conf is used by default
      */
     @JsonProperty("upstreams")
     public void setUpstreams(List<Upstream> upstreams) {

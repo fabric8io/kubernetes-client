@@ -80,7 +80,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(PodTemplateSpec.class),
     @BuildableReference(ResourceRequirements.class),
     @BuildableReference(IntOrString.class),
-    @BuildableReference(ObjectReference.class),
+    @BuildableReference(io.fabric8.kubernetes.api.model.ObjectReference.class),
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class),
     @BuildableReference(EnvVar.class),
@@ -194,7 +194,7 @@ public class ControllerConfigSpec implements Editable<ControllerConfigSpecBuilde
     }
 
     /**
-     * BaseOSContainerImage is the new-format container image for operating system updates.
+     * baseOSContainerImage is the new-format container image for operating system updates.
      */
     @JsonProperty("baseOSContainerImage")
     public String getBaseOSContainerImage() {
@@ -202,7 +202,7 @@ public class ControllerConfigSpec implements Editable<ControllerConfigSpecBuilde
     }
 
     /**
-     * BaseOSContainerImage is the new-format container image for operating system updates.
+     * baseOSContainerImage is the new-format container image for operating system updates.
      */
     @JsonProperty("baseOSContainerImage")
     public void setBaseOSContainerImage(String baseOSContainerImage) {
@@ -210,7 +210,7 @@ public class ControllerConfigSpec implements Editable<ControllerConfigSpecBuilde
     }
 
     /**
-     * BaseOSExtensionsContainerImage is the matching extensions container for the new-format container
+     * baseOSExtensionsContainerImage is the matching extensions container for the new-format container
      */
     @JsonProperty("baseOSExtensionsContainerImage")
     public String getBaseOSExtensionsContainerImage() {
@@ -218,7 +218,7 @@ public class ControllerConfigSpec implements Editable<ControllerConfigSpecBuilde
     }
 
     /**
-     * BaseOSExtensionsContainerImage is the matching extensions container for the new-format container
+     * baseOSExtensionsContainerImage is the matching extensions container for the new-format container
      */
     @JsonProperty("baseOSExtensionsContainerImage")
     public void setBaseOSExtensionsContainerImage(String baseOSExtensionsContainerImage) {
@@ -226,7 +226,7 @@ public class ControllerConfigSpec implements Editable<ControllerConfigSpecBuilde
     }
 
     /**
-     * cloudProvider specifies the cloud provider CA data
+     * cloudProviderCAData specifies the cloud provider CA data
      */
     @JsonProperty("cloudProviderCAData")
     public String getCloudProviderCAData() {
@@ -234,7 +234,7 @@ public class ControllerConfigSpec implements Editable<ControllerConfigSpecBuilde
     }
 
     /**
-     * cloudProvider specifies the cloud provider CA data
+     * cloudProviderCAData specifies the cloud provider CA data
      */
     @JsonProperty("cloudProviderCAData")
     public void setCloudProviderCAData(String cloudProviderCAData) {
@@ -453,7 +453,7 @@ public class ControllerConfigSpec implements Editable<ControllerConfigSpecBuilde
     }
 
     /**
-     * OSImageURL is the old-format container image that contains the OS update payload.
+     * osImageURL is the old-format container image that contains the OS update payload.
      */
     @JsonProperty("osImageURL")
     public String getOsImageURL() {
@@ -461,7 +461,7 @@ public class ControllerConfigSpec implements Editable<ControllerConfigSpecBuilde
     }
 
     /**
-     * OSImageURL is the old-format container image that contains the OS update payload.
+     * osImageURL is the old-format container image that contains the OS update payload.
      */
     @JsonProperty("osImageURL")
     public void setOsImageURL(String osImageURL) {

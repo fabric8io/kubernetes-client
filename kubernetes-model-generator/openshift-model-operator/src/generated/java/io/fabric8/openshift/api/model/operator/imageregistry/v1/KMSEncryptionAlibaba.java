@@ -79,7 +79,7 @@ public class KMSEncryptionAlibaba implements Editable<KMSEncryptionAlibabaBuilde
     }
 
     /**
-     * KeyID holds the KMS encryption key ID
+     * keyID holds the KMS encryption key ID
      */
     @JsonProperty("keyID")
     public String getKeyID() {
@@ -87,7 +87,7 @@ public class KMSEncryptionAlibaba implements Editable<KMSEncryptionAlibabaBuilde
     }
 
     /**
-     * KeyID holds the KMS encryption key ID
+     * keyID holds the KMS encryption key ID
      */
     @JsonProperty("keyID")
     public void setKeyID(String keyID) {

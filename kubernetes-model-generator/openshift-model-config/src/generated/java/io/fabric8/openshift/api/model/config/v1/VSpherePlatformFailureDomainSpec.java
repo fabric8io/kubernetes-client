@@ -39,9 +39,11 @@ import lombok.experimental.Accessors;
 @JsonPropertyOrder({
     "name",
     "region",
+    "regionAffinity",
     "server",
     "topology",
-    "zone"
+    "zone",
+    "zoneAffinity"
 })
 @ToString
 @EqualsAndHashCode
@@ -72,12 +74,16 @@ public class VSpherePlatformFailureDomainSpec implements Editable<VSpherePlatfor
     private String name;
     @JsonProperty("region")
     private String region;
+    @JsonProperty("regionAffinity")
+    private VSphereFailureDomainRegionAffinity regionAffinity;
     @JsonProperty("server")
     private String server;
     @JsonProperty("topology")
     private VSpherePlatformTopology topology;
     @JsonProperty("zone")
     private String zone;
+    @JsonProperty("zoneAffinity")
+    private VSphereFailureDomainZoneAffinity zoneAffinity;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -87,13 +93,15 @@ public class VSpherePlatformFailureDomainSpec implements Editable<VSpherePlatfor
     public VSpherePlatformFailureDomainSpec() {
     }
 
-    public VSpherePlatformFailureDomainSpec(String name, String region, String server, VSpherePlatformTopology topology, String zone) {
+    public VSpherePlatformFailureDomainSpec(String name, String region, VSphereFailureDomainRegionAffinity regionAffinity, String server, VSpherePlatformTopology topology, String zone, VSphereFailureDomainZoneAffinity zoneAffinity) {
         super();
         this.name = name;
         this.region = region;
+        this.regionAffinity = regionAffinity;
         this.server = server;
         this.topology = topology;
         this.zone = zone;
+        this.zoneAffinity = zoneAffinity;
     }
 
     /**
@@ -126,6 +134,22 @@ public class VSpherePlatformFailureDomainSpec implements Editable<VSpherePlatfor
     @JsonProperty("region")
     public void setRegion(String region) {
         this.region = region;
+    }
+
+    /**
+     * VSpherePlatformFailureDomainSpec holds the region and zone failure domain and the vCenter topology of that failure domain.
+     */
+    @JsonProperty("regionAffinity")
+    public VSphereFailureDomainRegionAffinity getRegionAffinity() {
+        return regionAffinity;
+    }
+
+    /**
+     * VSpherePlatformFailureDomainSpec holds the region and zone failure domain and the vCenter topology of that failure domain.
+     */
+    @JsonProperty("regionAffinity")
+    public void setRegionAffinity(VSphereFailureDomainRegionAffinity regionAffinity) {
+        this.regionAffinity = regionAffinity;
     }
 
     /**
@@ -174,6 +198,22 @@ public class VSpherePlatformFailureDomainSpec implements Editable<VSpherePlatfor
     @JsonProperty("zone")
     public void setZone(String zone) {
         this.zone = zone;
+    }
+
+    /**
+     * VSpherePlatformFailureDomainSpec holds the region and zone failure domain and the vCenter topology of that failure domain.
+     */
+    @JsonProperty("zoneAffinity")
+    public VSphereFailureDomainZoneAffinity getZoneAffinity() {
+        return zoneAffinity;
+    }
+
+    /**
+     * VSpherePlatformFailureDomainSpec holds the region and zone failure domain and the vCenter topology of that failure domain.
+     */
+    @JsonProperty("zoneAffinity")
+    public void setZoneAffinity(VSphereFailureDomainZoneAffinity zoneAffinity) {
+        this.zoneAffinity = zoneAffinity;
     }
 
     @JsonIgnore

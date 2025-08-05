@@ -39,6 +39,7 @@ import lombok.experimental.Accessors;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "conditions",
+    "managedBootImagesStatus",
     "nodeDisruptionPolicyStatus",
     "observedGeneration"
 })
@@ -70,6 +71,8 @@ public class MachineConfigurationStatus implements Editable<MachineConfiguration
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<Condition> conditions = new ArrayList<>();
+    @JsonProperty("managedBootImagesStatus")
+    private ManagedBootImages managedBootImagesStatus;
     @JsonProperty("nodeDisruptionPolicyStatus")
     private NodeDisruptionPolicyStatus nodeDisruptionPolicyStatus;
     @JsonProperty("observedGeneration")
@@ -83,9 +86,10 @@ public class MachineConfigurationStatus implements Editable<MachineConfiguration
     public MachineConfigurationStatus() {
     }
 
-    public MachineConfigurationStatus(List<Condition> conditions, NodeDisruptionPolicyStatus nodeDisruptionPolicyStatus, Long observedGeneration) {
+    public MachineConfigurationStatus(List<Condition> conditions, ManagedBootImages managedBootImagesStatus, NodeDisruptionPolicyStatus nodeDisruptionPolicyStatus, Long observedGeneration) {
         super();
         this.conditions = conditions;
+        this.managedBootImagesStatus = managedBootImagesStatus;
         this.nodeDisruptionPolicyStatus = nodeDisruptionPolicyStatus;
         this.observedGeneration = observedGeneration;
     }
@@ -105,6 +109,16 @@ public class MachineConfigurationStatus implements Editable<MachineConfiguration
     @JsonProperty("conditions")
     public void setConditions(List<Condition> conditions) {
         this.conditions = conditions;
+    }
+
+    @JsonProperty("managedBootImagesStatus")
+    public ManagedBootImages getManagedBootImagesStatus() {
+        return managedBootImagesStatus;
+    }
+
+    @JsonProperty("managedBootImagesStatus")
+    public void setManagedBootImagesStatus(ManagedBootImages managedBootImagesStatus) {
+        this.managedBootImagesStatus = managedBootImagesStatus;
     }
 
     @JsonProperty("nodeDisruptionPolicyStatus")

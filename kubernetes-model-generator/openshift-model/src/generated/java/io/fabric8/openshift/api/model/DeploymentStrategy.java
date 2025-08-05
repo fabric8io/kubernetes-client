@@ -111,7 +111,7 @@ public class DeploymentStrategy implements Editable<DeploymentStrategyBuilder>, 
     }
 
     /**
-     * ActiveDeadlineSeconds is the duration in seconds that the deployer pods for this deployment config may be active on a node before the system actively tries to terminate them.
+     * activeDeadlineSeconds is the duration in seconds that the deployer pods for this deployment config may be active on a node before the system actively tries to terminate them.
      */
     @JsonProperty("activeDeadlineSeconds")
     public Long getActiveDeadlineSeconds() {
@@ -119,7 +119,7 @@ public class DeploymentStrategy implements Editable<DeploymentStrategyBuilder>, 
     }
 
     /**
-     * ActiveDeadlineSeconds is the duration in seconds that the deployer pods for this deployment config may be active on a node before the system actively tries to terminate them.
+     * activeDeadlineSeconds is the duration in seconds that the deployer pods for this deployment config may be active on a node before the system actively tries to terminate them.
      */
     @JsonProperty("activeDeadlineSeconds")
     public void setActiveDeadlineSeconds(Long activeDeadlineSeconds) {
@@ -127,7 +127,7 @@ public class DeploymentStrategy implements Editable<DeploymentStrategyBuilder>, 
     }
 
     /**
-     * Annotations is a set of key, value pairs added to custom deployer and lifecycle pre/post hook pods.
+     * annotations is a set of key, value pairs added to custom deployer and lifecycle pre/post hook pods.
      */
     @JsonProperty("annotations")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -136,7 +136,7 @@ public class DeploymentStrategy implements Editable<DeploymentStrategyBuilder>, 
     }
 
     /**
-     * Annotations is a set of key, value pairs added to custom deployer and lifecycle pre/post hook pods.
+     * annotations is a set of key, value pairs added to custom deployer and lifecycle pre/post hook pods.
      */
     @JsonProperty("annotations")
     public void setAnnotations(Map<String, String> annotations) {
@@ -160,7 +160,7 @@ public class DeploymentStrategy implements Editable<DeploymentStrategyBuilder>, 
     }
 
     /**
-     * Labels is a set of key, value pairs added to custom deployer and lifecycle pre/post hook pods.
+     * labels is a set of key, value pairs added to custom deployer and lifecycle pre/post hook pods.
      */
     @JsonProperty("labels")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -169,7 +169,7 @@ public class DeploymentStrategy implements Editable<DeploymentStrategyBuilder>, 
     }
 
     /**
-     * Labels is a set of key, value pairs added to custom deployer and lifecycle pre/post hook pods.
+     * labels is a set of key, value pairs added to custom deployer and lifecycle pre/post hook pods.
      */
     @JsonProperty("labels")
     public void setLabels(Map<String, String> labels) {
@@ -225,7 +225,7 @@ public class DeploymentStrategy implements Editable<DeploymentStrategyBuilder>, 
     }
 
     /**
-     * Type is the name of a deployment strategy.
+     * type is the name of a deployment strategy.
      */
     @JsonProperty("type")
     public String getType() {
@@ -233,7 +233,7 @@ public class DeploymentStrategy implements Editable<DeploymentStrategyBuilder>, 
     }
 
     /**
-     * Type is the name of a deployment strategy.
+     * type is the name of a deployment strategy.
      */
     @JsonProperty("type")
     public void setType(String type) {

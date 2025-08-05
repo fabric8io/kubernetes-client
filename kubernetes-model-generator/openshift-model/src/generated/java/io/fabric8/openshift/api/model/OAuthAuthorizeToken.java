@@ -153,7 +153,7 @@ public class OAuthAuthorizeToken implements Editable<OAuthAuthorizeTokenBuilder>
     }
 
     /**
-     * ClientName references the client that created this token.
+     * clientName references the client that created this token.
      */
     @JsonProperty("clientName")
     public String getClientName() {
@@ -161,7 +161,7 @@ public class OAuthAuthorizeToken implements Editable<OAuthAuthorizeTokenBuilder>
     }
 
     /**
-     * ClientName references the client that created this token.
+     * clientName references the client that created this token.
      */
     @JsonProperty("clientName")
     public void setClientName(String clientName) {
@@ -169,7 +169,7 @@ public class OAuthAuthorizeToken implements Editable<OAuthAuthorizeTokenBuilder>
     }
 
     /**
-     * CodeChallenge is the optional code_challenge associated with this authorization code, as described in rfc7636
+     * codeChallenge is the optional code_challenge associated with this authorization code, as described in rfc7636
      */
     @JsonProperty("codeChallenge")
     public String getCodeChallenge() {
@@ -177,7 +177,7 @@ public class OAuthAuthorizeToken implements Editable<OAuthAuthorizeTokenBuilder>
     }
 
     /**
-     * CodeChallenge is the optional code_challenge associated with this authorization code, as described in rfc7636
+     * codeChallenge is the optional code_challenge associated with this authorization code, as described in rfc7636
      */
     @JsonProperty("codeChallenge")
     public void setCodeChallenge(String codeChallenge) {
@@ -185,7 +185,7 @@ public class OAuthAuthorizeToken implements Editable<OAuthAuthorizeTokenBuilder>
     }
 
     /**
-     * CodeChallengeMethod is the optional code_challenge_method associated with this authorization code, as described in rfc7636
+     * codeChallengeMethod is the optional code_challenge_method associated with this authorization code, as described in rfc7636
      */
     @JsonProperty("codeChallengeMethod")
     public String getCodeChallengeMethod() {
@@ -193,7 +193,7 @@ public class OAuthAuthorizeToken implements Editable<OAuthAuthorizeTokenBuilder>
     }
 
     /**
-     * CodeChallengeMethod is the optional code_challenge_method associated with this authorization code, as described in rfc7636
+     * codeChallengeMethod is the optional code_challenge_method associated with this authorization code, as described in rfc7636
      */
     @JsonProperty("codeChallengeMethod")
     public void setCodeChallengeMethod(String codeChallengeMethod) {
@@ -201,7 +201,7 @@ public class OAuthAuthorizeToken implements Editable<OAuthAuthorizeTokenBuilder>
     }
 
     /**
-     * ExpiresIn is the seconds from CreationTime before this token expires.
+     * expiresIn is the seconds from CreationTime before this token expires.
      */
     @JsonProperty("expiresIn")
     public Long getExpiresIn() {
@@ -209,7 +209,7 @@ public class OAuthAuthorizeToken implements Editable<OAuthAuthorizeTokenBuilder>
     }
 
     /**
-     * ExpiresIn is the seconds from CreationTime before this token expires.
+     * expiresIn is the seconds from CreationTime before this token expires.
      */
     @JsonProperty("expiresIn")
     public void setExpiresIn(Long expiresIn) {
@@ -249,7 +249,7 @@ public class OAuthAuthorizeToken implements Editable<OAuthAuthorizeTokenBuilder>
     }
 
     /**
-     * RedirectURI is the redirection associated with the token.
+     * redirectURI is the redirection associated with the token.
      */
     @JsonProperty("redirectURI")
     public String getRedirectURI() {
@@ -257,7 +257,7 @@ public class OAuthAuthorizeToken implements Editable<OAuthAuthorizeTokenBuilder>
     }
 
     /**
-     * RedirectURI is the redirection associated with the token.
+     * redirectURI is the redirection associated with the token.
      */
     @JsonProperty("redirectURI")
     public void setRedirectURI(String redirectURI) {
@@ -265,7 +265,7 @@ public class OAuthAuthorizeToken implements Editable<OAuthAuthorizeTokenBuilder>
     }
 
     /**
-     * Scopes is an array of the requested scopes.
+     * scopes is an array of the requested scopes.
      */
     @JsonProperty("scopes")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -274,7 +274,7 @@ public class OAuthAuthorizeToken implements Editable<OAuthAuthorizeTokenBuilder>
     }
 
     /**
-     * Scopes is an array of the requested scopes.
+     * scopes is an array of the requested scopes.
      */
     @JsonProperty("scopes")
     public void setScopes(List<String> scopes) {
@@ -282,7 +282,7 @@ public class OAuthAuthorizeToken implements Editable<OAuthAuthorizeTokenBuilder>
     }
 
     /**
-     * State data from request
+     * state data from request
      */
     @JsonProperty("state")
     public String getState() {
@@ -290,7 +290,7 @@ public class OAuthAuthorizeToken implements Editable<OAuthAuthorizeTokenBuilder>
     }
 
     /**
-     * State data from request
+     * state data from request
      */
     @JsonProperty("state")
     public void setState(String state) {
@@ -298,7 +298,7 @@ public class OAuthAuthorizeToken implements Editable<OAuthAuthorizeTokenBuilder>
     }
 
     /**
-     * UserName is the user name associated with this token
+     * userName is the user name associated with this token
      */
     @JsonProperty("userName")
     public String getUserName() {
@@ -306,7 +306,7 @@ public class OAuthAuthorizeToken implements Editable<OAuthAuthorizeTokenBuilder>
     }
 
     /**
-     * UserName is the user name associated with this token
+     * userName is the user name associated with this token
      */
     @JsonProperty("userName")
     public void setUserName(String userName) {
@@ -314,7 +314,7 @@ public class OAuthAuthorizeToken implements Editable<OAuthAuthorizeTokenBuilder>
     }
 
     /**
-     * UserUID is the unique UID associated with this token. UserUID and UserName must both match for this token to be valid.
+     * userUID is the unique UID associated with this token. UserUID and UserName must both match for this token to be valid.
      */
     @JsonProperty("userUID")
     public String getUserUID() {
@@ -322,7 +322,7 @@ public class OAuthAuthorizeToken implements Editable<OAuthAuthorizeTokenBuilder>
     }
 
     /**
-     * UserUID is the unique UID associated with this token. UserUID and UserName must both match for this token to be valid.
+     * userUID is the unique UID associated with this token. UserUID and UserName must both match for this token to be valid.
      */
     @JsonProperty("userUID")
     public void setUserUID(String userUID) {

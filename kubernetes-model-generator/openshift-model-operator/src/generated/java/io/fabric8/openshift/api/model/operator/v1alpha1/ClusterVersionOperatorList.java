@@ -1,5 +1,5 @@
 
-package io.fabric8.tekton.v1beta1;
+package io.fabric8.openshift.api.model.operator.v1alpha1;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -41,7 +41,7 @@ import lombok.ToString;
 import lombok.experimental.Accessors;
 
 /**
- * ClusterTaskList contains a list of ClusterTask
+ * ClusterVersionOperatorList is a collection of ClusterVersionOperators.<br><p> <br><p> Compatibility level 4: No compatibility is provided, the API can change at any point for any reason. These capabilities should not be used by applications needing long term support.
  */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -75,19 +75,19 @@ import lombok.experimental.Accessors;
 @TemplateTransformations({
     @TemplateTransformation(value = "/manifest.vm", outputPath = "META-INF/services/io.fabric8.kubernetes.api.model.KubernetesResource", gather = true)
 })
-@Version("v1beta1")
-@Group("tekton.dev")
+@Version("v1alpha1")
+@Group("operator.openshift.io")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class ClusterTaskList implements Editable<ClusterTaskListBuilder>, KubernetesResource, KubernetesResourceList<io.fabric8.tekton.v1beta1.ClusterTask>
+public class ClusterVersionOperatorList implements Editable<ClusterVersionOperatorListBuilder>, KubernetesResource, KubernetesResourceList<io.fabric8.openshift.api.model.operator.v1alpha1.ClusterVersionOperator>
 {
 
     @JsonProperty("apiVersion")
-    private String apiVersion = "tekton.dev/v1beta1";
+    private String apiVersion = "operator.openshift.io/v1alpha1";
     @JsonProperty("items")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<io.fabric8.tekton.v1beta1.ClusterTask> items = new ArrayList<>();
+    private List<io.fabric8.openshift.api.model.operator.v1alpha1.ClusterVersionOperator> items = new ArrayList<>();
     @JsonProperty("kind")
-    private String kind = "ClusterTaskList";
+    private String kind = "ClusterVersionOperatorList";
     @JsonProperty("metadata")
     private ListMeta metadata;
     @JsonIgnore
@@ -96,10 +96,10 @@ public class ClusterTaskList implements Editable<ClusterTaskListBuilder>, Kubern
     /**
      * No args constructor for use in serialization
      */
-    public ClusterTaskList() {
+    public ClusterVersionOperatorList() {
     }
 
-    public ClusterTaskList(String apiVersion, List<io.fabric8.tekton.v1beta1.ClusterTask> items, String kind, ListMeta metadata) {
+    public ClusterVersionOperatorList(String apiVersion, List<io.fabric8.openshift.api.model.operator.v1alpha1.ClusterVersionOperator> items, String kind, ListMeta metadata) {
         super();
         this.apiVersion = apiVersion;
         this.items = items;
@@ -124,19 +124,19 @@ public class ClusterTaskList implements Editable<ClusterTaskListBuilder>, Kubern
     }
 
     /**
-     * ClusterTaskList contains a list of ClusterTask
+     * items is a list of ClusterVersionOperators.
      */
     @JsonProperty("items")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<io.fabric8.tekton.v1beta1.ClusterTask> getItems() {
+    public List<io.fabric8.openshift.api.model.operator.v1alpha1.ClusterVersionOperator> getItems() {
         return items;
     }
 
     /**
-     * ClusterTaskList contains a list of ClusterTask
+     * items is a list of ClusterVersionOperators.
      */
     @JsonProperty("items")
-    public void setItems(List<io.fabric8.tekton.v1beta1.ClusterTask> items) {
+    public void setItems(List<io.fabric8.openshift.api.model.operator.v1alpha1.ClusterVersionOperator> items) {
         this.items = items;
     }
 
@@ -157,7 +157,7 @@ public class ClusterTaskList implements Editable<ClusterTaskListBuilder>, Kubern
     }
 
     /**
-     * ClusterTaskList contains a list of ClusterTask
+     * ClusterVersionOperatorList is a collection of ClusterVersionOperators.<br><p> <br><p> Compatibility level 4: No compatibility is provided, the API can change at any point for any reason. These capabilities should not be used by applications needing long term support.
      */
     @JsonProperty("metadata")
     public ListMeta getMetadata() {
@@ -165,7 +165,7 @@ public class ClusterTaskList implements Editable<ClusterTaskListBuilder>, Kubern
     }
 
     /**
-     * ClusterTaskList contains a list of ClusterTask
+     * ClusterVersionOperatorList is a collection of ClusterVersionOperators.<br><p> <br><p> Compatibility level 4: No compatibility is provided, the API can change at any point for any reason. These capabilities should not be used by applications needing long term support.
      */
     @JsonProperty("metadata")
     public void setMetadata(ListMeta metadata) {
@@ -173,12 +173,12 @@ public class ClusterTaskList implements Editable<ClusterTaskListBuilder>, Kubern
     }
 
     @JsonIgnore
-    public ClusterTaskListBuilder edit() {
-        return new ClusterTaskListBuilder(this);
+    public ClusterVersionOperatorListBuilder edit() {
+        return new ClusterVersionOperatorListBuilder(this);
     }
 
     @JsonIgnore
-    public ClusterTaskListBuilder toBuilder() {
+    public ClusterVersionOperatorListBuilder toBuilder() {
         return edit();
     }
 

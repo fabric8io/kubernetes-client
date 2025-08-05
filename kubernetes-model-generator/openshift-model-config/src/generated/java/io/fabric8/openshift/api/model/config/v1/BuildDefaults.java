@@ -108,7 +108,7 @@ public class BuildDefaults implements Editable<BuildDefaultsBuilder>, Kubernetes
     }
 
     /**
-     * Env is a set of default environment variables that will be applied to the build if the specified variables do not exist on the build
+     * env is a set of default environment variables that will be applied to the build if the specified variables do not exist on the build
      */
     @JsonProperty("env")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -117,7 +117,7 @@ public class BuildDefaults implements Editable<BuildDefaultsBuilder>, Kubernetes
     }
 
     /**
-     * Env is a set of default environment variables that will be applied to the build if the specified variables do not exist on the build
+     * env is a set of default environment variables that will be applied to the build if the specified variables do not exist on the build
      */
     @JsonProperty("env")
     public void setEnv(List<EnvVar> env) {
@@ -135,7 +135,7 @@ public class BuildDefaults implements Editable<BuildDefaultsBuilder>, Kubernetes
     }
 
     /**
-     * ImageLabels is a list of docker labels that are applied to the resulting image. User can override a default label by providing a label with the same name in their Build/BuildConfig.
+     * imageLabels is a list of docker labels that are applied to the resulting image. User can override a default label by providing a label with the same name in their Build/BuildConfig.
      */
     @JsonProperty("imageLabels")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -144,7 +144,7 @@ public class BuildDefaults implements Editable<BuildDefaultsBuilder>, Kubernetes
     }
 
     /**
-     * ImageLabels is a list of docker labels that are applied to the resulting image. User can override a default label by providing a label with the same name in their Build/BuildConfig.
+     * imageLabels is a list of docker labels that are applied to the resulting image. User can override a default label by providing a label with the same name in their Build/BuildConfig.
      */
     @JsonProperty("imageLabels")
     public void setImageLabels(List<ImageLabel> imageLabels) {

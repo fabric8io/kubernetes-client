@@ -85,7 +85,7 @@ public class LifecycleHook implements Editable<LifecycleHookBuilder>, Kubernetes
     }
 
     /**
-     * Name defines a unique name for the lifcycle hook. The name should be unique and descriptive, ideally 1-3 words, in CamelCase or it may be namespaced, eg. foo.example.com/CamelCase. Names must be unique and should only be managed by a single entity.
+     * name defines a unique name for the lifcycle hook. The name should be unique and descriptive, ideally 1-3 words, in CamelCase or it may be namespaced, eg. foo.example.com/CamelCase. Names must be unique and should only be managed by a single entity.
      */
     @JsonProperty("name")
     public String getName() {
@@ -93,7 +93,7 @@ public class LifecycleHook implements Editable<LifecycleHookBuilder>, Kubernetes
     }
 
     /**
-     * Name defines a unique name for the lifcycle hook. The name should be unique and descriptive, ideally 1-3 words, in CamelCase or it may be namespaced, eg. foo.example.com/CamelCase. Names must be unique and should only be managed by a single entity.
+     * name defines a unique name for the lifcycle hook. The name should be unique and descriptive, ideally 1-3 words, in CamelCase or it may be namespaced, eg. foo.example.com/CamelCase. Names must be unique and should only be managed by a single entity.
      */
     @JsonProperty("name")
     public void setName(String name) {
@@ -101,7 +101,7 @@ public class LifecycleHook implements Editable<LifecycleHookBuilder>, Kubernetes
     }
 
     /**
-     * Owner defines the owner of the lifecycle hook. This should be descriptive enough so that users can identify who/what is responsible for blocking the lifecycle. This could be the name of a controller (e.g. clusteroperator/etcd) or an administrator managing the hook.
+     * owner defines the owner of the lifecycle hook. This should be descriptive enough so that users can identify who/what is responsible for blocking the lifecycle. This could be the name of a controller (e.g. clusteroperator/etcd) or an administrator managing the hook.
      */
     @JsonProperty("owner")
     public String getOwner() {
@@ -109,7 +109,7 @@ public class LifecycleHook implements Editable<LifecycleHookBuilder>, Kubernetes
     }
 
     /**
-     * Owner defines the owner of the lifecycle hook. This should be descriptive enough so that users can identify who/what is responsible for blocking the lifecycle. This could be the name of a controller (e.g. clusteroperator/etcd) or an administrator managing the hook.
+     * owner defines the owner of the lifecycle hook. This should be descriptive enough so that users can identify who/what is responsible for blocking the lifecycle. This could be the name of a controller (e.g. clusteroperator/etcd) or an administrator managing the hook.
      */
     @JsonProperty("owner")
     public void setOwner(String owner) {

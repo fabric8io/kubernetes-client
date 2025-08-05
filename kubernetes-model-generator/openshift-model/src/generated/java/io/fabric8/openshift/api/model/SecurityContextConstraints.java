@@ -210,7 +210,7 @@ public class SecurityContextConstraints implements Editable<SecurityContextConst
     }
 
     /**
-     * AllowHostDirVolumePlugin determines if the policy allow containers to use the HostDir volume plugin
+     * allowHostDirVolumePlugin determines if the policy allow containers to use the HostDir volume plugin
      */
     @JsonProperty("allowHostDirVolumePlugin")
     public Boolean getAllowHostDirVolumePlugin() {
@@ -218,7 +218,7 @@ public class SecurityContextConstraints implements Editable<SecurityContextConst
     }
 
     /**
-     * AllowHostDirVolumePlugin determines if the policy allow containers to use the HostDir volume plugin
+     * allowHostDirVolumePlugin determines if the policy allow containers to use the HostDir volume plugin
      */
     @JsonProperty("allowHostDirVolumePlugin")
     public void setAllowHostDirVolumePlugin(Boolean allowHostDirVolumePlugin) {
@@ -226,7 +226,7 @@ public class SecurityContextConstraints implements Editable<SecurityContextConst
     }
 
     /**
-     * AllowHostIPC determines if the policy allows host ipc in the containers.
+     * allowHostIPC determines if the policy allows host ipc in the containers.
      */
     @JsonProperty("allowHostIPC")
     public Boolean getAllowHostIPC() {
@@ -234,7 +234,7 @@ public class SecurityContextConstraints implements Editable<SecurityContextConst
     }
 
     /**
-     * AllowHostIPC determines if the policy allows host ipc in the containers.
+     * allowHostIPC determines if the policy allows host ipc in the containers.
      */
     @JsonProperty("allowHostIPC")
     public void setAllowHostIPC(Boolean allowHostIPC) {
@@ -242,7 +242,7 @@ public class SecurityContextConstraints implements Editable<SecurityContextConst
     }
 
     /**
-     * AllowHostNetwork determines if the policy allows the use of HostNetwork in the pod spec.
+     * allowHostNetwork determines if the policy allows the use of HostNetwork in the pod spec.
      */
     @JsonProperty("allowHostNetwork")
     public Boolean getAllowHostNetwork() {
@@ -250,7 +250,7 @@ public class SecurityContextConstraints implements Editable<SecurityContextConst
     }
 
     /**
-     * AllowHostNetwork determines if the policy allows the use of HostNetwork in the pod spec.
+     * allowHostNetwork determines if the policy allows the use of HostNetwork in the pod spec.
      */
     @JsonProperty("allowHostNetwork")
     public void setAllowHostNetwork(Boolean allowHostNetwork) {
@@ -258,7 +258,7 @@ public class SecurityContextConstraints implements Editable<SecurityContextConst
     }
 
     /**
-     * AllowHostPID determines if the policy allows host pid in the containers.
+     * allowHostPID determines if the policy allows host pid in the containers.
      */
     @JsonProperty("allowHostPID")
     public Boolean getAllowHostPID() {
@@ -266,7 +266,7 @@ public class SecurityContextConstraints implements Editable<SecurityContextConst
     }
 
     /**
-     * AllowHostPID determines if the policy allows host pid in the containers.
+     * allowHostPID determines if the policy allows host pid in the containers.
      */
     @JsonProperty("allowHostPID")
     public void setAllowHostPID(Boolean allowHostPID) {
@@ -274,7 +274,7 @@ public class SecurityContextConstraints implements Editable<SecurityContextConst
     }
 
     /**
-     * AllowHostPorts determines if the policy allows host ports in the containers.
+     * allowHostPorts determines if the policy allows host ports in the containers.
      */
     @JsonProperty("allowHostPorts")
     public Boolean getAllowHostPorts() {
@@ -282,7 +282,7 @@ public class SecurityContextConstraints implements Editable<SecurityContextConst
     }
 
     /**
-     * AllowHostPorts determines if the policy allows host ports in the containers.
+     * allowHostPorts determines if the policy allows host ports in the containers.
      */
     @JsonProperty("allowHostPorts")
     public void setAllowHostPorts(Boolean allowHostPorts) {
@@ -290,7 +290,7 @@ public class SecurityContextConstraints implements Editable<SecurityContextConst
     }
 
     /**
-     * AllowPrivilegeEscalation determines if a pod can request to allow privilege escalation. If unspecified, defaults to true.
+     * allowPrivilegeEscalation determines if a pod can request to allow privilege escalation. If unspecified, defaults to true.
      */
     @JsonProperty("allowPrivilegeEscalation")
     public Boolean getAllowPrivilegeEscalation() {
@@ -298,7 +298,7 @@ public class SecurityContextConstraints implements Editable<SecurityContextConst
     }
 
     /**
-     * AllowPrivilegeEscalation determines if a pod can request to allow privilege escalation. If unspecified, defaults to true.
+     * allowPrivilegeEscalation determines if a pod can request to allow privilege escalation. If unspecified, defaults to true.
      */
     @JsonProperty("allowPrivilegeEscalation")
     public void setAllowPrivilegeEscalation(Boolean allowPrivilegeEscalation) {
@@ -306,7 +306,7 @@ public class SecurityContextConstraints implements Editable<SecurityContextConst
     }
 
     /**
-     * AllowPrivilegedContainer determines if a container can request to be run as privileged.
+     * allowPrivilegedContainer determines if a container can request to be run as privileged.
      */
     @JsonProperty("allowPrivilegedContainer")
     public Boolean getAllowPrivilegedContainer() {
@@ -314,7 +314,7 @@ public class SecurityContextConstraints implements Editable<SecurityContextConst
     }
 
     /**
-     * AllowPrivilegedContainer determines if a container can request to be run as privileged.
+     * allowPrivilegedContainer determines if a container can request to be run as privileged.
      */
     @JsonProperty("allowPrivilegedContainer")
     public void setAllowPrivilegedContainer(Boolean allowPrivilegedContainer) {
@@ -322,7 +322,7 @@ public class SecurityContextConstraints implements Editable<SecurityContextConst
     }
 
     /**
-     * AllowedCapabilities is a list of capabilities that can be requested to add to the container. Capabilities in this field maybe added at the pod author's discretion. You must not list a capability in both AllowedCapabilities and RequiredDropCapabilities. To allow all capabilities you may use '&#42;'.
+     * allowedCapabilities is a list of capabilities that can be requested to add to the container. Capabilities in this field maybe added at the pod author's discretion. You must not list a capability in both AllowedCapabilities and RequiredDropCapabilities. To allow all capabilities you may use '&#42;'.
      */
     @JsonProperty("allowedCapabilities")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -331,7 +331,7 @@ public class SecurityContextConstraints implements Editable<SecurityContextConst
     }
 
     /**
-     * AllowedCapabilities is a list of capabilities that can be requested to add to the container. Capabilities in this field maybe added at the pod author's discretion. You must not list a capability in both AllowedCapabilities and RequiredDropCapabilities. To allow all capabilities you may use '&#42;'.
+     * allowedCapabilities is a list of capabilities that can be requested to add to the container. Capabilities in this field maybe added at the pod author's discretion. You must not list a capability in both AllowedCapabilities and RequiredDropCapabilities. To allow all capabilities you may use '&#42;'.
      */
     @JsonProperty("allowedCapabilities")
     public void setAllowedCapabilities(List<String> allowedCapabilities) {
@@ -339,7 +339,7 @@ public class SecurityContextConstraints implements Editable<SecurityContextConst
     }
 
     /**
-     * AllowedFlexVolumes is a whitelist of allowed Flexvolumes.  Empty or nil indicates that all Flexvolumes may be used.  This parameter is effective only when the usage of the Flexvolumes is allowed in the "Volumes" field.
+     * allowedFlexVolumes is a whitelist of allowed Flexvolumes.  Empty or nil indicates that all Flexvolumes may be used.  This parameter is effective only when the usage of the Flexvolumes is allowed in the "Volumes" field.
      */
     @JsonProperty("allowedFlexVolumes")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -348,7 +348,7 @@ public class SecurityContextConstraints implements Editable<SecurityContextConst
     }
 
     /**
-     * AllowedFlexVolumes is a whitelist of allowed Flexvolumes.  Empty or nil indicates that all Flexvolumes may be used.  This parameter is effective only when the usage of the Flexvolumes is allowed in the "Volumes" field.
+     * allowedFlexVolumes is a whitelist of allowed Flexvolumes.  Empty or nil indicates that all Flexvolumes may be used.  This parameter is effective only when the usage of the Flexvolumes is allowed in the "Volumes" field.
      */
     @JsonProperty("allowedFlexVolumes")
     public void setAllowedFlexVolumes(List<AllowedFlexVolume> allowedFlexVolumes) {
@@ -356,7 +356,7 @@ public class SecurityContextConstraints implements Editable<SecurityContextConst
     }
 
     /**
-     * AllowedUnsafeSysctls is a list of explicitly allowed unsafe sysctls, defaults to none. Each entry is either a plain sysctl name or ends in "&#42;" in which case it is considered as a prefix of allowed sysctls. Single &#42; means all unsafe sysctls are allowed. Kubelet has to whitelist all allowed unsafe sysctls explicitly to avoid rejection.<br><p> <br><p> Examples: e.g. "foo/&#42;" allows "foo/bar", "foo/baz", etc. e.g. "foo.&#42;" allows "foo.bar", "foo.baz", etc.
+     * allowedUnsafeSysctls is a list of explicitly allowed unsafe sysctls, defaults to none. Each entry is either a plain sysctl name or ends in "&#42;" in which case it is considered as a prefix of allowed sysctls. Single &#42; means all unsafe sysctls are allowed. Kubelet has to whitelist all allowed unsafe sysctls explicitly to avoid rejection.<br><p> <br><p> Examples: e.g. "foo/&#42;" allows "foo/bar", "foo/baz", etc. e.g. "foo.&#42;" allows "foo.bar", "foo.baz", etc.
      */
     @JsonProperty("allowedUnsafeSysctls")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -365,7 +365,7 @@ public class SecurityContextConstraints implements Editable<SecurityContextConst
     }
 
     /**
-     * AllowedUnsafeSysctls is a list of explicitly allowed unsafe sysctls, defaults to none. Each entry is either a plain sysctl name or ends in "&#42;" in which case it is considered as a prefix of allowed sysctls. Single &#42; means all unsafe sysctls are allowed. Kubelet has to whitelist all allowed unsafe sysctls explicitly to avoid rejection.<br><p> <br><p> Examples: e.g. "foo/&#42;" allows "foo/bar", "foo/baz", etc. e.g. "foo.&#42;" allows "foo.bar", "foo.baz", etc.
+     * allowedUnsafeSysctls is a list of explicitly allowed unsafe sysctls, defaults to none. Each entry is either a plain sysctl name or ends in "&#42;" in which case it is considered as a prefix of allowed sysctls. Single &#42; means all unsafe sysctls are allowed. Kubelet has to whitelist all allowed unsafe sysctls explicitly to avoid rejection.<br><p> <br><p> Examples: e.g. "foo/&#42;" allows "foo/bar", "foo/baz", etc. e.g. "foo.&#42;" allows "foo.bar", "foo.baz", etc.
      */
     @JsonProperty("allowedUnsafeSysctls")
     public void setAllowedUnsafeSysctls(List<String> allowedUnsafeSysctls) {
@@ -389,7 +389,7 @@ public class SecurityContextConstraints implements Editable<SecurityContextConst
     }
 
     /**
-     * DefaultAddCapabilities is the default set of capabilities that will be added to the container unless the pod spec specifically drops the capability.  You may not list a capabiility in both DefaultAddCapabilities and RequiredDropCapabilities.
+     * defaultAddCapabilities is the default set of capabilities that will be added to the container unless the pod spec specifically drops the capability.  You may not list a capabiility in both DefaultAddCapabilities and RequiredDropCapabilities.
      */
     @JsonProperty("defaultAddCapabilities")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -398,7 +398,7 @@ public class SecurityContextConstraints implements Editable<SecurityContextConst
     }
 
     /**
-     * DefaultAddCapabilities is the default set of capabilities that will be added to the container unless the pod spec specifically drops the capability.  You may not list a capabiility in both DefaultAddCapabilities and RequiredDropCapabilities.
+     * defaultAddCapabilities is the default set of capabilities that will be added to the container unless the pod spec specifically drops the capability.  You may not list a capabiility in both DefaultAddCapabilities and RequiredDropCapabilities.
      */
     @JsonProperty("defaultAddCapabilities")
     public void setDefaultAddCapabilities(List<String> defaultAddCapabilities) {
@@ -406,7 +406,7 @@ public class SecurityContextConstraints implements Editable<SecurityContextConst
     }
 
     /**
-     * DefaultAllowPrivilegeEscalation controls the default setting for whether a process can gain more privileges than its parent process.
+     * defaultAllowPrivilegeEscalation controls the default setting for whether a process can gain more privileges than its parent process.
      */
     @JsonProperty("defaultAllowPrivilegeEscalation")
     public Boolean getDefaultAllowPrivilegeEscalation() {
@@ -414,7 +414,7 @@ public class SecurityContextConstraints implements Editable<SecurityContextConst
     }
 
     /**
-     * DefaultAllowPrivilegeEscalation controls the default setting for whether a process can gain more privileges than its parent process.
+     * defaultAllowPrivilegeEscalation controls the default setting for whether a process can gain more privileges than its parent process.
      */
     @JsonProperty("defaultAllowPrivilegeEscalation")
     public void setDefaultAllowPrivilegeEscalation(Boolean defaultAllowPrivilegeEscalation) {
@@ -422,7 +422,7 @@ public class SecurityContextConstraints implements Editable<SecurityContextConst
     }
 
     /**
-     * ForbiddenSysctls is a list of explicitly forbidden sysctls, defaults to none. Each entry is either a plain sysctl name or ends in "&#42;" in which case it is considered as a prefix of forbidden sysctls. Single &#42; means all sysctls are forbidden.<br><p> <br><p> Examples: e.g. "foo/&#42;" forbids "foo/bar", "foo/baz", etc. e.g. "foo.&#42;" forbids "foo.bar", "foo.baz", etc.
+     * forbiddenSysctls is a list of explicitly forbidden sysctls, defaults to none. Each entry is either a plain sysctl name or ends in "&#42;" in which case it is considered as a prefix of forbidden sysctls. Single &#42; means all sysctls are forbidden.<br><p> <br><p> Examples: e.g. "foo/&#42;" forbids "foo/bar", "foo/baz", etc. e.g. "foo.&#42;" forbids "foo.bar", "foo.baz", etc.
      */
     @JsonProperty("forbiddenSysctls")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -431,7 +431,7 @@ public class SecurityContextConstraints implements Editable<SecurityContextConst
     }
 
     /**
-     * ForbiddenSysctls is a list of explicitly forbidden sysctls, defaults to none. Each entry is either a plain sysctl name or ends in "&#42;" in which case it is considered as a prefix of forbidden sysctls. Single &#42; means all sysctls are forbidden.<br><p> <br><p> Examples: e.g. "foo/&#42;" forbids "foo/bar", "foo/baz", etc. e.g. "foo.&#42;" forbids "foo.bar", "foo.baz", etc.
+     * forbiddenSysctls is a list of explicitly forbidden sysctls, defaults to none. Each entry is either a plain sysctl name or ends in "&#42;" in which case it is considered as a prefix of forbidden sysctls. Single &#42; means all sysctls are forbidden.<br><p> <br><p> Examples: e.g. "foo/&#42;" forbids "foo/bar", "foo/baz", etc. e.g. "foo.&#42;" forbids "foo.bar", "foo.baz", etc.
      */
     @JsonProperty("forbiddenSysctls")
     public void setForbiddenSysctls(List<String> forbiddenSysctls) {
@@ -504,7 +504,7 @@ public class SecurityContextConstraints implements Editable<SecurityContextConst
     }
 
     /**
-     * Priority influences the sort order of SCCs when evaluating which SCCs to try first for a given pod request based on access in the Users and Groups fields.  The higher the int, the higher priority. An unset value is considered a 0 priority. If scores for multiple SCCs are equal they will be sorted from most restrictive to least restrictive. If both priorities and restrictions are equal the SCCs will be sorted by name.
+     * priority influences the sort order of SCCs when evaluating which SCCs to try first for a given pod request based on access in the Users and Groups fields.  The higher the int, the higher priority. An unset value is considered a 0 priority. If scores for multiple SCCs are equal they will be sorted from most restrictive to least restrictive. If both priorities and restrictions are equal the SCCs will be sorted by name.
      */
     @JsonProperty("priority")
     public Integer getPriority() {
@@ -512,7 +512,7 @@ public class SecurityContextConstraints implements Editable<SecurityContextConst
     }
 
     /**
-     * Priority influences the sort order of SCCs when evaluating which SCCs to try first for a given pod request based on access in the Users and Groups fields.  The higher the int, the higher priority. An unset value is considered a 0 priority. If scores for multiple SCCs are equal they will be sorted from most restrictive to least restrictive. If both priorities and restrictions are equal the SCCs will be sorted by name.
+     * priority influences the sort order of SCCs when evaluating which SCCs to try first for a given pod request based on access in the Users and Groups fields.  The higher the int, the higher priority. An unset value is considered a 0 priority. If scores for multiple SCCs are equal they will be sorted from most restrictive to least restrictive. If both priorities and restrictions are equal the SCCs will be sorted by name.
      */
     @JsonProperty("priority")
     public void setPriority(Integer priority) {
@@ -520,7 +520,7 @@ public class SecurityContextConstraints implements Editable<SecurityContextConst
     }
 
     /**
-     * ReadOnlyRootFilesystem when set to true will force containers to run with a read only root file system.  If the container specifically requests to run with a non-read only root file system the SCC should deny the pod. If set to false the container may run with a read only root file system if it wishes but it will not be forced to.
+     * readOnlyRootFilesystem when set to true will force containers to run with a read only root file system.  If the container specifically requests to run with a non-read only root file system the SCC should deny the pod. If set to false the container may run with a read only root file system if it wishes but it will not be forced to.
      */
     @JsonProperty("readOnlyRootFilesystem")
     public Boolean getReadOnlyRootFilesystem() {
@@ -528,7 +528,7 @@ public class SecurityContextConstraints implements Editable<SecurityContextConst
     }
 
     /**
-     * ReadOnlyRootFilesystem when set to true will force containers to run with a read only root file system.  If the container specifically requests to run with a non-read only root file system the SCC should deny the pod. If set to false the container may run with a read only root file system if it wishes but it will not be forced to.
+     * readOnlyRootFilesystem when set to true will force containers to run with a read only root file system.  If the container specifically requests to run with a non-read only root file system the SCC should deny the pod. If set to false the container may run with a read only root file system if it wishes but it will not be forced to.
      */
     @JsonProperty("readOnlyRootFilesystem")
     public void setReadOnlyRootFilesystem(Boolean readOnlyRootFilesystem) {
@@ -536,7 +536,7 @@ public class SecurityContextConstraints implements Editable<SecurityContextConst
     }
 
     /**
-     * RequiredDropCapabilities are the capabilities that will be dropped from the container.  These are required to be dropped and cannot be added.
+     * requiredDropCapabilities are the capabilities that will be dropped from the container.  These are required to be dropped and cannot be added.
      */
     @JsonProperty("requiredDropCapabilities")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -545,7 +545,7 @@ public class SecurityContextConstraints implements Editable<SecurityContextConst
     }
 
     /**
-     * RequiredDropCapabilities are the capabilities that will be dropped from the container.  These are required to be dropped and cannot be added.
+     * requiredDropCapabilities are the capabilities that will be dropped from the container.  These are required to be dropped and cannot be added.
      */
     @JsonProperty("requiredDropCapabilities")
     public void setRequiredDropCapabilities(List<String> requiredDropCapabilities) {
@@ -585,7 +585,7 @@ public class SecurityContextConstraints implements Editable<SecurityContextConst
     }
 
     /**
-     * SeccompProfiles lists the allowed profiles that may be set for the pod or container's seccomp annotations.  An unset (nil) or empty value means that no profiles may be specifid by the pod or container.	The wildcard '&#42;' may be used to allow all profiles.  When used to generate a value for a pod the first non-wildcard profile will be used as the default.
+     * seccompProfiles lists the allowed profiles that may be set for the pod or container's seccomp annotations.  An unset (nil) or empty value means that no profiles may be specifid by the pod or container.	The wildcard '&#42;' may be used to allow all profiles.  When used to generate a value for a pod the first non-wildcard profile will be used as the default.
      */
     @JsonProperty("seccompProfiles")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -594,7 +594,7 @@ public class SecurityContextConstraints implements Editable<SecurityContextConst
     }
 
     /**
-     * SeccompProfiles lists the allowed profiles that may be set for the pod or container's seccomp annotations.  An unset (nil) or empty value means that no profiles may be specifid by the pod or container.	The wildcard '&#42;' may be used to allow all profiles.  When used to generate a value for a pod the first non-wildcard profile will be used as the default.
+     * seccompProfiles lists the allowed profiles that may be set for the pod or container's seccomp annotations.  An unset (nil) or empty value means that no profiles may be specifid by the pod or container.	The wildcard '&#42;' may be used to allow all profiles.  When used to generate a value for a pod the first non-wildcard profile will be used as the default.
      */
     @JsonProperty("seccompProfiles")
     public void setSeccompProfiles(List<String> seccompProfiles) {
@@ -651,7 +651,7 @@ public class SecurityContextConstraints implements Editable<SecurityContextConst
     }
 
     /**
-     * Volumes is a white list of allowed volume plugins.  FSType corresponds directly with the field names of a VolumeSource (azureFile, configMap, emptyDir).  To allow all volumes you may use "&#42;". To allow no volumes, set to ["none"].
+     * volumes is a white list of allowed volume plugins.  FSType corresponds directly with the field names of a VolumeSource (azureFile, configMap, emptyDir).  To allow all volumes you may use "&#42;". To allow no volumes, set to ["none"].
      */
     @JsonProperty("volumes")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -660,7 +660,7 @@ public class SecurityContextConstraints implements Editable<SecurityContextConst
     }
 
     /**
-     * Volumes is a white list of allowed volume plugins.  FSType corresponds directly with the field names of a VolumeSource (azureFile, configMap, emptyDir).  To allow all volumes you may use "&#42;". To allow no volumes, set to ["none"].
+     * volumes is a white list of allowed volume plugins.  FSType corresponds directly with the field names of a VolumeSource (azureFile, configMap, emptyDir).  To allow all volumes you may use "&#42;". To allow no volumes, set to ["none"].
      */
     @JsonProperty("volumes")
     public void setVolumes(List<String> volumes) {

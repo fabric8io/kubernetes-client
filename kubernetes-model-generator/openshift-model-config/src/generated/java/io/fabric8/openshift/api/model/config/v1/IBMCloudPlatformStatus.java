@@ -104,7 +104,7 @@ public class IBMCloudPlatformStatus implements Editable<IBMCloudPlatformStatusBu
     }
 
     /**
-     * CISInstanceCRN is the CRN of the Cloud Internet Services instance managing the DNS zone for the cluster's base domain
+     * cisInstanceCRN is the CRN of the Cloud Internet Services instance managing the DNS zone for the cluster's base domain
      */
     @JsonProperty("cisInstanceCRN")
     public String getCisInstanceCRN() {
@@ -112,7 +112,7 @@ public class IBMCloudPlatformStatus implements Editable<IBMCloudPlatformStatusBu
     }
 
     /**
-     * CISInstanceCRN is the CRN of the Cloud Internet Services instance managing the DNS zone for the cluster's base domain
+     * cisInstanceCRN is the CRN of the Cloud Internet Services instance managing the DNS zone for the cluster's base domain
      */
     @JsonProperty("cisInstanceCRN")
     public void setCisInstanceCRN(String cisInstanceCRN) {
@@ -120,7 +120,7 @@ public class IBMCloudPlatformStatus implements Editable<IBMCloudPlatformStatusBu
     }
 
     /**
-     * DNSInstanceCRN is the CRN of the DNS Services instance managing the DNS zone for the cluster's base domain
+     * dnsInstanceCRN is the CRN of the DNS Services instance managing the DNS zone for the cluster's base domain
      */
     @JsonProperty("dnsInstanceCRN")
     public String getDnsInstanceCRN() {
@@ -128,7 +128,7 @@ public class IBMCloudPlatformStatus implements Editable<IBMCloudPlatformStatusBu
     }
 
     /**
-     * DNSInstanceCRN is the CRN of the DNS Services instance managing the DNS zone for the cluster's base domain
+     * dnsInstanceCRN is the CRN of the DNS Services instance managing the DNS zone for the cluster's base domain
      */
     @JsonProperty("dnsInstanceCRN")
     public void setDnsInstanceCRN(String dnsInstanceCRN) {
@@ -136,7 +136,7 @@ public class IBMCloudPlatformStatus implements Editable<IBMCloudPlatformStatusBu
     }
 
     /**
-     * Location is where the cluster has been deployed
+     * location is where the cluster has been deployed
      */
     @JsonProperty("location")
     public String getLocation() {
@@ -144,7 +144,7 @@ public class IBMCloudPlatformStatus implements Editable<IBMCloudPlatformStatusBu
     }
 
     /**
-     * Location is where the cluster has been deployed
+     * location is where the cluster has been deployed
      */
     @JsonProperty("location")
     public void setLocation(String location) {
@@ -152,7 +152,7 @@ public class IBMCloudPlatformStatus implements Editable<IBMCloudPlatformStatusBu
     }
 
     /**
-     * ProviderType indicates the type of cluster that was created
+     * providerType indicates the type of cluster that was created
      */
     @JsonProperty("providerType")
     public String getProviderType() {
@@ -160,7 +160,7 @@ public class IBMCloudPlatformStatus implements Editable<IBMCloudPlatformStatusBu
     }
 
     /**
-     * ProviderType indicates the type of cluster that was created
+     * providerType indicates the type of cluster that was created
      */
     @JsonProperty("providerType")
     public void setProviderType(String providerType) {
@@ -168,7 +168,7 @@ public class IBMCloudPlatformStatus implements Editable<IBMCloudPlatformStatusBu
     }
 
     /**
-     * ResourceGroupName is the Resource Group for new IBMCloud resources created for the cluster.
+     * resourceGroupName is the Resource Group for new IBMCloud resources created for the cluster.
      */
     @JsonProperty("resourceGroupName")
     public String getResourceGroupName() {
@@ -176,7 +176,7 @@ public class IBMCloudPlatformStatus implements Editable<IBMCloudPlatformStatusBu
     }
 
     /**
-     * ResourceGroupName is the Resource Group for new IBMCloud resources created for the cluster.
+     * resourceGroupName is the Resource Group for new IBMCloud resources created for the cluster.
      */
     @JsonProperty("resourceGroupName")
     public void setResourceGroupName(String resourceGroupName) {
@@ -184,7 +184,7 @@ public class IBMCloudPlatformStatus implements Editable<IBMCloudPlatformStatusBu
     }
 
     /**
-     * serviceEndpoints is a list of custom endpoints which will override the default service endpoints of an IBM Cloud service. These endpoints are consumed by components within the cluster to reach the respective IBM Cloud Services.
+     * serviceEndpoints is a list of custom endpoints which will override the default service endpoints of an IBM service. These endpoints are used by components within the cluster when trying to reach the IBM Cloud Services that have been overriden. The CCCMO reads in the IBMCloudPlatformSpec and validates each endpoint is resolvable. Once validated, the cloud config and IBMCloudPlatformStatus are updated to reflect the same custom endpoints.
      */
     @JsonProperty("serviceEndpoints")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -193,7 +193,7 @@ public class IBMCloudPlatformStatus implements Editable<IBMCloudPlatformStatusBu
     }
 
     /**
-     * serviceEndpoints is a list of custom endpoints which will override the default service endpoints of an IBM Cloud service. These endpoints are consumed by components within the cluster to reach the respective IBM Cloud Services.
+     * serviceEndpoints is a list of custom endpoints which will override the default service endpoints of an IBM service. These endpoints are used by components within the cluster when trying to reach the IBM Cloud Services that have been overriden. The CCCMO reads in the IBMCloudPlatformSpec and validates each endpoint is resolvable. Once validated, the cloud config and IBMCloudPlatformStatus are updated to reflect the same custom endpoints.
      */
     @JsonProperty("serviceEndpoints")
     public void setServiceEndpoints(List<IBMCloudServiceEndpoint> serviceEndpoints) {

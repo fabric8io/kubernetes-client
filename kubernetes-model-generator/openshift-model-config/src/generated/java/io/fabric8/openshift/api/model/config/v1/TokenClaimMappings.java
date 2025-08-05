@@ -1,7 +1,9 @@
 
 package io.fabric8.openshift.api.model.config.v1;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import javax.annotation.processing.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
@@ -34,7 +36,9 @@ import lombok.experimental.Accessors;
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
+    "extra",
     "groups",
+    "uid",
     "username"
 })
 @ToString
@@ -62,8 +66,13 @@ import lombok.experimental.Accessors;
 public class TokenClaimMappings implements Editable<TokenClaimMappingsBuilder>, KubernetesResource
 {
 
+    @JsonProperty("extra")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<ExtraMapping> extra = new ArrayList<>();
     @JsonProperty("groups")
     private PrefixedClaimMapping groups;
+    @JsonProperty("uid")
+    private TokenClaimOrExpressionMapping uid;
     @JsonProperty("username")
     private UsernameClaimMapping username;
     @JsonIgnore
@@ -75,10 +84,29 @@ public class TokenClaimMappings implements Editable<TokenClaimMappingsBuilder>, 
     public TokenClaimMappings() {
     }
 
-    public TokenClaimMappings(PrefixedClaimMapping groups, UsernameClaimMapping username) {
+    public TokenClaimMappings(List<ExtraMapping> extra, PrefixedClaimMapping groups, TokenClaimOrExpressionMapping uid, UsernameClaimMapping username) {
         super();
+        this.extra = extra;
         this.groups = groups;
+        this.uid = uid;
         this.username = username;
+    }
+
+    /**
+     * extra is an optional field for configuring the mappings used to construct the extra attribute for the cluster identity. When omitted, no extra attributes will be present on the cluster identity. key values for extra mappings must be unique. A maximum of 64 extra attribute mappings may be provided.
+     */
+    @JsonProperty("extra")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public List<ExtraMapping> getExtra() {
+        return extra;
+    }
+
+    /**
+     * extra is an optional field for configuring the mappings used to construct the extra attribute for the cluster identity. When omitted, no extra attributes will be present on the cluster identity. key values for extra mappings must be unique. A maximum of 64 extra attribute mappings may be provided.
+     */
+    @JsonProperty("extra")
+    public void setExtra(List<ExtraMapping> extra) {
+        this.extra = extra;
     }
 
     @JsonProperty("groups")
@@ -89,6 +117,16 @@ public class TokenClaimMappings implements Editable<TokenClaimMappingsBuilder>, 
     @JsonProperty("groups")
     public void setGroups(PrefixedClaimMapping groups) {
         this.groups = groups;
+    }
+
+    @JsonProperty("uid")
+    public TokenClaimOrExpressionMapping getUid() {
+        return uid;
+    }
+
+    @JsonProperty("uid")
+    public void setUid(TokenClaimOrExpressionMapping uid) {
+        this.uid = uid;
     }
 
     @JsonProperty("username")

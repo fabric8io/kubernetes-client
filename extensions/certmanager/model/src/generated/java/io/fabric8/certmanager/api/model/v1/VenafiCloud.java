@@ -103,7 +103,7 @@ public class VenafiCloud implements Editable<VenafiCloudBuilder>, KubernetesReso
     }
 
     /**
-     * URL is the base URL for Venafi Cloud. Defaults to "https://api.venafi.cloud/v1".
+     * URL is the base URL for Venafi Cloud. Defaults to "https://api.venafi.cloud/".
      */
     @JsonProperty("url")
     public String getUrl() {
@@ -111,7 +111,7 @@ public class VenafiCloud implements Editable<VenafiCloudBuilder>, KubernetesReso
     }
 
     /**
-     * URL is the base URL for Venafi Cloud. Defaults to "https://api.venafi.cloud/v1".
+     * URL is the base URL for Venafi Cloud. Defaults to "https://api.venafi.cloud/".
      */
     @JsonProperty("url")
     public void setUrl(String url) {

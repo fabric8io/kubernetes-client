@@ -93,7 +93,7 @@ public class NamedTagEventList implements Editable<NamedTagEventListBuilder>, Ku
     }
 
     /**
-     * Conditions is an array of conditions that apply to the tag event list.
+     * conditions is an array of conditions that apply to the tag event list.
      */
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -102,7 +102,7 @@ public class NamedTagEventList implements Editable<NamedTagEventListBuilder>, Ku
     }
 
     /**
-     * Conditions is an array of conditions that apply to the tag event list.
+     * conditions is an array of conditions that apply to the tag event list.
      */
     @JsonProperty("conditions")
     public void setConditions(List<TagEventCondition> conditions) {
@@ -127,7 +127,7 @@ public class NamedTagEventList implements Editable<NamedTagEventListBuilder>, Ku
     }
 
     /**
-     * Tag is the tag for which the history is recorded
+     * tag is the tag for which the history is recorded
      */
     @JsonProperty("tag")
     public String getTag() {
@@ -135,7 +135,7 @@ public class NamedTagEventList implements Editable<NamedTagEventListBuilder>, Ku
     }
 
     /**
-     * Tag is the tag for which the history is recorded
+     * tag is the tag for which the history is recorded
      */
     @JsonProperty("tag")
     public void setTag(String tag) {

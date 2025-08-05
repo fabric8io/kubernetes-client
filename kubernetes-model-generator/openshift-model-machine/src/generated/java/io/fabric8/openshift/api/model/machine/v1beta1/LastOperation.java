@@ -93,7 +93,7 @@ public class LastOperation implements Editable<LastOperationBuilder>, Kubernetes
     }
 
     /**
-     * Description is the human-readable description of the last operation.
+     * description is the human-readable description of the last operation.
      */
     @JsonProperty("description")
     public String getDescription() {
@@ -101,7 +101,7 @@ public class LastOperation implements Editable<LastOperationBuilder>, Kubernetes
     }
 
     /**
-     * Description is the human-readable description of the last operation.
+     * description is the human-readable description of the last operation.
      */
     @JsonProperty("description")
     public void setDescription(String description) {
@@ -125,7 +125,7 @@ public class LastOperation implements Editable<LastOperationBuilder>, Kubernetes
     }
 
     /**
-     * State is the current status of the last performed operation. E.g. Processing, Failed, Successful etc
+     * state is the current status of the last performed operation. E.g. Processing, Failed, Successful etc
      */
     @JsonProperty("state")
     public String getState() {
@@ -133,7 +133,7 @@ public class LastOperation implements Editable<LastOperationBuilder>, Kubernetes
     }
 
     /**
-     * State is the current status of the last performed operation. E.g. Processing, Failed, Successful etc
+     * state is the current status of the last performed operation. E.g. Processing, Failed, Successful etc
      */
     @JsonProperty("state")
     public void setState(String state) {
@@ -141,7 +141,7 @@ public class LastOperation implements Editable<LastOperationBuilder>, Kubernetes
     }
 
     /**
-     * Type is the type of operation which was last performed. E.g. Create, Delete, Update etc
+     * type is the type of operation which was last performed. E.g. Create, Delete, Update etc
      */
     @JsonProperty("type")
     public String getType() {
@@ -149,7 +149,7 @@ public class LastOperation implements Editable<LastOperationBuilder>, Kubernetes
     }
 
     /**
-     * Type is the type of operation which was last performed. E.g. Create, Delete, Update etc
+     * type is the type of operation which was last performed. E.g. Create, Delete, Update etc
      */
     @JsonProperty("type")
     public void setType(String type) {

@@ -85,7 +85,7 @@ public class NamedRoleBinding implements Editable<NamedRoleBindingBuilder>, Kube
     }
 
     /**
-     * Name is the name of the role binding
+     * name is the name of the role binding
      */
     @JsonProperty("name")
     public String getName() {
@@ -93,7 +93,7 @@ public class NamedRoleBinding implements Editable<NamedRoleBindingBuilder>, Kube
     }
 
     /**
-     * Name is the name of the role binding
+     * name is the name of the role binding
      */
     @JsonProperty("name")
     public void setName(String name) {

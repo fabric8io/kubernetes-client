@@ -38,7 +38,8 @@ import lombok.experimental.Accessors;
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "collection"
+    "collection",
+    "ui"
 })
 @ToString
 @EqualsAndHashCode
@@ -67,6 +68,8 @@ public class PlatformMetricsSpec implements Editable<PlatformMetricsSpecBuilder>
 
     @JsonProperty("collection")
     private PlatformMetricsCollectionSpec collection;
+    @JsonProperty("ui")
+    private UIConfig ui;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -76,9 +79,10 @@ public class PlatformMetricsSpec implements Editable<PlatformMetricsSpecBuilder>
     public PlatformMetricsSpec() {
     }
 
-    public PlatformMetricsSpec(PlatformMetricsCollectionSpec collection) {
+    public PlatformMetricsSpec(PlatformMetricsCollectionSpec collection, UIConfig ui) {
         super();
         this.collection = collection;
+        this.ui = ui;
     }
 
     /**
@@ -95,6 +99,22 @@ public class PlatformMetricsSpec implements Editable<PlatformMetricsSpecBuilder>
     @JsonProperty("collection")
     public void setCollection(PlatformMetricsCollectionSpec collection) {
         this.collection = collection;
+    }
+
+    /**
+     * PlatformMetricsSpec defines the spec for the addon to collect, forward and store metrics from fleet managed clusters.
+     */
+    @JsonProperty("ui")
+    public UIConfig getUi() {
+        return ui;
+    }
+
+    /**
+     * PlatformMetricsSpec defines the spec for the addon to collect, forward and store metrics from fleet managed clusters.
+     */
+    @JsonProperty("ui")
+    public void setUi(UIConfig ui) {
+        this.ui = ui;
     }
 
     @JsonIgnore

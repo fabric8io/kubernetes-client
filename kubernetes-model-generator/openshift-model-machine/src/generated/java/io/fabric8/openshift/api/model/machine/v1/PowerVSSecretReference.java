@@ -82,7 +82,7 @@ public class PowerVSSecretReference implements Editable<PowerVSSecretReferenceBu
     }
 
     /**
-     * Name of the secret.
+     * name of the secret.
      */
     @JsonProperty("name")
     public String getName() {
@@ -90,7 +90,7 @@ public class PowerVSSecretReference implements Editable<PowerVSSecretReferenceBu
     }
 
     /**
-     * Name of the secret.
+     * name of the secret.
      */
     @JsonProperty("name")
     public void setName(String name) {

@@ -1,11 +1,14 @@
 ## CHANGELOG
 
 ### 7.4-SNAPSHOT
-* Fix #7116: (java-generator) Use timezone format compatible with Kubernetes
 
 #### Bugs
 - Fix #7167: Allow Informer.isWatching to see underlying Watch state
+* Fix #7087: Avoid possible NPE in OkHttp websocket handlinger
 * Fix #7080: Avoid NPE in CRDGenerator if post-processor is set to null
+* Fix #7116: (java-generator) Use timezone format compatible with Kubernetes
+* Fix #7163: Ensure that streams are notified of errors
+* Fix #7092: (crd-generator) Add support for @Annotations and @Labels in CRD generation - CRD generator now includes annotations and labels specified via these annotations in the generated CRD metadata
 
 #### Improvements
 

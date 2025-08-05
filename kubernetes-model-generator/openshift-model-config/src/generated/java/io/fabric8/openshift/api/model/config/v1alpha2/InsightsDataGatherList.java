@@ -1,7 +1,9 @@
 
-package io.fabric8.tekton.v1beta1;
+package io.fabric8.openshift.api.model.config.v1alpha2;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import javax.annotation.processing.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
@@ -15,9 +17,11 @@ import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvVar;
-import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.IntOrString;
+import io.fabric8.kubernetes.api.model.KubernetesResource;
+import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 import io.fabric8.kubernetes.api.model.LabelSelector;
+import io.fabric8.kubernetes.api.model.ListMeta;
 import io.fabric8.kubernetes.api.model.LocalObjectReference;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.ObjectReference;
@@ -37,7 +41,7 @@ import lombok.ToString;
 import lombok.experimental.Accessors;
 
 /**
- * ClusterTask is a Task with a cluster scope. ClusterTasks are used to represent Tasks that should be publicly addressable from any namespace in the cluster.<br><p> <br><p> Deprecated: Please use the cluster resolver instead.
+ * InsightsDataGatherList is a collection of items Compatibility level 4: No compatibility is provided, the API can change at any point for any reason. These capabilities should not be used by applications needing long term support.
  */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -45,7 +49,7 @@ import lombok.experimental.Accessors;
     "apiVersion",
     "kind",
     "metadata",
-    "spec"
+    "items"
 })
 @ToString
 @EqualsAndHashCode
@@ -71,35 +75,36 @@ import lombok.experimental.Accessors;
 @TemplateTransformations({
     @TemplateTransformation(value = "/manifest.vm", outputPath = "META-INF/services/io.fabric8.kubernetes.api.model.KubernetesResource", gather = true)
 })
-@Version("v1beta1")
-@Group("tekton.dev")
+@Version("v1alpha2")
+@Group("config.openshift.io")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class ClusterTask implements Editable<ClusterTaskBuilder>, HasMetadata
+public class InsightsDataGatherList implements Editable<InsightsDataGatherListBuilder>, KubernetesResource, KubernetesResourceList<io.fabric8.openshift.api.model.config.v1alpha2.InsightsDataGather>
 {
 
     @JsonProperty("apiVersion")
-    private String apiVersion = "tekton.dev/v1beta1";
+    private String apiVersion = "config.openshift.io/v1alpha2";
+    @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<io.fabric8.openshift.api.model.config.v1alpha2.InsightsDataGather> items = new ArrayList<>();
     @JsonProperty("kind")
-    private String kind = "ClusterTask";
+    private String kind = "InsightsDataGatherList";
     @JsonProperty("metadata")
-    private ObjectMeta metadata;
-    @JsonProperty("spec")
-    private TaskSpec spec;
+    private ListMeta metadata;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
      */
-    public ClusterTask() {
+    public InsightsDataGatherList() {
     }
 
-    public ClusterTask(String apiVersion, String kind, ObjectMeta metadata, TaskSpec spec) {
+    public InsightsDataGatherList(String apiVersion, List<io.fabric8.openshift.api.model.config.v1alpha2.InsightsDataGather> items, String kind, ListMeta metadata) {
         super();
         this.apiVersion = apiVersion;
+        this.items = items;
         this.kind = kind;
         this.metadata = metadata;
-        this.spec = spec;
     }
 
     /**
@@ -119,6 +124,23 @@ public class ClusterTask implements Editable<ClusterTaskBuilder>, HasMetadata
     }
 
     /**
+     * items is the required list of InsightsDataGather objects it may not exceed 100 items
+     */
+    @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public List<io.fabric8.openshift.api.model.config.v1alpha2.InsightsDataGather> getItems() {
+        return items;
+    }
+
+    /**
+     * items is the required list of InsightsDataGather objects it may not exceed 100 items
+     */
+    @JsonProperty("items")
+    public void setItems(List<io.fabric8.openshift.api.model.config.v1alpha2.InsightsDataGather> items) {
+        this.items = items;
+    }
+
+    /**
      * Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
      */
     @JsonProperty("kind")
@@ -135,44 +157,28 @@ public class ClusterTask implements Editable<ClusterTaskBuilder>, HasMetadata
     }
 
     /**
-     * ClusterTask is a Task with a cluster scope. ClusterTasks are used to represent Tasks that should be publicly addressable from any namespace in the cluster.<br><p> <br><p> Deprecated: Please use the cluster resolver instead.
+     * InsightsDataGatherList is a collection of items Compatibility level 4: No compatibility is provided, the API can change at any point for any reason. These capabilities should not be used by applications needing long term support.
      */
     @JsonProperty("metadata")
-    public ObjectMeta getMetadata() {
+    public ListMeta getMetadata() {
         return metadata;
     }
 
     /**
-     * ClusterTask is a Task with a cluster scope. ClusterTasks are used to represent Tasks that should be publicly addressable from any namespace in the cluster.<br><p> <br><p> Deprecated: Please use the cluster resolver instead.
+     * InsightsDataGatherList is a collection of items Compatibility level 4: No compatibility is provided, the API can change at any point for any reason. These capabilities should not be used by applications needing long term support.
      */
     @JsonProperty("metadata")
-    public void setMetadata(ObjectMeta metadata) {
+    public void setMetadata(ListMeta metadata) {
         this.metadata = metadata;
     }
 
-    /**
-     * ClusterTask is a Task with a cluster scope. ClusterTasks are used to represent Tasks that should be publicly addressable from any namespace in the cluster.<br><p> <br><p> Deprecated: Please use the cluster resolver instead.
-     */
-    @JsonProperty("spec")
-    public TaskSpec getSpec() {
-        return spec;
-    }
-
-    /**
-     * ClusterTask is a Task with a cluster scope. ClusterTasks are used to represent Tasks that should be publicly addressable from any namespace in the cluster.<br><p> <br><p> Deprecated: Please use the cluster resolver instead.
-     */
-    @JsonProperty("spec")
-    public void setSpec(TaskSpec spec) {
-        this.spec = spec;
+    @JsonIgnore
+    public InsightsDataGatherListBuilder edit() {
+        return new InsightsDataGatherListBuilder(this);
     }
 
     @JsonIgnore
-    public ClusterTaskBuilder edit() {
-        return new ClusterTaskBuilder(this);
-    }
-
-    @JsonIgnore
-    public ClusterTaskBuilder toBuilder() {
+    public InsightsDataGatherListBuilder toBuilder() {
         return edit();
     }
 

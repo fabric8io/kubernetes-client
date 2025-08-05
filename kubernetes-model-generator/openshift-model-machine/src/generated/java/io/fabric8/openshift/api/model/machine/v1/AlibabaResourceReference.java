@@ -97,7 +97,7 @@ public class AlibabaResourceReference implements Editable<AlibabaResourceReferen
     }
 
     /**
-     * ID of resource
+     * id of resource
      */
     @JsonProperty("id")
     public String getId() {
@@ -105,7 +105,7 @@ public class AlibabaResourceReference implements Editable<AlibabaResourceReferen
     }
 
     /**
-     * ID of resource
+     * id of resource
      */
     @JsonProperty("id")
     public void setId(String id) {
@@ -113,7 +113,7 @@ public class AlibabaResourceReference implements Editable<AlibabaResourceReferen
     }
 
     /**
-     * Name of the resource
+     * name of the resource
      */
     @JsonProperty("name")
     public String getName() {
@@ -121,7 +121,7 @@ public class AlibabaResourceReference implements Editable<AlibabaResourceReferen
     }
 
     /**
-     * Name of the resource
+     * name of the resource
      */
     @JsonProperty("name")
     public void setName(String name) {
@@ -129,7 +129,7 @@ public class AlibabaResourceReference implements Editable<AlibabaResourceReferen
     }
 
     /**
-     * Tags is a set of metadata based upon ECS object tags used to identify a resource. For details about usage when multiple resources are found, please see the owning parent field documentation.
+     * tags is a set of metadata based upon ECS object tags used to identify a resource. For details about usage when multiple resources are found, please see the owning parent field documentation.
      */
     @JsonProperty("tags")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -138,7 +138,7 @@ public class AlibabaResourceReference implements Editable<AlibabaResourceReferen
     }
 
     /**
-     * Tags is a set of metadata based upon ECS object tags used to identify a resource. For details about usage when multiple resources are found, please see the owning parent field documentation.
+     * tags is a set of metadata based upon ECS object tags used to identify a resource. For details about usage when multiple resources are found, please see the owning parent field documentation.
      */
     @JsonProperty("tags")
     public void setTags(List<Tag> tags) {

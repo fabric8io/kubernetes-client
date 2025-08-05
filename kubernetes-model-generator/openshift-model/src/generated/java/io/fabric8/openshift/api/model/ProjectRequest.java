@@ -122,7 +122,7 @@ public class ProjectRequest implements Editable<ProjectRequestBuilder>, HasMetad
     }
 
     /**
-     * Description is the description to apply to a project
+     * description is the description to apply to a project
      */
     @JsonProperty("description")
     public String getDescription() {
@@ -130,7 +130,7 @@ public class ProjectRequest implements Editable<ProjectRequestBuilder>, HasMetad
     }
 
     /**
-     * Description is the description to apply to a project
+     * description is the description to apply to a project
      */
     @JsonProperty("description")
     public void setDescription(String description) {
@@ -138,7 +138,7 @@ public class ProjectRequest implements Editable<ProjectRequestBuilder>, HasMetad
     }
 
     /**
-     * DisplayName is the display name to apply to a project
+     * displayName is the display name to apply to a project
      */
     @JsonProperty("displayName")
     public String getDisplayName() {
@@ -146,7 +146,7 @@ public class ProjectRequest implements Editable<ProjectRequestBuilder>, HasMetad
     }
 
     /**
-     * DisplayName is the display name to apply to a project
+     * displayName is the display name to apply to a project
      */
     @JsonProperty("displayName")
     public void setDisplayName(String displayName) {

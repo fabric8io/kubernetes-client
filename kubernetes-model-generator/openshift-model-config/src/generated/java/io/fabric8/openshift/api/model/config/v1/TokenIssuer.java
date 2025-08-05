@@ -89,7 +89,7 @@ public class TokenIssuer implements Editable<TokenIssuerBuilder>, KubernetesReso
     }
 
     /**
-     * Audiences is an array of audiences that the token was issued for. Valid tokens must include at least one of these values in their "aud" claim. Must be set to exactly one value.
+     * audiences is an array of audiences that the token was issued for. Valid tokens must include at least one of these values in their "aud" claim. Must be set to exactly one value.
      */
     @JsonProperty("audiences")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -98,7 +98,7 @@ public class TokenIssuer implements Editable<TokenIssuerBuilder>, KubernetesReso
     }
 
     /**
-     * Audiences is an array of audiences that the token was issued for. Valid tokens must include at least one of these values in their "aud" claim. Must be set to exactly one value.
+     * audiences is an array of audiences that the token was issued for. Valid tokens must include at least one of these values in their "aud" claim. Must be set to exactly one value.
      */
     @JsonProperty("audiences")
     public void setAudiences(List<String> audiences) {

@@ -85,7 +85,7 @@ public class MTUMigrationValues implements Editable<MTUMigrationValuesBuilder>, 
     }
 
     /**
-     * From is the MTU to migrate from.
+     * from is the MTU to migrate from.
      */
     @JsonProperty("from")
     public Long getFrom() {
@@ -93,7 +93,7 @@ public class MTUMigrationValues implements Editable<MTUMigrationValuesBuilder>, 
     }
 
     /**
-     * From is the MTU to migrate from.
+     * from is the MTU to migrate from.
      */
     @JsonProperty("from")
     public void setFrom(Long from) {
@@ -101,7 +101,7 @@ public class MTUMigrationValues implements Editable<MTUMigrationValuesBuilder>, 
     }
 
     /**
-     * To is the MTU to migrate to.
+     * to is the MTU to migrate to.
      */
     @JsonProperty("to")
     public Long getTo() {
@@ -109,7 +109,7 @@ public class MTUMigrationValues implements Editable<MTUMigrationValuesBuilder>, 
     }
 
     /**
-     * To is the MTU to migrate to.
+     * to is the MTU to migrate to.
      */
     @JsonProperty("to")
     public void setTo(Long to) {

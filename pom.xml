@@ -92,31 +92,31 @@
     <!-- Core versions -->
     <sundrio.version>0.200.4</sundrio.version>
     <okhttp.version>4.12.0</okhttp.version>
-    <jackson.version>2.19.1</jackson.version>
+    <jackson.version>2.19.2</jackson.version>
     <jackson.bundle.version>${jackson.version}</jackson.bundle.version>
     <jetty.version>11.0.25</jetty.version>
-    <maven-core.version>3.9.10</maven-core.version>
+    <maven-core.version>3.9.11</maven-core.version>
     <maven-plugin-annotations.version>3.15.1</maven-plugin-annotations.version>
     <vertx.version>4.5.14</vertx.version>
-    <jandex.version>3.3.1</jandex.version>
-    <snakeyaml.version>2.9</snakeyaml.version>
+    <jandex.version>3.4.0</jandex.version>
+    <snakeyaml.version>2.10</snakeyaml.version>
     <snakeyaml.bundle.version>2.4</snakeyaml.bundle.version> <!-- Transitive Jackson -->
 
     <!-- API versions -->
     <jsr305.version>3.0.2</jsr305.version>
     <gradle-api.version>8.5</gradle-api.version>
-    <groovy-api.version>4.0.27</groovy-api.version>
+    <groovy-api.version>4.0.28</groovy-api.version>
 
     <!-- Testing versions -->
     <junit4.version>4.13.2</junit4.version>
-    <junit.version>5.13.3</junit.version>
+    <junit.version>5.13.4</junit.version>
     <assertj.core.version>3.27.3</assertj.core.version>
     <awaitility.version>4.3.0</awaitility.version>
-    <approvaltests.version>24.22.0</approvaltests.version>
+    <approvaltests.version>25.0.23</approvaltests.version>
     <bouncycastle.version>1.81</bouncycastle.version>
-    <bc-fips.version>2.1.0</bc-fips.version>
+    <bc-fips.version>2.1.1</bc-fips.version>
     <bcpkix-fips.version>2.1.9</bcpkix-fips.version>
-    <keycloak.version>26.3.1</keycloak.version><!-- Used by CRD Generator integration tests for verifications -->
+    <keycloak.version>26.3.2</keycloak.version><!-- Used by CRD Generator integration tests for verifications -->
     <mockito.version>5.18.0</mockito.version>
     <mockito-inline.version>5.2.0</mockito-inline.version>
     <spock.version>2.4-M6-groovy-4.0</spock.version>
@@ -126,10 +126,10 @@
     <aries-spifly.bundle.version>1.3.0</aries-spifly.bundle.version>
     <asm.bundle.version>8.0.1</asm.bundle.version>
     <slf4j.version>2.0.17</slf4j.version>
-    <log4j.version>2.24.3</log4j.version>
+    <log4j.version>2.25.1</log4j.version>
     <lombok.version>1.18.38</lombok.version>
-    <commons-compress.version>1.27.1</commons-compress.version>
-    <commons-io.version>2.19.0</commons-io.version> <!-- Required by Gradle Testing Toolkit -->
+    <commons-compress.version>1.28.0</commons-compress.version>
+    <commons-io.version>2.20.0</commons-io.version> <!-- Required by Gradle Testing Toolkit -->
     <guava.version>33.4.8-jre</guava.version> <!-- Required by Gradle Testing Toolkit -->
     <osgi.annotations.version>1.5.1</osgi.annotations.version>
     <felix.scr.version>2.0.6</felix.scr.version>
@@ -150,9 +150,9 @@
     <maven.release.plugin.version>3.1.1</maven.release.plugin.version>
     <maven.javadoc.plugin.version>3.11.2</maven.javadoc.plugin.version>
     <maven.source.plugin.version>3.3.1</maven.source.plugin.version>
-    <maven.enforcer.plugin.version>3.6.0</maven.enforcer.plugin.version>
+    <maven.enforcer.plugin.version>3.6.1</maven.enforcer.plugin.version>
     <maven.deploy.plugin.version>3.1.4</maven.deploy.plugin.version>
-    <maven.gpg.plugin.version>3.2.7</maven.gpg.plugin.version>
+    <maven.gpg.plugin.version>3.2.8</maven.gpg.plugin.version>
     <maven.antrun.plugin.version>3.1.0</maven.antrun.plugin.version>
     <maven.dependency.plugin.version>3.8.1</maven.dependency.plugin.version>
     <maven.shade.plugin.version>3.6.0</maven.shade.plugin.version>
@@ -166,7 +166,7 @@
     <sonar-maven-plugin.version>4.0.0.4121</sonar-maven-plugin.version>
     <central-publishing-maven-plugin>0.8.0</central-publishing-maven-plugin>
     <properties.maven.plugin.version>1.0.0</properties.maven.plugin.version>
-    <spotless-maven-plugin.version>2.45.0</spotless-maven-plugin.version>
+    <spotless-maven-plugin.version>2.46.1</spotless-maven-plugin.version>
     <really-executable-jar-maven-plugin.version>2.1.1</really-executable-jar-maven-plugin.version>
 
     <!-- Other options -->
@@ -1099,6 +1099,7 @@
         <artifactId>maven-surefire-plugin</artifactId>
         <inherited>true</inherited>
         <configuration>
+          <argLine>-Xmx2048m</argLine>
           <environmentVariables>
             <ENV_VAR_EXISTS>value</ENV_VAR_EXISTS>
             <ENV_VAR_EXISTS_BOOLEAN>true</ENV_VAR_EXISTS_BOOLEAN>
