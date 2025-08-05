@@ -769,8 +769,8 @@ github.com/metal3-io/baremetal-operator/apis v0.9.2 h1:jNVLSgwKgqxnLpH4yZo+MrYPg
 github.com/metal3-io/baremetal-operator/apis v0.9.2/go.mod h1:tw2xgvd+voXIYuQ5PNpS3sJvupP3b6nVc54HYadKxwE=
 github.com/metal3-io/baremetal-operator/pkg/hardwareutils v0.5.1 h1:X0+MWsJ+Gj/TAkmhGybvesvxk6zQKu3NQXzvC6l0iJs=
 github.com/metal3-io/baremetal-operator/pkg/hardwareutils v0.5.1/go.mod h1:399nvdaqoU9rTI25UdFw2EWcVjmJPpeZPIhfDAIx/XU=
-github.com/metal3-io/cluster-api-provider-metal3/api v1.9.3 h1:/QWYT9kPDFe0TNl/+w59pWgRZ/jCoPNOn6GJsB2Ws78=
-github.com/metal3-io/cluster-api-provider-metal3/api v1.9.3/go.mod h1:ce96bIxAU+obbwu6gB2Ve5YUA7GqwL202n3F1SP7Zp8=
+github.com/metal3-io/cluster-api-provider-metal3/api v1.10.1 h1:jS1pAqF1AqXjPsOI+JQvQ96QD0h64oAh1I3xgUMsPp8=
+github.com/metal3-io/cluster-api-provider-metal3/api v1.10.1/go.mod h1:xa8OLhHAQPqAo8E6xo3YdJ2Mfe1aLn36lcKjVUI3vaE=
 github.com/metal3-io/ip-address-manager/api v1.9.4 h1:MGFu+5/C+K9qfeyFXJCMMhXOQHahfRxXCrSJ+kI5YNQ=
 github.com/metal3-io/ip-address-manager/api v1.9.4/go.mod h1:Z0L032vV699SFb/rNKfmedzLvZLl9M3Jm8D2fsVXA1Q=
 github.com/miekg/dns v1.0.14/go.mod h1:W1PPwlIAgtquWBMBEV9nkV9Cazfe8ScdGz/Lj7v3Nrg=

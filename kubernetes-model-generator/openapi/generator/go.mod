@@ -11,7 +11,7 @@ require (
 	github.com/k8snetworkplumbingwg/network-attachment-definition-client v1.7.7
 	github.com/kubernetes-csi/external-snapshotter/client/v8 v8.2.0
 	github.com/metal3-io/baremetal-operator/apis v0.9.2
-	github.com/metal3-io/cluster-api-provider-metal3/api v1.9.3
+	github.com/metal3-io/cluster-api-provider-metal3/api v1.10.1
 	github.com/metal3-io/ip-address-manager/api v1.10.1 // indirect; indirect TODO: remove with controller-runtime replacement
 	// Match latest commit in the version branch (e.g. release-4.17)
 	github.com/openshift/api v3.9.0+incompatible
