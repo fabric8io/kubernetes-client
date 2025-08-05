@@ -96,7 +96,7 @@ public class EtcdConnectionInfo implements Editable<EtcdConnectionInfoBuilder>, 
     }
 
     /**
-     * CA is a file containing trusted roots for the etcd server certificates
+     * ca is a file containing trusted roots for the etcd server certificates
      */
     @JsonProperty("ca")
     public String getCa() {
@@ -104,7 +104,7 @@ public class EtcdConnectionInfo implements Editable<EtcdConnectionInfoBuilder>, 
     }
 
     /**
-     * CA is a file containing trusted roots for the etcd server certificates
+     * ca is a file containing trusted roots for the etcd server certificates
      */
     @JsonProperty("ca")
     public void setCa(String ca) {
@@ -112,7 +112,7 @@ public class EtcdConnectionInfo implements Editable<EtcdConnectionInfoBuilder>, 
     }
 
     /**
-     * CertFile is a file containing a PEM-encoded certificate
+     * certFile is a file containing a PEM-encoded certificate
      */
     @JsonProperty("certFile")
     public String getCertFile() {
@@ -120,7 +120,7 @@ public class EtcdConnectionInfo implements Editable<EtcdConnectionInfoBuilder>, 
     }
 
     /**
-     * CertFile is a file containing a PEM-encoded certificate
+     * certFile is a file containing a PEM-encoded certificate
      */
     @JsonProperty("certFile")
     public void setCertFile(String certFile) {
@@ -128,7 +128,7 @@ public class EtcdConnectionInfo implements Editable<EtcdConnectionInfoBuilder>, 
     }
 
     /**
-     * KeyFile is a file containing a PEM-encoded private key for the certificate specified by CertFile
+     * keyFile is a file containing a PEM-encoded private key for the certificate specified by CertFile
      */
     @JsonProperty("keyFile")
     public String getKeyFile() {
@@ -136,7 +136,7 @@ public class EtcdConnectionInfo implements Editable<EtcdConnectionInfoBuilder>, 
     }
 
     /**
-     * KeyFile is a file containing a PEM-encoded private key for the certificate specified by CertFile
+     * keyFile is a file containing a PEM-encoded private key for the certificate specified by CertFile
      */
     @JsonProperty("keyFile")
     public void setKeyFile(String keyFile) {
@@ -144,7 +144,7 @@ public class EtcdConnectionInfo implements Editable<EtcdConnectionInfoBuilder>, 
     }
 
     /**
-     * URLs are the URLs for etcd
+     * urls are the URLs for etcd
      */
     @JsonProperty("urls")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -153,7 +153,7 @@ public class EtcdConnectionInfo implements Editable<EtcdConnectionInfoBuilder>, 
     }
 
     /**
-     * URLs are the URLs for etcd
+     * urls are the URLs for etcd
      */
     @JsonProperty("urls")
     public void setUrls(List<String> urls) {

@@ -218,7 +218,7 @@ public class AzureMachineProviderSpec implements Editable<AzureMachineProviderSp
     }
 
     /**
-     * AcceleratedNetworking enables or disables Azure accelerated networking feature. Set to false by default. If true, then this will depend on whether the requested VMSize is supported. If set to true with an unsupported VMSize, Azure will return an error.
+     * acceleratedNetworking enables or disables Azure accelerated networking feature. Set to false by default. If true, then this will depend on whether the requested VMSize is supported. If set to true with an unsupported VMSize, Azure will return an error.
      */
     @JsonProperty("acceleratedNetworking")
     public Boolean getAcceleratedNetworking() {
@@ -226,7 +226,7 @@ public class AzureMachineProviderSpec implements Editable<AzureMachineProviderSp
     }
 
     /**
-     * AcceleratedNetworking enables or disables Azure accelerated networking feature. Set to false by default. If true, then this will depend on whether the requested VMSize is supported. If set to true with an unsupported VMSize, Azure will return an error.
+     * acceleratedNetworking enables or disables Azure accelerated networking feature. Set to false by default. If true, then this will depend on whether the requested VMSize is supported. If set to true with an unsupported VMSize, Azure will return an error.
      */
     @JsonProperty("acceleratedNetworking")
     public void setAcceleratedNetworking(Boolean acceleratedNetworking) {
@@ -267,7 +267,7 @@ public class AzureMachineProviderSpec implements Editable<AzureMachineProviderSp
     }
 
     /**
-     * AvailabilitySet specifies the availability set to use for this instance. Availability set should be precreated, before using this field.
+     * availabilitySet specifies the availability set to use for this instance. Availability set should be precreated, before using this field.
      */
     @JsonProperty("availabilitySet")
     public String getAvailabilitySet() {
@@ -275,7 +275,7 @@ public class AzureMachineProviderSpec implements Editable<AzureMachineProviderSp
     }
 
     /**
-     * AvailabilitySet specifies the availability set to use for this instance. Availability set should be precreated, before using this field.
+     * availabilitySet specifies the availability set to use for this instance. Availability set should be precreated, before using this field.
      */
     @JsonProperty("availabilitySet")
     public void setAvailabilitySet(String availabilitySet) {
@@ -396,7 +396,7 @@ public class AzureMachineProviderSpec implements Editable<AzureMachineProviderSp
     }
 
     /**
-     * Location is the region to use to create the instance
+     * location is the region to use to create the instance
      */
     @JsonProperty("location")
     public String getLocation() {
@@ -404,7 +404,7 @@ public class AzureMachineProviderSpec implements Editable<AzureMachineProviderSp
     }
 
     /**
-     * Location is the region to use to create the instance
+     * location is the region to use to create the instance
      */
     @JsonProperty("location")
     public void setLocation(String location) {
@@ -412,7 +412,7 @@ public class AzureMachineProviderSpec implements Editable<AzureMachineProviderSp
     }
 
     /**
-     * ManagedIdentity to set managed identity name
+     * managedIdentity to set managed identity name
      */
     @JsonProperty("managedIdentity")
     public String getManagedIdentity() {
@@ -420,7 +420,7 @@ public class AzureMachineProviderSpec implements Editable<AzureMachineProviderSp
     }
 
     /**
-     * ManagedIdentity to set managed identity name
+     * managedIdentity to set managed identity name
      */
     @JsonProperty("managedIdentity")
     public void setManagedIdentity(String managedIdentity) {
@@ -444,7 +444,7 @@ public class AzureMachineProviderSpec implements Editable<AzureMachineProviderSp
     }
 
     /**
-     * NatRule to set inbound NAT rule of the load balancer
+     * natRule to set inbound NAT rule of the load balancer
      */
     @JsonProperty("natRule")
     public Long getNatRule() {
@@ -452,7 +452,7 @@ public class AzureMachineProviderSpec implements Editable<AzureMachineProviderSp
     }
 
     /**
-     * NatRule to set inbound NAT rule of the load balancer
+     * natRule to set inbound NAT rule of the load balancer
      */
     @JsonProperty("natRule")
     public void setNatRule(Long natRule) {
@@ -460,7 +460,7 @@ public class AzureMachineProviderSpec implements Editable<AzureMachineProviderSp
     }
 
     /**
-     * NetworkResourceGroup is the resource group for the virtual machine's network
+     * networkResourceGroup is the resource group for the virtual machine's network
      */
     @JsonProperty("networkResourceGroup")
     public String getNetworkResourceGroup() {
@@ -468,7 +468,7 @@ public class AzureMachineProviderSpec implements Editable<AzureMachineProviderSp
     }
 
     /**
-     * NetworkResourceGroup is the resource group for the virtual machine's network
+     * networkResourceGroup is the resource group for the virtual machine's network
      */
     @JsonProperty("networkResourceGroup")
     public void setNetworkResourceGroup(String networkResourceGroup) {
@@ -492,7 +492,7 @@ public class AzureMachineProviderSpec implements Editable<AzureMachineProviderSp
     }
 
     /**
-     * PublicIP if true a public IP will be used
+     * publicIP if true a public IP will be used
      */
     @JsonProperty("publicIP")
     public Boolean getPublicIP() {
@@ -500,7 +500,7 @@ public class AzureMachineProviderSpec implements Editable<AzureMachineProviderSp
     }
 
     /**
-     * PublicIP if true a public IP will be used
+     * publicIP if true a public IP will be used
      */
     @JsonProperty("publicIP")
     public void setPublicIP(Boolean publicIP) {
@@ -508,7 +508,7 @@ public class AzureMachineProviderSpec implements Editable<AzureMachineProviderSp
     }
 
     /**
-     * PublicLoadBalancer to use for this instance
+     * publicLoadBalancer to use for this instance
      */
     @JsonProperty("publicLoadBalancer")
     public String getPublicLoadBalancer() {
@@ -516,7 +516,7 @@ public class AzureMachineProviderSpec implements Editable<AzureMachineProviderSp
     }
 
     /**
-     * PublicLoadBalancer to use for this instance
+     * publicLoadBalancer to use for this instance
      */
     @JsonProperty("publicLoadBalancer")
     public void setPublicLoadBalancer(String publicLoadBalancer) {
@@ -524,7 +524,7 @@ public class AzureMachineProviderSpec implements Editable<AzureMachineProviderSp
     }
 
     /**
-     * ResourceGroup is the resource group for the virtual machine
+     * resourceGroup is the resource group for the virtual machine
      */
     @JsonProperty("resourceGroup")
     public String getResourceGroup() {
@@ -532,7 +532,7 @@ public class AzureMachineProviderSpec implements Editable<AzureMachineProviderSp
     }
 
     /**
-     * ResourceGroup is the resource group for the virtual machine
+     * resourceGroup is the resource group for the virtual machine
      */
     @JsonProperty("resourceGroup")
     public void setResourceGroup(String resourceGroup) {
@@ -588,7 +588,7 @@ public class AzureMachineProviderSpec implements Editable<AzureMachineProviderSp
     }
 
     /**
-     * SSHPublicKey is the public key to use to SSH to the virtual machine.
+     * sshPublicKey is the public key to use to SSH to the virtual machine.
      */
     @JsonProperty("sshPublicKey")
     public String getSshPublicKey() {
@@ -596,7 +596,7 @@ public class AzureMachineProviderSpec implements Editable<AzureMachineProviderSp
     }
 
     /**
-     * SSHPublicKey is the public key to use to SSH to the virtual machine.
+     * sshPublicKey is the public key to use to SSH to the virtual machine.
      */
     @JsonProperty("sshPublicKey")
     public void setSshPublicKey(String sshPublicKey) {
@@ -604,7 +604,7 @@ public class AzureMachineProviderSpec implements Editable<AzureMachineProviderSp
     }
 
     /**
-     * Subnet to use for this instance
+     * subnet to use for this instance
      */
     @JsonProperty("subnet")
     public String getSubnet() {
@@ -612,7 +612,7 @@ public class AzureMachineProviderSpec implements Editable<AzureMachineProviderSp
     }
 
     /**
-     * Subnet to use for this instance
+     * subnet to use for this instance
      */
     @JsonProperty("subnet")
     public void setSubnet(String subnet) {
@@ -620,7 +620,7 @@ public class AzureMachineProviderSpec implements Editable<AzureMachineProviderSp
     }
 
     /**
-     * Tags is a list of tags to apply to the machine.
+     * tags is a list of tags to apply to the machine.
      */
     @JsonProperty("tags")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -629,7 +629,7 @@ public class AzureMachineProviderSpec implements Editable<AzureMachineProviderSp
     }
 
     /**
-     * Tags is a list of tags to apply to the machine.
+     * tags is a list of tags to apply to the machine.
      */
     @JsonProperty("tags")
     public void setTags(Map<String, String> tags) {
@@ -637,7 +637,7 @@ public class AzureMachineProviderSpec implements Editable<AzureMachineProviderSp
     }
 
     /**
-     * UltraSSDCapability enables or disables Azure UltraSSD capability for a virtual machine. This can be used to allow/disallow binding of Azure UltraSSD to the Machine both as Data Disks or via Persistent Volumes. This Azure feature is subject to a specific scope and certain limitations. More informations on this can be found in the official Azure documentation for Ultra Disks: (https://docs.microsoft.com/en-us/azure/virtual-machines/disks-enable-ultra-ssd?tabs=azure-portal#ga-scope-and-limitations).<br><p> <br><p> When omitted, if at least one Data Disk of type UltraSSD is specified, the platform will automatically enable the capability. If a Perisistent Volume backed by an UltraSSD is bound to a Pod on the Machine, when this field is ommitted, the platform will &#42;not&#42; automatically enable the capability (unless already enabled by the presence of an UltraSSD as Data Disk). This may manifest in the Pod being stuck in `ContainerCreating` phase. This defaulting behaviour may be subject to change in future.<br><p> <br><p> When set to "Enabled", if the capability is available for the Machine based on the scope and limitations described above, the capability will be set on the Machine. This will thus allow UltraSSD both as Data Disks and Persistent Volumes. If set to "Enabled" when the capability can't be available due to scope and limitations, the Machine will go into "Failed" state.<br><p> <br><p> When set to "Disabled", UltraSSDs will not be allowed either as Data Disks nor as Persistent Volumes. In this case if any UltraSSDs are specified as Data Disks on a Machine, the Machine will go into a "Failed" state. If instead any UltraSSDs are backing the volumes (via Persistent Volumes) of any Pods scheduled on a Node which is backed by the Machine, the Pod may get stuck in `ContainerCreating` phase.
+     * ultraSSDCapability enables or disables Azure UltraSSD capability for a virtual machine. This can be used to allow/disallow binding of Azure UltraSSD to the Machine both as Data Disks or via Persistent Volumes. This Azure feature is subject to a specific scope and certain limitations. More informations on this can be found in the official Azure documentation for Ultra Disks: (https://docs.microsoft.com/en-us/azure/virtual-machines/disks-enable-ultra-ssd?tabs=azure-portal#ga-scope-and-limitations).<br><p> <br><p> When omitted, if at least one Data Disk of type UltraSSD is specified, the platform will automatically enable the capability. If a Perisistent Volume backed by an UltraSSD is bound to a Pod on the Machine, when this field is ommitted, the platform will &#42;not&#42; automatically enable the capability (unless already enabled by the presence of an UltraSSD as Data Disk). This may manifest in the Pod being stuck in `ContainerCreating` phase. This defaulting behaviour may be subject to change in future.<br><p> <br><p> When set to "Enabled", if the capability is available for the Machine based on the scope and limitations described above, the capability will be set on the Machine. This will thus allow UltraSSD both as Data Disks and Persistent Volumes. If set to "Enabled" when the capability can't be available due to scope and limitations, the Machine will go into "Failed" state.<br><p> <br><p> When set to "Disabled", UltraSSDs will not be allowed either as Data Disks nor as Persistent Volumes. In this case if any UltraSSDs are specified as Data Disks on a Machine, the Machine will go into a "Failed" state. If instead any UltraSSDs are backing the volumes (via Persistent Volumes) of any Pods scheduled on a Node which is backed by the Machine, the Pod may get stuck in `ContainerCreating` phase.
      */
     @JsonProperty("ultraSSDCapability")
     public String getUltraSSDCapability() {
@@ -645,7 +645,7 @@ public class AzureMachineProviderSpec implements Editable<AzureMachineProviderSp
     }
 
     /**
-     * UltraSSDCapability enables or disables Azure UltraSSD capability for a virtual machine. This can be used to allow/disallow binding of Azure UltraSSD to the Machine both as Data Disks or via Persistent Volumes. This Azure feature is subject to a specific scope and certain limitations. More informations on this can be found in the official Azure documentation for Ultra Disks: (https://docs.microsoft.com/en-us/azure/virtual-machines/disks-enable-ultra-ssd?tabs=azure-portal#ga-scope-and-limitations).<br><p> <br><p> When omitted, if at least one Data Disk of type UltraSSD is specified, the platform will automatically enable the capability. If a Perisistent Volume backed by an UltraSSD is bound to a Pod on the Machine, when this field is ommitted, the platform will &#42;not&#42; automatically enable the capability (unless already enabled by the presence of an UltraSSD as Data Disk). This may manifest in the Pod being stuck in `ContainerCreating` phase. This defaulting behaviour may be subject to change in future.<br><p> <br><p> When set to "Enabled", if the capability is available for the Machine based on the scope and limitations described above, the capability will be set on the Machine. This will thus allow UltraSSD both as Data Disks and Persistent Volumes. If set to "Enabled" when the capability can't be available due to scope and limitations, the Machine will go into "Failed" state.<br><p> <br><p> When set to "Disabled", UltraSSDs will not be allowed either as Data Disks nor as Persistent Volumes. In this case if any UltraSSDs are specified as Data Disks on a Machine, the Machine will go into a "Failed" state. If instead any UltraSSDs are backing the volumes (via Persistent Volumes) of any Pods scheduled on a Node which is backed by the Machine, the Pod may get stuck in `ContainerCreating` phase.
+     * ultraSSDCapability enables or disables Azure UltraSSD capability for a virtual machine. This can be used to allow/disallow binding of Azure UltraSSD to the Machine both as Data Disks or via Persistent Volumes. This Azure feature is subject to a specific scope and certain limitations. More informations on this can be found in the official Azure documentation for Ultra Disks: (https://docs.microsoft.com/en-us/azure/virtual-machines/disks-enable-ultra-ssd?tabs=azure-portal#ga-scope-and-limitations).<br><p> <br><p> When omitted, if at least one Data Disk of type UltraSSD is specified, the platform will automatically enable the capability. If a Perisistent Volume backed by an UltraSSD is bound to a Pod on the Machine, when this field is ommitted, the platform will &#42;not&#42; automatically enable the capability (unless already enabled by the presence of an UltraSSD as Data Disk). This may manifest in the Pod being stuck in `ContainerCreating` phase. This defaulting behaviour may be subject to change in future.<br><p> <br><p> When set to "Enabled", if the capability is available for the Machine based on the scope and limitations described above, the capability will be set on the Machine. This will thus allow UltraSSD both as Data Disks and Persistent Volumes. If set to "Enabled" when the capability can't be available due to scope and limitations, the Machine will go into "Failed" state.<br><p> <br><p> When set to "Disabled", UltraSSDs will not be allowed either as Data Disks nor as Persistent Volumes. In this case if any UltraSSDs are specified as Data Disks on a Machine, the Machine will go into a "Failed" state. If instead any UltraSSDs are backing the volumes (via Persistent Volumes) of any Pods scheduled on a Node which is backed by the Machine, the Pod may get stuck in `ContainerCreating` phase.
      */
     @JsonProperty("ultraSSDCapability")
     public void setUltraSSDCapability(String ultraSSDCapability) {
@@ -669,7 +669,7 @@ public class AzureMachineProviderSpec implements Editable<AzureMachineProviderSp
     }
 
     /**
-     * VMSize is the size of the VM to create.
+     * vmSize is the size of the VM to create.
      */
     @JsonProperty("vmSize")
     public String getVmSize() {
@@ -677,7 +677,7 @@ public class AzureMachineProviderSpec implements Editable<AzureMachineProviderSp
     }
 
     /**
-     * VMSize is the size of the VM to create.
+     * vmSize is the size of the VM to create.
      */
     @JsonProperty("vmSize")
     public void setVmSize(String vmSize) {
@@ -685,7 +685,7 @@ public class AzureMachineProviderSpec implements Editable<AzureMachineProviderSp
     }
 
     /**
-     * Vnet to set virtual network name
+     * vnet to set virtual network name
      */
     @JsonProperty("vnet")
     public String getVnet() {
@@ -693,7 +693,7 @@ public class AzureMachineProviderSpec implements Editable<AzureMachineProviderSp
     }
 
     /**
-     * Vnet to set virtual network name
+     * vnet to set virtual network name
      */
     @JsonProperty("vnet")
     public void setVnet(String vnet) {

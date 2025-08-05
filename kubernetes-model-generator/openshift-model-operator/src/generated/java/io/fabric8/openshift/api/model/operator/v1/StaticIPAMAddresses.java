@@ -86,7 +86,7 @@ public class StaticIPAMAddresses implements Editable<StaticIPAMAddressesBuilder>
     }
 
     /**
-     * Address is the IP address in CIDR format
+     * address is the IP address in CIDR format
      */
     @JsonProperty("address")
     public String getAddress() {
@@ -94,7 +94,7 @@ public class StaticIPAMAddresses implements Editable<StaticIPAMAddressesBuilder>
     }
 
     /**
-     * Address is the IP address in CIDR format
+     * address is the IP address in CIDR format
      */
     @JsonProperty("address")
     public void setAddress(String address) {
@@ -102,7 +102,7 @@ public class StaticIPAMAddresses implements Editable<StaticIPAMAddressesBuilder>
     }
 
     /**
-     * Gateway is IP inside of subnet to designate as the gateway
+     * gateway is IP inside of subnet to designate as the gateway
      */
     @JsonProperty("gateway")
     public String getGateway() {
@@ -110,7 +110,7 @@ public class StaticIPAMAddresses implements Editable<StaticIPAMAddressesBuilder>
     }
 
     /**
-     * Gateway is IP inside of subnet to designate as the gateway
+     * gateway is IP inside of subnet to designate as the gateway
      */
     @JsonProperty("gateway")
     public void setGateway(String gateway) {

@@ -86,7 +86,7 @@ public class ExtractContentConfig implements Editable<ExtractContentConfigBuilde
     }
 
     /**
-     * CacheDir is the directory storing the pre-calculated API cache.
+     * CacheDir is the (optional) directory storing the pre-calculated API cache.
      */
     @JsonProperty("cacheDir")
     public String getCacheDir() {
@@ -94,7 +94,7 @@ public class ExtractContentConfig implements Editable<ExtractContentConfigBuilde
     }
 
     /**
-     * CacheDir is the directory storing the pre-calculated API cache.
+     * CacheDir is the (optional) directory storing the pre-calculated API cache.
      */
     @JsonProperty("cacheDir")
     public void setCacheDir(String cacheDir) {

@@ -93,7 +93,7 @@ public class ClusterRoleScopeRestriction implements Editable<ClusterRoleScopeRes
     }
 
     /**
-     * AllowEscalation indicates whether you can request roles and their escalating resources
+     * allowEscalation indicates whether you can request roles and their escalating resources
      */
     @JsonProperty("allowEscalation")
     public Boolean getAllowEscalation() {
@@ -101,7 +101,7 @@ public class ClusterRoleScopeRestriction implements Editable<ClusterRoleScopeRes
     }
 
     /**
-     * AllowEscalation indicates whether you can request roles and their escalating resources
+     * allowEscalation indicates whether you can request roles and their escalating resources
      */
     @JsonProperty("allowEscalation")
     public void setAllowEscalation(Boolean allowEscalation) {
@@ -109,7 +109,7 @@ public class ClusterRoleScopeRestriction implements Editable<ClusterRoleScopeRes
     }
 
     /**
-     * Namespaces is the list of namespaces that can be referenced.  &#42; means any of them (including &#42;)
+     * namespaces is the list of namespaces that can be referenced.  &#42; means any of them (including &#42;)
      */
     @JsonProperty("namespaces")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -118,7 +118,7 @@ public class ClusterRoleScopeRestriction implements Editable<ClusterRoleScopeRes
     }
 
     /**
-     * Namespaces is the list of namespaces that can be referenced.  &#42; means any of them (including &#42;)
+     * namespaces is the list of namespaces that can be referenced.  &#42; means any of them (including &#42;)
      */
     @JsonProperty("namespaces")
     public void setNamespaces(List<String> namespaces) {
@@ -126,7 +126,7 @@ public class ClusterRoleScopeRestriction implements Editable<ClusterRoleScopeRes
     }
 
     /**
-     * RoleNames is the list of cluster roles that can referenced.  &#42; means anything
+     * roleNames is the list of cluster roles that can referenced.  &#42; means anything
      */
     @JsonProperty("roleNames")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -135,7 +135,7 @@ public class ClusterRoleScopeRestriction implements Editable<ClusterRoleScopeRes
     }
 
     /**
-     * RoleNames is the list of cluster roles that can referenced.  &#42; means anything
+     * roleNames is the list of cluster roles that can referenced.  &#42; means anything
      */
     @JsonProperty("roleNames")
     public void setRoleNames(List<String> roleNames) {

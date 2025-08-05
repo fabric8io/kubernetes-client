@@ -93,7 +93,7 @@ public class StringSource implements Editable<StringSourceBuilder>, KubernetesRe
     }
 
     /**
-     * Env specifies an envvar containing the cleartext value, or an encrypted value if the keyFile is specified.
+     * env specifies an envvar containing the cleartext value, or an encrypted value if the keyFile is specified.
      */
     @JsonProperty("env")
     public String getEnv() {
@@ -101,7 +101,7 @@ public class StringSource implements Editable<StringSourceBuilder>, KubernetesRe
     }
 
     /**
-     * Env specifies an envvar containing the cleartext value, or an encrypted value if the keyFile is specified.
+     * env specifies an envvar containing the cleartext value, or an encrypted value if the keyFile is specified.
      */
     @JsonProperty("env")
     public void setEnv(String env) {
@@ -109,7 +109,7 @@ public class StringSource implements Editable<StringSourceBuilder>, KubernetesRe
     }
 
     /**
-     * File references a file containing the cleartext value, or an encrypted value if a keyFile is specified.
+     * file references a file containing the cleartext value, or an encrypted value if a keyFile is specified.
      */
     @JsonProperty("file")
     public String getFile() {
@@ -117,7 +117,7 @@ public class StringSource implements Editable<StringSourceBuilder>, KubernetesRe
     }
 
     /**
-     * File references a file containing the cleartext value, or an encrypted value if a keyFile is specified.
+     * file references a file containing the cleartext value, or an encrypted value if a keyFile is specified.
      */
     @JsonProperty("file")
     public void setFile(String file) {
@@ -125,7 +125,7 @@ public class StringSource implements Editable<StringSourceBuilder>, KubernetesRe
     }
 
     /**
-     * KeyFile references a file containing the key to use to decrypt the value.
+     * keyFile references a file containing the key to use to decrypt the value.
      */
     @JsonProperty("keyFile")
     public String getKeyFile() {
@@ -133,7 +133,7 @@ public class StringSource implements Editable<StringSourceBuilder>, KubernetesRe
     }
 
     /**
-     * KeyFile references a file containing the key to use to decrypt the value.
+     * keyFile references a file containing the key to use to decrypt the value.
      */
     @JsonProperty("keyFile")
     public void setKeyFile(String keyFile) {
@@ -141,7 +141,7 @@ public class StringSource implements Editable<StringSourceBuilder>, KubernetesRe
     }
 
     /**
-     * Value specifies the cleartext value, or an encrypted value if keyFile is specified.
+     * value specifies the cleartext value, or an encrypted value if keyFile is specified.
      */
     @JsonProperty("value")
     public String getValue() {
@@ -149,7 +149,7 @@ public class StringSource implements Editable<StringSourceBuilder>, KubernetesRe
     }
 
     /**
-     * Value specifies the cleartext value, or an encrypted value if keyFile is specified.
+     * value specifies the cleartext value, or an encrypted value if keyFile is specified.
      */
     @JsonProperty("value")
     public void setValue(String value) {

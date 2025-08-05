@@ -105,7 +105,7 @@ public class RollingDeploymentStrategyParams implements Editable<RollingDeployme
     }
 
     /**
-     * IntervalSeconds is the time to wait between polling deployment status after update. If the value is nil, a default will be used.
+     * intervalSeconds is the time to wait between polling deployment status after update. If the value is nil, a default will be used.
      */
     @JsonProperty("intervalSeconds")
     public Long getIntervalSeconds() {
@@ -113,7 +113,7 @@ public class RollingDeploymentStrategyParams implements Editable<RollingDeployme
     }
 
     /**
-     * IntervalSeconds is the time to wait between polling deployment status after update. If the value is nil, a default will be used.
+     * intervalSeconds is the time to wait between polling deployment status after update. If the value is nil, a default will be used.
      */
     @JsonProperty("intervalSeconds")
     public void setIntervalSeconds(Long intervalSeconds) {
@@ -185,7 +185,7 @@ public class RollingDeploymentStrategyParams implements Editable<RollingDeployme
     }
 
     /**
-     * TimeoutSeconds is the time to wait for updates before giving up. If the value is nil, a default will be used.
+     * timeoutSeconds is the time to wait for updates before giving up. If the value is nil, a default will be used.
      */
     @JsonProperty("timeoutSeconds")
     public Long getTimeoutSeconds() {
@@ -193,7 +193,7 @@ public class RollingDeploymentStrategyParams implements Editable<RollingDeployme
     }
 
     /**
-     * TimeoutSeconds is the time to wait for updates before giving up. If the value is nil, a default will be used.
+     * timeoutSeconds is the time to wait for updates before giving up. If the value is nil, a default will be used.
      */
     @JsonProperty("timeoutSeconds")
     public void setTimeoutSeconds(Long timeoutSeconds) {
@@ -201,7 +201,7 @@ public class RollingDeploymentStrategyParams implements Editable<RollingDeployme
     }
 
     /**
-     * UpdatePeriodSeconds is the time to wait between individual pod updates. If the value is nil, a default will be used.
+     * updatePeriodSeconds is the time to wait between individual pod updates. If the value is nil, a default will be used.
      */
     @JsonProperty("updatePeriodSeconds")
     public Long getUpdatePeriodSeconds() {
@@ -209,7 +209,7 @@ public class RollingDeploymentStrategyParams implements Editable<RollingDeployme
     }
 
     /**
-     * UpdatePeriodSeconds is the time to wait between individual pod updates. If the value is nil, a default will be used.
+     * updatePeriodSeconds is the time to wait between individual pod updates. If the value is nil, a default will be used.
      */
     @JsonProperty("updatePeriodSeconds")
     public void setUpdatePeriodSeconds(Long updatePeriodSeconds) {

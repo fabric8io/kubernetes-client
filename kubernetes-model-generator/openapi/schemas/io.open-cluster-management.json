@@ -14130,76 +14130,76 @@
       ],
       "properties": {
         "activityTimestamp": {
-          "description": "ActivityTimestamp ...",
+          "description": "ActivityTimestamp records the last observed activity of the cluster.",
           "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.Time"
         },
         "apiUrl": {
-          "description": "APIURL ...",
+          "description": "APIURL is the endpoint used to access the cluster's API server.",
           "type": "string",
           "default": ""
         },
         "cloudProvider": {
-          "description": "CloudProvider ...",
+          "description": "CloudProvider specifies the cloud provider where the cluster is hosted (e.g., AWS, Azure, GCP).",
           "type": "string"
         },
         "console": {
-          "description": "Console ...",
+          "description": "Console provides the URL of the cluster's web-based console.",
           "type": "string"
         },
         "creationTimestamp": {
-          "description": "CreationTimestamp ...",
+          "description": "CreationTimestamp marks when the cluster was initially discovered.",
           "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.Time"
         },
         "credential": {
-          "description": "Credential ...",
+          "description": "Credential references the Kubernetes secret containing authentication details for the cluster.",
           "default": {},
           "$ref": "#/definitions/io.k8s.api.core.v1.ObjectReference"
         },
         "displayName": {
-          "description": "DisplayName ...",
+          "description": "DisplayName is a human-readable name assigned to the cluster.",
           "type": "string",
           "default": ""
         },
         "importAsManagedCluster": {
-          "description": "ImportAsManagedCluster ...",
+          "description": "ImportAsManagedCluster determines whether the discovered cluster should be automatically imported as a managed cluster.",
           "type": "boolean"
         },
         "isManagedCluster": {
-          "description": "IsManagedCluster ...",
+          "description": "IsManagedCluster indicates whether the cluster is currently managed.",
           "type": "boolean",
           "default": false
         },
         "name": {
-          "description": "Name ...",
+          "description": "Name represents the unique identifier of the discovered cluster.",
           "type": "string",
           "default": ""
         },
         "ocpClusterId": {
-          "description": "OCPClusterID ...",
+          "description": "OCPClusterID contains the unique identifier assigned by OpenShift to the cluster.",
           "type": "string"
         },
         "openshiftVersion": {
-          "description": "OpenshiftVersion ...",
+          "description": "OpenshiftVersion specifies the OpenShift version running on the cluster.",
           "type": "string"
         },
         "owner": {
-          "description": "Owner ...",
+          "description": "Owner identifies the owner or organization responsible for the cluster.",
           "type": "string"
         },
         "region": {
-          "description": "Region ...",
+          "description": "Region specifies the geographical region where the cluster is deployed.",
           "type": "string"
         },
         "rhocmClusterId": {
-          "description": "RHOCMClusterID ...",
+          "description": "RHOCMClusterID contains the cluster ID from Red Hat OpenShift Cluster Manager.",
           "type": "string"
         },
         "status": {
-          "description": "Status ...",
+          "description": "Status represents the current state of the discovered cluster (e.g Active, Stale).",
           "type": "string"
         },
         "type": {
-          "description": "Type ...",
+          "description": "Type defines the type of cluster, such as OpenShift, Kubernetes, or a specific managed service type.",
           "type": "string",
           "default": ""
         }
@@ -14339,9 +14339,25 @@
       }
     },
     "io.open-cluster-management.discovery.v1.Filter": {
-      "description": "Filter ...",
+      "description": "Filter defines the criteria for discovering clusters based on specific attributes.",
       "type": "object",
       "properties": {
+        "clusterTypes": {
+          "description": "ClusterTypes is the list of cluster types to discover. These types represent the platform the cluster is running on, such as OpenShift Container Platform (OCP), Azure Red Hat OpenShift (ARO), or others.",
+          "type": "array",
+          "items": {
+            "type": "string",
+            "default": ""
+          }
+        },
+        "infrastructureProviders": {
+          "description": "InfrastructureProviders is the list of infrastructure providers to discover. This can be a list of cloud providers or platforms (e.g., AWS, Azure, GCP) where clusters might be running.",
+          "type": "array",
+          "items": {
+            "type": "string",
+            "default": ""
+          }
+        },
         "lastActive": {
           "description": "LastActive is the last active in days of clusters to discover, determined by activity timestamp",
           "type": "integer",
@@ -14349,6 +14365,14 @@
         },
         "openShiftVersions": {
           "description": "OpenShiftVersions is the list of release versions of OpenShift of the form \"\u003cMajor\u003e.\u003cMinor\u003e\"",
+          "type": "array",
+          "items": {
+            "type": "string",
+            "default": ""
+          }
+        },
+        "regions": {
+          "description": "Regions is the list of regions where OpenShift clusters are located. This helps in filtering clusters based on geographic location or data center region, useful for compliance or latency requirements.",
           "type": "array",
           "items": {
             "type": "string",

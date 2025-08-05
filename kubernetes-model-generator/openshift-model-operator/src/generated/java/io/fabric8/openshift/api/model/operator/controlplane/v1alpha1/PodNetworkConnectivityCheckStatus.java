@@ -97,7 +97,7 @@ public class PodNetworkConnectivityCheckStatus implements Editable<PodNetworkCon
     }
 
     /**
-     * Conditions summarize the status of the check
+     * conditions summarize the status of the check
      */
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -106,7 +106,7 @@ public class PodNetworkConnectivityCheckStatus implements Editable<PodNetworkCon
     }
 
     /**
-     * Conditions summarize the status of the check
+     * conditions summarize the status of the check
      */
     @JsonProperty("conditions")
     public void setConditions(List<PodNetworkConnectivityCheckCondition> conditions) {
@@ -114,7 +114,7 @@ public class PodNetworkConnectivityCheckStatus implements Editable<PodNetworkCon
     }
 
     /**
-     * Failures contains logs of unsuccessful check actions
+     * failures contains logs of unsuccessful check actions
      */
     @JsonProperty("failures")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -123,7 +123,7 @@ public class PodNetworkConnectivityCheckStatus implements Editable<PodNetworkCon
     }
 
     /**
-     * Failures contains logs of unsuccessful check actions
+     * failures contains logs of unsuccessful check actions
      */
     @JsonProperty("failures")
     public void setFailures(List<LogEntry> failures) {
@@ -131,7 +131,7 @@ public class PodNetworkConnectivityCheckStatus implements Editable<PodNetworkCon
     }
 
     /**
-     * Outages contains logs of time periods of outages
+     * outages contains logs of time periods of outages
      */
     @JsonProperty("outages")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -140,7 +140,7 @@ public class PodNetworkConnectivityCheckStatus implements Editable<PodNetworkCon
     }
 
     /**
-     * Outages contains logs of time periods of outages
+     * outages contains logs of time periods of outages
      */
     @JsonProperty("outages")
     public void setOutages(List<OutageEntry> outages) {
@@ -148,7 +148,7 @@ public class PodNetworkConnectivityCheckStatus implements Editable<PodNetworkCon
     }
 
     /**
-     * Successes contains logs successful check actions
+     * successes contains logs successful check actions
      */
     @JsonProperty("successes")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -157,7 +157,7 @@ public class PodNetworkConnectivityCheckStatus implements Editable<PodNetworkCon
     }
 
     /**
-     * Successes contains logs successful check actions
+     * successes contains logs successful check actions
      */
     @JsonProperty("successes")
     public void setSuccesses(List<LogEntry> successes) {

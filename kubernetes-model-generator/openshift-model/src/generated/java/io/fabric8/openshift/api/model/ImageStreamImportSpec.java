@@ -92,7 +92,7 @@ public class ImageStreamImportSpec implements Editable<ImageStreamImportSpecBuil
     }
 
     /**
-     * Images are a list of individual images to import.
+     * images are a list of individual images to import.
      */
     @JsonProperty("images")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -101,7 +101,7 @@ public class ImageStreamImportSpec implements Editable<ImageStreamImportSpecBuil
     }
 
     /**
-     * Images are a list of individual images to import.
+     * images are a list of individual images to import.
      */
     @JsonProperty("images")
     public void setImages(List<ImageImportSpec> images) {
@@ -109,7 +109,7 @@ public class ImageStreamImportSpec implements Editable<ImageStreamImportSpecBuil
     }
 
     /**
-     * Import indicates whether to perform an import - if so, the specified tags are set on the spec and status of the image stream defined by the type meta.
+     * import indicates whether to perform an import - if so, the specified tags are set on the spec and status of the image stream defined by the type meta.
      */
     @JsonProperty("import")
     public Boolean getImport() {
@@ -117,7 +117,7 @@ public class ImageStreamImportSpec implements Editable<ImageStreamImportSpecBuil
     }
 
     /**
-     * Import indicates whether to perform an import - if so, the specified tags are set on the spec and status of the image stream defined by the type meta.
+     * import indicates whether to perform an import - if so, the specified tags are set on the spec and status of the image stream defined by the type meta.
      */
     @JsonProperty("import")
     public void setImport(Boolean _import) {

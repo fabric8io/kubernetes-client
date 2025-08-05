@@ -106,7 +106,7 @@ public class TemplateInstanceStatus implements Editable<TemplateInstanceStatusBu
     }
 
     /**
-     * Objects references the objects created by the TemplateInstance.
+     * objects references the objects created by the TemplateInstance.
      */
     @JsonProperty("objects")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -115,7 +115,7 @@ public class TemplateInstanceStatus implements Editable<TemplateInstanceStatusBu
     }
 
     /**
-     * Objects references the objects created by the TemplateInstance.
+     * objects references the objects created by the TemplateInstance.
      */
     @JsonProperty("objects")
     public void setObjects(List<TemplateInstanceObject> objects) {

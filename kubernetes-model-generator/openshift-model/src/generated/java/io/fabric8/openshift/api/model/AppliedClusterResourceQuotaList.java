@@ -123,7 +123,7 @@ public class AppliedClusterResourceQuotaList implements Editable<AppliedClusterR
     }
 
     /**
-     * Items is a list of AppliedClusterResourceQuota
+     * items is a list of AppliedClusterResourceQuota
      */
     @JsonProperty("items")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -132,7 +132,7 @@ public class AppliedClusterResourceQuotaList implements Editable<AppliedClusterR
     }
 
     /**
-     * Items is a list of AppliedClusterResourceQuota
+     * items is a list of AppliedClusterResourceQuota
      */
     @JsonProperty("items")
     public void setItems(List<io.fabric8.openshift.api.model.AppliedClusterResourceQuota> items) {

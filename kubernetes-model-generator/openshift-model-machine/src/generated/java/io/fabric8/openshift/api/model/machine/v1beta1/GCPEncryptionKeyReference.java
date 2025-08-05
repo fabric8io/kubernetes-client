@@ -101,7 +101,7 @@ public class GCPEncryptionKeyReference implements Editable<GCPEncryptionKeyRefer
     }
 
     /**
-     * KMSKeyServiceAccount is the service account being used for the encryption request for the given KMS key. If absent, the Compute Engine default service account is used. See https://cloud.google.com/compute/docs/access/service-accounts#compute_engine_service_account for details on the default service account.
+     * kmsKeyServiceAccount is the service account being used for the encryption request for the given KMS key. If absent, the Compute Engine default service account is used. See https://cloud.google.com/compute/docs/access/service-accounts#compute_engine_service_account for details on the default service account.
      */
     @JsonProperty("kmsKeyServiceAccount")
     public String getKmsKeyServiceAccount() {
@@ -109,7 +109,7 @@ public class GCPEncryptionKeyReference implements Editable<GCPEncryptionKeyRefer
     }
 
     /**
-     * KMSKeyServiceAccount is the service account being used for the encryption request for the given KMS key. If absent, the Compute Engine default service account is used. See https://cloud.google.com/compute/docs/access/service-accounts#compute_engine_service_account for details on the default service account.
+     * kmsKeyServiceAccount is the service account being used for the encryption request for the given KMS key. If absent, the Compute Engine default service account is used. See https://cloud.google.com/compute/docs/access/service-accounts#compute_engine_service_account for details on the default service account.
      */
     @JsonProperty("kmsKeyServiceAccount")
     public void setKmsKeyServiceAccount(String kmsKeyServiceAccount) {

@@ -127,7 +127,7 @@ public class ChallengeSpec implements Editable<ChallengeSpecBuilder>, Kubernetes
     }
 
     /**
-     * dnsName is the identifier that this challenge is for, e.g. example.com. If the requested DNSName is a 'wildcard', this field MUST be set to the non-wildcard domain, e.g. for `&#42;.example.com`, it must be `example.com`.
+     * dnsName is the identifier that this challenge is for, e.g., example.com. If the requested DNSName is a 'wildcard', this field MUST be set to the non-wildcard domain, e.g., for `&#42;.example.com`, it must be `example.com`.
      */
     @JsonProperty("dnsName")
     public String getDnsName() {
@@ -135,7 +135,7 @@ public class ChallengeSpec implements Editable<ChallengeSpecBuilder>, Kubernetes
     }
 
     /**
-     * dnsName is the identifier that this challenge is for, e.g. example.com. If the requested DNSName is a 'wildcard', this field MUST be set to the non-wildcard domain, e.g. for `&#42;.example.com`, it must be `example.com`.
+     * dnsName is the identifier that this challenge is for, e.g., example.com. If the requested DNSName is a 'wildcard', this field MUST be set to the non-wildcard domain, e.g., for `&#42;.example.com`, it must be `example.com`.
      */
     @JsonProperty("dnsName")
     public void setDnsName(String dnsName) {

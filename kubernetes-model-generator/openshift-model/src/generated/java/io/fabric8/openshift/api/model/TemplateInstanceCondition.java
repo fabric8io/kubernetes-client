@@ -113,7 +113,7 @@ public class TemplateInstanceCondition implements Editable<TemplateInstanceCondi
     }
 
     /**
-     * Message is a human readable description of the details of the last transition, complementing reason.
+     * message is a human readable description of the details of the last transition, complementing reason.
      */
     @JsonProperty("message")
     public String getMessage() {
@@ -121,7 +121,7 @@ public class TemplateInstanceCondition implements Editable<TemplateInstanceCondi
     }
 
     /**
-     * Message is a human readable description of the details of the last transition, complementing reason.
+     * message is a human readable description of the details of the last transition, complementing reason.
      */
     @JsonProperty("message")
     public void setMessage(String message) {
@@ -129,7 +129,7 @@ public class TemplateInstanceCondition implements Editable<TemplateInstanceCondi
     }
 
     /**
-     * Reason is a brief machine readable explanation for the condition's last transition.
+     * reason is a brief machine readable explanation for the condition's last transition.
      */
     @JsonProperty("reason")
     public String getReason() {
@@ -137,7 +137,7 @@ public class TemplateInstanceCondition implements Editable<TemplateInstanceCondi
     }
 
     /**
-     * Reason is a brief machine readable explanation for the condition's last transition.
+     * reason is a brief machine readable explanation for the condition's last transition.
      */
     @JsonProperty("reason")
     public void setReason(String reason) {
@@ -145,7 +145,7 @@ public class TemplateInstanceCondition implements Editable<TemplateInstanceCondi
     }
 
     /**
-     * Status of the condition, one of True, False or Unknown.
+     * status of the condition, one of True, False or Unknown.
      */
     @JsonProperty("status")
     public String getStatus() {
@@ -153,7 +153,7 @@ public class TemplateInstanceCondition implements Editable<TemplateInstanceCondi
     }
 
     /**
-     * Status of the condition, one of True, False or Unknown.
+     * status of the condition, one of True, False or Unknown.
      */
     @JsonProperty("status")
     public void setStatus(String status) {
@@ -161,7 +161,7 @@ public class TemplateInstanceCondition implements Editable<TemplateInstanceCondi
     }
 
     /**
-     * Type of the condition, currently Ready or InstantiateFailure.
+     * type of the condition, currently Ready or InstantiateFailure.
      */
     @JsonProperty("type")
     public String getType() {
@@ -169,7 +169,7 @@ public class TemplateInstanceCondition implements Editable<TemplateInstanceCondi
     }
 
     /**
-     * Type of the condition, currently Ready or InstantiateFailure.
+     * type of the condition, currently Ready or InstantiateFailure.
      */
     @JsonProperty("type")
     public void setType(String type) {

@@ -81,7 +81,7 @@ public class DiskSettings implements Editable<DiskSettingsBuilder>, KubernetesRe
     }
 
     /**
-     * EphemeralStorageLocation enables ephemeral OS when set to 'Local'. Possible values include: 'Local'. See https://docs.microsoft.com/en-us/azure/virtual-machines/ephemeral-os-disks for full details. Empty value means no opinion and the platform chooses a default, which is subject to change over time. Currently the default is that disks are saved to remote Azure storage.
+     * ephemeralStorageLocation enables ephemeral OS when set to 'Local'. Possible values include: 'Local'. See https://docs.microsoft.com/en-us/azure/virtual-machines/ephemeral-os-disks for full details. Empty value means no opinion and the platform chooses a default, which is subject to change over time. Currently the default is that disks are saved to remote Azure storage.
      */
     @JsonProperty("ephemeralStorageLocation")
     public String getEphemeralStorageLocation() {
@@ -89,7 +89,7 @@ public class DiskSettings implements Editable<DiskSettingsBuilder>, KubernetesRe
     }
 
     /**
-     * EphemeralStorageLocation enables ephemeral OS when set to 'Local'. Possible values include: 'Local'. See https://docs.microsoft.com/en-us/azure/virtual-machines/ephemeral-os-disks for full details. Empty value means no opinion and the platform chooses a default, which is subject to change over time. Currently the default is that disks are saved to remote Azure storage.
+     * ephemeralStorageLocation enables ephemeral OS when set to 'Local'. Possible values include: 'Local'. See https://docs.microsoft.com/en-us/azure/virtual-machines/ephemeral-os-disks for full details. Empty value means no opinion and the platform chooses a default, which is subject to change over time. Currently the default is that disks are saved to remote Azure storage.
      */
     @JsonProperty("ephemeralStorageLocation")
     public void setEphemeralStorageLocation(String ephemeralStorageLocation) {

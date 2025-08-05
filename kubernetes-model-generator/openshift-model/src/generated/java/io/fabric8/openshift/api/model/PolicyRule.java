@@ -109,7 +109,7 @@ public class PolicyRule implements Editable<PolicyRuleBuilder>, KubernetesResour
     }
 
     /**
-     * APIGroups is the name of the APIGroup that contains the resources.  If this field is empty, then both kubernetes and origin API groups are assumed. That means that if an action is requested against one of the enumerated resources in either the kubernetes or the origin API group, the request will be allowed
+     * apiGroups is the name of the APIGroup that contains the resources.  If this field is empty, then both kubernetes and origin API groups are assumed. That means that if an action is requested against one of the enumerated resources in either the kubernetes or the origin API group, the request will be allowed
      */
     @JsonProperty("apiGroups")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -118,7 +118,7 @@ public class PolicyRule implements Editable<PolicyRuleBuilder>, KubernetesResour
     }
 
     /**
-     * APIGroups is the name of the APIGroup that contains the resources.  If this field is empty, then both kubernetes and origin API groups are assumed. That means that if an action is requested against one of the enumerated resources in either the kubernetes or the origin API group, the request will be allowed
+     * apiGroups is the name of the APIGroup that contains the resources.  If this field is empty, then both kubernetes and origin API groups are assumed. That means that if an action is requested against one of the enumerated resources in either the kubernetes or the origin API group, the request will be allowed
      */
     @JsonProperty("apiGroups")
     public void setApiGroups(List<String> apiGroups) {
@@ -160,7 +160,7 @@ public class PolicyRule implements Editable<PolicyRuleBuilder>, KubernetesResour
     }
 
     /**
-     * ResourceNames is an optional white list of names that the rule applies to.  An empty set means that everything is allowed.
+     * resourceNames is an optional white list of names that the rule applies to.  An empty set means that everything is allowed.
      */
     @JsonProperty("resourceNames")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -169,7 +169,7 @@ public class PolicyRule implements Editable<PolicyRuleBuilder>, KubernetesResour
     }
 
     /**
-     * ResourceNames is an optional white list of names that the rule applies to.  An empty set means that everything is allowed.
+     * resourceNames is an optional white list of names that the rule applies to.  An empty set means that everything is allowed.
      */
     @JsonProperty("resourceNames")
     public void setResourceNames(List<String> resourceNames) {
@@ -177,7 +177,7 @@ public class PolicyRule implements Editable<PolicyRuleBuilder>, KubernetesResour
     }
 
     /**
-     * Resources is a list of resources this rule applies to.  ResourceAll represents all resources.
+     * resources is a list of resources this rule applies to.  ResourceAll represents all resources.
      */
     @JsonProperty("resources")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -186,7 +186,7 @@ public class PolicyRule implements Editable<PolicyRuleBuilder>, KubernetesResour
     }
 
     /**
-     * Resources is a list of resources this rule applies to.  ResourceAll represents all resources.
+     * resources is a list of resources this rule applies to.  ResourceAll represents all resources.
      */
     @JsonProperty("resources")
     public void setResources(List<String> resources) {
@@ -194,7 +194,7 @@ public class PolicyRule implements Editable<PolicyRuleBuilder>, KubernetesResour
     }
 
     /**
-     * Verbs is a list of Verbs that apply to ALL the ResourceKinds and AttributeRestrictions contained in this rule.  VerbAll represents all kinds.
+     * verbs is a list of Verbs that apply to ALL the ResourceKinds and AttributeRestrictions contained in this rule.  VerbAll represents all kinds.
      */
     @JsonProperty("verbs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -203,7 +203,7 @@ public class PolicyRule implements Editable<PolicyRuleBuilder>, KubernetesResour
     }
 
     /**
-     * Verbs is a list of Verbs that apply to ALL the ResourceKinds and AttributeRestrictions contained in this rule.  VerbAll represents all kinds.
+     * verbs is a list of Verbs that apply to ALL the ResourceKinds and AttributeRestrictions contained in this rule.  VerbAll represents all kinds.
      */
     @JsonProperty("verbs")
     public void setVerbs(List<String> verbs) {

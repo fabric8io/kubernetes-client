@@ -46,7 +46,8 @@ import lombok.experimental.Accessors;
     "clientKeySecretRef",
     "namespace",
     "path",
-    "server"
+    "server",
+    "serverName"
 })
 @ToString
 @EqualsAndHashCode
@@ -89,6 +90,8 @@ public class VaultIssuer implements Editable<VaultIssuerBuilder>, KubernetesReso
     private String path;
     @JsonProperty("server")
     private String server;
+    @JsonProperty("serverName")
+    private String serverName;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -98,7 +101,7 @@ public class VaultIssuer implements Editable<VaultIssuerBuilder>, KubernetesReso
     public VaultIssuer() {
     }
 
-    public VaultIssuer(VaultAuth auth, String caBundle, SecretKeySelector caBundleSecretRef, SecretKeySelector clientCertSecretRef, SecretKeySelector clientKeySecretRef, String namespace, String path, String server) {
+    public VaultIssuer(VaultAuth auth, String caBundle, SecretKeySelector caBundleSecretRef, SecretKeySelector clientCertSecretRef, SecretKeySelector clientKeySecretRef, String namespace, String path, String server, String serverName) {
         super();
         this.auth = auth;
         this.caBundle = caBundle;
@@ -108,6 +111,7 @@ public class VaultIssuer implements Editable<VaultIssuerBuilder>, KubernetesReso
         this.namespace = namespace;
         this.path = path;
         this.server = server;
+        this.serverName = serverName;
     }
 
     /**
@@ -236,6 +240,22 @@ public class VaultIssuer implements Editable<VaultIssuerBuilder>, KubernetesReso
     @JsonProperty("server")
     public void setServer(String server) {
         this.server = server;
+    }
+
+    /**
+     * ServerName is used to verify the hostname on the returned certificates by the Vault server.
+     */
+    @JsonProperty("serverName")
+    public String getServerName() {
+        return serverName;
+    }
+
+    /**
+     * ServerName is used to verify the hostname on the returned certificates by the Vault server.
+     */
+    @JsonProperty("serverName")
+    public void setServerName(String serverName) {
+        this.serverName = serverName;
     }
 
     @JsonIgnore

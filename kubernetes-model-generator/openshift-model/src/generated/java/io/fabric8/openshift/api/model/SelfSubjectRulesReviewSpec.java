@@ -84,7 +84,7 @@ public class SelfSubjectRulesReviewSpec implements Editable<SelfSubjectRulesRevi
     }
 
     /**
-     * Scopes to use for the evaluation.  Empty means "use the unscoped (full) permissions of the user/groups". Nil means "use the scopes on this request".
+     * scopes to use for the evaluation.  Empty means "use the unscoped (full) permissions of the user/groups". Nil means "use the scopes on this request".
      */
     @JsonProperty("scopes")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -93,7 +93,7 @@ public class SelfSubjectRulesReviewSpec implements Editable<SelfSubjectRulesRevi
     }
 
     /**
-     * Scopes to use for the evaluation.  Empty means "use the unscoped (full) permissions of the user/groups". Nil means "use the scopes on this request".
+     * scopes to use for the evaluation.  Empty means "use the unscoped (full) permissions of the user/groups". Nil means "use the scopes on this request".
      */
     @JsonProperty("scopes")
     public void setScopes(List<String> scopes) {

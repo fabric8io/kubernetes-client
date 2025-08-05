@@ -124,7 +124,7 @@ public class ClusterNetworkList implements Editable<ClusterNetworkListBuilder>, 
     }
 
     /**
-     * Items is the list of cluster networks
+     * items is the list of cluster networks
      */
     @JsonProperty("items")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -133,7 +133,7 @@ public class ClusterNetworkList implements Editable<ClusterNetworkListBuilder>, 
     }
 
     /**
-     * Items is the list of cluster networks
+     * items is the list of cluster networks
      */
     @JsonProperty("items")
     public void setItems(List<io.fabric8.openshift.api.model.miscellaneous.network.v1.ClusterNetwork> items) {

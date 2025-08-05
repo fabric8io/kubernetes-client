@@ -101,7 +101,7 @@ public class NetworkMigration implements Editable<NetworkMigrationBuilder>, Kube
     }
 
     /**
-     * NetworkType is the target plugin that is being deployed. DEPRECATED: network type migration is no longer supported, so this should always be unset.
+     * networkType is the target plugin that is being deployed. DEPRECATED: network type migration is no longer supported, so this should always be unset.
      */
     @JsonProperty("networkType")
     public String getNetworkType() {
@@ -109,7 +109,7 @@ public class NetworkMigration implements Editable<NetworkMigrationBuilder>, Kube
     }
 
     /**
-     * NetworkType is the target plugin that is being deployed. DEPRECATED: network type migration is no longer supported, so this should always be unset.
+     * networkType is the target plugin that is being deployed. DEPRECATED: network type migration is no longer supported, so this should always be unset.
      */
     @JsonProperty("networkType")
     public void setNetworkType(String networkType) {

@@ -38,7 +38,7 @@ import lombok.ToString;
 import lombok.experimental.Accessors;
 
 /**
- * Image is an immutable representation of a container image and metadata at a point in time. Images are named by taking a hash of their contents (metadata and content) and any change in format, content, or metadata results in a new name. The images resource is primarily for use by cluster administrators and integrations like the cluster image registry - end users instead access images via the imagestreamtags or imagestreamimages resources. While image metadata is stored in the API, any integration that implements the container image registry API must provide its own storage for the raw manifest data, image config, and layer contents.<br><p> <br><p> Compatibility level 1: Stable within a major release for a minimum of 12 months or 3 minor releases (whichever is longer).
+ * Image is an immutable representation of a container image and its metadata at a point in time. Images are named by taking a hash of their contents (metadata and content) and any change in format, content, or metadata results in a new name. The images resource is primarily for use by cluster administrators and integrations like the cluster image registry - end users, instead, access images via the imagestreamtags or imagestreamimages resources. While image metadata is stored in the API, any integration that implements the container image registry API must provide its own storage for the raw manifest data, image config, and layer contents.<br><p> <br><p> Compatibility level 1: Stable within a major release for a minimum of 12 months or 3 minor releases (whichever is longer).
  */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -161,7 +161,7 @@ public class Image implements Editable<ImageBuilder>, HasMetadata
     }
 
     /**
-     * DockerImageConfig is a JSON blob that the runtime uses to set up the container. This is a part of manifest schema v2. Will not be set when the image represents a manifest list.
+     * dockerImageConfig is a JSON blob that the runtime uses to set up the container. This is a part of manifest schema v2. Will not be set when the image represents a manifest list.
      */
     @JsonProperty("dockerImageConfig")
     public String getDockerImageConfig() {
@@ -169,7 +169,7 @@ public class Image implements Editable<ImageBuilder>, HasMetadata
     }
 
     /**
-     * DockerImageConfig is a JSON blob that the runtime uses to set up the container. This is a part of manifest schema v2. Will not be set when the image represents a manifest list.
+     * dockerImageConfig is a JSON blob that the runtime uses to set up the container. This is a part of manifest schema v2. Will not be set when the image represents a manifest list.
      */
     @JsonProperty("dockerImageConfig")
     public void setDockerImageConfig(String dockerImageConfig) {
@@ -177,7 +177,7 @@ public class Image implements Editable<ImageBuilder>, HasMetadata
     }
 
     /**
-     * DockerImageLayers represents the layers in the image. May not be set if the image does not define that data or if the image represents a manifest list.
+     * dockerImageLayers represents the layers in the image. May not be set if the image does not define that data or if the image represents a manifest list.
      */
     @JsonProperty("dockerImageLayers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -186,7 +186,7 @@ public class Image implements Editable<ImageBuilder>, HasMetadata
     }
 
     /**
-     * DockerImageLayers represents the layers in the image. May not be set if the image does not define that data or if the image represents a manifest list.
+     * dockerImageLayers represents the layers in the image. May not be set if the image does not define that data or if the image represents a manifest list.
      */
     @JsonProperty("dockerImageLayers")
     public void setDockerImageLayers(List<ImageLayer> dockerImageLayers) {
@@ -194,7 +194,7 @@ public class Image implements Editable<ImageBuilder>, HasMetadata
     }
 
     /**
-     * DockerImageManifest is the raw JSON of the manifest
+     * dockerImageManifest is the raw JSON of the manifest
      */
     @JsonProperty("dockerImageManifest")
     public String getDockerImageManifest() {
@@ -202,7 +202,7 @@ public class Image implements Editable<ImageBuilder>, HasMetadata
     }
 
     /**
-     * DockerImageManifest is the raw JSON of the manifest
+     * dockerImageManifest is the raw JSON of the manifest
      */
     @JsonProperty("dockerImageManifest")
     public void setDockerImageManifest(String dockerImageManifest) {
@@ -210,7 +210,7 @@ public class Image implements Editable<ImageBuilder>, HasMetadata
     }
 
     /**
-     * DockerImageManifestMediaType specifies the mediaType of manifest. This is a part of manifest schema v2.
+     * dockerImageManifestMediaType specifies the mediaType of manifest. This is a part of manifest schema v2.
      */
     @JsonProperty("dockerImageManifestMediaType")
     public String getDockerImageManifestMediaType() {
@@ -218,7 +218,7 @@ public class Image implements Editable<ImageBuilder>, HasMetadata
     }
 
     /**
-     * DockerImageManifestMediaType specifies the mediaType of manifest. This is a part of manifest schema v2.
+     * dockerImageManifestMediaType specifies the mediaType of manifest. This is a part of manifest schema v2.
      */
     @JsonProperty("dockerImageManifestMediaType")
     public void setDockerImageManifestMediaType(String dockerImageManifestMediaType) {
@@ -226,7 +226,7 @@ public class Image implements Editable<ImageBuilder>, HasMetadata
     }
 
     /**
-     * DockerImageManifests holds information about sub-manifests when the image represents a manifest list. When this field is present, no DockerImageLayers should be specified.
+     * dockerImageManifests holds information about sub-manifests when the image represents a manifest list. When this field is present, no DockerImageLayers should be specified.
      */
     @JsonProperty("dockerImageManifests")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -235,7 +235,7 @@ public class Image implements Editable<ImageBuilder>, HasMetadata
     }
 
     /**
-     * DockerImageManifests holds information about sub-manifests when the image represents a manifest list. When this field is present, no DockerImageLayers should be specified.
+     * dockerImageManifests holds information about sub-manifests when the image represents a manifest list. When this field is present, no DockerImageLayers should be specified.
      */
     @JsonProperty("dockerImageManifests")
     public void setDockerImageManifests(List<ImageManifest> dockerImageManifests) {
@@ -243,7 +243,7 @@ public class Image implements Editable<ImageBuilder>, HasMetadata
     }
 
     /**
-     * Image is an immutable representation of a container image and metadata at a point in time. Images are named by taking a hash of their contents (metadata and content) and any change in format, content, or metadata results in a new name. The images resource is primarily for use by cluster administrators and integrations like the cluster image registry - end users instead access images via the imagestreamtags or imagestreamimages resources. While image metadata is stored in the API, any integration that implements the container image registry API must provide its own storage for the raw manifest data, image config, and layer contents.<br><p> <br><p> Compatibility level 1: Stable within a major release for a minimum of 12 months or 3 minor releases (whichever is longer).
+     * Image is an immutable representation of a container image and its metadata at a point in time. Images are named by taking a hash of their contents (metadata and content) and any change in format, content, or metadata results in a new name. The images resource is primarily for use by cluster administrators and integrations like the cluster image registry - end users, instead, access images via the imagestreamtags or imagestreamimages resources. While image metadata is stored in the API, any integration that implements the container image registry API must provide its own storage for the raw manifest data, image config, and layer contents.<br><p> <br><p> Compatibility level 1: Stable within a major release for a minimum of 12 months or 3 minor releases (whichever is longer).
      */
     @JsonProperty("dockerImageMetadata")
     public Object getDockerImageMetadata() {
@@ -251,7 +251,7 @@ public class Image implements Editable<ImageBuilder>, HasMetadata
     }
 
     /**
-     * Image is an immutable representation of a container image and metadata at a point in time. Images are named by taking a hash of their contents (metadata and content) and any change in format, content, or metadata results in a new name. The images resource is primarily for use by cluster administrators and integrations like the cluster image registry - end users instead access images via the imagestreamtags or imagestreamimages resources. While image metadata is stored in the API, any integration that implements the container image registry API must provide its own storage for the raw manifest data, image config, and layer contents.<br><p> <br><p> Compatibility level 1: Stable within a major release for a minimum of 12 months or 3 minor releases (whichever is longer).
+     * Image is an immutable representation of a container image and its metadata at a point in time. Images are named by taking a hash of their contents (metadata and content) and any change in format, content, or metadata results in a new name. The images resource is primarily for use by cluster administrators and integrations like the cluster image registry - end users, instead, access images via the imagestreamtags or imagestreamimages resources. While image metadata is stored in the API, any integration that implements the container image registry API must provide its own storage for the raw manifest data, image config, and layer contents.<br><p> <br><p> Compatibility level 1: Stable within a major release for a minimum of 12 months or 3 minor releases (whichever is longer).
      */
     @JsonProperty("dockerImageMetadata")
     @JsonDeserialize(using = io.fabric8.kubernetes.internal.KubernetesDeserializer.class)
@@ -260,7 +260,7 @@ public class Image implements Editable<ImageBuilder>, HasMetadata
     }
 
     /**
-     * DockerImageMetadataVersion conveys the version of the object, which if empty defaults to "1.0"
+     * dockerImageMetadataVersion conveys the version of the object, which if empty defaults to "1.0"
      */
     @JsonProperty("dockerImageMetadataVersion")
     public String getDockerImageMetadataVersion() {
@@ -268,7 +268,7 @@ public class Image implements Editable<ImageBuilder>, HasMetadata
     }
 
     /**
-     * DockerImageMetadataVersion conveys the version of the object, which if empty defaults to "1.0"
+     * dockerImageMetadataVersion conveys the version of the object, which if empty defaults to "1.0"
      */
     @JsonProperty("dockerImageMetadataVersion")
     public void setDockerImageMetadataVersion(String dockerImageMetadataVersion) {
@@ -276,7 +276,7 @@ public class Image implements Editable<ImageBuilder>, HasMetadata
     }
 
     /**
-     * DockerImageReference is the string that can be used to pull this image.
+     * dockerImageReference is the string that can be used to pull this image.
      */
     @JsonProperty("dockerImageReference")
     public String getDockerImageReference() {
@@ -284,7 +284,7 @@ public class Image implements Editable<ImageBuilder>, HasMetadata
     }
 
     /**
-     * DockerImageReference is the string that can be used to pull this image.
+     * dockerImageReference is the string that can be used to pull this image.
      */
     @JsonProperty("dockerImageReference")
     public void setDockerImageReference(String dockerImageReference) {
@@ -292,7 +292,7 @@ public class Image implements Editable<ImageBuilder>, HasMetadata
     }
 
     /**
-     * DockerImageSignatures provides the signatures as opaque blobs. This is a part of manifest schema v1.
+     * dockerImageSignatures provides the signatures as opaque blobs. This is a part of manifest schema v1.
      */
     @JsonProperty("dockerImageSignatures")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -301,7 +301,7 @@ public class Image implements Editable<ImageBuilder>, HasMetadata
     }
 
     /**
-     * DockerImageSignatures provides the signatures as opaque blobs. This is a part of manifest schema v1.
+     * dockerImageSignatures provides the signatures as opaque blobs. This is a part of manifest schema v1.
      */
     @JsonProperty("dockerImageSignatures")
     public void setDockerImageSignatures(List<String> dockerImageSignatures) {
@@ -325,7 +325,7 @@ public class Image implements Editable<ImageBuilder>, HasMetadata
     }
 
     /**
-     * Image is an immutable representation of a container image and metadata at a point in time. Images are named by taking a hash of their contents (metadata and content) and any change in format, content, or metadata results in a new name. The images resource is primarily for use by cluster administrators and integrations like the cluster image registry - end users instead access images via the imagestreamtags or imagestreamimages resources. While image metadata is stored in the API, any integration that implements the container image registry API must provide its own storage for the raw manifest data, image config, and layer contents.<br><p> <br><p> Compatibility level 1: Stable within a major release for a minimum of 12 months or 3 minor releases (whichever is longer).
+     * Image is an immutable representation of a container image and its metadata at a point in time. Images are named by taking a hash of their contents (metadata and content) and any change in format, content, or metadata results in a new name. The images resource is primarily for use by cluster administrators and integrations like the cluster image registry - end users, instead, access images via the imagestreamtags or imagestreamimages resources. While image metadata is stored in the API, any integration that implements the container image registry API must provide its own storage for the raw manifest data, image config, and layer contents.<br><p> <br><p> Compatibility level 1: Stable within a major release for a minimum of 12 months or 3 minor releases (whichever is longer).
      */
     @JsonProperty("metadata")
     public ObjectMeta getMetadata() {
@@ -333,7 +333,7 @@ public class Image implements Editable<ImageBuilder>, HasMetadata
     }
 
     /**
-     * Image is an immutable representation of a container image and metadata at a point in time. Images are named by taking a hash of their contents (metadata and content) and any change in format, content, or metadata results in a new name. The images resource is primarily for use by cluster administrators and integrations like the cluster image registry - end users instead access images via the imagestreamtags or imagestreamimages resources. While image metadata is stored in the API, any integration that implements the container image registry API must provide its own storage for the raw manifest data, image config, and layer contents.<br><p> <br><p> Compatibility level 1: Stable within a major release for a minimum of 12 months or 3 minor releases (whichever is longer).
+     * Image is an immutable representation of a container image and its metadata at a point in time. Images are named by taking a hash of their contents (metadata and content) and any change in format, content, or metadata results in a new name. The images resource is primarily for use by cluster administrators and integrations like the cluster image registry - end users, instead, access images via the imagestreamtags or imagestreamimages resources. While image metadata is stored in the API, any integration that implements the container image registry API must provide its own storage for the raw manifest data, image config, and layer contents.<br><p> <br><p> Compatibility level 1: Stable within a major release for a minimum of 12 months or 3 minor releases (whichever is longer).
      */
     @JsonProperty("metadata")
     public void setMetadata(ObjectMeta metadata) {
@@ -341,7 +341,7 @@ public class Image implements Editable<ImageBuilder>, HasMetadata
     }
 
     /**
-     * Signatures holds all signatures of the image.
+     * signatures holds all signatures of the image.
      */
     @JsonProperty("signatures")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -350,7 +350,7 @@ public class Image implements Editable<ImageBuilder>, HasMetadata
     }
 
     /**
-     * Signatures holds all signatures of the image.
+     * signatures holds all signatures of the image.
      */
     @JsonProperty("signatures")
     public void setSignatures(List<ImageSignature> signatures) {

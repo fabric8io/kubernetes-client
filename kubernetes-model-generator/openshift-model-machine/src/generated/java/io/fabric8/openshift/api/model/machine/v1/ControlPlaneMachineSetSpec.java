@@ -38,6 +38,7 @@ import lombok.experimental.Accessors;
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
+    "machineNamePrefix",
     "replicas",
     "selector",
     "state",
@@ -69,6 +70,8 @@ import lombok.experimental.Accessors;
 public class ControlPlaneMachineSetSpec implements Editable<ControlPlaneMachineSetSpecBuilder>, KubernetesResource
 {
 
+    @JsonProperty("machineNamePrefix")
+    private String machineNamePrefix;
     @JsonProperty("replicas")
     private Integer replicas;
     @JsonProperty("selector")
@@ -88,8 +91,9 @@ public class ControlPlaneMachineSetSpec implements Editable<ControlPlaneMachineS
     public ControlPlaneMachineSetSpec() {
     }
 
-    public ControlPlaneMachineSetSpec(Integer replicas, LabelSelector selector, String state, ControlPlaneMachineSetStrategy strategy, ControlPlaneMachineSetTemplate template) {
+    public ControlPlaneMachineSetSpec(String machineNamePrefix, Integer replicas, LabelSelector selector, String state, ControlPlaneMachineSetStrategy strategy, ControlPlaneMachineSetTemplate template) {
         super();
+        this.machineNamePrefix = machineNamePrefix;
         this.replicas = replicas;
         this.selector = selector;
         this.state = state;
@@ -98,7 +102,23 @@ public class ControlPlaneMachineSetSpec implements Editable<ControlPlaneMachineS
     }
 
     /**
-     * Replicas defines how many Control Plane Machines should be created by this ControlPlaneMachineSet. This field is immutable and cannot be changed after cluster installation. The ControlPlaneMachineSet only operates with 3 or 5 node control planes, 3 and 5 are the only valid values for this field.
+     * machineNamePrefix is the prefix used when creating machine names. Each machine name will consist of this prefix, followed by a randomly generated string of 5 characters, and the index of the machine. It must be a lowercase RFC 1123 subdomain, consisting of lowercase alphanumeric characters, hyphens ('-'), and periods ('.'). Each block, separated by periods, must start and end with an alphanumeric character. Hyphens are not allowed at the start or end of a block, and consecutive periods are not permitted. The prefix must be between 1 and 245 characters in length. For example, if machineNamePrefix is set to 'control-plane', and three machines are created, their names might be: control-plane-abcde-0, control-plane-fghij-1, control-plane-klmno-2
+     */
+    @JsonProperty("machineNamePrefix")
+    public String getMachineNamePrefix() {
+        return machineNamePrefix;
+    }
+
+    /**
+     * machineNamePrefix is the prefix used when creating machine names. Each machine name will consist of this prefix, followed by a randomly generated string of 5 characters, and the index of the machine. It must be a lowercase RFC 1123 subdomain, consisting of lowercase alphanumeric characters, hyphens ('-'), and periods ('.'). Each block, separated by periods, must start and end with an alphanumeric character. Hyphens are not allowed at the start or end of a block, and consecutive periods are not permitted. The prefix must be between 1 and 245 characters in length. For example, if machineNamePrefix is set to 'control-plane', and three machines are created, their names might be: control-plane-abcde-0, control-plane-fghij-1, control-plane-klmno-2
+     */
+    @JsonProperty("machineNamePrefix")
+    public void setMachineNamePrefix(String machineNamePrefix) {
+        this.machineNamePrefix = machineNamePrefix;
+    }
+
+    /**
+     * replicas defines how many Control Plane Machines should be created by this ControlPlaneMachineSet. This field is immutable and cannot be changed after cluster installation. The ControlPlaneMachineSet only operates with 3 or 5 node control planes, 3 and 5 are the only valid values for this field.
      */
     @JsonProperty("replicas")
     public Integer getReplicas() {
@@ -106,7 +126,7 @@ public class ControlPlaneMachineSetSpec implements Editable<ControlPlaneMachineS
     }
 
     /**
-     * Replicas defines how many Control Plane Machines should be created by this ControlPlaneMachineSet. This field is immutable and cannot be changed after cluster installation. The ControlPlaneMachineSet only operates with 3 or 5 node control planes, 3 and 5 are the only valid values for this field.
+     * replicas defines how many Control Plane Machines should be created by this ControlPlaneMachineSet. This field is immutable and cannot be changed after cluster installation. The ControlPlaneMachineSet only operates with 3 or 5 node control planes, 3 and 5 are the only valid values for this field.
      */
     @JsonProperty("replicas")
     public void setReplicas(Integer replicas) {
@@ -130,7 +150,7 @@ public class ControlPlaneMachineSetSpec implements Editable<ControlPlaneMachineS
     }
 
     /**
-     * State defines whether the ControlPlaneMachineSet is Active or Inactive. When Inactive, the ControlPlaneMachineSet will not take any action on the state of the Machines within the cluster. When Active, the ControlPlaneMachineSet will reconcile the Machines and will update the Machines as necessary. Once Active, a ControlPlaneMachineSet cannot be made Inactive. To prevent further action please remove the ControlPlaneMachineSet.
+     * state defines whether the ControlPlaneMachineSet is Active or Inactive. When Inactive, the ControlPlaneMachineSet will not take any action on the state of the Machines within the cluster. When Active, the ControlPlaneMachineSet will reconcile the Machines and will update the Machines as necessary. Once Active, a ControlPlaneMachineSet cannot be made Inactive. To prevent further action please remove the ControlPlaneMachineSet.
      */
     @JsonProperty("state")
     public String getState() {
@@ -138,7 +158,7 @@ public class ControlPlaneMachineSetSpec implements Editable<ControlPlaneMachineS
     }
 
     /**
-     * State defines whether the ControlPlaneMachineSet is Active or Inactive. When Inactive, the ControlPlaneMachineSet will not take any action on the state of the Machines within the cluster. When Active, the ControlPlaneMachineSet will reconcile the Machines and will update the Machines as necessary. Once Active, a ControlPlaneMachineSet cannot be made Inactive. To prevent further action please remove the ControlPlaneMachineSet.
+     * state defines whether the ControlPlaneMachineSet is Active or Inactive. When Inactive, the ControlPlaneMachineSet will not take any action on the state of the Machines within the cluster. When Active, the ControlPlaneMachineSet will reconcile the Machines and will update the Machines as necessary. Once Active, a ControlPlaneMachineSet cannot be made Inactive. To prevent further action please remove the ControlPlaneMachineSet.
      */
     @JsonProperty("state")
     public void setState(String state) {

@@ -124,7 +124,7 @@ public class NetNamespaceList implements Editable<NetNamespaceListBuilder>, Kube
     }
 
     /**
-     * Items is the list of net namespaces
+     * items is the list of net namespaces
      */
     @JsonProperty("items")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -133,7 +133,7 @@ public class NetNamespaceList implements Editable<NetNamespaceListBuilder>, Kube
     }
 
     /**
-     * Items is the list of net namespaces
+     * items is the list of net namespaces
      */
     @JsonProperty("items")
     public void setItems(List<io.fabric8.openshift.api.model.miscellaneous.network.v1.NetNamespace> items) {

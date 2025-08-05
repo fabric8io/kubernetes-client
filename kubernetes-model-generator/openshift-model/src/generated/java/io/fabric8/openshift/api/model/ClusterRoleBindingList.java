@@ -123,7 +123,7 @@ public class ClusterRoleBindingList implements Editable<ClusterRoleBindingListBu
     }
 
     /**
-     * Items is a list of ClusterRoleBindings
+     * items is a list of ClusterRoleBindings
      */
     @JsonProperty("items")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -132,7 +132,7 @@ public class ClusterRoleBindingList implements Editable<ClusterRoleBindingListBu
     }
 
     /**
-     * Items is a list of ClusterRoleBindings
+     * items is a list of ClusterRoleBindings
      */
     @JsonProperty("items")
     public void setItems(List<io.fabric8.openshift.api.model.ClusterRoleBinding> items) {

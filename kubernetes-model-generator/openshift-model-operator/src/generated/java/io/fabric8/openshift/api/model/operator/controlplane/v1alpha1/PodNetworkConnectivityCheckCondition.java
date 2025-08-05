@@ -114,7 +114,7 @@ public class PodNetworkConnectivityCheckCondition implements Editable<PodNetwork
     }
 
     /**
-     * Message indicating details about last transition in a human readable format.
+     * message indicating details about last transition in a human readable format.
      */
     @JsonProperty("message")
     public String getMessage() {
@@ -122,7 +122,7 @@ public class PodNetworkConnectivityCheckCondition implements Editable<PodNetwork
     }
 
     /**
-     * Message indicating details about last transition in a human readable format.
+     * message indicating details about last transition in a human readable format.
      */
     @JsonProperty("message")
     public void setMessage(String message) {
@@ -130,7 +130,7 @@ public class PodNetworkConnectivityCheckCondition implements Editable<PodNetwork
     }
 
     /**
-     * Reason for the condition's last status transition in a machine readable format.
+     * reason for the condition's last status transition in a machine readable format.
      */
     @JsonProperty("reason")
     public String getReason() {
@@ -138,7 +138,7 @@ public class PodNetworkConnectivityCheckCondition implements Editable<PodNetwork
     }
 
     /**
-     * Reason for the condition's last status transition in a machine readable format.
+     * reason for the condition's last status transition in a machine readable format.
      */
     @JsonProperty("reason")
     public void setReason(String reason) {
@@ -146,7 +146,7 @@ public class PodNetworkConnectivityCheckCondition implements Editable<PodNetwork
     }
 
     /**
-     * Status of the condition
+     * status of the condition
      */
     @JsonProperty("status")
     public String getStatus() {
@@ -154,7 +154,7 @@ public class PodNetworkConnectivityCheckCondition implements Editable<PodNetwork
     }
 
     /**
-     * Status of the condition
+     * status of the condition
      */
     @JsonProperty("status")
     public void setStatus(String status) {
@@ -162,7 +162,7 @@ public class PodNetworkConnectivityCheckCondition implements Editable<PodNetwork
     }
 
     /**
-     * Type of the condition
+     * type of the condition
      */
     @JsonProperty("type")
     public String getType() {
@@ -170,7 +170,7 @@ public class PodNetworkConnectivityCheckCondition implements Editable<PodNetwork
     }
 
     /**
-     * Type of the condition
+     * type of the condition
      */
     @JsonProperty("type")
     public void setType(String type) {

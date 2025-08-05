@@ -93,7 +93,7 @@ public class GCPKMSKeyReference implements Editable<GCPKMSKeyReferenceBuilder>, 
     }
 
     /**
-     * KeyRing is the name of the KMS Key Ring which the KMS Key belongs to.
+     * keyRing is the name of the KMS Key Ring which the KMS Key belongs to.
      */
     @JsonProperty("keyRing")
     public String getKeyRing() {
@@ -101,7 +101,7 @@ public class GCPKMSKeyReference implements Editable<GCPKMSKeyReferenceBuilder>, 
     }
 
     /**
-     * KeyRing is the name of the KMS Key Ring which the KMS Key belongs to.
+     * keyRing is the name of the KMS Key Ring which the KMS Key belongs to.
      */
     @JsonProperty("keyRing")
     public void setKeyRing(String keyRing) {
@@ -109,7 +109,7 @@ public class GCPKMSKeyReference implements Editable<GCPKMSKeyReferenceBuilder>, 
     }
 
     /**
-     * Location is the GCP location in which the Key Ring exists.
+     * location is the GCP location in which the Key Ring exists.
      */
     @JsonProperty("location")
     public String getLocation() {
@@ -117,7 +117,7 @@ public class GCPKMSKeyReference implements Editable<GCPKMSKeyReferenceBuilder>, 
     }
 
     /**
-     * Location is the GCP location in which the Key Ring exists.
+     * location is the GCP location in which the Key Ring exists.
      */
     @JsonProperty("location")
     public void setLocation(String location) {
@@ -125,7 +125,7 @@ public class GCPKMSKeyReference implements Editable<GCPKMSKeyReferenceBuilder>, 
     }
 
     /**
-     * Name is the name of the customer managed encryption key to be used for the disk encryption.
+     * name is the name of the customer managed encryption key to be used for the disk encryption.
      */
     @JsonProperty("name")
     public String getName() {
@@ -133,7 +133,7 @@ public class GCPKMSKeyReference implements Editable<GCPKMSKeyReferenceBuilder>, 
     }
 
     /**
-     * Name is the name of the customer managed encryption key to be used for the disk encryption.
+     * name is the name of the customer managed encryption key to be used for the disk encryption.
      */
     @JsonProperty("name")
     public void setName(String name) {
@@ -141,7 +141,7 @@ public class GCPKMSKeyReference implements Editable<GCPKMSKeyReferenceBuilder>, 
     }
 
     /**
-     * ProjectID is the ID of the Project in which the KMS Key Ring exists. Defaults to the VM ProjectID if not set.
+     * projectID is the ID of the Project in which the KMS Key Ring exists. Defaults to the VM ProjectID if not set.
      */
     @JsonProperty("projectID")
     public String getProjectID() {
@@ -149,7 +149,7 @@ public class GCPKMSKeyReference implements Editable<GCPKMSKeyReferenceBuilder>, 
     }
 
     /**
-     * ProjectID is the ID of the Project in which the KMS Key Ring exists. Defaults to the VM ProjectID if not set.
+     * projectID is the ID of the Project in which the KMS Key Ring exists. Defaults to the VM ProjectID if not set.
      */
     @JsonProperty("projectID")
     public void setProjectID(String projectID) {

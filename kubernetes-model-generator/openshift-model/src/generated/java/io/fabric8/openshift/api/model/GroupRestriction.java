@@ -89,7 +89,7 @@ public class GroupRestriction implements Editable<GroupRestrictionBuilder>, Kube
     }
 
     /**
-     * Groups is a list of groups used to match against an individual user's groups. If the user is a member of one of the whitelisted groups, the user is allowed to be bound to a role.
+     * groups is a list of groups used to match against an individual user's groups. If the user is a member of one of the whitelisted groups, the user is allowed to be bound to a role.
      */
     @JsonProperty("groups")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -98,7 +98,7 @@ public class GroupRestriction implements Editable<GroupRestrictionBuilder>, Kube
     }
 
     /**
-     * Groups is a list of groups used to match against an individual user's groups. If the user is a member of one of the whitelisted groups, the user is allowed to be bound to a role.
+     * groups is a list of groups used to match against an individual user's groups. If the user is a member of one of the whitelisted groups, the user is allowed to be bound to a role.
      */
     @JsonProperty("groups")
     public void setGroups(List<String> groups) {

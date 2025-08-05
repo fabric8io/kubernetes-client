@@ -82,7 +82,7 @@ public class TokenRequiredClaim implements Editable<TokenRequiredClaimBuilder>, 
     }
 
     /**
-     * Claim is a name of a required claim. Only claims with string values are supported.
+     * claim is a name of a required claim. Only claims with string values are supported.
      */
     @JsonProperty("claim")
     public String getClaim() {
@@ -90,7 +90,7 @@ public class TokenRequiredClaim implements Editable<TokenRequiredClaimBuilder>, 
     }
 
     /**
-     * Claim is a name of a required claim. Only claims with string values are supported.
+     * claim is a name of a required claim. Only claims with string values are supported.
      */
     @JsonProperty("claim")
     public void setClaim(String claim) {
@@ -98,7 +98,7 @@ public class TokenRequiredClaim implements Editable<TokenRequiredClaimBuilder>, 
     }
 
     /**
-     * RequiredValue is the required value for the claim.
+     * requiredValue is the required value for the claim.
      */
     @JsonProperty("requiredValue")
     public String getRequiredValue() {
@@ -106,7 +106,7 @@ public class TokenRequiredClaim implements Editable<TokenRequiredClaimBuilder>, 
     }
 
     /**
-     * RequiredValue is the required value for the claim.
+     * requiredValue is the required value for the claim.
      */
     @JsonProperty("requiredValue")
     public void setRequiredValue(String requiredValue) {

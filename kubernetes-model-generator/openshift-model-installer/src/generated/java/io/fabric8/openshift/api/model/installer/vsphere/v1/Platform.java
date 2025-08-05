@@ -495,7 +495,7 @@ public class Platform implements Editable<PlatformBuilder>, KubernetesResource
     }
 
     /**
-     * VCenters holds the connection details for services to communicate with vCenter. Currently only a single vCenter is supported.
+     * VCenters holds the connection details for services to communicate with vCenter.
      */
     @JsonProperty("vcenters")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -504,7 +504,7 @@ public class Platform implements Editable<PlatformBuilder>, KubernetesResource
     }
 
     /**
-     * VCenters holds the connection details for services to communicate with vCenter. Currently only a single vCenter is supported.
+     * VCenters holds the connection details for services to communicate with vCenter.
      */
     @JsonProperty("vcenters")
     public void setVcenters(List<VCenter> vcenters) {

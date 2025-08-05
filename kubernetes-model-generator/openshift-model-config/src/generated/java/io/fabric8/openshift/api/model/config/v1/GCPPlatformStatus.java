@@ -43,7 +43,8 @@ import lombok.experimental.Accessors;
     "projectID",
     "region",
     "resourceLabels",
-    "resourceTags"
+    "resourceTags",
+    "serviceEndpoints"
 })
 @ToString
 @EqualsAndHashCode
@@ -82,6 +83,9 @@ public class GCPPlatformStatus implements Editable<GCPPlatformStatusBuilder>, Ku
     @JsonProperty("resourceTags")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<GCPResourceTag> resourceTags = new ArrayList<>();
+    @JsonProperty("serviceEndpoints")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<GCPServiceEndpoint> serviceEndpoints = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -91,13 +95,14 @@ public class GCPPlatformStatus implements Editable<GCPPlatformStatusBuilder>, Ku
     public GCPPlatformStatus() {
     }
 
-    public GCPPlatformStatus(CloudLoadBalancerConfig cloudLoadBalancerConfig, String projectID, String region, List<GCPResourceLabel> resourceLabels, List<GCPResourceTag> resourceTags) {
+    public GCPPlatformStatus(CloudLoadBalancerConfig cloudLoadBalancerConfig, String projectID, String region, List<GCPResourceLabel> resourceLabels, List<GCPResourceTag> resourceTags, List<GCPServiceEndpoint> serviceEndpoints) {
         super();
         this.cloudLoadBalancerConfig = cloudLoadBalancerConfig;
         this.projectID = projectID;
         this.region = region;
         this.resourceLabels = resourceLabels;
         this.resourceTags = resourceTags;
+        this.serviceEndpoints = serviceEndpoints;
     }
 
     /**
@@ -180,6 +185,23 @@ public class GCPPlatformStatus implements Editable<GCPPlatformStatusBuilder>, Ku
     @JsonProperty("resourceTags")
     public void setResourceTags(List<GCPResourceTag> resourceTags) {
         this.resourceTags = resourceTags;
+    }
+
+    /**
+     * serviceEndpoints specifies endpoints that override the default endpoints used when creating clients to interact with GCP services. When not specified, the default endpoint for the GCP region will be used. Only 1 endpoint override is permitted for each GCP service. The maximum number of endpoint overrides allowed is 9.
+     */
+    @JsonProperty("serviceEndpoints")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public List<GCPServiceEndpoint> getServiceEndpoints() {
+        return serviceEndpoints;
+    }
+
+    /**
+     * serviceEndpoints specifies endpoints that override the default endpoints used when creating clients to interact with GCP services. When not specified, the default endpoint for the GCP region will be used. Only 1 endpoint override is permitted for each GCP service. The maximum number of endpoint overrides allowed is 9.
+     */
+    @JsonProperty("serviceEndpoints")
+    public void setServiceEndpoints(List<GCPServiceEndpoint> serviceEndpoints) {
+        this.serviceEndpoints = serviceEndpoints;
     }
 
     @JsonIgnore

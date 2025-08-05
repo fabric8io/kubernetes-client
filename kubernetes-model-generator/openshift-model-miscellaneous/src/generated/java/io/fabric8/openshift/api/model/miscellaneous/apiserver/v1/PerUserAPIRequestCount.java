@@ -146,7 +146,7 @@ public class PerUserAPIRequestCount implements Editable<PerUserAPIRequestCountBu
     }
 
     /**
-     * userName that made the request.
+     * username that made the request.
      */
     @JsonProperty("username")
     public String getUsername() {
@@ -154,7 +154,7 @@ public class PerUserAPIRequestCount implements Editable<PerUserAPIRequestCountBu
     }
 
     /**
-     * userName that made the request.
+     * username that made the request.
      */
     @JsonProperty("username")
     public void setUsername(String username) {

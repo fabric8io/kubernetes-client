@@ -86,7 +86,7 @@ public class StaticIPAMRoutes implements Editable<StaticIPAMRoutesBuilder>, Kube
     }
 
     /**
-     * Destination points the IP route destination
+     * destination points the IP route destination
      */
     @JsonProperty("destination")
     public String getDestination() {
@@ -94,7 +94,7 @@ public class StaticIPAMRoutes implements Editable<StaticIPAMRoutesBuilder>, Kube
     }
 
     /**
-     * Destination points the IP route destination
+     * destination points the IP route destination
      */
     @JsonProperty("destination")
     public void setDestination(String destination) {
@@ -102,7 +102,7 @@ public class StaticIPAMRoutes implements Editable<StaticIPAMRoutesBuilder>, Kube
     }
 
     /**
-     * Gateway is the route's next-hop IP address If unset, a default gateway is assumed (as determined by the CNI plugin).
+     * gateway is the route's next-hop IP address If unset, a default gateway is assumed (as determined by the CNI plugin).
      */
     @JsonProperty("gateway")
     public String getGateway() {
@@ -110,7 +110,7 @@ public class StaticIPAMRoutes implements Editable<StaticIPAMRoutesBuilder>, Kube
     }
 
     /**
-     * Gateway is the route's next-hop IP address If unset, a default gateway is assumed (as determined by the CNI plugin).
+     * gateway is the route's next-hop IP address If unset, a default gateway is assumed (as determined by the CNI plugin).
      */
     @JsonProperty("gateway")
     public void setGateway(String gateway) {

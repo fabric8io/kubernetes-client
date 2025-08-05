@@ -84,7 +84,7 @@ public class NetworkSpec implements Editable<NetworkSpecBuilder>, KubernetesReso
     }
 
     /**
-     * Devices defines the virtual machine's network interfaces.
+     * devices defines the virtual machine's network interfaces.
      */
     @JsonProperty("devices")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -93,7 +93,7 @@ public class NetworkSpec implements Editable<NetworkSpecBuilder>, KubernetesReso
     }
 
     /**
-     * Devices defines the virtual machine's network interfaces.
+     * devices defines the virtual machine's network interfaces.
      */
     @JsonProperty("devices")
     public void setDevices(List<NetworkDeviceSpec> devices) {

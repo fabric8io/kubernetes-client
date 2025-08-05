@@ -90,7 +90,7 @@ public class Upstream implements Editable<UpstreamBuilder>, KubernetesResource
     }
 
     /**
-     * Address must be defined when Type is set to Network. It will be ignored otherwise. It must be a valid ipv4 or ipv6 address.
+     * address must be defined when Type is set to Network. It will be ignored otherwise. It must be a valid ipv4 or ipv6 address.
      */
     @JsonProperty("address")
     public String getAddress() {
@@ -98,7 +98,7 @@ public class Upstream implements Editable<UpstreamBuilder>, KubernetesResource
     }
 
     /**
-     * Address must be defined when Type is set to Network. It will be ignored otherwise. It must be a valid ipv4 or ipv6 address.
+     * address must be defined when Type is set to Network. It will be ignored otherwise. It must be a valid ipv4 or ipv6 address.
      */
     @JsonProperty("address")
     public void setAddress(String address) {
@@ -106,7 +106,7 @@ public class Upstream implements Editable<UpstreamBuilder>, KubernetesResource
     }
 
     /**
-     * Port may be defined when Type is set to Network. It will be ignored otherwise. Port must be between 65535
+     * port may be defined when Type is set to Network. It will be ignored otherwise. Port must be between 65535
      */
     @JsonProperty("port")
     public Long getPort() {
@@ -114,7 +114,7 @@ public class Upstream implements Editable<UpstreamBuilder>, KubernetesResource
     }
 
     /**
-     * Port may be defined when Type is set to Network. It will be ignored otherwise. Port must be between 65535
+     * port may be defined when Type is set to Network. It will be ignored otherwise. Port must be between 65535
      */
     @JsonProperty("port")
     public void setPort(Long port) {
@@ -122,7 +122,7 @@ public class Upstream implements Editable<UpstreamBuilder>, KubernetesResource
     }
 
     /**
-     * Type defines whether this upstream contains an IP/IP:port resolver or the local /etc/resolv.conf. Type accepts 2 possible values: SystemResolvConf or Network.<br><p> <br><p> &#42; When SystemResolvConf is used, the Upstream structure does not require any further fields to be defined:<br><p>   /etc/resolv.conf will be used<br><p> &#42; When Network is used, the Upstream structure must contain at least an Address
+     * type defines whether this upstream contains an IP/IP:port resolver or the local /etc/resolv.conf. Type accepts 2 possible values: SystemResolvConf or Network.<br><p> <br><p> &#42; When SystemResolvConf is used, the Upstream structure does not require any further fields to be defined:<br><p>   /etc/resolv.conf will be used<br><p> &#42; When Network is used, the Upstream structure must contain at least an Address
      */
     @JsonProperty("type")
     public String getType() {
@@ -130,7 +130,7 @@ public class Upstream implements Editable<UpstreamBuilder>, KubernetesResource
     }
 
     /**
-     * Type defines whether this upstream contains an IP/IP:port resolver or the local /etc/resolv.conf. Type accepts 2 possible values: SystemResolvConf or Network.<br><p> <br><p> &#42; When SystemResolvConf is used, the Upstream structure does not require any further fields to be defined:<br><p>   /etc/resolv.conf will be used<br><p> &#42; When Network is used, the Upstream structure must contain at least an Address
+     * type defines whether this upstream contains an IP/IP:port resolver or the local /etc/resolv.conf. Type accepts 2 possible values: SystemResolvConf or Network.<br><p> <br><p> &#42; When SystemResolvConf is used, the Upstream structure does not require any further fields to be defined:<br><p>   /etc/resolv.conf will be used<br><p> &#42; When Network is used, the Upstream structure must contain at least an Address
      */
     @JsonProperty("type")
     public void setType(String type) {

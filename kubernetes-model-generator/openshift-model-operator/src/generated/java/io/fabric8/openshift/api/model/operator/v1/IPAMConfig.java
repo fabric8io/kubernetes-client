@@ -102,7 +102,7 @@ public class IPAMConfig implements Editable<IPAMConfigBuilder>, KubernetesResour
     }
 
     /**
-     * Type is the type of IPAM module will be used for IP Address Management(IPAM). The supported values are IPAMTypeDHCP, IPAMTypeStatic
+     * type is the type of IPAM module will be used for IP Address Management(IPAM). The supported values are IPAMTypeDHCP, IPAMTypeStatic
      */
     @JsonProperty("type")
     public String getType() {
@@ -110,7 +110,7 @@ public class IPAMConfig implements Editable<IPAMConfigBuilder>, KubernetesResour
     }
 
     /**
-     * Type is the type of IPAM module will be used for IP Address Management(IPAM). The supported values are IPAMTypeDHCP, IPAMTypeStatic
+     * type is the type of IPAM module will be used for IP Address Management(IPAM). The supported values are IPAMTypeDHCP, IPAMTypeStatic
      */
     @JsonProperty("type")
     public void setType(String type) {

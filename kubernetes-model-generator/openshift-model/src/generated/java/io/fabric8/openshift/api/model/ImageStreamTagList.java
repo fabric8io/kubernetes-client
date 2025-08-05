@@ -123,7 +123,7 @@ public class ImageStreamTagList implements Editable<ImageStreamTagListBuilder>, 
     }
 
     /**
-     * Items is the list of image stream tags
+     * items is the list of image stream tags
      */
     @JsonProperty("items")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -132,7 +132,7 @@ public class ImageStreamTagList implements Editable<ImageStreamTagListBuilder>, 
     }
 
     /**
-     * Items is the list of image stream tags
+     * items is the list of image stream tags
      */
     @JsonProperty("items")
     public void setItems(List<io.fabric8.openshift.api.model.ImageStreamTag> items) {

@@ -302,7 +302,7 @@ public class OVNKubernetesConfig implements Editable<OVNKubernetesConfigBuilder>
     }
 
     /**
-     * v6InternalSubnet is a v6 subnet used internally by ovn-kubernetes in case the default one is being already used by something else. It must not overlap with any other subnet being used by OpenShift or by the node network. The size of the subnet must be larger than the number of nodes. The value cannot be changed after installation. Default is fd98::/48
+     * v6InternalSubnet is a v6 subnet used internally by ovn-kubernetes in case the default one is being already used by something else. It must not overlap with any other subnet being used by OpenShift or by the node network. The size of the subnet must be larger than the number of nodes. The value cannot be changed after installation. Default is fd98::/64
      */
     @JsonProperty("v6InternalSubnet")
     public String getV6InternalSubnet() {
@@ -310,7 +310,7 @@ public class OVNKubernetesConfig implements Editable<OVNKubernetesConfigBuilder>
     }
 
     /**
-     * v6InternalSubnet is a v6 subnet used internally by ovn-kubernetes in case the default one is being already used by something else. It must not overlap with any other subnet being used by OpenShift or by the node network. The size of the subnet must be larger than the number of nodes. The value cannot be changed after installation. Default is fd98::/48
+     * v6InternalSubnet is a v6 subnet used internally by ovn-kubernetes in case the default one is being already used by something else. It must not overlap with any other subnet being used by OpenShift or by the node network. The size of the subnet must be larger than the number of nodes. The value cannot be changed after installation. Default is fd98::/64
      */
     @JsonProperty("v6InternalSubnet")
     public void setV6InternalSubnet(String v6InternalSubnet) {

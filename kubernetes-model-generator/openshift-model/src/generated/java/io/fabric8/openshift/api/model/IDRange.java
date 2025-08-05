@@ -85,7 +85,7 @@ public class IDRange implements Editable<IDRangeBuilder>, KubernetesResource
     }
 
     /**
-     * Max is the end of the range, inclusive.
+     * max is the end of the range, inclusive.
      */
     @JsonProperty("max")
     public Long getMax() {
@@ -93,7 +93,7 @@ public class IDRange implements Editable<IDRangeBuilder>, KubernetesResource
     }
 
     /**
-     * Max is the end of the range, inclusive.
+     * max is the end of the range, inclusive.
      */
     @JsonProperty("max")
     public void setMax(Long max) {
@@ -101,7 +101,7 @@ public class IDRange implements Editable<IDRangeBuilder>, KubernetesResource
     }
 
     /**
-     * Min is the start of the range, inclusive.
+     * min is the start of the range, inclusive.
      */
     @JsonProperty("min")
     public Long getMin() {
@@ -109,7 +109,7 @@ public class IDRange implements Editable<IDRangeBuilder>, KubernetesResource
     }
 
     /**
-     * Min is the start of the range, inclusive.
+     * min is the start of the range, inclusive.
      */
     @JsonProperty("min")
     public void setMin(Long min) {

@@ -85,7 +85,7 @@ public class CertInfo implements Editable<CertInfoBuilder>, KubernetesResource
     }
 
     /**
-     * CertFile is a file containing a PEM-encoded certificate
+     * certFile is a file containing a PEM-encoded certificate
      */
     @JsonProperty("certFile")
     public String getCertFile() {
@@ -93,7 +93,7 @@ public class CertInfo implements Editable<CertInfoBuilder>, KubernetesResource
     }
 
     /**
-     * CertFile is a file containing a PEM-encoded certificate
+     * certFile is a file containing a PEM-encoded certificate
      */
     @JsonProperty("certFile")
     public void setCertFile(String certFile) {
@@ -101,7 +101,7 @@ public class CertInfo implements Editable<CertInfoBuilder>, KubernetesResource
     }
 
     /**
-     * KeyFile is a file containing a PEM-encoded private key for the certificate specified by CertFile
+     * keyFile is a file containing a PEM-encoded private key for the certificate specified by CertFile
      */
     @JsonProperty("keyFile")
     public String getKeyFile() {
@@ -109,7 +109,7 @@ public class CertInfo implements Editable<CertInfoBuilder>, KubernetesResource
     }
 
     /**
-     * KeyFile is a file containing a PEM-encoded private key for the certificate specified by CertFile
+     * keyFile is a file containing a PEM-encoded private key for the certificate specified by CertFile
      */
     @JsonProperty("keyFile")
     public void setKeyFile(String keyFile) {

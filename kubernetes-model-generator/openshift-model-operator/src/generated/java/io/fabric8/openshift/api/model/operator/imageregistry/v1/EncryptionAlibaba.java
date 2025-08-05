@@ -102,7 +102,7 @@ public class EncryptionAlibaba implements Editable<EncryptionAlibabaBuilder>, Ku
     }
 
     /**
-     * Method defines the different encrytion modes available Empty value means no opinion and the platform chooses the a default, which is subject to change over time. Currently the default is `AES256`.
+     * method defines the different encrytion modes available Empty value means no opinion and the platform chooses the a default, which is subject to change over time. Currently the default is `AES256`.
      */
     @JsonProperty("method")
     public String getMethod() {
@@ -110,7 +110,7 @@ public class EncryptionAlibaba implements Editable<EncryptionAlibabaBuilder>, Ku
     }
 
     /**
-     * Method defines the different encrytion modes available Empty value means no opinion and the platform chooses the a default, which is subject to change over time. Currently the default is `AES256`.
+     * method defines the different encrytion modes available Empty value means no opinion and the platform chooses the a default, which is subject to change over time. Currently the default is `AES256`.
      */
     @JsonProperty("method")
     public void setMethod(String method) {

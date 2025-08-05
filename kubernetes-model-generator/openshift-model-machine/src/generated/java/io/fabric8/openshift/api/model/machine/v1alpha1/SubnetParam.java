@@ -104,7 +104,7 @@ public class SubnetParam implements Editable<SubnetParamBuilder>, KubernetesReso
     }
 
     /**
-     * PortSecurity optionally enables or disables security on ports managed by OpenStack
+     * portSecurity optionally enables or disables security on ports managed by OpenStack Deprecated: portSecurity is silently ignored. Set portSecurity on the parent network instead.
      */
     @JsonProperty("portSecurity")
     public Boolean getPortSecurity() {
@@ -112,7 +112,7 @@ public class SubnetParam implements Editable<SubnetParamBuilder>, KubernetesReso
     }
 
     /**
-     * PortSecurity optionally enables or disables security on ports managed by OpenStack
+     * portSecurity optionally enables or disables security on ports managed by OpenStack Deprecated: portSecurity is silently ignored. Set portSecurity on the parent network instead.
      */
     @JsonProperty("portSecurity")
     public void setPortSecurity(Boolean portSecurity) {
@@ -120,7 +120,7 @@ public class SubnetParam implements Editable<SubnetParamBuilder>, KubernetesReso
     }
 
     /**
-     * PortTags are tags that are added to ports created on this subnet
+     * portTags are tags that are added to ports created on this subnet
      */
     @JsonProperty("portTags")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -129,7 +129,7 @@ public class SubnetParam implements Editable<SubnetParamBuilder>, KubernetesReso
     }
 
     /**
-     * PortTags are tags that are added to ports created on this subnet
+     * portTags are tags that are added to ports created on this subnet
      */
     @JsonProperty("portTags")
     public void setPortTags(List<String> portTags) {

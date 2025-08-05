@@ -309,7 +309,7 @@ public class PortOpts implements Editable<PortOptsBuilder>, KubernetesResource
     }
 
     /**
-     * projectID specifies the project ID of the created port. Note that this requires OpenShift to have administrative permissions, which is typically not the case. Use of this field is not recommended.
+     * projectID specifies the project ID of the created port. Note that this requires OpenShift to have administrative permissions, which is typically not the case. Use of this field is not recommended. Deprecated: projectID is silently ignored.
      */
     @JsonProperty("projectID")
     public String getProjectID() {
@@ -317,7 +317,7 @@ public class PortOpts implements Editable<PortOptsBuilder>, KubernetesResource
     }
 
     /**
-     * projectID specifies the project ID of the created port. Note that this requires OpenShift to have administrative permissions, which is typically not the case. Use of this field is not recommended.
+     * projectID specifies the project ID of the created port. Note that this requires OpenShift to have administrative permissions, which is typically not the case. Use of this field is not recommended. Deprecated: projectID is silently ignored.
      */
     @JsonProperty("projectID")
     public void setProjectID(String projectID) {
@@ -359,7 +359,7 @@ public class PortOpts implements Editable<PortOptsBuilder>, KubernetesResource
     }
 
     /**
-     * tenantID specifies the tenant ID of the created port. Note that this requires OpenShift to have administrative permissions, which is typically not the case. Use of this field is not recommended. Deprecated: use projectID instead. It will be ignored if projectID is set.
+     * tenantID specifies the tenant ID of the created port. Note that this requires OpenShift to have administrative permissions, which is typically not the case. Use of this field is not recommended. Deprecated: tenantID is silently ignored.
      */
     @JsonProperty("tenantID")
     public String getTenantID() {
@@ -367,7 +367,7 @@ public class PortOpts implements Editable<PortOptsBuilder>, KubernetesResource
     }
 
     /**
-     * tenantID specifies the tenant ID of the created port. Note that this requires OpenShift to have administrative permissions, which is typically not the case. Use of this field is not recommended. Deprecated: use projectID instead. It will be ignored if projectID is set.
+     * tenantID specifies the tenant ID of the created port. Note that this requires OpenShift to have administrative permissions, which is typically not the case. Use of this field is not recommended. Deprecated: tenantID is silently ignored.
      */
     @JsonProperty("tenantID")
     public void setTenantID(String tenantID) {

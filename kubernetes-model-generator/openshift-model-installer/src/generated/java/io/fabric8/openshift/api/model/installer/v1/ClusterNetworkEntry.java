@@ -106,7 +106,7 @@ public class ClusterNetworkEntry implements Editable<ClusterNetworkEntryBuilder>
     }
 
     /**
-     * HostPrefix is the prefix size to allocate to each node from the CIDR. For example, 24 would allocate 2^8=256 adresses to each node. If this field is not used by the plugin, it can be left unset.
+     * HostPrefix is the prefix size to allocate to each node from the CIDR. For example, 24 would allocate 2^8=256 adresses to each node. If this field is not used by the plugin, it can be left unset. When multiple CIDRs of the same family (i.e. IPv4/IPv6) are present, their HostPrefix value must be the same.
      */
     @JsonProperty("hostPrefix")
     public Integer getHostPrefix() {
@@ -114,7 +114,7 @@ public class ClusterNetworkEntry implements Editable<ClusterNetworkEntryBuilder>
     }
 
     /**
-     * HostPrefix is the prefix size to allocate to each node from the CIDR. For example, 24 would allocate 2^8=256 adresses to each node. If this field is not used by the plugin, it can be left unset.
+     * HostPrefix is the prefix size to allocate to each node from the CIDR. For example, 24 would allocate 2^8=256 adresses to each node. If this field is not used by the plugin, it can be left unset. When multiple CIDRs of the same family (i.e. IPv4/IPv6) are present, their HostPrefix value must be the same.
      */
     @JsonProperty("hostPrefix")
     public void setHostPrefix(Integer hostPrefix) {

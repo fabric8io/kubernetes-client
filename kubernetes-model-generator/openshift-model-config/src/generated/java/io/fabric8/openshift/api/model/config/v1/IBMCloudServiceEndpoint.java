@@ -101,7 +101,7 @@ public class IBMCloudServiceEndpoint implements Editable<IBMCloudServiceEndpoint
     }
 
     /**
-     * url is fully qualified URI with scheme https, that overrides the default generated endpoint for a client. This must be provided and cannot be empty.
+     * url is fully qualified URI with scheme https, that overrides the default generated endpoint for a client. This must be provided and cannot be empty. The path must follow the pattern /v[0,9]+ or /api/v[0,9]+
      */
     @JsonProperty("url")
     public String getUrl() {
@@ -109,7 +109,7 @@ public class IBMCloudServiceEndpoint implements Editable<IBMCloudServiceEndpoint
     }
 
     /**
-     * url is fully qualified URI with scheme https, that overrides the default generated endpoint for a client. This must be provided and cannot be empty.
+     * url is fully qualified URI with scheme https, that overrides the default generated endpoint for a client. This must be provided and cannot be empty. The path must follow the pattern /v[0,9]+ or /api/v[0,9]+
      */
     @JsonProperty("url")
     public void setUrl(String url) {

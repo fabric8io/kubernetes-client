@@ -88,7 +88,7 @@ public class GCPServiceAccount implements Editable<GCPServiceAccountBuilder>, Ku
     }
 
     /**
-     * Email is the service account email.
+     * email is the service account email.
      */
     @JsonProperty("email")
     public String getEmail() {
@@ -96,7 +96,7 @@ public class GCPServiceAccount implements Editable<GCPServiceAccountBuilder>, Ku
     }
 
     /**
-     * Email is the service account email.
+     * email is the service account email.
      */
     @JsonProperty("email")
     public void setEmail(String email) {
@@ -104,7 +104,7 @@ public class GCPServiceAccount implements Editable<GCPServiceAccountBuilder>, Ku
     }
 
     /**
-     * Scopes list of scopes to be assigned to the service account.
+     * scopes list of scopes to be assigned to the service account.
      */
     @JsonProperty("scopes")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -113,7 +113,7 @@ public class GCPServiceAccount implements Editable<GCPServiceAccountBuilder>, Ku
     }
 
     /**
-     * Scopes list of scopes to be assigned to the service account.
+     * scopes list of scopes to be assigned to the service account.
      */
     @JsonProperty("scopes")
     public void setScopes(List<String> scopes) {

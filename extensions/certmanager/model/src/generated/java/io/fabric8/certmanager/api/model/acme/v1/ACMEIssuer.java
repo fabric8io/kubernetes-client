@@ -48,6 +48,7 @@ import lombok.experimental.Accessors;
     "externalAccountBinding",
     "preferredChain",
     "privateKeySecretRef",
+    "profile",
     "server",
     "skipTLSVerify",
     "solvers"
@@ -91,6 +92,8 @@ public class ACMEIssuer implements Editable<ACMEIssuerBuilder>, KubernetesResour
     private String preferredChain;
     @JsonProperty("privateKeySecretRef")
     private SecretKeySelector privateKeySecretRef;
+    @JsonProperty("profile")
+    private String profile;
     @JsonProperty("server")
     private String server;
     @JsonProperty("skipTLSVerify")
@@ -107,7 +110,7 @@ public class ACMEIssuer implements Editable<ACMEIssuerBuilder>, KubernetesResour
     public ACMEIssuer() {
     }
 
-    public ACMEIssuer(String caBundle, Boolean disableAccountKeyGeneration, String email, Boolean enableDurationFeature, ACMEExternalAccountBinding externalAccountBinding, String preferredChain, SecretKeySelector privateKeySecretRef, String server, Boolean skipTLSVerify, List<ACMEChallengeSolver> solvers) {
+    public ACMEIssuer(String caBundle, Boolean disableAccountKeyGeneration, String email, Boolean enableDurationFeature, ACMEExternalAccountBinding externalAccountBinding, String preferredChain, SecretKeySelector privateKeySecretRef, String profile, String server, Boolean skipTLSVerify, List<ACMEChallengeSolver> solvers) {
         super();
         this.caBundle = caBundle;
         this.disableAccountKeyGeneration = disableAccountKeyGeneration;
@@ -116,6 +119,7 @@ public class ACMEIssuer implements Editable<ACMEIssuerBuilder>, KubernetesResour
         this.externalAccountBinding = externalAccountBinding;
         this.preferredChain = preferredChain;
         this.privateKeySecretRef = privateKeySecretRef;
+        this.profile = profile;
         this.server = server;
         this.skipTLSVerify = skipTLSVerify;
         this.solvers = solvers;
@@ -202,7 +206,7 @@ public class ACMEIssuer implements Editable<ACMEIssuerBuilder>, KubernetesResour
     }
 
     /**
-     * PreferredChain is the chain to use if the ACME server outputs multiple. PreferredChain is no guarantee that this one gets delivered by the ACME endpoint. For example, for Let's Encrypt's DST crosssign you would use: "DST Root CA X3" or "ISRG Root X1" for the newer Let's Encrypt root CA. This value picks the first certificate bundle in the combined set of ACME default and alternative chains that has a root-most certificate with this value as its issuer's commonname.
+     * PreferredChain is the chain to use if the ACME server outputs multiple. PreferredChain is no guarantee that this one gets delivered by the ACME endpoint. For example, for Let's Encrypt's DST cross-sign you would use: "DST Root CA X3" or "ISRG Root X1" for the newer Let's Encrypt root CA. This value picks the first certificate bundle in the combined set of ACME default and alternative chains that has a root-most certificate with this value as its issuer's commonname.
      */
     @JsonProperty("preferredChain")
     public String getPreferredChain() {
@@ -210,7 +214,7 @@ public class ACMEIssuer implements Editable<ACMEIssuerBuilder>, KubernetesResour
     }
 
     /**
-     * PreferredChain is the chain to use if the ACME server outputs multiple. PreferredChain is no guarantee that this one gets delivered by the ACME endpoint. For example, for Let's Encrypt's DST crosssign you would use: "DST Root CA X3" or "ISRG Root X1" for the newer Let's Encrypt root CA. This value picks the first certificate bundle in the combined set of ACME default and alternative chains that has a root-most certificate with this value as its issuer's commonname.
+     * PreferredChain is the chain to use if the ACME server outputs multiple. PreferredChain is no guarantee that this one gets delivered by the ACME endpoint. For example, for Let's Encrypt's DST cross-sign you would use: "DST Root CA X3" or "ISRG Root X1" for the newer Let's Encrypt root CA. This value picks the first certificate bundle in the combined set of ACME default and alternative chains that has a root-most certificate with this value as its issuer's commonname.
      */
     @JsonProperty("preferredChain")
     public void setPreferredChain(String preferredChain) {
@@ -231,6 +235,22 @@ public class ACMEIssuer implements Editable<ACMEIssuerBuilder>, KubernetesResour
     @JsonProperty("privateKeySecretRef")
     public void setPrivateKeySecretRef(SecretKeySelector privateKeySecretRef) {
         this.privateKeySecretRef = privateKeySecretRef;
+    }
+
+    /**
+     * Profile allows requesting a certificate profile from the ACME server. Supported profiles are listed by the server's ACME directory URL.
+     */
+    @JsonProperty("profile")
+    public String getProfile() {
+        return profile;
+    }
+
+    /**
+     * Profile allows requesting a certificate profile from the ACME server. Supported profiles are listed by the server's ACME directory URL.
+     */
+    @JsonProperty("profile")
+    public void setProfile(String profile) {
+        this.profile = profile;
     }
 
     /**

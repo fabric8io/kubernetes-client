@@ -50,6 +50,7 @@ import lombok.experimental.Accessors;
     "metadata",
     "additionalTrustBundle",
     "additionalTrustBundlePolicy",
+    "arbiter",
     "baseDomain",
     "bootstrapInPlace",
     "capabilities",
@@ -106,6 +107,8 @@ public class InstallConfig implements Editable<InstallConfigBuilder>, HasMetadat
     private String additionalTrustBundlePolicy;
     @JsonProperty("apiVersion")
     private String apiVersion = "install.openshift.io/v1";
+    @JsonProperty("arbiter")
+    private MachinePool arbiter;
     @JsonProperty("baseDomain")
     private String baseDomain;
     @JsonProperty("bootstrapInPlace")
@@ -161,11 +164,12 @@ public class InstallConfig implements Editable<InstallConfigBuilder>, HasMetadat
     public InstallConfig() {
     }
 
-    public InstallConfig(String additionalTrustBundle, String additionalTrustBundlePolicy, String apiVersion, String baseDomain, BootstrapInPlace bootstrapInPlace, Capabilities capabilities, List<MachinePool> compute, MachinePool controlPlane, String cpuPartitioningMode, String credentialsMode, List<String> featureGates, String featureSet, Boolean fips, List<ImageContentSource> imageContentSources, List<ImageDigestSource> imageDigestSources, String kind, ObjectMeta metadata, Networking networking, OperatorPublishingStrategy operatorPublishingStrategy, Platform platform, Proxy proxy, String publish, String pullSecret, String sshKey) {
+    public InstallConfig(String additionalTrustBundle, String additionalTrustBundlePolicy, String apiVersion, MachinePool arbiter, String baseDomain, BootstrapInPlace bootstrapInPlace, Capabilities capabilities, List<MachinePool> compute, MachinePool controlPlane, String cpuPartitioningMode, String credentialsMode, List<String> featureGates, String featureSet, Boolean fips, List<ImageContentSource> imageContentSources, List<ImageDigestSource> imageDigestSources, String kind, ObjectMeta metadata, Networking networking, OperatorPublishingStrategy operatorPublishingStrategy, Platform platform, Proxy proxy, String publish, String pullSecret, String sshKey) {
         super();
         this.additionalTrustBundle = additionalTrustBundle;
         this.additionalTrustBundlePolicy = additionalTrustBundlePolicy;
         this.apiVersion = apiVersion;
+        this.arbiter = arbiter;
         this.baseDomain = baseDomain;
         this.bootstrapInPlace = bootstrapInPlace;
         this.capabilities = capabilities;
@@ -235,6 +239,22 @@ public class InstallConfig implements Editable<InstallConfigBuilder>, HasMetadat
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
         this.apiVersion = apiVersion;
+    }
+
+    /**
+     * InstallConfig is the configuration for an OpenShift install.
+     */
+    @JsonProperty("arbiter")
+    public MachinePool getArbiter() {
+        return arbiter;
+    }
+
+    /**
+     * InstallConfig is the configuration for an OpenShift install.
+     */
+    @JsonProperty("arbiter")
+    public void setArbiter(MachinePool arbiter) {
+        this.arbiter = arbiter;
     }
 
     /**

@@ -131,7 +131,7 @@ public class Identity implements Editable<IdentityBuilder>, HasMetadata
     }
 
     /**
-     * Extra holds extra information about this identity
+     * extra holds extra information about this identity
      */
     @JsonProperty("extra")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -140,7 +140,7 @@ public class Identity implements Editable<IdentityBuilder>, HasMetadata
     }
 
     /**
-     * Extra holds extra information about this identity
+     * extra holds extra information about this identity
      */
     @JsonProperty("extra")
     public void setExtra(Map<String, String> extra) {
@@ -180,7 +180,7 @@ public class Identity implements Editable<IdentityBuilder>, HasMetadata
     }
 
     /**
-     * ProviderName is the source of identity information
+     * providerName is the source of identity information
      */
     @JsonProperty("providerName")
     public String getProviderName() {
@@ -188,7 +188,7 @@ public class Identity implements Editable<IdentityBuilder>, HasMetadata
     }
 
     /**
-     * ProviderName is the source of identity information
+     * providerName is the source of identity information
      */
     @JsonProperty("providerName")
     public void setProviderName(String providerName) {
@@ -196,7 +196,7 @@ public class Identity implements Editable<IdentityBuilder>, HasMetadata
     }
 
     /**
-     * ProviderUserName uniquely represents this identity in the scope of the provider
+     * providerUserName uniquely represents this identity in the scope of the provider
      */
     @JsonProperty("providerUserName")
     public String getProviderUserName() {
@@ -204,7 +204,7 @@ public class Identity implements Editable<IdentityBuilder>, HasMetadata
     }
 
     /**
-     * ProviderUserName uniquely represents this identity in the scope of the provider
+     * providerUserName uniquely represents this identity in the scope of the provider
      */
     @JsonProperty("providerUserName")
     public void setProviderUserName(String providerUserName) {

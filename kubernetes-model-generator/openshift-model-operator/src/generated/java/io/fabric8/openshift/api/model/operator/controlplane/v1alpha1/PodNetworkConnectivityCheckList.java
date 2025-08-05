@@ -124,7 +124,7 @@ public class PodNetworkConnectivityCheckList implements Editable<PodNetworkConne
     }
 
     /**
-     * Items contains the items
+     * items contains the items
      */
     @JsonProperty("items")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -133,7 +133,7 @@ public class PodNetworkConnectivityCheckList implements Editable<PodNetworkConne
     }
 
     /**
-     * Items contains the items
+     * items contains the items
      */
     @JsonProperty("items")
     public void setItems(List<io.fabric8.openshift.api.model.operator.controlplane.v1alpha1.PodNetworkConnectivityCheck> items) {

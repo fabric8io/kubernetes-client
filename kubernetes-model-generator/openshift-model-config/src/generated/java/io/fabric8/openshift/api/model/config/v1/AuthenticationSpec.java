@@ -112,7 +112,7 @@ public class AuthenticationSpec implements Editable<AuthenticationSpecBuilder>, 
     }
 
     /**
-     * OIDCProviders are OIDC identity providers that can issue tokens for this cluster Can only be set if "Type" is set to "OIDC".<br><p> <br><p> At most one provider can be configured.
+     * oidcProviders are OIDC identity providers that can issue tokens for this cluster Can only be set if "Type" is set to "OIDC".<br><p> <br><p> At most one provider can be configured.
      */
     @JsonProperty("oidcProviders")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -121,7 +121,7 @@ public class AuthenticationSpec implements Editable<AuthenticationSpecBuilder>, 
     }
 
     /**
-     * OIDCProviders are OIDC identity providers that can issue tokens for this cluster Can only be set if "Type" is set to "OIDC".<br><p> <br><p> At most one provider can be configured.
+     * oidcProviders are OIDC identity providers that can issue tokens for this cluster Can only be set if "Type" is set to "OIDC".<br><p> <br><p> At most one provider can be configured.
      */
     @JsonProperty("oidcProviders")
     public void setOidcProviders(List<OIDCProvider> oidcProviders) {
