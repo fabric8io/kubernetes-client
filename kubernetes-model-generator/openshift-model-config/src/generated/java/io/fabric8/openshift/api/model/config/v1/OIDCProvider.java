@@ -108,7 +108,7 @@ public class OIDCProvider implements Editable<OIDCProviderBuilder>, KubernetesRe
     }
 
     /**
-     * ClaimValidationRules are rules that are applied to validate token claims to authenticate users.
+     * claimValidationRules are rules that are applied to validate token claims to authenticate users.
      */
     @JsonProperty("claimValidationRules")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -117,7 +117,7 @@ public class OIDCProvider implements Editable<OIDCProviderBuilder>, KubernetesRe
     }
 
     /**
-     * ClaimValidationRules are rules that are applied to validate token claims to authenticate users.
+     * claimValidationRules are rules that are applied to validate token claims to authenticate users.
      */
     @JsonProperty("claimValidationRules")
     public void setClaimValidationRules(List<TokenClaimValidationRule> claimValidationRules) {
@@ -135,7 +135,7 @@ public class OIDCProvider implements Editable<OIDCProviderBuilder>, KubernetesRe
     }
 
     /**
-     * Name of the OIDC provider
+     * name of the OIDC provider
      */
     @JsonProperty("name")
     public String getName() {
@@ -143,7 +143,7 @@ public class OIDCProvider implements Editable<OIDCProviderBuilder>, KubernetesRe
     }
 
     /**
-     * Name of the OIDC provider
+     * name of the OIDC provider
      */
     @JsonProperty("name")
     public void setName(String name) {
@@ -151,7 +151,7 @@ public class OIDCProvider implements Editable<OIDCProviderBuilder>, KubernetesRe
     }
 
     /**
-     * OIDCClients contains configuration for the platform's clients that need to request tokens from the issuer
+     * oidcClients contains configuration for the platform's clients that need to request tokens from the issuer
      */
     @JsonProperty("oidcClients")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -160,7 +160,7 @@ public class OIDCProvider implements Editable<OIDCProviderBuilder>, KubernetesRe
     }
 
     /**
-     * OIDCClients contains configuration for the platform's clients that need to request tokens from the issuer
+     * oidcClients contains configuration for the platform's clients that need to request tokens from the issuer
      */
     @JsonProperty("oidcClients")
     public void setOidcClients(List<OIDCClientConfig> oidcClients) {

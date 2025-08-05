@@ -123,7 +123,7 @@ public class RoleList implements Editable<RoleListBuilder>, KubernetesResource, 
     }
 
     /**
-     * Items is a list of Roles
+     * items is a list of Roles
      */
     @JsonProperty("items")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -132,7 +132,7 @@ public class RoleList implements Editable<RoleListBuilder>, KubernetesResource, 
     }
 
     /**
-     * Items is a list of Roles
+     * items is a list of Roles
      */
     @JsonProperty("items")
     public void setItems(List<io.fabric8.openshift.api.model.Role> items) {

@@ -165,7 +165,7 @@ public class BuildStatus implements Editable<BuildStatusBuilder>, KubernetesReso
     }
 
     /**
-     * Conditions represents the latest available observations of a build's current state.
+     * conditions represents the latest available observations of a build's current state.
      */
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -174,7 +174,7 @@ public class BuildStatus implements Editable<BuildStatusBuilder>, KubernetesReso
     }
 
     /**
-     * Conditions represents the latest available observations of a build's current state.
+     * conditions represents the latest available observations of a build's current state.
      */
     @JsonProperty("conditions")
     public void setConditions(List<BuildCondition> conditions) {

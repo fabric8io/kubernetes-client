@@ -101,7 +101,7 @@ public class ImageManifest implements Editable<ImageManifestBuilder>, Kubernetes
     }
 
     /**
-     * Architecture specifies the supported CPU architecture, for example `amd64` or `ppc64le`.
+     * architecture specifies the supported CPU architecture, for example `amd64` or `ppc64le`.
      */
     @JsonProperty("architecture")
     public String getArchitecture() {
@@ -109,7 +109,7 @@ public class ImageManifest implements Editable<ImageManifestBuilder>, Kubernetes
     }
 
     /**
-     * Architecture specifies the supported CPU architecture, for example `amd64` or `ppc64le`.
+     * architecture specifies the supported CPU architecture, for example `amd64` or `ppc64le`.
      */
     @JsonProperty("architecture")
     public void setArchitecture(String architecture) {
@@ -117,7 +117,7 @@ public class ImageManifest implements Editable<ImageManifestBuilder>, Kubernetes
     }
 
     /**
-     * Digest is the unique identifier for the manifest. It refers to an Image object.
+     * digest is the unique identifier for the manifest. It refers to an Image object.
      */
     @JsonProperty("digest")
     public String getDigest() {
@@ -125,7 +125,7 @@ public class ImageManifest implements Editable<ImageManifestBuilder>, Kubernetes
     }
 
     /**
-     * Digest is the unique identifier for the manifest. It refers to an Image object.
+     * digest is the unique identifier for the manifest. It refers to an Image object.
      */
     @JsonProperty("digest")
     public void setDigest(String digest) {
@@ -133,7 +133,7 @@ public class ImageManifest implements Editable<ImageManifestBuilder>, Kubernetes
     }
 
     /**
-     * ManifestSize represents the size of the raw object contents, in bytes.
+     * manifestSize represents the size of the raw object contents, in bytes.
      */
     @JsonProperty("manifestSize")
     public Long getManifestSize() {
@@ -141,7 +141,7 @@ public class ImageManifest implements Editable<ImageManifestBuilder>, Kubernetes
     }
 
     /**
-     * ManifestSize represents the size of the raw object contents, in bytes.
+     * manifestSize represents the size of the raw object contents, in bytes.
      */
     @JsonProperty("manifestSize")
     public void setManifestSize(Long manifestSize) {
@@ -149,7 +149,7 @@ public class ImageManifest implements Editable<ImageManifestBuilder>, Kubernetes
     }
 
     /**
-     * MediaType defines the type of the manifest, possible values are application/vnd.oci.image.manifest.v1+json, application/vnd.docker.distribution.manifest.v2+json or application/vnd.docker.distribution.manifest.v1+json.
+     * mediaType defines the type of the manifest, possible values are application/vnd.oci.image.manifest.v1+json, application/vnd.docker.distribution.manifest.v2+json or application/vnd.docker.distribution.manifest.v1+json.
      */
     @JsonProperty("mediaType")
     public String getMediaType() {
@@ -157,7 +157,7 @@ public class ImageManifest implements Editable<ImageManifestBuilder>, Kubernetes
     }
 
     /**
-     * MediaType defines the type of the manifest, possible values are application/vnd.oci.image.manifest.v1+json, application/vnd.docker.distribution.manifest.v2+json or application/vnd.docker.distribution.manifest.v1+json.
+     * mediaType defines the type of the manifest, possible values are application/vnd.oci.image.manifest.v1+json, application/vnd.docker.distribution.manifest.v2+json or application/vnd.docker.distribution.manifest.v1+json.
      */
     @JsonProperty("mediaType")
     public void setMediaType(String mediaType) {
@@ -165,7 +165,7 @@ public class ImageManifest implements Editable<ImageManifestBuilder>, Kubernetes
     }
 
     /**
-     * OS specifies the operating system, for example `linux`.
+     * os specifies the operating system, for example `linux`.
      */
     @JsonProperty("os")
     public String getOs() {
@@ -173,7 +173,7 @@ public class ImageManifest implements Editable<ImageManifestBuilder>, Kubernetes
     }
 
     /**
-     * OS specifies the operating system, for example `linux`.
+     * os specifies the operating system, for example `linux`.
      */
     @JsonProperty("os")
     public void setOs(String os) {
@@ -181,7 +181,7 @@ public class ImageManifest implements Editable<ImageManifestBuilder>, Kubernetes
     }
 
     /**
-     * Variant is an optional field repreenting a variant of the CPU, for example v6 to specify a particular CPU variant of the ARM CPU.
+     * variant is an optional field repreenting a variant of the CPU, for example v6 to specify a particular CPU variant of the ARM CPU.
      */
     @JsonProperty("variant")
     public String getVariant() {
@@ -189,7 +189,7 @@ public class ImageManifest implements Editable<ImageManifestBuilder>, Kubernetes
     }
 
     /**
-     * Variant is an optional field repreenting a variant of the CPU, for example v6 to specify a particular CPU variant of the ARM CPU.
+     * variant is an optional field repreenting a variant of the CPU, for example v6 to specify a particular CPU variant of the ARM CPU.
      */
     @JsonProperty("variant")
     public void setVariant(String variant) {

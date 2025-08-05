@@ -96,7 +96,7 @@ public class BuildOverrides implements Editable<BuildOverridesBuilder>, Kubernet
     }
 
     /**
-     * ForcePull overrides, if set, the equivalent value in the builds, i.e. false disables force pull for all builds, true enables force pull for all builds, independently of what each build specifies itself
+     * forcePull overrides, if set, the equivalent value in the builds, i.e. false disables force pull for all builds, true enables force pull for all builds, independently of what each build specifies itself
      */
     @JsonProperty("forcePull")
     public Boolean getForcePull() {
@@ -104,7 +104,7 @@ public class BuildOverrides implements Editable<BuildOverridesBuilder>, Kubernet
     }
 
     /**
-     * ForcePull overrides, if set, the equivalent value in the builds, i.e. false disables force pull for all builds, true enables force pull for all builds, independently of what each build specifies itself
+     * forcePull overrides, if set, the equivalent value in the builds, i.e. false disables force pull for all builds, true enables force pull for all builds, independently of what each build specifies itself
      */
     @JsonProperty("forcePull")
     public void setForcePull(Boolean forcePull) {
@@ -112,7 +112,7 @@ public class BuildOverrides implements Editable<BuildOverridesBuilder>, Kubernet
     }
 
     /**
-     * ImageLabels is a list of docker labels that are applied to the resulting image. If user provided a label in their Build/BuildConfig with the same name as one in this list, the user's label will be overwritten.
+     * imageLabels is a list of docker labels that are applied to the resulting image. If user provided a label in their Build/BuildConfig with the same name as one in this list, the user's label will be overwritten.
      */
     @JsonProperty("imageLabels")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -121,7 +121,7 @@ public class BuildOverrides implements Editable<BuildOverridesBuilder>, Kubernet
     }
 
     /**
-     * ImageLabels is a list of docker labels that are applied to the resulting image. If user provided a label in their Build/BuildConfig with the same name as one in this list, the user's label will be overwritten.
+     * imageLabels is a list of docker labels that are applied to the resulting image. If user provided a label in their Build/BuildConfig with the same name as one in this list, the user's label will be overwritten.
      */
     @JsonProperty("imageLabels")
     public void setImageLabels(List<ImageLabel> imageLabels) {
@@ -129,7 +129,7 @@ public class BuildOverrides implements Editable<BuildOverridesBuilder>, Kubernet
     }
 
     /**
-     * NodeSelector is a selector which must be true for the build pod to fit on a node
+     * nodeSelector is a selector which must be true for the build pod to fit on a node
      */
     @JsonProperty("nodeSelector")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -138,7 +138,7 @@ public class BuildOverrides implements Editable<BuildOverridesBuilder>, Kubernet
     }
 
     /**
-     * NodeSelector is a selector which must be true for the build pod to fit on a node
+     * nodeSelector is a selector which must be true for the build pod to fit on a node
      */
     @JsonProperty("nodeSelector")
     public void setNodeSelector(Map<String, String> nodeSelector) {
@@ -146,7 +146,7 @@ public class BuildOverrides implements Editable<BuildOverridesBuilder>, Kubernet
     }
 
     /**
-     * Tolerations is a list of Tolerations that will override any existing tolerations set on a build pod.
+     * tolerations is a list of Tolerations that will override any existing tolerations set on a build pod.
      */
     @JsonProperty("tolerations")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -155,7 +155,7 @@ public class BuildOverrides implements Editable<BuildOverridesBuilder>, Kubernet
     }
 
     /**
-     * Tolerations is a list of Tolerations that will override any existing tolerations set on a build pod.
+     * tolerations is a list of Tolerations that will override any existing tolerations set on a build pod.
      */
     @JsonProperty("tolerations")
     public void setTolerations(List<Toleration> tolerations) {

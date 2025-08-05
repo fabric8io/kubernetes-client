@@ -40,6 +40,7 @@ import lombok.experimental.Accessors;
 @JsonPropertyOrder({
     "IBMCLOUD_CIS_API_ENDPOINT",
     "IBMCLOUD_COS_CONFIG_ENDPOINT",
+    "IBMCLOUD_COS_ENDPOINT",
     "IBMCLOUD_GS_API_ENDPOINT",
     "IBMCLOUD_GT_API_ENDPOINT",
     "IBMCLOUD_HPCS_API_ENDPOINT",
@@ -47,6 +48,7 @@ import lombok.experimental.Accessors;
     "IBMCLOUD_IS_NG_API_ENDPOINT",
     "IBMCLOUD_KP_API_ENDPOINT",
     "IBMCLOUD_PRIVATE_DNS_API_ENDPOINT",
+    "IBMCLOUD_RESOURCE_CATALOG_API_ENDPOINT",
     "IBMCLOUD_RESOURCE_CONTROLLER_API_ENDPOINT",
     "IBMCLOUD_RESOURCE_MANAGEMENT_API_ENDPOINT"
 })
@@ -79,6 +81,8 @@ public class EndpointsJSON implements Editable<EndpointsJSONBuilder>, Kubernetes
     private EndpointsVisibility iBMCLOUDCISAPIENDPOINT;
     @JsonProperty("IBMCLOUD_COS_CONFIG_ENDPOINT")
     private EndpointsVisibility iBMCLOUDCOSCONFIGENDPOINT;
+    @JsonProperty("IBMCLOUD_COS_ENDPOINT")
+    private EndpointsVisibility iBMCLOUDCOSENDPOINT;
     @JsonProperty("IBMCLOUD_GS_API_ENDPOINT")
     private EndpointsVisibility iBMCLOUDGSAPIENDPOINT;
     @JsonProperty("IBMCLOUD_GT_API_ENDPOINT")
@@ -93,6 +97,8 @@ public class EndpointsJSON implements Editable<EndpointsJSONBuilder>, Kubernetes
     private EndpointsVisibility iBMCLOUDKPAPIENDPOINT;
     @JsonProperty("IBMCLOUD_PRIVATE_DNS_API_ENDPOINT")
     private EndpointsVisibility iBMCLOUDPRIVATEDNSAPIENDPOINT;
+    @JsonProperty("IBMCLOUD_RESOURCE_CATALOG_API_ENDPOINT")
+    private EndpointsVisibility iBMCLOUDRESOURCECATALOGAPIENDPOINT;
     @JsonProperty("IBMCLOUD_RESOURCE_CONTROLLER_API_ENDPOINT")
     private EndpointsVisibility iBMCLOUDRESOURCECONTROLLERAPIENDPOINT;
     @JsonProperty("IBMCLOUD_RESOURCE_MANAGEMENT_API_ENDPOINT")
@@ -106,10 +112,11 @@ public class EndpointsJSON implements Editable<EndpointsJSONBuilder>, Kubernetes
     public EndpointsJSON() {
     }
 
-    public EndpointsJSON(EndpointsVisibility iBMCLOUDCISAPIENDPOINT, EndpointsVisibility iBMCLOUDCOSCONFIGENDPOINT, EndpointsVisibility iBMCLOUDGSAPIENDPOINT, EndpointsVisibility iBMCLOUDGTAPIENDPOINT, EndpointsVisibility iBMCLOUDHPCSAPIENDPOINT, EndpointsVisibility iBMCLOUDIAMAPIENDPOINT, EndpointsVisibility iBMCLOUDISNGAPIENDPOINT, EndpointsVisibility iBMCLOUDKPAPIENDPOINT, EndpointsVisibility iBMCLOUDPRIVATEDNSAPIENDPOINT, EndpointsVisibility iBMCLOUDRESOURCECONTROLLERAPIENDPOINT, EndpointsVisibility iBMCLOUDRESOURCEMANAGEMENTAPIENDPOINT) {
+    public EndpointsJSON(EndpointsVisibility iBMCLOUDCISAPIENDPOINT, EndpointsVisibility iBMCLOUDCOSCONFIGENDPOINT, EndpointsVisibility iBMCLOUDCOSENDPOINT, EndpointsVisibility iBMCLOUDGSAPIENDPOINT, EndpointsVisibility iBMCLOUDGTAPIENDPOINT, EndpointsVisibility iBMCLOUDHPCSAPIENDPOINT, EndpointsVisibility iBMCLOUDIAMAPIENDPOINT, EndpointsVisibility iBMCLOUDISNGAPIENDPOINT, EndpointsVisibility iBMCLOUDKPAPIENDPOINT, EndpointsVisibility iBMCLOUDPRIVATEDNSAPIENDPOINT, EndpointsVisibility iBMCLOUDRESOURCECATALOGAPIENDPOINT, EndpointsVisibility iBMCLOUDRESOURCECONTROLLERAPIENDPOINT, EndpointsVisibility iBMCLOUDRESOURCEMANAGEMENTAPIENDPOINT) {
         super();
         this.iBMCLOUDCISAPIENDPOINT = iBMCLOUDCISAPIENDPOINT;
         this.iBMCLOUDCOSCONFIGENDPOINT = iBMCLOUDCOSCONFIGENDPOINT;
+        this.iBMCLOUDCOSENDPOINT = iBMCLOUDCOSENDPOINT;
         this.iBMCLOUDGSAPIENDPOINT = iBMCLOUDGSAPIENDPOINT;
         this.iBMCLOUDGTAPIENDPOINT = iBMCLOUDGTAPIENDPOINT;
         this.iBMCLOUDHPCSAPIENDPOINT = iBMCLOUDHPCSAPIENDPOINT;
@@ -117,6 +124,7 @@ public class EndpointsJSON implements Editable<EndpointsJSONBuilder>, Kubernetes
         this.iBMCLOUDISNGAPIENDPOINT = iBMCLOUDISNGAPIENDPOINT;
         this.iBMCLOUDKPAPIENDPOINT = iBMCLOUDKPAPIENDPOINT;
         this.iBMCLOUDPRIVATEDNSAPIENDPOINT = iBMCLOUDPRIVATEDNSAPIENDPOINT;
+        this.iBMCLOUDRESOURCECATALOGAPIENDPOINT = iBMCLOUDRESOURCECATALOGAPIENDPOINT;
         this.iBMCLOUDRESOURCECONTROLLERAPIENDPOINT = iBMCLOUDRESOURCECONTROLLERAPIENDPOINT;
         this.iBMCLOUDRESOURCEMANAGEMENTAPIENDPOINT = iBMCLOUDRESOURCEMANAGEMENTAPIENDPOINT;
     }
@@ -151,6 +159,22 @@ public class EndpointsJSON implements Editable<EndpointsJSONBuilder>, Kubernetes
     @JsonProperty("IBMCLOUD_COS_CONFIG_ENDPOINT")
     public void setIBMCLOUDCOSCONFIGENDPOINT(EndpointsVisibility iBMCLOUDCOSCONFIGENDPOINT) {
         this.iBMCLOUDCOSCONFIGENDPOINT = iBMCLOUDCOSCONFIGENDPOINT;
+    }
+
+    /**
+     * EndpointsJSON represents the JSON format to override IBM Cloud Terraform provider utilized service endpoints. https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/guides/custom-service-endpoints#file-structure-for-endpoints-file
+     */
+    @JsonProperty("IBMCLOUD_COS_ENDPOINT")
+    public EndpointsVisibility getIBMCLOUDCOSENDPOINT() {
+        return iBMCLOUDCOSENDPOINT;
+    }
+
+    /**
+     * EndpointsJSON represents the JSON format to override IBM Cloud Terraform provider utilized service endpoints. https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/guides/custom-service-endpoints#file-structure-for-endpoints-file
+     */
+    @JsonProperty("IBMCLOUD_COS_ENDPOINT")
+    public void setIBMCLOUDCOSENDPOINT(EndpointsVisibility iBMCLOUDCOSENDPOINT) {
+        this.iBMCLOUDCOSENDPOINT = iBMCLOUDCOSENDPOINT;
     }
 
     /**
@@ -263,6 +287,22 @@ public class EndpointsJSON implements Editable<EndpointsJSONBuilder>, Kubernetes
     @JsonProperty("IBMCLOUD_PRIVATE_DNS_API_ENDPOINT")
     public void setIBMCLOUDPRIVATEDNSAPIENDPOINT(EndpointsVisibility iBMCLOUDPRIVATEDNSAPIENDPOINT) {
         this.iBMCLOUDPRIVATEDNSAPIENDPOINT = iBMCLOUDPRIVATEDNSAPIENDPOINT;
+    }
+
+    /**
+     * EndpointsJSON represents the JSON format to override IBM Cloud Terraform provider utilized service endpoints. https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/guides/custom-service-endpoints#file-structure-for-endpoints-file
+     */
+    @JsonProperty("IBMCLOUD_RESOURCE_CATALOG_API_ENDPOINT")
+    public EndpointsVisibility getIBMCLOUDRESOURCECATALOGAPIENDPOINT() {
+        return iBMCLOUDRESOURCECATALOGAPIENDPOINT;
+    }
+
+    /**
+     * EndpointsJSON represents the JSON format to override IBM Cloud Terraform provider utilized service endpoints. https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/guides/custom-service-endpoints#file-structure-for-endpoints-file
+     */
+    @JsonProperty("IBMCLOUD_RESOURCE_CATALOG_API_ENDPOINT")
+    public void setIBMCLOUDRESOURCECATALOGAPIENDPOINT(EndpointsVisibility iBMCLOUDRESOURCECATALOGAPIENDPOINT) {
+        this.iBMCLOUDRESOURCECATALOGAPIENDPOINT = iBMCLOUDRESOURCECATALOGAPIENDPOINT;
     }
 
     /**

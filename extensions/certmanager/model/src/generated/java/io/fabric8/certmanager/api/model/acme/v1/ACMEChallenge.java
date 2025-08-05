@@ -106,7 +106,7 @@ public class ACMEChallenge implements Editable<ACMEChallengeBuilder>, Kubernetes
     }
 
     /**
-     * Type is the type of challenge being offered, e.g. 'http-01', 'dns-01', 'tls-sni-01', etc. This is the raw value retrieved from the ACME server. Only 'http-01' and 'dns-01' are supported by cert-manager, other values will be ignored.
+     * Type is the type of challenge being offered, e.g., 'http-01', 'dns-01', 'tls-sni-01', etc. This is the raw value retrieved from the ACME server. Only 'http-01' and 'dns-01' are supported by cert-manager, other values will be ignored.
      */
     @JsonProperty("type")
     public String getType() {
@@ -114,7 +114,7 @@ public class ACMEChallenge implements Editable<ACMEChallengeBuilder>, Kubernetes
     }
 
     /**
-     * Type is the type of challenge being offered, e.g. 'http-01', 'dns-01', 'tls-sni-01', etc. This is the raw value retrieved from the ACME server. Only 'http-01' and 'dns-01' are supported by cert-manager, other values will be ignored.
+     * Type is the type of challenge being offered, e.g., 'http-01', 'dns-01', 'tls-sni-01', etc. This is the raw value retrieved from the ACME server. Only 'http-01' and 'dns-01' are supported by cert-manager, other values will be ignored.
      */
     @JsonProperty("type")
     public void setType(String type) {

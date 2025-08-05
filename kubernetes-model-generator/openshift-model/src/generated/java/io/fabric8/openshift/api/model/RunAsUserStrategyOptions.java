@@ -93,7 +93,7 @@ public class RunAsUserStrategyOptions implements Editable<RunAsUserStrategyOptio
     }
 
     /**
-     * Type is the strategy that will dictate what RunAsUser is used in the SecurityContext.
+     * type is the strategy that will dictate what RunAsUser is used in the SecurityContext.
      */
     @JsonProperty("type")
     public String getType() {
@@ -101,7 +101,7 @@ public class RunAsUserStrategyOptions implements Editable<RunAsUserStrategyOptio
     }
 
     /**
-     * Type is the strategy that will dictate what RunAsUser is used in the SecurityContext.
+     * type is the strategy that will dictate what RunAsUser is used in the SecurityContext.
      */
     @JsonProperty("type")
     public void setType(String type) {
@@ -109,7 +109,7 @@ public class RunAsUserStrategyOptions implements Editable<RunAsUserStrategyOptio
     }
 
     /**
-     * UID is the user id that containers must run as.  Required for the MustRunAs strategy if not using namespace/service account allocated uids.
+     * uid is the user id that containers must run as.  Required for the MustRunAs strategy if not using namespace/service account allocated uids.
      */
     @JsonProperty("uid")
     public Long getUid() {
@@ -117,7 +117,7 @@ public class RunAsUserStrategyOptions implements Editable<RunAsUserStrategyOptio
     }
 
     /**
-     * UID is the user id that containers must run as.  Required for the MustRunAs strategy if not using namespace/service account allocated uids.
+     * uid is the user id that containers must run as.  Required for the MustRunAs strategy if not using namespace/service account allocated uids.
      */
     @JsonProperty("uid")
     public void setUid(Long uid) {
@@ -125,7 +125,7 @@ public class RunAsUserStrategyOptions implements Editable<RunAsUserStrategyOptio
     }
 
     /**
-     * UIDRangeMax defines the max value for a strategy that allocates by range.
+     * uidRangeMax defines the max value for a strategy that allocates by range.
      */
     @JsonProperty("uidRangeMax")
     public Long getUidRangeMax() {
@@ -133,7 +133,7 @@ public class RunAsUserStrategyOptions implements Editable<RunAsUserStrategyOptio
     }
 
     /**
-     * UIDRangeMax defines the max value for a strategy that allocates by range.
+     * uidRangeMax defines the max value for a strategy that allocates by range.
      */
     @JsonProperty("uidRangeMax")
     public void setUidRangeMax(Long uidRangeMax) {
@@ -141,7 +141,7 @@ public class RunAsUserStrategyOptions implements Editable<RunAsUserStrategyOptio
     }
 
     /**
-     * UIDRangeMin defines the min value for a strategy that allocates by range.
+     * uidRangeMin defines the min value for a strategy that allocates by range.
      */
     @JsonProperty("uidRangeMin")
     public Long getUidRangeMin() {
@@ -149,7 +149,7 @@ public class RunAsUserStrategyOptions implements Editable<RunAsUserStrategyOptio
     }
 
     /**
-     * UIDRangeMin defines the min value for a strategy that allocates by range.
+     * uidRangeMin defines the min value for a strategy that allocates by range.
      */
     @JsonProperty("uidRangeMin")
     public void setUidRangeMin(Long uidRangeMin) {

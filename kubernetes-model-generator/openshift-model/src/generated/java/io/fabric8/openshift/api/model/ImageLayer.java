@@ -89,7 +89,7 @@ public class ImageLayer implements Editable<ImageLayerBuilder>, KubernetesResour
     }
 
     /**
-     * MediaType of the referenced object.
+     * mediaType of the referenced object.
      */
     @JsonProperty("mediaType")
     public String getMediaType() {
@@ -97,7 +97,7 @@ public class ImageLayer implements Editable<ImageLayerBuilder>, KubernetesResour
     }
 
     /**
-     * MediaType of the referenced object.
+     * mediaType of the referenced object.
      */
     @JsonProperty("mediaType")
     public void setMediaType(String mediaType) {
@@ -105,7 +105,7 @@ public class ImageLayer implements Editable<ImageLayerBuilder>, KubernetesResour
     }
 
     /**
-     * Name of the layer as defined by the underlying store.
+     * name of the layer as defined by the underlying store.
      */
     @JsonProperty("name")
     public String getName() {
@@ -113,7 +113,7 @@ public class ImageLayer implements Editable<ImageLayerBuilder>, KubernetesResour
     }
 
     /**
-     * Name of the layer as defined by the underlying store.
+     * name of the layer as defined by the underlying store.
      */
     @JsonProperty("name")
     public void setName(String name) {
@@ -121,7 +121,7 @@ public class ImageLayer implements Editable<ImageLayerBuilder>, KubernetesResour
     }
 
     /**
-     * Size of the layer in bytes as defined by the underlying store.
+     * size of the layer in bytes as defined by the underlying store.
      */
     @JsonProperty("size")
     public Long getSize() {
@@ -129,7 +129,7 @@ public class ImageLayer implements Editable<ImageLayerBuilder>, KubernetesResour
     }
 
     /**
-     * Size of the layer in bytes as defined by the underlying store.
+     * size of the layer in bytes as defined by the underlying store.
      */
     @JsonProperty("size")
     public void setSize(Long size) {

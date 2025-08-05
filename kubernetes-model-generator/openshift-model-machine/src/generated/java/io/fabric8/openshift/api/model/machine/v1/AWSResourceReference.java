@@ -97,7 +97,7 @@ public class AWSResourceReference implements Editable<AWSResourceReferenceBuilde
     }
 
     /**
-     * ARN of resource.
+     * arn of resource.
      */
     @JsonProperty("arn")
     public String getArn() {
@@ -105,7 +105,7 @@ public class AWSResourceReference implements Editable<AWSResourceReferenceBuilde
     }
 
     /**
-     * ARN of resource.
+     * arn of resource.
      */
     @JsonProperty("arn")
     public void setArn(String arn) {
@@ -113,7 +113,7 @@ public class AWSResourceReference implements Editable<AWSResourceReferenceBuilde
     }
 
     /**
-     * Filters is a set of filters used to identify a resource.
+     * filters is a set of filters used to identify a resource.
      */
     @JsonProperty("filters")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -122,7 +122,7 @@ public class AWSResourceReference implements Editable<AWSResourceReferenceBuilde
     }
 
     /**
-     * Filters is a set of filters used to identify a resource.
+     * filters is a set of filters used to identify a resource.
      */
     @JsonProperty("filters")
     public void setFilters(List<AWSResourceFilter> filters) {
@@ -130,7 +130,7 @@ public class AWSResourceReference implements Editable<AWSResourceReferenceBuilde
     }
 
     /**
-     * ID of resource.
+     * id of resource.
      */
     @JsonProperty("id")
     public String getId() {
@@ -138,7 +138,7 @@ public class AWSResourceReference implements Editable<AWSResourceReferenceBuilde
     }
 
     /**
-     * ID of resource.
+     * id of resource.
      */
     @JsonProperty("id")
     public void setId(String id) {
@@ -146,7 +146,7 @@ public class AWSResourceReference implements Editable<AWSResourceReferenceBuilde
     }
 
     /**
-     * Type determines how the reference will fetch the AWS resource.
+     * type determines how the reference will fetch the AWS resource.
      */
     @JsonProperty("type")
     public String getType() {
@@ -154,7 +154,7 @@ public class AWSResourceReference implements Editable<AWSResourceReferenceBuilde
     }
 
     /**
-     * Type determines how the reference will fetch the AWS resource.
+     * type determines how the reference will fetch the AWS resource.
      */
     @JsonProperty("type")
     public void setType(String type) {

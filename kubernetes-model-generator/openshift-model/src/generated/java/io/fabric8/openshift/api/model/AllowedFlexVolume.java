@@ -81,7 +81,7 @@ public class AllowedFlexVolume implements Editable<AllowedFlexVolumeBuilder>, Ku
     }
 
     /**
-     * Driver is the name of the Flexvolume driver.
+     * driver is the name of the Flexvolume driver.
      */
     @JsonProperty("driver")
     public String getDriver() {
@@ -89,7 +89,7 @@ public class AllowedFlexVolume implements Editable<AllowedFlexVolumeBuilder>, Ku
     }
 
     /**
-     * Driver is the name of the Flexvolume driver.
+     * driver is the name of the Flexvolume driver.
      */
     @JsonProperty("driver")
     public void setDriver(String driver) {

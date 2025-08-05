@@ -113,7 +113,7 @@ public class ServingInfo implements Editable<ServingInfoBuilder>, KubernetesReso
     }
 
     /**
-     * BindAddress is the ip:port to serve on
+     * bindAddress is the ip:port to serve on
      */
     @JsonProperty("bindAddress")
     public String getBindAddress() {
@@ -121,7 +121,7 @@ public class ServingInfo implements Editable<ServingInfoBuilder>, KubernetesReso
     }
 
     /**
-     * BindAddress is the ip:port to serve on
+     * bindAddress is the ip:port to serve on
      */
     @JsonProperty("bindAddress")
     public void setBindAddress(String bindAddress) {
@@ -129,7 +129,7 @@ public class ServingInfo implements Editable<ServingInfoBuilder>, KubernetesReso
     }
 
     /**
-     * BindNetwork is the type of network to bind to - defaults to "tcp4", accepts "tcp", "tcp4", and "tcp6"
+     * bindNetwork is the type of network to bind to - defaults to "tcp4", accepts "tcp", "tcp4", and "tcp6"
      */
     @JsonProperty("bindNetwork")
     public String getBindNetwork() {
@@ -137,7 +137,7 @@ public class ServingInfo implements Editable<ServingInfoBuilder>, KubernetesReso
     }
 
     /**
-     * BindNetwork is the type of network to bind to - defaults to "tcp4", accepts "tcp", "tcp4", and "tcp6"
+     * bindNetwork is the type of network to bind to - defaults to "tcp4", accepts "tcp", "tcp4", and "tcp6"
      */
     @JsonProperty("bindNetwork")
     public void setBindNetwork(String bindNetwork) {
@@ -145,7 +145,7 @@ public class ServingInfo implements Editable<ServingInfoBuilder>, KubernetesReso
     }
 
     /**
-     * CertFile is a file containing a PEM-encoded certificate
+     * certFile is a file containing a PEM-encoded certificate
      */
     @JsonProperty("certFile")
     public String getCertFile() {
@@ -153,7 +153,7 @@ public class ServingInfo implements Editable<ServingInfoBuilder>, KubernetesReso
     }
 
     /**
-     * CertFile is a file containing a PEM-encoded certificate
+     * certFile is a file containing a PEM-encoded certificate
      */
     @JsonProperty("certFile")
     public void setCertFile(String certFile) {
@@ -161,7 +161,7 @@ public class ServingInfo implements Editable<ServingInfoBuilder>, KubernetesReso
     }
 
     /**
-     * CipherSuites contains an overridden list of ciphers for the server to support. Values must match cipher suite IDs from https://golang.org/pkg/crypto/tls/#pkg-constants
+     * cipherSuites contains an overridden list of ciphers for the server to support. Values must match cipher suite IDs from https://golang.org/pkg/crypto/tls/#pkg-constants
      */
     @JsonProperty("cipherSuites")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -170,7 +170,7 @@ public class ServingInfo implements Editable<ServingInfoBuilder>, KubernetesReso
     }
 
     /**
-     * CipherSuites contains an overridden list of ciphers for the server to support. Values must match cipher suite IDs from https://golang.org/pkg/crypto/tls/#pkg-constants
+     * cipherSuites contains an overridden list of ciphers for the server to support. Values must match cipher suite IDs from https://golang.org/pkg/crypto/tls/#pkg-constants
      */
     @JsonProperty("cipherSuites")
     public void setCipherSuites(List<String> cipherSuites) {
@@ -178,7 +178,7 @@ public class ServingInfo implements Editable<ServingInfoBuilder>, KubernetesReso
     }
 
     /**
-     * ClientCA is the certificate bundle for all the signers that you'll recognize for incoming client certificates
+     * clientCA is the certificate bundle for all the signers that you'll recognize for incoming client certificates
      */
     @JsonProperty("clientCA")
     public String getClientCA() {
@@ -186,7 +186,7 @@ public class ServingInfo implements Editable<ServingInfoBuilder>, KubernetesReso
     }
 
     /**
-     * ClientCA is the certificate bundle for all the signers that you'll recognize for incoming client certificates
+     * clientCA is the certificate bundle for all the signers that you'll recognize for incoming client certificates
      */
     @JsonProperty("clientCA")
     public void setClientCA(String clientCA) {
@@ -194,7 +194,7 @@ public class ServingInfo implements Editable<ServingInfoBuilder>, KubernetesReso
     }
 
     /**
-     * KeyFile is a file containing a PEM-encoded private key for the certificate specified by CertFile
+     * keyFile is a file containing a PEM-encoded private key for the certificate specified by CertFile
      */
     @JsonProperty("keyFile")
     public String getKeyFile() {
@@ -202,7 +202,7 @@ public class ServingInfo implements Editable<ServingInfoBuilder>, KubernetesReso
     }
 
     /**
-     * KeyFile is a file containing a PEM-encoded private key for the certificate specified by CertFile
+     * keyFile is a file containing a PEM-encoded private key for the certificate specified by CertFile
      */
     @JsonProperty("keyFile")
     public void setKeyFile(String keyFile) {
@@ -210,7 +210,7 @@ public class ServingInfo implements Editable<ServingInfoBuilder>, KubernetesReso
     }
 
     /**
-     * MinTLSVersion is the minimum TLS version supported. Values must match version names from https://golang.org/pkg/crypto/tls/#pkg-constants
+     * minTLSVersion is the minimum TLS version supported. Values must match version names from https://golang.org/pkg/crypto/tls/#pkg-constants
      */
     @JsonProperty("minTLSVersion")
     public String getMinTLSVersion() {
@@ -218,7 +218,7 @@ public class ServingInfo implements Editable<ServingInfoBuilder>, KubernetesReso
     }
 
     /**
-     * MinTLSVersion is the minimum TLS version supported. Values must match version names from https://golang.org/pkg/crypto/tls/#pkg-constants
+     * minTLSVersion is the minimum TLS version supported. Values must match version names from https://golang.org/pkg/crypto/tls/#pkg-constants
      */
     @JsonProperty("minTLSVersion")
     public void setMinTLSVersion(String minTLSVersion) {
@@ -226,7 +226,7 @@ public class ServingInfo implements Editable<ServingInfoBuilder>, KubernetesReso
     }
 
     /**
-     * NamedCertificates is a list of certificates to use to secure requests to specific hostnames
+     * namedCertificates is a list of certificates to use to secure requests to specific hostnames
      */
     @JsonProperty("namedCertificates")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -235,7 +235,7 @@ public class ServingInfo implements Editable<ServingInfoBuilder>, KubernetesReso
     }
 
     /**
-     * NamedCertificates is a list of certificates to use to secure requests to specific hostnames
+     * namedCertificates is a list of certificates to use to secure requests to specific hostnames
      */
     @JsonProperty("namedCertificates")
     public void setNamedCertificates(List<NamedCertificate> namedCertificates) {

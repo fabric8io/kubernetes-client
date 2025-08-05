@@ -1,9 +1,7 @@
 
 package io.fabric8.openshift.api.model.machineconfiguration.v1alpha1;
 
-import java.util.ArrayList;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 import javax.annotation.processing.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
@@ -33,13 +31,16 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * MachineConfigNodeStatusPinnedImageSet holds information about the current, desired, and failed pinned image sets for the observed machine config node.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "currentGeneration",
     "desiredGeneration",
     "lastFailedGeneration",
-    "lastFailedGenerationErrors",
+    "lastFailedGenerationError",
     "name"
 })
 @ToString
@@ -73,9 +74,8 @@ public class MachineConfigNodeStatusPinnedImageSet implements Editable<MachineCo
     private Integer desiredGeneration;
     @JsonProperty("lastFailedGeneration")
     private Integer lastFailedGeneration;
-    @JsonProperty("lastFailedGenerationErrors")
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> lastFailedGenerationErrors = new ArrayList<>();
+    @JsonProperty("lastFailedGenerationError")
+    private String lastFailedGenerationError;
     @JsonProperty("name")
     private String name;
     @JsonIgnore
@@ -87,12 +87,12 @@ public class MachineConfigNodeStatusPinnedImageSet implements Editable<MachineCo
     public MachineConfigNodeStatusPinnedImageSet() {
     }
 
-    public MachineConfigNodeStatusPinnedImageSet(Integer currentGeneration, Integer desiredGeneration, Integer lastFailedGeneration, List<String> lastFailedGenerationErrors, String name) {
+    public MachineConfigNodeStatusPinnedImageSet(Integer currentGeneration, Integer desiredGeneration, Integer lastFailedGeneration, String lastFailedGenerationError, String name) {
         super();
         this.currentGeneration = currentGeneration;
         this.desiredGeneration = desiredGeneration;
         this.lastFailedGeneration = lastFailedGeneration;
-        this.lastFailedGenerationErrors = lastFailedGenerationErrors;
+        this.lastFailedGenerationError = lastFailedGenerationError;
         this.name = name;
     }
 
@@ -113,7 +113,7 @@ public class MachineConfigNodeStatusPinnedImageSet implements Editable<MachineCo
     }
 
     /**
-     * desiredGeneration version is the generation of the pinned image set that is targeted to be pulled and pinned on this node.
+     * desiredGeneration is the generation of the pinned image set that is targeted to be pulled and pinned on this node.
      */
     @JsonProperty("desiredGeneration")
     public Integer getDesiredGeneration() {
@@ -121,7 +121,7 @@ public class MachineConfigNodeStatusPinnedImageSet implements Editable<MachineCo
     }
 
     /**
-     * desiredGeneration version is the generation of the pinned image set that is targeted to be pulled and pinned on this node.
+     * desiredGeneration is the generation of the pinned image set that is targeted to be pulled and pinned on this node.
      */
     @JsonProperty("desiredGeneration")
     public void setDesiredGeneration(Integer desiredGeneration) {
@@ -145,24 +145,23 @@ public class MachineConfigNodeStatusPinnedImageSet implements Editable<MachineCo
     }
 
     /**
-     * lastFailedGenerationErrors is a list of errors why the lastFailed generation failed to be pulled and pinned.
+     * lastFailedGenerationError is the error explaining why the desired images failed to be pulled and pinned. The error is an empty string if the image pull and pin is successful.
      */
-    @JsonProperty("lastFailedGenerationErrors")
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<String> getLastFailedGenerationErrors() {
-        return lastFailedGenerationErrors;
+    @JsonProperty("lastFailedGenerationError")
+    public String getLastFailedGenerationError() {
+        return lastFailedGenerationError;
     }
 
     /**
-     * lastFailedGenerationErrors is a list of errors why the lastFailed generation failed to be pulled and pinned.
+     * lastFailedGenerationError is the error explaining why the desired images failed to be pulled and pinned. The error is an empty string if the image pull and pin is successful.
      */
-    @JsonProperty("lastFailedGenerationErrors")
-    public void setLastFailedGenerationErrors(List<String> lastFailedGenerationErrors) {
-        this.lastFailedGenerationErrors = lastFailedGenerationErrors;
+    @JsonProperty("lastFailedGenerationError")
+    public void setLastFailedGenerationError(String lastFailedGenerationError) {
+        this.lastFailedGenerationError = lastFailedGenerationError;
     }
 
     /**
-     * name is the name of the pinned image set. Must be a lowercase RFC-1123 hostname (https://tools.ietf.org/html/rfc1123) It may consist of only alphanumeric characters, hyphens (-) and periods (.) and must be at most 253 characters in length.
+     * name is the name of the pinned image set. Must be a lowercase RFC-1123 subdomain name (https://tools.ietf.org/html/rfc1123) consisting of only lowercase alphanumeric characters, hyphens (-), and periods (.), and must start and end with an alphanumeric character, and be at most 253 characters in length.
      */
     @JsonProperty("name")
     public String getName() {
@@ -170,7 +169,7 @@ public class MachineConfigNodeStatusPinnedImageSet implements Editable<MachineCo
     }
 
     /**
-     * name is the name of the pinned image set. Must be a lowercase RFC-1123 hostname (https://tools.ietf.org/html/rfc1123) It may consist of only alphanumeric characters, hyphens (-) and periods (.) and must be at most 253 characters in length.
+     * name is the name of the pinned image set. Must be a lowercase RFC-1123 subdomain name (https://tools.ietf.org/html/rfc1123) consisting of only lowercase alphanumeric characters, hyphens (-), and periods (.), and must start and end with an alphanumeric character, and be at most 253 characters in length.
      */
     @JsonProperty("name")
     public void setName(String name) {

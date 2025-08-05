@@ -124,7 +124,7 @@ public class HostSubnetList implements Editable<HostSubnetListBuilder>, Kubernet
     }
 
     /**
-     * Items is the list of host subnets
+     * items is the list of host subnets
      */
     @JsonProperty("items")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -133,7 +133,7 @@ public class HostSubnetList implements Editable<HostSubnetListBuilder>, Kubernet
     }
 
     /**
-     * Items is the list of host subnets
+     * items is the list of host subnets
      */
     @JsonProperty("items")
     public void setItems(List<io.fabric8.openshift.api.model.miscellaneous.network.v1.HostSubnet> items) {

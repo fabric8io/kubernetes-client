@@ -130,7 +130,7 @@ public class ImageImportSpec implements Editable<ImageImportSpecBuilder>, Kubern
     }
 
     /**
-     * IncludeManifest determines if the manifest for each image is returned in the response
+     * includeManifest determines if the manifest for each image is returned in the response
      */
     @JsonProperty("includeManifest")
     public Boolean getIncludeManifest() {
@@ -138,7 +138,7 @@ public class ImageImportSpec implements Editable<ImageImportSpecBuilder>, Kubern
     }
 
     /**
-     * IncludeManifest determines if the manifest for each image is returned in the response
+     * includeManifest determines if the manifest for each image is returned in the response
      */
     @JsonProperty("includeManifest")
     public void setIncludeManifest(Boolean includeManifest) {

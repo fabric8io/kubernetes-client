@@ -100,7 +100,7 @@ public class RouteIngress implements Editable<RouteIngressBuilder>, KubernetesRe
     }
 
     /**
-     * Conditions is the state of the route, may be empty.
+     * conditions is the state of the route, may be empty.
      */
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -109,7 +109,7 @@ public class RouteIngress implements Editable<RouteIngressBuilder>, KubernetesRe
     }
 
     /**
-     * Conditions is the state of the route, may be empty.
+     * conditions is the state of the route, may be empty.
      */
     @JsonProperty("conditions")
     public void setConditions(List<RouteIngressCondition> conditions) {
@@ -117,7 +117,7 @@ public class RouteIngress implements Editable<RouteIngressBuilder>, KubernetesRe
     }
 
     /**
-     * Host is the host string under which the route is exposed; this value is required
+     * host is the host string under which the route is exposed; this value is required
      */
     @JsonProperty("host")
     public String getHost() {
@@ -125,7 +125,7 @@ public class RouteIngress implements Editable<RouteIngressBuilder>, KubernetesRe
     }
 
     /**
-     * Host is the host string under which the route is exposed; this value is required
+     * host is the host string under which the route is exposed; this value is required
      */
     @JsonProperty("host")
     public void setHost(String host) {

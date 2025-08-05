@@ -171,7 +171,7 @@ public class ImageStreamMapping implements Editable<ImageStreamMappingBuilder>, 
     }
 
     /**
-     * Tag is a string value this image can be located with inside the stream.
+     * tag is a string value this image can be located with inside the stream.
      */
     @JsonProperty("tag")
     public String getTag() {
@@ -179,7 +179,7 @@ public class ImageStreamMapping implements Editable<ImageStreamMappingBuilder>, 
     }
 
     /**
-     * Tag is a string value this image can be located with inside the stream.
+     * tag is a string value this image can be located with inside the stream.
      */
     @JsonProperty("tag")
     public void setTag(String tag) {

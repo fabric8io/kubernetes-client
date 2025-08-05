@@ -50,6 +50,7 @@ import lombok.experimental.Accessors;
     "metadata",
     "cloneMode",
     "credentialsSecret",
+    "dataDisks",
     "diskGiB",
     "memoryMiB",
     "network",
@@ -97,6 +98,9 @@ public class VSphereMachineProviderSpec implements Editable<VSphereMachineProvid
     private String cloneMode;
     @JsonProperty("credentialsSecret")
     private LocalObjectReference credentialsSecret;
+    @JsonProperty("dataDisks")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<VSphereDisk> dataDisks = new ArrayList<>();
     @JsonProperty("diskGiB")
     private Integer diskGiB;
     @JsonProperty("kind")
@@ -131,11 +135,12 @@ public class VSphereMachineProviderSpec implements Editable<VSphereMachineProvid
     public VSphereMachineProviderSpec() {
     }
 
-    public VSphereMachineProviderSpec(String apiVersion, String cloneMode, LocalObjectReference credentialsSecret, Integer diskGiB, String kind, Long memoryMiB, ObjectMeta metadata, NetworkSpec network, Integer numCPUs, Integer numCoresPerSocket, String snapshot, List<String> tagIDs, String template, LocalObjectReference userDataSecret, Workspace workspace) {
+    public VSphereMachineProviderSpec(String apiVersion, String cloneMode, LocalObjectReference credentialsSecret, List<VSphereDisk> dataDisks, Integer diskGiB, String kind, Long memoryMiB, ObjectMeta metadata, NetworkSpec network, Integer numCPUs, Integer numCoresPerSocket, String snapshot, List<String> tagIDs, String template, LocalObjectReference userDataSecret, Workspace workspace) {
         super();
         this.apiVersion = apiVersion;
         this.cloneMode = cloneMode;
         this.credentialsSecret = credentialsSecret;
+        this.dataDisks = dataDisks;
         this.diskGiB = diskGiB;
         this.kind = kind;
         this.memoryMiB = memoryMiB;
@@ -167,7 +172,7 @@ public class VSphereMachineProviderSpec implements Editable<VSphereMachineProvid
     }
 
     /**
-     * CloneMode specifies the type of clone operation. The LinkedClone mode is only support for templates that have at least one snapshot. If the template has no snapshots, then CloneMode defaults to FullClone. When LinkedClone mode is enabled the DiskGiB field is ignored as it is not possible to expand disks of linked clones. Defaults to FullClone. When using LinkedClone, if no snapshots exist for the source template, falls back to FullClone.
+     * cloneMode specifies the type of clone operation. The LinkedClone mode is only support for templates that have at least one snapshot. If the template has no snapshots, then CloneMode defaults to FullClone. When LinkedClone mode is enabled the DiskGiB field is ignored as it is not possible to expand disks of linked clones. Defaults to FullClone. When using LinkedClone, if no snapshots exist for the source template, falls back to FullClone.
      */
     @JsonProperty("cloneMode")
     public String getCloneMode() {
@@ -175,7 +180,7 @@ public class VSphereMachineProviderSpec implements Editable<VSphereMachineProvid
     }
 
     /**
-     * CloneMode specifies the type of clone operation. The LinkedClone mode is only support for templates that have at least one snapshot. If the template has no snapshots, then CloneMode defaults to FullClone. When LinkedClone mode is enabled the DiskGiB field is ignored as it is not possible to expand disks of linked clones. Defaults to FullClone. When using LinkedClone, if no snapshots exist for the source template, falls back to FullClone.
+     * cloneMode specifies the type of clone operation. The LinkedClone mode is only support for templates that have at least one snapshot. If the template has no snapshots, then CloneMode defaults to FullClone. When LinkedClone mode is enabled the DiskGiB field is ignored as it is not possible to expand disks of linked clones. Defaults to FullClone. When using LinkedClone, if no snapshots exist for the source template, falls back to FullClone.
      */
     @JsonProperty("cloneMode")
     public void setCloneMode(String cloneMode) {
@@ -199,7 +204,24 @@ public class VSphereMachineProviderSpec implements Editable<VSphereMachineProvid
     }
 
     /**
-     * DiskGiB is the size of a virtual machine's disk, in GiB. Defaults to the analogue property value in the template from which this machine is cloned. This parameter will be ignored if 'LinkedClone' CloneMode is set.
+     * dataDisks is a list of non OS disks to be created and attached to the VM.  The max number of disk allowed to be attached is currently 29.  The max number of disks for any controller is 30, but VM template will always have OS disk so that will leave 29 disks on any controller type.
+     */
+    @JsonProperty("dataDisks")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public List<VSphereDisk> getDataDisks() {
+        return dataDisks;
+    }
+
+    /**
+     * dataDisks is a list of non OS disks to be created and attached to the VM.  The max number of disk allowed to be attached is currently 29.  The max number of disks for any controller is 30, but VM template will always have OS disk so that will leave 29 disks on any controller type.
+     */
+    @JsonProperty("dataDisks")
+    public void setDataDisks(List<VSphereDisk> dataDisks) {
+        this.dataDisks = dataDisks;
+    }
+
+    /**
+     * diskGiB is the size of a virtual machine's disk, in GiB. Defaults to the analogue property value in the template from which this machine is cloned. This parameter will be ignored if 'LinkedClone' CloneMode is set.
      */
     @JsonProperty("diskGiB")
     public Integer getDiskGiB() {
@@ -207,7 +229,7 @@ public class VSphereMachineProviderSpec implements Editable<VSphereMachineProvid
     }
 
     /**
-     * DiskGiB is the size of a virtual machine's disk, in GiB. Defaults to the analogue property value in the template from which this machine is cloned. This parameter will be ignored if 'LinkedClone' CloneMode is set.
+     * diskGiB is the size of a virtual machine's disk, in GiB. Defaults to the analogue property value in the template from which this machine is cloned. This parameter will be ignored if 'LinkedClone' CloneMode is set.
      */
     @JsonProperty("diskGiB")
     public void setDiskGiB(Integer diskGiB) {
@@ -231,7 +253,7 @@ public class VSphereMachineProviderSpec implements Editable<VSphereMachineProvid
     }
 
     /**
-     * MemoryMiB is the size of a virtual machine's memory, in MiB. Defaults to the analogue property value in the template from which this machine is cloned.
+     * memoryMiB is the size of a virtual machine's memory, in MiB. Defaults to the analogue property value in the template from which this machine is cloned.
      */
     @JsonProperty("memoryMiB")
     public Long getMemoryMiB() {
@@ -239,7 +261,7 @@ public class VSphereMachineProviderSpec implements Editable<VSphereMachineProvid
     }
 
     /**
-     * MemoryMiB is the size of a virtual machine's memory, in MiB. Defaults to the analogue property value in the template from which this machine is cloned.
+     * memoryMiB is the size of a virtual machine's memory, in MiB. Defaults to the analogue property value in the template from which this machine is cloned.
      */
     @JsonProperty("memoryMiB")
     public void setMemoryMiB(Long memoryMiB) {
@@ -279,7 +301,7 @@ public class VSphereMachineProviderSpec implements Editable<VSphereMachineProvid
     }
 
     /**
-     * NumCPUs is the number of virtual processors in a virtual machine. Defaults to the analogue property value in the template from which this machine is cloned.
+     * numCPUs is the number of virtual processors in a virtual machine. Defaults to the analogue property value in the template from which this machine is cloned.
      */
     @JsonProperty("numCPUs")
     public Integer getNumCPUs() {
@@ -287,7 +309,7 @@ public class VSphereMachineProviderSpec implements Editable<VSphereMachineProvid
     }
 
     /**
-     * NumCPUs is the number of virtual processors in a virtual machine. Defaults to the analogue property value in the template from which this machine is cloned.
+     * numCPUs is the number of virtual processors in a virtual machine. Defaults to the analogue property value in the template from which this machine is cloned.
      */
     @JsonProperty("numCPUs")
     public void setNumCPUs(Integer numCPUs) {
@@ -311,7 +333,7 @@ public class VSphereMachineProviderSpec implements Editable<VSphereMachineProvid
     }
 
     /**
-     * Snapshot is the name of the snapshot from which the VM was cloned
+     * snapshot is the name of the snapshot from which the VM was cloned
      */
     @JsonProperty("snapshot")
     public String getSnapshot() {
@@ -319,7 +341,7 @@ public class VSphereMachineProviderSpec implements Editable<VSphereMachineProvid
     }
 
     /**
-     * Snapshot is the name of the snapshot from which the VM was cloned
+     * snapshot is the name of the snapshot from which the VM was cloned
      */
     @JsonProperty("snapshot")
     public void setSnapshot(String snapshot) {
@@ -344,7 +366,7 @@ public class VSphereMachineProviderSpec implements Editable<VSphereMachineProvid
     }
 
     /**
-     * Template is the name, inventory path, or instance UUID of the template used to clone new machines.
+     * template is the name, inventory path, or instance UUID of the template used to clone new machines.
      */
     @JsonProperty("template")
     public String getTemplate() {
@@ -352,7 +374,7 @@ public class VSphereMachineProviderSpec implements Editable<VSphereMachineProvid
     }
 
     /**
-     * Template is the name, inventory path, or instance UUID of the template used to clone new machines.
+     * template is the name, inventory path, or instance UUID of the template used to clone new machines.
      */
     @JsonProperty("template")
     public void setTemplate(String template) {

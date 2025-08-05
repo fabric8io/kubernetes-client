@@ -42,6 +42,7 @@ import lombok.experimental.Accessors;
 @JsonPropertyOrder({
     "coresPerSocket",
     "cpus",
+    "dataDisks",
     "memoryMB",
     "osDisk",
     "zones"
@@ -75,6 +76,9 @@ public class MachinePool implements Editable<MachinePoolBuilder>, KubernetesReso
     private Integer coresPerSocket;
     @JsonProperty("cpus")
     private Integer cpus;
+    @JsonProperty("dataDisks")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<DataDisk> dataDisks = new ArrayList<>();
     @JsonProperty("memoryMB")
     private Long memoryMB;
     @JsonProperty("osDisk")
@@ -91,10 +95,11 @@ public class MachinePool implements Editable<MachinePoolBuilder>, KubernetesReso
     public MachinePool() {
     }
 
-    public MachinePool(Integer coresPerSocket, Integer cpus, Long memoryMB, OSDisk osDisk, List<String> zones) {
+    public MachinePool(Integer coresPerSocket, Integer cpus, List<DataDisk> dataDisks, Long memoryMB, OSDisk osDisk, List<String> zones) {
         super();
         this.coresPerSocket = coresPerSocket;
         this.cpus = cpus;
+        this.dataDisks = dataDisks;
         this.memoryMB = memoryMB;
         this.osDisk = osDisk;
         this.zones = zones;
@@ -130,6 +135,23 @@ public class MachinePool implements Editable<MachinePoolBuilder>, KubernetesReso
     @JsonProperty("cpus")
     public void setCpus(Integer cpus) {
         this.cpus = cpus;
+    }
+
+    /**
+     * DataDisks are additional disks to add to the VM that are not part of the VM's OVA template.
+     */
+    @JsonProperty("dataDisks")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public List<DataDisk> getDataDisks() {
+        return dataDisks;
+    }
+
+    /**
+     * DataDisks are additional disks to add to the VM that are not part of the VM's OVA template.
+     */
+    @JsonProperty("dataDisks")
+    public void setDataDisks(List<DataDisk> dataDisks) {
+        this.dataDisks = dataDisks;
     }
 
     /**

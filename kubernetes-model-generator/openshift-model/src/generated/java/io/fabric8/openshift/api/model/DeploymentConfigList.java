@@ -123,7 +123,7 @@ public class DeploymentConfigList implements Editable<DeploymentConfigListBuilde
     }
 
     /**
-     * Items is a list of deployment configs
+     * items is a list of deployment configs
      */
     @JsonProperty("items")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -132,7 +132,7 @@ public class DeploymentConfigList implements Editable<DeploymentConfigListBuilde
     }
 
     /**
-     * Items is a list of deployment configs
+     * items is a list of deployment configs
      */
     @JsonProperty("items")
     public void setItems(List<io.fabric8.openshift.api.model.DeploymentConfig> items) {

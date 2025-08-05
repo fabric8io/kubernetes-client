@@ -88,7 +88,7 @@ public class DeploymentDetails implements Editable<DeploymentDetailsBuilder>, Ku
     }
 
     /**
-     * Causes are extended data associated with all the causes for creating a new deployment
+     * causes are extended data associated with all the causes for creating a new deployment
      */
     @JsonProperty("causes")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -97,7 +97,7 @@ public class DeploymentDetails implements Editable<DeploymentDetailsBuilder>, Ku
     }
 
     /**
-     * Causes are extended data associated with all the causes for creating a new deployment
+     * causes are extended data associated with all the causes for creating a new deployment
      */
     @JsonProperty("causes")
     public void setCauses(List<DeploymentCause> causes) {
@@ -105,7 +105,7 @@ public class DeploymentDetails implements Editable<DeploymentDetailsBuilder>, Ku
     }
 
     /**
-     * Message is the user specified change message, if this deployment was triggered manually by the user
+     * message is the user specified change message, if this deployment was triggered manually by the user
      */
     @JsonProperty("message")
     public String getMessage() {
@@ -113,7 +113,7 @@ public class DeploymentDetails implements Editable<DeploymentDetailsBuilder>, Ku
     }
 
     /**
-     * Message is the user specified change message, if this deployment was triggered manually by the user
+     * message is the user specified change message, if this deployment was triggered manually by the user
      */
     @JsonProperty("message")
     public void setMessage(String message) {

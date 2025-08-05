@@ -46,6 +46,7 @@ import lombok.experimental.Accessors;
     "machineCIDR",
     "machineNetwork",
     "networkType",
+    "ovnKubernetesConfig",
     "serviceCIDR",
     "serviceNetwork",
     "type"
@@ -90,6 +91,8 @@ public class Networking implements Editable<NetworkingBuilder>, KubernetesResour
     private List<MachineNetworkEntry> machineNetwork = new ArrayList<>();
     @JsonProperty("networkType")
     private String networkType;
+    @JsonProperty("ovnKubernetesConfig")
+    private OVNKubernetesConfig ovnKubernetesConfig;
     @JsonProperty("serviceCIDR")
     private String serviceCIDR;
     @JsonProperty("serviceNetwork")
@@ -106,7 +109,7 @@ public class Networking implements Editable<NetworkingBuilder>, KubernetesResour
     public Networking() {
     }
 
-    public Networking(List<ClusterNetworkEntry> clusterNetwork, Long clusterNetworkMTU, List<ClusterNetworkEntry> clusterNetworkList, String machineCIDR, List<MachineNetworkEntry> machineNetwork, String networkType, String serviceCIDR, List<String> serviceNetwork, String type) {
+    public Networking(List<ClusterNetworkEntry> clusterNetwork, Long clusterNetworkMTU, List<ClusterNetworkEntry> clusterNetworkList, String machineCIDR, List<MachineNetworkEntry> machineNetwork, String networkType, OVNKubernetesConfig ovnKubernetesConfig, String serviceCIDR, List<String> serviceNetwork, String type) {
         super();
         this.clusterNetwork = clusterNetwork;
         this.clusterNetworkMTU = clusterNetworkMTU;
@@ -114,6 +117,7 @@ public class Networking implements Editable<NetworkingBuilder>, KubernetesResour
         this.machineCIDR = machineCIDR;
         this.machineNetwork = machineNetwork;
         this.networkType = networkType;
+        this.ovnKubernetesConfig = ovnKubernetesConfig;
         this.serviceCIDR = serviceCIDR;
         this.serviceNetwork = serviceNetwork;
         this.type = type;
@@ -216,6 +220,22 @@ public class Networking implements Editable<NetworkingBuilder>, KubernetesResour
     @JsonProperty("networkType")
     public void setNetworkType(String networkType) {
         this.networkType = networkType;
+    }
+
+    /**
+     * Networking defines the pod network provider in the cluster.
+     */
+    @JsonProperty("ovnKubernetesConfig")
+    public OVNKubernetesConfig getOvnKubernetesConfig() {
+        return ovnKubernetesConfig;
+    }
+
+    /**
+     * Networking defines the pod network provider in the cluster.
+     */
+    @JsonProperty("ovnKubernetesConfig")
+    public void setOvnKubernetesConfig(OVNKubernetesConfig ovnKubernetesConfig) {
+        this.ovnKubernetesConfig = ovnKubernetesConfig;
     }
 
     /**

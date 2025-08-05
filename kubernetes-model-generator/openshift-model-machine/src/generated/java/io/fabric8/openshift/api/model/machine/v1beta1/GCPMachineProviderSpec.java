@@ -215,7 +215,7 @@ public class GCPMachineProviderSpec implements Editable<GCPMachineProviderSpecBu
     }
 
     /**
-     * CanIPForward Allows this instance to send and receive packets with non-matching destination or source IPs. This is required if you plan to use this instance to forward routes.
+     * canIPForward Allows this instance to send and receive packets with non-matching destination or source IPs. This is required if you plan to use this instance to forward routes.
      */
     @JsonProperty("canIPForward")
     public Boolean getCanIPForward() {
@@ -223,7 +223,7 @@ public class GCPMachineProviderSpec implements Editable<GCPMachineProviderSpecBu
     }
 
     /**
-     * CanIPForward Allows this instance to send and receive packets with non-matching destination or source IPs. This is required if you plan to use this instance to forward routes.
+     * canIPForward Allows this instance to send and receive packets with non-matching destination or source IPs. This is required if you plan to use this instance to forward routes.
      */
     @JsonProperty("canIPForward")
     public void setCanIPForward(Boolean canIPForward) {
@@ -231,7 +231,7 @@ public class GCPMachineProviderSpec implements Editable<GCPMachineProviderSpecBu
     }
 
     /**
-     * confidentialCompute Defines whether the instance should have confidential compute enabled. If enabled OnHostMaintenance is required to be set to "Terminate". If omitted, the platform chooses a default, which is subject to change over time, currently that default is false.
+     * confidentialCompute is an optional field defining whether the instance should have confidential compute enabled or not, and the confidential computing technology of choice. Allowed values are omitted, Disabled, Enabled, AMDEncryptedVirtualization, AMDEncryptedVirtualizationNestedPaging, and IntelTrustedDomainExtensions When set to Disabled, the machine will not be configured to be a confidential computing instance. When set to Enabled, the machine will be configured as a confidential computing instance with no preference on the confidential compute policy used. In this mode, the platform chooses a default that is subject to change over time. Currently, the default is to use AMD Secure Encrypted Virtualization. When set to AMDEncryptedVirtualization, the machine will be configured as a confidential computing instance with AMD Secure Encrypted Virtualization (AMD SEV) as the confidential computing technology. When set to AMDEncryptedVirtualizationNestedPaging, the machine will be configured as a confidential computing instance with AMD Secure Encrypted Virtualization Secure Nested Paging (AMD SEV-SNP) as the confidential computing technology. When set to IntelTrustedDomainExtensions, the machine will be configured as a confidential computing instance with Intel Trusted Domain Extensions (Intel TDX) as the confidential computing technology. If any value other than Disabled is set the selected machine type must support that specific confidential computing technology. The machine series supporting confidential computing technologies can be checked at https://cloud.google.com/confidential-computing/confidential-vm/docs/supported-configurations#all-confidential-vm-instances Currently, AMDEncryptedVirtualization is supported in c2d, n2d, and c3d machines. AMDEncryptedVirtualizationNestedPaging is supported in n2d machines. IntelTrustedDomainExtensions is supported in c3 machines. If any value other than Disabled is set, the selected region must support that specific confidential computing technology. The list of regions supporting confidential computing technologies can be checked at https://cloud.google.com/confidential-computing/confidential-vm/docs/supported-configurations#supported-zones If any value other than Disabled is set onHostMaintenance is required to be set to "Terminate". If omitted, the platform chooses a default, which is subject to change over time, currently that default is Disabled.
      */
     @JsonProperty("confidentialCompute")
     public String getConfidentialCompute() {
@@ -239,7 +239,7 @@ public class GCPMachineProviderSpec implements Editable<GCPMachineProviderSpecBu
     }
 
     /**
-     * confidentialCompute Defines whether the instance should have confidential compute enabled. If enabled OnHostMaintenance is required to be set to "Terminate". If omitted, the platform chooses a default, which is subject to change over time, currently that default is false.
+     * confidentialCompute is an optional field defining whether the instance should have confidential compute enabled or not, and the confidential computing technology of choice. Allowed values are omitted, Disabled, Enabled, AMDEncryptedVirtualization, AMDEncryptedVirtualizationNestedPaging, and IntelTrustedDomainExtensions When set to Disabled, the machine will not be configured to be a confidential computing instance. When set to Enabled, the machine will be configured as a confidential computing instance with no preference on the confidential compute policy used. In this mode, the platform chooses a default that is subject to change over time. Currently, the default is to use AMD Secure Encrypted Virtualization. When set to AMDEncryptedVirtualization, the machine will be configured as a confidential computing instance with AMD Secure Encrypted Virtualization (AMD SEV) as the confidential computing technology. When set to AMDEncryptedVirtualizationNestedPaging, the machine will be configured as a confidential computing instance with AMD Secure Encrypted Virtualization Secure Nested Paging (AMD SEV-SNP) as the confidential computing technology. When set to IntelTrustedDomainExtensions, the machine will be configured as a confidential computing instance with Intel Trusted Domain Extensions (Intel TDX) as the confidential computing technology. If any value other than Disabled is set the selected machine type must support that specific confidential computing technology. The machine series supporting confidential computing technologies can be checked at https://cloud.google.com/confidential-computing/confidential-vm/docs/supported-configurations#all-confidential-vm-instances Currently, AMDEncryptedVirtualization is supported in c2d, n2d, and c3d machines. AMDEncryptedVirtualizationNestedPaging is supported in n2d machines. IntelTrustedDomainExtensions is supported in c3 machines. If any value other than Disabled is set, the selected region must support that specific confidential computing technology. The list of regions supporting confidential computing technologies can be checked at https://cloud.google.com/confidential-computing/confidential-vm/docs/supported-configurations#supported-zones If any value other than Disabled is set onHostMaintenance is required to be set to "Terminate". If omitted, the platform chooses a default, which is subject to change over time, currently that default is Disabled.
      */
     @JsonProperty("confidentialCompute")
     public void setConfidentialCompute(String confidentialCompute) {
@@ -263,7 +263,7 @@ public class GCPMachineProviderSpec implements Editable<GCPMachineProviderSpecBu
     }
 
     /**
-     * DeletionProtection whether the resource should be protected against deletion.
+     * deletionProtection whether the resource should be protected against deletion.
      */
     @JsonProperty("deletionProtection")
     public Boolean getDeletionProtection() {
@@ -271,7 +271,7 @@ public class GCPMachineProviderSpec implements Editable<GCPMachineProviderSpecBu
     }
 
     /**
-     * DeletionProtection whether the resource should be protected against deletion.
+     * deletionProtection whether the resource should be protected against deletion.
      */
     @JsonProperty("deletionProtection")
     public void setDeletionProtection(Boolean deletionProtection) {
@@ -279,7 +279,7 @@ public class GCPMachineProviderSpec implements Editable<GCPMachineProviderSpecBu
     }
 
     /**
-     * Disks is a list of disks to be attached to the VM.
+     * disks is a list of disks to be attached to the VM.
      */
     @JsonProperty("disks")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -288,7 +288,7 @@ public class GCPMachineProviderSpec implements Editable<GCPMachineProviderSpecBu
     }
 
     /**
-     * Disks is a list of disks to be attached to the VM.
+     * disks is a list of disks to be attached to the VM.
      */
     @JsonProperty("disks")
     public void setDisks(List<GCPDisk> disks) {
@@ -313,7 +313,7 @@ public class GCPMachineProviderSpec implements Editable<GCPMachineProviderSpecBu
     }
 
     /**
-     * GPUs is a list of GPUs to be attached to the VM.
+     * gpus is a list of GPUs to be attached to the VM.
      */
     @JsonProperty("gpus")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -322,7 +322,7 @@ public class GCPMachineProviderSpec implements Editable<GCPMachineProviderSpecBu
     }
 
     /**
-     * GPUs is a list of GPUs to be attached to the VM.
+     * gpus is a list of GPUs to be attached to the VM.
      */
     @JsonProperty("gpus")
     public void setGpus(List<GCPGPUConfig> gpus) {
@@ -346,7 +346,7 @@ public class GCPMachineProviderSpec implements Editable<GCPMachineProviderSpecBu
     }
 
     /**
-     * Labels list of labels to apply to the VM.
+     * labels list of labels to apply to the VM.
      */
     @JsonProperty("labels")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -355,7 +355,7 @@ public class GCPMachineProviderSpec implements Editable<GCPMachineProviderSpecBu
     }
 
     /**
-     * Labels list of labels to apply to the VM.
+     * labels list of labels to apply to the VM.
      */
     @JsonProperty("labels")
     public void setLabels(Map<String, String> labels) {
@@ -363,7 +363,7 @@ public class GCPMachineProviderSpec implements Editable<GCPMachineProviderSpecBu
     }
 
     /**
-     * MachineType is the machine type to use for the VM.
+     * machineType is the machine type to use for the VM.
      */
     @JsonProperty("machineType")
     public String getMachineType() {
@@ -371,7 +371,7 @@ public class GCPMachineProviderSpec implements Editable<GCPMachineProviderSpecBu
     }
 
     /**
-     * MachineType is the machine type to use for the VM.
+     * machineType is the machine type to use for the VM.
      */
     @JsonProperty("machineType")
     public void setMachineType(String machineType) {
@@ -395,7 +395,7 @@ public class GCPMachineProviderSpec implements Editable<GCPMachineProviderSpecBu
     }
 
     /**
-     * NetworkInterfaces is a list of network interfaces to be attached to the VM.
+     * networkInterfaces is a list of network interfaces to be attached to the VM.
      */
     @JsonProperty("networkInterfaces")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -404,7 +404,7 @@ public class GCPMachineProviderSpec implements Editable<GCPMachineProviderSpecBu
     }
 
     /**
-     * NetworkInterfaces is a list of network interfaces to be attached to the VM.
+     * networkInterfaces is a list of network interfaces to be attached to the VM.
      */
     @JsonProperty("networkInterfaces")
     public void setNetworkInterfaces(List<GCPNetworkInterface> networkInterfaces) {
@@ -412,7 +412,7 @@ public class GCPMachineProviderSpec implements Editable<GCPMachineProviderSpecBu
     }
 
     /**
-     * OnHostMaintenance determines the behavior when a maintenance event occurs that might cause the instance to reboot. This is required to be set to "Terminate" if you want to provision machine with attached GPUs. Otherwise, allowed values are "Migrate" and "Terminate". If omitted, the platform chooses a default, which is subject to change over time, currently that default is "Migrate".
+     * onHostMaintenance determines the behavior when a maintenance event occurs that might cause the instance to reboot. This is required to be set to "Terminate" if you want to provision machine with attached GPUs. Otherwise, allowed values are "Migrate" and "Terminate". If omitted, the platform chooses a default, which is subject to change over time, currently that default is "Migrate".
      */
     @JsonProperty("onHostMaintenance")
     public String getOnHostMaintenance() {
@@ -420,7 +420,7 @@ public class GCPMachineProviderSpec implements Editable<GCPMachineProviderSpecBu
     }
 
     /**
-     * OnHostMaintenance determines the behavior when a maintenance event occurs that might cause the instance to reboot. This is required to be set to "Terminate" if you want to provision machine with attached GPUs. Otherwise, allowed values are "Migrate" and "Terminate". If omitted, the platform chooses a default, which is subject to change over time, currently that default is "Migrate".
+     * onHostMaintenance determines the behavior when a maintenance event occurs that might cause the instance to reboot. This is required to be set to "Terminate" if you want to provision machine with attached GPUs. Otherwise, allowed values are "Migrate" and "Terminate". If omitted, the platform chooses a default, which is subject to change over time, currently that default is "Migrate".
      */
     @JsonProperty("onHostMaintenance")
     public void setOnHostMaintenance(String onHostMaintenance) {
@@ -428,7 +428,7 @@ public class GCPMachineProviderSpec implements Editable<GCPMachineProviderSpecBu
     }
 
     /**
-     * Preemptible indicates if created instance is preemptible.
+     * preemptible indicates if created instance is preemptible.
      */
     @JsonProperty("preemptible")
     public Boolean getPreemptible() {
@@ -436,7 +436,7 @@ public class GCPMachineProviderSpec implements Editable<GCPMachineProviderSpecBu
     }
 
     /**
-     * Preemptible indicates if created instance is preemptible.
+     * preemptible indicates if created instance is preemptible.
      */
     @JsonProperty("preemptible")
     public void setPreemptible(Boolean preemptible) {
@@ -444,7 +444,7 @@ public class GCPMachineProviderSpec implements Editable<GCPMachineProviderSpecBu
     }
 
     /**
-     * ProjectID is the project in which the GCP machine provider will create the VM.
+     * projectID is the project in which the GCP machine provider will create the VM.
      */
     @JsonProperty("projectID")
     public String getProjectID() {
@@ -452,7 +452,7 @@ public class GCPMachineProviderSpec implements Editable<GCPMachineProviderSpecBu
     }
 
     /**
-     * ProjectID is the project in which the GCP machine provider will create the VM.
+     * projectID is the project in which the GCP machine provider will create the VM.
      */
     @JsonProperty("projectID")
     public void setProjectID(String projectID) {
@@ -460,7 +460,7 @@ public class GCPMachineProviderSpec implements Editable<GCPMachineProviderSpecBu
     }
 
     /**
-     * Region is the region in which the GCP machine provider will create the VM.
+     * region is the region in which the GCP machine provider will create the VM.
      */
     @JsonProperty("region")
     public String getRegion() {
@@ -468,7 +468,7 @@ public class GCPMachineProviderSpec implements Editable<GCPMachineProviderSpecBu
     }
 
     /**
-     * Region is the region in which the GCP machine provider will create the VM.
+     * region is the region in which the GCP machine provider will create the VM.
      */
     @JsonProperty("region")
     public void setRegion(String region) {
@@ -493,7 +493,7 @@ public class GCPMachineProviderSpec implements Editable<GCPMachineProviderSpecBu
     }
 
     /**
-     * RestartPolicy determines the behavior when an instance crashes or the underlying infrastructure provider stops the instance as part of a maintenance event (default "Always"). Cannot be "Always" with preemptible instances. Otherwise, allowed values are "Always" and "Never". If omitted, the platform chooses a default, which is subject to change over time, currently that default is "Always". RestartPolicy represents AutomaticRestart in GCP compute api
+     * restartPolicy determines the behavior when an instance crashes or the underlying infrastructure provider stops the instance as part of a maintenance event (default "Always"). Cannot be "Always" with preemptible instances. Otherwise, allowed values are "Always" and "Never". If omitted, the platform chooses a default, which is subject to change over time, currently that default is "Always". RestartPolicy represents AutomaticRestart in GCP compute api
      */
     @JsonProperty("restartPolicy")
     public String getRestartPolicy() {
@@ -501,7 +501,7 @@ public class GCPMachineProviderSpec implements Editable<GCPMachineProviderSpecBu
     }
 
     /**
-     * RestartPolicy determines the behavior when an instance crashes or the underlying infrastructure provider stops the instance as part of a maintenance event (default "Always"). Cannot be "Always" with preemptible instances. Otherwise, allowed values are "Always" and "Never". If omitted, the platform chooses a default, which is subject to change over time, currently that default is "Always". RestartPolicy represents AutomaticRestart in GCP compute api
+     * restartPolicy determines the behavior when an instance crashes or the underlying infrastructure provider stops the instance as part of a maintenance event (default "Always"). Cannot be "Always" with preemptible instances. Otherwise, allowed values are "Always" and "Never". If omitted, the platform chooses a default, which is subject to change over time, currently that default is "Always". RestartPolicy represents AutomaticRestart in GCP compute api
      */
     @JsonProperty("restartPolicy")
     public void setRestartPolicy(String restartPolicy) {
@@ -509,7 +509,7 @@ public class GCPMachineProviderSpec implements Editable<GCPMachineProviderSpecBu
     }
 
     /**
-     * ServiceAccounts is a list of GCP service accounts to be used by the VM.
+     * serviceAccounts is a list of GCP service accounts to be used by the VM.
      */
     @JsonProperty("serviceAccounts")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -518,7 +518,7 @@ public class GCPMachineProviderSpec implements Editable<GCPMachineProviderSpecBu
     }
 
     /**
-     * ServiceAccounts is a list of GCP service accounts to be used by the VM.
+     * serviceAccounts is a list of GCP service accounts to be used by the VM.
      */
     @JsonProperty("serviceAccounts")
     public void setServiceAccounts(List<GCPServiceAccount> serviceAccounts) {
@@ -542,7 +542,7 @@ public class GCPMachineProviderSpec implements Editable<GCPMachineProviderSpecBu
     }
 
     /**
-     * Tags list of network tags to apply to the VM.
+     * tags list of network tags to apply to the VM.
      */
     @JsonProperty("tags")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -551,7 +551,7 @@ public class GCPMachineProviderSpec implements Editable<GCPMachineProviderSpecBu
     }
 
     /**
-     * Tags list of network tags to apply to the VM.
+     * tags list of network tags to apply to the VM.
      */
     @JsonProperty("tags")
     public void setTags(List<String> tags) {
@@ -559,7 +559,7 @@ public class GCPMachineProviderSpec implements Editable<GCPMachineProviderSpecBu
     }
 
     /**
-     * TargetPools are used for network TCP/UDP load balancing. A target pool references member instances, an associated legacy HttpHealthCheck resource, and, optionally, a backup target pool
+     * targetPools are used for network TCP/UDP load balancing. A target pool references member instances, an associated legacy HttpHealthCheck resource, and, optionally, a backup target pool
      */
     @JsonProperty("targetPools")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -568,7 +568,7 @@ public class GCPMachineProviderSpec implements Editable<GCPMachineProviderSpecBu
     }
 
     /**
-     * TargetPools are used for network TCP/UDP load balancing. A target pool references member instances, an associated legacy HttpHealthCheck resource, and, optionally, a backup target pool
+     * targetPools are used for network TCP/UDP load balancing. A target pool references member instances, an associated legacy HttpHealthCheck resource, and, optionally, a backup target pool
      */
     @JsonProperty("targetPools")
     public void setTargetPools(List<String> targetPools) {
@@ -592,7 +592,7 @@ public class GCPMachineProviderSpec implements Editable<GCPMachineProviderSpecBu
     }
 
     /**
-     * Zone is the zone in which the GCP machine provider will create the VM.
+     * zone is the zone in which the GCP machine provider will create the VM.
      */
     @JsonProperty("zone")
     public String getZone() {
@@ -600,7 +600,7 @@ public class GCPMachineProviderSpec implements Editable<GCPMachineProviderSpecBu
     }
 
     /**
-     * Zone is the zone in which the GCP machine provider will create the VM.
+     * zone is the zone in which the GCP machine provider will create the VM.
      */
     @JsonProperty("zone")
     public void setZone(String zone) {

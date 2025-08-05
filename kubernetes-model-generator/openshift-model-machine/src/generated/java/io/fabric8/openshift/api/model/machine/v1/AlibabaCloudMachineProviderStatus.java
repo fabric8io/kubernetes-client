@@ -132,7 +132,7 @@ public class AlibabaCloudMachineProviderStatus implements Editable<AlibabaCloudM
     }
 
     /**
-     * Conditions is a set of conditions associated with the Machine to indicate errors or other status
+     * conditions is a set of conditions associated with the Machine to indicate errors or other status
      */
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -141,7 +141,7 @@ public class AlibabaCloudMachineProviderStatus implements Editable<AlibabaCloudM
     }
 
     /**
-     * Conditions is a set of conditions associated with the Machine to indicate errors or other status
+     * conditions is a set of conditions associated with the Machine to indicate errors or other status
      */
     @JsonProperty("conditions")
     public void setConditions(List<Condition> conditions) {
@@ -149,7 +149,7 @@ public class AlibabaCloudMachineProviderStatus implements Editable<AlibabaCloudM
     }
 
     /**
-     * InstanceID is the instance ID of the machine created in alibabacloud
+     * instanceId is the instance ID of the machine created in alibabacloud
      */
     @JsonProperty("instanceId")
     public String getInstanceId() {
@@ -157,7 +157,7 @@ public class AlibabaCloudMachineProviderStatus implements Editable<AlibabaCloudM
     }
 
     /**
-     * InstanceID is the instance ID of the machine created in alibabacloud
+     * instanceId is the instance ID of the machine created in alibabacloud
      */
     @JsonProperty("instanceId")
     public void setInstanceId(String instanceId) {
@@ -165,7 +165,7 @@ public class AlibabaCloudMachineProviderStatus implements Editable<AlibabaCloudM
     }
 
     /**
-     * InstanceState is the state of the alibabacloud instance for this machine
+     * instanceState is the state of the alibabacloud instance for this machine
      */
     @JsonProperty("instanceState")
     public String getInstanceState() {
@@ -173,7 +173,7 @@ public class AlibabaCloudMachineProviderStatus implements Editable<AlibabaCloudM
     }
 
     /**
-     * InstanceState is the state of the alibabacloud instance for this machine
+     * instanceState is the state of the alibabacloud instance for this machine
      */
     @JsonProperty("instanceState")
     public void setInstanceState(String instanceState) {

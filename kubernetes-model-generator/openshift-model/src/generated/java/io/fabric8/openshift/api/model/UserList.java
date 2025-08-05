@@ -123,7 +123,7 @@ public class UserList implements Editable<UserListBuilder>, KubernetesResource, 
     }
 
     /**
-     * Items is the list of users
+     * items is the list of users
      */
     @JsonProperty("items")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -132,7 +132,7 @@ public class UserList implements Editable<UserListBuilder>, KubernetesResource, 
     }
 
     /**
-     * Items is the list of users
+     * items is the list of users
      */
     @JsonProperty("items")
     public void setItems(List<io.fabric8.openshift.api.model.User> items) {

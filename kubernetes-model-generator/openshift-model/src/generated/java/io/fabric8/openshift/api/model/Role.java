@@ -154,7 +154,7 @@ public class Role implements Editable<RoleBuilder>, HasMetadata, Namespaced
     }
 
     /**
-     * Rules holds all the PolicyRules for this Role
+     * rules holds all the PolicyRules for this Role
      */
     @JsonProperty("rules")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -163,7 +163,7 @@ public class Role implements Editable<RoleBuilder>, HasMetadata, Namespaced
     }
 
     /**
-     * Rules holds all the PolicyRules for this Role
+     * rules holds all the PolicyRules for this Role
      */
     @JsonProperty("rules")
     public void setRules(List<PolicyRule> rules) {

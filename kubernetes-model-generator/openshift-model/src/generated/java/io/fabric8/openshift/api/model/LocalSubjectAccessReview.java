@@ -185,7 +185,7 @@ public class LocalSubjectAccessReview implements Editable<LocalSubjectAccessRevi
     }
 
     /**
-     * Groups is optional.  Groups is the list of groups to which the User belongs.
+     * groups is optional.  Groups is the list of groups to which the User belongs.
      */
     @JsonProperty("groups")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -194,7 +194,7 @@ public class LocalSubjectAccessReview implements Editable<LocalSubjectAccessRevi
     }
 
     /**
-     * Groups is optional.  Groups is the list of groups to which the User belongs.
+     * groups is optional.  Groups is the list of groups to which the User belongs.
      */
     @JsonProperty("groups")
     public void setGroups(List<String> groups) {
@@ -202,7 +202,7 @@ public class LocalSubjectAccessReview implements Editable<LocalSubjectAccessRevi
     }
 
     /**
-     * IsNonResourceURL is true if this is a request for a non-resource URL (outside of the resource hierarchy)
+     * isNonResourceURL is true if this is a request for a non-resource URL (outside of the resource hierarchy)
      */
     @JsonProperty("isNonResourceURL")
     public Boolean getIsNonResourceURL() {
@@ -210,7 +210,7 @@ public class LocalSubjectAccessReview implements Editable<LocalSubjectAccessRevi
     }
 
     /**
-     * IsNonResourceURL is true if this is a request for a non-resource URL (outside of the resource hierarchy)
+     * isNonResourceURL is true if this is a request for a non-resource URL (outside of the resource hierarchy)
      */
     @JsonProperty("isNonResourceURL")
     public void setIsNonResourceURL(Boolean isNonResourceURL) {
@@ -250,7 +250,7 @@ public class LocalSubjectAccessReview implements Editable<LocalSubjectAccessRevi
     }
 
     /**
-     * Namespace is the namespace of the action being requested.  Currently, there is no distinction between no namespace and all namespaces
+     * namespace is the namespace of the action being requested.  Currently, there is no distinction between no namespace and all namespaces
      */
     @JsonProperty("namespace")
     public String getNamespace() {
@@ -258,7 +258,7 @@ public class LocalSubjectAccessReview implements Editable<LocalSubjectAccessRevi
     }
 
     /**
-     * Namespace is the namespace of the action being requested.  Currently, there is no distinction between no namespace and all namespaces
+     * namespace is the namespace of the action being requested.  Currently, there is no distinction between no namespace and all namespaces
      */
     @JsonProperty("namespace")
     public void setNamespace(String namespace) {
@@ -266,7 +266,7 @@ public class LocalSubjectAccessReview implements Editable<LocalSubjectAccessRevi
     }
 
     /**
-     * Path is the path of a non resource URL
+     * path is the path of a non resource URL
      */
     @JsonProperty("path")
     public String getPath() {
@@ -274,7 +274,7 @@ public class LocalSubjectAccessReview implements Editable<LocalSubjectAccessRevi
     }
 
     /**
-     * Path is the path of a non resource URL
+     * path is the path of a non resource URL
      */
     @JsonProperty("path")
     public void setPath(String path) {
@@ -282,7 +282,7 @@ public class LocalSubjectAccessReview implements Editable<LocalSubjectAccessRevi
     }
 
     /**
-     * Resource is one of the existing resource types
+     * resource is one of the existing resource types
      */
     @JsonProperty("resource")
     public String getResource() {
@@ -290,7 +290,7 @@ public class LocalSubjectAccessReview implements Editable<LocalSubjectAccessRevi
     }
 
     /**
-     * Resource is one of the existing resource types
+     * resource is one of the existing resource types
      */
     @JsonProperty("resource")
     public void setResource(String resource) {
@@ -330,7 +330,7 @@ public class LocalSubjectAccessReview implements Editable<LocalSubjectAccessRevi
     }
 
     /**
-     * ResourceName is the name of the resource being requested for a "get" or deleted for a "delete"
+     * resourceName is the name of the resource being requested for a "get" or deleted for a "delete"
      */
     @JsonProperty("resourceName")
     public String getResourceName() {
@@ -338,7 +338,7 @@ public class LocalSubjectAccessReview implements Editable<LocalSubjectAccessRevi
     }
 
     /**
-     * ResourceName is the name of the resource being requested for a "get" or deleted for a "delete"
+     * resourceName is the name of the resource being requested for a "get" or deleted for a "delete"
      */
     @JsonProperty("resourceName")
     public void setResourceName(String resourceName) {
@@ -346,7 +346,7 @@ public class LocalSubjectAccessReview implements Editable<LocalSubjectAccessRevi
     }
 
     /**
-     * Scopes to use for the evaluation.  Empty means "use the unscoped (full) permissions of the user/groups". Nil for a self-SAR, means "use the scopes on this request". Nil for a regular SAR, means the same as empty.
+     * scopes to use for the evaluation.  Empty means "use the unscoped (full) permissions of the user/groups". Nil for a self-SAR, means "use the scopes on this request". Nil for a regular SAR, means the same as empty.
      */
     @JsonProperty("scopes")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -355,7 +355,7 @@ public class LocalSubjectAccessReview implements Editable<LocalSubjectAccessRevi
     }
 
     /**
-     * Scopes to use for the evaluation.  Empty means "use the unscoped (full) permissions of the user/groups". Nil for a self-SAR, means "use the scopes on this request". Nil for a regular SAR, means the same as empty.
+     * scopes to use for the evaluation.  Empty means "use the unscoped (full) permissions of the user/groups". Nil for a self-SAR, means "use the scopes on this request". Nil for a regular SAR, means the same as empty.
      */
     @JsonProperty("scopes")
     public void setScopes(List<String> scopes) {
@@ -363,7 +363,7 @@ public class LocalSubjectAccessReview implements Editable<LocalSubjectAccessRevi
     }
 
     /**
-     * User is optional.  If both User and Groups are empty, the current authenticated user is used.
+     * user is optional.  If both User and Groups are empty, the current authenticated user is used.
      */
     @JsonProperty("user")
     public String getUser() {
@@ -371,7 +371,7 @@ public class LocalSubjectAccessReview implements Editable<LocalSubjectAccessRevi
     }
 
     /**
-     * User is optional.  If both User and Groups are empty, the current authenticated user is used.
+     * user is optional.  If both User and Groups are empty, the current authenticated user is used.
      */
     @JsonProperty("user")
     public void setUser(String user) {
@@ -379,7 +379,7 @@ public class LocalSubjectAccessReview implements Editable<LocalSubjectAccessRevi
     }
 
     /**
-     * Verb is one of: get, list, watch, create, update, delete
+     * verb is one of: get, list, watch, create, update, delete
      */
     @JsonProperty("verb")
     public String getVerb() {
@@ -387,7 +387,7 @@ public class LocalSubjectAccessReview implements Editable<LocalSubjectAccessRevi
     }
 
     /**
-     * Verb is one of: get, list, watch, create, update, delete
+     * verb is one of: get, list, watch, create, update, delete
      */
     @JsonProperty("verb")
     public void setVerb(String verb) {

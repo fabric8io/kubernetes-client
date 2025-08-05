@@ -84,7 +84,7 @@ public class ProjectSpec implements Editable<ProjectSpecBuilder>, KubernetesReso
     }
 
     /**
-     * Finalizers is an opaque list of values that must be empty to permanently remove object from storage
+     * finalizers is an opaque list of values that must be empty to permanently remove object from storage
      */
     @JsonProperty("finalizers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -93,7 +93,7 @@ public class ProjectSpec implements Editable<ProjectSpecBuilder>, KubernetesReso
     }
 
     /**
-     * Finalizers is an opaque list of values that must be empty to permanently remove object from storage
+     * finalizers is an opaque list of values that must be empty to permanently remove object from storage
      */
     @JsonProperty("finalizers")
     public void setFinalizers(List<String> finalizers) {

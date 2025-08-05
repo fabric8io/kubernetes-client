@@ -57,6 +57,7 @@ import lombok.experimental.Accessors;
     "instanceType",
     "keyName",
     "loadBalancers",
+    "marketType",
     "metadataServiceOptions",
     "networkInterfaceType",
     "placement",
@@ -123,6 +124,8 @@ public class AWSMachineProviderConfig implements Editable<AWSMachineProviderConf
     @JsonProperty("loadBalancers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<LoadBalancerReference> loadBalancers = new ArrayList<>();
+    @JsonProperty("marketType")
+    private String marketType;
     @JsonProperty("metadata")
     private ObjectMeta metadata;
     @JsonProperty("metadataServiceOptions")
@@ -158,7 +161,7 @@ public class AWSMachineProviderConfig implements Editable<AWSMachineProviderConf
     public AWSMachineProviderConfig() {
     }
 
-    public AWSMachineProviderConfig(AWSResourceReference ami, String apiVersion, List<BlockDeviceMappingSpec> blockDevices, String capacityReservationId, LocalObjectReference credentialsSecret, Long deviceIndex, AWSResourceReference iamInstanceProfile, String instanceType, String keyName, String kind, List<LoadBalancerReference> loadBalancers, ObjectMeta metadata, MetadataServiceOptions metadataServiceOptions, String networkInterfaceType, Placement placement, String placementGroupName, Integer placementGroupPartition, Boolean publicIp, List<AWSResourceReference> securityGroups, SpotMarketOptions spotMarketOptions, AWSResourceReference subnet, List<TagSpecification> tags, LocalObjectReference userDataSecret) {
+    public AWSMachineProviderConfig(AWSResourceReference ami, String apiVersion, List<BlockDeviceMappingSpec> blockDevices, String capacityReservationId, LocalObjectReference credentialsSecret, Long deviceIndex, AWSResourceReference iamInstanceProfile, String instanceType, String keyName, String kind, List<LoadBalancerReference> loadBalancers, String marketType, ObjectMeta metadata, MetadataServiceOptions metadataServiceOptions, String networkInterfaceType, Placement placement, String placementGroupName, Integer placementGroupPartition, Boolean publicIp, List<AWSResourceReference> securityGroups, SpotMarketOptions spotMarketOptions, AWSResourceReference subnet, List<TagSpecification> tags, LocalObjectReference userDataSecret) {
         super();
         this.ami = ami;
         this.apiVersion = apiVersion;
@@ -171,6 +174,7 @@ public class AWSMachineProviderConfig implements Editable<AWSMachineProviderConf
         this.keyName = keyName;
         this.kind = kind;
         this.loadBalancers = loadBalancers;
+        this.marketType = marketType;
         this.metadata = metadata;
         this.metadataServiceOptions = metadataServiceOptions;
         this.networkInterfaceType = networkInterfaceType;
@@ -218,7 +222,7 @@ public class AWSMachineProviderConfig implements Editable<AWSMachineProviderConf
     }
 
     /**
-     * BlockDevices is the set of block device mapping associated to this instance, block device without a name will be used as a root device and only one device without a name is allowed https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/block-device-mapping-concepts.html
+     * blockDevices is the set of block device mapping associated to this instance, block device without a name will be used as a root device and only one device without a name is allowed https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/block-device-mapping-concepts.html
      */
     @JsonProperty("blockDevices")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -227,7 +231,7 @@ public class AWSMachineProviderConfig implements Editable<AWSMachineProviderConf
     }
 
     /**
-     * BlockDevices is the set of block device mapping associated to this instance, block device without a name will be used as a root device and only one device without a name is allowed https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/block-device-mapping-concepts.html
+     * blockDevices is the set of block device mapping associated to this instance, block device without a name will be used as a root device and only one device without a name is allowed https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/block-device-mapping-concepts.html
      */
     @JsonProperty("blockDevices")
     public void setBlockDevices(List<BlockDeviceMappingSpec> blockDevices) {
@@ -267,7 +271,7 @@ public class AWSMachineProviderConfig implements Editable<AWSMachineProviderConf
     }
 
     /**
-     * DeviceIndex is the index of the device on the instance for the network interface attachment. Defaults to 0.
+     * deviceIndex is the index of the device on the instance for the network interface attachment. Defaults to 0.
      */
     @JsonProperty("deviceIndex")
     public Long getDeviceIndex() {
@@ -275,7 +279,7 @@ public class AWSMachineProviderConfig implements Editable<AWSMachineProviderConf
     }
 
     /**
-     * DeviceIndex is the index of the device on the instance for the network interface attachment. Defaults to 0.
+     * deviceIndex is the index of the device on the instance for the network interface attachment. Defaults to 0.
      */
     @JsonProperty("deviceIndex")
     public void setDeviceIndex(Long deviceIndex) {
@@ -299,7 +303,7 @@ public class AWSMachineProviderConfig implements Editable<AWSMachineProviderConf
     }
 
     /**
-     * InstanceType is the type of instance to create. Example: m4.xlarge
+     * instanceType is the type of instance to create. Example: m4.xlarge
      */
     @JsonProperty("instanceType")
     public String getInstanceType() {
@@ -307,7 +311,7 @@ public class AWSMachineProviderConfig implements Editable<AWSMachineProviderConf
     }
 
     /**
-     * InstanceType is the type of instance to create. Example: m4.xlarge
+     * instanceType is the type of instance to create. Example: m4.xlarge
      */
     @JsonProperty("instanceType")
     public void setInstanceType(String instanceType) {
@@ -315,7 +319,7 @@ public class AWSMachineProviderConfig implements Editable<AWSMachineProviderConf
     }
 
     /**
-     * KeyName is the name of the KeyPair to use for SSH
+     * keyName is the name of the KeyPair to use for SSH
      */
     @JsonProperty("keyName")
     public String getKeyName() {
@@ -323,7 +327,7 @@ public class AWSMachineProviderConfig implements Editable<AWSMachineProviderConf
     }
 
     /**
-     * KeyName is the name of the KeyPair to use for SSH
+     * keyName is the name of the KeyPair to use for SSH
      */
     @JsonProperty("keyName")
     public void setKeyName(String keyName) {
@@ -347,7 +351,7 @@ public class AWSMachineProviderConfig implements Editable<AWSMachineProviderConf
     }
 
     /**
-     * LoadBalancers is the set of load balancers to which the new instance should be added once it is created.
+     * loadBalancers is the set of load balancers to which the new instance should be added once it is created.
      */
     @JsonProperty("loadBalancers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -356,11 +360,27 @@ public class AWSMachineProviderConfig implements Editable<AWSMachineProviderConf
     }
 
     /**
-     * LoadBalancers is the set of load balancers to which the new instance should be added once it is created.
+     * loadBalancers is the set of load balancers to which the new instance should be added once it is created.
      */
     @JsonProperty("loadBalancers")
     public void setLoadBalancers(List<LoadBalancerReference> loadBalancers) {
         this.loadBalancers = loadBalancers;
+    }
+
+    /**
+     * marketType specifies the type of market for the EC2 instance. Valid values are OnDemand, Spot, CapacityBlock and omitted.<br><p> <br><p> Defaults to OnDemand. When SpotMarketOptions is provided, the marketType defaults to "Spot".<br><p> <br><p> When set to OnDemand the instance runs as a standard OnDemand instance. When set to Spot the instance runs as a Spot instance. When set to CapacityBlock the instance utilizes pre-purchased compute capacity (capacity blocks) with AWS Capacity Reservations. If this value is selected, capacityReservationID must be specified to identify the target reservation.
+     */
+    @JsonProperty("marketType")
+    public String getMarketType() {
+        return marketType;
+    }
+
+    /**
+     * marketType specifies the type of market for the EC2 instance. Valid values are OnDemand, Spot, CapacityBlock and omitted.<br><p> <br><p> Defaults to OnDemand. When SpotMarketOptions is provided, the marketType defaults to "Spot".<br><p> <br><p> When set to OnDemand the instance runs as a standard OnDemand instance. When set to Spot the instance runs as a Spot instance. When set to CapacityBlock the instance utilizes pre-purchased compute capacity (capacity blocks) with AWS Capacity Reservations. If this value is selected, capacityReservationID must be specified to identify the target reservation.
+     */
+    @JsonProperty("marketType")
+    public void setMarketType(String marketType) {
+        this.marketType = marketType;
     }
 
     /**
@@ -396,7 +416,7 @@ public class AWSMachineProviderConfig implements Editable<AWSMachineProviderConf
     }
 
     /**
-     * NetworkInterfaceType specifies the type of network interface to be used for the primary network interface. Valid values are "ENA", "EFA", and omitted, which means no opinion and the platform chooses a good default which may change over time. The current default value is "ENA". Please visit https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/efa.html to learn more about the AWS Elastic Fabric Adapter interface option.
+     * networkInterfaceType specifies the type of network interface to be used for the primary network interface. Valid values are "ENA", "EFA", and omitted, which means no opinion and the platform chooses a good default which may change over time. The current default value is "ENA". Please visit https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/efa.html to learn more about the AWS Elastic Fabric Adapter interface option.
      */
     @JsonProperty("networkInterfaceType")
     public String getNetworkInterfaceType() {
@@ -404,7 +424,7 @@ public class AWSMachineProviderConfig implements Editable<AWSMachineProviderConf
     }
 
     /**
-     * NetworkInterfaceType specifies the type of network interface to be used for the primary network interface. Valid values are "ENA", "EFA", and omitted, which means no opinion and the platform chooses a good default which may change over time. The current default value is "ENA". Please visit https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/efa.html to learn more about the AWS Elastic Fabric Adapter interface option.
+     * networkInterfaceType specifies the type of network interface to be used for the primary network interface. Valid values are "ENA", "EFA", and omitted, which means no opinion and the platform chooses a good default which may change over time. The current default value is "ENA". Please visit https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/efa.html to learn more about the AWS Elastic Fabric Adapter interface option.
      */
     @JsonProperty("networkInterfaceType")
     public void setNetworkInterfaceType(String networkInterfaceType) {
@@ -428,7 +448,7 @@ public class AWSMachineProviderConfig implements Editable<AWSMachineProviderConf
     }
 
     /**
-     * PlacementGroupName specifies the name of the placement group in which to launch the instance. The placement group must already be created and may use any placement strategy. When omitted, no placement group is used when creating the EC2 instance.
+     * placementGroupName specifies the name of the placement group in which to launch the instance. The placement group must already be created and may use any placement strategy. When omitted, no placement group is used when creating the EC2 instance.
      */
     @JsonProperty("placementGroupName")
     public String getPlacementGroupName() {
@@ -436,7 +456,7 @@ public class AWSMachineProviderConfig implements Editable<AWSMachineProviderConf
     }
 
     /**
-     * PlacementGroupName specifies the name of the placement group in which to launch the instance. The placement group must already be created and may use any placement strategy. When omitted, no placement group is used when creating the EC2 instance.
+     * placementGroupName specifies the name of the placement group in which to launch the instance. The placement group must already be created and may use any placement strategy. When omitted, no placement group is used when creating the EC2 instance.
      */
     @JsonProperty("placementGroupName")
     public void setPlacementGroupName(String placementGroupName) {
@@ -460,7 +480,7 @@ public class AWSMachineProviderConfig implements Editable<AWSMachineProviderConf
     }
 
     /**
-     * PublicIP specifies whether the instance should get a public IP. If not present, it should use the default of its subnet.
+     * publicIp specifies whether the instance should get a public IP. If not present, it should use the default of its subnet.
      */
     @JsonProperty("publicIp")
     public Boolean getPublicIp() {
@@ -468,7 +488,7 @@ public class AWSMachineProviderConfig implements Editable<AWSMachineProviderConf
     }
 
     /**
-     * PublicIP specifies whether the instance should get a public IP. If not present, it should use the default of its subnet.
+     * publicIp specifies whether the instance should get a public IP. If not present, it should use the default of its subnet.
      */
     @JsonProperty("publicIp")
     public void setPublicIp(Boolean publicIp) {
@@ -476,7 +496,7 @@ public class AWSMachineProviderConfig implements Editable<AWSMachineProviderConf
     }
 
     /**
-     * SecurityGroups is an array of references to security groups that should be applied to the instance.
+     * securityGroups is an array of references to security groups that should be applied to the instance.
      */
     @JsonProperty("securityGroups")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -485,7 +505,7 @@ public class AWSMachineProviderConfig implements Editable<AWSMachineProviderConf
     }
 
     /**
-     * SecurityGroups is an array of references to security groups that should be applied to the instance.
+     * securityGroups is an array of references to security groups that should be applied to the instance.
      */
     @JsonProperty("securityGroups")
     public void setSecurityGroups(List<AWSResourceReference> securityGroups) {
@@ -525,7 +545,7 @@ public class AWSMachineProviderConfig implements Editable<AWSMachineProviderConf
     }
 
     /**
-     * Tags is the set of tags to add to apply to an instance, in addition to the ones added by default by the actuator. These tags are additive. The actuator will ensure these tags are present, but will not remove any other tags that may exist on the instance.
+     * tags is the set of tags to add to apply to an instance, in addition to the ones added by default by the actuator. These tags are additive. The actuator will ensure these tags are present, but will not remove any other tags that may exist on the instance.
      */
     @JsonProperty("tags")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -534,7 +554,7 @@ public class AWSMachineProviderConfig implements Editable<AWSMachineProviderConf
     }
 
     /**
-     * Tags is the set of tags to add to apply to an instance, in addition to the ones added by default by the actuator. These tags are additive. The actuator will ensure these tags are present, but will not remove any other tags that may exist on the instance.
+     * tags is the set of tags to add to apply to an instance, in addition to the ones added by default by the actuator. These tags are additive. The actuator will ensure these tags are present, but will not remove any other tags that may exist on the instance.
      */
     @JsonProperty("tags")
     public void setTags(List<TagSpecification> tags) {

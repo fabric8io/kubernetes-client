@@ -130,7 +130,7 @@ public class User implements Editable<UserBuilder>, HasMetadata
     }
 
     /**
-     * FullName is the full name of user
+     * fullName is the full name of user
      */
     @JsonProperty("fullName")
     public String getFullName() {
@@ -138,7 +138,7 @@ public class User implements Editable<UserBuilder>, HasMetadata
     }
 
     /**
-     * FullName is the full name of user
+     * fullName is the full name of user
      */
     @JsonProperty("fullName")
     public void setFullName(String fullName) {
@@ -146,7 +146,7 @@ public class User implements Editable<UserBuilder>, HasMetadata
     }
 
     /**
-     * Groups specifies group names this user is a member of. This field is deprecated and will be removed in a future release. Instead, create a Group object containing the name of this User.
+     * groups specifies group names this user is a member of. This field is deprecated and will be removed in a future release. Instead, create a Group object containing the name of this User.
      */
     @JsonProperty("groups")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -155,7 +155,7 @@ public class User implements Editable<UserBuilder>, HasMetadata
     }
 
     /**
-     * Groups specifies group names this user is a member of. This field is deprecated and will be removed in a future release. Instead, create a Group object containing the name of this User.
+     * groups specifies group names this user is a member of. This field is deprecated and will be removed in a future release. Instead, create a Group object containing the name of this User.
      */
     @JsonProperty("groups")
     public void setGroups(List<String> groups) {
@@ -163,7 +163,7 @@ public class User implements Editable<UserBuilder>, HasMetadata
     }
 
     /**
-     * Identities are the identities associated with this user
+     * identities are the identities associated with this user
      */
     @JsonProperty("identities")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -172,7 +172,7 @@ public class User implements Editable<UserBuilder>, HasMetadata
     }
 
     /**
-     * Identities are the identities associated with this user
+     * identities are the identities associated with this user
      */
     @JsonProperty("identities")
     public void setIdentities(List<String> identities) {

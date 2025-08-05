@@ -125,7 +125,7 @@ public class Update implements Editable<UpdateBuilder>, KubernetesResource
     }
 
     /**
-     * image is a container image location that contains the update. image should be used when the desired version does not exist in availableUpdates or history. When image is set, version is ignored. When image is set, version should be empty. When image is set, architecture cannot be specified.
+     * image is a container image location that contains the update. image should be used when the desired version does not exist in availableUpdates or history. When image is set, architecture cannot be specified. If both version and image are set, the version extracted from the referenced image must match the specified version.
      */
     @JsonProperty("image")
     public String getImage() {
@@ -133,7 +133,7 @@ public class Update implements Editable<UpdateBuilder>, KubernetesResource
     }
 
     /**
-     * image is a container image location that contains the update. image should be used when the desired version does not exist in availableUpdates or history. When image is set, version is ignored. When image is set, version should be empty. When image is set, architecture cannot be specified.
+     * image is a container image location that contains the update. image should be used when the desired version does not exist in availableUpdates or history. When image is set, architecture cannot be specified. If both version and image are set, the version extracted from the referenced image must match the specified version.
      */
     @JsonProperty("image")
     public void setImage(String image) {
@@ -141,7 +141,7 @@ public class Update implements Editable<UpdateBuilder>, KubernetesResource
     }
 
     /**
-     * version is a semantic version identifying the update version. version is ignored if image is specified and required if architecture is specified.
+     * version is a semantic version identifying the update version. version is required if architecture is specified. If both version and image are set, the version extracted from the referenced image must match the specified version.
      */
     @JsonProperty("version")
     public String getVersion() {
@@ -149,7 +149,7 @@ public class Update implements Editable<UpdateBuilder>, KubernetesResource
     }
 
     /**
-     * version is a semantic version identifying the update version. version is ignored if image is specified and required if architecture is specified.
+     * version is a semantic version identifying the update version. version is required if architecture is specified. If both version and image are set, the version extracted from the referenced image must match the specified version.
      */
     @JsonProperty("version")
     public void setVersion(String version) {

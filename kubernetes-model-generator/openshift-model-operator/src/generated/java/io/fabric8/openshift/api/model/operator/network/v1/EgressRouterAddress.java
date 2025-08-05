@@ -102,7 +102,7 @@ public class EgressRouterAddress implements Editable<EgressRouterAddressBuilder>
     }
 
     /**
-     * IP is the address to configure on the router's interface. Can be IPv4 or IPv6.
+     * ip is the address to configure on the router's interface. Can be IPv4 or IPv6.
      */
     @JsonProperty("ip")
     public String getIp() {
@@ -110,7 +110,7 @@ public class EgressRouterAddress implements Editable<EgressRouterAddressBuilder>
     }
 
     /**
-     * IP is the address to configure on the router's interface. Can be IPv4 or IPv6.
+     * ip is the address to configure on the router's interface. Can be IPv4 or IPv6.
      */
     @JsonProperty("ip")
     public void setIp(String ip) {

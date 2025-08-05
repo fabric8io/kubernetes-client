@@ -101,7 +101,7 @@ public class TagEventCondition implements Editable<TagEventConditionBuilder>, Ku
     }
 
     /**
-     * Generation is the spec tag generation that this status corresponds to
+     * generation is the spec tag generation that this status corresponds to
      */
     @JsonProperty("generation")
     public Long getGeneration() {
@@ -109,7 +109,7 @@ public class TagEventCondition implements Editable<TagEventConditionBuilder>, Ku
     }
 
     /**
-     * Generation is the spec tag generation that this status corresponds to
+     * generation is the spec tag generation that this status corresponds to
      */
     @JsonProperty("generation")
     public void setGeneration(Long generation) {
@@ -133,7 +133,7 @@ public class TagEventCondition implements Editable<TagEventConditionBuilder>, Ku
     }
 
     /**
-     * Message is a human readable description of the details about last transition, complementing reason.
+     * message is a human readable description of the details about last transition, complementing reason.
      */
     @JsonProperty("message")
     public String getMessage() {
@@ -141,7 +141,7 @@ public class TagEventCondition implements Editable<TagEventConditionBuilder>, Ku
     }
 
     /**
-     * Message is a human readable description of the details about last transition, complementing reason.
+     * message is a human readable description of the details about last transition, complementing reason.
      */
     @JsonProperty("message")
     public void setMessage(String message) {
@@ -149,7 +149,7 @@ public class TagEventCondition implements Editable<TagEventConditionBuilder>, Ku
     }
 
     /**
-     * Reason is a brief machine readable explanation for the condition's last transition.
+     * reason is a brief machine readable explanation for the condition's last transition.
      */
     @JsonProperty("reason")
     public String getReason() {
@@ -157,7 +157,7 @@ public class TagEventCondition implements Editable<TagEventConditionBuilder>, Ku
     }
 
     /**
-     * Reason is a brief machine readable explanation for the condition's last transition.
+     * reason is a brief machine readable explanation for the condition's last transition.
      */
     @JsonProperty("reason")
     public void setReason(String reason) {
@@ -165,7 +165,7 @@ public class TagEventCondition implements Editable<TagEventConditionBuilder>, Ku
     }
 
     /**
-     * Status of the condition, one of True, False, Unknown.
+     * status of the condition, one of True, False, Unknown.
      */
     @JsonProperty("status")
     public String getStatus() {
@@ -173,7 +173,7 @@ public class TagEventCondition implements Editable<TagEventConditionBuilder>, Ku
     }
 
     /**
-     * Status of the condition, one of True, False, Unknown.
+     * status of the condition, one of True, False, Unknown.
      */
     @JsonProperty("status")
     public void setStatus(String status) {
@@ -181,7 +181,7 @@ public class TagEventCondition implements Editable<TagEventConditionBuilder>, Ku
     }
 
     /**
-     * Type of tag event condition, currently only ImportSuccess
+     * type of tag event condition, currently only ImportSuccess
      */
     @JsonProperty("type")
     public String getType() {
@@ -189,7 +189,7 @@ public class TagEventCondition implements Editable<TagEventConditionBuilder>, Ku
     }
 
     /**
-     * Type of tag event condition, currently only ImportSuccess
+     * type of tag event condition, currently only ImportSuccess
      */
     @JsonProperty("type")
     public void setType(String type) {

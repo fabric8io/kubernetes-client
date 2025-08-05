@@ -101,7 +101,7 @@ public class MachineOSBuilderReference implements Editable<MachineOSBuilderRefer
     }
 
     /**
-     * ImageBuilderType describes the image builder set in the MachineOSConfig
+     * imageBuilderType describes the image builder set in the MachineOSConfig
      */
     @JsonProperty("imageBuilderType")
     public String getImageBuilderType() {
@@ -109,7 +109,7 @@ public class MachineOSBuilderReference implements Editable<MachineOSBuilderRefer
     }
 
     /**
-     * ImageBuilderType describes the image builder set in the MachineOSConfig
+     * imageBuilderType describes the image builder set in the MachineOSConfig
      */
     @JsonProperty("imageBuilderType")
     public void setImageBuilderType(String imageBuilderType) {

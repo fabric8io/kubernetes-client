@@ -123,7 +123,7 @@ public class IdentityList implements Editable<IdentityListBuilder>, KubernetesRe
     }
 
     /**
-     * Items is the list of identities
+     * items is the list of identities
      */
     @JsonProperty("items")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -132,7 +132,7 @@ public class IdentityList implements Editable<IdentityListBuilder>, KubernetesRe
     }
 
     /**
-     * Items is the list of identities
+     * items is the list of identities
      */
     @JsonProperty("items")
     public void setItems(List<io.fabric8.openshift.api.model.Identity> items) {

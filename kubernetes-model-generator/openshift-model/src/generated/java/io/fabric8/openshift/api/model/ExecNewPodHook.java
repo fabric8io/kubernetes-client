@@ -98,7 +98,7 @@ public class ExecNewPodHook implements Editable<ExecNewPodHookBuilder>, Kubernet
     }
 
     /**
-     * Command is the action command and its arguments.
+     * command is the action command and its arguments.
      */
     @JsonProperty("command")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -107,7 +107,7 @@ public class ExecNewPodHook implements Editable<ExecNewPodHookBuilder>, Kubernet
     }
 
     /**
-     * Command is the action command and its arguments.
+     * command is the action command and its arguments.
      */
     @JsonProperty("command")
     public void setCommand(List<String> command) {
@@ -115,7 +115,7 @@ public class ExecNewPodHook implements Editable<ExecNewPodHookBuilder>, Kubernet
     }
 
     /**
-     * ContainerName is the name of a container in the deployment pod template whose container image will be used for the hook pod's container.
+     * containerName is the name of a container in the deployment pod template whose container image will be used for the hook pod's container.
      */
     @JsonProperty("containerName")
     public String getContainerName() {
@@ -123,7 +123,7 @@ public class ExecNewPodHook implements Editable<ExecNewPodHookBuilder>, Kubernet
     }
 
     /**
-     * ContainerName is the name of a container in the deployment pod template whose container image will be used for the hook pod's container.
+     * containerName is the name of a container in the deployment pod template whose container image will be used for the hook pod's container.
      */
     @JsonProperty("containerName")
     public void setContainerName(String containerName) {
@@ -131,7 +131,7 @@ public class ExecNewPodHook implements Editable<ExecNewPodHookBuilder>, Kubernet
     }
 
     /**
-     * Env is a set of environment variables to supply to the hook pod's container.
+     * env is a set of environment variables to supply to the hook pod's container.
      */
     @JsonProperty("env")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -140,7 +140,7 @@ public class ExecNewPodHook implements Editable<ExecNewPodHookBuilder>, Kubernet
     }
 
     /**
-     * Env is a set of environment variables to supply to the hook pod's container.
+     * env is a set of environment variables to supply to the hook pod's container.
      */
     @JsonProperty("env")
     public void setEnv(List<EnvVar> env) {
@@ -148,7 +148,7 @@ public class ExecNewPodHook implements Editable<ExecNewPodHookBuilder>, Kubernet
     }
 
     /**
-     * Volumes is a list of named volumes from the pod template which should be copied to the hook pod. Volumes names not found in pod spec are ignored. An empty list means no volumes will be copied.
+     * volumes is a list of named volumes from the pod template which should be copied to the hook pod. Volumes names not found in pod spec are ignored. An empty list means no volumes will be copied.
      */
     @JsonProperty("volumes")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -157,7 +157,7 @@ public class ExecNewPodHook implements Editable<ExecNewPodHookBuilder>, Kubernet
     }
 
     /**
-     * Volumes is a list of named volumes from the pod template which should be copied to the hook pod. Volumes names not found in pod spec are ignored. An empty list means no volumes will be copied.
+     * volumes is a list of named volumes from the pod template which should be copied to the hook pod. Volumes names not found in pod spec are ignored. An empty list means no volumes will be copied.
      */
     @JsonProperty("volumes")
     public void setVolumes(List<String> volumes) {

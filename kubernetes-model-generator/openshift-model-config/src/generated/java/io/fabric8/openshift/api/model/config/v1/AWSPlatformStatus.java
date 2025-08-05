@@ -146,7 +146,7 @@ public class AWSPlatformStatus implements Editable<AWSPlatformStatusBuilder>, Ku
     }
 
     /**
-     * ServiceEndpoints list contains custom endpoints which will override default service endpoint of AWS Services. There must be only one ServiceEndpoint for a service.
+     * serviceEndpoints list contains custom endpoints which will override default service endpoint of AWS Services. There must be only one ServiceEndpoint for a service.
      */
     @JsonProperty("serviceEndpoints")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -155,7 +155,7 @@ public class AWSPlatformStatus implements Editable<AWSPlatformStatusBuilder>, Ku
     }
 
     /**
-     * ServiceEndpoints list contains custom endpoints which will override default service endpoint of AWS Services. There must be only one ServiceEndpoint for a service.
+     * serviceEndpoints list contains custom endpoints which will override default service endpoint of AWS Services. There must be only one ServiceEndpoint for a service.
      */
     @JsonProperty("serviceEndpoints")
     public void setServiceEndpoints(List<AWSServiceEndpoint> serviceEndpoints) {

@@ -41,7 +41,8 @@ import lombok.experimental.Accessors;
     "datastore",
     "folder",
     "resourcePool",
-    "server"
+    "server",
+    "vmGroup"
 })
 @ToString
 @EqualsAndHashCode
@@ -78,6 +79,8 @@ public class Workspace implements Editable<WorkspaceBuilder>, KubernetesResource
     private String resourcePool;
     @JsonProperty("server")
     private String server;
+    @JsonProperty("vmGroup")
+    private String vmGroup;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -87,17 +90,18 @@ public class Workspace implements Editable<WorkspaceBuilder>, KubernetesResource
     public Workspace() {
     }
 
-    public Workspace(String datacenter, String datastore, String folder, String resourcePool, String server) {
+    public Workspace(String datacenter, String datastore, String folder, String resourcePool, String server, String vmGroup) {
         super();
         this.datacenter = datacenter;
         this.datastore = datastore;
         this.folder = folder;
         this.resourcePool = resourcePool;
         this.server = server;
+        this.vmGroup = vmGroup;
     }
 
     /**
-     * Datacenter is the datacenter in which VMs are created/located.
+     * datacenter is the datacenter in which VMs are created/located.
      */
     @JsonProperty("datacenter")
     public String getDatacenter() {
@@ -105,7 +109,7 @@ public class Workspace implements Editable<WorkspaceBuilder>, KubernetesResource
     }
 
     /**
-     * Datacenter is the datacenter in which VMs are created/located.
+     * datacenter is the datacenter in which VMs are created/located.
      */
     @JsonProperty("datacenter")
     public void setDatacenter(String datacenter) {
@@ -113,7 +117,7 @@ public class Workspace implements Editable<WorkspaceBuilder>, KubernetesResource
     }
 
     /**
-     * Datastore is the datastore in which VMs are created/located.
+     * datastore is the datastore in which VMs are created/located.
      */
     @JsonProperty("datastore")
     public String getDatastore() {
@@ -121,7 +125,7 @@ public class Workspace implements Editable<WorkspaceBuilder>, KubernetesResource
     }
 
     /**
-     * Datastore is the datastore in which VMs are created/located.
+     * datastore is the datastore in which VMs are created/located.
      */
     @JsonProperty("datastore")
     public void setDatastore(String datastore) {
@@ -129,7 +133,7 @@ public class Workspace implements Editable<WorkspaceBuilder>, KubernetesResource
     }
 
     /**
-     * Folder is the folder in which VMs are created/located.
+     * folder is the folder in which VMs are created/located.
      */
     @JsonProperty("folder")
     public String getFolder() {
@@ -137,7 +141,7 @@ public class Workspace implements Editable<WorkspaceBuilder>, KubernetesResource
     }
 
     /**
-     * Folder is the folder in which VMs are created/located.
+     * folder is the folder in which VMs are created/located.
      */
     @JsonProperty("folder")
     public void setFolder(String folder) {
@@ -145,7 +149,7 @@ public class Workspace implements Editable<WorkspaceBuilder>, KubernetesResource
     }
 
     /**
-     * ResourcePool is the resource pool in which VMs are created/located.
+     * resourcePool is the resource pool in which VMs are created/located.
      */
     @JsonProperty("resourcePool")
     public String getResourcePool() {
@@ -153,7 +157,7 @@ public class Workspace implements Editable<WorkspaceBuilder>, KubernetesResource
     }
 
     /**
-     * ResourcePool is the resource pool in which VMs are created/located.
+     * resourcePool is the resource pool in which VMs are created/located.
      */
     @JsonProperty("resourcePool")
     public void setResourcePool(String resourcePool) {
@@ -161,7 +165,7 @@ public class Workspace implements Editable<WorkspaceBuilder>, KubernetesResource
     }
 
     /**
-     * Server is the IP address or FQDN of the vSphere endpoint.
+     * server is the IP address or FQDN of the vSphere endpoint.
      */
     @JsonProperty("server")
     public String getServer() {
@@ -169,11 +173,27 @@ public class Workspace implements Editable<WorkspaceBuilder>, KubernetesResource
     }
 
     /**
-     * Server is the IP address or FQDN of the vSphere endpoint.
+     * server is the IP address or FQDN of the vSphere endpoint.
      */
     @JsonProperty("server")
     public void setServer(String server) {
         this.server = server;
+    }
+
+    /**
+     * vmGroup is the cluster vm group in which virtual machines will be added for vm host group based zonal.
+     */
+    @JsonProperty("vmGroup")
+    public String getVmGroup() {
+        return vmGroup;
+    }
+
+    /**
+     * vmGroup is the cluster vm group in which virtual machines will be added for vm host group based zonal.
+     */
+    @JsonProperty("vmGroup")
+    public void setVmGroup(String vmGroup) {
+        this.vmGroup = vmGroup;
     }
 
     @JsonIgnore

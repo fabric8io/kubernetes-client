@@ -132,7 +132,7 @@ public class AzureMachineProviderStatus implements Editable<AzureMachineProvider
     }
 
     /**
-     * Conditions is a set of conditions associated with the Machine to indicate errors or other status.
+     * conditions is a set of conditions associated with the Machine to indicate errors or other status.
      */
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -141,7 +141,7 @@ public class AzureMachineProviderStatus implements Editable<AzureMachineProvider
     }
 
     /**
-     * Conditions is a set of conditions associated with the Machine to indicate errors or other status.
+     * conditions is a set of conditions associated with the Machine to indicate errors or other status.
      */
     @JsonProperty("conditions")
     public void setConditions(List<Condition> conditions) {
@@ -181,7 +181,7 @@ public class AzureMachineProviderStatus implements Editable<AzureMachineProvider
     }
 
     /**
-     * VMID is the ID of the virtual machine created in Azure.
+     * vmId is the ID of the virtual machine created in Azure.
      */
     @JsonProperty("vmId")
     public String getVmId() {
@@ -189,7 +189,7 @@ public class AzureMachineProviderStatus implements Editable<AzureMachineProvider
     }
 
     /**
-     * VMID is the ID of the virtual machine created in Azure.
+     * vmId is the ID of the virtual machine created in Azure.
      */
     @JsonProperty("vmId")
     public void setVmId(String vmId) {
@@ -197,7 +197,7 @@ public class AzureMachineProviderStatus implements Editable<AzureMachineProvider
     }
 
     /**
-     * VMState is the provisioning state of the Azure virtual machine.
+     * vmState is the provisioning state of the Azure virtual machine.
      */
     @JsonProperty("vmState")
     public String getVmState() {
@@ -205,7 +205,7 @@ public class AzureMachineProviderStatus implements Editable<AzureMachineProvider
     }
 
     /**
-     * VMState is the provisioning state of the Azure virtual machine.
+     * vmState is the provisioning state of the Azure virtual machine.
      */
     @JsonProperty("vmState")
     public void setVmState(String vmState) {

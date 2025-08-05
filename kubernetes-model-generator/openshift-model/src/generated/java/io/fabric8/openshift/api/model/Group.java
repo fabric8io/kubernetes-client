@@ -152,7 +152,7 @@ public class Group implements Editable<GroupBuilder>, HasMetadata
     }
 
     /**
-     * Users is the list of users in this group.
+     * users is the list of users in this group.
      */
     @JsonProperty("users")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -161,7 +161,7 @@ public class Group implements Editable<GroupBuilder>, HasMetadata
     }
 
     /**
-     * Users is the list of users in this group.
+     * users is the list of users in this group.
      */
     @JsonProperty("users")
     public void setUsers(List<String> users) {

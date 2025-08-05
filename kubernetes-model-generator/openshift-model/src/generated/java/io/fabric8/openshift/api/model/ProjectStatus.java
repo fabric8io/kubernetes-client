@@ -106,7 +106,7 @@ public class ProjectStatus implements Editable<ProjectStatusBuilder>, Kubernetes
     }
 
     /**
-     * Phase is the current lifecycle phase of the project<br><p> <br><p> Possible enum values:<br><p>  - `"Active"` means the namespace is available for use in the system<br><p>  - `"Terminating"` means the namespace is undergoing graceful termination
+     * phase is the current lifecycle phase of the project<br><p> <br><p> Possible enum values:<br><p>  - `"Active"` means the namespace is available for use in the system<br><p>  - `"Terminating"` means the namespace is undergoing graceful termination
      */
     @JsonProperty("phase")
     public String getPhase() {
@@ -114,7 +114,7 @@ public class ProjectStatus implements Editable<ProjectStatusBuilder>, Kubernetes
     }
 
     /**
-     * Phase is the current lifecycle phase of the project<br><p> <br><p> Possible enum values:<br><p>  - `"Active"` means the namespace is available for use in the system<br><p>  - `"Terminating"` means the namespace is undergoing graceful termination
+     * phase is the current lifecycle phase of the project<br><p> <br><p> Possible enum values:<br><p>  - `"Active"` means the namespace is available for use in the system<br><p>  - `"Terminating"` means the namespace is undergoing graceful termination
      */
     @JsonProperty("phase")
     public void setPhase(String phase) {

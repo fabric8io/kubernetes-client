@@ -117,7 +117,7 @@ public class DeploymentConfigSpec implements Editable<DeploymentConfigSpecBuilde
     }
 
     /**
-     * MinReadySeconds is the minimum number of seconds for which a newly created pod should be ready without any of its container crashing, for it to be considered available. Defaults to 0 (pod will be considered available as soon as it is ready)
+     * minReadySeconds is the minimum number of seconds for which a newly created pod should be ready without any of its container crashing, for it to be considered available. Defaults to 0 (pod will be considered available as soon as it is ready)
      */
     @JsonProperty("minReadySeconds")
     public Integer getMinReadySeconds() {
@@ -125,7 +125,7 @@ public class DeploymentConfigSpec implements Editable<DeploymentConfigSpecBuilde
     }
 
     /**
-     * MinReadySeconds is the minimum number of seconds for which a newly created pod should be ready without any of its container crashing, for it to be considered available. Defaults to 0 (pod will be considered available as soon as it is ready)
+     * minReadySeconds is the minimum number of seconds for which a newly created pod should be ready without any of its container crashing, for it to be considered available. Defaults to 0 (pod will be considered available as soon as it is ready)
      */
     @JsonProperty("minReadySeconds")
     public void setMinReadySeconds(Integer minReadySeconds) {
@@ -133,7 +133,7 @@ public class DeploymentConfigSpec implements Editable<DeploymentConfigSpecBuilde
     }
 
     /**
-     * Paused indicates that the deployment config is paused resulting in no new deployments on template changes or changes in the template caused by other triggers.
+     * paused indicates that the deployment config is paused resulting in no new deployments on template changes or changes in the template caused by other triggers.
      */
     @JsonProperty("paused")
     public Boolean getPaused() {
@@ -141,7 +141,7 @@ public class DeploymentConfigSpec implements Editable<DeploymentConfigSpecBuilde
     }
 
     /**
-     * Paused indicates that the deployment config is paused resulting in no new deployments on template changes or changes in the template caused by other triggers.
+     * paused indicates that the deployment config is paused resulting in no new deployments on template changes or changes in the template caused by other triggers.
      */
     @JsonProperty("paused")
     public void setPaused(Boolean paused) {
@@ -149,7 +149,7 @@ public class DeploymentConfigSpec implements Editable<DeploymentConfigSpecBuilde
     }
 
     /**
-     * Replicas is the number of desired replicas.
+     * replicas is the number of desired replicas.
      */
     @JsonProperty("replicas")
     public Integer getReplicas() {
@@ -157,7 +157,7 @@ public class DeploymentConfigSpec implements Editable<DeploymentConfigSpecBuilde
     }
 
     /**
-     * Replicas is the number of desired replicas.
+     * replicas is the number of desired replicas.
      */
     @JsonProperty("replicas")
     public void setReplicas(Integer replicas) {
@@ -165,7 +165,7 @@ public class DeploymentConfigSpec implements Editable<DeploymentConfigSpecBuilde
     }
 
     /**
-     * RevisionHistoryLimit is the number of old ReplicationControllers to retain to allow for rollbacks. This field is a pointer to allow for differentiation between an explicit zero and not specified. Defaults to 10. (This only applies to DeploymentConfigs created via the new group API resource, not the legacy resource.)
+     * revisionHistoryLimit is the number of old ReplicationControllers to retain to allow for rollbacks. This field is a pointer to allow for differentiation between an explicit zero and not specified. Defaults to 10. (This only applies to DeploymentConfigs created via the new group API resource, not the legacy resource.)
      */
     @JsonProperty("revisionHistoryLimit")
     public Integer getRevisionHistoryLimit() {
@@ -173,7 +173,7 @@ public class DeploymentConfigSpec implements Editable<DeploymentConfigSpecBuilde
     }
 
     /**
-     * RevisionHistoryLimit is the number of old ReplicationControllers to retain to allow for rollbacks. This field is a pointer to allow for differentiation between an explicit zero and not specified. Defaults to 10. (This only applies to DeploymentConfigs created via the new group API resource, not the legacy resource.)
+     * revisionHistoryLimit is the number of old ReplicationControllers to retain to allow for rollbacks. This field is a pointer to allow for differentiation between an explicit zero and not specified. Defaults to 10. (This only applies to DeploymentConfigs created via the new group API resource, not the legacy resource.)
      */
     @JsonProperty("revisionHistoryLimit")
     public void setRevisionHistoryLimit(Integer revisionHistoryLimit) {
@@ -181,7 +181,7 @@ public class DeploymentConfigSpec implements Editable<DeploymentConfigSpecBuilde
     }
 
     /**
-     * Selector is a label query over pods that should match the Replicas count.
+     * selector is a label query over pods that should match the Replicas count.
      */
     @JsonProperty("selector")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -190,7 +190,7 @@ public class DeploymentConfigSpec implements Editable<DeploymentConfigSpecBuilde
     }
 
     /**
-     * Selector is a label query over pods that should match the Replicas count.
+     * selector is a label query over pods that should match the Replicas count.
      */
     @JsonProperty("selector")
     public void setSelector(Map<String, String> selector) {
@@ -230,7 +230,7 @@ public class DeploymentConfigSpec implements Editable<DeploymentConfigSpecBuilde
     }
 
     /**
-     * Test ensures that this deployment config will have zero replicas except while a deployment is running. This allows the deployment config to be used as a continuous deployment test - triggering on images, running the deployment, and then succeeding or failing. Post strategy hooks and After actions can be used to integrate successful deployment with an action.
+     * test ensures that this deployment config will have zero replicas except while a deployment is running. This allows the deployment config to be used as a continuous deployment test - triggering on images, running the deployment, and then succeeding or failing. Post strategy hooks and After actions can be used to integrate successful deployment with an action.
      */
     @JsonProperty("test")
     public Boolean getTest() {
@@ -238,7 +238,7 @@ public class DeploymentConfigSpec implements Editable<DeploymentConfigSpecBuilde
     }
 
     /**
-     * Test ensures that this deployment config will have zero replicas except while a deployment is running. This allows the deployment config to be used as a continuous deployment test - triggering on images, running the deployment, and then succeeding or failing. Post strategy hooks and After actions can be used to integrate successful deployment with an action.
+     * test ensures that this deployment config will have zero replicas except while a deployment is running. This allows the deployment config to be used as a continuous deployment test - triggering on images, running the deployment, and then succeeding or failing. Post strategy hooks and After actions can be used to integrate successful deployment with an action.
      */
     @JsonProperty("test")
     public void setTest(Boolean test) {
@@ -246,7 +246,7 @@ public class DeploymentConfigSpec implements Editable<DeploymentConfigSpecBuilde
     }
 
     /**
-     * Triggers determine how updates to a DeploymentConfig result in new deployments. If no triggers are defined, a new deployment can only occur as a result of an explicit client update to the DeploymentConfig with a new LatestVersion. If null, defaults to having a config change trigger.
+     * triggers determine how updates to a DeploymentConfig result in new deployments. If no triggers are defined, a new deployment can only occur as a result of an explicit client update to the DeploymentConfig with a new LatestVersion. If null, defaults to having a config change trigger.
      */
     @JsonProperty("triggers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -255,7 +255,7 @@ public class DeploymentConfigSpec implements Editable<DeploymentConfigSpecBuilde
     }
 
     /**
-     * Triggers determine how updates to a DeploymentConfig result in new deployments. If no triggers are defined, a new deployment can only occur as a result of an explicit client update to the DeploymentConfig with a new LatestVersion. If null, defaults to having a config change trigger.
+     * triggers determine how updates to a DeploymentConfig result in new deployments. If no triggers are defined, a new deployment can only occur as a result of an explicit client update to the DeploymentConfig with a new LatestVersion. If null, defaults to having a config change trigger.
      */
     @JsonProperty("triggers")
     public void setTriggers(List<DeploymentTriggerPolicy> triggers) {

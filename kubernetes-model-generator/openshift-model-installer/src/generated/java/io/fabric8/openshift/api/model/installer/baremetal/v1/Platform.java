@@ -41,6 +41,7 @@ import lombok.experimental.Accessors;
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
+    "additionalNTPServers",
     "apiVIP",
     "apiVIPs",
     "bootstrapExternalStaticDNS",
@@ -92,6 +93,9 @@ import lombok.experimental.Accessors;
 public class Platform implements Editable<PlatformBuilder>, KubernetesResource
 {
 
+    @JsonProperty("additionalNTPServers")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<String> additionalNTPServers = new ArrayList<>();
     @JsonProperty("apiVIP")
     private String apiVIP;
     @JsonProperty("apiVIPs")
@@ -154,8 +158,9 @@ public class Platform implements Editable<PlatformBuilder>, KubernetesResource
     public Platform() {
     }
 
-    public Platform(String apiVIP, List<String> apiVIPs, String bootstrapExternalStaticDNS, String bootstrapExternalStaticGateway, String bootstrapExternalStaticIP, String bootstrapOSImage, String bootstrapProvisioningIP, String clusterOSImage, String clusterProvisioningIP, MachinePool defaultMachinePlatform, String externalBridge, String externalMACAddress, List<Host> hosts, String ingressVIP, List<String> ingressVIPs, String libvirtURI, BareMetalPlatformLoadBalancer loadBalancer, String provisioningBridge, Boolean provisioningDHCPExternal, String provisioningDHCPRange, String provisioningHostIP, String provisioningMACAddress, String provisioningNetwork, String provisioningNetworkCIDR, String provisioningNetworkInterface) {
+    public Platform(List<String> additionalNTPServers, String apiVIP, List<String> apiVIPs, String bootstrapExternalStaticDNS, String bootstrapExternalStaticGateway, String bootstrapExternalStaticIP, String bootstrapOSImage, String bootstrapProvisioningIP, String clusterOSImage, String clusterProvisioningIP, MachinePool defaultMachinePlatform, String externalBridge, String externalMACAddress, List<Host> hosts, String ingressVIP, List<String> ingressVIPs, String libvirtURI, BareMetalPlatformLoadBalancer loadBalancer, String provisioningBridge, Boolean provisioningDHCPExternal, String provisioningDHCPRange, String provisioningHostIP, String provisioningMACAddress, String provisioningNetwork, String provisioningNetworkCIDR, String provisioningNetworkInterface) {
         super();
+        this.additionalNTPServers = additionalNTPServers;
         this.apiVIP = apiVIP;
         this.apiVIPs = apiVIPs;
         this.bootstrapExternalStaticDNS = bootstrapExternalStaticDNS;
@@ -181,6 +186,23 @@ public class Platform implements Editable<PlatformBuilder>, KubernetesResource
         this.provisioningNetwork = provisioningNetwork;
         this.provisioningNetworkCIDR = provisioningNetworkCIDR;
         this.provisioningNetworkInterface = provisioningNetworkInterface;
+    }
+
+    /**
+     * AdditionalNTPServers defines a list of additional NTP servers to use for provisioning
+     */
+    @JsonProperty("additionalNTPServers")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public List<String> getAdditionalNTPServers() {
+        return additionalNTPServers;
+    }
+
+    /**
+     * AdditionalNTPServers defines a list of additional NTP servers to use for provisioning
+     */
+    @JsonProperty("additionalNTPServers")
+    public void setAdditionalNTPServers(List<String> additionalNTPServers) {
+        this.additionalNTPServers = additionalNTPServers;
     }
 
     /**

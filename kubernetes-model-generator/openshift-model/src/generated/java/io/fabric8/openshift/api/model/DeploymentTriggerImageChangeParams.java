@@ -96,7 +96,7 @@ public class DeploymentTriggerImageChangeParams implements Editable<DeploymentTr
     }
 
     /**
-     * Automatic means that the detection of a new tag value should result in an image update inside the pod template.
+     * automatic means that the detection of a new tag value should result in an image update inside the pod template.
      */
     @JsonProperty("automatic")
     public Boolean getAutomatic() {
@@ -104,7 +104,7 @@ public class DeploymentTriggerImageChangeParams implements Editable<DeploymentTr
     }
 
     /**
-     * Automatic means that the detection of a new tag value should result in an image update inside the pod template.
+     * automatic means that the detection of a new tag value should result in an image update inside the pod template.
      */
     @JsonProperty("automatic")
     public void setAutomatic(Boolean automatic) {
@@ -112,7 +112,7 @@ public class DeploymentTriggerImageChangeParams implements Editable<DeploymentTr
     }
 
     /**
-     * ContainerNames is used to restrict tag updates to the specified set of container names in a pod. If multiple triggers point to the same containers, the resulting behavior is undefined. Future API versions will make this a validation error. If ContainerNames does not point to a valid container, the trigger will be ignored. Future API versions will make this a validation error.
+     * containerNames is used to restrict tag updates to the specified set of container names in a pod. If multiple triggers point to the same containers, the resulting behavior is undefined. Future API versions will make this a validation error. If ContainerNames does not point to a valid container, the trigger will be ignored. Future API versions will make this a validation error.
      */
     @JsonProperty("containerNames")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -121,7 +121,7 @@ public class DeploymentTriggerImageChangeParams implements Editable<DeploymentTr
     }
 
     /**
-     * ContainerNames is used to restrict tag updates to the specified set of container names in a pod. If multiple triggers point to the same containers, the resulting behavior is undefined. Future API versions will make this a validation error. If ContainerNames does not point to a valid container, the trigger will be ignored. Future API versions will make this a validation error.
+     * containerNames is used to restrict tag updates to the specified set of container names in a pod. If multiple triggers point to the same containers, the resulting behavior is undefined. Future API versions will make this a validation error. If ContainerNames does not point to a valid container, the trigger will be ignored. Future API versions will make this a validation error.
      */
     @JsonProperty("containerNames")
     public void setContainerNames(List<String> containerNames) {
@@ -145,7 +145,7 @@ public class DeploymentTriggerImageChangeParams implements Editable<DeploymentTr
     }
 
     /**
-     * LastTriggeredImage is the last image to be triggered.
+     * lastTriggeredImage is the last image to be triggered.
      */
     @JsonProperty("lastTriggeredImage")
     public String getLastTriggeredImage() {
@@ -153,7 +153,7 @@ public class DeploymentTriggerImageChangeParams implements Editable<DeploymentTr
     }
 
     /**
-     * LastTriggeredImage is the last image to be triggered.
+     * lastTriggeredImage is the last image to be triggered.
      */
     @JsonProperty("lastTriggeredImage")
     public void setLastTriggeredImage(String lastTriggeredImage) {

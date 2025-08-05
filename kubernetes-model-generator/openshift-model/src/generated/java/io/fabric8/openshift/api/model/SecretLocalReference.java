@@ -81,7 +81,7 @@ public class SecretLocalReference implements Editable<SecretLocalReferenceBuilde
     }
 
     /**
-     * Name is the name of the resource in the same namespace being referenced
+     * name is the name of the resource in the same namespace being referenced
      */
     @JsonProperty("name")
     public String getName() {
@@ -89,7 +89,7 @@ public class SecretLocalReference implements Editable<SecretLocalReferenceBuilde
     }
 
     /**
-     * Name is the name of the resource in the same namespace being referenced
+     * name is the name of the resource in the same namespace being referenced
      */
     @JsonProperty("name")
     public void setName(String name) {

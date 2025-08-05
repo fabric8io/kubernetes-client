@@ -1,13 +1,16 @@
 
 package io.fabric8.openshift.api.model.config.v1;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import javax.annotation.processing.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
@@ -36,7 +39,7 @@ import lombok.experimental.Accessors;
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-
+    "serviceEndpoints"
 })
 @ToString
 @EqualsAndHashCode
@@ -63,8 +66,39 @@ import lombok.experimental.Accessors;
 public class IBMCloudPlatformSpec implements Editable<IBMCloudPlatformSpecBuilder>, KubernetesResource
 {
 
+    @JsonProperty("serviceEndpoints")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<IBMCloudServiceEndpoint> serviceEndpoints = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
+
+    /**
+     * No args constructor for use in serialization
+     */
+    public IBMCloudPlatformSpec() {
+    }
+
+    public IBMCloudPlatformSpec(List<IBMCloudServiceEndpoint> serviceEndpoints) {
+        super();
+        this.serviceEndpoints = serviceEndpoints;
+    }
+
+    /**
+     * serviceEndpoints is a list of custom endpoints which will override the default service endpoints of an IBM service. These endpoints are used by components within the cluster when trying to reach the IBM Cloud Services that have been overriden. The CCCMO reads in the IBMCloudPlatformSpec and validates each endpoint is resolvable. Once validated, the cloud config and IBMCloudPlatformStatus are updated to reflect the same custom endpoints. A maximum of 13 service endpoints overrides are supported.
+     */
+    @JsonProperty("serviceEndpoints")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public List<IBMCloudServiceEndpoint> getServiceEndpoints() {
+        return serviceEndpoints;
+    }
+
+    /**
+     * serviceEndpoints is a list of custom endpoints which will override the default service endpoints of an IBM service. These endpoints are used by components within the cluster when trying to reach the IBM Cloud Services that have been overriden. The CCCMO reads in the IBMCloudPlatformSpec and validates each endpoint is resolvable. Once validated, the cloud config and IBMCloudPlatformStatus are updated to reflect the same custom endpoints. A maximum of 13 service endpoints overrides are supported.
+     */
+    @JsonProperty("serviceEndpoints")
+    public void setServiceEndpoints(List<IBMCloudServiceEndpoint> serviceEndpoints) {
+        this.serviceEndpoints = serviceEndpoints;
+    }
 
     @JsonIgnore
     public IBMCloudPlatformSpecBuilder edit() {

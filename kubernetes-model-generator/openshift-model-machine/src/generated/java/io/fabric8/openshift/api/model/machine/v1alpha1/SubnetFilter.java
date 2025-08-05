@@ -431,7 +431,7 @@ public class SubnetFilter implements Editable<SubnetFilterBuilder>, KubernetesRe
     }
 
     /**
-     * subnetpoolId filters subnets by subnet pool ID.
+     * subnetpoolId filters subnets by subnet pool ID. Deprecated: subnetpoolId is silently ignored.
      */
     @JsonProperty("subnetpoolId")
     public String getSubnetpoolId() {
@@ -439,7 +439,7 @@ public class SubnetFilter implements Editable<SubnetFilterBuilder>, KubernetesRe
     }
 
     /**
-     * subnetpoolId filters subnets by subnet pool ID.
+     * subnetpoolId filters subnets by subnet pool ID. Deprecated: subnetpoolId is silently ignored.
      */
     @JsonProperty("subnetpoolId")
     public void setSubnetpoolId(String subnetpoolId) {

@@ -149,7 +149,7 @@ public class Condition implements Editable<ConditionBuilder>, KubernetesResource
     }
 
     /**
-     * Severity provides an explicit classification of Reason code, so the users or machines can immediately understand the current situation and act accordingly. The Severity field MUST be set only when Status=False.
+     * severity provides an explicit classification of Reason code, so the users or machines can immediately understand the current situation and act accordingly. The Severity field MUST be set only when Status=False.
      */
     @JsonProperty("severity")
     public String getSeverity() {
@@ -157,7 +157,7 @@ public class Condition implements Editable<ConditionBuilder>, KubernetesResource
     }
 
     /**
-     * Severity provides an explicit classification of Reason code, so the users or machines can immediately understand the current situation and act accordingly. The Severity field MUST be set only when Status=False.
+     * severity provides an explicit classification of Reason code, so the users or machines can immediately understand the current situation and act accordingly. The Severity field MUST be set only when Status=False.
      */
     @JsonProperty("severity")
     public void setSeverity(String severity) {
@@ -165,7 +165,7 @@ public class Condition implements Editable<ConditionBuilder>, KubernetesResource
     }
 
     /**
-     * Status of the condition, one of True, False, Unknown.
+     * status of the condition, one of True, False, Unknown.
      */
     @JsonProperty("status")
     public String getStatus() {
@@ -173,7 +173,7 @@ public class Condition implements Editable<ConditionBuilder>, KubernetesResource
     }
 
     /**
-     * Status of the condition, one of True, False, Unknown.
+     * status of the condition, one of True, False, Unknown.
      */
     @JsonProperty("status")
     public void setStatus(String status) {
@@ -181,7 +181,7 @@ public class Condition implements Editable<ConditionBuilder>, KubernetesResource
     }
 
     /**
-     * Type of condition in CamelCase or in foo.example.com/CamelCase. Many .condition.type values are consistent across resources like Available, but because arbitrary conditions can be useful (see .node.status.conditions), the ability to deconflict is important.
+     * type of condition in CamelCase or in foo.example.com/CamelCase. Many .condition.type values are consistent across resources like Available, but because arbitrary conditions can be useful (see .node.status.conditions), the ability to deconflict is important.
      */
     @JsonProperty("type")
     public String getType() {
@@ -189,7 +189,7 @@ public class Condition implements Editable<ConditionBuilder>, KubernetesResource
     }
 
     /**
-     * Type of condition in CamelCase or in foo.example.com/CamelCase. Many .condition.type values are consistent across resources like Available, but because arbitrary conditions can be useful (see .node.status.conditions), the ability to deconflict is important.
+     * type of condition in CamelCase or in foo.example.com/CamelCase. Many .condition.type values are consistent across resources like Available, but because arbitrary conditions can be useful (see .node.status.conditions), the ability to deconflict is important.
      */
     @JsonProperty("type")
     public void setType(String type) {

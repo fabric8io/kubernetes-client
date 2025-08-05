@@ -53,7 +53,9 @@ import lombok.experimental.Accessors;
     "region",
     "serviceEndpoints",
     "subnets",
-    "userTags"
+    "userProvisionedDNS",
+    "userTags",
+    "vpc"
 })
 @ToString
 @EqualsAndHashCode
@@ -108,9 +110,13 @@ public class Platform implements Editable<PlatformBuilder>, KubernetesResource
     @JsonProperty("subnets")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> subnets = new ArrayList<>();
+    @JsonProperty("userProvisionedDNS")
+    private String userProvisionedDNS;
     @JsonProperty("userTags")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Map<String, String> userTags = new LinkedHashMap<>();
+    @JsonProperty("vpc")
+    private VPC vpc;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -120,7 +126,7 @@ public class Platform implements Editable<PlatformBuilder>, KubernetesResource
     public Platform() {
     }
 
-    public Platform(String amiID, Boolean bestEffortDeleteIgnition, MachinePool defaultMachinePlatform, Boolean experimentalPropagateUserTags, String hostedZone, String hostedZoneRole, String lbType, Boolean preserveBootstrapIgnition, Boolean propagateUserTags, String publicIpv4Pool, String region, List<ServiceEndpoint> serviceEndpoints, List<String> subnets, Map<String, String> userTags) {
+    public Platform(String amiID, Boolean bestEffortDeleteIgnition, MachinePool defaultMachinePlatform, Boolean experimentalPropagateUserTags, String hostedZone, String hostedZoneRole, String lbType, Boolean preserveBootstrapIgnition, Boolean propagateUserTags, String publicIpv4Pool, String region, List<ServiceEndpoint> serviceEndpoints, List<String> subnets, String userProvisionedDNS, Map<String, String> userTags, VPC vpc) {
         super();
         this.amiID = amiID;
         this.bestEffortDeleteIgnition = bestEffortDeleteIgnition;
@@ -135,7 +141,9 @@ public class Platform implements Editable<PlatformBuilder>, KubernetesResource
         this.region = region;
         this.serviceEndpoints = serviceEndpoints;
         this.subnets = subnets;
+        this.userProvisionedDNS = userProvisionedDNS;
         this.userTags = userTags;
+        this.vpc = vpc;
     }
 
     /**
@@ -332,7 +340,7 @@ public class Platform implements Editable<PlatformBuilder>, KubernetesResource
     }
 
     /**
-     * Subnets specifies existing subnets (by ID) where cluster resources will be created.  Leave unset to have the installer create subnets in a new VPC on your behalf.
+     * Subnets specifies existing subnets (by ID) where cluster resources will be created.  Leave unset to have the installer create subnets in a new VPC on your behalf.<br><p> <br><p> Deprecated: use platform.aws.vpc.subnets
      */
     @JsonProperty("subnets")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -341,11 +349,27 @@ public class Platform implements Editable<PlatformBuilder>, KubernetesResource
     }
 
     /**
-     * Subnets specifies existing subnets (by ID) where cluster resources will be created.  Leave unset to have the installer create subnets in a new VPC on your behalf.
+     * Subnets specifies existing subnets (by ID) where cluster resources will be created.  Leave unset to have the installer create subnets in a new VPC on your behalf.<br><p> <br><p> Deprecated: use platform.aws.vpc.subnets
      */
     @JsonProperty("subnets")
     public void setSubnets(List<String> subnets) {
         this.subnets = subnets;
+    }
+
+    /**
+     * UserProvisionedDNS indicates if the customer is providing their own DNS solution in place of the default provisioned by the Installer.
+     */
+    @JsonProperty("userProvisionedDNS")
+    public String getUserProvisionedDNS() {
+        return userProvisionedDNS;
+    }
+
+    /**
+     * UserProvisionedDNS indicates if the customer is providing their own DNS solution in place of the default provisioned by the Installer.
+     */
+    @JsonProperty("userProvisionedDNS")
+    public void setUserProvisionedDNS(String userProvisionedDNS) {
+        this.userProvisionedDNS = userProvisionedDNS;
     }
 
     /**
@@ -363,6 +387,22 @@ public class Platform implements Editable<PlatformBuilder>, KubernetesResource
     @JsonProperty("userTags")
     public void setUserTags(Map<String, String> userTags) {
         this.userTags = userTags;
+    }
+
+    /**
+     * Platform stores all the global configuration that all machinesets use.
+     */
+    @JsonProperty("vpc")
+    public VPC getVpc() {
+        return vpc;
+    }
+
+    /**
+     * Platform stores all the global configuration that all machinesets use.
+     */
+    @JsonProperty("vpc")
+    public void setVpc(VPC vpc) {
+        this.vpc = vpc;
     }
 
     @JsonIgnore

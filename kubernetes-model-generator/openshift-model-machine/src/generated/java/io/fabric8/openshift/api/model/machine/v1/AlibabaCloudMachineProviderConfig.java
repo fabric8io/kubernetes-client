@@ -298,7 +298,7 @@ public class AlibabaCloudMachineProviderConfig implements Editable<AlibabaCloudM
     }
 
     /**
-     * RAMRoleName is the name of the instance Resource Access Management (RAM) role. This allows the instance to perform API calls as this specified RAM role.
+     * ramRoleName is the name of the instance Resource Access Management (RAM) role. This allows the instance to perform API calls as this specified RAM role.
      */
     @JsonProperty("ramRoleName")
     public String getRamRoleName() {
@@ -306,7 +306,7 @@ public class AlibabaCloudMachineProviderConfig implements Editable<AlibabaCloudM
     }
 
     /**
-     * RAMRoleName is the name of the instance Resource Access Management (RAM) role. This allows the instance to perform API calls as this specified RAM role.
+     * ramRoleName is the name of the instance Resource Access Management (RAM) role. This allows the instance to perform API calls as this specified RAM role.
      */
     @JsonProperty("ramRoleName")
     public void setRamRoleName(String ramRoleName) {
@@ -346,7 +346,7 @@ public class AlibabaCloudMachineProviderConfig implements Editable<AlibabaCloudM
     }
 
     /**
-     * SecurityGroups is a list of security group references to assign to the instance. A reference holds either the security group ID, the resource name, or the required tags to search. When more than one security group is returned for a tag search, all the groups are associated with the instance up to the maximum number of security groups to which an instance can belong. For more information, see the "Security group limits" section in Limits. https://www.alibabacloud.com/help/en/doc-detail/25412.htm
+     * securityGroups is a list of security group references to assign to the instance. A reference holds either the security group ID, the resource name, or the required tags to search. When more than one security group is returned for a tag search, all the groups are associated with the instance up to the maximum number of security groups to which an instance can belong. For more information, see the "Security group limits" section in Limits. https://www.alibabacloud.com/help/en/doc-detail/25412.htm
      */
     @JsonProperty("securityGroups")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -355,7 +355,7 @@ public class AlibabaCloudMachineProviderConfig implements Editable<AlibabaCloudM
     }
 
     /**
-     * SecurityGroups is a list of security group references to assign to the instance. A reference holds either the security group ID, the resource name, or the required tags to search. When more than one security group is returned for a tag search, all the groups are associated with the instance up to the maximum number of security groups to which an instance can belong. For more information, see the "Security group limits" section in Limits. https://www.alibabacloud.com/help/en/doc-detail/25412.htm
+     * securityGroups is a list of security group references to assign to the instance. A reference holds either the security group ID, the resource name, or the required tags to search. When more than one security group is returned for a tag search, all the groups are associated with the instance up to the maximum number of security groups to which an instance can belong. For more information, see the "Security group limits" section in Limits. https://www.alibabacloud.com/help/en/doc-detail/25412.htm
      */
     @JsonProperty("securityGroups")
     public void setSecurityGroups(List<AlibabaResourceReference> securityGroups) {
@@ -396,7 +396,7 @@ public class AlibabaCloudMachineProviderConfig implements Editable<AlibabaCloudM
     }
 
     /**
-     * Tenancy specifies whether to create the instance on a dedicated host. Valid values:<br><p> <br><p> default: creates the instance on a non-dedicated host. host: creates the instance on a dedicated host. If you do not specify the DedicatedHostID parameter, Alibaba Cloud automatically selects a dedicated host for the instance. Empty value means no opinion and the platform chooses the a default, which is subject to change over time. Currently the default is `default`.
+     * tenancy specifies whether to create the instance on a dedicated host. Valid values:<br><p> <br><p> default: creates the instance on a non-dedicated host. host: creates the instance on a dedicated host. If you do not specify the DedicatedHostID parameter, Alibaba Cloud automatically selects a dedicated host for the instance. Empty value means no opinion and the platform chooses the a default, which is subject to change over time. Currently the default is `default`.
      */
     @JsonProperty("tenancy")
     public String getTenancy() {
@@ -404,7 +404,7 @@ public class AlibabaCloudMachineProviderConfig implements Editable<AlibabaCloudM
     }
 
     /**
-     * Tenancy specifies whether to create the instance on a dedicated host. Valid values:<br><p> <br><p> default: creates the instance on a non-dedicated host. host: creates the instance on a dedicated host. If you do not specify the DedicatedHostID parameter, Alibaba Cloud automatically selects a dedicated host for the instance. Empty value means no opinion and the platform chooses the a default, which is subject to change over time. Currently the default is `default`.
+     * tenancy specifies whether to create the instance on a dedicated host. Valid values:<br><p> <br><p> default: creates the instance on a non-dedicated host. host: creates the instance on a dedicated host. If you do not specify the DedicatedHostID parameter, Alibaba Cloud automatically selects a dedicated host for the instance. Empty value means no opinion and the platform chooses the a default, which is subject to change over time. Currently the default is `default`.
      */
     @JsonProperty("tenancy")
     public void setTenancy(String tenancy) {
