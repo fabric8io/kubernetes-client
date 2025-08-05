@@ -32,14 +32,11 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
-/**
- * PlatformMetricsSpec defines the spec for the addon to collect, forward and store metrics from fleet managed clusters.
- */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "collection",
-    "ui"
+    "enabled",
+    "namespaceBinding"
 })
 @ToString
 @EqualsAndHashCode
@@ -63,67 +60,67 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class PlatformMetricsSpec implements Editable<PlatformMetricsSpecBuilder>, KubernetesResource
+public class PlatformNamespaceRightSizingRecommendationSpec implements Editable<PlatformNamespaceRightSizingRecommendationSpecBuilder>, KubernetesResource
 {
 
-    @JsonProperty("collection")
-    private PlatformMetricsCollectionSpec collection;
-    @JsonProperty("ui")
-    private UIConfig ui;
+    @JsonProperty("enabled")
+    private Boolean enabled;
+    @JsonProperty("namespaceBinding")
+    private String namespaceBinding;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
      */
-    public PlatformMetricsSpec() {
+    public PlatformNamespaceRightSizingRecommendationSpec() {
     }
 
-    public PlatformMetricsSpec(PlatformMetricsCollectionSpec collection, UIConfig ui) {
+    public PlatformNamespaceRightSizingRecommendationSpec(Boolean enabled, String namespaceBinding) {
         super();
-        this.collection = collection;
-        this.ui = ui;
+        this.enabled = enabled;
+        this.namespaceBinding = namespaceBinding;
     }
 
     /**
-     * PlatformMetricsSpec defines the spec for the addon to collect, forward and store metrics from fleet managed clusters.
+     * Enabled defines a flag to enable/disable the namespace right-sizing feature for the Analytics.
      */
-    @JsonProperty("collection")
-    public PlatformMetricsCollectionSpec getCollection() {
-        return collection;
+    @JsonProperty("enabled")
+    public Boolean getEnabled() {
+        return enabled;
     }
 
     /**
-     * PlatformMetricsSpec defines the spec for the addon to collect, forward and store metrics from fleet managed clusters.
+     * Enabled defines a flag to enable/disable the namespace right-sizing feature for the Analytics.
      */
-    @JsonProperty("collection")
-    public void setCollection(PlatformMetricsCollectionSpec collection) {
-        this.collection = collection;
+    @JsonProperty("enabled")
+    public void setEnabled(Boolean enabled) {
+        this.enabled = enabled;
     }
 
     /**
-     * PlatformMetricsSpec defines the spec for the addon to collect, forward and store metrics from fleet managed clusters.
+     * NamespaceBinding defines the namespace where all the required resources are created. The default namespace is `open-cluster-management-global-set
      */
-    @JsonProperty("ui")
-    public UIConfig getUi() {
-        return ui;
+    @JsonProperty("namespaceBinding")
+    public String getNamespaceBinding() {
+        return namespaceBinding;
     }
 
     /**
-     * PlatformMetricsSpec defines the spec for the addon to collect, forward and store metrics from fleet managed clusters.
+     * NamespaceBinding defines the namespace where all the required resources are created. The default namespace is `open-cluster-management-global-set
      */
-    @JsonProperty("ui")
-    public void setUi(UIConfig ui) {
-        this.ui = ui;
+    @JsonProperty("namespaceBinding")
+    public void setNamespaceBinding(String namespaceBinding) {
+        this.namespaceBinding = namespaceBinding;
     }
 
     @JsonIgnore
-    public PlatformMetricsSpecBuilder edit() {
-        return new PlatformMetricsSpecBuilder(this);
+    public PlatformNamespaceRightSizingRecommendationSpecBuilder edit() {
+        return new PlatformNamespaceRightSizingRecommendationSpecBuilder(this);
     }
 
     @JsonIgnore
-    public PlatformMetricsSpecBuilder toBuilder() {
+    public PlatformNamespaceRightSizingRecommendationSpecBuilder toBuilder() {
         return edit();
     }
 
