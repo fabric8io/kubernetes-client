@@ -35,7 +35,8 @@ import lombok.experimental.Accessors;
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "incidentDetection"
+    "incidentDetection",
+    "namespaceRightSizingRecommendation"
 })
 @ToString
 @EqualsAndHashCode
@@ -64,6 +65,8 @@ public class PlatformAnalyticsSpec implements Editable<PlatformAnalyticsSpecBuil
 
     @JsonProperty("incidentDetection")
     private PlatformIncidentDetectionSpec incidentDetection;
+    @JsonProperty("namespaceRightSizingRecommendation")
+    private PlatformNamespaceRightSizingRecommendationSpec namespaceRightSizingRecommendation;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -73,9 +76,10 @@ public class PlatformAnalyticsSpec implements Editable<PlatformAnalyticsSpecBuil
     public PlatformAnalyticsSpec() {
     }
 
-    public PlatformAnalyticsSpec(PlatformIncidentDetectionSpec incidentDetection) {
+    public PlatformAnalyticsSpec(PlatformIncidentDetectionSpec incidentDetection, PlatformNamespaceRightSizingRecommendationSpec namespaceRightSizingRecommendation) {
         super();
         this.incidentDetection = incidentDetection;
+        this.namespaceRightSizingRecommendation = namespaceRightSizingRecommendation;
     }
 
     @JsonProperty("incidentDetection")
@@ -86,6 +90,16 @@ public class PlatformAnalyticsSpec implements Editable<PlatformAnalyticsSpecBuil
     @JsonProperty("incidentDetection")
     public void setIncidentDetection(PlatformIncidentDetectionSpec incidentDetection) {
         this.incidentDetection = incidentDetection;
+    }
+
+    @JsonProperty("namespaceRightSizingRecommendation")
+    public PlatformNamespaceRightSizingRecommendationSpec getNamespaceRightSizingRecommendation() {
+        return namespaceRightSizingRecommendation;
+    }
+
+    @JsonProperty("namespaceRightSizingRecommendation")
+    public void setNamespaceRightSizingRecommendation(PlatformNamespaceRightSizingRecommendationSpec namespaceRightSizingRecommendation) {
+        this.namespaceRightSizingRecommendation = namespaceRightSizingRecommendation;
     }
 
     @JsonIgnore

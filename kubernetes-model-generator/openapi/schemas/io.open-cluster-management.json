@@ -15405,6 +15405,11 @@
           "description": "Incident detecion defines the configuration spec for the incident detection feature delivered via the cluster observability operator. If enabled, adds incidents UI to `Observe` section of OpenShift Console Platform",
           "default": {},
           "$ref": "#/definitions/io.open-cluster-management.observability.v1beta2.PlatformIncidentDetectionSpec"
+        },
+        "namespaceRightSizingRecommendation": {
+          "description": "Feature to enable namespace right-sizing recommendation capabilities for the Analytics.",
+          "default": {},
+          "$ref": "#/definitions/io.open-cluster-management.observability.v1beta2.PlatformNamespaceRightSizingRecommendationSpec"
         }
       },
       "x-fabric8-info": {
@@ -15519,6 +15524,11 @@
           "description": "Collection defines the spec for the addon to collect and forward metrics from fleet managed clusters.",
           "default": {},
           "$ref": "#/definitions/io.open-cluster-management.observability.v1beta2.PlatformMetricsCollectionSpec"
+        },
+        "ui": {
+          "description": "UI defines the spec for the addon to enable UI through COO on the hub",
+          "default": {},
+          "$ref": "#/definitions/io.open-cluster-management.observability.v1beta2.UIConfig"
         }
       },
       "x-fabric8-info": {
@@ -15526,6 +15536,26 @@
         "Group": "observability.open-cluster-management.io",
         "Version": "v1beta2",
         "Kind": "PlatformMetricsSpec",
+        "Scope": "Namespaced"
+      }
+    },
+    "io.open-cluster-management.observability.v1beta2.PlatformNamespaceRightSizingRecommendationSpec": {
+      "type": "object",
+      "properties": {
+        "enabled": {
+          "description": "Enabled defines a flag to enable/disable the namespace right-sizing feature for the Analytics.",
+          "type": "boolean"
+        },
+        "namespaceBinding": {
+          "description": "NamespaceBinding defines the namespace where all the required resources are created. The default namespace is `open-cluster-management-global-set",
+          "type": "string"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "observability.open-cluster-management.io",
+        "Version": "v1beta2",
+        "Kind": "PlatformNamespaceRightSizingRecommendationSpec",
         "Scope": "Namespaced"
       }
     },
@@ -15804,6 +15834,23 @@
         "Group": "observability.open-cluster-management.io",
         "Version": "v1beta2",
         "Kind": "StoreSpec",
+        "Scope": "Namespaced"
+      }
+    },
+    "io.open-cluster-management.observability.v1beta2.UIConfig": {
+      "description": "UIConfig defines the spec for the addon to expose the metrics UI through COO",
+      "type": "object",
+      "properties": {
+        "enabled": {
+          "description": "Enabled defines a flag to enable/disable the metrics UI.",
+          "type": "boolean"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "observability.open-cluster-management.io",
+        "Version": "v1beta2",
+        "Kind": "UIConfig",
         "Scope": "Namespaced"
       }
     },
@@ -17429,8 +17476,8 @@
           "description": "Type of the authentication used by hub to initialize the Hub cluster. Possible values are csr and awsirsa.",
           "type": "string"
         },
-        "awsisra": {
-          "description": "AwsIrsa represents the configuration for awsisra driver.",
+        "awsirsa": {
+          "description": "AwsIrsa represents the configuration for awsirsa driver.",
           "$ref": "#/definitions/io.open-cluster-management.operator.v1.AwsIrsaConfig"
         },
         "csr": {

@@ -33,13 +33,12 @@ import lombok.ToString;
 import lombok.experimental.Accessors;
 
 /**
- * PlatformMetricsSpec defines the spec for the addon to collect, forward and store metrics from fleet managed clusters.
+ * UIConfig defines the spec for the addon to expose the metrics UI through COO
  */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "collection",
-    "ui"
+    "enabled"
 })
 @ToString
 @EqualsAndHashCode
@@ -63,67 +62,48 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class PlatformMetricsSpec implements Editable<PlatformMetricsSpecBuilder>, KubernetesResource
+public class UIConfig implements Editable<UIConfigBuilder>, KubernetesResource
 {
 
-    @JsonProperty("collection")
-    private PlatformMetricsCollectionSpec collection;
-    @JsonProperty("ui")
-    private UIConfig ui;
+    @JsonProperty("enabled")
+    private Boolean enabled;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
      */
-    public PlatformMetricsSpec() {
+    public UIConfig() {
     }
 
-    public PlatformMetricsSpec(PlatformMetricsCollectionSpec collection, UIConfig ui) {
+    public UIConfig(Boolean enabled) {
         super();
-        this.collection = collection;
-        this.ui = ui;
+        this.enabled = enabled;
     }
 
     /**
-     * PlatformMetricsSpec defines the spec for the addon to collect, forward and store metrics from fleet managed clusters.
+     * Enabled defines a flag to enable/disable the metrics UI.
      */
-    @JsonProperty("collection")
-    public PlatformMetricsCollectionSpec getCollection() {
-        return collection;
+    @JsonProperty("enabled")
+    public Boolean getEnabled() {
+        return enabled;
     }
 
     /**
-     * PlatformMetricsSpec defines the spec for the addon to collect, forward and store metrics from fleet managed clusters.
+     * Enabled defines a flag to enable/disable the metrics UI.
      */
-    @JsonProperty("collection")
-    public void setCollection(PlatformMetricsCollectionSpec collection) {
-        this.collection = collection;
-    }
-
-    /**
-     * PlatformMetricsSpec defines the spec for the addon to collect, forward and store metrics from fleet managed clusters.
-     */
-    @JsonProperty("ui")
-    public UIConfig getUi() {
-        return ui;
-    }
-
-    /**
-     * PlatformMetricsSpec defines the spec for the addon to collect, forward and store metrics from fleet managed clusters.
-     */
-    @JsonProperty("ui")
-    public void setUi(UIConfig ui) {
-        this.ui = ui;
+    @JsonProperty("enabled")
+    public void setEnabled(Boolean enabled) {
+        this.enabled = enabled;
     }
 
     @JsonIgnore
-    public PlatformMetricsSpecBuilder edit() {
-        return new PlatformMetricsSpecBuilder(this);
+    public UIConfigBuilder edit() {
+        return new UIConfigBuilder(this);
     }
 
     @JsonIgnore
-    public PlatformMetricsSpecBuilder toBuilder() {
+    public UIConfigBuilder toBuilder() {
         return edit();
     }
 
