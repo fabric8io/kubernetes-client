@@ -151,8 +151,12 @@ public interface SharedIndexInformer<T> extends AutoCloseable {
 
   /**
    * Return true if the informer is actively watching
-   * <br>
-   * Will return false when {@link #isRunning()} is true when the watch needs to be re-established.
+   * <p>
+   * Will return false even when {@link #isRunning()} is true
+   * if the watch needs to be re-established due to connectivity issues, 410 Gone response, etc.
+   * <p>
+   * A single false observation does not mean the informer is unhealthy as it will likely be able to resume
+   * normal operations.
    */
   boolean isWatching();
 
