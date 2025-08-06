@@ -101,7 +101,7 @@ public class DeploymentTriggerPolicy implements Editable<DeploymentTriggerPolicy
     }
 
     /**
-     * Type of the trigger
+     * type of the trigger
      */
     @JsonProperty("type")
     public String getType() {
@@ -109,7 +109,7 @@ public class DeploymentTriggerPolicy implements Editable<DeploymentTriggerPolicy
     }
 
     /**
-     * Type of the trigger
+     * type of the trigger
      */
     @JsonProperty("type")
     public void setType(String type) {

@@ -146,7 +146,7 @@ public class ClusterNetwork implements Editable<ClusterNetworkBuilder>, HasMetad
     }
 
     /**
-     * ClusterNetworks is a list of ClusterNetwork objects that defines the global overlay network's L3 space by specifying a set of CIDR and netmasks that the SDN can allocate addresses from.
+     * clusterNetworks is a list of ClusterNetwork objects that defines the global overlay network's L3 space by specifying a set of CIDR and netmasks that the SDN can allocate addresses from.
      */
     @JsonProperty("clusterNetworks")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -155,7 +155,7 @@ public class ClusterNetwork implements Editable<ClusterNetworkBuilder>, HasMetad
     }
 
     /**
-     * ClusterNetworks is a list of ClusterNetwork objects that defines the global overlay network's L3 space by specifying a set of CIDR and netmasks that the SDN can allocate addresses from.
+     * clusterNetworks is a list of ClusterNetwork objects that defines the global overlay network's L3 space by specifying a set of CIDR and netmasks that the SDN can allocate addresses from.
      */
     @JsonProperty("clusterNetworks")
     public void setClusterNetworks(List<ClusterNetworkEntry> clusterNetworks) {
@@ -163,7 +163,7 @@ public class ClusterNetwork implements Editable<ClusterNetworkBuilder>, HasMetad
     }
 
     /**
-     * HostSubnetLength is the number of bits of network to allocate to each node. eg, 8 would mean that each node would have a /24 slice of the overlay network for its pods
+     * hostsubnetlength is the number of bits of network to allocate to each node. eg, 8 would mean that each node would have a /24 slice of the overlay network for its pods
      */
     @JsonProperty("hostsubnetlength")
     public Long getHostsubnetlength() {
@@ -171,7 +171,7 @@ public class ClusterNetwork implements Editable<ClusterNetworkBuilder>, HasMetad
     }
 
     /**
-     * HostSubnetLength is the number of bits of network to allocate to each node. eg, 8 would mean that each node would have a /24 slice of the overlay network for its pods
+     * hostsubnetlength is the number of bits of network to allocate to each node. eg, 8 would mean that each node would have a /24 slice of the overlay network for its pods
      */
     @JsonProperty("hostsubnetlength")
     public void setHostsubnetlength(Long hostsubnetlength) {
@@ -211,7 +211,7 @@ public class ClusterNetwork implements Editable<ClusterNetworkBuilder>, HasMetad
     }
 
     /**
-     * MTU is the MTU for the overlay network. This should be 50 less than the MTU of the network connecting the nodes. It is normally autodetected by the cluster network operator.
+     * mtu is the MTU for the overlay network. This should be 50 less than the MTU of the network connecting the nodes. It is normally autodetected by the cluster network operator.
      */
     @JsonProperty("mtu")
     public Long getMtu() {
@@ -219,7 +219,7 @@ public class ClusterNetwork implements Editable<ClusterNetworkBuilder>, HasMetad
     }
 
     /**
-     * MTU is the MTU for the overlay network. This should be 50 less than the MTU of the network connecting the nodes. It is normally autodetected by the cluster network operator.
+     * mtu is the MTU for the overlay network. This should be 50 less than the MTU of the network connecting the nodes. It is normally autodetected by the cluster network operator.
      */
     @JsonProperty("mtu")
     public void setMtu(Long mtu) {
@@ -227,7 +227,7 @@ public class ClusterNetwork implements Editable<ClusterNetworkBuilder>, HasMetad
     }
 
     /**
-     * Network is a CIDR string specifying the global overlay network's L3 space
+     * network is a CIDR string specifying the global overlay network's L3 space
      */
     @JsonProperty("network")
     public String getNetwork() {
@@ -235,7 +235,7 @@ public class ClusterNetwork implements Editable<ClusterNetworkBuilder>, HasMetad
     }
 
     /**
-     * Network is a CIDR string specifying the global overlay network's L3 space
+     * network is a CIDR string specifying the global overlay network's L3 space
      */
     @JsonProperty("network")
     public void setNetwork(String network) {
@@ -243,7 +243,7 @@ public class ClusterNetwork implements Editable<ClusterNetworkBuilder>, HasMetad
     }
 
     /**
-     * PluginName is the name of the network plugin being used
+     * pluginName is the name of the network plugin being used
      */
     @JsonProperty("pluginName")
     public String getPluginName() {
@@ -251,7 +251,7 @@ public class ClusterNetwork implements Editable<ClusterNetworkBuilder>, HasMetad
     }
 
     /**
-     * PluginName is the name of the network plugin being used
+     * pluginName is the name of the network plugin being used
      */
     @JsonProperty("pluginName")
     public void setPluginName(String pluginName) {
@@ -259,7 +259,7 @@ public class ClusterNetwork implements Editable<ClusterNetworkBuilder>, HasMetad
     }
 
     /**
-     * ServiceNetwork is the CIDR range that Service IP addresses are allocated from
+     * serviceNetwork is the CIDR range that Service IP addresses are allocated from
      */
     @JsonProperty("serviceNetwork")
     public String getServiceNetwork() {
@@ -267,7 +267,7 @@ public class ClusterNetwork implements Editable<ClusterNetworkBuilder>, HasMetad
     }
 
     /**
-     * ServiceNetwork is the CIDR range that Service IP addresses are allocated from
+     * serviceNetwork is the CIDR range that Service IP addresses are allocated from
      */
     @JsonProperty("serviceNetwork")
     public void setServiceNetwork(String serviceNetwork) {
@@ -275,7 +275,7 @@ public class ClusterNetwork implements Editable<ClusterNetworkBuilder>, HasMetad
     }
 
     /**
-     * VXLANPort sets the VXLAN destination port used by the cluster. It is set by the master configuration file on startup and cannot be edited manually. Valid values for VXLANPort are integers 1-65535 inclusive and if unset defaults to 4789. Changing VXLANPort allows users to resolve issues between openshift SDN and other software trying to use the same VXLAN destination port.
+     * vxlanPort sets the VXLAN destination port used by the cluster. It is set by the master configuration file on startup and cannot be edited manually. Valid values for VXLANPort are integers 1-65535 inclusive and if unset defaults to 4789. Changing VXLANPort allows users to resolve issues between openshift SDN and other software trying to use the same VXLAN destination port.
      */
     @JsonProperty("vxlanPort")
     public Long getVxlanPort() {
@@ -283,7 +283,7 @@ public class ClusterNetwork implements Editable<ClusterNetworkBuilder>, HasMetad
     }
 
     /**
-     * VXLANPort sets the VXLAN destination port used by the cluster. It is set by the master configuration file on startup and cannot be edited manually. Valid values for VXLANPort are integers 1-65535 inclusive and if unset defaults to 4789. Changing VXLANPort allows users to resolve issues between openshift SDN and other software trying to use the same VXLAN destination port.
+     * vxlanPort sets the VXLAN destination port used by the cluster. It is set by the master configuration file on startup and cannot be edited manually. Valid values for VXLANPort are integers 1-65535 inclusive and if unset defaults to 4789. Changing VXLANPort allows users to resolve issues between openshift SDN and other software trying to use the same VXLAN destination port.
      */
     @JsonProperty("vxlanPort")
     public void setVxlanPort(Long vxlanPort) {

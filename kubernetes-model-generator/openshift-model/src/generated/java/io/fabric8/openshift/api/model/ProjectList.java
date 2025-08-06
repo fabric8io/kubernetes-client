@@ -123,7 +123,7 @@ public class ProjectList implements Editable<ProjectListBuilder>, KubernetesReso
     }
 
     /**
-     * Items is the list of projects
+     * items is the list of projects
      */
     @JsonProperty("items")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -132,7 +132,7 @@ public class ProjectList implements Editable<ProjectListBuilder>, KubernetesReso
     }
 
     /**
-     * Items is the list of projects
+     * items is the list of projects
      */
     @JsonProperty("items")
     public void setItems(List<io.fabric8.openshift.api.model.Project> items) {

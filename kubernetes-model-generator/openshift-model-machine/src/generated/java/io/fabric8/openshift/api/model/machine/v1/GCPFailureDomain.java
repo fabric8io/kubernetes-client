@@ -82,7 +82,7 @@ public class GCPFailureDomain implements Editable<GCPFailureDomainBuilder>, Kube
     }
 
     /**
-     * Zone is the zone in which the GCP machine provider will create the VM.
+     * zone is the zone in which the GCP machine provider will create the VM.
      */
     @JsonProperty("zone")
     public String getZone() {
@@ -90,7 +90,7 @@ public class GCPFailureDomain implements Editable<GCPFailureDomainBuilder>, Kube
     }
 
     /**
-     * Zone is the zone in which the GCP machine provider will create the VM.
+     * zone is the zone in which the GCP machine provider will create the VM.
      */
     @JsonProperty("zone")
     public void setZone(String zone) {

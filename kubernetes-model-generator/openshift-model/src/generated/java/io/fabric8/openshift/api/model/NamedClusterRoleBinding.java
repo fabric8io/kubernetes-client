@@ -85,7 +85,7 @@ public class NamedClusterRoleBinding implements Editable<NamedClusterRoleBinding
     }
 
     /**
-     * Name is the name of the cluster role binding
+     * name is the name of the cluster role binding
      */
     @JsonProperty("name")
     public String getName() {
@@ -93,7 +93,7 @@ public class NamedClusterRoleBinding implements Editable<NamedClusterRoleBinding
     }
 
     /**
-     * Name is the name of the cluster role binding
+     * name is the name of the cluster role binding
      */
     @JsonProperty("name")
     public void setName(String name) {

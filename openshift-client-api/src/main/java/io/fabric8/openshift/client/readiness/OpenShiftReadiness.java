@@ -36,7 +36,7 @@ public class OpenShiftReadiness extends Readiness {
   }
 
   @Override
-  protected boolean isReadinessApplicable(HasMetadata item) {
+  public boolean isReadinessApplicable(HasMetadata item) {
     return super.isReadinessApplicable(item) ||
         item instanceof DeploymentConfig;
   }

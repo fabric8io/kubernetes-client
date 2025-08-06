@@ -118,7 +118,7 @@ public class OutageEntry implements Editable<OutageEntryBuilder>, KubernetesReso
     }
 
     /**
-     * EndLogs contains log entries related to the end of this outage. Should contain the success entry that resolved the outage and possibly a few of the failure log entries that preceded it.
+     * endLogs contains log entries related to the end of this outage. Should contain the success entry that resolved the outage and possibly a few of the failure log entries that preceded it.
      */
     @JsonProperty("endLogs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -127,7 +127,7 @@ public class OutageEntry implements Editable<OutageEntryBuilder>, KubernetesReso
     }
 
     /**
-     * EndLogs contains log entries related to the end of this outage. Should contain the success entry that resolved the outage and possibly a few of the failure log entries that preceded it.
+     * endLogs contains log entries related to the end of this outage. Should contain the success entry that resolved the outage and possibly a few of the failure log entries that preceded it.
      */
     @JsonProperty("endLogs")
     public void setEndLogs(List<LogEntry> endLogs) {
@@ -135,7 +135,7 @@ public class OutageEntry implements Editable<OutageEntryBuilder>, KubernetesReso
     }
 
     /**
-     * Message summarizes outage details in a human readable format.
+     * message summarizes outage details in a human readable format.
      */
     @JsonProperty("message")
     public String getMessage() {
@@ -143,7 +143,7 @@ public class OutageEntry implements Editable<OutageEntryBuilder>, KubernetesReso
     }
 
     /**
-     * Message summarizes outage details in a human readable format.
+     * message summarizes outage details in a human readable format.
      */
     @JsonProperty("message")
     public void setMessage(String message) {
@@ -167,7 +167,7 @@ public class OutageEntry implements Editable<OutageEntryBuilder>, KubernetesReso
     }
 
     /**
-     * StartLogs contains log entries related to the start of this outage. Should contain the original failure, any entries where the failure mode changed.
+     * startLogs contains log entries related to the start of this outage. Should contain the original failure, any entries where the failure mode changed.
      */
     @JsonProperty("startLogs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -176,7 +176,7 @@ public class OutageEntry implements Editable<OutageEntryBuilder>, KubernetesReso
     }
 
     /**
-     * StartLogs contains log entries related to the start of this outage. Should contain the original failure, any entries where the failure mode changed.
+     * startLogs contains log entries related to the start of this outage. Should contain the original failure, any entries where the failure mode changed.
      */
     @JsonProperty("startLogs")
     public void setStartLogs(List<LogEntry> startLogs) {

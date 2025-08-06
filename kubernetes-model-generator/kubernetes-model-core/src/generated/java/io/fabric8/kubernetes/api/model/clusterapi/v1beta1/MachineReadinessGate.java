@@ -21,7 +21,8 @@ import lombok.experimental.Accessors;
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "conditionType"
+    "conditionType",
+    "polarity"
 })
 @ToString
 @EqualsAndHashCode
@@ -36,6 +37,8 @@ public class MachineReadinessGate implements Editable<MachineReadinessGateBuilde
 
     @JsonProperty("conditionType")
     private String conditionType;
+    @JsonProperty("polarity")
+    private String polarity;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -45,9 +48,10 @@ public class MachineReadinessGate implements Editable<MachineReadinessGateBuilde
     public MachineReadinessGate() {
     }
 
-    public MachineReadinessGate(String conditionType) {
+    public MachineReadinessGate(String conditionType, String polarity) {
         super();
         this.conditionType = conditionType;
+        this.polarity = polarity;
     }
 
     @JsonProperty("conditionType")
@@ -58,6 +62,16 @@ public class MachineReadinessGate implements Editable<MachineReadinessGateBuilde
     @JsonProperty("conditionType")
     public void setConditionType(String conditionType) {
         this.conditionType = conditionType;
+    }
+
+    @JsonProperty("polarity")
+    public String getPolarity() {
+        return polarity;
+    }
+
+    @JsonProperty("polarity")
+    public void setPolarity(String polarity) {
+        this.polarity = polarity;
     }
 
     @JsonIgnore

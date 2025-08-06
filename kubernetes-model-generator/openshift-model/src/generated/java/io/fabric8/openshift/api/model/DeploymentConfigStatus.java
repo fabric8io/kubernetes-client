@@ -116,7 +116,7 @@ public class DeploymentConfigStatus implements Editable<DeploymentConfigStatusBu
     }
 
     /**
-     * AvailableReplicas is the total number of available pods targeted by this deployment config.
+     * availableReplicas is the total number of available pods targeted by this deployment config.
      */
     @JsonProperty("availableReplicas")
     public Integer getAvailableReplicas() {
@@ -124,7 +124,7 @@ public class DeploymentConfigStatus implements Editable<DeploymentConfigStatusBu
     }
 
     /**
-     * AvailableReplicas is the total number of available pods targeted by this deployment config.
+     * availableReplicas is the total number of available pods targeted by this deployment config.
      */
     @JsonProperty("availableReplicas")
     public void setAvailableReplicas(Integer availableReplicas) {
@@ -132,7 +132,7 @@ public class DeploymentConfigStatus implements Editable<DeploymentConfigStatusBu
     }
 
     /**
-     * Conditions represents the latest available observations of a deployment config's current state.
+     * conditions represents the latest available observations of a deployment config's current state.
      */
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -141,7 +141,7 @@ public class DeploymentConfigStatus implements Editable<DeploymentConfigStatusBu
     }
 
     /**
-     * Conditions represents the latest available observations of a deployment config's current state.
+     * conditions represents the latest available observations of a deployment config's current state.
      */
     @JsonProperty("conditions")
     public void setConditions(List<DeploymentCondition> conditions) {
@@ -165,7 +165,7 @@ public class DeploymentConfigStatus implements Editable<DeploymentConfigStatusBu
     }
 
     /**
-     * LatestVersion is used to determine whether the current deployment associated with a deployment config is out of sync.
+     * latestVersion is used to determine whether the current deployment associated with a deployment config is out of sync.
      */
     @JsonProperty("latestVersion")
     public Long getLatestVersion() {
@@ -173,7 +173,7 @@ public class DeploymentConfigStatus implements Editable<DeploymentConfigStatusBu
     }
 
     /**
-     * LatestVersion is used to determine whether the current deployment associated with a deployment config is out of sync.
+     * latestVersion is used to determine whether the current deployment associated with a deployment config is out of sync.
      */
     @JsonProperty("latestVersion")
     public void setLatestVersion(Long latestVersion) {
@@ -181,7 +181,7 @@ public class DeploymentConfigStatus implements Editable<DeploymentConfigStatusBu
     }
 
     /**
-     * ObservedGeneration is the most recent generation observed by the deployment config controller.
+     * observedGeneration is the most recent generation observed by the deployment config controller.
      */
     @JsonProperty("observedGeneration")
     public Long getObservedGeneration() {
@@ -189,7 +189,7 @@ public class DeploymentConfigStatus implements Editable<DeploymentConfigStatusBu
     }
 
     /**
-     * ObservedGeneration is the most recent generation observed by the deployment config controller.
+     * observedGeneration is the most recent generation observed by the deployment config controller.
      */
     @JsonProperty("observedGeneration")
     public void setObservedGeneration(Long observedGeneration) {
@@ -213,7 +213,7 @@ public class DeploymentConfigStatus implements Editable<DeploymentConfigStatusBu
     }
 
     /**
-     * Replicas is the total number of pods targeted by this deployment config.
+     * replicas is the total number of pods targeted by this deployment config.
      */
     @JsonProperty("replicas")
     public Integer getReplicas() {
@@ -221,7 +221,7 @@ public class DeploymentConfigStatus implements Editable<DeploymentConfigStatusBu
     }
 
     /**
-     * Replicas is the total number of pods targeted by this deployment config.
+     * replicas is the total number of pods targeted by this deployment config.
      */
     @JsonProperty("replicas")
     public void setReplicas(Integer replicas) {
@@ -229,7 +229,7 @@ public class DeploymentConfigStatus implements Editable<DeploymentConfigStatusBu
     }
 
     /**
-     * UnavailableReplicas is the total number of unavailable pods targeted by this deployment config.
+     * unavailableReplicas is the total number of unavailable pods targeted by this deployment config.
      */
     @JsonProperty("unavailableReplicas")
     public Integer getUnavailableReplicas() {
@@ -237,7 +237,7 @@ public class DeploymentConfigStatus implements Editable<DeploymentConfigStatusBu
     }
 
     /**
-     * UnavailableReplicas is the total number of unavailable pods targeted by this deployment config.
+     * unavailableReplicas is the total number of unavailable pods targeted by this deployment config.
      */
     @JsonProperty("unavailableReplicas")
     public void setUnavailableReplicas(Integer unavailableReplicas) {
@@ -245,7 +245,7 @@ public class DeploymentConfigStatus implements Editable<DeploymentConfigStatusBu
     }
 
     /**
-     * UpdatedReplicas is the total number of non-terminated pods targeted by this deployment config that have the desired template spec.
+     * updatedReplicas is the total number of non-terminated pods targeted by this deployment config that have the desired template spec.
      */
     @JsonProperty("updatedReplicas")
     public Integer getUpdatedReplicas() {
@@ -253,7 +253,7 @@ public class DeploymentConfigStatus implements Editable<DeploymentConfigStatusBu
     }
 
     /**
-     * UpdatedReplicas is the total number of non-terminated pods targeted by this deployment config that have the desired template spec.
+     * updatedReplicas is the total number of non-terminated pods targeted by this deployment config that have the desired template spec.
      */
     @JsonProperty("updatedReplicas")
     public void setUpdatedReplicas(Integer updatedReplicas) {

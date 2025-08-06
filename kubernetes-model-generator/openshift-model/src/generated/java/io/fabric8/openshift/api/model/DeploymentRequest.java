@@ -130,7 +130,7 @@ public class DeploymentRequest implements Editable<DeploymentRequestBuilder>, Ku
     }
 
     /**
-     * ExcludeTriggers instructs the instantiator to avoid processing the specified triggers. This field overrides the triggers from latest and allows clients to control specific logic. This field is ignored if not specified.
+     * excludeTriggers instructs the instantiator to avoid processing the specified triggers. This field overrides the triggers from latest and allows clients to control specific logic. This field is ignored if not specified.
      */
     @JsonProperty("excludeTriggers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -139,7 +139,7 @@ public class DeploymentRequest implements Editable<DeploymentRequestBuilder>, Ku
     }
 
     /**
-     * ExcludeTriggers instructs the instantiator to avoid processing the specified triggers. This field overrides the triggers from latest and allows clients to control specific logic. This field is ignored if not specified.
+     * excludeTriggers instructs the instantiator to avoid processing the specified triggers. This field overrides the triggers from latest and allows clients to control specific logic. This field is ignored if not specified.
      */
     @JsonProperty("excludeTriggers")
     public void setExcludeTriggers(List<String> excludeTriggers) {
@@ -147,7 +147,7 @@ public class DeploymentRequest implements Editable<DeploymentRequestBuilder>, Ku
     }
 
     /**
-     * Force will try to force a new deployment to run. If the deployment config is paused, then setting this to true will return an Invalid error.
+     * force will try to force a new deployment to run. If the deployment config is paused, then setting this to true will return an Invalid error.
      */
     @JsonProperty("force")
     public Boolean getForce() {
@@ -155,7 +155,7 @@ public class DeploymentRequest implements Editable<DeploymentRequestBuilder>, Ku
     }
 
     /**
-     * Force will try to force a new deployment to run. If the deployment config is paused, then setting this to true will return an Invalid error.
+     * force will try to force a new deployment to run. If the deployment config is paused, then setting this to true will return an Invalid error.
      */
     @JsonProperty("force")
     public void setForce(Boolean force) {
@@ -179,7 +179,7 @@ public class DeploymentRequest implements Editable<DeploymentRequestBuilder>, Ku
     }
 
     /**
-     * Latest will update the deployment config with the latest state from all triggers.
+     * latest will update the deployment config with the latest state from all triggers.
      */
     @JsonProperty("latest")
     public Boolean getLatest() {
@@ -187,7 +187,7 @@ public class DeploymentRequest implements Editable<DeploymentRequestBuilder>, Ku
     }
 
     /**
-     * Latest will update the deployment config with the latest state from all triggers.
+     * latest will update the deployment config with the latest state from all triggers.
      */
     @JsonProperty("latest")
     public void setLatest(Boolean latest) {
@@ -195,7 +195,7 @@ public class DeploymentRequest implements Editable<DeploymentRequestBuilder>, Ku
     }
 
     /**
-     * Name of the deployment config for requesting a new deployment.
+     * name of the deployment config for requesting a new deployment.
      */
     @JsonProperty("name")
     public String getName() {
@@ -203,7 +203,7 @@ public class DeploymentRequest implements Editable<DeploymentRequestBuilder>, Ku
     }
 
     /**
-     * Name of the deployment config for requesting a new deployment.
+     * name of the deployment config for requesting a new deployment.
      */
     @JsonProperty("name")
     public void setName(String name) {

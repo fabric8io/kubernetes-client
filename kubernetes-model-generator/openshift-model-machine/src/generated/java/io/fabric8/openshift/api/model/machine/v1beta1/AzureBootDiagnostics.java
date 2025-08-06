@@ -101,7 +101,7 @@ public class AzureBootDiagnostics implements Editable<AzureBootDiagnosticsBuilde
     }
 
     /**
-     * StorageAccountType determines if the storage account for storing the diagnostics data should be provisioned by Azure (AzureManaged) or by the customer (CustomerManaged).
+     * storageAccountType determines if the storage account for storing the diagnostics data should be provisioned by Azure (AzureManaged) or by the customer (CustomerManaged).
      */
     @JsonProperty("storageAccountType")
     public String getStorageAccountType() {
@@ -109,7 +109,7 @@ public class AzureBootDiagnostics implements Editable<AzureBootDiagnosticsBuilde
     }
 
     /**
-     * StorageAccountType determines if the storage account for storing the diagnostics data should be provisioned by Azure (AzureManaged) or by the customer (CustomerManaged).
+     * storageAccountType determines if the storage account for storing the diagnostics data should be provisioned by Azure (AzureManaged) or by the customer (CustomerManaged).
      */
     @JsonProperty("storageAccountType")
     public void setStorageAccountType(String storageAccountType) {

@@ -60,6 +60,7 @@ import lombok.experimental.Accessors;
     "revisionHistoryLimit",
     "secretName",
     "secretTemplate",
+    "signatureAlgorithm",
     "subject",
     "uris",
     "usages"
@@ -132,6 +133,8 @@ public class CertificateSpec implements Editable<CertificateSpecBuilder>, Kubern
     private String secretName;
     @JsonProperty("secretTemplate")
     private CertificateSecretTemplate secretTemplate;
+    @JsonProperty("signatureAlgorithm")
+    private String signatureAlgorithm;
     @JsonProperty("subject")
     private X509Subject subject;
     @JsonProperty("uris")
@@ -149,7 +152,7 @@ public class CertificateSpec implements Editable<CertificateSpecBuilder>, Kubern
     public CertificateSpec() {
     }
 
-    public CertificateSpec(List<CertificateAdditionalOutputFormat> additionalOutputFormats, String commonName, List<String> dnsNames, Duration duration, List<String> emailAddresses, Boolean encodeUsagesInRequest, List<String> ipAddresses, Boolean isCA, ObjectReference issuerRef, CertificateKeystores keystores, String literalSubject, NameConstraints nameConstraints, List<OtherName> otherNames, CertificatePrivateKey privateKey, Duration renewBefore, Integer renewBeforePercentage, Integer revisionHistoryLimit, String secretName, CertificateSecretTemplate secretTemplate, X509Subject subject, List<String> uris, List<String> usages) {
+    public CertificateSpec(List<CertificateAdditionalOutputFormat> additionalOutputFormats, String commonName, List<String> dnsNames, Duration duration, List<String> emailAddresses, Boolean encodeUsagesInRequest, List<String> ipAddresses, Boolean isCA, ObjectReference issuerRef, CertificateKeystores keystores, String literalSubject, NameConstraints nameConstraints, List<OtherName> otherNames, CertificatePrivateKey privateKey, Duration renewBefore, Integer renewBeforePercentage, Integer revisionHistoryLimit, String secretName, CertificateSecretTemplate secretTemplate, String signatureAlgorithm, X509Subject subject, List<String> uris, List<String> usages) {
         super();
         this.additionalOutputFormats = additionalOutputFormats;
         this.commonName = commonName;
@@ -170,13 +173,14 @@ public class CertificateSpec implements Editable<CertificateSpecBuilder>, Kubern
         this.revisionHistoryLimit = revisionHistoryLimit;
         this.secretName = secretName;
         this.secretTemplate = secretTemplate;
+        this.signatureAlgorithm = signatureAlgorithm;
         this.subject = subject;
         this.uris = uris;
         this.usages = usages;
     }
 
     /**
-     * Defines extra output formats of the private key and signed certificate chain to be written to this Certificate's target Secret.<br><p> <br><p> This is a Beta Feature enabled by default. It can be disabled with the `--feature-gates=AdditionalCertificateOutputFormats=false` option set on both the controller and webhook components.
+     * Defines extra output formats of the private key and signed certificate chain to be written to this Certificate's target Secret.
      */
     @JsonProperty("additionalOutputFormats")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -185,7 +189,7 @@ public class CertificateSpec implements Editable<CertificateSpecBuilder>, Kubern
     }
 
     /**
-     * Defines extra output formats of the private key and signed certificate chain to be written to this Certificate's target Secret.<br><p> <br><p> This is a Beta Feature enabled by default. It can be disabled with the `--feature-gates=AdditionalCertificateOutputFormats=false` option set on both the controller and webhook components.
+     * Defines extra output formats of the private key and signed certificate chain to be written to this Certificate's target Secret.
      */
     @JsonProperty("additionalOutputFormats")
     public void setAdditionalOutputFormats(List<CertificateAdditionalOutputFormat> additionalOutputFormats) {
@@ -437,7 +441,7 @@ public class CertificateSpec implements Editable<CertificateSpecBuilder>, Kubern
     }
 
     /**
-     * The maximum number of CertificateRequest revisions that are maintained in the Certificate's history. Each revision represents a single `CertificateRequest` created by this Certificate, either when it was created, renewed, or Spec was changed. Revisions will be removed by oldest first if the number of revisions exceeds this number.<br><p> <br><p> If set, revisionHistoryLimit must be a value of `1` or greater. If unset (`nil`), revisions will not be garbage collected. Default value is `nil`.
+     * The maximum number of CertificateRequest revisions that are maintained in the Certificate's history. Each revision represents a single `CertificateRequest` created by this Certificate, either when it was created, renewed, or Spec was changed. Revisions will be removed by oldest first if the number of revisions exceeds this number.<br><p> <br><p> If set, revisionHistoryLimit must be a value of `1` or greater. Default value is `1`.
      */
     @JsonProperty("revisionHistoryLimit")
     public Integer getRevisionHistoryLimit() {
@@ -445,7 +449,7 @@ public class CertificateSpec implements Editable<CertificateSpecBuilder>, Kubern
     }
 
     /**
-     * The maximum number of CertificateRequest revisions that are maintained in the Certificate's history. Each revision represents a single `CertificateRequest` created by this Certificate, either when it was created, renewed, or Spec was changed. Revisions will be removed by oldest first if the number of revisions exceeds this number.<br><p> <br><p> If set, revisionHistoryLimit must be a value of `1` or greater. If unset (`nil`), revisions will not be garbage collected. Default value is `nil`.
+     * The maximum number of CertificateRequest revisions that are maintained in the Certificate's history. Each revision represents a single `CertificateRequest` created by this Certificate, either when it was created, renewed, or Spec was changed. Revisions will be removed by oldest first if the number of revisions exceeds this number.<br><p> <br><p> If set, revisionHistoryLimit must be a value of `1` or greater. Default value is `1`.
      */
     @JsonProperty("revisionHistoryLimit")
     public void setRevisionHistoryLimit(Integer revisionHistoryLimit) {
@@ -482,6 +486,22 @@ public class CertificateSpec implements Editable<CertificateSpecBuilder>, Kubern
     @JsonProperty("secretTemplate")
     public void setSecretTemplate(CertificateSecretTemplate secretTemplate) {
         this.secretTemplate = secretTemplate;
+    }
+
+    /**
+     * Signature algorithm to use. Allowed values for RSA keys: SHA256WithRSA, SHA384WithRSA, SHA512WithRSA. Allowed values for ECDSA keys: ECDSAWithSHA256, ECDSAWithSHA384, ECDSAWithSHA512. Allowed values for Ed25519 keys: PureEd25519.
+     */
+    @JsonProperty("signatureAlgorithm")
+    public String getSignatureAlgorithm() {
+        return signatureAlgorithm;
+    }
+
+    /**
+     * Signature algorithm to use. Allowed values for RSA keys: SHA256WithRSA, SHA384WithRSA, SHA512WithRSA. Allowed values for ECDSA keys: ECDSAWithSHA256, ECDSAWithSHA384, ECDSAWithSHA512. Allowed values for Ed25519 keys: PureEd25519.
+     */
+    @JsonProperty("signatureAlgorithm")
+    public void setSignatureAlgorithm(String signatureAlgorithm) {
+        this.signatureAlgorithm = signatureAlgorithm;
     }
 
     /**

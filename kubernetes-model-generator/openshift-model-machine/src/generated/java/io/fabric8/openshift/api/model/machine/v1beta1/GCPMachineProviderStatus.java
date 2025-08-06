@@ -132,7 +132,7 @@ public class GCPMachineProviderStatus implements Editable<GCPMachineProviderStat
     }
 
     /**
-     * Conditions is a set of conditions associated with the Machine to indicate errors or other status
+     * conditions is a set of conditions associated with the Machine to indicate errors or other status
      */
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -141,7 +141,7 @@ public class GCPMachineProviderStatus implements Editable<GCPMachineProviderStat
     }
 
     /**
-     * Conditions is a set of conditions associated with the Machine to indicate errors or other status
+     * conditions is a set of conditions associated with the Machine to indicate errors or other status
      */
     @JsonProperty("conditions")
     public void setConditions(List<Condition> conditions) {
@@ -149,7 +149,7 @@ public class GCPMachineProviderStatus implements Editable<GCPMachineProviderStat
     }
 
     /**
-     * InstanceID is the ID of the instance in GCP
+     * instanceId is the ID of the instance in GCP
      */
     @JsonProperty("instanceId")
     public String getInstanceId() {
@@ -157,7 +157,7 @@ public class GCPMachineProviderStatus implements Editable<GCPMachineProviderStat
     }
 
     /**
-     * InstanceID is the ID of the instance in GCP
+     * instanceId is the ID of the instance in GCP
      */
     @JsonProperty("instanceId")
     public void setInstanceId(String instanceId) {
@@ -165,7 +165,7 @@ public class GCPMachineProviderStatus implements Editable<GCPMachineProviderStat
     }
 
     /**
-     * InstanceState is the provisioning state of the GCP Instance.
+     * instanceState is the provisioning state of the GCP Instance.
      */
     @JsonProperty("instanceState")
     public String getInstanceState() {
@@ -173,7 +173,7 @@ public class GCPMachineProviderStatus implements Editable<GCPMachineProviderStat
     }
 
     /**
-     * InstanceState is the provisioning state of the GCP Instance.
+     * instanceState is the provisioning state of the GCP Instance.
      */
     @JsonProperty("instanceState")
     public void setInstanceState(String instanceState) {

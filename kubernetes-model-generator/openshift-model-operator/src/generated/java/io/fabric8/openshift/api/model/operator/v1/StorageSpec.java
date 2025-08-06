@@ -186,7 +186,7 @@ public class StorageSpec implements Editable<StorageSpecBuilder>, KubernetesReso
     }
 
     /**
-     * VSphereStorageDriver indicates the storage driver to use on VSphere clusters. Once this field is set to CSIWithMigrationDriver, it can not be changed. If this is empty, the platform will choose a good default, which may change over time without notice. The current default is CSIWithMigrationDriver and may not be changed. DEPRECATED: This field will be removed in a future release.
+     * vsphereStorageDriver indicates the storage driver to use on VSphere clusters. Once this field is set to CSIWithMigrationDriver, it can not be changed. If this is empty, the platform will choose a good default, which may change over time without notice. The current default is CSIWithMigrationDriver and may not be changed. DEPRECATED: This field will be removed in a future release.
      */
     @JsonProperty("vsphereStorageDriver")
     public String getVsphereStorageDriver() {
@@ -194,7 +194,7 @@ public class StorageSpec implements Editable<StorageSpecBuilder>, KubernetesReso
     }
 
     /**
-     * VSphereStorageDriver indicates the storage driver to use on VSphere clusters. Once this field is set to CSIWithMigrationDriver, it can not be changed. If this is empty, the platform will choose a good default, which may change over time without notice. The current default is CSIWithMigrationDriver and may not be changed. DEPRECATED: This field will be removed in a future release.
+     * vsphereStorageDriver indicates the storage driver to use on VSphere clusters. Once this field is set to CSIWithMigrationDriver, it can not be changed. If this is empty, the platform will choose a good default, which may change over time without notice. The current default is CSIWithMigrationDriver and may not be changed. DEPRECATED: This field will be removed in a future release.
      */
     @JsonProperty("vsphereStorageDriver")
     public void setVsphereStorageDriver(String vsphereStorageDriver) {

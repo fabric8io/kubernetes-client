@@ -43,6 +43,7 @@ import lombok.experimental.Accessors;
     "globalMaxSnapshotsPerBlockVolume",
     "granularMaxSnapshotsPerBlockVolumeInVSAN",
     "granularMaxSnapshotsPerBlockVolumeInVVOL",
+    "maxAllowedBlockVolumesPerNode",
     "topologyCategories"
 })
 @ToString
@@ -76,6 +77,8 @@ public class VSphereCSIDriverConfigSpec implements Editable<VSphereCSIDriverConf
     private Long granularMaxSnapshotsPerBlockVolumeInVSAN;
     @JsonProperty("granularMaxSnapshotsPerBlockVolumeInVVOL")
     private Long granularMaxSnapshotsPerBlockVolumeInVVOL;
+    @JsonProperty("maxAllowedBlockVolumesPerNode")
+    private Integer maxAllowedBlockVolumesPerNode;
     @JsonProperty("topologyCategories")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> topologyCategories = new ArrayList<>();
@@ -88,11 +91,12 @@ public class VSphereCSIDriverConfigSpec implements Editable<VSphereCSIDriverConf
     public VSphereCSIDriverConfigSpec() {
     }
 
-    public VSphereCSIDriverConfigSpec(Long globalMaxSnapshotsPerBlockVolume, Long granularMaxSnapshotsPerBlockVolumeInVSAN, Long granularMaxSnapshotsPerBlockVolumeInVVOL, List<String> topologyCategories) {
+    public VSphereCSIDriverConfigSpec(Long globalMaxSnapshotsPerBlockVolume, Long granularMaxSnapshotsPerBlockVolumeInVSAN, Long granularMaxSnapshotsPerBlockVolumeInVVOL, Integer maxAllowedBlockVolumesPerNode, List<String> topologyCategories) {
         super();
         this.globalMaxSnapshotsPerBlockVolume = globalMaxSnapshotsPerBlockVolume;
         this.granularMaxSnapshotsPerBlockVolumeInVSAN = granularMaxSnapshotsPerBlockVolumeInVSAN;
         this.granularMaxSnapshotsPerBlockVolumeInVVOL = granularMaxSnapshotsPerBlockVolumeInVVOL;
+        this.maxAllowedBlockVolumesPerNode = maxAllowedBlockVolumesPerNode;
         this.topologyCategories = topologyCategories;
     }
 
@@ -142,6 +146,22 @@ public class VSphereCSIDriverConfigSpec implements Editable<VSphereCSIDriverConf
     @JsonProperty("granularMaxSnapshotsPerBlockVolumeInVVOL")
     public void setGranularMaxSnapshotsPerBlockVolumeInVVOL(Long granularMaxSnapshotsPerBlockVolumeInVVOL) {
         this.granularMaxSnapshotsPerBlockVolumeInVVOL = granularMaxSnapshotsPerBlockVolumeInVVOL;
+    }
+
+    /**
+     * maxAllowedBlockVolumesPerNode is an optional configuration parameter that allows setting a custom value for the limit of the number of PersistentVolumes attached to a node. In vSphere version 7 this limit was set to 59 by default, however in vSphere version 8 this limit was increased to 255. Before increasing this value above 59 the cluster administrator needs to ensure that every node forming the cluster is updated to ESXi version 8 or higher and that all nodes are running the same version. The limit must be between 1 and 255, which matches the vSphere version 8 maximum. When omitted, this means no opinion and the platform is left to choose a reasonable default, which is subject to change over time. The current default is 59, which matches the limit for vSphere version 7.
+     */
+    @JsonProperty("maxAllowedBlockVolumesPerNode")
+    public Integer getMaxAllowedBlockVolumesPerNode() {
+        return maxAllowedBlockVolumesPerNode;
+    }
+
+    /**
+     * maxAllowedBlockVolumesPerNode is an optional configuration parameter that allows setting a custom value for the limit of the number of PersistentVolumes attached to a node. In vSphere version 7 this limit was set to 59 by default, however in vSphere version 8 this limit was increased to 255. Before increasing this value above 59 the cluster administrator needs to ensure that every node forming the cluster is updated to ESXi version 8 or higher and that all nodes are running the same version. The limit must be between 1 and 255, which matches the vSphere version 8 maximum. When omitted, this means no opinion and the platform is left to choose a reasonable default, which is subject to change over time. The current default is 59, which matches the limit for vSphere version 7.
+     */
+    @JsonProperty("maxAllowedBlockVolumesPerNode")
+    public void setMaxAllowedBlockVolumesPerNode(Integer maxAllowedBlockVolumesPerNode) {
+        this.maxAllowedBlockVolumesPerNode = maxAllowedBlockVolumesPerNode;
     }
 
     /**

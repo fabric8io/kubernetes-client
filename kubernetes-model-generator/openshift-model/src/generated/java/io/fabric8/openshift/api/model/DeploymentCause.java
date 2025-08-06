@@ -101,7 +101,7 @@ public class DeploymentCause implements Editable<DeploymentCauseBuilder>, Kubern
     }
 
     /**
-     * Type of the trigger that resulted in the creation of a new deployment
+     * type of the trigger that resulted in the creation of a new deployment
      */
     @JsonProperty("type")
     public String getType() {
@@ -109,7 +109,7 @@ public class DeploymentCause implements Editable<DeploymentCauseBuilder>, Kubern
     }
 
     /**
-     * Type of the trigger that resulted in the creation of a new deployment
+     * type of the trigger that resulted in the creation of a new deployment
      */
     @JsonProperty("type")
     public void setType(String type) {

@@ -94,7 +94,7 @@ public class PowerVSResource implements Editable<PowerVSResourceBuilder>, Kubern
     }
 
     /**
-     * ID of resource
+     * id of resource
      */
     @JsonProperty("id")
     public String getId() {
@@ -102,7 +102,7 @@ public class PowerVSResource implements Editable<PowerVSResourceBuilder>, Kubern
     }
 
     /**
-     * ID of resource
+     * id of resource
      */
     @JsonProperty("id")
     public void setId(String id) {
@@ -110,7 +110,7 @@ public class PowerVSResource implements Editable<PowerVSResourceBuilder>, Kubern
     }
 
     /**
-     * Name of resource
+     * name of resource
      */
     @JsonProperty("name")
     public String getName() {
@@ -118,7 +118,7 @@ public class PowerVSResource implements Editable<PowerVSResourceBuilder>, Kubern
     }
 
     /**
-     * Name of resource
+     * name of resource
      */
     @JsonProperty("name")
     public void setName(String name) {
@@ -126,7 +126,7 @@ public class PowerVSResource implements Editable<PowerVSResourceBuilder>, Kubern
     }
 
     /**
-     * Regex to find resource Regex contains the pattern to match to find a resource
+     * regex to find resource Regex contains the pattern to match to find a resource
      */
     @JsonProperty("regex")
     public String getRegex() {
@@ -134,7 +134,7 @@ public class PowerVSResource implements Editable<PowerVSResourceBuilder>, Kubern
     }
 
     /**
-     * Regex to find resource Regex contains the pattern to match to find a resource
+     * regex to find resource Regex contains the pattern to match to find a resource
      */
     @JsonProperty("regex")
     public void setRegex(String regex) {
@@ -142,7 +142,7 @@ public class PowerVSResource implements Editable<PowerVSResourceBuilder>, Kubern
     }
 
     /**
-     * Type identifies the resource type for this entry. Valid values are ID, Name and RegEx
+     * type identifies the resource type for this entry. Valid values are ID, Name and RegEx
      */
     @JsonProperty("type")
     public String getType() {
@@ -150,7 +150,7 @@ public class PowerVSResource implements Editable<PowerVSResourceBuilder>, Kubern
     }
 
     /**
-     * Type identifies the resource type for this entry. Valid values are ID, Name and RegEx
+     * type identifies the resource type for this entry. Valid values are ID, Name and RegEx
      */
     @JsonProperty("type")
     public void setType(String type) {

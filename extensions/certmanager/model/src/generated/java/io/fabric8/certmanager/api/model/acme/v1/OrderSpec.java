@@ -43,6 +43,7 @@ import lombok.experimental.Accessors;
     "duration",
     "ipAddresses",
     "issuerRef",
+    "profile",
     "request"
 })
 @ToString
@@ -82,6 +83,8 @@ public class OrderSpec implements Editable<OrderSpecBuilder>, KubernetesResource
     private List<String> ipAddresses = new ArrayList<>();
     @JsonProperty("issuerRef")
     private ObjectReference issuerRef;
+    @JsonProperty("profile")
+    private String profile;
     @JsonProperty("request")
     private String request;
     @JsonIgnore
@@ -93,13 +96,14 @@ public class OrderSpec implements Editable<OrderSpecBuilder>, KubernetesResource
     public OrderSpec() {
     }
 
-    public OrderSpec(String commonName, List<String> dnsNames, Duration duration, List<String> ipAddresses, ObjectReference issuerRef, String request) {
+    public OrderSpec(String commonName, List<String> dnsNames, Duration duration, List<String> ipAddresses, ObjectReference issuerRef, String profile, String request) {
         super();
         this.commonName = commonName;
         this.dnsNames = dnsNames;
         this.duration = duration;
         this.ipAddresses = ipAddresses;
         this.issuerRef = issuerRef;
+        this.profile = profile;
         this.request = request;
     }
 
@@ -171,6 +175,22 @@ public class OrderSpec implements Editable<OrderSpecBuilder>, KubernetesResource
     @JsonProperty("issuerRef")
     public void setIssuerRef(ObjectReference issuerRef) {
         this.issuerRef = issuerRef;
+    }
+
+    /**
+     * Profile allows requesting a certificate profile from the ACME server. Supported profiles are listed by the server's ACME directory URL.
+     */
+    @JsonProperty("profile")
+    public String getProfile() {
+        return profile;
+    }
+
+    /**
+     * Profile allows requesting a certificate profile from the ACME server. Supported profiles are listed by the server's ACME directory URL.
+     */
+    @JsonProperty("profile")
+    public void setProfile(String profile) {
+        this.profile = profile;
     }
 
     /**

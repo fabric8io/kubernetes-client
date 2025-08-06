@@ -89,7 +89,7 @@ public class LifecycleHooks implements Editable<LifecycleHooksBuilder>, Kubernet
     }
 
     /**
-     * PreDrain hooks prevent the machine from being drained. This also blocks further lifecycle events, such as termination.
+     * preDrain hooks prevent the machine from being drained. This also blocks further lifecycle events, such as termination.
      */
     @JsonProperty("preDrain")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -98,7 +98,7 @@ public class LifecycleHooks implements Editable<LifecycleHooksBuilder>, Kubernet
     }
 
     /**
-     * PreDrain hooks prevent the machine from being drained. This also blocks further lifecycle events, such as termination.
+     * preDrain hooks prevent the machine from being drained. This also blocks further lifecycle events, such as termination.
      */
     @JsonProperty("preDrain")
     public void setPreDrain(List<LifecycleHook> preDrain) {
@@ -106,7 +106,7 @@ public class LifecycleHooks implements Editable<LifecycleHooksBuilder>, Kubernet
     }
 
     /**
-     * PreTerminate hooks prevent the machine from being terminated. PreTerminate hooks be actioned after the Machine has been drained.
+     * preTerminate hooks prevent the machine from being terminated. PreTerminate hooks be actioned after the Machine has been drained.
      */
     @JsonProperty("preTerminate")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -115,7 +115,7 @@ public class LifecycleHooks implements Editable<LifecycleHooksBuilder>, Kubernet
     }
 
     /**
-     * PreTerminate hooks prevent the machine from being terminated. PreTerminate hooks be actioned after the Machine has been drained.
+     * preTerminate hooks prevent the machine from being terminated. PreTerminate hooks be actioned after the Machine has been drained.
      */
     @JsonProperty("preTerminate")
     public void setPreTerminate(List<LifecycleHook> preTerminate) {

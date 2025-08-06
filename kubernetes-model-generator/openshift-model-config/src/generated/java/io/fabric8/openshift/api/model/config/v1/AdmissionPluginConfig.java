@@ -103,7 +103,7 @@ public class AdmissionPluginConfig implements Editable<AdmissionPluginConfigBuil
     }
 
     /**
-     * Location is the path to a configuration file that contains the plugin's configuration
+     * location is the path to a configuration file that contains the plugin's configuration
      */
     @JsonProperty("location")
     public String getLocation() {
@@ -111,7 +111,7 @@ public class AdmissionPluginConfig implements Editable<AdmissionPluginConfigBuil
     }
 
     /**
-     * Location is the path to a configuration file that contains the plugin's configuration
+     * location is the path to a configuration file that contains the plugin's configuration
      */
     @JsonProperty("location")
     public void setLocation(String location) {

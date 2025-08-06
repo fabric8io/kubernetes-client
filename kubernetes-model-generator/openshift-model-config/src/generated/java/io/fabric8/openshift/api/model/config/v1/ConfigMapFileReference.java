@@ -85,7 +85,7 @@ public class ConfigMapFileReference implements Editable<ConfigMapFileReferenceBu
     }
 
     /**
-     * Key allows pointing to a specific key/value inside of the configmap.  This is useful for logical file references.
+     * key allows pointing to a specific key/value inside of the configmap.  This is useful for logical file references.
      */
     @JsonProperty("key")
     public String getKey() {
@@ -93,7 +93,7 @@ public class ConfigMapFileReference implements Editable<ConfigMapFileReferenceBu
     }
 
     /**
-     * Key allows pointing to a specific key/value inside of the configmap.  This is useful for logical file references.
+     * key allows pointing to a specific key/value inside of the configmap.  This is useful for logical file references.
      */
     @JsonProperty("key")
     public void setKey(String key) {

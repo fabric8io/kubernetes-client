@@ -248,7 +248,7 @@ public class GitInfo implements Editable<GitInfoBuilder>, KubernetesResource
     }
 
     /**
-     * Refs is a list of GitRefs for the provided repo - generally sent when used from a post-receive hook. This field is optional and is used when sending multiple refs
+     * refs is a list of GitRefs for the provided repo - generally sent when used from a post-receive hook. This field is optional and is used when sending multiple refs
      */
     @JsonProperty("refs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -257,7 +257,7 @@ public class GitInfo implements Editable<GitInfoBuilder>, KubernetesResource
     }
 
     /**
-     * Refs is a list of GitRefs for the provided repo - generally sent when used from a post-receive hook. This field is optional and is used when sending multiple refs
+     * refs is a list of GitRefs for the provided repo - generally sent when used from a post-receive hook. This field is optional and is used when sending multiple refs
      */
     @JsonProperty("refs")
     public void setRefs(List<GitRefInfo> refs) {

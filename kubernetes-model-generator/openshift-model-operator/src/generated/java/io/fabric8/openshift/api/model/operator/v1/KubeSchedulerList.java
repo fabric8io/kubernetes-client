@@ -124,7 +124,7 @@ public class KubeSchedulerList implements Editable<KubeSchedulerListBuilder>, Ku
     }
 
     /**
-     * Items contains the items
+     * items contains the items
      */
     @JsonProperty("items")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -133,7 +133,7 @@ public class KubeSchedulerList implements Editable<KubeSchedulerListBuilder>, Ku
     }
 
     /**
-     * Items contains the items
+     * items contains the items
      */
     @JsonProperty("items")
     public void setItems(List<io.fabric8.openshift.api.model.operator.v1.KubeScheduler> items) {

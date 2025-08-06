@@ -123,7 +123,7 @@ public class OAuthAccessTokenList implements Editable<OAuthAccessTokenListBuilde
     }
 
     /**
-     * Items is the list of OAuth access tokens
+     * items is the list of OAuth access tokens
      */
     @JsonProperty("items")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -132,7 +132,7 @@ public class OAuthAccessTokenList implements Editable<OAuthAccessTokenListBuilde
     }
 
     /**
-     * Items is the list of OAuth access tokens
+     * items is the list of OAuth access tokens
      */
     @JsonProperty("items")
     public void setItems(List<io.fabric8.openshift.api.model.OAuthAccessToken> items) {

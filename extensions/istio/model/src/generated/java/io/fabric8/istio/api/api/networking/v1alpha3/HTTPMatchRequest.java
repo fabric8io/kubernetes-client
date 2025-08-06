@@ -288,7 +288,7 @@ public class HTTPMatchRequest implements Editable<HTTPMatchRequestBuilder>, Kube
     }
 
     /**
-     * One or more labels that constrain the applicability of a rule to source (client) workloads with the given labels. If the VirtualService has a list of gateways specified in the top-level `gateways` field, it must include the reserved gateway `mesh` for this field to be applicable.
+     * One or more labels that constrain the applicability of a rule to source (client) workloads with the given labels. If the VirtualService has a list of gateways specified in the top-level `gateways` field, it must include the reserved gateway `mesh` for this field to be applicable.<br><p> <br><p> &#42;&#42;Note:&#42;&#42; This is not a runtime match, but is a selector; it filters which workloads the VirtualService applies to.
      */
     @JsonProperty("sourceLabels")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -297,7 +297,7 @@ public class HTTPMatchRequest implements Editable<HTTPMatchRequestBuilder>, Kube
     }
 
     /**
-     * One or more labels that constrain the applicability of a rule to source (client) workloads with the given labels. If the VirtualService has a list of gateways specified in the top-level `gateways` field, it must include the reserved gateway `mesh` for this field to be applicable.
+     * One or more labels that constrain the applicability of a rule to source (client) workloads with the given labels. If the VirtualService has a list of gateways specified in the top-level `gateways` field, it must include the reserved gateway `mesh` for this field to be applicable.<br><p> <br><p> &#42;&#42;Note:&#42;&#42; This is not a runtime match, but is a selector; it filters which workloads the VirtualService applies to.
      */
     @JsonProperty("sourceLabels")
     public void setSourceLabels(Map<String, String> sourceLabels) {
@@ -305,7 +305,7 @@ public class HTTPMatchRequest implements Editable<HTTPMatchRequestBuilder>, Kube
     }
 
     /**
-     * Source namespace constraining the applicability of a rule to workloads in that namespace. If the VirtualService has a list of gateways specified in the top-level `gateways` field, it must include the reserved gateway `mesh` for this field to be applicable.
+     * Source namespace constraining the applicability of a rule to workloads in that namespace. If the VirtualService has a list of gateways specified in the top-level `gateways` field, it must include the reserved gateway `mesh` for this field to be applicable.<br><p> <br><p> &#42;&#42;Note:&#42;&#42; This is not a runtime match, but is a selector; it filters which workloads the VirtualService applies to.
      */
     @JsonProperty("sourceNamespace")
     public String getSourceNamespace() {
@@ -313,7 +313,7 @@ public class HTTPMatchRequest implements Editable<HTTPMatchRequestBuilder>, Kube
     }
 
     /**
-     * Source namespace constraining the applicability of a rule to workloads in that namespace. If the VirtualService has a list of gateways specified in the top-level `gateways` field, it must include the reserved gateway `mesh` for this field to be applicable.
+     * Source namespace constraining the applicability of a rule to workloads in that namespace. If the VirtualService has a list of gateways specified in the top-level `gateways` field, it must include the reserved gateway `mesh` for this field to be applicable.<br><p> <br><p> &#42;&#42;Note:&#42;&#42; This is not a runtime match, but is a selector; it filters which workloads the VirtualService applies to.
      */
     @JsonProperty("sourceNamespace")
     public void setSourceNamespace(String sourceNamespace) {

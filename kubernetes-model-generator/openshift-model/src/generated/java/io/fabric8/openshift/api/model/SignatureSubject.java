@@ -105,7 +105,7 @@ public class SignatureSubject implements Editable<SignatureSubjectBuilder>, Kube
     }
 
     /**
-     * Organization name.
+     * organization name.
      */
     @JsonProperty("organization")
     public String getOrganization() {
@@ -113,7 +113,7 @@ public class SignatureSubject implements Editable<SignatureSubjectBuilder>, Kube
     }
 
     /**
-     * Organization name.
+     * organization name.
      */
     @JsonProperty("organization")
     public void setOrganization(String organization) {

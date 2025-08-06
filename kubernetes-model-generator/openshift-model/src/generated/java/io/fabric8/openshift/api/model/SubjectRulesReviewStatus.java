@@ -88,7 +88,7 @@ public class SubjectRulesReviewStatus implements Editable<SubjectRulesReviewStat
     }
 
     /**
-     * EvaluationError can appear in combination with Rules.  It means some error happened during evaluation that may have prevented additional rules from being populated.
+     * evaluationError can appear in combination with Rules.  It means some error happened during evaluation that may have prevented additional rules from being populated.
      */
     @JsonProperty("evaluationError")
     public String getEvaluationError() {
@@ -96,7 +96,7 @@ public class SubjectRulesReviewStatus implements Editable<SubjectRulesReviewStat
     }
 
     /**
-     * EvaluationError can appear in combination with Rules.  It means some error happened during evaluation that may have prevented additional rules from being populated.
+     * evaluationError can appear in combination with Rules.  It means some error happened during evaluation that may have prevented additional rules from being populated.
      */
     @JsonProperty("evaluationError")
     public void setEvaluationError(String evaluationError) {
@@ -104,7 +104,7 @@ public class SubjectRulesReviewStatus implements Editable<SubjectRulesReviewStat
     }
 
     /**
-     * Rules is the list of rules (no particular sort) that are allowed for the subject
+     * rules is the list of rules (no particular sort) that are allowed for the subject
      */
     @JsonProperty("rules")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -113,7 +113,7 @@ public class SubjectRulesReviewStatus implements Editable<SubjectRulesReviewStat
     }
 
     /**
-     * Rules is the list of rules (no particular sort) that are allowed for the subject
+     * rules is the list of rules (no particular sort) that are allowed for the subject
      */
     @JsonProperty("rules")
     public void setRules(List<PolicyRule> rules) {

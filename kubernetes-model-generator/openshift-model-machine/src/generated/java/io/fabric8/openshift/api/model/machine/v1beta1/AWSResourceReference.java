@@ -92,7 +92,7 @@ public class AWSResourceReference implements Editable<AWSResourceReferenceBuilde
     }
 
     /**
-     * ARN of resource
+     * arn of resource
      */
     @JsonProperty("arn")
     public String getArn() {
@@ -100,7 +100,7 @@ public class AWSResourceReference implements Editable<AWSResourceReferenceBuilde
     }
 
     /**
-     * ARN of resource
+     * arn of resource
      */
     @JsonProperty("arn")
     public void setArn(String arn) {
@@ -108,7 +108,7 @@ public class AWSResourceReference implements Editable<AWSResourceReferenceBuilde
     }
 
     /**
-     * Filters is a set of filters used to identify a resource
+     * filters is a set of filters used to identify a resource
      */
     @JsonProperty("filters")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -117,7 +117,7 @@ public class AWSResourceReference implements Editable<AWSResourceReferenceBuilde
     }
 
     /**
-     * Filters is a set of filters used to identify a resource
+     * filters is a set of filters used to identify a resource
      */
     @JsonProperty("filters")
     public void setFilters(List<Filter> filters) {
@@ -125,7 +125,7 @@ public class AWSResourceReference implements Editable<AWSResourceReferenceBuilde
     }
 
     /**
-     * ID of resource
+     * id of resource
      */
     @JsonProperty("id")
     public String getId() {
@@ -133,7 +133,7 @@ public class AWSResourceReference implements Editable<AWSResourceReferenceBuilde
     }
 
     /**
-     * ID of resource
+     * id of resource
      */
     @JsonProperty("id")
     public void setId(String id) {

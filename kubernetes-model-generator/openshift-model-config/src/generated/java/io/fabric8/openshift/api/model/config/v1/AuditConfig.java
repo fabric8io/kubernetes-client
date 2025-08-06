@@ -231,7 +231,7 @@ public class AuditConfig implements Editable<AuditConfigBuilder>, KubernetesReso
     }
 
     /**
-     * PolicyFile is a path to the file that defines the audit policy configuration.
+     * policyFile is a path to the file that defines the audit policy configuration.
      */
     @JsonProperty("policyFile")
     public String getPolicyFile() {
@@ -239,7 +239,7 @@ public class AuditConfig implements Editable<AuditConfigBuilder>, KubernetesReso
     }
 
     /**
-     * PolicyFile is a path to the file that defines the audit policy configuration.
+     * policyFile is a path to the file that defines the audit policy configuration.
      */
     @JsonProperty("policyFile")
     public void setPolicyFile(String policyFile) {

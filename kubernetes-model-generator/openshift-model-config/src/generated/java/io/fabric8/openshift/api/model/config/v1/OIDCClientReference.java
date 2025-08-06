@@ -86,7 +86,7 @@ public class OIDCClientReference implements Editable<OIDCClientReferenceBuilder>
     }
 
     /**
-     * ClientID is the identifier of the OIDC client from the OIDC provider
+     * clientID is the identifier of the OIDC client from the OIDC provider
      */
     @JsonProperty("clientID")
     public String getClientID() {
@@ -94,7 +94,7 @@ public class OIDCClientReference implements Editable<OIDCClientReferenceBuilder>
     }
 
     /**
-     * ClientID is the identifier of the OIDC client from the OIDC provider
+     * clientID is the identifier of the OIDC client from the OIDC provider
      */
     @JsonProperty("clientID")
     public void setClientID(String clientID) {

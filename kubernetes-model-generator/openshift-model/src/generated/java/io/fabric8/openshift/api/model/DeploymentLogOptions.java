@@ -167,7 +167,7 @@ public class DeploymentLogOptions implements Editable<DeploymentLogOptionsBuilde
     }
 
     /**
-     * Follow if true indicates that the build log should be streamed until the build terminates.
+     * follow if true indicates that the build log should be streamed until the build terminates.
      */
     @JsonProperty("follow")
     public Boolean getFollow() {
@@ -175,7 +175,7 @@ public class DeploymentLogOptions implements Editable<DeploymentLogOptionsBuilde
     }
 
     /**
-     * Follow if true indicates that the build log should be streamed until the build terminates.
+     * follow if true indicates that the build log should be streamed until the build terminates.
      */
     @JsonProperty("follow")
     public void setFollow(Boolean follow) {
@@ -215,7 +215,7 @@ public class DeploymentLogOptions implements Editable<DeploymentLogOptionsBuilde
     }
 
     /**
-     * NoWait if true causes the call to return immediately even if the deployment is not available yet. Otherwise the server will wait until the deployment has started.
+     * nowait if true causes the call to return immediately even if the deployment is not available yet. Otherwise the server will wait until the deployment has started.
      */
     @JsonProperty("nowait")
     public Boolean getNowait() {
@@ -223,7 +223,7 @@ public class DeploymentLogOptions implements Editable<DeploymentLogOptionsBuilde
     }
 
     /**
-     * NoWait if true causes the call to return immediately even if the deployment is not available yet. Otherwise the server will wait until the deployment has started.
+     * nowait if true causes the call to return immediately even if the deployment is not available yet. Otherwise the server will wait until the deployment has started.
      */
     @JsonProperty("nowait")
     public void setNowait(Boolean nowait) {
@@ -311,7 +311,7 @@ public class DeploymentLogOptions implements Editable<DeploymentLogOptionsBuilde
     }
 
     /**
-     * Version of the deployment for which to view logs.
+     * version of the deployment for which to view logs.
      */
     @JsonProperty("version")
     public Long getVersion() {
@@ -319,7 +319,7 @@ public class DeploymentLogOptions implements Editable<DeploymentLogOptionsBuilde
     }
 
     /**
-     * Version of the deployment for which to view logs.
+     * version of the deployment for which to view logs.
      */
     @JsonProperty("version")
     public void setVersion(Long version) {

@@ -105,7 +105,7 @@ public class Parameter implements Editable<ParameterBuilder>, KubernetesResource
     }
 
     /**
-     * Description of a parameter. Optional.
+     * description of a parameter. Optional.
      */
     @JsonProperty("description")
     public String getDescription() {
@@ -113,7 +113,7 @@ public class Parameter implements Editable<ParameterBuilder>, KubernetesResource
     }
 
     /**
-     * Description of a parameter. Optional.
+     * description of a parameter. Optional.
      */
     @JsonProperty("description")
     public void setDescription(String description) {
@@ -137,7 +137,7 @@ public class Parameter implements Editable<ParameterBuilder>, KubernetesResource
     }
 
     /**
-     * From is an input value for the generator. Optional.
+     * from is an input value for the generator. Optional.
      */
     @JsonProperty("from")
     public String getFrom() {
@@ -145,7 +145,7 @@ public class Parameter implements Editable<ParameterBuilder>, KubernetesResource
     }
 
     /**
-     * From is an input value for the generator. Optional.
+     * from is an input value for the generator. Optional.
      */
     @JsonProperty("from")
     public void setFrom(String from) {
@@ -169,7 +169,7 @@ public class Parameter implements Editable<ParameterBuilder>, KubernetesResource
     }
 
     /**
-     * Name must be set and it can be referenced in Template Items using ${PARAMETER_NAME}. Required.
+     * name must be set and it can be referenced in Template Items using ${PARAMETER_NAME}. Required.
      */
     @JsonProperty("name")
     public String getName() {
@@ -177,7 +177,7 @@ public class Parameter implements Editable<ParameterBuilder>, KubernetesResource
     }
 
     /**
-     * Name must be set and it can be referenced in Template Items using ${PARAMETER_NAME}. Required.
+     * name must be set and it can be referenced in Template Items using ${PARAMETER_NAME}. Required.
      */
     @JsonProperty("name")
     public void setName(String name) {
@@ -201,7 +201,7 @@ public class Parameter implements Editable<ParameterBuilder>, KubernetesResource
     }
 
     /**
-     * Value holds the Parameter data. If specified, the generator will be ignored. The value replaces all occurrences of the Parameter ${Name} expression during the Template to Config transformation. Optional.
+     * value holds the Parameter data. If specified, the generator will be ignored. The value replaces all occurrences of the Parameter ${Name} expression during the Template to Config transformation. Optional.
      */
     @JsonProperty("value")
     public String getValue() {
@@ -209,7 +209,7 @@ public class Parameter implements Editable<ParameterBuilder>, KubernetesResource
     }
 
     /**
-     * Value holds the Parameter data. If specified, the generator will be ignored. The value replaces all occurrences of the Parameter ${Name} expression during the Template to Config transformation. Optional.
+     * value holds the Parameter data. If specified, the generator will be ignored. The value replaces all occurrences of the Parameter ${Name} expression during the Template to Config transformation. Optional.
      */
     @JsonProperty("value")
     public void setValue(String value) {

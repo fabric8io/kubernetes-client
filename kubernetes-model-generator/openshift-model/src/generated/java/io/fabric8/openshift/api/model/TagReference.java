@@ -139,7 +139,7 @@ public class TagReference implements Editable<TagReferenceBuilder>, KubernetesRe
     }
 
     /**
-     * Generation is a counter that tracks mutations to the spec tag (user intent). When a tag reference is changed the generation is set to match the current stream generation (which is incremented every time spec is changed). Other processes in the system like the image importer observe that the generation of spec tag is newer than the generation recorded in the status and use that as a trigger to import the newest remote tag. To trigger a new import, clients may set this value to zero which will reset the generation to the latest stream generation. Legacy clients will send this value as nil which will be merged with the current tag generation.
+     * generation is a counter that tracks mutations to the spec tag (user intent). When a tag reference is changed the generation is set to match the current stream generation (which is incremented every time spec is changed). Other processes in the system like the image importer observe that the generation of spec tag is newer than the generation recorded in the status and use that as a trigger to import the newest remote tag. To trigger a new import, clients may set this value to zero which will reset the generation to the latest stream generation. Legacy clients will send this value as nil which will be merged with the current tag generation.
      */
     @JsonProperty("generation")
     public Long getGeneration() {
@@ -147,7 +147,7 @@ public class TagReference implements Editable<TagReferenceBuilder>, KubernetesRe
     }
 
     /**
-     * Generation is a counter that tracks mutations to the spec tag (user intent). When a tag reference is changed the generation is set to match the current stream generation (which is incremented every time spec is changed). Other processes in the system like the image importer observe that the generation of spec tag is newer than the generation recorded in the status and use that as a trigger to import the newest remote tag. To trigger a new import, clients may set this value to zero which will reset the generation to the latest stream generation. Legacy clients will send this value as nil which will be merged with the current tag generation.
+     * generation is a counter that tracks mutations to the spec tag (user intent). When a tag reference is changed the generation is set to match the current stream generation (which is incremented every time spec is changed). Other processes in the system like the image importer observe that the generation of spec tag is newer than the generation recorded in the status and use that as a trigger to import the newest remote tag. To trigger a new import, clients may set this value to zero which will reset the generation to the latest stream generation. Legacy clients will send this value as nil which will be merged with the current tag generation.
      */
     @JsonProperty("generation")
     public void setGeneration(Long generation) {
@@ -171,7 +171,7 @@ public class TagReference implements Editable<TagReferenceBuilder>, KubernetesRe
     }
 
     /**
-     * Name of the tag
+     * name of the tag
      */
     @JsonProperty("name")
     public String getName() {
@@ -179,7 +179,7 @@ public class TagReference implements Editable<TagReferenceBuilder>, KubernetesRe
     }
 
     /**
-     * Name of the tag
+     * name of the tag
      */
     @JsonProperty("name")
     public void setName(String name) {
@@ -187,7 +187,7 @@ public class TagReference implements Editable<TagReferenceBuilder>, KubernetesRe
     }
 
     /**
-     * Reference states if the tag will be imported. Default value is false, which means the tag will be imported.
+     * reference states if the tag will be imported. Default value is false, which means the tag will be imported.
      */
     @JsonProperty("reference")
     public Boolean getReference() {
@@ -195,7 +195,7 @@ public class TagReference implements Editable<TagReferenceBuilder>, KubernetesRe
     }
 
     /**
-     * Reference states if the tag will be imported. Default value is false, which means the tag will be imported.
+     * reference states if the tag will be imported. Default value is false, which means the tag will be imported.
      */
     @JsonProperty("reference")
     public void setReference(Boolean reference) {

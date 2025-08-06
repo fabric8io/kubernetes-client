@@ -85,7 +85,7 @@ public class TagSpecification implements Editable<TagSpecificationBuilder>, Kube
     }
 
     /**
-     * Name of the tag
+     * name of the tag
      */
     @JsonProperty("name")
     public String getName() {
@@ -93,7 +93,7 @@ public class TagSpecification implements Editable<TagSpecificationBuilder>, Kube
     }
 
     /**
-     * Name of the tag
+     * name of the tag
      */
     @JsonProperty("name")
     public void setName(String name) {
@@ -101,7 +101,7 @@ public class TagSpecification implements Editable<TagSpecificationBuilder>, Kube
     }
 
     /**
-     * Value of the tag
+     * value of the tag
      */
     @JsonProperty("value")
     public String getValue() {
@@ -109,7 +109,7 @@ public class TagSpecification implements Editable<TagSpecificationBuilder>, Kube
     }
 
     /**
-     * Value of the tag
+     * value of the tag
      */
     @JsonProperty("value")
     public void setValue(String value) {

@@ -85,7 +85,7 @@ public class ImageLayerData implements Editable<ImageLayerDataBuilder>, Kubernet
     }
 
     /**
-     * MediaType of the referenced object.
+     * mediaType of the referenced object.
      */
     @JsonProperty("mediaType")
     public String getMediaType() {
@@ -93,7 +93,7 @@ public class ImageLayerData implements Editable<ImageLayerDataBuilder>, Kubernet
     }
 
     /**
-     * MediaType of the referenced object.
+     * mediaType of the referenced object.
      */
     @JsonProperty("mediaType")
     public void setMediaType(String mediaType) {
@@ -101,7 +101,7 @@ public class ImageLayerData implements Editable<ImageLayerDataBuilder>, Kubernet
     }
 
     /**
-     * Size of the layer in bytes as defined by the underlying store. This field is optional if the necessary information about size is not available.
+     * size of the layer in bytes as defined by the underlying store. This field is optional if the necessary information about size is not available.
      */
     @JsonProperty("size")
     public Long getSize() {
@@ -109,7 +109,7 @@ public class ImageLayerData implements Editable<ImageLayerDataBuilder>, Kubernet
     }
 
     /**
-     * Size of the layer in bytes as defined by the underlying store. This field is optional if the necessary information about size is not available.
+     * size of the layer in bytes as defined by the underlying store. This field is optional if the necessary information about size is not available.
      */
     @JsonProperty("size")
     public void setSize(Long size) {

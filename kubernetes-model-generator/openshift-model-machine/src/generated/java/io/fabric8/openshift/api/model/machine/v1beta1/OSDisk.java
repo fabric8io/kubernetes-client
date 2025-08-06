@@ -94,7 +94,7 @@ public class OSDisk implements Editable<OSDiskBuilder>, KubernetesResource
     }
 
     /**
-     * CachingType specifies the caching requirements. Possible values include: 'None', 'ReadOnly', 'ReadWrite'. Empty value means no opinion and the platform chooses a default, which is subject to change over time. Currently the default is `None`.
+     * cachingType specifies the caching requirements. Possible values include: 'None', 'ReadOnly', 'ReadWrite'. Empty value means no opinion and the platform chooses a default, which is subject to change over time. Currently the default is `None`.
      */
     @JsonProperty("cachingType")
     public String getCachingType() {
@@ -102,7 +102,7 @@ public class OSDisk implements Editable<OSDiskBuilder>, KubernetesResource
     }
 
     /**
-     * CachingType specifies the caching requirements. Possible values include: 'None', 'ReadOnly', 'ReadWrite'. Empty value means no opinion and the platform chooses a default, which is subject to change over time. Currently the default is `None`.
+     * cachingType specifies the caching requirements. Possible values include: 'None', 'ReadOnly', 'ReadWrite'. Empty value means no opinion and the platform chooses a default, which is subject to change over time. Currently the default is `None`.
      */
     @JsonProperty("cachingType")
     public void setCachingType(String cachingType) {
@@ -120,7 +120,7 @@ public class OSDisk implements Editable<OSDiskBuilder>, KubernetesResource
     }
 
     /**
-     * DiskSizeGB is the size in GB to assign to the data disk.
+     * diskSizeGB is the size in GB to assign to the data disk.
      */
     @JsonProperty("diskSizeGB")
     public Integer getDiskSizeGB() {
@@ -128,7 +128,7 @@ public class OSDisk implements Editable<OSDiskBuilder>, KubernetesResource
     }
 
     /**
-     * DiskSizeGB is the size in GB to assign to the data disk.
+     * diskSizeGB is the size in GB to assign to the data disk.
      */
     @JsonProperty("diskSizeGB")
     public void setDiskSizeGB(Integer diskSizeGB) {
@@ -146,7 +146,7 @@ public class OSDisk implements Editable<OSDiskBuilder>, KubernetesResource
     }
 
     /**
-     * OSType is the operating system type of the OS disk. Possible values include "Linux" and "Windows".
+     * osType is the operating system type of the OS disk. Possible values include "Linux" and "Windows".
      */
     @JsonProperty("osType")
     public String getOsType() {
@@ -154,7 +154,7 @@ public class OSDisk implements Editable<OSDiskBuilder>, KubernetesResource
     }
 
     /**
-     * OSType is the operating system type of the OS disk. Possible values include "Linux" and "Windows".
+     * osType is the operating system type of the OS disk. Possible values include "Linux" and "Windows".
      */
     @JsonProperty("osType")
     public void setOsType(String osType) {

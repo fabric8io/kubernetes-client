@@ -85,7 +85,7 @@ public class FeatureGateTests implements Editable<FeatureGateTestsBuilder>, Kube
     }
 
     /**
-     * FeatureGate is the name of the FeatureGate as it appears in The FeatureGate CR instance.
+     * featureGate is the name of the FeatureGate as it appears in The FeatureGate CR instance.
      */
     @JsonProperty("featureGate")
     public String getFeatureGate() {
@@ -93,7 +93,7 @@ public class FeatureGateTests implements Editable<FeatureGateTestsBuilder>, Kube
     }
 
     /**
-     * FeatureGate is the name of the FeatureGate as it appears in The FeatureGate CR instance.
+     * featureGate is the name of the FeatureGate as it appears in The FeatureGate CR instance.
      */
     @JsonProperty("featureGate")
     public void setFeatureGate(String featureGate) {
@@ -101,7 +101,7 @@ public class FeatureGateTests implements Editable<FeatureGateTestsBuilder>, Kube
     }
 
     /**
-     * Tests contains an item for every TestName
+     * tests contains an item for every TestName
      */
     @JsonProperty("tests")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -110,7 +110,7 @@ public class FeatureGateTests implements Editable<FeatureGateTestsBuilder>, Kube
     }
 
     /**
-     * Tests contains an item for every TestName
+     * tests contains an item for every TestName
      */
     @JsonProperty("tests")
     public void setTests(List<TestDetails> tests) {

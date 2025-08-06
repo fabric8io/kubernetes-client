@@ -82,7 +82,7 @@ public class ImageLabel implements Editable<ImageLabelBuilder>, KubernetesResour
     }
 
     /**
-     * Name defines the name of the label. It must have non-zero length.
+     * name defines the name of the label. It must have non-zero length.
      */
     @JsonProperty("name")
     public String getName() {
@@ -90,7 +90,7 @@ public class ImageLabel implements Editable<ImageLabelBuilder>, KubernetesResour
     }
 
     /**
-     * Name defines the name of the label. It must have non-zero length.
+     * name defines the name of the label. It must have non-zero length.
      */
     @JsonProperty("name")
     public void setName(String name) {
@@ -98,7 +98,7 @@ public class ImageLabel implements Editable<ImageLabelBuilder>, KubernetesResour
     }
 
     /**
-     * Value defines the literal value of the label.
+     * value defines the literal value of the label.
      */
     @JsonProperty("value")
     public String getValue() {
@@ -106,7 +106,7 @@ public class ImageLabel implements Editable<ImageLabelBuilder>, KubernetesResour
     }
 
     /**
-     * Value defines the literal value of the label.
+     * value defines the literal value of the label.
      */
     @JsonProperty("value")
     public void setValue(String value) {

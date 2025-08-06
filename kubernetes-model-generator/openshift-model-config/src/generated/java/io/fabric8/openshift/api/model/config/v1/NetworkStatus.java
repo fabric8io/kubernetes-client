@@ -124,7 +124,7 @@ public class NetworkStatus implements Editable<NetworkStatusBuilder>, Kubernetes
     }
 
     /**
-     * ClusterNetworkMTU is the MTU for inter-pod networking.
+     * clusterNetworkMTU is the MTU for inter-pod networking.
      */
     @JsonProperty("clusterNetworkMTU")
     public Integer getClusterNetworkMTU() {
@@ -132,7 +132,7 @@ public class NetworkStatus implements Editable<NetworkStatusBuilder>, Kubernetes
     }
 
     /**
-     * ClusterNetworkMTU is the MTU for inter-pod networking.
+     * clusterNetworkMTU is the MTU for inter-pod networking.
      */
     @JsonProperty("clusterNetworkMTU")
     public void setClusterNetworkMTU(Integer clusterNetworkMTU) {
@@ -173,7 +173,7 @@ public class NetworkStatus implements Editable<NetworkStatusBuilder>, Kubernetes
     }
 
     /**
-     * NetworkType is the plugin that is deployed (e.g. OVNKubernetes).
+     * networkType is the plugin that is deployed (e.g. OVNKubernetes).
      */
     @JsonProperty("networkType")
     public String getNetworkType() {
@@ -181,7 +181,7 @@ public class NetworkStatus implements Editable<NetworkStatusBuilder>, Kubernetes
     }
 
     /**
-     * NetworkType is the plugin that is deployed (e.g. OVNKubernetes).
+     * networkType is the plugin that is deployed (e.g. OVNKubernetes).
      */
     @JsonProperty("networkType")
     public void setNetworkType(String networkType) {

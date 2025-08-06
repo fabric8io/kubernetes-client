@@ -85,7 +85,7 @@ public class GCPGPUConfig implements Editable<GCPGPUConfigBuilder>, KubernetesRe
     }
 
     /**
-     * Count is the number of GPUs to be attached to an instance.
+     * count is the number of GPUs to be attached to an instance.
      */
     @JsonProperty("count")
     public Integer getCount() {
@@ -93,7 +93,7 @@ public class GCPGPUConfig implements Editable<GCPGPUConfigBuilder>, KubernetesRe
     }
 
     /**
-     * Count is the number of GPUs to be attached to an instance.
+     * count is the number of GPUs to be attached to an instance.
      */
     @JsonProperty("count")
     public void setCount(Integer count) {
@@ -101,7 +101,7 @@ public class GCPGPUConfig implements Editable<GCPGPUConfigBuilder>, KubernetesRe
     }
 
     /**
-     * Type is the type of GPU to be attached to an instance. Supported GPU types are: nvidia-tesla-k80, nvidia-tesla-p100, nvidia-tesla-v100, nvidia-tesla-p4, nvidia-tesla-t4
+     * type is the type of GPU to be attached to an instance. Supported GPU types are: nvidia-tesla-k80, nvidia-tesla-p100, nvidia-tesla-v100, nvidia-tesla-p4, nvidia-tesla-t4
      */
     @JsonProperty("type")
     public String getType() {
@@ -109,7 +109,7 @@ public class GCPGPUConfig implements Editable<GCPGPUConfigBuilder>, KubernetesRe
     }
 
     /**
-     * Type is the type of GPU to be attached to an instance. Supported GPU types are: nvidia-tesla-k80, nvidia-tesla-p100, nvidia-tesla-v100, nvidia-tesla-p4, nvidia-tesla-t4
+     * type is the type of GPU to be attached to an instance. Supported GPU types are: nvidia-tesla-k80, nvidia-tesla-p100, nvidia-tesla-v100, nvidia-tesla-p4, nvidia-tesla-t4
      */
     @JsonProperty("type")
     public void setType(String type) {

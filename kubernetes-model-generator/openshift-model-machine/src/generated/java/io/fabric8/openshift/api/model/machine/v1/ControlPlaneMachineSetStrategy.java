@@ -82,7 +82,7 @@ public class ControlPlaneMachineSetStrategy implements Editable<ControlPlaneMach
     }
 
     /**
-     * Type defines the type of update strategy that should be used when updating Machines owned by the ControlPlaneMachineSet. Valid values are "RollingUpdate" and "OnDelete". The current default value is "RollingUpdate".
+     * type defines the type of update strategy that should be used when updating Machines owned by the ControlPlaneMachineSet. Valid values are "RollingUpdate" and "OnDelete". The current default value is "RollingUpdate".
      */
     @JsonProperty("type")
     public String getType() {
@@ -90,7 +90,7 @@ public class ControlPlaneMachineSetStrategy implements Editable<ControlPlaneMach
     }
 
     /**
-     * Type defines the type of update strategy that should be used when updating Machines owned by the ControlPlaneMachineSet. Valid values are "RollingUpdate" and "OnDelete". The current default value is "RollingUpdate".
+     * type defines the type of update strategy that should be used when updating Machines owned by the ControlPlaneMachineSet. Valid values are "RollingUpdate" and "OnDelete". The current default value is "RollingUpdate".
      */
     @JsonProperty("type")
     public void setType(String type) {

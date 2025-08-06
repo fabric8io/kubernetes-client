@@ -102,7 +102,7 @@ public class SELinuxContextStrategyOptions implements Editable<SELinuxContextStr
     }
 
     /**
-     * Type is the strategy that will dictate what SELinux context is used in the SecurityContext.
+     * type is the strategy that will dictate what SELinux context is used in the SecurityContext.
      */
     @JsonProperty("type")
     public String getType() {
@@ -110,7 +110,7 @@ public class SELinuxContextStrategyOptions implements Editable<SELinuxContextStr
     }
 
     /**
-     * Type is the strategy that will dictate what SELinux context is used in the SecurityContext.
+     * type is the strategy that will dictate what SELinux context is used in the SecurityContext.
      */
     @JsonProperty("type")
     public void setType(String type) {

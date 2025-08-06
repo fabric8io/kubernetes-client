@@ -123,7 +123,7 @@ public class ClusterRoleList implements Editable<ClusterRoleListBuilder>, Kubern
     }
 
     /**
-     * Items is a list of ClusterRoles
+     * items is a list of ClusterRoles
      */
     @JsonProperty("items")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -132,7 +132,7 @@ public class ClusterRoleList implements Editable<ClusterRoleListBuilder>, Kubern
     }
 
     /**
-     * Items is a list of ClusterRoles
+     * items is a list of ClusterRoles
      */
     @JsonProperty("items")
     public void setItems(List<io.fabric8.openshift.api.model.ClusterRole> items) {

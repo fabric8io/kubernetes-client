@@ -95,7 +95,7 @@ public class AuthenticationStatus implements Editable<AuthenticationStatusBuilde
     }
 
     /**
-     * OIDCClients is where participating operators place the current OIDC client status for OIDC clients that can be customized by the cluster-admin.
+     * oidcClients is where participating operators place the current OIDC client status for OIDC clients that can be customized by the cluster-admin.
      */
     @JsonProperty("oidcClients")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -104,7 +104,7 @@ public class AuthenticationStatus implements Editable<AuthenticationStatusBuilde
     }
 
     /**
-     * OIDCClients is where participating operators place the current OIDC client status for OIDC clients that can be customized by the cluster-admin.
+     * oidcClients is where participating operators place the current OIDC client status for OIDC clients that can be customized by the cluster-admin.
      */
     @JsonProperty("oidcClients")
     public void setOidcClients(List<OIDCClientStatus> oidcClients) {

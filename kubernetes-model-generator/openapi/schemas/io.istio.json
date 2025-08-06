@@ -1801,7 +1801,7 @@
           "$ref": "#/definitions/io.istio.api.networking.v1alpha3.StringMatch"
         },
         "sourceLabels": {
-          "description": "One or more labels that constrain the applicability of a rule to source (client) workloads with the given labels. If the VirtualService has a list of gateways specified in the top-level `gateways` field, it must include the reserved gateway `mesh` for this field to be applicable.",
+          "description": "One or more labels that constrain the applicability of a rule to source (client) workloads with the given labels. If the VirtualService has a list of gateways specified in the top-level `gateways` field, it must include the reserved gateway `mesh` for this field to be applicable.\n\n**Note:** This is not a runtime match, but is a selector; it filters which workloads the VirtualService applies to.",
           "type": "object",
           "additionalProperties": {
             "type": "string",
@@ -1809,7 +1809,7 @@
           }
         },
         "sourceNamespace": {
-          "description": "Source namespace constraining the applicability of a rule to workloads in that namespace. If the VirtualService has a list of gateways specified in the top-level `gateways` field, it must include the reserved gateway `mesh` for this field to be applicable.",
+          "description": "Source namespace constraining the applicability of a rule to workloads in that namespace. If the VirtualService has a list of gateways specified in the top-level `gateways` field, it must include the reserved gateway `mesh` for this field to be applicable.\n\n**Note:** This is not a runtime match, but is a selector; it filters which workloads the VirtualService applies to.",
           "type": "string"
         },
         "statPrefix": {
@@ -1962,9 +1962,17 @@
           "type": "integer",
           "format": "int32"
         },
+        "backoff": {
+          "description": "Specifies the minimum duration between retry attempts. If unset, default minimum duration of 25ms is used as base interval for exponetial backoff. This has an impact on the total number of retries that will be attempted based on the `attempts` field and route timeout. For example, with attempts is set to 3, backoff to 2s and timeout to 3s, the request will be retried only once.",
+          "$ref": "#/definitions/org.golang.google.protobuf.types.known.durationpb.Duration"
+        },
         "perTryTimeout": {
           "description": "Timeout per attempt for a given request, including the initial call and any retries. Format: 1h/1m/1s/1ms. MUST be \u003e=1ms. Default is same value as request `timeout` of the [HTTP route](https://istio.io/docs/reference/config/networking/virtual-service/#HTTPRoute), which means no timeout.",
           "$ref": "#/definitions/org.golang.google.protobuf.types.known.durationpb.Duration"
+        },
+        "retryIgnorePreviousHosts": {
+          "description": "Flag to specify whether the retries should ignore previously tried hosts during retry. Defaults to true.",
+          "$ref": "#/definitions/org.golang.google.protobuf.types.known.wrapperspb.BoolValue"
         },
         "retryOn": {
           "description": "Specifies the conditions under which retry takes place. One or more policies can be specified using a ‘,’ delimited list. See the [retry policies](https://www.envoyproxy.io/docs/envoy/latest/configuration/http/http_filters/router_filter#x-envoy-retry-on) and [gRPC retry policies](https://www.envoyproxy.io/docs/envoy/latest/configuration/http/http_filters/router_filter#x-envoy-retry-grpc-on) for more details.\n\nIn addition to the policies specified above, a list of HTTP status codes can be passed, such as `retryOn: \"503,reset\"`. Note these status codes refer to the actual responses received from the destination. For example, if a connection is reset, Istio will translate this to 503 for it's response. However, the destination did not return a 503 error, so this would not match `\"503\"` (it would, however, match `\"reset\"`).\n\nIf not specified, this defaults to `connect-failure,refused-stream,unavailable,cancelled`.",
@@ -2396,7 +2404,7 @@
           "format": "int64"
         },
         "sourceLabels": {
-          "description": "One or more labels that constrain the applicability of a rule to workloads with the given labels. If the VirtualService has a list of gateways specified in the top-level `gateways` field, it should include the reserved gateway `mesh` in order for this field to be applicable.",
+          "description": "One or more labels that constrain the applicability of a rule to workloads with the given labels. If the VirtualService has a list of gateways specified in the top-level `gateways` field, it should include the reserved gateway `mesh` in order for this field to be applicable.\n\n**Note:** This is not a runtime match, but is a selector; it filters which workloads the VirtualService applies to.",
           "type": "object",
           "additionalProperties": {
             "type": "string",
@@ -2404,7 +2412,7 @@
           }
         },
         "sourceNamespace": {
-          "description": "Source namespace constraining the applicability of a rule to workloads in that namespace. If the VirtualService has a list of gateways specified in the top-level `gateways` field, it must include the reserved gateway `mesh` for this field to be applicable.",
+          "description": "Source namespace constraining the applicability of a rule to workloads in that namespace. If the VirtualService has a list of gateways specified in the top-level `gateways` field, it must include the reserved gateway `mesh` for this field to be applicable.\n\n**Note:** This is not a runtime match, but is a selector; it filters which workloads the VirtualService applies to.",
           "type": "string"
         },
         "sourceSubnet": {
@@ -3200,6 +3208,14 @@
           "description": "For gateways running on Kubernetes, the name of the secret that holds the TLS certs including the CA certificates. Applicable only on Kubernetes. An Opaque secret should contain the following keys and values: `tls.key: \u003cprivateKey\u003e` and `tls.crt: \u003cserverCert\u003e` or `key: \u003cprivateKey\u003e` and `cert: \u003cserverCert\u003e`. For mutual TLS, `cacert: \u003cCACertificate\u003e` and `crl: \u003cCertificateRevocationList\u003e` can be provided in the same secret or a separate secret named `\u003csecret\u003e-cacert`. A TLS secret for server certificates with an additional `tls.ocsp-staple` key for specifying OCSP staple information, `ca.crt` key for CA certificates and `ca.crl` for certificate revocation list is also supported. Only one of server certificates and CA certificate or credentialName can be specified.",
           "type": "string"
         },
+        "credentialNames": {
+          "description": "Same as CredentialName but for multiple certificates. Mainly used for specifying RSA and ECDSA certificates for the same server.",
+          "type": "array",
+          "items": {
+            "type": "string",
+            "default": ""
+          }
+        },
         "httpsRedirect": {
           "description": "If set to true, the load balancer will send a 301 redirect for all http connections, asking the clients to use HTTPS.",
           "type": "boolean"
@@ -3228,11 +3244,18 @@
           "type": "string"
         },
         "subjectAltNames": {
-          "description": "A list of alternate names to verify the subject identity in the certificate presented by the client. Requires TLS mode to be set to `MUTUAL`.",
+          "description": "A list of alternate names to verify the subject identity in the certificate presented by the client. Requires TLS mode to be set to `MUTUAL`. When multiple certificates are provided via `credential_names` or `tls_certificates`, the subject alternate names are validated against the selected certificate.",
           "type": "array",
           "items": {
             "type": "string",
             "default": ""
+          }
+        },
+        "tlsCertificates": {
+          "description": "Only one of `server_certificate`, `private_key`, `ca_certificates` or `credential_name` or `credential_names` or `tls_certificates` should be specified. This is mainly used for specifying RSA and ECDSA certificates for the same server.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/io.istio.api.networking.v1alpha3.ServerTLSSettings_TLSCertificate"
           }
         },
         "verifyCertificateHash": {
@@ -3257,6 +3280,31 @@
         "Group": "",
         "Version": "v1alpha3",
         "Kind": "ServerTLSSettings",
+        "Scope": "Namespaced"
+      }
+    },
+    "io.istio.api.networking.v1alpha3.ServerTLSSettings_TLSCertificate": {
+      "description": "TLSCertificate describes the server's TLS certificate.",
+      "type": "object",
+      "properties": {
+        "caCertificates": {
+          "description": "REQUIRED if mode is `MUTUAL` or `OPTIONAL_MUTUAL`. The path to a file containing certificate authority certificates to use in verifying a presented client side certificate.",
+          "type": "string"
+        },
+        "privateKey": {
+          "description": "REQUIRED if mode is `SIMPLE` or `MUTUAL`. The path to the file holding the server's private key.",
+          "type": "string"
+        },
+        "serverCertificate": {
+          "description": "REQUIRED if mode is `SIMPLE` or `MUTUAL`. The path to the file holding the server-side TLS certificate to use.",
+          "type": "string"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "",
+        "Version": "v1alpha3",
+        "Kind": "ServerTLSSettings_TLSCertificate",
         "Scope": "Namespaced"
       }
     },
@@ -3752,7 +3800,7 @@
           }
         },
         "sourceLabels": {
-          "description": "One or more labels that constrain the applicability of a rule to workloads with the given labels. If the VirtualService has a list of gateways specified in the top-level `gateways` field, it should include the reserved gateway `mesh` in order for this field to be applicable.",
+          "description": "One or more labels that constrain the applicability of a rule to workloads with the given labels. If the VirtualService has a list of gateways specified in the top-level `gateways` field, it should include the reserved gateway `mesh` in order for this field to be applicable.\n\n**Note:** This is not a runtime match, but is a selector; it filters which workloads the VirtualService applies to.",
           "type": "object",
           "additionalProperties": {
             "type": "string",
@@ -3760,7 +3808,7 @@
           }
         },
         "sourceNamespace": {
-          "description": "Source namespace constraining the applicability of a rule to workloads in that namespace. If the VirtualService has a list of gateways specified in the top-level `gateways` field, it must include the reserved gateway `mesh` for this field to be applicable.",
+          "description": "Source namespace constraining the applicability of a rule to workloads in that namespace. If the VirtualService has a list of gateways specified in the top-level `gateways` field, it must include the reserved gateway `mesh` for this field to be applicable.\n\n**Note:** This is not a runtime match, but is a selector; it filters which workloads the VirtualService applies to.",
           "type": "string"
         }
       },
@@ -4448,7 +4496,7 @@
           "type": "boolean"
         },
         "fromCookies": {
-          "description": "List of cookie names from which JWT is expected.\t// For example, if config is:\n\n``` yaml\n\n\tfrom_cookies:\n\t- auth-token\n\n``` Then JWT will be extracted from “auth-token“ cookie in the request.\n\nNote: Requests with multiple tokens (at different locations) are not supported, the output principal of such requests is undefined.",
+          "description": "List of cookie names from which JWT is expected.\t// For example, if config is:\n\n``` yaml\n\n\tfrom_cookies:\n\t- auth-token\n\n``` Then JWT will be extracted from `auth-token` cookie in the request.\n\nNote: Requests with multiple tokens (at different locations) are not supported, the output principal of such requests is undefined.",
           "type": "array",
           "items": {
             "type": "string",
@@ -5472,9 +5520,6 @@
     "io.istio.extensions.v1alpha1.WasmPlugin": {
       "description": "WasmPlugin provides a mechanism to extend the functionality provided by the Istio proxy through WebAssembly filters.\n\n\u003c!-- crd generation tags representing the server time when this object was created. It is not guaranteed to be set in happens-before order across separate operations. Clients may not set this value. It is represented in RFC3339 form and is in UTC. Populated by the system. Read-only. Null for lists. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#metadata\" --\u003e\n\n\u003c!-- go code generation tags --\u003e",
       "type": "object",
-      "required": [
-        "status"
-      ],
       "properties": {
         "apiVersion": {
           "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
@@ -5541,9 +5586,6 @@
     "io.istio.networking.v1.DestinationRule": {
       "description": "DestinationRule defines policies that apply to traffic intended for a service after routing has occurred.\n\n\u003c!-- crd generation tags representing the server time when this object was created. It is not guaranteed to be set in happens-before order across separate operations. Clients may not set this value. It is represented in RFC3339 form and is in UTC. Populated by the system. Read-only. Null for lists. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#metadata\" --\u003e\n\n\u003c!-- go code generation tags --\u003e",
       "type": "object",
-      "required": [
-        "status"
-      ],
       "properties": {
         "apiVersion": {
           "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
@@ -5610,9 +5652,6 @@
     "io.istio.networking.v1.Gateway": {
       "description": "Gateway describes a load balancer operating at the edge of the mesh receiving incoming or outgoing HTTP/TCP connections.\n\n\u003c!-- crd generation tags --\u003e\n\n\u003c!-- go code generation tags --\u003e",
       "type": "object",
-      "required": [
-        "status"
-      ],
       "properties": {
         "apiVersion": {
           "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
@@ -5679,9 +5718,6 @@
     "io.istio.networking.v1.ServiceEntry": {
       "description": "ServiceEntry enables adding additional entries into Istio's internal service registry.\n\n\u003c!-- crd generation tags mesh or part of the mesh (MESH_EXTERNAL or MESH_INTERNAL)\" (NONE, STATIC, or DNS)\" representing the server time when this object was created. It is not guaranteed to be set in happens-before order across separate operations. Clients may not set this value. It is represented in RFC3339 form and is in UTC. Populated by the system. Read-only. Null for lists. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#metadata\" --\u003e\n\n\u003c!-- go code generation tags istiostatus-override: ServiceEntryStatus: istio.io/api/networking/v1alpha3 --\u003e",
       "type": "object",
-      "required": [
-        "status"
-      ],
       "properties": {
         "apiVersion": {
           "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
@@ -5748,9 +5784,6 @@
     "io.istio.networking.v1.Sidecar": {
       "description": "`Sidecar` describes the configuration of the sidecar proxy that mediates inbound and outbound communication of the workload instance to which it is attached.\n\n\u003c!-- crd generation tags --\u003e\n\n\u003c!-- go code generation tags --\u003e",
       "type": "object",
-      "required": [
-        "status"
-      ],
       "properties": {
         "apiVersion": {
           "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
@@ -5817,9 +5850,6 @@
     "io.istio.networking.v1.VirtualService": {
       "description": "Configuration affecting traffic routing.\n\n\u003c!-- crd generation tags that should apply these routes\" representing the server time when this object was created. It is not guaranteed to be set in happens-before order across separate operations. Clients may not set this value. It is represented in RFC3339 form and is in UTC. Populated by the system. Read-only. Null for lists. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#metadata\" --\u003e\n\n\u003c!-- go code generation tags --\u003e",
       "type": "object",
-      "required": [
-        "status"
-      ],
       "properties": {
         "apiVersion": {
           "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
@@ -5886,9 +5916,6 @@
     "io.istio.networking.v1.WorkloadEntry": {
       "description": "WorkloadEntry enables specifying the properties of a single non-Kubernetes workload such a VM or a bare metal services that can be referred to by service entries.\n\n\u003c!-- crd generation tags representing the server time when this object was created. It is not guaranteed to be set in happens-before order across separate operations. Clients may not set this value. It is represented in RFC3339 form and is in UTC. Populated by the system. Read-only. Null for lists. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#metadata\" --\u003e\n\n\u003c!-- go code generation tags --\u003e",
       "type": "object",
-      "required": [
-        "status"
-      ],
       "properties": {
         "apiVersion": {
           "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
@@ -5955,9 +5982,6 @@
     "io.istio.networking.v1.WorkloadGroup": {
       "description": "`WorkloadGroup` enables specifying the properties of a single workload for bootstrap and provides a template for `WorkloadEntry`, similar to how `Deployment` specifies properties of workloads via `Pod` templates. A `WorkloadGroup` can have more than one `WorkloadEntry`. `WorkloadGroup` has no relationship to resources which control service registry like `ServiceEntry` and as such doesn't configure host name for these workloads.\n\n\u003c!-- crd generation tags representing the server time when this object was created. It is not guaranteed to be set in happens-before order across separate operations. Clients may not set this value. It is represented in RFC3339 form and is in UTC. Populated by the system. Read-only. Null for lists. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#metadata\" --\u003e\n\n\u003c!-- go code generation tags --\u003e",
       "type": "object",
-      "required": [
-        "status"
-      ],
       "properties": {
         "apiVersion": {
           "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
@@ -6024,9 +6048,6 @@
     "io.istio.networking.v1alpha3.DestinationRule": {
       "description": "DestinationRule defines policies that apply to traffic intended for a service after routing has occurred.\n\n\u003c!-- crd generation tags representing the server time when this object was created. It is not guaranteed to be set in happens-before order across separate operations. Clients may not set this value. It is represented in RFC3339 form and is in UTC. Populated by the system. Read-only. Null for lists. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#metadata\" --\u003e\n\n\u003c!-- go code generation tags --\u003e",
       "type": "object",
-      "required": [
-        "status"
-      ],
       "properties": {
         "apiVersion": {
           "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
@@ -6093,9 +6114,6 @@
     "io.istio.networking.v1alpha3.EnvoyFilter": {
       "description": "EnvoyFilter provides a mechanism to customize the Envoy configuration generated by istiod.\n\n\u003c!-- crd generation tags --\u003e\n\n\u003c!-- go code generation tags --\u003e",
       "type": "object",
-      "required": [
-        "status"
-      ],
       "properties": {
         "apiVersion": {
           "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
@@ -6162,9 +6180,6 @@
     "io.istio.networking.v1alpha3.Gateway": {
       "description": "Gateway describes a load balancer operating at the edge of the mesh receiving incoming or outgoing HTTP/TCP connections.\n\n\u003c!-- crd generation tags --\u003e\n\n\u003c!-- go code generation tags --\u003e",
       "type": "object",
-      "required": [
-        "status"
-      ],
       "properties": {
         "apiVersion": {
           "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
@@ -6231,9 +6246,6 @@
     "io.istio.networking.v1alpha3.ServiceEntry": {
       "description": "ServiceEntry enables adding additional entries into Istio's internal service registry.\n\n\u003c!-- crd generation tags mesh or part of the mesh (MESH_EXTERNAL or MESH_INTERNAL)\" (NONE, STATIC, or DNS)\" representing the server time when this object was created. It is not guaranteed to be set in happens-before order across separate operations. Clients may not set this value. It is represented in RFC3339 form and is in UTC. Populated by the system. Read-only. Null for lists. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#metadata\" --\u003e\n\n\u003c!-- go code generation tags istiostatus-override: ServiceEntryStatus: istio.io/api/networking/v1alpha3 --\u003e",
       "type": "object",
-      "required": [
-        "status"
-      ],
       "properties": {
         "apiVersion": {
           "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
@@ -6300,9 +6312,6 @@
     "io.istio.networking.v1alpha3.Sidecar": {
       "description": "`Sidecar` describes the configuration of the sidecar proxy that mediates inbound and outbound communication of the workload instance to which it is attached.\n\n\u003c!-- crd generation tags --\u003e\n\n\u003c!-- go code generation tags --\u003e",
       "type": "object",
-      "required": [
-        "status"
-      ],
       "properties": {
         "apiVersion": {
           "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
@@ -6369,9 +6378,6 @@
     "io.istio.networking.v1alpha3.VirtualService": {
       "description": "Configuration affecting traffic routing.\n\n\u003c!-- crd generation tags that should apply these routes\" representing the server time when this object was created. It is not guaranteed to be set in happens-before order across separate operations. Clients may not set this value. It is represented in RFC3339 form and is in UTC. Populated by the system. Read-only. Null for lists. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#metadata\" --\u003e\n\n\u003c!-- go code generation tags --\u003e",
       "type": "object",
-      "required": [
-        "status"
-      ],
       "properties": {
         "apiVersion": {
           "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
@@ -6438,9 +6444,6 @@
     "io.istio.networking.v1alpha3.WorkloadEntry": {
       "description": "WorkloadEntry enables specifying the properties of a single non-Kubernetes workload such a VM or a bare metal services that can be referred to by service entries.\n\n\u003c!-- crd generation tags representing the server time when this object was created. It is not guaranteed to be set in happens-before order across separate operations. Clients may not set this value. It is represented in RFC3339 form and is in UTC. Populated by the system. Read-only. Null for lists. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#metadata\" --\u003e\n\n\u003c!-- go code generation tags --\u003e",
       "type": "object",
-      "required": [
-        "status"
-      ],
       "properties": {
         "apiVersion": {
           "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
@@ -6507,9 +6510,6 @@
     "io.istio.networking.v1alpha3.WorkloadGroup": {
       "description": "`WorkloadGroup` enables specifying the properties of a single workload for bootstrap and provides a template for `WorkloadEntry`, similar to how `Deployment` specifies properties of workloads via `Pod` templates. A `WorkloadGroup` can have more than one `WorkloadEntry`. `WorkloadGroup` has no relationship to resources which control service registry like `ServiceEntry` and as such doesn't configure host name for these workloads.\n\n\u003c!-- crd generation tags representing the server time when this object was created. It is not guaranteed to be set in happens-before order across separate operations. Clients may not set this value. It is represented in RFC3339 form and is in UTC. Populated by the system. Read-only. Null for lists. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#metadata\" --\u003e\n\n\u003c!-- go code generation tags --\u003e",
       "type": "object",
-      "required": [
-        "status"
-      ],
       "properties": {
         "apiVersion": {
           "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
@@ -6576,9 +6576,6 @@
     "io.istio.networking.v1beta1.DestinationRule": {
       "description": "DestinationRule defines policies that apply to traffic intended for a service after routing has occurred.\n\n\u003c!-- crd generation tags representing the server time when this object was created. It is not guaranteed to be set in happens-before order across separate operations. Clients may not set this value. It is represented in RFC3339 form and is in UTC. Populated by the system. Read-only. Null for lists. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#metadata\" --\u003e\n\n\u003c!-- go code generation tags --\u003e",
       "type": "object",
-      "required": [
-        "status"
-      ],
       "properties": {
         "apiVersion": {
           "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
@@ -6645,9 +6642,6 @@
     "io.istio.networking.v1beta1.Gateway": {
       "description": "Gateway describes a load balancer operating at the edge of the mesh receiving incoming or outgoing HTTP/TCP connections.\n\n\u003c!-- crd generation tags --\u003e\n\n\u003c!-- go code generation tags --\u003e",
       "type": "object",
-      "required": [
-        "status"
-      ],
       "properties": {
         "apiVersion": {
           "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
@@ -6714,9 +6708,6 @@
     "io.istio.networking.v1beta1.ProxyConfig": {
       "description": "`ProxyConfig` exposes proxy level configuration options.\n\n\u003c!-- crd generation tags --\u003e\n\n\u003c!-- go code generation tags --\u003e",
       "type": "object",
-      "required": [
-        "status"
-      ],
       "properties": {
         "apiVersion": {
           "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
@@ -6783,9 +6774,6 @@
     "io.istio.networking.v1beta1.ServiceEntry": {
       "description": "ServiceEntry enables adding additional entries into Istio's internal service registry.\n\n\u003c!-- crd generation tags mesh or part of the mesh (MESH_EXTERNAL or MESH_INTERNAL)\" (NONE, STATIC, or DNS)\" representing the server time when this object was created. It is not guaranteed to be set in happens-before order across separate operations. Clients may not set this value. It is represented in RFC3339 form and is in UTC. Populated by the system. Read-only. Null for lists. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#metadata\" --\u003e\n\n\u003c!-- go code generation tags istiostatus-override: ServiceEntryStatus: istio.io/api/networking/v1alpha3 --\u003e",
       "type": "object",
-      "required": [
-        "status"
-      ],
       "properties": {
         "apiVersion": {
           "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
@@ -6852,9 +6840,6 @@
     "io.istio.networking.v1beta1.Sidecar": {
       "description": "`Sidecar` describes the configuration of the sidecar proxy that mediates inbound and outbound communication of the workload instance to which it is attached.\n\n\u003c!-- crd generation tags --\u003e\n\n\u003c!-- go code generation tags --\u003e",
       "type": "object",
-      "required": [
-        "status"
-      ],
       "properties": {
         "apiVersion": {
           "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
@@ -6921,9 +6906,6 @@
     "io.istio.networking.v1beta1.VirtualService": {
       "description": "Configuration affecting traffic routing.\n\n\u003c!-- crd generation tags that should apply these routes\" representing the server time when this object was created. It is not guaranteed to be set in happens-before order across separate operations. Clients may not set this value. It is represented in RFC3339 form and is in UTC. Populated by the system. Read-only. Null for lists. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#metadata\" --\u003e\n\n\u003c!-- go code generation tags --\u003e",
       "type": "object",
-      "required": [
-        "status"
-      ],
       "properties": {
         "apiVersion": {
           "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
@@ -6990,9 +6972,6 @@
     "io.istio.networking.v1beta1.WorkloadEntry": {
       "description": "WorkloadEntry enables specifying the properties of a single non-Kubernetes workload such a VM or a bare metal services that can be referred to by service entries.\n\n\u003c!-- crd generation tags representing the server time when this object was created. It is not guaranteed to be set in happens-before order across separate operations. Clients may not set this value. It is represented in RFC3339 form and is in UTC. Populated by the system. Read-only. Null for lists. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#metadata\" --\u003e\n\n\u003c!-- go code generation tags --\u003e",
       "type": "object",
-      "required": [
-        "status"
-      ],
       "properties": {
         "apiVersion": {
           "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
@@ -7059,9 +7038,6 @@
     "io.istio.networking.v1beta1.WorkloadGroup": {
       "description": "`WorkloadGroup` enables specifying the properties of a single workload for bootstrap and provides a template for `WorkloadEntry`, similar to how `Deployment` specifies properties of workloads via `Pod` templates. A `WorkloadGroup` can have more than one `WorkloadEntry`. `WorkloadGroup` has no relationship to resources which control service registry like `ServiceEntry` and as such doesn't configure host name for these workloads.\n\n\u003c!-- crd generation tags representing the server time when this object was created. It is not guaranteed to be set in happens-before order across separate operations. Clients may not set this value. It is represented in RFC3339 form and is in UTC. Populated by the system. Read-only. Null for lists. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#metadata\" --\u003e\n\n\u003c!-- go code generation tags --\u003e",
       "type": "object",
-      "required": [
-        "status"
-      ],
       "properties": {
         "apiVersion": {
           "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
@@ -7128,9 +7104,6 @@
     "io.istio.security.v1.AuthorizationPolicy": {
       "description": "AuthorizationPolicy enables access control on workloads.\n\n\u003c!-- crd generation tags representing the server time when this object was created. It is not guaranteed to be set in happens-before order across separate operations. Clients may not set this value. It is represented in RFC3339 form and is in UTC. Populated by the system. Read-only. Null for lists. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#metadata\" --\u003e\n\n\u003c!-- go code generation tags --\u003e",
       "type": "object",
-      "required": [
-        "status"
-      ],
       "properties": {
         "apiVersion": {
           "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
@@ -7197,9 +7170,6 @@
     "io.istio.security.v1.PeerAuthentication": {
       "description": "\u003c!-- crd generation tags representing the server time when this object was created. It is not guaranteed to be set in happens-before order across separate operations. Clients may not set this value. It is represented in RFC3339 form and is in UTC. Populated by the system. Read-only. Null for lists. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#metadata\" --\u003e\n\n\u003c!-- go code generation tags --\u003e",
       "type": "object",
-      "required": [
-        "status"
-      ],
       "properties": {
         "apiVersion": {
           "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
@@ -7266,9 +7236,6 @@
     "io.istio.security.v1.RequestAuthentication": {
       "description": "\u003c!-- crd generation tags --\u003e\n\n\u003c!-- go code generation tags --\u003e",
       "type": "object",
-      "required": [
-        "status"
-      ],
       "properties": {
         "apiVersion": {
           "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
@@ -7335,9 +7302,6 @@
     "io.istio.security.v1beta1.AuthorizationPolicy": {
       "description": "AuthorizationPolicy enables access control on workloads.\n\n\u003c!-- crd generation tags representing the server time when this object was created. It is not guaranteed to be set in happens-before order across separate operations. Clients may not set this value. It is represented in RFC3339 form and is in UTC. Populated by the system. Read-only. Null for lists. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#metadata\" --\u003e\n\n\u003c!-- go code generation tags --\u003e",
       "type": "object",
-      "required": [
-        "status"
-      ],
       "properties": {
         "apiVersion": {
           "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
@@ -7404,9 +7368,6 @@
     "io.istio.security.v1beta1.PeerAuthentication": {
       "description": "\u003c!-- crd generation tags representing the server time when this object was created. It is not guaranteed to be set in happens-before order across separate operations. Clients may not set this value. It is represented in RFC3339 form and is in UTC. Populated by the system. Read-only. Null for lists. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#metadata\" --\u003e\n\n\u003c!-- go code generation tags --\u003e",
       "type": "object",
-      "required": [
-        "status"
-      ],
       "properties": {
         "apiVersion": {
           "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
@@ -7473,9 +7434,6 @@
     "io.istio.security.v1beta1.RequestAuthentication": {
       "description": "\u003c!-- crd generation tags --\u003e\n\n\u003c!-- go code generation tags --\u003e",
       "type": "object",
-      "required": [
-        "status"
-      ],
       "properties": {
         "apiVersion": {
           "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
@@ -7542,9 +7500,6 @@
     "io.istio.telemetry.v1.Telemetry": {
       "description": "\u003c!-- crd generation tags is a timestamp representing the server time when this object was created. It is not guaranteed to be set in happens-before order across separate operations. Clients may not set this value. It is represented in RFC3339 form and is in UTC. Populated by the system. Read-only. Null for lists. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#metadata\" --\u003e\n\n\u003c!-- go code generation tags --\u003e",
       "type": "object",
-      "required": [
-        "status"
-      ],
       "properties": {
         "apiVersion": {
           "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
@@ -7611,9 +7566,6 @@
     "io.istio.telemetry.v1alpha1.Telemetry": {
       "description": "\u003c!-- crd generation tags is a timestamp representing the server time when this object was created. It is not guaranteed to be set in happens-before order across separate operations. Clients may not set this value. It is represented in RFC3339 form and is in UTC. Populated by the system. Read-only. Null for lists. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#metadata\" --\u003e\n\n\u003c!-- go code generation tags --\u003e",
       "type": "object",
-      "required": [
-        "status"
-      ],
       "properties": {
         "apiVersion": {
           "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",

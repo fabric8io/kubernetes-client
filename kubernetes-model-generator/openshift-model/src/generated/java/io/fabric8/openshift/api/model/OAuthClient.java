@@ -135,7 +135,7 @@ public class OAuthClient implements Editable<OAuthClientBuilder>, HasMetadata
     }
 
     /**
-     * AccessTokenInactivityTimeoutSeconds overrides the default token inactivity timeout for tokens granted to this client. The value represents the maximum amount of time that can occur between consecutive uses of the token. Tokens become invalid if they are not used within this temporal window. The user will need to acquire a new token to regain access once a token times out. This value needs to be set only if the default set in configuration is not appropriate for this client. Valid values are: - 0: Tokens for this client never time out - X: Tokens time out if there is no activity for X seconds The current minimum allowed value for X is 300 (5 minutes)<br><p> <br><p> WARNING: existing tokens' timeout will not be affected (lowered) by changing this value
+     * accessTokenInactivityTimeoutSeconds overrides the default token inactivity timeout for tokens granted to this client. The value represents the maximum amount of time that can occur between consecutive uses of the token. Tokens become invalid if they are not used within this temporal window. The user will need to acquire a new token to regain access once a token times out. This value needs to be set only if the default set in configuration is not appropriate for this client. Valid values are: - 0: Tokens for this client never time out - X: Tokens time out if there is no activity for X seconds The current minimum allowed value for X is 300 (5 minutes)<br><p> <br><p> WARNING: existing tokens' timeout will not be affected (lowered) by changing this value
      */
     @JsonProperty("accessTokenInactivityTimeoutSeconds")
     public Integer getAccessTokenInactivityTimeoutSeconds() {
@@ -143,7 +143,7 @@ public class OAuthClient implements Editable<OAuthClientBuilder>, HasMetadata
     }
 
     /**
-     * AccessTokenInactivityTimeoutSeconds overrides the default token inactivity timeout for tokens granted to this client. The value represents the maximum amount of time that can occur between consecutive uses of the token. Tokens become invalid if they are not used within this temporal window. The user will need to acquire a new token to regain access once a token times out. This value needs to be set only if the default set in configuration is not appropriate for this client. Valid values are: - 0: Tokens for this client never time out - X: Tokens time out if there is no activity for X seconds The current minimum allowed value for X is 300 (5 minutes)<br><p> <br><p> WARNING: existing tokens' timeout will not be affected (lowered) by changing this value
+     * accessTokenInactivityTimeoutSeconds overrides the default token inactivity timeout for tokens granted to this client. The value represents the maximum amount of time that can occur between consecutive uses of the token. Tokens become invalid if they are not used within this temporal window. The user will need to acquire a new token to regain access once a token times out. This value needs to be set only if the default set in configuration is not appropriate for this client. Valid values are: - 0: Tokens for this client never time out - X: Tokens time out if there is no activity for X seconds The current minimum allowed value for X is 300 (5 minutes)<br><p> <br><p> WARNING: existing tokens' timeout will not be affected (lowered) by changing this value
      */
     @JsonProperty("accessTokenInactivityTimeoutSeconds")
     public void setAccessTokenInactivityTimeoutSeconds(Integer accessTokenInactivityTimeoutSeconds) {
@@ -151,7 +151,7 @@ public class OAuthClient implements Editable<OAuthClientBuilder>, HasMetadata
     }
 
     /**
-     * AccessTokenMaxAgeSeconds overrides the default access token max age for tokens granted to this client. 0 means no expiration.
+     * accessTokenMaxAgeSeconds overrides the default access token max age for tokens granted to this client. 0 means no expiration.
      */
     @JsonProperty("accessTokenMaxAgeSeconds")
     public Integer getAccessTokenMaxAgeSeconds() {
@@ -159,7 +159,7 @@ public class OAuthClient implements Editable<OAuthClientBuilder>, HasMetadata
     }
 
     /**
-     * AccessTokenMaxAgeSeconds overrides the default access token max age for tokens granted to this client. 0 means no expiration.
+     * accessTokenMaxAgeSeconds overrides the default access token max age for tokens granted to this client. 0 means no expiration.
      */
     @JsonProperty("accessTokenMaxAgeSeconds")
     public void setAccessTokenMaxAgeSeconds(Integer accessTokenMaxAgeSeconds) {
@@ -167,7 +167,7 @@ public class OAuthClient implements Editable<OAuthClientBuilder>, HasMetadata
     }
 
     /**
-     * AdditionalSecrets holds other secrets that may be used to identify the client.  This is useful for rotation and for service account token validation
+     * additionalSecrets holds other secrets that may be used to identify the client.  This is useful for rotation and for service account token validation
      */
     @JsonProperty("additionalSecrets")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -176,7 +176,7 @@ public class OAuthClient implements Editable<OAuthClientBuilder>, HasMetadata
     }
 
     /**
-     * AdditionalSecrets holds other secrets that may be used to identify the client.  This is useful for rotation and for service account token validation
+     * additionalSecrets holds other secrets that may be used to identify the client.  This is useful for rotation and for service account token validation
      */
     @JsonProperty("additionalSecrets")
     public void setAdditionalSecrets(List<String> additionalSecrets) {
@@ -200,7 +200,7 @@ public class OAuthClient implements Editable<OAuthClientBuilder>, HasMetadata
     }
 
     /**
-     * GrantMethod is a required field which determines how to handle grants for this client. Valid grant handling methods are:<br><p>  - auto:   always approves grant requests, useful for trusted clients<br><p>  - prompt: prompts the end user for approval of grant requests, useful for third-party clients
+     * grantMethod is a required field which determines how to handle grants for this client. Valid grant handling methods are:<br><p>  - auto:   always approves grant requests, useful for trusted clients<br><p>  - prompt: prompts the end user for approval of grant requests, useful for third-party clients
      */
     @JsonProperty("grantMethod")
     public String getGrantMethod() {
@@ -208,7 +208,7 @@ public class OAuthClient implements Editable<OAuthClientBuilder>, HasMetadata
     }
 
     /**
-     * GrantMethod is a required field which determines how to handle grants for this client. Valid grant handling methods are:<br><p>  - auto:   always approves grant requests, useful for trusted clients<br><p>  - prompt: prompts the end user for approval of grant requests, useful for third-party clients
+     * grantMethod is a required field which determines how to handle grants for this client. Valid grant handling methods are:<br><p>  - auto:   always approves grant requests, useful for trusted clients<br><p>  - prompt: prompts the end user for approval of grant requests, useful for third-party clients
      */
     @JsonProperty("grantMethod")
     public void setGrantMethod(String grantMethod) {
@@ -248,7 +248,7 @@ public class OAuthClient implements Editable<OAuthClientBuilder>, HasMetadata
     }
 
     /**
-     * RedirectURIs is the valid redirection URIs associated with a client
+     * redirectURIs is the valid redirection URIs associated with a client
      */
     @JsonProperty("redirectURIs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -257,7 +257,7 @@ public class OAuthClient implements Editable<OAuthClientBuilder>, HasMetadata
     }
 
     /**
-     * RedirectURIs is the valid redirection URIs associated with a client
+     * redirectURIs is the valid redirection URIs associated with a client
      */
     @JsonProperty("redirectURIs")
     public void setRedirectURIs(List<String> redirectURIs) {
@@ -265,7 +265,7 @@ public class OAuthClient implements Editable<OAuthClientBuilder>, HasMetadata
     }
 
     /**
-     * RespondWithChallenges indicates whether the client wants authentication needed responses made in the form of challenges instead of redirects
+     * respondWithChallenges indicates whether the client wants authentication needed responses made in the form of challenges instead of redirects
      */
     @JsonProperty("respondWithChallenges")
     public Boolean getRespondWithChallenges() {
@@ -273,7 +273,7 @@ public class OAuthClient implements Editable<OAuthClientBuilder>, HasMetadata
     }
 
     /**
-     * RespondWithChallenges indicates whether the client wants authentication needed responses made in the form of challenges instead of redirects
+     * respondWithChallenges indicates whether the client wants authentication needed responses made in the form of challenges instead of redirects
      */
     @JsonProperty("respondWithChallenges")
     public void setRespondWithChallenges(Boolean respondWithChallenges) {
@@ -281,7 +281,7 @@ public class OAuthClient implements Editable<OAuthClientBuilder>, HasMetadata
     }
 
     /**
-     * ScopeRestrictions describes which scopes this client can request.  Each requested scope is checked against each restriction.  If any restriction matches, then the scope is allowed. If no restriction matches, then the scope is denied.
+     * scopeRestrictions describes which scopes this client can request.  Each requested scope is checked against each restriction.  If any restriction matches, then the scope is allowed. If no restriction matches, then the scope is denied.
      */
     @JsonProperty("scopeRestrictions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -290,7 +290,7 @@ public class OAuthClient implements Editable<OAuthClientBuilder>, HasMetadata
     }
 
     /**
-     * ScopeRestrictions describes which scopes this client can request.  Each requested scope is checked against each restriction.  If any restriction matches, then the scope is allowed. If no restriction matches, then the scope is denied.
+     * scopeRestrictions describes which scopes this client can request.  Each requested scope is checked against each restriction.  If any restriction matches, then the scope is allowed. If no restriction matches, then the scope is denied.
      */
     @JsonProperty("scopeRestrictions")
     public void setScopeRestrictions(List<ScopeRestriction> scopeRestrictions) {
@@ -298,7 +298,7 @@ public class OAuthClient implements Editable<OAuthClientBuilder>, HasMetadata
     }
 
     /**
-     * Secret is the unique secret associated with a client
+     * secret is the unique secret associated with a client
      */
     @JsonProperty("secret")
     public String getSecret() {
@@ -306,7 +306,7 @@ public class OAuthClient implements Editable<OAuthClientBuilder>, HasMetadata
     }
 
     /**
-     * Secret is the unique secret associated with a client
+     * secret is the unique secret associated with a client
      */
     @JsonProperty("secret")
     public void setSecret(String secret) {

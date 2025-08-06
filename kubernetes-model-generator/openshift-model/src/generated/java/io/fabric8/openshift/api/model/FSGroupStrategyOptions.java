@@ -88,7 +88,7 @@ public class FSGroupStrategyOptions implements Editable<FSGroupStrategyOptionsBu
     }
 
     /**
-     * Ranges are the allowed ranges of fs groups.  If you would like to force a single fs group then supply a single range with the same start and end.
+     * ranges are the allowed ranges of fs groups.  If you would like to force a single fs group then supply a single range with the same start and end.
      */
     @JsonProperty("ranges")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -97,7 +97,7 @@ public class FSGroupStrategyOptions implements Editable<FSGroupStrategyOptionsBu
     }
 
     /**
-     * Ranges are the allowed ranges of fs groups.  If you would like to force a single fs group then supply a single range with the same start and end.
+     * ranges are the allowed ranges of fs groups.  If you would like to force a single fs group then supply a single range with the same start and end.
      */
     @JsonProperty("ranges")
     public void setRanges(List<IDRange> ranges) {
@@ -105,7 +105,7 @@ public class FSGroupStrategyOptions implements Editable<FSGroupStrategyOptionsBu
     }
 
     /**
-     * Type is the strategy that will dictate what FSGroup is used in the SecurityContext.
+     * type is the strategy that will dictate what FSGroup is used in the SecurityContext.
      */
     @JsonProperty("type")
     public String getType() {
@@ -113,7 +113,7 @@ public class FSGroupStrategyOptions implements Editable<FSGroupStrategyOptionsBu
     }
 
     /**
-     * Type is the strategy that will dictate what FSGroup is used in the SecurityContext.
+     * type is the strategy that will dictate what FSGroup is used in the SecurityContext.
      */
     @JsonProperty("type")
     public void setType(String type) {

@@ -141,7 +141,7 @@ public class RecreateDeploymentStrategyParams implements Editable<RecreateDeploy
     }
 
     /**
-     * TimeoutSeconds is the time to wait for updates before giving up. If the value is nil, a default will be used.
+     * timeoutSeconds is the time to wait for updates before giving up. If the value is nil, a default will be used.
      */
     @JsonProperty("timeoutSeconds")
     public Long getTimeoutSeconds() {
@@ -149,7 +149,7 @@ public class RecreateDeploymentStrategyParams implements Editable<RecreateDeploy
     }
 
     /**
-     * TimeoutSeconds is the time to wait for updates before giving up. If the value is nil, a default will be used.
+     * timeoutSeconds is the time to wait for updates before giving up. If the value is nil, a default will be used.
      */
     @JsonProperty("timeoutSeconds")
     public void setTimeoutSeconds(Long timeoutSeconds) {

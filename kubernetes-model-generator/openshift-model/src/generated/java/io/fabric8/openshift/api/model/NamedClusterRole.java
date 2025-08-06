@@ -85,7 +85,7 @@ public class NamedClusterRole implements Editable<NamedClusterRoleBuilder>, Kube
     }
 
     /**
-     * Name is the name of the cluster role
+     * name is the name of the cluster role
      */
     @JsonProperty("name")
     public String getName() {
@@ -93,7 +93,7 @@ public class NamedClusterRole implements Editable<NamedClusterRoleBuilder>, Kube
     }
 
     /**
-     * Name is the name of the cluster role
+     * name is the name of the cluster role
      */
     @JsonProperty("name")
     public void setName(String name) {

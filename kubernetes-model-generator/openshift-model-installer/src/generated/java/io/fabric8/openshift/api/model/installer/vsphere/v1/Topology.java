@@ -44,6 +44,7 @@ import lombok.experimental.Accessors;
     "datacenter",
     "datastore",
     "folder",
+    "hostGroup",
     "networks",
     "resourcePool",
     "tagIDs",
@@ -82,6 +83,8 @@ public class Topology implements Editable<TopologyBuilder>, KubernetesResource
     private String datastore;
     @JsonProperty("folder")
     private String folder;
+    @JsonProperty("hostGroup")
+    private String hostGroup;
     @JsonProperty("networks")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> networks = new ArrayList<>();
@@ -101,12 +104,13 @@ public class Topology implements Editable<TopologyBuilder>, KubernetesResource
     public Topology() {
     }
 
-    public Topology(String computeCluster, String datacenter, String datastore, String folder, List<String> networks, String resourcePool, List<String> tagIDs, String template) {
+    public Topology(String computeCluster, String datacenter, String datastore, String folder, String hostGroup, List<String> networks, String resourcePool, List<String> tagIDs, String template) {
         super();
         this.computeCluster = computeCluster;
         this.datacenter = datacenter;
         this.datastore = datastore;
         this.folder = folder;
+        this.hostGroup = hostGroup;
         this.networks = networks;
         this.resourcePool = resourcePool;
         this.tagIDs = tagIDs;
@@ -175,6 +179,22 @@ public class Topology implements Editable<TopologyBuilder>, KubernetesResource
     @JsonProperty("folder")
     public void setFolder(String folder) {
         this.folder = folder;
+    }
+
+    /**
+     * hostGroup is the name of the vm-host group of type host within vCenter for this failure domain. hostGroup is limited to 80 characters. This field is required when the ZoneType is HostGroup
+     */
+    @JsonProperty("hostGroup")
+    public String getHostGroup() {
+        return hostGroup;
+    }
+
+    /**
+     * hostGroup is the name of the vm-host group of type host within vCenter for this failure domain. hostGroup is limited to 80 characters. This field is required when the ZoneType is HostGroup
+     */
+    @JsonProperty("hostGroup")
+    public void setHostGroup(String hostGroup) {
+        this.hostGroup = hostGroup;
     }
 
     /**

@@ -109,7 +109,7 @@ public class TagEvent implements Editable<TagEventBuilder>, KubernetesResource
     }
 
     /**
-     * DockerImageReference is the string that can be used to pull this image
+     * dockerImageReference is the string that can be used to pull this image
      */
     @JsonProperty("dockerImageReference")
     public String getDockerImageReference() {
@@ -117,7 +117,7 @@ public class TagEvent implements Editable<TagEventBuilder>, KubernetesResource
     }
 
     /**
-     * DockerImageReference is the string that can be used to pull this image
+     * dockerImageReference is the string that can be used to pull this image
      */
     @JsonProperty("dockerImageReference")
     public void setDockerImageReference(String dockerImageReference) {
@@ -125,7 +125,7 @@ public class TagEvent implements Editable<TagEventBuilder>, KubernetesResource
     }
 
     /**
-     * Generation is the spec tag generation that resulted in this tag being updated
+     * generation is the spec tag generation that resulted in this tag being updated
      */
     @JsonProperty("generation")
     public Long getGeneration() {
@@ -133,7 +133,7 @@ public class TagEvent implements Editable<TagEventBuilder>, KubernetesResource
     }
 
     /**
-     * Generation is the spec tag generation that resulted in this tag being updated
+     * generation is the spec tag generation that resulted in this tag being updated
      */
     @JsonProperty("generation")
     public void setGeneration(Long generation) {
@@ -141,7 +141,7 @@ public class TagEvent implements Editable<TagEventBuilder>, KubernetesResource
     }
 
     /**
-     * Image is the image
+     * image is the image
      */
     @JsonProperty("image")
     public String getImage() {
@@ -149,7 +149,7 @@ public class TagEvent implements Editable<TagEventBuilder>, KubernetesResource
     }
 
     /**
-     * Image is the image
+     * image is the image
      */
     @JsonProperty("image")
     public void setImage(String image) {

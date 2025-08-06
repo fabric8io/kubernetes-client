@@ -104,7 +104,7 @@ public class PowerVSPlatformStatus implements Editable<PowerVSPlatformStatusBuil
     }
 
     /**
-     * CISInstanceCRN is the CRN of the Cloud Internet Services instance managing the DNS zone for the cluster's base domain
+     * cisInstanceCRN is the CRN of the Cloud Internet Services instance managing the DNS zone for the cluster's base domain
      */
     @JsonProperty("cisInstanceCRN")
     public String getCisInstanceCRN() {
@@ -112,7 +112,7 @@ public class PowerVSPlatformStatus implements Editable<PowerVSPlatformStatusBuil
     }
 
     /**
-     * CISInstanceCRN is the CRN of the Cloud Internet Services instance managing the DNS zone for the cluster's base domain
+     * cisInstanceCRN is the CRN of the Cloud Internet Services instance managing the DNS zone for the cluster's base domain
      */
     @JsonProperty("cisInstanceCRN")
     public void setCisInstanceCRN(String cisInstanceCRN) {
@@ -120,7 +120,7 @@ public class PowerVSPlatformStatus implements Editable<PowerVSPlatformStatusBuil
     }
 
     /**
-     * DNSInstanceCRN is the CRN of the DNS Services instance managing the DNS zone for the cluster's base domain
+     * dnsInstanceCRN is the CRN of the DNS Services instance managing the DNS zone for the cluster's base domain
      */
     @JsonProperty("dnsInstanceCRN")
     public String getDnsInstanceCRN() {
@@ -128,7 +128,7 @@ public class PowerVSPlatformStatus implements Editable<PowerVSPlatformStatusBuil
     }
 
     /**
-     * DNSInstanceCRN is the CRN of the DNS Services instance managing the DNS zone for the cluster's base domain
+     * dnsInstanceCRN is the CRN of the DNS Services instance managing the DNS zone for the cluster's base domain
      */
     @JsonProperty("dnsInstanceCRN")
     public void setDnsInstanceCRN(String dnsInstanceCRN) {

@@ -140,7 +140,7 @@ public class DeploymentConfigRollback implements Editable<DeploymentConfigRollba
     }
 
     /**
-     * Name of the deployment config that will be rolled back.
+     * name of the deployment config that will be rolled back.
      */
     @JsonProperty("name")
     public String getName() {
@@ -148,7 +148,7 @@ public class DeploymentConfigRollback implements Editable<DeploymentConfigRollba
     }
 
     /**
-     * Name of the deployment config that will be rolled back.
+     * name of the deployment config that will be rolled back.
      */
     @JsonProperty("name")
     public void setName(String name) {
@@ -172,7 +172,7 @@ public class DeploymentConfigRollback implements Editable<DeploymentConfigRollba
     }
 
     /**
-     * UpdatedAnnotations is a set of new annotations that will be added in the deployment config.
+     * updatedAnnotations is a set of new annotations that will be added in the deployment config.
      */
     @JsonProperty("updatedAnnotations")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -181,7 +181,7 @@ public class DeploymentConfigRollback implements Editable<DeploymentConfigRollba
     }
 
     /**
-     * UpdatedAnnotations is a set of new annotations that will be added in the deployment config.
+     * updatedAnnotations is a set of new annotations that will be added in the deployment config.
      */
     @JsonProperty("updatedAnnotations")
     public void setUpdatedAnnotations(Map<String, String> updatedAnnotations) {

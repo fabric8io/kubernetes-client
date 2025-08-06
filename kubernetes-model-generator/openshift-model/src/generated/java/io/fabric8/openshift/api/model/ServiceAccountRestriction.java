@@ -89,7 +89,7 @@ public class ServiceAccountRestriction implements Editable<ServiceAccountRestric
     }
 
     /**
-     * Namespaces specifies a list of literal namespace names.
+     * namespaces specifies a list of literal namespace names.
      */
     @JsonProperty("namespaces")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -98,7 +98,7 @@ public class ServiceAccountRestriction implements Editable<ServiceAccountRestric
     }
 
     /**
-     * Namespaces specifies a list of literal namespace names.
+     * namespaces specifies a list of literal namespace names.
      */
     @JsonProperty("namespaces")
     public void setNamespaces(List<String> namespaces) {
@@ -106,7 +106,7 @@ public class ServiceAccountRestriction implements Editable<ServiceAccountRestric
     }
 
     /**
-     * ServiceAccounts specifies a list of literal service-account names.
+     * serviceaccounts specifies a list of literal service-account names.
      */
     @JsonProperty("serviceaccounts")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -115,7 +115,7 @@ public class ServiceAccountRestriction implements Editable<ServiceAccountRestric
     }
 
     /**
-     * ServiceAccounts specifies a list of literal service-account names.
+     * serviceaccounts specifies a list of literal service-account names.
      */
     @JsonProperty("serviceaccounts")
     public void setServiceaccounts(List<ServiceAccountReference> serviceaccounts) {

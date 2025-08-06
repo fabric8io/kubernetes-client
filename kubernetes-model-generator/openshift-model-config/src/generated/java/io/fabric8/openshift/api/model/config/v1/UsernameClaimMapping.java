@@ -86,7 +86,7 @@ public class UsernameClaimMapping implements Editable<UsernameClaimMappingBuilde
     }
 
     /**
-     * Claim is a JWT token claim to be used in the mapping
+     * claim is a JWT token claim to be used in the mapping
      */
     @JsonProperty("claim")
     public String getClaim() {
@@ -94,7 +94,7 @@ public class UsernameClaimMapping implements Editable<UsernameClaimMappingBuilde
     }
 
     /**
-     * Claim is a JWT token claim to be used in the mapping
+     * claim is a JWT token claim to be used in the mapping
      */
     @JsonProperty("claim")
     public void setClaim(String claim) {
@@ -112,7 +112,7 @@ public class UsernameClaimMapping implements Editable<UsernameClaimMappingBuilde
     }
 
     /**
-     * PrefixPolicy specifies how a prefix should apply.<br><p> <br><p> By default, claims other than `email` will be prefixed with the issuer URL to prevent naming clashes with other plugins.<br><p> <br><p> Set to "NoPrefix" to disable prefixing.<br><p> <br><p> Example:<br><p>     (1) `prefix` is set to "myoidc:" and `claim` is set to "username".<br><p>         If the JWT claim `username` contains value `userA`, the resulting<br><p>         mapped value will be "myoidc:userA".<br><p>     (2) `prefix` is set to "myoidc:" and `claim` is set to "email". If the<br><p>         JWT `email` claim contains value "userA@myoidc.tld", the resulting<br><p>         mapped value will be "myoidc:userA@myoidc.tld".<br><p>     (3) `prefix` is unset, `issuerURL` is set to `https://myoidc.tld`,<br><p>         the JWT claims include "username":"userA" and "email":"userA@myoidc.tld",<br><p>         and `claim` is set to:<br><p>         (a) "username": the mapped value will be "https://myoidc.tld#userA"<br><p>         (b) "email": the mapped value will be "userA@myoidc.tld"
+     * prefixPolicy specifies how a prefix should apply.<br><p> <br><p> By default, claims other than `email` will be prefixed with the issuer URL to prevent naming clashes with other plugins.<br><p> <br><p> Set to "NoPrefix" to disable prefixing.<br><p> <br><p> Example:<br><p>     (1) `prefix` is set to "myoidc:" and `claim` is set to "username".<br><p>         If the JWT claim `username` contains value `userA`, the resulting<br><p>         mapped value will be "myoidc:userA".<br><p>     (2) `prefix` is set to "myoidc:" and `claim` is set to "email". If the<br><p>         JWT `email` claim contains value "userA@myoidc.tld", the resulting<br><p>         mapped value will be "myoidc:userA@myoidc.tld".<br><p>     (3) `prefix` is unset, `issuerURL` is set to `https://myoidc.tld`,<br><p>         the JWT claims include "username":"userA" and "email":"userA@myoidc.tld",<br><p>         and `claim` is set to:<br><p>         (a) "username": the mapped value will be "https://myoidc.tld#userA"<br><p>         (b) "email": the mapped value will be "userA@myoidc.tld"
      */
     @JsonProperty("prefixPolicy")
     public String getPrefixPolicy() {
@@ -120,7 +120,7 @@ public class UsernameClaimMapping implements Editable<UsernameClaimMappingBuilde
     }
 
     /**
-     * PrefixPolicy specifies how a prefix should apply.<br><p> <br><p> By default, claims other than `email` will be prefixed with the issuer URL to prevent naming clashes with other plugins.<br><p> <br><p> Set to "NoPrefix" to disable prefixing.<br><p> <br><p> Example:<br><p>     (1) `prefix` is set to "myoidc:" and `claim` is set to "username".<br><p>         If the JWT claim `username` contains value `userA`, the resulting<br><p>         mapped value will be "myoidc:userA".<br><p>     (2) `prefix` is set to "myoidc:" and `claim` is set to "email". If the<br><p>         JWT `email` claim contains value "userA@myoidc.tld", the resulting<br><p>         mapped value will be "myoidc:userA@myoidc.tld".<br><p>     (3) `prefix` is unset, `issuerURL` is set to `https://myoidc.tld`,<br><p>         the JWT claims include "username":"userA" and "email":"userA@myoidc.tld",<br><p>         and `claim` is set to:<br><p>         (a) "username": the mapped value will be "https://myoidc.tld#userA"<br><p>         (b) "email": the mapped value will be "userA@myoidc.tld"
+     * prefixPolicy specifies how a prefix should apply.<br><p> <br><p> By default, claims other than `email` will be prefixed with the issuer URL to prevent naming clashes with other plugins.<br><p> <br><p> Set to "NoPrefix" to disable prefixing.<br><p> <br><p> Example:<br><p>     (1) `prefix` is set to "myoidc:" and `claim` is set to "username".<br><p>         If the JWT claim `username` contains value `userA`, the resulting<br><p>         mapped value will be "myoidc:userA".<br><p>     (2) `prefix` is set to "myoidc:" and `claim` is set to "email". If the<br><p>         JWT `email` claim contains value "userA@myoidc.tld", the resulting<br><p>         mapped value will be "myoidc:userA@myoidc.tld".<br><p>     (3) `prefix` is unset, `issuerURL` is set to `https://myoidc.tld`,<br><p>         the JWT claims include "username":"userA" and "email":"userA@myoidc.tld",<br><p>         and `claim` is set to:<br><p>         (a) "username": the mapped value will be "https://myoidc.tld#userA"<br><p>         (b) "email": the mapped value will be "userA@myoidc.tld"
      */
     @JsonProperty("prefixPolicy")
     public void setPrefixPolicy(String prefixPolicy) {

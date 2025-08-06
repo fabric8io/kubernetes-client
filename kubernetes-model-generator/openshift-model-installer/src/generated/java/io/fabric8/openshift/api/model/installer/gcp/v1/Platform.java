@@ -28,6 +28,7 @@ import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
 import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
+import io.fabric8.openshift.api.model.config.v1.GCPServiceEndpoint;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
@@ -47,6 +48,7 @@ import lombok.experimental.Accessors;
     "networkProjectID",
     "projectID",
     "region",
+    "serviceEndpoints",
     "userLabels",
     "userProvisionedDNS",
     "userTags"
@@ -90,6 +92,9 @@ public class Platform implements Editable<PlatformBuilder>, KubernetesResource
     private String projectID;
     @JsonProperty("region")
     private String region;
+    @JsonProperty("serviceEndpoints")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<GCPServiceEndpoint> serviceEndpoints = new ArrayList<>();
     @JsonProperty("userLabels")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<UserLabel> userLabels = new ArrayList<>();
@@ -107,7 +112,7 @@ public class Platform implements Editable<PlatformBuilder>, KubernetesResource
     public Platform() {
     }
 
-    public Platform(String computeSubnet, String controlPlaneSubnet, MachinePool defaultMachinePlatform, String network, String networkProjectID, String projectID, String region, List<UserLabel> userLabels, String userProvisionedDNS, List<UserTag> userTags) {
+    public Platform(String computeSubnet, String controlPlaneSubnet, MachinePool defaultMachinePlatform, String network, String networkProjectID, String projectID, String region, List<GCPServiceEndpoint> serviceEndpoints, List<UserLabel> userLabels, String userProvisionedDNS, List<UserTag> userTags) {
         super();
         this.computeSubnet = computeSubnet;
         this.controlPlaneSubnet = controlPlaneSubnet;
@@ -116,6 +121,7 @@ public class Platform implements Editable<PlatformBuilder>, KubernetesResource
         this.networkProjectID = networkProjectID;
         this.projectID = projectID;
         this.region = region;
+        this.serviceEndpoints = serviceEndpoints;
         this.userLabels = userLabels;
         this.userProvisionedDNS = userProvisionedDNS;
         this.userTags = userTags;
@@ -231,6 +237,23 @@ public class Platform implements Editable<PlatformBuilder>, KubernetesResource
     @JsonProperty("region")
     public void setRegion(String region) {
         this.region = region;
+    }
+
+    /**
+     * ServiceEndpoints list contains custom endpoints which will override default service endpoint of GCP Services. There must be only one ServiceEndpoint for a service.
+     */
+    @JsonProperty("serviceEndpoints")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public List<GCPServiceEndpoint> getServiceEndpoints() {
+        return serviceEndpoints;
+    }
+
+    /**
+     * ServiceEndpoints list contains custom endpoints which will override default service endpoint of GCP Services. There must be only one ServiceEndpoint for a service.
+     */
+    @JsonProperty("serviceEndpoints")
+    public void setServiceEndpoints(List<GCPServiceEndpoint> serviceEndpoints) {
+        this.serviceEndpoints = serviceEndpoints;
     }
 
     /**

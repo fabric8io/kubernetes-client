@@ -102,7 +102,7 @@ public class MacvlanConfig implements Editable<MacvlanConfigBuilder>, Kubernetes
     }
 
     /**
-     * Mode depicts the mode that is used for the macvlan interface; one of Bridge|Private|VEPA|Passthru. The default mode is "Bridge".
+     * mode depicts the mode that is used for the macvlan interface; one of Bridge|Private|VEPA|Passthru. The default mode is "Bridge".
      */
     @JsonProperty("mode")
     public String getMode() {
@@ -110,7 +110,7 @@ public class MacvlanConfig implements Editable<MacvlanConfigBuilder>, Kubernetes
     }
 
     /**
-     * Mode depicts the mode that is used for the macvlan interface; one of Bridge|Private|VEPA|Passthru. The default mode is "Bridge".
+     * mode depicts the mode that is used for the macvlan interface; one of Bridge|Private|VEPA|Passthru. The default mode is "Bridge".
      */
     @JsonProperty("mode")
     public void setMode(String mode) {

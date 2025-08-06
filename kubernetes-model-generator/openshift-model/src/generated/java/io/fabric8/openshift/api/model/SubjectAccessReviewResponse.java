@@ -111,7 +111,7 @@ public class SubjectAccessReviewResponse implements Editable<SubjectAccessReview
     }
 
     /**
-     * Allowed is required.  True if the action would be allowed, false otherwise.
+     * allowed is required.  True if the action would be allowed, false otherwise.
      */
     @JsonProperty("allowed")
     public Boolean getAllowed() {
@@ -119,7 +119,7 @@ public class SubjectAccessReviewResponse implements Editable<SubjectAccessReview
     }
 
     /**
-     * Allowed is required.  True if the action would be allowed, false otherwise.
+     * allowed is required.  True if the action would be allowed, false otherwise.
      */
     @JsonProperty("allowed")
     public void setAllowed(Boolean allowed) {
@@ -143,7 +143,7 @@ public class SubjectAccessReviewResponse implements Editable<SubjectAccessReview
     }
 
     /**
-     * EvaluationError is an indication that some error occurred during the authorization check. It is entirely possible to get an error and be able to continue determine authorization status in spite of it.  This is most common when a bound role is missing, but enough roles are still present and bound to reason about the request.
+     * evaluationError is an indication that some error occurred during the authorization check. It is entirely possible to get an error and be able to continue determine authorization status in spite of it.  This is most common when a bound role is missing, but enough roles are still present and bound to reason about the request.
      */
     @JsonProperty("evaluationError")
     public String getEvaluationError() {
@@ -151,7 +151,7 @@ public class SubjectAccessReviewResponse implements Editable<SubjectAccessReview
     }
 
     /**
-     * EvaluationError is an indication that some error occurred during the authorization check. It is entirely possible to get an error and be able to continue determine authorization status in spite of it.  This is most common when a bound role is missing, but enough roles are still present and bound to reason about the request.
+     * evaluationError is an indication that some error occurred during the authorization check. It is entirely possible to get an error and be able to continue determine authorization status in spite of it.  This is most common when a bound role is missing, but enough roles are still present and bound to reason about the request.
      */
     @JsonProperty("evaluationError")
     public void setEvaluationError(String evaluationError) {
@@ -175,7 +175,7 @@ public class SubjectAccessReviewResponse implements Editable<SubjectAccessReview
     }
 
     /**
-     * Namespace is the namespace used for the access review
+     * namespace is the namespace used for the access review
      */
     @JsonProperty("namespace")
     public String getNamespace() {
@@ -183,7 +183,7 @@ public class SubjectAccessReviewResponse implements Editable<SubjectAccessReview
     }
 
     /**
-     * Namespace is the namespace used for the access review
+     * namespace is the namespace used for the access review
      */
     @JsonProperty("namespace")
     public void setNamespace(String namespace) {
@@ -191,7 +191,7 @@ public class SubjectAccessReviewResponse implements Editable<SubjectAccessReview
     }
 
     /**
-     * Reason is optional.  It indicates why a request was allowed or denied.
+     * reason is optional.  It indicates why a request was allowed or denied.
      */
     @JsonProperty("reason")
     public String getReason() {
@@ -199,7 +199,7 @@ public class SubjectAccessReviewResponse implements Editable<SubjectAccessReview
     }
 
     /**
-     * Reason is optional.  It indicates why a request was allowed or denied.
+     * reason is optional.  It indicates why a request was allowed or denied.
      */
     @JsonProperty("reason")
     public void setReason(String reason) {

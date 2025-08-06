@@ -131,7 +131,7 @@ public class VSphereMachineProviderStatus implements Editable<VSphereMachineProv
     }
 
     /**
-     * Conditions is a set of conditions associated with the Machine to indicate errors or other status
+     * conditions is a set of conditions associated with the Machine to indicate errors or other status
      */
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -140,7 +140,7 @@ public class VSphereMachineProviderStatus implements Editable<VSphereMachineProv
     }
 
     /**
-     * Conditions is a set of conditions associated with the Machine to indicate errors or other status
+     * conditions is a set of conditions associated with the Machine to indicate errors or other status
      */
     @JsonProperty("conditions")
     public void setConditions(List<Condition> conditions) {
@@ -148,7 +148,7 @@ public class VSphereMachineProviderStatus implements Editable<VSphereMachineProv
     }
 
     /**
-     * InstanceID is the ID of the instance in VSphere
+     * instanceId is the ID of the instance in VSphere
      */
     @JsonProperty("instanceId")
     public String getInstanceId() {
@@ -156,7 +156,7 @@ public class VSphereMachineProviderStatus implements Editable<VSphereMachineProv
     }
 
     /**
-     * InstanceID is the ID of the instance in VSphere
+     * instanceId is the ID of the instance in VSphere
      */
     @JsonProperty("instanceId")
     public void setInstanceId(String instanceId) {
@@ -164,7 +164,7 @@ public class VSphereMachineProviderStatus implements Editable<VSphereMachineProv
     }
 
     /**
-     * InstanceState is the provisioning state of the VSphere Instance.
+     * instanceState is the provisioning state of the VSphere Instance.
      */
     @JsonProperty("instanceState")
     public String getInstanceState() {
@@ -172,7 +172,7 @@ public class VSphereMachineProviderStatus implements Editable<VSphereMachineProv
     }
 
     /**
-     * InstanceState is the provisioning state of the VSphere Instance.
+     * instanceState is the provisioning state of the VSphere Instance.
      */
     @JsonProperty("instanceState")
     public void setInstanceState(String instanceState) {
@@ -196,7 +196,7 @@ public class VSphereMachineProviderStatus implements Editable<VSphereMachineProv
     }
 
     /**
-     * TaskRef is a managed object reference to a Task related to the machine. This value is set automatically at runtime and should not be set or modified by users.
+     * taskRef is a managed object reference to a Task related to the machine. This value is set automatically at runtime and should not be set or modified by users.
      */
     @JsonProperty("taskRef")
     public String getTaskRef() {
@@ -204,7 +204,7 @@ public class VSphereMachineProviderStatus implements Editable<VSphereMachineProv
     }
 
     /**
-     * TaskRef is a managed object reference to a Task related to the machine. This value is set automatically at runtime and should not be set or modified by users.
+     * taskRef is a managed object reference to a Task related to the machine. This value is set automatically at runtime and should not be set or modified by users.
      */
     @JsonProperty("taskRef")
     public void setTaskRef(String taskRef) {

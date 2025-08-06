@@ -90,7 +90,7 @@ public class AzureManagedIdentity implements Editable<AzureManagedIdentityBuilde
     }
 
     /**
-     * client ID of the managed identity, can not be used at the same time as resourceID
+     * client ID of the managed identity, cannot be used at the same time as resourceID
      */
     @JsonProperty("clientID")
     public String getClientID() {
@@ -98,7 +98,7 @@ public class AzureManagedIdentity implements Editable<AzureManagedIdentityBuilde
     }
 
     /**
-     * client ID of the managed identity, can not be used at the same time as resourceID
+     * client ID of the managed identity, cannot be used at the same time as resourceID
      */
     @JsonProperty("clientID")
     public void setClientID(String clientID) {
@@ -106,7 +106,7 @@ public class AzureManagedIdentity implements Editable<AzureManagedIdentityBuilde
     }
 
     /**
-     * resource ID of the managed identity, can not be used at the same time as clientID Cannot be used for Azure Managed Service Identity
+     * resource ID of the managed identity, cannot be used at the same time as clientID Cannot be used for Azure Managed Service Identity
      */
     @JsonProperty("resourceID")
     public String getResourceID() {
@@ -114,7 +114,7 @@ public class AzureManagedIdentity implements Editable<AzureManagedIdentityBuilde
     }
 
     /**
-     * resource ID of the managed identity, can not be used at the same time as clientID Cannot be used for Azure Managed Service Identity
+     * resource ID of the managed identity, cannot be used at the same time as clientID Cannot be used for Azure Managed Service Identity
      */
     @JsonProperty("resourceID")
     public void setResourceID(String resourceID) {
@@ -122,7 +122,7 @@ public class AzureManagedIdentity implements Editable<AzureManagedIdentityBuilde
     }
 
     /**
-     * tenant ID of the managed identity, can not be used at the same time as resourceID
+     * tenant ID of the managed identity, cannot be used at the same time as resourceID
      */
     @JsonProperty("tenantID")
     public String getTenantID() {
@@ -130,7 +130,7 @@ public class AzureManagedIdentity implements Editable<AzureManagedIdentityBuilde
     }
 
     /**
-     * tenant ID of the managed identity, can not be used at the same time as resourceID
+     * tenant ID of the managed identity, cannot be used at the same time as resourceID
      */
     @JsonProperty("tenantID")
     public void setTenantID(String tenantID) {

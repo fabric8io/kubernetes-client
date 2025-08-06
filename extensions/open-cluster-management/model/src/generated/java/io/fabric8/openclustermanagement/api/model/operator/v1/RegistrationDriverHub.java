@@ -36,7 +36,7 @@ import lombok.experimental.Accessors;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "authType",
-    "awsisra",
+    "awsirsa",
     "csr"
 })
 @ToString
@@ -66,8 +66,8 @@ public class RegistrationDriverHub implements Editable<RegistrationDriverHubBuil
 
     @JsonProperty("authType")
     private String authType;
-    @JsonProperty("awsisra")
-    private AwsIrsaConfig awsisra;
+    @JsonProperty("awsirsa")
+    private AwsIrsaConfig awsirsa;
     @JsonProperty("csr")
     private CSRConfig csr;
     @JsonIgnore
@@ -79,10 +79,10 @@ public class RegistrationDriverHub implements Editable<RegistrationDriverHubBuil
     public RegistrationDriverHub() {
     }
 
-    public RegistrationDriverHub(String authType, AwsIrsaConfig awsisra, CSRConfig csr) {
+    public RegistrationDriverHub(String authType, AwsIrsaConfig awsirsa, CSRConfig csr) {
         super();
         this.authType = authType;
-        this.awsisra = awsisra;
+        this.awsirsa = awsirsa;
         this.csr = csr;
     }
 
@@ -102,14 +102,14 @@ public class RegistrationDriverHub implements Editable<RegistrationDriverHubBuil
         this.authType = authType;
     }
 
-    @JsonProperty("awsisra")
-    public AwsIrsaConfig getAwsisra() {
-        return awsisra;
+    @JsonProperty("awsirsa")
+    public AwsIrsaConfig getAwsirsa() {
+        return awsirsa;
     }
 
-    @JsonProperty("awsisra")
-    public void setAwsisra(AwsIrsaConfig awsisra) {
-        this.awsisra = awsisra;
+    @JsonProperty("awsirsa")
+    public void setAwsirsa(AwsIrsaConfig awsirsa) {
+        this.awsirsa = awsirsa;
     }
 
     @JsonProperty("csr")

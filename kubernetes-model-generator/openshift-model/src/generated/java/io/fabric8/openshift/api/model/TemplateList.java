@@ -123,7 +123,7 @@ public class TemplateList implements Editable<TemplateListBuilder>, KubernetesRe
     }
 
     /**
-     * Items is a list of templates
+     * items is a list of templates
      */
     @JsonProperty("items")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -132,7 +132,7 @@ public class TemplateList implements Editable<TemplateListBuilder>, KubernetesRe
     }
 
     /**
-     * Items is a list of templates
+     * items is a list of templates
      */
     @JsonProperty("items")
     public void setItems(List<io.fabric8.openshift.api.model.Template> items) {

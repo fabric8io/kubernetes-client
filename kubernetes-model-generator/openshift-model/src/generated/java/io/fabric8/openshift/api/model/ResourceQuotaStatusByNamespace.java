@@ -86,7 +86,7 @@ public class ResourceQuotaStatusByNamespace implements Editable<ResourceQuotaSta
     }
 
     /**
-     * Namespace the project this status applies to
+     * namespace the project this status applies to
      */
     @JsonProperty("namespace")
     public String getNamespace() {
@@ -94,7 +94,7 @@ public class ResourceQuotaStatusByNamespace implements Editable<ResourceQuotaSta
     }
 
     /**
-     * Namespace the project this status applies to
+     * namespace the project this status applies to
      */
     @JsonProperty("namespace")
     public void setNamespace(String namespace) {

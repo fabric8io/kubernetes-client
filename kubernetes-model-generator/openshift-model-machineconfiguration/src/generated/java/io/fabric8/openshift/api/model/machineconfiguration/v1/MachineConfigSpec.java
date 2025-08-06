@@ -22,7 +22,6 @@ import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.LabelSelector;
 import io.fabric8.kubernetes.api.model.LocalObjectReference;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
-import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
@@ -61,7 +60,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(PodTemplateSpec.class),
     @BuildableReference(ResourceRequirements.class),
     @BuildableReference(IntOrString.class),
-    @BuildableReference(ObjectReference.class),
+    @BuildableReference(io.fabric8.kubernetes.api.model.ObjectReference.class),
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class),
     @BuildableReference(EnvVar.class),
@@ -111,7 +110,7 @@ public class MachineConfigSpec implements Editable<MachineConfigSpecBuilder>, Ku
     }
 
     /**
-     * BaseOSExtensionsContainerImage specifies the remote location that will be used to fetch the extensions container matching a new-format OS image
+     * baseOSExtensionsContainerImage specifies the remote location that will be used to fetch the extensions container matching a new-format OS image
      */
     @JsonProperty("baseOSExtensionsContainerImage")
     public String getBaseOSExtensionsContainerImage() {
@@ -119,7 +118,7 @@ public class MachineConfigSpec implements Editable<MachineConfigSpecBuilder>, Ku
     }
 
     /**
-     * BaseOSExtensionsContainerImage specifies the remote location that will be used to fetch the extensions container matching a new-format OS image
+     * baseOSExtensionsContainerImage specifies the remote location that will be used to fetch the extensions container matching a new-format OS image
      */
     @JsonProperty("baseOSExtensionsContainerImage")
     public void setBaseOSExtensionsContainerImage(String baseOSExtensionsContainerImage) {
@@ -210,7 +209,7 @@ public class MachineConfigSpec implements Editable<MachineConfigSpecBuilder>, Ku
     }
 
     /**
-     * OSImageURL specifies the remote location that will be used to fetch the OS.
+     * osImageURL specifies the remote location that will be used to fetch the OS.
      */
     @JsonProperty("osImageURL")
     public String getOsImageURL() {
@@ -218,7 +217,7 @@ public class MachineConfigSpec implements Editable<MachineConfigSpecBuilder>, Ku
     }
 
     /**
-     * OSImageURL specifies the remote location that will be used to fetch the OS.
+     * osImageURL specifies the remote location that will be used to fetch the OS.
      */
     @JsonProperty("osImageURL")
     public void setOsImageURL(String osImageURL) {

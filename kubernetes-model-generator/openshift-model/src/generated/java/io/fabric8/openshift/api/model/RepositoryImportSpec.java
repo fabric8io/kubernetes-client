@@ -125,7 +125,7 @@ public class RepositoryImportSpec implements Editable<RepositoryImportSpecBuilde
     }
 
     /**
-     * IncludeManifest determines if the manifest for each image is returned in the response
+     * includeManifest determines if the manifest for each image is returned in the response
      */
     @JsonProperty("includeManifest")
     public Boolean getIncludeManifest() {
@@ -133,7 +133,7 @@ public class RepositoryImportSpec implements Editable<RepositoryImportSpecBuilde
     }
 
     /**
-     * IncludeManifest determines if the manifest for each image is returned in the response
+     * includeManifest determines if the manifest for each image is returned in the response
      */
     @JsonProperty("includeManifest")
     public void setIncludeManifest(Boolean includeManifest) {

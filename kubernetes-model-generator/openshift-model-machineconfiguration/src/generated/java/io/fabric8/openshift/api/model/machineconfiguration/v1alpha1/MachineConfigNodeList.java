@@ -123,7 +123,7 @@ public class MachineConfigNodeList implements Editable<MachineConfigNodeListBuil
     }
 
     /**
-     * MachineConfigNodeList describes all of the MachinesStates on the system<br><p> <br><p> Compatibility level 4: No compatibility is provided, the API can change at any point for any reason. These capabilities should not be used by applications needing long term support.
+     * items contains a collection of MachineConfigNode resources.
      */
     @JsonProperty("items")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -132,7 +132,7 @@ public class MachineConfigNodeList implements Editable<MachineConfigNodeListBuil
     }
 
     /**
-     * MachineConfigNodeList describes all of the MachinesStates on the system<br><p> <br><p> Compatibility level 4: No compatibility is provided, the API can change at any point for any reason. These capabilities should not be used by applications needing long term support.
+     * items contains a collection of MachineConfigNode resources.
      */
     @JsonProperty("items")
     public void setItems(List<io.fabric8.openshift.api.model.machineconfiguration.v1alpha1.MachineConfigNode> items) {

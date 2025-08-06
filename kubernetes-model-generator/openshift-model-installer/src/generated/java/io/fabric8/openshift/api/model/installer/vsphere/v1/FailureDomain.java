@@ -40,9 +40,11 @@ import lombok.experimental.Accessors;
 @JsonPropertyOrder({
     "name",
     "region",
+    "regionType",
     "server",
     "topology",
-    "zone"
+    "zone",
+    "zoneType"
 })
 @ToString
 @EqualsAndHashCode
@@ -73,12 +75,16 @@ public class FailureDomain implements Editable<FailureDomainBuilder>, Kubernetes
     private String name;
     @JsonProperty("region")
     private String region;
+    @JsonProperty("regionType")
+    private String regionType;
     @JsonProperty("server")
     private String server;
     @JsonProperty("topology")
     private Topology topology;
     @JsonProperty("zone")
     private String zone;
+    @JsonProperty("zoneType")
+    private String zoneType;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -88,13 +94,15 @@ public class FailureDomain implements Editable<FailureDomainBuilder>, Kubernetes
     public FailureDomain() {
     }
 
-    public FailureDomain(String name, String region, String server, Topology topology, String zone) {
+    public FailureDomain(String name, String region, String regionType, String server, Topology topology, String zone, String zoneType) {
         super();
         this.name = name;
         this.region = region;
+        this.regionType = regionType;
         this.server = server;
         this.topology = topology;
         this.zone = zone;
+        this.zoneType = zoneType;
     }
 
     /**
@@ -114,7 +122,7 @@ public class FailureDomain implements Editable<FailureDomainBuilder>, Kubernetes
     }
 
     /**
-     * region defines a FailureDomainCoordinate which includes the name of the vCenter tag, the failure domain type and the name of the vCenter tag category.
+     * The region is the name of the tag in vCenter that is associated with the tag category `openshift-region`. The region name must match the tag name and must exist prior to installation. When the regionType is Datacenter the tag must be attached to the toplogy.datacenter object in vCenter. When the regionType is ComputeCluster the tag must be attached to the topology.computeCluster object in vCenter.
      */
     @JsonProperty("region")
     public String getRegion() {
@@ -122,11 +130,27 @@ public class FailureDomain implements Editable<FailureDomainBuilder>, Kubernetes
     }
 
     /**
-     * region defines a FailureDomainCoordinate which includes the name of the vCenter tag, the failure domain type and the name of the vCenter tag category.
+     * The region is the name of the tag in vCenter that is associated with the tag category `openshift-region`. The region name must match the tag name and must exist prior to installation. When the regionType is Datacenter the tag must be attached to the toplogy.datacenter object in vCenter. When the regionType is ComputeCluster the tag must be attached to the topology.computeCluster object in vCenter.
      */
     @JsonProperty("region")
     public void setRegion(String region) {
         this.region = region;
+    }
+
+    /**
+     * regionType is the type of failure domain region, the current values are "Datacenter" and "ComputeCluster" When regionType is Datacenter the zoneType must be ComputeCluster. When regionType is ComputeCluster the zoneType must be HostGroup
+     */
+    @JsonProperty("regionType")
+    public String getRegionType() {
+        return regionType;
+    }
+
+    /**
+     * regionType is the type of failure domain region, the current values are "Datacenter" and "ComputeCluster" When regionType is Datacenter the zoneType must be ComputeCluster. When regionType is ComputeCluster the zoneType must be HostGroup
+     */
+    @JsonProperty("regionType")
+    public void setRegionType(String regionType) {
+        this.regionType = regionType;
     }
 
     /**
@@ -162,7 +186,7 @@ public class FailureDomain implements Editable<FailureDomainBuilder>, Kubernetes
     }
 
     /**
-     * zone defines a VSpherePlatformFailureDomain which includes the name of the vCenter tag, the failure domain type and the name of the vCenter tag category.
+     * The zone is the name of the tag in vCenter that is associated with the tag category `openshift-zone`. The zone name must match the tag name and must exist prior to installation. When zoneType is HostGroup the ESXi hosts defined in the provided in the topology.hostGroup field must be tagged. When the zoneType is ComputeCluster the tag must be attached to the topology.computeCluster object in vCenter.
      */
     @JsonProperty("zone")
     public String getZone() {
@@ -170,11 +194,27 @@ public class FailureDomain implements Editable<FailureDomainBuilder>, Kubernetes
     }
 
     /**
-     * zone defines a VSpherePlatformFailureDomain which includes the name of the vCenter tag, the failure domain type and the name of the vCenter tag category.
+     * The zone is the name of the tag in vCenter that is associated with the tag category `openshift-zone`. The zone name must match the tag name and must exist prior to installation. When zoneType is HostGroup the ESXi hosts defined in the provided in the topology.hostGroup field must be tagged. When the zoneType is ComputeCluster the tag must be attached to the topology.computeCluster object in vCenter.
      */
     @JsonProperty("zone")
     public void setZone(String zone) {
         this.zone = zone;
+    }
+
+    /**
+     * When zoneType is ComputeCluster the regionType must be Datacenter When zoneType is HostGroup the regionType must be ComputeCluster If the zoneType is HostGroup topology.hostGroup must be defined and exist in vCenter prior to installation.
+     */
+    @JsonProperty("zoneType")
+    public String getZoneType() {
+        return zoneType;
+    }
+
+    /**
+     * When zoneType is ComputeCluster the regionType must be Datacenter When zoneType is HostGroup the regionType must be ComputeCluster If the zoneType is HostGroup topology.hostGroup must be defined and exist in vCenter prior to installation.
+     */
+    @JsonProperty("zoneType")
+    public void setZoneType(String zoneType) {
+        this.zoneType = zoneType;
     }
 
     @JsonIgnore

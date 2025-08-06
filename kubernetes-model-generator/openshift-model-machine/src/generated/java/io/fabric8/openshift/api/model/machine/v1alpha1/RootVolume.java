@@ -131,7 +131,7 @@ public class RootVolume implements Editable<RootVolumeBuilder>, KubernetesResour
     }
 
     /**
-     * diskSize specifies the size, in GB, of the created root volume.
+     * diskSize specifies the size, in GiB, of the created root volume.
      */
     @JsonProperty("diskSize")
     public Integer getDiskSize() {
@@ -139,7 +139,7 @@ public class RootVolume implements Editable<RootVolumeBuilder>, KubernetesResour
     }
 
     /**
-     * diskSize specifies the size, in GB, of the created root volume.
+     * diskSize specifies the size, in GiB, of the created root volume.
      */
     @JsonProperty("diskSize")
     public void setDiskSize(Integer diskSize) {

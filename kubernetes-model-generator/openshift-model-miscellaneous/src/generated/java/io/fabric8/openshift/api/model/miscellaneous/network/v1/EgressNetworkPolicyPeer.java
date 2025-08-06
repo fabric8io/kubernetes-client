@@ -86,7 +86,7 @@ public class EgressNetworkPolicyPeer implements Editable<EgressNetworkPolicyPeer
     }
 
     /**
-     * CIDRSelector is the CIDR range to allow/deny traffic to. If this is set, dnsName must be unset Ideally we would have liked to use the cidr openapi format for this property. But openshift-sdn only supports v4 while specifying the cidr format allows both v4 and v6 cidrs We are therefore using a regex pattern to validate instead.
+     * cidrSelector is the CIDR range to allow/deny traffic to. If this is set, dnsName must be unset Ideally we would have liked to use the cidr openapi format for this property. But openshift-sdn only supports v4 while specifying the cidr format allows both v4 and v6 cidrs We are therefore using a regex pattern to validate instead.
      */
     @JsonProperty("cidrSelector")
     public String getCidrSelector() {
@@ -94,7 +94,7 @@ public class EgressNetworkPolicyPeer implements Editable<EgressNetworkPolicyPeer
     }
 
     /**
-     * CIDRSelector is the CIDR range to allow/deny traffic to. If this is set, dnsName must be unset Ideally we would have liked to use the cidr openapi format for this property. But openshift-sdn only supports v4 while specifying the cidr format allows both v4 and v6 cidrs We are therefore using a regex pattern to validate instead.
+     * cidrSelector is the CIDR range to allow/deny traffic to. If this is set, dnsName must be unset Ideally we would have liked to use the cidr openapi format for this property. But openshift-sdn only supports v4 while specifying the cidr format allows both v4 and v6 cidrs We are therefore using a regex pattern to validate instead.
      */
     @JsonProperty("cidrSelector")
     public void setCidrSelector(String cidrSelector) {
@@ -102,7 +102,7 @@ public class EgressNetworkPolicyPeer implements Editable<EgressNetworkPolicyPeer
     }
 
     /**
-     * DNSName is the domain name to allow/deny traffic to. If this is set, cidrSelector must be unset
+     * dnsName is the domain name to allow/deny traffic to. If this is set, cidrSelector must be unset
      */
     @JsonProperty("dnsName")
     public String getDnsName() {
@@ -110,7 +110,7 @@ public class EgressNetworkPolicyPeer implements Editable<EgressNetworkPolicyPeer
     }
 
     /**
-     * DNSName is the domain name to allow/deny traffic to. If this is set, cidrSelector must be unset
+     * dnsName is the domain name to allow/deny traffic to. If this is set, cidrSelector must be unset
      */
     @JsonProperty("dnsName")
     public void setDnsName(String dnsName) {

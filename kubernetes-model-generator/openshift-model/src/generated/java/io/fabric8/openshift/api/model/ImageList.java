@@ -123,7 +123,7 @@ public class ImageList implements Editable<ImageListBuilder>, KubernetesResource
     }
 
     /**
-     * Items is a list of images
+     * items is a list of images
      */
     @JsonProperty("items")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -132,7 +132,7 @@ public class ImageList implements Editable<ImageListBuilder>, KubernetesResource
     }
 
     /**
-     * Items is a list of images
+     * items is a list of images
      */
     @JsonProperty("items")
     public void setItems(List<io.fabric8.openshift.api.model.Image> items) {

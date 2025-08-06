@@ -121,7 +121,7 @@ public class OSDiskManagedDiskParameters implements Editable<OSDiskManagedDiskPa
     }
 
     /**
-     * StorageAccountType is the storage account type to use. Possible values include "Standard_LRS", "Premium_LRS".
+     * storageAccountType is the storage account type to use. Possible values include "Standard_LRS", "Premium_LRS".
      */
     @JsonProperty("storageAccountType")
     public String getStorageAccountType() {
@@ -129,7 +129,7 @@ public class OSDiskManagedDiskParameters implements Editable<OSDiskManagedDiskPa
     }
 
     /**
-     * StorageAccountType is the storage account type to use. Possible values include "Standard_LRS", "Premium_LRS".
+     * storageAccountType is the storage account type to use. Possible values include "Standard_LRS", "Premium_LRS".
      */
     @JsonProperty("storageAccountType")
     public void setStorageAccountType(String storageAccountType) {

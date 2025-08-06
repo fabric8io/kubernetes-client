@@ -165,7 +165,7 @@ public class SignatureCondition implements Editable<SignatureConditionBuilder>, 
     }
 
     /**
-     * Status of the condition, one of True, False, Unknown.
+     * status of the condition, one of True, False, Unknown.
      */
     @JsonProperty("status")
     public String getStatus() {
@@ -173,7 +173,7 @@ public class SignatureCondition implements Editable<SignatureConditionBuilder>, 
     }
 
     /**
-     * Status of the condition, one of True, False, Unknown.
+     * status of the condition, one of True, False, Unknown.
      */
     @JsonProperty("status")
     public void setStatus(String status) {
@@ -181,7 +181,7 @@ public class SignatureCondition implements Editable<SignatureConditionBuilder>, 
     }
 
     /**
-     * Type of signature condition, Complete or Failed.
+     * type of signature condition, Complete or Failed.
      */
     @JsonProperty("type")
     public String getType() {
@@ -189,7 +189,7 @@ public class SignatureCondition implements Editable<SignatureConditionBuilder>, 
     }
 
     /**
-     * Type of signature condition, Complete or Failed.
+     * type of signature condition, Complete or Failed.
      */
     @JsonProperty("type")
     public void setType(String type) {

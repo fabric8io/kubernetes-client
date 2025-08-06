@@ -145,7 +145,7 @@ public class RouteIngressCondition implements Editable<RouteIngressConditionBuil
     }
 
     /**
-     * Status is the status of the condition. Can be True, False, Unknown.
+     * status is the status of the condition. Can be True, False, Unknown.
      */
     @JsonProperty("status")
     public String getStatus() {
@@ -153,7 +153,7 @@ public class RouteIngressCondition implements Editable<RouteIngressConditionBuil
     }
 
     /**
-     * Status is the status of the condition. Can be True, False, Unknown.
+     * status is the status of the condition. Can be True, False, Unknown.
      */
     @JsonProperty("status")
     public void setStatus(String status) {
@@ -161,7 +161,7 @@ public class RouteIngressCondition implements Editable<RouteIngressConditionBuil
     }
 
     /**
-     * Type is the type of the condition. Currently only Admitted or UnservableInFutureVersions.
+     * type is the type of the condition. Currently only Admitted or UnservableInFutureVersions.
      */
     @JsonProperty("type")
     public String getType() {
@@ -169,7 +169,7 @@ public class RouteIngressCondition implements Editable<RouteIngressConditionBuil
     }
 
     /**
-     * Type is the type of the condition. Currently only Admitted or UnservableInFutureVersions.
+     * type is the type of the condition. Currently only Admitted or UnservableInFutureVersions.
      */
     @JsonProperty("type")
     public void setType(String type) {

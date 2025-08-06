@@ -97,7 +97,7 @@ public abstract class AbstractWatchManager<T extends HasMetadata> implements Wat
     final AtomicBoolean reconnected = new AtomicBoolean();
     final AtomicBoolean closed = new AtomicBoolean();
     final CompletableFuture<Void> ended = new CompletableFuture<>();
-
+    final AtomicBoolean started = new AtomicBoolean();
   }
 
   private static final Logger logger = LoggerFactory.getLogger(AbstractWatchManager.class);
@@ -448,6 +448,10 @@ public abstract class AbstractWatchManager<T extends HasMetadata> implements Wat
     } else {
       logger.debug("Unknown Watch error received, will reconnect if possible", t);
     }
+  }
+
+  public boolean isWatching() {
+    return Optional.ofNullable(latestRequestState).map(s -> s.started.get() && !s.ended.isDone()).orElse(false);
   }
 
 }

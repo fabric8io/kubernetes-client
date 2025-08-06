@@ -81,7 +81,7 @@ public class DiskEncryptionSetParameters implements Editable<DiskEncryptionSetPa
     }
 
     /**
-     * ID is the disk encryption set ID Empty value means no opinion and the platform chooses a default, which is subject to change over time. Currently the default is: "Default".
+     * id is the disk encryption set ID Empty value means no opinion and the platform chooses a default, which is subject to change over time. Currently the default is: "Default".
      */
     @JsonProperty("id")
     public String getId() {
@@ -89,7 +89,7 @@ public class DiskEncryptionSetParameters implements Editable<DiskEncryptionSetPa
     }
 
     /**
-     * ID is the disk encryption set ID Empty value means no opinion and the platform chooses a default, which is subject to change over time. Currently the default is: "Default".
+     * id is the disk encryption set ID Empty value means no opinion and the platform chooses a default, which is subject to change over time. Currently the default is: "Default".
      */
     @JsonProperty("id")
     public void setId(String id) {

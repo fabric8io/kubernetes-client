@@ -88,7 +88,7 @@ public class PodNetworkConnectivityCheckSpec implements Editable<PodNetworkConne
     }
 
     /**
-     * SourcePod names the pod from which the condition will be checked
+     * sourcePod names the pod from which the condition will be checked
      */
     @JsonProperty("sourcePod")
     public String getSourcePod() {
@@ -96,7 +96,7 @@ public class PodNetworkConnectivityCheckSpec implements Editable<PodNetworkConne
     }
 
     /**
-     * SourcePod names the pod from which the condition will be checked
+     * sourcePod names the pod from which the condition will be checked
      */
     @JsonProperty("sourcePod")
     public void setSourcePod(String sourcePod) {

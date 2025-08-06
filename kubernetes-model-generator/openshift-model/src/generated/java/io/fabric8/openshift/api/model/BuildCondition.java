@@ -165,7 +165,7 @@ public class BuildCondition implements Editable<BuildConditionBuilder>, Kubernet
     }
 
     /**
-     * Status of the condition, one of True, False, Unknown.
+     * status of the condition, one of True, False, Unknown.
      */
     @JsonProperty("status")
     public String getStatus() {
@@ -173,7 +173,7 @@ public class BuildCondition implements Editable<BuildConditionBuilder>, Kubernet
     }
 
     /**
-     * Status of the condition, one of True, False, Unknown.
+     * status of the condition, one of True, False, Unknown.
      */
     @JsonProperty("status")
     public void setStatus(String status) {
@@ -181,7 +181,7 @@ public class BuildCondition implements Editable<BuildConditionBuilder>, Kubernet
     }
 
     /**
-     * Type of build condition.
+     * type of build condition.
      */
     @JsonProperty("type")
     public String getType() {
@@ -189,7 +189,7 @@ public class BuildCondition implements Editable<BuildConditionBuilder>, Kubernet
     }
 
     /**
-     * Type of build condition.
+     * type of build condition.
      */
     @JsonProperty("type")
     public void setType(String type) {

@@ -121,7 +121,7 @@ public class HTTPServingInfo implements Editable<HTTPServingInfoBuilder>, Kubern
     }
 
     /**
-     * BindAddress is the ip:port to serve on
+     * bindAddress is the ip:port to serve on
      */
     @JsonProperty("bindAddress")
     public String getBindAddress() {
@@ -129,7 +129,7 @@ public class HTTPServingInfo implements Editable<HTTPServingInfoBuilder>, Kubern
     }
 
     /**
-     * BindAddress is the ip:port to serve on
+     * bindAddress is the ip:port to serve on
      */
     @JsonProperty("bindAddress")
     public void setBindAddress(String bindAddress) {
@@ -137,7 +137,7 @@ public class HTTPServingInfo implements Editable<HTTPServingInfoBuilder>, Kubern
     }
 
     /**
-     * BindNetwork is the type of network to bind to - defaults to "tcp4", accepts "tcp", "tcp4", and "tcp6"
+     * bindNetwork is the type of network to bind to - defaults to "tcp4", accepts "tcp", "tcp4", and "tcp6"
      */
     @JsonProperty("bindNetwork")
     public String getBindNetwork() {
@@ -145,7 +145,7 @@ public class HTTPServingInfo implements Editable<HTTPServingInfoBuilder>, Kubern
     }
 
     /**
-     * BindNetwork is the type of network to bind to - defaults to "tcp4", accepts "tcp", "tcp4", and "tcp6"
+     * bindNetwork is the type of network to bind to - defaults to "tcp4", accepts "tcp", "tcp4", and "tcp6"
      */
     @JsonProperty("bindNetwork")
     public void setBindNetwork(String bindNetwork) {
@@ -153,7 +153,7 @@ public class HTTPServingInfo implements Editable<HTTPServingInfoBuilder>, Kubern
     }
 
     /**
-     * CertFile is a file containing a PEM-encoded certificate
+     * certFile is a file containing a PEM-encoded certificate
      */
     @JsonProperty("certFile")
     public String getCertFile() {
@@ -161,7 +161,7 @@ public class HTTPServingInfo implements Editable<HTTPServingInfoBuilder>, Kubern
     }
 
     /**
-     * CertFile is a file containing a PEM-encoded certificate
+     * certFile is a file containing a PEM-encoded certificate
      */
     @JsonProperty("certFile")
     public void setCertFile(String certFile) {
@@ -169,7 +169,7 @@ public class HTTPServingInfo implements Editable<HTTPServingInfoBuilder>, Kubern
     }
 
     /**
-     * CipherSuites contains an overridden list of ciphers for the server to support. Values must match cipher suite IDs from https://golang.org/pkg/crypto/tls/#pkg-constants
+     * cipherSuites contains an overridden list of ciphers for the server to support. Values must match cipher suite IDs from https://golang.org/pkg/crypto/tls/#pkg-constants
      */
     @JsonProperty("cipherSuites")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -178,7 +178,7 @@ public class HTTPServingInfo implements Editable<HTTPServingInfoBuilder>, Kubern
     }
 
     /**
-     * CipherSuites contains an overridden list of ciphers for the server to support. Values must match cipher suite IDs from https://golang.org/pkg/crypto/tls/#pkg-constants
+     * cipherSuites contains an overridden list of ciphers for the server to support. Values must match cipher suite IDs from https://golang.org/pkg/crypto/tls/#pkg-constants
      */
     @JsonProperty("cipherSuites")
     public void setCipherSuites(List<String> cipherSuites) {
@@ -186,7 +186,7 @@ public class HTTPServingInfo implements Editable<HTTPServingInfoBuilder>, Kubern
     }
 
     /**
-     * ClientCA is the certificate bundle for all the signers that you'll recognize for incoming client certificates
+     * clientCA is the certificate bundle for all the signers that you'll recognize for incoming client certificates
      */
     @JsonProperty("clientCA")
     public String getClientCA() {
@@ -194,7 +194,7 @@ public class HTTPServingInfo implements Editable<HTTPServingInfoBuilder>, Kubern
     }
 
     /**
-     * ClientCA is the certificate bundle for all the signers that you'll recognize for incoming client certificates
+     * clientCA is the certificate bundle for all the signers that you'll recognize for incoming client certificates
      */
     @JsonProperty("clientCA")
     public void setClientCA(String clientCA) {
@@ -202,7 +202,7 @@ public class HTTPServingInfo implements Editable<HTTPServingInfoBuilder>, Kubern
     }
 
     /**
-     * KeyFile is a file containing a PEM-encoded private key for the certificate specified by CertFile
+     * keyFile is a file containing a PEM-encoded private key for the certificate specified by CertFile
      */
     @JsonProperty("keyFile")
     public String getKeyFile() {
@@ -210,7 +210,7 @@ public class HTTPServingInfo implements Editable<HTTPServingInfoBuilder>, Kubern
     }
 
     /**
-     * KeyFile is a file containing a PEM-encoded private key for the certificate specified by CertFile
+     * keyFile is a file containing a PEM-encoded private key for the certificate specified by CertFile
      */
     @JsonProperty("keyFile")
     public void setKeyFile(String keyFile) {
@@ -218,7 +218,7 @@ public class HTTPServingInfo implements Editable<HTTPServingInfoBuilder>, Kubern
     }
 
     /**
-     * MaxRequestsInFlight is the number of concurrent requests allowed to the server. If zero, no limit.
+     * maxRequestsInFlight is the number of concurrent requests allowed to the server. If zero, no limit.
      */
     @JsonProperty("maxRequestsInFlight")
     public Long getMaxRequestsInFlight() {
@@ -226,7 +226,7 @@ public class HTTPServingInfo implements Editable<HTTPServingInfoBuilder>, Kubern
     }
 
     /**
-     * MaxRequestsInFlight is the number of concurrent requests allowed to the server. If zero, no limit.
+     * maxRequestsInFlight is the number of concurrent requests allowed to the server. If zero, no limit.
      */
     @JsonProperty("maxRequestsInFlight")
     public void setMaxRequestsInFlight(Long maxRequestsInFlight) {
@@ -234,7 +234,7 @@ public class HTTPServingInfo implements Editable<HTTPServingInfoBuilder>, Kubern
     }
 
     /**
-     * MinTLSVersion is the minimum TLS version supported. Values must match version names from https://golang.org/pkg/crypto/tls/#pkg-constants
+     * minTLSVersion is the minimum TLS version supported. Values must match version names from https://golang.org/pkg/crypto/tls/#pkg-constants
      */
     @JsonProperty("minTLSVersion")
     public String getMinTLSVersion() {
@@ -242,7 +242,7 @@ public class HTTPServingInfo implements Editable<HTTPServingInfoBuilder>, Kubern
     }
 
     /**
-     * MinTLSVersion is the minimum TLS version supported. Values must match version names from https://golang.org/pkg/crypto/tls/#pkg-constants
+     * minTLSVersion is the minimum TLS version supported. Values must match version names from https://golang.org/pkg/crypto/tls/#pkg-constants
      */
     @JsonProperty("minTLSVersion")
     public void setMinTLSVersion(String minTLSVersion) {
@@ -250,7 +250,7 @@ public class HTTPServingInfo implements Editable<HTTPServingInfoBuilder>, Kubern
     }
 
     /**
-     * NamedCertificates is a list of certificates to use to secure requests to specific hostnames
+     * namedCertificates is a list of certificates to use to secure requests to specific hostnames
      */
     @JsonProperty("namedCertificates")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -259,7 +259,7 @@ public class HTTPServingInfo implements Editable<HTTPServingInfoBuilder>, Kubern
     }
 
     /**
-     * NamedCertificates is a list of certificates to use to secure requests to specific hostnames
+     * namedCertificates is a list of certificates to use to secure requests to specific hostnames
      */
     @JsonProperty("namedCertificates")
     public void setNamedCertificates(List<NamedCertificate> namedCertificates) {
@@ -267,7 +267,7 @@ public class HTTPServingInfo implements Editable<HTTPServingInfoBuilder>, Kubern
     }
 
     /**
-     * RequestTimeoutSeconds is the number of seconds before requests are timed out. The default is 60 minutes, if -1 there is no limit on requests.
+     * requestTimeoutSeconds is the number of seconds before requests are timed out. The default is 60 minutes, if -1 there is no limit on requests.
      */
     @JsonProperty("requestTimeoutSeconds")
     public Long getRequestTimeoutSeconds() {
@@ -275,7 +275,7 @@ public class HTTPServingInfo implements Editable<HTTPServingInfoBuilder>, Kubern
     }
 
     /**
-     * RequestTimeoutSeconds is the number of seconds before requests are timed out. The default is 60 minutes, if -1 there is no limit on requests.
+     * requestTimeoutSeconds is the number of seconds before requests are timed out. The default is 60 minutes, if -1 there is no limit on requests.
      */
     @JsonProperty("requestTimeoutSeconds")
     public void setRequestTimeoutSeconds(Long requestTimeoutSeconds) {

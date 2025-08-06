@@ -168,7 +168,7 @@ public class ResourceAccessReview implements Editable<ResourceAccessReviewBuilde
     }
 
     /**
-     * IsNonResourceURL is true if this is a request for a non-resource URL (outside of the resource hierarchy)
+     * isNonResourceURL is true if this is a request for a non-resource URL (outside of the resource hierarchy)
      */
     @JsonProperty("isNonResourceURL")
     public Boolean getIsNonResourceURL() {
@@ -176,7 +176,7 @@ public class ResourceAccessReview implements Editable<ResourceAccessReviewBuilde
     }
 
     /**
-     * IsNonResourceURL is true if this is a request for a non-resource URL (outside of the resource hierarchy)
+     * isNonResourceURL is true if this is a request for a non-resource URL (outside of the resource hierarchy)
      */
     @JsonProperty("isNonResourceURL")
     public void setIsNonResourceURL(Boolean isNonResourceURL) {
@@ -216,7 +216,7 @@ public class ResourceAccessReview implements Editable<ResourceAccessReviewBuilde
     }
 
     /**
-     * Namespace is the namespace of the action being requested.  Currently, there is no distinction between no namespace and all namespaces
+     * namespace is the namespace of the action being requested.  Currently, there is no distinction between no namespace and all namespaces
      */
     @JsonProperty("namespace")
     public String getNamespace() {
@@ -224,7 +224,7 @@ public class ResourceAccessReview implements Editable<ResourceAccessReviewBuilde
     }
 
     /**
-     * Namespace is the namespace of the action being requested.  Currently, there is no distinction between no namespace and all namespaces
+     * namespace is the namespace of the action being requested.  Currently, there is no distinction between no namespace and all namespaces
      */
     @JsonProperty("namespace")
     public void setNamespace(String namespace) {
@@ -232,7 +232,7 @@ public class ResourceAccessReview implements Editable<ResourceAccessReviewBuilde
     }
 
     /**
-     * Path is the path of a non resource URL
+     * path is the path of a non resource URL
      */
     @JsonProperty("path")
     public String getPath() {
@@ -240,7 +240,7 @@ public class ResourceAccessReview implements Editable<ResourceAccessReviewBuilde
     }
 
     /**
-     * Path is the path of a non resource URL
+     * path is the path of a non resource URL
      */
     @JsonProperty("path")
     public void setPath(String path) {
@@ -248,7 +248,7 @@ public class ResourceAccessReview implements Editable<ResourceAccessReviewBuilde
     }
 
     /**
-     * Resource is one of the existing resource types
+     * resource is one of the existing resource types
      */
     @JsonProperty("resource")
     public String getResource() {
@@ -256,7 +256,7 @@ public class ResourceAccessReview implements Editable<ResourceAccessReviewBuilde
     }
 
     /**
-     * Resource is one of the existing resource types
+     * resource is one of the existing resource types
      */
     @JsonProperty("resource")
     public void setResource(String resource) {
@@ -296,7 +296,7 @@ public class ResourceAccessReview implements Editable<ResourceAccessReviewBuilde
     }
 
     /**
-     * ResourceName is the name of the resource being requested for a "get" or deleted for a "delete"
+     * resourceName is the name of the resource being requested for a "get" or deleted for a "delete"
      */
     @JsonProperty("resourceName")
     public String getResourceName() {
@@ -304,7 +304,7 @@ public class ResourceAccessReview implements Editable<ResourceAccessReviewBuilde
     }
 
     /**
-     * ResourceName is the name of the resource being requested for a "get" or deleted for a "delete"
+     * resourceName is the name of the resource being requested for a "get" or deleted for a "delete"
      */
     @JsonProperty("resourceName")
     public void setResourceName(String resourceName) {
@@ -312,7 +312,7 @@ public class ResourceAccessReview implements Editable<ResourceAccessReviewBuilde
     }
 
     /**
-     * Verb is one of: get, list, watch, create, update, delete
+     * verb is one of: get, list, watch, create, update, delete
      */
     @JsonProperty("verb")
     public String getVerb() {
@@ -320,7 +320,7 @@ public class ResourceAccessReview implements Editable<ResourceAccessReviewBuilde
     }
 
     /**
-     * Verb is one of: get, list, watch, create, update, delete
+     * verb is one of: get, list, watch, create, update, delete
      */
     @JsonProperty("verb")
     public void setVerb(String verb) {

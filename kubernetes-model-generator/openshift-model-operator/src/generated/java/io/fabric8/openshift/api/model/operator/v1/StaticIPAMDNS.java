@@ -94,7 +94,7 @@ public class StaticIPAMDNS implements Editable<StaticIPAMDNSBuilder>, Kubernetes
     }
 
     /**
-     * Domain configures the domainname the local domain used for short hostname lookups
+     * domain configures the domainname the local domain used for short hostname lookups
      */
     @JsonProperty("domain")
     public String getDomain() {
@@ -102,7 +102,7 @@ public class StaticIPAMDNS implements Editable<StaticIPAMDNSBuilder>, Kubernetes
     }
 
     /**
-     * Domain configures the domainname the local domain used for short hostname lookups
+     * domain configures the domainname the local domain used for short hostname lookups
      */
     @JsonProperty("domain")
     public void setDomain(String domain) {
@@ -110,7 +110,7 @@ public class StaticIPAMDNS implements Editable<StaticIPAMDNSBuilder>, Kubernetes
     }
 
     /**
-     * Nameservers points DNS servers for IP lookup
+     * nameservers points DNS servers for IP lookup
      */
     @JsonProperty("nameservers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -119,7 +119,7 @@ public class StaticIPAMDNS implements Editable<StaticIPAMDNSBuilder>, Kubernetes
     }
 
     /**
-     * Nameservers points DNS servers for IP lookup
+     * nameservers points DNS servers for IP lookup
      */
     @JsonProperty("nameservers")
     public void setNameservers(List<String> nameservers) {
@@ -127,7 +127,7 @@ public class StaticIPAMDNS implements Editable<StaticIPAMDNSBuilder>, Kubernetes
     }
 
     /**
-     * Search configures priority ordered search domains for short hostname lookups
+     * search configures priority ordered search domains for short hostname lookups
      */
     @JsonProperty("search")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -136,7 +136,7 @@ public class StaticIPAMDNS implements Editable<StaticIPAMDNSBuilder>, Kubernetes
     }
 
     /**
-     * Search configures priority ordered search domains for short hostname lookups
+     * search configures priority ordered search domains for short hostname lookups
      */
     @JsonProperty("search")
     public void setSearch(List<String> search) {

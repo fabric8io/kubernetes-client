@@ -43,6 +43,7 @@ import lombok.experimental.Accessors;
     "aws",
     "ceOverrides",
     "sink",
+    "template",
     "timer"
 })
 @ToString
@@ -76,6 +77,8 @@ public class IntegrationSourceSpec implements Editable<IntegrationSourceSpecBuil
     private CloudEventOverrides ceOverrides;
     @JsonProperty("sink")
     private Destination sink;
+    @JsonProperty("template")
+    private PodTemplateSpec template;
     @JsonProperty("timer")
     private Timer timer;
     @JsonIgnore
@@ -87,11 +90,12 @@ public class IntegrationSourceSpec implements Editable<IntegrationSourceSpecBuil
     public IntegrationSourceSpec() {
     }
 
-    public IntegrationSourceSpec(Aws aws, CloudEventOverrides ceOverrides, Destination sink, Timer timer) {
+    public IntegrationSourceSpec(Aws aws, CloudEventOverrides ceOverrides, Destination sink, PodTemplateSpec template, Timer timer) {
         super();
         this.aws = aws;
         this.ceOverrides = ceOverrides;
         this.sink = sink;
+        this.template = template;
         this.timer = timer;
     }
 
@@ -141,6 +145,22 @@ public class IntegrationSourceSpec implements Editable<IntegrationSourceSpecBuil
     @JsonProperty("sink")
     public void setSink(Destination sink) {
         this.sink = sink;
+    }
+
+    /**
+     * IntegrationSourceSpec defines the desired state of IntegrationSource
+     */
+    @JsonProperty("template")
+    public PodTemplateSpec getTemplate() {
+        return template;
+    }
+
+    /**
+     * IntegrationSourceSpec defines the desired state of IntegrationSource
+     */
+    @JsonProperty("template")
+    public void setTemplate(PodTemplateSpec template) {
+        this.template = template;
     }
 
     /**

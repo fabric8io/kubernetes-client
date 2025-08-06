@@ -97,7 +97,7 @@ public class OIDCClientConfig implements Editable<OIDCClientConfigBuilder>, Kube
     }
 
     /**
-     * ClientID is the identifier of the OIDC client from the OIDC provider
+     * clientID is the identifier of the OIDC client from the OIDC provider
      */
     @JsonProperty("clientID")
     public String getClientID() {
@@ -105,7 +105,7 @@ public class OIDCClientConfig implements Editable<OIDCClientConfigBuilder>, Kube
     }
 
     /**
-     * ClientID is the identifier of the OIDC client from the OIDC provider
+     * clientID is the identifier of the OIDC client from the OIDC provider
      */
     @JsonProperty("clientID")
     public void setClientID(String clientID) {
@@ -123,7 +123,7 @@ public class OIDCClientConfig implements Editable<OIDCClientConfigBuilder>, Kube
     }
 
     /**
-     * ComponentName is the name of the component that is supposed to consume this client configuration
+     * componentName is the name of the component that is supposed to consume this client configuration
      */
     @JsonProperty("componentName")
     public String getComponentName() {
@@ -131,7 +131,7 @@ public class OIDCClientConfig implements Editable<OIDCClientConfigBuilder>, Kube
     }
 
     /**
-     * ComponentName is the name of the component that is supposed to consume this client configuration
+     * componentName is the name of the component that is supposed to consume this client configuration
      */
     @JsonProperty("componentName")
     public void setComponentName(String componentName) {
@@ -139,7 +139,7 @@ public class OIDCClientConfig implements Editable<OIDCClientConfigBuilder>, Kube
     }
 
     /**
-     * ComponentNamespace is the namespace of the component that is supposed to consume this client configuration
+     * componentNamespace is the namespace of the component that is supposed to consume this client configuration
      */
     @JsonProperty("componentNamespace")
     public String getComponentNamespace() {
@@ -147,7 +147,7 @@ public class OIDCClientConfig implements Editable<OIDCClientConfigBuilder>, Kube
     }
 
     /**
-     * ComponentNamespace is the namespace of the component that is supposed to consume this client configuration
+     * componentNamespace is the namespace of the component that is supposed to consume this client configuration
      */
     @JsonProperty("componentNamespace")
     public void setComponentNamespace(String componentNamespace) {
@@ -155,7 +155,7 @@ public class OIDCClientConfig implements Editable<OIDCClientConfigBuilder>, Kube
     }
 
     /**
-     * ExtraScopes is an optional set of scopes to request tokens with.
+     * extraScopes is an optional set of scopes to request tokens with.
      */
     @JsonProperty("extraScopes")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -164,7 +164,7 @@ public class OIDCClientConfig implements Editable<OIDCClientConfigBuilder>, Kube
     }
 
     /**
-     * ExtraScopes is an optional set of scopes to request tokens with.
+     * extraScopes is an optional set of scopes to request tokens with.
      */
     @JsonProperty("extraScopes")
     public void setExtraScopes(List<String> extraScopes) {

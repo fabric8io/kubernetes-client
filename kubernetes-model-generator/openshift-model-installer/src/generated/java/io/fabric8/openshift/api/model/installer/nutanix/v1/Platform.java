@@ -49,6 +49,8 @@ import lombok.experimental.Accessors;
     "ingressVIP",
     "ingressVIPs",
     "loadBalancer",
+    "preloadedOSImageName",
+    "prismAPICallTimeout",
     "prismCentral",
     "prismElements",
     "subnetUUIDs"
@@ -97,6 +99,10 @@ public class Platform implements Editable<PlatformBuilder>, KubernetesResource
     private List<String> ingressVIPs = new ArrayList<>();
     @JsonProperty("loadBalancer")
     private NutanixPlatformLoadBalancer loadBalancer;
+    @JsonProperty("preloadedOSImageName")
+    private String preloadedOSImageName;
+    @JsonProperty("prismAPICallTimeout")
+    private Integer prismAPICallTimeout;
     @JsonProperty("prismCentral")
     private PrismCentral prismCentral;
     @JsonProperty("prismElements")
@@ -114,7 +120,7 @@ public class Platform implements Editable<PlatformBuilder>, KubernetesResource
     public Platform() {
     }
 
-    public Platform(String apiVIP, List<String> apiVIPs, String clusterOSImage, MachinePool defaultMachinePlatform, List<FailureDomain> failureDomains, String ingressVIP, List<String> ingressVIPs, NutanixPlatformLoadBalancer loadBalancer, PrismCentral prismCentral, List<PrismElement> prismElements, List<String> subnetUUIDs) {
+    public Platform(String apiVIP, List<String> apiVIPs, String clusterOSImage, MachinePool defaultMachinePlatform, List<FailureDomain> failureDomains, String ingressVIP, List<String> ingressVIPs, NutanixPlatformLoadBalancer loadBalancer, String preloadedOSImageName, Integer prismAPICallTimeout, PrismCentral prismCentral, List<PrismElement> prismElements, List<String> subnetUUIDs) {
         super();
         this.apiVIP = apiVIP;
         this.apiVIPs = apiVIPs;
@@ -124,6 +130,8 @@ public class Platform implements Editable<PlatformBuilder>, KubernetesResource
         this.ingressVIP = ingressVIP;
         this.ingressVIPs = ingressVIPs;
         this.loadBalancer = loadBalancer;
+        this.preloadedOSImageName = preloadedOSImageName;
+        this.prismAPICallTimeout = prismAPICallTimeout;
         this.prismCentral = prismCentral;
         this.prismElements = prismElements;
         this.subnetUUIDs = subnetUUIDs;
@@ -258,6 +266,38 @@ public class Platform implements Editable<PlatformBuilder>, KubernetesResource
     @JsonProperty("loadBalancer")
     public void setLoadBalancer(NutanixPlatformLoadBalancer loadBalancer) {
         this.loadBalancer = loadBalancer;
+    }
+
+    /**
+     * PreloadedOSImageName uses the named preloaded RHCOS image from PC/PE, instead of create and upload a new image for each cluster.
+     */
+    @JsonProperty("preloadedOSImageName")
+    public String getPreloadedOSImageName() {
+        return preloadedOSImageName;
+    }
+
+    /**
+     * PreloadedOSImageName uses the named preloaded RHCOS image from PC/PE, instead of create and upload a new image for each cluster.
+     */
+    @JsonProperty("preloadedOSImageName")
+    public void setPreloadedOSImageName(String preloadedOSImageName) {
+        this.preloadedOSImageName = preloadedOSImageName;
+    }
+
+    /**
+     * PrismAPICallTimeout sets the timeout (in minutes) for the prism-api calls. If not configured, the default value of 10 minutes will be used as the prism-api call timeout.
+     */
+    @JsonProperty("prismAPICallTimeout")
+    public Integer getPrismAPICallTimeout() {
+        return prismAPICallTimeout;
+    }
+
+    /**
+     * PrismAPICallTimeout sets the timeout (in minutes) for the prism-api calls. If not configured, the default value of 10 minutes will be used as the prism-api call timeout.
+     */
+    @JsonProperty("prismAPICallTimeout")
+    public void setPrismAPICallTimeout(Integer prismAPICallTimeout) {
+        this.prismAPICallTimeout = prismAPICallTimeout;
     }
 
     /**

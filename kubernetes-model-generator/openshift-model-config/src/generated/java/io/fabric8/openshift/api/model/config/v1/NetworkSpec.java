@@ -154,7 +154,7 @@ public class NetworkSpec implements Editable<NetworkSpecBuilder>, KubernetesReso
     }
 
     /**
-     * NetworkType is the plugin that is to be deployed (e.g. OVNKubernetes). This should match a value that the cluster-network-operator understands, or else no networking will be installed. Currently supported values are: - OVNKubernetes This field is immutable after installation.
+     * networkType is the plugin that is to be deployed (e.g. OVNKubernetes). This should match a value that the cluster-network-operator understands, or else no networking will be installed. Currently supported values are: - OVNKubernetes This field is immutable after installation.
      */
     @JsonProperty("networkType")
     public String getNetworkType() {
@@ -162,7 +162,7 @@ public class NetworkSpec implements Editable<NetworkSpecBuilder>, KubernetesReso
     }
 
     /**
-     * NetworkType is the plugin that is to be deployed (e.g. OVNKubernetes). This should match a value that the cluster-network-operator understands, or else no networking will be installed. Currently supported values are: - OVNKubernetes This field is immutable after installation.
+     * networkType is the plugin that is to be deployed (e.g. OVNKubernetes). This should match a value that the cluster-network-operator understands, or else no networking will be installed. Currently supported values are: - OVNKubernetes This field is immutable after installation.
      */
     @JsonProperty("networkType")
     public void setNetworkType(String networkType) {

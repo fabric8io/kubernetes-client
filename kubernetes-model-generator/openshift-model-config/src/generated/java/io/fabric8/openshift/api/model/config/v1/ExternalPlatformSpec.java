@@ -81,7 +81,7 @@ public class ExternalPlatformSpec implements Editable<ExternalPlatformSpecBuilde
     }
 
     /**
-     * PlatformName holds the arbitrary string representing the infrastructure provider name, expected to be set at the installation time. This field is solely for informational and reporting purposes and is not expected to be used for decision-making.
+     * platformName holds the arbitrary string representing the infrastructure provider name, expected to be set at the installation time. This field is solely for informational and reporting purposes and is not expected to be used for decision-making.
      */
     @JsonProperty("platformName")
     public String getPlatformName() {
@@ -89,7 +89,7 @@ public class ExternalPlatformSpec implements Editable<ExternalPlatformSpecBuilde
     }
 
     /**
-     * PlatformName holds the arbitrary string representing the infrastructure provider name, expected to be set at the installation time. This field is solely for informational and reporting purposes and is not expected to be used for decision-making.
+     * platformName holds the arbitrary string representing the infrastructure provider name, expected to be set at the installation time. This field is solely for informational and reporting purposes and is not expected to be used for decision-making.
      */
     @JsonProperty("platformName")
     public void setPlatformName(String platformName) {

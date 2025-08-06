@@ -93,7 +93,7 @@ public class CustomDeploymentStrategyParams implements Editable<CustomDeployment
     }
 
     /**
-     * Command is optional and overrides CMD in the container Image.
+     * command is optional and overrides CMD in the container Image.
      */
     @JsonProperty("command")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -102,7 +102,7 @@ public class CustomDeploymentStrategyParams implements Editable<CustomDeployment
     }
 
     /**
-     * Command is optional and overrides CMD in the container Image.
+     * command is optional and overrides CMD in the container Image.
      */
     @JsonProperty("command")
     public void setCommand(List<String> command) {
@@ -110,7 +110,7 @@ public class CustomDeploymentStrategyParams implements Editable<CustomDeployment
     }
 
     /**
-     * Environment holds the environment which will be given to the container for Image.
+     * environment holds the environment which will be given to the container for Image.
      */
     @JsonProperty("environment")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -119,7 +119,7 @@ public class CustomDeploymentStrategyParams implements Editable<CustomDeployment
     }
 
     /**
-     * Environment holds the environment which will be given to the container for Image.
+     * environment holds the environment which will be given to the container for Image.
      */
     @JsonProperty("environment")
     public void setEnvironment(List<EnvVar> environment) {
@@ -127,7 +127,7 @@ public class CustomDeploymentStrategyParams implements Editable<CustomDeployment
     }
 
     /**
-     * Image specifies a container image which can carry out a deployment.
+     * image specifies a container image which can carry out a deployment.
      */
     @JsonProperty("image")
     public String getImage() {
@@ -135,7 +135,7 @@ public class CustomDeploymentStrategyParams implements Editable<CustomDeployment
     }
 
     /**
-     * Image specifies a container image which can carry out a deployment.
+     * image specifies a container image which can carry out a deployment.
      */
     @JsonProperty("image")
     public void setImage(String image) {

@@ -130,7 +130,7 @@ public class NetNamespace implements Editable<NetNamespaceBuilder>, HasMetadata
     }
 
     /**
-     * EgressIPs is a list of reserved IPs that will be used as the source for external traffic coming from pods in this namespace. (If empty, external traffic will be masqueraded to Node IPs.)
+     * egressIPs is a list of reserved IPs that will be used as the source for external traffic coming from pods in this namespace. (If empty, external traffic will be masqueraded to Node IPs.)
      */
     @JsonProperty("egressIPs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -139,7 +139,7 @@ public class NetNamespace implements Editable<NetNamespaceBuilder>, HasMetadata
     }
 
     /**
-     * EgressIPs is a list of reserved IPs that will be used as the source for external traffic coming from pods in this namespace. (If empty, external traffic will be masqueraded to Node IPs.)
+     * egressIPs is a list of reserved IPs that will be used as the source for external traffic coming from pods in this namespace. (If empty, external traffic will be masqueraded to Node IPs.)
      */
     @JsonProperty("egressIPs")
     public void setEgressIPs(List<String> egressIPs) {
@@ -179,7 +179,7 @@ public class NetNamespace implements Editable<NetNamespaceBuilder>, HasMetadata
     }
 
     /**
-     * NetID is the network identifier of the network namespace assigned to each overlay network packet. This can be manipulated with the "oc adm pod-network" commands.
+     * netid is the network identifier of the network namespace assigned to each overlay network packet. This can be manipulated with the "oc adm pod-network" commands.
      */
     @JsonProperty("netid")
     public Long getNetid() {
@@ -187,7 +187,7 @@ public class NetNamespace implements Editable<NetNamespaceBuilder>, HasMetadata
     }
 
     /**
-     * NetID is the network identifier of the network namespace assigned to each overlay network packet. This can be manipulated with the "oc adm pod-network" commands.
+     * netid is the network identifier of the network namespace assigned to each overlay network packet. This can be manipulated with the "oc adm pod-network" commands.
      */
     @JsonProperty("netid")
     public void setNetid(Long netid) {
@@ -195,7 +195,7 @@ public class NetNamespace implements Editable<NetNamespaceBuilder>, HasMetadata
     }
 
     /**
-     * NetName is the name of the network namespace. (This is the same as the object's name, but both fields must be set.)
+     * netname is the name of the network namespace. (This is the same as the object's name, but both fields must be set.)
      */
     @JsonProperty("netname")
     public String getNetname() {
@@ -203,7 +203,7 @@ public class NetNamespace implements Editable<NetNamespaceBuilder>, HasMetadata
     }
 
     /**
-     * NetName is the name of the network namespace. (This is the same as the object's name, but both fields must be set.)
+     * netname is the name of the network namespace. (This is the same as the object's name, but both fields must be set.)
      */
     @JsonProperty("netname")
     public void setNetname(String netname) {

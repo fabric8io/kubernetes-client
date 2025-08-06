@@ -152,7 +152,7 @@ public class MachineSetStatus implements Editable<MachineSetStatusBuilder>, Kube
     }
 
     /**
-     * Conditions defines the current state of the MachineSet
+     * conditions defines the current state of the MachineSet
      */
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -161,7 +161,7 @@ public class MachineSetStatus implements Editable<MachineSetStatusBuilder>, Kube
     }
 
     /**
-     * Conditions defines the current state of the MachineSet
+     * conditions defines the current state of the MachineSet
      */
     @JsonProperty("conditions")
     public void setConditions(List<Condition> conditions) {
@@ -217,7 +217,7 @@ public class MachineSetStatus implements Editable<MachineSetStatusBuilder>, Kube
     }
 
     /**
-     * ObservedGeneration reflects the generation of the most recently observed MachineSet.
+     * observedGeneration reflects the generation of the most recently observed MachineSet.
      */
     @JsonProperty("observedGeneration")
     public Long getObservedGeneration() {
@@ -225,7 +225,7 @@ public class MachineSetStatus implements Editable<MachineSetStatusBuilder>, Kube
     }
 
     /**
-     * ObservedGeneration reflects the generation of the most recently observed MachineSet.
+     * observedGeneration reflects the generation of the most recently observed MachineSet.
      */
     @JsonProperty("observedGeneration")
     public void setObservedGeneration(Long observedGeneration) {
@@ -249,7 +249,7 @@ public class MachineSetStatus implements Editable<MachineSetStatusBuilder>, Kube
     }
 
     /**
-     * Replicas is the most recently observed number of replicas.
+     * replicas is the most recently observed number of replicas.
      */
     @JsonProperty("replicas")
     public Integer getReplicas() {
@@ -257,7 +257,7 @@ public class MachineSetStatus implements Editable<MachineSetStatusBuilder>, Kube
     }
 
     /**
-     * Replicas is the most recently observed number of replicas.
+     * replicas is the most recently observed number of replicas.
      */
     @JsonProperty("replicas")
     public void setReplicas(Integer replicas) {

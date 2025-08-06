@@ -131,7 +131,7 @@ public class MachineConfigNodeStatus implements Editable<MachineConfigNodeStatus
     }
 
     /**
-     * observedGeneration represents the generation observed by the controller. This field is updated when the controller observes a change to the desiredConfig in the configVersion of the machine config node spec.
+     * observedGeneration represents the generation of the MachineConfigNode object observed by the Machine Config Operator's controller. This field is updated when the controller observes a change to the desiredConfig in the configVersion of the machine config node spec.
      */
     @JsonProperty("observedGeneration")
     public Long getObservedGeneration() {
@@ -139,7 +139,7 @@ public class MachineConfigNodeStatus implements Editable<MachineConfigNodeStatus
     }
 
     /**
-     * observedGeneration represents the generation observed by the controller. This field is updated when the controller observes a change to the desiredConfig in the configVersion of the machine config node spec.
+     * observedGeneration represents the generation of the MachineConfigNode object observed by the Machine Config Operator's controller. This field is updated when the controller observes a change to the desiredConfig in the configVersion of the machine config node spec.
      */
     @JsonProperty("observedGeneration")
     public void setObservedGeneration(Long observedGeneration) {
@@ -147,7 +147,7 @@ public class MachineConfigNodeStatus implements Editable<MachineConfigNodeStatus
     }
 
     /**
-     * pinnedImageSets describes the current and desired pinned image sets for this node. The current version is the generation of the pinned image set that has most recently been successfully pulled and pinned on this node. The desired version is the generation of the pinned image set that is targeted to be pulled and pinned on this node.
+     * pinnedImageSets describes the current and desired pinned image sets for this node.
      */
     @JsonProperty("pinnedImageSets")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -156,7 +156,7 @@ public class MachineConfigNodeStatus implements Editable<MachineConfigNodeStatus
     }
 
     /**
-     * pinnedImageSets describes the current and desired pinned image sets for this node. The current version is the generation of the pinned image set that has most recently been successfully pulled and pinned on this node. The desired version is the generation of the pinned image set that is targeted to be pulled and pinned on this node.
+     * pinnedImageSets describes the current and desired pinned image sets for this node.
      */
     @JsonProperty("pinnedImageSets")
     public void setPinnedImageSets(List<MachineConfigNodeStatusPinnedImageSet> pinnedImageSets) {

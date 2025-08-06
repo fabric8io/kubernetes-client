@@ -40,6 +40,7 @@ import lombok.experimental.Accessors;
     "additionalValuesFiles",
     "apiVersions",
     "debug",
+    "devel",
     "includeCRDs",
     "kubeVersion",
     "name",
@@ -87,6 +88,8 @@ public class HelmChart implements Editable<HelmChartBuilder>, KubernetesResource
     private List<String> apiVersions = new ArrayList<>();
     @JsonProperty("debug")
     private Boolean debug;
+    @JsonProperty("devel")
+    private Boolean devel;
     @JsonProperty("includeCRDs")
     private Boolean includeCRDs;
     @JsonProperty("kubeVersion")
@@ -124,11 +127,12 @@ public class HelmChart implements Editable<HelmChartBuilder>, KubernetesResource
     public HelmChart() {
     }
 
-    public HelmChart(List<String> additionalValuesFiles, List<String> apiVersions, Boolean debug, Boolean includeCRDs, String kubeVersion, String name, String nameTemplate, String namespace, String releaseName, String repo, Boolean skipHooks, Boolean skipTests, String valuesFile, Map<String, Object> valuesInline, String valuesMerge, String version) {
+    public HelmChart(List<String> additionalValuesFiles, List<String> apiVersions, Boolean debug, Boolean devel, Boolean includeCRDs, String kubeVersion, String name, String nameTemplate, String namespace, String releaseName, String repo, Boolean skipHooks, Boolean skipTests, String valuesFile, Map<String, Object> valuesInline, String valuesMerge, String version) {
         super();
         this.additionalValuesFiles = additionalValuesFiles;
         this.apiVersions = apiVersions;
         this.debug = debug;
+        this.devel = devel;
         this.includeCRDs = includeCRDs;
         this.kubeVersion = kubeVersion;
         this.name = name;
@@ -174,6 +178,16 @@ public class HelmChart implements Editable<HelmChartBuilder>, KubernetesResource
     @JsonProperty("debug")
     public void setDebug(Boolean debug) {
         this.debug = debug;
+    }
+
+    @JsonProperty("devel")
+    public Boolean getDevel() {
+        return devel;
+    }
+
+    @JsonProperty("devel")
+    public void setDevel(Boolean devel) {
+        this.devel = devel;
     }
 
     @JsonProperty("includeCRDs")

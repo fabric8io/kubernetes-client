@@ -39,6 +39,7 @@ import lombok.experimental.Accessors;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "architecture",
+    "fencing",
     "hyperthreading",
     "name",
     "platform",
@@ -71,6 +72,8 @@ public class MachinePool implements Editable<MachinePoolBuilder>, KubernetesReso
 
     @JsonProperty("architecture")
     private String architecture;
+    @JsonProperty("fencing")
+    private Fencing fencing;
     @JsonProperty("hyperthreading")
     private String hyperthreading;
     @JsonProperty("name")
@@ -88,9 +91,10 @@ public class MachinePool implements Editable<MachinePoolBuilder>, KubernetesReso
     public MachinePool() {
     }
 
-    public MachinePool(String architecture, String hyperthreading, String name, MachinePoolPlatform platform, Long replicas) {
+    public MachinePool(String architecture, Fencing fencing, String hyperthreading, String name, MachinePoolPlatform platform, Long replicas) {
         super();
         this.architecture = architecture;
+        this.fencing = fencing;
         this.hyperthreading = hyperthreading;
         this.name = name;
         this.platform = platform;
@@ -114,6 +118,22 @@ public class MachinePool implements Editable<MachinePoolBuilder>, KubernetesReso
     }
 
     /**
+     * MachinePool is a pool of machines to be installed.
+     */
+    @JsonProperty("fencing")
+    public Fencing getFencing() {
+        return fencing;
+    }
+
+    /**
+     * MachinePool is a pool of machines to be installed.
+     */
+    @JsonProperty("fencing")
+    public void setFencing(Fencing fencing) {
+        this.fencing = fencing;
+    }
+
+    /**
      * Hyperthreading determines the mode of hyperthreading that machines in the pool will utilize. Default is for hyperthreading to be enabled.
      */
     @JsonProperty("hyperthreading")
@@ -130,7 +150,7 @@ public class MachinePool implements Editable<MachinePoolBuilder>, KubernetesReso
     }
 
     /**
-     * Name is the name of the machine pool. For the control plane machine pool, the name will always be "master". For the compute machine pools, the only valid name is "worker".
+     * Name is the name of the machine pool. For the control plane machine pool, the name will always be "master". For the compute machine pools, the only valid name is "worker". For the arbiter machine pools, the only valid name is "arbiter".
      */
     @JsonProperty("name")
     public String getName() {
@@ -138,7 +158,7 @@ public class MachinePool implements Editable<MachinePoolBuilder>, KubernetesReso
     }
 
     /**
-     * Name is the name of the machine pool. For the control plane machine pool, the name will always be "master". For the compute machine pools, the only valid name is "worker".
+     * Name is the name of the machine pool. For the control plane machine pool, the name will always be "master". For the compute machine pools, the only valid name is "worker". For the arbiter machine pools, the only valid name is "arbiter".
      */
     @JsonProperty("name")
     public void setName(String name) {

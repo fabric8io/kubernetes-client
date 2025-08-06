@@ -150,7 +150,7 @@ public class ImageSignature implements Editable<ImageSignatureBuilder>, HasMetad
     }
 
     /**
-     * Conditions represent the latest available observations of a signature's current state.
+     * conditions represent the latest available observations of a signature's current state.
      */
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -159,7 +159,7 @@ public class ImageSignature implements Editable<ImageSignatureBuilder>, HasMetad
     }
 
     /**
-     * Conditions represent the latest available observations of a signature's current state.
+     * conditions represent the latest available observations of a signature's current state.
      */
     @JsonProperty("conditions")
     public void setConditions(List<SignatureCondition> conditions) {

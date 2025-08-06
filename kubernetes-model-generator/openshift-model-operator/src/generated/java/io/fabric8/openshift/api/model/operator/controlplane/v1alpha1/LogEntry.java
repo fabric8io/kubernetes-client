@@ -114,7 +114,7 @@ public class LogEntry implements Editable<LogEntryBuilder>, KubernetesResource
     }
 
     /**
-     * Message explaining status in a human readable format.
+     * message explaining status in a human readable format.
      */
     @JsonProperty("message")
     public String getMessage() {
@@ -122,7 +122,7 @@ public class LogEntry implements Editable<LogEntryBuilder>, KubernetesResource
     }
 
     /**
-     * Message explaining status in a human readable format.
+     * message explaining status in a human readable format.
      */
     @JsonProperty("message")
     public void setMessage(String message) {
@@ -130,7 +130,7 @@ public class LogEntry implements Editable<LogEntryBuilder>, KubernetesResource
     }
 
     /**
-     * Reason for status in a machine readable format.
+     * reason for status in a machine readable format.
      */
     @JsonProperty("reason")
     public String getReason() {
@@ -138,7 +138,7 @@ public class LogEntry implements Editable<LogEntryBuilder>, KubernetesResource
     }
 
     /**
-     * Reason for status in a machine readable format.
+     * reason for status in a machine readable format.
      */
     @JsonProperty("reason")
     public void setReason(String reason) {
@@ -146,7 +146,7 @@ public class LogEntry implements Editable<LogEntryBuilder>, KubernetesResource
     }
 
     /**
-     * Success indicates if the log entry indicates a success or failure.
+     * success indicates if the log entry indicates a success or failure.
      */
     @JsonProperty("success")
     public Boolean getSuccess() {
@@ -154,7 +154,7 @@ public class LogEntry implements Editable<LogEntryBuilder>, KubernetesResource
     }
 
     /**
-     * Success indicates if the log entry indicates a success or failure.
+     * success indicates if the log entry indicates a success or failure.
      */
     @JsonProperty("success")
     public void setSuccess(Boolean success) {

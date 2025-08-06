@@ -180,7 +180,7 @@ public class ResourceAccessReviewResponse implements Editable<ResourceAccessRevi
     }
 
     /**
-     * Namespace is the namespace used for the access review
+     * namespace is the namespace used for the access review
      */
     @JsonProperty("namespace")
     public String getNamespace() {
@@ -188,7 +188,7 @@ public class ResourceAccessReviewResponse implements Editable<ResourceAccessRevi
     }
 
     /**
-     * Namespace is the namespace used for the access review
+     * namespace is the namespace used for the access review
      */
     @JsonProperty("namespace")
     public void setNamespace(String namespace) {

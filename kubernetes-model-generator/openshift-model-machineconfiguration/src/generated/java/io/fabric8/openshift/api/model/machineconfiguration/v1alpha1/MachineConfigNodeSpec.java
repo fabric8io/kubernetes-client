@@ -1,9 +1,7 @@
 
 package io.fabric8.openshift.api.model.machineconfiguration.v1alpha1;
 
-import java.util.ArrayList;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 import javax.annotation.processing.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
@@ -41,7 +39,6 @@ import lombok.experimental.Accessors;
 @JsonPropertyOrder({
     "configVersion",
     "node",
-    "pinnedImageSets",
     "pool"
 })
 @ToString
@@ -73,9 +70,6 @@ public class MachineConfigNodeSpec implements Editable<MachineConfigNodeSpecBuil
     private MachineConfigNodeSpecMachineConfigVersion configVersion;
     @JsonProperty("node")
     private MCOObjectReference node;
-    @JsonProperty("pinnedImageSets")
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<MachineConfigNodeSpecPinnedImageSet> pinnedImageSets = new ArrayList<>();
     @JsonProperty("pool")
     private MCOObjectReference pool;
     @JsonIgnore
@@ -87,11 +81,10 @@ public class MachineConfigNodeSpec implements Editable<MachineConfigNodeSpecBuil
     public MachineConfigNodeSpec() {
     }
 
-    public MachineConfigNodeSpec(MachineConfigNodeSpecMachineConfigVersion configVersion, MCOObjectReference node, List<MachineConfigNodeSpecPinnedImageSet> pinnedImageSets, MCOObjectReference pool) {
+    public MachineConfigNodeSpec(MachineConfigNodeSpecMachineConfigVersion configVersion, MCOObjectReference node, MCOObjectReference pool) {
         super();
         this.configVersion = configVersion;
         this.node = node;
-        this.pinnedImageSets = pinnedImageSets;
         this.pool = pool;
     }
 
@@ -125,23 +118,6 @@ public class MachineConfigNodeSpec implements Editable<MachineConfigNodeSpecBuil
     @JsonProperty("node")
     public void setNode(MCOObjectReference node) {
         this.node = node;
-    }
-
-    /**
-     * pinnedImageSets holds the desired pinned image sets that this node should pin and pull.
-     */
-    @JsonProperty("pinnedImageSets")
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<MachineConfigNodeSpecPinnedImageSet> getPinnedImageSets() {
-        return pinnedImageSets;
-    }
-
-    /**
-     * pinnedImageSets holds the desired pinned image sets that this node should pin and pull.
-     */
-    @JsonProperty("pinnedImageSets")
-    public void setPinnedImageSets(List<MachineConfigNodeSpecPinnedImageSet> pinnedImageSets) {
-        this.pinnedImageSets = pinnedImageSets;
     }
 
     /**

@@ -93,7 +93,7 @@ public class GCPNetworkInterface implements Editable<GCPNetworkInterfaceBuilder>
     }
 
     /**
-     * Network is the network name.
+     * network is the network name.
      */
     @JsonProperty("network")
     public String getNetwork() {
@@ -101,7 +101,7 @@ public class GCPNetworkInterface implements Editable<GCPNetworkInterfaceBuilder>
     }
 
     /**
-     * Network is the network name.
+     * network is the network name.
      */
     @JsonProperty("network")
     public void setNetwork(String network) {
@@ -109,7 +109,7 @@ public class GCPNetworkInterface implements Editable<GCPNetworkInterfaceBuilder>
     }
 
     /**
-     * ProjectID is the project in which the GCP machine provider will create the VM.
+     * projectID is the project in which the GCP machine provider will create the VM.
      */
     @JsonProperty("projectID")
     public String getProjectID() {
@@ -117,7 +117,7 @@ public class GCPNetworkInterface implements Editable<GCPNetworkInterfaceBuilder>
     }
 
     /**
-     * ProjectID is the project in which the GCP machine provider will create the VM.
+     * projectID is the project in which the GCP machine provider will create the VM.
      */
     @JsonProperty("projectID")
     public void setProjectID(String projectID) {
@@ -125,7 +125,7 @@ public class GCPNetworkInterface implements Editable<GCPNetworkInterfaceBuilder>
     }
 
     /**
-     * PublicIP indicates if true a public IP will be used
+     * publicIP indicates if true a public IP will be used
      */
     @JsonProperty("publicIP")
     public Boolean getPublicIP() {
@@ -133,7 +133,7 @@ public class GCPNetworkInterface implements Editable<GCPNetworkInterfaceBuilder>
     }
 
     /**
-     * PublicIP indicates if true a public IP will be used
+     * publicIP indicates if true a public IP will be used
      */
     @JsonProperty("publicIP")
     public void setPublicIP(Boolean publicIP) {
@@ -141,7 +141,7 @@ public class GCPNetworkInterface implements Editable<GCPNetworkInterfaceBuilder>
     }
 
     /**
-     * Subnetwork is the subnetwork name.
+     * subnetwork is the subnetwork name.
      */
     @JsonProperty("subnetwork")
     public String getSubnetwork() {
@@ -149,7 +149,7 @@ public class GCPNetworkInterface implements Editable<GCPNetworkInterfaceBuilder>
     }
 
     /**
-     * Subnetwork is the subnetwork name.
+     * subnetwork is the subnetwork name.
      */
     @JsonProperty("subnetwork")
     public void setSubnetwork(String subnetwork) {

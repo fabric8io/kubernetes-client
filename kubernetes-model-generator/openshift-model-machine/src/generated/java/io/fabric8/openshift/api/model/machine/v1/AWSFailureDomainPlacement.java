@@ -82,7 +82,7 @@ public class AWSFailureDomainPlacement implements Editable<AWSFailureDomainPlace
     }
 
     /**
-     * AvailabilityZone is the availability zone of the instance.
+     * availabilityZone is the availability zone of the instance.
      */
     @JsonProperty("availabilityZone")
     public String getAvailabilityZone() {
@@ -90,7 +90,7 @@ public class AWSFailureDomainPlacement implements Editable<AWSFailureDomainPlace
     }
 
     /**
-     * AvailabilityZone is the availability zone of the instance.
+     * availabilityZone is the availability zone of the instance.
      */
     @JsonProperty("availabilityZone")
     public void setAvailabilityZone(String availabilityZone) {

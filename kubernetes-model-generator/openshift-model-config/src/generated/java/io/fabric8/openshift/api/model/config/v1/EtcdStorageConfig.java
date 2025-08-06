@@ -97,7 +97,7 @@ public class EtcdStorageConfig implements Editable<EtcdStorageConfigBuilder>, Ku
     }
 
     /**
-     * CA is a file containing trusted roots for the etcd server certificates
+     * ca is a file containing trusted roots for the etcd server certificates
      */
     @JsonProperty("ca")
     public String getCa() {
@@ -105,7 +105,7 @@ public class EtcdStorageConfig implements Editable<EtcdStorageConfigBuilder>, Ku
     }
 
     /**
-     * CA is a file containing trusted roots for the etcd server certificates
+     * ca is a file containing trusted roots for the etcd server certificates
      */
     @JsonProperty("ca")
     public void setCa(String ca) {
@@ -113,7 +113,7 @@ public class EtcdStorageConfig implements Editable<EtcdStorageConfigBuilder>, Ku
     }
 
     /**
-     * CertFile is a file containing a PEM-encoded certificate
+     * certFile is a file containing a PEM-encoded certificate
      */
     @JsonProperty("certFile")
     public String getCertFile() {
@@ -121,7 +121,7 @@ public class EtcdStorageConfig implements Editable<EtcdStorageConfigBuilder>, Ku
     }
 
     /**
-     * CertFile is a file containing a PEM-encoded certificate
+     * certFile is a file containing a PEM-encoded certificate
      */
     @JsonProperty("certFile")
     public void setCertFile(String certFile) {
@@ -129,7 +129,7 @@ public class EtcdStorageConfig implements Editable<EtcdStorageConfigBuilder>, Ku
     }
 
     /**
-     * KeyFile is a file containing a PEM-encoded private key for the certificate specified by CertFile
+     * keyFile is a file containing a PEM-encoded private key for the certificate specified by CertFile
      */
     @JsonProperty("keyFile")
     public String getKeyFile() {
@@ -137,7 +137,7 @@ public class EtcdStorageConfig implements Editable<EtcdStorageConfigBuilder>, Ku
     }
 
     /**
-     * KeyFile is a file containing a PEM-encoded private key for the certificate specified by CertFile
+     * keyFile is a file containing a PEM-encoded private key for the certificate specified by CertFile
      */
     @JsonProperty("keyFile")
     public void setKeyFile(String keyFile) {
@@ -145,7 +145,7 @@ public class EtcdStorageConfig implements Editable<EtcdStorageConfigBuilder>, Ku
     }
 
     /**
-     * StoragePrefix is the path within etcd that the OpenShift resources will be rooted under. This value, if changed, will mean existing objects in etcd will no longer be located.
+     * storagePrefix is the path within etcd that the OpenShift resources will be rooted under. This value, if changed, will mean existing objects in etcd will no longer be located.
      */
     @JsonProperty("storagePrefix")
     public String getStoragePrefix() {
@@ -153,7 +153,7 @@ public class EtcdStorageConfig implements Editable<EtcdStorageConfigBuilder>, Ku
     }
 
     /**
-     * StoragePrefix is the path within etcd that the OpenShift resources will be rooted under. This value, if changed, will mean existing objects in etcd will no longer be located.
+     * storagePrefix is the path within etcd that the OpenShift resources will be rooted under. This value, if changed, will mean existing objects in etcd will no longer be located.
      */
     @JsonProperty("storagePrefix")
     public void setStoragePrefix(String storagePrefix) {
@@ -161,7 +161,7 @@ public class EtcdStorageConfig implements Editable<EtcdStorageConfigBuilder>, Ku
     }
 
     /**
-     * URLs are the URLs for etcd
+     * urls are the URLs for etcd
      */
     @JsonProperty("urls")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -170,7 +170,7 @@ public class EtcdStorageConfig implements Editable<EtcdStorageConfigBuilder>, Ku
     }
 
     /**
-     * URLs are the URLs for etcd
+     * urls are the URLs for etcd
      */
     @JsonProperty("urls")
     public void setUrls(List<String> urls) {

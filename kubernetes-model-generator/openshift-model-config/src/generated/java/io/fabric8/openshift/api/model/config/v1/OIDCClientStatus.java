@@ -100,7 +100,7 @@ public class OIDCClientStatus implements Editable<OIDCClientStatusBuilder>, Kube
     }
 
     /**
-     * ComponentName is the name of the component that will consume a client configuration.
+     * componentName is the name of the component that will consume a client configuration.
      */
     @JsonProperty("componentName")
     public String getComponentName() {
@@ -108,7 +108,7 @@ public class OIDCClientStatus implements Editable<OIDCClientStatusBuilder>, Kube
     }
 
     /**
-     * ComponentName is the name of the component that will consume a client configuration.
+     * componentName is the name of the component that will consume a client configuration.
      */
     @JsonProperty("componentName")
     public void setComponentName(String componentName) {
@@ -116,7 +116,7 @@ public class OIDCClientStatus implements Editable<OIDCClientStatusBuilder>, Kube
     }
 
     /**
-     * ComponentNamespace is the namespace of the component that will consume a client configuration.
+     * componentNamespace is the namespace of the component that will consume a client configuration.
      */
     @JsonProperty("componentNamespace")
     public String getComponentNamespace() {
@@ -124,7 +124,7 @@ public class OIDCClientStatus implements Editable<OIDCClientStatusBuilder>, Kube
     }
 
     /**
-     * ComponentNamespace is the namespace of the component that will consume a client configuration.
+     * componentNamespace is the namespace of the component that will consume a client configuration.
      */
     @JsonProperty("componentNamespace")
     public void setComponentNamespace(String componentNamespace) {
@@ -132,7 +132,7 @@ public class OIDCClientStatus implements Editable<OIDCClientStatusBuilder>, Kube
     }
 
     /**
-     * Conditions are used to communicate the state of the `oidcClients` entry.<br><p> <br><p> Supported conditions include Available, Degraded and Progressing.<br><p> <br><p> If Available is true, the component is successfully using the configured client. If Degraded is true, that means something has gone wrong trying to handle the client configuration. If Progressing is true, that means the component is taking some action related to the `oidcClients` entry.
+     * conditions are used to communicate the state of the `oidcClients` entry.<br><p> <br><p> Supported conditions include Available, Degraded and Progressing.<br><p> <br><p> If Available is true, the component is successfully using the configured client. If Degraded is true, that means something has gone wrong trying to handle the client configuration. If Progressing is true, that means the component is taking some action related to the `oidcClients` entry.
      */
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -141,7 +141,7 @@ public class OIDCClientStatus implements Editable<OIDCClientStatusBuilder>, Kube
     }
 
     /**
-     * Conditions are used to communicate the state of the `oidcClients` entry.<br><p> <br><p> Supported conditions include Available, Degraded and Progressing.<br><p> <br><p> If Available is true, the component is successfully using the configured client. If Degraded is true, that means something has gone wrong trying to handle the client configuration. If Progressing is true, that means the component is taking some action related to the `oidcClients` entry.
+     * conditions are used to communicate the state of the `oidcClients` entry.<br><p> <br><p> Supported conditions include Available, Degraded and Progressing.<br><p> <br><p> If Available is true, the component is successfully using the configured client. If Degraded is true, that means something has gone wrong trying to handle the client configuration. If Progressing is true, that means the component is taking some action related to the `oidcClients` entry.
      */
     @JsonProperty("conditions")
     public void setConditions(List<Condition> conditions) {
@@ -149,7 +149,7 @@ public class OIDCClientStatus implements Editable<OIDCClientStatusBuilder>, Kube
     }
 
     /**
-     * ConsumingUsers is a slice of ServiceAccounts that need to have read permission on the `clientSecret` secret.
+     * consumingUsers is a slice of ServiceAccounts that need to have read permission on the `clientSecret` secret.
      */
     @JsonProperty("consumingUsers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -158,7 +158,7 @@ public class OIDCClientStatus implements Editable<OIDCClientStatusBuilder>, Kube
     }
 
     /**
-     * ConsumingUsers is a slice of ServiceAccounts that need to have read permission on the `clientSecret` secret.
+     * consumingUsers is a slice of ServiceAccounts that need to have read permission on the `clientSecret` secret.
      */
     @JsonProperty("consumingUsers")
     public void setConsumingUsers(List<String> consumingUsers) {
@@ -166,7 +166,7 @@ public class OIDCClientStatus implements Editable<OIDCClientStatusBuilder>, Kube
     }
 
     /**
-     * CurrentOIDCClients is a list of clients that the component is currently using.
+     * currentOIDCClients is a list of clients that the component is currently using.
      */
     @JsonProperty("currentOIDCClients")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -175,7 +175,7 @@ public class OIDCClientStatus implements Editable<OIDCClientStatusBuilder>, Kube
     }
 
     /**
-     * CurrentOIDCClients is a list of clients that the component is currently using.
+     * currentOIDCClients is a list of clients that the component is currently using.
      */
     @JsonProperty("currentOIDCClients")
     public void setCurrentOIDCClients(List<OIDCClientReference> currentOIDCClients) {

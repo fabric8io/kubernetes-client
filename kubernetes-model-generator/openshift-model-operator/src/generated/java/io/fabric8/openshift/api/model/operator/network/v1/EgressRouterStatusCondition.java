@@ -114,7 +114,7 @@ public class EgressRouterStatusCondition implements Editable<EgressRouterStatusC
     }
 
     /**
-     * Message provides additional information about the current condition. This is only to be consumed by humans.  It may contain Line Feed characters (U+000A), which should be rendered as new lines.
+     * message provides additional information about the current condition. This is only to be consumed by humans.  It may contain Line Feed characters (U+000A), which should be rendered as new lines.
      */
     @JsonProperty("message")
     public String getMessage() {
@@ -122,7 +122,7 @@ public class EgressRouterStatusCondition implements Editable<EgressRouterStatusC
     }
 
     /**
-     * Message provides additional information about the current condition. This is only to be consumed by humans.  It may contain Line Feed characters (U+000A), which should be rendered as new lines.
+     * message provides additional information about the current condition. This is only to be consumed by humans.  It may contain Line Feed characters (U+000A), which should be rendered as new lines.
      */
     @JsonProperty("message")
     public void setMessage(String message) {
@@ -130,7 +130,7 @@ public class EgressRouterStatusCondition implements Editable<EgressRouterStatusC
     }
 
     /**
-     * Reason is the CamelCase reason for the condition's current status.
+     * reason is the CamelCase reason for the condition's current status.
      */
     @JsonProperty("reason")
     public String getReason() {
@@ -138,7 +138,7 @@ public class EgressRouterStatusCondition implements Editable<EgressRouterStatusC
     }
 
     /**
-     * Reason is the CamelCase reason for the condition's current status.
+     * reason is the CamelCase reason for the condition's current status.
      */
     @JsonProperty("reason")
     public void setReason(String reason) {
@@ -146,7 +146,7 @@ public class EgressRouterStatusCondition implements Editable<EgressRouterStatusC
     }
 
     /**
-     * Status of the condition, one of True, False, Unknown.
+     * status of the condition, one of True, False, Unknown.
      */
     @JsonProperty("status")
     public String getStatus() {
@@ -154,7 +154,7 @@ public class EgressRouterStatusCondition implements Editable<EgressRouterStatusC
     }
 
     /**
-     * Status of the condition, one of True, False, Unknown.
+     * status of the condition, one of True, False, Unknown.
      */
     @JsonProperty("status")
     public void setStatus(String status) {
@@ -162,7 +162,7 @@ public class EgressRouterStatusCondition implements Editable<EgressRouterStatusC
     }
 
     /**
-     * Type specifies the aspect reported by this condition; one of Available, Progressing, Degraded
+     * type specifies the aspect reported by this condition; one of Available, Progressing, Degraded
      */
     @JsonProperty("type")
     public String getType() {
@@ -170,7 +170,7 @@ public class EgressRouterStatusCondition implements Editable<EgressRouterStatusC
     }
 
     /**
-     * Type specifies the aspect reported by this condition; one of Available, Progressing, Degraded
+     * type specifies the aspect reported by this condition; one of Available, Progressing, Degraded
      */
     @JsonProperty("type")
     public void setType(String type) {

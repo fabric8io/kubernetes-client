@@ -89,7 +89,7 @@ public class ClusterResourceQuotaStatus implements Editable<ClusterResourceQuota
     }
 
     /**
-     * Namespaces slices the usage by project.  This division allows for quick resolution of deletion reconciliation inside of a single project without requiring a recalculation across all projects.  This can be used to pull the deltas for a given project.
+     * namespaces slices the usage by project.  This division allows for quick resolution of deletion reconciliation inside of a single project without requiring a recalculation across all projects.  This can be used to pull the deltas for a given project.
      */
     @JsonProperty("namespaces")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -98,7 +98,7 @@ public class ClusterResourceQuotaStatus implements Editable<ClusterResourceQuota
     }
 
     /**
-     * Namespaces slices the usage by project.  This division allows for quick resolution of deletion reconciliation inside of a single project without requiring a recalculation across all projects.  This can be used to pull the deltas for a given project.
+     * namespaces slices the usage by project.  This division allows for quick resolution of deletion reconciliation inside of a single project without requiring a recalculation across all projects.  This can be used to pull the deltas for a given project.
      */
     @JsonProperty("namespaces")
     public void setNamespaces(List<ResourceQuotaStatusByNamespace> namespaces) {

@@ -114,7 +114,7 @@ public class EgressRouterSpec implements Editable<EgressRouterSpecBuilder>, Kube
     }
 
     /**
-     * Mode depicts the mode that is used for the egress router. The default mode is "Redirect" and is the only supported mode currently.
+     * mode depicts the mode that is used for the egress router. The default mode is "Redirect" and is the only supported mode currently.
      */
     @JsonProperty("mode")
     public String getMode() {
@@ -122,7 +122,7 @@ public class EgressRouterSpec implements Editable<EgressRouterSpecBuilder>, Kube
     }
 
     /**
-     * Mode depicts the mode that is used for the egress router. The default mode is "Redirect" and is the only supported mode currently.
+     * mode depicts the mode that is used for the egress router. The default mode is "Redirect" and is the only supported mode currently.
      */
     @JsonProperty("mode")
     public void setMode(String mode) {

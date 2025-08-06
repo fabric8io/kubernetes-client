@@ -31,9 +31,13 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * APIServerEncryption is used to encrypt sensitive resources on the cluster.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
+    "kms",
     "type"
 })
 @ToString
@@ -61,6 +65,8 @@ import lombok.experimental.Accessors;
 public class APIServerEncryption implements Editable<APIServerEncryptionBuilder>, KubernetesResource
 {
 
+    @JsonProperty("kms")
+    private KMSConfig kms;
     @JsonProperty("type")
     private String type;
     @JsonIgnore
@@ -72,9 +78,26 @@ public class APIServerEncryption implements Editable<APIServerEncryptionBuilder>
     public APIServerEncryption() {
     }
 
-    public APIServerEncryption(String type) {
+    public APIServerEncryption(KMSConfig kms, String type) {
         super();
+        this.kms = kms;
         this.type = type;
+    }
+
+    /**
+     * APIServerEncryption is used to encrypt sensitive resources on the cluster.
+     */
+    @JsonProperty("kms")
+    public KMSConfig getKms() {
+        return kms;
+    }
+
+    /**
+     * APIServerEncryption is used to encrypt sensitive resources on the cluster.
+     */
+    @JsonProperty("kms")
+    public void setKms(KMSConfig kms) {
+        this.kms = kms;
     }
 
     /**

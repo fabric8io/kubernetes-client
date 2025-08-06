@@ -123,7 +123,7 @@ public class OAuthClientList implements Editable<OAuthClientListBuilder>, Kubern
     }
 
     /**
-     * Items is the list of OAuth clients
+     * items is the list of OAuth clients
      */
     @JsonProperty("items")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -132,7 +132,7 @@ public class OAuthClientList implements Editable<OAuthClientListBuilder>, Kubern
     }
 
     /**
-     * Items is the list of OAuth clients
+     * items is the list of OAuth clients
      */
     @JsonProperty("items")
     public void setItems(List<io.fabric8.openshift.api.model.OAuthClient> items) {

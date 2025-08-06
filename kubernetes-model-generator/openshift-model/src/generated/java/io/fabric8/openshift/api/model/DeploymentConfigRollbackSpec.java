@@ -117,7 +117,7 @@ public class DeploymentConfigRollbackSpec implements Editable<DeploymentConfigRo
     }
 
     /**
-     * IncludeReplicationMeta specifies whether to include the replica count and selector.
+     * includeReplicationMeta specifies whether to include the replica count and selector.
      */
     @JsonProperty("includeReplicationMeta")
     public Boolean getIncludeReplicationMeta() {
@@ -125,7 +125,7 @@ public class DeploymentConfigRollbackSpec implements Editable<DeploymentConfigRo
     }
 
     /**
-     * IncludeReplicationMeta specifies whether to include the replica count and selector.
+     * includeReplicationMeta specifies whether to include the replica count and selector.
      */
     @JsonProperty("includeReplicationMeta")
     public void setIncludeReplicationMeta(Boolean includeReplicationMeta) {
@@ -133,7 +133,7 @@ public class DeploymentConfigRollbackSpec implements Editable<DeploymentConfigRo
     }
 
     /**
-     * IncludeStrategy specifies whether to include the deployment Strategy.
+     * includeStrategy specifies whether to include the deployment Strategy.
      */
     @JsonProperty("includeStrategy")
     public Boolean getIncludeStrategy() {
@@ -141,7 +141,7 @@ public class DeploymentConfigRollbackSpec implements Editable<DeploymentConfigRo
     }
 
     /**
-     * IncludeStrategy specifies whether to include the deployment Strategy.
+     * includeStrategy specifies whether to include the deployment Strategy.
      */
     @JsonProperty("includeStrategy")
     public void setIncludeStrategy(Boolean includeStrategy) {
@@ -149,7 +149,7 @@ public class DeploymentConfigRollbackSpec implements Editable<DeploymentConfigRo
     }
 
     /**
-     * IncludeTemplate specifies whether to include the PodTemplateSpec.
+     * includeTemplate specifies whether to include the PodTemplateSpec.
      */
     @JsonProperty("includeTemplate")
     public Boolean getIncludeTemplate() {
@@ -157,7 +157,7 @@ public class DeploymentConfigRollbackSpec implements Editable<DeploymentConfigRo
     }
 
     /**
-     * IncludeTemplate specifies whether to include the PodTemplateSpec.
+     * includeTemplate specifies whether to include the PodTemplateSpec.
      */
     @JsonProperty("includeTemplate")
     public void setIncludeTemplate(Boolean includeTemplate) {
@@ -165,7 +165,7 @@ public class DeploymentConfigRollbackSpec implements Editable<DeploymentConfigRo
     }
 
     /**
-     * IncludeTriggers specifies whether to include config Triggers.
+     * includeTriggers specifies whether to include config Triggers.
      */
     @JsonProperty("includeTriggers")
     public Boolean getIncludeTriggers() {
@@ -173,7 +173,7 @@ public class DeploymentConfigRollbackSpec implements Editable<DeploymentConfigRo
     }
 
     /**
-     * IncludeTriggers specifies whether to include config Triggers.
+     * includeTriggers specifies whether to include config Triggers.
      */
     @JsonProperty("includeTriggers")
     public void setIncludeTriggers(Boolean includeTriggers) {
@@ -181,7 +181,7 @@ public class DeploymentConfigRollbackSpec implements Editable<DeploymentConfigRo
     }
 
     /**
-     * Revision to rollback to. If set to 0, rollback to the last revision.
+     * revision to rollback to. If set to 0, rollback to the last revision.
      */
     @JsonProperty("revision")
     public Long getRevision() {
@@ -189,7 +189,7 @@ public class DeploymentConfigRollbackSpec implements Editable<DeploymentConfigRo
     }
 
     /**
-     * Revision to rollback to. If set to 0, rollback to the last revision.
+     * revision to rollback to. If set to 0, rollback to the last revision.
      */
     @JsonProperty("revision")
     public void setRevision(Long revision) {

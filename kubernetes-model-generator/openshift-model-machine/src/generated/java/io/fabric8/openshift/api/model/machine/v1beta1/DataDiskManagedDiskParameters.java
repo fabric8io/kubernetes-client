@@ -101,7 +101,7 @@ public class DataDiskManagedDiskParameters implements Editable<DataDiskManagedDi
     }
 
     /**
-     * StorageAccountType is the storage account type to use. Possible values include "Standard_LRS", "Premium_LRS" and "UltraSSD_LRS".
+     * storageAccountType is the storage account type to use. Possible values include "Standard_LRS", "Premium_LRS" and "UltraSSD_LRS".
      */
     @JsonProperty("storageAccountType")
     public String getStorageAccountType() {
@@ -109,7 +109,7 @@ public class DataDiskManagedDiskParameters implements Editable<DataDiskManagedDi
     }
 
     /**
-     * StorageAccountType is the storage account type to use. Possible values include "Standard_LRS", "Premium_LRS" and "UltraSSD_LRS".
+     * storageAccountType is the storage account type to use. Possible values include "Standard_LRS", "Premium_LRS" and "UltraSSD_LRS".
      */
     @JsonProperty("storageAccountType")
     public void setStorageAccountType(String storageAccountType) {

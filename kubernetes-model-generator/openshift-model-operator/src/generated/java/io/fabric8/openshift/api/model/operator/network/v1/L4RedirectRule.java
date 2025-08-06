@@ -110,7 +110,7 @@ public class L4RedirectRule implements Editable<L4RedirectRuleBuilder>, Kubernet
     }
 
     /**
-     * Port is the port number to which clients should send traffic to be redirected.
+     * port is the port number to which clients should send traffic to be redirected.
      */
     @JsonProperty("port")
     public Integer getPort() {
@@ -118,7 +118,7 @@ public class L4RedirectRule implements Editable<L4RedirectRuleBuilder>, Kubernet
     }
 
     /**
-     * Port is the port number to which clients should send traffic to be redirected.
+     * port is the port number to which clients should send traffic to be redirected.
      */
     @JsonProperty("port")
     public void setPort(Integer port) {
@@ -126,7 +126,7 @@ public class L4RedirectRule implements Editable<L4RedirectRuleBuilder>, Kubernet
     }
 
     /**
-     * Protocol can be TCP, SCTP or UDP.
+     * protocol can be TCP, SCTP or UDP.
      */
     @JsonProperty("protocol")
     public String getProtocol() {
@@ -134,7 +134,7 @@ public class L4RedirectRule implements Editable<L4RedirectRuleBuilder>, Kubernet
     }
 
     /**
-     * Protocol can be TCP, SCTP or UDP.
+     * protocol can be TCP, SCTP or UDP.
      */
     @JsonProperty("protocol")
     public void setProtocol(String protocol) {
@@ -142,7 +142,7 @@ public class L4RedirectRule implements Editable<L4RedirectRuleBuilder>, Kubernet
     }
 
     /**
-     * TargetPort allows specifying the port number on the remote destination to which the traffic gets redirected to. If unspecified, the value from "Port" is used.
+     * targetPort allows specifying the port number on the remote destination to which the traffic gets redirected to. If unspecified, the value from "Port" is used.
      */
     @JsonProperty("targetPort")
     public Integer getTargetPort() {
@@ -150,7 +150,7 @@ public class L4RedirectRule implements Editable<L4RedirectRuleBuilder>, Kubernet
     }
 
     /**
-     * TargetPort allows specifying the port number on the remote destination to which the traffic gets redirected to. If unspecified, the value from "Port" is used.
+     * targetPort allows specifying the port number on the remote destination to which the traffic gets redirected to. If unspecified, the value from "Port" is used.
      */
     @JsonProperty("targetPort")
     public void setTargetPort(Integer targetPort) {

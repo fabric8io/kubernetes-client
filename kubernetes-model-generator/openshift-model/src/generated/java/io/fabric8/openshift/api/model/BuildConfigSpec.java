@@ -266,7 +266,7 @@ public class BuildConfigSpec implements Editable<BuildConfigSpecBuilder>, Kubern
     }
 
     /**
-     * RunPolicy describes how the new build created from this build configuration will be scheduled for execution. This is optional, if not specified we default to "Serial".
+     * runPolicy describes how the new build created from this build configuration will be scheduled for execution. This is optional, if not specified we default to "Serial".
      */
     @JsonProperty("runPolicy")
     public String getRunPolicy() {
@@ -274,7 +274,7 @@ public class BuildConfigSpec implements Editable<BuildConfigSpecBuilder>, Kubern
     }
 
     /**
-     * RunPolicy describes how the new build created from this build configuration will be scheduled for execution. This is optional, if not specified we default to "Serial".
+     * runPolicy describes how the new build created from this build configuration will be scheduled for execution. This is optional, if not specified we default to "Serial".
      */
     @JsonProperty("runPolicy")
     public void setRunPolicy(String runPolicy) {

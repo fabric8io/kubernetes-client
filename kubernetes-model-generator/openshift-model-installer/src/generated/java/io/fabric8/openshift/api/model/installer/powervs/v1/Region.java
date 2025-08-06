@@ -42,7 +42,6 @@ import lombok.experimental.Accessors;
 @JsonPropertyOrder({
     "COSRegion",
     "Description",
-    "SysTypes",
     "VPCRegion",
     "VPCZones",
     "Zones"
@@ -76,9 +75,6 @@ public class Region implements Editable<RegionBuilder>, KubernetesResource
     private String cOSRegion;
     @JsonProperty("Description")
     private String description;
-    @JsonProperty("SysTypes")
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> sysTypes = new ArrayList<>();
     @JsonProperty("VPCRegion")
     private String vPCRegion;
     @JsonProperty("VPCZones")
@@ -86,7 +82,7 @@ public class Region implements Editable<RegionBuilder>, KubernetesResource
     private List<String> vPCZones = new ArrayList<>();
     @JsonProperty("Zones")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> zones = new ArrayList<>();
+    private Map<String, Zone> zones = new LinkedHashMap<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -96,11 +92,10 @@ public class Region implements Editable<RegionBuilder>, KubernetesResource
     public Region() {
     }
 
-    public Region(String cOSRegion, String description, List<String> sysTypes, String vPCRegion, List<String> vPCZones, List<String> zones) {
+    public Region(String cOSRegion, String description, String vPCRegion, List<String> vPCZones, Map<String, Zone> zones) {
         super();
         this.cOSRegion = cOSRegion;
         this.description = description;
-        this.sysTypes = sysTypes;
         this.vPCRegion = vPCRegion;
         this.vPCZones = vPCZones;
         this.zones = zones;
@@ -141,23 +136,6 @@ public class Region implements Editable<RegionBuilder>, KubernetesResource
     /**
      * Region describes resources associated with a region in Power VS. We're using a few items from the IBM Cloud VPC offering. The region names for VPC are different so another function of this is to correlate those.
      */
-    @JsonProperty("SysTypes")
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<String> getSysTypes() {
-        return sysTypes;
-    }
-
-    /**
-     * Region describes resources associated with a region in Power VS. We're using a few items from the IBM Cloud VPC offering. The region names for VPC are different so another function of this is to correlate those.
-     */
-    @JsonProperty("SysTypes")
-    public void setSysTypes(List<String> sysTypes) {
-        this.sysTypes = sysTypes;
-    }
-
-    /**
-     * Region describes resources associated with a region in Power VS. We're using a few items from the IBM Cloud VPC offering. The region names for VPC are different so another function of this is to correlate those.
-     */
     @JsonProperty("VPCRegion")
     public String getVPCRegion() {
         return vPCRegion;
@@ -193,7 +171,7 @@ public class Region implements Editable<RegionBuilder>, KubernetesResource
      */
     @JsonProperty("Zones")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<String> getZones() {
+    public Map<String, Zone> getZones() {
         return zones;
     }
 
@@ -201,7 +179,7 @@ public class Region implements Editable<RegionBuilder>, KubernetesResource
      * Region describes resources associated with a region in Power VS. We're using a few items from the IBM Cloud VPC offering. The region names for VPC are different so another function of this is to correlate those.
      */
     @JsonProperty("Zones")
-    public void setZones(List<String> zones) {
+    public void setZones(Map<String, Zone> zones) {
         this.zones = zones;
     }
 

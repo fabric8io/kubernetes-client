@@ -420,7 +420,7 @@ public class OpenstackProviderSpec implements Editable<OpenstackProviderSpecBuil
     }
 
     /**
-     * The subnet that a set of machines will get ingress/egress traffic from
+     * The subnet that a set of machines will get ingress/egress traffic from Deprecated: primarySubnet is silently ignored. Use subnets instead.
      */
     @JsonProperty("primarySubnet")
     public String getPrimarySubnet() {
@@ -428,7 +428,7 @@ public class OpenstackProviderSpec implements Editable<OpenstackProviderSpecBuil
     }
 
     /**
-     * The subnet that a set of machines will get ingress/egress traffic from
+     * The subnet that a set of machines will get ingress/egress traffic from Deprecated: primarySubnet is silently ignored. Use subnets instead.
      */
     @JsonProperty("primarySubnet")
     public void setPrimarySubnet(String primarySubnet) {
@@ -518,7 +518,7 @@ public class OpenstackProviderSpec implements Editable<OpenstackProviderSpecBuil
     }
 
     /**
-     * The machine ssh username
+     * The machine ssh username Deprecated: sshUserName is silently ignored.
      */
     @JsonProperty("sshUserName")
     public String getSshUserName() {
@@ -526,7 +526,7 @@ public class OpenstackProviderSpec implements Editable<OpenstackProviderSpecBuil
     }
 
     /**
-     * The machine ssh username
+     * The machine ssh username Deprecated: sshUserName is silently ignored.
      */
     @JsonProperty("sshUserName")
     public void setSshUserName(String sshUserName) {

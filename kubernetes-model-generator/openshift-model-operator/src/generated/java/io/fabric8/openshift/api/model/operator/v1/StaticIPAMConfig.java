@@ -94,7 +94,7 @@ public class StaticIPAMConfig implements Editable<StaticIPAMConfigBuilder>, Kube
     }
 
     /**
-     * Addresses configures IP address for the interface
+     * addresses configures IP address for the interface
      */
     @JsonProperty("addresses")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -103,7 +103,7 @@ public class StaticIPAMConfig implements Editable<StaticIPAMConfigBuilder>, Kube
     }
 
     /**
-     * Addresses configures IP address for the interface
+     * addresses configures IP address for the interface
      */
     @JsonProperty("addresses")
     public void setAddresses(List<StaticIPAMAddresses> addresses) {
@@ -127,7 +127,7 @@ public class StaticIPAMConfig implements Editable<StaticIPAMConfigBuilder>, Kube
     }
 
     /**
-     * Routes configures IP routes for the interface
+     * routes configures IP routes for the interface
      */
     @JsonProperty("routes")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -136,7 +136,7 @@ public class StaticIPAMConfig implements Editable<StaticIPAMConfigBuilder>, Kube
     }
 
     /**
-     * Routes configures IP routes for the interface
+     * routes configures IP routes for the interface
      */
     @JsonProperty("routes")
     public void setRoutes(List<StaticIPAMRoutes> routes) {

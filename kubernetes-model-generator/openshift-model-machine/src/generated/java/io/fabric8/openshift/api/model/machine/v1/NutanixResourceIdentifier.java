@@ -106,7 +106,7 @@ public class NutanixResourceIdentifier implements Editable<NutanixResourceIdenti
     }
 
     /**
-     * Type is the identifier type to use for this resource.
+     * type is the identifier type to use for this resource.
      */
     @JsonProperty("type")
     public String getType() {
@@ -114,7 +114,7 @@ public class NutanixResourceIdentifier implements Editable<NutanixResourceIdenti
     }
 
     /**
-     * Type is the identifier type to use for this resource.
+     * type is the identifier type to use for this resource.
      */
     @JsonProperty("type")
     public void setType(String type) {

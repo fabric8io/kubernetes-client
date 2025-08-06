@@ -93,7 +93,7 @@ public class SubjectRulesReviewSpec implements Editable<SubjectRulesReviewSpecBu
     }
 
     /**
-     * Groups is optional.  Groups is the list of groups to which the User belongs.  At least one of User and Groups must be specified.
+     * groups is optional.  Groups is the list of groups to which the User belongs.  At least one of User and Groups must be specified.
      */
     @JsonProperty("groups")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -102,7 +102,7 @@ public class SubjectRulesReviewSpec implements Editable<SubjectRulesReviewSpecBu
     }
 
     /**
-     * Groups is optional.  Groups is the list of groups to which the User belongs.  At least one of User and Groups must be specified.
+     * groups is optional.  Groups is the list of groups to which the User belongs.  At least one of User and Groups must be specified.
      */
     @JsonProperty("groups")
     public void setGroups(List<String> groups) {
@@ -110,7 +110,7 @@ public class SubjectRulesReviewSpec implements Editable<SubjectRulesReviewSpecBu
     }
 
     /**
-     * Scopes to use for the evaluation.  Empty means "use the unscoped (full) permissions of the user/groups".
+     * scopes to use for the evaluation.  Empty means "use the unscoped (full) permissions of the user/groups".
      */
     @JsonProperty("scopes")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -119,7 +119,7 @@ public class SubjectRulesReviewSpec implements Editable<SubjectRulesReviewSpecBu
     }
 
     /**
-     * Scopes to use for the evaluation.  Empty means "use the unscoped (full) permissions of the user/groups".
+     * scopes to use for the evaluation.  Empty means "use the unscoped (full) permissions of the user/groups".
      */
     @JsonProperty("scopes")
     public void setScopes(List<String> scopes) {
@@ -127,7 +127,7 @@ public class SubjectRulesReviewSpec implements Editable<SubjectRulesReviewSpecBu
     }
 
     /**
-     * User is optional.  At least one of User and Groups must be specified.
+     * user is optional.  At least one of User and Groups must be specified.
      */
     @JsonProperty("user")
     public String getUser() {
@@ -135,7 +135,7 @@ public class SubjectRulesReviewSpec implements Editable<SubjectRulesReviewSpecBu
     }
 
     /**
-     * User is optional.  At least one of User and Groups must be specified.
+     * user is optional.  At least one of User and Groups must be specified.
      */
     @JsonProperty("user")
     public void setUser(String user) {

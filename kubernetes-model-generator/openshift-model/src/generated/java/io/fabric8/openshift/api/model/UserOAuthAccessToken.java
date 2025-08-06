@@ -153,7 +153,7 @@ public class UserOAuthAccessToken implements Editable<UserOAuthAccessTokenBuilde
     }
 
     /**
-     * AuthorizeToken contains the token that authorized this token
+     * authorizeToken contains the token that authorized this token
      */
     @JsonProperty("authorizeToken")
     public String getAuthorizeToken() {
@@ -161,7 +161,7 @@ public class UserOAuthAccessToken implements Editable<UserOAuthAccessTokenBuilde
     }
 
     /**
-     * AuthorizeToken contains the token that authorized this token
+     * authorizeToken contains the token that authorized this token
      */
     @JsonProperty("authorizeToken")
     public void setAuthorizeToken(String authorizeToken) {
@@ -169,7 +169,7 @@ public class UserOAuthAccessToken implements Editable<UserOAuthAccessTokenBuilde
     }
 
     /**
-     * ClientName references the client that created this token.
+     * clientName references the client that created this token.
      */
     @JsonProperty("clientName")
     public String getClientName() {
@@ -177,7 +177,7 @@ public class UserOAuthAccessToken implements Editable<UserOAuthAccessTokenBuilde
     }
 
     /**
-     * ClientName references the client that created this token.
+     * clientName references the client that created this token.
      */
     @JsonProperty("clientName")
     public void setClientName(String clientName) {
@@ -185,7 +185,7 @@ public class UserOAuthAccessToken implements Editable<UserOAuthAccessTokenBuilde
     }
 
     /**
-     * ExpiresIn is the seconds from CreationTime before this token expires.
+     * expiresIn is the seconds from CreationTime before this token expires.
      */
     @JsonProperty("expiresIn")
     public Long getExpiresIn() {
@@ -193,7 +193,7 @@ public class UserOAuthAccessToken implements Editable<UserOAuthAccessTokenBuilde
     }
 
     /**
-     * ExpiresIn is the seconds from CreationTime before this token expires.
+     * expiresIn is the seconds from CreationTime before this token expires.
      */
     @JsonProperty("expiresIn")
     public void setExpiresIn(Long expiresIn) {
@@ -201,7 +201,7 @@ public class UserOAuthAccessToken implements Editable<UserOAuthAccessTokenBuilde
     }
 
     /**
-     * InactivityTimeoutSeconds is the value in seconds, from the CreationTimestamp, after which this token can no longer be used. The value is automatically incremented when the token is used.
+     * inactivityTimeoutSeconds is the value in seconds, from the CreationTimestamp, after which this token can no longer be used. The value is automatically incremented when the token is used.
      */
     @JsonProperty("inactivityTimeoutSeconds")
     public Integer getInactivityTimeoutSeconds() {
@@ -209,7 +209,7 @@ public class UserOAuthAccessToken implements Editable<UserOAuthAccessTokenBuilde
     }
 
     /**
-     * InactivityTimeoutSeconds is the value in seconds, from the CreationTimestamp, after which this token can no longer be used. The value is automatically incremented when the token is used.
+     * inactivityTimeoutSeconds is the value in seconds, from the CreationTimestamp, after which this token can no longer be used. The value is automatically incremented when the token is used.
      */
     @JsonProperty("inactivityTimeoutSeconds")
     public void setInactivityTimeoutSeconds(Integer inactivityTimeoutSeconds) {
@@ -249,7 +249,7 @@ public class UserOAuthAccessToken implements Editable<UserOAuthAccessTokenBuilde
     }
 
     /**
-     * RedirectURI is the redirection associated with the token.
+     * redirectURI is the redirection associated with the token.
      */
     @JsonProperty("redirectURI")
     public String getRedirectURI() {
@@ -257,7 +257,7 @@ public class UserOAuthAccessToken implements Editable<UserOAuthAccessTokenBuilde
     }
 
     /**
-     * RedirectURI is the redirection associated with the token.
+     * redirectURI is the redirection associated with the token.
      */
     @JsonProperty("redirectURI")
     public void setRedirectURI(String redirectURI) {
@@ -265,7 +265,7 @@ public class UserOAuthAccessToken implements Editable<UserOAuthAccessTokenBuilde
     }
 
     /**
-     * RefreshToken is the value by which this token can be renewed. Can be blank.
+     * refreshToken is the value by which this token can be renewed. Can be blank.
      */
     @JsonProperty("refreshToken")
     public String getRefreshToken() {
@@ -273,7 +273,7 @@ public class UserOAuthAccessToken implements Editable<UserOAuthAccessTokenBuilde
     }
 
     /**
-     * RefreshToken is the value by which this token can be renewed. Can be blank.
+     * refreshToken is the value by which this token can be renewed. Can be blank.
      */
     @JsonProperty("refreshToken")
     public void setRefreshToken(String refreshToken) {
@@ -281,7 +281,7 @@ public class UserOAuthAccessToken implements Editable<UserOAuthAccessTokenBuilde
     }
 
     /**
-     * Scopes is an array of the requested scopes.
+     * scopes is an array of the requested scopes.
      */
     @JsonProperty("scopes")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -290,7 +290,7 @@ public class UserOAuthAccessToken implements Editable<UserOAuthAccessTokenBuilde
     }
 
     /**
-     * Scopes is an array of the requested scopes.
+     * scopes is an array of the requested scopes.
      */
     @JsonProperty("scopes")
     public void setScopes(List<String> scopes) {
@@ -298,7 +298,7 @@ public class UserOAuthAccessToken implements Editable<UserOAuthAccessTokenBuilde
     }
 
     /**
-     * UserName is the user name associated with this token
+     * userName is the user name associated with this token
      */
     @JsonProperty("userName")
     public String getUserName() {
@@ -306,7 +306,7 @@ public class UserOAuthAccessToken implements Editable<UserOAuthAccessTokenBuilde
     }
 
     /**
-     * UserName is the user name associated with this token
+     * userName is the user name associated with this token
      */
     @JsonProperty("userName")
     public void setUserName(String userName) {
@@ -314,7 +314,7 @@ public class UserOAuthAccessToken implements Editable<UserOAuthAccessTokenBuilde
     }
 
     /**
-     * UserUID is the unique UID associated with this token
+     * userUID is the unique UID associated with this token
      */
     @JsonProperty("userUID")
     public String getUserUID() {
@@ -322,7 +322,7 @@ public class UserOAuthAccessToken implements Editable<UserOAuthAccessTokenBuilde
     }
 
     /**
-     * UserUID is the unique UID associated with this token
+     * userUID is the unique UID associated with this token
      */
     @JsonProperty("userUID")
     public void setUserUID(String userUID) {

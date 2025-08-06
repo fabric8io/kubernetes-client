@@ -89,7 +89,7 @@ public class Placement implements Editable<PlacementBuilder>, KubernetesResource
     }
 
     /**
-     * AvailabilityZone is the availability zone of the instance
+     * availabilityZone is the availability zone of the instance
      */
     @JsonProperty("availabilityZone")
     public String getAvailabilityZone() {
@@ -97,7 +97,7 @@ public class Placement implements Editable<PlacementBuilder>, KubernetesResource
     }
 
     /**
-     * AvailabilityZone is the availability zone of the instance
+     * availabilityZone is the availability zone of the instance
      */
     @JsonProperty("availabilityZone")
     public void setAvailabilityZone(String availabilityZone) {
@@ -105,7 +105,7 @@ public class Placement implements Editable<PlacementBuilder>, KubernetesResource
     }
 
     /**
-     * Region is the region to use to create the instance
+     * region is the region to use to create the instance
      */
     @JsonProperty("region")
     public String getRegion() {
@@ -113,7 +113,7 @@ public class Placement implements Editable<PlacementBuilder>, KubernetesResource
     }
 
     /**
-     * Region is the region to use to create the instance
+     * region is the region to use to create the instance
      */
     @JsonProperty("region")
     public void setRegion(String region) {
@@ -121,7 +121,7 @@ public class Placement implements Editable<PlacementBuilder>, KubernetesResource
     }
 
     /**
-     * Tenancy indicates if instance should run on shared or single-tenant hardware. There are supported 3 options: default, dedicated and host.
+     * tenancy indicates if instance should run on shared or single-tenant hardware. There are supported 3 options: default, dedicated and host.
      */
     @JsonProperty("tenancy")
     public String getTenancy() {
@@ -129,7 +129,7 @@ public class Placement implements Editable<PlacementBuilder>, KubernetesResource
     }
 
     /**
-     * Tenancy indicates if instance should run on shared or single-tenant hardware. There are supported 3 options: default, dedicated and host.
+     * tenancy indicates if instance should run on shared or single-tenant hardware. There are supported 3 options: default, dedicated and host.
      */
     @JsonProperty("tenancy")
     public void setTenancy(String tenancy) {

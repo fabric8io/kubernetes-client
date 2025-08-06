@@ -16,6 +16,12 @@
 package main
 
 import (
+	"os"
+	"path/filepath"
+	"reflect"
+	"strings"
+	"time"
+
 	"github.com/getkin/kin-openapi/openapi3"
 	"github.com/spf13/cobra"
 	admissionV1 "k8s.io/api/admission/v1"
@@ -27,13 +33,8 @@ import (
 	metaV1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	configapiV1 "k8s.io/client-go/tools/clientcmd/api/v1"
 	metricsV1Beta1 "k8s.io/metrics/pkg/apis/metrics/v1beta1"
-	"os"
-	"path/filepath"
-	"reflect"
 	clusterapiv1beta1 "sigs.k8s.io/cluster-api/api/v1beta1"
 	kustomize "sigs.k8s.io/kustomize/api/types"
-	"strings"
-	"time"
 )
 
 var reflection = &cobra.Command{

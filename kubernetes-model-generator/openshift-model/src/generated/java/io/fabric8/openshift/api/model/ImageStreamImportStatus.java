@@ -92,7 +92,7 @@ public class ImageStreamImportStatus implements Editable<ImageStreamImportStatus
     }
 
     /**
-     * Images is set with the result of importing spec.images
+     * images is set with the result of importing spec.images
      */
     @JsonProperty("images")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -101,7 +101,7 @@ public class ImageStreamImportStatus implements Editable<ImageStreamImportStatus
     }
 
     /**
-     * Images is set with the result of importing spec.images
+     * images is set with the result of importing spec.images
      */
     @JsonProperty("images")
     public void setImages(List<ImageImportStatus> images) {

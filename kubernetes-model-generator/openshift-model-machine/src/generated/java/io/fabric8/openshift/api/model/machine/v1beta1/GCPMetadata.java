@@ -85,7 +85,7 @@ public class GCPMetadata implements Editable<GCPMetadataBuilder>, KubernetesReso
     }
 
     /**
-     * Key is the metadata key.
+     * key is the metadata key.
      */
     @JsonProperty("key")
     public String getKey() {
@@ -93,7 +93,7 @@ public class GCPMetadata implements Editable<GCPMetadataBuilder>, KubernetesReso
     }
 
     /**
-     * Key is the metadata key.
+     * key is the metadata key.
      */
     @JsonProperty("key")
     public void setKey(String key) {
@@ -101,7 +101,7 @@ public class GCPMetadata implements Editable<GCPMetadataBuilder>, KubernetesReso
     }
 
     /**
-     * Value is the metadata value.
+     * value is the metadata value.
      */
     @JsonProperty("value")
     public String getValue() {
@@ -109,7 +109,7 @@ public class GCPMetadata implements Editable<GCPMetadataBuilder>, KubernetesReso
     }
 
     /**
-     * Value is the metadata value.
+     * value is the metadata value.
      */
     @JsonProperty("value")
     public void setValue(String value) {

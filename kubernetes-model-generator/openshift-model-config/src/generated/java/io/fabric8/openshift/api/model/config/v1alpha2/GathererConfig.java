@@ -1,5 +1,5 @@
 
-package io.fabric8.openshift.api.model.machineconfiguration.v1alpha1;
+package io.fabric8.openshift.api.model.config.v1alpha2;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -20,6 +20,7 @@ import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.LabelSelector;
 import io.fabric8.kubernetes.api.model.LocalObjectReference;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
+import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
@@ -31,10 +32,14 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * gathererConfig allows to configure specific gatherers
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "name"
+    "name",
+    "state"
 })
 @ToString
 @EqualsAndHashCode
@@ -49,7 +54,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(PodTemplateSpec.class),
     @BuildableReference(ResourceRequirements.class),
     @BuildableReference(IntOrString.class),
-    @BuildableReference(io.fabric8.kubernetes.api.model.ObjectReference.class),
+    @BuildableReference(ObjectReference.class),
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class),
     @BuildableReference(EnvVar.class),
@@ -58,27 +63,30 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class MachineConfigNodeSpecPinnedImageSet implements Editable<MachineConfigNodeSpecPinnedImageSetBuilder>, KubernetesResource
+public class GathererConfig implements Editable<GathererConfigBuilder>, KubernetesResource
 {
 
     @JsonProperty("name")
     private String name;
+    @JsonProperty("state")
+    private String state;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
      */
-    public MachineConfigNodeSpecPinnedImageSet() {
+    public GathererConfig() {
     }
 
-    public MachineConfigNodeSpecPinnedImageSet(String name) {
+    public GathererConfig(String name, String state) {
         super();
         this.name = name;
+        this.state = state;
     }
 
     /**
-     * name is the name of the pinned image set. Must be a lowercase RFC-1123 hostname (https://tools.ietf.org/html/rfc1123) It may consist of only alphanumeric characters, hyphens (-) and periods (.) and must be at most 253 characters in length.
+     * name is the required name of a specific gatherer It may not exceed 256 characters. The format for a gatherer name is: {gatherer}/{function} where the function is optional. Gatherer consists of a lowercase letters only that may include underscores (_). Function consists of a lowercase letters only that may include underscores (_) and is separated from the gatherer by a forward slash (/). The particular gatherers can be found at https://github.com/openshift/insights-operator/blob/master/docs/gathered-data.md. Run the following command to get the names of last active gatherers: "oc get insightsoperators.operator.openshift.io cluster -o json | jq '.status.gatherStatus.gatherers[].name'"
      */
     @JsonProperty("name")
     public String getName() {
@@ -86,20 +94,36 @@ public class MachineConfigNodeSpecPinnedImageSet implements Editable<MachineConf
     }
 
     /**
-     * name is the name of the pinned image set. Must be a lowercase RFC-1123 hostname (https://tools.ietf.org/html/rfc1123) It may consist of only alphanumeric characters, hyphens (-) and periods (.) and must be at most 253 characters in length.
+     * name is the required name of a specific gatherer It may not exceed 256 characters. The format for a gatherer name is: {gatherer}/{function} where the function is optional. Gatherer consists of a lowercase letters only that may include underscores (_). Function consists of a lowercase letters only that may include underscores (_) and is separated from the gatherer by a forward slash (/). The particular gatherers can be found at https://github.com/openshift/insights-operator/blob/master/docs/gathered-data.md. Run the following command to get the names of last active gatherers: "oc get insightsoperators.operator.openshift.io cluster -o json | jq '.status.gatherStatus.gatherers[].name'"
      */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;
     }
 
-    @JsonIgnore
-    public MachineConfigNodeSpecPinnedImageSetBuilder edit() {
-        return new MachineConfigNodeSpecPinnedImageSetBuilder(this);
+    /**
+     * state is a required field that allows you to configure specific gatherer. Valid values are "Enabled" and "Disabled". When set to Enabled the gatherer will run. When set to Disabled the gatherer will not run.
+     */
+    @JsonProperty("state")
+    public String getState() {
+        return state;
+    }
+
+    /**
+     * state is a required field that allows you to configure specific gatherer. Valid values are "Enabled" and "Disabled". When set to Enabled the gatherer will run. When set to Disabled the gatherer will not run.
+     */
+    @JsonProperty("state")
+    public void setState(String state) {
+        this.state = state;
     }
 
     @JsonIgnore
-    public MachineConfigNodeSpecPinnedImageSetBuilder toBuilder() {
+    public GathererConfigBuilder edit() {
+        return new GathererConfigBuilder(this);
+    }
+
+    @JsonIgnore
+    public GathererConfigBuilder toBuilder() {
         return edit();
     }
 

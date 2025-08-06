@@ -101,7 +101,7 @@ public class DataDisk implements Editable<DataDiskBuilder>, KubernetesResource
     }
 
     /**
-     * CachingType specifies the caching requirements. Empty value means no opinion and the platform chooses a default, which is subject to change over time. Currently the default is CachingTypeNone.
+     * cachingType specifies the caching requirements. Empty value means no opinion and the platform chooses a default, which is subject to change over time. Currently the default is CachingTypeNone.
      */
     @JsonProperty("cachingType")
     public String getCachingType() {
@@ -109,7 +109,7 @@ public class DataDisk implements Editable<DataDiskBuilder>, KubernetesResource
     }
 
     /**
-     * CachingType specifies the caching requirements. Empty value means no opinion and the platform chooses a default, which is subject to change over time. Currently the default is CachingTypeNone.
+     * cachingType specifies the caching requirements. Empty value means no opinion and the platform chooses a default, which is subject to change over time. Currently the default is CachingTypeNone.
      */
     @JsonProperty("cachingType")
     public void setCachingType(String cachingType) {
@@ -117,7 +117,7 @@ public class DataDisk implements Editable<DataDiskBuilder>, KubernetesResource
     }
 
     /**
-     * DeletionPolicy specifies the data disk deletion policy upon Machine deletion. Possible values are "Delete","Detach". When "Delete" is used the data disk is deleted when the Machine is deleted. When "Detach" is used the data disk is detached from the Machine and retained when the Machine is deleted.
+     * deletionPolicy specifies the data disk deletion policy upon Machine deletion. Possible values are "Delete","Detach". When "Delete" is used the data disk is deleted when the Machine is deleted. When "Detach" is used the data disk is detached from the Machine and retained when the Machine is deleted.
      */
     @JsonProperty("deletionPolicy")
     public String getDeletionPolicy() {
@@ -125,7 +125,7 @@ public class DataDisk implements Editable<DataDiskBuilder>, KubernetesResource
     }
 
     /**
-     * DeletionPolicy specifies the data disk deletion policy upon Machine deletion. Possible values are "Delete","Detach". When "Delete" is used the data disk is deleted when the Machine is deleted. When "Detach" is used the data disk is detached from the Machine and retained when the Machine is deleted.
+     * deletionPolicy specifies the data disk deletion policy upon Machine deletion. Possible values are "Delete","Detach". When "Delete" is used the data disk is deleted when the Machine is deleted. When "Detach" is used the data disk is detached from the Machine and retained when the Machine is deleted.
      */
     @JsonProperty("deletionPolicy")
     public void setDeletionPolicy(String deletionPolicy) {
@@ -133,7 +133,7 @@ public class DataDisk implements Editable<DataDiskBuilder>, KubernetesResource
     }
 
     /**
-     * DiskSizeGB is the size in GB to assign to the data disk.
+     * diskSizeGB is the size in GB to assign to the data disk.
      */
     @JsonProperty("diskSizeGB")
     public Integer getDiskSizeGB() {
@@ -141,7 +141,7 @@ public class DataDisk implements Editable<DataDiskBuilder>, KubernetesResource
     }
 
     /**
-     * DiskSizeGB is the size in GB to assign to the data disk.
+     * diskSizeGB is the size in GB to assign to the data disk.
      */
     @JsonProperty("diskSizeGB")
     public void setDiskSizeGB(Integer diskSizeGB) {
@@ -149,7 +149,7 @@ public class DataDisk implements Editable<DataDiskBuilder>, KubernetesResource
     }
 
     /**
-     * Lun Specifies the logical unit number of the data disk. This value is used to identify data disks within the VM and therefore must be unique for each data disk attached to a VM. This value is also needed for referencing the data disks devices within userdata to perform disk initialization through Ignition (e.g. partition/format/mount). The value must be between 0 and 63.
+     * lun Specifies the logical unit number of the data disk. This value is used to identify data disks within the VM and therefore must be unique for each data disk attached to a VM. This value is also needed for referencing the data disks devices within userdata to perform disk initialization through Ignition (e.g. partition/format/mount). The value must be between 0 and 63.
      */
     @JsonProperty("lun")
     public Integer getLun() {
@@ -157,7 +157,7 @@ public class DataDisk implements Editable<DataDiskBuilder>, KubernetesResource
     }
 
     /**
-     * Lun Specifies the logical unit number of the data disk. This value is used to identify data disks within the VM and therefore must be unique for each data disk attached to a VM. This value is also needed for referencing the data disks devices within userdata to perform disk initialization through Ignition (e.g. partition/format/mount). The value must be between 0 and 63.
+     * lun Specifies the logical unit number of the data disk. This value is used to identify data disks within the VM and therefore must be unique for each data disk attached to a VM. This value is also needed for referencing the data disks devices within userdata to perform disk initialization through Ignition (e.g. partition/format/mount). The value must be between 0 and 63.
      */
     @JsonProperty("lun")
     public void setLun(Integer lun) {
@@ -181,7 +181,7 @@ public class DataDisk implements Editable<DataDiskBuilder>, KubernetesResource
     }
 
     /**
-     * NameSuffix is the suffix to be appended to the machine name to generate the disk name. Each disk name will be in format &lt;machineName&gt;_&lt;nameSuffix&gt;. NameSuffix name must start and finish with an alphanumeric character and can only contain letters, numbers, underscores, periods or hyphens. The overall disk name must not exceed 80 chars in length.
+     * nameSuffix is the suffix to be appended to the machine name to generate the disk name. Each disk name will be in format &lt;machineName&gt;_&lt;nameSuffix&gt;. NameSuffix name must start and finish with an alphanumeric character and can only contain letters, numbers, underscores, periods or hyphens. The overall disk name must not exceed 80 chars in length.
      */
     @JsonProperty("nameSuffix")
     public String getNameSuffix() {
@@ -189,7 +189,7 @@ public class DataDisk implements Editable<DataDiskBuilder>, KubernetesResource
     }
 
     /**
-     * NameSuffix is the suffix to be appended to the machine name to generate the disk name. Each disk name will be in format &lt;machineName&gt;_&lt;nameSuffix&gt;. NameSuffix name must start and finish with an alphanumeric character and can only contain letters, numbers, underscores, periods or hyphens. The overall disk name must not exceed 80 chars in length.
+     * nameSuffix is the suffix to be appended to the machine name to generate the disk name. Each disk name will be in format &lt;machineName&gt;_&lt;nameSuffix&gt;. NameSuffix name must start and finish with an alphanumeric character and can only contain letters, numbers, underscores, periods or hyphens. The overall disk name must not exceed 80 chars in length.
      */
     @JsonProperty("nameSuffix")
     public void setNameSuffix(String nameSuffix) {

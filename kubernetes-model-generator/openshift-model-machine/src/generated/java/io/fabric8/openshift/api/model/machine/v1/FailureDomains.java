@@ -114,7 +114,7 @@ public class FailureDomains implements Editable<FailureDomainsBuilder>, Kubernet
     }
 
     /**
-     * AWS configures failure domain information for the AWS platform.
+     * aws configures failure domain information for the AWS platform.
      */
     @JsonProperty("aws")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -123,7 +123,7 @@ public class FailureDomains implements Editable<FailureDomainsBuilder>, Kubernet
     }
 
     /**
-     * AWS configures failure domain information for the AWS platform.
+     * aws configures failure domain information for the AWS platform.
      */
     @JsonProperty("aws")
     public void setAws(List<AWSFailureDomain> aws) {
@@ -131,7 +131,7 @@ public class FailureDomains implements Editable<FailureDomainsBuilder>, Kubernet
     }
 
     /**
-     * Azure configures failure domain information for the Azure platform.
+     * azure configures failure domain information for the Azure platform.
      */
     @JsonProperty("azure")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -140,7 +140,7 @@ public class FailureDomains implements Editable<FailureDomainsBuilder>, Kubernet
     }
 
     /**
-     * Azure configures failure domain information for the Azure platform.
+     * azure configures failure domain information for the Azure platform.
      */
     @JsonProperty("azure")
     public void setAzure(List<AzureFailureDomain> azure) {
@@ -148,7 +148,7 @@ public class FailureDomains implements Editable<FailureDomainsBuilder>, Kubernet
     }
 
     /**
-     * GCP configures failure domain information for the GCP platform.
+     * gcp configures failure domain information for the GCP platform.
      */
     @JsonProperty("gcp")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -157,7 +157,7 @@ public class FailureDomains implements Editable<FailureDomainsBuilder>, Kubernet
     }
 
     /**
-     * GCP configures failure domain information for the GCP platform.
+     * gcp configures failure domain information for the GCP platform.
      */
     @JsonProperty("gcp")
     public void setGcp(List<GCPFailureDomain> gcp) {
@@ -182,7 +182,7 @@ public class FailureDomains implements Editable<FailureDomainsBuilder>, Kubernet
     }
 
     /**
-     * OpenStack configures failure domain information for the OpenStack platform.
+     * openstack configures failure domain information for the OpenStack platform.
      */
     @JsonProperty("openstack")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -191,7 +191,7 @@ public class FailureDomains implements Editable<FailureDomainsBuilder>, Kubernet
     }
 
     /**
-     * OpenStack configures failure domain information for the OpenStack platform.
+     * openstack configures failure domain information for the OpenStack platform.
      */
     @JsonProperty("openstack")
     public void setOpenstack(List<OpenStackFailureDomain> openstack) {
@@ -199,7 +199,7 @@ public class FailureDomains implements Editable<FailureDomainsBuilder>, Kubernet
     }
 
     /**
-     * Platform identifies the platform for which the FailureDomain represents. Currently supported values are AWS, Azure, GCP, OpenStack, VSphere and Nutanix.
+     * platform identifies the platform for which the FailureDomain represents. Currently supported values are AWS, Azure, GCP, OpenStack, VSphere and Nutanix.
      */
     @JsonProperty("platform")
     public String getPlatform() {
@@ -207,7 +207,7 @@ public class FailureDomains implements Editable<FailureDomainsBuilder>, Kubernet
     }
 
     /**
-     * Platform identifies the platform for which the FailureDomain represents. Currently supported values are AWS, Azure, GCP, OpenStack, VSphere and Nutanix.
+     * platform identifies the platform for which the FailureDomain represents. Currently supported values are AWS, Azure, GCP, OpenStack, VSphere and Nutanix.
      */
     @JsonProperty("platform")
     public void setPlatform(String platform) {

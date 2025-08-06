@@ -123,7 +123,7 @@ public class RoleBindingList implements Editable<RoleBindingListBuilder>, Kubern
     }
 
     /**
-     * Items is a list of RoleBindings
+     * items is a list of RoleBindings
      */
     @JsonProperty("items")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -132,7 +132,7 @@ public class RoleBindingList implements Editable<RoleBindingListBuilder>, Kubern
     }
 
     /**
-     * Items is a list of RoleBindings
+     * items is a list of RoleBindings
      */
     @JsonProperty("items")
     public void setItems(List<io.fabric8.openshift.api.model.RoleBinding> items) {

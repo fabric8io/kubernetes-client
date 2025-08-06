@@ -96,7 +96,7 @@ public class MachineHealthCheckStatus implements Editable<MachineHealthCheckStat
     }
 
     /**
-     * Conditions defines the current state of the MachineHealthCheck
+     * conditions defines the current state of the MachineHealthCheck
      */
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -105,7 +105,7 @@ public class MachineHealthCheckStatus implements Editable<MachineHealthCheckStat
     }
 
     /**
-     * Conditions defines the current state of the MachineHealthCheck
+     * conditions defines the current state of the MachineHealthCheck
      */
     @JsonProperty("conditions")
     public void setConditions(List<Condition> conditions) {
@@ -145,7 +145,7 @@ public class MachineHealthCheckStatus implements Editable<MachineHealthCheckStat
     }
 
     /**
-     * RemediationsAllowed is the number of further remediations allowed by this machine health check before maxUnhealthy short circuiting will be applied
+     * remediationsAllowed is the number of further remediations allowed by this machine health check before maxUnhealthy short circuiting will be applied
      */
     @JsonProperty("remediationsAllowed")
     public Integer getRemediationsAllowed() {
@@ -153,7 +153,7 @@ public class MachineHealthCheckStatus implements Editable<MachineHealthCheckStat
     }
 
     /**
-     * RemediationsAllowed is the number of further remediations allowed by this machine health check before maxUnhealthy short circuiting will be applied
+     * remediationsAllowed is the number of further remediations allowed by this machine health check before maxUnhealthy short circuiting will be applied
      */
     @JsonProperty("remediationsAllowed")
     public void setRemediationsAllowed(Integer remediationsAllowed) {

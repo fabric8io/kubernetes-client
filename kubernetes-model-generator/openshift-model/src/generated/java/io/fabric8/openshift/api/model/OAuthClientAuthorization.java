@@ -133,7 +133,7 @@ public class OAuthClientAuthorization implements Editable<OAuthClientAuthorizati
     }
 
     /**
-     * ClientName references the client that created this authorization
+     * clientName references the client that created this authorization
      */
     @JsonProperty("clientName")
     public String getClientName() {
@@ -141,7 +141,7 @@ public class OAuthClientAuthorization implements Editable<OAuthClientAuthorizati
     }
 
     /**
-     * ClientName references the client that created this authorization
+     * clientName references the client that created this authorization
      */
     @JsonProperty("clientName")
     public void setClientName(String clientName) {
@@ -181,7 +181,7 @@ public class OAuthClientAuthorization implements Editable<OAuthClientAuthorizati
     }
 
     /**
-     * Scopes is an array of the granted scopes.
+     * scopes is an array of the granted scopes.
      */
     @JsonProperty("scopes")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -190,7 +190,7 @@ public class OAuthClientAuthorization implements Editable<OAuthClientAuthorizati
     }
 
     /**
-     * Scopes is an array of the granted scopes.
+     * scopes is an array of the granted scopes.
      */
     @JsonProperty("scopes")
     public void setScopes(List<String> scopes) {
@@ -198,7 +198,7 @@ public class OAuthClientAuthorization implements Editable<OAuthClientAuthorizati
     }
 
     /**
-     * UserName is the user name that authorized this client
+     * userName is the user name that authorized this client
      */
     @JsonProperty("userName")
     public String getUserName() {
@@ -206,7 +206,7 @@ public class OAuthClientAuthorization implements Editable<OAuthClientAuthorizati
     }
 
     /**
-     * UserName is the user name that authorized this client
+     * userName is the user name that authorized this client
      */
     @JsonProperty("userName")
     public void setUserName(String userName) {
@@ -214,7 +214,7 @@ public class OAuthClientAuthorization implements Editable<OAuthClientAuthorizati
     }
 
     /**
-     * UserUID is the unique UID associated with this authorization. UserUID and UserName must both match for this authorization to be valid.
+     * userUID is the unique UID associated with this authorization. UserUID and UserName must both match for this authorization to be valid.
      */
     @JsonProperty("userUID")
     public String getUserUID() {
@@ -222,7 +222,7 @@ public class OAuthClientAuthorization implements Editable<OAuthClientAuthorizati
     }
 
     /**
-     * UserUID is the unique UID associated with this authorization. UserUID and UserName must both match for this authorization to be valid.
+     * userUID is the unique UID associated with this authorization. UserUID and UserName must both match for this authorization to be valid.
      */
     @JsonProperty("userUID")
     public void setUserUID(String userUID) {

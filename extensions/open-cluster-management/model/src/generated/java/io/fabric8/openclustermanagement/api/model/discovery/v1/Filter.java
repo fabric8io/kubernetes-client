@@ -35,13 +35,16 @@ import lombok.ToString;
 import lombok.experimental.Accessors;
 
 /**
- * Filter ...
+ * Filter defines the criteria for discovering clusters based on specific attributes.
  */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
+    "clusterTypes",
+    "infrastructureProviders",
     "lastActive",
-    "openShiftVersions"
+    "openShiftVersions",
+    "regions"
 })
 @ToString
 @EqualsAndHashCode
@@ -68,11 +71,20 @@ import lombok.experimental.Accessors;
 public class Filter implements Editable<FilterBuilder>, KubernetesResource
 {
 
+    @JsonProperty("clusterTypes")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<String> clusterTypes = new ArrayList<>();
+    @JsonProperty("infrastructureProviders")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<String> infrastructureProviders = new ArrayList<>();
     @JsonProperty("lastActive")
     private Integer lastActive;
     @JsonProperty("openShiftVersions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> openShiftVersions = new ArrayList<>();
+    @JsonProperty("regions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<String> regions = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -82,10 +94,47 @@ public class Filter implements Editable<FilterBuilder>, KubernetesResource
     public Filter() {
     }
 
-    public Filter(Integer lastActive, List<String> openShiftVersions) {
+    public Filter(List<String> clusterTypes, List<String> infrastructureProviders, Integer lastActive, List<String> openShiftVersions, List<String> regions) {
         super();
+        this.clusterTypes = clusterTypes;
+        this.infrastructureProviders = infrastructureProviders;
         this.lastActive = lastActive;
         this.openShiftVersions = openShiftVersions;
+        this.regions = regions;
+    }
+
+    /**
+     * ClusterTypes is the list of cluster types to discover. These types represent the platform the cluster is running on, such as OpenShift Container Platform (OCP), Azure Red Hat OpenShift (ARO), or others.
+     */
+    @JsonProperty("clusterTypes")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public List<String> getClusterTypes() {
+        return clusterTypes;
+    }
+
+    /**
+     * ClusterTypes is the list of cluster types to discover. These types represent the platform the cluster is running on, such as OpenShift Container Platform (OCP), Azure Red Hat OpenShift (ARO), or others.
+     */
+    @JsonProperty("clusterTypes")
+    public void setClusterTypes(List<String> clusterTypes) {
+        this.clusterTypes = clusterTypes;
+    }
+
+    /**
+     * InfrastructureProviders is the list of infrastructure providers to discover. This can be a list of cloud providers or platforms (e.g., AWS, Azure, GCP) where clusters might be running.
+     */
+    @JsonProperty("infrastructureProviders")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public List<String> getInfrastructureProviders() {
+        return infrastructureProviders;
+    }
+
+    /**
+     * InfrastructureProviders is the list of infrastructure providers to discover. This can be a list of cloud providers or platforms (e.g., AWS, Azure, GCP) where clusters might be running.
+     */
+    @JsonProperty("infrastructureProviders")
+    public void setInfrastructureProviders(List<String> infrastructureProviders) {
+        this.infrastructureProviders = infrastructureProviders;
     }
 
     /**
@@ -119,6 +168,23 @@ public class Filter implements Editable<FilterBuilder>, KubernetesResource
     @JsonProperty("openShiftVersions")
     public void setOpenShiftVersions(List<String> openShiftVersions) {
         this.openShiftVersions = openShiftVersions;
+    }
+
+    /**
+     * Regions is the list of regions where OpenShift clusters are located. This helps in filtering clusters based on geographic location or data center region, useful for compliance or latency requirements.
+     */
+    @JsonProperty("regions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public List<String> getRegions() {
+        return regions;
+    }
+
+    /**
+     * Regions is the list of regions where OpenShift clusters are located. This helps in filtering clusters based on geographic location or data center region, useful for compliance or latency requirements.
+     */
+    @JsonProperty("regions")
+    public void setRegions(List<String> regions) {
+        this.regions = regions;
     }
 
     @JsonIgnore

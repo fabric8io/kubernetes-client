@@ -109,7 +109,7 @@ public class JenkinsPipelineBuildStrategy implements Editable<JenkinsPipelineBui
     }
 
     /**
-     * Jenkinsfile defines the optional raw contents of a Jenkinsfile which defines a Jenkins pipeline build.
+     * jenkinsfile defines the optional raw contents of a Jenkinsfile which defines a Jenkins pipeline build.
      */
     @JsonProperty("jenkinsfile")
     public String getJenkinsfile() {
@@ -117,7 +117,7 @@ public class JenkinsPipelineBuildStrategy implements Editable<JenkinsPipelineBui
     }
 
     /**
-     * Jenkinsfile defines the optional raw contents of a Jenkinsfile which defines a Jenkins pipeline build.
+     * jenkinsfile defines the optional raw contents of a Jenkinsfile which defines a Jenkins pipeline build.
      */
     @JsonProperty("jenkinsfile")
     public void setJenkinsfile(String jenkinsfile) {
@@ -125,7 +125,7 @@ public class JenkinsPipelineBuildStrategy implements Editable<JenkinsPipelineBui
     }
 
     /**
-     * JenkinsfilePath is the optional path of the Jenkinsfile that will be used to configure the pipeline relative to the root of the context (contextDir). If both JenkinsfilePath &amp; Jenkinsfile are both not specified, this defaults to Jenkinsfile in the root of the specified contextDir.
+     * jenkinsfilePath is the optional path of the Jenkinsfile that will be used to configure the pipeline relative to the root of the context (contextDir). If both JenkinsfilePath &amp; Jenkinsfile are both not specified, this defaults to Jenkinsfile in the root of the specified contextDir.
      */
     @JsonProperty("jenkinsfilePath")
     public String getJenkinsfilePath() {
@@ -133,7 +133,7 @@ public class JenkinsPipelineBuildStrategy implements Editable<JenkinsPipelineBui
     }
 
     /**
-     * JenkinsfilePath is the optional path of the Jenkinsfile that will be used to configure the pipeline relative to the root of the context (contextDir). If both JenkinsfilePath &amp; Jenkinsfile are both not specified, this defaults to Jenkinsfile in the root of the specified contextDir.
+     * jenkinsfilePath is the optional path of the Jenkinsfile that will be used to configure the pipeline relative to the root of the context (contextDir). If both JenkinsfilePath &amp; Jenkinsfile are both not specified, this defaults to Jenkinsfile in the root of the specified contextDir.
      */
     @JsonProperty("jenkinsfilePath")
     public void setJenkinsfilePath(String jenkinsfilePath) {

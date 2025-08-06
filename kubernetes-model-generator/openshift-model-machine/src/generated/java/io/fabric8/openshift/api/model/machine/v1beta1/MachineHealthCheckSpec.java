@@ -164,7 +164,7 @@ public class MachineHealthCheckSpec implements Editable<MachineHealthCheckSpecBu
     }
 
     /**
-     * UnhealthyConditions contains a list of the conditions that determine whether a node is considered unhealthy.  The conditions are combined in a logical OR, i.e. if any of the conditions is met, the node is unhealthy.
+     * unhealthyConditions contains a list of the conditions that determine whether a node is considered unhealthy.  The conditions are combined in a logical OR, i.e. if any of the conditions is met, the node is unhealthy.
      */
     @JsonProperty("unhealthyConditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -173,7 +173,7 @@ public class MachineHealthCheckSpec implements Editable<MachineHealthCheckSpecBu
     }
 
     /**
-     * UnhealthyConditions contains a list of the conditions that determine whether a node is considered unhealthy.  The conditions are combined in a logical OR, i.e. if any of the conditions is met, the node is unhealthy.
+     * unhealthyConditions contains a list of the conditions that determine whether a node is considered unhealthy.  The conditions are combined in a logical OR, i.e. if any of the conditions is met, the node is unhealthy.
      */
     @JsonProperty("unhealthyConditions")
     public void setUnhealthyConditions(List<UnhealthyCondition> unhealthyConditions) {

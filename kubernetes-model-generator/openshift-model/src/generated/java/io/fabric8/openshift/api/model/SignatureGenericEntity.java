@@ -101,7 +101,7 @@ public class SignatureGenericEntity implements Editable<SignatureGenericEntityBu
     }
 
     /**
-     * Organization name.
+     * organization name.
      */
     @JsonProperty("organization")
     public String getOrganization() {
@@ -109,7 +109,7 @@ public class SignatureGenericEntity implements Editable<SignatureGenericEntityBu
     }
 
     /**
-     * Organization name.
+     * organization name.
      */
     @JsonProperty("organization")
     public void setOrganization(String organization) {

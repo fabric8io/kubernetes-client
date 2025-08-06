@@ -123,7 +123,7 @@ public class ImageStreamList implements Editable<ImageStreamListBuilder>, Kubern
     }
 
     /**
-     * Items is a list of imageStreams
+     * items is a list of imageStreams
      */
     @JsonProperty("items")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -132,7 +132,7 @@ public class ImageStreamList implements Editable<ImageStreamListBuilder>, Kubern
     }
 
     /**
-     * Items is a list of imageStreams
+     * items is a list of imageStreams
      */
     @JsonProperty("items")
     public void setItems(List<io.fabric8.openshift.api.model.ImageStream> items) {

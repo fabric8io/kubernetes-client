@@ -92,7 +92,7 @@ public class TokenClaimValidationRule implements Editable<TokenClaimValidationRu
     }
 
     /**
-     * Type sets the type of the validation rule
+     * type sets the type of the validation rule
      */
     @JsonProperty("type")
     public String getType() {
@@ -100,7 +100,7 @@ public class TokenClaimValidationRule implements Editable<TokenClaimValidationRu
     }
 
     /**
-     * Type sets the type of the validation rule
+     * type sets the type of the validation rule
      */
     @JsonProperty("type")
     public void setType(String type) {

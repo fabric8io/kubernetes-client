@@ -94,7 +94,7 @@ public class RepositoryImportStatus implements Editable<RepositoryImportStatusBu
     }
 
     /**
-     * AdditionalTags are tags that exist in the repository but were not imported because a maximum limit of automatic imports was applied.
+     * additionalTags are tags that exist in the repository but were not imported because a maximum limit of automatic imports was applied.
      */
     @JsonProperty("additionalTags")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -103,7 +103,7 @@ public class RepositoryImportStatus implements Editable<RepositoryImportStatusBu
     }
 
     /**
-     * AdditionalTags are tags that exist in the repository but were not imported because a maximum limit of automatic imports was applied.
+     * additionalTags are tags that exist in the repository but were not imported because a maximum limit of automatic imports was applied.
      */
     @JsonProperty("additionalTags")
     public void setAdditionalTags(List<String> additionalTags) {
@@ -111,7 +111,7 @@ public class RepositoryImportStatus implements Editable<RepositoryImportStatusBu
     }
 
     /**
-     * Images is a list of images successfully retrieved by the import of the repository.
+     * images is a list of images successfully retrieved by the import of the repository.
      */
     @JsonProperty("images")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -120,7 +120,7 @@ public class RepositoryImportStatus implements Editable<RepositoryImportStatusBu
     }
 
     /**
-     * Images is a list of images successfully retrieved by the import of the repository.
+     * images is a list of images successfully retrieved by the import of the repository.
      */
     @JsonProperty("images")
     public void setImages(List<ImageImportStatus> images) {

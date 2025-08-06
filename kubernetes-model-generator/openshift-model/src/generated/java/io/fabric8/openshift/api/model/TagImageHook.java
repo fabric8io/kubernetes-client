@@ -85,7 +85,7 @@ public class TagImageHook implements Editable<TagImageHookBuilder>, KubernetesRe
     }
 
     /**
-     * ContainerName is the name of a container in the deployment config whose image value will be used as the source of the tag. If there is only a single container this value will be defaulted to the name of that container.
+     * containerName is the name of a container in the deployment config whose image value will be used as the source of the tag. If there is only a single container this value will be defaulted to the name of that container.
      */
     @JsonProperty("containerName")
     public String getContainerName() {
@@ -93,7 +93,7 @@ public class TagImageHook implements Editable<TagImageHookBuilder>, KubernetesRe
     }
 
     /**
-     * ContainerName is the name of a container in the deployment config whose image value will be used as the source of the tag. If there is only a single container this value will be defaulted to the name of that container.
+     * containerName is the name of a container in the deployment config whose image value will be used as the source of the tag. If there is only a single container this value will be defaulted to the name of that container.
      */
     @JsonProperty("containerName")
     public void setContainerName(String containerName) {

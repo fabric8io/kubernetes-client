@@ -81,7 +81,7 @@ public class TestReportingSpec implements Editable<TestReportingSpecBuilder>, Ku
     }
 
     /**
-     * TestsForFeatureGates is a list, indexed by FeatureGate and includes information about testing.
+     * testsForFeatureGates is a list, indexed by FeatureGate and includes information about testing.
      */
     @JsonProperty("testsForFeatureGates")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -90,7 +90,7 @@ public class TestReportingSpec implements Editable<TestReportingSpecBuilder>, Ku
     }
 
     /**
-     * TestsForFeatureGates is a list, indexed by FeatureGate and includes information about testing.
+     * testsForFeatureGates is a list, indexed by FeatureGate and includes information about testing.
      */
     @JsonProperty("testsForFeatureGates")
     public void setTestsForFeatureGates(List<FeatureGateTests> testsForFeatureGates) {

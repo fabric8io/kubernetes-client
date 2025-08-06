@@ -85,7 +85,7 @@ public class NamedRole implements Editable<NamedRoleBuilder>, KubernetesResource
     }
 
     /**
-     * Name is the name of the role
+     * name is the name of the role
      */
     @JsonProperty("name")
     public String getName() {
@@ -93,7 +93,7 @@ public class NamedRole implements Editable<NamedRoleBuilder>, KubernetesResource
     }
 
     /**
-     * Name is the name of the role
+     * name is the name of the role
      */
     @JsonProperty("name")
     public void setName(String name) {

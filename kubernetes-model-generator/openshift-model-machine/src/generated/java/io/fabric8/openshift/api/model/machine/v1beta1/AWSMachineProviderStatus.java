@@ -127,7 +127,7 @@ public class AWSMachineProviderStatus implements Editable<AWSMachineProviderStat
     }
 
     /**
-     * Conditions is a set of conditions associated with the Machine to indicate errors or other status
+     * conditions is a set of conditions associated with the Machine to indicate errors or other status
      */
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -136,7 +136,7 @@ public class AWSMachineProviderStatus implements Editable<AWSMachineProviderStat
     }
 
     /**
-     * Conditions is a set of conditions associated with the Machine to indicate errors or other status
+     * conditions is a set of conditions associated with the Machine to indicate errors or other status
      */
     @JsonProperty("conditions")
     public void setConditions(List<Condition> conditions) {
@@ -144,7 +144,7 @@ public class AWSMachineProviderStatus implements Editable<AWSMachineProviderStat
     }
 
     /**
-     * InstanceID is the instance ID of the machine created in AWS
+     * instanceId is the instance ID of the machine created in AWS
      */
     @JsonProperty("instanceId")
     public String getInstanceId() {
@@ -152,7 +152,7 @@ public class AWSMachineProviderStatus implements Editable<AWSMachineProviderStat
     }
 
     /**
-     * InstanceID is the instance ID of the machine created in AWS
+     * instanceId is the instance ID of the machine created in AWS
      */
     @JsonProperty("instanceId")
     public void setInstanceId(String instanceId) {
@@ -160,7 +160,7 @@ public class AWSMachineProviderStatus implements Editable<AWSMachineProviderStat
     }
 
     /**
-     * InstanceState is the state of the AWS instance for this machine
+     * instanceState is the state of the AWS instance for this machine
      */
     @JsonProperty("instanceState")
     public String getInstanceState() {
@@ -168,7 +168,7 @@ public class AWSMachineProviderStatus implements Editable<AWSMachineProviderStat
     }
 
     /**
-     * InstanceState is the state of the AWS instance for this machine
+     * instanceState is the state of the AWS instance for this machine
      */
     @JsonProperty("instanceState")
     public void setInstanceState(String instanceState) {
