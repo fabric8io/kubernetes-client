@@ -24,8 +24,10 @@ import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.databind.node.TextNode;
 import com.fasterxml.jackson.databind.ser.std.StdSerializer;
+import io.fabric8.crd.generator.annotation.PreserveUnknownFields;
 import io.fabric8.crd.generator.annotation.SchemaSwap;
 import io.fabric8.crdv2.example.annotated.Annotated;
 import io.fabric8.crdv2.example.basic.Basic;
@@ -352,9 +354,49 @@ class JsonSchemaTest {
 
   }
 
+  public static class PreserveUnknownByFieldType {
+
+    public JsonNode jsonNode;
+    public ObjectNode objectNode;
+
+  }
+
+  @PreserveUnknownFields
+  public static class PreserveUnknownAnnotation extends PreserveUnknown {
+
+  }
+
   @Test
-  void testPreserveUnknown() {
+  void testImplicitPreserveUnknown() {
     JSONSchemaProps schema = new JsonSchema(ResolvingContext.defaultResolvingContext(true), PreserveUnknown.class).getSchema();
+    assertNotNull(schema);
+    assertEquals(0, schema.getProperties().size());
+    assertEquals(Boolean.TRUE, schema.getXKubernetesPreserveUnknownFields());
+
+    schema = new JsonSchema(ResolvingContext.defaultResolvingContext(false), PreserveUnknown.class).getSchema();
+    assertNotNull(schema);
+    assertEquals(0, schema.getProperties().size());
+    assertNull(schema.getXKubernetesPreserveUnknownFields());
+  }
+
+  @Test
+  void testPreserveUnknownByFieldType() {
+    JSONSchemaProps schema = new JsonSchema(ResolvingContext.defaultResolvingContext(false), PreserveUnknownByFieldType.class)
+        .getSchema();
+    assertNotNull(schema);
+    assertEquals(2, schema.getProperties().size());
+    JSONSchemaProps jsonNode = schema.getProperties().get("jsonNode");
+    JSONSchemaProps objectNode = schema.getProperties().get("objectNode");
+    assertEquals(Boolean.TRUE, jsonNode.getXKubernetesPreserveUnknownFields());
+    assertNull(jsonNode.getType());
+    assertEquals(Boolean.TRUE, objectNode.getXKubernetesPreserveUnknownFields());
+    assertEquals("object", objectNode.getType());
+  }
+
+  @Test
+  void testPreserveUnknownClassAnnotation() {
+    JSONSchemaProps schema = new JsonSchema(ResolvingContext.defaultResolvingContext(false), PreserveUnknownAnnotation.class)
+        .getSchema();
     assertNotNull(schema);
     assertEquals(0, schema.getProperties().size());
     assertEquals(Boolean.TRUE, schema.getXKubernetesPreserveUnknownFields());
@@ -412,6 +454,7 @@ class JsonSchemaTest {
     assertEquals("string", renewTime.getType());
     assertNull(renewTime.getPattern());
     assertEquals("date-time", renewTime.getFormat());
+    assertNull(schema.getProperties().get("getAdditionalProperties"));
   }
 
   private static class NestedHasMetadata {
