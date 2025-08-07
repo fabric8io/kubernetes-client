@@ -4,8 +4,9 @@
 
 #### Bugs
 * Fix #7148: corrected octal format detection
-* Fix #7167: Allow Informer.isWatching to see underlying Watch state
-* Fix #7087: Avoid possible NPE in OkHttp websocket handlinger
+- Fix #7167: Allow Informer.isWatching to see underlying Watch state
+* Fix #7087: Avoid possible NPE in OkHttp websocket handling
+* Fix #7072: Changed rolling update handling to json merge patch to avoid 422 errors
 * Fix #7080: Avoid NPE in CRDGenerator if post-processor is set to null
 * Fix #7116: (java-generator) Use timezone format compatible with Kubernetes
 * Fix #7163: Ensure that streams are notified of errors
