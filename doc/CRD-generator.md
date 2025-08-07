@@ -873,6 +873,11 @@ spec:
         # [...]
 ```
 
+### Schema Customization
+
+In some instances the built-in set of annotations and logic may not produce the desired CRD output. There is a mechanism
+included in the crd-generator-api-v2 module for this. See the `io.fabric8.crdv2.generator.v1.SchemaCustomizer` annotation
+for directly manipulating the JSONSchemaProps of the annotated resource. This annotation is applied last, after all of the other annotations are processed.
 
 ## Features cheatsheet
 
