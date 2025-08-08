@@ -42,6 +42,7 @@ public class ConfigBuilder extends ConfigFluent<ConfigBuilder> implements Visita
 
   ConfigFluent<?> fluent;
 
+  @Override
   public Config build() {
     Config buildable = new Config(fluent.getMasterUrl(), fluent.getApiVersion(), fluent.getNamespace(), fluent.getTrustCerts(),
         fluent.getDisableHostnameVerification(), fluent.getCaCertFile(), fluent.getCaCertData(), fluent.getClientCertFile(),
@@ -56,7 +57,7 @@ public class ConfigBuilder extends ConfigFluent<ConfigBuilder> implements Visita
         fluent.getImpersonateUsername(), fluent.getImpersonateGroups(), fluent.getImpersonateExtras(),
         fluent.getOauthTokenProvider(), fluent.getCustomHeaders(), fluent.getRequestRetryBackoffLimit(),
         fluent.getRequestRetryBackoffInterval(), fluent.getUploadRequestTimeout(), fluent.getOnlyHttpWatches(),
-        fluent.getCurrentContext(), fluent.getContexts(),
+        fluent.getWatchList(), fluent.getCurrentContext(), fluent.getContexts(),
         Optional.ofNullable(fluent.getAutoConfigure()).orElse(!disableAutoConfig()), true);
     buildable.setAuthProvider(fluent.getAuthProvider());
     return buildable;

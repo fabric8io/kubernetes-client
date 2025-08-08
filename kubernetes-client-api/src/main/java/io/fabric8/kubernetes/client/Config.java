@@ -170,6 +170,7 @@ public class Config {
   private AuthProviderConfig authProvider;
   private String username;
   private String password;
+
   private volatile String oauthToken;
   @JsonIgnore
   private volatile String autoOAuthToken;
@@ -223,6 +224,7 @@ public class Config {
   private TlsVersion[] tlsVersions;
 
   private Boolean onlyHttpWatches;
+  private Boolean watchList;
 
   /**
    * custom headers
@@ -320,13 +322,13 @@ public class Config {
         null,
         null, null, null, null, null,
         null, null, null,
-        null, null, null,
+        null, null, null, null,
         null, null, null, null,
         null, autoConfigure, true);
   }
 
   @JsonCreator
-  public Config(
+  public static Config newConfig(
       @JsonProperty("masterUrl") String masterUrl,
       @JsonProperty("apiVersion") String apiVersion,
       @JsonProperty("namespace") String namespace,
@@ -374,23 +376,25 @@ public class Config {
       @JsonProperty("requestRetryBackoffInterval") Integer requestRetryBackoffInterval,
       @JsonProperty("uploadRequestTimeout") Integer uploadRequestTimeout,
       @JsonProperty("onlyHttpWatches") Boolean onlyHttpWatches,
+      @JsonProperty("watchList") Boolean watchList,
       @JsonProperty("currentContext") NamedContext currentContext,
       @JsonProperty("contexts") List<NamedContext> contexts,
       @JsonProperty("autoConfigure") Boolean autoConfigure) {
-    this(masterUrl, apiVersion, namespace, trustCerts, disableHostnameVerification, caCertFile, caCertData,
+    return new Config(masterUrl, apiVersion, namespace, trustCerts, disableHostnameVerification, caCertFile, caCertData,
         clientCertFile, clientCertData, clientKeyFile, clientKeyData, clientKeyAlgo, clientKeyPassphrase, username,
         password, oauthToken, autoOAuthToken, watchReconnectInterval, watchReconnectLimit, connectionTimeout, requestTimeout,
         scaleTimeout, loggingInterval, maxConcurrentRequests, maxConcurrentRequestsPerHost, http2Disable,
         httpProxy, httpsProxy, noProxy, userAgent, tlsVersions, websocketPingInterval, proxyUsername, proxyPassword,
         trustStoreFile, trustStorePassphrase, keyStoreFile, keyStorePassphrase, impersonateUsername, impersonateGroups,
         impersonateExtras, oauthTokenProvider, customHeaders, requestRetryBackoffLimit, requestRetryBackoffInterval,
-        uploadRequestTimeout, onlyHttpWatches, currentContext, contexts, autoConfigure, true);
+        uploadRequestTimeout, onlyHttpWatches, watchList, currentContext, contexts, autoConfigure, true);
   }
 
   /*
    * The Builder is generated in SundrioConfig, if new fields need to be added here, please make sure to add them there too.
    */
-  Config(String masterUrl, String apiVersion, String namespace, Boolean trustCerts, Boolean disableHostnameVerification,
+  protected Config(String masterUrl, String apiVersion, String namespace, Boolean trustCerts,
+      Boolean disableHostnameVerification,
       String caCertFile, String caCertData, String clientCertFile, String clientCertData, String clientKeyFile,
       String clientKeyData, String clientKeyAlgo, String clientKeyPassphrase, String username, String password,
       String oauthToken, String autoOAuthToken, Integer watchReconnectInterval, Integer watchReconnectLimit,
@@ -402,7 +406,8 @@ public class Config {
       String proxyPassword, String trustStoreFile, String trustStorePassphrase, String keyStoreFile, String keyStorePassphrase,
       String impersonateUsername, String[] impersonateGroups, Map<String, List<String>> impersonateExtras,
       OAuthTokenProvider oauthTokenProvider, Map<String, String> customHeaders, Integer requestRetryBackoffLimit,
-      Integer requestRetryBackoffInterval, Integer uploadRequestTimeout, Boolean onlyHttpWatches, NamedContext currentContext,
+      Integer requestRetryBackoffInterval, Integer uploadRequestTimeout, Boolean onlyHttpWatches, Boolean watchList,
+      NamedContext currentContext,
       List<NamedContext> contexts, Boolean autoConfigure, Boolean shouldSetDefaultValues) {
     if (Boolean.TRUE.equals(shouldSetDefaultValues)) {
       this.masterUrl = DEFAULT_MASTER_URL;
@@ -410,7 +415,6 @@ public class Config {
       this.defaultNamespace = true;
       this.trustCerts = false;
       this.disableHostnameVerification = false;
-      this.onlyHttpWatches = false;
       this.http2Disable = false;
       this.clientKeyAlgo = "RSA";
       this.clientKeyPassphrase = DEFAULT_CLIENT_KEY_PASSPHRASE;
@@ -582,6 +586,7 @@ public class Config {
     this.oauthTokenProvider = oauthTokenProvider;
     this.customHeaders = customHeaders;
     this.onlyHttpWatches = onlyHttpWatches;
+    this.watchList = watchList;
   }
 
   public static void configFromSysPropsOrEnvVars(Config config) {
@@ -970,9 +975,9 @@ public class Config {
       String line, algorithm = null;
 
       while ((line = bufferedReader.readLine()) != null) {
-        if (line.contains("BEGIN EC PRIVATE KEY"))
+        if (line.contains("BEGIN EC PRIVATE KEY")) {
           algorithm = "EC";
-        else if (line.contains("BEGIN RSA PRIVATE KEY")) {
+        } else if (line.contains("BEGIN RSA PRIVATE KEY")) {
           algorithm = "RSA";
         }
       }
@@ -1536,6 +1541,22 @@ public class Config {
 
   public void setOnlyHttpWatches(boolean onlyHttpWatches) {
     this.onlyHttpWatches = onlyHttpWatches;
+  }
+
+  public Boolean getOnlyHttpWatches() {
+    return onlyHttpWatches;
+  }
+
+  public Boolean getWatchList() {
+    return watchList;
+  }
+
+  public boolean isWatchList() {
+    return Optional.ofNullable(watchList).orElse(false);
+  }
+
+  public void setWatchList(boolean watchList) {
+    this.watchList = watchList;
   }
 
 }
