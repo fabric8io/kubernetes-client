@@ -72,9 +72,14 @@
           <source>src/main/resources/existing-java-type-crd.yml</source>
           <generatedAnnotations>false</generatedAnnotations>
           <existingJavaTypes>
+            <!-- Java Class -->
             <com.example.v1.existingjavatypespec.Affinity>
               io.fabric8.kubernetes.api.model.Affinity
             </com.example.v1.existingjavatypespec.Affinity>
+            <!-- Java Enum -->
+            <com.example.v1.existingjavatypespec.DeletionPropagation>
+              io.fabric8.kubernetes.api.model.DeletionPropagation
+            </com.example.v1.existingjavatypespec.DeletionPropagation>
           </existingJavaTypes>
         </configuration>
       </plugin>
