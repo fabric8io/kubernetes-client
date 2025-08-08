@@ -15,6 +15,8 @@
  */
 package io.fabric8.kubernetes.client.impl;
 
+import com.fasterxml.jackson.databind.util.ClassUtil;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.builder.VisitableBuilder;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesResourceList;
@@ -34,35 +36,34 @@ class ResourceHandlerImpl<T extends HasMetadata, V extends VisitableBuilder<T, V
 
   private final ResourceDefinitionContext context;
   private final Class<T> type;
-  private final Class<V> builderClass;
   private final Class<? extends KubernetesResourceList<T>> defaultListClass;
   private final Function<Client, HasMetadataOperation<T, ?, Resource<T>>> operationConstructor;
 
   ResourceHandlerImpl(Class<T> type, Function<Client, HasMetadataOperation<T, ?, Resource<T>>> operationConstructor) {
-    this.type = type;
-    this.context = ResourceDefinitionContext.fromResourceType(type);
-    this.builderClass = KubernetesResourceUtil.inferBuilderType(type);
-    this.defaultListClass = (Class<? extends KubernetesResourceList<T>>) KubernetesResourceUtil.inferListType(type);
-    this.operationConstructor = operationConstructor;
+    this(type, (Class<? extends KubernetesResourceList<T>>) KubernetesResourceUtil.inferListType(type), ResourceDefinitionContext.fromResourceType(type), operationConstructor);
   }
 
   ResourceHandlerImpl(Class<T> type, Class<? extends KubernetesResourceList<T>> listClass, ResourceDefinitionContext context) {
+    this(type, listClass, context, null);
+  }
+
+  private ResourceHandlerImpl(Class<T> type, Class<? extends KubernetesResourceList<T>> listClass, ResourceDefinitionContext context, Function<Client, HasMetadataOperation<T, ?, Resource<T>>> operationConstructor) {
     this.type = type;
     this.context = context;
     this.defaultListClass = listClass;
-    this.builderClass = KubernetesResourceUtil.inferBuilderType(type);
-    this.operationConstructor = null;
+    this.operationConstructor = operationConstructor;
   }
+
 
   @Override
   public V edit(T item) {
-    if (this.builderClass == null) {
-      throw new KubernetesClientException(String.format("Cannot edit %s with visitors, no builder was found", type.getName()));
+    if (!(item instanceof Editable)) {
+      throw new KubernetesClientException(String.format("Cannot edit %s with visitors as it is not Editable", type.getName()));
     }
     try {
-      return this.builderClass.getDeclaredConstructor(item.getClass()).newInstance(item);
-    } catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException
-        | NoSuchMethodException | SecurityException e) {
+      final Editable<?> editable = (Editable<?>) item;
+      return (V) editable.edit();
+    } catch (ClassCastException e) {
       throw KubernetesClientException.launderThrowable(e);
     }
   }

@@ -480,10 +480,6 @@ public class KubernetesResourceUtil {
     return (Class<? extends KubernetesResourceList>) loadRelated(type, "List", DefaultKubernetesResourceList.class);
   }
 
-  public static <T extends HasMetadata, V extends VisitableBuilder<T, V>> Class<V> inferBuilderType(Class<T> type) {
-    return (Class<V>) loadRelated(type, "Builder", null);
-  }
-
   private static Class<?> loadRelated(Class<?> type, String suffix, Class<?> defaultClass) {
     try {
       return Thread.currentThread().getContextClassLoader().loadClass(type.getName() + suffix);
