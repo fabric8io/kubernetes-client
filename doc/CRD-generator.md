@@ -617,7 +617,7 @@ Will generate:
                 x-kubernetes-preserve-unknown-fields: true
 ```
 
-The usage of ObjectNode further restrict the property type to object.
+The usage of ObjectNode further restrict the property type to `object`.
 
 If a field or one of its accessors is annotated with
 `com.fasterxml.jackson.annotation.JsonAnyGetter`/`com.fasterxml.jackson.annotation.JsonAnySetter`
