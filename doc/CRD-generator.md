@@ -592,36 +592,81 @@ The `SchemaSwap` annotation has an optional `depth` property, which is for advan
 
 ### Generating `x-kubernetes-preserve-unknown-fields: true`
 
-If a field or one of its accessors is annotated with
-`com.fasterxml.jackson.annotation.JsonAnyGetter`/`com.fasterxml.jackson.annotation.JsonAnySetter`
-or the field type is `com.fasterxml.jackson.databind.JsonNode`
+If a property has type JsonNode or ObjectNode this will automatically result in marking the property as `x-kubernetes-preserve-unknown-fields: true`. For example:
 
 ```java
 public class ExampleSpec {
   JsonNode someValue;
 
-  @JsonAnyGetter
   JsonNode getSomeValue() {
     return someValue;
   }
 
-  @JsonAnySetter
   void setSomeValue(JsonNode value) {
     this.someValue = value;
   }
 }
 ```
 
-Corresponding `x-kubernetes-preserve-unknown-fields: true` will be generated in the output CRD, such as:
+Will generate:
 
 ```yaml
           spec:
             properties:
               someValue:
-                type: object
                 x-kubernetes-preserve-unknown-fields: true
+```
+
+The usage of ObjectNode further restrict the property type to `object`.
+
+If a field or one of its accessors is annotated with
+`com.fasterxml.jackson.annotation.JsonAnyGetter`/`com.fasterxml.jackson.annotation.JsonAnySetter`
+
+```java
+public class ExampleSpec {
+  @JsonIgnore
+  Map<String, Object> values = new LinkedHashMap<>();
+
+  @JsonAnyGetter
+  @JsonIgnore
+  Map<String, Object> getValues() {
+    return values;
+  }
+
+  @JsonAnySetter
+  void setValue(String key, Object value) {
+    this.someValue = value;
+  }
+}
+```
+
+The Corresponding `x-kubernetes-preserve-unknown-fields: true` will be generated in the output CRD if the resolving context has implicitPreserveUnknownFields=true:
+
+```yaml
+          spec:
             type: object
             x-kubernetes-preserve-unknown-fields: true
+```
+
+Alternatively if implicitPreserveUnknownFields=false you may force `x-kubernetes-preserve-unknown-fields: true` with the `io.fabric8.crd.generator.annotation.PreserveUnknownFields` annotation:
+
+```java
+@PreserveUnknownFields
+public class ExampleSpec {
+  @JsonIgnore
+  Map<String, Object> values = new LinkedHashMap<>();
+
+  @JsonAnyGetter
+  @JsonIgnore
+  Map<String, Object> getValues() {
+    return values;
+  }
+
+  @JsonAnySetter
+  void setValue(String key, Object value) {
+    this.someValue = value;
+  }
+}
 ```
 
 You can also annotate a field with `io.fabric8.crd.generator.annotation.PreserveUnknownFields`:
@@ -635,7 +680,7 @@ public class ExampleSpec {
 }
 ```
 
-will be generated as:
+which will be generated as:
 
 ```yaml
           spec:

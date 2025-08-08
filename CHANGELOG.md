@@ -12,6 +12,7 @@
 * Fix #7092: (crd-generator) Add support for @Annotations and @Labels in CRD generation - CRD generator now includes annotations and labels specified via these annotations in the generated CRD metadata
 
 #### Improvements
+ * Fix #7217: refinements and expanded documentation for preserve unknown handling
 
 #### Dependency Upgrade
 

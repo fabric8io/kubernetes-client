@@ -21,6 +21,7 @@ import com.fasterxml.jackson.databind.BeanProperty;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.module.jsonSchema.JsonSchema;
 import com.fasterxml.jackson.module.jsonSchema.types.ArraySchema;
 import com.fasterxml.jackson.module.jsonSchema.types.ArraySchema.Items;
@@ -426,6 +427,10 @@ public abstract class AbstractJsonSchema<T extends KubernetesJSONSchemaProps, V 
     Class<?> rawClass = gos.javaType.getRawClass();
     collectDependentClasses(rawClass);
 
+    // while it should not be repeating, we reuse this method to look for preserve unknown on the class hierarchy
+    consumeRepeatingAnnotation(rawClass, PreserveUnknownFields.class,
+        ignored -> objectSchema.setXKubernetesPreserveUnknownFields(true));
+
     consumeRepeatingAnnotation(rawClass, SchemaSwap.class, ss -> {
       swaps.registerSwap(rawClass,
           ss.originalType(),
@@ -562,8 +567,12 @@ public abstract class AbstractJsonSchema<T extends KubernetesJSONSchemaProps, V 
       if (type.getRawClass() == RawExtension.class) {
         return raw();
       }
-      // TODO: this could optionally take a type restriction
-      T schema = singleProperty(null);
+      String typeName = null;
+      if (type.getRawClass() == ObjectNode.class) {
+        typeName = "object";
+      }
+      T schema = singleProperty(typeName);
+
       schema.setXKubernetesPreserveUnknownFields(true);
       return schema;
     } else if (jacksonSchema.isUnionTypeSchema()) {
@@ -576,12 +585,12 @@ public abstract class AbstractJsonSchema<T extends KubernetesJSONSchemaProps, V 
       jacksonSchema = referenced;
     } else if (type.isMapLikeType()) {
       final JavaType keyType = type.getKeyType();
+      final JavaType valueType = type.getContentType();
 
       if (keyType.getRawClass() != String.class) {
         LOGGER.warn("Property '{}' with '{}' key type is mapped to 'string' because of CRD schemas limitations", name, keyType);
       }
 
-      final JavaType valueType = type.getContentType();
       JsonSchema mapValueSchema = ((SchemaAdditionalProperties) ((ObjectSchema) jacksonSchema).getAdditionalProperties())
           .getJsonSchema();
       T component = resolveProperty(visited, schemaSwaps, name, valueType, mapValueSchema, null);
