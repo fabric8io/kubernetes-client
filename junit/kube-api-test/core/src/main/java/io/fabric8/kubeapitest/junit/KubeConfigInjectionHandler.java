@@ -20,9 +20,11 @@ import io.fabric8.kubeapitest.KubeAPITestException;
 import org.junit.jupiter.api.extension.ExtensionContext;
 
 import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
+import java.util.function.Predicate;
 
 public class KubeConfigInjectionHandler implements ClientInjectionHandler {
 
@@ -53,9 +55,9 @@ public class KubeConfigInjectionHandler implements ClientInjectionHandler {
   public Optional<Field> getFieldForKubeConfigInjection(ExtensionContext extensionContext,
       boolean staticField) {
     Class<?> clazz = extensionContext.getTestClass().orElseThrow(IllegalStateException::new);
-    java.util.List<Field> kubeConfigFields = Arrays.stream(clazz.getDeclaredFields())
-        .filter(f -> f.getAnnotationsByType(KubeConfig.class).length > 0)
-        .collect(Collectors.toList());
+    java.util.List<Field> kubeConfigFields = getAllFieldsIncludingAllParents(clazz,
+        f -> f.getAnnotationsByType(KubeConfig.class).length > 0);
+
     if (kubeConfigFields.isEmpty()) {
       return Optional.empty();
     }
@@ -74,6 +76,19 @@ public class KubeConfigInjectionHandler implements ClientInjectionHandler {
     } else {
       return Optional.of(field);
     }
+  }
+
+  public static java.util.List<Field> getAllFieldsIncludingAllParents(Class<?> clazz, Predicate<Field> predicate) {
+    List<Field> staticFields = new ArrayList<>();
+    Class<?> currentClass = clazz;
+
+    while (currentClass != null) {
+      Field[] declaredFields = currentClass.getDeclaredFields();
+      Arrays.stream(declaredFields).filter(predicate).forEach(staticFields::add);
+      currentClass = currentClass.getSuperclass();
+    }
+
+    return staticFields;
   }
 
 }
