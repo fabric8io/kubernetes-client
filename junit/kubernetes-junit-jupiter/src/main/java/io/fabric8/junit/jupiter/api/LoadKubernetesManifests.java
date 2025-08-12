@@ -20,6 +20,7 @@ import io.fabric8.junit.jupiter.LoadKubernetesManifestsExtension;
 import io.fabric8.junit.jupiter.NamespaceExtension;
 import org.junit.jupiter.api.extension.ExtendWith;
 
+import java.lang.annotation.Inherited;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
@@ -40,6 +41,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @ExtendWith(NamespaceExtension.class)
 @ExtendWith(KubernetesExtension.class)
 @ExtendWith(LoadKubernetesManifestsExtension.class)
+@Inherited
 public @interface LoadKubernetesManifests {
 
   String[] value();
