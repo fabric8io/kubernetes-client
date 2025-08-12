@@ -20,6 +20,7 @@ import io.fabric8.junit.jupiter.NamespaceExtension;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import org.junit.jupiter.api.extension.ExtendWith;
 
+import java.lang.annotation.Inherited;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
@@ -51,6 +52,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Retention(RUNTIME)
 @ExtendWith(NamespaceExtension.class)
 @ExtendWith(KubernetesExtension.class)
+@Inherited
 public @interface KubernetesTest {
   /**
    * Create an ephemeral Namespace for the test.

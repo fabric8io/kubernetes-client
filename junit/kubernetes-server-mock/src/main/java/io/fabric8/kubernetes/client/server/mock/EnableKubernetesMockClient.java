@@ -18,6 +18,7 @@ package io.fabric8.kubernetes.client.server.mock;
 import io.fabric8.kubernetes.client.KubernetesClientBuilder;
 import org.junit.jupiter.api.extension.ExtendWith;
 
+import java.lang.annotation.Inherited;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 import java.util.function.Consumer;
@@ -35,6 +36,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Target({ TYPE, METHOD, ANNOTATION_TYPE })
 @Retention(RUNTIME)
 @ExtendWith(KubernetesMockServerExtension.class)
+@Inherited
 public @interface EnableKubernetesMockClient {
 
   boolean https() default true;

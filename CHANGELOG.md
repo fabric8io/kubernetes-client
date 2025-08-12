@@ -3,8 +3,9 @@
 ### 7.4-SNAPSHOT
 
 #### Bugs
+* Fix #3032: EnableKubernetesMockClient annotation works with Nested tests
 * Fix #7148: corrected octal format detection
-- Fix #7167: Allow Informer.isWatching to see underlying Watch state
+* Fix #7167: Allow Informer.isWatching to see underlying Watch state
 * Fix #7087: Avoid possible NPE in OkHttp websocket handling
 * Fix #7072: Changed rolling update handling to json merge patch to avoid 422 errors
 * Fix #7080: Avoid NPE in CRDGenerator if post-processor is set to null
