@@ -46,7 +46,7 @@ jobs:
       - name: Support long filenames in git
         run: git config --system core.longpaths true
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - name: Setup Java
         uses: actions/setup-java@v4
         with:
