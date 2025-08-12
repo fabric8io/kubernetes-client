@@ -10,6 +10,7 @@
 * Fix #7116: (java-generator) Use timezone format compatible with Kubernetes
 * Fix #7163: Ensure that streams are notified of errors
 * Fix #7092: (crd-generator) Add support for @Annotations and @Labels in CRD generation - CRD generator now includes annotations and labels specified via these annotations in the generated CRD metadata
+* Fix #7224: Fix KubeApiTest inheritance from base test class
 
 #### Improvements
  * Fix #7217: refinements and expanded documentation for preserve unknown handling
