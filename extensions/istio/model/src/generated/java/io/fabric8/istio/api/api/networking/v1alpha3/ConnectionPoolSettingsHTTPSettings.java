@@ -126,7 +126,7 @@ public class ConnectionPoolSettingsHTTPSettings implements Editable<ConnectionPo
     }
 
     /**
-     * Maximum number of requests that will be queued while waiting for a ready connection pool connection. Default 2^32-1. Refer to https://www.envoyproxy.io/docs/envoy/latest/intro/arch_overview/upstream/circuit_breaking under which conditions a new connection is created for HTTP2. Please note that this is applicable to both HTTP/1.1 and HTTP2.
+     * Maximum number of requests that will be queued while waiting for a ready connection pool connection. Default 2^32-1. Refer to [Envoy Circuit Breaking](https://www.envoyproxy.io/docs/envoy/latest/intro/arch_overview/upstream/circuit_breaking) under which conditions a new connection is created for HTTP/2. Please note that this is applicable to both HTTP/1.1 and HTTP/2.
      */
     @JsonProperty("http1MaxPendingRequests")
     public Integer getHttp1MaxPendingRequests() {
@@ -134,7 +134,7 @@ public class ConnectionPoolSettingsHTTPSettings implements Editable<ConnectionPo
     }
 
     /**
-     * Maximum number of requests that will be queued while waiting for a ready connection pool connection. Default 2^32-1. Refer to https://www.envoyproxy.io/docs/envoy/latest/intro/arch_overview/upstream/circuit_breaking under which conditions a new connection is created for HTTP2. Please note that this is applicable to both HTTP/1.1 and HTTP2.
+     * Maximum number of requests that will be queued while waiting for a ready connection pool connection. Default 2^32-1. Refer to [Envoy Circuit Breaking](https://www.envoyproxy.io/docs/envoy/latest/intro/arch_overview/upstream/circuit_breaking) under which conditions a new connection is created for HTTP/2. Please note that this is applicable to both HTTP/1.1 and HTTP/2.
      */
     @JsonProperty("http1MaxPendingRequests")
     public void setHttp1MaxPendingRequests(Integer http1MaxPendingRequests) {
@@ -142,7 +142,7 @@ public class ConnectionPoolSettingsHTTPSettings implements Editable<ConnectionPo
     }
 
     /**
-     * Maximum number of active requests to a destination. Default 2^32-1. Please note that this is applicable to both HTTP/1.1 and HTTP2.
+     * Maximum number of active requests to a destination. Default 2^32-1. Please note that this is applicable to both HTTP/1.1 and HTTP/2.
      */
     @JsonProperty("http2MaxRequests")
     public Integer getHttp2MaxRequests() {
@@ -150,7 +150,7 @@ public class ConnectionPoolSettingsHTTPSettings implements Editable<ConnectionPo
     }
 
     /**
-     * Maximum number of active requests to a destination. Default 2^32-1. Please note that this is applicable to both HTTP/1.1 and HTTP2.
+     * Maximum number of active requests to a destination. Default 2^32-1. Please note that this is applicable to both HTTP/1.1 and HTTP/2.
      */
     @JsonProperty("http2MaxRequests")
     public void setHttp2MaxRequests(Integer http2MaxRequests) {

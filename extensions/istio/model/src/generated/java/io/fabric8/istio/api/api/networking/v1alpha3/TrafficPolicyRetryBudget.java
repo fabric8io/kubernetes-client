@@ -32,15 +32,11 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
-/**
- * TLSCertificate describes the server's TLS certificate.
- */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "caCertificates",
-    "privateKey",
-    "serverCertificate"
+    "minRetryConcurrency",
+    "percent"
 })
 @ToString
 @EqualsAndHashCode
@@ -64,86 +60,61 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class ServerTLSSettingsTLSCertificate implements Editable<ServerTLSSettingsTLSCertificateBuilder>, KubernetesResource
+public class TrafficPolicyRetryBudget implements Editable<TrafficPolicyRetryBudgetBuilder>, KubernetesResource
 {
 
-    @JsonProperty("caCertificates")
-    private String caCertificates;
-    @JsonProperty("privateKey")
-    private String privateKey;
-    @JsonProperty("serverCertificate")
-    private String serverCertificate;
+    @JsonProperty("minRetryConcurrency")
+    private Long minRetryConcurrency;
+    @JsonProperty("percent")
+    private Double percent;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
      */
-    public ServerTLSSettingsTLSCertificate() {
+    public TrafficPolicyRetryBudget() {
     }
 
-    public ServerTLSSettingsTLSCertificate(String caCertificates, String privateKey, String serverCertificate) {
+    public TrafficPolicyRetryBudget(Long minRetryConcurrency, Double percent) {
         super();
-        this.caCertificates = caCertificates;
-        this.privateKey = privateKey;
-        this.serverCertificate = serverCertificate;
+        this.minRetryConcurrency = minRetryConcurrency;
+        this.percent = percent;
     }
 
     /**
-     * $hide_from_docs REQUIRED if mode is `MUTUAL` or `OPTIONAL_MUTUAL`. The path to a file containing certificate authority certificates to use in verifying a presented client side certificate. $hide_from_docs
+     * Specifies the minimum retry concurrency allowed for the retry budget. For example, a budget of 20% with a minimum retry concurrency of 3 will allow 5 active retries while there are 25 active requests. If there are 2 active requests, there are still 3 active retries allowed because of the minimum retry concurrency.<br><p> <br><p> Defaults to 3.
      */
-    @JsonProperty("caCertificates")
-    public String getCaCertificates() {
-        return caCertificates;
+    @JsonProperty("minRetryConcurrency")
+    public Long getMinRetryConcurrency() {
+        return minRetryConcurrency;
     }
 
     /**
-     * $hide_from_docs REQUIRED if mode is `MUTUAL` or `OPTIONAL_MUTUAL`. The path to a file containing certificate authority certificates to use in verifying a presented client side certificate. $hide_from_docs
+     * Specifies the minimum retry concurrency allowed for the retry budget. For example, a budget of 20% with a minimum retry concurrency of 3 will allow 5 active retries while there are 25 active requests. If there are 2 active requests, there are still 3 active retries allowed because of the minimum retry concurrency.<br><p> <br><p> Defaults to 3.
      */
-    @JsonProperty("caCertificates")
-    public void setCaCertificates(String caCertificates) {
-        this.caCertificates = caCertificates;
+    @JsonProperty("minRetryConcurrency")
+    public void setMinRetryConcurrency(Long minRetryConcurrency) {
+        this.minRetryConcurrency = minRetryConcurrency;
     }
 
-    /**
-     * REQUIRED if mode is `SIMPLE` or `MUTUAL`. The path to the file holding the server's private key.
-     */
-    @JsonProperty("privateKey")
-    public String getPrivateKey() {
-        return privateKey;
+    @JsonProperty("percent")
+    public Double getPercent() {
+        return percent;
     }
 
-    /**
-     * REQUIRED if mode is `SIMPLE` or `MUTUAL`. The path to the file holding the server's private key.
-     */
-    @JsonProperty("privateKey")
-    public void setPrivateKey(String privateKey) {
-        this.privateKey = privateKey;
-    }
-
-    /**
-     * REQUIRED if mode is `SIMPLE` or `MUTUAL`. The path to the file holding the server-side TLS certificate to use.
-     */
-    @JsonProperty("serverCertificate")
-    public String getServerCertificate() {
-        return serverCertificate;
-    }
-
-    /**
-     * REQUIRED if mode is `SIMPLE` or `MUTUAL`. The path to the file holding the server-side TLS certificate to use.
-     */
-    @JsonProperty("serverCertificate")
-    public void setServerCertificate(String serverCertificate) {
-        this.serverCertificate = serverCertificate;
+    @JsonProperty("percent")
+    public void setPercent(Double percent) {
+        this.percent = percent;
     }
 
     @JsonIgnore
-    public ServerTLSSettingsTLSCertificateBuilder edit() {
-        return new ServerTLSSettingsTLSCertificateBuilder(this);
+    public TrafficPolicyRetryBudgetBuilder edit() {
+        return new TrafficPolicyRetryBudgetBuilder(this);
     }
 
     @JsonIgnore
-    public ServerTLSSettingsTLSCertificateBuilder toBuilder() {
+    public TrafficPolicyRetryBudgetBuilder toBuilder() {
         return edit();
     }
 
