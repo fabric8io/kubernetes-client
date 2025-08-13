@@ -15,7 +15,8 @@
         "Metrics",
         "SpireConfig",
         "Events",
-        "Tracing"
+        "Tracing",
+        "WaitExponentialBackoff"
       ],
       "properties": {
         "Defaults": {
@@ -35,6 +36,9 @@
         },
         "Tracing": {
           "$ref": "#/definitions/com.github.tektoncd.pipeline.pkg.apis.config.Tracing"
+        },
+        "WaitExponentialBackoff": {
+          "$ref": "#/definitions/com.github.tektoncd.pipeline.pkg.apis.config.WaitExponentialBackoff"
         }
       },
       "x-fabric8-info": {
@@ -61,7 +65,8 @@
         "DefaultResolverType",
         "DefaultContainerResourceRequirements",
         "DefaultImagePullBackOffTimeout",
-        "DefaultMaximumResolutionTimeout"
+        "DefaultMaximumResolutionTimeout",
+        "DefaultSidecarLogPollingInterval"
       ],
       "properties": {
         "DefaultAAPodTemplate": {
@@ -114,6 +119,12 @@
         "DefaultServiceAccount": {
           "type": "string",
           "default": ""
+        },
+        "DefaultSidecarLogPollingInterval": {
+          "description": "DefaultSidecarLogPollingInterval specifies how frequently (as a time.Duration) the Tekton sidecar log results container polls for step completion files. This value is loaded from the 'sidecar-log-polling-interval' key in the config-defaults ConfigMap. It is used to control the responsiveness and resource usage of the sidecar in both production and test environments.",
+          "type": "integer",
+          "format": "int64",
+          "default": 0
         },
         "DefaultTaskRunWorkspaceBinding": {
           "description": "Deprecated. Use the events package instead",
@@ -204,6 +215,9 @@
         },
         "enableStepActions": {
           "description": "EnableStepActions is a no-op flag since StepActions are stable",
+          "type": "boolean"
+        },
+        "enableWaitExponentialBackoff": {
           "type": "boolean"
         },
         "enforceNonfalsifiability": {
@@ -377,6 +391,51 @@
         "Group": "",
         "Version": "config",
         "Kind": "Tracing",
+        "Scope": "Namespaced"
+      }
+    },
+    "com.github.tektoncd.pipeline.pkg.apis.config.WaitExponentialBackoff": {
+      "description": "WaitExponentialBackoff holds the configurations for exponential backoff",
+      "type": "object",
+      "required": [
+        "Duration",
+        "Factor",
+        "Jitter",
+        "Steps",
+        "Cap"
+      ],
+      "properties": {
+        "Cap": {
+          "type": "integer",
+          "format": "int64",
+          "default": 0
+        },
+        "Duration": {
+          "type": "integer",
+          "format": "int64",
+          "default": 0
+        },
+        "Factor": {
+          "type": "number",
+          "format": "double",
+          "default": 0
+        },
+        "Jitter": {
+          "type": "number",
+          "format": "double",
+          "default": 0
+        },
+        "Steps": {
+          "type": "integer",
+          "format": "int32",
+          "default": 0
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "",
+        "Version": "config",
+        "Kind": "WaitExponentialBackoff",
         "Scope": "Namespaced"
       }
     },
@@ -5149,7 +5208,7 @@
           }
         },
         "entryPoint": {
-          "description": "EntryPoint identifies the entry point into the build. This is often a path to a build definition file and/or a target label within that file. Example: \"task/git-clone/0.8/git-clone.yaml\"",
+          "description": "EntryPoint identifies the entry point into the build. This is often a path to a build definition file and/or a target label within that file. Example: \"task/git-clone/0.10/git-clone.yaml\"",
           "type": "string"
         },
         "uri": {
@@ -7767,7 +7826,7 @@
           }
         },
         "entryPoint": {
-          "description": "EntryPoint identifies the entry point into the build. This is often a path to a build definition file and/or a target label within that file. Example: \"task/git-clone/0.8/git-clone.yaml\"",
+          "description": "EntryPoint identifies the entry point into the build. This is often a path to a build definition file and/or a target label within that file. Example: \"task/git-clone/0.10/git-clone.yaml\"",
           "type": "string"
         },
         "uri": {
@@ -9465,7 +9524,7 @@
           }
         },
         "entryPoint": {
-          "description": "EntryPoint identifies the entry point into the build. This is often a path to a build definition file and/or a target label within that file. Example: \"task/git-clone/0.8/git-clone.yaml\"",
+          "description": "EntryPoint identifies the entry point into the build. This is often a path to a build definition file and/or a target label within that file. Example: \"task/git-clone/0.10/git-clone.yaml\"",
           "type": "string"
         },
         "uri": {
