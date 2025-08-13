@@ -320,7 +320,7 @@ public class ServerTLSSettings implements Editable<ServerTLSSettingsBuilder>, Ku
     }
 
     /**
-     * Only one of `server_certificate`, `private_key`, `ca_certificates` or `credential_name` or `credential_names` or `tls_certificates` should be specified. This is mainly used for specifying RSA and ECDSA certificates for the same server.
+     * Only one of `server_certificate`, `private_key` or `credential_name` or `credential_names` or `tls_certificates` should be specified. This is mainly used for specifying RSA and ECDSA certificates for the same server.
      */
     @JsonProperty("tlsCertificates")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -329,7 +329,7 @@ public class ServerTLSSettings implements Editable<ServerTLSSettingsBuilder>, Ku
     }
 
     /**
-     * Only one of `server_certificate`, `private_key`, `ca_certificates` or `credential_name` or `credential_names` or `tls_certificates` should be specified. This is mainly used for specifying RSA and ECDSA certificates for the same server.
+     * Only one of `server_certificate`, `private_key` or `credential_name` or `credential_names` or `tls_certificates` should be specified. This is mainly used for specifying RSA and ECDSA certificates for the same server.
      */
     @JsonProperty("tlsCertificates")
     public void setTlsCertificates(List<ServerTLSSettingsTLSCertificate> tlsCertificates) {

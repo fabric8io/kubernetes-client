@@ -41,7 +41,7 @@ import lombok.ToString;
 import lombok.experimental.Accessors;
 
 /**
- * DestinationRule defines policies that apply to traffic intended for a service after routing has occurred.<br><p> <br><p> &lt;!-- crd generation tags representing the server time when this object was created. It is not guaranteed to be set in happens-before order across separate operations. Clients may not set this value. It is represented in RFC3339 form and is in UTC. Populated by the system. Read-only. Null for lists. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#metadata" --&gt;<br><p> <br><p> &lt;!-- go code generation tags --&gt;
+ * DestinationRule defines policies that apply to traffic intended for a service after routing has occurred.<br><p> <br><p> &lt;!-- crd generation tags representing the server time when this object was created. It is not guaranteed to be set in happens-before order across separate operations. Clients may not set this value. It is represented in RFC3339 form and is in UTC. Populated by the system. Read-only. Null for lists. For more information, see [Kubernetes API Conventions](https://github.com/kubernetes/community/blob/master/contributors/devel/sig-architecture/api-conventions.md#metadata)" --&gt;<br><p> <br><p> &lt;!-- go code generation tags --&gt;
  */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -163,7 +163,7 @@ public class DestinationRule implements Editable<DestinationRuleBuilder>, Kubern
     }
 
     /**
-     * DestinationRule defines policies that apply to traffic intended for a service after routing has occurred.<br><p> <br><p> &lt;!-- crd generation tags representing the server time when this object was created. It is not guaranteed to be set in happens-before order across separate operations. Clients may not set this value. It is represented in RFC3339 form and is in UTC. Populated by the system. Read-only. Null for lists. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#metadata" --&gt;<br><p> <br><p> &lt;!-- go code generation tags --&gt;
+     * DestinationRule defines policies that apply to traffic intended for a service after routing has occurred.<br><p> <br><p> &lt;!-- crd generation tags representing the server time when this object was created. It is not guaranteed to be set in happens-before order across separate operations. Clients may not set this value. It is represented in RFC3339 form and is in UTC. Populated by the system. Read-only. Null for lists. For more information, see [Kubernetes API Conventions](https://github.com/kubernetes/community/blob/master/contributors/devel/sig-architecture/api-conventions.md#metadata)" --&gt;<br><p> <br><p> &lt;!-- go code generation tags --&gt;
      */
     @JsonProperty("trafficPolicy")
     public TrafficPolicy getTrafficPolicy() {
@@ -171,7 +171,7 @@ public class DestinationRule implements Editable<DestinationRuleBuilder>, Kubern
     }
 
     /**
-     * DestinationRule defines policies that apply to traffic intended for a service after routing has occurred.<br><p> <br><p> &lt;!-- crd generation tags representing the server time when this object was created. It is not guaranteed to be set in happens-before order across separate operations. Clients may not set this value. It is represented in RFC3339 form and is in UTC. Populated by the system. Read-only. Null for lists. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#metadata" --&gt;<br><p> <br><p> &lt;!-- go code generation tags --&gt;
+     * DestinationRule defines policies that apply to traffic intended for a service after routing has occurred.<br><p> <br><p> &lt;!-- crd generation tags representing the server time when this object was created. It is not guaranteed to be set in happens-before order across separate operations. Clients may not set this value. It is represented in RFC3339 form and is in UTC. Populated by the system. Read-only. Null for lists. For more information, see [Kubernetes API Conventions](https://github.com/kubernetes/community/blob/master/contributors/devel/sig-architecture/api-conventions.md#metadata)" --&gt;<br><p> <br><p> &lt;!-- go code generation tags --&gt;
      */
     @JsonProperty("trafficPolicy")
     public void setTrafficPolicy(TrafficPolicy trafficPolicy) {
@@ -179,7 +179,7 @@ public class DestinationRule implements Editable<DestinationRuleBuilder>, Kubern
     }
 
     /**
-     * DestinationRule defines policies that apply to traffic intended for a service after routing has occurred.<br><p> <br><p> &lt;!-- crd generation tags representing the server time when this object was created. It is not guaranteed to be set in happens-before order across separate operations. Clients may not set this value. It is represented in RFC3339 form and is in UTC. Populated by the system. Read-only. Null for lists. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#metadata" --&gt;<br><p> <br><p> &lt;!-- go code generation tags --&gt;
+     * DestinationRule defines policies that apply to traffic intended for a service after routing has occurred.<br><p> <br><p> &lt;!-- crd generation tags representing the server time when this object was created. It is not guaranteed to be set in happens-before order across separate operations. Clients may not set this value. It is represented in RFC3339 form and is in UTC. Populated by the system. Read-only. Null for lists. For more information, see [Kubernetes API Conventions](https://github.com/kubernetes/community/blob/master/contributors/devel/sig-architecture/api-conventions.md#metadata)" --&gt;<br><p> <br><p> &lt;!-- go code generation tags --&gt;
      */
     @JsonProperty("workloadSelector")
     public WorkloadSelector getWorkloadSelector() {
@@ -187,7 +187,7 @@ public class DestinationRule implements Editable<DestinationRuleBuilder>, Kubern
     }
 
     /**
-     * DestinationRule defines policies that apply to traffic intended for a service after routing has occurred.<br><p> <br><p> &lt;!-- crd generation tags representing the server time when this object was created. It is not guaranteed to be set in happens-before order across separate operations. Clients may not set this value. It is represented in RFC3339 form and is in UTC. Populated by the system. Read-only. Null for lists. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#metadata" --&gt;<br><p> <br><p> &lt;!-- go code generation tags --&gt;
+     * DestinationRule defines policies that apply to traffic intended for a service after routing has occurred.<br><p> <br><p> &lt;!-- crd generation tags representing the server time when this object was created. It is not guaranteed to be set in happens-before order across separate operations. Clients may not set this value. It is represented in RFC3339 form and is in UTC. Populated by the system. Read-only. Null for lists. For more information, see [Kubernetes API Conventions](https://github.com/kubernetes/community/blob/master/contributors/devel/sig-architecture/api-conventions.md#metadata)" --&gt;<br><p> <br><p> &lt;!-- go code generation tags --&gt;
      */
     @JsonProperty("workloadSelector")
     public void setWorkloadSelector(WorkloadSelector workloadSelector) {

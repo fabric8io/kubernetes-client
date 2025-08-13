@@ -213,7 +213,7 @@
         "Kind": "FailStrategy",
         "Scope": "Namespaced"
       },
-      "x-kubernetes-fabric8-enum-values": "FAIL_CLOSE(0),FAIL_OPEN(1)",
+      "x-kubernetes-fabric8-enum-values": "FAIL_CLOSE(0),FAIL_OPEN(1),FAIL_RELOAD(2)",
       "x-kubernetes-fabric8-type": "enum"
     },
     "io.istio.api.extensions.v1alpha1.PluginPhase": {
@@ -582,17 +582,17 @@
           "$ref": "#/definitions/io.istio.api.networking.v1alpha3.ConnectionPoolSettings_HTTPSettings_H2UpgradePolicy"
         },
         "http1MaxPendingRequests": {
-          "description": "Maximum number of requests that will be queued while waiting for a ready connection pool connection. Default 2^32-1. Refer to https://www.envoyproxy.io/docs/envoy/latest/intro/arch_overview/upstream/circuit_breaking under which conditions a new connection is created for HTTP2. Please note that this is applicable to both HTTP/1.1 and HTTP2.",
+          "description": "Maximum number of requests that will be queued while waiting for a ready connection pool connection. Default 2^32-1. Refer to [Envoy Circuit Breaking](https://www.envoyproxy.io/docs/envoy/latest/intro/arch_overview/upstream/circuit_breaking) under which conditions a new connection is created for HTTP/2. Please note that this is applicable to both HTTP/1.1 and HTTP/2.",
           "type": "integer",
           "format": "int32"
         },
         "http2MaxRequests": {
-          "description": "Maximum number of active requests to a destination. Default 2^32-1. Please note that this is applicable to both HTTP/1.1 and HTTP2.",
+          "description": "Maximum number of active requests to a destination. Default 2^32-1. Please note that this is applicable to both HTTP/1.1 and HTTP/2.",
           "type": "integer",
           "format": "int32"
         },
         "idleTimeout": {
-          "description": "The idle timeout for upstream connection pool connections. The idle timeout is defined as the period in which there are no active requests. If not set, the default is 1 hour. When the idle timeout is reached, the connection will be closed. If the connection is an HTTP/2 connection a drain sequence will occur prior to closing the connection. Note that request based timeouts mean that HTTP/2 PINGs will not keep the connection alive. Applies to both HTTP1.1 and HTTP2 connections.",
+          "description": "The idle timeout for upstream connection pool connections. The idle timeout is defined as the period in which there are no active requests. If not set, the default is 1 hour. When the idle timeout is reached, the connection will be closed. If the connection is an HTTP/2 connection a drain sequence will occur prior to closing the connection. Note that request based timeouts mean that HTTP/2 PINGs will not keep the connection alive. Applies to both HTTP/1.1 and HTTP/2 connections.",
           "$ref": "#/definitions/org.golang.google.protobuf.types.known.durationpb.Duration"
         },
         "maxConcurrentStreams": {
@@ -820,7 +820,7 @@
       }
     },
     "io.istio.api.networking.v1alpha3.DestinationRule": {
-      "description": "DestinationRule defines policies that apply to traffic intended for a service after routing has occurred.\n\n\u003c!-- crd generation tags representing the server time when this object was created. It is not guaranteed to be set in happens-before order across separate operations. Clients may not set this value. It is represented in RFC3339 form and is in UTC. Populated by the system. Read-only. Null for lists. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#metadata\" --\u003e\n\n\u003c!-- go code generation tags --\u003e",
+      "description": "DestinationRule defines policies that apply to traffic intended for a service after routing has occurred.\n\n\u003c!-- crd generation tags representing the server time when this object was created. It is not guaranteed to be set in happens-before order across separate operations. Clients may not set this value. It is represented in RFC3339 form and is in UTC. Populated by the system. Read-only. Null for lists. For more information, see [Kubernetes API Conventions](https://github.com/kubernetes/community/blob/master/contributors/devel/sig-architecture/api-conventions.md#metadata)\" --\u003e\n\n\u003c!-- go code generation tags --\u003e",
       "type": "object",
       "properties": {
         "exportTo": {
@@ -2075,7 +2075,7 @@
           "$ref": "#/definitions/io.istio.api.networking.v1alpha3.HTTPRedirect"
         },
         "retries": {
-          "description": "Retry policy for HTTP requests.\n\nNote: the default cluster-wide retry policy, if not specified, is:\n\n```yaml attempts: 2 retryOn: \"connect-failure,refused-stream,unavailable,cancelled,503\" ```\n\nThis can be customized in [`Mesh Config` `defaultHttpRetryPolicy`](https://istio.io/latest/docs/reference/config/istio.mesh.v1alpha1/#MeshConfig).",
+          "description": "Retry policy for HTTP requests.\n\nNote: the default cluster-wide retry policy, if not specified, is:\n\n```yaml attempts: 2 retryOn: \"connect-failure,refused-stream,unavailable,cancelled\" ```\n\nThis can be customized in [`Mesh Config` `defaultHttpRetryPolicy`](https://istio.io/latest/docs/reference/config/istio.mesh.v1alpha1/#MeshConfig).",
           "$ref": "#/definitions/io.istio.api.networking.v1alpha3.HTTPRetry"
         },
         "rewrite": {
@@ -2490,7 +2490,7 @@
       ],
       "properties": {
         "HashAlgorithm": {
-          "description": "The hash algorithm to use. Please refer to https://www.envoyproxy.io/docs/envoy/latest/intro/arch_overview/upstream/load_balancing/load_balancers#ring-hash and https://www.envoyproxy.io/docs/envoy/latest/intro/arch_overview/upstream/load_balancing/load_balancers#maglev for considerations on choosing an algorithm. Defaults to RingHash if not specified.\n\nTypes that are valid to be assigned to HashAlgorithm:\n\n\t*LoadBalancerSettings_ConsistentHashLB_RingHash_\n\t*LoadBalancerSettings_ConsistentHashLB_Maglev",
+          "description": "The hash algorithm to use. Please refer to Envoy's [Ring Hash Load Balancer](https://www.envoyproxy.io/docs/envoy/latest/intro/arch_overview/upstream/load_balancing/load_balancers#ring-hash) and [Maglev Load Balancer](https://www.envoyproxy.io/docs/envoy/latest/intro/arch_overview/upstream/load_balancing/load_balancers#maglev) docs for considerations on choosing an algorithm. Defaults to RingHash if not specified.\n\nTypes that are valid to be assigned to HashAlgorithm:\n\n\t*LoadBalancerSettings_ConsistentHashLB_RingHash_\n\t*LoadBalancerSettings_ConsistentHashLB_Maglev",
           "default": {},
           "$ref": "#/definitions/io.istio.api.networking.v1alpha3.IsLoadBalancerSettings_ConsistentHashLB_HashAlgorithm"
         },
@@ -2855,7 +2855,7 @@
       "x-kubernetes-fabric8-type": "enum"
     },
     "io.istio.api.networking.v1alpha3.OutlierDetection": {
-      "description": "A Circuit breaker implementation that tracks the status of each individual host in the upstream service.  Applicable to both HTTP and TCP services.  For HTTP services, hosts that continually return 5xx errors for API calls are ejected from the pool for a pre-defined period of time. For TCP services, connection timeouts or connection failures to a given host counts as an error when measuring the consecutive errors metric. See Envoy's [outlier detection](https://www.envoyproxy.io/docs/envoy/latest/intro/arch_overview/upstream/outlier) for more details.\n\nThe following rule sets a connection pool size of 100 HTTP1 connections with no more than 10 req/connection to the \"reviews\" service. In addition, it sets a limit of 1000 concurrent HTTP2 requests and configures upstream hosts to be scanned every 5 mins so that any host that fails 7 consecutive times with a 502, 503, or 504 error code will be ejected for 15 minutes.\n\n```yaml apiVersion: networking.istio.io/v1 kind: DestinationRule metadata:\n\n\tname: reviews-cb-policy\n\nspec:\n\n\thost: reviews.prod.svc.cluster.local\n\ttrafficPolicy:\n\t  connectionPool:\n\t    tcp:\n\t      maxConnections: 100\n\t    http:\n\t      http2MaxRequests: 1000\n\t      maxRequestsPerConnection: 10\n\t  outlierDetection:\n\t    consecutive5xxErrors: 7\n\t    interval: 5m\n\t    baseEjectionTime: 15m\n\n```",
+      "description": "A Circuit breaker implementation that tracks the status of each individual host in the upstream service.  Applicable to both HTTP and TCP services.  For HTTP services, hosts that continually return 5xx errors for API calls are ejected from the pool for a pre-defined period of time. For TCP services, connection timeouts or connection failures to a given host counts as an error when measuring the consecutive errors metric. See Envoy's [outlier detection](https://www.envoyproxy.io/docs/envoy/latest/intro/arch_overview/upstream/outlier) for more details.\n\nThe following rule sets a connection pool size of 100 HTTP1 connections with no more than 10 req/connection to the \"reviews\" service. In addition, it sets a limit of 1000 concurrent HTTP/2 requests and configures upstream hosts to be scanned every 5 mins so that any host that fails 7 consecutive times with a 502, 503, or 504 error code will be ejected for 15 minutes.\n\n```yaml apiVersion: networking.istio.io/v1 kind: DestinationRule metadata:\n\n\tname: reviews-cb-policy\n\nspec:\n\n\thost: reviews.prod.svc.cluster.local\n\ttrafficPolicy:\n\t  connectionPool:\n\t    tcp:\n\t      maxConnections: 100\n\t    http:\n\t      http2MaxRequests: 1000\n\t      maxRequestsPerConnection: 10\n\t  outlierDetection:\n\t    consecutive5xxErrors: 7\n\t    interval: 5m\n\t    baseEjectionTime: 15m\n\n```",
       "type": "object",
       "properties": {
         "baseEjectionTime": {
@@ -3252,7 +3252,7 @@
           }
         },
         "tlsCertificates": {
-          "description": "Only one of `server_certificate`, `private_key`, `ca_certificates` or `credential_name` or `credential_names` or `tls_certificates` should be specified. This is mainly used for specifying RSA and ECDSA certificates for the same server.",
+          "description": "Only one of `server_certificate`, `private_key` or `credential_name` or `credential_names` or `tls_certificates` should be specified. This is mainly used for specifying RSA and ECDSA certificates for the same server.",
           "type": "array",
           "items": {
             "$ref": "#/definitions/io.istio.api.networking.v1alpha3.ServerTLSSettings_TLSCertificate"
@@ -3288,7 +3288,7 @@
       "type": "object",
       "properties": {
         "caCertificates": {
-          "description": "REQUIRED if mode is `MUTUAL` or `OPTIONAL_MUTUAL`. The path to a file containing certificate authority certificates to use in verifying a presented client side certificate.",
+          "description": "$hide_from_docs REQUIRED if mode is `MUTUAL` or `OPTIONAL_MUTUAL`. The path to a file containing certificate authority certificates to use in verifying a presented client side certificate. $hide_from_docs",
           "type": "string"
         },
         "privateKey": {
@@ -3874,6 +3874,10 @@
           "description": "The upstream PROXY protocol settings.",
           "$ref": "#/definitions/io.istio.api.networking.v1alpha3.TrafficPolicy_ProxyProtocol"
         },
+        "retryBudget": {
+          "description": "Specifies a limit on concurrent retries in relation to the number of active requests.",
+          "$ref": "#/definitions/io.istio.api.networking.v1alpha3.TrafficPolicy_RetryBudget"
+        },
         "tls": {
           "description": "TLS related settings for connections to the upstream service.",
           "$ref": "#/definitions/io.istio.api.networking.v1alpha3.ClientTLSSettings"
@@ -3928,7 +3932,7 @@
       "type": "object",
       "properties": {
         "version": {
-          "description": "The PROXY protocol version to use. See https://www.haproxy.org/download/2.1/doc/proxy-protocol.txt for details. By default it is `V1`.",
+          "description": "The PROXY protocol version to use. See [the protocol spec](https://www.haproxy.org/download/2.1/doc/proxy-protocol.txt) for details. By default it is `V1`.",
           "default": {},
           "$ref": "#/definitions/io.istio.api.networking.v1alpha3.TrafficPolicy_ProxyProtocol_VERSION"
         }
@@ -3952,6 +3956,27 @@
       },
       "x-kubernetes-fabric8-enum-values": "V1(0),V2(1)",
       "x-kubernetes-fabric8-type": "enum"
+    },
+    "io.istio.api.networking.v1alpha3.TrafficPolicy_RetryBudget": {
+      "type": "object",
+      "properties": {
+        "minRetryConcurrency": {
+          "description": "Specifies the minimum retry concurrency allowed for the retry budget. For example, a budget of 20% with a minimum retry concurrency of 3 will allow 5 active retries while there are 25 active requests. If there are 2 active requests, there are still 3 active retries allowed because of the minimum retry concurrency.\n\nDefaults to 3.",
+          "type": "integer",
+          "format": "int64"
+        },
+        "percent": {
+          "description": "Specifies the limit on concurrent retries as a percentage of the sum of active requests and active pending requests. Defaults to 20%.",
+          "$ref": "#/definitions/org.golang.google.protobuf.types.known.wrapperspb.DoubleValue"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "",
+        "Version": "v1alpha3",
+        "Kind": "TrafficPolicy_RetryBudget",
+        "Scope": "Namespaced"
+      }
     },
     "io.istio.api.networking.v1alpha3.TrafficPolicy_TunnelSettings": {
       "type": "object",
@@ -5584,7 +5609,7 @@
       }
     },
     "io.istio.networking.v1.DestinationRule": {
-      "description": "DestinationRule defines policies that apply to traffic intended for a service after routing has occurred.\n\n\u003c!-- crd generation tags representing the server time when this object was created. It is not guaranteed to be set in happens-before order across separate operations. Clients may not set this value. It is represented in RFC3339 form and is in UTC. Populated by the system. Read-only. Null for lists. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#metadata\" --\u003e\n\n\u003c!-- go code generation tags --\u003e",
+      "description": "DestinationRule defines policies that apply to traffic intended for a service after routing has occurred.\n\n\u003c!-- crd generation tags representing the server time when this object was created. It is not guaranteed to be set in happens-before order across separate operations. Clients may not set this value. It is represented in RFC3339 form and is in UTC. Populated by the system. Read-only. Null for lists. For more information, see [Kubernetes API Conventions](https://github.com/kubernetes/community/blob/master/contributors/devel/sig-architecture/api-conventions.md#metadata)\" --\u003e\n\n\u003c!-- go code generation tags --\u003e",
       "type": "object",
       "properties": {
         "apiVersion": {
@@ -6046,7 +6071,7 @@
       }
     },
     "io.istio.networking.v1alpha3.DestinationRule": {
-      "description": "DestinationRule defines policies that apply to traffic intended for a service after routing has occurred.\n\n\u003c!-- crd generation tags representing the server time when this object was created. It is not guaranteed to be set in happens-before order across separate operations. Clients may not set this value. It is represented in RFC3339 form and is in UTC. Populated by the system. Read-only. Null for lists. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#metadata\" --\u003e\n\n\u003c!-- go code generation tags --\u003e",
+      "description": "DestinationRule defines policies that apply to traffic intended for a service after routing has occurred.\n\n\u003c!-- crd generation tags representing the server time when this object was created. It is not guaranteed to be set in happens-before order across separate operations. Clients may not set this value. It is represented in RFC3339 form and is in UTC. Populated by the system. Read-only. Null for lists. For more information, see [Kubernetes API Conventions](https://github.com/kubernetes/community/blob/master/contributors/devel/sig-architecture/api-conventions.md#metadata)\" --\u003e\n\n\u003c!-- go code generation tags --\u003e",
       "type": "object",
       "properties": {
         "apiVersion": {
@@ -6574,7 +6599,7 @@
       }
     },
     "io.istio.networking.v1beta1.DestinationRule": {
-      "description": "DestinationRule defines policies that apply to traffic intended for a service after routing has occurred.\n\n\u003c!-- crd generation tags representing the server time when this object was created. It is not guaranteed to be set in happens-before order across separate operations. Clients may not set this value. It is represented in RFC3339 form and is in UTC. Populated by the system. Read-only. Null for lists. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#metadata\" --\u003e\n\n\u003c!-- go code generation tags --\u003e",
+      "description": "DestinationRule defines policies that apply to traffic intended for a service after routing has occurred.\n\n\u003c!-- crd generation tags representing the server time when this object was created. It is not guaranteed to be set in happens-before order across separate operations. Clients may not set this value. It is represented in RFC3339 form and is in UTC. Populated by the system. Read-only. Null for lists. For more information, see [Kubernetes API Conventions](https://github.com/kubernetes/community/blob/master/contributors/devel/sig-architecture/api-conventions.md#metadata)\" --\u003e\n\n\u003c!-- go code generation tags --\u003e",
       "type": "object",
       "properties": {
         "apiVersion": {
