@@ -32,7 +32,7 @@ require (
 	github.com/stolostron/search-v2-operator v0.0.0-20250609200037-030a382461f4
 	github.com/tektoncd/pipeline v1.3.1
 	github.com/tektoncd/triggers v0.33.0
-	istio.io/client-go v1.26.3
+	istio.io/client-go v1.27.0
 	k8s.io/api v0.33.3
 	k8s.io/apiextensions-apiserver v0.33.3
 	k8s.io/apimachinery v0.33.3
@@ -229,7 +229,7 @@ require (
 	gopkg.in/inf.v0 v0.9.1 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
-	istio.io/api v1.26.3-0.20250708203130-20827773ee1b // indirect
+	istio.io/api v1.27.0-beta.0.0.20250731082105-36763529c462 // indirect
 	k8s.io/component-base v0.33.3 // indirect
 	k8s.io/klog/v2 v2.130.1 // indirect
 	k8s.io/utils v0.0.0-20250604170112-4c0f3b243397 // indirect
