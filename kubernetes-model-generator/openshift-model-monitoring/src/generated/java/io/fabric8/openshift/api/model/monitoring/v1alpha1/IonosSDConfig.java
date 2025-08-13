@@ -28,6 +28,7 @@ import io.fabric8.kubernetes.api.model.ResourceRequirements;
 import io.fabric8.kubernetes.api.model.SecretKeySelector;
 import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
+import io.fabric8.openshift.api.model.monitoring.v1.OAuth2;
 import io.fabric8.openshift.api.model.monitoring.v1.SafeAuthorization;
 import io.fabric8.openshift.api.model.monitoring.v1.SafeTLSConfig;
 import io.sundr.builder.annotations.Buildable;
@@ -47,6 +48,7 @@ import lombok.experimental.Accessors;
     "enableHTTP2",
     "followRedirects",
     "noProxy",
+    "oauth2",
     "port",
     "proxyConnectHeader",
     "proxyFromEnvironment",
@@ -89,6 +91,8 @@ public class IonosSDConfig implements Editable<IonosSDConfigBuilder>, Kubernetes
     private Boolean followRedirects;
     @JsonProperty("noProxy")
     private String noProxy;
+    @JsonProperty("oauth2")
+    private OAuth2 oauth2;
     @JsonProperty("port")
     private Integer port;
     @JsonProperty("proxyConnectHeader")
@@ -111,13 +115,14 @@ public class IonosSDConfig implements Editable<IonosSDConfigBuilder>, Kubernetes
     public IonosSDConfig() {
     }
 
-    public IonosSDConfig(SafeAuthorization authorization, String datacenterID, Boolean enableHTTP2, Boolean followRedirects, String noProxy, Integer port, Map<String, List<SecretKeySelector>> proxyConnectHeader, Boolean proxyFromEnvironment, String proxyUrl, String refreshInterval, SafeTLSConfig tlsConfig) {
+    public IonosSDConfig(SafeAuthorization authorization, String datacenterID, Boolean enableHTTP2, Boolean followRedirects, String noProxy, OAuth2 oauth2, Integer port, Map<String, List<SecretKeySelector>> proxyConnectHeader, Boolean proxyFromEnvironment, String proxyUrl, String refreshInterval, SafeTLSConfig tlsConfig) {
         super();
         this.authorization = authorization;
         this.datacenterID = datacenterID;
         this.enableHTTP2 = enableHTTP2;
         this.followRedirects = followRedirects;
         this.noProxy = noProxy;
+        this.oauth2 = oauth2;
         this.port = port;
         this.proxyConnectHeader = proxyConnectHeader;
         this.proxyFromEnvironment = proxyFromEnvironment;
@@ -191,7 +196,7 @@ public class IonosSDConfig implements Editable<IonosSDConfigBuilder>, Kubernetes
     }
 
     /**
-     * `noProxy` is a comma-separated string that can contain IPs, CIDR notation, domain names that should be excluded from proxying. IP and domain names can contain port numbers.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0 or Alertmanager &gt;= 0.25.0.
+     * `noProxy` is a comma-separated string that can contain IPs, CIDR notation, domain names that should be excluded from proxying. IP and domain names can contain port numbers.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
      */
     @JsonProperty("noProxy")
     public String getNoProxy() {
@@ -199,11 +204,27 @@ public class IonosSDConfig implements Editable<IonosSDConfigBuilder>, Kubernetes
     }
 
     /**
-     * `noProxy` is a comma-separated string that can contain IPs, CIDR notation, domain names that should be excluded from proxying. IP and domain names can contain port numbers.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0 or Alertmanager &gt;= 0.25.0.
+     * `noProxy` is a comma-separated string that can contain IPs, CIDR notation, domain names that should be excluded from proxying. IP and domain names can contain port numbers.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
      */
     @JsonProperty("noProxy")
     public void setNoProxy(String noProxy) {
         this.noProxy = noProxy;
+    }
+
+    /**
+     * IonosSDConfig configurations allow retrieving scrape targets from IONOS resources. See https://prometheus.io/docs/prometheus/latest/configuration/configuration/#ionos_sd_config
+     */
+    @JsonProperty("oauth2")
+    public OAuth2 getOauth2() {
+        return oauth2;
+    }
+
+    /**
+     * IonosSDConfig configurations allow retrieving scrape targets from IONOS resources. See https://prometheus.io/docs/prometheus/latest/configuration/configuration/#ionos_sd_config
+     */
+    @JsonProperty("oauth2")
+    public void setOauth2(OAuth2 oauth2) {
+        this.oauth2 = oauth2;
     }
 
     /**
@@ -223,7 +244,7 @@ public class IonosSDConfig implements Editable<IonosSDConfigBuilder>, Kubernetes
     }
 
     /**
-     * ProxyConnectHeader optionally specifies headers to send to proxies during CONNECT requests.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0 or Alertmanager &gt;= 0.25.0.
+     * ProxyConnectHeader optionally specifies headers to send to proxies during CONNECT requests.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
      */
     @JsonProperty("proxyConnectHeader")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -232,7 +253,7 @@ public class IonosSDConfig implements Editable<IonosSDConfigBuilder>, Kubernetes
     }
 
     /**
-     * ProxyConnectHeader optionally specifies headers to send to proxies during CONNECT requests.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0 or Alertmanager &gt;= 0.25.0.
+     * ProxyConnectHeader optionally specifies headers to send to proxies during CONNECT requests.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
      */
     @JsonProperty("proxyConnectHeader")
     public void setProxyConnectHeader(Map<String, List<SecretKeySelector>> proxyConnectHeader) {
@@ -240,7 +261,7 @@ public class IonosSDConfig implements Editable<IonosSDConfigBuilder>, Kubernetes
     }
 
     /**
-     * Whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).<br><p> <br><p> It requires Prometheus &gt;= v2.43.0 or Alertmanager &gt;= 0.25.0.
+     * Whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
      */
     @JsonProperty("proxyFromEnvironment")
     public Boolean getProxyFromEnvironment() {
@@ -248,7 +269,7 @@ public class IonosSDConfig implements Editable<IonosSDConfigBuilder>, Kubernetes
     }
 
     /**
-     * Whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).<br><p> <br><p> It requires Prometheus &gt;= v2.43.0 or Alertmanager &gt;= 0.25.0.
+     * Whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
      */
     @JsonProperty("proxyFromEnvironment")
     public void setProxyFromEnvironment(Boolean proxyFromEnvironment) {

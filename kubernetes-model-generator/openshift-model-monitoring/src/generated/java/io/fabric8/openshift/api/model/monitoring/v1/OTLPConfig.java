@@ -39,6 +39,8 @@ import lombok.experimental.Accessors;
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
+    "convertHistogramsToNHCB",
+    "keepIdentifyingResourceAttributes",
     "promoteResourceAttributes",
     "translationStrategy"
 })
@@ -67,6 +69,10 @@ import lombok.experimental.Accessors;
 public class OTLPConfig implements Editable<OTLPConfigBuilder>, KubernetesResource
 {
 
+    @JsonProperty("convertHistogramsToNHCB")
+    private Boolean convertHistogramsToNHCB;
+    @JsonProperty("keepIdentifyingResourceAttributes")
+    private Boolean keepIdentifyingResourceAttributes;
     @JsonProperty("promoteResourceAttributes")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> promoteResourceAttributes = new ArrayList<>();
@@ -81,10 +87,44 @@ public class OTLPConfig implements Editable<OTLPConfigBuilder>, KubernetesResour
     public OTLPConfig() {
     }
 
-    public OTLPConfig(List<String> promoteResourceAttributes, String translationStrategy) {
+    public OTLPConfig(Boolean convertHistogramsToNHCB, Boolean keepIdentifyingResourceAttributes, List<String> promoteResourceAttributes, String translationStrategy) {
         super();
+        this.convertHistogramsToNHCB = convertHistogramsToNHCB;
+        this.keepIdentifyingResourceAttributes = keepIdentifyingResourceAttributes;
         this.promoteResourceAttributes = promoteResourceAttributes;
         this.translationStrategy = translationStrategy;
+    }
+
+    /**
+     * Configures optional translation of OTLP explicit bucket histograms into native histograms with custom buckets. It requires Prometheus &gt;= v3.4.0.
+     */
+    @JsonProperty("convertHistogramsToNHCB")
+    public Boolean getConvertHistogramsToNHCB() {
+        return convertHistogramsToNHCB;
+    }
+
+    /**
+     * Configures optional translation of OTLP explicit bucket histograms into native histograms with custom buckets. It requires Prometheus &gt;= v3.4.0.
+     */
+    @JsonProperty("convertHistogramsToNHCB")
+    public void setConvertHistogramsToNHCB(Boolean convertHistogramsToNHCB) {
+        this.convertHistogramsToNHCB = convertHistogramsToNHCB;
+    }
+
+    /**
+     * Enables adding `service.name`, `service.namespace` and `service.instance.id` resource attributes to the `target_info` metric, on top of converting them into the `instance` and `job` labels.<br><p> <br><p> It requires Prometheus &gt;= v3.1.0.
+     */
+    @JsonProperty("keepIdentifyingResourceAttributes")
+    public Boolean getKeepIdentifyingResourceAttributes() {
+        return keepIdentifyingResourceAttributes;
+    }
+
+    /**
+     * Enables adding `service.name`, `service.namespace` and `service.instance.id` resource attributes to the `target_info` metric, on top of converting them into the `instance` and `job` labels.<br><p> <br><p> It requires Prometheus &gt;= v3.1.0.
+     */
+    @JsonProperty("keepIdentifyingResourceAttributes")
+    public void setKeepIdentifyingResourceAttributes(Boolean keepIdentifyingResourceAttributes) {
+        this.keepIdentifyingResourceAttributes = keepIdentifyingResourceAttributes;
     }
 
     /**
@@ -105,7 +145,7 @@ public class OTLPConfig implements Editable<OTLPConfigBuilder>, KubernetesResour
     }
 
     /**
-     * Configures how the OTLP receiver endpoint translates the incoming metrics. If unset, Prometheus uses its default value.<br><p> <br><p> It requires Prometheus &gt;= v3.0.0.
+     * Configures how the OTLP receiver endpoint translates the incoming metrics.<br><p> <br><p> It requires Prometheus &gt;= v3.0.0.
      */
     @JsonProperty("translationStrategy")
     public String getTranslationStrategy() {
@@ -113,7 +153,7 @@ public class OTLPConfig implements Editable<OTLPConfigBuilder>, KubernetesResour
     }
 
     /**
-     * Configures how the OTLP receiver endpoint translates the incoming metrics. If unset, Prometheus uses its default value.<br><p> <br><p> It requires Prometheus &gt;= v3.0.0.
+     * Configures how the OTLP receiver endpoint translates the incoming metrics.<br><p> <br><p> It requires Prometheus &gt;= v3.0.0.
      */
     @JsonProperty("translationStrategy")
     public void setTranslationStrategy(String translationStrategy) {

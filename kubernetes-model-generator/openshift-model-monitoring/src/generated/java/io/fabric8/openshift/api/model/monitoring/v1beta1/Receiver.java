@@ -43,6 +43,7 @@ import lombok.experimental.Accessors;
     "discordConfigs",
     "emailConfigs",
     "msteamsConfigs",
+    "msteamsv2Configs",
     "name",
     "opsgenieConfigs",
     "pagerdutyConfigs",
@@ -89,6 +90,9 @@ public class Receiver implements Editable<ReceiverBuilder>, KubernetesResource
     @JsonProperty("msteamsConfigs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<MSTeamsConfig> msteamsConfigs = new ArrayList<>();
+    @JsonProperty("msteamsv2Configs")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<MSTeamsV2Config> msteamsv2Configs = new ArrayList<>();
     @JsonProperty("name")
     private String name;
     @JsonProperty("opsgenieConfigs")
@@ -130,11 +134,12 @@ public class Receiver implements Editable<ReceiverBuilder>, KubernetesResource
     public Receiver() {
     }
 
-    public Receiver(List<DiscordConfig> discordConfigs, List<EmailConfig> emailConfigs, List<MSTeamsConfig> msteamsConfigs, String name, List<OpsGenieConfig> opsgenieConfigs, List<PagerDutyConfig> pagerdutyConfigs, List<PushoverConfig> pushoverConfigs, List<SlackConfig> slackConfigs, List<SNSConfig> snsConfigs, List<TelegramConfig> telegramConfigs, List<VictorOpsConfig> victoropsConfigs, List<WebexConfig> webexConfigs, List<WebhookConfig> webhookConfigs, List<WeChatConfig> wechatConfigs) {
+    public Receiver(List<DiscordConfig> discordConfigs, List<EmailConfig> emailConfigs, List<MSTeamsConfig> msteamsConfigs, List<MSTeamsV2Config> msteamsv2Configs, String name, List<OpsGenieConfig> opsgenieConfigs, List<PagerDutyConfig> pagerdutyConfigs, List<PushoverConfig> pushoverConfigs, List<SlackConfig> slackConfigs, List<SNSConfig> snsConfigs, List<TelegramConfig> telegramConfigs, List<VictorOpsConfig> victoropsConfigs, List<WebexConfig> webexConfigs, List<WebhookConfig> webhookConfigs, List<WeChatConfig> wechatConfigs) {
         super();
         this.discordConfigs = discordConfigs;
         this.emailConfigs = emailConfigs;
         this.msteamsConfigs = msteamsConfigs;
+        this.msteamsv2Configs = msteamsv2Configs;
         this.name = name;
         this.opsgenieConfigs = opsgenieConfigs;
         this.pagerdutyConfigs = pagerdutyConfigs;
@@ -197,6 +202,23 @@ public class Receiver implements Editable<ReceiverBuilder>, KubernetesResource
     @JsonProperty("msteamsConfigs")
     public void setMsteamsConfigs(List<MSTeamsConfig> msteamsConfigs) {
         this.msteamsConfigs = msteamsConfigs;
+    }
+
+    /**
+     * List of MSTeamsV2 configurations. It requires Alertmanager &gt;= 0.28.0.
+     */
+    @JsonProperty("msteamsv2Configs")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public List<MSTeamsV2Config> getMsteamsv2Configs() {
+        return msteamsv2Configs;
+    }
+
+    /**
+     * List of MSTeamsV2 configurations. It requires Alertmanager &gt;= 0.28.0.
+     */
+    @JsonProperty("msteamsv2Configs")
+    public void setMsteamsv2Configs(List<MSTeamsV2Config> msteamsv2Configs) {
+        this.msteamsv2Configs = msteamsv2Configs;
     }
 
     /**

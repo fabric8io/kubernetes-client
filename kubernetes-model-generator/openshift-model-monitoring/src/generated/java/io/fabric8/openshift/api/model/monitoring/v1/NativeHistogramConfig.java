@@ -38,6 +38,7 @@ import lombok.experimental.Accessors;
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
+    "convertClassicHistogramsToNHCB",
     "nativeHistogramBucketLimit",
     "nativeHistogramMinBucketFactor",
     "scrapeClassicHistograms"
@@ -67,6 +68,8 @@ import lombok.experimental.Accessors;
 public class NativeHistogramConfig implements Editable<NativeHistogramConfigBuilder>, KubernetesResource
 {
 
+    @JsonProperty("convertClassicHistogramsToNHCB")
+    private Boolean convertClassicHistogramsToNHCB;
     @JsonProperty("nativeHistogramBucketLimit")
     private Long nativeHistogramBucketLimit;
     @JsonProperty("nativeHistogramMinBucketFactor")
@@ -82,11 +85,28 @@ public class NativeHistogramConfig implements Editable<NativeHistogramConfigBuil
     public NativeHistogramConfig() {
     }
 
-    public NativeHistogramConfig(Long nativeHistogramBucketLimit, Quantity nativeHistogramMinBucketFactor, Boolean scrapeClassicHistograms) {
+    public NativeHistogramConfig(Boolean convertClassicHistogramsToNHCB, Long nativeHistogramBucketLimit, Quantity nativeHistogramMinBucketFactor, Boolean scrapeClassicHistograms) {
         super();
+        this.convertClassicHistogramsToNHCB = convertClassicHistogramsToNHCB;
         this.nativeHistogramBucketLimit = nativeHistogramBucketLimit;
         this.nativeHistogramMinBucketFactor = nativeHistogramMinBucketFactor;
         this.scrapeClassicHistograms = scrapeClassicHistograms;
+    }
+
+    /**
+     * Whether to convert all scraped classic histograms into a native histogram with custom buckets. It requires Prometheus &gt;= v3.0.0.
+     */
+    @JsonProperty("convertClassicHistogramsToNHCB")
+    public Boolean getConvertClassicHistogramsToNHCB() {
+        return convertClassicHistogramsToNHCB;
+    }
+
+    /**
+     * Whether to convert all scraped classic histograms into a native histogram with custom buckets. It requires Prometheus &gt;= v3.0.0.
+     */
+    @JsonProperty("convertClassicHistogramsToNHCB")
+    public void setConvertClassicHistogramsToNHCB(Boolean convertClassicHistogramsToNHCB) {
+        this.convertClassicHistogramsToNHCB = convertClassicHistogramsToNHCB;
     }
 
     /**

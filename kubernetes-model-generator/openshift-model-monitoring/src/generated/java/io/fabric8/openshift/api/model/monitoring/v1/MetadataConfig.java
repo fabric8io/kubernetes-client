@@ -37,6 +37,7 @@ import lombok.experimental.Accessors;
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
+    "maxSamplesPerSend",
     "send",
     "sendInterval"
 })
@@ -65,6 +66,8 @@ import lombok.experimental.Accessors;
 public class MetadataConfig implements Editable<MetadataConfigBuilder>, KubernetesResource
 {
 
+    @JsonProperty("maxSamplesPerSend")
+    private Integer maxSamplesPerSend;
     @JsonProperty("send")
     private Boolean send;
     @JsonProperty("sendInterval")
@@ -78,10 +81,27 @@ public class MetadataConfig implements Editable<MetadataConfigBuilder>, Kubernet
     public MetadataConfig() {
     }
 
-    public MetadataConfig(Boolean send, String sendInterval) {
+    public MetadataConfig(Integer maxSamplesPerSend, Boolean send, String sendInterval) {
         super();
+        this.maxSamplesPerSend = maxSamplesPerSend;
         this.send = send;
         this.sendInterval = sendInterval;
+    }
+
+    /**
+     * MaxSamplesPerSend is the maximum number of metadata samples per send.<br><p> <br><p> It requires Prometheus &gt;= v2.29.0.
+     */
+    @JsonProperty("maxSamplesPerSend")
+    public Integer getMaxSamplesPerSend() {
+        return maxSamplesPerSend;
+    }
+
+    /**
+     * MaxSamplesPerSend is the maximum number of metadata samples per send.<br><p> <br><p> It requires Prometheus &gt;= v2.29.0.
+     */
+    @JsonProperty("maxSamplesPerSend")
+    public void setMaxSamplesPerSend(Integer maxSamplesPerSend) {
+        this.maxSamplesPerSend = maxSamplesPerSend;
     }
 
     /**

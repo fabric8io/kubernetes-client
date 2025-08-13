@@ -91,7 +91,7 @@ public class EmbeddedObjectMetadata implements Editable<EmbeddedObjectMetadataBu
     }
 
     /**
-     * Annotations is an unstructured key value map stored with a resource that may be set by external tools to store and retrieve arbitrary metadata. They are not queryable and should be preserved when modifying objects. More info: http://kubernetes.io/docs/user-guide/annotations
+     * Annotations is an unstructured key value map stored with a resource that may be set by external tools to store and retrieve arbitrary metadata. They are not queryable and should be preserved when modifying objects. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/
      */
     @JsonProperty("annotations")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -100,7 +100,7 @@ public class EmbeddedObjectMetadata implements Editable<EmbeddedObjectMetadataBu
     }
 
     /**
-     * Annotations is an unstructured key value map stored with a resource that may be set by external tools to store and retrieve arbitrary metadata. They are not queryable and should be preserved when modifying objects. More info: http://kubernetes.io/docs/user-guide/annotations
+     * Annotations is an unstructured key value map stored with a resource that may be set by external tools to store and retrieve arbitrary metadata. They are not queryable and should be preserved when modifying objects. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/
      */
     @JsonProperty("annotations")
     public void setAnnotations(Map<String, String> annotations) {
@@ -108,7 +108,7 @@ public class EmbeddedObjectMetadata implements Editable<EmbeddedObjectMetadataBu
     }
 
     /**
-     * Map of string keys and values that can be used to organize and categorize (scope and select) objects. May match selectors of replication controllers and services. More info: http://kubernetes.io/docs/user-guide/labels
+     * Map of string keys and values that can be used to organize and categorize (scope and select) objects. May match selectors of replication controllers and services. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/
      */
     @JsonProperty("labels")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -117,7 +117,7 @@ public class EmbeddedObjectMetadata implements Editable<EmbeddedObjectMetadataBu
     }
 
     /**
-     * Map of string keys and values that can be used to organize and categorize (scope and select) objects. May match selectors of replication controllers and services. More info: http://kubernetes.io/docs/user-guide/labels
+     * Map of string keys and values that can be used to organize and categorize (scope and select) objects. May match selectors of replication controllers and services. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/
      */
     @JsonProperty("labels")
     public void setLabels(Map<String, String> labels) {
@@ -125,7 +125,7 @@ public class EmbeddedObjectMetadata implements Editable<EmbeddedObjectMetadataBu
     }
 
     /**
-     * Name must be unique within a namespace. Is required when creating resources, although some resources may allow a client to request the generation of an appropriate name automatically. Name is primarily intended for creation idempotence and configuration definition. Cannot be updated. More info: http://kubernetes.io/docs/user-guide/identifiers#names
+     * Name must be unique within a namespace. Is required when creating resources, although some resources may allow a client to request the generation of an appropriate name automatically. Name is primarily intended for creation idempotence and configuration definition. Cannot be updated. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/
      */
     @JsonProperty("name")
     public String getName() {
@@ -133,7 +133,7 @@ public class EmbeddedObjectMetadata implements Editable<EmbeddedObjectMetadataBu
     }
 
     /**
-     * Name must be unique within a namespace. Is required when creating resources, although some resources may allow a client to request the generation of an appropriate name automatically. Name is primarily intended for creation idempotence and configuration definition. Cannot be updated. More info: http://kubernetes.io/docs/user-guide/identifiers#names
+     * Name must be unique within a namespace. Is required when creating resources, although some resources may allow a client to request the generation of an appropriate name automatically. Name is primarily intended for creation idempotence and configuration definition. Cannot be updated. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/
      */
     @JsonProperty("name")
     public void setName(String name) {

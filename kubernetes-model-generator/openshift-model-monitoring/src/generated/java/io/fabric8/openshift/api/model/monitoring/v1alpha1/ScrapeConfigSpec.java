@@ -51,6 +51,7 @@ import lombok.experimental.Accessors;
     "azureSDConfigs",
     "basicAuth",
     "consulSDConfigs",
+    "convertClassicHistogramsToNHCB",
     "digitalOceanSDConfigs",
     "dnsSDConfigs",
     "dockerSDConfigs",
@@ -78,6 +79,8 @@ import lombok.experimental.Accessors;
     "linodeSDConfigs",
     "metricRelabelings",
     "metricsPath",
+    "nameEscapingScheme",
+    "nameValidationScheme",
     "nativeHistogramBucketLimit",
     "nativeHistogramMinBucketFactor",
     "noProxy",
@@ -139,6 +142,8 @@ public class ScrapeConfigSpec implements Editable<ScrapeConfigSpecBuilder>, Kube
     @JsonProperty("consulSDConfigs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<ConsulSDConfig> consulSDConfigs = new ArrayList<>();
+    @JsonProperty("convertClassicHistogramsToNHCB")
+    private Boolean convertClassicHistogramsToNHCB;
     @JsonProperty("digitalOceanSDConfigs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<DigitalOceanSDConfig> digitalOceanSDConfigs = new ArrayList<>();
@@ -209,6 +214,10 @@ public class ScrapeConfigSpec implements Editable<ScrapeConfigSpecBuilder>, Kube
     private List<RelabelConfig> metricRelabelings = new ArrayList<>();
     @JsonProperty("metricsPath")
     private String metricsPath;
+    @JsonProperty("nameEscapingScheme")
+    private String nameEscapingScheme;
+    @JsonProperty("nameValidationScheme")
+    private String nameValidationScheme;
     @JsonProperty("nativeHistogramBucketLimit")
     private Long nativeHistogramBucketLimit;
     @JsonProperty("nativeHistogramMinBucketFactor")
@@ -278,12 +287,13 @@ public class ScrapeConfigSpec implements Editable<ScrapeConfigSpecBuilder>, Kube
     public ScrapeConfigSpec() {
     }
 
-    public ScrapeConfigSpec(SafeAuthorization authorization, List<AzureSDConfig> azureSDConfigs, BasicAuth basicAuth, List<ConsulSDConfig> consulSDConfigs, List<DigitalOceanSDConfig> digitalOceanSDConfigs, List<DNSSDConfig> dnsSDConfigs, List<DockerSDConfig> dockerSDConfigs, List<DockerSwarmSDConfig> dockerSwarmSDConfigs, List<EC2SDConfig> ec2SDConfigs, Boolean enableCompression, Boolean enableHTTP2, List<EurekaSDConfig> eurekaSDConfigs, String fallbackScrapeProtocol, List<FileSDConfig> fileSDConfigs, List<GCESDConfig> gceSDConfigs, List<HetznerSDConfig> hetznerSDConfigs, Boolean honorLabels, Boolean honorTimestamps, List<HTTPSDConfig> httpSDConfigs, List<IonosSDConfig> ionosSDConfigs, String jobName, Long keepDroppedTargets, List<KubernetesSDConfig> kubernetesSDConfigs, List<KumaSDConfig> kumaSDConfigs, Long labelLimit, Long labelNameLengthLimit, Long labelValueLengthLimit, List<LightSailSDConfig> lightSailSDConfigs, List<LinodeSDConfig> linodeSDConfigs, List<RelabelConfig> metricRelabelings, String metricsPath, Long nativeHistogramBucketLimit, Quantity nativeHistogramMinBucketFactor, String noProxy, List<NomadSDConfig> nomadSDConfigs, OAuth2 oauth2, List<OpenStackSDConfig> openstackSDConfigs, List<OVHCloudSDConfig> ovhcloudSDConfigs, Map<String, List<String>> params, Map<String, List<SecretKeySelector>> proxyConnectHeader, Boolean proxyFromEnvironment, String proxyUrl, List<PuppetDBSDConfig> puppetDBSDConfigs, List<RelabelConfig> relabelings, Long sampleLimit, List<ScalewaySDConfig> scalewaySDConfigs, String scheme, String scrapeClass, Boolean scrapeClassicHistograms, String scrapeInterval, List<String> scrapeProtocols, String scrapeTimeout, List<StaticConfig> staticConfigs, Long targetLimit, SafeTLSConfig tlsConfig, Boolean trackTimestampsStaleness) {
+    public ScrapeConfigSpec(SafeAuthorization authorization, List<AzureSDConfig> azureSDConfigs, BasicAuth basicAuth, List<ConsulSDConfig> consulSDConfigs, Boolean convertClassicHistogramsToNHCB, List<DigitalOceanSDConfig> digitalOceanSDConfigs, List<DNSSDConfig> dnsSDConfigs, List<DockerSDConfig> dockerSDConfigs, List<DockerSwarmSDConfig> dockerSwarmSDConfigs, List<EC2SDConfig> ec2SDConfigs, Boolean enableCompression, Boolean enableHTTP2, List<EurekaSDConfig> eurekaSDConfigs, String fallbackScrapeProtocol, List<FileSDConfig> fileSDConfigs, List<GCESDConfig> gceSDConfigs, List<HetznerSDConfig> hetznerSDConfigs, Boolean honorLabels, Boolean honorTimestamps, List<HTTPSDConfig> httpSDConfigs, List<IonosSDConfig> ionosSDConfigs, String jobName, Long keepDroppedTargets, List<KubernetesSDConfig> kubernetesSDConfigs, List<KumaSDConfig> kumaSDConfigs, Long labelLimit, Long labelNameLengthLimit, Long labelValueLengthLimit, List<LightSailSDConfig> lightSailSDConfigs, List<LinodeSDConfig> linodeSDConfigs, List<RelabelConfig> metricRelabelings, String metricsPath, String nameEscapingScheme, String nameValidationScheme, Long nativeHistogramBucketLimit, Quantity nativeHistogramMinBucketFactor, String noProxy, List<NomadSDConfig> nomadSDConfigs, OAuth2 oauth2, List<OpenStackSDConfig> openstackSDConfigs, List<OVHCloudSDConfig> ovhcloudSDConfigs, Map<String, List<String>> params, Map<String, List<SecretKeySelector>> proxyConnectHeader, Boolean proxyFromEnvironment, String proxyUrl, List<PuppetDBSDConfig> puppetDBSDConfigs, List<RelabelConfig> relabelings, Long sampleLimit, List<ScalewaySDConfig> scalewaySDConfigs, String scheme, String scrapeClass, Boolean scrapeClassicHistograms, String scrapeInterval, List<String> scrapeProtocols, String scrapeTimeout, List<StaticConfig> staticConfigs, Long targetLimit, SafeTLSConfig tlsConfig, Boolean trackTimestampsStaleness) {
         super();
         this.authorization = authorization;
         this.azureSDConfigs = azureSDConfigs;
         this.basicAuth = basicAuth;
         this.consulSDConfigs = consulSDConfigs;
+        this.convertClassicHistogramsToNHCB = convertClassicHistogramsToNHCB;
         this.digitalOceanSDConfigs = digitalOceanSDConfigs;
         this.dnsSDConfigs = dnsSDConfigs;
         this.dockerSDConfigs = dockerSDConfigs;
@@ -311,6 +321,8 @@ public class ScrapeConfigSpec implements Editable<ScrapeConfigSpecBuilder>, Kube
         this.linodeSDConfigs = linodeSDConfigs;
         this.metricRelabelings = metricRelabelings;
         this.metricsPath = metricsPath;
+        this.nameEscapingScheme = nameEscapingScheme;
+        this.nameValidationScheme = nameValidationScheme;
         this.nativeHistogramBucketLimit = nativeHistogramBucketLimit;
         this.nativeHistogramMinBucketFactor = nativeHistogramMinBucketFactor;
         this.noProxy = noProxy;
@@ -402,6 +414,22 @@ public class ScrapeConfigSpec implements Editable<ScrapeConfigSpecBuilder>, Kube
     @JsonProperty("consulSDConfigs")
     public void setConsulSDConfigs(List<ConsulSDConfig> consulSDConfigs) {
         this.consulSDConfigs = consulSDConfigs;
+    }
+
+    /**
+     * Whether to convert all scraped classic histograms into a native histogram with custom buckets. It requires Prometheus &gt;= v3.0.0.
+     */
+    @JsonProperty("convertClassicHistogramsToNHCB")
+    public Boolean getConvertClassicHistogramsToNHCB() {
+        return convertClassicHistogramsToNHCB;
+    }
+
+    /**
+     * Whether to convert all scraped classic histograms into a native histogram with custom buckets. It requires Prometheus &gt;= v3.0.0.
+     */
+    @JsonProperty("convertClassicHistogramsToNHCB")
+    public void setConvertClassicHistogramsToNHCB(Boolean convertClassicHistogramsToNHCB) {
+        this.convertClassicHistogramsToNHCB = convertClassicHistogramsToNHCB;
     }
 
     /**
@@ -853,6 +881,38 @@ public class ScrapeConfigSpec implements Editable<ScrapeConfigSpecBuilder>, Kube
     }
 
     /**
+     * Metric name escaping mode to request through content negotiation.<br><p> <br><p> It requires Prometheus &gt;= v3.4.0.
+     */
+    @JsonProperty("nameEscapingScheme")
+    public String getNameEscapingScheme() {
+        return nameEscapingScheme;
+    }
+
+    /**
+     * Metric name escaping mode to request through content negotiation.<br><p> <br><p> It requires Prometheus &gt;= v3.4.0.
+     */
+    @JsonProperty("nameEscapingScheme")
+    public void setNameEscapingScheme(String nameEscapingScheme) {
+        this.nameEscapingScheme = nameEscapingScheme;
+    }
+
+    /**
+     * Specifies the validation scheme for metric and label names.<br><p> <br><p> It requires Prometheus &gt;= v3.0.0.
+     */
+    @JsonProperty("nameValidationScheme")
+    public String getNameValidationScheme() {
+        return nameValidationScheme;
+    }
+
+    /**
+     * Specifies the validation scheme for metric and label names.<br><p> <br><p> It requires Prometheus &gt;= v3.0.0.
+     */
+    @JsonProperty("nameValidationScheme")
+    public void setNameValidationScheme(String nameValidationScheme) {
+        this.nameValidationScheme = nameValidationScheme;
+    }
+
+    /**
      * If there are more than this many buckets in a native histogram, buckets will be merged to stay within the limit. It requires Prometheus &gt;= v2.45.0.
      */
     @JsonProperty("nativeHistogramBucketLimit")
@@ -885,7 +945,7 @@ public class ScrapeConfigSpec implements Editable<ScrapeConfigSpecBuilder>, Kube
     }
 
     /**
-     * `noProxy` is a comma-separated string that can contain IPs, CIDR notation, domain names that should be excluded from proxying. IP and domain names can contain port numbers.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0 or Alertmanager &gt;= 0.25.0.
+     * `noProxy` is a comma-separated string that can contain IPs, CIDR notation, domain names that should be excluded from proxying. IP and domain names can contain port numbers.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
      */
     @JsonProperty("noProxy")
     public String getNoProxy() {
@@ -893,7 +953,7 @@ public class ScrapeConfigSpec implements Editable<ScrapeConfigSpecBuilder>, Kube
     }
 
     /**
-     * `noProxy` is a comma-separated string that can contain IPs, CIDR notation, domain names that should be excluded from proxying. IP and domain names can contain port numbers.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0 or Alertmanager &gt;= 0.25.0.
+     * `noProxy` is a comma-separated string that can contain IPs, CIDR notation, domain names that should be excluded from proxying. IP and domain names can contain port numbers.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
      */
     @JsonProperty("noProxy")
     public void setNoProxy(String noProxy) {
@@ -985,7 +1045,7 @@ public class ScrapeConfigSpec implements Editable<ScrapeConfigSpecBuilder>, Kube
     }
 
     /**
-     * ProxyConnectHeader optionally specifies headers to send to proxies during CONNECT requests.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0 or Alertmanager &gt;= 0.25.0.
+     * ProxyConnectHeader optionally specifies headers to send to proxies during CONNECT requests.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
      */
     @JsonProperty("proxyConnectHeader")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -994,7 +1054,7 @@ public class ScrapeConfigSpec implements Editable<ScrapeConfigSpecBuilder>, Kube
     }
 
     /**
-     * ProxyConnectHeader optionally specifies headers to send to proxies during CONNECT requests.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0 or Alertmanager &gt;= 0.25.0.
+     * ProxyConnectHeader optionally specifies headers to send to proxies during CONNECT requests.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
      */
     @JsonProperty("proxyConnectHeader")
     public void setProxyConnectHeader(Map<String, List<SecretKeySelector>> proxyConnectHeader) {
@@ -1002,7 +1062,7 @@ public class ScrapeConfigSpec implements Editable<ScrapeConfigSpecBuilder>, Kube
     }
 
     /**
-     * Whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).<br><p> <br><p> It requires Prometheus &gt;= v2.43.0 or Alertmanager &gt;= 0.25.0.
+     * Whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
      */
     @JsonProperty("proxyFromEnvironment")
     public Boolean getProxyFromEnvironment() {
@@ -1010,7 +1070,7 @@ public class ScrapeConfigSpec implements Editable<ScrapeConfigSpecBuilder>, Kube
     }
 
     /**
-     * Whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).<br><p> <br><p> It requires Prometheus &gt;= v2.43.0 or Alertmanager &gt;= 0.25.0.
+     * Whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
      */
     @JsonProperty("proxyFromEnvironment")
     public void setProxyFromEnvironment(Boolean proxyFromEnvironment) {
@@ -1182,7 +1242,7 @@ public class ScrapeConfigSpec implements Editable<ScrapeConfigSpecBuilder>, Kube
     }
 
     /**
-     * ScrapeTimeout is the number of seconds to wait until a scrape request times out.
+     * ScrapeTimeout is the number of seconds to wait until a scrape request times out. The value cannot be greater than the scrape interval otherwise the operator will reject the resource.
      */
     @JsonProperty("scrapeTimeout")
     public String getScrapeTimeout() {
@@ -1190,7 +1250,7 @@ public class ScrapeConfigSpec implements Editable<ScrapeConfigSpecBuilder>, Kube
     }
 
     /**
-     * ScrapeTimeout is the number of seconds to wait until a scrape request times out.
+     * ScrapeTimeout is the number of seconds to wait until a scrape request times out. The value cannot be greater than the scrape interval otherwise the operator will reject the resource.
      */
     @JsonProperty("scrapeTimeout")
     public void setScrapeTimeout(String scrapeTimeout) {

@@ -42,6 +42,7 @@ import lombok.experimental.Accessors;
 @JsonPropertyOrder({
     "attachMetadata",
     "bodySizeLimit",
+    "convertClassicHistogramsToNHCB",
     "endpoints",
     "fallbackScrapeProtocol",
     "jobLabel",
@@ -91,6 +92,8 @@ public class ServiceMonitorSpec implements Editable<ServiceMonitorSpecBuilder>, 
     private AttachMetadata attachMetadata;
     @JsonProperty("bodySizeLimit")
     private String bodySizeLimit;
+    @JsonProperty("convertClassicHistogramsToNHCB")
+    private Boolean convertClassicHistogramsToNHCB;
     @JsonProperty("endpoints")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<Endpoint> endpoints = new ArrayList<>();
@@ -142,10 +145,11 @@ public class ServiceMonitorSpec implements Editable<ServiceMonitorSpecBuilder>, 
     public ServiceMonitorSpec() {
     }
 
-    public ServiceMonitorSpec(AttachMetadata attachMetadata, String bodySizeLimit, List<Endpoint> endpoints, String fallbackScrapeProtocol, String jobLabel, Long keepDroppedTargets, Long labelLimit, Long labelNameLengthLimit, Long labelValueLengthLimit, NamespaceSelector namespaceSelector, Long nativeHistogramBucketLimit, Quantity nativeHistogramMinBucketFactor, List<String> podTargetLabels, Long sampleLimit, String scrapeClass, Boolean scrapeClassicHistograms, List<String> scrapeProtocols, LabelSelector selector, String selectorMechanism, List<String> targetLabels, Long targetLimit) {
+    public ServiceMonitorSpec(AttachMetadata attachMetadata, String bodySizeLimit, Boolean convertClassicHistogramsToNHCB, List<Endpoint> endpoints, String fallbackScrapeProtocol, String jobLabel, Long keepDroppedTargets, Long labelLimit, Long labelNameLengthLimit, Long labelValueLengthLimit, NamespaceSelector namespaceSelector, Long nativeHistogramBucketLimit, Quantity nativeHistogramMinBucketFactor, List<String> podTargetLabels, Long sampleLimit, String scrapeClass, Boolean scrapeClassicHistograms, List<String> scrapeProtocols, LabelSelector selector, String selectorMechanism, List<String> targetLabels, Long targetLimit) {
         super();
         this.attachMetadata = attachMetadata;
         this.bodySizeLimit = bodySizeLimit;
+        this.convertClassicHistogramsToNHCB = convertClassicHistogramsToNHCB;
         this.endpoints = endpoints;
         this.fallbackScrapeProtocol = fallbackScrapeProtocol;
         this.jobLabel = jobLabel;
@@ -197,6 +201,22 @@ public class ServiceMonitorSpec implements Editable<ServiceMonitorSpecBuilder>, 
     @JsonProperty("bodySizeLimit")
     public void setBodySizeLimit(String bodySizeLimit) {
         this.bodySizeLimit = bodySizeLimit;
+    }
+
+    /**
+     * Whether to convert all scraped classic histograms into a native histogram with custom buckets. It requires Prometheus &gt;= v3.0.0.
+     */
+    @JsonProperty("convertClassicHistogramsToNHCB")
+    public Boolean getConvertClassicHistogramsToNHCB() {
+        return convertClassicHistogramsToNHCB;
+    }
+
+    /**
+     * Whether to convert all scraped classic histograms into a native histogram with custom buckets. It requires Prometheus &gt;= v3.0.0.
+     */
+    @JsonProperty("convertClassicHistogramsToNHCB")
+    public void setConvertClassicHistogramsToNHCB(Boolean convertClassicHistogramsToNHCB) {
+        this.convertClassicHistogramsToNHCB = convertClassicHistogramsToNHCB;
     }
 
     /**

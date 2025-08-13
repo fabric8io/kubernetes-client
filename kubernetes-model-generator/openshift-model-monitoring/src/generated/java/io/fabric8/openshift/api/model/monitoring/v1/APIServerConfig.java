@@ -2,6 +2,7 @@
 package io.fabric8.openshift.api.model.monitoring.v1;
 
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import javax.annotation.processing.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
@@ -23,6 +24,7 @@ import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
+import io.fabric8.kubernetes.api.model.SecretKeySelector;
 import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
@@ -42,6 +44,10 @@ import lombok.experimental.Accessors;
     "bearerToken",
     "bearerTokenFile",
     "host",
+    "noProxy",
+    "proxyConnectHeader",
+    "proxyFromEnvironment",
+    "proxyUrl",
     "tlsConfig"
 })
 @ToString
@@ -79,6 +85,15 @@ public class APIServerConfig implements Editable<APIServerConfigBuilder>, Kubern
     private String bearerTokenFile;
     @JsonProperty("host")
     private String host;
+    @JsonProperty("noProxy")
+    private String noProxy;
+    @JsonProperty("proxyConnectHeader")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private Map<String, List<SecretKeySelector>> proxyConnectHeader = new LinkedHashMap<>();
+    @JsonProperty("proxyFromEnvironment")
+    private Boolean proxyFromEnvironment;
+    @JsonProperty("proxyUrl")
+    private String proxyUrl;
     @JsonProperty("tlsConfig")
     private TLSConfig tlsConfig;
     @JsonIgnore
@@ -90,13 +105,17 @@ public class APIServerConfig implements Editable<APIServerConfigBuilder>, Kubern
     public APIServerConfig() {
     }
 
-    public APIServerConfig(Authorization authorization, BasicAuth basicAuth, String bearerToken, String bearerTokenFile, String host, TLSConfig tlsConfig) {
+    public APIServerConfig(Authorization authorization, BasicAuth basicAuth, String bearerToken, String bearerTokenFile, String host, String noProxy, Map<String, List<SecretKeySelector>> proxyConnectHeader, Boolean proxyFromEnvironment, String proxyUrl, TLSConfig tlsConfig) {
         super();
         this.authorization = authorization;
         this.basicAuth = basicAuth;
         this.bearerToken = bearerToken;
         this.bearerTokenFile = bearerTokenFile;
         this.host = host;
+        this.noProxy = noProxy;
+        this.proxyConnectHeader = proxyConnectHeader;
+        this.proxyFromEnvironment = proxyFromEnvironment;
+        this.proxyUrl = proxyUrl;
         this.tlsConfig = tlsConfig;
     }
 
@@ -178,6 +197,71 @@ public class APIServerConfig implements Editable<APIServerConfigBuilder>, Kubern
     @JsonProperty("host")
     public void setHost(String host) {
         this.host = host;
+    }
+
+    /**
+     * `noProxy` is a comma-separated string that can contain IPs, CIDR notation, domain names that should be excluded from proxying. IP and domain names can contain port numbers.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
+     */
+    @JsonProperty("noProxy")
+    public String getNoProxy() {
+        return noProxy;
+    }
+
+    /**
+     * `noProxy` is a comma-separated string that can contain IPs, CIDR notation, domain names that should be excluded from proxying. IP and domain names can contain port numbers.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
+     */
+    @JsonProperty("noProxy")
+    public void setNoProxy(String noProxy) {
+        this.noProxy = noProxy;
+    }
+
+    /**
+     * ProxyConnectHeader optionally specifies headers to send to proxies during CONNECT requests.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
+     */
+    @JsonProperty("proxyConnectHeader")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public Map<String, List<SecretKeySelector>> getProxyConnectHeader() {
+        return proxyConnectHeader;
+    }
+
+    /**
+     * ProxyConnectHeader optionally specifies headers to send to proxies during CONNECT requests.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
+     */
+    @JsonProperty("proxyConnectHeader")
+    public void setProxyConnectHeader(Map<String, List<SecretKeySelector>> proxyConnectHeader) {
+        this.proxyConnectHeader = proxyConnectHeader;
+    }
+
+    /**
+     * Whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
+     */
+    @JsonProperty("proxyFromEnvironment")
+    public Boolean getProxyFromEnvironment() {
+        return proxyFromEnvironment;
+    }
+
+    /**
+     * Whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
+     */
+    @JsonProperty("proxyFromEnvironment")
+    public void setProxyFromEnvironment(Boolean proxyFromEnvironment) {
+        this.proxyFromEnvironment = proxyFromEnvironment;
+    }
+
+    /**
+     * `proxyURL` defines the HTTP proxy server to use.
+     */
+    @JsonProperty("proxyUrl")
+    public String getProxyUrl() {
+        return proxyUrl;
+    }
+
+    /**
+     * `proxyURL` defines the HTTP proxy server to use.
+     */
+    @JsonProperty("proxyUrl")
+    public void setProxyUrl(String proxyUrl) {
+        this.proxyUrl = proxyUrl;
     }
 
     /**

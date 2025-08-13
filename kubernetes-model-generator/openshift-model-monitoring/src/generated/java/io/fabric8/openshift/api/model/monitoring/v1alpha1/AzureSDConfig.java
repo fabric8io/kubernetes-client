@@ -2,6 +2,7 @@
 package io.fabric8.openshift.api.model.monitoring.v1alpha1;
 
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import javax.annotation.processing.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
@@ -27,6 +28,10 @@ import io.fabric8.kubernetes.api.model.ResourceRequirements;
 import io.fabric8.kubernetes.api.model.SecretKeySelector;
 import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
+import io.fabric8.openshift.api.model.monitoring.v1.BasicAuth;
+import io.fabric8.openshift.api.model.monitoring.v1.OAuth2;
+import io.fabric8.openshift.api.model.monitoring.v1.SafeAuthorization;
+import io.fabric8.openshift.api.model.monitoring.v1.SafeTLSConfig;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
@@ -40,14 +45,24 @@ import lombok.experimental.Accessors;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "authenticationMethod",
+    "authorization",
+    "basicAuth",
     "clientID",
     "clientSecret",
+    "enableHTTP2",
     "environment",
+    "followRedirects",
+    "noProxy",
+    "oauth2",
     "port",
+    "proxyConnectHeader",
+    "proxyFromEnvironment",
+    "proxyUrl",
     "refreshInterval",
     "resourceGroup",
     "subscriptionID",
-    "tenantID"
+    "tenantID",
+    "tlsConfig"
 })
 @ToString
 @EqualsAndHashCode
@@ -76,14 +91,33 @@ public class AzureSDConfig implements Editable<AzureSDConfigBuilder>, Kubernetes
 
     @JsonProperty("authenticationMethod")
     private String authenticationMethod;
+    @JsonProperty("authorization")
+    private SafeAuthorization authorization;
+    @JsonProperty("basicAuth")
+    private BasicAuth basicAuth;
     @JsonProperty("clientID")
     private String clientID;
     @JsonProperty("clientSecret")
     private SecretKeySelector clientSecret;
+    @JsonProperty("enableHTTP2")
+    private Boolean enableHTTP2;
     @JsonProperty("environment")
     private String environment;
+    @JsonProperty("followRedirects")
+    private Boolean followRedirects;
+    @JsonProperty("noProxy")
+    private String noProxy;
+    @JsonProperty("oauth2")
+    private OAuth2 oauth2;
     @JsonProperty("port")
     private Integer port;
+    @JsonProperty("proxyConnectHeader")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private Map<String, List<SecretKeySelector>> proxyConnectHeader = new LinkedHashMap<>();
+    @JsonProperty("proxyFromEnvironment")
+    private Boolean proxyFromEnvironment;
+    @JsonProperty("proxyUrl")
+    private String proxyUrl;
     @JsonProperty("refreshInterval")
     private String refreshInterval;
     @JsonProperty("resourceGroup")
@@ -92,6 +126,8 @@ public class AzureSDConfig implements Editable<AzureSDConfigBuilder>, Kubernetes
     private String subscriptionID;
     @JsonProperty("tenantID")
     private String tenantID;
+    @JsonProperty("tlsConfig")
+    private SafeTLSConfig tlsConfig;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -101,17 +137,27 @@ public class AzureSDConfig implements Editable<AzureSDConfigBuilder>, Kubernetes
     public AzureSDConfig() {
     }
 
-    public AzureSDConfig(String authenticationMethod, String clientID, SecretKeySelector clientSecret, String environment, Integer port, String refreshInterval, String resourceGroup, String subscriptionID, String tenantID) {
+    public AzureSDConfig(String authenticationMethod, SafeAuthorization authorization, BasicAuth basicAuth, String clientID, SecretKeySelector clientSecret, Boolean enableHTTP2, String environment, Boolean followRedirects, String noProxy, OAuth2 oauth2, Integer port, Map<String, List<SecretKeySelector>> proxyConnectHeader, Boolean proxyFromEnvironment, String proxyUrl, String refreshInterval, String resourceGroup, String subscriptionID, String tenantID, SafeTLSConfig tlsConfig) {
         super();
         this.authenticationMethod = authenticationMethod;
+        this.authorization = authorization;
+        this.basicAuth = basicAuth;
         this.clientID = clientID;
         this.clientSecret = clientSecret;
+        this.enableHTTP2 = enableHTTP2;
         this.environment = environment;
+        this.followRedirects = followRedirects;
+        this.noProxy = noProxy;
+        this.oauth2 = oauth2;
         this.port = port;
+        this.proxyConnectHeader = proxyConnectHeader;
+        this.proxyFromEnvironment = proxyFromEnvironment;
+        this.proxyUrl = proxyUrl;
         this.refreshInterval = refreshInterval;
         this.resourceGroup = resourceGroup;
         this.subscriptionID = subscriptionID;
         this.tenantID = tenantID;
+        this.tlsConfig = tlsConfig;
     }
 
     /**
@@ -128,6 +174,38 @@ public class AzureSDConfig implements Editable<AzureSDConfigBuilder>, Kubernetes
     @JsonProperty("authenticationMethod")
     public void setAuthenticationMethod(String authenticationMethod) {
         this.authenticationMethod = authenticationMethod;
+    }
+
+    /**
+     * AzureSDConfig allow retrieving scrape targets from Azure VMs. See https://prometheus.io/docs/prometheus/latest/configuration/configuration/#azure_sd_config
+     */
+    @JsonProperty("authorization")
+    public SafeAuthorization getAuthorization() {
+        return authorization;
+    }
+
+    /**
+     * AzureSDConfig allow retrieving scrape targets from Azure VMs. See https://prometheus.io/docs/prometheus/latest/configuration/configuration/#azure_sd_config
+     */
+    @JsonProperty("authorization")
+    public void setAuthorization(SafeAuthorization authorization) {
+        this.authorization = authorization;
+    }
+
+    /**
+     * AzureSDConfig allow retrieving scrape targets from Azure VMs. See https://prometheus.io/docs/prometheus/latest/configuration/configuration/#azure_sd_config
+     */
+    @JsonProperty("basicAuth")
+    public BasicAuth getBasicAuth() {
+        return basicAuth;
+    }
+
+    /**
+     * AzureSDConfig allow retrieving scrape targets from Azure VMs. See https://prometheus.io/docs/prometheus/latest/configuration/configuration/#azure_sd_config
+     */
+    @JsonProperty("basicAuth")
+    public void setBasicAuth(BasicAuth basicAuth) {
+        this.basicAuth = basicAuth;
     }
 
     /**
@@ -163,6 +241,22 @@ public class AzureSDConfig implements Editable<AzureSDConfigBuilder>, Kubernetes
     }
 
     /**
+     * Whether to enable HTTP2.
+     */
+    @JsonProperty("enableHTTP2")
+    public Boolean getEnableHTTP2() {
+        return enableHTTP2;
+    }
+
+    /**
+     * Whether to enable HTTP2.
+     */
+    @JsonProperty("enableHTTP2")
+    public void setEnableHTTP2(Boolean enableHTTP2) {
+        this.enableHTTP2 = enableHTTP2;
+    }
+
+    /**
      * The Azure environment.
      */
     @JsonProperty("environment")
@@ -176,6 +270,54 @@ public class AzureSDConfig implements Editable<AzureSDConfigBuilder>, Kubernetes
     @JsonProperty("environment")
     public void setEnvironment(String environment) {
         this.environment = environment;
+    }
+
+    /**
+     * Configure whether HTTP requests follow HTTP 3xx redirects.
+     */
+    @JsonProperty("followRedirects")
+    public Boolean getFollowRedirects() {
+        return followRedirects;
+    }
+
+    /**
+     * Configure whether HTTP requests follow HTTP 3xx redirects.
+     */
+    @JsonProperty("followRedirects")
+    public void setFollowRedirects(Boolean followRedirects) {
+        this.followRedirects = followRedirects;
+    }
+
+    /**
+     * `noProxy` is a comma-separated string that can contain IPs, CIDR notation, domain names that should be excluded from proxying. IP and domain names can contain port numbers.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
+     */
+    @JsonProperty("noProxy")
+    public String getNoProxy() {
+        return noProxy;
+    }
+
+    /**
+     * `noProxy` is a comma-separated string that can contain IPs, CIDR notation, domain names that should be excluded from proxying. IP and domain names can contain port numbers.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
+     */
+    @JsonProperty("noProxy")
+    public void setNoProxy(String noProxy) {
+        this.noProxy = noProxy;
+    }
+
+    /**
+     * AzureSDConfig allow retrieving scrape targets from Azure VMs. See https://prometheus.io/docs/prometheus/latest/configuration/configuration/#azure_sd_config
+     */
+    @JsonProperty("oauth2")
+    public OAuth2 getOauth2() {
+        return oauth2;
+    }
+
+    /**
+     * AzureSDConfig allow retrieving scrape targets from Azure VMs. See https://prometheus.io/docs/prometheus/latest/configuration/configuration/#azure_sd_config
+     */
+    @JsonProperty("oauth2")
+    public void setOauth2(OAuth2 oauth2) {
+        this.oauth2 = oauth2;
     }
 
     /**
@@ -195,6 +337,55 @@ public class AzureSDConfig implements Editable<AzureSDConfigBuilder>, Kubernetes
     }
 
     /**
+     * ProxyConnectHeader optionally specifies headers to send to proxies during CONNECT requests.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
+     */
+    @JsonProperty("proxyConnectHeader")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public Map<String, List<SecretKeySelector>> getProxyConnectHeader() {
+        return proxyConnectHeader;
+    }
+
+    /**
+     * ProxyConnectHeader optionally specifies headers to send to proxies during CONNECT requests.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
+     */
+    @JsonProperty("proxyConnectHeader")
+    public void setProxyConnectHeader(Map<String, List<SecretKeySelector>> proxyConnectHeader) {
+        this.proxyConnectHeader = proxyConnectHeader;
+    }
+
+    /**
+     * Whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
+     */
+    @JsonProperty("proxyFromEnvironment")
+    public Boolean getProxyFromEnvironment() {
+        return proxyFromEnvironment;
+    }
+
+    /**
+     * Whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
+     */
+    @JsonProperty("proxyFromEnvironment")
+    public void setProxyFromEnvironment(Boolean proxyFromEnvironment) {
+        this.proxyFromEnvironment = proxyFromEnvironment;
+    }
+
+    /**
+     * `proxyURL` defines the HTTP proxy server to use.
+     */
+    @JsonProperty("proxyUrl")
+    public String getProxyUrl() {
+        return proxyUrl;
+    }
+
+    /**
+     * `proxyURL` defines the HTTP proxy server to use.
+     */
+    @JsonProperty("proxyUrl")
+    public void setProxyUrl(String proxyUrl) {
+        this.proxyUrl = proxyUrl;
+    }
+
+    /**
      * RefreshInterval configures the refresh interval at which Prometheus will re-read the instance list.
      */
     @JsonProperty("refreshInterval")
@@ -211,7 +402,7 @@ public class AzureSDConfig implements Editable<AzureSDConfigBuilder>, Kubernetes
     }
 
     /**
-     * Optional resource group name. Limits discovery to this resource group.
+     * Optional resource group name. Limits discovery to this resource group. Requires  Prometheus v2.35.0 and above
      */
     @JsonProperty("resourceGroup")
     public String getResourceGroup() {
@@ -219,7 +410,7 @@ public class AzureSDConfig implements Editable<AzureSDConfigBuilder>, Kubernetes
     }
 
     /**
-     * Optional resource group name. Limits discovery to this resource group.
+     * Optional resource group name. Limits discovery to this resource group. Requires  Prometheus v2.35.0 and above
      */
     @JsonProperty("resourceGroup")
     public void setResourceGroup(String resourceGroup) {
@@ -256,6 +447,22 @@ public class AzureSDConfig implements Editable<AzureSDConfigBuilder>, Kubernetes
     @JsonProperty("tenantID")
     public void setTenantID(String tenantID) {
         this.tenantID = tenantID;
+    }
+
+    /**
+     * AzureSDConfig allow retrieving scrape targets from Azure VMs. See https://prometheus.io/docs/prometheus/latest/configuration/configuration/#azure_sd_config
+     */
+    @JsonProperty("tlsConfig")
+    public SafeTLSConfig getTlsConfig() {
+        return tlsConfig;
+    }
+
+    /**
+     * AzureSDConfig allow retrieving scrape targets from Azure VMs. See https://prometheus.io/docs/prometheus/latest/configuration/configuration/#azure_sd_config
+     */
+    @JsonProperty("tlsConfig")
+    public void setTlsConfig(SafeTLSConfig tlsConfig) {
+        this.tlsConfig = tlsConfig;
     }
 
     @JsonIgnore
