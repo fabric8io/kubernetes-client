@@ -44,6 +44,7 @@ import lombok.experimental.Accessors;
     "authorization",
     "basicAuth",
     "bearerTokenSecret",
+    "convertClassicHistogramsToNHCB",
     "fallbackScrapeProtocol",
     "interval",
     "jobName",
@@ -97,6 +98,8 @@ public class ProbeSpec implements Editable<ProbeSpecBuilder>, KubernetesResource
     private BasicAuth basicAuth;
     @JsonProperty("bearerTokenSecret")
     private SecretKeySelector bearerTokenSecret;
+    @JsonProperty("convertClassicHistogramsToNHCB")
+    private Boolean convertClassicHistogramsToNHCB;
     @JsonProperty("fallbackScrapeProtocol")
     private String fallbackScrapeProtocol;
     @JsonProperty("interval")
@@ -150,11 +153,12 @@ public class ProbeSpec implements Editable<ProbeSpecBuilder>, KubernetesResource
     public ProbeSpec() {
     }
 
-    public ProbeSpec(SafeAuthorization authorization, BasicAuth basicAuth, SecretKeySelector bearerTokenSecret, String fallbackScrapeProtocol, String interval, String jobName, Long keepDroppedTargets, Long labelLimit, Long labelNameLengthLimit, Long labelValueLengthLimit, List<RelabelConfig> metricRelabelings, String module, Long nativeHistogramBucketLimit, Quantity nativeHistogramMinBucketFactor, OAuth2 oauth2, ProberSpec prober, Long sampleLimit, String scrapeClass, Boolean scrapeClassicHistograms, List<String> scrapeProtocols, String scrapeTimeout, Long targetLimit, ProbeTargets targets, SafeTLSConfig tlsConfig) {
+    public ProbeSpec(SafeAuthorization authorization, BasicAuth basicAuth, SecretKeySelector bearerTokenSecret, Boolean convertClassicHistogramsToNHCB, String fallbackScrapeProtocol, String interval, String jobName, Long keepDroppedTargets, Long labelLimit, Long labelNameLengthLimit, Long labelValueLengthLimit, List<RelabelConfig> metricRelabelings, String module, Long nativeHistogramBucketLimit, Quantity nativeHistogramMinBucketFactor, OAuth2 oauth2, ProberSpec prober, Long sampleLimit, String scrapeClass, Boolean scrapeClassicHistograms, List<String> scrapeProtocols, String scrapeTimeout, Long targetLimit, ProbeTargets targets, SafeTLSConfig tlsConfig) {
         super();
         this.authorization = authorization;
         this.basicAuth = basicAuth;
         this.bearerTokenSecret = bearerTokenSecret;
+        this.convertClassicHistogramsToNHCB = convertClassicHistogramsToNHCB;
         this.fallbackScrapeProtocol = fallbackScrapeProtocol;
         this.interval = interval;
         this.jobName = jobName;
@@ -224,6 +228,22 @@ public class ProbeSpec implements Editable<ProbeSpecBuilder>, KubernetesResource
     @JsonProperty("bearerTokenSecret")
     public void setBearerTokenSecret(SecretKeySelector bearerTokenSecret) {
         this.bearerTokenSecret = bearerTokenSecret;
+    }
+
+    /**
+     * Whether to convert all scraped classic histograms into a native histogram with custom buckets. It requires Prometheus &gt;= v3.0.0.
+     */
+    @JsonProperty("convertClassicHistogramsToNHCB")
+    public Boolean getConvertClassicHistogramsToNHCB() {
+        return convertClassicHistogramsToNHCB;
+    }
+
+    /**
+     * Whether to convert all scraped classic histograms into a native histogram with custom buckets. It requires Prometheus &gt;= v3.0.0.
+     */
+    @JsonProperty("convertClassicHistogramsToNHCB")
+    public void setConvertClassicHistogramsToNHCB(Boolean convertClassicHistogramsToNHCB) {
+        this.convertClassicHistogramsToNHCB = convertClassicHistogramsToNHCB;
     }
 
     /**
@@ -501,7 +521,7 @@ public class ProbeSpec implements Editable<ProbeSpecBuilder>, KubernetesResource
     }
 
     /**
-     * Timeout for scraping metrics from the Prometheus exporter. If not specified, the Prometheus global scrape timeout is used.
+     * Timeout for scraping metrics from the Prometheus exporter. If not specified, the Prometheus global scrape timeout is used. The value cannot be greater than the scrape interval otherwise the operator will reject the resource.
      */
     @JsonProperty("scrapeTimeout")
     public String getScrapeTimeout() {
@@ -509,7 +529,7 @@ public class ProbeSpec implements Editable<ProbeSpecBuilder>, KubernetesResource
     }
 
     /**
-     * Timeout for scraping metrics from the Prometheus exporter. If not specified, the Prometheus global scrape timeout is used.
+     * Timeout for scraping metrics from the Prometheus exporter. If not specified, the Prometheus global scrape timeout is used. The value cannot be greater than the scrape interval otherwise the operator will reject the resource.
      */
     @JsonProperty("scrapeTimeout")
     public void setScrapeTimeout(String scrapeTimeout) {

@@ -2,6 +2,7 @@
 package io.fabric8.openshift.api.model.monitoring.v1;
 
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import javax.annotation.processing.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
@@ -23,6 +24,7 @@ import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
+import io.fabric8.kubernetes.api.model.SecretKeySelector;
 import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
@@ -37,7 +39,10 @@ import lombok.experimental.Accessors;
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
+    "noProxy",
     "path",
+    "proxyConnectHeader",
+    "proxyFromEnvironment",
     "proxyUrl",
     "scheme",
     "url"
@@ -67,8 +72,15 @@ import lombok.experimental.Accessors;
 public class ProberSpec implements Editable<ProberSpecBuilder>, KubernetesResource
 {
 
+    @JsonProperty("noProxy")
+    private String noProxy;
     @JsonProperty("path")
     private String path;
+    @JsonProperty("proxyConnectHeader")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private Map<String, List<SecretKeySelector>> proxyConnectHeader = new LinkedHashMap<>();
+    @JsonProperty("proxyFromEnvironment")
+    private Boolean proxyFromEnvironment;
     @JsonProperty("proxyUrl")
     private String proxyUrl;
     @JsonProperty("scheme")
@@ -84,12 +96,31 @@ public class ProberSpec implements Editable<ProberSpecBuilder>, KubernetesResour
     public ProberSpec() {
     }
 
-    public ProberSpec(String path, String proxyUrl, String scheme, String url) {
+    public ProberSpec(String noProxy, String path, Map<String, List<SecretKeySelector>> proxyConnectHeader, Boolean proxyFromEnvironment, String proxyUrl, String scheme, String url) {
         super();
+        this.noProxy = noProxy;
         this.path = path;
+        this.proxyConnectHeader = proxyConnectHeader;
+        this.proxyFromEnvironment = proxyFromEnvironment;
         this.proxyUrl = proxyUrl;
         this.scheme = scheme;
         this.url = url;
+    }
+
+    /**
+     * `noProxy` is a comma-separated string that can contain IPs, CIDR notation, domain names that should be excluded from proxying. IP and domain names can contain port numbers.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
+     */
+    @JsonProperty("noProxy")
+    public String getNoProxy() {
+        return noProxy;
+    }
+
+    /**
+     * `noProxy` is a comma-separated string that can contain IPs, CIDR notation, domain names that should be excluded from proxying. IP and domain names can contain port numbers.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
+     */
+    @JsonProperty("noProxy")
+    public void setNoProxy(String noProxy) {
+        this.noProxy = noProxy;
     }
 
     /**
@@ -109,7 +140,40 @@ public class ProberSpec implements Editable<ProberSpecBuilder>, KubernetesResour
     }
 
     /**
-     * Optional ProxyURL.
+     * ProxyConnectHeader optionally specifies headers to send to proxies during CONNECT requests.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
+     */
+    @JsonProperty("proxyConnectHeader")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public Map<String, List<SecretKeySelector>> getProxyConnectHeader() {
+        return proxyConnectHeader;
+    }
+
+    /**
+     * ProxyConnectHeader optionally specifies headers to send to proxies during CONNECT requests.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
+     */
+    @JsonProperty("proxyConnectHeader")
+    public void setProxyConnectHeader(Map<String, List<SecretKeySelector>> proxyConnectHeader) {
+        this.proxyConnectHeader = proxyConnectHeader;
+    }
+
+    /**
+     * Whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
+     */
+    @JsonProperty("proxyFromEnvironment")
+    public Boolean getProxyFromEnvironment() {
+        return proxyFromEnvironment;
+    }
+
+    /**
+     * Whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
+     */
+    @JsonProperty("proxyFromEnvironment")
+    public void setProxyFromEnvironment(Boolean proxyFromEnvironment) {
+        this.proxyFromEnvironment = proxyFromEnvironment;
+    }
+
+    /**
+     * `proxyURL` defines the HTTP proxy server to use.
      */
     @JsonProperty("proxyUrl")
     public String getProxyUrl() {
@@ -117,7 +181,7 @@ public class ProberSpec implements Editable<ProberSpecBuilder>, KubernetesResour
     }
 
     /**
-     * Optional ProxyURL.
+     * `proxyURL` defines the HTTP proxy server to use.
      */
     @JsonProperty("proxyUrl")
     public void setProxyUrl(String proxyUrl) {

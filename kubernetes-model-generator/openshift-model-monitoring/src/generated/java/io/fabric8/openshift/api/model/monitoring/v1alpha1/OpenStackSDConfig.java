@@ -376,7 +376,7 @@ public class OpenStackSDConfig implements Editable<OpenStackSDConfigBuilder>, Ku
     }
 
     /**
-     * The OpenStack role of entities that should be discovered.
+     * The OpenStack role of entities that should be discovered.<br><p> <br><p> Note: The `LoadBalancer` role requires Prometheus &gt;= v3.2.0.
      */
     @JsonProperty("role")
     public String getRole() {
@@ -384,7 +384,7 @@ public class OpenStackSDConfig implements Editable<OpenStackSDConfigBuilder>, Ku
     }
 
     /**
-     * The OpenStack role of entities that should be discovered.
+     * The OpenStack role of entities that should be discovered.<br><p> <br><p> Note: The `LoadBalancer` role requires Prometheus &gt;= v3.2.0.
      */
     @JsonProperty("role")
     public void setRole(String role) {

@@ -44,6 +44,7 @@ import lombok.experimental.Accessors;
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
+    "additionalArgs",
     "additionalPeers",
     "affinity",
     "alertmanagerConfigMatcherStrategy",
@@ -57,12 +58,14 @@ import lombok.experimental.Accessors;
     "clusterLabel",
     "clusterPeerTimeout",
     "clusterPushpullInterval",
+    "clusterTLS",
     "configMaps",
     "configSecret",
     "containers",
     "dnsConfig",
     "dnsPolicy",
     "enableFeatures",
+    "enableServiceLinks",
     "externalUrl",
     "forceEnableClusterMode",
     "hostAliases",
@@ -70,6 +73,7 @@ import lombok.experimental.Accessors;
     "imagePullPolicy",
     "imagePullSecrets",
     "initContainers",
+    "limits",
     "listenLocal",
     "logFormat",
     "logLevel",
@@ -87,9 +91,11 @@ import lombok.experimental.Accessors;
     "secrets",
     "securityContext",
     "serviceAccountName",
+    "serviceName",
     "sha",
     "storage",
     "tag",
+    "terminationGracePeriodSeconds",
     "tolerations",
     "topologySpreadConstraints",
     "version",
@@ -122,6 +128,9 @@ import lombok.experimental.Accessors;
 public class AlertmanagerSpec implements Editable<AlertmanagerSpecBuilder>, KubernetesResource
 {
 
+    @JsonProperty("additionalArgs")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<Argument> additionalArgs = new ArrayList<>();
     @JsonProperty("additionalPeers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> additionalPeers = new ArrayList<>();
@@ -149,6 +158,8 @@ public class AlertmanagerSpec implements Editable<AlertmanagerSpecBuilder>, Kube
     private String clusterPeerTimeout;
     @JsonProperty("clusterPushpullInterval")
     private String clusterPushpullInterval;
+    @JsonProperty("clusterTLS")
+    private ClusterTLSConfig clusterTLS;
     @JsonProperty("configMaps")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> configMaps = new ArrayList<>();
@@ -164,6 +175,8 @@ public class AlertmanagerSpec implements Editable<AlertmanagerSpecBuilder>, Kube
     @JsonProperty("enableFeatures")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> enableFeatures = new ArrayList<>();
+    @JsonProperty("enableServiceLinks")
+    private Boolean enableServiceLinks;
     @JsonProperty("externalUrl")
     private String externalUrl;
     @JsonProperty("forceEnableClusterMode")
@@ -181,6 +194,8 @@ public class AlertmanagerSpec implements Editable<AlertmanagerSpecBuilder>, Kube
     @JsonProperty("initContainers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<Container> initContainers = new ArrayList<>();
+    @JsonProperty("limits")
+    private AlertmanagerLimitsSpec limits;
     @JsonProperty("listenLocal")
     private Boolean listenLocal;
     @JsonProperty("logFormat")
@@ -217,12 +232,16 @@ public class AlertmanagerSpec implements Editable<AlertmanagerSpecBuilder>, Kube
     private PodSecurityContext securityContext;
     @JsonProperty("serviceAccountName")
     private String serviceAccountName;
+    @JsonProperty("serviceName")
+    private String serviceName;
     @JsonProperty("sha")
     private String sha;
     @JsonProperty("storage")
     private StorageSpec storage;
     @JsonProperty("tag")
     private String tag;
+    @JsonProperty("terminationGracePeriodSeconds")
+    private Long terminationGracePeriodSeconds;
     @JsonProperty("tolerations")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<Toleration> tolerations = new ArrayList<>();
@@ -248,8 +267,9 @@ public class AlertmanagerSpec implements Editable<AlertmanagerSpecBuilder>, Kube
     public AlertmanagerSpec() {
     }
 
-    public AlertmanagerSpec(List<String> additionalPeers, Affinity affinity, AlertmanagerConfigMatcherStrategy alertmanagerConfigMatcherStrategy, LabelSelector alertmanagerConfigNamespaceSelector, LabelSelector alertmanagerConfigSelector, AlertmanagerConfiguration alertmanagerConfiguration, Boolean automountServiceAccountToken, String baseImage, String clusterAdvertiseAddress, String clusterGossipInterval, String clusterLabel, String clusterPeerTimeout, String clusterPushpullInterval, List<String> configMaps, String configSecret, List<Container> containers, PodDNSConfig dnsConfig, String dnsPolicy, List<String> enableFeatures, String externalUrl, Boolean forceEnableClusterMode, List<HostAlias> hostAliases, String image, String imagePullPolicy, List<LocalObjectReference> imagePullSecrets, List<Container> initContainers, Boolean listenLocal, String logFormat, String logLevel, Long minReadySeconds, Map<String, String> nodeSelector, Boolean paused, StatefulSetPersistentVolumeClaimRetentionPolicy persistentVolumeClaimRetentionPolicy, EmbeddedObjectMetadata podMetadata, String portName, String priorityClassName, Integer replicas, ResourceRequirements resources, String retention, String routePrefix, List<String> secrets, PodSecurityContext securityContext, String serviceAccountName, String sha, StorageSpec storage, String tag, List<Toleration> tolerations, List<TopologySpreadConstraint> topologySpreadConstraints, String version, List<VolumeMount> volumeMounts, List<Volume> volumes, AlertmanagerWebSpec web) {
+    public AlertmanagerSpec(List<Argument> additionalArgs, List<String> additionalPeers, Affinity affinity, AlertmanagerConfigMatcherStrategy alertmanagerConfigMatcherStrategy, LabelSelector alertmanagerConfigNamespaceSelector, LabelSelector alertmanagerConfigSelector, AlertmanagerConfiguration alertmanagerConfiguration, Boolean automountServiceAccountToken, String baseImage, String clusterAdvertiseAddress, String clusterGossipInterval, String clusterLabel, String clusterPeerTimeout, String clusterPushpullInterval, ClusterTLSConfig clusterTLS, List<String> configMaps, String configSecret, List<Container> containers, PodDNSConfig dnsConfig, String dnsPolicy, List<String> enableFeatures, Boolean enableServiceLinks, String externalUrl, Boolean forceEnableClusterMode, List<HostAlias> hostAliases, String image, String imagePullPolicy, List<LocalObjectReference> imagePullSecrets, List<Container> initContainers, AlertmanagerLimitsSpec limits, Boolean listenLocal, String logFormat, String logLevel, Long minReadySeconds, Map<String, String> nodeSelector, Boolean paused, StatefulSetPersistentVolumeClaimRetentionPolicy persistentVolumeClaimRetentionPolicy, EmbeddedObjectMetadata podMetadata, String portName, String priorityClassName, Integer replicas, ResourceRequirements resources, String retention, String routePrefix, List<String> secrets, PodSecurityContext securityContext, String serviceAccountName, String serviceName, String sha, StorageSpec storage, String tag, Long terminationGracePeriodSeconds, List<Toleration> tolerations, List<TopologySpreadConstraint> topologySpreadConstraints, String version, List<VolumeMount> volumeMounts, List<Volume> volumes, AlertmanagerWebSpec web) {
         super();
+        this.additionalArgs = additionalArgs;
         this.additionalPeers = additionalPeers;
         this.affinity = affinity;
         this.alertmanagerConfigMatcherStrategy = alertmanagerConfigMatcherStrategy;
@@ -263,12 +283,14 @@ public class AlertmanagerSpec implements Editable<AlertmanagerSpecBuilder>, Kube
         this.clusterLabel = clusterLabel;
         this.clusterPeerTimeout = clusterPeerTimeout;
         this.clusterPushpullInterval = clusterPushpullInterval;
+        this.clusterTLS = clusterTLS;
         this.configMaps = configMaps;
         this.configSecret = configSecret;
         this.containers = containers;
         this.dnsConfig = dnsConfig;
         this.dnsPolicy = dnsPolicy;
         this.enableFeatures = enableFeatures;
+        this.enableServiceLinks = enableServiceLinks;
         this.externalUrl = externalUrl;
         this.forceEnableClusterMode = forceEnableClusterMode;
         this.hostAliases = hostAliases;
@@ -276,6 +298,7 @@ public class AlertmanagerSpec implements Editable<AlertmanagerSpecBuilder>, Kube
         this.imagePullPolicy = imagePullPolicy;
         this.imagePullSecrets = imagePullSecrets;
         this.initContainers = initContainers;
+        this.limits = limits;
         this.listenLocal = listenLocal;
         this.logFormat = logFormat;
         this.logLevel = logLevel;
@@ -293,15 +316,34 @@ public class AlertmanagerSpec implements Editable<AlertmanagerSpecBuilder>, Kube
         this.secrets = secrets;
         this.securityContext = securityContext;
         this.serviceAccountName = serviceAccountName;
+        this.serviceName = serviceName;
         this.sha = sha;
         this.storage = storage;
         this.tag = tag;
+        this.terminationGracePeriodSeconds = terminationGracePeriodSeconds;
         this.tolerations = tolerations;
         this.topologySpreadConstraints = topologySpreadConstraints;
         this.version = version;
         this.volumeMounts = volumeMounts;
         this.volumes = volumes;
         this.web = web;
+    }
+
+    /**
+     * AdditionalArgs allows setting additional arguments for the 'Alertmanager' container. It is intended for e.g. activating hidden flags which are not supported by the dedicated configuration options yet. The arguments are passed as-is to the Alertmanager container which may cause issues if they are invalid or not supported by the given Alertmanager version.
+     */
+    @JsonProperty("additionalArgs")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public List<Argument> getAdditionalArgs() {
+        return additionalArgs;
+    }
+
+    /**
+     * AdditionalArgs allows setting additional arguments for the 'Alertmanager' container. It is intended for e.g. activating hidden flags which are not supported by the dedicated configuration options yet. The arguments are passed as-is to the Alertmanager container which may cause issues if they are invalid or not supported by the given Alertmanager version.
+     */
+    @JsonProperty("additionalArgs")
+    public void setAdditionalArgs(List<Argument> additionalArgs) {
+        this.additionalArgs = additionalArgs;
     }
 
     /**
@@ -514,6 +556,22 @@ public class AlertmanagerSpec implements Editable<AlertmanagerSpecBuilder>, Kube
     }
 
     /**
+     * AlertmanagerSpec is a specification of the desired behavior of the Alertmanager cluster. More info: https://github.com/kubernetes/community/blob/master/contributors/devel/sig-architecture/api-conventions.md#spec-and-status
+     */
+    @JsonProperty("clusterTLS")
+    public ClusterTLSConfig getClusterTLS() {
+        return clusterTLS;
+    }
+
+    /**
+     * AlertmanagerSpec is a specification of the desired behavior of the Alertmanager cluster. More info: https://github.com/kubernetes/community/blob/master/contributors/devel/sig-architecture/api-conventions.md#spec-and-status
+     */
+    @JsonProperty("clusterTLS")
+    public void setClusterTLS(ClusterTLSConfig clusterTLS) {
+        this.clusterTLS = clusterTLS;
+    }
+
+    /**
      * ConfigMaps is a list of ConfigMaps in the same namespace as the Alertmanager object, which shall be mounted into the Alertmanager Pods. Each ConfigMap is added to the StatefulSet definition as a volume named `configmap-&lt;configmap-name&gt;`. The ConfigMaps are mounted into `/etc/alertmanager/configmaps/&lt;configmap-name&gt;` in the 'alertmanager' container.
      */
     @JsonProperty("configMaps")
@@ -613,6 +671,22 @@ public class AlertmanagerSpec implements Editable<AlertmanagerSpecBuilder>, Kube
     }
 
     /**
+     * Indicates whether information about services should be injected into pod's environment variables
+     */
+    @JsonProperty("enableServiceLinks")
+    public Boolean getEnableServiceLinks() {
+        return enableServiceLinks;
+    }
+
+    /**
+     * Indicates whether information about services should be injected into pod's environment variables
+     */
+    @JsonProperty("enableServiceLinks")
+    public void setEnableServiceLinks(Boolean enableServiceLinks) {
+        this.enableServiceLinks = enableServiceLinks;
+    }
+
+    /**
      * The external URL the Alertmanager instances will be available under. This is necessary to generate correct URLs. This is necessary if Alertmanager is not served from root of a DNS name.
      */
     @JsonProperty("externalUrl")
@@ -694,7 +768,7 @@ public class AlertmanagerSpec implements Editable<AlertmanagerSpecBuilder>, Kube
     }
 
     /**
-     * An optional list of references to secrets in the same namespace to use for pulling prometheus and alertmanager images from registries see http://kubernetes.io/docs/user-guide/images#specifying-imagepullsecrets-on-a-pod
+     * An optional list of references to secrets in the same namespace to use for pulling prometheus and alertmanager images from registries see https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/
      */
     @JsonProperty("imagePullSecrets")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -703,7 +777,7 @@ public class AlertmanagerSpec implements Editable<AlertmanagerSpecBuilder>, Kube
     }
 
     /**
-     * An optional list of references to secrets in the same namespace to use for pulling prometheus and alertmanager images from registries see http://kubernetes.io/docs/user-guide/images#specifying-imagepullsecrets-on-a-pod
+     * An optional list of references to secrets in the same namespace to use for pulling prometheus and alertmanager images from registries see https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/
      */
     @JsonProperty("imagePullSecrets")
     public void setImagePullSecrets(List<LocalObjectReference> imagePullSecrets) {
@@ -725,6 +799,22 @@ public class AlertmanagerSpec implements Editable<AlertmanagerSpecBuilder>, Kube
     @JsonProperty("initContainers")
     public void setInitContainers(List<Container> initContainers) {
         this.initContainers = initContainers;
+    }
+
+    /**
+     * AlertmanagerSpec is a specification of the desired behavior of the Alertmanager cluster. More info: https://github.com/kubernetes/community/blob/master/contributors/devel/sig-architecture/api-conventions.md#spec-and-status
+     */
+    @JsonProperty("limits")
+    public AlertmanagerLimitsSpec getLimits() {
+        return limits;
+    }
+
+    /**
+     * AlertmanagerSpec is a specification of the desired behavior of the Alertmanager cluster. More info: https://github.com/kubernetes/community/blob/master/contributors/devel/sig-architecture/api-conventions.md#spec-and-status
+     */
+    @JsonProperty("limits")
+    public void setLimits(AlertmanagerLimitsSpec limits) {
+        this.limits = limits;
     }
 
     /**
@@ -1002,6 +1092,22 @@ public class AlertmanagerSpec implements Editable<AlertmanagerSpecBuilder>, Kube
     }
 
     /**
+     * The name of the service name used by the underlying StatefulSet(s) as the governing service. If defined, the Service  must be created before the Alertmanager resource in the same namespace and it must define a selector that matches the pod labels. If empty, the operator will create and manage a headless service named `alertmanager-operated` for Alermanager resources. When deploying multiple Alertmanager resources in the same namespace, it is recommended to specify a different value for each. See https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/#stable-network-id for more details.
+     */
+    @JsonProperty("serviceName")
+    public String getServiceName() {
+        return serviceName;
+    }
+
+    /**
+     * The name of the service name used by the underlying StatefulSet(s) as the governing service. If defined, the Service  must be created before the Alertmanager resource in the same namespace and it must define a selector that matches the pod labels. If empty, the operator will create and manage a headless service named `alertmanager-operated` for Alermanager resources. When deploying multiple Alertmanager resources in the same namespace, it is recommended to specify a different value for each. See https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/#stable-network-id for more details.
+     */
+    @JsonProperty("serviceName")
+    public void setServiceName(String serviceName) {
+        this.serviceName = serviceName;
+    }
+
+    /**
      * SHA of Alertmanager container image to be deployed. Defaults to the value of `version`. Similar to a tag, but the SHA explicitly deploys an immutable container image. Version and Tag are ignored if SHA is set. Deprecated: use 'image' instead. The image digest can be specified as part of the image URL.
      */
     @JsonProperty("sha")
@@ -1047,6 +1153,22 @@ public class AlertmanagerSpec implements Editable<AlertmanagerSpecBuilder>, Kube
     @JsonProperty("tag")
     public void setTag(String tag) {
         this.tag = tag;
+    }
+
+    /**
+     * Optional duration in seconds the pod needs to terminate gracefully. Value must be non-negative integer. The value zero indicates stop immediately via the kill signal (no opportunity to shut down) which may lead to data corruption.<br><p> <br><p> Defaults to 120 seconds.
+     */
+    @JsonProperty("terminationGracePeriodSeconds")
+    public Long getTerminationGracePeriodSeconds() {
+        return terminationGracePeriodSeconds;
+    }
+
+    /**
+     * Optional duration in seconds the pod needs to terminate gracefully. Value must be non-negative integer. The value zero indicates stop immediately via the kill signal (no opportunity to shut down) which may lead to data corruption.<br><p> <br><p> Defaults to 120 seconds.
+     */
+    @JsonProperty("terminationGracePeriodSeconds")
+    public void setTerminationGracePeriodSeconds(Long terminationGracePeriodSeconds) {
+        this.terminationGracePeriodSeconds = terminationGracePeriodSeconds;
     }
 
     /**

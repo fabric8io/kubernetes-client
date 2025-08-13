@@ -42,6 +42,7 @@ import lombok.experimental.Accessors;
 @JsonPropertyOrder({
     "attachMetadata",
     "bodySizeLimit",
+    "convertClassicHistogramsToNHCB",
     "fallbackScrapeProtocol",
     "jobLabel",
     "keepDroppedTargets",
@@ -90,6 +91,8 @@ public class PodMonitorSpec implements Editable<PodMonitorSpecBuilder>, Kubernet
     private AttachMetadata attachMetadata;
     @JsonProperty("bodySizeLimit")
     private String bodySizeLimit;
+    @JsonProperty("convertClassicHistogramsToNHCB")
+    private Boolean convertClassicHistogramsToNHCB;
     @JsonProperty("fallbackScrapeProtocol")
     private String fallbackScrapeProtocol;
     @JsonProperty("jobLabel")
@@ -138,10 +141,11 @@ public class PodMonitorSpec implements Editable<PodMonitorSpecBuilder>, Kubernet
     public PodMonitorSpec() {
     }
 
-    public PodMonitorSpec(AttachMetadata attachMetadata, String bodySizeLimit, String fallbackScrapeProtocol, String jobLabel, Long keepDroppedTargets, Long labelLimit, Long labelNameLengthLimit, Long labelValueLengthLimit, NamespaceSelector namespaceSelector, Long nativeHistogramBucketLimit, Quantity nativeHistogramMinBucketFactor, List<PodMetricsEndpoint> podMetricsEndpoints, List<String> podTargetLabels, Long sampleLimit, String scrapeClass, Boolean scrapeClassicHistograms, List<String> scrapeProtocols, LabelSelector selector, String selectorMechanism, Long targetLimit) {
+    public PodMonitorSpec(AttachMetadata attachMetadata, String bodySizeLimit, Boolean convertClassicHistogramsToNHCB, String fallbackScrapeProtocol, String jobLabel, Long keepDroppedTargets, Long labelLimit, Long labelNameLengthLimit, Long labelValueLengthLimit, NamespaceSelector namespaceSelector, Long nativeHistogramBucketLimit, Quantity nativeHistogramMinBucketFactor, List<PodMetricsEndpoint> podMetricsEndpoints, List<String> podTargetLabels, Long sampleLimit, String scrapeClass, Boolean scrapeClassicHistograms, List<String> scrapeProtocols, LabelSelector selector, String selectorMechanism, Long targetLimit) {
         super();
         this.attachMetadata = attachMetadata;
         this.bodySizeLimit = bodySizeLimit;
+        this.convertClassicHistogramsToNHCB = convertClassicHistogramsToNHCB;
         this.fallbackScrapeProtocol = fallbackScrapeProtocol;
         this.jobLabel = jobLabel;
         this.keepDroppedTargets = keepDroppedTargets;
@@ -192,6 +196,22 @@ public class PodMonitorSpec implements Editable<PodMonitorSpecBuilder>, Kubernet
     @JsonProperty("bodySizeLimit")
     public void setBodySizeLimit(String bodySizeLimit) {
         this.bodySizeLimit = bodySizeLimit;
+    }
+
+    /**
+     * Whether to convert all scraped classic histograms into a native histogram with custom buckets. It requires Prometheus &gt;= v3.0.0.
+     */
+    @JsonProperty("convertClassicHistogramsToNHCB")
+    public Boolean getConvertClassicHistogramsToNHCB() {
+        return convertClassicHistogramsToNHCB;
+    }
+
+    /**
+     * Whether to convert all scraped classic histograms into a native histogram with custom buckets. It requires Prometheus &gt;= v3.0.0.
+     */
+    @JsonProperty("convertClassicHistogramsToNHCB")
+    public void setConvertClassicHistogramsToNHCB(Boolean convertClassicHistogramsToNHCB) {
+        this.convertClassicHistogramsToNHCB = convertClassicHistogramsToNHCB;
     }
 
     /**

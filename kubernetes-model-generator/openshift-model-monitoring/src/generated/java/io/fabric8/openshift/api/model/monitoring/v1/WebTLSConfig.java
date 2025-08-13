@@ -146,7 +146,7 @@ public class WebTLSConfig implements Editable<WebTLSConfigBuilder>, KubernetesRe
     }
 
     /**
-     * Path to the TLS certificate file in the Prometheus container for the server. Mutually exclusive with `cert`.
+     * Path to the TLS certificate file in the container for the web server.<br><p> <br><p> Either `keySecret` or `keyFile` must be defined.<br><p> <br><p> It is mutually exclusive with `cert`.
      */
     @JsonProperty("certFile")
     public String getCertFile() {
@@ -154,7 +154,7 @@ public class WebTLSConfig implements Editable<WebTLSConfigBuilder>, KubernetesRe
     }
 
     /**
-     * Path to the TLS certificate file in the Prometheus container for the server. Mutually exclusive with `cert`.
+     * Path to the TLS certificate file in the container for the web server.<br><p> <br><p> Either `keySecret` or `keyFile` must be defined.<br><p> <br><p> It is mutually exclusive with `cert`.
      */
     @JsonProperty("certFile")
     public void setCertFile(String certFile) {
@@ -162,7 +162,7 @@ public class WebTLSConfig implements Editable<WebTLSConfigBuilder>, KubernetesRe
     }
 
     /**
-     * List of supported cipher suites for TLS versions up to TLS 1.2. If empty, Go default cipher suites are used. Available cipher suites are documented in the go documentation: https://golang.org/pkg/crypto/tls/#pkg-constants
+     * List of supported cipher suites for TLS versions up to TLS 1.2.<br><p> <br><p> If not defined, the Go default cipher suites are used. Available cipher suites are documented in the Go documentation: https://golang.org/pkg/crypto/tls/#pkg-constants
      */
     @JsonProperty("cipherSuites")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -171,7 +171,7 @@ public class WebTLSConfig implements Editable<WebTLSConfigBuilder>, KubernetesRe
     }
 
     /**
-     * List of supported cipher suites for TLS versions up to TLS 1.2. If empty, Go default cipher suites are used. Available cipher suites are documented in the go documentation: https://golang.org/pkg/crypto/tls/#pkg-constants
+     * List of supported cipher suites for TLS versions up to TLS 1.2.<br><p> <br><p> If not defined, the Go default cipher suites are used. Available cipher suites are documented in the Go documentation: https://golang.org/pkg/crypto/tls/#pkg-constants
      */
     @JsonProperty("cipherSuites")
     public void setCipherSuites(List<String> cipherSuites) {
@@ -179,7 +179,7 @@ public class WebTLSConfig implements Editable<WebTLSConfigBuilder>, KubernetesRe
     }
 
     /**
-     * Server policy for client authentication. Maps to ClientAuth Policies. For more detail on clientAuth options: https://golang.org/pkg/crypto/tls/#ClientAuthType
+     * The server policy for client TLS authentication.<br><p> <br><p> For more detail on clientAuth options: https://golang.org/pkg/crypto/tls/#ClientAuthType
      */
     @JsonProperty("clientAuthType")
     public String getClientAuthType() {
@@ -187,7 +187,7 @@ public class WebTLSConfig implements Editable<WebTLSConfigBuilder>, KubernetesRe
     }
 
     /**
-     * Server policy for client authentication. Maps to ClientAuth Policies. For more detail on clientAuth options: https://golang.org/pkg/crypto/tls/#ClientAuthType
+     * The server policy for client TLS authentication.<br><p> <br><p> For more detail on clientAuth options: https://golang.org/pkg/crypto/tls/#ClientAuthType
      */
     @JsonProperty("clientAuthType")
     public void setClientAuthType(String clientAuthType) {
@@ -195,7 +195,7 @@ public class WebTLSConfig implements Editable<WebTLSConfigBuilder>, KubernetesRe
     }
 
     /**
-     * Path to the CA certificate file for client certificate authentication to the server. Mutually exclusive with `client_ca`.
+     * Path to the CA certificate file for client certificate authentication to the server.<br><p> <br><p> It is mutually exclusive with `client_ca`.
      */
     @JsonProperty("clientCAFile")
     public String getClientCAFile() {
@@ -203,7 +203,7 @@ public class WebTLSConfig implements Editable<WebTLSConfigBuilder>, KubernetesRe
     }
 
     /**
-     * Path to the CA certificate file for client certificate authentication to the server. Mutually exclusive with `client_ca`.
+     * Path to the CA certificate file for client certificate authentication to the server.<br><p> <br><p> It is mutually exclusive with `client_ca`.
      */
     @JsonProperty("clientCAFile")
     public void setClientCAFile(String clientCAFile) {
@@ -227,7 +227,7 @@ public class WebTLSConfig implements Editable<WebTLSConfigBuilder>, KubernetesRe
     }
 
     /**
-     * Elliptic curves that will be used in an ECDHE handshake, in preference order. Available curves are documented in the go documentation: https://golang.org/pkg/crypto/tls/#CurveID
+     * Elliptic curves that will be used in an ECDHE handshake, in preference order.<br><p> <br><p> Available curves are documented in the Go documentation: https://golang.org/pkg/crypto/tls/#CurveID
      */
     @JsonProperty("curvePreferences")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -236,7 +236,7 @@ public class WebTLSConfig implements Editable<WebTLSConfigBuilder>, KubernetesRe
     }
 
     /**
-     * Elliptic curves that will be used in an ECDHE handshake, in preference order. Available curves are documented in the go documentation: https://golang.org/pkg/crypto/tls/#CurveID
+     * Elliptic curves that will be used in an ECDHE handshake, in preference order.<br><p> <br><p> Available curves are documented in the Go documentation: https://golang.org/pkg/crypto/tls/#CurveID
      */
     @JsonProperty("curvePreferences")
     public void setCurvePreferences(List<String> curvePreferences) {
@@ -244,7 +244,7 @@ public class WebTLSConfig implements Editable<WebTLSConfigBuilder>, KubernetesRe
     }
 
     /**
-     * Path to the TLS key file in the Prometheus container for the server. Mutually exclusive with `keySecret`.
+     * Path to the TLS private key file in the container for the web server.<br><p> <br><p> If defined, either `cert` or `certFile` must be defined.<br><p> <br><p> It is mutually exclusive with `keySecret`.
      */
     @JsonProperty("keyFile")
     public String getKeyFile() {
@@ -252,7 +252,7 @@ public class WebTLSConfig implements Editable<WebTLSConfigBuilder>, KubernetesRe
     }
 
     /**
-     * Path to the TLS key file in the Prometheus container for the server. Mutually exclusive with `keySecret`.
+     * Path to the TLS private key file in the container for the web server.<br><p> <br><p> If defined, either `cert` or `certFile` must be defined.<br><p> <br><p> It is mutually exclusive with `keySecret`.
      */
     @JsonProperty("keyFile")
     public void setKeyFile(String keyFile) {
@@ -276,7 +276,7 @@ public class WebTLSConfig implements Editable<WebTLSConfigBuilder>, KubernetesRe
     }
 
     /**
-     * Maximum TLS version that is acceptable. Defaults to TLS13.
+     * Maximum TLS version that is acceptable.
      */
     @JsonProperty("maxVersion")
     public String getMaxVersion() {
@@ -284,7 +284,7 @@ public class WebTLSConfig implements Editable<WebTLSConfigBuilder>, KubernetesRe
     }
 
     /**
-     * Maximum TLS version that is acceptable. Defaults to TLS13.
+     * Maximum TLS version that is acceptable.
      */
     @JsonProperty("maxVersion")
     public void setMaxVersion(String maxVersion) {
@@ -292,7 +292,7 @@ public class WebTLSConfig implements Editable<WebTLSConfigBuilder>, KubernetesRe
     }
 
     /**
-     * Minimum TLS version that is acceptable. Defaults to TLS12.
+     * Minimum TLS version that is acceptable.
      */
     @JsonProperty("minVersion")
     public String getMinVersion() {
@@ -300,7 +300,7 @@ public class WebTLSConfig implements Editable<WebTLSConfigBuilder>, KubernetesRe
     }
 
     /**
-     * Minimum TLS version that is acceptable. Defaults to TLS12.
+     * Minimum TLS version that is acceptable.
      */
     @JsonProperty("minVersion")
     public void setMinVersion(String minVersion) {
@@ -308,7 +308,7 @@ public class WebTLSConfig implements Editable<WebTLSConfigBuilder>, KubernetesRe
     }
 
     /**
-     * Controls whether the server selects the client's most preferred cipher suite, or the server's most preferred cipher suite. If true then the server's preference, as expressed in the order of elements in cipherSuites, is used.
+     * Controls whether the server selects the client's most preferred cipher suite, or the server's most preferred cipher suite.<br><p> <br><p> If true then the server's preference, as expressed in the order of elements in cipherSuites, is used.
      */
     @JsonProperty("preferServerCipherSuites")
     public Boolean getPreferServerCipherSuites() {
@@ -316,7 +316,7 @@ public class WebTLSConfig implements Editable<WebTLSConfigBuilder>, KubernetesRe
     }
 
     /**
-     * Controls whether the server selects the client's most preferred cipher suite, or the server's most preferred cipher suite. If true then the server's preference, as expressed in the order of elements in cipherSuites, is used.
+     * Controls whether the server selects the client's most preferred cipher suite, or the server's most preferred cipher suite.<br><p> <br><p> If true then the server's preference, as expressed in the order of elements in cipherSuites, is used.
      */
     @JsonProperty("preferServerCipherSuites")
     public void setPreferServerCipherSuites(Boolean preferServerCipherSuites) {

@@ -48,6 +48,7 @@ import lombok.experimental.Accessors;
     "basicAuth",
     "enableHTTP2",
     "followRedirects",
+    "labelSelector",
     "noProxy",
     "oauth2",
     "port",
@@ -91,6 +92,8 @@ public class HetznerSDConfig implements Editable<HetznerSDConfigBuilder>, Kubern
     private Boolean enableHTTP2;
     @JsonProperty("followRedirects")
     private Boolean followRedirects;
+    @JsonProperty("labelSelector")
+    private String labelSelector;
     @JsonProperty("noProxy")
     private String noProxy;
     @JsonProperty("oauth2")
@@ -119,12 +122,13 @@ public class HetznerSDConfig implements Editable<HetznerSDConfigBuilder>, Kubern
     public HetznerSDConfig() {
     }
 
-    public HetznerSDConfig(SafeAuthorization authorization, BasicAuth basicAuth, Boolean enableHTTP2, Boolean followRedirects, String noProxy, OAuth2 oauth2, Integer port, Map<String, List<SecretKeySelector>> proxyConnectHeader, Boolean proxyFromEnvironment, String proxyUrl, String refreshInterval, String role, SafeTLSConfig tlsConfig) {
+    public HetznerSDConfig(SafeAuthorization authorization, BasicAuth basicAuth, Boolean enableHTTP2, Boolean followRedirects, String labelSelector, String noProxy, OAuth2 oauth2, Integer port, Map<String, List<SecretKeySelector>> proxyConnectHeader, Boolean proxyFromEnvironment, String proxyUrl, String refreshInterval, String role, SafeTLSConfig tlsConfig) {
         super();
         this.authorization = authorization;
         this.basicAuth = basicAuth;
         this.enableHTTP2 = enableHTTP2;
         this.followRedirects = followRedirects;
+        this.labelSelector = labelSelector;
         this.noProxy = noProxy;
         this.oauth2 = oauth2;
         this.port = port;
@@ -201,7 +205,23 @@ public class HetznerSDConfig implements Editable<HetznerSDConfigBuilder>, Kubern
     }
 
     /**
-     * `noProxy` is a comma-separated string that can contain IPs, CIDR notation, domain names that should be excluded from proxying. IP and domain names can contain port numbers.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0 or Alertmanager &gt;= 0.25.0.
+     * Label selector used to filter the servers when fetching them from the API. It requires Prometheus &gt;= v3.5.0.
+     */
+    @JsonProperty("labelSelector")
+    public String getLabelSelector() {
+        return labelSelector;
+    }
+
+    /**
+     * Label selector used to filter the servers when fetching them from the API. It requires Prometheus &gt;= v3.5.0.
+     */
+    @JsonProperty("labelSelector")
+    public void setLabelSelector(String labelSelector) {
+        this.labelSelector = labelSelector;
+    }
+
+    /**
+     * `noProxy` is a comma-separated string that can contain IPs, CIDR notation, domain names that should be excluded from proxying. IP and domain names can contain port numbers.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
      */
     @JsonProperty("noProxy")
     public String getNoProxy() {
@@ -209,7 +229,7 @@ public class HetznerSDConfig implements Editable<HetznerSDConfigBuilder>, Kubern
     }
 
     /**
-     * `noProxy` is a comma-separated string that can contain IPs, CIDR notation, domain names that should be excluded from proxying. IP and domain names can contain port numbers.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0 or Alertmanager &gt;= 0.25.0.
+     * `noProxy` is a comma-separated string that can contain IPs, CIDR notation, domain names that should be excluded from proxying. IP and domain names can contain port numbers.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
      */
     @JsonProperty("noProxy")
     public void setNoProxy(String noProxy) {
@@ -249,7 +269,7 @@ public class HetznerSDConfig implements Editable<HetznerSDConfigBuilder>, Kubern
     }
 
     /**
-     * ProxyConnectHeader optionally specifies headers to send to proxies during CONNECT requests.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0 or Alertmanager &gt;= 0.25.0.
+     * ProxyConnectHeader optionally specifies headers to send to proxies during CONNECT requests.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
      */
     @JsonProperty("proxyConnectHeader")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -258,7 +278,7 @@ public class HetznerSDConfig implements Editable<HetznerSDConfigBuilder>, Kubern
     }
 
     /**
-     * ProxyConnectHeader optionally specifies headers to send to proxies during CONNECT requests.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0 or Alertmanager &gt;= 0.25.0.
+     * ProxyConnectHeader optionally specifies headers to send to proxies during CONNECT requests.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
      */
     @JsonProperty("proxyConnectHeader")
     public void setProxyConnectHeader(Map<String, List<SecretKeySelector>> proxyConnectHeader) {
@@ -266,7 +286,7 @@ public class HetznerSDConfig implements Editable<HetznerSDConfigBuilder>, Kubern
     }
 
     /**
-     * Whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).<br><p> <br><p> It requires Prometheus &gt;= v2.43.0 or Alertmanager &gt;= 0.25.0.
+     * Whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
      */
     @JsonProperty("proxyFromEnvironment")
     public Boolean getProxyFromEnvironment() {
@@ -274,7 +294,7 @@ public class HetznerSDConfig implements Editable<HetznerSDConfigBuilder>, Kubern
     }
 
     /**
-     * Whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).<br><p> <br><p> It requires Prometheus &gt;= v2.43.0 or Alertmanager &gt;= 0.25.0.
+     * Whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
      */
     @JsonProperty("proxyFromEnvironment")
     public void setProxyFromEnvironment(Boolean proxyFromEnvironment) {

@@ -40,10 +40,13 @@ import lombok.experimental.Accessors;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "apiURL",
+    "avatarURL",
+    "content",
     "httpConfig",
     "message",
     "sendResolved",
-    "title"
+    "title",
+    "username"
 })
 @ToString
 @EqualsAndHashCode
@@ -72,6 +75,10 @@ public class DiscordConfig implements Editable<DiscordConfigBuilder>, Kubernetes
 
     @JsonProperty("apiURL")
     private SecretKeySelector apiURL;
+    @JsonProperty("avatarURL")
+    private String avatarURL;
+    @JsonProperty("content")
+    private String content;
     @JsonProperty("httpConfig")
     private HTTPConfig httpConfig;
     @JsonProperty("message")
@@ -80,6 +87,8 @@ public class DiscordConfig implements Editable<DiscordConfigBuilder>, Kubernetes
     private Boolean sendResolved;
     @JsonProperty("title")
     private String title;
+    @JsonProperty("username")
+    private String username;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -89,13 +98,16 @@ public class DiscordConfig implements Editable<DiscordConfigBuilder>, Kubernetes
     public DiscordConfig() {
     }
 
-    public DiscordConfig(SecretKeySelector apiURL, HTTPConfig httpConfig, String message, Boolean sendResolved, String title) {
+    public DiscordConfig(SecretKeySelector apiURL, String avatarURL, String content, HTTPConfig httpConfig, String message, Boolean sendResolved, String title, String username) {
         super();
         this.apiURL = apiURL;
+        this.avatarURL = avatarURL;
+        this.content = content;
         this.httpConfig = httpConfig;
         this.message = message;
         this.sendResolved = sendResolved;
         this.title = title;
+        this.username = username;
     }
 
     /**
@@ -112,6 +124,38 @@ public class DiscordConfig implements Editable<DiscordConfigBuilder>, Kubernetes
     @JsonProperty("apiURL")
     public void setApiURL(SecretKeySelector apiURL) {
         this.apiURL = apiURL;
+    }
+
+    /**
+     * The avatar url of the message sender.
+     */
+    @JsonProperty("avatarURL")
+    public String getAvatarURL() {
+        return avatarURL;
+    }
+
+    /**
+     * The avatar url of the message sender.
+     */
+    @JsonProperty("avatarURL")
+    public void setAvatarURL(String avatarURL) {
+        this.avatarURL = avatarURL;
+    }
+
+    /**
+     * The template of the content's body.
+     */
+    @JsonProperty("content")
+    public String getContent() {
+        return content;
+    }
+
+    /**
+     * The template of the content's body.
+     */
+    @JsonProperty("content")
+    public void setContent(String content) {
+        this.content = content;
     }
 
     /**
@@ -176,6 +220,22 @@ public class DiscordConfig implements Editable<DiscordConfigBuilder>, Kubernetes
     @JsonProperty("title")
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    /**
+     * The username of the message sender.
+     */
+    @JsonProperty("username")
+    public String getUsername() {
+        return username;
+    }
+
+    /**
+     * The username of the message sender.
+     */
+    @JsonProperty("username")
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     @JsonIgnore
