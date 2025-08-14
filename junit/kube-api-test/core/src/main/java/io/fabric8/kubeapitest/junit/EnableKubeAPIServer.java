@@ -18,6 +18,7 @@ package io.fabric8.kubeapitest.junit;
 import io.fabric8.kubeapitest.KubeAPIServerConfig;
 import org.junit.jupiter.api.extension.ExtendWith;
 
+import java.lang.annotation.Inherited;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
@@ -30,6 +31,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @ExtendWith(KubeAPIServerExtension.class)
 @Target({ TYPE, METHOD, ANNOTATION_TYPE })
 @Retention(RUNTIME)
+@Inherited
 public @interface EnableKubeAPIServer {
 
   String NOT_SET = "NOT_SET";

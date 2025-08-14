@@ -23,24 +23,24 @@ require (
 	github.com/operator-framework/api v0.33.0
 	github.com/operator-framework/operator-lifecycle-manager v0.31.0
 	github.com/ovn-org/ovn-kubernetes/go-controller v0.0.0-20241030140127-a68ef49d9441
-	github.com/prometheus-operator/prometheus-operator/pkg/apis/monitoring v0.79.2
+	github.com/prometheus-operator/prometheus-operator/pkg/apis/monitoring v0.84.1
 	github.com/spf13/cobra v1.9.1
 	github.com/stolostron/discovery v0.0.0-20250721184441-6a13204f0907
 	github.com/stolostron/klusterlet-addon-controller v0.0.0-20250324045714-0d7e21c66660
 	github.com/stolostron/multicluster-observability-operator v0.0.0-20250726172846-3a17a1a4168e
 	github.com/stolostron/multiclusterhub-operator v0.0.0-20250728181123-c3e46b4bdbbc
 	github.com/stolostron/search-v2-operator v0.0.0-20250609200037-030a382461f4
-	github.com/tektoncd/pipeline v1.2.0
-	github.com/tektoncd/triggers v0.32.0
-	istio.io/client-go v1.26.3
-	k8s.io/api v0.33.3
-	k8s.io/apiextensions-apiserver v0.33.3
-	k8s.io/apimachinery v0.33.3
+	github.com/tektoncd/pipeline v1.3.1
+	github.com/tektoncd/triggers v0.33.0
+	istio.io/client-go v1.27.0
+	k8s.io/api v0.33.4
+	k8s.io/apiextensions-apiserver v0.33.4
+	k8s.io/apimachinery v0.33.4
 	k8s.io/autoscaler/vertical-pod-autoscaler v1.4.1
 	k8s.io/client-go v12.0.0+incompatible
 	k8s.io/gengo/v2 v2.0.0-20250207200755-1244d31929d7
 	k8s.io/kube-openapi v0.0.0-20250701173324-9bd5c66d9911
-	k8s.io/metrics v0.33.3
+	k8s.io/metrics v0.33.4
 	knative.dev/caching v0.0.0-20250716150501-fd36b19e8e44
 	knative.dev/eventing v0.46.0
 	knative.dev/eventing-awssqs v0.29.0
@@ -223,14 +223,14 @@ require (
 	google.golang.org/api v0.233.0 // indirect
 	google.golang.org/genproto/googleapis/api v0.0.0-20250721164621-a45f3dfb1074 // indirect
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20250715232539-7130f93afb79 // indirect
-	google.golang.org/grpc v1.73.0 // indirect
-	google.golang.org/protobuf v1.36.6 // indirect
+	google.golang.org/grpc v1.74.2 // indirect
+	google.golang.org/protobuf v1.36.7 // indirect
 	gopkg.in/evanphx/json-patch.v4 v4.12.0 // indirect
 	gopkg.in/inf.v0 v0.9.1 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
-	istio.io/api v1.26.3-0.20250708203130-20827773ee1b // indirect
-	k8s.io/component-base v0.33.3 // indirect
+	istio.io/api v1.27.0-beta.0.0.20250731082105-36763529c462 // indirect
+	k8s.io/component-base v0.33.4 // indirect
 	k8s.io/klog/v2 v2.130.1 // indirect
 	k8s.io/utils v0.0.0-20250604170112-4c0f3b243397 // indirect
 	knative.dev/pkg v0.0.0-20250716115900-19d3cc2da0b9 // indirect
@@ -240,5 +240,5 @@ require (
 	sigs.k8s.io/kustomize/kyaml v0.20.1 // indirect
 	sigs.k8s.io/randfill v1.0.0 // indirect
 	sigs.k8s.io/structured-merge-diff/v4 v4.7.0 // indirect
-	sigs.k8s.io/yaml v1.5.0 // indirect
+	sigs.k8s.io/yaml v1.6.0 // indirect
 )

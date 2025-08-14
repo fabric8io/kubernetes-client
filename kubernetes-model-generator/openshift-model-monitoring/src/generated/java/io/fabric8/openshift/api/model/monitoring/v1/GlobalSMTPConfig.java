@@ -45,7 +45,8 @@ import lombok.experimental.Accessors;
     "from",
     "hello",
     "requireTLS",
-    "smartHost"
+    "smartHost",
+    "tlsConfig"
 })
 @ToString
 @EqualsAndHashCode
@@ -88,6 +89,8 @@ public class GlobalSMTPConfig implements Editable<GlobalSMTPConfigBuilder>, Kube
     private Boolean requireTLS;
     @JsonProperty("smartHost")
     private HostPort smartHost;
+    @JsonProperty("tlsConfig")
+    private SafeTLSConfig tlsConfig;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -97,7 +100,7 @@ public class GlobalSMTPConfig implements Editable<GlobalSMTPConfigBuilder>, Kube
     public GlobalSMTPConfig() {
     }
 
-    public GlobalSMTPConfig(String authIdentity, SecretKeySelector authPassword, SecretKeySelector authSecret, String authUsername, String from, String hello, Boolean requireTLS, HostPort smartHost) {
+    public GlobalSMTPConfig(String authIdentity, SecretKeySelector authPassword, SecretKeySelector authSecret, String authUsername, String from, String hello, Boolean requireTLS, HostPort smartHost, SafeTLSConfig tlsConfig) {
         super();
         this.authIdentity = authIdentity;
         this.authPassword = authPassword;
@@ -107,6 +110,7 @@ public class GlobalSMTPConfig implements Editable<GlobalSMTPConfigBuilder>, Kube
         this.hello = hello;
         this.requireTLS = requireTLS;
         this.smartHost = smartHost;
+        this.tlsConfig = tlsConfig;
     }
 
     /**
@@ -235,6 +239,22 @@ public class GlobalSMTPConfig implements Editable<GlobalSMTPConfigBuilder>, Kube
     @JsonProperty("smartHost")
     public void setSmartHost(HostPort smartHost) {
         this.smartHost = smartHost;
+    }
+
+    /**
+     * GlobalSMTPConfig configures global SMTP parameters. See https://prometheus.io/docs/alerting/latest/configuration/#configuration-file
+     */
+    @JsonProperty("tlsConfig")
+    public SafeTLSConfig getTlsConfig() {
+        return tlsConfig;
+    }
+
+    /**
+     * GlobalSMTPConfig configures global SMTP parameters. See https://prometheus.io/docs/alerting/latest/configuration/#configuration-file
+     */
+    @JsonProperty("tlsConfig")
+    public void setTlsConfig(SafeTLSConfig tlsConfig) {
+        this.tlsConfig = tlsConfig;
     }
 
     @JsonIgnore

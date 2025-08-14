@@ -19,6 +19,7 @@ import io.fabric8.junit.jupiter.RequireK8sSupportCondition;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import org.junit.jupiter.api.extension.ExtendWith;
 
+import java.lang.annotation.Inherited;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
@@ -27,6 +28,7 @@ import java.lang.annotation.RetentionPolicy;
  */
 @Retention(RetentionPolicy.RUNTIME)
 @ExtendWith(RequireK8sSupportCondition.class)
+@Inherited
 public @interface RequireK8sSupport {
   Class<? extends HasMetadata> value();
 }

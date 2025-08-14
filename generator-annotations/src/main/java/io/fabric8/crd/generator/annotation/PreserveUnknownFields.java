@@ -15,12 +15,15 @@
  */
 package io.fabric8.crd.generator.annotation;
 
-import java.lang.annotation.*;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 /*
  * Used to emit 'x-kubernetes-preserve-unknown-fields'
  */
-@Target(ElementType.FIELD)
+@Target({ ElementType.TYPE, ElementType.FIELD })
 @Retention(RetentionPolicy.RUNTIME)
 public @interface PreserveUnknownFields {
 }

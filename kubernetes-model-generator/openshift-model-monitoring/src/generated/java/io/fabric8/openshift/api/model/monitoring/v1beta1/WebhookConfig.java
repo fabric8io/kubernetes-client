@@ -41,6 +41,7 @@ import lombok.experimental.Accessors;
     "httpConfig",
     "maxAlerts",
     "sendResolved",
+    "timeout",
     "url",
     "urlSecret"
 })
@@ -75,6 +76,8 @@ public class WebhookConfig implements Editable<WebhookConfigBuilder>, Kubernetes
     private Integer maxAlerts;
     @JsonProperty("sendResolved")
     private Boolean sendResolved;
+    @JsonProperty("timeout")
+    private String timeout;
     @JsonProperty("url")
     private String url;
     @JsonProperty("urlSecret")
@@ -88,11 +91,12 @@ public class WebhookConfig implements Editable<WebhookConfigBuilder>, Kubernetes
     public WebhookConfig() {
     }
 
-    public WebhookConfig(HTTPConfig httpConfig, Integer maxAlerts, Boolean sendResolved, String url, SecretKeySelector urlSecret) {
+    public WebhookConfig(HTTPConfig httpConfig, Integer maxAlerts, Boolean sendResolved, String timeout, String url, SecretKeySelector urlSecret) {
         super();
         this.httpConfig = httpConfig;
         this.maxAlerts = maxAlerts;
         this.sendResolved = sendResolved;
+        this.timeout = timeout;
         this.url = url;
         this.urlSecret = urlSecret;
     }
@@ -143,6 +147,22 @@ public class WebhookConfig implements Editable<WebhookConfigBuilder>, Kubernetes
     @JsonProperty("sendResolved")
     public void setSendResolved(Boolean sendResolved) {
         this.sendResolved = sendResolved;
+    }
+
+    /**
+     * The maximum time to wait for a webhook request to complete, before failing the request and allowing it to be retried. It requires Alertmanager &gt;= v0.28.0.
+     */
+    @JsonProperty("timeout")
+    public String getTimeout() {
+        return timeout;
+    }
+
+    /**
+     * The maximum time to wait for a webhook request to complete, before failing the request and allowing it to be retried. It requires Alertmanager &gt;= v0.28.0.
+     */
+    @JsonProperty("timeout")
+    public void setTimeout(String timeout) {
+        this.timeout = timeout;
     }
 
     /**

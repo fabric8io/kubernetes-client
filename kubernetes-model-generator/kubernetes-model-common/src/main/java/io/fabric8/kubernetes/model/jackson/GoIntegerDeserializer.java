@@ -54,7 +54,7 @@ public class GoIntegerDeserializer extends StdDeserializer<Integer> implements C
     }
     if (applicable) {
       final Matcher matcher = OCTAL.matcher(value);
-      if (matcher.find()) {
+      if (matcher.matches()) {
         return Integer.valueOf(matcher.group(2), 8);
       }
     }

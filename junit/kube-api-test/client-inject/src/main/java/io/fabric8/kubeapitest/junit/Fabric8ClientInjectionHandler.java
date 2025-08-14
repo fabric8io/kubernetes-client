@@ -23,9 +23,7 @@ import io.fabric8.kubernetes.client.KubernetesClientBuilder;
 import org.junit.jupiter.api.extension.ExtensionContext;
 
 import java.lang.reflect.Field;
-import java.util.Arrays;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 public class Fabric8ClientInjectionHandler implements ClientInjectionHandler {
 
@@ -67,9 +65,9 @@ public class Fabric8ClientInjectionHandler implements ClientInjectionHandler {
   public static Optional<Field> getFieldForKubeClientInjection(ExtensionContext extensionContext,
       boolean staticField) {
     Class<?> clazz = extensionContext.getTestClass().orElseThrow();
-    var kubeConfigFields = Arrays.stream(clazz.getDeclaredFields())
-        .filter(f -> KubernetesClient.class.isAssignableFrom(f.getType()))
-        .collect(Collectors.toList());
+    var kubeConfigFields = KubeConfigInjectionHandler.getAllFieldsIncludingAllParents(clazz,
+        f -> KubernetesClient.class.isAssignableFrom(f.getType()));
+
     if (kubeConfigFields.isEmpty()) {
       return Optional.empty();
     }

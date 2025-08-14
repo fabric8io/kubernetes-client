@@ -32,10 +32,16 @@ import org.junit.jupiter.api.extension.ExtensionContext;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.Queue;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * The class that implements JUnit5 extension mechanism. You can use it directly in your JUnit test
@@ -50,10 +56,6 @@ public class KubernetesMockServerExtension
   private KubernetesMockServer instantMock;
   private NamespacedKubernetesClient instantClient;
 
-  public interface SetTestClassField {
-    void apply(Object instance, Field f) throws IllegalAccessException;
-  }
-
   @Override
   public void afterEach(ExtensionContext context) {
     destroy();
@@ -66,45 +68,37 @@ public class KubernetesMockServerExtension
 
   @Override
   public void beforeEach(ExtensionContext context) throws Exception {
-    setKubernetesClientAndMockServerFields(context, false);
+    context.getTestClass().ifPresent(testClass -> initializeKubernetesClientAndMockServer(testClass, false));
+    for (Object testInstance : context.getRequiredTestInstances().getAllInstances()) {
+      for (Field field : extractFields(context, Client.class, f -> !Modifier.isStatic(f.getModifiers()))) {
+        if (field.getDeclaringClass().isAssignableFrom(testInstance.getClass())) {
+          setFieldValue(field, testInstance, instantClient.adapt((Class<Client>) field.getType()));
+        }
+      }
+      for (Field field : extractFields(context, KubernetesMockServer.class, f -> !Modifier.isStatic(f.getModifiers()))) {
+        if (field.getDeclaringClass().isAssignableFrom(testInstance.getClass())) {
+          setFieldValue(field, testInstance, instantMock);
+        }
+      }
+    }
   }
 
   @Override
   public void beforeAll(ExtensionContext context) throws Exception {
-    setKubernetesClientAndMockServerFields(context, true);
-  }
-
-  protected void setFieldIfKubernetesClientOrMockServer(ExtensionContext context, boolean isStatic, Field field)
-      throws IllegalAccessException {
-    if (extensionMatches(field.getType())) {
-      final NamespacedKubernetesClient client;
-      if (isStatic) {
-        client = staticClient;
-      } else {
-        client = instantClient;
-      }
-      setFieldIfEqualsToProvidedType(context, isStatic, field, Client.class,
-          (i, f) -> f.set(i, client.adapt((Class<Client>) f.getType())));
-    } else {
-      final KubernetesMockServer mock;
-      if (isStatic) {
-        mock = staticMock;
-      } else {
-        mock = instantMock;
-      }
-      setFieldIfEqualsToProvidedType(context, isStatic, field, getKubernetesMockServerType(), (i, f) -> f.set(i, mock));
+    context.getTestClass().ifPresent(testClass -> initializeKubernetesClientAndMockServer(testClass, true));
+    for (Field field : extractFields(context, Client.class, f -> Modifier.isStatic(f.getModifiers()))) {
+      setFieldValue(field, null, staticClient.adapt((Class<Client>) field.getType()));
     }
-  }
-
-  protected void setFieldIfEqualsToProvidedType(ExtensionContext context, boolean isStatic, Field field, Class<?> fieldType,
-      SetTestClassField setTestClassField) throws IllegalAccessException {
-    if (fieldType.isAssignableFrom(field.getType()) && Modifier.isStatic(field.getModifiers()) == isStatic) {
-      setKubernetesClientStaticOrMemberField(context, isStatic, field, setTestClassField);
+    for (Field field : extractFields(context, KubernetesMockServer.class, f -> Modifier.isStatic(f.getModifiers()))) {
+      setFieldValue(field, null, staticMock);
     }
   }
 
   protected void initializeKubernetesClientAndMockServer(Class<?> testClass, boolean isStatic) {
-    EnableKubernetesMockClient a = testClass.getAnnotation(EnableKubernetesMockClient.class);
+    EnableKubernetesMockClient a = extractEnabledKubernetesMockClient(testClass);
+    if (a == null) {
+      return;
+    }
     final Map<ServerRequest, Queue<ServerResponse>> responses = new HashMap<>();
     final Dispatcher dispatcher;
     if (a.crud()) {
@@ -133,6 +127,21 @@ public class KubernetesMockServerExtension
     }
   }
 
+  private static EnableKubernetesMockClient extractEnabledKubernetesMockClient(Class<?> testClass) {
+    EnableKubernetesMockClient a = testClass.getAnnotation(EnableKubernetesMockClient.class);
+    Class<?> enclosingClass = testClass;
+    while (a == null && enclosingClass.getEnclosingClass() != null) {
+      enclosingClass = enclosingClass.getEnclosingClass();
+      a = enclosingClass.getAnnotation(EnableKubernetesMockClient.class);
+    }
+    Class<?> superClass = testClass;
+    while (a == null && superClass.getSuperclass() != null && superClass != Object.class) {
+      superClass = superClass.getSuperclass();
+      a = superClass.getAnnotation(EnableKubernetesMockClient.class);
+    }
+    return a;
+  }
+
   protected void destroy() {
     if (instantMock != null) {
       instantMock.destroy();
@@ -147,41 +156,50 @@ public class KubernetesMockServerExtension
     staticClient.close();
   }
 
-  protected Class<?> getKubernetesMockServerType() {
-    return KubernetesMockServer.class;
-  }
-
-  private boolean extensionMatches(Class<?> type) {
-    return Client.class.isAssignableFrom(type);
-  }
-
-  private void setKubernetesClientAndMockServerFields(ExtensionContext context, boolean isStatic)
-      throws IllegalAccessException {
-    Optional<Class<?>> optClass = context.getTestClass();
-    if (optClass.isPresent()) {
-      Class<?> testClass = optClass.get();
-      initializeKubernetesClientAndMockServer(testClass, isStatic);
-      processTestClassDeclaredFields(context, isStatic, testClass);
+  // Copied from io.fabric8.junit.jupiter.BaseExtension.extractFields TODO: remove duplication
+  private static Field[] extractFields(ExtensionContext context, Class<?> clazz, Predicate<Field>... predicates) {
+    final List<Field> fields = new ArrayList<>();
+    if (context.getTestClass().isPresent()) {
+      Class<?> testClass = context.getTestClass().orElse(Object.class);
+      fields.addAll(extractFields(testClass, clazz, predicates));
+      Class<?> enclosingTestClass = testClass.getEnclosingClass();
+      while (enclosingTestClass != null) {
+        fields.addAll(extractFields(enclosingTestClass, clazz, predicates));
+        enclosingTestClass = enclosingTestClass.getEnclosingClass();
+      }
     }
+    return fields.toArray(new Field[0]);
   }
 
-  private void processTestClassDeclaredFields(ExtensionContext context, boolean isStatic, Class<?> testClass)
-      throws IllegalAccessException {
-    Field[] fields = testClass.getDeclaredFields();
-    for (Field field : fields) {
-      setFieldIfKubernetesClientOrMockServer(context, isStatic, field);
-    }
+  // Copied from io.fabric8.junit.jupiter.BaseExtension.extractFields TODO: remove duplication
+  private static List<Field> extractFields(Class<?> testClass, Class<?> clazz, Predicate<Field>... predicates) {
+    final List<Field> fields = new ArrayList<>();
+    do {
+      fields.addAll(extractFieldsFromClass(testClass, clazz, predicates));
+      testClass = testClass.getSuperclass();
+    } while (testClass != Object.class);
+    return fields;
   }
 
-  private void setKubernetesClientStaticOrMemberField(ExtensionContext context, boolean isStatic, Field f,
-      SetTestClassField setTestClassField) throws IllegalAccessException {
-    f.setAccessible(true);
-    if (isStatic) {
-      setTestClassField.apply(null, f);
-    } else {
-      Optional<Object> optTestInstance = context.getTestInstance();
-      if (optTestInstance.isPresent())
-        setTestClassField.apply(optTestInstance.get(), f);
+  // Copied from io.fabric8.junit.jupiter.BaseExtension.extractFields TODO: remove duplication
+  private static List<Field> extractFieldsFromClass(Class<?> classWhereFieldIs, Class<?> fieldType,
+      Predicate<Field>... predicates) {
+    if (classWhereFieldIs != null && classWhereFieldIs != Object.class) {
+      Stream<Field> fieldStream = Arrays.stream(classWhereFieldIs.getDeclaredFields())
+          .filter(f -> fieldType.isAssignableFrom(f.getType()));
+      for (Predicate<Field> p : predicates) {
+        fieldStream = fieldStream.filter(p);
+      }
+      return fieldStream.collect(Collectors.toList());
     }
+    return Collections.emptyList();
+  }
+
+  // Copied from io.fabric8.junit.jupiter.BaseExtension.setFieldValue TODO: remove duplication
+  private static void setFieldValue(Field field, Object entity, Object value) throws IllegalAccessException {
+    final boolean isAccessible = field.isAccessible();
+    field.setAccessible(true);
+    field.set(entity, value);
+    field.setAccessible(isAccessible);
   }
 }

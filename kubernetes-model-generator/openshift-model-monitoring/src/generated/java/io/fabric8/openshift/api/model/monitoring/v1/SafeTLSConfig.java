@@ -170,7 +170,7 @@ public class SafeTLSConfig implements Editable<SafeTLSConfigBuilder>, Kubernetes
     }
 
     /**
-     * Maximum acceptable TLS version.<br><p> <br><p> It requires Prometheus &gt;= v2.41.0.
+     * Maximum acceptable TLS version.<br><p> <br><p> It requires Prometheus &gt;= v2.41.0 or Thanos &gt;= v0.31.0.
      */
     @JsonProperty("maxVersion")
     public String getMaxVersion() {
@@ -178,7 +178,7 @@ public class SafeTLSConfig implements Editable<SafeTLSConfigBuilder>, Kubernetes
     }
 
     /**
-     * Maximum acceptable TLS version.<br><p> <br><p> It requires Prometheus &gt;= v2.41.0.
+     * Maximum acceptable TLS version.<br><p> <br><p> It requires Prometheus &gt;= v2.41.0 or Thanos &gt;= v0.31.0.
      */
     @JsonProperty("maxVersion")
     public void setMaxVersion(String maxVersion) {
@@ -186,7 +186,7 @@ public class SafeTLSConfig implements Editable<SafeTLSConfigBuilder>, Kubernetes
     }
 
     /**
-     * Minimum acceptable TLS version.<br><p> <br><p> It requires Prometheus &gt;= v2.35.0.
+     * Minimum acceptable TLS version.<br><p> <br><p> It requires Prometheus &gt;= v2.35.0 or Thanos &gt;= v0.28.0.
      */
     @JsonProperty("minVersion")
     public String getMinVersion() {
@@ -194,7 +194,7 @@ public class SafeTLSConfig implements Editable<SafeTLSConfigBuilder>, Kubernetes
     }
 
     /**
-     * Minimum acceptable TLS version.<br><p> <br><p> It requires Prometheus &gt;= v2.35.0.
+     * Minimum acceptable TLS version.<br><p> <br><p> It requires Prometheus &gt;= v2.35.0 or Thanos &gt;= v0.28.0.
      */
     @JsonProperty("minVersion")
     public void setMinVersion(String minVersion) {

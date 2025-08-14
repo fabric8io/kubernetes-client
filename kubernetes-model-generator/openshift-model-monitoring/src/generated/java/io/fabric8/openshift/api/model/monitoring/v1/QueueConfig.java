@@ -261,7 +261,7 @@ public class QueueConfig implements Editable<QueueConfigBuilder>, KubernetesReso
     }
 
     /**
-     * SampleAgeLimit drops samples older than the limit. It requires Prometheus &gt;= v2.50.0.
+     * SampleAgeLimit drops samples older than the limit. It requires Prometheus &gt;= v2.50.0 or Thanos &gt;= v0.32.0.
      */
     @JsonProperty("sampleAgeLimit")
     public String getSampleAgeLimit() {
@@ -269,7 +269,7 @@ public class QueueConfig implements Editable<QueueConfigBuilder>, KubernetesReso
     }
 
     /**
-     * SampleAgeLimit drops samples older than the limit. It requires Prometheus &gt;= v2.50.0.
+     * SampleAgeLimit drops samples older than the limit. It requires Prometheus &gt;= v2.50.0 or Thanos &gt;= v0.32.0.
      */
     @JsonProperty("sampleAgeLimit")
     public void setSampleAgeLimit(String sampleAgeLimit) {

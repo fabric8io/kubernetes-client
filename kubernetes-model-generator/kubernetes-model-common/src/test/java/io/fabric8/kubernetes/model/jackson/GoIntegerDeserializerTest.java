@@ -58,6 +58,7 @@ class GoIntegerDeserializerTest {
       return Stream.of("mode", "defaultMode")
           .flatMap(field -> Stream.of(
               Arguments.of(field, "null", null),
+              Arguments.of(field, "\"400\"", 400),
               Arguments.of(field, "\"0555\"", 365),
               Arguments.of(field, "\"0o555\"", 365),
               Arguments.of(field, "\"0O555\"", 365),

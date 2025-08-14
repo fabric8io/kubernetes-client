@@ -90,7 +90,7 @@ public class ServerTLSSettingsTLSCertificate implements Editable<ServerTLSSettin
     }
 
     /**
-     * REQUIRED if mode is `MUTUAL` or `OPTIONAL_MUTUAL`. The path to a file containing certificate authority certificates to use in verifying a presented client side certificate.
+     * $hide_from_docs REQUIRED if mode is `MUTUAL` or `OPTIONAL_MUTUAL`. The path to a file containing certificate authority certificates to use in verifying a presented client side certificate. $hide_from_docs
      */
     @JsonProperty("caCertificates")
     public String getCaCertificates() {
@@ -98,7 +98,7 @@ public class ServerTLSSettingsTLSCertificate implements Editable<ServerTLSSettin
     }
 
     /**
-     * REQUIRED if mode is `MUTUAL` or `OPTIONAL_MUTUAL`. The path to a file containing certificate authority certificates to use in verifying a presented client side certificate.
+     * $hide_from_docs REQUIRED if mode is `MUTUAL` or `OPTIONAL_MUTUAL`. The path to a file containing certificate authority certificates to use in verifying a presented client side certificate. $hide_from_docs
      */
     @JsonProperty("caCertificates")
     public void setCaCertificates(String caCertificates) {

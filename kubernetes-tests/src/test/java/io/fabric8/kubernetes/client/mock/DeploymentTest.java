@@ -623,8 +623,8 @@ class DeploymentTest {
     // Then
     RecordedRequest recordedRequest = server.getLastRequest();
     assertEquals("PATCH", recordedRequest.getMethod());
-    assertThat(client.getKubernetesSerialization().unmarshal(recordedRequest.getBody().readUtf8(), List.class))
-        .isEqualTo(List.of(Map.of("op", "add", "path", "/spec/paused", "value", true)));
+    assertThat(recordedRequest.getBody().readUtf8())
+        .isEqualTo("{\"spec\":{\"paused\":true}}");
   }
 
   @Test
@@ -654,8 +654,8 @@ class DeploymentTest {
     RecordedRequest recordedRequest = server.getLastRequest();
     assertNotNull(deployment);
     assertEquals("PATCH", recordedRequest.getMethod());
-    assertThat(client.getKubernetesSerialization().unmarshal(recordedRequest.getBody().readUtf8(), List.class))
-        .isEqualTo(List.of(Map.of("op", "remove", "path", "/spec/paused")));
+    assertThat(recordedRequest.getBody().readUtf8())
+        .isEqualTo("{\"spec\":{\"paused\":null}}");
   }
 
   @Test
@@ -685,7 +685,7 @@ class DeploymentTest {
     RecordedRequest recordedRequest = server.getLastRequest();
     assertNotNull(deployment);
     assertEquals("PATCH", recordedRequest.getMethod());
-    assertTrue(recordedRequest.getBody().readUtf8().contains("kubectl.kubernetes.io~1restartedAt"));
+    assertTrue(recordedRequest.getBody().readUtf8().contains("kubectl.kubernetes.io/restartedAt"));
   }
 
   @Test

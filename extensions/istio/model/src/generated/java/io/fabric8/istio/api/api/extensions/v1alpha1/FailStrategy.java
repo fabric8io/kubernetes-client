@@ -8,7 +8,8 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 public enum FailStrategy 
 {
     FAIL_CLOSE(0),
-    FAIL_OPEN(1);
+    FAIL_OPEN(1),
+    FAIL_RELOAD(2);
     private final int value;
     private FailStrategy(int value) {
         this.value = value;

@@ -45,6 +45,7 @@ import lombok.experimental.Accessors;
     "outlierDetection",
     "portLevelSettings",
     "proxyProtocol",
+    "retryBudget",
     "tls",
     "tunnel"
 })
@@ -84,6 +85,8 @@ public class TrafficPolicy implements Editable<TrafficPolicyBuilder>, Kubernetes
     private List<TrafficPolicyPortTrafficPolicy> portLevelSettings = new ArrayList<>();
     @JsonProperty("proxyProtocol")
     private TrafficPolicyProxyProtocol proxyProtocol;
+    @JsonProperty("retryBudget")
+    private TrafficPolicyRetryBudget retryBudget;
     @JsonProperty("tls")
     private ClientTLSSettings tls;
     @JsonProperty("tunnel")
@@ -97,13 +100,14 @@ public class TrafficPolicy implements Editable<TrafficPolicyBuilder>, Kubernetes
     public TrafficPolicy() {
     }
 
-    public TrafficPolicy(ConnectionPoolSettings connectionPool, LoadBalancerSettings loadBalancer, OutlierDetection outlierDetection, List<TrafficPolicyPortTrafficPolicy> portLevelSettings, TrafficPolicyProxyProtocol proxyProtocol, ClientTLSSettings tls, TrafficPolicyTunnelSettings tunnel) {
+    public TrafficPolicy(ConnectionPoolSettings connectionPool, LoadBalancerSettings loadBalancer, OutlierDetection outlierDetection, List<TrafficPolicyPortTrafficPolicy> portLevelSettings, TrafficPolicyProxyProtocol proxyProtocol, TrafficPolicyRetryBudget retryBudget, ClientTLSSettings tls, TrafficPolicyTunnelSettings tunnel) {
         super();
         this.connectionPool = connectionPool;
         this.loadBalancer = loadBalancer;
         this.outlierDetection = outlierDetection;
         this.portLevelSettings = portLevelSettings;
         this.proxyProtocol = proxyProtocol;
+        this.retryBudget = retryBudget;
         this.tls = tls;
         this.tunnel = tunnel;
     }
@@ -187,6 +191,22 @@ public class TrafficPolicy implements Editable<TrafficPolicyBuilder>, Kubernetes
     @JsonProperty("proxyProtocol")
     public void setProxyProtocol(TrafficPolicyProxyProtocol proxyProtocol) {
         this.proxyProtocol = proxyProtocol;
+    }
+
+    /**
+     * Traffic policies to apply for a specific destination, across all destination ports. See DestinationRule for examples.
+     */
+    @JsonProperty("retryBudget")
+    public TrafficPolicyRetryBudget getRetryBudget() {
+        return retryBudget;
+    }
+
+    /**
+     * Traffic policies to apply for a specific destination, across all destination ports. See DestinationRule for examples.
+     */
+    @JsonProperty("retryBudget")
+    public void setRetryBudget(TrafficPolicyRetryBudget retryBudget) {
+        this.retryBudget = retryBudget;
     }
 
     /**

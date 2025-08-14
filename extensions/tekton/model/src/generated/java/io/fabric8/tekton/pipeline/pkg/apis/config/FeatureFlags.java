@@ -51,6 +51,7 @@ import lombok.experimental.Accessors;
     "enableParamEnum",
     "enableProvenanceInStatus",
     "enableStepActions",
+    "enableWaitExponentialBackoff",
     "enforceNonfalsifiability",
     "maxResultSize",
     "requireGitSSHSecretKnownHosts",
@@ -112,6 +113,8 @@ public class FeatureFlags implements Editable<FeatureFlagsBuilder>, KubernetesRe
     private Boolean enableProvenanceInStatus;
     @JsonProperty("enableStepActions")
     private Boolean enableStepActions;
+    @JsonProperty("enableWaitExponentialBackoff")
+    private Boolean enableWaitExponentialBackoff;
     @JsonProperty("enforceNonfalsifiability")
     private String enforceNonfalsifiability;
     @JsonProperty("maxResultSize")
@@ -139,7 +142,7 @@ public class FeatureFlags implements Editable<FeatureFlagsBuilder>, KubernetesRe
     public FeatureFlags() {
     }
 
-    public FeatureFlags(Boolean awaitSidecarReadiness, String coschedule, Boolean disableCredsInit, String disableInlineSpec, String enableAPIFields, Boolean enableArtifacts, Boolean enableCELInWhenExpression, Boolean enableConciseResolverSyntax, Boolean enableKeepPodOnCancel, Boolean enableKubernetesSidecar, Boolean enableParamEnum, Boolean enableProvenanceInStatus, Boolean enableStepActions, String enforceNonfalsifiability, Integer maxResultSize, Boolean requireGitSSHSecretKnownHosts, String resultExtractionMethod, Boolean runningInEnvWithInjectedSidecars, Boolean sendCloudEventsForRuns, Boolean setSecurityContext, Boolean setSecurityContextReadOnlyRootFilesystem, String verificationNoMatchPolicy) {
+    public FeatureFlags(Boolean awaitSidecarReadiness, String coschedule, Boolean disableCredsInit, String disableInlineSpec, String enableAPIFields, Boolean enableArtifacts, Boolean enableCELInWhenExpression, Boolean enableConciseResolverSyntax, Boolean enableKeepPodOnCancel, Boolean enableKubernetesSidecar, Boolean enableParamEnum, Boolean enableProvenanceInStatus, Boolean enableStepActions, Boolean enableWaitExponentialBackoff, String enforceNonfalsifiability, Integer maxResultSize, Boolean requireGitSSHSecretKnownHosts, String resultExtractionMethod, Boolean runningInEnvWithInjectedSidecars, Boolean sendCloudEventsForRuns, Boolean setSecurityContext, Boolean setSecurityContextReadOnlyRootFilesystem, String verificationNoMatchPolicy) {
         super();
         this.awaitSidecarReadiness = awaitSidecarReadiness;
         this.coschedule = coschedule;
@@ -154,6 +157,7 @@ public class FeatureFlags implements Editable<FeatureFlagsBuilder>, KubernetesRe
         this.enableParamEnum = enableParamEnum;
         this.enableProvenanceInStatus = enableProvenanceInStatus;
         this.enableStepActions = enableStepActions;
+        this.enableWaitExponentialBackoff = enableWaitExponentialBackoff;
         this.enforceNonfalsifiability = enforceNonfalsifiability;
         this.maxResultSize = maxResultSize;
         this.requireGitSSHSecretKnownHosts = requireGitSSHSecretKnownHosts;
@@ -371,6 +375,22 @@ public class FeatureFlags implements Editable<FeatureFlagsBuilder>, KubernetesRe
     @JsonProperty("enableStepActions")
     public void setEnableStepActions(Boolean enableStepActions) {
         this.enableStepActions = enableStepActions;
+    }
+
+    /**
+     * FeatureFlags holds the features configurations
+     */
+    @JsonProperty("enableWaitExponentialBackoff")
+    public Boolean getEnableWaitExponentialBackoff() {
+        return enableWaitExponentialBackoff;
+    }
+
+    /**
+     * FeatureFlags holds the features configurations
+     */
+    @JsonProperty("enableWaitExponentialBackoff")
+    public void setEnableWaitExponentialBackoff(Boolean enableWaitExponentialBackoff) {
+        this.enableWaitExponentialBackoff = enableWaitExponentialBackoff;
     }
 
     /**

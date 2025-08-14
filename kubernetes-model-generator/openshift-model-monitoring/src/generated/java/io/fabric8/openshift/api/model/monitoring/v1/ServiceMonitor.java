@@ -45,7 +45,8 @@ import lombok.experimental.Accessors;
     "apiVersion",
     "kind",
     "metadata",
-    "spec"
+    "spec",
+    "status"
 })
 @ToString
 @EqualsAndHashCode
@@ -85,6 +86,8 @@ public class ServiceMonitor implements Editable<ServiceMonitorBuilder>, HasMetad
     private ObjectMeta metadata;
     @JsonProperty("spec")
     private ServiceMonitorSpec spec;
+    @JsonProperty("status")
+    private ConfigResourceStatus status;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -94,12 +97,13 @@ public class ServiceMonitor implements Editable<ServiceMonitorBuilder>, HasMetad
     public ServiceMonitor() {
     }
 
-    public ServiceMonitor(String apiVersion, String kind, ObjectMeta metadata, ServiceMonitorSpec spec) {
+    public ServiceMonitor(String apiVersion, String kind, ObjectMeta metadata, ServiceMonitorSpec spec, ConfigResourceStatus status) {
         super();
         this.apiVersion = apiVersion;
         this.kind = kind;
         this.metadata = metadata;
         this.spec = spec;
+        this.status = status;
     }
 
     /**
@@ -164,6 +168,22 @@ public class ServiceMonitor implements Editable<ServiceMonitorBuilder>, HasMetad
     @JsonProperty("spec")
     public void setSpec(ServiceMonitorSpec spec) {
         this.spec = spec;
+    }
+
+    /**
+     * The `ServiceMonitor` custom resource definition (CRD) defines how `Prometheus` and `PrometheusAgent` can scrape metrics from a group of services. Among other things, it allows to specify: &#42; The services to scrape via label selectors. &#42; The container ports to scrape. &#42; Authentication credentials to use. &#42; Target and metric relabeling.<br><p> <br><p> `Prometheus` and `PrometheusAgent` objects select `ServiceMonitor` objects using label and namespace selectors.
+     */
+    @JsonProperty("status")
+    public ConfigResourceStatus getStatus() {
+        return status;
+    }
+
+    /**
+     * The `ServiceMonitor` custom resource definition (CRD) defines how `Prometheus` and `PrometheusAgent` can scrape metrics from a group of services. Among other things, it allows to specify: &#42; The services to scrape via label selectors. &#42; The container ports to scrape. &#42; Authentication credentials to use. &#42; Target and metric relabeling.<br><p> <br><p> `Prometheus` and `PrometheusAgent` objects select `ServiceMonitor` objects using label and namespace selectors.
+     */
+    @JsonProperty("status")
+    public void setStatus(ConfigResourceStatus status) {
+        this.status = status;
     }
 
     @JsonIgnore

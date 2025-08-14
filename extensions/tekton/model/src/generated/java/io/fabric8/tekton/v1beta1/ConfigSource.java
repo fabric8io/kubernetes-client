@@ -108,7 +108,7 @@ public class ConfigSource implements Editable<ConfigSourceBuilder>, KubernetesRe
     }
 
     /**
-     * EntryPoint identifies the entry point into the build. This is often a path to a build definition file and/or a target label within that file. Example: "task/git-clone/0.8/git-clone.yaml"
+     * EntryPoint identifies the entry point into the build. This is often a path to a build definition file and/or a target label within that file. Example: "task/git-clone/0.10/git-clone.yaml"
      */
     @JsonProperty("entryPoint")
     public String getEntryPoint() {
@@ -116,7 +116,7 @@ public class ConfigSource implements Editable<ConfigSourceBuilder>, KubernetesRe
     }
 
     /**
-     * EntryPoint identifies the entry point into the build. This is often a path to a build definition file and/or a target label within that file. Example: "task/git-clone/0.8/git-clone.yaml"
+     * EntryPoint identifies the entry point into the build. This is often a path to a build definition file and/or a target label within that file. Example: "task/git-clone/0.10/git-clone.yaml"
      */
     @JsonProperty("entryPoint")
     public void setEntryPoint(String entryPoint) {

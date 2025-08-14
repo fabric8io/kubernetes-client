@@ -55,6 +55,7 @@ import lombok.experimental.Accessors;
     "containers",
     "dnsConfig",
     "dnsPolicy",
+    "enableServiceLinks",
     "enforcedNamespaceLabel",
     "evaluationInterval",
     "excludedFromEnforcement",
@@ -80,15 +81,21 @@ import lombok.experimental.Accessors;
     "prometheusRulesExcludedFromEnforce",
     "queryConfig",
     "queryEndpoints",
+    "remoteWrite",
     "replicas",
     "resources",
     "retention",
     "routePrefix",
+    "ruleConcurrentEval",
     "ruleNamespaceSelector",
+    "ruleOutageTolerance",
+    "ruleQueryOffset",
     "ruleSelector",
     "securityContext",
     "serviceAccountName",
+    "serviceName",
     "storage",
+    "terminationGracePeriodSeconds",
     "tolerations",
     "topologySpreadConstraints",
     "tracingConfig",
@@ -149,6 +156,8 @@ public class ThanosRulerSpec implements Editable<ThanosRulerSpecBuilder>, Kubern
     private PodDNSConfig dnsConfig;
     @JsonProperty("dnsPolicy")
     private String dnsPolicy;
+    @JsonProperty("enableServiceLinks")
+    private Boolean enableServiceLinks;
     @JsonProperty("enforcedNamespaceLabel")
     private String enforcedNamespaceLabel;
     @JsonProperty("evaluationInterval")
@@ -207,6 +216,9 @@ public class ThanosRulerSpec implements Editable<ThanosRulerSpecBuilder>, Kubern
     @JsonProperty("queryEndpoints")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> queryEndpoints = new ArrayList<>();
+    @JsonProperty("remoteWrite")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<RemoteWriteSpec> remoteWrite = new ArrayList<>();
     @JsonProperty("replicas")
     private Integer replicas;
     @JsonProperty("resources")
@@ -215,16 +227,26 @@ public class ThanosRulerSpec implements Editable<ThanosRulerSpecBuilder>, Kubern
     private String retention;
     @JsonProperty("routePrefix")
     private String routePrefix;
+    @JsonProperty("ruleConcurrentEval")
+    private Integer ruleConcurrentEval;
     @JsonProperty("ruleNamespaceSelector")
     private LabelSelector ruleNamespaceSelector;
+    @JsonProperty("ruleOutageTolerance")
+    private String ruleOutageTolerance;
+    @JsonProperty("ruleQueryOffset")
+    private String ruleQueryOffset;
     @JsonProperty("ruleSelector")
     private LabelSelector ruleSelector;
     @JsonProperty("securityContext")
     private PodSecurityContext securityContext;
     @JsonProperty("serviceAccountName")
     private String serviceAccountName;
+    @JsonProperty("serviceName")
+    private String serviceName;
     @JsonProperty("storage")
     private StorageSpec storage;
+    @JsonProperty("terminationGracePeriodSeconds")
+    private Long terminationGracePeriodSeconds;
     @JsonProperty("tolerations")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<Toleration> tolerations = new ArrayList<>();
@@ -254,7 +276,7 @@ public class ThanosRulerSpec implements Editable<ThanosRulerSpecBuilder>, Kubern
     public ThanosRulerSpec() {
     }
 
-    public ThanosRulerSpec(List<Argument> additionalArgs, Affinity affinity, List<String> alertDropLabels, String alertQueryUrl, String alertRelabelConfigFile, SecretKeySelector alertRelabelConfigs, SecretKeySelector alertmanagersConfig, List<String> alertmanagersUrl, List<Container> containers, PodDNSConfig dnsConfig, String dnsPolicy, String enforcedNamespaceLabel, String evaluationInterval, List<ObjectReference> excludedFromEnforcement, String externalPrefix, TLSConfig grpcServerTlsConfig, List<HostAlias> hostAliases, String image, String imagePullPolicy, List<LocalObjectReference> imagePullSecrets, List<Container> initContainers, Map<String, String> labels, Boolean listenLocal, String logFormat, String logLevel, Long minReadySeconds, Map<String, String> nodeSelector, SecretKeySelector objectStorageConfig, String objectStorageConfigFile, Boolean paused, EmbeddedObjectMetadata podMetadata, String portName, String priorityClassName, List<PrometheusRuleExcludeConfig> prometheusRulesExcludedFromEnforce, SecretKeySelector queryConfig, List<String> queryEndpoints, Integer replicas, ResourceRequirements resources, String retention, String routePrefix, LabelSelector ruleNamespaceSelector, LabelSelector ruleSelector, PodSecurityContext securityContext, String serviceAccountName, StorageSpec storage, List<Toleration> tolerations, List<TopologySpreadConstraint> topologySpreadConstraints, SecretKeySelector tracingConfig, String tracingConfigFile, String version, List<VolumeMount> volumeMounts, List<Volume> volumes, ThanosRulerWebSpec web) {
+    public ThanosRulerSpec(List<Argument> additionalArgs, Affinity affinity, List<String> alertDropLabels, String alertQueryUrl, String alertRelabelConfigFile, SecretKeySelector alertRelabelConfigs, SecretKeySelector alertmanagersConfig, List<String> alertmanagersUrl, List<Container> containers, PodDNSConfig dnsConfig, String dnsPolicy, Boolean enableServiceLinks, String enforcedNamespaceLabel, String evaluationInterval, List<ObjectReference> excludedFromEnforcement, String externalPrefix, TLSConfig grpcServerTlsConfig, List<HostAlias> hostAliases, String image, String imagePullPolicy, List<LocalObjectReference> imagePullSecrets, List<Container> initContainers, Map<String, String> labels, Boolean listenLocal, String logFormat, String logLevel, Long minReadySeconds, Map<String, String> nodeSelector, SecretKeySelector objectStorageConfig, String objectStorageConfigFile, Boolean paused, EmbeddedObjectMetadata podMetadata, String portName, String priorityClassName, List<PrometheusRuleExcludeConfig> prometheusRulesExcludedFromEnforce, SecretKeySelector queryConfig, List<String> queryEndpoints, List<RemoteWriteSpec> remoteWrite, Integer replicas, ResourceRequirements resources, String retention, String routePrefix, Integer ruleConcurrentEval, LabelSelector ruleNamespaceSelector, String ruleOutageTolerance, String ruleQueryOffset, LabelSelector ruleSelector, PodSecurityContext securityContext, String serviceAccountName, String serviceName, StorageSpec storage, Long terminationGracePeriodSeconds, List<Toleration> tolerations, List<TopologySpreadConstraint> topologySpreadConstraints, SecretKeySelector tracingConfig, String tracingConfigFile, String version, List<VolumeMount> volumeMounts, List<Volume> volumes, ThanosRulerWebSpec web) {
         super();
         this.additionalArgs = additionalArgs;
         this.affinity = affinity;
@@ -267,6 +289,7 @@ public class ThanosRulerSpec implements Editable<ThanosRulerSpecBuilder>, Kubern
         this.containers = containers;
         this.dnsConfig = dnsConfig;
         this.dnsPolicy = dnsPolicy;
+        this.enableServiceLinks = enableServiceLinks;
         this.enforcedNamespaceLabel = enforcedNamespaceLabel;
         this.evaluationInterval = evaluationInterval;
         this.excludedFromEnforcement = excludedFromEnforcement;
@@ -292,15 +315,21 @@ public class ThanosRulerSpec implements Editable<ThanosRulerSpecBuilder>, Kubern
         this.prometheusRulesExcludedFromEnforce = prometheusRulesExcludedFromEnforce;
         this.queryConfig = queryConfig;
         this.queryEndpoints = queryEndpoints;
+        this.remoteWrite = remoteWrite;
         this.replicas = replicas;
         this.resources = resources;
         this.retention = retention;
         this.routePrefix = routePrefix;
+        this.ruleConcurrentEval = ruleConcurrentEval;
         this.ruleNamespaceSelector = ruleNamespaceSelector;
+        this.ruleOutageTolerance = ruleOutageTolerance;
+        this.ruleQueryOffset = ruleQueryOffset;
         this.ruleSelector = ruleSelector;
         this.securityContext = securityContext;
         this.serviceAccountName = serviceAccountName;
+        this.serviceName = serviceName;
         this.storage = storage;
+        this.terminationGracePeriodSeconds = terminationGracePeriodSeconds;
         this.tolerations = tolerations;
         this.topologySpreadConstraints = topologySpreadConstraints;
         this.tracingConfig = tracingConfig;
@@ -489,6 +518,22 @@ public class ThanosRulerSpec implements Editable<ThanosRulerSpecBuilder>, Kubern
     @JsonProperty("dnsPolicy")
     public void setDnsPolicy(String dnsPolicy) {
         this.dnsPolicy = dnsPolicy;
+    }
+
+    /**
+     * Indicates whether information about services should be injected into pod's environment variables
+     */
+    @JsonProperty("enableServiceLinks")
+    public Boolean getEnableServiceLinks() {
+        return enableServiceLinks;
+    }
+
+    /**
+     * Indicates whether information about services should be injected into pod's environment variables
+     */
+    @JsonProperty("enableServiceLinks")
+    public void setEnableServiceLinks(Boolean enableServiceLinks) {
+        this.enableServiceLinks = enableServiceLinks;
     }
 
     /**
@@ -900,6 +945,23 @@ public class ThanosRulerSpec implements Editable<ThanosRulerSpecBuilder>, Kubern
     }
 
     /**
+     * Defines the list of remote write configurations.<br><p> <br><p> When the list isn't empty, the ruler is configured with stateless mode.<br><p> <br><p> It requires Thanos &gt;= 0.24.0.
+     */
+    @JsonProperty("remoteWrite")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public List<RemoteWriteSpec> getRemoteWrite() {
+        return remoteWrite;
+    }
+
+    /**
+     * Defines the list of remote write configurations.<br><p> <br><p> When the list isn't empty, the ruler is configured with stateless mode.<br><p> <br><p> It requires Thanos &gt;= 0.24.0.
+     */
+    @JsonProperty("remoteWrite")
+    public void setRemoteWrite(List<RemoteWriteSpec> remoteWrite) {
+        this.remoteWrite = remoteWrite;
+    }
+
+    /**
      * Number of thanos ruler instances to deploy.
      */
     @JsonProperty("replicas")
@@ -932,7 +994,7 @@ public class ThanosRulerSpec implements Editable<ThanosRulerSpecBuilder>, Kubern
     }
 
     /**
-     * Time duration ThanosRuler shall retain data for. Default is '24h', and must match the regular expression `[0-9]+(ms|s|m|h|d|w|y)` (milliseconds seconds minutes hours days weeks years).
+     * Time duration ThanosRuler shall retain data for. Default is '24h', and must match the regular expression `[0-9]+(ms|s|m|h|d|w|y)` (milliseconds seconds minutes hours days weeks years).<br><p> <br><p> The field has no effect when remote-write is configured since the Ruler operates in stateless mode.
      */
     @JsonProperty("retention")
     public String getRetention() {
@@ -940,7 +1002,7 @@ public class ThanosRulerSpec implements Editable<ThanosRulerSpecBuilder>, Kubern
     }
 
     /**
-     * Time duration ThanosRuler shall retain data for. Default is '24h', and must match the regular expression `[0-9]+(ms|s|m|h|d|w|y)` (milliseconds seconds minutes hours days weeks years).
+     * Time duration ThanosRuler shall retain data for. Default is '24h', and must match the regular expression `[0-9]+(ms|s|m|h|d|w|y)` (milliseconds seconds minutes hours days weeks years).<br><p> <br><p> The field has no effect when remote-write is configured since the Ruler operates in stateless mode.
      */
     @JsonProperty("retention")
     public void setRetention(String retention) {
@@ -964,6 +1026,22 @@ public class ThanosRulerSpec implements Editable<ThanosRulerSpecBuilder>, Kubern
     }
 
     /**
+     * How many rules can be evaluated concurrently. It requires Thanos &gt;= v0.37.0.
+     */
+    @JsonProperty("ruleConcurrentEval")
+    public Integer getRuleConcurrentEval() {
+        return ruleConcurrentEval;
+    }
+
+    /**
+     * How many rules can be evaluated concurrently. It requires Thanos &gt;= v0.37.0.
+     */
+    @JsonProperty("ruleConcurrentEval")
+    public void setRuleConcurrentEval(Integer ruleConcurrentEval) {
+        this.ruleConcurrentEval = ruleConcurrentEval;
+    }
+
+    /**
      * ThanosRulerSpec is a specification of the desired behavior of the ThanosRuler. More info: https://github.com/kubernetes/community/blob/master/contributors/devel/sig-architecture/api-conventions.md#spec-and-status
      */
     @JsonProperty("ruleNamespaceSelector")
@@ -977,6 +1055,38 @@ public class ThanosRulerSpec implements Editable<ThanosRulerSpecBuilder>, Kubern
     @JsonProperty("ruleNamespaceSelector")
     public void setRuleNamespaceSelector(LabelSelector ruleNamespaceSelector) {
         this.ruleNamespaceSelector = ruleNamespaceSelector;
+    }
+
+    /**
+     * Max time to tolerate prometheus outage for restoring "for" state of alert. It requires Thanos &gt;= v0.30.0.
+     */
+    @JsonProperty("ruleOutageTolerance")
+    public String getRuleOutageTolerance() {
+        return ruleOutageTolerance;
+    }
+
+    /**
+     * Max time to tolerate prometheus outage for restoring "for" state of alert. It requires Thanos &gt;= v0.30.0.
+     */
+    @JsonProperty("ruleOutageTolerance")
+    public void setRuleOutageTolerance(String ruleOutageTolerance) {
+        this.ruleOutageTolerance = ruleOutageTolerance;
+    }
+
+    /**
+     * The default rule group's query offset duration to use. It requires Thanos &gt;= v0.38.0.
+     */
+    @JsonProperty("ruleQueryOffset")
+    public String getRuleQueryOffset() {
+        return ruleQueryOffset;
+    }
+
+    /**
+     * The default rule group's query offset duration to use. It requires Thanos &gt;= v0.38.0.
+     */
+    @JsonProperty("ruleQueryOffset")
+    public void setRuleQueryOffset(String ruleQueryOffset) {
+        this.ruleQueryOffset = ruleQueryOffset;
     }
 
     /**
@@ -1028,6 +1138,22 @@ public class ThanosRulerSpec implements Editable<ThanosRulerSpecBuilder>, Kubern
     }
 
     /**
+     * The name of the service name used by the underlying StatefulSet(s) as the governing service. If defined, the Service  must be created before the ThanosRuler resource in the same namespace and it must define a selector that matches the pod labels. If empty, the operator will create and manage a headless service named `thanos-ruler-operated` for ThanosRuler resources. When deploying multiple ThanosRuler resources in the same namespace, it is recommended to specify a different value for each. See https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/#stable-network-id for more details.
+     */
+    @JsonProperty("serviceName")
+    public String getServiceName() {
+        return serviceName;
+    }
+
+    /**
+     * The name of the service name used by the underlying StatefulSet(s) as the governing service. If defined, the Service  must be created before the ThanosRuler resource in the same namespace and it must define a selector that matches the pod labels. If empty, the operator will create and manage a headless service named `thanos-ruler-operated` for ThanosRuler resources. When deploying multiple ThanosRuler resources in the same namespace, it is recommended to specify a different value for each. See https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/#stable-network-id for more details.
+     */
+    @JsonProperty("serviceName")
+    public void setServiceName(String serviceName) {
+        this.serviceName = serviceName;
+    }
+
+    /**
      * ThanosRulerSpec is a specification of the desired behavior of the ThanosRuler. More info: https://github.com/kubernetes/community/blob/master/contributors/devel/sig-architecture/api-conventions.md#spec-and-status
      */
     @JsonProperty("storage")
@@ -1041,6 +1167,22 @@ public class ThanosRulerSpec implements Editable<ThanosRulerSpecBuilder>, Kubern
     @JsonProperty("storage")
     public void setStorage(StorageSpec storage) {
         this.storage = storage;
+    }
+
+    /**
+     * Optional duration in seconds the pod needs to terminate gracefully. Value must be non-negative integer. The value zero indicates stop immediately via the kill signal (no opportunity to shut down) which may lead to data corruption.<br><p> <br><p> Defaults to 120 seconds.
+     */
+    @JsonProperty("terminationGracePeriodSeconds")
+    public Long getTerminationGracePeriodSeconds() {
+        return terminationGracePeriodSeconds;
+    }
+
+    /**
+     * Optional duration in seconds the pod needs to terminate gracefully. Value must be non-negative integer. The value zero indicates stop immediately via the kill signal (no opportunity to shut down) which may lead to data corruption.<br><p> <br><p> Defaults to 120 seconds.
+     */
+    @JsonProperty("terminationGracePeriodSeconds")
+    public void setTerminationGracePeriodSeconds(Long terminationGracePeriodSeconds) {
+        this.terminationGracePeriodSeconds = terminationGracePeriodSeconds;
     }
 
     /**

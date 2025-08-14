@@ -37,3 +37,6 @@ spec:
               properties:
                 affinity:
                   type: object
+                deletionPropagation:
+                  type: string
+                  enum: [ "Orphan" ]

@@ -205,7 +205,7 @@ public class EC2SDConfig implements Editable<EC2SDConfigBuilder>, KubernetesReso
     }
 
     /**
-     * `noProxy` is a comma-separated string that can contain IPs, CIDR notation, domain names that should be excluded from proxying. IP and domain names can contain port numbers.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0 or Alertmanager &gt;= 0.25.0.
+     * `noProxy` is a comma-separated string that can contain IPs, CIDR notation, domain names that should be excluded from proxying. IP and domain names can contain port numbers.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
      */
     @JsonProperty("noProxy")
     public String getNoProxy() {
@@ -213,7 +213,7 @@ public class EC2SDConfig implements Editable<EC2SDConfigBuilder>, KubernetesReso
     }
 
     /**
-     * `noProxy` is a comma-separated string that can contain IPs, CIDR notation, domain names that should be excluded from proxying. IP and domain names can contain port numbers.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0 or Alertmanager &gt;= 0.25.0.
+     * `noProxy` is a comma-separated string that can contain IPs, CIDR notation, domain names that should be excluded from proxying. IP and domain names can contain port numbers.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
      */
     @JsonProperty("noProxy")
     public void setNoProxy(String noProxy) {
@@ -237,7 +237,7 @@ public class EC2SDConfig implements Editable<EC2SDConfigBuilder>, KubernetesReso
     }
 
     /**
-     * ProxyConnectHeader optionally specifies headers to send to proxies during CONNECT requests.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0 or Alertmanager &gt;= 0.25.0.
+     * ProxyConnectHeader optionally specifies headers to send to proxies during CONNECT requests.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
      */
     @JsonProperty("proxyConnectHeader")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -246,7 +246,7 @@ public class EC2SDConfig implements Editable<EC2SDConfigBuilder>, KubernetesReso
     }
 
     /**
-     * ProxyConnectHeader optionally specifies headers to send to proxies during CONNECT requests.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0 or Alertmanager &gt;= 0.25.0.
+     * ProxyConnectHeader optionally specifies headers to send to proxies during CONNECT requests.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
      */
     @JsonProperty("proxyConnectHeader")
     public void setProxyConnectHeader(Map<String, List<SecretKeySelector>> proxyConnectHeader) {
@@ -254,7 +254,7 @@ public class EC2SDConfig implements Editable<EC2SDConfigBuilder>, KubernetesReso
     }
 
     /**
-     * Whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).<br><p> <br><p> It requires Prometheus &gt;= v2.43.0 or Alertmanager &gt;= 0.25.0.
+     * Whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
      */
     @JsonProperty("proxyFromEnvironment")
     public Boolean getProxyFromEnvironment() {
@@ -262,7 +262,7 @@ public class EC2SDConfig implements Editable<EC2SDConfigBuilder>, KubernetesReso
     }
 
     /**
-     * Whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).<br><p> <br><p> It requires Prometheus &gt;= v2.43.0 or Alertmanager &gt;= 0.25.0.
+     * Whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
      */
     @JsonProperty("proxyFromEnvironment")
     public void setProxyFromEnvironment(Boolean proxyFromEnvironment) {

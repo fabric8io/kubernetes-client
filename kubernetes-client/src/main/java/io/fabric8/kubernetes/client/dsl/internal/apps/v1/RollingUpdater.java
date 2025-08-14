@@ -45,6 +45,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
+import java.util.AbstractMap;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -168,40 +169,30 @@ public abstract class RollingUpdater<T extends HasMetadata, L> {
     }
   }
 
-  private static <T> T applyPatch(Resource<T> resource, List<Object> list, KubernetesSerialization serialization) {
-    return resource.patch(PatchContext.of(PatchType.JSON), serialization.asJson(list));
+  private static <T> T applyPatch(Resource<T> resource, Map<String, Object> map, KubernetesSerialization serialization) {
+    return resource.patch(PatchContext.of(PatchType.JSON_MERGE), serialization.asJson(map));
   }
 
   public static <T extends HasMetadata> T resume(RollableScalableResourceOperation<T, ?, ?> resource) {
-    return applyPatch(resource, RollingUpdater.requestPayLoadForRolloutResume(), resource.getKubernetesSerialization());
+    return applyPatch(resource, RollingUpdater.requestPayLoadForRollout(null), resource.getKubernetesSerialization());
   }
 
   public static <T extends HasMetadata> T pause(RollableScalableResourceOperation<T, ?, ?> resource) {
-    return applyPatch(resource, RollingUpdater.requestPayLoadForRolloutPause(), resource.getKubernetesSerialization());
+    return applyPatch(resource, RollingUpdater.requestPayLoadForRollout(Boolean.TRUE), resource.getKubernetesSerialization());
   }
 
   public static <T extends HasMetadata> T restart(RollableScalableResourceOperation<T, ?, ?> resource) {
     return applyPatch(resource, RollingUpdater.requestPayLoadForRolloutRestart(), resource.getKubernetesSerialization());
   }
 
-  public static List<Object> requestPayLoadForRolloutPause() {
-    return List.of(Map.of(
-        "op", "add",
-        "path", "/spec/paused",
-        "value", true));
+  public static Map<String, Object> requestPayLoadForRollout(Boolean paused) {
+    return Map.of("spec", new AbstractMap.SimpleEntry<>("paused", paused));
   }
 
-  public static List<Object> requestPayLoadForRolloutResume() {
-    return List.of(Map.of(
-        "op", "remove",
-        "path", "/spec/paused"));
-  }
-
-  public static List<Object> requestPayLoadForRolloutRestart() {
-    return List.of(Map.of(
-        "op", "add",
-        "path", "/spec/template/metadata/annotations/kubectl.kubernetes.io~1restartedAt",
-        "value", new Date().toInstant().atOffset(ZoneOffset.UTC).format(DateTimeFormatter.ISO_LOCAL_DATE_TIME)));
+  public static Map<String, Object> requestPayLoadForRolloutRestart() {
+    String now = new Date().toInstant().atOffset(ZoneOffset.UTC).format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+    return Map.of("spec",
+        Map.of("template", Map.of("metadata", Map.of("annotations", Map.of("kubectl.kubernetes.io/restartedAt", now)))));
   }
 
   /**

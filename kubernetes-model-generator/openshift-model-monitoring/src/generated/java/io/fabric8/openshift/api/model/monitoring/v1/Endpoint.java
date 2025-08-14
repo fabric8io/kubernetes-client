@@ -51,10 +51,13 @@ import lombok.experimental.Accessors;
     "honorTimestamps",
     "interval",
     "metricRelabelings",
+    "noProxy",
     "oauth2",
     "params",
     "path",
     "port",
+    "proxyConnectHeader",
+    "proxyFromEnvironment",
     "proxyUrl",
     "relabelings",
     "scheme",
@@ -111,6 +114,8 @@ public class Endpoint implements Editable<EndpointBuilder>, KubernetesResource
     @JsonProperty("metricRelabelings")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<RelabelConfig> metricRelabelings = new ArrayList<>();
+    @JsonProperty("noProxy")
+    private String noProxy;
     @JsonProperty("oauth2")
     private OAuth2 oauth2;
     @JsonProperty("params")
@@ -120,6 +125,11 @@ public class Endpoint implements Editable<EndpointBuilder>, KubernetesResource
     private String path;
     @JsonProperty("port")
     private String port;
+    @JsonProperty("proxyConnectHeader")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private Map<String, List<SecretKeySelector>> proxyConnectHeader = new LinkedHashMap<>();
+    @JsonProperty("proxyFromEnvironment")
+    private Boolean proxyFromEnvironment;
     @JsonProperty("proxyUrl")
     private String proxyUrl;
     @JsonProperty("relabelings")
@@ -144,7 +154,7 @@ public class Endpoint implements Editable<EndpointBuilder>, KubernetesResource
     public Endpoint() {
     }
 
-    public Endpoint(SafeAuthorization authorization, BasicAuth basicAuth, String bearerTokenFile, SecretKeySelector bearerTokenSecret, Boolean enableHttp2, Boolean filterRunning, Boolean followRedirects, Boolean honorLabels, Boolean honorTimestamps, String interval, List<RelabelConfig> metricRelabelings, OAuth2 oauth2, Map<String, List<String>> params, String path, String port, String proxyUrl, List<RelabelConfig> relabelings, String scheme, String scrapeTimeout, IntOrString targetPort, TLSConfig tlsConfig, Boolean trackTimestampsStaleness) {
+    public Endpoint(SafeAuthorization authorization, BasicAuth basicAuth, String bearerTokenFile, SecretKeySelector bearerTokenSecret, Boolean enableHttp2, Boolean filterRunning, Boolean followRedirects, Boolean honorLabels, Boolean honorTimestamps, String interval, List<RelabelConfig> metricRelabelings, String noProxy, OAuth2 oauth2, Map<String, List<String>> params, String path, String port, Map<String, List<SecretKeySelector>> proxyConnectHeader, Boolean proxyFromEnvironment, String proxyUrl, List<RelabelConfig> relabelings, String scheme, String scrapeTimeout, IntOrString targetPort, TLSConfig tlsConfig, Boolean trackTimestampsStaleness) {
         super();
         this.authorization = authorization;
         this.basicAuth = basicAuth;
@@ -157,10 +167,13 @@ public class Endpoint implements Editable<EndpointBuilder>, KubernetesResource
         this.honorTimestamps = honorTimestamps;
         this.interval = interval;
         this.metricRelabelings = metricRelabelings;
+        this.noProxy = noProxy;
         this.oauth2 = oauth2;
         this.params = params;
         this.path = path;
         this.port = port;
+        this.proxyConnectHeader = proxyConnectHeader;
+        this.proxyFromEnvironment = proxyFromEnvironment;
         this.proxyUrl = proxyUrl;
         this.relabelings = relabelings;
         this.scheme = scheme;
@@ -348,6 +361,22 @@ public class Endpoint implements Editable<EndpointBuilder>, KubernetesResource
     }
 
     /**
+     * `noProxy` is a comma-separated string that can contain IPs, CIDR notation, domain names that should be excluded from proxying. IP and domain names can contain port numbers.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
+     */
+    @JsonProperty("noProxy")
+    public String getNoProxy() {
+        return noProxy;
+    }
+
+    /**
+     * `noProxy` is a comma-separated string that can contain IPs, CIDR notation, domain names that should be excluded from proxying. IP and domain names can contain port numbers.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
+     */
+    @JsonProperty("noProxy")
+    public void setNoProxy(String noProxy) {
+        this.noProxy = noProxy;
+    }
+
+    /**
      * Endpoint defines an endpoint serving Prometheus metrics to be scraped by Prometheus.
      */
     @JsonProperty("oauth2")
@@ -413,7 +442,40 @@ public class Endpoint implements Editable<EndpointBuilder>, KubernetesResource
     }
 
     /**
-     * `proxyURL` configures the HTTP Proxy URL (e.g. "http://proxyserver:2195") to go through when scraping the target.
+     * ProxyConnectHeader optionally specifies headers to send to proxies during CONNECT requests.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
+     */
+    @JsonProperty("proxyConnectHeader")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public Map<String, List<SecretKeySelector>> getProxyConnectHeader() {
+        return proxyConnectHeader;
+    }
+
+    /**
+     * ProxyConnectHeader optionally specifies headers to send to proxies during CONNECT requests.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
+     */
+    @JsonProperty("proxyConnectHeader")
+    public void setProxyConnectHeader(Map<String, List<SecretKeySelector>> proxyConnectHeader) {
+        this.proxyConnectHeader = proxyConnectHeader;
+    }
+
+    /**
+     * Whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
+     */
+    @JsonProperty("proxyFromEnvironment")
+    public Boolean getProxyFromEnvironment() {
+        return proxyFromEnvironment;
+    }
+
+    /**
+     * Whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
+     */
+    @JsonProperty("proxyFromEnvironment")
+    public void setProxyFromEnvironment(Boolean proxyFromEnvironment) {
+        this.proxyFromEnvironment = proxyFromEnvironment;
+    }
+
+    /**
+     * `proxyURL` defines the HTTP proxy server to use.
      */
     @JsonProperty("proxyUrl")
     public String getProxyUrl() {
@@ -421,7 +483,7 @@ public class Endpoint implements Editable<EndpointBuilder>, KubernetesResource
     }
 
     /**
-     * `proxyURL` configures the HTTP Proxy URL (e.g. "http://proxyserver:2195") to go through when scraping the target.
+     * `proxyURL` defines the HTTP proxy server to use.
      */
     @JsonProperty("proxyUrl")
     public void setProxyUrl(String proxyUrl) {
@@ -462,7 +524,7 @@ public class Endpoint implements Editable<EndpointBuilder>, KubernetesResource
     }
 
     /**
-     * Timeout after which Prometheus considers the scrape to be failed.<br><p> <br><p> If empty, Prometheus uses the global scrape timeout unless it is less than the target's scrape interval value in which the latter is used.
+     * Timeout after which Prometheus considers the scrape to be failed.<br><p> <br><p> If empty, Prometheus uses the global scrape timeout unless it is less than the target's scrape interval value in which the latter is used. The value cannot be greater than the scrape interval otherwise the operator will reject the resource.
      */
     @JsonProperty("scrapeTimeout")
     public String getScrapeTimeout() {
@@ -470,7 +532,7 @@ public class Endpoint implements Editable<EndpointBuilder>, KubernetesResource
     }
 
     /**
-     * Timeout after which Prometheus considers the scrape to be failed.<br><p> <br><p> If empty, Prometheus uses the global scrape timeout unless it is less than the target's scrape interval value in which the latter is used.
+     * Timeout after which Prometheus considers the scrape to be failed.<br><p> <br><p> If empty, Prometheus uses the global scrape timeout unless it is less than the target's scrape interval value in which the latter is used. The value cannot be greater than the scrape interval otherwise the operator will reject the resource.
      */
     @JsonProperty("scrapeTimeout")
     public void setScrapeTimeout(String scrapeTimeout) {

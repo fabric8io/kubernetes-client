@@ -39,6 +39,7 @@ import lombok.experimental.Accessors;
     "attachMetadata",
     "authorization",
     "default",
+    "fallbackScrapeProtocol",
     "metricRelabelings",
     "name",
     "relabelings",
@@ -75,6 +76,8 @@ public class ScrapeClass implements Editable<ScrapeClassBuilder>, KubernetesReso
     private Authorization authorization;
     @JsonProperty("default")
     private Boolean _default;
+    @JsonProperty("fallbackScrapeProtocol")
+    private String fallbackScrapeProtocol;
     @JsonProperty("metricRelabelings")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<RelabelConfig> metricRelabelings = new ArrayList<>();
@@ -94,11 +97,12 @@ public class ScrapeClass implements Editable<ScrapeClassBuilder>, KubernetesReso
     public ScrapeClass() {
     }
 
-    public ScrapeClass(AttachMetadata attachMetadata, Authorization authorization, Boolean _default, List<RelabelConfig> metricRelabelings, String name, List<RelabelConfig> relabelings, TLSConfig tlsConfig) {
+    public ScrapeClass(AttachMetadata attachMetadata, Authorization authorization, Boolean _default, String fallbackScrapeProtocol, List<RelabelConfig> metricRelabelings, String name, List<RelabelConfig> relabelings, TLSConfig tlsConfig) {
         super();
         this.attachMetadata = attachMetadata;
         this.authorization = authorization;
         this._default = _default;
+        this.fallbackScrapeProtocol = fallbackScrapeProtocol;
         this.metricRelabelings = metricRelabelings;
         this.name = name;
         this.relabelings = relabelings;
@@ -139,6 +143,22 @@ public class ScrapeClass implements Editable<ScrapeClassBuilder>, KubernetesReso
     @JsonProperty("default")
     public void setDefault(Boolean _default) {
         this._default = _default;
+    }
+
+    /**
+     * The protocol to use if a scrape returns blank, unparseable, or otherwise invalid Content-Type. It will only apply if the scrape resource doesn't specify any FallbackScrapeProtocol<br><p> <br><p> It requires Prometheus &gt;= v3.0.0.
+     */
+    @JsonProperty("fallbackScrapeProtocol")
+    public String getFallbackScrapeProtocol() {
+        return fallbackScrapeProtocol;
+    }
+
+    /**
+     * The protocol to use if a scrape returns blank, unparseable, or otherwise invalid Content-Type. It will only apply if the scrape resource doesn't specify any FallbackScrapeProtocol<br><p> <br><p> It requires Prometheus &gt;= v3.0.0.
+     */
+    @JsonProperty("fallbackScrapeProtocol")
+    public void setFallbackScrapeProtocol(String fallbackScrapeProtocol) {
+        this.fallbackScrapeProtocol = fallbackScrapeProtocol;
     }
 
     /**
