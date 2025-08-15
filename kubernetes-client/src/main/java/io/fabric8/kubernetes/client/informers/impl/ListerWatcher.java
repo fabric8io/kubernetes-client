@@ -17,6 +17,7 @@ package io.fabric8.kubernetes.client.informers.impl;
 
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.ListOptions;
+import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.Watcher;
 import io.fabric8.kubernetes.client.dsl.internal.AbstractWatchManager;
 
@@ -39,4 +40,6 @@ public interface ListerWatcher<T extends HasMetadata, L> {
   int getWatchReconnectInterval();
 
   String getApiEndpointPath();
+
+  Config getConfig();
 }
