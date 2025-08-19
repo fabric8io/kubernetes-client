@@ -45,7 +45,7 @@ require (
 	knative.dev/eventing v0.46.0
 	knative.dev/eventing-awssqs v0.29.0
 	knative.dev/eventing-couchdb v0.28.0
-	knative.dev/eventing-github v0.46.0
+	knative.dev/eventing-github v0.46.1
 	knative.dev/eventing-gitlab v0.46.0
 	knative.dev/eventing-kafka-broker v0.46.0
 	knative.dev/eventing-prometheus v0.28.0
@@ -230,7 +230,7 @@ require (
 	k8s.io/component-base v0.33.4 // indirect
 	k8s.io/klog/v2 v2.130.1 // indirect
 	k8s.io/utils v0.0.0-20250604170112-4c0f3b243397 // indirect
-	knative.dev/pkg v0.0.0-20250716115900-19d3cc2da0b9 // indirect
+	knative.dev/pkg v0.0.0-20250817152444-53ed1d53d232 // indirect
 	sigs.k8s.io/cluster-api-provider-azure v1.20.2 // indirect
 	sigs.k8s.io/controller-runtime v0.21.0 // indirect
 	sigs.k8s.io/json v0.0.0-20241014173422-cfa47c3a1cc8 // indirect
