@@ -2115,12 +2115,12 @@ knative.dev/networking v0.0.0-20250716125000-edb1a4a0c863 h1:CYX6QidA9ab5KqvFiV+
 knative.dev/networking v0.0.0-20250716125000-edb1a4a0c863/go.mod h1:nl+drvAW6onp4f+T7Ax83NgOCyyqCbWgfL8FxuCVgMw=
 knative.dev/pkg v0.0.0-20211206113427-18589ac7627e/go.mod h1:E6B4RTjZyxe55a0kxOlnEHEl71zuG7gghnqYvNBKwBw=
 knative.dev/pkg v0.0.0-20220118160532-77555ea48cd4/go.mod h1:etVT7Tm8pSDf4RKhGk4r7j/hj3dNBpvT7bO6a6wpahs=
-knative.dev/pkg v0.0.0-20250716115900-19d3cc2da0b9 h1:P9GFsqTmX4WokSVVUK1IbHOnbJLi8EW1pd4PvbUEodo=
-knative.dev/pkg v0.0.0-20250716115900-19d3cc2da0b9/go.mod h1:Hq2y1gu4P/MWEk9zB8L/zrjJ19ywEnYgwXq8ZMjRl30=
+knative.dev/pkg v0.0.0-20250817152444-53ed1d53d232 h1:DqXSNueFZ28EAoU4wrPu8nsFBNazJAfxFlOn/1qqqcQ=
+knative.dev/pkg v0.0.0-20250817152444-53ed1d53d232/go.mod h1:ZIbXYkQ/A4WeXhPyeZ9OtEuW4RTkpxeYNByJeC0h6Zs=
 knative.dev/reconciler-test v0.0.0-20211207070557-0d138a88867b/go.mod h1:dCq1Fuu+eUISdnxABMvoDhefF91DYwE6O3rTYTraXbw=
 knative.dev/reconciler-test v0.0.0-20220118183433-c8bfbe66bada/go.mod h1:XV4cghzCtdASkfUsfMYSnGfGRyd/naDjy9h7Tnae22g=
-knative.dev/serving v0.46.0 h1:OF4Jt+6xY4nw0lFb9G3rEEJPZcNx1k2Kf1IhhJp/Rg4=
-knative.dev/serving v0.46.0/go.mod h1:DlTwkSWEPku/Dn2nnnkDCaUnFtN/YqUr6Be+fq8ZUk4=
+knative.dev/serving v0.46.1 h1:nkbZMcu5r1c+hZhOSW3MIh/7mJp/WLQ4j89PHknDXyU=
+knative.dev/serving v0.46.1/go.mod h1:NHcCSU65kUFC8rmvxoa+v3HEqWsahTBWsobGvqp3Dd0=
 open-cluster-management.io/api v0.16.2 h1:JzpJtgp/qJKjDLEO7o7q5eVLxYkfgxhtagJvWFbaNno=
 open-cluster-management.io/api v0.16.2/go.mod h1:9erZEWEn4bEqh0nIX2wA7f/s3KCuFycQdBrPrRzi0QM=
 open-cluster-management.io/governance-policy-propagator v0.16.0 h1:2oBWdVYgJXcx75d8RS4Ttsic5SIaE5ioG+mug4RAPqI=
