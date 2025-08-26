@@ -1013,8 +1013,8 @@ github.com/prometheus/procfs v0.2.0/go.mod h1:lV6e/gmhEcM9IjHGsFOCxxuZ+z1YqCvr4O
 github.com/prometheus/procfs v0.6.0/go.mod h1:cz+aTbrPOrUb4q7XlbU9ygM+/jj0fzG6c1xBZuNvfVA=
 github.com/prometheus/procfs v0.7.3/go.mod h1:cz+aTbrPOrUb4q7XlbU9ygM+/jj0fzG6c1xBZuNvfVA=
 github.com/prometheus/procfs v0.8.0/go.mod h1:z7EfXMXOkbkqb9IINtpCn86r/to3BnA0uaxHdg830/4=
-github.com/prometheus/procfs v0.16.1 h1:hZ15bTNuirocR6u0JZ6BAHHmwS1p8B4P6MRqxtzMyRg=
-github.com/prometheus/procfs v0.16.1/go.mod h1:teAbpZRB1iIAJYREa1LsoWUXykVXA1KlTmWl8x/U+Is=
+github.com/prometheus/procfs v0.17.0 h1:FuLQ+05u4ZI+SS/w9+BWEM2TXiHKsUQ9TADiRH7DuK0=
+github.com/prometheus/procfs v0.17.0/go.mod h1:oPQLaDAMRbA+u8H5Pbfq+dl3VDAvHxMUOVhe0wYB2zw=
 github.com/prometheus/statsd_exporter v0.21.0/go.mod h1:rbT83sZq2V+p73lHhPZfMc3MLCHmSHelCh9hSGYNLTQ=
 github.com/prometheus/statsd_exporter v0.22.7 h1:7Pji/i2GuhK6Lu7DHrtTkFmNBCudCPT1pX2CziuyQR0=
 github.com/prometheus/statsd_exporter v0.22.7/go.mod h1:N/TevpjkIh9ccs6nuzY3jQn9dFqnUakOjnEuMPJJJnI=
@@ -2102,8 +2102,8 @@ knative.dev/eventing-github v0.46.2 h1:eTIrpUkYQOQ54ZKZmheUEfUEFuvV0oHRrJ70x/bnI
 knative.dev/eventing-github v0.46.2/go.mod h1:uA0zlg234noKVUNu0md2yVtvP6MVGU9fiResR1VfpVw=
 knative.dev/eventing-gitlab v0.46.2 h1:gpsYAPp2DIN8NVDJxm1RuZ7M7LpqaFqk9xdQ9lqm6r0=
 knative.dev/eventing-gitlab v0.46.2/go.mod h1:W973dv8BnC33Zr8jeh+LLwmhLikyNWFm1ola1ByB2cc=
-knative.dev/eventing-kafka-broker v0.46.0 h1:1MCZSS3MnVcwWbmW/JX1p1+Bn+tKdF6mhGwhskDhxNM=
-knative.dev/eventing-kafka-broker v0.46.0/go.mod h1:YVuSbO9y8M7/6FMpgpf9JY75sHmb3wF11JkJUHexhz8=
+knative.dev/eventing-kafka-broker v0.46.1 h1:HCCjmqYNig3kqXIXvNl8pkVxEGToWTiup/bpxuqGtRM=
+knative.dev/eventing-kafka-broker v0.46.1/go.mod h1:vu+WLCjzSkLlXMQCZkAEAdG5eZSKn3wN1KclpXxPcz8=
 knative.dev/eventing-prometheus v0.28.0 h1:2VjDEL0Ck9s++uomjlOL4/Y824ziZjXZYWcNQsm53P0=
 knative.dev/eventing-prometheus v0.28.0/go.mod h1:aaGkW4Vzh4KZ23aiH7TMoTvfNAf8Lf8Nesqpz/5zP9Y=
 knative.dev/hack v0.0.0-20211122162614-813559cefdda/go.mod h1:PHt8x8yX5Z9pPquBEfIj0X66f8iWkWfR0S/sarACJrI=

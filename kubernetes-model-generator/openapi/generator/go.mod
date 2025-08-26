@@ -47,7 +47,7 @@ require (
 	knative.dev/eventing-couchdb v0.28.0
 	knative.dev/eventing-github v0.46.2
 	knative.dev/eventing-gitlab v0.46.2
-	knative.dev/eventing-kafka-broker v0.46.0
+	knative.dev/eventing-kafka-broker v0.46.1
 	knative.dev/eventing-prometheus v0.28.0
 	knative.dev/networking v0.0.0-20250716125000-edb1a4a0c863
 	knative.dev/serving v0.46.1
@@ -183,7 +183,7 @@ require (
 	github.com/prometheus/client_golang v1.23.0 // indirect
 	github.com/prometheus/client_model v0.6.2 // indirect
 	github.com/prometheus/common v0.65.0 // indirect
-	github.com/prometheus/procfs v0.16.1 // indirect
+	github.com/prometheus/procfs v0.17.0 // indirect
 	github.com/prometheus/statsd_exporter v0.22.7 // indirect
 	github.com/rickb777/date v1.14.1 // indirect
 	github.com/rickb777/plural v1.2.2 // indirect
