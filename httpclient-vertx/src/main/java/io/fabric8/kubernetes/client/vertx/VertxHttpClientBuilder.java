@@ -50,6 +50,7 @@ public class VertxHttpClientBuilder<F extends HttpClient.Factory>
 
   final Vertx vertx;
   private final boolean closeVertx;
+  private WebClientOptions customWebClientOptions;
 
   public VertxHttpClientBuilder(F clientFactory, Vertx sharedVertx) {
     this(
@@ -64,13 +65,31 @@ public class VertxHttpClientBuilder<F extends HttpClient.Factory>
     this.closeVertx = closeVertx;
   }
 
+  /**
+   * Use the provided {@link WebClientOptions} as the base options for the client.
+   * <p>
+   *   Note: The Builder overrides some options to ensure the client works properly with the Kubernetes API server.
+   *   These options that the Builder controls will override the values you set in the provided
+   *   {@link WebClientOptions}.
+   * </p>
+   */
+  public VertxHttpClientBuilder<F> withCustomWebClientOptions(WebClientOptions options) {
+    this.customWebClientOptions = options;
+    return this;
+  }
+
   @Override
   public VertxHttpClient<F> build() {
     if (this.client != null) {
       return new VertxHttpClient<>(this, this.client.getClosed(), this.client.getClient(), closeVertx);
     }
 
-    WebClientOptions options = new WebClientOptions();
+    WebClientOptions options;
+    if (customWebClientOptions == null) {
+      options = new WebClientOptions();
+    } else {
+      options = new WebClientOptions(customWebClientOptions);
+    }
 
     options.setMaxPoolSize(MAX_CONNECTIONS);
     options.setMaxWebSockets(MAX_CONNECTIONS);
