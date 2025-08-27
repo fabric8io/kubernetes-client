@@ -7,7 +7,7 @@ toolchain go1.24.5
 require (
 	github.com/cert-manager/cert-manager v1.18.2
 	github.com/chaos-mesh/chaos-mesh/api v0.0.0-20250513055240-4db47f53978c
-	github.com/getkin/kin-openapi v0.132.0
+	github.com/getkin/kin-openapi v0.133.0
 	github.com/k8snetworkplumbingwg/network-attachment-definition-client v1.7.7
 	github.com/kubernetes-csi/external-snapshotter/client/v8 v8.2.0
 	github.com/metal3-io/baremetal-operator/apis v0.9.2
@@ -194,6 +194,7 @@ require (
 	github.com/stolostron/backplane-operator v0.0.0-20250724195055-fb90af6051f4 // indirect
 	github.com/stolostron/cluster-lifecycle-api v0.0.0-20240813023109-42b5c115d0a3 // indirect
 	github.com/vincent-petithory/dataurl v1.0.0 // indirect
+	github.com/woodsbury/decimal128 v1.3.0 // indirect
 	github.com/x448/float16 v0.8.4 // indirect
 	go.mongodb.org/mongo-driver v1.17.4 // indirect
 	go.opencensus.io v0.24.0 // indirect
