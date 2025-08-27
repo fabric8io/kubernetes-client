@@ -59,7 +59,7 @@ jobs:
         run: |
           sudo prlimit --pid $$ --nofile=500000:500000
       - name: Setup Java
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v5
         with:
           java-version: ${{ matrix.environment.java  }}
           distribution: 'temurin'
