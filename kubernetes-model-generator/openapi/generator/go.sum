@@ -2110,8 +2110,8 @@ knative.dev/eventing-github v0.46.3 h1:3z+Il+TmPgCXefzeEh/fZfr/HUthnpeHX63tN5D9B
 knative.dev/eventing-github v0.46.3/go.mod h1:5Sf/vQLRxNN3nU3OKQMGEGEU8xc4TbgLodLz+am/jNg=
 knative.dev/eventing-gitlab v0.46.3 h1:iz0TtnlYTReAv+nuUV+OaplcX/9IaRK5gFIT31adIxE=
 knative.dev/eventing-gitlab v0.46.3/go.mod h1:ukpArwJTFi/2qQ2AWL6qVqBEBLD/E2McUoxdfvHyaXE=
-knative.dev/eventing-kafka-broker v0.46.1 h1:HCCjmqYNig3kqXIXvNl8pkVxEGToWTiup/bpxuqGtRM=
-knative.dev/eventing-kafka-broker v0.46.1/go.mod h1:vu+WLCjzSkLlXMQCZkAEAdG5eZSKn3wN1KclpXxPcz8=
+knative.dev/eventing-kafka-broker v0.46.2 h1:4E3IHYAdM3uYTnsbDZ4En8T3gYg0KOrGR+xMsvGLdJg=
+knative.dev/eventing-kafka-broker v0.46.2/go.mod h1:wahlWlLuHBsKvCrtMwNFbQLhrFZtczzEfrffOW9KO28=
 knative.dev/eventing-prometheus v0.28.0 h1:2VjDEL0Ck9s++uomjlOL4/Y824ziZjXZYWcNQsm53P0=
 knative.dev/eventing-prometheus v0.28.0/go.mod h1:aaGkW4Vzh4KZ23aiH7TMoTvfNAf8Lf8Nesqpz/5zP9Y=
 knative.dev/hack v0.0.0-20211122162614-813559cefdda/go.mod h1:PHt8x8yX5Z9pPquBEfIj0X66f8iWkWfR0S/sarACJrI=
