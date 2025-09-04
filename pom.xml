@@ -90,7 +90,7 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
     <!-- Core versions -->
-    <sundrio.version>0.200.4</sundrio.version>
+    <sundrio.version>0.210.0</sundrio.version>
     <okhttp.version>4.12.0</okhttp.version>
     <jackson.version>2.19.2</jackson.version>
     <jackson.bundle.version>${jackson.version}</jackson.bundle.version>
