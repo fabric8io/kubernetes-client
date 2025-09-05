@@ -18,8 +18,6 @@ package io.fabric8.openshift.client;
 import io.fabric8.kubernetes.client.Config;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.Getter;
-import lombok.Setter;
 
 /**
  * Add new Openshift options here instead of {@link OpenShiftConfig}, then add the mapping logic
@@ -27,8 +25,6 @@ import lombok.Setter;
  */
 @Buildable(builderPackage = "io.fabric8.kubernetes.api.builder", editableEnabled = false, refs = {
     @BuildableReference(Config.class) })
-@Getter
-@Setter
 class SundrioOpenShiftConfig extends OpenShiftConfig {
 
   // for the fluent generation - mapped to additional properties

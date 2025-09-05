@@ -47,7 +47,7 @@ public class OpenShiftConfig extends Config {
 
   //This is not meant to be used. This constructor is used only by the generated builder.
   OpenShiftConfig() {
-    super();
+    super(!disableAutoConfig());
   }
 
   @JsonCreator(mode = Mode.DELEGATING)

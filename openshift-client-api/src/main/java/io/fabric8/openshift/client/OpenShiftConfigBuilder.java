@@ -23,19 +23,19 @@ import io.fabric8.kubernetes.client.SundrioConfig;
 public class OpenShiftConfigBuilder extends OpenShiftConfigFluent<OpenShiftConfigBuilder>
     implements VisitableBuilder<OpenShiftConfig, OpenShiftConfigBuilder> {
   public OpenShiftConfigBuilder() {
-    this(new OpenShiftConfig());
+    this(new SundrioOpenShiftConfig());
   }
 
   public OpenShiftConfigBuilder(OpenShiftConfigFluent<?> fluent) {
-    this(fluent, new OpenShiftConfig());
+    this(fluent, new SundrioOpenShiftConfig());
   }
 
-  public OpenShiftConfigBuilder(OpenShiftConfigFluent<?> fluent, OpenShiftConfig instance) {
+  public OpenShiftConfigBuilder(OpenShiftConfigFluent<?> fluent, SundrioOpenShiftConfig instance) {
     this.fluent = fluent;
     fluent.copyInstance(instance);
   }
 
-  public OpenShiftConfigBuilder(OpenShiftConfig instance) {
+  public OpenShiftConfigBuilder(SundrioOpenShiftConfig instance) {
     this.fluent = this;
     this.copyInstance(instance);
   }
