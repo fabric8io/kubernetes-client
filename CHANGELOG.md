@@ -20,6 +20,7 @@
 #### Dependency Upgrade
 
 #### New Features
+* Fix #7174: Added Vert.x 5 HTTP client implementation with improved async handling and WebSocket separation
 
 * Fix #7045: (java-generator)  Extend the existingJavaTypes to support use of existing enumerations
 
