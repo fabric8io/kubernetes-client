@@ -89,6 +89,7 @@ public class DefaultSharedIndexInformer<T extends HasMetadata, L extends Kuberne
 
     processorStore = new ProcessorStore<>(this.indexer, this.processor);
     this.reflector = new Reflector<>(listerWatcher, processorStore, informerExecutor);
+    this.reflector.setWatchList(listerWatcher.getConfig().isWatchList());
   }
 
   /**
