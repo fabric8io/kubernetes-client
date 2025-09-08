@@ -22,10 +22,18 @@ import java.util.Optional;
 import static io.fabric8.kubernetes.client.Config.disableAutoConfig;
 
 public class ConfigBuilder extends ConfigFluent<ConfigBuilder> implements VisitableBuilder<Config, ConfigBuilder> {
+  /**
+   * Note: differs from the typical generated builder - the fluent state is
+   * preserved whole
+   */
   public ConfigBuilder() {
     this.fluent = this;
   }
 
+  /**
+   * Note: differs from the typical generated builder - the fluent state is
+   * preserved whole
+   */
   public ConfigBuilder(ConfigFluent<?> fluent) {
     this.fluent = fluent;
   }
@@ -42,23 +50,19 @@ public class ConfigBuilder extends ConfigFluent<ConfigBuilder> implements Visita
 
   ConfigFluent<?> fluent;
 
+  @Override
   public Config build() {
-    Config buildable = new Config(fluent.getMasterUrl(), fluent.getApiVersion(), fluent.getNamespace(), fluent.getTrustCerts(),
-        fluent.getDisableHostnameVerification(), fluent.getCaCertFile(), fluent.getCaCertData(), fluent.getClientCertFile(),
-        fluent.getClientCertData(), fluent.getClientKeyFile(), fluent.getClientKeyData(), fluent.getClientKeyAlgo(),
-        fluent.getClientKeyPassphrase(), fluent.getUsername(), fluent.getPassword(), fluent.getOauthToken(),
-        fluent.getAutoOAuthToken(), fluent.getWatchReconnectInterval(), fluent.getWatchReconnectLimit(),
-        fluent.getConnectionTimeout(), fluent.getRequestTimeout(), fluent.getScaleTimeout(), fluent.getLoggingInterval(),
-        fluent.getMaxConcurrentRequests(), fluent.getMaxConcurrentRequestsPerHost(), fluent.getHttp2Disable(),
-        fluent.getHttpProxy(), fluent.getHttpsProxy(), fluent.getNoProxy(), fluent.getUserAgent(), fluent.getTlsVersions(),
-        fluent.getWebsocketPingInterval(), fluent.getProxyUsername(), fluent.getProxyPassword(), fluent.getTrustStoreFile(),
-        fluent.getTrustStorePassphrase(), fluent.getKeyStoreFile(), fluent.getKeyStorePassphrase(),
-        fluent.getImpersonateUsername(), fluent.getImpersonateGroups(), fluent.getImpersonateExtras(),
-        fluent.getOauthTokenProvider(), fluent.getCustomHeaders(), fluent.getRequestRetryBackoffLimit(),
-        fluent.getRequestRetryBackoffInterval(), fluent.getUploadRequestTimeout(), fluent.getOnlyHttpWatches(),
-        fluent.getCurrentContext(), fluent.getContexts(),
-        Optional.ofNullable(fluent.getAutoConfigure()).orElse(!disableAutoConfig()), true);
-    buildable.setAuthProvider(fluent.getAuthProvider());
-    return buildable;
+    // build the config state from the generated builder, then use that
+    // to construct the full state
+    SundrioConfig config = toSundrioConfig(fluent);
+    return new Config(config, true);
+  }
+
+  public static SundrioConfig toSundrioConfig(SundrioConfigFluent<?> fluent) {
+    SundrioConfigBuilder builder = new SundrioConfigBuilder();
+    builder.fluent = fluent;
+    SundrioConfig config = builder.build();
+    config.setAutoConfigure(Optional.ofNullable(config.getAutoConfigure()).orElse(!disableAutoConfig()));
+    return config;
   }
 }
