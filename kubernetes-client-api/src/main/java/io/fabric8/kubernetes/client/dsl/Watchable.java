@@ -15,9 +15,19 @@
  */
 package io.fabric8.kubernetes.client.dsl;
 
+import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.ListOptions;
+import io.fabric8.kubernetes.api.model.ListOptionsBuilder;
+import io.fabric8.kubernetes.api.model.ObjectMeta;
+import io.fabric8.kubernetes.api.model.Status;
+import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.Watch;
 import io.fabric8.kubernetes.client.Watcher;
+import io.fabric8.kubernetes.client.WatcherException;
+
+import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
+import java.util.function.Consumer;
 
 public interface Watchable<T> {
 
@@ -54,5 +64,60 @@ public interface Watchable<T> {
    */
   @Deprecated
   Watch watch(String resourceVersion, Watcher<T> watcher);
+
+  /**
+   * Helper method to use the WatchList feature to list resources.
+   * A watch is used under the covers, but will be terminated after the initial events.
+   * <br>
+   * Not specifying a resourceVersion on the context or using 0 will perform a "consistent read"
+   * from the time at which the request started processing.
+   * 
+   * @param onItem a consumer to be called for each item
+   * @return a CompletableFuture that provides the terminal resourceVersion, or any underlying exception during processing. It
+   *         may be
+   *         cancelled to terminate the streamingList operation early
+   */
+  default CompletableFuture<String> streamingList(Consumer<T> onItem) {
+    CompletableFuture<String> future = new CompletableFuture<>();
+    Watch watch = this.watch(new ListOptionsBuilder().withSendInitialEvents(true)
+        .withResourceVersionMatch("NotOlderThan")
+        .withAllowWatchBookmarks(true)
+        .build(), new Watcher<T>() {
+
+          @Override
+          public void eventReceived(Action action, T resource) {
+            switch (action) {
+              case ADDED:
+                onItem.accept(resource);
+                break;
+              case BOOKMARK:
+                if (resource instanceof HasMetadata) {
+                  future.complete(Optional.ofNullable(((HasMetadata) resource).getMetadata())
+                      .map(ObjectMeta::getResourceVersion).orElse(null));
+                } else {
+                  future.complete(null);
+                }
+                break;
+              default:
+                if (action == Action.ERROR && resource instanceof Status) {
+                  Status status = (Status) resource;
+                  future.completeExceptionally(new KubernetesClientException(status));
+                } else {
+                  future.completeExceptionally(
+                      new KubernetesClientException("Unexpected event before list ending bookmark: " + action));
+                }
+                break;
+            }
+          }
+
+          @Override
+          public void onClose(WatcherException cause) {
+            future.completeExceptionally(cause);
+          }
+
+        });
+    future.whenComplete((v, t) -> watch.close());
+    return future;
+  }
 
 }

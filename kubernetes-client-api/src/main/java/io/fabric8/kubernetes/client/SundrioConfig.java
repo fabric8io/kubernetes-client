@@ -114,6 +114,8 @@ public class SundrioConfig {
 
   protected Boolean onlyHttpWatches;
 
+  protected Boolean watchList;
+
   /**
    * custom headers
    */
