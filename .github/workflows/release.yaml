@@ -34,8 +34,8 @@ on:
 env:
   MAVEN_ARGS: -B -C -V -ntp -Dhttp.keepAlive=false -e ${{ github.event.inputs.additional_args }}
   RELEASE_MAVEN_ARGS: -Prelease -DstagingProgressTimeoutMinutes=20
-  OSSRHUSERNAME: ${{ secrets.OSSRHUSERNAME }}
-  OSSRHPASSWORD: ${{ secrets.OSSRHPASSWORD }}
+  MAVEN_CENTRAL_USERNAME: ${{ secrets.MAVEN_CENTRAL_USERNAME }}
+  MAVEN_CENTRAL_PASSWORD: ${{ secrets.MAVEN_CENTRAL_PASSWORD }}
   SIGNINGPASSWORD: ${{ secrets.SIGNINGPASSWORD }}
 
 #permissions:
@@ -63,9 +63,9 @@ jobs:
         with:
           java-version: 11
           distribution: ${{ github.event.inputs.java_distribution }}
-          server-id: ossrh
-          server-username: OSSRHUSERNAME
-          server-password: OSSRHPASSWORD
+          server-id: central-portal
+          server-username: MAVEN_CENTRAL_USERNAME
+          server-password: MAVEN_CENTRAL_PASSWORD
           gpg-private-key: ${{ secrets.SIGNINGKEY }}
           gpg-passphrase: SIGNINGPASSWORD
       - name: Build and release Java 8 modules
