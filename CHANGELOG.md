@@ -20,10 +20,10 @@
 #### Dependency Upgrade
 
 #### New Features
-
 * Fix #7045: (java-generator)  Extend the existingJavaTypes to support use of existing enumerations
 
 #### _**Note**_: Breaking changes
+Fix #7204: Rationalized config constructors
 
 ### 6.14.0 (2025-06-10)
 

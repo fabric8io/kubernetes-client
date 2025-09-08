@@ -225,6 +225,13 @@ public class Config extends SundrioConfig {
   protected Config() {
   }
 
+  /**
+   * Please use {@link ConfigBuilder} or static factory methods to create new instances.
+   * <p>
+   * All arguments constructor (only for serialization purposes).
+   * 
+   * @param config delegate configuration for deserialization.
+   */
   @JsonCreator(mode = Mode.DELEGATING)
   public Config(SundrioConfig config) {
     this(config, true);
