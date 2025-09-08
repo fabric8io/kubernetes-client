@@ -1,6 +1,6 @@
 ## CHANGELOG
 
-### 7.4-SNAPSHOT
+### 7.4.0 (2025-09-08)
 
 #### Bugs
 * Fix #3032: EnableKubernetesMockClient annotation works with Nested tests

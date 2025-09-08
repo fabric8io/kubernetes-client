@@ -22,7 +22,7 @@
   <parent>
     <groupId>io.fabric8</groupId>
     <artifactId>verticalpodautoscaler-extension-pom</artifactId>
-    <version>7.4-SNAPSHOT</version>
+    <version>7.4.0</version>
   </parent>
 
   <artifactId>verticalpodautoscaler-examples</artifactId>

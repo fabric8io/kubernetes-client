@@ -23,7 +23,7 @@
     <parent>
         <groupId>io.fabric8</groupId>
         <artifactId>kube-api-test-parent</artifactId>
-        <version>7.4-SNAPSHOT</version>
+        <version>7.4.0</version>
     </parent>
 
     <artifactId>kube-api-test</artifactId>
