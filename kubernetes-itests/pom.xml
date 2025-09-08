@@ -152,5 +152,80 @@
         </dependency>
       </dependencies>
     </profile>
+    <profile>
+      <id>httpclient-vertx-5</id>
+      <!-- 
+        Profile for testing with Vert.x 5.x HTTP client implementation.
+        Usage: mvn -Phttpclient-vertx-5 test -Dtest.httpclient=vertx-5
+        This profile overrides parent POM's Vert.x version from 4.5.14 to 5.0.1
+        to ensure integration tests use the correct Vert.x 5 runtime classes.
+      -->
+      <properties>
+        <!-- Override parent vertx.version for this profile -->
+        <vertx.version>5.0.1</vertx.version>
+      </properties>
+      <dependencyManagement>
+        <dependencies>
+          <!-- Force Vert.x 5.x versions when this profile is active -->
+          <dependency>
+            <groupId>io.vertx</groupId>
+            <artifactId>vertx-core</artifactId>
+            <version>${vertx.version}</version>
+          </dependency>
+          <dependency>
+            <groupId>io.vertx</groupId>
+            <artifactId>vertx-web-client</artifactId>
+            <version>${vertx.version}</version>
+          </dependency>
+          <dependency>
+            <groupId>io.vertx</groupId>
+            <artifactId>vertx-web-common</artifactId>
+            <version>${vertx.version}</version>
+          </dependency>
+          <dependency>
+            <groupId>io.vertx</groupId>
+            <artifactId>vertx-auth-common</artifactId>
+            <version>${vertx.version}</version>
+          </dependency>
+          <dependency>
+            <groupId>io.vertx</groupId>
+            <artifactId>vertx-core-logging</artifactId>
+            <version>${vertx.version}</version>
+          </dependency>
+          <dependency>
+            <groupId>io.vertx</groupId>
+            <artifactId>vertx-web</artifactId>
+            <version>${vertx.version}</version>
+          </dependency>
+          <dependency>
+            <groupId>io.vertx</groupId>
+            <artifactId>vertx-bridge-common</artifactId>
+            <version>${vertx.version}</version>
+          </dependency>
+          <dependency>
+            <groupId>io.vertx</groupId>
+            <artifactId>vertx-uri-template</artifactId>
+            <version>${vertx.version}</version>
+          </dependency>
+        </dependencies>
+      </dependencyManagement>
+      <dependencies>
+        <dependency>
+          <groupId>io.fabric8</groupId>
+          <artifactId>openshift-client</artifactId>
+          <scope>test</scope>
+          <exclusions>
+            <exclusion>
+              <groupId>io.fabric8</groupId>
+              <artifactId>kubernetes-httpclient-vertx</artifactId>
+            </exclusion>
+          </exclusions>
+        </dependency>
+        <dependency>
+          <groupId>io.fabric8</groupId>
+          <artifactId>kubernetes-httpclient-vertx-5</artifactId>
+        </dependency>
+      </dependencies>
+    </profile>
   </profiles>
 </project>
