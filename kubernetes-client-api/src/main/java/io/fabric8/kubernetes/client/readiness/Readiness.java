@@ -84,7 +84,7 @@ public class Readiness {
     }
   }
 
-  public boolean isReadinessApplicable(HasMetadata item) {
+  public static boolean isReadinessApplicable(HasMetadata item) {
     return (item instanceof Deployment ||
         item instanceof io.fabric8.kubernetes.api.model.extensions.Deployment ||
         item instanceof ReplicaSet ||
