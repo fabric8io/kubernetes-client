@@ -34,6 +34,8 @@ class ReducedStateItemStoreTest {
     Pod pod = new PodBuilder().withNewSpec().endSpec().withNewMetadata().withUid("x").withName("y").addToLabels("one", "1")
         .addToLabels("two", "2").withResourceVersion("2").endMetadata().withNewStatus().endStatus().build();
 
+    final var uid = pod.getMetadata().getUid();
+
     Object[] values = store.store(pod);
 
     assertEquals(3, values.length);
@@ -41,18 +43,18 @@ class ReducedStateItemStoreTest {
     assertEquals(pod.getMetadata().getLabels(), values[1]);
     assertNull(values[2]);
 
-    Pod restored = store.restore("x", values);
+    Pod restored = store.restore(uid, values);
 
     assertNull(restored.getSpec());
     assertNull(restored.getStatus());
-    assertEquals("x", restored.getMetadata().getUid());
+    assertEquals(uid, restored.getMetadata().getUid());
     assertEquals(pod.getMetadata().getLabels(), restored.getMetadata().getLabels());
 
-    assertNull(store.put("x", pod));
-    assertNotNull(store.get("x"));
-    assertEquals("2", store.getResourceVersion("x"));
+    assertNull(store.put(uid, pod));
+    assertNotNull(store.get(uid));
+    assertEquals("2", store.getResourceVersion(uid));
     assertEquals(1, store.size());
-    assertNotNull(store.remove("x"));
+    assertNotNull(store.remove(uid));
   }
 
 }
