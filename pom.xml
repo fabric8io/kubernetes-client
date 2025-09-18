@@ -127,7 +127,7 @@
     <asm.bundle.version>8.0.1</asm.bundle.version>
     <slf4j.version>2.0.17</slf4j.version>
     <log4j.version>2.25.1</log4j.version>
-    <lombok.version>1.18.40</lombok.version>
+    <lombok.version>1.18.42</lombok.version>
     <commons-compress.version>1.28.0</commons-compress.version>
     <commons-io.version>2.20.0</commons-io.version> <!-- Required by Gradle Testing Toolkit -->
     <guava.version>33.4.8-jre</guava.version> <!-- Required by Gradle Testing Toolkit -->
