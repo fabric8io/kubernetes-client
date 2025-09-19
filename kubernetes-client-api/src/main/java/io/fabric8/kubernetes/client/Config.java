@@ -428,6 +428,9 @@ public class Config extends SundrioConfig {
     if (config.defaultNamespace != null) {
       this.defaultNamespace = config.defaultNamespace;
     }
+    if (config.watchList != null) {
+      this.watchList = config.watchList;
+    }
   }
 
   public static void configFromSysPropsOrEnvVars(Config config) {
@@ -1056,6 +1059,10 @@ public class Config extends SundrioConfig {
 
   public void setOnlyHttpWatches(boolean onlyHttpWatches) {
     this.onlyHttpWatches = onlyHttpWatches;
+  }
+
+  public boolean isWatchList() {
+    return Optional.ofNullable(watchList).orElse(false);
   }
 
 }
