@@ -135,7 +135,7 @@
     <felix.scr.version>2.0.6</felix.scr.version>
     <jmustache.version>1.16</jmustache.version>
     <picocli.version>4.7.7</picocli.version>
-    <swagger-request-validator-core.version>2.45.1</swagger-request-validator-core.version>
+    <swagger-request-validator-core.version>2.46.0</swagger-request-validator-core.version>
     <swagger-parser.version>2.1.34</swagger-parser.version>
 
     <!-- Maven plugin versions -->
