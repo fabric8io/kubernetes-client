@@ -19,6 +19,7 @@ import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodList;
 import io.fabric8.kubernetes.api.model.PodListBuilder;
 import io.fabric8.kubernetes.client.KubernetesClientException;
+import io.fabric8.kubernetes.client.Watcher.Action;
 import io.fabric8.kubernetes.client.WatcherException;
 import io.fabric8.kubernetes.client.dsl.internal.AbstractWatchManager;
 import io.fabric8.kubernetes.client.informers.impl.ListerWatcher;
@@ -164,6 +165,48 @@ class ReflectorTest {
     assertFalse(reflector.isStopped());
 
     reflector.getWatcher().onClose(new WatcherException(null));
+
+    assertFalse(reflector.isWatching());
+    assertTrue(reflector.isStopped());
+  }
+
+  @Test
+  void testWatchListException() {
+    ListerWatcher<Pod, PodList> mock = Mockito.mock(ListerWatcher.class);
+
+    Reflector<Pod, PodList> reflector = new Reflector<>(mock, mockStore);
+    reflector.setWatchList(true);
+
+    AbstractWatchManager manager = Mockito.mock(AbstractWatchManager.class);
+    Mockito.when(manager.isWatching()).thenReturn(true);
+
+    Mockito.when(mock.submitWatch(Mockito.any(), Mockito.any()))
+        .thenReturn(CompletableFuture.completedFuture(manager));
+
+    reflector.start();
+
+    assertTrue(reflector.isWatching());
+    assertFalse(reflector.isStopped());
+
+    reflector.getWatcher().onClose(new WatcherException(null));
+
+    assertFalse(reflector.isWatching());
+    assertTrue(reflector.isStopped());
+  }
+
+  @Test
+  void testWatchListEventException() {
+    ListerWatcher<Pod, PodList> mock = Mockito.mock(ListerWatcher.class);
+
+    Reflector<Pod, PodList> reflector = new Reflector<>(mock, mockStore);
+    reflector.setWatchList(true);
+
+    Mockito.when(mock.submitWatch(Mockito.any(), Mockito.any()))
+        .thenReturn(CompletableFuture.completedFuture(Mockito.mock(AbstractWatchManager.class)));
+
+    reflector.start();
+
+    reflector.getWatcher().eventReceived(Action.DELETED, new Pod());
 
     assertFalse(reflector.isWatching());
     assertTrue(reflector.isStopped());
