@@ -37,11 +37,12 @@ import java.util.stream.Stream;
 public class ReducedStateItemStore<V extends HasMetadata> implements ItemStore<V> {
 
   private static final String METADATA = "metadata";
+  private static final Object[] NOT_FOUND_KEY_VALUE = new Object[1];
   private final ConcurrentHashMap<String, Object[]> store = new ConcurrentHashMap<>();
   private final List<String[]> fields = new ArrayList<>();
   private final Class<V> typeClass;
   private final KeyState keyState;
-  private KubernetesSerialization serialization;
+  private final KubernetesSerialization serialization;
 
   public static class KeyState {
 
@@ -64,17 +65,20 @@ public class ReducedStateItemStore<V extends HasMetadata> implements ItemStore<V
 
   }
 
+  private static final String NAMESPACE = "namespace";
+  private static final String NAME = "name";
   public static final KeyState NAME_KEY_STATE = new KeyState(Cache::metaNamespaceKeyFunc,
       k -> {
-        int index = k.indexOf("/");
+        int index = k.indexOf('/');
         if (index == -1) {
           return new String[] { null, k };
         }
         return new String[] { k.substring(0, index), k.substring(index + 1) };
-      }, new String[] { METADATA, "namespace" }, new String[] { METADATA, "name" });
+      }, new String[] { METADATA, NAMESPACE }, new String[] { METADATA, NAME });
 
+  private static final String UID = "uid";
   public static final KeyState UID_KEY_STATE = new KeyState(Cache::metaUidKeyFunc,
-      k -> new String[] { k }, new String[] { METADATA, "uid" });
+      k -> new String[] { k }, new String[] { METADATA, UID });
 
   /**
    * Create a state store with only the fields specified.
@@ -106,14 +110,15 @@ public class ReducedStateItemStore<V extends HasMetadata> implements ItemStore<V
     this.keyState = keyState;
     fields.add(new String[] { METADATA, "resourceVersion" });
     if (valueFields != null) {
-      for (int i = 0; i < valueFields.length; i++) {
-        fields.add(valueFields[i].split("\\."));
+      for (String valueField : valueFields) {
+        fields.add(valueField.split("\\."));
       }
     }
     this.typeClass = typeClass;
     this.serialization = serialization;
   }
 
+  @SuppressWarnings("unchecked")
   Object[] store(V value) {
     if (value == null) {
       return null;
@@ -134,6 +139,7 @@ public class ReducedStateItemStore<V extends HasMetadata> implements ItemStore<V
     return serialization.convertValue(raw, typeClass);
   }
 
+  @SuppressWarnings("unchecked")
   private static void applyFields(Object[] values, Map<String, Object> raw, List<String[]> fields) {
     for (int i = 0; i < fields.size(); i++) {
       Object value = values[i];
@@ -175,7 +181,7 @@ public class ReducedStateItemStore<V extends HasMetadata> implements ItemStore<V
   }
 
   public String getResourceVersion(String key) {
-    return (String) store.getOrDefault(key, new Object[1])[0];
+    return (String) store.getOrDefault(key, NOT_FOUND_KEY_VALUE)[0];
   }
 
   @Override
