@@ -18,6 +18,7 @@ package io.fabric8.kubernetes.client.vertx;
 import io.fabric8.kubernetes.client.http.HttpClient;
 import io.vertx.core.Vertx;
 import io.vertx.core.impl.VertxImpl;
+import io.vertx.ext.web.client.WebClientOptions;
 import org.assertj.core.api.InstanceOfAssertFactories;
 import org.junit.jupiter.api.Test;
 
@@ -80,5 +81,25 @@ class VertxHttpClientBuilderTest {
     assertThat(builder.vertx)
         .asInstanceOf(InstanceOfAssertFactories.type(VertxImpl.class))
         .returns(true, vi -> vi.closeFuture().isClosed());
+  }
+
+  @Test
+  void buildsSuccessfullyWithCustomWebClientOptions() {
+    WebClientOptions customOptions = new WebClientOptions()
+        .setKeepAlive(false)
+        .setTcpNoDelay(false)
+        .setUserAgent("custom-agent");
+
+    VertxHttpClientFactory factory = new VertxHttpClientFactory();
+    VertxHttpClientBuilder<?> builder = factory.newBuilder();
+
+    try (HttpClient client = builder.withCustomWebClientOptions(customOptions).build()) {
+      assertThat(client)
+          .isInstanceOf(VertxHttpClient.class)
+          .isNotNull();
+
+      assertThat(client.newHttpRequestBuilder().uri("http://localhost").build())
+          .isNotNull();
+    }
   }
 }
