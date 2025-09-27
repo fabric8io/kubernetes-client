@@ -9,6 +9,7 @@
 #### Dependency Upgrade
 
 #### New Features
+* Fix #7252: Allow VertxHttpClientBuilder to be seeded with a base WebClientOptions object, allowing more customization of the Vertx HTTP Client
 
 #### _**Note**_: Breaking changes
 
