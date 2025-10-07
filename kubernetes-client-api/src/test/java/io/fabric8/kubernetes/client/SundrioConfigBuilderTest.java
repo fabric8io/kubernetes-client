@@ -30,6 +30,6 @@ class SundrioConfigBuilderTest {
         .filter(f -> !Modifier.isStatic(f.getModifiers()))
         .collect(Collectors.toList()))
         .withFailMessage("You've probably modified SundrioConfig, please update the Config copy constructor as well")
-        .hasSize(53);
+        .hasSize(54);
   }
 }

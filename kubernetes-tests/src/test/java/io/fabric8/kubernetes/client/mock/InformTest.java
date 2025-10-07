@@ -38,6 +38,7 @@ import org.junit.jupiter.api.Test;
 
 import java.net.HttpURLConnection;
 import java.util.Arrays;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Stream;
@@ -107,6 +108,42 @@ class InformTest {
     assertTrue(addLatch.await(10, TimeUnit.SECONDS));
 
     informer.stop();
+  }
+
+  @Test
+  void testStreamingList() throws Exception {
+    // Given
+    Pod pod1 = new PodBuilder().withNewMetadata()
+        .withNamespace("test")
+        .withName("pod1")
+        .withResourceVersion("1")
+        .endMetadata()
+        .build();
+
+    Pod podBookmark = new PodBuilder().withNewMetadata()
+        .withResourceVersion("2")
+        .endMetadata()
+        .build();
+
+    server.expect()
+        .withPath(
+            "/api/v1/namespaces/test/pods?allowWatchBookmarks=true&labelSelector=my-label&resourceVersion=3&resourceVersionMatch=NotOlderThan&sendInitialEvents=true&watch=true")
+        .andUpgradeToWebSocket()
+        .open()
+        .waitFor(EVENT_WAIT_PERIOD_MS)
+        .andEmit(new WatchEvent(pod1, "ADDED"))
+        .waitFor(EVENT_WAIT_PERIOD_MS)
+        .andEmit(new WatchEvent(podBookmark, "BOOKMARK"))
+        .done()
+        .once();
+    final CountDownLatch addLatch = new CountDownLatch(1);
+
+    // When
+    CompletableFuture<String> future = client.pods().withLabel("my-label").withResourceVersion("3")
+        .streamingList(pod -> addLatch.countDown());
+
+    assertTrue(addLatch.await(10, TimeUnit.SECONDS));
+    assertEquals("2", future.get(10, TimeUnit.SECONDS));
   }
 
   @Test
