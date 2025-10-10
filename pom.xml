@@ -94,7 +94,7 @@
     <okhttp.version>4.12.0</okhttp.version>
     <jackson.version>2.20.0</jackson.version>
     <jackson.bundle.version>${jackson.version}</jackson.bundle.version>
-    <!-- fix as jackson-annotations version 2.20 was released-->
+    <!-- fix as jackson-annotations version 2.20 was released, Refer: https://github.com/FasterXML/jackson-bom/blob/54f854ba1ce69c5827f8acf6d08ba2d7ce36233c/pom.xml#L53-L62 -->
     <jackson.bundle.version.annotations>2.20</jackson.bundle.version.annotations>
     <jetty.version>11.0.26</jetty.version>
     <maven-core.version>3.9.11</maven-core.version>
