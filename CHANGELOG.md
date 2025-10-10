@@ -7,10 +7,12 @@
 #### Improvements
 
 #### Dependency Upgrade
+#7266: bump jackson-bom from 2.19.2 to 2.20.0, fix overrides and handle jackson-annotations v2.20
 
 #### New Features
 
 #### _**Note**_: Breaking changes
+#7266: bump jackson-bom from 2.19.2 to 2.20.0, fix overrides and handle jackson-annotations v2.20
 
 ### 7.4.0 (2025-09-08)
 
