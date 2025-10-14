@@ -68,5 +68,7 @@ jobs:
           server-password: MAVEN_CENTRAL_PASSWORD
           gpg-private-key: ${{ secrets.SIGNINGKEY }}
           gpg-passphrase: SIGNINGPASSWORD
-      - name: Build and release Java 8 modules
-        run: ./mvnw ${MAVEN_ARGS} ${RELEASE_MAVEN_ARGS} clean deploy
+      - name: Generate BOM
+        run: ./mvnw ${MAVEN_ARGS} clean sundr:generate-bom
+      - name: Build and release Java modules
+        run: ./mvnw ${MAVEN_ARGS} ${RELEASE_MAVEN_ARGS} deploy
