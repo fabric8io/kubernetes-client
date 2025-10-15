@@ -235,6 +235,7 @@
     <module>kubernetes-client-deps-compatibility-tests</module>
     <module>log4j</module>
     <module>kubernetes-examples</module>
+    <!-- BOM modules are added via profile activation at build time -->
   </modules>
 
   <dependencyManagement>
@@ -1300,6 +1301,11 @@
       <properties>
         <karaf.itest.skip>true</karaf.itest.skip>
       </properties>
+      <!-- make sure that these modules exists before running release-->
+      <modules>
+        <module>target/classes/kubernetes-client-bom</module>
+        <module>target/classes/kubernetes-client-bom-with-deps</module>
+      </modules>
       <build>
         <plugins>
           <plugin>
