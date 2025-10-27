@@ -46,6 +46,7 @@ import static io.fabric8.kubernetes.client.extended.leaderelection.LeaderElector
 import static io.fabric8.kubernetes.client.extended.leaderelection.LeaderElector.now;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
@@ -141,6 +142,7 @@ class LeaderElectorTest {
     // Then
     Awaitility.await().atMost(10, TimeUnit.SECONDS).until(() -> Utils.isNullOrEmpty(activeLer.get().getHolderIdentity()));
     assertEquals(0, activeLer.get().getLeaderTransitions());
+    assertNull(activeLer.get().getHolderIdentity());
 
     // create a new elector, they are no good after a single use
     leaderElector = new LeaderElector(mock(NamespacedKubernetesClient.class), lec, CommonThreadPool.get());
