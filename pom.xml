@@ -64,14 +64,14 @@
 
   <distributionManagement>
     <snapshotRepository>
-      <id>nexus-snapshots</id>
+      <id>central-portal</id>
       <name>Central Portal (Snapshots)</name>
-      <url>http://localhost:8080/nexus/content/repositories/snapshots/</url>
+      <url>https://central.sonatype.com/repository/maven-snapshots/</url>
     </snapshotRepository>
     <repository>
-      <id>nexus-releases</id>
+      <id>ossrh</id>
       <name>Sonatype OSS Repository</name>
-      <url>http://localhost:8080/nexus/content/repositories/releases/</url>
+      <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
     </repository>
   </distributionManagement>
 
