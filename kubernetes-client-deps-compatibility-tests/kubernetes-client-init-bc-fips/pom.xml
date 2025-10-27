@@ -30,6 +30,10 @@
   <name>Fabric8 :: Kubernetes :: Bouncy Castle FIPS Compatibility :: Test</name>
   <artifactId>kubernetes-client-init-bc-fips</artifactId>
 
+  <properties>
+    <maven.deploy.skip>true</maven.deploy.skip>
+  </properties>
+
   <dependencies>
     <dependency>
       <groupId>io.fabric8</groupId>

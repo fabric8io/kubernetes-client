@@ -29,6 +29,10 @@
   <packaging>jar</packaging>
   <name>Fabric8 :: Java generator :: Integration Tests</name>
 
+  <properties>
+    <maven.deploy.skip>true</maven.deploy.skip>
+  </properties>
+
   <dependencies>
     <!-- Force installation before running the ITs -->
     <dependency>

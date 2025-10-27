@@ -32,6 +32,7 @@
     <podName>mypod</podName>
     <masterUrl>https://localhost:8443/</masterUrl>
     <namespace>default</namespace>
+    <maven.deploy.skip>true</maven.deploy.skip>
   </properties>
 
   <dependencies>
