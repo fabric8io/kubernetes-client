@@ -29,6 +29,10 @@
   <packaging>jar</packaging>
   <name>Fabric8 :: Cert Manager :: Tests</name>
 
+  <properties>
+    <maven.deploy.skip>true</maven.deploy.skip>
+  </properties>
+
   <dependencies>
     <dependency>
       <groupId>io.fabric8</groupId>

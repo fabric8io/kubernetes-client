@@ -27,6 +27,10 @@
   <artifactId>chaos-tests</artifactId>
   <name>Fabric8 :: Chaos Tests</name>
 
+  <properties>
+    <maven.deploy.skip>true</maven.deploy.skip>
+  </properties>
+
   <repositories>
     <repository>
       <id>central-portal-snapshots</id>

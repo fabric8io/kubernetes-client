@@ -28,6 +28,10 @@
   <artifactId>openclustermanagement-examples</artifactId>
   <name>Fabric8 :: Open Cluster Management :: Examples</name>
 
+  <properties>
+    <maven.deploy.skip>true</maven.deploy.skip>
+  </properties>
+
   <dependencies>
     <dependency>
       <groupId>io.fabric8</groupId>

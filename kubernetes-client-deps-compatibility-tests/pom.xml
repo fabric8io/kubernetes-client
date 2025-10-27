@@ -30,6 +30,10 @@
   <artifactId>kubernetes-client-deps-compatibility-tests</artifactId>
   <packaging>pom</packaging>
 
+  <properties>
+    <maven.deploy.skip>true</maven.deploy.skip>
+  </properties>
+
   <modules>
     <module>kubernetes-client-init-bc-fips</module>
   </modules>

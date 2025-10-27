@@ -88,6 +88,7 @@
   <properties>
     <useIncrementalCompilation>false</useIncrementalCompilation>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <maven.deploy.skip>false</maven.deploy.skip>
 
     <!-- Core versions -->
     <sundrio.version>0.230.1</sundrio.version>
@@ -1337,6 +1338,7 @@
             <configuration>
               <publishingServerId>central-portal</publishingServerId>
               <autoPublish>false</autoPublish>
+              <skipPublishing>${maven.deploy.skip}</skipPublishing>
             </configuration>
           </plugin>
           <plugin>
