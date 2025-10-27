@@ -28,6 +28,10 @@
   <artifactId>verticalpodautoscaler-examples</artifactId>
   <name>Fabric8 :: Vertical Pod Autoscaler :: Examples</name>
 
+  <properties>
+    <maven.deploy.skip>true</maven.deploy.skip>
+  </properties>
+
   <dependencies>
     <dependency>
       <groupId>io.fabric8</groupId>

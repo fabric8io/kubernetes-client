@@ -64,14 +64,14 @@
 
   <distributionManagement>
     <snapshotRepository>
-      <id>central-portal</id>
+      <id>nexus-snapshots</id>
       <name>Central Portal (Snapshots)</name>
-      <url>https://central.sonatype.com/repository/maven-snapshots/</url>
+      <url>http://localhost:8080/nexus/content/repositories/snapshots/</url>
     </snapshotRepository>
     <repository>
-      <id>ossrh</id>
+      <id>nexus-releases</id>
       <name>Sonatype OSS Repository</name>
-      <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+      <url>http://localhost:8080/nexus/content/repositories/releases/</url>
     </repository>
   </distributionManagement>
 
@@ -88,6 +88,7 @@
   <properties>
     <useIncrementalCompilation>false</useIncrementalCompilation>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <maven.deploy.skip>false</maven.deploy.skip>
 
     <!-- Core versions -->
     <sundrio.version>0.230.1</sundrio.version>
@@ -1337,6 +1338,7 @@
             <configuration>
               <publishingServerId>central-portal</publishingServerId>
               <autoPublish>false</autoPublish>
+              <skipPublishing>${maven.deploy.skip}</skipPublishing>
             </configuration>
           </plugin>
           <plugin>
