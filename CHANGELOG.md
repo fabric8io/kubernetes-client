@@ -3,12 +3,13 @@
 ### 7.5-SNAPSHOT
 
 #### Bugs
+* Fix #7343: Leader election callbacks to be called only once (instead of 2)
 
 #### Improvements
+* Fix #7345: skip publishing test and example modules to Maven Central
 
 #### Dependency Upgrade
-* #7266: bump jackson-bom from 2.19.2 to 2.20.0, fix overrides and handle jackson-annotations v2.20
-* #7345: skip publishing test and example modules to Maven Central
+* Fix #7266: bump jackson-bom from 2.19.2 to 2.20.0, fix overrides and handle jackson-annotations v2.20
 
 #### New Features
 
