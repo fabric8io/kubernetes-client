@@ -156,7 +156,7 @@ public class LeaderElector {
     }
     ZonedDateTime now = now();
     final LeaderElectionRecord newLeaderElectionRecord = new LeaderElectionRecord(
-        "",
+        null,
         Duration.ofSeconds(1),
         now,
         now,
