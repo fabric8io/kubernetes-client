@@ -12,6 +12,7 @@
 * Fix #7266: bump jackson-bom from 2.19.2 to 2.20.0, fix overrides and handle jackson-annotations v2.20
 
 #### New Features
+* Fix #7252: Allow VertxHttpClientBuilder to be seeded with a base WebClientOptions object, allowing more customization of the Vertx HTTP Client
 
 #### _**Note**_: Breaking changes
 * #7266: bump jackson-bom from 2.19.2 to 2.20.0, fix overrides and handle jackson-annotations v2.20
