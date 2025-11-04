@@ -94,9 +94,11 @@ public abstract class AbstractHttpClientNewWebSocketBuilderTest {
         .andEmit("First")
         .waitFor(10L)
         .andEmit("Second")
+        .waitFor(10L)
+        .andEmit("ALongMessageThatCouldBeSplitIntoMultipleWebsocketFrames".repeat(2000))
         .done()
         .always();
-    final CountDownLatch latch = new CountDownLatch(2);
+    final CountDownLatch latch = new CountDownLatch(3);
     final Set<String> messages = ConcurrentHashMap.newKeySet();
     httpClient.newWebSocketBuilder()
         .uri(URI.create(server.url("/websocket-multiple-message")))
@@ -109,7 +111,8 @@ public abstract class AbstractHttpClientNewWebSocketBuilderTest {
           }
         }).get(10L, TimeUnit.SECONDS);
     assertThat(latch.await(60, TimeUnit.SECONDS)).isTrue();
-    assertThat(messages).containsExactlyInAnyOrder("First", "Second");
+    assertThat(messages).containsExactlyInAnyOrder("First", "Second",
+      "ALongMessageThatCouldBeSplitIntoMultipleWebsocketFrames".repeat(2000));
   }
 
   @Test

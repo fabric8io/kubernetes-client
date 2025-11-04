@@ -112,6 +112,6 @@ class VertxWebSocket implements WebSocket {
 
   @Override
   public void request() {
-    ws.fetch(1);
+    ws.resume();
   }
 }

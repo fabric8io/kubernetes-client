@@ -4,6 +4,7 @@
 
 #### Bugs
 * Fix #7343: Leader election callbacks to be called only once (instead of 2)
+* Fix #7347: Vert.x websocket client doesn't work for messages split into multiple websocket frames
 
 #### Improvements
 * Fix #7345: skip publishing test and example modules to Maven Central
