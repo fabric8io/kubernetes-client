@@ -39,6 +39,7 @@ import lombok.experimental.Accessors;
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
+    "requestPolicy",
     "value"
 })
 @ToString
@@ -66,6 +67,8 @@ import lombok.experimental.Accessors;
 public class DeviceCapacity implements Editable<DeviceCapacityBuilder>, KubernetesResource
 {
 
+    @JsonProperty("requestPolicy")
+    private CapacityRequestPolicy requestPolicy;
     @JsonProperty("value")
     private Quantity value;
     @JsonIgnore
@@ -77,9 +80,26 @@ public class DeviceCapacity implements Editable<DeviceCapacityBuilder>, Kubernet
     public DeviceCapacity() {
     }
 
-    public DeviceCapacity(Quantity value) {
+    public DeviceCapacity(CapacityRequestPolicy requestPolicy, Quantity value) {
         super();
+        this.requestPolicy = requestPolicy;
         this.value = value;
+    }
+
+    /**
+     * DeviceCapacity describes a quantity associated with a device.
+     */
+    @JsonProperty("requestPolicy")
+    public CapacityRequestPolicy getRequestPolicy() {
+        return requestPolicy;
+    }
+
+    /**
+     * DeviceCapacity describes a quantity associated with a device.
+     */
+    @JsonProperty("requestPolicy")
+    public void setRequestPolicy(CapacityRequestPolicy requestPolicy) {
+        this.requestPolicy = requestPolicy;
     }
 
     /**
