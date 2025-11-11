@@ -71,6 +71,14 @@ public class SettableBeanPropertyDelegating extends SettableBeanProperty.Delegat
    * {@inheritDoc}
    */
   @Override
+  public boolean isMerging() {
+    return delegate.isMerging();
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
   public boolean isIgnorable() {
     return delegate.isIgnorable();
   }

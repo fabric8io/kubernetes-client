@@ -22,12 +22,16 @@
   <parent>
     <groupId>io.fabric8</groupId>
     <artifactId>volumesnapshot</artifactId>
-    <version>7.4-SNAPSHOT</version>
+    <version>7.5-SNAPSHOT</version>
   </parent>
 
   <artifactId>volumesnapshot-tests</artifactId>
   <packaging>jar</packaging>
   <name>Fabric8 :: Volume Snapshot :: Tests</name>
+
+  <properties>
+    <maven.deploy.skip>true</maven.deploy.skip>
+  </properties>
 
   <dependencies>
     <dependency>

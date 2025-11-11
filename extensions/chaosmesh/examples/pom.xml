@@ -22,11 +22,15 @@
   <parent>
     <groupId>io.fabric8</groupId>
     <artifactId>chaosmesh</artifactId>
-    <version>7.4-SNAPSHOT</version>
+    <version>7.5-SNAPSHOT</version>
   </parent>
 
   <artifactId>chaosmesh-examples</artifactId>
   <name>Fabric8 :: Chaos Mesh :: Examples</name>
+
+  <properties>
+    <maven.deploy.skip>true</maven.deploy.skip>
+  </properties>
 
   <dependencies>
     <dependency>

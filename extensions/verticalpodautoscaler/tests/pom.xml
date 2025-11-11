@@ -22,12 +22,16 @@
   <parent>
     <groupId>io.fabric8</groupId>
     <artifactId>verticalpodautoscaler-extension-pom</artifactId>
-    <version>7.4-SNAPSHOT</version>
+    <version>7.5-SNAPSHOT</version>
   </parent>
 
   <artifactId>verticalpodautoscaler-tests</artifactId>
   <packaging>jar</packaging>
   <name>Fabric8 :: Vertical Pod Autoscaler :: Tests</name>
+
+  <properties>
+    <maven.deploy.skip>true</maven.deploy.skip>
+  </properties>
 
   <dependencies>
     <dependency>

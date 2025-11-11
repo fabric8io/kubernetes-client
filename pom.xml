@@ -23,7 +23,7 @@
 
   <groupId>io.fabric8</groupId>
   <artifactId>kubernetes-client-project</artifactId>
-  <version>7.4-SNAPSHOT</version>
+  <version>7.5-SNAPSHOT</version>
   <packaging>pom</packaging>
 
   <name>Fabric8 :: Kubernetes :: Project</name>
@@ -88,36 +88,39 @@
   <properties>
     <useIncrementalCompilation>false</useIncrementalCompilation>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <maven.deploy.skip>false</maven.deploy.skip>
 
     <!-- Core versions -->
-    <sundrio.version>0.200.4</sundrio.version>
+    <sundrio.version>0.230.1</sundrio.version>
     <okhttp.version>4.12.0</okhttp.version>
-    <jackson.version>2.19.2</jackson.version>
+    <jackson.version>2.20.0</jackson.version>
     <jackson.bundle.version>${jackson.version}</jackson.bundle.version>
+    <!-- fix as jackson-annotations version 2.20 was released, Refer: https://github.com/FasterXML/jackson-bom/blob/54f854ba1ce69c5827f8acf6d08ba2d7ce36233c/pom.xml#L53-L62 -->
+    <jackson.bundle.version.annotations>2.20</jackson.bundle.version.annotations>
     <jetty.version>11.0.26</jetty.version>
     <maven-core.version>3.9.11</maven-core.version>
     <maven-plugin-annotations.version>3.15.1</maven-plugin-annotations.version>
-    <vertx.version>4.5.14</vertx.version>
-    <jandex.version>3.4.0</jandex.version>
+    <vertx.version>4.5.21</vertx.version>
+    <jandex.version>3.5.0</jandex.version>
     <snakeyaml.version>2.10</snakeyaml.version>
     <snakeyaml.bundle.version>2.4</snakeyaml.bundle.version> <!-- Transitive Jackson -->
 
     <!-- API versions -->
     <jsr305.version>3.0.2</jsr305.version>
     <gradle-api.version>8.5</gradle-api.version>
-    <groovy-api.version>5.0.0</groovy-api.version>
+    <groovy-api.version>5.0.1</groovy-api.version>
 
     <!-- Testing versions -->
     <junit4.version>4.13.2</junit4.version>
     <junit.version>5.13.4</junit.version>
-    <assertj.core.version>3.27.4</assertj.core.version>
+    <assertj.core.version>3.27.6</assertj.core.version>
     <awaitility.version>4.3.0</awaitility.version>
-    <approvaltests.version>25.0.23</approvaltests.version>
-    <bouncycastle.version>1.81</bouncycastle.version>
-    <bc-fips.version>2.1.1</bc-fips.version>
-    <bcpkix-fips.version>2.1.9</bcpkix-fips.version>
-    <keycloak.version>26.3.3</keycloak.version><!-- Used by CRD Generator integration tests for verifications -->
-    <mockito.version>5.19.0</mockito.version>
+    <approvaltests.version>25.6.1</approvaltests.version>
+    <bouncycastle.version>1.82</bouncycastle.version>
+    <bc-fips.version>2.1.2</bc-fips.version>
+    <bcpkix-fips.version>2.1.10</bcpkix-fips.version>
+    <keycloak.version>26.4.0</keycloak.version><!-- Used by CRD Generator integration tests for verifications -->
+    <mockito.version>5.20.0</mockito.version>
     <mockito-inline.version>5.2.0</mockito-inline.version>
     <spock.version>2.4-M6-groovy-4.0</spock.version>
 
@@ -126,47 +129,47 @@
     <aries-spifly.bundle.version>1.3.0</aries-spifly.bundle.version>
     <asm.bundle.version>8.0.1</asm.bundle.version>
     <slf4j.version>2.0.17</slf4j.version>
-    <log4j.version>2.25.1</log4j.version>
-    <lombok.version>1.18.38</lombok.version>
+    <log4j.version>2.25.2</log4j.version>
+    <lombok.version>1.18.42</lombok.version>
     <commons-compress.version>1.28.0</commons-compress.version>
     <commons-io.version>2.20.0</commons-io.version> <!-- Required by Gradle Testing Toolkit -->
-    <guava.version>33.4.8-jre</guava.version> <!-- Required by Gradle Testing Toolkit -->
+    <guava.version>33.5.0-jre</guava.version> <!-- Required by Gradle Testing Toolkit -->
     <osgi.annotations.version>1.5.1</osgi.annotations.version>
     <felix.scr.version>2.0.6</felix.scr.version>
     <jmustache.version>1.16</jmustache.version>
     <picocli.version>4.7.7</picocli.version>
-    <swagger-request-validator-core.version>2.45.1</swagger-request-validator-core.version>
-    <swagger-parser.version>2.1.33</swagger-parser.version>
+    <swagger-request-validator-core.version>2.46.0</swagger-request-validator-core.version>
+    <swagger-parser.version>2.1.35</swagger-parser.version>
 
     <!-- Maven plugin versions -->
     <buildnumber.plugin.version>3.2.1</buildnumber.plugin.version>
-    <exec.maven-plugin.version>3.5.1</exec.maven-plugin.version>
-    <maven.compiler.plugin.version>3.14.0</maven.compiler.plugin.version>
+    <exec.maven-plugin.version>3.6.1</exec.maven-plugin.version>
+    <maven.compiler.plugin.version>3.14.1</maven.compiler.plugin.version>
     <maven.bundle.plugin.version>5.1.9</maven.bundle.plugin.version>
     <maven.buildhelper.plugin.version>3.6.1</maven.buildhelper.plugin.version>
     <maven.jar.plugin.version>3.4.2</maven.jar.plugin.version>
-    <maven.surefire.plugin.version>3.5.3</maven.surefire.plugin.version>
+    <maven.surefire.plugin.version>3.5.4</maven.surefire.plugin.version>
     <maven.resources.plugin.version>3.3.1</maven.resources.plugin.version>
     <maven.release.plugin.version>3.1.1</maven.release.plugin.version>
-    <maven.javadoc.plugin.version>3.11.3</maven.javadoc.plugin.version>
+    <maven.javadoc.plugin.version>3.12.0</maven.javadoc.plugin.version>
     <maven.source.plugin.version>3.3.1</maven.source.plugin.version>
-    <maven.enforcer.plugin.version>3.6.1</maven.enforcer.plugin.version>
+    <maven.enforcer.plugin.version>3.6.2</maven.enforcer.plugin.version>
     <maven.deploy.plugin.version>3.1.4</maven.deploy.plugin.version>
     <maven.gpg.plugin.version>3.2.8</maven.gpg.plugin.version>
     <maven.antrun.plugin.version>3.1.0</maven.antrun.plugin.version>
-    <maven.dependency.plugin.version>3.8.1</maven.dependency.plugin.version>
-    <maven.shade.plugin.version>3.6.0</maven.shade.plugin.version>
+    <maven.dependency.plugin.version>3.9.0</maven.dependency.plugin.version>
+    <maven.shade.plugin.version>3.6.1</maven.shade.plugin.version>
     <maven.install.plugin.version>3.1.4</maven.install.plugin.version>
     <maven.invoker.plugin.version>3.9.1</maven.invoker.plugin.version>
     <maven.plugin.plugin.version>3.15.1</maven.plugin.plugin.version>
     <gmavenplus-plugin.version>4.2.1</gmavenplus-plugin.version>
     <gradle-api-maven-plugin.version>0.0.7</gradle-api-maven-plugin.version>
-    <jacoco-maven-plugin.version>0.8.13</jacoco-maven-plugin.version>
+    <jacoco-maven-plugin.version>0.8.14</jacoco-maven-plugin.version>
     <jkube.version>1.18.1</jkube.version>
     <sonar-maven-plugin.version>5.2.0.4988</sonar-maven-plugin.version>
-    <central-publishing-maven-plugin>0.8.0</central-publishing-maven-plugin>
+    <central-publishing-maven-plugin>0.9.0</central-publishing-maven-plugin>
     <properties.maven.plugin.version>1.0.0</properties.maven.plugin.version>
-    <spotless-maven-plugin.version>2.46.1</spotless-maven-plugin.version>
+    <spotless-maven-plugin.version>3.0.0</spotless-maven-plugin.version>
     <really-executable-jar-maven-plugin.version>2.1.1</really-executable-jar-maven-plugin.version>
 
     <!-- Other options -->
@@ -204,7 +207,7 @@
     </osgi.include.resources.default>
     <osgi.include.resources>${osgi.include.resources.default}</osgi.include.resources>
     <karaf.itest.skip>false</karaf.itest.skip>
-    <project.build.outputTimestamp>2025-05-20T10:17:43Z</project.build.outputTimestamp>
+    <project.build.outputTimestamp>2025-09-08T10:04:20Z</project.build.outputTimestamp>
     <validation-api.version>2.0.1.Final</validation-api.version>
   </properties>
   <modules>
@@ -234,6 +237,7 @@
     <module>kubernetes-client-deps-compatibility-tests</module>
     <module>log4j</module>
     <module>kubernetes-examples</module>
+    <!-- BOM modules are added via profile activation at build time -->
   </modules>
 
   <dependencyManagement>
@@ -1304,6 +1308,11 @@
       <properties>
         <karaf.itest.skip>true</karaf.itest.skip>
       </properties>
+      <!-- make sure that these modules exists before running release-->
+      <modules>
+        <module>target/classes/kubernetes-client-bom</module>
+        <module>target/classes/kubernetes-client-bom-with-deps</module>
+      </modules>
       <build>
         <plugins>
           <plugin>
@@ -1335,6 +1344,7 @@
             <configuration>
               <publishingServerId>central-portal</publishingServerId>
               <autoPublish>false</autoPublish>
+              <skipPublishing>${maven.deploy.skip}</skipPublishing>
             </configuration>
           </plugin>
           <plugin>

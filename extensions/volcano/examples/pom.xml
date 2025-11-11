@@ -22,11 +22,15 @@
   <parent>
     <groupId>io.fabric8</groupId>
     <artifactId>volcano-extension-pom</artifactId>
-    <version>7.4-SNAPSHOT</version>
+    <version>7.5-SNAPSHOT</version>
   </parent>
 
   <artifactId>volcano-examples</artifactId>
   <name>Fabric8 :: Volcano :: Examples</name>
+
+  <properties>
+    <maven.deploy.skip>true</maven.deploy.skip>
+  </properties>
 
   <dependencies>
     <dependency>
