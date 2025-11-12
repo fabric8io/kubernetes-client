@@ -13,15 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8.kubernetes.client.jdkhttp;
+package io.fabric8.kubernetes.client.jetty;
 
-import io.fabric8.kubernetes.client.http.AbstractWebSocketSendTest;
+import io.fabric8.kubernetes.client.http.AbstractWebSocketSendReceiveTest;
 import io.fabric8.kubernetes.client.http.HttpClient;
 
 @SuppressWarnings("java:S2187")
-public class JdkHttpClientWebSocketSendTest extends AbstractWebSocketSendTest {
+public class JettyWebSocketSendReceiveTest extends AbstractWebSocketSendReceiveTest {
   @Override
   protected HttpClient.Factory getHttpClientFactory() {
-    return new JdkHttpClientFactory();
+    return new JettyHttpClientFactory();
   }
 }
