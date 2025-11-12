@@ -13,6 +13,7 @@
 * Fix #7266: bump jackson-bom from 2.19.2 to 2.20.0, fix overrides and handle jackson-annotations v2.20
 
 #### New Features
+* Fix #7174: Added Vert.x 5 HTTP client implementation with improved async handling and WebSocket separation
 
 #### _**Note**_: Breaking changes
 * #7266: bump jackson-bom from 2.19.2 to 2.20.0, fix overrides and handle jackson-annotations v2.20
