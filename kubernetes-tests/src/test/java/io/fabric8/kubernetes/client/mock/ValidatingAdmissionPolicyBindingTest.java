@@ -16,10 +16,7 @@
 package io.fabric8.kubernetes.client.mock;
 
 import io.fabric8.kubernetes.api.model.HasMetadata;
-import io.fabric8.kubernetes.api.model.admissionregistration.v1beta1.ValidatingAdmissionPolicyBinding;
-import io.fabric8.kubernetes.api.model.admissionregistration.v1beta1.ValidatingAdmissionPolicyBindingBuilder;
-import io.fabric8.kubernetes.api.model.admissionregistration.v1beta1.ValidatingAdmissionPolicyBindingList;
-import io.fabric8.kubernetes.api.model.admissionregistration.v1beta1.ValidatingAdmissionPolicyBindingListBuilder;
+import io.fabric8.kubernetes.api.model.admissionregistration.v1beta1.*;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
 import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
@@ -32,18 +29,18 @@ import java.util.List;
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 
 @EnableKubernetesMockClient
-class V1beta1ValidatingAdmissionPolicyBindingTest {
+class V1beta1MutatingAdmissionPolicyBindingTest {
 
   KubernetesMockServer server;
   private KubernetesClient client;
 
   @Test
   void load() {
-    List<HasMetadata> items = client.load(getClass().getResourceAsStream("/test-v1beta1-validatingadmissionpolicybinding.yml"))
+    List<HasMetadata> items = client.load(getClass().getResourceAsStream("/test-v1beta1-mutatingadmissionpolicybinding.yml"))
         .items();
     assertThat(items).isNotNull().hasSize(1);
     AssertionsForClassTypes.assertThat(items.get(0))
-        .isInstanceOf(ValidatingAdmissionPolicyBinding.class)
+        .isInstanceOf(MutatingAdmissionPolicyBinding.class)
         .hasFieldOrPropertyWithValue("metadata.name", "demo-binding-test.example.com");
   }
 
@@ -51,16 +48,16 @@ class V1beta1ValidatingAdmissionPolicyBindingTest {
   void get() {
     // Given
     server.expect().get()
-        .withPath("/apis/admissionregistration.k8s.io/v1beta1/validatingadmissionpolicybindings/demo-binding-test.example.com")
-        .andReturn(HttpURLConnection.HTTP_OK, createValidatingAdmissionPolicyBinding())
+        .withPath("/apis/admissionregistration.k8s.io/v1beta1/mutatingadmissionpolicybindings/demo-binding-test.example.com")
+        .andReturn(HttpURLConnection.HTTP_OK, createMutatingAdmissionPolicyBinding())
         .once();
 
     // When
-    ValidatingAdmissionPolicyBinding validatingAdmissionPolicyBinding = client.admissionRegistration().v1beta1()
-        .validatingAdmissionPolicyBindings().withName("demo-binding-test.example.com").get();
+    MutatingAdmissionPolicyBinding mutatingAdmissionPolicyBinding = client.admissionRegistration().v1beta1()
+        .mutatingAdmissionPolicyBindings().withName("demo-binding-test.example.com").get();
 
     // Then
-    AssertionsForClassTypes.assertThat(validatingAdmissionPolicyBinding)
+    AssertionsForClassTypes.assertThat(mutatingAdmissionPolicyBinding)
         .isNotNull()
         .hasFieldOrPropertyWithValue("metadata.name", "demo-binding-test.example.com");
   }
@@ -68,15 +65,15 @@ class V1beta1ValidatingAdmissionPolicyBindingTest {
   @Test
   void list() {
     // Given
-    server.expect().get().withPath("/apis/admissionregistration.k8s.io/v1beta1/validatingadmissionpolicybindings")
-        .andReturn(HttpURLConnection.HTTP_OK, new ValidatingAdmissionPolicyBindingListBuilder()
-            .addToItems(createValidatingAdmissionPolicyBinding())
+    server.expect().get().withPath("/apis/admissionregistration.k8s.io/v1beta1/mutatingadmissionpolicybindings")
+        .andReturn(HttpURLConnection.HTTP_OK, new MutatingAdmissionPolicyBindingListBuilder()
+            .addToItems(createMutatingAdmissionPolicyBinding())
             .build())
         .once();
 
     // When
-    ValidatingAdmissionPolicyBindingList flowSchemas = client.admissionRegistration().v1beta1()
-        .validatingAdmissionPolicyBindings().list();
+    MutatingAdmissionPolicyBindingList flowSchemas = client.admissionRegistration().v1beta1()
+        .mutatingAdmissionPolicyBindings().list();
 
     // Then
     AssertionsForClassTypes.assertThat(flowSchemas).isNotNull();
@@ -88,40 +85,40 @@ class V1beta1ValidatingAdmissionPolicyBindingTest {
   @Test
   void create() {
     // Given
-    ValidatingAdmissionPolicyBinding validatingAdmissionPolicyBinding = createValidatingAdmissionPolicyBinding();
-    server.expect().post().withPath("/apis/admissionregistration.k8s.io/v1beta1/validatingadmissionpolicybindings")
+    MutatingAdmissionPolicyBinding validatingAdmissionPolicyBinding = createMutatingAdmissionPolicyBinding();
+    server.expect().post().withPath("/apis/admissionregistration.k8s.io/v1beta1/mutatingadmissionpolicybindings")
         .andReturn(HttpURLConnection.HTTP_OK, validatingAdmissionPolicyBinding)
         .once();
 
     // When
-    ValidatingAdmissionPolicyBinding createdValidatingAdmissionPolicyBinding = client.admissionRegistration().v1beta1()
-        .validatingAdmissionPolicyBindings().resource(validatingAdmissionPolicyBinding).create();
+    MutatingAdmissionPolicyBinding mutatingAdmissionPolicyBinding = client.admissionRegistration().v1beta1()
+        .mutatingAdmissionPolicyBindings().resource(validatingAdmissionPolicyBinding).create();
 
     // Then
-    AssertionsForClassTypes.assertThat(createdValidatingAdmissionPolicyBinding).isNotNull();
-    AssertionsForClassTypes.assertThat(createdValidatingAdmissionPolicyBinding)
+    AssertionsForClassTypes.assertThat(mutatingAdmissionPolicyBinding).isNotNull();
+    AssertionsForClassTypes.assertThat(mutatingAdmissionPolicyBinding)
         .hasFieldOrPropertyWithValue("metadata.name", "demo-binding-test.example.com");
   }
 
   @Test
   void delete() {
     // Given
-    ValidatingAdmissionPolicyBinding flowSchema = createValidatingAdmissionPolicyBinding();
+    MutatingAdmissionPolicyBinding flowSchema = createMutatingAdmissionPolicyBinding();
     server.expect().delete()
-        .withPath("/apis/admissionregistration.k8s.io/v1beta1/validatingadmissionpolicybindings/demo-binding-test.example.com")
+        .withPath("/apis/admissionregistration.k8s.io/v1beta1/mutatingadmissionpolicybindings/demo-binding-test.example.com")
         .andReturn(HttpURLConnection.HTTP_OK, flowSchema)
         .once();
 
     // When
-    boolean isDeleted = client.admissionRegistration().v1beta1().validatingAdmissionPolicyBindings()
+    boolean isDeleted = client.admissionRegistration().v1beta1().mutatingAdmissionPolicyBindings()
         .withName("demo-binding-test.example.com").delete().size() == 1;
 
     // Then
     AssertionsForClassTypes.assertThat(isDeleted).isTrue();
   }
 
-  private ValidatingAdmissionPolicyBinding createValidatingAdmissionPolicyBinding() {
-    return new ValidatingAdmissionPolicyBindingBuilder()
+  private MutatingAdmissionPolicyBinding createMutatingAdmissionPolicyBinding() {
+    return new MutatingAdmissionPolicyBindingBuilder()
         .withNewMetadata().withName("demo-binding-test.example.com").endMetadata()
         .withNewSpec()
         .withPolicyName("demo-policy.example.com")

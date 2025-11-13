@@ -63,5 +63,5 @@ public interface V1beta1AdmissionRegistrationAPIGroupDSL extends Client {
    *
    * @return the non-namespace operation for MutatingAdmissionPolicyBinding
    */
-  NonNamespaceOperation<MutatingAdmissionPolicyBinding, MutatingAdmissionPolicyBindingList, Resource<MutatingAdmissionPolicyBinding>> validatingMutatingAdmissionPoliciesBindings();
+  NonNamespaceOperation<MutatingAdmissionPolicyBinding, MutatingAdmissionPolicyBindingList, Resource<MutatingAdmissionPolicyBinding>> mutatingAdmissionPolicyBindings();
 }

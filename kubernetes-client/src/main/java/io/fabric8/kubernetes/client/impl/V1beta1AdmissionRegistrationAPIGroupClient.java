@@ -58,7 +58,7 @@ public class V1beta1AdmissionRegistrationAPIGroupClient extends ClientAdapter<V1
    * {@inheritDoc}
    */
   @Override
-  public NonNamespaceOperation<MutatingAdmissionPolicyBinding, MutatingAdmissionPolicyBindingList, Resource<MutatingAdmissionPolicyBinding>> validatingMutatingAdmissionPoliciesBindings() {
+  public NonNamespaceOperation<MutatingAdmissionPolicyBinding, MutatingAdmissionPolicyBindingList, Resource<MutatingAdmissionPolicyBinding>> mutatingAdmissionPolicyBindings() {
     return resources(MutatingAdmissionPolicyBinding.class, MutatingAdmissionPolicyBindingList.class);
   }
 

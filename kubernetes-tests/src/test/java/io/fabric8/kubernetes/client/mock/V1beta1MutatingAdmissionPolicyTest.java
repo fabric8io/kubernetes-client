@@ -16,10 +16,7 @@
 package io.fabric8.kubernetes.client.mock;
 
 import io.fabric8.kubernetes.api.model.HasMetadata;
-import io.fabric8.kubernetes.api.model.admissionregistration.v1beta1.ValidatingAdmissionPolicy;
-import io.fabric8.kubernetes.api.model.admissionregistration.v1beta1.ValidatingAdmissionPolicyBuilder;
-import io.fabric8.kubernetes.api.model.admissionregistration.v1beta1.ValidatingAdmissionPolicyList;
-import io.fabric8.kubernetes.api.model.admissionregistration.v1beta1.ValidatingAdmissionPolicyListBuilder;
+import io.fabric8.kubernetes.api.model.admissionregistration.v1beta1.*;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
 import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
@@ -32,18 +29,18 @@ import java.util.List;
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 
 @EnableKubernetesMockClient
-class V1beta1ValidatingAdmissionPolicyTest {
+class V1beta1MutatingAdmissionPolicyTest {
 
   KubernetesMockServer server;
   private KubernetesClient client;
 
   @Test
   void load() {
-    List<HasMetadata> items = client.load(getClass().getResourceAsStream("/test-v1beta1-validatingadmissionpolicy.yml"))
+    List<HasMetadata> items = client.load(getClass().getResourceAsStream("/test-v1beta1-mutatingadmissionpolicy.yml"))
         .items();
     assertThat(items).isNotNull().hasSize(1);
     AssertionsForClassTypes.assertThat(items.get(0))
-        .isInstanceOf(ValidatingAdmissionPolicy.class)
+        .isInstanceOf(MutatingAdmissionPolicy.class)
         .hasFieldOrPropertyWithValue("metadata.name", "demo-policy.example.com");
   }
 
@@ -51,16 +48,16 @@ class V1beta1ValidatingAdmissionPolicyTest {
   void get() {
     // Given
     server.expect().get()
-        .withPath("/apis/admissionregistration.k8s.io/v1beta1/validatingadmissionpolicies/demo-policy.example.com")
-        .andReturn(HttpURLConnection.HTTP_OK, createValidatingAdmissionPolicy())
+        .withPath("/apis/admissionregistration.k8s.io/v1beta1/mutatingadmissionpolicies/demo-policy.example.com")
+        .andReturn(HttpURLConnection.HTTP_OK, createMutatingAdmissionPolicy())
         .once();
 
     // When
-    ValidatingAdmissionPolicy validatingAdmissionPolicy = client.admissionRegistration().v1beta1()
-        .validatingAdmissionPolicies().withName("demo-policy.example.com").get();
+    MutatingAdmissionPolicy mutatingAdmissionPolicy = client.admissionRegistration().v1beta1()
+        .mutatingAdmissionPolicies().withName("demo-policy.example.com").get();
 
     // Then
-    AssertionsForClassTypes.assertThat(validatingAdmissionPolicy)
+    AssertionsForClassTypes.assertThat(mutatingAdmissionPolicy)
         .isNotNull()
         .hasFieldOrPropertyWithValue("metadata.name", "demo-policy.example.com");
   }
@@ -68,14 +65,14 @@ class V1beta1ValidatingAdmissionPolicyTest {
   @Test
   void list() {
     // Given
-    server.expect().get().withPath("/apis/admissionregistration.k8s.io/v1beta1/validatingadmissionpolicies")
-        .andReturn(HttpURLConnection.HTTP_OK, new ValidatingAdmissionPolicyListBuilder()
-            .addToItems(createValidatingAdmissionPolicy())
+    server.expect().get().withPath("/apis/admissionregistration.k8s.io/v1beta1/mutatingadmissionpolicies")
+        .andReturn(HttpURLConnection.HTTP_OK, new MutatingAdmissionPolicyListBuilder()
+            .addToItems(createMutatingAdmissionPolicy())
             .build())
         .once();
 
     // When
-    ValidatingAdmissionPolicyList flowSchemas = client.admissionRegistration().v1beta1().validatingAdmissionPolicies().list();
+    MutatingAdmissionPolicyList flowSchemas = client.admissionRegistration().v1beta1().mutatingAdmissionPolicies().list();
 
     // Then
     AssertionsForClassTypes.assertThat(flowSchemas).isNotNull();
@@ -87,43 +84,43 @@ class V1beta1ValidatingAdmissionPolicyTest {
   @Test
   void create() {
     // Given
-    ValidatingAdmissionPolicy validatingAdmissionPolicy = createValidatingAdmissionPolicy();
-    server.expect().post().withPath("/apis/admissionregistration.k8s.io/v1beta1/validatingadmissionpolicies")
-        .andReturn(HttpURLConnection.HTTP_OK, validatingAdmissionPolicy)
+    MutatingAdmissionPolicy admissionPolicy = createMutatingAdmissionPolicy();
+    server.expect().post().withPath("/apis/admissionregistration.k8s.io/v1beta1/mutatingadmissionpolicies")
+        .andReturn(HttpURLConnection.HTTP_OK, admissionPolicy)
         .once();
 
     // When
-    ValidatingAdmissionPolicy createdValidatingAdmissionPolicy = client.admissionRegistration().v1beta1()
-        .validatingAdmissionPolicies().resource(validatingAdmissionPolicy).create();
+    MutatingAdmissionPolicy mutatingAdmissionPolicy = client.admissionRegistration().v1beta1()
+        .mutatingAdmissionPolicies().resource(admissionPolicy).create();
 
     // Then
-    AssertionsForClassTypes.assertThat(createdValidatingAdmissionPolicy).isNotNull();
-    AssertionsForClassTypes.assertThat(createdValidatingAdmissionPolicy)
+    AssertionsForClassTypes.assertThat(mutatingAdmissionPolicy).isNotNull();
+    AssertionsForClassTypes.assertThat(mutatingAdmissionPolicy)
         .hasFieldOrPropertyWithValue("metadata.name", "demo-policy.example.com");
   }
 
   @Test
   void delete() {
     // Given
-    ValidatingAdmissionPolicy flowSchema = createValidatingAdmissionPolicy();
+    MutatingAdmissionPolicy flowSchema = createMutatingAdmissionPolicy();
     server.expect().delete()
-        .withPath("/apis/admissionregistration.k8s.io/v1beta1/validatingadmissionpolicies/demo-policy.example.com")
+        .withPath("/apis/admissionregistration.k8s.io/v1beta1/mutatingadmissionpolicies/demo-policy.example.com")
         .andReturn(HttpURLConnection.HTTP_OK, flowSchema)
         .once();
 
     // When
-    boolean isDeleted = client.admissionRegistration().v1beta1().validatingAdmissionPolicies()
+    boolean isDeleted = client.admissionRegistration().v1beta1().mutatingAdmissionPolicies()
         .withName("demo-policy.example.com").delete().size() == 1;
 
     // Then
     AssertionsForClassTypes.assertThat(isDeleted).isTrue();
   }
 
-  private ValidatingAdmissionPolicy createValidatingAdmissionPolicy() {
-    return new ValidatingAdmissionPolicyBuilder()
+  private MutatingAdmissionPolicy createMutatingAdmissionPolicy() {
+    return new MutatingAdmissionPolicyBuilder()
         .withNewMetadata().withName("demo-policy.example.com").endMetadata()
         .withNewSpec()
-        .addNewValidation().withExpression("object.spec.replicas <= 5").endValidation()
+        .addNewMutation().withNewApplyConfiguration("newExpression").withJsonPatch(new JSONPatch("someValue")).withPatchType("someType").endMutation()
         .withNewMatchConstraints()
         .addNewResourceRule()
         .addToApiGroups("apps")
