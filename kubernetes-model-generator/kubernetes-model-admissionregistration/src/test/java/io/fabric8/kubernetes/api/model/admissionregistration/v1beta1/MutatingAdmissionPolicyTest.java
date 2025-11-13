@@ -31,9 +31,10 @@ class MutatingAdmissionPolicyTest {
   @Test
   void deserializationAndSerializationShouldWorkAsExpected() throws IOException {
     // Given
-    String originalJson = new Scanner(Objects.requireNonNull(getClass().getResourceAsStream("/test-mutatingadmissionpolicy-v1beta1.json")))
-      .useDelimiter("\\A")
-      .next();
+    String originalJson = new Scanner(
+        Objects.requireNonNull(getClass().getResourceAsStream("/test-mutatingadmissionpolicy-v1beta1.json")))
+        .useDelimiter("\\A")
+        .next();
 
     // When
     final MutatingAdmissionPolicy validatingAdmissionPolicy = mapper.readValue(originalJson, MutatingAdmissionPolicy.class);
@@ -42,63 +43,63 @@ class MutatingAdmissionPolicyTest {
     // Then
     assertThat(serializedJson).isNotNull();
     assertThat(validatingAdmissionPolicy)
-      .isNotNull()
-      .hasFieldOrPropertyWithValue("metadata.name", "mutating-policy.example.com")
-      .hasFieldOrPropertyWithValue("spec.matchConstraints.resourceRules",
-        Collections.singletonList(new NamedRuleWithOperationsBuilder()
-          .addToApiGroups("apps")
-          .addToApiVersions("v1beta1")
-          .addToOperations("CREATE", "UPDATE")
-          .addToResources("deployments")
-          .addToResourceNames("resourceNamesValue")
-          .withScope("scopeValue")
-          .build()))
-      .hasFieldOrPropertyWithValue("spec.mutations", Collections.singletonList(new MutationBuilder()
-        .withNewApplyConfiguration("newExpression")
-        .withJsonPatch(new JSONPatch("newJsonPatch"))
-        .withPatchType("newPatchType")
-        .build()));
+        .isNotNull()
+        .hasFieldOrPropertyWithValue("metadata.name", "mutating-policy.example.com")
+        .hasFieldOrPropertyWithValue("spec.matchConstraints.resourceRules",
+            Collections.singletonList(new NamedRuleWithOperationsBuilder()
+                .addToApiGroups("apps")
+                .addToApiVersions("v1beta1")
+                .addToOperations("CREATE", "UPDATE")
+                .addToResources("deployments")
+                .addToResourceNames("resourceNamesValue")
+                .withScope("scopeValue")
+                .build()))
+        .hasFieldOrPropertyWithValue("spec.mutations", Collections.singletonList(new MutationBuilder()
+            .withNewApplyConfiguration("newExpression")
+            .withJsonPatch(new JSONPatch("newJsonPatch"))
+            .withPatchType("newPatchType")
+            .build()));
   }
 
   @Test
   void builderShouldCreateObject() {
     // Given
     MutatingAdmissionPolicyBuilder mutatingAdmissionPolicyBuilder = new MutatingAdmissionPolicyBuilder()
-      .withNewMetadata().withName("mutating-policy.example.com").endMetadata()
-      .withNewSpec()
-      .addNewMutation()
-      .withNewApplyConfiguration("newExpression")
-      .withJsonPatch(new JSONPatch("newJsonPatch"))
-      .withPatchType("newPatchType")
-      .endMutation()
-      .withNewMatchConstraints()
-      .addNewResourceRule()
-      .addToApiGroups("apps")
-      .addToApiVersions("v1beta1")
-      .addToOperations("CREATE", "UPDATE")
-      .addToResources("deployments")
-      .endResourceRule()
-      .endMatchConstraints()
-      .endSpec();
+        .withNewMetadata().withName("mutating-policy.example.com").endMetadata()
+        .withNewSpec()
+        .addNewMutation()
+        .withNewApplyConfiguration("newExpression")
+        .withJsonPatch(new JSONPatch("newJsonPatch"))
+        .withPatchType("newPatchType")
+        .endMutation()
+        .withNewMatchConstraints()
+        .addNewResourceRule()
+        .addToApiGroups("apps")
+        .addToApiVersions("v1beta1")
+        .addToOperations("CREATE", "UPDATE")
+        .addToResources("deployments")
+        .endResourceRule()
+        .endMatchConstraints()
+        .endSpec();
 
     // When
     MutatingAdmissionPolicy mutatingAdmissionPolicy = mutatingAdmissionPolicyBuilder.build();
 
     // Then
     assertThat(mutatingAdmissionPolicy)
-      .isNotNull()
-      .hasFieldOrPropertyWithValue("metadata.name", "mutating-policy.example.com")
-      .hasFieldOrPropertyWithValue("spec.matchConstraints.resourceRules",
-        Collections.singletonList(new NamedRuleWithOperationsBuilder()
-          .addToApiGroups("apps")
-          .addToApiVersions("v1beta1")
-          .addToOperations("CREATE", "UPDATE")
-          .addToResources("deployments")
-          .build()))
-      .hasFieldOrPropertyWithValue("spec.mutations", Collections.singletonList(new MutationBuilder()
-        .withNewApplyConfiguration("newExpression")
-        .withJsonPatch(new JSONPatch("newJsonPatch"))
-        .withPatchType("newPatchType")
-        .build()));
+        .isNotNull()
+        .hasFieldOrPropertyWithValue("metadata.name", "mutating-policy.example.com")
+        .hasFieldOrPropertyWithValue("spec.matchConstraints.resourceRules",
+            Collections.singletonList(new NamedRuleWithOperationsBuilder()
+                .addToApiGroups("apps")
+                .addToApiVersions("v1beta1")
+                .addToOperations("CREATE", "UPDATE")
+                .addToResources("deployments")
+                .build()))
+        .hasFieldOrPropertyWithValue("spec.mutations", Collections.singletonList(new MutationBuilder()
+            .withNewApplyConfiguration("newExpression")
+            .withJsonPatch(new JSONPatch("newJsonPatch"))
+            .withPatchType("newPatchType")
+            .build()));
   }
 }

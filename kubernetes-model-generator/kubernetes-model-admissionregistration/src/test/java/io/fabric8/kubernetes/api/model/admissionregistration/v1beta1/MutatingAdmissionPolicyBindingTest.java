@@ -32,7 +32,8 @@ class MutatingAdmissionPolicyBindingTest {
   @Test
   void deserializationAndSerializationShouldWorkAsExpected() throws IOException {
     // Given
-    String originalJson = new Scanner(Objects.requireNonNull(getClass().getResourceAsStream("/test-mutatingadmissionpolicybinding-v1beta1.json")))
+    String originalJson = new Scanner(
+        Objects.requireNonNull(getClass().getResourceAsStream("/test-mutatingadmissionpolicybinding-v1beta1.json")))
         .useDelimiter("\\A")
         .next();
 
