@@ -42,6 +42,7 @@ import lombok.experimental.Accessors;
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
+    "managedBy",
     "params",
     "pipelineRef",
     "pipelineSpec",
@@ -79,6 +80,8 @@ import lombok.experimental.Accessors;
 public class PipelineRunSpec implements Editable<PipelineRunSpecBuilder>, KubernetesResource
 {
 
+    @JsonProperty("managedBy")
+    private String managedBy;
     @JsonProperty("params")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<Param> params = new ArrayList<>();
@@ -114,8 +117,9 @@ public class PipelineRunSpec implements Editable<PipelineRunSpecBuilder>, Kubern
     public PipelineRunSpec() {
     }
 
-    public PipelineRunSpec(List<Param> params, PipelineRef pipelineRef, PipelineSpec pipelineSpec, Template podTemplate, List<PipelineResourceBinding> resources, String serviceAccountName, String status, List<PipelineTaskRunSpec> taskRunSpecs, Duration timeout, TimeoutFields timeouts, List<WorkspaceBinding> workspaces) {
+    public PipelineRunSpec(String managedBy, List<Param> params, PipelineRef pipelineRef, PipelineSpec pipelineSpec, Template podTemplate, List<PipelineResourceBinding> resources, String serviceAccountName, String status, List<PipelineTaskRunSpec> taskRunSpecs, Duration timeout, TimeoutFields timeouts, List<WorkspaceBinding> workspaces) {
         super();
+        this.managedBy = managedBy;
         this.params = params;
         this.pipelineRef = pipelineRef;
         this.pipelineSpec = pipelineSpec;
@@ -127,6 +131,22 @@ public class PipelineRunSpec implements Editable<PipelineRunSpecBuilder>, Kubern
         this.timeout = timeout;
         this.timeouts = timeouts;
         this.workspaces = workspaces;
+    }
+
+    /**
+     * ManagedBy indicates which controller is responsible for reconciling this resource. If unset or set to "tekton.dev/pipeline", the default Tekton controller will manage this resource. This field is immutable.
+     */
+    @JsonProperty("managedBy")
+    public String getManagedBy() {
+        return managedBy;
+    }
+
+    /**
+     * ManagedBy indicates which controller is responsible for reconciling this resource. If unset or set to "tekton.dev/pipeline", the default Tekton controller will manage this resource. This field is immutable.
+     */
+    @JsonProperty("managedBy")
+    public void setManagedBy(String managedBy) {
+        this.managedBy = managedBy;
     }
 
     /**

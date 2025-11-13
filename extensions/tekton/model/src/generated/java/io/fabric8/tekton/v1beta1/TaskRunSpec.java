@@ -44,6 +44,7 @@ import lombok.experimental.Accessors;
 @JsonPropertyOrder({
     "computeResources",
     "debug",
+    "managedBy",
     "params",
     "podTemplate",
     "resources",
@@ -87,6 +88,8 @@ public class TaskRunSpec implements Editable<TaskRunSpecBuilder>, KubernetesReso
     private ResourceRequirements computeResources;
     @JsonProperty("debug")
     private TaskRunDebug debug;
+    @JsonProperty("managedBy")
+    private String managedBy;
     @JsonProperty("params")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<Param> params = new ArrayList<>();
@@ -126,10 +129,11 @@ public class TaskRunSpec implements Editable<TaskRunSpecBuilder>, KubernetesReso
     public TaskRunSpec() {
     }
 
-    public TaskRunSpec(ResourceRequirements computeResources, TaskRunDebug debug, List<Param> params, Template podTemplate, TaskRunResources resources, Integer retries, String serviceAccountName, List<TaskRunSidecarOverride> sidecarOverrides, String status, String statusMessage, List<TaskRunStepOverride> stepOverrides, TaskRef taskRef, TaskSpec taskSpec, Duration timeout, List<WorkspaceBinding> workspaces) {
+    public TaskRunSpec(ResourceRequirements computeResources, TaskRunDebug debug, String managedBy, List<Param> params, Template podTemplate, TaskRunResources resources, Integer retries, String serviceAccountName, List<TaskRunSidecarOverride> sidecarOverrides, String status, String statusMessage, List<TaskRunStepOverride> stepOverrides, TaskRef taskRef, TaskSpec taskSpec, Duration timeout, List<WorkspaceBinding> workspaces) {
         super();
         this.computeResources = computeResources;
         this.debug = debug;
+        this.managedBy = managedBy;
         this.params = params;
         this.podTemplate = podTemplate;
         this.resources = resources;
@@ -175,6 +179,22 @@ public class TaskRunSpec implements Editable<TaskRunSpecBuilder>, KubernetesReso
     @JsonProperty("debug")
     public void setDebug(TaskRunDebug debug) {
         this.debug = debug;
+    }
+
+    /**
+     * ManagedBy indicates which controller is responsible for reconciling this resource. If unset or set to "tekton.dev/pipeline", the default Tekton controller will manage this resource. This field is immutable.
+     */
+    @JsonProperty("managedBy")
+    public String getManagedBy() {
+        return managedBy;
+    }
+
+    /**
+     * ManagedBy indicates which controller is responsible for reconciling this resource. If unset or set to "tekton.dev/pipeline", the default Tekton controller will manage this resource. This field is immutable.
+     */
+    @JsonProperty("managedBy")
+    public void setManagedBy(String managedBy) {
+        this.managedBy = managedBy;
     }
 
     /**

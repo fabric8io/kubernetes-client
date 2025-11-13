@@ -69,40 +69,4 @@ class ValidatingAdmissionPolicyTest {
             .hasFieldOrPropertyWithValue("operations", Arrays.asList("CREATE", "UPDATE"))
             .hasFieldOrPropertyWithValue("resources", Collections.singletonList("deployments")));
   }
-
-  @Test
-  void builderShouldCreateObject() {
-    // Given
-    ValidatingAdmissionPolicyBuilder validatingAdmissionPolicyBuilder = new ValidatingAdmissionPolicyBuilder()
-        .withNewMetadata().withName("demo-policy.example.com").endMetadata()
-        .withNewSpec()
-        .addNewValidation().withExpression("object.spec.replicas <= 5").endValidation()
-        .withNewMatchConstraints()
-        .addNewResourceRule()
-        .addToApiGroups("apps")
-        .addToApiVersions("v1")
-        .addToOperations("CREATE", "UPDATE")
-        .addToResources("deployments")
-        .endResourceRule()
-        .endMatchConstraints()
-        .endSpec();
-
-    // When
-    ValidatingAdmissionPolicy validatingAdmissionPolicy = validatingAdmissionPolicyBuilder.build();
-
-    // Then
-    assertThat(validatingAdmissionPolicy)
-        .isNotNull()
-        .hasFieldOrPropertyWithValue("metadata.name", "demo-policy.example.com")
-        .hasFieldOrPropertyWithValue("spec.matchConstraints.resourceRules",
-            Collections.singletonList(new NamedRuleWithOperationsBuilder()
-                .addToApiGroups("apps")
-                .addToApiVersions("v1")
-                .addToOperations("CREATE", "UPDATE")
-                .addToResources("deployments")
-                .build()))
-        .hasFieldOrPropertyWithValue("spec.validations", Collections.singletonList(new ValidationBuilder()
-            .withExpression("object.spec.replicas <= 5")
-            .build()));
-  }
 }

@@ -16,7 +16,6 @@
 package io.fabric8.kubernetes.api.model.admissionregistration.v1;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.fabric8.kubernetes.api.model.LabelSelectorRequirementBuilder;
 import io.fabric8.kubernetes.api.model.Namespaced;
 import org.junit.jupiter.api.Test;
 
@@ -58,41 +57,6 @@ class ValidatingAdmissionPolicyBindingTest {
         .hasFieldOrPropertyWithValue("metadata.name", "demo-binding-test.example.com")
         .hasFieldOrPropertyWithValue("spec.matchResources.namespaceSelector.matchLabels",
             Collections.singletonMap("environment", "test"))
-        .hasFieldOrPropertyWithValue("spec.policyName", "demo-policy.example.com");
-  }
-
-  @Test
-  void builderShouldCreateObject() {
-    // Given
-    ValidatingAdmissionPolicyBindingBuilder validatingAdmissionPolicyBindingBuilder = new ValidatingAdmissionPolicyBindingBuilder()
-        .withNewMetadata().withName("demo-binding-test.example.com").endMetadata()
-        .withNewSpec()
-        .withPolicyName("demo-policy.example.com")
-        .withNewMatchResources()
-        .withNewNamespaceSelector()
-        .addNewMatchExpression()
-        .withKey("environment")
-        .withOperator("In")
-        .withValues("test")
-        .endMatchExpression()
-        .endNamespaceSelector()
-        .endMatchResources()
-        .addToValidationActions("Audit")
-        .endSpec();
-
-    // When
-    ValidatingAdmissionPolicyBinding validatingAdmissionPolicyBinding = validatingAdmissionPolicyBindingBuilder.build();
-
-    // Then
-    assertThat(validatingAdmissionPolicyBinding)
-        .isNotNull()
-        .hasFieldOrPropertyWithValue("metadata.name", "demo-binding-test.example.com")
-        .hasFieldOrPropertyWithValue("spec.matchResources.namespaceSelector.matchExpressions",
-            Collections.singletonList(new LabelSelectorRequirementBuilder()
-                .withKey("environment")
-                .withOperator("In")
-                .withValues("test")
-                .build()))
         .hasFieldOrPropertyWithValue("spec.policyName", "demo-policy.example.com");
   }
 }

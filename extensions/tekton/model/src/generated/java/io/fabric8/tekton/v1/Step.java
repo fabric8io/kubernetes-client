@@ -47,6 +47,7 @@ import lombok.experimental.Accessors;
     "args",
     "command",
     "computeResources",
+    "displayName",
     "env",
     "envFrom",
     "image",
@@ -100,6 +101,8 @@ public class Step implements Editable<StepBuilder>, KubernetesResource
     private List<String> command = new ArrayList<>();
     @JsonProperty("computeResources")
     private ResourceRequirements computeResources;
+    @JsonProperty("displayName")
+    private String displayName;
     @JsonProperty("env")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<EnvVar> env = new ArrayList<>();
@@ -155,11 +158,12 @@ public class Step implements Editable<StepBuilder>, KubernetesResource
     public Step() {
     }
 
-    public Step(List<String> args, List<String> command, ResourceRequirements computeResources, List<EnvVar> env, List<EnvFromSource> envFrom, String image, String imagePullPolicy, String name, String onError, List<Param> params, Ref ref, List<StepResult> results, String script, SecurityContext securityContext, StepOutputConfig stderrConfig, StepOutputConfig stdoutConfig, Duration timeout, List<VolumeDevice> volumeDevices, List<VolumeMount> volumeMounts, List<WhenExpression> when, String workingDir, List<WorkspaceUsage> workspaces) {
+    public Step(List<String> args, List<String> command, ResourceRequirements computeResources, String displayName, List<EnvVar> env, List<EnvFromSource> envFrom, String image, String imagePullPolicy, String name, String onError, List<Param> params, Ref ref, List<StepResult> results, String script, SecurityContext securityContext, StepOutputConfig stderrConfig, StepOutputConfig stdoutConfig, Duration timeout, List<VolumeDevice> volumeDevices, List<VolumeMount> volumeMounts, List<WhenExpression> when, String workingDir, List<WorkspaceUsage> workspaces) {
         super();
         this.args = args;
         this.command = command;
         this.computeResources = computeResources;
+        this.displayName = displayName;
         this.env = env;
         this.envFrom = envFrom;
         this.image = image;
@@ -229,6 +233,22 @@ public class Step implements Editable<StepBuilder>, KubernetesResource
     @JsonProperty("computeResources")
     public void setComputeResources(ResourceRequirements computeResources) {
         this.computeResources = computeResources;
+    }
+
+    /**
+     * DisplayName is a user-facing name of the step that may be used to populate a UI.
+     */
+    @JsonProperty("displayName")
+    public String getDisplayName() {
+        return displayName;
+    }
+
+    /**
+     * DisplayName is a user-facing name of the step that may be used to populate a UI.
+     */
+    @JsonProperty("displayName")
+    public void setDisplayName(String displayName) {
+        this.displayName = displayName;
     }
 
     /**
