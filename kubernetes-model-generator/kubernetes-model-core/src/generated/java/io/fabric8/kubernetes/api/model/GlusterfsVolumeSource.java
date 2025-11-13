@@ -61,7 +61,7 @@ public class GlusterfsVolumeSource implements Editable<GlusterfsVolumeSourceBuil
     }
 
     /**
-     * endpoints is the endpoint name that details Glusterfs topology. More info: https://examples.k8s.io/volumes/glusterfs/README.md#create-a-pod
+     * endpoints is the endpoint name that details Glusterfs topology.
      */
     @JsonProperty("endpoints")
     public String getEndpoints() {
@@ -69,7 +69,7 @@ public class GlusterfsVolumeSource implements Editable<GlusterfsVolumeSourceBuil
     }
 
     /**
-     * endpoints is the endpoint name that details Glusterfs topology. More info: https://examples.k8s.io/volumes/glusterfs/README.md#create-a-pod
+     * endpoints is the endpoint name that details Glusterfs topology.
      */
     @JsonProperty("endpoints")
     public void setEndpoints(String endpoints) {

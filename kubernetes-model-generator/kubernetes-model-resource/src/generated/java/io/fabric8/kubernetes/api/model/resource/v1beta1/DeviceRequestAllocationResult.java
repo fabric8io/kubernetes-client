@@ -25,6 +25,7 @@ import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
+import io.fabric8.kubernetes.api.model.Quantity;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
 import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
@@ -41,10 +42,14 @@ import lombok.experimental.Accessors;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "adminAccess",
+    "bindingConditions",
+    "bindingFailureConditions",
+    "consumedCapacity",
     "device",
     "driver",
     "pool",
     "request",
+    "shareID",
     "tolerations"
 })
 @ToString
@@ -74,6 +79,15 @@ public class DeviceRequestAllocationResult implements Editable<DeviceRequestAllo
 
     @JsonProperty("adminAccess")
     private Boolean adminAccess;
+    @JsonProperty("bindingConditions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<String> bindingConditions = new ArrayList<>();
+    @JsonProperty("bindingFailureConditions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<String> bindingFailureConditions = new ArrayList<>();
+    @JsonProperty("consumedCapacity")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private Map<String, Quantity> consumedCapacity = new LinkedHashMap<>();
     @JsonProperty("device")
     private String device;
     @JsonProperty("driver")
@@ -82,6 +96,8 @@ public class DeviceRequestAllocationResult implements Editable<DeviceRequestAllo
     private String pool;
     @JsonProperty("request")
     private String request;
+    @JsonProperty("shareID")
+    private String shareID;
     @JsonProperty("tolerations")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<DeviceToleration> tolerations = new ArrayList<>();
@@ -94,13 +110,17 @@ public class DeviceRequestAllocationResult implements Editable<DeviceRequestAllo
     public DeviceRequestAllocationResult() {
     }
 
-    public DeviceRequestAllocationResult(Boolean adminAccess, String device, String driver, String pool, String request, List<DeviceToleration> tolerations) {
+    public DeviceRequestAllocationResult(Boolean adminAccess, List<String> bindingConditions, List<String> bindingFailureConditions, Map<String, Quantity> consumedCapacity, String device, String driver, String pool, String request, String shareID, List<DeviceToleration> tolerations) {
         super();
         this.adminAccess = adminAccess;
+        this.bindingConditions = bindingConditions;
+        this.bindingFailureConditions = bindingFailureConditions;
+        this.consumedCapacity = consumedCapacity;
         this.device = device;
         this.driver = driver;
         this.pool = pool;
         this.request = request;
+        this.shareID = shareID;
         this.tolerations = tolerations;
     }
 
@@ -118,6 +138,57 @@ public class DeviceRequestAllocationResult implements Editable<DeviceRequestAllo
     @JsonProperty("adminAccess")
     public void setAdminAccess(Boolean adminAccess) {
         this.adminAccess = adminAccess;
+    }
+
+    /**
+     * BindingConditions contains a copy of the BindingConditions from the corresponding ResourceSlice at the time of allocation.<br><p> <br><p> This is an alpha field and requires enabling the DRADeviceBindingConditions and DRAResourceClaimDeviceStatus feature gates.
+     */
+    @JsonProperty("bindingConditions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public List<String> getBindingConditions() {
+        return bindingConditions;
+    }
+
+    /**
+     * BindingConditions contains a copy of the BindingConditions from the corresponding ResourceSlice at the time of allocation.<br><p> <br><p> This is an alpha field and requires enabling the DRADeviceBindingConditions and DRAResourceClaimDeviceStatus feature gates.
+     */
+    @JsonProperty("bindingConditions")
+    public void setBindingConditions(List<String> bindingConditions) {
+        this.bindingConditions = bindingConditions;
+    }
+
+    /**
+     * BindingFailureConditions contains a copy of the BindingFailureConditions from the corresponding ResourceSlice at the time of allocation.<br><p> <br><p> This is an alpha field and requires enabling the DRADeviceBindingConditions and DRAResourceClaimDeviceStatus feature gates.
+     */
+    @JsonProperty("bindingFailureConditions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public List<String> getBindingFailureConditions() {
+        return bindingFailureConditions;
+    }
+
+    /**
+     * BindingFailureConditions contains a copy of the BindingFailureConditions from the corresponding ResourceSlice at the time of allocation.<br><p> <br><p> This is an alpha field and requires enabling the DRADeviceBindingConditions and DRAResourceClaimDeviceStatus feature gates.
+     */
+    @JsonProperty("bindingFailureConditions")
+    public void setBindingFailureConditions(List<String> bindingFailureConditions) {
+        this.bindingFailureConditions = bindingFailureConditions;
+    }
+
+    /**
+     * ConsumedCapacity tracks the amount of capacity consumed per device as part of the claim request. The consumed amount may differ from the requested amount: it is rounded up to the nearest valid value based on the device’s requestPolicy if applicable (i.e., may not be less than the requested amount).<br><p> <br><p> The total consumed capacity for each device must not exceed the DeviceCapacity's Value.<br><p> <br><p> This field is populated only for devices that allow multiple allocations. All capacity entries are included, even if the consumed amount is zero.
+     */
+    @JsonProperty("consumedCapacity")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public Map<String, Quantity> getConsumedCapacity() {
+        return consumedCapacity;
+    }
+
+    /**
+     * ConsumedCapacity tracks the amount of capacity consumed per device as part of the claim request. The consumed amount may differ from the requested amount: it is rounded up to the nearest valid value based on the device’s requestPolicy if applicable (i.e., may not be less than the requested amount).<br><p> <br><p> The total consumed capacity for each device must not exceed the DeviceCapacity's Value.<br><p> <br><p> This field is populated only for devices that allow multiple allocations. All capacity entries are included, even if the consumed amount is zero.
+     */
+    @JsonProperty("consumedCapacity")
+    public void setConsumedCapacity(Map<String, Quantity> consumedCapacity) {
+        this.consumedCapacity = consumedCapacity;
     }
 
     /**
@@ -182,6 +253,22 @@ public class DeviceRequestAllocationResult implements Editable<DeviceRequestAllo
     @JsonProperty("request")
     public void setRequest(String request) {
         this.request = request;
+    }
+
+    /**
+     * ShareID uniquely identifies an individual allocation share of the device, used when the device supports multiple simultaneous allocations. It serves as an additional map key to differentiate concurrent shares of the same device.
+     */
+    @JsonProperty("shareID")
+    public String getShareID() {
+        return shareID;
+    }
+
+    /**
+     * ShareID uniquely identifies an individual allocation share of the device, used when the device supports multiple simultaneous allocations. It serves as an additional map key to differentiate concurrent shares of the same device.
+     */
+    @JsonProperty("shareID")
+    public void setShareID(String shareID) {
+        this.shareID = shareID;
     }
 
     /**

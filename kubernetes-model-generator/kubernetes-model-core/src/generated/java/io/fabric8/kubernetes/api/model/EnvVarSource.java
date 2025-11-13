@@ -25,6 +25,7 @@ import lombok.experimental.Accessors;
 @JsonPropertyOrder({
     "configMapKeyRef",
     "fieldRef",
+    "fileKeyRef",
     "resourceFieldRef",
     "secretKeyRef"
 })
@@ -43,6 +44,8 @@ public class EnvVarSource implements Editable<EnvVarSourceBuilder>, KubernetesRe
     private ConfigMapKeySelector configMapKeyRef;
     @JsonProperty("fieldRef")
     private ObjectFieldSelector fieldRef;
+    @JsonProperty("fileKeyRef")
+    private FileKeySelector fileKeyRef;
     @JsonProperty("resourceFieldRef")
     private ResourceFieldSelector resourceFieldRef;
     @JsonProperty("secretKeyRef")
@@ -56,10 +59,11 @@ public class EnvVarSource implements Editable<EnvVarSourceBuilder>, KubernetesRe
     public EnvVarSource() {
     }
 
-    public EnvVarSource(ConfigMapKeySelector configMapKeyRef, ObjectFieldSelector fieldRef, ResourceFieldSelector resourceFieldRef, SecretKeySelector secretKeyRef) {
+    public EnvVarSource(ConfigMapKeySelector configMapKeyRef, ObjectFieldSelector fieldRef, FileKeySelector fileKeyRef, ResourceFieldSelector resourceFieldRef, SecretKeySelector secretKeyRef) {
         super();
         this.configMapKeyRef = configMapKeyRef;
         this.fieldRef = fieldRef;
+        this.fileKeyRef = fileKeyRef;
         this.resourceFieldRef = resourceFieldRef;
         this.secretKeyRef = secretKeyRef;
     }
@@ -94,6 +98,22 @@ public class EnvVarSource implements Editable<EnvVarSourceBuilder>, KubernetesRe
     @JsonProperty("fieldRef")
     public void setFieldRef(ObjectFieldSelector fieldRef) {
         this.fieldRef = fieldRef;
+    }
+
+    /**
+     * EnvVarSource represents a source for the value of an EnvVar.
+     */
+    @JsonProperty("fileKeyRef")
+    public FileKeySelector getFileKeyRef() {
+        return fileKeyRef;
+    }
+
+    /**
+     * EnvVarSource represents a source for the value of an EnvVar.
+     */
+    @JsonProperty("fileKeyRef")
+    public void setFileKeyRef(FileKeySelector fileKeyRef) {
+        this.fileKeyRef = fileKeyRef;
     }
 
     /**

@@ -158,7 +158,7 @@ public class JobSpec implements Editable<JobSpecBuilder>, KubernetesResource
     }
 
     /**
-     * Specifies the number of retries before marking this job failed. Defaults to 6
+     * Specifies the number of retries before marking this job failed. Defaults to 6, unless backoffLimitPerIndex (only Indexed Job) is specified. When backoffLimitPerIndex is specified, backoffLimit defaults to 2147483647.
      */
     @JsonProperty("backoffLimit")
     public Integer getBackoffLimit() {
@@ -166,7 +166,7 @@ public class JobSpec implements Editable<JobSpecBuilder>, KubernetesResource
     }
 
     /**
-     * Specifies the number of retries before marking this job failed. Defaults to 6
+     * Specifies the number of retries before marking this job failed. Defaults to 6, unless backoffLimitPerIndex (only Indexed Job) is specified. When backoffLimitPerIndex is specified, backoffLimit defaults to 2147483647.
      */
     @JsonProperty("backoffLimit")
     public void setBackoffLimit(Integer backoffLimit) {
@@ -302,7 +302,7 @@ public class JobSpec implements Editable<JobSpecBuilder>, KubernetesResource
     }
 
     /**
-     * podReplacementPolicy specifies when to create replacement Pods. Possible values are: - TerminatingOrFailed means that we recreate pods<br><p>   when they are terminating (has a metadata.deletionTimestamp) or failed.<br><p> - Failed means to wait until a previously created Pod is fully terminated (has phase<br><p>   Failed or Succeeded) before creating a replacement Pod.<br><p> <br><p> When using podFailurePolicy, Failed is the the only allowed value. TerminatingOrFailed and Failed are allowed values when podFailurePolicy is not in use. This is an beta field. To use this, enable the JobPodReplacementPolicy feature toggle. This is on by default.
+     * podReplacementPolicy specifies when to create replacement Pods. Possible values are: - TerminatingOrFailed means that we recreate pods<br><p>   when they are terminating (has a metadata.deletionTimestamp) or failed.<br><p> - Failed means to wait until a previously created Pod is fully terminated (has phase<br><p>   Failed or Succeeded) before creating a replacement Pod.<br><p> <br><p> When using podFailurePolicy, Failed is the the only allowed value. TerminatingOrFailed and Failed are allowed values when podFailurePolicy is not in use.
      */
     @JsonProperty("podReplacementPolicy")
     public String getPodReplacementPolicy() {
@@ -310,7 +310,7 @@ public class JobSpec implements Editable<JobSpecBuilder>, KubernetesResource
     }
 
     /**
-     * podReplacementPolicy specifies when to create replacement Pods. Possible values are: - TerminatingOrFailed means that we recreate pods<br><p>   when they are terminating (has a metadata.deletionTimestamp) or failed.<br><p> - Failed means to wait until a previously created Pod is fully terminated (has phase<br><p>   Failed or Succeeded) before creating a replacement Pod.<br><p> <br><p> When using podFailurePolicy, Failed is the the only allowed value. TerminatingOrFailed and Failed are allowed values when podFailurePolicy is not in use. This is an beta field. To use this, enable the JobPodReplacementPolicy feature toggle. This is on by default.
+     * podReplacementPolicy specifies when to create replacement Pods. Possible values are: - TerminatingOrFailed means that we recreate pods<br><p>   when they are terminating (has a metadata.deletionTimestamp) or failed.<br><p> - Failed means to wait until a previously created Pod is fully terminated (has phase<br><p>   Failed or Succeeded) before creating a replacement Pod.<br><p> <br><p> When using podFailurePolicy, Failed is the the only allowed value. TerminatingOrFailed and Failed are allowed values when podFailurePolicy is not in use.
      */
     @JsonProperty("podReplacementPolicy")
     public void setPodReplacementPolicy(String podReplacementPolicy) {
