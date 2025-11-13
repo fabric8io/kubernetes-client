@@ -15,14 +15,14 @@
  */
 package io.fabric8.kubernetes.client;
 
-import io.fabric8.kubernetes.api.model.admissionregistration.v1beta1.MutatingWebhookConfiguration;
-import io.fabric8.kubernetes.api.model.admissionregistration.v1beta1.ValidatingWebhookConfigurationList;
-import io.fabric8.kubernetes.api.model.admissionregistration.v1beta1.ValidatingWebhookConfiguration;
-import io.fabric8.kubernetes.api.model.admissionregistration.v1beta1.MutatingWebhookConfigurationList;
 import io.fabric8.kubernetes.api.model.admissionregistration.v1beta1.MutatingAdmissionPolicy;
-import io.fabric8.kubernetes.api.model.admissionregistration.v1beta1.MutatingAdmissionPolicyList;
 import io.fabric8.kubernetes.api.model.admissionregistration.v1beta1.MutatingAdmissionPolicyBinding;
 import io.fabric8.kubernetes.api.model.admissionregistration.v1beta1.MutatingAdmissionPolicyBindingList;
+import io.fabric8.kubernetes.api.model.admissionregistration.v1beta1.MutatingAdmissionPolicyList;
+import io.fabric8.kubernetes.api.model.admissionregistration.v1beta1.MutatingWebhookConfiguration;
+import io.fabric8.kubernetes.api.model.admissionregistration.v1beta1.MutatingWebhookConfigurationList;
+import io.fabric8.kubernetes.api.model.admissionregistration.v1beta1.ValidatingWebhookConfiguration;
+import io.fabric8.kubernetes.api.model.admissionregistration.v1beta1.ValidatingWebhookConfigurationList;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.NonNamespaceOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
@@ -50,7 +50,8 @@ public interface V1beta1AdmissionRegistrationAPIGroupDSL extends Client {
 
   /**
    * Gets a non-namespace operation for MutatingAdmissionPolicy resources.
-   * MutatingAdmissionPolicies describe the definition of admission mutation policies that mutate objects coming into the admission chain.
+   * MutatingAdmissionPolicies describe the definition of admission mutation policies that mutate objects coming into the
+   * admission chain.
    *
    * @return the non-namespace operation for MutatingAdmissionPolicy
    */
