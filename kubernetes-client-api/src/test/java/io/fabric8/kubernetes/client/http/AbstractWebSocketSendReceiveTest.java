@@ -31,7 +31,7 @@ import java.util.concurrent.TimeUnit;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public abstract class AbstractWebSocketSendTest {
+public abstract class AbstractWebSocketSendReceiveTest {
 
   private static DefaultMockServer server;
 
@@ -83,6 +83,50 @@ public abstract class AbstractWebSocketSendTest {
       final String result = receivedText.poll(10L, TimeUnit.SECONDS);
       // Then
       assertThat(result).isEqualTo("received");
+    }
+  }
+
+  @Test
+  @DisplayName("receive multiframe message")
+  void multiframeReceive() throws Exception {
+    final String multiframe = "a".repeat(66000);
+    try (
+        final HttpClient client = getHttpClientFactory().newBuilder().build();
+        // ensure that a derived builder works
+        final var derivedClient = client.newBuilder().build()) {
+      // Given
+      server.expect().withPath("/receive-text")
+          .andUpgradeToWebSocket()
+          .open()
+          .waitFor(5)
+          .andEmit("received")
+          .waitFor(5)
+          .andEmit(multiframe)
+          .done()
+          .always();
+      final BlockingQueue<String> receivedText = new ArrayBlockingQueue<>(1);
+      // TODO: JDK HttpClient implementation doesn't work with ws URIs
+      // - Currently we are using an HttpRequest.Builder which is then
+      //   mapped to a WebSocket.Builder. We should probably use the WebSocket.Builder
+      //   directly
+      //.uri(URI.create(String.format("ws://%s:%s/receive-text", server.getHostName(), server.getPort())))
+      derivedClient.newWebSocketBuilder()
+          .uri(URI.create(server.url("receive-text")))
+          .buildAsync(new WebSocket.Listener() {
+            @Override
+            public void onMessage(WebSocket webSocket, String text) {
+              assertTrue(receivedText.offer(text));
+              webSocket.request();
+            }
+          }).get(10L, TimeUnit.SECONDS);
+      // When
+      String result = receivedText.poll(10L, TimeUnit.SECONDS);
+      // Then
+      assertThat(result).isEqualTo("received");
+
+      result = receivedText.poll(10L, TimeUnit.SECONDS);
+      // Then
+      assertThat(result).isEqualTo(multiframe);
     }
   }
 

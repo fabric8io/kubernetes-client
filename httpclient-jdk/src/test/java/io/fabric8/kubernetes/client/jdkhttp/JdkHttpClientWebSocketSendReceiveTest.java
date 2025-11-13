@@ -13,15 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8.kubernetes.client.okhttp;
+package io.fabric8.kubernetes.client.jdkhttp;
 
-import io.fabric8.kubernetes.client.http.AbstractWebSocketSendTest;
+import io.fabric8.kubernetes.client.http.AbstractWebSocketSendReceiveTest;
 import io.fabric8.kubernetes.client.http.HttpClient;
 
 @SuppressWarnings("java:S2187")
-public class OkHttpWebSocketSendTest extends AbstractWebSocketSendTest {
+public class JdkHttpClientWebSocketSendReceiveTest extends AbstractWebSocketSendReceiveTest {
   @Override
   protected HttpClient.Factory getHttpClientFactory() {
-    return new OkHttpClientFactory();
+    return new JdkHttpClientFactory();
   }
 }
