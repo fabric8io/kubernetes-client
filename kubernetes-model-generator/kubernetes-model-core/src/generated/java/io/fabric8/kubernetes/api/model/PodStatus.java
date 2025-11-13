@@ -28,6 +28,7 @@ import lombok.experimental.Accessors;
     "conditions",
     "containerStatuses",
     "ephemeralContainerStatuses",
+    "extendedResourceClaimStatus",
     "hostIP",
     "hostIPs",
     "initContainerStatuses",
@@ -63,6 +64,8 @@ public class PodStatus implements Editable<PodStatusBuilder>, KubernetesResource
     @JsonProperty("ephemeralContainerStatuses")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<ContainerStatus> ephemeralContainerStatuses = new ArrayList<>();
+    @JsonProperty("extendedResourceClaimStatus")
+    private PodExtendedResourceClaimStatus extendedResourceClaimStatus;
     @JsonProperty("hostIP")
     private String hostIP;
     @JsonProperty("hostIPs")
@@ -104,11 +107,12 @@ public class PodStatus implements Editable<PodStatusBuilder>, KubernetesResource
     public PodStatus() {
     }
 
-    public PodStatus(List<PodCondition> conditions, List<ContainerStatus> containerStatuses, List<ContainerStatus> ephemeralContainerStatuses, String hostIP, List<HostIP> hostIPs, List<ContainerStatus> initContainerStatuses, String message, String nominatedNodeName, Long observedGeneration, String phase, String podIP, List<PodIP> podIPs, String qosClass, String reason, String resize, List<PodResourceClaimStatus> resourceClaimStatuses, String startTime) {
+    public PodStatus(List<PodCondition> conditions, List<ContainerStatus> containerStatuses, List<ContainerStatus> ephemeralContainerStatuses, PodExtendedResourceClaimStatus extendedResourceClaimStatus, String hostIP, List<HostIP> hostIPs, List<ContainerStatus> initContainerStatuses, String message, String nominatedNodeName, Long observedGeneration, String phase, String podIP, List<PodIP> podIPs, String qosClass, String reason, String resize, List<PodResourceClaimStatus> resourceClaimStatuses, String startTime) {
         super();
         this.conditions = conditions;
         this.containerStatuses = containerStatuses;
         this.ephemeralContainerStatuses = ephemeralContainerStatuses;
+        this.extendedResourceClaimStatus = extendedResourceClaimStatus;
         this.hostIP = hostIP;
         this.hostIPs = hostIPs;
         this.initContainerStatuses = initContainerStatuses;
@@ -174,6 +178,22 @@ public class PodStatus implements Editable<PodStatusBuilder>, KubernetesResource
     @JsonProperty("ephemeralContainerStatuses")
     public void setEphemeralContainerStatuses(List<ContainerStatus> ephemeralContainerStatuses) {
         this.ephemeralContainerStatuses = ephemeralContainerStatuses;
+    }
+
+    /**
+     * PodStatus represents information about the status of a pod. Status may trail the actual state of a system, especially if the node that hosts the pod cannot contact the control plane.
+     */
+    @JsonProperty("extendedResourceClaimStatus")
+    public PodExtendedResourceClaimStatus getExtendedResourceClaimStatus() {
+        return extendedResourceClaimStatus;
+    }
+
+    /**
+     * PodStatus represents information about the status of a pod. Status may trail the actual state of a system, especially if the node that hosts the pod cannot contact the control plane.
+     */
+    @JsonProperty("extendedResourceClaimStatus")
+    public void setExtendedResourceClaimStatus(PodExtendedResourceClaimStatus extendedResourceClaimStatus) {
+        this.extendedResourceClaimStatus = extendedResourceClaimStatus;
     }
 
     /**

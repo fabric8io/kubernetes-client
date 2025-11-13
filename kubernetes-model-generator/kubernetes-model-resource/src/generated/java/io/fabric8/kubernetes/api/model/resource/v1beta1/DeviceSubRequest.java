@@ -41,6 +41,7 @@ import lombok.experimental.Accessors;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "allocationMode",
+    "capacity",
     "count",
     "deviceClassName",
     "name",
@@ -74,6 +75,8 @@ public class DeviceSubRequest implements Editable<DeviceSubRequestBuilder>, Kube
 
     @JsonProperty("allocationMode")
     private String allocationMode;
+    @JsonProperty("capacity")
+    private CapacityRequirements capacity;
     @JsonProperty("count")
     private Long count;
     @JsonProperty("deviceClassName")
@@ -95,9 +98,10 @@ public class DeviceSubRequest implements Editable<DeviceSubRequestBuilder>, Kube
     public DeviceSubRequest() {
     }
 
-    public DeviceSubRequest(String allocationMode, Long count, String deviceClassName, String name, List<DeviceSelector> selectors, List<DeviceToleration> tolerations) {
+    public DeviceSubRequest(String allocationMode, CapacityRequirements capacity, Long count, String deviceClassName, String name, List<DeviceSelector> selectors, List<DeviceToleration> tolerations) {
         super();
         this.allocationMode = allocationMode;
+        this.capacity = capacity;
         this.count = count;
         this.deviceClassName = deviceClassName;
         this.name = name;
@@ -119,6 +123,22 @@ public class DeviceSubRequest implements Editable<DeviceSubRequestBuilder>, Kube
     @JsonProperty("allocationMode")
     public void setAllocationMode(String allocationMode) {
         this.allocationMode = allocationMode;
+    }
+
+    /**
+     * DeviceSubRequest describes a request for device provided in the claim.spec.devices.requests[].firstAvailable array. Each is typically a request for a single resource like a device, but can also ask for several identical devices.<br><p> <br><p> DeviceSubRequest is similar to Request, but doesn't expose the AdminAccess or FirstAvailable fields, as those can only be set on the top-level request. AdminAccess is not supported for requests with a prioritized list, and recursive FirstAvailable fields are not supported.
+     */
+    @JsonProperty("capacity")
+    public CapacityRequirements getCapacity() {
+        return capacity;
+    }
+
+    /**
+     * DeviceSubRequest describes a request for device provided in the claim.spec.devices.requests[].firstAvailable array. Each is typically a request for a single resource like a device, but can also ask for several identical devices.<br><p> <br><p> DeviceSubRequest is similar to Request, but doesn't expose the AdminAccess or FirstAvailable fields, as those can only be set on the top-level request. AdminAccess is not supported for requests with a prioritized list, and recursive FirstAvailable fields are not supported.
+     */
+    @JsonProperty("capacity")
+    public void setCapacity(CapacityRequirements capacity) {
+        this.capacity = capacity;
     }
 
     /**

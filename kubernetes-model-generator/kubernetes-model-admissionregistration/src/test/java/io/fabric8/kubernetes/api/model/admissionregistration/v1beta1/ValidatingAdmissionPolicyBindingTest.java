@@ -17,6 +17,8 @@ package io.fabric8.kubernetes.api.model.admissionregistration.v1beta1;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.fabric8.kubernetes.api.model.LabelSelectorRequirementBuilder;
+import io.fabric8.kubernetes.api.model.admissionregistration.v1.ValidatingAdmissionPolicyBinding;
+import io.fabric8.kubernetes.api.model.admissionregistration.v1.ValidatingAdmissionPolicyBindingBuilder;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;

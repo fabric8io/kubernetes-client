@@ -66,7 +66,8 @@
         "DefaultContainerResourceRequirements",
         "DefaultImagePullBackOffTimeout",
         "DefaultMaximumResolutionTimeout",
-        "DefaultSidecarLogPollingInterval"
+        "DefaultSidecarLogPollingInterval",
+        "DefaultStepRefConcurrencyLimit"
       ],
       "properties": {
         "DefaultAAPodTemplate": {
@@ -124,6 +125,11 @@
           "description": "DefaultSidecarLogPollingInterval specifies how frequently (as a time.Duration) the Tekton sidecar log results container polls for step completion files. This value is loaded from the 'sidecar-log-polling-interval' key in the config-defaults ConfigMap. It is used to control the responsiveness and resource usage of the sidecar in both production and test environments.",
           "type": "integer",
           "format": "int64",
+          "default": 0
+        },
+        "DefaultStepRefConcurrencyLimit": {
+          "type": "integer",
+          "format": "int32",
           "default": 0
         },
         "DefaultTaskRunWorkspaceBinding": {
@@ -4579,6 +4585,10 @@
       "description": "PipelineRunSpec defines the desired state of PipelineRun",
       "type": "object",
       "properties": {
+        "managedBy": {
+          "description": "ManagedBy indicates which controller is responsible for reconciling this resource. If unset or set to \"tekton.dev/pipeline\", the default Tekton controller will manage this resource. This field is immutable.",
+          "type": "string"
+        },
         "params": {
           "description": "Params is a list of parameter names and values.",
           "type": "array",
@@ -4951,7 +4961,7 @@
           "$ref": "#/definitions/dev.tekton.v1.EmbeddedTask"
         },
         "timeout": {
-          "description": "Time after which the TaskRun times out. Defaults to 1 hour. Refer Go's ParseDuration documentation for expected format: https://golang.org/pkg/time/#ParseDuration",
+          "description": "Duration after which the TaskRun times out. Defaults to 1 hour. Refer Go's ParseDuration documentation for expected format: https://golang.org/pkg/time/#ParseDuration",
           "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.Duration"
         },
         "when": {
@@ -5083,6 +5093,10 @@
             "$ref": "#/definitions/dev.tekton.v1.TaskRunStepSpec"
           },
           "x-kubernetes-list-type": "atomic"
+        },
+        "timeout": {
+          "description": "Duration after which the TaskRun times out. Overrides the timeout specified on the Task's spec if specified. Takes lower precedence to PipelineRun's `spec.timeouts.tasks` Refer Go's ParseDuration documentation for expected format: https://golang.org/pkg/time/#ParseDuration",
+          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.Duration"
         }
       },
       "x-fabric8-info": {
@@ -5553,6 +5567,10 @@
           "description": "ComputeResources required by this Step. Cannot be updated. More info: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/",
           "default": {},
           "$ref": "#/definitions/io.k8s.api.core.v1.ResourceRequirements"
+        },
+        "displayName": {
+          "description": "DisplayName is a user-facing name of the step that may be used to populate a UI.",
+          "type": "string"
         },
         "env": {
           "description": "List of environment variables to set in the Step. Cannot be updated.",
@@ -6221,6 +6239,10 @@
         },
         "debug": {
           "$ref": "#/definitions/dev.tekton.v1.TaskRunDebug"
+        },
+        "managedBy": {
+          "description": "ManagedBy indicates which controller is responsible for reconciling this resource. If unset or set to \"tekton.dev/pipeline\", the default Tekton controller will manage this resource. This field is immutable.",
+          "type": "string"
         },
         "params": {
           "type": "array",
@@ -8760,6 +8782,10 @@
       "description": "PipelineRunSpec defines the desired state of PipelineRun",
       "type": "object",
       "properties": {
+        "managedBy": {
+          "description": "ManagedBy indicates which controller is responsible for reconciling this resource. If unset or set to \"tekton.dev/pipeline\", the default Tekton controller will manage this resource. This field is immutable.",
+          "type": "string"
+        },
         "params": {
           "description": "Params is a list of parameter names and values.",
           "type": "array",
@@ -9188,7 +9214,7 @@
           "$ref": "#/definitions/dev.tekton.v1beta1.EmbeddedTask"
         },
         "timeout": {
-          "description": "Time after which the TaskRun times out. Defaults to 1 hour. Refer Go's ParseDuration documentation for expected format: https://golang.org/pkg/time/#ParseDuration",
+          "description": "Duration after which the TaskRun times out. Defaults to 1 hour. Refer Go's ParseDuration documentation for expected format: https://golang.org/pkg/time/#ParseDuration",
           "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.Duration"
         },
         "when": {
@@ -9414,6 +9440,10 @@
         },
         "taskServiceAccountName": {
           "type": "string"
+        },
+        "timeout": {
+          "description": "Duration after which the TaskRun times out. Refer Go's ParseDuration documentation for expected format: https://golang.org/pkg/time/#ParseDuration",
+          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.Duration"
         }
       },
       "x-fabric8-info": {
@@ -9864,6 +9894,10 @@
             "default": ""
           },
           "x-kubernetes-list-type": "atomic"
+        },
+        "displayName": {
+          "description": "DisplayName is a user-facing name of the step that may be used to populate a UI.",
+          "type": "string"
         },
         "env": {
           "description": "List of environment variables to set in the container. Cannot be updated.",
@@ -10928,6 +10962,10 @@
         },
         "debug": {
           "$ref": "#/definitions/dev.tekton.v1beta1.TaskRunDebug"
+        },
+        "managedBy": {
+          "description": "ManagedBy indicates which controller is responsible for reconciling this resource. If unset or set to \"tekton.dev/pipeline\", the default Tekton controller will manage this resource. This field is immutable.",
+          "type": "string"
         },
         "params": {
           "type": "array",

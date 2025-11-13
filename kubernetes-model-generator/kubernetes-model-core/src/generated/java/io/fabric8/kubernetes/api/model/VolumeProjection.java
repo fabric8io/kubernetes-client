@@ -26,6 +26,7 @@ import lombok.experimental.Accessors;
     "clusterTrustBundle",
     "configMap",
     "downwardAPI",
+    "podCertificate",
     "secret",
     "serviceAccountToken"
 })
@@ -46,6 +47,8 @@ public class VolumeProjection implements Editable<VolumeProjectionBuilder>, Kube
     private ConfigMapProjection configMap;
     @JsonProperty("downwardAPI")
     private DownwardAPIProjection downwardAPI;
+    @JsonProperty("podCertificate")
+    private PodCertificateProjection podCertificate;
     @JsonProperty("secret")
     private SecretProjection secret;
     @JsonProperty("serviceAccountToken")
@@ -59,11 +62,12 @@ public class VolumeProjection implements Editable<VolumeProjectionBuilder>, Kube
     public VolumeProjection() {
     }
 
-    public VolumeProjection(ClusterTrustBundleProjection clusterTrustBundle, ConfigMapProjection configMap, DownwardAPIProjection downwardAPI, SecretProjection secret, ServiceAccountTokenProjection serviceAccountToken) {
+    public VolumeProjection(ClusterTrustBundleProjection clusterTrustBundle, ConfigMapProjection configMap, DownwardAPIProjection downwardAPI, PodCertificateProjection podCertificate, SecretProjection secret, ServiceAccountTokenProjection serviceAccountToken) {
         super();
         this.clusterTrustBundle = clusterTrustBundle;
         this.configMap = configMap;
         this.downwardAPI = downwardAPI;
+        this.podCertificate = podCertificate;
         this.secret = secret;
         this.serviceAccountToken = serviceAccountToken;
     }
@@ -114,6 +118,22 @@ public class VolumeProjection implements Editable<VolumeProjectionBuilder>, Kube
     @JsonProperty("downwardAPI")
     public void setDownwardAPI(DownwardAPIProjection downwardAPI) {
         this.downwardAPI = downwardAPI;
+    }
+
+    /**
+     * Projection that may be projected along with other supported volume types. Exactly one of these fields must be set.
+     */
+    @JsonProperty("podCertificate")
+    public PodCertificateProjection getPodCertificate() {
+        return podCertificate;
+    }
+
+    /**
+     * Projection that may be projected along with other supported volume types. Exactly one of these fields must be set.
+     */
+    @JsonProperty("podCertificate")
+    public void setPodCertificate(PodCertificateProjection podCertificate) {
+        this.podCertificate = podCertificate;
     }
 
     /**
