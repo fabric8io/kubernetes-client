@@ -41,25 +41,25 @@ class V1beta1MutatingAdmissionPolicyTest {
     assertThat(items).isNotNull().hasSize(1);
     AssertionsForClassTypes.assertThat(items.get(0))
         .isInstanceOf(MutatingAdmissionPolicy.class)
-        .hasFieldOrPropertyWithValue("metadata.name", "demo-policy.example.com");
+        .hasFieldOrPropertyWithValue("metadata.name", "sidecar-policy.example.com");
   }
 
   @Test
   void get() {
     // Given
     server.expect().get()
-        .withPath("/apis/admissionregistration.k8s.io/v1beta1/mutatingadmissionpolicies/demo-policy.example.com")
+        .withPath("/apis/admissionregistration.k8s.io/v1beta1/mutatingadmissionpolicies/sidecar-policy.example.com")
         .andReturn(HttpURLConnection.HTTP_OK, createMutatingAdmissionPolicy())
         .once();
 
     // When
     MutatingAdmissionPolicy mutatingAdmissionPolicy = client.admissionRegistration().v1beta1()
-        .mutatingAdmissionPolicies().withName("demo-policy.example.com").get();
+        .mutatingAdmissionPolicies().withName("sidecar-policy.example.com").get();
 
     // Then
     AssertionsForClassTypes.assertThat(mutatingAdmissionPolicy)
         .isNotNull()
-        .hasFieldOrPropertyWithValue("metadata.name", "demo-policy.example.com");
+        .hasFieldOrPropertyWithValue("metadata.name", "sidecar-policy.example.com");
   }
 
   @Test
@@ -78,7 +78,7 @@ class V1beta1MutatingAdmissionPolicyTest {
     AssertionsForClassTypes.assertThat(flowSchemas).isNotNull();
     assertThat(flowSchemas.getItems()).hasSize(1);
     AssertionsForClassTypes.assertThat(flowSchemas.getItems().get(0))
-        .hasFieldOrPropertyWithValue("metadata.name", "demo-policy.example.com");
+        .hasFieldOrPropertyWithValue("metadata.name", "sidecar-policy.example.com");
   }
 
   @Test
@@ -96,7 +96,7 @@ class V1beta1MutatingAdmissionPolicyTest {
     // Then
     AssertionsForClassTypes.assertThat(mutatingAdmissionPolicy).isNotNull();
     AssertionsForClassTypes.assertThat(mutatingAdmissionPolicy)
-        .hasFieldOrPropertyWithValue("metadata.name", "demo-policy.example.com");
+        .hasFieldOrPropertyWithValue("metadata.name", "sidecar-policy.example.com");
   }
 
   @Test
@@ -104,13 +104,13 @@ class V1beta1MutatingAdmissionPolicyTest {
     // Given
     MutatingAdmissionPolicy flowSchema = createMutatingAdmissionPolicy();
     server.expect().delete()
-        .withPath("/apis/admissionregistration.k8s.io/v1beta1/mutatingadmissionpolicies/demo-policy.example.com")
+        .withPath("/apis/admissionregistration.k8s.io/v1beta1/mutatingadmissionpolicies/sidecar-policy.example.com")
         .andReturn(HttpURLConnection.HTTP_OK, flowSchema)
         .once();
 
     // When
     boolean isDeleted = client.admissionRegistration().v1beta1().mutatingAdmissionPolicies()
-        .withName("demo-policy.example.com").delete().size() == 1;
+        .withName("sidecar-policy.example.com").delete().size() == 1;
 
     // Then
     AssertionsForClassTypes.assertThat(isDeleted).isTrue();
@@ -118,7 +118,7 @@ class V1beta1MutatingAdmissionPolicyTest {
 
   private MutatingAdmissionPolicy createMutatingAdmissionPolicy() {
     return new MutatingAdmissionPolicyBuilder()
-        .withNewMetadata().withName("demo-policy.example.com").endMetadata()
+        .withNewMetadata().withName("sidecar-policy.example.com").endMetadata()
         .withNewSpec()
         .addNewMutation().withNewApplyConfiguration("newExpression").withJsonPatch(new JSONPatch("someValue"))
         .withPatchType("someType").endMutation()

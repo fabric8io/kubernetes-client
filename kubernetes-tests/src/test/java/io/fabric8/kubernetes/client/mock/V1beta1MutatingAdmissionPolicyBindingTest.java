@@ -41,7 +41,7 @@ class V1beta1MutatingAdmissionPolicyBindingTest {
     assertThat(items).isNotNull().hasSize(1);
     AssertionsForClassTypes.assertThat(items.get(0))
         .isInstanceOf(MutatingAdmissionPolicyBinding.class)
-        .hasFieldOrPropertyWithValue("metadata.name", "demo-binding-test.example.com");
+        .hasFieldOrPropertyWithValue("metadata.name", "simple-mutating-policy-binding");
   }
 
   @Test
