@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Literal adds the same, hard-coded value to each span.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -78,11 +81,17 @@ public class TracingCustomTagLiteral implements IsTracingCustomTagType, Editable
         this.literal = literal;
     }
 
+    /**
+     * Literal adds the same, hard-coded value to each span.
+     */
     @JsonProperty("literal")
     public TracingLiteral getLiteral() {
         return literal;
     }
 
+    /**
+     * Literal adds the same, hard-coded value to each span.
+     */
     @JsonProperty("literal")
     public void setLiteral(TracingLiteral literal) {
         this.literal = literal;

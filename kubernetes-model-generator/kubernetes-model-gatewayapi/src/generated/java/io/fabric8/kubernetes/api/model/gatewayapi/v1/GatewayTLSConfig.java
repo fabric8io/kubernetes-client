@@ -1,9 +1,7 @@
 
 package io.fabric8.kubernetes.api.model.gatewayapi.v1;
 
-import java.util.ArrayList;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 import javax.annotation.processing.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
@@ -33,15 +31,13 @@ import lombok.ToString;
 import lombok.experimental.Accessors;
 
 /**
- * GatewayTLSConfig describes a TLS configuration.
+ * GatewayTLSConfig specifies frontend and backend tls configuration for gateway.
  */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "certificateRefs",
-    "frontendValidation",
-    "mode",
-    "options"
+    "backend",
+    "frontend"
 })
 @ToString
 @EqualsAndHashCode
@@ -68,16 +64,10 @@ import lombok.experimental.Accessors;
 public class GatewayTLSConfig implements Editable<GatewayTLSConfigBuilder>, KubernetesResource
 {
 
-    @JsonProperty("certificateRefs")
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<SecretObjectReference> certificateRefs = new ArrayList<>();
-    @JsonProperty("frontendValidation")
-    private FrontendTLSValidation frontendValidation;
-    @JsonProperty("mode")
-    private String mode;
-    @JsonProperty("options")
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, String> options = new LinkedHashMap<>();
+    @JsonProperty("backend")
+    private GatewayBackendTLS backend;
+    @JsonProperty("frontend")
+    private FrontendTLSConfig frontend;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -87,78 +77,42 @@ public class GatewayTLSConfig implements Editable<GatewayTLSConfigBuilder>, Kube
     public GatewayTLSConfig() {
     }
 
-    public GatewayTLSConfig(List<SecretObjectReference> certificateRefs, FrontendTLSValidation frontendValidation, String mode, Map<String, String> options) {
+    public GatewayTLSConfig(GatewayBackendTLS backend, FrontendTLSConfig frontend) {
         super();
-        this.certificateRefs = certificateRefs;
-        this.frontendValidation = frontendValidation;
-        this.mode = mode;
-        this.options = options;
+        this.backend = backend;
+        this.frontend = frontend;
     }
 
     /**
-     * CertificateRefs contains a series of references to Kubernetes objects that contains TLS certificates and private keys. These certificates are used to establish a TLS handshake for requests that match the hostname of the associated listener.<br><p> <br><p> A single CertificateRef to a Kubernetes Secret has "Core" support. Implementations MAY choose to support attaching multiple certificates to a Listener, but this behavior is implementation-specific.<br><p> <br><p> References to a resource in different namespace are invalid UNLESS there is a ReferenceGrant in the target namespace that allows the certificate to be attached. If a ReferenceGrant does not allow this reference, the "ResolvedRefs" condition MUST be set to False for this listener with the "RefNotPermitted" reason.<br><p> <br><p> This field is required to have at least one element when the mode is set to "Terminate" (default) and is optional otherwise.<br><p> <br><p> CertificateRefs can reference to standard Kubernetes resources, i.e. Secret, or implementation-specific custom resources.<br><p> <br><p> Support: Core - A single reference to a Kubernetes Secret of type kubernetes.io/tls<br><p> <br><p> Support: Implementation-specific (More than one reference or other resource types)
+     * GatewayTLSConfig specifies frontend and backend tls configuration for gateway.
      */
-    @JsonProperty("certificateRefs")
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<SecretObjectReference> getCertificateRefs() {
-        return certificateRefs;
+    @JsonProperty("backend")
+    public GatewayBackendTLS getBackend() {
+        return backend;
     }
 
     /**
-     * CertificateRefs contains a series of references to Kubernetes objects that contains TLS certificates and private keys. These certificates are used to establish a TLS handshake for requests that match the hostname of the associated listener.<br><p> <br><p> A single CertificateRef to a Kubernetes Secret has "Core" support. Implementations MAY choose to support attaching multiple certificates to a Listener, but this behavior is implementation-specific.<br><p> <br><p> References to a resource in different namespace are invalid UNLESS there is a ReferenceGrant in the target namespace that allows the certificate to be attached. If a ReferenceGrant does not allow this reference, the "ResolvedRefs" condition MUST be set to False for this listener with the "RefNotPermitted" reason.<br><p> <br><p> This field is required to have at least one element when the mode is set to "Terminate" (default) and is optional otherwise.<br><p> <br><p> CertificateRefs can reference to standard Kubernetes resources, i.e. Secret, or implementation-specific custom resources.<br><p> <br><p> Support: Core - A single reference to a Kubernetes Secret of type kubernetes.io/tls<br><p> <br><p> Support: Implementation-specific (More than one reference or other resource types)
+     * GatewayTLSConfig specifies frontend and backend tls configuration for gateway.
      */
-    @JsonProperty("certificateRefs")
-    public void setCertificateRefs(List<SecretObjectReference> certificateRefs) {
-        this.certificateRefs = certificateRefs;
+    @JsonProperty("backend")
+    public void setBackend(GatewayBackendTLS backend) {
+        this.backend = backend;
     }
 
     /**
-     * GatewayTLSConfig describes a TLS configuration.
+     * GatewayTLSConfig specifies frontend and backend tls configuration for gateway.
      */
-    @JsonProperty("frontendValidation")
-    public FrontendTLSValidation getFrontendValidation() {
-        return frontendValidation;
+    @JsonProperty("frontend")
+    public FrontendTLSConfig getFrontend() {
+        return frontend;
     }
 
     /**
-     * GatewayTLSConfig describes a TLS configuration.
+     * GatewayTLSConfig specifies frontend and backend tls configuration for gateway.
      */
-    @JsonProperty("frontendValidation")
-    public void setFrontendValidation(FrontendTLSValidation frontendValidation) {
-        this.frontendValidation = frontendValidation;
-    }
-
-    /**
-     * Mode defines the TLS behavior for the TLS session initiated by the client. There are two possible modes:<br><p> <br><p> - Terminate: The TLS session between the downstream client and the<br><p>   Gateway is terminated at the Gateway. This mode requires certificates<br><p>   to be specified in some way, such as populating the certificateRefs<br><p>   field.<br><p> - Passthrough: The TLS session is NOT terminated by the Gateway. This<br><p>   implies that the Gateway can't decipher the TLS stream except for<br><p>   the ClientHello message of the TLS protocol. The certificateRefs field<br><p>   is ignored in this mode.<br><p> <br><p> Support: Core
-     */
-    @JsonProperty("mode")
-    public String getMode() {
-        return mode;
-    }
-
-    /**
-     * Mode defines the TLS behavior for the TLS session initiated by the client. There are two possible modes:<br><p> <br><p> - Terminate: The TLS session between the downstream client and the<br><p>   Gateway is terminated at the Gateway. This mode requires certificates<br><p>   to be specified in some way, such as populating the certificateRefs<br><p>   field.<br><p> - Passthrough: The TLS session is NOT terminated by the Gateway. This<br><p>   implies that the Gateway can't decipher the TLS stream except for<br><p>   the ClientHello message of the TLS protocol. The certificateRefs field<br><p>   is ignored in this mode.<br><p> <br><p> Support: Core
-     */
-    @JsonProperty("mode")
-    public void setMode(String mode) {
-        this.mode = mode;
-    }
-
-    /**
-     * Options are a list of key/value pairs to enable extended TLS configuration for each implementation. For example, configuring the minimum TLS version or supported cipher suites.<br><p> <br><p> A set of common keys MAY be defined by the API in the future. To avoid any ambiguity, implementation-specific definitions MUST use domain-prefixed names, such as `example.com/my-custom-option`. Un-prefixed names are reserved for key names defined by Gateway API.<br><p> <br><p> Support: Implementation-specific
-     */
-    @JsonProperty("options")
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public Map<String, String> getOptions() {
-        return options;
-    }
-
-    /**
-     * Options are a list of key/value pairs to enable extended TLS configuration for each implementation. For example, configuring the minimum TLS version or supported cipher suites.<br><p> <br><p> A set of common keys MAY be defined by the API in the future. To avoid any ambiguity, implementation-specific definitions MUST use domain-prefixed names, such as `example.com/my-custom-option`. Un-prefixed names are reserved for key names defined by Gateway API.<br><p> <br><p> Support: Implementation-specific
-     */
-    @JsonProperty("options")
-    public void setOptions(Map<String, String> options) {
-        this.options = options;
+    @JsonProperty("frontend")
+    public void setFrontend(FrontendTLSConfig frontend) {
+        this.frontend = frontend;
     }
 
     @JsonIgnore

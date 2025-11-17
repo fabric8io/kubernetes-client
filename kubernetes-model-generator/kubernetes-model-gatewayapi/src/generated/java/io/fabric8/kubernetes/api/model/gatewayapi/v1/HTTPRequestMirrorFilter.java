@@ -120,7 +120,7 @@ public class HTTPRequestMirrorFilter implements Editable<HTTPRequestMirrorFilter
     }
 
     /**
-     * Percent represents the percentage of requests that should be mirrored to BackendRef. Its minimum value is 0 (indicating 0% of requests) and its maximum value is 100 (indicating 100% of requests).<br><p> <br><p> Only one of Fraction or Percent may be specified. If neither field is specified, 100% of requests will be mirrored.<br><p> <br><p> &lt;gateway:experimental&gt;
+     * Percent represents the percentage of requests that should be mirrored to BackendRef. Its minimum value is 0 (indicating 0% of requests) and its maximum value is 100 (indicating 100% of requests).<br><p> <br><p> Only one of Fraction or Percent may be specified. If neither field is specified, 100% of requests will be mirrored.
      */
     @JsonProperty("percent")
     public Integer getPercent() {
@@ -128,7 +128,7 @@ public class HTTPRequestMirrorFilter implements Editable<HTTPRequestMirrorFilter
     }
 
     /**
-     * Percent represents the percentage of requests that should be mirrored to BackendRef. Its minimum value is 0 (indicating 0% of requests) and its maximum value is 100 (indicating 100% of requests).<br><p> <br><p> Only one of Fraction or Percent may be specified. If neither field is specified, 100% of requests will be mirrored.<br><p> <br><p> &lt;gateway:experimental&gt;
+     * Percent represents the percentage of requests that should be mirrored to BackendRef. Its minimum value is 0 (indicating 0% of requests) and its maximum value is 100 (indicating 100% of requests).<br><p> <br><p> Only one of Fraction or Percent may be specified. If neither field is specified, 100% of requests will be mirrored.
      */
     @JsonProperty("percent")
     public void setPercent(Integer percent) {

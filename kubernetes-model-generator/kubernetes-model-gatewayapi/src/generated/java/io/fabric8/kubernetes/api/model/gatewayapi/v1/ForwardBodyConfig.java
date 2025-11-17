@@ -31,13 +31,12 @@ import lombok.ToString;
 import lombok.experimental.Accessors;
 
 /**
- * GatewayAddress describes an address that can be bound to a Gateway.
+ * ForwardBody configures if requests to the authorization server should include the body of the client request; and if so, how big that body is allowed to be.<br><p> <br><p> If empty or unset, do not forward the body.
  */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "type",
-    "value"
+    "maxSize"
 })
 @ToString
 @EqualsAndHashCode
@@ -61,67 +60,48 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class GatewayAddress implements Editable<GatewayAddressBuilder>, KubernetesResource
+public class ForwardBodyConfig implements Editable<ForwardBodyConfigBuilder>, KubernetesResource
 {
 
-    @JsonProperty("type")
-    private String type;
-    @JsonProperty("value")
-    private String value;
+    @JsonProperty("maxSize")
+    private Integer maxSize;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
      */
-    public GatewayAddress() {
+    public ForwardBodyConfig() {
     }
 
-    public GatewayAddress(String type, String value) {
+    public ForwardBodyConfig(Integer maxSize) {
         super();
-        this.type = type;
-        this.value = value;
+        this.maxSize = maxSize;
     }
 
     /**
-     * Type of the address.
+     * MaxSize specifies how large in bytes the largest body that will be buffered and sent to the authorization server. If the body size is larger than `maxSize`, then the body sent to the authorization server must be truncated to `maxSize` bytes.<br><p> <br><p> Experimental note: This behavior needs to be checked against various dataplanes; it may need to be changed. See https://github.com/kubernetes-sigs/gateway-api/pull/4001#discussion_r2291405746 for more.<br><p> <br><p> If 0, the body will not be sent to the authorization server.
      */
-    @JsonProperty("type")
-    public String getType() {
-        return type;
+    @JsonProperty("maxSize")
+    public Integer getMaxSize() {
+        return maxSize;
     }
 
     /**
-     * Type of the address.
+     * MaxSize specifies how large in bytes the largest body that will be buffered and sent to the authorization server. If the body size is larger than `maxSize`, then the body sent to the authorization server must be truncated to `maxSize` bytes.<br><p> <br><p> Experimental note: This behavior needs to be checked against various dataplanes; it may need to be changed. See https://github.com/kubernetes-sigs/gateway-api/pull/4001#discussion_r2291405746 for more.<br><p> <br><p> If 0, the body will not be sent to the authorization server.
      */
-    @JsonProperty("type")
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    /**
-     * Value of the address. The validity of the values will depend on the type and support by the controller.<br><p> <br><p> Examples: `1.2.3.4`, `128::1`, `my-ip-address`.
-     */
-    @JsonProperty("value")
-    public String getValue() {
-        return value;
-    }
-
-    /**
-     * Value of the address. The validity of the values will depend on the type and support by the controller.<br><p> <br><p> Examples: `1.2.3.4`, `128::1`, `my-ip-address`.
-     */
-    @JsonProperty("value")
-    public void setValue(String value) {
-        this.value = value;
+    @JsonProperty("maxSize")
+    public void setMaxSize(Integer maxSize) {
+        this.maxSize = maxSize;
     }
 
     @JsonIgnore
-    public GatewayAddressBuilder edit() {
-        return new GatewayAddressBuilder(this);
+    public ForwardBodyConfigBuilder edit() {
+        return new ForwardBodyConfigBuilder(this);
     }
 
     @JsonIgnore
-    public GatewayAddressBuilder toBuilder() {
+    public ForwardBodyConfigBuilder toBuilder() {
         return edit();
     }
 

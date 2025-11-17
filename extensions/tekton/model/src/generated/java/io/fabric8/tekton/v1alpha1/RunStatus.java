@@ -36,7 +36,7 @@ import lombok.ToString;
 import lombok.experimental.Accessors;
 
 /**
- * RunStatus defines the observed state of Run.
+ * RunStatus defines the observed state of Run
  */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -135,7 +135,7 @@ public class RunStatus implements Editable<RunStatusBuilder>, KubernetesResource
     }
 
     /**
-     * RunStatus defines the observed state of Run.
+     * RunStatus defines the observed state of Run
      */
     @JsonProperty("completionTime")
     public String getCompletionTime() {
@@ -143,7 +143,7 @@ public class RunStatus implements Editable<RunStatusBuilder>, KubernetesResource
     }
 
     /**
-     * RunStatus defines the observed state of Run.
+     * RunStatus defines the observed state of Run
      */
     @JsonProperty("completionTime")
     public void setCompletionTime(String completionTime) {
@@ -168,7 +168,7 @@ public class RunStatus implements Editable<RunStatusBuilder>, KubernetesResource
     }
 
     /**
-     * RunStatus defines the observed state of Run.
+     * RunStatus defines the observed state of Run
      */
     @JsonProperty("extraFields")
     public Object getExtraFields() {
@@ -176,7 +176,7 @@ public class RunStatus implements Editable<RunStatusBuilder>, KubernetesResource
     }
 
     /**
-     * RunStatus defines the observed state of Run.
+     * RunStatus defines the observed state of Run
      */
     @JsonProperty("extraFields")
     @JsonDeserialize(using = io.fabric8.kubernetes.internal.KubernetesDeserializer.class)
@@ -235,7 +235,7 @@ public class RunStatus implements Editable<RunStatusBuilder>, KubernetesResource
     }
 
     /**
-     * RunStatus defines the observed state of Run.
+     * RunStatus defines the observed state of Run
      */
     @JsonProperty("startTime")
     public String getStartTime() {
@@ -243,7 +243,7 @@ public class RunStatus implements Editable<RunStatusBuilder>, KubernetesResource
     }
 
     /**
-     * RunStatus defines the observed state of Run.
+     * RunStatus defines the observed state of Run
      */
     @JsonProperty("startTime")
     public void setStartTime(String startTime) {

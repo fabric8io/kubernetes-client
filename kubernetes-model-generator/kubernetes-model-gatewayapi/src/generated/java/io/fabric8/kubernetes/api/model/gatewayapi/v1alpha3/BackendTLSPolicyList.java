@@ -40,9 +40,6 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
-/**
- * BackendTLSPolicyList contains a list of BackendTLSPolicies
- */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -123,18 +120,12 @@ public class BackendTLSPolicyList implements Editable<BackendTLSPolicyListBuilde
         this.apiVersion = apiVersion;
     }
 
-    /**
-     * BackendTLSPolicyList contains a list of BackendTLSPolicies
-     */
     @JsonProperty("items")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.kubernetes.api.model.gatewayapi.v1alpha3.BackendTLSPolicy> getItems() {
         return items;
     }
 
-    /**
-     * BackendTLSPolicyList contains a list of BackendTLSPolicies
-     */
     @JsonProperty("items")
     public void setItems(List<io.fabric8.kubernetes.api.model.gatewayapi.v1alpha3.BackendTLSPolicy> items) {
         this.items = items;
@@ -156,17 +147,11 @@ public class BackendTLSPolicyList implements Editable<BackendTLSPolicyListBuilde
         this.kind = kind;
     }
 
-    /**
-     * BackendTLSPolicyList contains a list of BackendTLSPolicies
-     */
     @JsonProperty("metadata")
     public ListMeta getMetadata() {
         return metadata;
     }
 
-    /**
-     * BackendTLSPolicyList contains a list of BackendTLSPolicies
-     */
     @JsonProperty("metadata")
     public void setMetadata(ListMeta metadata) {
         this.metadata = metadata;

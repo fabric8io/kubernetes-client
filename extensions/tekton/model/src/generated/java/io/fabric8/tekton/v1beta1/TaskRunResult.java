@@ -33,7 +33,7 @@ import lombok.ToString;
 import lombok.experimental.Accessors;
 
 /**
- * TaskRunStepResult is a type alias of TaskRunResult
+ * TaskRunResult used to describe the results of a task
  */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -122,7 +122,7 @@ public class TaskRunResult implements Editable<TaskRunResultBuilder>, Kubernetes
     }
 
     /**
-     * TaskRunStepResult is a type alias of TaskRunResult
+     * TaskRunResult used to describe the results of a task
      */
     @JsonProperty("value")
     public ParamValue getValue() {
@@ -130,7 +130,7 @@ public class TaskRunResult implements Editable<TaskRunResultBuilder>, Kubernetes
     }
 
     /**
-     * TaskRunStepResult is a type alias of TaskRunResult
+     * TaskRunResult used to describe the results of a task
      */
     @JsonProperty("value")
     public void setValue(ParamValue value) {

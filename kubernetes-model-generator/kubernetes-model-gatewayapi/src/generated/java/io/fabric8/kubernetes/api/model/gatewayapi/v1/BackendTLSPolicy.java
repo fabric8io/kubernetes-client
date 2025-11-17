@@ -1,5 +1,5 @@
 
-package io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2;
+package io.fabric8.kubernetes.api.model.gatewayapi.v1;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -18,10 +18,8 @@ import io.fabric8.kubernetes.api.model.EnvVar;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.LabelSelector;
-import io.fabric8.kubernetes.api.model.LocalObjectReference;
 import io.fabric8.kubernetes.api.model.Namespaced;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
-import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
@@ -38,7 +36,7 @@ import lombok.ToString;
 import lombok.experimental.Accessors;
 
 /**
- * BackendLBPolicy provides a way to define load balancing rules for a backend.
+ * BackendTLSPolicy provides a way to configure how a Gateway connects to a Backend via TLS.
  */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -62,8 +60,8 @@ import lombok.experimental.Accessors;
     @BuildableReference(PodTemplateSpec.class),
     @BuildableReference(ResourceRequirements.class),
     @BuildableReference(IntOrString.class),
-    @BuildableReference(ObjectReference.class),
-    @BuildableReference(LocalObjectReference.class),
+    @BuildableReference(io.fabric8.kubernetes.api.model.ObjectReference.class),
+    @BuildableReference(io.fabric8.kubernetes.api.model.LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class),
     @BuildableReference(EnvVar.class),
     @BuildableReference(ContainerPort.class),
@@ -73,20 +71,20 @@ import lombok.experimental.Accessors;
 @TemplateTransformations({
     @TemplateTransformation(value = "/manifest.vm", outputPath = "META-INF/services/io.fabric8.kubernetes.api.model.KubernetesResource", gather = true)
 })
-@Version("v1alpha2")
+@Version("v1")
 @Group("gateway.networking.k8s.io")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class BackendLBPolicy implements Editable<BackendLBPolicyBuilder>, HasMetadata, Namespaced
+public class BackendTLSPolicy implements Editable<BackendTLSPolicyBuilder>, HasMetadata, Namespaced
 {
 
     @JsonProperty("apiVersion")
-    private String apiVersion = "gateway.networking.k8s.io/v1alpha2";
+    private String apiVersion = "gateway.networking.k8s.io/v1";
     @JsonProperty("kind")
-    private String kind = "BackendLBPolicy";
+    private String kind = "BackendTLSPolicy";
     @JsonProperty("metadata")
     private ObjectMeta metadata;
     @JsonProperty("spec")
-    private BackendLBPolicySpec spec;
+    private BackendTLSPolicySpec spec;
     @JsonProperty("status")
     private PolicyStatus status;
     @JsonIgnore
@@ -95,10 +93,10 @@ public class BackendLBPolicy implements Editable<BackendLBPolicyBuilder>, HasMet
     /**
      * No args constructor for use in serialization
      */
-    public BackendLBPolicy() {
+    public BackendTLSPolicy() {
     }
 
-    public BackendLBPolicy(String apiVersion, String kind, ObjectMeta metadata, BackendLBPolicySpec spec, PolicyStatus status) {
+    public BackendTLSPolicy(String apiVersion, String kind, ObjectMeta metadata, BackendTLSPolicySpec spec, PolicyStatus status) {
         super();
         this.apiVersion = apiVersion;
         this.kind = kind;
@@ -140,7 +138,7 @@ public class BackendLBPolicy implements Editable<BackendLBPolicyBuilder>, HasMet
     }
 
     /**
-     * BackendLBPolicy provides a way to define load balancing rules for a backend.
+     * BackendTLSPolicy provides a way to configure how a Gateway connects to a Backend via TLS.
      */
     @JsonProperty("metadata")
     public ObjectMeta getMetadata() {
@@ -148,7 +146,7 @@ public class BackendLBPolicy implements Editable<BackendLBPolicyBuilder>, HasMet
     }
 
     /**
-     * BackendLBPolicy provides a way to define load balancing rules for a backend.
+     * BackendTLSPolicy provides a way to configure how a Gateway connects to a Backend via TLS.
      */
     @JsonProperty("metadata")
     public void setMetadata(ObjectMeta metadata) {
@@ -156,23 +154,23 @@ public class BackendLBPolicy implements Editable<BackendLBPolicyBuilder>, HasMet
     }
 
     /**
-     * BackendLBPolicy provides a way to define load balancing rules for a backend.
+     * BackendTLSPolicy provides a way to configure how a Gateway connects to a Backend via TLS.
      */
     @JsonProperty("spec")
-    public BackendLBPolicySpec getSpec() {
+    public BackendTLSPolicySpec getSpec() {
         return spec;
     }
 
     /**
-     * BackendLBPolicy provides a way to define load balancing rules for a backend.
+     * BackendTLSPolicy provides a way to configure how a Gateway connects to a Backend via TLS.
      */
     @JsonProperty("spec")
-    public void setSpec(BackendLBPolicySpec spec) {
+    public void setSpec(BackendTLSPolicySpec spec) {
         this.spec = spec;
     }
 
     /**
-     * BackendLBPolicy provides a way to define load balancing rules for a backend.
+     * BackendTLSPolicy provides a way to configure how a Gateway connects to a Backend via TLS.
      */
     @JsonProperty("status")
     public PolicyStatus getStatus() {
@@ -180,7 +178,7 @@ public class BackendLBPolicy implements Editable<BackendLBPolicyBuilder>, HasMet
     }
 
     /**
-     * BackendLBPolicy provides a way to define load balancing rules for a backend.
+     * BackendTLSPolicy provides a way to configure how a Gateway connects to a Backend via TLS.
      */
     @JsonProperty("status")
     public void setStatus(PolicyStatus status) {
@@ -188,12 +186,12 @@ public class BackendLBPolicy implements Editable<BackendLBPolicyBuilder>, HasMet
     }
 
     @JsonIgnore
-    public BackendLBPolicyBuilder edit() {
-        return new BackendLBPolicyBuilder(this);
+    public BackendTLSPolicyBuilder edit() {
+        return new BackendTLSPolicyBuilder(this);
     }
 
     @JsonIgnore
-    public BackendLBPolicyBuilder toBuilder() {
+    public BackendTLSPolicyBuilder toBuilder() {
         return edit();
     }
 

@@ -4390,7 +4390,7 @@
         }
       },
       "x-fabric8-info": {
-        "Type": "nested",
+        "Type": "object",
         "Group": "",
         "Version": "v1beta1",
         "Kind": "AuthorizationPolicy_ExtensionProvider",
@@ -4398,6 +4398,7 @@
       }
     },
     "io.istio.api.security.v1beta1.AuthorizationPolicy_Provider": {
+      "description": "Specifies detailed configuration of the CUSTOM action. Must be used only with CUSTOM action.",
       "type": "object",
       "required": [
         "provider"
@@ -5045,6 +5046,7 @@
       "x-kubernetes-fabric8-interface-fields": "MetricMatch"
     },
     "io.istio.api.telemetry.v1alpha1.MetricSelector_CustomMetric": {
+      "description": "Allows free-form specification of a metric. No validation of custom metrics is provided.",
       "type": "object",
       "required": [
         "customMetric"
@@ -5079,6 +5081,7 @@
       "x-kubernetes-fabric8-type": "enum"
     },
     "io.istio.api.telemetry.v1alpha1.MetricSelector_Metric": {
+      "description": "One of the well-known [Istio Standard Metrics](https://istio.io/latest/docs/reference/config/metrics/).",
       "type": "object",
       "required": [
         "metric"
@@ -5328,6 +5331,7 @@
       "x-kubernetes-fabric8-interface-fields": "Type"
     },
     "io.istio.api.telemetry.v1alpha1.Tracing_CustomTag_Environment": {
+      "description": "Environment adds the value of an environment variable to each span.",
       "type": "object",
       "required": [
         "environment"
@@ -5348,6 +5352,7 @@
       "x-kubernetes-fabric8-implements": "IsTracing_CustomTag_Type"
     },
     "io.istio.api.telemetry.v1alpha1.Tracing_CustomTag_Header": {
+      "description": "RequestHeader adds the value of an header from the request to each span.",
       "type": "object",
       "required": [
         "header"
@@ -5368,6 +5373,7 @@
       "x-kubernetes-fabric8-implements": "IsTracing_CustomTag_Type"
     },
     "io.istio.api.telemetry.v1alpha1.Tracing_CustomTag_Literal": {
+      "description": "Literal adds the same, hard-coded value to each span.",
       "type": "object",
       "required": [
         "literal"
