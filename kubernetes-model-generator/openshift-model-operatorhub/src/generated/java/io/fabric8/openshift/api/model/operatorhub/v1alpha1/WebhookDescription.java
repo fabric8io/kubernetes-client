@@ -274,7 +274,7 @@ public class WebhookDescription implements Editable<WebhookDescriptionBuilder>, 
     }
 
     /**
-     * WebhookDescription provides details to OLM about required webhooks
+     * Possible enum values:<br><p>  - `"IfNeeded"` indicates that the mutation may be called at least one additional time as part of the admission evaluation if the object being admitted is modified by other admission plugins after the initial mutation call.<br><p>  - `"Never"` indicates that the mutation must not be called more than once in a single admission evaluation.
      */
     @JsonProperty("reinvocationPolicy")
     public String getReinvocationPolicy() {
@@ -282,7 +282,7 @@ public class WebhookDescription implements Editable<WebhookDescriptionBuilder>, 
     }
 
     /**
-     * WebhookDescription provides details to OLM about required webhooks
+     * Possible enum values:<br><p>  - `"IfNeeded"` indicates that the mutation may be called at least one additional time as part of the admission evaluation if the object being admitted is modified by other admission plugins after the initial mutation call.<br><p>  - `"Never"` indicates that the mutation must not be called more than once in a single admission evaluation.
      */
     @JsonProperty("reinvocationPolicy")
     public void setReinvocationPolicy(String reinvocationPolicy) {
