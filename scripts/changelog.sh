@@ -58,7 +58,7 @@ function removeLastLine() {
 }
 
 function replaceBullets() {
-  echo -e "$1" | sed -e "s/^*/-/"
+  echo -e "$1" | sed -e "s/^\*/-/"
 }
 
 function addLinks() {
@@ -67,7 +67,7 @@ function addLinks() {
   currentLink="$START_LINK"
   if [ -n "$2" ]; then currentLink="$2" ; fi
   while read -r line; do
-    issueNumber=$(echo "$line" | sed -En 's/.*?#([0-9]+).*/\1/p')
+    issueNumber=$(echo "$line" | sed -n -E 's/.*#([0-9]+).*/\1/p')
     if [ -z "$issueNumber" ]; then
       lines+="$line\n";
     else
