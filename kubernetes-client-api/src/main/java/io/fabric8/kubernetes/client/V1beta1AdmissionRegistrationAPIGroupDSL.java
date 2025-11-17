@@ -15,42 +15,53 @@
  */
 package io.fabric8.kubernetes.client;
 
+import io.fabric8.kubernetes.api.model.admissionregistration.v1beta1.MutatingAdmissionPolicy;
+import io.fabric8.kubernetes.api.model.admissionregistration.v1beta1.MutatingAdmissionPolicyBinding;
+import io.fabric8.kubernetes.api.model.admissionregistration.v1beta1.MutatingAdmissionPolicyBindingList;
+import io.fabric8.kubernetes.api.model.admissionregistration.v1beta1.MutatingAdmissionPolicyList;
 import io.fabric8.kubernetes.api.model.admissionregistration.v1beta1.MutatingWebhookConfiguration;
 import io.fabric8.kubernetes.api.model.admissionregistration.v1beta1.MutatingWebhookConfigurationList;
-import io.fabric8.kubernetes.api.model.admissionregistration.v1beta1.ValidatingAdmissionPolicy;
-import io.fabric8.kubernetes.api.model.admissionregistration.v1beta1.ValidatingAdmissionPolicyBinding;
-import io.fabric8.kubernetes.api.model.admissionregistration.v1beta1.ValidatingAdmissionPolicyBindingList;
-import io.fabric8.kubernetes.api.model.admissionregistration.v1beta1.ValidatingAdmissionPolicyList;
 import io.fabric8.kubernetes.api.model.admissionregistration.v1beta1.ValidatingWebhookConfiguration;
 import io.fabric8.kubernetes.api.model.admissionregistration.v1beta1.ValidatingWebhookConfigurationList;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.NonNamespaceOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
 
+/**
+ * DSL interface for interacting with the Kubernetes Admission Registration API Group v1beta1.
+ * Provides access to admission webhook configurations and admission policies.
+ */
 public interface V1beta1AdmissionRegistrationAPIGroupDSL extends Client {
+  /**
+   * Gets a mixed operation for ValidatingWebhookConfiguration resources.
+   * ValidatingWebhookConfigurations describe the configuration of admission webhooks that validate requests.
+   *
+   * @return the mixed operation for ValidatingWebhookConfiguration
+   */
   MixedOperation<ValidatingWebhookConfiguration, ValidatingWebhookConfigurationList, Resource<ValidatingWebhookConfiguration>> validatingWebhookConfigurations();
 
+  /**
+   * Gets a non-namespace operation for MutatingWebhookConfiguration resources.
+   * MutatingWebhookConfigurations describe the configuration of admission webhooks that mutate requests.
+   *
+   * @return the non-namespace operation for MutatingWebhookConfiguration
+   */
   NonNamespaceOperation<MutatingWebhookConfiguration, MutatingWebhookConfigurationList, Resource<MutatingWebhookConfiguration>> mutatingWebhookConfigurations();
 
   /**
-   * API entrypoint for admissionregistration.k8s.io/v1beta1 ValidatingAdmissionPolicy
-   * <p>
-   * ValidatingAdmissionPolicy describes the definition of an admission validation policy that accepts or
-   * rejects an object without changing it.
-   * </p>
-   * 
-   * @return NonNamespaceOperation for ValidatingAdmissionPolicy
+   * Gets a non-namespace operation for MutatingAdmissionPolicy resources.
+   * MutatingAdmissionPolicies describe the definition of admission mutation policies that mutate objects coming into the
+   * admission chain.
+   *
+   * @return the non-namespace operation for MutatingAdmissionPolicy
    */
-  NonNamespaceOperation<ValidatingAdmissionPolicy, ValidatingAdmissionPolicyList, Resource<ValidatingAdmissionPolicy>> validatingAdmissionPolicies();
+  NonNamespaceOperation<MutatingAdmissionPolicy, MutatingAdmissionPolicyList, Resource<MutatingAdmissionPolicy>> mutatingAdmissionPolicies();
 
   /**
-   * API entrypoint for admissionregistration.k8s.io/v1beta1 ValidatingAdmissionPolicyBinding
-   * <p>
-   * ValidatingAdmissionPolicyBinding and parameter CRDs together define how cluster administrators configure policies for
-   * clusters.
-   * </p>
-   * 
-   * @return NonNamespaceOperation for ValidatingAdmissionPolicyBinding
+   * Gets a non-namespace operation for MutatingAdmissionPolicyBinding resources.
+   * MutatingAdmissionPolicyBindings bind MutatingAdmissionPolicies with parameterized resources.
+   *
+   * @return the non-namespace operation for MutatingAdmissionPolicyBinding
    */
-  NonNamespaceOperation<ValidatingAdmissionPolicyBinding, ValidatingAdmissionPolicyBindingList, Resource<ValidatingAdmissionPolicyBinding>> validatingAdmissionPolicyBindings();
+  NonNamespaceOperation<MutatingAdmissionPolicyBinding, MutatingAdmissionPolicyBindingList, Resource<MutatingAdmissionPolicyBinding>> mutatingAdmissionPolicyBindings();
 }

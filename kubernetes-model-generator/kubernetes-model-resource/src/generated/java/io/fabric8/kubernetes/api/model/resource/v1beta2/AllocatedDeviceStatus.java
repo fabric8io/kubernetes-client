@@ -36,7 +36,7 @@ import lombok.ToString;
 import lombok.experimental.Accessors;
 
 /**
- * AllocatedDeviceStatus contains the status of an allocated device, if the driver chooses to report it. This may include driver-specific information.
+ * AllocatedDeviceStatus contains the status of an allocated device, if the driver chooses to report it. This may include driver-specific information.<br><p> <br><p> The combination of Driver, Pool, Device, and ShareID must match the corresponding key in Status.Allocation.Devices.
  */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -46,7 +46,8 @@ import lombok.experimental.Accessors;
     "device",
     "driver",
     "networkData",
-    "pool"
+    "pool",
+    "shareID"
 })
 @ToString
 @EqualsAndHashCode
@@ -87,6 +88,8 @@ public class AllocatedDeviceStatus implements Editable<AllocatedDeviceStatusBuil
     private NetworkDeviceData networkData;
     @JsonProperty("pool")
     private String pool;
+    @JsonProperty("shareID")
+    private String shareID;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -96,7 +99,7 @@ public class AllocatedDeviceStatus implements Editable<AllocatedDeviceStatusBuil
     public AllocatedDeviceStatus() {
     }
 
-    public AllocatedDeviceStatus(List<Condition> conditions, Object data, String device, String driver, NetworkDeviceData networkData, String pool) {
+    public AllocatedDeviceStatus(List<Condition> conditions, Object data, String device, String driver, NetworkDeviceData networkData, String pool, String shareID) {
         super();
         this.conditions = conditions;
         this.data = data;
@@ -104,6 +107,7 @@ public class AllocatedDeviceStatus implements Editable<AllocatedDeviceStatusBuil
         this.driver = driver;
         this.networkData = networkData;
         this.pool = pool;
+        this.shareID = shareID;
     }
 
     /**
@@ -124,7 +128,7 @@ public class AllocatedDeviceStatus implements Editable<AllocatedDeviceStatusBuil
     }
 
     /**
-     * AllocatedDeviceStatus contains the status of an allocated device, if the driver chooses to report it. This may include driver-specific information.
+     * AllocatedDeviceStatus contains the status of an allocated device, if the driver chooses to report it. This may include driver-specific information.<br><p> <br><p> The combination of Driver, Pool, Device, and ShareID must match the corresponding key in Status.Allocation.Devices.
      */
     @JsonProperty("data")
     public Object getData() {
@@ -132,7 +136,7 @@ public class AllocatedDeviceStatus implements Editable<AllocatedDeviceStatusBuil
     }
 
     /**
-     * AllocatedDeviceStatus contains the status of an allocated device, if the driver chooses to report it. This may include driver-specific information.
+     * AllocatedDeviceStatus contains the status of an allocated device, if the driver chooses to report it. This may include driver-specific information.<br><p> <br><p> The combination of Driver, Pool, Device, and ShareID must match the corresponding key in Status.Allocation.Devices.
      */
     @JsonProperty("data")
     @JsonDeserialize(using = io.fabric8.kubernetes.internal.KubernetesDeserializer.class)
@@ -173,7 +177,7 @@ public class AllocatedDeviceStatus implements Editable<AllocatedDeviceStatusBuil
     }
 
     /**
-     * AllocatedDeviceStatus contains the status of an allocated device, if the driver chooses to report it. This may include driver-specific information.
+     * AllocatedDeviceStatus contains the status of an allocated device, if the driver chooses to report it. This may include driver-specific information.<br><p> <br><p> The combination of Driver, Pool, Device, and ShareID must match the corresponding key in Status.Allocation.Devices.
      */
     @JsonProperty("networkData")
     public NetworkDeviceData getNetworkData() {
@@ -181,7 +185,7 @@ public class AllocatedDeviceStatus implements Editable<AllocatedDeviceStatusBuil
     }
 
     /**
-     * AllocatedDeviceStatus contains the status of an allocated device, if the driver chooses to report it. This may include driver-specific information.
+     * AllocatedDeviceStatus contains the status of an allocated device, if the driver chooses to report it. This may include driver-specific information.<br><p> <br><p> The combination of Driver, Pool, Device, and ShareID must match the corresponding key in Status.Allocation.Devices.
      */
     @JsonProperty("networkData")
     public void setNetworkData(NetworkDeviceData networkData) {
@@ -202,6 +206,22 @@ public class AllocatedDeviceStatus implements Editable<AllocatedDeviceStatusBuil
     @JsonProperty("pool")
     public void setPool(String pool) {
         this.pool = pool;
+    }
+
+    /**
+     * ShareID uniquely identifies an individual allocation share of the device.
+     */
+    @JsonProperty("shareID")
+    public String getShareID() {
+        return shareID;
+    }
+
+    /**
+     * ShareID uniquely identifies an individual allocation share of the device.
+     */
+    @JsonProperty("shareID")
+    public void setShareID(String shareID) {
+        this.shareID = shareID;
     }
 
     @JsonIgnore

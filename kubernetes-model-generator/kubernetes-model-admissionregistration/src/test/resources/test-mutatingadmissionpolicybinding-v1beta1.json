@@ -1,0 +1,149 @@
+{
+  "apiVersion": "admissionregistration.k8s.io/v1beta1",
+  "kind": "MutatingAdmissionPolicyBinding",
+  "metadata": {
+    "annotations": {
+      "additionalProp1": "string",
+      "additionalProp2": "string",
+      "additionalProp3": "string"
+    },
+    "creationTimestamp": "2025-11-13T11:27:05.625Z",
+    "deletionGracePeriodSeconds": 0,
+    "deletionTimestamp": "2025-11-13T11:27:05.625Z",
+    "finalizers": [
+      "string"
+    ],
+    "generateName": "string",
+    "generation": 0,
+    "labels": {
+      "additionalProp1": "string",
+      "additionalProp2": "string",
+      "additionalProp3": "string"
+    },
+    "managedFields": [
+      {
+        "apiVersion": "string",
+        "fieldsType": "string",
+        "fieldsV1": {},
+        "manager": "string",
+        "operation": "string",
+        "subresource": "string",
+        "time": "2025-11-13T11:27:05.625Z"
+      }
+    ],
+    "name": "nameValue",
+    "namespace": "string",
+    "ownerReferences": [
+      {
+        "apiVersion": "string",
+        "blockOwnerDeletion": true,
+        "controller": true,
+        "kind": "string",
+        "name": "string",
+        "uid": "string"
+      }
+    ],
+    "resourceVersion": "string",
+    "selfLink": "string",
+    "uid": "string"
+  },
+  "spec": {
+    "matchResources": {
+      "excludeResourceRules": [
+        {
+          "apiGroups": [
+            "string"
+          ],
+          "apiVersions": [
+            "string"
+          ],
+          "operations": [
+            "string"
+          ],
+          "resourceNames": [
+            "string"
+          ],
+          "resources": [
+            "string"
+          ],
+          "scope": "string"
+        }
+      ],
+      "matchPolicy": "string",
+      "namespaceSelector": {
+        "matchExpressions": [
+          {
+            "key": "keyValue",
+            "operator": "operatorValue",
+            "values": [
+              "valuesValue"
+            ]
+          }
+        ],
+        "matchLabels": {
+          "additionalProp1": "string",
+          "additionalProp2": "string",
+          "additionalProp3": "string"
+        }
+      },
+      "objectSelector": {
+        "matchExpressions": [
+          {
+            "key": "string",
+            "operator": "string",
+            "values": [
+              "string"
+            ]
+          }
+        ],
+        "matchLabels": {
+          "additionalProp1": "string",
+          "additionalProp2": "string",
+          "additionalProp3": "string"
+        }
+      },
+      "resourceRules": [
+        {
+          "apiGroups": [
+            "string"
+          ],
+          "apiVersions": [
+            "string"
+          ],
+          "operations": [
+            "string"
+          ],
+          "resourceNames": [
+            "string"
+          ],
+          "resources": [
+            "string"
+          ],
+          "scope": "string"
+        }
+      ]
+    },
+    "paramRef": {
+      "name": "string",
+      "namespace": "string",
+      "parameterNotFoundAction": "string",
+      "selector": {
+        "matchExpressions": [
+          {
+            "key": "string",
+            "operator": "string",
+            "values": [
+              "string"
+            ]
+          }
+        ],
+        "matchLabels": {
+          "additionalProp1": "string",
+          "additionalProp2": "string",
+          "additionalProp3": "string"
+        }
+      }
+    },
+    "policyName": "policyNameValue"
+  }
+}
