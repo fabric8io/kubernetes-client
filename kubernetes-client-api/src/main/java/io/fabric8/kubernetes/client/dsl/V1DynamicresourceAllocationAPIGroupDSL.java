@@ -16,8 +16,9 @@
 package io.fabric8.kubernetes.client.dsl;
 
 import io.fabric8.kubernetes.api.model.resource.v1.*;
+import io.fabric8.kubernetes.client.Client;
 
-public interface V1DynamicresourceAllocationAPIGroupDSL {
+public interface V1DynamicresourceAllocationAPIGroupDSL extends Client {
   /**
    * API entrypoint for resource.k8s.io/v1 ResourceClaim
    *
