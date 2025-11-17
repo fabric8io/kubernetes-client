@@ -1,0 +1,157 @@
+{
+  "apiVersion": "admissionregistration.k8s.io/v1beta1",
+  "kind": "MutatingAdmissionPolicy",
+  "metadata": {
+    "annotations": {
+      "additionalProp1": "string",
+      "additionalProp2": "string",
+      "additionalProp3": "string"
+    },
+    "creationTimestamp": "2025-11-13T11:20:19.597Z",
+    "deletionGracePeriodSeconds": 0,
+    "deletionTimestamp": "2025-11-13T11:20:19.597Z",
+    "finalizers": [
+      "string"
+    ],
+    "generateName": "string",
+    "generation": 0,
+    "labels": {
+      "additionalProp1": "string",
+      "additionalProp2": "string",
+      "additionalProp3": "string"
+    },
+    "managedFields": [
+      {
+        "apiVersion": "string",
+        "fieldsType": "string",
+        "fieldsV1": {},
+        "manager": "string",
+        "operation": "string",
+        "subresource": "string",
+        "time": "2025-11-13T11:20:19.597Z"
+      }
+    ],
+    "name": "mutating-policy.example.com",
+    "namespace": "string",
+    "ownerReferences": [
+      {
+        "apiVersion": "string",
+        "blockOwnerDeletion": true,
+        "controller": true,
+        "kind": "string",
+        "name": "string",
+        "uid": "string"
+      }
+    ],
+    "resourceVersion": "string",
+    "selfLink": "string",
+    "uid": "string"
+  },
+  "spec": {
+    "failurePolicy": "string",
+    "matchConditions": [
+      {
+        "expression": "newExpression",
+        "name": "expressionName"
+      }
+    ],
+    "matchConstraints": {
+      "excludeResourceRules": [
+        {
+          "apiGroups": [
+            "string"
+          ],
+          "apiVersions": [
+            "string"
+          ],
+          "operations": [
+            "string"
+          ],
+          "resourceNames": [
+            "string"
+          ],
+          "resources": [
+            "string"
+          ],
+          "scope": "string"
+        }
+      ],
+      "matchPolicy": "newPolicy",
+      "namespaceSelector": {
+        "matchExpressions": [
+          {
+            "key": "string",
+            "operator": "string",
+            "values": [
+              "string"
+            ]
+          }
+        ],
+        "matchLabels": {
+          "additionalProp1": "string",
+          "additionalProp2": "string",
+          "additionalProp3": "string"
+        }
+      },
+      "objectSelector": {
+        "matchExpressions": [
+          {
+            "key": "string",
+            "operator": "string",
+            "values": [
+              "string"
+            ]
+          }
+        ],
+        "matchLabels": {
+          "additionalProp1": "string",
+          "additionalProp2": "string",
+          "additionalProp3": "string"
+        }
+      },
+      "resourceRules": [
+        {
+          "apiGroups": [
+            "apps"
+          ],
+          "apiVersions": [
+            "v1beta1"
+          ],
+          "operations": [
+            "CREATE",
+            "UPDATE"
+          ],
+          "resourceNames": [
+            "resourceNamesValue"
+          ],
+          "resources": [
+            "deployments"
+          ],
+          "scope": "scopeValue"
+        }
+      ]
+    },
+    "mutations": [
+      {
+        "applyConfiguration": {
+          "expression": "newExpression"
+        },
+        "jsonPatch": {
+          "expression": "newJsonPatch"
+        },
+        "patchType": "newPatchType"
+      }
+    ],
+    "paramKind": {
+      "apiVersion": "string",
+      "kind": "string"
+    },
+    "reinvocationPolicy": "newReinvocationPolicy",
+    "variables": [
+      {
+        "expression": "string",
+        "name": "string"
+      }
+    ]
+  }
+}

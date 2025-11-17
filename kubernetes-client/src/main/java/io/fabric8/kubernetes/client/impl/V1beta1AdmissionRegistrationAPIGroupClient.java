@@ -15,29 +15,40 @@
  */
 package io.fabric8.kubernetes.client.impl;
 
-import io.fabric8.kubernetes.api.model.admissionregistration.v1beta1.MutatingWebhookConfiguration;
-import io.fabric8.kubernetes.api.model.admissionregistration.v1beta1.MutatingWebhookConfigurationList;
-import io.fabric8.kubernetes.api.model.admissionregistration.v1beta1.ValidatingWebhookConfiguration;
-import io.fabric8.kubernetes.api.model.admissionregistration.v1beta1.ValidatingWebhookConfigurationList;
+import io.fabric8.kubernetes.api.model.admissionregistration.v1beta1.*;
 import io.fabric8.kubernetes.client.V1beta1AdmissionRegistrationAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.NonNamespaceOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.extension.ClientAdapter;
 
+/**
+ * Client implementation for the Kubernetes Admission Registration API Group v1beta1.
+ * This client provides access to admission webhook configurations and admission policies
+ * through a fluent DSL interface.
+ */
 public class V1beta1AdmissionRegistrationAPIGroupClient extends ClientAdapter<V1beta1AdmissionRegistrationAPIGroupClient>
     implements V1beta1AdmissionRegistrationAPIGroupDSL {
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public MixedOperation<ValidatingWebhookConfiguration, ValidatingWebhookConfigurationList, Resource<ValidatingWebhookConfiguration>> validatingWebhookConfigurations() {
     return resources(ValidatingWebhookConfiguration.class, ValidatingWebhookConfigurationList.class);
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public NonNamespaceOperation<MutatingWebhookConfiguration, MutatingWebhookConfigurationList, Resource<MutatingWebhookConfiguration>> mutatingWebhookConfigurations() {
     return resources(MutatingWebhookConfiguration.class, MutatingWebhookConfigurationList.class);
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public V1beta1AdmissionRegistrationAPIGroupClient newInstance() {
     return new V1beta1AdmissionRegistrationAPIGroupClient();
