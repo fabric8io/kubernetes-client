@@ -80,7 +80,7 @@ public class CookieConfig implements Editable<CookieConfigBuilder>, KubernetesRe
     }
 
     /**
-     * LifetimeType specifies whether the cookie has a permanent or session-based lifetime. A permanent cookie persists until its specified expiry time, defined by the Expires or Max-Age cookie attributes, while a session cookie is deleted when the current session ends.<br><p> <br><p> When set to "Permanent", AbsoluteTimeout indicates the cookie's lifetime via the Expires or Max-Age cookie attributes and is required.<br><p> <br><p> When set to "Session", AbsoluteTimeout indicates the absolute lifetime of the cookie tracked by the gateway and is optional.<br><p> <br><p> Support: Core for "Session" type<br><p> <br><p> Support: Extended for "Permanent" type
+     * LifetimeType specifies whether the cookie has a permanent or session-based lifetime. A permanent cookie persists until its specified expiry time, defined by the Expires or Max-Age cookie attributes, while a session cookie is deleted when the current session ends.<br><p> <br><p> When set to "Permanent", AbsoluteTimeout indicates the cookie's lifetime via the Expires or Max-Age cookie attributes and is required.<br><p> <br><p> When set to "Session", AbsoluteTimeout indicates the absolute lifetime of the cookie tracked by the gateway and is optional.<br><p> <br><p> Defaults to "Session".<br><p> <br><p> Support: Core for "Session" type<br><p> <br><p> Support: Extended for "Permanent" type
      */
     @JsonProperty("lifetimeType")
     public String getLifetimeType() {
@@ -88,7 +88,7 @@ public class CookieConfig implements Editable<CookieConfigBuilder>, KubernetesRe
     }
 
     /**
-     * LifetimeType specifies whether the cookie has a permanent or session-based lifetime. A permanent cookie persists until its specified expiry time, defined by the Expires or Max-Age cookie attributes, while a session cookie is deleted when the current session ends.<br><p> <br><p> When set to "Permanent", AbsoluteTimeout indicates the cookie's lifetime via the Expires or Max-Age cookie attributes and is required.<br><p> <br><p> When set to "Session", AbsoluteTimeout indicates the absolute lifetime of the cookie tracked by the gateway and is optional.<br><p> <br><p> Support: Core for "Session" type<br><p> <br><p> Support: Extended for "Permanent" type
+     * LifetimeType specifies whether the cookie has a permanent or session-based lifetime. A permanent cookie persists until its specified expiry time, defined by the Expires or Max-Age cookie attributes, while a session cookie is deleted when the current session ends.<br><p> <br><p> When set to "Permanent", AbsoluteTimeout indicates the cookie's lifetime via the Expires or Max-Age cookie attributes and is required.<br><p> <br><p> When set to "Session", AbsoluteTimeout indicates the absolute lifetime of the cookie tracked by the gateway and is optional.<br><p> <br><p> Defaults to "Session".<br><p> <br><p> Support: Core for "Session" type<br><p> <br><p> Support: Extended for "Permanent" type
      */
     @JsonProperty("lifetimeType")
     public void setLifetimeType(String lifetimeType) {

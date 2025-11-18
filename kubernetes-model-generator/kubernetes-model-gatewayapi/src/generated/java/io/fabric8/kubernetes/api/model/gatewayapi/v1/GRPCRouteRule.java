@@ -118,7 +118,7 @@ public class GRPCRouteRule implements Editable<GRPCRouteRuleBuilder>, Kubernetes
     }
 
     /**
-     * Filters define the filters that are applied to requests that match this rule.<br><p> <br><p> The effects of ordering of multiple behaviors are currently unspecified. This can change in the future based on feedback during the alpha stage.<br><p> <br><p> Conformance-levels at this level are defined based on the type of filter:<br><p> <br><p> - ALL core filters MUST be supported by all implementations that support<br><p>   GRPCRoute.<br><p> - Implementers are encouraged to support extended filters. - Implementation-specific custom filters have no API guarantees across<br><p>   implementations.<br><p> <br><p> Specifying the same filter multiple times is not supported unless explicitly indicated in the filter.<br><p> <br><p> If an implementation can not support a combination of filters, it must clearly document that limitation. In cases where incompatible or unsupported filters are specified and cause the `Accepted` condition to be set to status `False`, implementations may use the `IncompatibleFilters` reason to specify this configuration error.<br><p> <br><p> Support: Core
+     * Filters define the filters that are applied to requests that match this rule.<br><p> <br><p> The effects of ordering of multiple behaviors are currently unspecified. This can change in the future based on feedback during the alpha stage.<br><p> <br><p> Conformance-levels at this level are defined based on the type of filter:<br><p> <br><p> - ALL core filters MUST be supported by all implementations that support<br><p>   GRPCRoute.<br><p> - Implementers are encouraged to support extended filters. - Implementation-specific custom filters have no API guarantees across<br><p>   implementations.<br><p> <br><p> Specifying the same filter multiple times is not supported unless explicitly indicated in the filter.<br><p> <br><p> If an implementation cannot support a combination of filters, it must clearly document that limitation. In cases where incompatible or unsupported filters are specified and cause the `Accepted` condition to be set to status `False`, implementations may use the `IncompatibleFilters` reason to specify this configuration error.<br><p> <br><p> Support: Core
      */
     @JsonProperty("filters")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -127,7 +127,7 @@ public class GRPCRouteRule implements Editable<GRPCRouteRuleBuilder>, Kubernetes
     }
 
     /**
-     * Filters define the filters that are applied to requests that match this rule.<br><p> <br><p> The effects of ordering of multiple behaviors are currently unspecified. This can change in the future based on feedback during the alpha stage.<br><p> <br><p> Conformance-levels at this level are defined based on the type of filter:<br><p> <br><p> - ALL core filters MUST be supported by all implementations that support<br><p>   GRPCRoute.<br><p> - Implementers are encouraged to support extended filters. - Implementation-specific custom filters have no API guarantees across<br><p>   implementations.<br><p> <br><p> Specifying the same filter multiple times is not supported unless explicitly indicated in the filter.<br><p> <br><p> If an implementation can not support a combination of filters, it must clearly document that limitation. In cases where incompatible or unsupported filters are specified and cause the `Accepted` condition to be set to status `False`, implementations may use the `IncompatibleFilters` reason to specify this configuration error.<br><p> <br><p> Support: Core
+     * Filters define the filters that are applied to requests that match this rule.<br><p> <br><p> The effects of ordering of multiple behaviors are currently unspecified. This can change in the future based on feedback during the alpha stage.<br><p> <br><p> Conformance-levels at this level are defined based on the type of filter:<br><p> <br><p> - ALL core filters MUST be supported by all implementations that support<br><p>   GRPCRoute.<br><p> - Implementers are encouraged to support extended filters. - Implementation-specific custom filters have no API guarantees across<br><p>   implementations.<br><p> <br><p> Specifying the same filter multiple times is not supported unless explicitly indicated in the filter.<br><p> <br><p> If an implementation cannot support a combination of filters, it must clearly document that limitation. In cases where incompatible or unsupported filters are specified and cause the `Accepted` condition to be set to status `False`, implementations may use the `IncompatibleFilters` reason to specify this configuration error.<br><p> <br><p> Support: Core
      */
     @JsonProperty("filters")
     public void setFilters(List<GRPCRouteFilter> filters) {
@@ -152,7 +152,7 @@ public class GRPCRouteRule implements Editable<GRPCRouteRuleBuilder>, Kubernetes
     }
 
     /**
-     * Name is the name of the route rule. This name MUST be unique within a Route if it is set.<br><p> <br><p> Support: Extended &lt;gateway:experimental&gt;
+     * Name is the name of the route rule. This name MUST be unique within a Route if it is set.<br><p> <br><p> Support: Extended
      */
     @JsonProperty("name")
     public String getName() {
@@ -160,7 +160,7 @@ public class GRPCRouteRule implements Editable<GRPCRouteRuleBuilder>, Kubernetes
     }
 
     /**
-     * Name is the name of the route rule. This name MUST be unique within a Route if it is set.<br><p> <br><p> Support: Extended &lt;gateway:experimental&gt;
+     * Name is the name of the route rule. This name MUST be unique within a Route if it is set.<br><p> <br><p> Support: Extended
      */
     @JsonProperty("name")
     public void setName(String name) {

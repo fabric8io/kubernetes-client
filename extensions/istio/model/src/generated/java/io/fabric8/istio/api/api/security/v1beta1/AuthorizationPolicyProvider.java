@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Specifies detailed configuration of the CUSTOM action. Must be used only with CUSTOM action.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -78,11 +81,17 @@ public class AuthorizationPolicyProvider implements IsAuthorizationPolicyActionD
         this.provider = provider;
     }
 
+    /**
+     * Specifies detailed configuration of the CUSTOM action. Must be used only with CUSTOM action.
+     */
     @JsonProperty("provider")
     public AuthorizationPolicyExtensionProvider getProvider() {
         return provider;
     }
 
+    /**
+     * Specifies detailed configuration of the CUSTOM action. Must be used only with CUSTOM action.
+     */
     @JsonProperty("provider")
     public void setProvider(AuthorizationPolicyExtensionProvider provider) {
         this.provider = provider;

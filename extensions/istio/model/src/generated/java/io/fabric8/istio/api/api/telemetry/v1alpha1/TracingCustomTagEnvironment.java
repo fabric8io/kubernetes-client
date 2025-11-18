@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Environment adds the value of an environment variable to each span.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -78,11 +81,17 @@ public class TracingCustomTagEnvironment implements IsTracingCustomTagType, Edit
         this.environment = environment;
     }
 
+    /**
+     * Environment adds the value of an environment variable to each span.
+     */
     @JsonProperty("environment")
     public TracingEnvironment getEnvironment() {
         return environment;
     }
 
+    /**
+     * Environment adds the value of an environment variable to each span.
+     */
     @JsonProperty("environment")
     public void setEnvironment(TracingEnvironment environment) {
         this.environment = environment;

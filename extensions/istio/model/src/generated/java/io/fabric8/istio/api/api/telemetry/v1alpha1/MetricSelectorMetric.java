@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * One of the well-known [Istio Standard Metrics](https://istio.io/latest/docs/reference/config/metrics/).
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -78,11 +81,17 @@ public class MetricSelectorMetric implements IsMetricSelectorMetricMatch, Editab
         this.metric = metric;
     }
 
+    /**
+     * One of the well-known [Istio Standard Metrics](https://istio.io/latest/docs/reference/config/metrics/).
+     */
     @JsonProperty("metric")
     public MetricSelectorIstioMetric getMetric() {
         return metric;
     }
 
+    /**
+     * One of the well-known [Istio Standard Metrics](https://istio.io/latest/docs/reference/config/metrics/).
+     */
     @JsonProperty("metric")
     public void setMetric(MetricSelectorIstioMetric metric) {
         this.metric = metric;

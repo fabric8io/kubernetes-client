@@ -1,5 +1,5 @@
 
-package io.fabric8.kubernetes.api.model.gatewayapi.v1alpha3;
+package io.fabric8.kubernetes.api.model.gatewayapi.v1;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -20,15 +20,12 @@ import io.fabric8.kubernetes.api.model.EnvVar;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.LabelSelector;
-import io.fabric8.kubernetes.api.model.LocalObjectReference;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
-import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
 import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
-import io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.LocalPolicyTargetReferenceWithSectionName;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
@@ -58,8 +55,8 @@ import lombok.experimental.Accessors;
     @BuildableReference(PodTemplateSpec.class),
     @BuildableReference(ResourceRequirements.class),
     @BuildableReference(IntOrString.class),
-    @BuildableReference(ObjectReference.class),
-    @BuildableReference(LocalObjectReference.class),
+    @BuildableReference(io.fabric8.kubernetes.api.model.ObjectReference.class),
+    @BuildableReference(io.fabric8.kubernetes.api.model.LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class),
     @BuildableReference(EnvVar.class),
     @BuildableReference(ContainerPort.class),
@@ -112,7 +109,7 @@ public class BackendTLSPolicySpec implements Editable<BackendTLSPolicySpecBuilde
     }
 
     /**
-     * TargetRefs identifies an API object to apply the policy to. Only Services have Extended support. Implementations MAY support additional objects, with Implementation Specific support. Note that this config applies to the entire referenced resource by default, but this default may change in the future to provide a more granular application of the policy.<br><p> <br><p> Support: Extended for Kubernetes Service<br><p> <br><p> Support: Implementation-specific for any other resource
+     * TargetRefs identifies an API object to apply the policy to. Only Services have Extended support. Implementations MAY support additional objects, with Implementation Specific support. Note that this config applies to the entire referenced resource by default, but this default may change in the future to provide a more granular application of the policy.<br><p> <br><p> TargetRefs must be _distinct_. This means either that:<br><p> <br><p> &#42; They select different targets. If this is the case, then targetRef<br><p>   entries are distinct. In terms of fields, this means that the<br><p>   multi-part key defined by `group`, `kind`, and `name` must<br><p>   be unique across all targetRef entries in the BackendTLSPolicy.<br><p> &#42; They select different sectionNames in the same target.<br><p> <br><p> When more than one BackendTLSPolicy selects the same target and sectionName, implementations MUST determine precedence using the following criteria, continuing on ties:<br><p> <br><p> &#42; The older policy by creation timestamp takes precedence. For<br><p>   example, a policy with a creation timestamp of "2021-07-15<br><p>   01:02:03" MUST be given precedence over a policy with a<br><p>   creation timestamp of "2021-07-15 01:02:04".<br><p> &#42; The policy appearing first in alphabetical order by {name}.<br><p>   For example, a policy named `bar` is given precedence over a<br><p>   policy named `baz`.<br><p> <br><p> For any BackendTLSPolicy that does not take precedence, the implementation MUST ensure the `Accepted` Condition is set to `status: False`, with Reason `Conflicted`.<br><p> <br><p> Support: Extended for Kubernetes Service<br><p> <br><p> Support: Implementation-specific for any other resource
      */
     @JsonProperty("targetRefs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -121,7 +118,7 @@ public class BackendTLSPolicySpec implements Editable<BackendTLSPolicySpecBuilde
     }
 
     /**
-     * TargetRefs identifies an API object to apply the policy to. Only Services have Extended support. Implementations MAY support additional objects, with Implementation Specific support. Note that this config applies to the entire referenced resource by default, but this default may change in the future to provide a more granular application of the policy.<br><p> <br><p> Support: Extended for Kubernetes Service<br><p> <br><p> Support: Implementation-specific for any other resource
+     * TargetRefs identifies an API object to apply the policy to. Only Services have Extended support. Implementations MAY support additional objects, with Implementation Specific support. Note that this config applies to the entire referenced resource by default, but this default may change in the future to provide a more granular application of the policy.<br><p> <br><p> TargetRefs must be _distinct_. This means either that:<br><p> <br><p> &#42; They select different targets. If this is the case, then targetRef<br><p>   entries are distinct. In terms of fields, this means that the<br><p>   multi-part key defined by `group`, `kind`, and `name` must<br><p>   be unique across all targetRef entries in the BackendTLSPolicy.<br><p> &#42; They select different sectionNames in the same target.<br><p> <br><p> When more than one BackendTLSPolicy selects the same target and sectionName, implementations MUST determine precedence using the following criteria, continuing on ties:<br><p> <br><p> &#42; The older policy by creation timestamp takes precedence. For<br><p>   example, a policy with a creation timestamp of "2021-07-15<br><p>   01:02:03" MUST be given precedence over a policy with a<br><p>   creation timestamp of "2021-07-15 01:02:04".<br><p> &#42; The policy appearing first in alphabetical order by {name}.<br><p>   For example, a policy named `bar` is given precedence over a<br><p>   policy named `baz`.<br><p> <br><p> For any BackendTLSPolicy that does not take precedence, the implementation MUST ensure the `Accepted` Condition is set to `status: False`, with Reason `Conflicted`.<br><p> <br><p> Support: Extended for Kubernetes Service<br><p> <br><p> Support: Implementation-specific for any other resource
      */
     @JsonProperty("targetRefs")
     public void setTargetRefs(List<LocalPolicyTargetReferenceWithSectionName> targetRefs) {

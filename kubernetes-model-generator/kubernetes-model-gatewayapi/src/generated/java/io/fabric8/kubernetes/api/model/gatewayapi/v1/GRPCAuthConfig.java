@@ -1,5 +1,5 @@
 
-package io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2;
+package io.fabric8.kubernetes.api.model.gatewayapi.v1;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -20,15 +20,12 @@ import io.fabric8.kubernetes.api.model.EnvVar;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.LabelSelector;
-import io.fabric8.kubernetes.api.model.LocalObjectReference;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
-import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
 import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
-import io.fabric8.kubernetes.api.model.gatewayapi.v1.SessionPersistence;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
@@ -36,13 +33,12 @@ import lombok.ToString;
 import lombok.experimental.Accessors;
 
 /**
- * BackendLBPolicySpec defines the desired state of BackendLBPolicy. Note: there is no Override or Default policy configuration.
+ * GRPCAuthConfig contains configuration for communication with Auth server backends that speak Envoy's ext_authz gRPC protocol.<br><p> <br><p> Requests and responses are defined in the protobufs explained at: https://www.envoyproxy.io/docs/envoy/latest/api-v3/service/auth/v3/external_auth.proto
  */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "sessionPersistence",
-    "targetRefs"
+    "allowedHeaders"
 })
 @ToString
 @EqualsAndHashCode
@@ -57,8 +53,8 @@ import lombok.experimental.Accessors;
     @BuildableReference(PodTemplateSpec.class),
     @BuildableReference(ResourceRequirements.class),
     @BuildableReference(IntOrString.class),
-    @BuildableReference(ObjectReference.class),
-    @BuildableReference(LocalObjectReference.class),
+    @BuildableReference(io.fabric8.kubernetes.api.model.ObjectReference.class),
+    @BuildableReference(io.fabric8.kubernetes.api.model.LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class),
     @BuildableReference(EnvVar.class),
     @BuildableReference(ContainerPort.class),
@@ -66,69 +62,50 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class BackendLBPolicySpec implements Editable<BackendLBPolicySpecBuilder>, KubernetesResource
+public class GRPCAuthConfig implements Editable<GRPCAuthConfigBuilder>, KubernetesResource
 {
 
-    @JsonProperty("sessionPersistence")
-    private SessionPersistence sessionPersistence;
-    @JsonProperty("targetRefs")
+    @JsonProperty("allowedHeaders")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<LocalPolicyTargetReference> targetRefs = new ArrayList<>();
+    private List<String> allowedHeaders = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
      */
-    public BackendLBPolicySpec() {
+    public GRPCAuthConfig() {
     }
 
-    public BackendLBPolicySpec(SessionPersistence sessionPersistence, List<LocalPolicyTargetReference> targetRefs) {
+    public GRPCAuthConfig(List<String> allowedHeaders) {
         super();
-        this.sessionPersistence = sessionPersistence;
-        this.targetRefs = targetRefs;
+        this.allowedHeaders = allowedHeaders;
     }
 
     /**
-     * BackendLBPolicySpec defines the desired state of BackendLBPolicy. Note: there is no Override or Default policy configuration.
+     * AllowedRequestHeaders specifies what headers from the client request will be sent to the authorization server.<br><p> <br><p> If this list is empty, then all headers must be sent.<br><p> <br><p> If the list has entries, only those entries must be sent.
      */
-    @JsonProperty("sessionPersistence")
-    public SessionPersistence getSessionPersistence() {
-        return sessionPersistence;
-    }
-
-    /**
-     * BackendLBPolicySpec defines the desired state of BackendLBPolicy. Note: there is no Override or Default policy configuration.
-     */
-    @JsonProperty("sessionPersistence")
-    public void setSessionPersistence(SessionPersistence sessionPersistence) {
-        this.sessionPersistence = sessionPersistence;
-    }
-
-    /**
-     * TargetRef identifies an API object to apply policy to. Currently, Backends (i.e. Service, ServiceImport, or any implementation-specific backendRef) are the only valid API target references.
-     */
-    @JsonProperty("targetRefs")
+    @JsonProperty("allowedHeaders")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<LocalPolicyTargetReference> getTargetRefs() {
-        return targetRefs;
+    public List<String> getAllowedHeaders() {
+        return allowedHeaders;
     }
 
     /**
-     * TargetRef identifies an API object to apply policy to. Currently, Backends (i.e. Service, ServiceImport, or any implementation-specific backendRef) are the only valid API target references.
+     * AllowedRequestHeaders specifies what headers from the client request will be sent to the authorization server.<br><p> <br><p> If this list is empty, then all headers must be sent.<br><p> <br><p> If the list has entries, only those entries must be sent.
      */
-    @JsonProperty("targetRefs")
-    public void setTargetRefs(List<LocalPolicyTargetReference> targetRefs) {
-        this.targetRefs = targetRefs;
+    @JsonProperty("allowedHeaders")
+    public void setAllowedHeaders(List<String> allowedHeaders) {
+        this.allowedHeaders = allowedHeaders;
     }
 
     @JsonIgnore
-    public BackendLBPolicySpecBuilder edit() {
-        return new BackendLBPolicySpecBuilder(this);
+    public GRPCAuthConfigBuilder edit() {
+        return new GRPCAuthConfigBuilder(this);
     }
 
     @JsonIgnore
-    public BackendLBPolicySpecBuilder toBuilder() {
+    public GRPCAuthConfigBuilder toBuilder() {
         return edit();
     }
 
