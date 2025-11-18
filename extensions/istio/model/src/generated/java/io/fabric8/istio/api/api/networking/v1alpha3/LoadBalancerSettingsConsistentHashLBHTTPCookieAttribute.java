@@ -1,9 +1,7 @@
 
 package io.fabric8.istio.api.api.networking.v1alpha3;
 
-import java.util.ArrayList;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 import javax.annotation.processing.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
@@ -35,15 +33,13 @@ import lombok.ToString;
 import lombok.experimental.Accessors;
 
 /**
- * Describes a HTTP cookie that will be used as the hash key for the Consistent Hash load balancer.
+ * Attribute defines an API for adding additional attributes for a HTTP cookie.
  */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "attributes",
     "name",
-    "path",
-    "ttl"
+    "value"
 })
 @ToString
 @EqualsAndHashCode
@@ -67,54 +63,30 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class LoadBalancerSettingsConsistentHashLBHTTPCookie_ implements Editable<LoadBalancerSettingsConsistentHashLBHTTPCookie_Builder>, KubernetesResource
+public class LoadBalancerSettingsConsistentHashLBHTTPCookieAttribute implements Editable<LoadBalancerSettingsConsistentHashLBHTTPCookieAttributeBuilder>, KubernetesResource
 {
 
-    @JsonProperty("attributes")
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<LoadBalancerSettingsConsistentHashLBHTTPCookieAttribute> attributes = new ArrayList<>();
     @JsonProperty("name")
     private String name;
-    @JsonProperty("path")
-    private String path;
-    @JsonProperty("ttl")
-    private String ttl;
+    @JsonProperty("value")
+    private String value;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
      */
-    public LoadBalancerSettingsConsistentHashLBHTTPCookie_() {
+    public LoadBalancerSettingsConsistentHashLBHTTPCookieAttribute() {
     }
 
-    public LoadBalancerSettingsConsistentHashLBHTTPCookie_(List<LoadBalancerSettingsConsistentHashLBHTTPCookieAttribute> attributes, String name, String path, String ttl) {
+    public LoadBalancerSettingsConsistentHashLBHTTPCookieAttribute(String name, String value) {
         super();
-        this.attributes = attributes;
         this.name = name;
-        this.path = path;
-        this.ttl = ttl;
+        this.value = value;
     }
 
     /**
-     * Additional attributes for the cookie. They will be used when generating a new cookie.
-     */
-    @JsonProperty("attributes")
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<LoadBalancerSettingsConsistentHashLBHTTPCookieAttribute> getAttributes() {
-        return attributes;
-    }
-
-    /**
-     * Additional attributes for the cookie. They will be used when generating a new cookie.
-     */
-    @JsonProperty("attributes")
-    public void setAttributes(List<LoadBalancerSettingsConsistentHashLBHTTPCookieAttribute> attributes) {
-        this.attributes = attributes;
-    }
-
-    /**
-     * Name of the cookie.
+     * The name of the cookie attribute.
      */
     @JsonProperty("name")
     public String getName() {
@@ -122,7 +94,7 @@ public class LoadBalancerSettingsConsistentHashLBHTTPCookie_ implements Editable
     }
 
     /**
-     * Name of the cookie.
+     * The name of the cookie attribute.
      */
     @JsonProperty("name")
     public void setName(String name) {
@@ -130,44 +102,28 @@ public class LoadBalancerSettingsConsistentHashLBHTTPCookie_ implements Editable
     }
 
     /**
-     * Path to set for the cookie.
+     * The optional value of the cookie attribute.
      */
-    @JsonProperty("path")
-    public String getPath() {
-        return path;
+    @JsonProperty("value")
+    public String getValue() {
+        return value;
     }
 
     /**
-     * Path to set for the cookie.
+     * The optional value of the cookie attribute.
      */
-    @JsonProperty("path")
-    public void setPath(String path) {
-        this.path = path;
-    }
-
-    /**
-     * Describes a HTTP cookie that will be used as the hash key for the Consistent Hash load balancer.
-     */
-    @JsonProperty("ttl")
-    public String getTtl() {
-        return ttl;
-    }
-
-    /**
-     * Describes a HTTP cookie that will be used as the hash key for the Consistent Hash load balancer.
-     */
-    @JsonProperty("ttl")
-    public void setTtl(String ttl) {
-        this.ttl = ttl;
+    @JsonProperty("value")
+    public void setValue(String value) {
+        this.value = value;
     }
 
     @JsonIgnore
-    public LoadBalancerSettingsConsistentHashLBHTTPCookie_Builder edit() {
-        return new LoadBalancerSettingsConsistentHashLBHTTPCookie_Builder(this);
+    public LoadBalancerSettingsConsistentHashLBHTTPCookieAttributeBuilder edit() {
+        return new LoadBalancerSettingsConsistentHashLBHTTPCookieAttributeBuilder(this);
     }
 
     @JsonIgnore
-    public LoadBalancerSettingsConsistentHashLBHTTPCookie_Builder toBuilder() {
+    public LoadBalancerSettingsConsistentHashLBHTTPCookieAttributeBuilder toBuilder() {
         return edit();
     }
 
