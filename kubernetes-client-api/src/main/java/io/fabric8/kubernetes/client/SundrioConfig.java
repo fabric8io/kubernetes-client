@@ -57,74 +57,74 @@ import java.util.Map;
 @Data
 public class SundrioConfig {
 
-  protected Boolean trustCerts;
-  protected Boolean disableHostnameVerification;
-  protected String masterUrl;
-  protected String apiVersion;
-  protected String namespace;
-  protected Boolean defaultNamespace;
-  protected String caCertFile;
-  protected String caCertData;
-  protected String clientCertFile;
-  protected String clientCertData;
-  protected String clientKeyFile;
-  protected String clientKeyData;
-  protected String clientKeyAlgo;
-  protected String clientKeyPassphrase;
-  protected String trustStoreFile;
-  protected String trustStorePassphrase;
-  protected String keyStoreFile;
-  protected String keyStorePassphrase;
-  protected AuthProviderConfig authProvider;
-  protected String username;
-  protected String password;
-  protected volatile String oauthToken;
+  private Boolean trustCerts;
+  private Boolean disableHostnameVerification;
+  private String masterUrl;
+  private String apiVersion;
+  private String namespace;
+  private Boolean defaultNamespace;
+  private String caCertFile;
+  private String caCertData;
+  private String clientCertFile;
+  private String clientCertData;
+  private String clientKeyFile;
+  private String clientKeyData;
+  private String clientKeyAlgo;
+  private String clientKeyPassphrase;
+  private String trustStoreFile;
+  private String trustStorePassphrase;
+  private String keyStoreFile;
+  private String keyStorePassphrase;
+  private AuthProviderConfig authProvider;
+  private String username;
+  private String password;
+  private volatile String oauthToken;
   @JsonIgnore
-  protected volatile String autoOAuthToken;
+  private volatile String autoOAuthToken;
   @JsonIgnore
-  protected OAuthTokenProvider oauthTokenProvider;
-  protected Long websocketPingInterval;
-  protected Integer connectionTimeout;
-  protected Integer maxConcurrentRequests;
-  protected Integer maxConcurrentRequestsPerHost;
+  private OAuthTokenProvider oauthTokenProvider;
+  private Long websocketPingInterval;
+  private Integer connectionTimeout;
+  private Integer maxConcurrentRequests;
+  private Integer maxConcurrentRequestsPerHost;
 
-  protected List<NamedContext> contexts;
-  protected NamedContext currentContext;
+  private List<NamedContext> contexts;
+  private NamedContext currentContext;
 
-  protected Integer watchReconnectInterval;
-  protected Integer watchReconnectLimit;
-  protected Integer uploadRequestTimeout;
-  protected Integer requestRetryBackoffLimit;
-  protected Integer requestRetryBackoffInterval;
-  protected Integer requestTimeout;
-  protected Long scaleTimeout;
-  protected Integer loggingInterval;
-  protected String impersonateUsername;
-  protected String[] impersonateGroups;
-  protected Map<String, List<String>> impersonateExtras;
+  private Integer watchReconnectInterval;
+  private Integer watchReconnectLimit;
+  private Integer uploadRequestTimeout;
+  private Integer requestRetryBackoffLimit;
+  private Integer requestRetryBackoffInterval;
+  private Integer requestTimeout;
+  private Long scaleTimeout;
+  private Integer loggingInterval;
+  private String impersonateUsername;
+  private String[] impersonateGroups;
+  private Map<String, List<String>> impersonateExtras;
 
-  protected Boolean http2Disable;
-  protected String httpProxy;
-  protected String httpsProxy;
-  protected String proxyUsername;
-  protected String proxyPassword;
-  protected String[] noProxy;
-  protected String userAgent;
-  protected TlsVersion[] tlsVersions;
+  private Boolean http2Disable;
+  private String httpProxy;
+  private String httpsProxy;
+  private String proxyUsername;
+  private String proxyPassword;
+  private String[] noProxy;
+  private String userAgent;
+  private TlsVersion[] tlsVersions;
 
-  protected Boolean onlyHttpWatches;
+  private Boolean onlyHttpWatches;
 
-  protected Boolean watchList;
+  private Boolean watchList;
 
   /**
    * custom headers
    */
-  protected Map<String, String> customHeaders;
+  private Map<String, String> customHeaders;
 
-  protected Boolean autoConfigure;
+  private Boolean autoConfigure;
 
   @JsonIgnore
-  protected Map<String, Object> additionalProperties = new HashMap<>();
+  private Map<String, Object> additionalProperties = new HashMap<>();
 
   @JsonAnyGetter
   public Map<String, Object> getAdditionalProperties() {

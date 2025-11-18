@@ -3,6 +3,7 @@
 ### 7.5-SNAPSHOT
 
 #### Bugs
+* Fix #7356: ensure request config is preserved when adapting to OpenShiftClient
 * Fix #7343: Leader election callbacks to be called only once (instead of 2)
 
 #### Improvements
