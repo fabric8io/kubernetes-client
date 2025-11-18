@@ -111,7 +111,7 @@ public class PrometheusSourceSpec implements Editable<PrometheusSourceSpecBuilde
     }
 
     /**
-     * The name of the file containing the authenication token
+     * The name of the file containing the authentication token
      */
     @JsonProperty("authTokenFile")
     public String getAuthTokenFile() {
@@ -119,7 +119,7 @@ public class PrometheusSourceSpec implements Editable<PrometheusSourceSpecBuilde
     }
 
     /**
-     * The name of the file containing the authenication token
+     * The name of the file containing the authentication token
      */
     @JsonProperty("authTokenFile")
     public void setAuthTokenFile(String authTokenFile) {
