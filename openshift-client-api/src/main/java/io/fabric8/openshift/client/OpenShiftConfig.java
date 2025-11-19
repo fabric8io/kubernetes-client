@@ -61,9 +61,9 @@ public class OpenShiftConfig extends Config {
 
   OpenShiftConfig(SundrioConfig kubernetesConfig, String openShiftUrl, String oapiVersion, Long buildTimeout,
       Boolean disableApiGroupCheck) {
-    super(kubernetesConfig); // initi the base state - including setting defaults
+    super(kubernetesConfig); // init the base state - including setting defaults
     if (oapiVersion == null) {
-      oapiVersion = getDefaultOapiVersion(apiVersion);
+      oapiVersion = getDefaultOapiVersion(getApiVersion());
     }
 
     this.setOapiVersion(oapiVersion);
@@ -115,24 +115,24 @@ public class OpenShiftConfig extends Config {
 
   @JsonIgnore
   public String getOapiVersion() {
-    return (String) this.additionalProperties.getOrDefault(OAPI_VERSION, "v1");
+    return (String) this.getAdditionalProperties().getOrDefault(OAPI_VERSION, "v1");
   }
 
   public void setOapiVersion(String oapiVersion) {
-    this.additionalProperties.put(OAPI_VERSION, oapiVersion);
+    this.getAdditionalProperties().put(OAPI_VERSION, oapiVersion);
   }
 
   @JsonIgnore
   public String getOpenShiftUrl() {
-    return (String) this.additionalProperties.get(OPENSHIFT_URL);
+    return (String) this.getAdditionalProperties().get(OPENSHIFT_URL);
   }
 
   public void setOpenShiftUrl(String openShiftUrl) {
-    this.additionalProperties.put(OPENSHIFT_URL, openShiftUrl);
+    this.getAdditionalProperties().put(OPENSHIFT_URL, openShiftUrl);
   }
 
   public Long getBuildTimeout() {
-    return (Long) this.additionalProperties.getOrDefault(BUILD_TIMEOUT, DEFAULT_BUILD_TIMEOUT);
+    return (Long) this.getAdditionalProperties().getOrDefault(BUILD_TIMEOUT, DEFAULT_BUILD_TIMEOUT);
   }
 
   public void setBuildTimeout(long buildTimeout) {
@@ -141,15 +141,15 @@ public class OpenShiftConfig extends Config {
 
   public void setBuildTimeout(Long buildTimeout) {
     if (buildTimeout == null) {
-      this.additionalProperties.remove(BUILD_TIMEOUT);
+      this.getAdditionalProperties().remove(BUILD_TIMEOUT);
     } else {
-      this.additionalProperties.put(BUILD_TIMEOUT, buildTimeout);
+      this.getAdditionalProperties().put(BUILD_TIMEOUT, buildTimeout);
     }
   }
 
   @JsonIgnore
   public boolean isDisableApiGroupCheck() {
-    return Boolean.TRUE.equals(additionalProperties.get(DISABLE_API_GROUP_CHECK));
+    return Boolean.TRUE.equals(getAdditionalProperties().get(DISABLE_API_GROUP_CHECK));
   }
 
   public void setDisableApiGroupCheck(boolean disableApiGroupCheck) {
@@ -158,9 +158,9 @@ public class OpenShiftConfig extends Config {
 
   public void setDisableApiGroupCheck(Boolean disableApiGroupCheck) {
     if (disableApiGroupCheck == null) {
-      this.additionalProperties.remove(DISABLE_API_GROUP_CHECK);
+      this.getAdditionalProperties().remove(DISABLE_API_GROUP_CHECK);
     } else {
-      this.additionalProperties.put(DISABLE_API_GROUP_CHECK, disableApiGroupCheck);
+      this.getAdditionalProperties().put(DISABLE_API_GROUP_CHECK, disableApiGroupCheck);
     }
   }
 
