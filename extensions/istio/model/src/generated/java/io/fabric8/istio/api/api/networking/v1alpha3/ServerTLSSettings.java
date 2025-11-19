@@ -37,6 +37,7 @@ import lombok.experimental.Accessors;
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
+    "caCertCredentialName",
     "caCertificates",
     "caCrl",
     "cipherSuites",
@@ -78,6 +79,8 @@ import lombok.experimental.Accessors;
 public class ServerTLSSettings implements Editable<ServerTLSSettingsBuilder>, KubernetesResource
 {
 
+    @JsonProperty("caCertCredentialName")
+    private String caCertCredentialName;
     @JsonProperty("caCertificates")
     private String caCertificates;
     @JsonProperty("caCrl")
@@ -123,8 +126,9 @@ public class ServerTLSSettings implements Editable<ServerTLSSettingsBuilder>, Ku
     public ServerTLSSettings() {
     }
 
-    public ServerTLSSettings(String caCertificates, String caCrl, List<String> cipherSuites, String credentialName, List<String> credentialNames, Boolean httpsRedirect, ServerTLSSettingsTLSProtocol maxProtocolVersion, ServerTLSSettingsTLSProtocol minProtocolVersion, ServerTLSSettingsTLSmode mode, String privateKey, String serverCertificate, List<String> subjectAltNames, List<ServerTLSSettingsTLSCertificate> tlsCertificates, List<String> verifyCertificateHash, List<String> verifyCertificateSpki) {
+    public ServerTLSSettings(String caCertCredentialName, String caCertificates, String caCrl, List<String> cipherSuites, String credentialName, List<String> credentialNames, Boolean httpsRedirect, ServerTLSSettingsTLSProtocol maxProtocolVersion, ServerTLSSettingsTLSProtocol minProtocolVersion, ServerTLSSettingsTLSmode mode, String privateKey, String serverCertificate, List<String> subjectAltNames, List<ServerTLSSettingsTLSCertificate> tlsCertificates, List<String> verifyCertificateHash, List<String> verifyCertificateSpki) {
         super();
+        this.caCertCredentialName = caCertCredentialName;
         this.caCertificates = caCertificates;
         this.caCrl = caCrl;
         this.cipherSuites = cipherSuites;
@@ -140,6 +144,22 @@ public class ServerTLSSettings implements Editable<ServerTLSSettingsBuilder>, Ku
         this.tlsCertificates = tlsCertificates;
         this.verifyCertificateHash = verifyCertificateHash;
         this.verifyCertificateSpki = verifyCertificateSpki;
+    }
+
+    /**
+     * For mutual TLS, the name of the secret or the configmap that holds CA certificates. Takes precedence over CA certificates in the Secret referenced with `credentialName(s)`.
+     */
+    @JsonProperty("caCertCredentialName")
+    public String getCaCertCredentialName() {
+        return caCertCredentialName;
+    }
+
+    /**
+     * For mutual TLS, the name of the secret or the configmap that holds CA certificates. Takes precedence over CA certificates in the Secret referenced with `credentialName(s)`.
+     */
+    @JsonProperty("caCertCredentialName")
+    public void setCaCertCredentialName(String caCertCredentialName) {
+        this.caCertCredentialName = caCertCredentialName;
     }
 
     /**

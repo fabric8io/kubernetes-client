@@ -2518,6 +2518,13 @@
       "description": "Describes a HTTP cookie that will be used as the hash key for the Consistent Hash load balancer.",
       "type": "object",
       "properties": {
+        "attributes": {
+          "description": "Additional attributes for the cookie. They will be used when generating a new cookie.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/io.istio.api.networking.v1alpha3.LoadBalancerSettings_ConsistentHashLB_HTTPCookie_Attribute"
+          }
+        },
         "name": {
           "description": "Name of the cookie.",
           "type": "string"
@@ -2536,6 +2543,27 @@
         "Group": "",
         "Version": "v1alpha3",
         "Kind": "LoadBalancerSettings_ConsistentHashLB_HTTPCookie",
+        "Scope": "Namespaced"
+      }
+    },
+    "io.istio.api.networking.v1alpha3.LoadBalancerSettings_ConsistentHashLB_HTTPCookie_Attribute": {
+      "description": "Attribute defines an API for adding additional attributes for a HTTP cookie.",
+      "type": "object",
+      "properties": {
+        "name": {
+          "description": "The name of the cookie attribute.",
+          "type": "string"
+        },
+        "value": {
+          "description": "The optional value of the cookie attribute.",
+          "type": "string"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "",
+        "Version": "v1alpha3",
+        "Kind": "LoadBalancerSettings_ConsistentHashLB_HTTPCookie_Attribute",
         "Scope": "Namespaced"
       }
     },
@@ -3188,6 +3216,10 @@
     "io.istio.api.networking.v1alpha3.ServerTLSSettings": {
       "type": "object",
       "properties": {
+        "caCertCredentialName": {
+          "description": "For mutual TLS, the name of the secret or the configmap that holds CA certificates. Takes precedence over CA certificates in the Secret referenced with `credentialName(s)`.",
+          "type": "string"
+        },
         "caCertificates": {
           "description": "REQUIRED if mode is `MUTUAL` or `OPTIONAL_MUTUAL`. The path to a file containing certificate authority certificates to use in verifying a presented client side certificate.",
           "type": "string"
@@ -3339,7 +3371,7 @@
       "type": "object",
       "properties": {
         "addresses": {
-          "description": "The virtual IP addresses associated with the service. Could be CIDR prefix. For HTTP traffic, generated route configurations will include http route domains for both the `addresses` and `hosts` field values and the destination will be identified based on the HTTP Host/Authority header. If one or more IP addresses are specified, the incoming traffic will be identified as belonging to this service if the destination IP matches the IP/CIDRs specified in the addresses field. If the Addresses field is empty, traffic will be identified solely based on the destination port. In such scenarios, the port on which the service is being accessed must not be shared by any other service in the mesh. In other words, the sidecar will behave as a simple TCP proxy, forwarding incoming traffic on a specified port to the specified destination endpoint IP/host. Unix domain socket addresses are not supported in this field.",
+          "description": "The virtual IP addresses associated with the service. Could be CIDR prefix. For HTTP traffic, generated route configurations will include http route domains for both the `addresses` and `hosts` field values and the destination will be identified based on the HTTP Host/Authority header. If one or more IP addresses are specified, the incoming traffic will be identified as belonging to this service if the destination IP matches the IP/CIDRs specified in the addresses field. If the Addresses field is empty, traffic will be identified solely based on the destination port. In such scenarios, the port on which the service is being accessed must not be shared by any other service in the mesh. In other words, the sidecar will behave as a simple TCP proxy, forwarding incoming traffic on a specified port to the specified destination endpoint IP/host. Unix domain socket addresses are not supported in this field. Although the API allows specifying addresses in a list, multiple addresses will not be used by a single host. This means manual specification of dual-stack addressing is not supported.",
           "type": "array",
           "items": {
             "type": "string",
@@ -3354,7 +3386,7 @@
           }
         },
         "exportTo": {
-          "description": "A list of namespaces to which this service is exported. Exporting a service allows it to be used by sidecars, gateways and virtual services defined in other namespaces. This feature provides a mechanism for service owners and mesh administrators to control the visibility of services across namespace boundaries.\n\nIf no namespaces are specified then the service is exported to all namespaces by default.\n\nThe value \".\" is reserved and defines an export to the same namespace that the service is declared in. Similarly the value \"*\" is reserved and defines an export to all namespaces.\n\nFor a Kubernetes Service, the equivalent effect can be achieved by setting the annotation \"networking.istio.io/exportTo\" to a comma-separated list of namespace names.",
+          "description": "A list of namespaces to which this service is exported. Exporting a service allows it to be used by sidecars, gateways and virtual services defined in other namespaces. This feature provides a mechanism for service owners and mesh administrators to control the visibility of services across namespace boundaries.\n\nIf no namespaces are specified then the service is exported to all namespaces by default.\n\nThe value \".\" is reserved and defines an export to the same namespace that the service is declared in. Similarly the value \"*\" is reserved and defines an export to all namespaces.\n\nFor a Kubernetes Service, the equivalent effect can be achieved by setting the annotation \"networking.istio.io/exportTo\" to a comma-separated list of namespace names.\n\n**Note:** Ztunnel and Waypoint proxies not support this field and will read it at \"*\".",
           "type": "array",
           "items": {
             "type": "string",
@@ -3362,7 +3394,7 @@
           }
         },
         "hosts": {
-          "description": "The hosts associated with the ServiceEntry. Could be a DNS name with wildcard prefix.\n\n1. The hosts field is used to select matching hosts in VirtualServices and DestinationRules. 2. For HTTP traffic the HTTP Host/Authority header will be matched against the hosts field. 3. For HTTPs or TLS traffic containing Server Name Indication (SNI), the SNI value will be matched against the hosts field.\n\n**NOTE 1:** When resolution is set to type DNS and no endpoints are specified, the host field will be used as the DNS name of the endpoint to route traffic to.\n\n**NOTE 2:** If the hostname matches with the name of a service from another service registry such as Kubernetes that also supplies its own set of endpoints, the ServiceEntry will be treated as a decorator of the existing Kubernetes service. Properties in the service entry will be added to the Kubernetes service if applicable. Currently, only the following additional properties will be considered by `istiod`:\n\n 1. subjectAltNames: In addition to verifying the SANs of the\n    service accounts associated with the pods of the service, the\n    SANs specified here will also be verified.",
+          "description": "The hosts associated with the ServiceEntry. Could be a DNS name with wildcard prefix.\n\n1. The hosts field is used to select matching hosts in VirtualServices and DestinationRules. 2. For HTTP traffic the HTTP Host/Authority header will be matched against the hosts field. 3. For HTTPs or TLS traffic containing Server Name Indication (SNI), the SNI value will be matched against the hosts field.\n\n**NOTE 1:** When resolution is set to type DNS and no endpoints are specified, the host field will be used as the DNS name of the endpoint to route traffic to.\n\n**NOTE 2:** If the hostname matches with the name of a service from another service registry such as Kubernetes that also supplies its own set of endpoints, the ServiceEntry will be treated as a decorator of the existing Kubernetes service. Properties in the service entry will be added to the Kubernetes service if applicable. Currently, only the following additional properties will be considered by `istiod`:\n\n 1. subjectAltNames: In addition to verifying the SANs of the\n    service accounts associated with the pods of the service, the\n    SANs specified here will also be verified.\n\n**NOTE 3:** Ztunnel and Waypoint proxies do not support wildcard hosts.",
           "type": "array",
           "items": {
             "type": "string",
@@ -3497,7 +3529,7 @@
         "Kind": "ServiceEntry_Resolution",
         "Scope": "Namespaced"
       },
-      "x-kubernetes-fabric8-enum-values": "DNS(2),DNS_ROUND_ROBIN(3),NONE(0),STATIC(1)",
+      "x-kubernetes-fabric8-enum-values": "DNS(2),DNS_ROUND_ROBIN(3),DYNAMIC_DNS(4),NONE(0),STATIC(1)",
       "x-kubernetes-fabric8-type": "enum"
     },
     "io.istio.api.networking.v1alpha3.ServicePort": {
@@ -4506,7 +4538,7 @@
       }
     },
     "io.istio.api.security.v1beta1.JWTRule": {
-      "description": "JSON Web Token (JWT) token format for authentication as defined by [RFC 7519](https://tools.ietf.org/html/rfc7519). See [OAuth 2.0](https://tools.ietf.org/html/rfc6749) and [OIDC 1.0](http://openid.net/connect) for how this is used in the whole authentication flow.\n\nExamples:\n\nSpec for a JWT that is issued by `https://example.com`, with the audience claims must be either `bookstore_android.apps.example.com` or `bookstore_web.apps.example.com`. The token should be presented at the `Authorization` header (default). The JSON Web Key Set (JWKS) will be discovered following OpenID Connect protocol.\n\n```yaml issuer: https://example.com audiences:\n  - bookstore_android.apps.example.com\n    bookstore_web.apps.example.com\n\n```\n\nThis example specifies a token in a non-default location (`x-goog-iap-jwt-assertion` header). It also defines the URI to fetch JWKS explicitly.\n\n```yaml issuer: https://example.com jwksUri: https://example.com/.secret/jwks.json fromHeaders: - \"x-goog-iap-jwt-assertion\" ```",
+      "description": "JSON Web Token (JWT) token format for authentication as defined by [RFC 7519](https://tools.ietf.org/html/rfc7519). See [OAuth 2.0](https://tools.ietf.org/html/rfc6749) and [OIDC 1.0](http://openid.net/connect) for how this is used in the whole authentication flow.\n\nExamples:\n\nSpec for a JWT that is issued by `https://example.com`, with the audience claims must be either `bookstore_android.apps.example.com` or `bookstore_web.apps.example.com`. The token should be presented at the `Authorization` header (default). The JSON Web Key Set (JWKS) will be discovered following OpenID Connect protocol.\n\n```yaml issuer: https://example.com audiences:\n  - bookstore_android.apps.example.com\n    bookstore_web.apps.example.com\n\n```\n\nThis example specifies a token in a non-default location (`x-goog-iap-jwt-assertion` header). It also defines the URI to fetch JWKS explicitly.\n\n```yaml issuer: https://example.com jwksUri: https://example.com/.secret/jwks.json fromHeaders: - \"x-goog-iap-jwt-assertion\" ```\n\nThis example shows how to configure custom claims to be treated as space-delimited strings. This is useful when JWT tokens contain custom claims with multiple space-separated values that should be available for individual matching in authorization policies.\n\n```yaml issuer: https://example.com spaceDelimitedClaims: - \"custom_scope\" - \"provider.login.scope\" - \"roles\" ```\n\nWith this configuration, a JWT containing `\"custom_scope\": \"read write admin\"` will allow authorization policies to match against individual values like \"read\", \"write\", or \"admin\".",
       "type": "object",
       "properties": {
         "audiences": {
@@ -4522,7 +4554,7 @@
           "type": "boolean"
         },
         "fromCookies": {
-          "description": "List of cookie names from which JWT is expected.\t// For example, if config is:\n\n``` yaml\n\n\tfrom_cookies:\n\t- auth-token\n\n``` Then JWT will be extracted from `auth-token` cookie in the request.\n\nNote: Requests with multiple tokens (at different locations) are not supported, the output principal of such requests is undefined.",
+          "description": "List of cookie names from which JWT is expected.\t// For example, if config is:\n\n``` yaml\n\n\tfromCookies:\n\t- auth-token\n\n``` Then JWT will be extracted from `auth-token` cookie in the request.\n\nNote: Requests with multiple tokens (at different locations) are not supported, the output principal of such requests is undefined.",
           "type": "array",
           "items": {
             "type": "string",
@@ -4566,6 +4598,14 @@
         "outputPayloadToHeader": {
           "description": "This field specifies the header name to output a successfully verified JWT payload to the backend. The forwarded data is `base64_encoded(jwt_payload_in_JSON)`. If it is not specified, the payload will not be emitted.",
           "type": "string"
+        },
+        "spaceDelimitedClaims": {
+          "description": "List of JWT claim names that should be treated as space-delimited strings. These claims will be split on whitespace and each individual value will be available for matching in authorization policies. This extends the default behavior that only treats 'scope' and 'permission' claims as space-delimited.\n\nExample usage for custom claims: ```yaml spaceDelimitedClaims: - \"custom_scope\" - \"provider.login.scope\" - \"roles\" ```\n\nThis allows authorization policies to match individual values within space-separated claim strings, maintaining compatibility with existing JWT token formats.\n\nNote: The default claims 'scope' and 'permission' are always treated as space-delimited regardless of this setting.",
+          "type": "array",
+          "items": {
+            "type": "string",
+            "default": ""
+          }
         },
         "timeout": {
           "description": "The maximum amount of time that the resolver, determined by the PILOT_JWT_ENABLE_REMOTE_JWKS environment variable, will spend waiting for the JWKS to be fetched. Default is 5s.",
