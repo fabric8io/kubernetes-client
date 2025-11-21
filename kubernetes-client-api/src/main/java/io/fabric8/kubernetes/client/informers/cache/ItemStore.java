@@ -25,10 +25,10 @@ import java.util.stream.Stream;
  * all entries until they are deleted. At its simplest this is just a map coupled with a key function.
  * <p>
  * Modifications to this store once the informer is running, by anything other than the informer will alter the event stream. If
- * for example an item is not found, an subsequent update from the api version will send notifications to
+ * for example an item is not found, any subsequent update from the api version will send notifications to
  * {@link ResourceEventHandler}s as an add.
  * <p>
- * Direct modifications to this store by anything other than the informer will not updated indexes nor emit events.
+ * Direct modifications to this store by anything other than the informer will not update indexes nor emit events.
  * <p>
  * The implementation should be safe with respect to concurrency. Modifications from the informer
  * will be single threaded, but not necessarily the same thread. Reads may be concurrent with writes.
@@ -60,8 +60,6 @@ public interface ItemStore<V> {
    * <br>
    * If false, then the initial add events must be processed as they
    * occur - meaning that the store state may not be complete.
-   *
-   * @return
    */
   default boolean isFullState() {
     return true;
