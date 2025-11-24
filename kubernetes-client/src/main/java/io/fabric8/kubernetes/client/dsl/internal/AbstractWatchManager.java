@@ -211,7 +211,7 @@ public abstract class AbstractWatchManager<T extends HasMetadata> implements Wat
   /**
    * Called to reestablish the connection. Should only be called once per request.
    */
-  void scheduleReconnect(WatchRequestState state) {
+  void scheduleReconnect(WatchRequestState state, Throwable t) {
     if (!state.reconnected.compareAndSet(false, true)) {
       return;
     }
@@ -221,7 +221,7 @@ public abstract class AbstractWatchManager<T extends HasMetadata> implements Wat
     }
 
     if (cannotReconnect()) {
-      close(new WatcherException("Exhausted reconnects"));
+      close(new WatcherException("Exhausted reconnects", t, true));
       return;
     }
 
@@ -252,7 +252,7 @@ public abstract class AbstractWatchManager<T extends HasMetadata> implements Wat
     } catch (Exception e) {
       // An unexpected error occurred and we didn't even get an onFailure callback.
       logger.error("Exception in reconnect", e);
-      close(new WatcherException("Unhandled exception in reconnect attempt", e));
+      close(new WatcherException("Unhandled exception in reconnect attempt", e, true));
     }
   }
 
@@ -430,7 +430,7 @@ public abstract class AbstractWatchManager<T extends HasMetadata> implements Wat
         logEndError(t);
       }
     } finally {
-      scheduleReconnect(state);
+      scheduleReconnect(state, t);
     }
   }
 

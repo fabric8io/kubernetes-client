@@ -20,23 +20,30 @@ import java.util.Optional;
 
 public class WatcherException extends Exception {
   private final String rawWatchMessage;
+  private final boolean reconnectionError;
 
   public WatcherException(String message, Throwable cause) {
     this(message, cause, null);
   }
 
   public WatcherException(String message) {
+    this(message, null, null);
+  }
+
+  public WatcherException(String message, Throwable cause, boolean reconnectionError) {
     super(message);
     rawWatchMessage = null;
+    this.reconnectionError = reconnectionError;
   }
 
   public WatcherException(String message, Throwable cause, String rawWatchMessage) {
     super(message, cause);
     this.rawWatchMessage = rawWatchMessage;
+    this.reconnectionError = false;
   }
 
   public KubernetesClientException asClientException() {
-    final Throwable cause = getCause();
+    final Throwable cause = Optional.ofNullable(getCause()).orElse(this);
     return cause instanceof KubernetesClientException ? (KubernetesClientException) cause
         : new KubernetesClientException(getMessage(), cause);
   }
@@ -47,8 +54,13 @@ public class WatcherException extends Exception {
         || (cause.getStatus() != null && cause.getStatus().getCode() == HttpURLConnection.HTTP_GONE));
   }
 
+  public boolean isReconnectionError() {
+    return reconnectionError;
+  }
+
   @SuppressWarnings("unused")
   public Optional<String> getRawWatchMessage() {
     return Optional.ofNullable(rawWatchMessage);
   }
+
 }
