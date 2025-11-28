@@ -570,9 +570,9 @@ public class OperationSupport {
     List<String> warnings = response.headers("Warning");
     if (warnings != null && !warnings.isEmpty()) {
       if (context.fieldValidation == Validation.WARN) {
-        LOG.warn("Recieved warning(s) from request {}: {}", request.uri(), warnings);
+        LOG.warn("Received warning(s) from request {}: {}", request.uri(), warnings);
       } else {
-        LOG.debug("Recieved warning(s) from request {}: {}", request.uri(), warnings);
+        LOG.debug("Received warning(s) from request {}: {}", request.uri(), warnings);
       }
     }
     if (response.isSuccessful()) {
