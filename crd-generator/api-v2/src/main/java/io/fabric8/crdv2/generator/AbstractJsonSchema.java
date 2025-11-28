@@ -41,6 +41,8 @@ import io.fabric8.crd.generator.annotation.SchemaSwap;
 import io.fabric8.crd.generator.annotation.SelectableField;
 import io.fabric8.crdv2.generator.InternalSchemaSwaps.SwapResult;
 import io.fabric8.crdv2.generator.ResolvingContext.GeneratorObjectSchema;
+import io.fabric8.crdv2.generator.v1.JsonSchema.V1JSONSchemaProps;
+import io.fabric8.crdv2.generator.v1.SchemaCustomizer;
 import io.fabric8.generator.annotation.Default;
 import io.fabric8.generator.annotation.Max;
 import io.fabric8.generator.annotation.Min;
@@ -54,6 +56,7 @@ import io.fabric8.kubernetes.api.model.GenericKubernetesResource;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.Quantity;
+import io.fabric8.kubernetes.api.model.apiextensions.v1.JSONSchemaProps;
 import io.fabric8.kubernetes.api.model.runtime.RawExtension;
 import io.fabric8.kubernetes.client.utils.Utils;
 import io.fabric8.kubernetes.model.annotation.LabelSelector;
@@ -412,7 +415,7 @@ public abstract class AbstractJsonSchema<T extends KubernetesJSONSchemaProps, V 
       String... ignore) {
     Set<String> ignores = ignore.length > 0 ? new LinkedHashSet<>(Arrays.asList(ignore)) : Collections.emptySet();
 
-    final T objectSchema = singleProperty("object");
+    T objectSchema = singleProperty("object");
 
     schemaSwaps = schemaSwaps.branchAnnotations();
     final InternalSchemaSwaps swaps = schemaSwaps;
@@ -505,6 +508,28 @@ public abstract class AbstractJsonSchema<T extends KubernetesJSONSchemaProps, V 
     consumeRepeatingAnnotation(rawClass, ValidationRule.class,
         v -> validationRules.add(from(v)));
     addToValidationRules(objectSchema, validationRules);
+    return handleSchemaCustomizer(objectSchema, rawClass);
+  }
+
+  private T handleSchemaCustomizer(T objectSchema, Class<?> rawClass) {
+    if (objectSchema instanceof JSONSchemaProps) {
+      JSONSchemaProps[] props = new JSONSchemaProps[] { (JSONSchemaProps) objectSchema };
+      consumeRepeatingAnnotation(rawClass, SchemaCustomizer.class, sc -> {
+        try {
+          props[0] = sc.value().getConstructor().newInstance().apply(props[0], sc.input(),
+              this.resolvingContext.kubernetesSerialization);
+        } catch (Exception e) {
+          if (!(e instanceof RuntimeException)) {
+            e = new RuntimeException(e);
+          }
+          throw (RuntimeException) e;
+        }
+      });
+      if (props[0] != objectSchema) {
+        // hack to convert back to V1JSONSchemaProps
+        objectSchema = (T) resolvingContext.kubernetesSerialization.convertValue(props[0], V1JSONSchemaProps.class);
+      }
+    }
     return objectSchema;
   }
 

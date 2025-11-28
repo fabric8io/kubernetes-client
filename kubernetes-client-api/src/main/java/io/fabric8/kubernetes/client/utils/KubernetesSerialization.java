@@ -26,6 +26,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.KeyDeserializer;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectReader;
 import com.fasterxml.jackson.databind.SerializationConfig;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.cfg.HandlerInstantiator;
@@ -426,6 +427,15 @@ public class KubernetesSerialization {
       return input; // valid json
     } catch (JsonProcessingException e) {
       return asJson(unmarshal(input, JsonNode.class));
+    }
+  }
+
+  public void mergePatch(Object updatable, String patch) {
+    ObjectReader reader = mapper.readerForUpdating(updatable);
+    try {
+      reader.readValue(patch);
+    } catch (JsonProcessingException e) {
+      throw KubernetesClientException.launderThrowable(e);
     }
   }
 
