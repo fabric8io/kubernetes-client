@@ -5,6 +5,7 @@
 #### Bugs
 * Fix #7356: ensure request config is preserved when adapting to OpenShiftClient
 * Fix #7343: Leader election callbacks to be called only once (instead of 2)
+* Fix #7160: Use the duration from current leader record, not from the config
 * Fix #7347: Ensure vert.x websockets handle multiple frames
 
 #### Improvements
