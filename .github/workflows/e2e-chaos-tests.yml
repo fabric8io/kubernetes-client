@@ -40,7 +40,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        kubernetes: [v1.33.0]
+        kubernetes: [v1.34.2]
         java-version: [11,17]
         http-client: [okhttp,jdk,jetty,vertx]
         chaos-test: ["network-delay.yaml", "network-loss.yaml", "network-duplicate.yaml"]
@@ -50,7 +50,7 @@ jobs:
       - name: Setup Minikube-Kubernetes
         uses: manusa/actions-setup-minikube@v2.14.0
         with:
-          minikube version: v1.35.0
+          minikube version: v1.37.0
           kubernetes version: ${{ matrix.kubernetes }}
           github token: ${{ secrets.GITHUB_TOKEN }}
       - name: Setup Java ${{ matrix.java-version }}
