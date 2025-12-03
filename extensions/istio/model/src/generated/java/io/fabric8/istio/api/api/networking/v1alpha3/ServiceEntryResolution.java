@@ -12,6 +12,7 @@ public enum ServiceEntryResolution
 {
     DNS(2),
     DNS_ROUND_ROBIN(3),
+    DYNAMIC_DNS(4),
     NONE(0),
     STATIC(1);
     private final int value;

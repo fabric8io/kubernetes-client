@@ -90,7 +90,7 @@ public class VolumeError implements Editable<VolumeErrorBuilder>, KubernetesReso
     }
 
     /**
-     * errorCode is a numeric gRPC code representing the error encountered during Attach or Detach operations.<br><p> <br><p> This is an optional, alpha field that requires the MutableCSINodeAllocatableCount feature gate being enabled to be set.
+     * errorCode is a numeric gRPC code representing the error encountered during Attach or Detach operations.<br><p> <br><p> This is an optional, beta field that requires the MutableCSINodeAllocatableCount feature gate being enabled to be set.
      */
     @JsonProperty("errorCode")
     public Integer getErrorCode() {
@@ -98,7 +98,7 @@ public class VolumeError implements Editable<VolumeErrorBuilder>, KubernetesReso
     }
 
     /**
-     * errorCode is a numeric gRPC code representing the error encountered during Attach or Detach operations.<br><p> <br><p> This is an optional, alpha field that requires the MutableCSINodeAllocatableCount feature gate being enabled to be set.
+     * errorCode is a numeric gRPC code representing the error encountered during Attach or Detach operations.<br><p> <br><p> This is an optional, beta field that requires the MutableCSINodeAllocatableCount feature gate being enabled to be set.
      */
     @JsonProperty("errorCode")
     public void setErrorCode(Integer errorCode) {

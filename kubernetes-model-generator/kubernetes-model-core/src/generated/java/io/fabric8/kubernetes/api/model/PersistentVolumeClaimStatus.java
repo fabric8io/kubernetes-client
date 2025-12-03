@@ -173,7 +173,7 @@ public class PersistentVolumeClaimStatus implements Editable<PersistentVolumeCla
     }
 
     /**
-     * currentVolumeAttributesClassName is the current name of the VolumeAttributesClass the PVC is using. When unset, there is no VolumeAttributeClass applied to this PersistentVolumeClaim This is a beta field and requires enabling VolumeAttributesClass feature (off by default).
+     * currentVolumeAttributesClassName is the current name of the VolumeAttributesClass the PVC is using. When unset, there is no VolumeAttributeClass applied to this PersistentVolumeClaim
      */
     @JsonProperty("currentVolumeAttributesClassName")
     public String getCurrentVolumeAttributesClassName() {
@@ -181,7 +181,7 @@ public class PersistentVolumeClaimStatus implements Editable<PersistentVolumeCla
     }
 
     /**
-     * currentVolumeAttributesClassName is the current name of the VolumeAttributesClass the PVC is using. When unset, there is no VolumeAttributeClass applied to this PersistentVolumeClaim This is a beta field and requires enabling VolumeAttributesClass feature (off by default).
+     * currentVolumeAttributesClassName is the current name of the VolumeAttributesClass the PVC is using. When unset, there is no VolumeAttributeClass applied to this PersistentVolumeClaim
      */
     @JsonProperty("currentVolumeAttributesClassName")
     public void setCurrentVolumeAttributesClassName(String currentVolumeAttributesClassName) {

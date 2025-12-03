@@ -3,7 +3,10 @@
 ### 7.5-SNAPSHOT
 
 #### Bugs
+* Fix #7356: ensure request config is preserved when adapting to OpenShiftClient
 * Fix #7343: Leader election callbacks to be called only once (instead of 2)
+* Fix #7160: Use the duration from current leader record, not from the config
+* Fix #7347: Ensure vert.x websockets handle multiple frames
 
 #### Improvements
 * Fix #7345: skip publishing test and example modules to Maven Central
@@ -12,10 +15,13 @@
 * Fix #7266: bump jackson-bom from 2.19.2 to 2.20.0, fix overrides and handle jackson-annotations v2.20
 
 #### New Features
+* Fix #7048: Support for Kubernetes v1.34 (Of Wind & Will)
 * Fix #7174: Added Vert.x 5 HTTP client implementation with improved async handling and WebSocket separation
 
 #### _**Note**_: Breaking changes
-* #7266: bump jackson-bom from 2.19.2 to 2.20.0, fix overrides and handle jackson-annotations v2.20
+* Fix #7266: bump jackson-bom from 2.19.2 to 2.20.0, fix overrides and handle jackson-annotations v2.20
+* Fix #7048: **admissionregistration.v1beta1**: Removed `ValidatingAdmissionPolicy` and related classes (`ValidatingAdmissionPolicyBinding`, `AuditAnnotation`, `Validation`, `ValidatingAdmissionPolicyBindingSpec`) from `v1beta1` as they have graduated to GA in `admissionregistration.v1`. `MutatingAdmissionPolicy` has been promoted from `v1alpha1` to `v1beta1`. The `V1beta1AdmissionRegistrationAPIGroupDSL` and  `V1beta1AdmissionRegistrationAPIGroupClient` have been updated accordingly.
+  Users should migrate to `admissionregistration.v1.ValidatingAdmissionPolicy` for GA APIs.
 
 ### 7.4.0 (2025-09-08)
 
@@ -95,8 +101,6 @@ Fix #7204: Rationalized config constructors
 #### New Features
 * Fix #6827: (crd-generator) Add CRDPostProcessor to process generated CRDs before they are written out
 * Fix #7025: Support for Kubernetes v1.33 (Octarine)
-
-#### _**Note**_: Breaking changes
 
 ### 7.1.0 (2025-01-30)
 

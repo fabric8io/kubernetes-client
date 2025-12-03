@@ -196,7 +196,7 @@ public class Config extends SundrioConfig {
       tryNamespaceFromPath(config);
     }
     postAutoConfigure(config);
-    config.autoConfigure = true;
+    config.setAutoConfigure(true);
   }
 
   private static void postAutoConfigure(Config config) {
@@ -243,193 +243,190 @@ public class Config extends SundrioConfig {
   protected Config(SundrioConfig config, Boolean shouldSetDefaultValues) {
     if (Boolean.TRUE.equals(shouldSetDefaultValues)) {
       this.setMasterUrl(DEFAULT_MASTER_URL);
-      this.apiVersion = "v1";
-      this.defaultNamespace = true;
-      this.trustCerts = false;
-      this.disableHostnameVerification = false;
-      this.onlyHttpWatches = false;
-      this.http2Disable = false;
-      this.clientKeyAlgo = "RSA";
-      this.clientKeyPassphrase = DEFAULT_CLIENT_KEY_PASSPHRASE;
-      this.websocketPingInterval = DEFAULT_WEBSOCKET_PING_INTERVAL;
-      this.connectionTimeout = DEFAULT_CONNECTION_TIMEOUT;
-      this.maxConcurrentRequests = DEFAULT_MAX_CONCURRENT_REQUESTS;
-      this.maxConcurrentRequestsPerHost = DEFAULT_MAX_CONCURRENT_REQUESTS_PER_HOST;
-      this.contexts = new ArrayList<>();
-      this.watchReconnectInterval = DEFAULT_WATCH_RECONNECT_INTERVAL;
-      this.watchReconnectLimit = -1;
-      this.uploadRequestTimeout = DEFAULT_UPLOAD_REQUEST_TIMEOUT;
-      this.requestRetryBackoffInterval = DEFAULT_REQUEST_RETRY_BACKOFFINTERVAL;
-      this.requestRetryBackoffLimit = DEFAULT_REQUEST_RETRY_BACKOFFLIMIT;
-      this.requestTimeout = DEFAULT_REQUEST_TIMEOUT;
-      this.scaleTimeout = DEFAULT_SCALE_TIMEOUT;
-      this.loggingInterval = DEFAULT_LOGGING_INTERVAL;
-      this.userAgent = "fabric8-kubernetes-client/" + Version.clientVersion();
-      this.tlsVersions = new TlsVersion[] { TlsVersion.TLS_1_3, TlsVersion.TLS_1_2 };
-      this.requestConfig = new RequestConfig(this.watchReconnectLimit, this.watchReconnectInterval,
-          this.requestTimeout, this.scaleTimeout, this.loggingInterval,
-          this.requestRetryBackoffLimit, this.requestRetryBackoffInterval, this.uploadRequestTimeout);
+      this.setApiVersion("v1");
+      this.setDefaultNamespace(true);
+      this.setTrustCerts(false);
+      this.setDisableHostnameVerification(false);
+      this.setOnlyHttpWatches(false);
+      this.setHttp2Disable(false);
+      this.setClientKeyAlgo("RSA");
+      this.setClientKeyPassphrase(DEFAULT_CLIENT_KEY_PASSPHRASE);
+      this.setWebsocketPingInterval(DEFAULT_WEBSOCKET_PING_INTERVAL);
+      this.setConnectionTimeout(DEFAULT_CONNECTION_TIMEOUT);
+      this.setMaxConcurrentRequests(DEFAULT_MAX_CONCURRENT_REQUESTS);
+      this.setMaxConcurrentRequestsPerHost(DEFAULT_MAX_CONCURRENT_REQUESTS_PER_HOST);
+      this.setContexts(new ArrayList<>());
+      this.setWatchReconnectInterval(DEFAULT_WATCH_RECONNECT_INTERVAL);
+      this.setWatchReconnectLimit(-1);
+      this.setUploadRequestTimeout(DEFAULT_UPLOAD_REQUEST_TIMEOUT);
+      this.setRequestRetryBackoffInterval(DEFAULT_REQUEST_RETRY_BACKOFFINTERVAL);
+      this.setRequestRetryBackoffLimit(DEFAULT_REQUEST_RETRY_BACKOFFLIMIT);
+      this.setRequestTimeout(DEFAULT_REQUEST_TIMEOUT);
+      this.setScaleTimeout(DEFAULT_SCALE_TIMEOUT);
+      this.setLoggingInterval(DEFAULT_LOGGING_INTERVAL);
+      this.setUserAgent("fabric8-kubernetes-client/" + Version.clientVersion());
+      this.setTlsVersions(new TlsVersion[] { TlsVersion.TLS_1_3, TlsVersion.TLS_1_2 });
     }
 
-    if (Boolean.TRUE.equals(config.autoConfigure)) {
+    if (Boolean.TRUE.equals(config.getAutoConfigure())) {
       autoConfigure(this, null);
     }
-    if (Utils.isNotNullOrEmpty(config.apiVersion)) {
-      this.apiVersion = config.apiVersion;
+    if (Utils.isNotNullOrEmpty(config.getApiVersion())) {
+      this.setApiVersion(config.getApiVersion());
     }
-    if (Utils.isNotNullOrEmpty(config.masterUrl)) {
-      this.setMasterUrl(config.masterUrl);
+    if (Utils.isNotNullOrEmpty(config.getMasterUrl())) {
+      this.setMasterUrl(config.getMasterUrl());
     }
-    if (Utils.isNotNullOrEmpty(config.namespace)) {
-      this.namespace = config.namespace;
+    if (Utils.isNotNullOrEmpty(config.getNamespace())) {
+      this.setNamespace(config.getNamespace());
     }
-    if (Boolean.TRUE.equals(config.trustCerts)) {
-      this.trustCerts = true;
+    if (Boolean.TRUE.equals(config.getTrustCerts())) {
+      this.setTrustCerts(true);
     }
-    if (Boolean.TRUE.equals(config.disableHostnameVerification)) {
-      this.disableHostnameVerification = true;
+    if (Boolean.TRUE.equals(config.getDisableHostnameVerification())) {
+      this.setDisableHostnameVerification(true);
     }
-    if (Utils.isNotNullOrEmpty(config.caCertFile)) {
-      this.caCertFile = config.caCertFile;
+    if (Utils.isNotNullOrEmpty(config.getCaCertFile())) {
+      this.setCaCertFile(config.getCaCertFile());
     }
-    if (Utils.isNotNullOrEmpty(config.caCertData)) {
-      this.caCertData = config.caCertData;
+    if (Utils.isNotNullOrEmpty(config.getCaCertData())) {
+      this.setCaCertData(config.getCaCertData());
     }
-    if (Utils.isNotNullOrEmpty(config.clientCertFile)) {
-      this.clientCertFile = config.clientCertFile;
+    if (Utils.isNotNullOrEmpty(config.getClientCertFile())) {
+      this.setClientCertFile(config.getClientCertFile());
     }
-    if (Utils.isNotNullOrEmpty(config.clientCertData)) {
-      this.clientCertData = config.clientCertData;
+    if (Utils.isNotNullOrEmpty(config.getClientCertData())) {
+      this.setClientCertData(config.getClientCertData());
     }
-    if (Utils.isNotNullOrEmpty(config.clientKeyFile)) {
-      this.clientKeyFile = config.clientKeyFile;
+    if (Utils.isNotNullOrEmpty(config.getClientKeyFile())) {
+      this.setClientKeyFile(config.getClientKeyFile());
     }
-    if (Utils.isNotNullOrEmpty(config.clientKeyData)) {
-      this.clientKeyData = config.clientKeyData;
+    if (Utils.isNotNullOrEmpty(config.getClientKeyData())) {
+      this.setClientKeyData(config.getClientKeyData());
     }
-    if (Utils.isNotNullOrEmpty(config.clientKeyAlgo)) {
-      this.clientKeyAlgo = config.clientKeyAlgo;
+    if (Utils.isNotNullOrEmpty(config.getClientKeyAlgo())) {
+      this.setClientKeyAlgo(config.getClientKeyAlgo());
     }
-    if (Utils.isNotNullOrEmpty(config.clientKeyPassphrase)) {
-      this.clientKeyPassphrase = config.clientKeyPassphrase;
+    if (Utils.isNotNullOrEmpty(config.getClientKeyPassphrase())) {
+      this.setClientKeyPassphrase(config.getClientKeyPassphrase());
     }
-    if (Utils.isNotNullOrEmpty(config.username)) {
-      this.username = config.username;
+    if (Utils.isNotNullOrEmpty(config.getUsername())) {
+      this.setUsername(config.getUsername());
     }
-    if (Utils.isNotNullOrEmpty(config.password)) {
-      this.password = config.password;
+    if (Utils.isNotNullOrEmpty(config.getPassword())) {
+      this.setPassword(config.getPassword());
     }
-    if (Utils.isNotNullOrEmpty(config.oauthToken)) {
-      this.oauthToken = config.oauthToken;
+    if (Utils.isNotNullOrEmpty(config.getOauthToken())) {
+      this.setOauthToken(config.getOauthToken());
     }
-    if (config.websocketPingInterval != null) {
-      this.websocketPingInterval = config.websocketPingInterval;
+    if (config.getWebsocketPingInterval() != null) {
+      this.setWebsocketPingInterval(config.getWebsocketPingInterval());
     }
-    if (config.connectionTimeout != null) {
-      this.connectionTimeout = config.connectionTimeout;
+    if (config.getConnectionTimeout() != null) {
+      this.setConnectionTimeout(config.getConnectionTimeout());
     }
-    if (config.watchReconnectLimit != null) {
-      setWatchReconnectLimit(config.watchReconnectLimit);
+    if (config.getWatchReconnectLimit() != null) {
+      setWatchReconnectLimit(config.getWatchReconnectLimit());
     }
-    if (config.watchReconnectInterval != null) {
-      setWatchReconnectInterval(config.watchReconnectInterval);
+    if (config.getWatchReconnectInterval() != null) {
+      setWatchReconnectInterval(config.getWatchReconnectInterval());
     }
-    if (config.requestTimeout != null) {
-      setRequestTimeout(config.requestTimeout);
+    if (config.getRequestTimeout() != null) {
+      setRequestTimeout(config.getRequestTimeout());
     }
-    if (config.scaleTimeout != null) {
-      setScaleTimeout(config.scaleTimeout);
+    if (config.getScaleTimeout() != null) {
+      setScaleTimeout(config.getScaleTimeout());
     }
-    if (config.loggingInterval != null) {
-      setLoggingInterval(config.loggingInterval);
+    if (config.getLoggingInterval() != null) {
+      setLoggingInterval(config.getLoggingInterval());
     }
-    if (config.requestRetryBackoffLimit != null) {
-      setRequestRetryBackoffLimit(config.requestRetryBackoffLimit);
+    if (config.getRequestRetryBackoffLimit() != null) {
+      setRequestRetryBackoffLimit(config.getRequestRetryBackoffLimit());
     }
-    if (config.requestRetryBackoffInterval != null) {
-      setRequestRetryBackoffInterval(config.requestRetryBackoffInterval);
+    if (config.getRequestRetryBackoffInterval() != null) {
+      setRequestRetryBackoffInterval(config.getRequestRetryBackoffInterval());
     }
-    if (config.uploadRequestTimeout != null) {
-      setUploadRequestTimeout(config.uploadRequestTimeout);
+    if (config.getUploadRequestTimeout() != null) {
+      setUploadRequestTimeout(config.getUploadRequestTimeout());
     }
-    if (Utils.isNotNullOrEmpty(config.impersonateUsername)) {
-      setImpersonateUsername(config.impersonateUsername);
+    if (Utils.isNotNullOrEmpty(config.getImpersonateUsername())) {
+      setImpersonateUsername(config.getImpersonateUsername());
     }
-    if (Utils.isNotNullOrEmpty(config.impersonateGroups)) {
-      setImpersonateGroups(config.impersonateGroups);
+    if (Utils.isNotNullOrEmpty(config.getImpersonateGroups())) {
+      setImpersonateGroups(config.getImpersonateGroups());
     }
-    if (Utils.isNotNullOrEmpty(config.impersonateExtras)) {
-      setImpersonateExtras(config.impersonateExtras);
+    if (Utils.isNotNullOrEmpty(config.getImpersonateExtras())) {
+      setImpersonateExtras(config.getImpersonateExtras());
     }
-    if (config.http2Disable != null) {
-      this.http2Disable = config.http2Disable;
+    if (config.getHttp2Disable() != null) {
+      this.setHttp2Disable(config.getHttp2Disable());
     }
-    if (Utils.isNotNullOrEmpty(config.httpProxy)) {
-      this.httpProxy = config.httpProxy;
+    if (Utils.isNotNullOrEmpty(config.getHttpProxy())) {
+      this.setHttpProxy(config.getHttpProxy());
     }
-    if (Utils.isNotNullOrEmpty(config.httpsProxy)) {
-      this.httpsProxy = config.httpsProxy;
+    if (Utils.isNotNullOrEmpty(config.getHttpsProxy())) {
+      this.setHttpsProxy(config.getHttpsProxy());
     }
-    if (Utils.isNotNullOrEmpty(config.noProxy)) {
-      this.noProxy = config.noProxy;
+    if (Utils.isNotNullOrEmpty(config.getNoProxy())) {
+      this.setNoProxy(config.getNoProxy());
     }
-    if (Utils.isNotNullOrEmpty(config.proxyUsername)) {
-      this.proxyUsername = config.proxyUsername;
+    if (Utils.isNotNullOrEmpty(config.getProxyUsername())) {
+      this.setProxyUsername(config.getProxyUsername());
     }
-    if (Utils.isNotNullOrEmpty(config.proxyPassword)) {
-      this.proxyPassword = config.proxyPassword;
+    if (Utils.isNotNullOrEmpty(config.getProxyPassword())) {
+      this.setProxyPassword(config.getProxyPassword());
     }
-    if (Utils.isNotNullOrEmpty(config.userAgent)) {
-      this.userAgent = config.userAgent;
+    if (Utils.isNotNullOrEmpty(config.getUserAgent())) {
+      this.setUserAgent(config.getUserAgent());
     }
-    if (config.tlsVersions != null && config.tlsVersions.length > 0) {
-      this.tlsVersions = config.tlsVersions;
+    if (config.getTlsVersions() != null && config.getTlsVersions().length > 0) {
+      this.setTlsVersions(config.getTlsVersions());
     }
-    if (Utils.isNotNullOrEmpty(config.trustStoreFile)) {
-      this.trustStoreFile = config.trustStoreFile;
+    if (Utils.isNotNullOrEmpty(config.getTrustStoreFile())) {
+      this.setTrustStoreFile(config.getTrustStoreFile());
     }
-    if (Utils.isNotNullOrEmpty(config.trustStorePassphrase)) {
-      this.trustStorePassphrase = config.trustStorePassphrase;
+    if (Utils.isNotNullOrEmpty(config.getTrustStorePassphrase())) {
+      this.setTrustStorePassphrase(config.getTrustStorePassphrase());
     }
-    if (Utils.isNotNullOrEmpty(config.keyStoreFile)) {
-      this.keyStoreFile = config.keyStoreFile;
+    if (Utils.isNotNullOrEmpty(config.getKeyStoreFile())) {
+      this.setKeyStoreFile(config.getKeyStoreFile());
     }
-    if (Utils.isNotNullOrEmpty(config.keyStorePassphrase)) {
-      this.keyStorePassphrase = config.keyStorePassphrase;
+    if (Utils.isNotNullOrEmpty(config.getKeyStorePassphrase())) {
+      this.setKeyStorePassphrase(config.getKeyStorePassphrase());
     }
-    if (config.maxConcurrentRequests != null) {
-      this.maxConcurrentRequests = config.maxConcurrentRequests;
+    if (config.getMaxConcurrentRequests() != null) {
+      this.setMaxConcurrentRequests(config.getMaxConcurrentRequests());
     }
-    if (config.maxConcurrentRequestsPerHost != null) {
-      this.maxConcurrentRequestsPerHost = config.maxConcurrentRequestsPerHost;
+    if (config.getMaxConcurrentRequestsPerHost() != null) {
+      this.setMaxConcurrentRequestsPerHost(config.getMaxConcurrentRequestsPerHost());
     }
-    if (Utils.isNotNullOrEmpty(config.autoOAuthToken)) {
-      this.autoOAuthToken = config.autoOAuthToken;
+    if (Utils.isNotNullOrEmpty(config.getAutoOAuthToken())) {
+      this.setAutoOAuthToken(config.getAutoOAuthToken());
     }
-    if (config.contexts != null && !config.contexts.isEmpty()) {
-      this.contexts = config.contexts;
+    if (config.getContexts() != null && !config.getContexts().isEmpty()) {
+      this.setContexts(config.getContexts());
     }
-    if (Utils.isNotNull(config.currentContext)) {
-      this.currentContext = config.currentContext;
+    if (Utils.isNotNull(config.getCurrentContext())) {
+      this.setCurrentContext(config.getCurrentContext());
     }
-    if (Utils.isNotNullOrEmpty(config.masterUrl)) {
-      setMasterUrl(config.masterUrl);
+    if (Utils.isNotNullOrEmpty(config.getMasterUrl())) {
+      setMasterUrl(config.getMasterUrl());
     }
-    this.autoConfigure = config.autoConfigure;
-    this.oauthTokenProvider = config.oauthTokenProvider;
-    this.customHeaders = config.customHeaders;
-    if (config.onlyHttpWatches != null) {
-      this.onlyHttpWatches = config.onlyHttpWatches;
+    this.setAutoConfigure(config.getAutoConfigure());
+    this.setOauthTokenProvider(config.getOauthTokenProvider());
+    this.setCustomHeaders(config.getCustomHeaders());
+    if (config.getOnlyHttpWatches() != null) {
+      this.setOnlyHttpWatches(config.getOnlyHttpWatches());
     }
-    this.authProvider = config.authProvider;
-    if (config.additionalProperties != null) {
-      this.additionalProperties = new LinkedHashMap<String, Object>(config.additionalProperties);
+    this.setAuthProvider(config.getAuthProvider());
+    if (config.getAdditionalProperties() != null) {
+      this.setAdditionalProperties(new LinkedHashMap<String, Object>(config.getAdditionalProperties()));
     }
-    if (config.defaultNamespace != null) {
-      this.defaultNamespace = config.defaultNamespace;
+    if (config.getDefaultNamespace() != null) {
+      this.setDefaultNamespace(config.getDefaultNamespace());
     }
-    if (config.watchList != null) {
-      this.watchList = config.watchList;
+    if (config.getWatchList() != null) {
+      this.setWatchList(config.getWatchList());
     }
   }
 
@@ -679,10 +676,10 @@ public class Config extends SundrioConfig {
    */
   public Config refresh() {
     final String currentContextName = getCurrentContext() != null ? getCurrentContext().getName() : null;
-    if (Utils.isNotNullOrEmpty(oauthToken)) {
+    if (Utils.isNotNullOrEmpty(getOauthToken())) {
       return this;
     }
-    if (autoConfigure) {
+    if (Boolean.TRUE.equals(getAutoConfigure())) {
       return Config.autoConfigure(currentContextName);
     }
     // Only possible if the Config was created using Config.fromKubeconfig, otherwise autoConfigure would have been called
@@ -883,26 +880,26 @@ public class Config extends SundrioConfig {
   @Override
   public void setMasterUrl(String masterUrl) {
     //We set the masterUrl because it's needed by ensureHttps
-    this.masterUrl = masterUrl;
-    this.masterUrl = ensureEndsWithSlash(ensureHttps(masterUrl, this));
+    super.setMasterUrl(masterUrl);
+    super.setMasterUrl(ensureEndsWithSlash(ensureHttps(masterUrl, this)));
   }
 
   @JsonProperty("trustCerts")
   public boolean isTrustCerts() {
-    return Optional.ofNullable(trustCerts).orElse(false);
+    return Optional.ofNullable(getTrustCerts()).orElse(false);
   }
 
   public void setTrustCerts(boolean trustCerts) {
-    this.trustCerts = trustCerts;
+    this.setTrustCerts(Boolean.valueOf(trustCerts));
   }
 
   @JsonProperty("disableHostnameVerification")
   public boolean isDisableHostnameVerification() {
-    return Optional.ofNullable(disableHostnameVerification).orElse(false);
+    return Optional.ofNullable(getDisableHostnameVerification()).orElse(false);
   }
 
   public void setDisableHostnameVerification(boolean disableHostnameVerification) {
-    this.disableHostnameVerification = disableHostnameVerification;
+    this.setDisableHostnameVerification(Boolean.valueOf(disableHostnameVerification));
   }
 
   @Override
@@ -999,16 +996,16 @@ public class Config extends SundrioConfig {
 
   @JsonProperty("http2Disable")
   public boolean isHttp2Disable() {
-    return Optional.ofNullable(http2Disable).orElse(false);
+    return Optional.ofNullable(getHttp2Disable()).orElse(false);
   }
 
   @JsonProperty("defaultNamespace")
   public boolean isDefaultNamespace() {
-    return Optional.ofNullable(defaultNamespace).orElse(true);
+    return Optional.ofNullable(getDefaultNamespace()).orElse(true);
   }
 
   public void setDefaultNamespace(boolean defaultNamespace) {
-    this.defaultNamespace = defaultNamespace;
+    this.setDefaultNamespace(Boolean.valueOf(defaultNamespace));
   }
 
   public RequestConfig getRequestConfig() {
@@ -1054,15 +1051,15 @@ public class Config extends SundrioConfig {
   }
 
   public boolean isOnlyHttpWatches() {
-    return Optional.ofNullable(onlyHttpWatches).orElse(false);
+    return Optional.ofNullable(getOnlyHttpWatches()).orElse(false);
   }
 
   public void setOnlyHttpWatches(boolean onlyHttpWatches) {
-    this.onlyHttpWatches = onlyHttpWatches;
+    this.setOnlyHttpWatches(Boolean.valueOf(onlyHttpWatches));
   }
 
   public boolean isWatchList() {
-    return Optional.ofNullable(watchList).orElse(false);
+    return Optional.ofNullable(getWatchList()).orElse(false);
   }
 
 }

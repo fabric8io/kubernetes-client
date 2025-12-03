@@ -31,7 +31,7 @@ import lombok.ToString;
 import lombok.experimental.Accessors;
 
 /**
- * HTTPPathModifier defines configuration for path modifiers. &lt;gateway:experimental&gt;
+ * HTTPPathModifier defines configuration for path modifiers.
  */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)

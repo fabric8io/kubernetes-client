@@ -39,6 +39,7 @@ import lombok.experimental.Accessors;
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
+    "allocationTimestamp",
     "devices",
     "nodeSelector"
 })
@@ -67,6 +68,8 @@ import lombok.experimental.Accessors;
 public class AllocationResult implements Editable<AllocationResultBuilder>, KubernetesResource
 {
 
+    @JsonProperty("allocationTimestamp")
+    private String allocationTimestamp;
     @JsonProperty("devices")
     private DeviceAllocationResult devices;
     @JsonProperty("nodeSelector")
@@ -80,10 +83,27 @@ public class AllocationResult implements Editable<AllocationResultBuilder>, Kube
     public AllocationResult() {
     }
 
-    public AllocationResult(DeviceAllocationResult devices, NodeSelector nodeSelector) {
+    public AllocationResult(String allocationTimestamp, DeviceAllocationResult devices, NodeSelector nodeSelector) {
         super();
+        this.allocationTimestamp = allocationTimestamp;
         this.devices = devices;
         this.nodeSelector = nodeSelector;
+    }
+
+    /**
+     * AllocationResult contains attributes of an allocated resource.
+     */
+    @JsonProperty("allocationTimestamp")
+    public String getAllocationTimestamp() {
+        return allocationTimestamp;
+    }
+
+    /**
+     * AllocationResult contains attributes of an allocated resource.
+     */
+    @JsonProperty("allocationTimestamp")
+    public void setAllocationTimestamp(String allocationTimestamp) {
+        this.allocationTimestamp = allocationTimestamp;
     }
 
     /**

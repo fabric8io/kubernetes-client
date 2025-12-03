@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * EventListenerTemplate refers to a particular TriggerTemplate resource.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -86,31 +89,49 @@ public class TriggerSpecTemplate implements Editable<TriggerSpecTemplateBuilder>
         this.spec = spec;
     }
 
+    /**
+     * EventListenerTemplate refers to a particular TriggerTemplate resource.
+     */
     @JsonProperty("apiversion")
     public String getApiversion() {
         return apiversion;
     }
 
+    /**
+     * EventListenerTemplate refers to a particular TriggerTemplate resource.
+     */
     @JsonProperty("apiversion")
     public void setApiversion(String apiversion) {
         this.apiversion = apiversion;
     }
 
+    /**
+     * EventListenerTemplate refers to a particular TriggerTemplate resource.
+     */
     @JsonProperty("ref")
     public String getRef() {
         return ref;
     }
 
+    /**
+     * EventListenerTemplate refers to a particular TriggerTemplate resource.
+     */
     @JsonProperty("ref")
     public void setRef(String ref) {
         this.ref = ref;
     }
 
+    /**
+     * EventListenerTemplate refers to a particular TriggerTemplate resource.
+     */
     @JsonProperty("spec")
     public TriggerTemplateSpec getSpec() {
         return spec;
     }
 
+    /**
+     * EventListenerTemplate refers to a particular TriggerTemplate resource.
+     */
     @JsonProperty("spec")
     public void setSpec(TriggerTemplateSpec spec) {
         this.spec = spec;

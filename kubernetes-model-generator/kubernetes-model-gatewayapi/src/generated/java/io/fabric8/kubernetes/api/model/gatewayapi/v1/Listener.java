@@ -79,7 +79,7 @@ public class Listener implements Editable<ListenerBuilder>, KubernetesResource
     @JsonProperty("protocol")
     private String protocol;
     @JsonProperty("tls")
-    private GatewayTLSConfig tls;
+    private ListenerTLSConfig tls;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -89,7 +89,7 @@ public class Listener implements Editable<ListenerBuilder>, KubernetesResource
     public Listener() {
     }
 
-    public Listener(AllowedRoutes allowedRoutes, String hostname, String name, Integer port, String protocol, GatewayTLSConfig tls) {
+    public Listener(AllowedRoutes allowedRoutes, String hostname, String name, Integer port, String protocol, ListenerTLSConfig tls) {
         super();
         this.allowedRoutes = allowedRoutes;
         this.hostname = hostname;
@@ -116,7 +116,7 @@ public class Listener implements Editable<ListenerBuilder>, KubernetesResource
     }
 
     /**
-     * Hostname specifies the virtual hostname to match for protocol types that define this concept. When unspecified, all hostnames are matched. This field is ignored for protocols that don't require hostname based matching.<br><p> <br><p> Implementations MUST apply Hostname matching appropriately for each of the following protocols:<br><p> <br><p> &#42; TLS: The Listener Hostname MUST match the SNI. &#42; HTTP: The Listener Hostname MUST match the Host header of the request. &#42; HTTPS: The Listener Hostname SHOULD match at both the TLS and HTTP<br><p>   protocol layers as described above. If an implementation does not<br><p>   ensure that both the SNI and Host header match the Listener hostname,<br><p>   it MUST clearly document that.<br><p> <br><p> For HTTPRoute and TLSRoute resources, there is an interaction with the `spec.hostnames` array. When both listener and route specify hostnames, there MUST be an intersection between the values for a Route to be accepted. For more information, refer to the Route specific Hostnames documentation.<br><p> <br><p> Hostnames that are prefixed with a wildcard label (`&#42;.`) are interpreted as a suffix match. That means that a match for `&#42;.example.com` would match both `test.example.com`, and `foo.test.example.com`, but not `example.com`.<br><p> <br><p> Support: Core
+     * Hostname specifies the virtual hostname to match for protocol types that define this concept. When unspecified, all hostnames are matched. This field is ignored for protocols that don't require hostname based matching.<br><p> <br><p> Implementations MUST apply Hostname matching appropriately for each of the following protocols:<br><p> <br><p> &#42; TLS: The Listener Hostname MUST match the SNI. &#42; HTTP: The Listener Hostname MUST match the Host header of the request. &#42; HTTPS: The Listener Hostname SHOULD match both the SNI and Host header.<br><p>   Note that this does not require the SNI and Host header to be the same.<br><p>   The semantics of this are described in more detail below.<br><p> <br><p> To ensure security, Section 11.1 of RFC-6066 emphasizes that server implementations that rely on SNI hostname matching MUST also verify hostnames within the application protocol.<br><p> <br><p> Section 9.1.2 of RFC-7540 provides a mechanism for servers to reject the reuse of a connection by responding with the HTTP 421 Misdirected Request status code. This indicates that the origin server has rejected the request because it appears to have been misdirected.<br><p> <br><p> To detect misdirected requests, Gateways SHOULD match the authority of the requests with all the SNI hostname(s) configured across all the Gateway Listeners on the same port and protocol:<br><p> <br><p> &#42; If another Listener has an exact match or more specific wildcard entry,<br><p>   the Gateway SHOULD return a 421.<br><p> &#42; If the current Listener (selected by SNI matching during ClientHello)<br><p>   does not match the Host:<br><p>     &#42; If another Listener does match the Host the Gateway SHOULD return a<br><p>       421.<br><p>     &#42; If no other Listener matches the Host, the Gateway MUST return a<br><p>       404.<br><p> <br><p> For HTTPRoute and TLSRoute resources, there is an interaction with the `spec.hostnames` array. When both listener and route specify hostnames, there MUST be an intersection between the values for a Route to be accepted. For more information, refer to the Route specific Hostnames documentation.<br><p> <br><p> Hostnames that are prefixed with a wildcard label (`&#42;.`) are interpreted as a suffix match. That means that a match for `&#42;.example.com` would match both `test.example.com`, and `foo.test.example.com`, but not `example.com`.<br><p> <br><p> Support: Core
      */
     @JsonProperty("hostname")
     public String getHostname() {
@@ -124,7 +124,7 @@ public class Listener implements Editable<ListenerBuilder>, KubernetesResource
     }
 
     /**
-     * Hostname specifies the virtual hostname to match for protocol types that define this concept. When unspecified, all hostnames are matched. This field is ignored for protocols that don't require hostname based matching.<br><p> <br><p> Implementations MUST apply Hostname matching appropriately for each of the following protocols:<br><p> <br><p> &#42; TLS: The Listener Hostname MUST match the SNI. &#42; HTTP: The Listener Hostname MUST match the Host header of the request. &#42; HTTPS: The Listener Hostname SHOULD match at both the TLS and HTTP<br><p>   protocol layers as described above. If an implementation does not<br><p>   ensure that both the SNI and Host header match the Listener hostname,<br><p>   it MUST clearly document that.<br><p> <br><p> For HTTPRoute and TLSRoute resources, there is an interaction with the `spec.hostnames` array. When both listener and route specify hostnames, there MUST be an intersection between the values for a Route to be accepted. For more information, refer to the Route specific Hostnames documentation.<br><p> <br><p> Hostnames that are prefixed with a wildcard label (`&#42;.`) are interpreted as a suffix match. That means that a match for `&#42;.example.com` would match both `test.example.com`, and `foo.test.example.com`, but not `example.com`.<br><p> <br><p> Support: Core
+     * Hostname specifies the virtual hostname to match for protocol types that define this concept. When unspecified, all hostnames are matched. This field is ignored for protocols that don't require hostname based matching.<br><p> <br><p> Implementations MUST apply Hostname matching appropriately for each of the following protocols:<br><p> <br><p> &#42; TLS: The Listener Hostname MUST match the SNI. &#42; HTTP: The Listener Hostname MUST match the Host header of the request. &#42; HTTPS: The Listener Hostname SHOULD match both the SNI and Host header.<br><p>   Note that this does not require the SNI and Host header to be the same.<br><p>   The semantics of this are described in more detail below.<br><p> <br><p> To ensure security, Section 11.1 of RFC-6066 emphasizes that server implementations that rely on SNI hostname matching MUST also verify hostnames within the application protocol.<br><p> <br><p> Section 9.1.2 of RFC-7540 provides a mechanism for servers to reject the reuse of a connection by responding with the HTTP 421 Misdirected Request status code. This indicates that the origin server has rejected the request because it appears to have been misdirected.<br><p> <br><p> To detect misdirected requests, Gateways SHOULD match the authority of the requests with all the SNI hostname(s) configured across all the Gateway Listeners on the same port and protocol:<br><p> <br><p> &#42; If another Listener has an exact match or more specific wildcard entry,<br><p>   the Gateway SHOULD return a 421.<br><p> &#42; If the current Listener (selected by SNI matching during ClientHello)<br><p>   does not match the Host:<br><p>     &#42; If another Listener does match the Host the Gateway SHOULD return a<br><p>       421.<br><p>     &#42; If no other Listener matches the Host, the Gateway MUST return a<br><p>       404.<br><p> <br><p> For HTTPRoute and TLSRoute resources, there is an interaction with the `spec.hostnames` array. When both listener and route specify hostnames, there MUST be an intersection between the values for a Route to be accepted. For more information, refer to the Route specific Hostnames documentation.<br><p> <br><p> Hostnames that are prefixed with a wildcard label (`&#42;.`) are interpreted as a suffix match. That means that a match for `&#42;.example.com` would match both `test.example.com`, and `foo.test.example.com`, but not `example.com`.<br><p> <br><p> Support: Core
      */
     @JsonProperty("hostname")
     public void setHostname(String hostname) {
@@ -183,7 +183,7 @@ public class Listener implements Editable<ListenerBuilder>, KubernetesResource
      * Listener embodies the concept of a logical endpoint where a Gateway accepts network connections.
      */
     @JsonProperty("tls")
-    public GatewayTLSConfig getTls() {
+    public ListenerTLSConfig getTls() {
         return tls;
     }
 
@@ -191,7 +191,7 @@ public class Listener implements Editable<ListenerBuilder>, KubernetesResource
      * Listener embodies the concept of a logical endpoint where a Gateway accepts network connections.
      */
     @JsonProperty("tls")
-    public void setTls(GatewayTLSConfig tls) {
+    public void setTls(ListenerTLSConfig tls) {
         this.tls = tls;
     }
 

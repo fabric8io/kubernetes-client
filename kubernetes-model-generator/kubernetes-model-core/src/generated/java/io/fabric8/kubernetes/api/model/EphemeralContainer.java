@@ -39,6 +39,7 @@ import lombok.experimental.Accessors;
     "resizePolicy",
     "resources",
     "restartPolicy",
+    "restartPolicyRules",
     "securityContext",
     "startupProbe",
     "stdin",
@@ -96,6 +97,9 @@ public class EphemeralContainer implements Editable<EphemeralContainerBuilder>, 
     private ResourceRequirements resources;
     @JsonProperty("restartPolicy")
     private String restartPolicy;
+    @JsonProperty("restartPolicyRules")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<ContainerRestartRule> restartPolicyRules = new ArrayList<>();
     @JsonProperty("securityContext")
     private SecurityContext securityContext;
     @JsonProperty("startupProbe")
@@ -129,7 +133,7 @@ public class EphemeralContainer implements Editable<EphemeralContainerBuilder>, 
     public EphemeralContainer() {
     }
 
-    public EphemeralContainer(List<String> args, List<String> command, List<EnvVar> env, List<EnvFromSource> envFrom, String image, String imagePullPolicy, Lifecycle lifecycle, Probe livenessProbe, String name, List<ContainerPort> ports, Probe readinessProbe, List<ContainerResizePolicy> resizePolicy, ResourceRequirements resources, String restartPolicy, SecurityContext securityContext, Probe startupProbe, Boolean stdin, Boolean stdinOnce, String targetContainerName, String terminationMessagePath, String terminationMessagePolicy, Boolean tty, List<VolumeDevice> volumeDevices, List<VolumeMount> volumeMounts, String workingDir) {
+    public EphemeralContainer(List<String> args, List<String> command, List<EnvVar> env, List<EnvFromSource> envFrom, String image, String imagePullPolicy, Lifecycle lifecycle, Probe livenessProbe, String name, List<ContainerPort> ports, Probe readinessProbe, List<ContainerResizePolicy> resizePolicy, ResourceRequirements resources, String restartPolicy, List<ContainerRestartRule> restartPolicyRules, SecurityContext securityContext, Probe startupProbe, Boolean stdin, Boolean stdinOnce, String targetContainerName, String terminationMessagePath, String terminationMessagePolicy, Boolean tty, List<VolumeDevice> volumeDevices, List<VolumeMount> volumeMounts, String workingDir) {
         super();
         this.args = args;
         this.command = command;
@@ -145,6 +149,7 @@ public class EphemeralContainer implements Editable<EphemeralContainerBuilder>, 
         this.resizePolicy = resizePolicy;
         this.resources = resources;
         this.restartPolicy = restartPolicy;
+        this.restartPolicyRules = restartPolicyRules;
         this.securityContext = securityContext;
         this.startupProbe = startupProbe;
         this.stdin = stdin;
@@ -210,7 +215,7 @@ public class EphemeralContainer implements Editable<EphemeralContainerBuilder>, 
     }
 
     /**
-     * List of sources to populate environment variables in the container. The keys defined within a source must be a C_IDENTIFIER. All invalid keys will be reported as an event when the container is starting. When a key exists in multiple sources, the value associated with the last source will take precedence. Values defined by an Env with a duplicate key will take precedence. Cannot be updated.
+     * List of sources to populate environment variables in the container. The keys defined within a source may consist of any printable ASCII characters except '='. When a key exists in multiple sources, the value associated with the last source will take precedence. Values defined by an Env with a duplicate key will take precedence. Cannot be updated.
      */
     @JsonProperty("envFrom")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -219,7 +224,7 @@ public class EphemeralContainer implements Editable<EphemeralContainerBuilder>, 
     }
 
     /**
-     * List of sources to populate environment variables in the container. The keys defined within a source must be a C_IDENTIFIER. All invalid keys will be reported as an event when the container is starting. When a key exists in multiple sources, the value associated with the last source will take precedence. Values defined by an Env with a duplicate key will take precedence. Cannot be updated.
+     * List of sources to populate environment variables in the container. The keys defined within a source may consist of any printable ASCII characters except '='. When a key exists in multiple sources, the value associated with the last source will take precedence. Values defined by an Env with a duplicate key will take precedence. Cannot be updated.
      */
     @JsonProperty("envFrom")
     public void setEnvFrom(List<EnvFromSource> envFrom) {
@@ -373,7 +378,7 @@ public class EphemeralContainer implements Editable<EphemeralContainerBuilder>, 
     }
 
     /**
-     * Restart policy for the container to manage the restart behavior of each container within a pod. This may only be set for init containers. You cannot set this field on ephemeral containers.
+     * Restart policy for the container to manage the restart behavior of each container within a pod. You cannot set this field on ephemeral containers.
      */
     @JsonProperty("restartPolicy")
     public String getRestartPolicy() {
@@ -381,11 +386,28 @@ public class EphemeralContainer implements Editable<EphemeralContainerBuilder>, 
     }
 
     /**
-     * Restart policy for the container to manage the restart behavior of each container within a pod. This may only be set for init containers. You cannot set this field on ephemeral containers.
+     * Restart policy for the container to manage the restart behavior of each container within a pod. You cannot set this field on ephemeral containers.
      */
     @JsonProperty("restartPolicy")
     public void setRestartPolicy(String restartPolicy) {
         this.restartPolicy = restartPolicy;
+    }
+
+    /**
+     * Represents a list of rules to be checked to determine if the container should be restarted on exit. You cannot set this field on ephemeral containers.
+     */
+    @JsonProperty("restartPolicyRules")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public List<ContainerRestartRule> getRestartPolicyRules() {
+        return restartPolicyRules;
+    }
+
+    /**
+     * Represents a list of rules to be checked to determine if the container should be restarted on exit. You cannot set this field on ephemeral containers.
+     */
+    @JsonProperty("restartPolicyRules")
+    public void setRestartPolicyRules(List<ContainerRestartRule> restartPolicyRules) {
+        this.restartPolicyRules = restartPolicyRules;
     }
 
     /**

@@ -61,7 +61,7 @@ public class EnvVar implements Editable<EnvVarBuilder>, KubernetesResource
     }
 
     /**
-     * Name of the environment variable. Must be a C_IDENTIFIER.
+     * Name of the environment variable. May consist of any printable ASCII characters except '='.
      */
     @JsonProperty("name")
     public String getName() {
@@ -69,7 +69,7 @@ public class EnvVar implements Editable<EnvVarBuilder>, KubernetesResource
     }
 
     /**
-     * Name of the environment variable. Must be a C_IDENTIFIER.
+     * Name of the environment variable. May consist of any printable ASCII characters except '='.
      */
     @JsonProperty("name")
     public void setName(String name) {

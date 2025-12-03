@@ -43,6 +43,11 @@ class VertxWebSocket implements WebSocket {
   }
 
   void init() {
+    ws.frameHandler(frame -> {
+      if (!frame.isFinal()) {
+        ws.fetch(1);
+      }
+    });
     ws.binaryMessageHandler(msg -> {
       ws.pause();
       listener.onMessage(this, msg.getByteBuf().nioBuffer());

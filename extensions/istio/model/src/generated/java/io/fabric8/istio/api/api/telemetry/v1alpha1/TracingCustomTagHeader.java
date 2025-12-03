@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * RequestHeader adds the value of an header from the request to each span.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -78,11 +81,17 @@ public class TracingCustomTagHeader implements IsTracingCustomTagType, Editable<
         this.header = header;
     }
 
+    /**
+     * RequestHeader adds the value of an header from the request to each span.
+     */
     @JsonProperty("header")
     public TracingRequestHeader getHeader() {
         return header;
     }
 
+    /**
+     * RequestHeader adds the value of an header from the request to each span.
+     */
     @JsonProperty("header")
     public void setHeader(TracingRequestHeader header) {
         this.header = header;

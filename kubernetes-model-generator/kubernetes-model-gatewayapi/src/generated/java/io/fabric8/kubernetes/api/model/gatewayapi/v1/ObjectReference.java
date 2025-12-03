@@ -92,7 +92,7 @@ public class ObjectReference implements Editable<ObjectReferenceBuilder>, Kubern
     }
 
     /**
-     * Group is the group of the referent. For example, "gateway.networking.k8s.io". When unspecified or empty string, core API group is inferred.
+     * Group is the group of the referent. For example, "gateway.networking.k8s.io". When set to the empty string, core API group is inferred.
      */
     @JsonProperty("group")
     public String getGroup() {
@@ -100,7 +100,7 @@ public class ObjectReference implements Editable<ObjectReferenceBuilder>, Kubern
     }
 
     /**
-     * Group is the group of the referent. For example, "gateway.networking.k8s.io". When unspecified or empty string, core API group is inferred.
+     * Group is the group of the referent. For example, "gateway.networking.k8s.io". When set to the empty string, core API group is inferred.
      */
     @JsonProperty("group")
     public void setGroup(String group) {

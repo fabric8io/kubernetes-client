@@ -33,7 +33,7 @@ import lombok.ToString;
 import lombok.experimental.Accessors;
 
 /**
- * WorkspacePipelineDeclaration creates a named slot in a Pipeline that a PipelineRun is expected to populate with a workspace binding.<br><p> <br><p> Deprecated: use PipelineWorkspaceDeclaration type instead
+ * PipelineWorkspaceDeclaration creates a named slot in a Pipeline that a PipelineRun is expected to populate with a workspace binding.
  */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)

@@ -42,6 +42,7 @@ import lombok.experimental.Accessors;
 @JsonPropertyOrder({
     "adminAccess",
     "allocationMode",
+    "capacity",
     "count",
     "deviceClassName",
     "selectors",
@@ -76,6 +77,8 @@ public class ExactDeviceRequest implements Editable<ExactDeviceRequestBuilder>, 
     private Boolean adminAccess;
     @JsonProperty("allocationMode")
     private String allocationMode;
+    @JsonProperty("capacity")
+    private CapacityRequirements capacity;
     @JsonProperty("count")
     private Long count;
     @JsonProperty("deviceClassName")
@@ -95,10 +98,11 @@ public class ExactDeviceRequest implements Editable<ExactDeviceRequestBuilder>, 
     public ExactDeviceRequest() {
     }
 
-    public ExactDeviceRequest(Boolean adminAccess, String allocationMode, Long count, String deviceClassName, List<DeviceSelector> selectors, List<DeviceToleration> tolerations) {
+    public ExactDeviceRequest(Boolean adminAccess, String allocationMode, CapacityRequirements capacity, Long count, String deviceClassName, List<DeviceSelector> selectors, List<DeviceToleration> tolerations) {
         super();
         this.adminAccess = adminAccess;
         this.allocationMode = allocationMode;
+        this.capacity = capacity;
         this.count = count;
         this.deviceClassName = deviceClassName;
         this.selectors = selectors;
@@ -135,6 +139,22 @@ public class ExactDeviceRequest implements Editable<ExactDeviceRequestBuilder>, 
     @JsonProperty("allocationMode")
     public void setAllocationMode(String allocationMode) {
         this.allocationMode = allocationMode;
+    }
+
+    /**
+     * ExactDeviceRequest is a request for one or more identical devices.
+     */
+    @JsonProperty("capacity")
+    public CapacityRequirements getCapacity() {
+        return capacity;
+    }
+
+    /**
+     * ExactDeviceRequest is a request for one or more identical devices.
+     */
+    @JsonProperty("capacity")
+    public void setCapacity(CapacityRequirements capacity) {
+        this.capacity = capacity;
     }
 
     /**

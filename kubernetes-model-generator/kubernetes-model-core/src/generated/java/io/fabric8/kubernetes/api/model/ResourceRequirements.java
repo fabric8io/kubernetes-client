@@ -66,7 +66,7 @@ public class ResourceRequirements implements Editable<ResourceRequirementsBuilde
     }
 
     /**
-     * Claims lists the names of resources, defined in spec.resourceClaims, that are used by this container.<br><p> <br><p> This is an alpha field and requires enabling the DynamicResourceAllocation feature gate.<br><p> <br><p> This field is immutable. It can only be set for containers.
+     * Claims lists the names of resources, defined in spec.resourceClaims, that are used by this container.<br><p> <br><p> This field depends on the DynamicResourceAllocation feature gate.<br><p> <br><p> This field is immutable. It can only be set for containers.
      */
     @JsonProperty("claims")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -75,7 +75,7 @@ public class ResourceRequirements implements Editable<ResourceRequirementsBuilde
     }
 
     /**
-     * Claims lists the names of resources, defined in spec.resourceClaims, that are used by this container.<br><p> <br><p> This is an alpha field and requires enabling the DynamicResourceAllocation feature gate.<br><p> <br><p> This field is immutable. It can only be set for containers.
+     * Claims lists the names of resources, defined in spec.resourceClaims, that are used by this container.<br><p> <br><p> This field depends on the DynamicResourceAllocation feature gate.<br><p> <br><p> This field is immutable. It can only be set for containers.
      */
     @JsonProperty("claims")
     public void setClaims(List<ResourceClaim> claims) {

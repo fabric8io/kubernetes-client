@@ -31,12 +31,14 @@ import lombok.ToString;
 import lombok.experimental.Accessors;
 
 /**
- * HTTPRouteFilter defines processing steps that must be completed during the request or response lifecycle. HTTPRouteFilters are meant as an extension point to express processing that may be done in Gateway implementations. Some examples include request or response modification, implementing authentication strategies, rate-limiting, and traffic shaping. API guarantee/conformance is defined based on the type of the filter.
+ * HTTPRouteFilter defines processing steps that must be completed during the request or response lifecycle. HTTPRouteFilters are meant as an extension point to express processing that may be done in Gateway implementations. Some examples include request or response modification, implementing authentication strategies, rate-limiting, and traffic shaping. API guarantee/conformance is defined based on the type of the filter.<br><p> <br><p> &lt;gateway:experimental:validation:XValidation:message="filter.cors must be nil if the filter.type is not CORS",rule="!(has(self.cors) &amp;&amp; self.type != 'CORS')"&gt; &lt;gateway:experimental:validation:XValidation:message="filter.cors must be specified for CORS filter.type",rule="!(!has(self.cors) &amp;&amp; self.type == 'CORS')"&gt; &lt;gateway:experimental:validation:XValidation:message="filter.externalAuth must be nil if the filter.type is not ExternalAuth",rule="!(has(self.externalAuth) &amp;&amp; self.type != 'ExternalAuth')"&gt; &lt;gateway:experimental:validation:XValidation:message="filter.externalAuth must be specified for ExternalAuth filter.type",rule="!(!has(self.externalAuth) &amp;&amp; self.type == 'ExternalAuth')"&gt;
  */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
+    "cors",
     "extensionRef",
+    "externalAuth",
     "requestHeaderModifier",
     "requestMirror",
     "requestRedirect",
@@ -69,8 +71,12 @@ import lombok.experimental.Accessors;
 public class HTTPRouteFilter implements Editable<HTTPRouteFilterBuilder>, KubernetesResource
 {
 
+    @JsonProperty("cors")
+    private HTTPCORSFilter cors;
     @JsonProperty("extensionRef")
     private LocalObjectReference extensionRef;
+    @JsonProperty("externalAuth")
+    private HTTPExternalAuthFilter externalAuth;
     @JsonProperty("requestHeaderModifier")
     private HTTPHeaderFilter requestHeaderModifier;
     @JsonProperty("requestMirror")
@@ -92,9 +98,11 @@ public class HTTPRouteFilter implements Editable<HTTPRouteFilterBuilder>, Kubern
     public HTTPRouteFilter() {
     }
 
-    public HTTPRouteFilter(LocalObjectReference extensionRef, HTTPHeaderFilter requestHeaderModifier, HTTPRequestMirrorFilter requestMirror, HTTPRequestRedirectFilter requestRedirect, HTTPHeaderFilter responseHeaderModifier, String type, HTTPURLRewriteFilter urlRewrite) {
+    public HTTPRouteFilter(HTTPCORSFilter cors, LocalObjectReference extensionRef, HTTPExternalAuthFilter externalAuth, HTTPHeaderFilter requestHeaderModifier, HTTPRequestMirrorFilter requestMirror, HTTPRequestRedirectFilter requestRedirect, HTTPHeaderFilter responseHeaderModifier, String type, HTTPURLRewriteFilter urlRewrite) {
         super();
+        this.cors = cors;
         this.extensionRef = extensionRef;
+        this.externalAuth = externalAuth;
         this.requestHeaderModifier = requestHeaderModifier;
         this.requestMirror = requestMirror;
         this.requestRedirect = requestRedirect;
@@ -104,7 +112,23 @@ public class HTTPRouteFilter implements Editable<HTTPRouteFilterBuilder>, Kubern
     }
 
     /**
-     * HTTPRouteFilter defines processing steps that must be completed during the request or response lifecycle. HTTPRouteFilters are meant as an extension point to express processing that may be done in Gateway implementations. Some examples include request or response modification, implementing authentication strategies, rate-limiting, and traffic shaping. API guarantee/conformance is defined based on the type of the filter.
+     * HTTPRouteFilter defines processing steps that must be completed during the request or response lifecycle. HTTPRouteFilters are meant as an extension point to express processing that may be done in Gateway implementations. Some examples include request or response modification, implementing authentication strategies, rate-limiting, and traffic shaping. API guarantee/conformance is defined based on the type of the filter.<br><p> <br><p> &lt;gateway:experimental:validation:XValidation:message="filter.cors must be nil if the filter.type is not CORS",rule="!(has(self.cors) &amp;&amp; self.type != 'CORS')"&gt; &lt;gateway:experimental:validation:XValidation:message="filter.cors must be specified for CORS filter.type",rule="!(!has(self.cors) &amp;&amp; self.type == 'CORS')"&gt; &lt;gateway:experimental:validation:XValidation:message="filter.externalAuth must be nil if the filter.type is not ExternalAuth",rule="!(has(self.externalAuth) &amp;&amp; self.type != 'ExternalAuth')"&gt; &lt;gateway:experimental:validation:XValidation:message="filter.externalAuth must be specified for ExternalAuth filter.type",rule="!(!has(self.externalAuth) &amp;&amp; self.type == 'ExternalAuth')"&gt;
+     */
+    @JsonProperty("cors")
+    public HTTPCORSFilter getCors() {
+        return cors;
+    }
+
+    /**
+     * HTTPRouteFilter defines processing steps that must be completed during the request or response lifecycle. HTTPRouteFilters are meant as an extension point to express processing that may be done in Gateway implementations. Some examples include request or response modification, implementing authentication strategies, rate-limiting, and traffic shaping. API guarantee/conformance is defined based on the type of the filter.<br><p> <br><p> &lt;gateway:experimental:validation:XValidation:message="filter.cors must be nil if the filter.type is not CORS",rule="!(has(self.cors) &amp;&amp; self.type != 'CORS')"&gt; &lt;gateway:experimental:validation:XValidation:message="filter.cors must be specified for CORS filter.type",rule="!(!has(self.cors) &amp;&amp; self.type == 'CORS')"&gt; &lt;gateway:experimental:validation:XValidation:message="filter.externalAuth must be nil if the filter.type is not ExternalAuth",rule="!(has(self.externalAuth) &amp;&amp; self.type != 'ExternalAuth')"&gt; &lt;gateway:experimental:validation:XValidation:message="filter.externalAuth must be specified for ExternalAuth filter.type",rule="!(!has(self.externalAuth) &amp;&amp; self.type == 'ExternalAuth')"&gt;
+     */
+    @JsonProperty("cors")
+    public void setCors(HTTPCORSFilter cors) {
+        this.cors = cors;
+    }
+
+    /**
+     * HTTPRouteFilter defines processing steps that must be completed during the request or response lifecycle. HTTPRouteFilters are meant as an extension point to express processing that may be done in Gateway implementations. Some examples include request or response modification, implementing authentication strategies, rate-limiting, and traffic shaping. API guarantee/conformance is defined based on the type of the filter.<br><p> <br><p> &lt;gateway:experimental:validation:XValidation:message="filter.cors must be nil if the filter.type is not CORS",rule="!(has(self.cors) &amp;&amp; self.type != 'CORS')"&gt; &lt;gateway:experimental:validation:XValidation:message="filter.cors must be specified for CORS filter.type",rule="!(!has(self.cors) &amp;&amp; self.type == 'CORS')"&gt; &lt;gateway:experimental:validation:XValidation:message="filter.externalAuth must be nil if the filter.type is not ExternalAuth",rule="!(has(self.externalAuth) &amp;&amp; self.type != 'ExternalAuth')"&gt; &lt;gateway:experimental:validation:XValidation:message="filter.externalAuth must be specified for ExternalAuth filter.type",rule="!(!has(self.externalAuth) &amp;&amp; self.type == 'ExternalAuth')"&gt;
      */
     @JsonProperty("extensionRef")
     public LocalObjectReference getExtensionRef() {
@@ -112,7 +136,7 @@ public class HTTPRouteFilter implements Editable<HTTPRouteFilterBuilder>, Kubern
     }
 
     /**
-     * HTTPRouteFilter defines processing steps that must be completed during the request or response lifecycle. HTTPRouteFilters are meant as an extension point to express processing that may be done in Gateway implementations. Some examples include request or response modification, implementing authentication strategies, rate-limiting, and traffic shaping. API guarantee/conformance is defined based on the type of the filter.
+     * HTTPRouteFilter defines processing steps that must be completed during the request or response lifecycle. HTTPRouteFilters are meant as an extension point to express processing that may be done in Gateway implementations. Some examples include request or response modification, implementing authentication strategies, rate-limiting, and traffic shaping. API guarantee/conformance is defined based on the type of the filter.<br><p> <br><p> &lt;gateway:experimental:validation:XValidation:message="filter.cors must be nil if the filter.type is not CORS",rule="!(has(self.cors) &amp;&amp; self.type != 'CORS')"&gt; &lt;gateway:experimental:validation:XValidation:message="filter.cors must be specified for CORS filter.type",rule="!(!has(self.cors) &amp;&amp; self.type == 'CORS')"&gt; &lt;gateway:experimental:validation:XValidation:message="filter.externalAuth must be nil if the filter.type is not ExternalAuth",rule="!(has(self.externalAuth) &amp;&amp; self.type != 'ExternalAuth')"&gt; &lt;gateway:experimental:validation:XValidation:message="filter.externalAuth must be specified for ExternalAuth filter.type",rule="!(!has(self.externalAuth) &amp;&amp; self.type == 'ExternalAuth')"&gt;
      */
     @JsonProperty("extensionRef")
     public void setExtensionRef(LocalObjectReference extensionRef) {
@@ -120,7 +144,23 @@ public class HTTPRouteFilter implements Editable<HTTPRouteFilterBuilder>, Kubern
     }
 
     /**
-     * HTTPRouteFilter defines processing steps that must be completed during the request or response lifecycle. HTTPRouteFilters are meant as an extension point to express processing that may be done in Gateway implementations. Some examples include request or response modification, implementing authentication strategies, rate-limiting, and traffic shaping. API guarantee/conformance is defined based on the type of the filter.
+     * HTTPRouteFilter defines processing steps that must be completed during the request or response lifecycle. HTTPRouteFilters are meant as an extension point to express processing that may be done in Gateway implementations. Some examples include request or response modification, implementing authentication strategies, rate-limiting, and traffic shaping. API guarantee/conformance is defined based on the type of the filter.<br><p> <br><p> &lt;gateway:experimental:validation:XValidation:message="filter.cors must be nil if the filter.type is not CORS",rule="!(has(self.cors) &amp;&amp; self.type != 'CORS')"&gt; &lt;gateway:experimental:validation:XValidation:message="filter.cors must be specified for CORS filter.type",rule="!(!has(self.cors) &amp;&amp; self.type == 'CORS')"&gt; &lt;gateway:experimental:validation:XValidation:message="filter.externalAuth must be nil if the filter.type is not ExternalAuth",rule="!(has(self.externalAuth) &amp;&amp; self.type != 'ExternalAuth')"&gt; &lt;gateway:experimental:validation:XValidation:message="filter.externalAuth must be specified for ExternalAuth filter.type",rule="!(!has(self.externalAuth) &amp;&amp; self.type == 'ExternalAuth')"&gt;
+     */
+    @JsonProperty("externalAuth")
+    public HTTPExternalAuthFilter getExternalAuth() {
+        return externalAuth;
+    }
+
+    /**
+     * HTTPRouteFilter defines processing steps that must be completed during the request or response lifecycle. HTTPRouteFilters are meant as an extension point to express processing that may be done in Gateway implementations. Some examples include request or response modification, implementing authentication strategies, rate-limiting, and traffic shaping. API guarantee/conformance is defined based on the type of the filter.<br><p> <br><p> &lt;gateway:experimental:validation:XValidation:message="filter.cors must be nil if the filter.type is not CORS",rule="!(has(self.cors) &amp;&amp; self.type != 'CORS')"&gt; &lt;gateway:experimental:validation:XValidation:message="filter.cors must be specified for CORS filter.type",rule="!(!has(self.cors) &amp;&amp; self.type == 'CORS')"&gt; &lt;gateway:experimental:validation:XValidation:message="filter.externalAuth must be nil if the filter.type is not ExternalAuth",rule="!(has(self.externalAuth) &amp;&amp; self.type != 'ExternalAuth')"&gt; &lt;gateway:experimental:validation:XValidation:message="filter.externalAuth must be specified for ExternalAuth filter.type",rule="!(!has(self.externalAuth) &amp;&amp; self.type == 'ExternalAuth')"&gt;
+     */
+    @JsonProperty("externalAuth")
+    public void setExternalAuth(HTTPExternalAuthFilter externalAuth) {
+        this.externalAuth = externalAuth;
+    }
+
+    /**
+     * HTTPRouteFilter defines processing steps that must be completed during the request or response lifecycle. HTTPRouteFilters are meant as an extension point to express processing that may be done in Gateway implementations. Some examples include request or response modification, implementing authentication strategies, rate-limiting, and traffic shaping. API guarantee/conformance is defined based on the type of the filter.<br><p> <br><p> &lt;gateway:experimental:validation:XValidation:message="filter.cors must be nil if the filter.type is not CORS",rule="!(has(self.cors) &amp;&amp; self.type != 'CORS')"&gt; &lt;gateway:experimental:validation:XValidation:message="filter.cors must be specified for CORS filter.type",rule="!(!has(self.cors) &amp;&amp; self.type == 'CORS')"&gt; &lt;gateway:experimental:validation:XValidation:message="filter.externalAuth must be nil if the filter.type is not ExternalAuth",rule="!(has(self.externalAuth) &amp;&amp; self.type != 'ExternalAuth')"&gt; &lt;gateway:experimental:validation:XValidation:message="filter.externalAuth must be specified for ExternalAuth filter.type",rule="!(!has(self.externalAuth) &amp;&amp; self.type == 'ExternalAuth')"&gt;
      */
     @JsonProperty("requestHeaderModifier")
     public HTTPHeaderFilter getRequestHeaderModifier() {
@@ -128,7 +168,7 @@ public class HTTPRouteFilter implements Editable<HTTPRouteFilterBuilder>, Kubern
     }
 
     /**
-     * HTTPRouteFilter defines processing steps that must be completed during the request or response lifecycle. HTTPRouteFilters are meant as an extension point to express processing that may be done in Gateway implementations. Some examples include request or response modification, implementing authentication strategies, rate-limiting, and traffic shaping. API guarantee/conformance is defined based on the type of the filter.
+     * HTTPRouteFilter defines processing steps that must be completed during the request or response lifecycle. HTTPRouteFilters are meant as an extension point to express processing that may be done in Gateway implementations. Some examples include request or response modification, implementing authentication strategies, rate-limiting, and traffic shaping. API guarantee/conformance is defined based on the type of the filter.<br><p> <br><p> &lt;gateway:experimental:validation:XValidation:message="filter.cors must be nil if the filter.type is not CORS",rule="!(has(self.cors) &amp;&amp; self.type != 'CORS')"&gt; &lt;gateway:experimental:validation:XValidation:message="filter.cors must be specified for CORS filter.type",rule="!(!has(self.cors) &amp;&amp; self.type == 'CORS')"&gt; &lt;gateway:experimental:validation:XValidation:message="filter.externalAuth must be nil if the filter.type is not ExternalAuth",rule="!(has(self.externalAuth) &amp;&amp; self.type != 'ExternalAuth')"&gt; &lt;gateway:experimental:validation:XValidation:message="filter.externalAuth must be specified for ExternalAuth filter.type",rule="!(!has(self.externalAuth) &amp;&amp; self.type == 'ExternalAuth')"&gt;
      */
     @JsonProperty("requestHeaderModifier")
     public void setRequestHeaderModifier(HTTPHeaderFilter requestHeaderModifier) {
@@ -136,7 +176,7 @@ public class HTTPRouteFilter implements Editable<HTTPRouteFilterBuilder>, Kubern
     }
 
     /**
-     * HTTPRouteFilter defines processing steps that must be completed during the request or response lifecycle. HTTPRouteFilters are meant as an extension point to express processing that may be done in Gateway implementations. Some examples include request or response modification, implementing authentication strategies, rate-limiting, and traffic shaping. API guarantee/conformance is defined based on the type of the filter.
+     * HTTPRouteFilter defines processing steps that must be completed during the request or response lifecycle. HTTPRouteFilters are meant as an extension point to express processing that may be done in Gateway implementations. Some examples include request or response modification, implementing authentication strategies, rate-limiting, and traffic shaping. API guarantee/conformance is defined based on the type of the filter.<br><p> <br><p> &lt;gateway:experimental:validation:XValidation:message="filter.cors must be nil if the filter.type is not CORS",rule="!(has(self.cors) &amp;&amp; self.type != 'CORS')"&gt; &lt;gateway:experimental:validation:XValidation:message="filter.cors must be specified for CORS filter.type",rule="!(!has(self.cors) &amp;&amp; self.type == 'CORS')"&gt; &lt;gateway:experimental:validation:XValidation:message="filter.externalAuth must be nil if the filter.type is not ExternalAuth",rule="!(has(self.externalAuth) &amp;&amp; self.type != 'ExternalAuth')"&gt; &lt;gateway:experimental:validation:XValidation:message="filter.externalAuth must be specified for ExternalAuth filter.type",rule="!(!has(self.externalAuth) &amp;&amp; self.type == 'ExternalAuth')"&gt;
      */
     @JsonProperty("requestMirror")
     public HTTPRequestMirrorFilter getRequestMirror() {
@@ -144,7 +184,7 @@ public class HTTPRouteFilter implements Editable<HTTPRouteFilterBuilder>, Kubern
     }
 
     /**
-     * HTTPRouteFilter defines processing steps that must be completed during the request or response lifecycle. HTTPRouteFilters are meant as an extension point to express processing that may be done in Gateway implementations. Some examples include request or response modification, implementing authentication strategies, rate-limiting, and traffic shaping. API guarantee/conformance is defined based on the type of the filter.
+     * HTTPRouteFilter defines processing steps that must be completed during the request or response lifecycle. HTTPRouteFilters are meant as an extension point to express processing that may be done in Gateway implementations. Some examples include request or response modification, implementing authentication strategies, rate-limiting, and traffic shaping. API guarantee/conformance is defined based on the type of the filter.<br><p> <br><p> &lt;gateway:experimental:validation:XValidation:message="filter.cors must be nil if the filter.type is not CORS",rule="!(has(self.cors) &amp;&amp; self.type != 'CORS')"&gt; &lt;gateway:experimental:validation:XValidation:message="filter.cors must be specified for CORS filter.type",rule="!(!has(self.cors) &amp;&amp; self.type == 'CORS')"&gt; &lt;gateway:experimental:validation:XValidation:message="filter.externalAuth must be nil if the filter.type is not ExternalAuth",rule="!(has(self.externalAuth) &amp;&amp; self.type != 'ExternalAuth')"&gt; &lt;gateway:experimental:validation:XValidation:message="filter.externalAuth must be specified for ExternalAuth filter.type",rule="!(!has(self.externalAuth) &amp;&amp; self.type == 'ExternalAuth')"&gt;
      */
     @JsonProperty("requestMirror")
     public void setRequestMirror(HTTPRequestMirrorFilter requestMirror) {
@@ -152,7 +192,7 @@ public class HTTPRouteFilter implements Editable<HTTPRouteFilterBuilder>, Kubern
     }
 
     /**
-     * HTTPRouteFilter defines processing steps that must be completed during the request or response lifecycle. HTTPRouteFilters are meant as an extension point to express processing that may be done in Gateway implementations. Some examples include request or response modification, implementing authentication strategies, rate-limiting, and traffic shaping. API guarantee/conformance is defined based on the type of the filter.
+     * HTTPRouteFilter defines processing steps that must be completed during the request or response lifecycle. HTTPRouteFilters are meant as an extension point to express processing that may be done in Gateway implementations. Some examples include request or response modification, implementing authentication strategies, rate-limiting, and traffic shaping. API guarantee/conformance is defined based on the type of the filter.<br><p> <br><p> &lt;gateway:experimental:validation:XValidation:message="filter.cors must be nil if the filter.type is not CORS",rule="!(has(self.cors) &amp;&amp; self.type != 'CORS')"&gt; &lt;gateway:experimental:validation:XValidation:message="filter.cors must be specified for CORS filter.type",rule="!(!has(self.cors) &amp;&amp; self.type == 'CORS')"&gt; &lt;gateway:experimental:validation:XValidation:message="filter.externalAuth must be nil if the filter.type is not ExternalAuth",rule="!(has(self.externalAuth) &amp;&amp; self.type != 'ExternalAuth')"&gt; &lt;gateway:experimental:validation:XValidation:message="filter.externalAuth must be specified for ExternalAuth filter.type",rule="!(!has(self.externalAuth) &amp;&amp; self.type == 'ExternalAuth')"&gt;
      */
     @JsonProperty("requestRedirect")
     public HTTPRequestRedirectFilter getRequestRedirect() {
@@ -160,7 +200,7 @@ public class HTTPRouteFilter implements Editable<HTTPRouteFilterBuilder>, Kubern
     }
 
     /**
-     * HTTPRouteFilter defines processing steps that must be completed during the request or response lifecycle. HTTPRouteFilters are meant as an extension point to express processing that may be done in Gateway implementations. Some examples include request or response modification, implementing authentication strategies, rate-limiting, and traffic shaping. API guarantee/conformance is defined based on the type of the filter.
+     * HTTPRouteFilter defines processing steps that must be completed during the request or response lifecycle. HTTPRouteFilters are meant as an extension point to express processing that may be done in Gateway implementations. Some examples include request or response modification, implementing authentication strategies, rate-limiting, and traffic shaping. API guarantee/conformance is defined based on the type of the filter.<br><p> <br><p> &lt;gateway:experimental:validation:XValidation:message="filter.cors must be nil if the filter.type is not CORS",rule="!(has(self.cors) &amp;&amp; self.type != 'CORS')"&gt; &lt;gateway:experimental:validation:XValidation:message="filter.cors must be specified for CORS filter.type",rule="!(!has(self.cors) &amp;&amp; self.type == 'CORS')"&gt; &lt;gateway:experimental:validation:XValidation:message="filter.externalAuth must be nil if the filter.type is not ExternalAuth",rule="!(has(self.externalAuth) &amp;&amp; self.type != 'ExternalAuth')"&gt; &lt;gateway:experimental:validation:XValidation:message="filter.externalAuth must be specified for ExternalAuth filter.type",rule="!(!has(self.externalAuth) &amp;&amp; self.type == 'ExternalAuth')"&gt;
      */
     @JsonProperty("requestRedirect")
     public void setRequestRedirect(HTTPRequestRedirectFilter requestRedirect) {
@@ -168,7 +208,7 @@ public class HTTPRouteFilter implements Editable<HTTPRouteFilterBuilder>, Kubern
     }
 
     /**
-     * HTTPRouteFilter defines processing steps that must be completed during the request or response lifecycle. HTTPRouteFilters are meant as an extension point to express processing that may be done in Gateway implementations. Some examples include request or response modification, implementing authentication strategies, rate-limiting, and traffic shaping. API guarantee/conformance is defined based on the type of the filter.
+     * HTTPRouteFilter defines processing steps that must be completed during the request or response lifecycle. HTTPRouteFilters are meant as an extension point to express processing that may be done in Gateway implementations. Some examples include request or response modification, implementing authentication strategies, rate-limiting, and traffic shaping. API guarantee/conformance is defined based on the type of the filter.<br><p> <br><p> &lt;gateway:experimental:validation:XValidation:message="filter.cors must be nil if the filter.type is not CORS",rule="!(has(self.cors) &amp;&amp; self.type != 'CORS')"&gt; &lt;gateway:experimental:validation:XValidation:message="filter.cors must be specified for CORS filter.type",rule="!(!has(self.cors) &amp;&amp; self.type == 'CORS')"&gt; &lt;gateway:experimental:validation:XValidation:message="filter.externalAuth must be nil if the filter.type is not ExternalAuth",rule="!(has(self.externalAuth) &amp;&amp; self.type != 'ExternalAuth')"&gt; &lt;gateway:experimental:validation:XValidation:message="filter.externalAuth must be specified for ExternalAuth filter.type",rule="!(!has(self.externalAuth) &amp;&amp; self.type == 'ExternalAuth')"&gt;
      */
     @JsonProperty("responseHeaderModifier")
     public HTTPHeaderFilter getResponseHeaderModifier() {
@@ -176,7 +216,7 @@ public class HTTPRouteFilter implements Editable<HTTPRouteFilterBuilder>, Kubern
     }
 
     /**
-     * HTTPRouteFilter defines processing steps that must be completed during the request or response lifecycle. HTTPRouteFilters are meant as an extension point to express processing that may be done in Gateway implementations. Some examples include request or response modification, implementing authentication strategies, rate-limiting, and traffic shaping. API guarantee/conformance is defined based on the type of the filter.
+     * HTTPRouteFilter defines processing steps that must be completed during the request or response lifecycle. HTTPRouteFilters are meant as an extension point to express processing that may be done in Gateway implementations. Some examples include request or response modification, implementing authentication strategies, rate-limiting, and traffic shaping. API guarantee/conformance is defined based on the type of the filter.<br><p> <br><p> &lt;gateway:experimental:validation:XValidation:message="filter.cors must be nil if the filter.type is not CORS",rule="!(has(self.cors) &amp;&amp; self.type != 'CORS')"&gt; &lt;gateway:experimental:validation:XValidation:message="filter.cors must be specified for CORS filter.type",rule="!(!has(self.cors) &amp;&amp; self.type == 'CORS')"&gt; &lt;gateway:experimental:validation:XValidation:message="filter.externalAuth must be nil if the filter.type is not ExternalAuth",rule="!(has(self.externalAuth) &amp;&amp; self.type != 'ExternalAuth')"&gt; &lt;gateway:experimental:validation:XValidation:message="filter.externalAuth must be specified for ExternalAuth filter.type",rule="!(!has(self.externalAuth) &amp;&amp; self.type == 'ExternalAuth')"&gt;
      */
     @JsonProperty("responseHeaderModifier")
     public void setResponseHeaderModifier(HTTPHeaderFilter responseHeaderModifier) {
@@ -184,7 +224,7 @@ public class HTTPRouteFilter implements Editable<HTTPRouteFilterBuilder>, Kubern
     }
 
     /**
-     * Type identifies the type of filter to apply. As with other API fields, types are classified into three conformance levels:<br><p> <br><p> - Core: Filter types and their corresponding configuration defined by<br><p>   "Support: Core" in this package, e.g. "RequestHeaderModifier". All<br><p>   implementations must support core filters.<br><p> <br><p> - Extended: Filter types and their corresponding configuration defined by<br><p>   "Support: Extended" in this package, e.g. "RequestMirror". Implementers<br><p>   are encouraged to support extended filters.<br><p> <br><p> - Implementation-specific: Filters that are defined and supported by<br><p>   specific vendors.<br><p>   In the future, filters showing convergence in behavior across multiple<br><p>   implementations will be considered for inclusion in extended or core<br><p>   conformance levels. Filter-specific configuration for such filters<br><p>   is specified using the ExtensionRef field. `Type` should be set to<br><p>   "ExtensionRef" for custom filters.<br><p> <br><p> Implementers are encouraged to define custom implementation types to extend the core API with implementation-specific behavior.<br><p> <br><p> If a reference to a custom filter type cannot be resolved, the filter MUST NOT be skipped. Instead, requests that would have been processed by that filter MUST receive a HTTP error response.<br><p> <br><p> Note that values may be added to this enum, implementations must ensure that unknown values will not cause a crash.<br><p> <br><p> Unknown values here must result in the implementation setting the Accepted Condition for the Route to `status: False`, with a Reason of `UnsupportedValue`.
+     * Type identifies the type of filter to apply. As with other API fields, types are classified into three conformance levels:<br><p> <br><p> - Core: Filter types and their corresponding configuration defined by<br><p>   "Support: Core" in this package, e.g. "RequestHeaderModifier". All<br><p>   implementations must support core filters.<br><p> <br><p> - Extended: Filter types and their corresponding configuration defined by<br><p>   "Support: Extended" in this package, e.g. "RequestMirror". Implementers<br><p>   are encouraged to support extended filters.<br><p> <br><p> - Implementation-specific: Filters that are defined and supported by<br><p>   specific vendors.<br><p>   In the future, filters showing convergence in behavior across multiple<br><p>   implementations will be considered for inclusion in extended or core<br><p>   conformance levels. Filter-specific configuration for such filters<br><p>   is specified using the ExtensionRef field. `Type` should be set to<br><p>   "ExtensionRef" for custom filters.<br><p> <br><p> Implementers are encouraged to define custom implementation types to extend the core API with implementation-specific behavior.<br><p> <br><p> If a reference to a custom filter type cannot be resolved, the filter MUST NOT be skipped. Instead, requests that would have been processed by that filter MUST receive a HTTP error response.<br><p> <br><p> Note that values may be added to this enum, implementations must ensure that unknown values will not cause a crash.<br><p> <br><p> Unknown values here must result in the implementation setting the Accepted Condition for the Route to `status: False`, with a Reason of `UnsupportedValue`.<br><p> <br><p> &lt;gateway:experimental:validation:Enum=RequestHeaderModifier;ResponseHeaderModifier;RequestMirror;RequestRedirect;URLRewrite;ExtensionRef;CORS;ExternalAuth&gt;
      */
     @JsonProperty("type")
     public String getType() {
@@ -192,7 +232,7 @@ public class HTTPRouteFilter implements Editable<HTTPRouteFilterBuilder>, Kubern
     }
 
     /**
-     * Type identifies the type of filter to apply. As with other API fields, types are classified into three conformance levels:<br><p> <br><p> - Core: Filter types and their corresponding configuration defined by<br><p>   "Support: Core" in this package, e.g. "RequestHeaderModifier". All<br><p>   implementations must support core filters.<br><p> <br><p> - Extended: Filter types and their corresponding configuration defined by<br><p>   "Support: Extended" in this package, e.g. "RequestMirror". Implementers<br><p>   are encouraged to support extended filters.<br><p> <br><p> - Implementation-specific: Filters that are defined and supported by<br><p>   specific vendors.<br><p>   In the future, filters showing convergence in behavior across multiple<br><p>   implementations will be considered for inclusion in extended or core<br><p>   conformance levels. Filter-specific configuration for such filters<br><p>   is specified using the ExtensionRef field. `Type` should be set to<br><p>   "ExtensionRef" for custom filters.<br><p> <br><p> Implementers are encouraged to define custom implementation types to extend the core API with implementation-specific behavior.<br><p> <br><p> If a reference to a custom filter type cannot be resolved, the filter MUST NOT be skipped. Instead, requests that would have been processed by that filter MUST receive a HTTP error response.<br><p> <br><p> Note that values may be added to this enum, implementations must ensure that unknown values will not cause a crash.<br><p> <br><p> Unknown values here must result in the implementation setting the Accepted Condition for the Route to `status: False`, with a Reason of `UnsupportedValue`.
+     * Type identifies the type of filter to apply. As with other API fields, types are classified into three conformance levels:<br><p> <br><p> - Core: Filter types and their corresponding configuration defined by<br><p>   "Support: Core" in this package, e.g. "RequestHeaderModifier". All<br><p>   implementations must support core filters.<br><p> <br><p> - Extended: Filter types and their corresponding configuration defined by<br><p>   "Support: Extended" in this package, e.g. "RequestMirror". Implementers<br><p>   are encouraged to support extended filters.<br><p> <br><p> - Implementation-specific: Filters that are defined and supported by<br><p>   specific vendors.<br><p>   In the future, filters showing convergence in behavior across multiple<br><p>   implementations will be considered for inclusion in extended or core<br><p>   conformance levels. Filter-specific configuration for such filters<br><p>   is specified using the ExtensionRef field. `Type` should be set to<br><p>   "ExtensionRef" for custom filters.<br><p> <br><p> Implementers are encouraged to define custom implementation types to extend the core API with implementation-specific behavior.<br><p> <br><p> If a reference to a custom filter type cannot be resolved, the filter MUST NOT be skipped. Instead, requests that would have been processed by that filter MUST receive a HTTP error response.<br><p> <br><p> Note that values may be added to this enum, implementations must ensure that unknown values will not cause a crash.<br><p> <br><p> Unknown values here must result in the implementation setting the Accepted Condition for the Route to `status: False`, with a Reason of `UnsupportedValue`.<br><p> <br><p> &lt;gateway:experimental:validation:Enum=RequestHeaderModifier;ResponseHeaderModifier;RequestMirror;RequestRedirect;URLRewrite;ExtensionRef;CORS;ExternalAuth&gt;
      */
     @JsonProperty("type")
     public void setType(String type) {
@@ -200,7 +240,7 @@ public class HTTPRouteFilter implements Editable<HTTPRouteFilterBuilder>, Kubern
     }
 
     /**
-     * HTTPRouteFilter defines processing steps that must be completed during the request or response lifecycle. HTTPRouteFilters are meant as an extension point to express processing that may be done in Gateway implementations. Some examples include request or response modification, implementing authentication strategies, rate-limiting, and traffic shaping. API guarantee/conformance is defined based on the type of the filter.
+     * HTTPRouteFilter defines processing steps that must be completed during the request or response lifecycle. HTTPRouteFilters are meant as an extension point to express processing that may be done in Gateway implementations. Some examples include request or response modification, implementing authentication strategies, rate-limiting, and traffic shaping. API guarantee/conformance is defined based on the type of the filter.<br><p> <br><p> &lt;gateway:experimental:validation:XValidation:message="filter.cors must be nil if the filter.type is not CORS",rule="!(has(self.cors) &amp;&amp; self.type != 'CORS')"&gt; &lt;gateway:experimental:validation:XValidation:message="filter.cors must be specified for CORS filter.type",rule="!(!has(self.cors) &amp;&amp; self.type == 'CORS')"&gt; &lt;gateway:experimental:validation:XValidation:message="filter.externalAuth must be nil if the filter.type is not ExternalAuth",rule="!(has(self.externalAuth) &amp;&amp; self.type != 'ExternalAuth')"&gt; &lt;gateway:experimental:validation:XValidation:message="filter.externalAuth must be specified for ExternalAuth filter.type",rule="!(!has(self.externalAuth) &amp;&amp; self.type == 'ExternalAuth')"&gt;
      */
     @JsonProperty("urlRewrite")
     public HTTPURLRewriteFilter getUrlRewrite() {
@@ -208,7 +248,7 @@ public class HTTPRouteFilter implements Editable<HTTPRouteFilterBuilder>, Kubern
     }
 
     /**
-     * HTTPRouteFilter defines processing steps that must be completed during the request or response lifecycle. HTTPRouteFilters are meant as an extension point to express processing that may be done in Gateway implementations. Some examples include request or response modification, implementing authentication strategies, rate-limiting, and traffic shaping. API guarantee/conformance is defined based on the type of the filter.
+     * HTTPRouteFilter defines processing steps that must be completed during the request or response lifecycle. HTTPRouteFilters are meant as an extension point to express processing that may be done in Gateway implementations. Some examples include request or response modification, implementing authentication strategies, rate-limiting, and traffic shaping. API guarantee/conformance is defined based on the type of the filter.<br><p> <br><p> &lt;gateway:experimental:validation:XValidation:message="filter.cors must be nil if the filter.type is not CORS",rule="!(has(self.cors) &amp;&amp; self.type != 'CORS')"&gt; &lt;gateway:experimental:validation:XValidation:message="filter.cors must be specified for CORS filter.type",rule="!(!has(self.cors) &amp;&amp; self.type == 'CORS')"&gt; &lt;gateway:experimental:validation:XValidation:message="filter.externalAuth must be nil if the filter.type is not ExternalAuth",rule="!(has(self.externalAuth) &amp;&amp; self.type != 'ExternalAuth')"&gt; &lt;gateway:experimental:validation:XValidation:message="filter.externalAuth must be specified for ExternalAuth filter.type",rule="!(!has(self.externalAuth) &amp;&amp; self.type == 'ExternalAuth')"&gt;
      */
     @JsonProperty("urlRewrite")
     public void setUrlRewrite(HTTPURLRewriteFilter urlRewrite) {

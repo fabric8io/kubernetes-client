@@ -42,6 +42,7 @@ import lombok.experimental.Accessors;
 @JsonPropertyOrder({
     "adminAccess",
     "allocationMode",
+    "capacity",
     "count",
     "deviceClassName",
     "firstAvailable",
@@ -78,6 +79,8 @@ public class DeviceRequest implements Editable<DeviceRequestBuilder>, Kubernetes
     private Boolean adminAccess;
     @JsonProperty("allocationMode")
     private String allocationMode;
+    @JsonProperty("capacity")
+    private CapacityRequirements capacity;
     @JsonProperty("count")
     private Long count;
     @JsonProperty("deviceClassName")
@@ -102,10 +105,11 @@ public class DeviceRequest implements Editable<DeviceRequestBuilder>, Kubernetes
     public DeviceRequest() {
     }
 
-    public DeviceRequest(Boolean adminAccess, String allocationMode, Long count, String deviceClassName, List<DeviceSubRequest> firstAvailable, String name, List<DeviceSelector> selectors, List<DeviceToleration> tolerations) {
+    public DeviceRequest(Boolean adminAccess, String allocationMode, CapacityRequirements capacity, Long count, String deviceClassName, List<DeviceSubRequest> firstAvailable, String name, List<DeviceSelector> selectors, List<DeviceToleration> tolerations) {
         super();
         this.adminAccess = adminAccess;
         this.allocationMode = allocationMode;
+        this.capacity = capacity;
         this.count = count;
         this.deviceClassName = deviceClassName;
         this.firstAvailable = firstAvailable;
@@ -144,6 +148,22 @@ public class DeviceRequest implements Editable<DeviceRequestBuilder>, Kubernetes
     @JsonProperty("allocationMode")
     public void setAllocationMode(String allocationMode) {
         this.allocationMode = allocationMode;
+    }
+
+    /**
+     * DeviceRequest is a request for devices required for a claim. This is typically a request for a single resource like a device, but can also ask for several identical devices.
+     */
+    @JsonProperty("capacity")
+    public CapacityRequirements getCapacity() {
+        return capacity;
+    }
+
+    /**
+     * DeviceRequest is a request for devices required for a claim. This is typically a request for a single resource like a device, but can also ask for several identical devices.
+     */
+    @JsonProperty("capacity")
+    public void setCapacity(CapacityRequirements capacity) {
+        this.capacity = capacity;
     }
 
     /**

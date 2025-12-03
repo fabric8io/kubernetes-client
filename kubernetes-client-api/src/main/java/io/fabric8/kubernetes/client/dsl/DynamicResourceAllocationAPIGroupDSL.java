@@ -20,4 +20,6 @@ import io.fabric8.kubernetes.client.V1Alpha2DynamicResourceAllocationAPIGroupDSL
 
 public interface DynamicResourceAllocationAPIGroupDSL extends Client {
   V1Alpha2DynamicResourceAllocationAPIGroupDSL v1alpha2();
+
+  V1DynamicresourceAllocationAPIGroupDSL v1();
 }

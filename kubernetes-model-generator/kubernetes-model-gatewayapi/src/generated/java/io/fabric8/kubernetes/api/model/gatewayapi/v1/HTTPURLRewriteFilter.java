@@ -31,7 +31,7 @@ import lombok.ToString;
 import lombok.experimental.Accessors;
 
 /**
- * HTTPURLRewriteFilter defines a filter that modifies a request during forwarding. At most one of these filters may be used on a Route rule. This MUST NOT be used on the same Route rule as a HTTPRequestRedirect filter.<br><p> <br><p> Support: Extended<br><p> <br><p> &lt;gateway:experimental&gt;
+ * HTTPURLRewriteFilter defines a filter that modifies a request during forwarding. At most one of these filters may be used on a Route rule. This MUST NOT be used on the same Route rule as a HTTPRequestRedirect filter.<br><p> <br><p> Support: Extended
  */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -100,7 +100,7 @@ public class HTTPURLRewriteFilter implements Editable<HTTPURLRewriteFilterBuilde
     }
 
     /**
-     * HTTPURLRewriteFilter defines a filter that modifies a request during forwarding. At most one of these filters may be used on a Route rule. This MUST NOT be used on the same Route rule as a HTTPRequestRedirect filter.<br><p> <br><p> Support: Extended<br><p> <br><p> &lt;gateway:experimental&gt;
+     * HTTPURLRewriteFilter defines a filter that modifies a request during forwarding. At most one of these filters may be used on a Route rule. This MUST NOT be used on the same Route rule as a HTTPRequestRedirect filter.<br><p> <br><p> Support: Extended
      */
     @JsonProperty("path")
     public HTTPPathModifier getPath() {
@@ -108,7 +108,7 @@ public class HTTPURLRewriteFilter implements Editable<HTTPURLRewriteFilterBuilde
     }
 
     /**
-     * HTTPURLRewriteFilter defines a filter that modifies a request during forwarding. At most one of these filters may be used on a Route rule. This MUST NOT be used on the same Route rule as a HTTPRequestRedirect filter.<br><p> <br><p> Support: Extended<br><p> <br><p> &lt;gateway:experimental&gt;
+     * HTTPURLRewriteFilter defines a filter that modifies a request during forwarding. At most one of these filters may be used on a Route rule. This MUST NOT be used on the same Route rule as a HTTPRequestRedirect filter.<br><p> <br><p> Support: Extended
      */
     @JsonProperty("path")
     public void setPath(HTTPPathModifier path) {

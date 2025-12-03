@@ -91,7 +91,7 @@ public class HTTPRouteRetry implements Editable<HTTPRouteRetryBuilder>, Kubernet
     }
 
     /**
-     * Attempts specifies the maxmimum number of times an individual request from the gateway to a backend should be retried.<br><p> <br><p> If the maximum number of retries has been attempted without a successful response from the backend, the Gateway MUST return an error.<br><p> <br><p> When this field is unspecified, the number of times to attempt to retry a backend request is implementation-specific.<br><p> <br><p> Support: Extended
+     * Attempts specifies the maximum number of times an individual request from the gateway to a backend should be retried.<br><p> <br><p> If the maximum number of retries has been attempted without a successful response from the backend, the Gateway MUST return an error.<br><p> <br><p> When this field is unspecified, the number of times to attempt to retry a backend request is implementation-specific.<br><p> <br><p> Support: Extended
      */
     @JsonProperty("attempts")
     public Integer getAttempts() {
@@ -99,7 +99,7 @@ public class HTTPRouteRetry implements Editable<HTTPRouteRetryBuilder>, Kubernet
     }
 
     /**
-     * Attempts specifies the maxmimum number of times an individual request from the gateway to a backend should be retried.<br><p> <br><p> If the maximum number of retries has been attempted without a successful response from the backend, the Gateway MUST return an error.<br><p> <br><p> When this field is unspecified, the number of times to attempt to retry a backend request is implementation-specific.<br><p> <br><p> Support: Extended
+     * Attempts specifies the maximum number of times an individual request from the gateway to a backend should be retried.<br><p> <br><p> If the maximum number of retries has been attempted without a successful response from the backend, the Gateway MUST return an error.<br><p> <br><p> When this field is unspecified, the number of times to attempt to retry a backend request is implementation-specific.<br><p> <br><p> Support: Extended
      */
     @JsonProperty("attempts")
     public void setAttempts(Integer attempts) {

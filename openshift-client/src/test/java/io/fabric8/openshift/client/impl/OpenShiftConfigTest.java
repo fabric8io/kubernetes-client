@@ -26,6 +26,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class OpenShiftConfigTest {
@@ -91,4 +92,24 @@ class OpenShiftConfigTest {
     assertEquals(original.getConfiguration().getUsername(), copy.getConfiguration().getUsername());
     assertEquals(original.getConfiguration().getPassword(), copy.getConfiguration().getPassword());
   }
+
+  @Test
+  void shouldUseSetConfigurationWhenAdaptingK8sClientToOpenShiftClient() {
+    // Given
+    final int requestTimeout = 60_000;
+    final int requestRetryBackoffLimit = 20;
+    final Config config = new ConfigBuilder(Config.empty()).withMasterUrl("www.example.com")
+        .withRequestTimeout(requestTimeout).withRequestRetryBackoffLimit(requestRetryBackoffLimit).build();
+    assertThat(config.getRequestTimeout()).isEqualTo(requestTimeout);
+    try (final KubernetesClient k8sClient = new KubernetesClientBuilder().withConfig(config).build()) {
+      assertThat(k8sClient.getConfiguration().getRequestTimeout()).isEqualTo(requestTimeout);
+
+      // When
+      final OpenShiftClient openshiftClient = k8sClient.adapt(OpenShiftClient.class);
+
+      assertThat(openshiftClient.getConfiguration().getRequestTimeout()).isEqualTo(requestTimeout);
+      assertThat(openshiftClient.getConfiguration().getRequestRetryBackoffLimit()).isEqualTo(requestRetryBackoffLimit);
+    }
+  }
+
 }

@@ -279,14 +279,29 @@ class LeaderElectorTest {
   void canBecomeLeaderAndDifferentLeaderWithActiveLockShouldReturnFalse() {
     // Given
     final LeaderElectionConfig lec = mock(LeaderElectionConfig.class);
-    when(lec.getLeaseDuration()).thenReturn(Duration.ofHours(1L));
     final LeaderElectionRecord ler = mock(LeaderElectionRecord.class);
+    when(ler.getLeaseDuration()).thenReturn(Duration.ofHours(1L));
     when(ler.getHolderIdentity()).thenReturn("someone");
     when(ler.getRenewTime()).thenReturn(ZonedDateTime.now(ZoneOffset.UTC));
     // When
     final boolean result = new LeaderElector(mock(NamespacedKubernetesClient.class), lec, Runnable::run).canBecomeLeader(ler);
     // Then
     assertFalse(result);
+  }
+
+  @Test
+  void canBecomeLeaderRecordDurationDiffersFromConfig() {
+    // Given
+    final LeaderElectionConfig lec = mock(LeaderElectionConfig.class);
+    when(lec.getLeaseDuration()).thenReturn(Duration.ofHours(1L));
+    final LeaderElectionRecord ler = mock(LeaderElectionRecord.class);
+    when(ler.getLeaseDuration()).thenReturn(Duration.ofMinutes(15L));
+    when(ler.getHolderIdentity()).thenReturn("someone");
+    when(ler.getRenewTime()).thenReturn(ZonedDateTime.now(ZoneOffset.UTC).minus(Duration.ofMinutes(20L)));
+    // When
+    final boolean result = new LeaderElector(mock(NamespacedKubernetesClient.class), lec, Runnable::run).canBecomeLeader(ler);
+    // Then - because the duration from the record is used
+    assertTrue(result);
   }
 
   @Test

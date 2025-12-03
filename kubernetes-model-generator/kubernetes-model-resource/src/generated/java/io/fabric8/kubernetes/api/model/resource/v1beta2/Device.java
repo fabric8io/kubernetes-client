@@ -42,7 +42,11 @@ import lombok.experimental.Accessors;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "allNodes",
+    "allowMultipleAllocations",
     "attributes",
+    "bindingConditions",
+    "bindingFailureConditions",
+    "bindsToNode",
     "capacity",
     "consumesCounters",
     "name",
@@ -77,9 +81,19 @@ public class Device implements Editable<DeviceBuilder>, KubernetesResource
 
     @JsonProperty("allNodes")
     private Boolean allNodes;
+    @JsonProperty("allowMultipleAllocations")
+    private Boolean allowMultipleAllocations;
     @JsonProperty("attributes")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Map<String, DeviceAttribute> attributes = new LinkedHashMap<>();
+    @JsonProperty("bindingConditions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<String> bindingConditions = new ArrayList<>();
+    @JsonProperty("bindingFailureConditions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<String> bindingFailureConditions = new ArrayList<>();
+    @JsonProperty("bindsToNode")
+    private Boolean bindsToNode;
     @JsonProperty("capacity")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Map<String, DeviceCapacity> capacity = new LinkedHashMap<>();
@@ -104,10 +118,14 @@ public class Device implements Editable<DeviceBuilder>, KubernetesResource
     public Device() {
     }
 
-    public Device(Boolean allNodes, Map<String, DeviceAttribute> attributes, Map<String, DeviceCapacity> capacity, List<DeviceCounterConsumption> consumesCounters, String name, String nodeName, NodeSelector nodeSelector, List<DeviceTaint> taints) {
+    public Device(Boolean allNodes, Boolean allowMultipleAllocations, Map<String, DeviceAttribute> attributes, List<String> bindingConditions, List<String> bindingFailureConditions, Boolean bindsToNode, Map<String, DeviceCapacity> capacity, List<DeviceCounterConsumption> consumesCounters, String name, String nodeName, NodeSelector nodeSelector, List<DeviceTaint> taints) {
         super();
         this.allNodes = allNodes;
+        this.allowMultipleAllocations = allowMultipleAllocations;
         this.attributes = attributes;
+        this.bindingConditions = bindingConditions;
+        this.bindingFailureConditions = bindingFailureConditions;
+        this.bindsToNode = bindsToNode;
         this.capacity = capacity;
         this.consumesCounters = consumesCounters;
         this.name = name;
@@ -133,6 +151,22 @@ public class Device implements Editable<DeviceBuilder>, KubernetesResource
     }
 
     /**
+     * AllowMultipleAllocations marks whether the device is allowed to be allocated to multiple DeviceRequests.<br><p> <br><p> If AllowMultipleAllocations is set to true, the device can be allocated more than once, and all of its capacity is consumable, regardless of whether the requestPolicy is defined or not.
+     */
+    @JsonProperty("allowMultipleAllocations")
+    public Boolean getAllowMultipleAllocations() {
+        return allowMultipleAllocations;
+    }
+
+    /**
+     * AllowMultipleAllocations marks whether the device is allowed to be allocated to multiple DeviceRequests.<br><p> <br><p> If AllowMultipleAllocations is set to true, the device can be allocated more than once, and all of its capacity is consumable, regardless of whether the requestPolicy is defined or not.
+     */
+    @JsonProperty("allowMultipleAllocations")
+    public void setAllowMultipleAllocations(Boolean allowMultipleAllocations) {
+        this.allowMultipleAllocations = allowMultipleAllocations;
+    }
+
+    /**
      * Attributes defines the set of attributes for this device. The name of each attribute must be unique in that set.<br><p> <br><p> The maximum number of attributes and capacities combined is 32.
      */
     @JsonProperty("attributes")
@@ -147,6 +181,56 @@ public class Device implements Editable<DeviceBuilder>, KubernetesResource
     @JsonProperty("attributes")
     public void setAttributes(Map<String, DeviceAttribute> attributes) {
         this.attributes = attributes;
+    }
+
+    /**
+     * BindingConditions defines the conditions for proceeding with binding. All of these conditions must be set in the per-device status conditions with a value of True to proceed with binding the pod to the node while scheduling the pod.<br><p> <br><p> The maximum number of binding conditions is 4.<br><p> <br><p> The conditions must be a valid condition type string.<br><p> <br><p> This is an alpha field and requires enabling the DRADeviceBindingConditions and DRAResourceClaimDeviceStatus feature gates.
+     */
+    @JsonProperty("bindingConditions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public List<String> getBindingConditions() {
+        return bindingConditions;
+    }
+
+    /**
+     * BindingConditions defines the conditions for proceeding with binding. All of these conditions must be set in the per-device status conditions with a value of True to proceed with binding the pod to the node while scheduling the pod.<br><p> <br><p> The maximum number of binding conditions is 4.<br><p> <br><p> The conditions must be a valid condition type string.<br><p> <br><p> This is an alpha field and requires enabling the DRADeviceBindingConditions and DRAResourceClaimDeviceStatus feature gates.
+     */
+    @JsonProperty("bindingConditions")
+    public void setBindingConditions(List<String> bindingConditions) {
+        this.bindingConditions = bindingConditions;
+    }
+
+    /**
+     * BindingFailureConditions defines the conditions for binding failure. They may be set in the per-device status conditions. If any is set to "True", a binding failure occurred.<br><p> <br><p> The maximum number of binding failure conditions is 4.<br><p> <br><p> The conditions must be a valid condition type string.<br><p> <br><p> This is an alpha field and requires enabling the DRADeviceBindingConditions and DRAResourceClaimDeviceStatus feature gates.
+     */
+    @JsonProperty("bindingFailureConditions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public List<String> getBindingFailureConditions() {
+        return bindingFailureConditions;
+    }
+
+    /**
+     * BindingFailureConditions defines the conditions for binding failure. They may be set in the per-device status conditions. If any is set to "True", a binding failure occurred.<br><p> <br><p> The maximum number of binding failure conditions is 4.<br><p> <br><p> The conditions must be a valid condition type string.<br><p> <br><p> This is an alpha field and requires enabling the DRADeviceBindingConditions and DRAResourceClaimDeviceStatus feature gates.
+     */
+    @JsonProperty("bindingFailureConditions")
+    public void setBindingFailureConditions(List<String> bindingFailureConditions) {
+        this.bindingFailureConditions = bindingFailureConditions;
+    }
+
+    /**
+     * BindsToNode indicates if the usage of an allocation involving this device has to be limited to exactly the node that was chosen when allocating the claim. If set to true, the scheduler will set the ResourceClaim.Status.Allocation.NodeSelector to match the node where the allocation was made.<br><p> <br><p> This is an alpha field and requires enabling the DRADeviceBindingConditions and DRAResourceClaimDeviceStatus feature gates.
+     */
+    @JsonProperty("bindsToNode")
+    public Boolean getBindsToNode() {
+        return bindsToNode;
+    }
+
+    /**
+     * BindsToNode indicates if the usage of an allocation involving this device has to be limited to exactly the node that was chosen when allocating the claim. If set to true, the scheduler will set the ResourceClaim.Status.Allocation.NodeSelector to match the node where the allocation was made.<br><p> <br><p> This is an alpha field and requires enabling the DRADeviceBindingConditions and DRAResourceClaimDeviceStatus feature gates.
+     */
+    @JsonProperty("bindsToNode")
+    public void setBindsToNode(Boolean bindsToNode) {
+        this.bindsToNode = bindsToNode;
     }
 
     /**

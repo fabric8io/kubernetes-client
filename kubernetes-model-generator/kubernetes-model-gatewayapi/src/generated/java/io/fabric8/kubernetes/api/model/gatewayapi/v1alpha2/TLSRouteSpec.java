@@ -43,7 +43,8 @@ import lombok.experimental.Accessors;
 @JsonPropertyOrder({
     "hostnames",
     "parentRefs",
-    "rules"
+    "rules",
+    "useDefaultGateways"
 })
 @ToString
 @EqualsAndHashCode
@@ -79,6 +80,8 @@ public class TLSRouteSpec implements Editable<TLSRouteSpecBuilder>, KubernetesRe
     @JsonProperty("rules")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<TLSRouteRule> rules = new ArrayList<>();
+    @JsonProperty("useDefaultGateways")
+    private String useDefaultGateways;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -88,11 +91,12 @@ public class TLSRouteSpec implements Editable<TLSRouteSpecBuilder>, KubernetesRe
     public TLSRouteSpec() {
     }
 
-    public TLSRouteSpec(List<String> hostnames, List<ParentReference> parentRefs, List<TLSRouteRule> rules) {
+    public TLSRouteSpec(List<String> hostnames, List<ParentReference> parentRefs, List<TLSRouteRule> rules, String useDefaultGateways) {
         super();
         this.hostnames = hostnames;
         this.parentRefs = parentRefs;
         this.rules = rules;
+        this.useDefaultGateways = useDefaultGateways;
     }
 
     /**
@@ -144,6 +148,22 @@ public class TLSRouteSpec implements Editable<TLSRouteSpecBuilder>, KubernetesRe
     @JsonProperty("rules")
     public void setRules(List<TLSRouteRule> rules) {
         this.rules = rules;
+    }
+
+    /**
+     * UseDefaultGateways indicates the default Gateway scope to use for this Route. If unset (the default) or set to None, the Route will not be attached to any default Gateway; if set, it will be attached to any default Gateway supporting the named scope, subject to the usual rules about which Routes a Gateway is allowed to claim.<br><p> <br><p> Think carefully before using this functionality! The set of default Gateways supporting the requested scope can change over time without any notice to the Route author, and in many situations it will not be appropriate to request a default Gateway for a given Route -- for example, a Route with specific security requirements should almost certainly not use a default Gateway.<br><p> <br><p> &lt;gateway:experimental&gt;
+     */
+    @JsonProperty("useDefaultGateways")
+    public String getUseDefaultGateways() {
+        return useDefaultGateways;
+    }
+
+    /**
+     * UseDefaultGateways indicates the default Gateway scope to use for this Route. If unset (the default) or set to None, the Route will not be attached to any default Gateway; if set, it will be attached to any default Gateway supporting the named scope, subject to the usual rules about which Routes a Gateway is allowed to claim.<br><p> <br><p> Think carefully before using this functionality! The set of default Gateways supporting the requested scope can change over time without any notice to the Route author, and in many situations it will not be appropriate to request a default Gateway for a given Route -- for example, a Route with specific security requirements should almost certainly not use a default Gateway.<br><p> <br><p> &lt;gateway:experimental&gt;
+     */
+    @JsonProperty("useDefaultGateways")
+    public void setUseDefaultGateways(String useDefaultGateways) {
+        this.useDefaultGateways = useDefaultGateways;
     }
 
     @JsonIgnore

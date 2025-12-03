@@ -50,7 +50,7 @@ jobs:
         crc: [ 2.32.0 ]
     steps:
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
       - name: Setup Java 11
         uses: actions/setup-java@v5
         with:

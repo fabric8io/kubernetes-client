@@ -77,7 +77,7 @@ public class EnvFromSource implements Editable<EnvFromSourceBuilder>, Kubernetes
     }
 
     /**
-     * Optional text to prepend to the name of each environment variable. Must be a C_IDENTIFIER.
+     * Optional text to prepend to the name of each environment variable. May consist of any printable ASCII characters except '='.
      */
     @JsonProperty("prefix")
     public String getPrefix() {
@@ -85,7 +85,7 @@ public class EnvFromSource implements Editable<EnvFromSourceBuilder>, Kubernetes
     }
 
     /**
-     * Optional text to prepend to the name of each environment variable. Must be a C_IDENTIFIER.
+     * Optional text to prepend to the name of each environment variable. May consist of any printable ASCII characters except '='.
      */
     @JsonProperty("prefix")
     public void setPrefix(String prefix) {

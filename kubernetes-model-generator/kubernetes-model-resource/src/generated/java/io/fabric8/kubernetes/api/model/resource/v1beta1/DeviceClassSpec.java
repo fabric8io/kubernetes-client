@@ -41,6 +41,7 @@ import lombok.experimental.Accessors;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "config",
+    "extendedResourceName",
     "selectors"
 })
 @ToString
@@ -71,6 +72,8 @@ public class DeviceClassSpec implements Editable<DeviceClassSpecBuilder>, Kubern
     @JsonProperty("config")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<DeviceClassConfiguration> config = new ArrayList<>();
+    @JsonProperty("extendedResourceName")
+    private String extendedResourceName;
     @JsonProperty("selectors")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<DeviceSelector> selectors = new ArrayList<>();
@@ -83,9 +86,10 @@ public class DeviceClassSpec implements Editable<DeviceClassSpecBuilder>, Kubern
     public DeviceClassSpec() {
     }
 
-    public DeviceClassSpec(List<DeviceClassConfiguration> config, List<DeviceSelector> selectors) {
+    public DeviceClassSpec(List<DeviceClassConfiguration> config, String extendedResourceName, List<DeviceSelector> selectors) {
         super();
         this.config = config;
+        this.extendedResourceName = extendedResourceName;
         this.selectors = selectors;
     }
 
@@ -104,6 +108,22 @@ public class DeviceClassSpec implements Editable<DeviceClassSpecBuilder>, Kubern
     @JsonProperty("config")
     public void setConfig(List<DeviceClassConfiguration> config) {
         this.config = config;
+    }
+
+    /**
+     * ExtendedResourceName is the extended resource name for the devices of this class. The devices of this class can be used to satisfy a pod's extended resource requests. It has the same format as the name of a pod's extended resource. It should be unique among all the device classes in a cluster. If two device classes have the same name, then the class created later is picked to satisfy a pod's extended resource requests. If two classes are created at the same time, then the name of the class lexicographically sorted first is picked.<br><p> <br><p> This is an alpha field.
+     */
+    @JsonProperty("extendedResourceName")
+    public String getExtendedResourceName() {
+        return extendedResourceName;
+    }
+
+    /**
+     * ExtendedResourceName is the extended resource name for the devices of this class. The devices of this class can be used to satisfy a pod's extended resource requests. It has the same format as the name of a pod's extended resource. It should be unique among all the device classes in a cluster. If two device classes have the same name, then the class created later is picked to satisfy a pod's extended resource requests. If two classes are created at the same time, then the name of the class lexicographically sorted first is picked.<br><p> <br><p> This is an alpha field.
+     */
+    @JsonProperty("extendedResourceName")
+    public void setExtendedResourceName(String extendedResourceName) {
+        this.extendedResourceName = extendedResourceName;
     }
 
     /**

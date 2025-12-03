@@ -31,7 +31,7 @@ import lombok.ToString;
 import lombok.experimental.Accessors;
 
 /**
- * HTTPRouteTimeouts defines timeouts that can be configured for an HTTPRoute.
+ * HTTPRouteTimeouts defines timeouts that can be configured for an HTTPRoute. Timeout values are represented with Gateway API Duration formatting.
  */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)

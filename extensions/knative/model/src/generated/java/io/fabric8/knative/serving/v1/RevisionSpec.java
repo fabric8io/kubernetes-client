@@ -67,6 +67,7 @@ import lombok.experimental.Accessors;
     "hostPID",
     "hostUsers",
     "hostname",
+    "hostnameOverride",
     "idleTimeoutSeconds",
     "imagePullSecrets",
     "initContainers",
@@ -155,6 +156,8 @@ public class RevisionSpec implements Editable<RevisionSpecBuilder>, KubernetesRe
     private Boolean hostUsers;
     @JsonProperty("hostname")
     private String hostname;
+    @JsonProperty("hostnameOverride")
+    private String hostnameOverride;
     @JsonProperty("idleTimeoutSeconds")
     private Long idleTimeoutSeconds;
     @JsonProperty("imagePullSecrets")
@@ -232,7 +235,7 @@ public class RevisionSpec implements Editable<RevisionSpecBuilder>, KubernetesRe
     public RevisionSpec() {
     }
 
-    public RevisionSpec(Long activeDeadlineSeconds, Affinity affinity, Boolean automountServiceAccountToken, Long containerConcurrency, List<Container> containers, PodDNSConfig dnsConfig, String dnsPolicy, Boolean enableServiceLinks, List<EphemeralContainer> ephemeralContainers, List<HostAlias> hostAliases, Boolean hostIPC, Boolean hostNetwork, Boolean hostPID, Boolean hostUsers, String hostname, Long idleTimeoutSeconds, List<LocalObjectReference> imagePullSecrets, List<Container> initContainers, String nodeName, Map<String, String> nodeSelector, PodOS os, Map<String, Quantity> overhead, String preemptionPolicy, Integer priority, String priorityClassName, List<PodReadinessGate> readinessGates, List<PodResourceClaim> resourceClaims, ResourceRequirements resources, Long responseStartTimeoutSeconds, String restartPolicy, String runtimeClassName, String schedulerName, List<PodSchedulingGate> schedulingGates, PodSecurityContext securityContext, String serviceAccount, String serviceAccountName, Boolean setHostnameAsFQDN, Boolean shareProcessNamespace, String subdomain, Long terminationGracePeriodSeconds, Long timeoutSeconds, List<Toleration> tolerations, List<TopologySpreadConstraint> topologySpreadConstraints, List<Volume> volumes) {
+    public RevisionSpec(Long activeDeadlineSeconds, Affinity affinity, Boolean automountServiceAccountToken, Long containerConcurrency, List<Container> containers, PodDNSConfig dnsConfig, String dnsPolicy, Boolean enableServiceLinks, List<EphemeralContainer> ephemeralContainers, List<HostAlias> hostAliases, Boolean hostIPC, Boolean hostNetwork, Boolean hostPID, Boolean hostUsers, String hostname, String hostnameOverride, Long idleTimeoutSeconds, List<LocalObjectReference> imagePullSecrets, List<Container> initContainers, String nodeName, Map<String, String> nodeSelector, PodOS os, Map<String, Quantity> overhead, String preemptionPolicy, Integer priority, String priorityClassName, List<PodReadinessGate> readinessGates, List<PodResourceClaim> resourceClaims, ResourceRequirements resources, Long responseStartTimeoutSeconds, String restartPolicy, String runtimeClassName, String schedulerName, List<PodSchedulingGate> schedulingGates, PodSecurityContext securityContext, String serviceAccount, String serviceAccountName, Boolean setHostnameAsFQDN, Boolean shareProcessNamespace, String subdomain, Long terminationGracePeriodSeconds, Long timeoutSeconds, List<Toleration> tolerations, List<TopologySpreadConstraint> topologySpreadConstraints, List<Volume> volumes) {
         super();
         this.activeDeadlineSeconds = activeDeadlineSeconds;
         this.affinity = affinity;
@@ -249,6 +252,7 @@ public class RevisionSpec implements Editable<RevisionSpecBuilder>, KubernetesRe
         this.hostPID = hostPID;
         this.hostUsers = hostUsers;
         this.hostname = hostname;
+        this.hostnameOverride = hostnameOverride;
         this.idleTimeoutSeconds = idleTimeoutSeconds;
         this.imagePullSecrets = imagePullSecrets;
         this.initContainers = initContainers;
@@ -460,7 +464,7 @@ public class RevisionSpec implements Editable<RevisionSpecBuilder>, KubernetesRe
     }
 
     /**
-     * Host networking requested for this pod. Use the host's network namespace. If this option is set, the ports that will be used must be specified. Default to false.
+     * Host networking requested for this pod. Use the host's network namespace. When using HostNetwork you should specify ports so the scheduler is aware. When `hostNetwork` is true, specified `hostPort` fields in port definitions must match `containerPort`, and unspecified `hostPort` fields in port definitions are defaulted to match `containerPort`. Default to false.
      */
     @JsonProperty("hostNetwork")
     public Boolean getHostNetwork() {
@@ -468,7 +472,7 @@ public class RevisionSpec implements Editable<RevisionSpecBuilder>, KubernetesRe
     }
 
     /**
-     * Host networking requested for this pod. Use the host's network namespace. If this option is set, the ports that will be used must be specified. Default to false.
+     * Host networking requested for this pod. Use the host's network namespace. When using HostNetwork you should specify ports so the scheduler is aware. When `hostNetwork` is true, specified `hostPort` fields in port definitions must match `containerPort`, and unspecified `hostPort` fields in port definitions are defaulted to match `containerPort`. Default to false.
      */
     @JsonProperty("hostNetwork")
     public void setHostNetwork(Boolean hostNetwork) {
@@ -521,6 +525,22 @@ public class RevisionSpec implements Editable<RevisionSpecBuilder>, KubernetesRe
     @JsonProperty("hostname")
     public void setHostname(String hostname) {
         this.hostname = hostname;
+    }
+
+    /**
+     * HostnameOverride specifies an explicit override for the pod's hostname as perceived by the pod. This field only specifies the pod's hostname and does not affect its DNS records. When this field is set to a non-empty string: - It takes precedence over the values set in `hostname` and `subdomain`. - The Pod's hostname will be set to this value. - `setHostnameAsFQDN` must be nil or set to false. - `hostNetwork` must be set to false.<br><p> <br><p> This field must be a valid DNS subdomain as defined in RFC 1123 and contain at most 64 characters. Requires the HostnameOverride feature gate to be enabled.
+     */
+    @JsonProperty("hostnameOverride")
+    public String getHostnameOverride() {
+        return hostnameOverride;
+    }
+
+    /**
+     * HostnameOverride specifies an explicit override for the pod's hostname as perceived by the pod. This field only specifies the pod's hostname and does not affect its DNS records. When this field is set to a non-empty string: - It takes precedence over the values set in `hostname` and `subdomain`. - The Pod's hostname will be set to this value. - `setHostnameAsFQDN` must be nil or set to false. - `hostNetwork` must be set to false.<br><p> <br><p> This field must be a valid DNS subdomain as defined in RFC 1123 and contain at most 64 characters. Requires the HostnameOverride feature gate to be enabled.
+     */
+    @JsonProperty("hostnameOverride")
+    public void setHostnameOverride(String hostnameOverride) {
+        this.hostnameOverride = hostnameOverride;
     }
 
     /**

@@ -40,6 +40,7 @@ import lombok.experimental.Accessors;
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
+    "distinctAttribute",
     "matchAttribute",
     "requests"
 })
@@ -68,6 +69,8 @@ import lombok.experimental.Accessors;
 public class DeviceConstraint implements Editable<DeviceConstraintBuilder>, KubernetesResource
 {
 
+    @JsonProperty("distinctAttribute")
+    private String distinctAttribute;
     @JsonProperty("matchAttribute")
     private String matchAttribute;
     @JsonProperty("requests")
@@ -82,10 +85,27 @@ public class DeviceConstraint implements Editable<DeviceConstraintBuilder>, Kube
     public DeviceConstraint() {
     }
 
-    public DeviceConstraint(String matchAttribute, List<String> requests) {
+    public DeviceConstraint(String distinctAttribute, String matchAttribute, List<String> requests) {
         super();
+        this.distinctAttribute = distinctAttribute;
         this.matchAttribute = matchAttribute;
         this.requests = requests;
+    }
+
+    /**
+     * DistinctAttribute requires that all devices in question have this attribute and that its type and value are unique across those devices.<br><p> <br><p> This acts as the inverse of MatchAttribute.<br><p> <br><p> This constraint is used to avoid allocating multiple requests to the same device by ensuring attribute-level differentiation.<br><p> <br><p> This is useful for scenarios where resource requests must be fulfilled by separate physical devices. For example, a container requests two network interfaces that must be allocated from two different physical NICs.
+     */
+    @JsonProperty("distinctAttribute")
+    public String getDistinctAttribute() {
+        return distinctAttribute;
+    }
+
+    /**
+     * DistinctAttribute requires that all devices in question have this attribute and that its type and value are unique across those devices.<br><p> <br><p> This acts as the inverse of MatchAttribute.<br><p> <br><p> This constraint is used to avoid allocating multiple requests to the same device by ensuring attribute-level differentiation.<br><p> <br><p> This is useful for scenarios where resource requests must be fulfilled by separate physical devices. For example, a container requests two network interfaces that must be allocated from two different physical NICs.
+     */
+    @JsonProperty("distinctAttribute")
+    public void setDistinctAttribute(String distinctAttribute) {
+        this.distinctAttribute = distinctAttribute;
     }
 
     /**

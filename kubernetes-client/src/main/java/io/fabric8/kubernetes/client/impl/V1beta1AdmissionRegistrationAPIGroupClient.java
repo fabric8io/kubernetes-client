@@ -15,43 +15,58 @@
  */
 package io.fabric8.kubernetes.client.impl;
 
-import io.fabric8.kubernetes.api.model.admissionregistration.v1beta1.MutatingWebhookConfiguration;
-import io.fabric8.kubernetes.api.model.admissionregistration.v1beta1.MutatingWebhookConfigurationList;
-import io.fabric8.kubernetes.api.model.admissionregistration.v1beta1.ValidatingAdmissionPolicy;
-import io.fabric8.kubernetes.api.model.admissionregistration.v1beta1.ValidatingAdmissionPolicyBinding;
-import io.fabric8.kubernetes.api.model.admissionregistration.v1beta1.ValidatingAdmissionPolicyBindingList;
-import io.fabric8.kubernetes.api.model.admissionregistration.v1beta1.ValidatingAdmissionPolicyList;
-import io.fabric8.kubernetes.api.model.admissionregistration.v1beta1.ValidatingWebhookConfiguration;
-import io.fabric8.kubernetes.api.model.admissionregistration.v1beta1.ValidatingWebhookConfigurationList;
+import io.fabric8.kubernetes.api.model.admissionregistration.v1beta1.*;
 import io.fabric8.kubernetes.client.V1beta1AdmissionRegistrationAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.NonNamespaceOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.extension.ClientAdapter;
 
+/**
+ * Client implementation for the Kubernetes Admission Registration API Group v1beta1.
+ * This client provides access to admission webhook configurations and admission policies
+ * through a fluent DSL interface.
+ */
 public class V1beta1AdmissionRegistrationAPIGroupClient extends ClientAdapter<V1beta1AdmissionRegistrationAPIGroupClient>
     implements V1beta1AdmissionRegistrationAPIGroupDSL {
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public MixedOperation<ValidatingWebhookConfiguration, ValidatingWebhookConfigurationList, Resource<ValidatingWebhookConfiguration>> validatingWebhookConfigurations() {
     return resources(ValidatingWebhookConfiguration.class, ValidatingWebhookConfigurationList.class);
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public NonNamespaceOperation<MutatingWebhookConfiguration, MutatingWebhookConfigurationList, Resource<MutatingWebhookConfiguration>> mutatingWebhookConfigurations() {
     return resources(MutatingWebhookConfiguration.class, MutatingWebhookConfigurationList.class);
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
-  public NonNamespaceOperation<ValidatingAdmissionPolicy, ValidatingAdmissionPolicyList, Resource<io.fabric8.kubernetes.api.model.admissionregistration.v1beta1.ValidatingAdmissionPolicy>> validatingAdmissionPolicies() {
-    return resources(ValidatingAdmissionPolicy.class, ValidatingAdmissionPolicyList.class);
+  public NonNamespaceOperation<MutatingAdmissionPolicy, MutatingAdmissionPolicyList, Resource<MutatingAdmissionPolicy>> mutatingAdmissionPolicies() {
+    return resources(MutatingAdmissionPolicy.class, MutatingAdmissionPolicyList.class);
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
-  public NonNamespaceOperation<ValidatingAdmissionPolicyBinding, ValidatingAdmissionPolicyBindingList, Resource<ValidatingAdmissionPolicyBinding>> validatingAdmissionPolicyBindings() {
-    return resources(ValidatingAdmissionPolicyBinding.class, ValidatingAdmissionPolicyBindingList.class);
+  public NonNamespaceOperation<MutatingAdmissionPolicyBinding, MutatingAdmissionPolicyBindingList, Resource<MutatingAdmissionPolicyBinding>> mutatingAdmissionPolicyBindings() {
+    return resources(MutatingAdmissionPolicyBinding.class, MutatingAdmissionPolicyBindingList.class);
   }
 
+  /**
+   * Creates a new instance of this client.
+   *
+   * @return a new V1beta1AdmissionRegistrationAPIGroupClient instance
+   */
   @Override
   public V1beta1AdmissionRegistrationAPIGroupClient newInstance() {
     return new V1beta1AdmissionRegistrationAPIGroupClient();

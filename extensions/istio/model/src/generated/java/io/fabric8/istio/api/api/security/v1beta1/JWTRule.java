@@ -35,7 +35,7 @@ import lombok.ToString;
 import lombok.experimental.Accessors;
 
 /**
- * JSON Web Token (JWT) token format for authentication as defined by [RFC 7519](https://tools.ietf.org/html/rfc7519). See [OAuth 2.0](https://tools.ietf.org/html/rfc6749) and [OIDC 1.0](http://openid.net/connect) for how this is used in the whole authentication flow.<br><p> <br><p> Examples:<br><p> <br><p> Spec for a JWT that is issued by `https://example.com`, with the audience claims must be either `bookstore_android.apps.example.com` or `bookstore_web.apps.example.com`. The token should be presented at the `Authorization` header (default). The JSON Web Key Set (JWKS) will be discovered following OpenID Connect protocol.<br><p> <br><p> ```yaml issuer: https://example.com audiences:<br><p>   - bookstore_android.apps.example.com<br><p>     bookstore_web.apps.example.com<br><p> <br><p> ```<br><p> <br><p> This example specifies a token in a non-default location (`x-goog-iap-jwt-assertion` header). It also defines the URI to fetch JWKS explicitly.<br><p> <br><p> ```yaml issuer: https://example.com jwksUri: https://example.com/.secret/jwks.json fromHeaders: - "x-goog-iap-jwt-assertion" ```
+ * JSON Web Token (JWT) token format for authentication as defined by [RFC 7519](https://tools.ietf.org/html/rfc7519). See [OAuth 2.0](https://tools.ietf.org/html/rfc6749) and [OIDC 1.0](http://openid.net/connect) for how this is used in the whole authentication flow.<br><p> <br><p> Examples:<br><p> <br><p> Spec for a JWT that is issued by `https://example.com`, with the audience claims must be either `bookstore_android.apps.example.com` or `bookstore_web.apps.example.com`. The token should be presented at the `Authorization` header (default). The JSON Web Key Set (JWKS) will be discovered following OpenID Connect protocol.<br><p> <br><p> ```yaml issuer: https://example.com audiences:<br><p>   - bookstore_android.apps.example.com<br><p>     bookstore_web.apps.example.com<br><p> <br><p> ```<br><p> <br><p> This example specifies a token in a non-default location (`x-goog-iap-jwt-assertion` header). It also defines the URI to fetch JWKS explicitly.<br><p> <br><p> ```yaml issuer: https://example.com jwksUri: https://example.com/.secret/jwks.json fromHeaders: - "x-goog-iap-jwt-assertion" ```<br><p> <br><p> This example shows how to configure custom claims to be treated as space-delimited strings. This is useful when JWT tokens contain custom claims with multiple space-separated values that should be available for individual matching in authorization policies.<br><p> <br><p> ```yaml issuer: https://example.com spaceDelimitedClaims: - "custom_scope" - "provider.login.scope" - "roles" ```<br><p> <br><p> With this configuration, a JWT containing `"custom_scope": "read write admin"` will allow authorization policies to match against individual values like "read", "write", or "admin".
  */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -50,6 +50,7 @@ import lombok.experimental.Accessors;
     "jwksUri",
     "outputClaimToHeaders",
     "outputPayloadToHeader",
+    "spaceDelimitedClaims",
     "timeout"
 })
 @ToString
@@ -102,6 +103,9 @@ public class JWTRule implements Editable<JWTRuleBuilder>, KubernetesResource
     private List<ClaimToHeader> outputClaimToHeaders = new ArrayList<>();
     @JsonProperty("outputPayloadToHeader")
     private String outputPayloadToHeader;
+    @JsonProperty("spaceDelimitedClaims")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<String> spaceDelimitedClaims = new ArrayList<>();
     @JsonProperty("timeout")
     private String timeout;
     @JsonIgnore
@@ -113,7 +117,7 @@ public class JWTRule implements Editable<JWTRuleBuilder>, KubernetesResource
     public JWTRule() {
     }
 
-    public JWTRule(List<String> audiences, Boolean forwardOriginalToken, List<String> fromCookies, List<JWTHeader> fromHeaders, List<String> fromParams, String issuer, String jwks, String jwksUri, List<ClaimToHeader> outputClaimToHeaders, String outputPayloadToHeader, String timeout) {
+    public JWTRule(List<String> audiences, Boolean forwardOriginalToken, List<String> fromCookies, List<JWTHeader> fromHeaders, List<String> fromParams, String issuer, String jwks, String jwksUri, List<ClaimToHeader> outputClaimToHeaders, String outputPayloadToHeader, List<String> spaceDelimitedClaims, String timeout) {
         super();
         this.audiences = audiences;
         this.forwardOriginalToken = forwardOriginalToken;
@@ -125,6 +129,7 @@ public class JWTRule implements Editable<JWTRuleBuilder>, KubernetesResource
         this.jwksUri = jwksUri;
         this.outputClaimToHeaders = outputClaimToHeaders;
         this.outputPayloadToHeader = outputPayloadToHeader;
+        this.spaceDelimitedClaims = spaceDelimitedClaims;
         this.timeout = timeout;
     }
 
@@ -162,7 +167,7 @@ public class JWTRule implements Editable<JWTRuleBuilder>, KubernetesResource
     }
 
     /**
-     * List of cookie names from which JWT is expected.	// For example, if config is:<br><p> <br><p> ``` yaml<br><p> <br><p> 	from_cookies:<br><p> 	- auth-token<br><p> <br><p> ``` Then JWT will be extracted from `auth-token` cookie in the request.<br><p> <br><p> Note: Requests with multiple tokens (at different locations) are not supported, the output principal of such requests is undefined.
+     * List of cookie names from which JWT is expected.	// For example, if config is:<br><p> <br><p> ``` yaml<br><p> <br><p> 	fromCookies:<br><p> 	- auth-token<br><p> <br><p> ``` Then JWT will be extracted from `auth-token` cookie in the request.<br><p> <br><p> Note: Requests with multiple tokens (at different locations) are not supported, the output principal of such requests is undefined.
      */
     @JsonProperty("fromCookies")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -171,7 +176,7 @@ public class JWTRule implements Editable<JWTRuleBuilder>, KubernetesResource
     }
 
     /**
-     * List of cookie names from which JWT is expected.	// For example, if config is:<br><p> <br><p> ``` yaml<br><p> <br><p> 	from_cookies:<br><p> 	- auth-token<br><p> <br><p> ``` Then JWT will be extracted from `auth-token` cookie in the request.<br><p> <br><p> Note: Requests with multiple tokens (at different locations) are not supported, the output principal of such requests is undefined.
+     * List of cookie names from which JWT is expected.	// For example, if config is:<br><p> <br><p> ``` yaml<br><p> <br><p> 	fromCookies:<br><p> 	- auth-token<br><p> <br><p> ``` Then JWT will be extracted from `auth-token` cookie in the request.<br><p> <br><p> Note: Requests with multiple tokens (at different locations) are not supported, the output principal of such requests is undefined.
      */
     @JsonProperty("fromCookies")
     public void setFromCookies(List<String> fromCookies) {
@@ -294,7 +299,24 @@ public class JWTRule implements Editable<JWTRuleBuilder>, KubernetesResource
     }
 
     /**
-     * JSON Web Token (JWT) token format for authentication as defined by [RFC 7519](https://tools.ietf.org/html/rfc7519). See [OAuth 2.0](https://tools.ietf.org/html/rfc6749) and [OIDC 1.0](http://openid.net/connect) for how this is used in the whole authentication flow.<br><p> <br><p> Examples:<br><p> <br><p> Spec for a JWT that is issued by `https://example.com`, with the audience claims must be either `bookstore_android.apps.example.com` or `bookstore_web.apps.example.com`. The token should be presented at the `Authorization` header (default). The JSON Web Key Set (JWKS) will be discovered following OpenID Connect protocol.<br><p> <br><p> ```yaml issuer: https://example.com audiences:<br><p>   - bookstore_android.apps.example.com<br><p>     bookstore_web.apps.example.com<br><p> <br><p> ```<br><p> <br><p> This example specifies a token in a non-default location (`x-goog-iap-jwt-assertion` header). It also defines the URI to fetch JWKS explicitly.<br><p> <br><p> ```yaml issuer: https://example.com jwksUri: https://example.com/.secret/jwks.json fromHeaders: - "x-goog-iap-jwt-assertion" ```
+     * List of JWT claim names that should be treated as space-delimited strings. These claims will be split on whitespace and each individual value will be available for matching in authorization policies. This extends the default behavior that only treats 'scope' and 'permission' claims as space-delimited.<br><p> <br><p> Example usage for custom claims: ```yaml spaceDelimitedClaims: - "custom_scope" - "provider.login.scope" - "roles" ```<br><p> <br><p> This allows authorization policies to match individual values within space-separated claim strings, maintaining compatibility with existing JWT token formats.<br><p> <br><p> Note: The default claims 'scope' and 'permission' are always treated as space-delimited regardless of this setting.
+     */
+    @JsonProperty("spaceDelimitedClaims")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public List<String> getSpaceDelimitedClaims() {
+        return spaceDelimitedClaims;
+    }
+
+    /**
+     * List of JWT claim names that should be treated as space-delimited strings. These claims will be split on whitespace and each individual value will be available for matching in authorization policies. This extends the default behavior that only treats 'scope' and 'permission' claims as space-delimited.<br><p> <br><p> Example usage for custom claims: ```yaml spaceDelimitedClaims: - "custom_scope" - "provider.login.scope" - "roles" ```<br><p> <br><p> This allows authorization policies to match individual values within space-separated claim strings, maintaining compatibility with existing JWT token formats.<br><p> <br><p> Note: The default claims 'scope' and 'permission' are always treated as space-delimited regardless of this setting.
+     */
+    @JsonProperty("spaceDelimitedClaims")
+    public void setSpaceDelimitedClaims(List<String> spaceDelimitedClaims) {
+        this.spaceDelimitedClaims = spaceDelimitedClaims;
+    }
+
+    /**
+     * JSON Web Token (JWT) token format for authentication as defined by [RFC 7519](https://tools.ietf.org/html/rfc7519). See [OAuth 2.0](https://tools.ietf.org/html/rfc6749) and [OIDC 1.0](http://openid.net/connect) for how this is used in the whole authentication flow.<br><p> <br><p> Examples:<br><p> <br><p> Spec for a JWT that is issued by `https://example.com`, with the audience claims must be either `bookstore_android.apps.example.com` or `bookstore_web.apps.example.com`. The token should be presented at the `Authorization` header (default). The JSON Web Key Set (JWKS) will be discovered following OpenID Connect protocol.<br><p> <br><p> ```yaml issuer: https://example.com audiences:<br><p>   - bookstore_android.apps.example.com<br><p>     bookstore_web.apps.example.com<br><p> <br><p> ```<br><p> <br><p> This example specifies a token in a non-default location (`x-goog-iap-jwt-assertion` header). It also defines the URI to fetch JWKS explicitly.<br><p> <br><p> ```yaml issuer: https://example.com jwksUri: https://example.com/.secret/jwks.json fromHeaders: - "x-goog-iap-jwt-assertion" ```<br><p> <br><p> This example shows how to configure custom claims to be treated as space-delimited strings. This is useful when JWT tokens contain custom claims with multiple space-separated values that should be available for individual matching in authorization policies.<br><p> <br><p> ```yaml issuer: https://example.com spaceDelimitedClaims: - "custom_scope" - "provider.login.scope" - "roles" ```<br><p> <br><p> With this configuration, a JWT containing `"custom_scope": "read write admin"` will allow authorization policies to match against individual values like "read", "write", or "admin".
      */
     @JsonProperty("timeout")
     public String getTimeout() {
@@ -302,7 +324,7 @@ public class JWTRule implements Editable<JWTRuleBuilder>, KubernetesResource
     }
 
     /**
-     * JSON Web Token (JWT) token format for authentication as defined by [RFC 7519](https://tools.ietf.org/html/rfc7519). See [OAuth 2.0](https://tools.ietf.org/html/rfc6749) and [OIDC 1.0](http://openid.net/connect) for how this is used in the whole authentication flow.<br><p> <br><p> Examples:<br><p> <br><p> Spec for a JWT that is issued by `https://example.com`, with the audience claims must be either `bookstore_android.apps.example.com` or `bookstore_web.apps.example.com`. The token should be presented at the `Authorization` header (default). The JSON Web Key Set (JWKS) will be discovered following OpenID Connect protocol.<br><p> <br><p> ```yaml issuer: https://example.com audiences:<br><p>   - bookstore_android.apps.example.com<br><p>     bookstore_web.apps.example.com<br><p> <br><p> ```<br><p> <br><p> This example specifies a token in a non-default location (`x-goog-iap-jwt-assertion` header). It also defines the URI to fetch JWKS explicitly.<br><p> <br><p> ```yaml issuer: https://example.com jwksUri: https://example.com/.secret/jwks.json fromHeaders: - "x-goog-iap-jwt-assertion" ```
+     * JSON Web Token (JWT) token format for authentication as defined by [RFC 7519](https://tools.ietf.org/html/rfc7519). See [OAuth 2.0](https://tools.ietf.org/html/rfc6749) and [OIDC 1.0](http://openid.net/connect) for how this is used in the whole authentication flow.<br><p> <br><p> Examples:<br><p> <br><p> Spec for a JWT that is issued by `https://example.com`, with the audience claims must be either `bookstore_android.apps.example.com` or `bookstore_web.apps.example.com`. The token should be presented at the `Authorization` header (default). The JSON Web Key Set (JWKS) will be discovered following OpenID Connect protocol.<br><p> <br><p> ```yaml issuer: https://example.com audiences:<br><p>   - bookstore_android.apps.example.com<br><p>     bookstore_web.apps.example.com<br><p> <br><p> ```<br><p> <br><p> This example specifies a token in a non-default location (`x-goog-iap-jwt-assertion` header). It also defines the URI to fetch JWKS explicitly.<br><p> <br><p> ```yaml issuer: https://example.com jwksUri: https://example.com/.secret/jwks.json fromHeaders: - "x-goog-iap-jwt-assertion" ```<br><p> <br><p> This example shows how to configure custom claims to be treated as space-delimited strings. This is useful when JWT tokens contain custom claims with multiple space-separated values that should be available for individual matching in authorization policies.<br><p> <br><p> ```yaml issuer: https://example.com spaceDelimitedClaims: - "custom_scope" - "provider.login.scope" - "roles" ```<br><p> <br><p> With this configuration, a JWT containing `"custom_scope": "read write admin"` will allow authorization policies to match against individual values like "read", "write", or "admin".
      */
     @JsonProperty("timeout")
     public void setTimeout(String timeout) {

@@ -35,7 +35,7 @@ import lombok.ToString;
 import lombok.experimental.Accessors;
 
 /**
- * TaskRunStepArtifact represents an artifact produced or used by a step within a task run. It directly uses the Artifact type for its structure.
+ * Artifact represents an artifact within a system, potentially containing multiple values associated with it.
  */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)

@@ -1,7 +1,9 @@
 
 package io.fabric8.istio.api.api.networking.v1alpha3;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import javax.annotation.processing.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
@@ -38,6 +40,7 @@ import lombok.experimental.Accessors;
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
+    "attributes",
     "name",
     "path",
     "ttl"
@@ -67,6 +70,9 @@ import lombok.experimental.Accessors;
 public class LoadBalancerSettingsConsistentHashLBHTTPCookie_ implements Editable<LoadBalancerSettingsConsistentHashLBHTTPCookie_Builder>, KubernetesResource
 {
 
+    @JsonProperty("attributes")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<LoadBalancerSettingsConsistentHashLBHTTPCookieAttribute> attributes = new ArrayList<>();
     @JsonProperty("name")
     private String name;
     @JsonProperty("path")
@@ -82,11 +88,29 @@ public class LoadBalancerSettingsConsistentHashLBHTTPCookie_ implements Editable
     public LoadBalancerSettingsConsistentHashLBHTTPCookie_() {
     }
 
-    public LoadBalancerSettingsConsistentHashLBHTTPCookie_(String name, String path, String ttl) {
+    public LoadBalancerSettingsConsistentHashLBHTTPCookie_(List<LoadBalancerSettingsConsistentHashLBHTTPCookieAttribute> attributes, String name, String path, String ttl) {
         super();
+        this.attributes = attributes;
         this.name = name;
         this.path = path;
         this.ttl = ttl;
+    }
+
+    /**
+     * Additional attributes for the cookie. They will be used when generating a new cookie.
+     */
+    @JsonProperty("attributes")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public List<LoadBalancerSettingsConsistentHashLBHTTPCookieAttribute> getAttributes() {
+        return attributes;
+    }
+
+    /**
+     * Additional attributes for the cookie. They will be used when generating a new cookie.
+     */
+    @JsonProperty("attributes")
+    public void setAttributes(List<LoadBalancerSettingsConsistentHashLBHTTPCookieAttribute> attributes) {
+        this.attributes = attributes;
     }
 
     /**

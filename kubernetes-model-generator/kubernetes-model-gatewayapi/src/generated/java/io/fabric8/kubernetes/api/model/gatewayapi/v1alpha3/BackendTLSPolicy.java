@@ -27,7 +27,8 @@ import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
 import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
-import io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.PolicyStatus;
+import io.fabric8.kubernetes.api.model.gatewayapi.v1.BackendTLSPolicySpec;
+import io.fabric8.kubernetes.api.model.gatewayapi.v1.PolicyStatus;
 import io.fabric8.kubernetes.model.annotation.Group;
 import io.fabric8.kubernetes.model.annotation.Version;
 import io.sundr.builder.annotations.Buildable;
@@ -38,9 +39,6 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
-/**
- * BackendTLSPolicy provides a way to configure how a Gateway connects to a Backend via TLS.
- */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -140,49 +138,31 @@ public class BackendTLSPolicy implements Editable<BackendTLSPolicyBuilder>, HasM
         this.kind = kind;
     }
 
-    /**
-     * BackendTLSPolicy provides a way to configure how a Gateway connects to a Backend via TLS.
-     */
     @JsonProperty("metadata")
     public ObjectMeta getMetadata() {
         return metadata;
     }
 
-    /**
-     * BackendTLSPolicy provides a way to configure how a Gateway connects to a Backend via TLS.
-     */
     @JsonProperty("metadata")
     public void setMetadata(ObjectMeta metadata) {
         this.metadata = metadata;
     }
 
-    /**
-     * BackendTLSPolicy provides a way to configure how a Gateway connects to a Backend via TLS.
-     */
     @JsonProperty("spec")
     public BackendTLSPolicySpec getSpec() {
         return spec;
     }
 
-    /**
-     * BackendTLSPolicy provides a way to configure how a Gateway connects to a Backend via TLS.
-     */
     @JsonProperty("spec")
     public void setSpec(BackendTLSPolicySpec spec) {
         this.spec = spec;
     }
 
-    /**
-     * BackendTLSPolicy provides a way to configure how a Gateway connects to a Backend via TLS.
-     */
     @JsonProperty("status")
     public PolicyStatus getStatus() {
         return status;
     }
 
-    /**
-     * BackendTLSPolicy provides a way to configure how a Gateway connects to a Backend via TLS.
-     */
     @JsonProperty("status")
     public void setStatus(PolicyStatus status) {
         this.status = status;
