@@ -15,11 +15,11 @@
  */
 package io.fabric8.kubernetes.client.vertx;
 
-import io.fabric8.kubernetes.client.http.AbstractWebSocketSendTest;
+import io.fabric8.kubernetes.client.http.AbstractWebSocketSendReceiveTest;
 import io.fabric8.kubernetes.client.http.HttpClient;
 
 @SuppressWarnings("java:S2187")
-public class VertxHttpClientWebSocketSendTest extends AbstractWebSocketSendTest {
+public class VertxHttpClientWebSocketSendTest extends AbstractWebSocketSendReceiveTest {
   @Override
   protected HttpClient.Factory getHttpClientFactory() {
     return new VertxHttpClientFactory();
