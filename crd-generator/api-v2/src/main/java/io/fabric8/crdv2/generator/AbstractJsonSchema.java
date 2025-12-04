@@ -518,11 +518,10 @@ public abstract class AbstractJsonSchema<T extends KubernetesJSONSchemaProps, V 
         try {
           props[0] = sc.value().getConstructor().newInstance().apply(props[0], sc.input(),
               this.resolvingContext.kubernetesSerialization);
-        } catch (Exception e) {
-          if (!(e instanceof RuntimeException)) {
-            e = new RuntimeException(e);
-          }
-          throw (RuntimeException) e;
+        } catch (ReflectiveOperationException e) {
+          throw new RuntimeException("Failed to instantiate or apply SchemaCustomizer: " + sc.value().getName(), e);
+        } catch (RuntimeException e) {
+          throw new RuntimeException("Failed to apply SchemaCustomizer: " + sc.value().getName(), e);
         }
       });
       if (props[0] != objectSchema) {
