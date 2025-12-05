@@ -907,6 +907,7 @@ for directly manipulating the JSONSchemaProps of the annotated resource. This an
 | `io.fabric8.kubernetes.model.annotation.SpecReplicas`           | The field is used in scale subresource as `specReplicaPath`                                         |
 | `io.fabric8.kubernetes.model.annotation.StatusReplicas`         | The field is used in scale subresource as `statusReplicaPath`                                       |
 | `io.fabric8.kubernetes.model.annotation.LabelSelector`          | The field is used in scale subresource as `labelSelectorPath`                                       |
+| `io.fabric8.crdv2.generator.v1.SchemaCustomizer`                | Advanced: Allows direct manipulation of the `JSONSchemaProps` via a custom `Customizer` class       |
 
 
 A field of type `com.fasterxml.jackson.databind.JsonNode` is encoded as an empty object with `x-kubernetes-preserve-unknown-fields: true` defined.

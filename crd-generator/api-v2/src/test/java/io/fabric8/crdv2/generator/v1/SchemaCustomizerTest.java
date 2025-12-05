@@ -16,11 +16,13 @@
 package io.fabric8.crdv2.generator.v1;
 
 import io.fabric8.crdv2.example.customized.Customized;
+import io.fabric8.crdv2.example.customized.MergePatchCustomized;
 import io.fabric8.crdv2.example.customized.RawCustomized;
 import io.fabric8.kubernetes.api.model.apiextensions.v1.JSONSchemaProps;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 class SchemaCustomizerTest {
 
@@ -35,6 +37,17 @@ class SchemaCustomizerTest {
     JSONSchemaProps schema = JsonSchema.from(RawCustomized.class);
     assertEquals(1, schema.getProperties().size());
     assertEquals("integer", schema.getProperties().get("prop").getType());
+  }
+
+  @Test
+  void applyMergePatchCustomizer() {
+    JSONSchemaProps schema = JsonSchema.from(MergePatchCustomized.class);
+    // Verify the patch was applied
+    assertEquals("patched description", schema.getDescription());
+    assertEquals(1L, schema.getMinProperties());
+    // Verify existing properties are preserved
+    assertNotNull(schema.getProperties().get("existingField"));
+    assertEquals("string", schema.getProperties().get("existingField").getType());
   }
 
 }
