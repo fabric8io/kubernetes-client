@@ -102,7 +102,7 @@
     <maven-plugin-annotations.version>3.15.1</maven-plugin-annotations.version>
     <vertx.version>4.5.21</vertx.version>
     <jandex.version>3.5.0</jandex.version>
-    <snakeyaml.version>2.10</snakeyaml.version>
+    <snakeyaml.version>3.0.1</snakeyaml.version>
     <snakeyaml.bundle.version>2.4</snakeyaml.bundle.version> <!-- Transitive Jackson -->
 
     <!-- API versions -->
