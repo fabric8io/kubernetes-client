@@ -111,6 +111,10 @@
       <groupId>io.fabric8</groupId>
       <artifactId>openshift-model-installer</artifactId>
     </dependency>
+   <dependency>
+     <groupId>io.fabric8</groupId>
+     <artifactId>kubernetes-model-clusterapi</artifactId>
+   </dependency>
 
     <!-- Compile Only Dependencies -->
     <dependency>
