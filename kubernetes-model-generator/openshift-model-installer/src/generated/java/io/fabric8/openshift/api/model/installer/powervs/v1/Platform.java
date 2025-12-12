@@ -228,7 +228,7 @@ public class Platform implements Editable<PlatformBuilder>, KubernetesResource
     }
 
     /**
-     * TGName is the name of a pre-created TransitGateway inside IBM Cloud.
+     * tgName is the name or id of a pre-created TransitGateway inside IBM Cloud.
      */
     @JsonProperty("tgName")
     public String getTgName() {
@@ -236,7 +236,7 @@ public class Platform implements Editable<PlatformBuilder>, KubernetesResource
     }
 
     /**
-     * TGName is the name of a pre-created TransitGateway inside IBM Cloud.
+     * tgName is the name or id of a pre-created TransitGateway inside IBM Cloud.
      */
     @JsonProperty("tgName")
     public void setTgName(String tgName) {
@@ -260,7 +260,7 @@ public class Platform implements Editable<PlatformBuilder>, KubernetesResource
     }
 
     /**
-     * VPCName is the name of a pre-created VPC inside IBM Cloud.
+     * vpcName is the name or id of a pre-created VPC inside IBM Cloud.
      */
     @JsonProperty("vpcName")
     public String getVpcName() {
@@ -268,7 +268,7 @@ public class Platform implements Editable<PlatformBuilder>, KubernetesResource
     }
 
     /**
-     * VPCName is the name of a pre-created VPC inside IBM Cloud.
+     * vpcName is the name or id of a pre-created VPC inside IBM Cloud.
      */
     @JsonProperty("vpcName")
     public void setVpcName(String vpcName) {

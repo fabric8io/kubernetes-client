@@ -108,7 +108,7 @@ public class OIDCProvider implements Editable<OIDCProviderBuilder>, KubernetesRe
     }
 
     /**
-     * claimValidationRules are rules that are applied to validate token claims to authenticate users.
+     * claimValidationRules is an optional field that configures the rules to be used by the Kubernetes API server for validating the claims in a JWT token issued by the identity provider.<br><p> <br><p> Validation rules are joined via an AND operation.
      */
     @JsonProperty("claimValidationRules")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -117,7 +117,7 @@ public class OIDCProvider implements Editable<OIDCProviderBuilder>, KubernetesRe
     }
 
     /**
-     * claimValidationRules are rules that are applied to validate token claims to authenticate users.
+     * claimValidationRules is an optional field that configures the rules to be used by the Kubernetes API server for validating the claims in a JWT token issued by the identity provider.<br><p> <br><p> Validation rules are joined via an AND operation.
      */
     @JsonProperty("claimValidationRules")
     public void setClaimValidationRules(List<TokenClaimValidationRule> claimValidationRules) {
@@ -135,7 +135,7 @@ public class OIDCProvider implements Editable<OIDCProviderBuilder>, KubernetesRe
     }
 
     /**
-     * name of the OIDC provider
+     * name is a required field that configures the unique human-readable identifier associated with the identity provider. It is used to distinguish between multiple identity providers and has no impact on token validation or authentication mechanics.<br><p> <br><p> name must not be an empty string ("").
      */
     @JsonProperty("name")
     public String getName() {
@@ -143,7 +143,7 @@ public class OIDCProvider implements Editable<OIDCProviderBuilder>, KubernetesRe
     }
 
     /**
-     * name of the OIDC provider
+     * name is a required field that configures the unique human-readable identifier associated with the identity provider. It is used to distinguish between multiple identity providers and has no impact on token validation or authentication mechanics.<br><p> <br><p> name must not be an empty string ("").
      */
     @JsonProperty("name")
     public void setName(String name) {
@@ -151,7 +151,7 @@ public class OIDCProvider implements Editable<OIDCProviderBuilder>, KubernetesRe
     }
 
     /**
-     * oidcClients contains configuration for the platform's clients that need to request tokens from the issuer
+     * oidcClients is an optional field that configures how on-cluster, platform clients should request tokens from the identity provider. oidcClients must not exceed 20 entries and entries must have unique namespace/name pairs.
      */
     @JsonProperty("oidcClients")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -160,7 +160,7 @@ public class OIDCProvider implements Editable<OIDCProviderBuilder>, KubernetesRe
     }
 
     /**
-     * oidcClients contains configuration for the platform's clients that need to request tokens from the issuer
+     * oidcClients is an optional field that configures how on-cluster, platform clients should request tokens from the identity provider. oidcClients must not exceed 20 entries and entries must have unique namespace/name pairs.
      */
     @JsonProperty("oidcClients")
     public void setOidcClients(List<OIDCClientConfig> oidcClients) {

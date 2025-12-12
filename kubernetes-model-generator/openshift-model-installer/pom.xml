@@ -54,6 +54,10 @@
       <groupId>io.fabric8</groupId>
       <artifactId>openshift-model-machine</artifactId>
     </dependency>
+    <dependency>
+      <groupId>io.fabric8</groupId>
+      <artifactId>kubernetes-model-clusterapi</artifactId>
+    </dependency>
   </dependencies>
 
   <profiles>
@@ -94,6 +98,10 @@
                   <property>
                     <name>#/components/schemas/com.github.openshift.installer.pkg.ipnet.IPNet</name>
                     <value>java.lang.String</value>
+                  </property>
+                  <property>
+                    <name>#/definitions/io.x-k8s.cluster.infrastructure.v1beta1.DataDisk</name>
+                    <value>io.fabric8.kubernetes.api.model.clusterapi.v1beta1.DataDisk</value>
                   </property>
                 </refToJavaTypeMappings>
               </settings>

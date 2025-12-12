@@ -33,6 +33,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * OIDCClientConfig configures how platform clients interact with identity providers as an authentication method
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -97,7 +100,7 @@ public class OIDCClientConfig implements Editable<OIDCClientConfigBuilder>, Kube
     }
 
     /**
-     * clientID is the identifier of the OIDC client from the OIDC provider
+     * clientID is a required field that configures the client identifier, from the identity provider, that the platform component uses for authentication requests made to the identity provider. The identity provider must accept this identifier for platform components to be able to use the identity provider as an authentication mode.<br><p> <br><p> clientID must not be an empty string ("").
      */
     @JsonProperty("clientID")
     public String getClientID() {
@@ -105,25 +108,31 @@ public class OIDCClientConfig implements Editable<OIDCClientConfigBuilder>, Kube
     }
 
     /**
-     * clientID is the identifier of the OIDC client from the OIDC provider
+     * clientID is a required field that configures the client identifier, from the identity provider, that the platform component uses for authentication requests made to the identity provider. The identity provider must accept this identifier for platform components to be able to use the identity provider as an authentication mode.<br><p> <br><p> clientID must not be an empty string ("").
      */
     @JsonProperty("clientID")
     public void setClientID(String clientID) {
         this.clientID = clientID;
     }
 
+    /**
+     * OIDCClientConfig configures how platform clients interact with identity providers as an authentication method
+     */
     @JsonProperty("clientSecret")
     public SecretNameReference getClientSecret() {
         return clientSecret;
     }
 
+    /**
+     * OIDCClientConfig configures how platform clients interact with identity providers as an authentication method
+     */
     @JsonProperty("clientSecret")
     public void setClientSecret(SecretNameReference clientSecret) {
         this.clientSecret = clientSecret;
     }
 
     /**
-     * componentName is the name of the component that is supposed to consume this client configuration
+     * componentName is a required field that specifies the name of the platform component being configured to use the identity provider as an authentication mode. It is used in combination with componentNamespace as a unique identifier.<br><p> <br><p> componentName must not be an empty string ("") and must not exceed 256 characters in length.
      */
     @JsonProperty("componentName")
     public String getComponentName() {
@@ -131,7 +140,7 @@ public class OIDCClientConfig implements Editable<OIDCClientConfigBuilder>, Kube
     }
 
     /**
-     * componentName is the name of the component that is supposed to consume this client configuration
+     * componentName is a required field that specifies the name of the platform component being configured to use the identity provider as an authentication mode. It is used in combination with componentNamespace as a unique identifier.<br><p> <br><p> componentName must not be an empty string ("") and must not exceed 256 characters in length.
      */
     @JsonProperty("componentName")
     public void setComponentName(String componentName) {
@@ -139,7 +148,7 @@ public class OIDCClientConfig implements Editable<OIDCClientConfigBuilder>, Kube
     }
 
     /**
-     * componentNamespace is the namespace of the component that is supposed to consume this client configuration
+     * componentNamespace is a required field that specifies the namespace in which the platform component being configured to use the identity provider as an authentication mode is running. It is used in combination with componentName as a unique identifier.<br><p> <br><p> componentNamespace must not be an empty string ("") and must not exceed 63 characters in length.
      */
     @JsonProperty("componentNamespace")
     public String getComponentNamespace() {
@@ -147,7 +156,7 @@ public class OIDCClientConfig implements Editable<OIDCClientConfigBuilder>, Kube
     }
 
     /**
-     * componentNamespace is the namespace of the component that is supposed to consume this client configuration
+     * componentNamespace is a required field that specifies the namespace in which the platform component being configured to use the identity provider as an authentication mode is running. It is used in combination with componentName as a unique identifier.<br><p> <br><p> componentNamespace must not be an empty string ("") and must not exceed 63 characters in length.
      */
     @JsonProperty("componentNamespace")
     public void setComponentNamespace(String componentNamespace) {
@@ -155,7 +164,7 @@ public class OIDCClientConfig implements Editable<OIDCClientConfigBuilder>, Kube
     }
 
     /**
-     * extraScopes is an optional set of scopes to request tokens with.
+     * extraScopes is an optional field that configures the extra scopes that should be requested by the platform component when making authentication requests to the identity provider. This is useful if you have configured claim mappings that requires specific scopes to be requested beyond the standard OIDC scopes.<br><p> <br><p> When omitted, no additional scopes are requested.
      */
     @JsonProperty("extraScopes")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -164,7 +173,7 @@ public class OIDCClientConfig implements Editable<OIDCClientConfigBuilder>, Kube
     }
 
     /**
-     * extraScopes is an optional set of scopes to request tokens with.
+     * extraScopes is an optional field that configures the extra scopes that should be requested by the platform component when making authentication requests to the identity provider. This is useful if you have configured claim mappings that requires specific scopes to be requested beyond the standard OIDC scopes.<br><p> <br><p> When omitted, no additional scopes are requested.
      */
     @JsonProperty("extraScopes")
     public void setExtraScopes(List<String> extraScopes) {

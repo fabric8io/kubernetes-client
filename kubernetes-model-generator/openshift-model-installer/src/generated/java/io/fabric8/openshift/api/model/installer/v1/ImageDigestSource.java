@@ -41,7 +41,8 @@ import lombok.experimental.Accessors;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "mirrors",
-    "source"
+    "source",
+    "sourcePolicy"
 })
 @ToString
 @EqualsAndHashCode
@@ -73,6 +74,8 @@ public class ImageDigestSource implements Editable<ImageDigestSourceBuilder>, Ku
     private List<String> mirrors = new ArrayList<>();
     @JsonProperty("source")
     private String source;
+    @JsonProperty("sourcePolicy")
+    private String sourcePolicy;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -82,10 +85,11 @@ public class ImageDigestSource implements Editable<ImageDigestSourceBuilder>, Ku
     public ImageDigestSource() {
     }
 
-    public ImageDigestSource(List<String> mirrors, String source) {
+    public ImageDigestSource(List<String> mirrors, String source, String sourcePolicy) {
         super();
         this.mirrors = mirrors;
         this.source = source;
+        this.sourcePolicy = sourcePolicy;
     }
 
     /**
@@ -119,6 +123,22 @@ public class ImageDigestSource implements Editable<ImageDigestSourceBuilder>, Ku
     @JsonProperty("source")
     public void setSource(String source) {
         this.source = source;
+    }
+
+    /**
+     * SourcePolicy defines the fallback policy when there is a failure pulling an image from the mirrors.
+     */
+    @JsonProperty("sourcePolicy")
+    public String getSourcePolicy() {
+        return sourcePolicy;
+    }
+
+    /**
+     * SourcePolicy defines the fallback policy when there is a failure pulling an image from the mirrors.
+     */
+    @JsonProperty("sourcePolicy")
+    public void setSourcePolicy(String sourcePolicy) {
+        this.sourcePolicy = sourcePolicy;
     }
 
     @JsonIgnore

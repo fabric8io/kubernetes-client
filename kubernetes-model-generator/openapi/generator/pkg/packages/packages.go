@@ -35,6 +35,8 @@ var OpenShiftPackagePatterns = []string{
 	"github.com/openshift/cluster-node-tuning-operator/pkg/apis/tuned/v...",
 	"github.com/openshift/hive/apis/hive/v...",
 	"github.com/openshift/installer/pkg/types", // Add manually each package since some subpackages are problematic with go modules
+	"sigs.k8s.io/cluster-api-provider-azure/api/v1beta1", // cluster-api-provider-azure types
+	"sigs.k8s.io/cluster-api/api/v1beta1",
 	"github.com/openshift/installer/pkg/types/aws",
 	"github.com/openshift/installer/pkg/types/azure",
 	"github.com/openshift/installer/pkg/types/baremetal",
@@ -45,6 +47,7 @@ var OpenShiftPackagePatterns = []string{
 	"github.com/openshift/installer/pkg/types/nutanix",
 	"github.com/openshift/installer/pkg/types/openstack",
 	"github.com/openshift/installer/pkg/types/ovirt",
+	"github.com/openshift/installer/pkg/types/powervc",
 	"github.com/openshift/installer/pkg/types/powervs",
 	"github.com/openshift/installer/pkg/types/vsphere",
 	"github.com/operator-framework/api/pkg/operators/v...",

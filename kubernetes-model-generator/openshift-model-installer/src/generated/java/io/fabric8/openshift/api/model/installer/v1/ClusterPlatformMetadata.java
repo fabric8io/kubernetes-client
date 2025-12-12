@@ -47,6 +47,7 @@ import lombok.experimental.Accessors;
     "nutanix",
     "openstack",
     "ovirt",
+    "powervc",
     "powervs",
     "vsphere"
 })
@@ -91,6 +92,8 @@ public class ClusterPlatformMetadata implements Editable<ClusterPlatformMetadata
     private io.fabric8.openshift.api.model.installer.openstack.v1.Metadata openstack;
     @JsonProperty("ovirt")
     private io.fabric8.openshift.api.model.installer.ovirt.v1.Metadata ovirt;
+    @JsonProperty("powervc")
+    private com.github.openshift.installer.pkg.types.powervc.Metadata powervc;
     @JsonProperty("powervs")
     private io.fabric8.openshift.api.model.installer.powervs.v1.Metadata powervs;
     @JsonProperty("vsphere")
@@ -104,7 +107,7 @@ public class ClusterPlatformMetadata implements Editable<ClusterPlatformMetadata
     public ClusterPlatformMetadata() {
     }
 
-    public ClusterPlatformMetadata(Metadata aws, io.fabric8.openshift.api.model.installer.azure.v1.Metadata azure, io.fabric8.openshift.api.model.installer.baremetal.v1.Metadata baremetal, io.fabric8.openshift.api.model.installer.gcp.v1.Metadata gcp, io.fabric8.openshift.api.model.installer.ibmcloud.v1.Metadata ibmcloud, io.fabric8.openshift.api.model.installer.nutanix.v1.Metadata nutanix, io.fabric8.openshift.api.model.installer.openstack.v1.Metadata openstack, io.fabric8.openshift.api.model.installer.ovirt.v1.Metadata ovirt, io.fabric8.openshift.api.model.installer.powervs.v1.Metadata powervs, io.fabric8.openshift.api.model.installer.vsphere.v1.Metadata vsphere) {
+    public ClusterPlatformMetadata(Metadata aws, io.fabric8.openshift.api.model.installer.azure.v1.Metadata azure, io.fabric8.openshift.api.model.installer.baremetal.v1.Metadata baremetal, io.fabric8.openshift.api.model.installer.gcp.v1.Metadata gcp, io.fabric8.openshift.api.model.installer.ibmcloud.v1.Metadata ibmcloud, io.fabric8.openshift.api.model.installer.nutanix.v1.Metadata nutanix, io.fabric8.openshift.api.model.installer.openstack.v1.Metadata openstack, io.fabric8.openshift.api.model.installer.ovirt.v1.Metadata ovirt, com.github.openshift.installer.pkg.types.powervc.Metadata powervc, io.fabric8.openshift.api.model.installer.powervs.v1.Metadata powervs, io.fabric8.openshift.api.model.installer.vsphere.v1.Metadata vsphere) {
         super();
         this.aws = aws;
         this.azure = azure;
@@ -114,6 +117,7 @@ public class ClusterPlatformMetadata implements Editable<ClusterPlatformMetadata
         this.nutanix = nutanix;
         this.openstack = openstack;
         this.ovirt = ovirt;
+        this.powervc = powervc;
         this.powervs = powervs;
         this.vsphere = vsphere;
     }
@@ -244,6 +248,22 @@ public class ClusterPlatformMetadata implements Editable<ClusterPlatformMetadata
     @JsonProperty("ovirt")
     public void setOvirt(io.fabric8.openshift.api.model.installer.ovirt.v1.Metadata ovirt) {
         this.ovirt = ovirt;
+    }
+
+    /**
+     * ClusterPlatformMetadata contains metadata for platfrom.
+     */
+    @JsonProperty("powervc")
+    public com.github.openshift.installer.pkg.types.powervc.Metadata getPowervc() {
+        return powervc;
+    }
+
+    /**
+     * ClusterPlatformMetadata contains metadata for platfrom.
+     */
+    @JsonProperty("powervc")
+    public void setPowervc(com.github.openshift.installer.pkg.types.powervc.Metadata powervc) {
+        this.powervc = powervc;
     }
 
     /**

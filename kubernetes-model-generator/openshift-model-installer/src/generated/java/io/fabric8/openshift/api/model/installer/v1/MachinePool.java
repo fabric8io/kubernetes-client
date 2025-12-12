@@ -1,7 +1,9 @@
 
 package io.fabric8.openshift.api.model.installer.v1;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import javax.annotation.processing.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
@@ -39,6 +41,7 @@ import lombok.experimental.Accessors;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "architecture",
+    "diskSetup",
     "fencing",
     "hyperthreading",
     "name",
@@ -72,6 +75,9 @@ public class MachinePool implements Editable<MachinePoolBuilder>, KubernetesReso
 
     @JsonProperty("architecture")
     private String architecture;
+    @JsonProperty("diskSetup")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<Disk> diskSetup = new ArrayList<>();
     @JsonProperty("fencing")
     private Fencing fencing;
     @JsonProperty("hyperthreading")
@@ -91,9 +97,10 @@ public class MachinePool implements Editable<MachinePoolBuilder>, KubernetesReso
     public MachinePool() {
     }
 
-    public MachinePool(String architecture, Fencing fencing, String hyperthreading, String name, MachinePoolPlatform platform, Long replicas) {
+    public MachinePool(String architecture, List<Disk> diskSetup, Fencing fencing, String hyperthreading, String name, MachinePoolPlatform platform, Long replicas) {
         super();
         this.architecture = architecture;
+        this.diskSetup = diskSetup;
         this.fencing = fencing;
         this.hyperthreading = hyperthreading;
         this.name = name;
@@ -115,6 +122,23 @@ public class MachinePool implements Editable<MachinePoolBuilder>, KubernetesReso
     @JsonProperty("architecture")
     public void setArchitecture(String architecture) {
         this.architecture = architecture;
+    }
+
+    /**
+     * DiskSetup stores the type of disks that will be setup with MachineConfigs. The available types are etcd, swap and user-defined.
+     */
+    @JsonProperty("diskSetup")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public List<Disk> getDiskSetup() {
+        return diskSetup;
+    }
+
+    /**
+     * DiskSetup stores the type of disks that will be setup with MachineConfigs. The available types are etcd, swap and user-defined.
+     */
+    @JsonProperty("diskSetup")
+    public void setDiskSetup(List<Disk> diskSetup) {
+        this.diskSetup = diskSetup;
     }
 
     /**

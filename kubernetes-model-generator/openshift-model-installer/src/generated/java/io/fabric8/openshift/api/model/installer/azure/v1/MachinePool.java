@@ -28,6 +28,7 @@ import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
 import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
+import io.fabric8.kubernetes.api.model.clusterapi.v1beta1.DataDisk;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
@@ -41,6 +42,7 @@ import lombok.experimental.Accessors;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "bootDiagnostics",
+    "dataDisks",
     "encryptionAtHost",
     "identity",
     "osDisk",
@@ -78,6 +80,9 @@ public class MachinePool implements Editable<MachinePoolBuilder>, KubernetesReso
 
     @JsonProperty("bootDiagnostics")
     private BootDiagnostics bootDiagnostics;
+    @JsonProperty("dataDisks")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<DataDisk> dataDisks = new ArrayList<>();
     @JsonProperty("encryptionAtHost")
     private Boolean encryptionAtHost;
     @JsonProperty("identity")
@@ -106,9 +111,10 @@ public class MachinePool implements Editable<MachinePoolBuilder>, KubernetesReso
     public MachinePool() {
     }
 
-    public MachinePool(BootDiagnostics bootDiagnostics, Boolean encryptionAtHost, VMIdentity identity, OSDisk osDisk, OSImage osImage, SecuritySettings settings, String type, String ultraSSDCapability, String vmNetworkingType, List<String> zones) {
+    public MachinePool(BootDiagnostics bootDiagnostics, List<DataDisk> dataDisks, Boolean encryptionAtHost, VMIdentity identity, OSDisk osDisk, OSImage osImage, SecuritySettings settings, String type, String ultraSSDCapability, String vmNetworkingType, List<String> zones) {
         super();
         this.bootDiagnostics = bootDiagnostics;
+        this.dataDisks = dataDisks;
         this.encryptionAtHost = encryptionAtHost;
         this.identity = identity;
         this.osDisk = osDisk;
@@ -134,6 +140,23 @@ public class MachinePool implements Editable<MachinePoolBuilder>, KubernetesReso
     @JsonProperty("bootDiagnostics")
     public void setBootDiagnostics(BootDiagnostics bootDiagnostics) {
         this.bootDiagnostics = bootDiagnostics;
+    }
+
+    /**
+     * DataDisk specifies the parameters that are used to add one or more data disks to the machine.
+     */
+    @JsonProperty("dataDisks")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public List<DataDisk> getDataDisks() {
+        return dataDisks;
+    }
+
+    /**
+     * DataDisk specifies the parameters that are used to add one or more data disks to the machine.
+     */
+    @JsonProperty("dataDisks")
+    public void setDataDisks(List<DataDisk> dataDisks) {
+        this.dataDisks = dataDisks;
     }
 
     /**
