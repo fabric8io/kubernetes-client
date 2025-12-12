@@ -17,6 +17,8 @@ package io.fabric8.openshift.client;
 
 import io.fabric8.kubernetes.api.model.ComponentStatus;
 import io.fabric8.kubernetes.api.model.ComponentStatusList;
+import io.fabric8.kubernetes.api.model.clusterapi.metal3.v1alpha1.BareMetalHost;
+import io.fabric8.kubernetes.api.model.clusterapi.metal3.v1alpha1.BareMetalHostList;
 import io.fabric8.kubernetes.api.model.clusterapi.v1beta1.Metal3Remediation;
 import io.fabric8.kubernetes.api.model.clusterapi.v1beta1.Metal3RemediationList;
 import io.fabric8.kubernetes.api.model.clusterapi.v1beta1.Metal3RemediationTemplate;
