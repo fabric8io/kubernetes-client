@@ -1,0 +1,164 @@
+
+package io.fabric8.openshift.api.model.config.v1;
+
+import java.util.LinkedHashMap;
+import java.util.Map;
+import javax.annotation.processing.Generated;
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
+import io.fabric8.kubernetes.api.model.Container;
+import io.fabric8.kubernetes.api.model.ContainerPort;
+import io.fabric8.kubernetes.api.model.EnvVar;
+import io.fabric8.kubernetes.api.model.IntOrString;
+import io.fabric8.kubernetes.api.model.KubernetesResource;
+import io.fabric8.kubernetes.api.model.LabelSelector;
+import io.fabric8.kubernetes.api.model.LocalObjectReference;
+import io.fabric8.kubernetes.api.model.ObjectMeta;
+import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
+import io.fabric8.kubernetes.api.model.PodTemplateSpec;
+import io.fabric8.kubernetes.api.model.ResourceRequirements;
+import io.fabric8.kubernetes.api.model.Volume;
+import io.fabric8.kubernetes.api.model.VolumeMount;
+import io.sundr.builder.annotations.Buildable;
+import io.sundr.builder.annotations.BuildableReference;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
+import lombok.experimental.Accessors;
+
+/**
+ * PolicyIdentity defines image identity the signature claims about the image. When omitted, the default matchPolicy is "MatchRepoDigestOrExact".
+ */
+@JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonPropertyOrder({
+    "exactRepository",
+    "matchPolicy",
+    "remapIdentity"
+})
+@ToString
+@EqualsAndHashCode
+@Accessors(prefix = {
+    "_",
+    ""
+})
+@Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
+    @BuildableReference(ObjectMeta.class),
+    @BuildableReference(LabelSelector.class),
+    @BuildableReference(Container.class),
+    @BuildableReference(PodTemplateSpec.class),
+    @BuildableReference(ResourceRequirements.class),
+    @BuildableReference(IntOrString.class),
+    @BuildableReference(io.fabric8.kubernetes.api.model.ObjectReference.class),
+    @BuildableReference(LocalObjectReference.class),
+    @BuildableReference(PersistentVolumeClaim.class),
+    @BuildableReference(EnvVar.class),
+    @BuildableReference(ContainerPort.class),
+    @BuildableReference(Volume.class),
+    @BuildableReference(VolumeMount.class)
+})
+@Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
+public class PolicyIdentity implements Editable<PolicyIdentityBuilder>, KubernetesResource
+{
+
+    @JsonProperty("exactRepository")
+    private PolicyMatchExactRepository exactRepository;
+    @JsonProperty("matchPolicy")
+    private String matchPolicy;
+    @JsonProperty("remapIdentity")
+    private PolicyMatchRemapIdentity remapIdentity;
+    @JsonIgnore
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
+
+    /**
+     * No args constructor for use in serialization
+     */
+    public PolicyIdentity() {
+    }
+
+    public PolicyIdentity(PolicyMatchExactRepository exactRepository, String matchPolicy, PolicyMatchRemapIdentity remapIdentity) {
+        super();
+        this.exactRepository = exactRepository;
+        this.matchPolicy = matchPolicy;
+        this.remapIdentity = remapIdentity;
+    }
+
+    /**
+     * PolicyIdentity defines image identity the signature claims about the image. When omitted, the default matchPolicy is "MatchRepoDigestOrExact".
+     */
+    @JsonProperty("exactRepository")
+    public PolicyMatchExactRepository getExactRepository() {
+        return exactRepository;
+    }
+
+    /**
+     * PolicyIdentity defines image identity the signature claims about the image. When omitted, the default matchPolicy is "MatchRepoDigestOrExact".
+     */
+    @JsonProperty("exactRepository")
+    public void setExactRepository(PolicyMatchExactRepository exactRepository) {
+        this.exactRepository = exactRepository;
+    }
+
+    /**
+     * matchPolicy is a required filed specifies matching strategy to verify the image identity in the signature against the image scope. Allowed values are "MatchRepoDigestOrExact", "MatchRepository", "ExactRepository", "RemapIdentity". When omitted, the default value is "MatchRepoDigestOrExact". When set to "MatchRepoDigestOrExact", the identity in the signature must be in the same repository as the image identity if the image identity is referenced by a digest. Otherwise, the identity in the signature must be the same as the image identity. When set to "MatchRepository", the identity in the signature must be in the same repository as the image identity. When set to "ExactRepository", the exactRepository must be specified. The identity in the signature must be in the same repository as a specific identity specified by "repository". When set to "RemapIdentity", the remapIdentity must be specified. The signature must be in the same as the remapped image identity. Remapped image identity is obtained by replacing the "prefix" with the specified "signedPrefix" if the the image identity matches the specified remapPrefix.
+     */
+    @JsonProperty("matchPolicy")
+    public String getMatchPolicy() {
+        return matchPolicy;
+    }
+
+    /**
+     * matchPolicy is a required filed specifies matching strategy to verify the image identity in the signature against the image scope. Allowed values are "MatchRepoDigestOrExact", "MatchRepository", "ExactRepository", "RemapIdentity". When omitted, the default value is "MatchRepoDigestOrExact". When set to "MatchRepoDigestOrExact", the identity in the signature must be in the same repository as the image identity if the image identity is referenced by a digest. Otherwise, the identity in the signature must be the same as the image identity. When set to "MatchRepository", the identity in the signature must be in the same repository as the image identity. When set to "ExactRepository", the exactRepository must be specified. The identity in the signature must be in the same repository as a specific identity specified by "repository". When set to "RemapIdentity", the remapIdentity must be specified. The signature must be in the same as the remapped image identity. Remapped image identity is obtained by replacing the "prefix" with the specified "signedPrefix" if the the image identity matches the specified remapPrefix.
+     */
+    @JsonProperty("matchPolicy")
+    public void setMatchPolicy(String matchPolicy) {
+        this.matchPolicy = matchPolicy;
+    }
+
+    /**
+     * PolicyIdentity defines image identity the signature claims about the image. When omitted, the default matchPolicy is "MatchRepoDigestOrExact".
+     */
+    @JsonProperty("remapIdentity")
+    public PolicyMatchRemapIdentity getRemapIdentity() {
+        return remapIdentity;
+    }
+
+    /**
+     * PolicyIdentity defines image identity the signature claims about the image. When omitted, the default matchPolicy is "MatchRepoDigestOrExact".
+     */
+    @JsonProperty("remapIdentity")
+    public void setRemapIdentity(PolicyMatchRemapIdentity remapIdentity) {
+        this.remapIdentity = remapIdentity;
+    }
+
+    @JsonIgnore
+    public PolicyIdentityBuilder edit() {
+        return new PolicyIdentityBuilder(this);
+    }
+
+    @JsonIgnore
+    public PolicyIdentityBuilder toBuilder() {
+        return edit();
+    }
+
+    @JsonAnyGetter
+    @JsonIgnore
+    public Map<String, Object> getAdditionalProperties() {
+        return this.additionalProperties;
+    }
+
+    @JsonAnySetter
+    public void setAdditionalProperty(String name, Object value) {
+        this.additionalProperties.put(name, value);
+    }
+
+    public void setAdditionalProperties(Map<String, Object> additionalProperties) {
+        this.additionalProperties = additionalProperties;
+    }
+
+}

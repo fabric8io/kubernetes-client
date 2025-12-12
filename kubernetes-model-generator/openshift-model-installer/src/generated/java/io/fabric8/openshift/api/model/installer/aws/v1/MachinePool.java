@@ -42,6 +42,7 @@ import lombok.experimental.Accessors;
 @JsonPropertyOrder({
     "additionalSecurityGroupIDs",
     "amiID",
+    "cpuOptions",
     "iamProfile",
     "iamRole",
     "metadataService",
@@ -79,6 +80,8 @@ public class MachinePool implements Editable<MachinePoolBuilder>, KubernetesReso
     private List<String> additionalSecurityGroupIDs = new ArrayList<>();
     @JsonProperty("amiID")
     private String amiID;
+    @JsonProperty("cpuOptions")
+    private CPUOptions cpuOptions;
     @JsonProperty("iamProfile")
     private String iamProfile;
     @JsonProperty("iamRole")
@@ -101,10 +104,11 @@ public class MachinePool implements Editable<MachinePoolBuilder>, KubernetesReso
     public MachinePool() {
     }
 
-    public MachinePool(List<String> additionalSecurityGroupIDs, String amiID, String iamProfile, String iamRole, EC2Metadata metadataService, EC2RootVolume rootVolume, String type, List<String> zones) {
+    public MachinePool(List<String> additionalSecurityGroupIDs, String amiID, CPUOptions cpuOptions, String iamProfile, String iamRole, EC2Metadata metadataService, EC2RootVolume rootVolume, String type, List<String> zones) {
         super();
         this.additionalSecurityGroupIDs = additionalSecurityGroupIDs;
         this.amiID = amiID;
+        this.cpuOptions = cpuOptions;
         this.iamProfile = iamProfile;
         this.iamRole = iamRole;
         this.metadataService = metadataService;
@@ -144,6 +148,22 @@ public class MachinePool implements Editable<MachinePoolBuilder>, KubernetesReso
     @JsonProperty("amiID")
     public void setAmiID(String amiID) {
         this.amiID = amiID;
+    }
+
+    /**
+     * MachinePool stores the configuration for a machine pool installed on AWS.
+     */
+    @JsonProperty("cpuOptions")
+    public CPUOptions getCpuOptions() {
+        return cpuOptions;
+    }
+
+    /**
+     * MachinePool stores the configuration for a machine pool installed on AWS.
+     */
+    @JsonProperty("cpuOptions")
+    public void setCpuOptions(CPUOptions cpuOptions) {
+        this.cpuOptions = cpuOptions;
     }
 
     /**

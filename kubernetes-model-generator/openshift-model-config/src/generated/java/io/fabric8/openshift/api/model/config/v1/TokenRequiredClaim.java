@@ -82,7 +82,7 @@ public class TokenRequiredClaim implements Editable<TokenRequiredClaimBuilder>, 
     }
 
     /**
-     * claim is a name of a required claim. Only claims with string values are supported.
+     * claim is a required field that configures the name of the required claim. When taken from the JWT claims, claim must be a string value.<br><p> <br><p> claim must not be an empty string ("").
      */
     @JsonProperty("claim")
     public String getClaim() {
@@ -90,7 +90,7 @@ public class TokenRequiredClaim implements Editable<TokenRequiredClaimBuilder>, 
     }
 
     /**
-     * claim is a name of a required claim. Only claims with string values are supported.
+     * claim is a required field that configures the name of the required claim. When taken from the JWT claims, claim must be a string value.<br><p> <br><p> claim must not be an empty string ("").
      */
     @JsonProperty("claim")
     public void setClaim(String claim) {
@@ -98,7 +98,7 @@ public class TokenRequiredClaim implements Editable<TokenRequiredClaimBuilder>, 
     }
 
     /**
-     * requiredValue is the required value for the claim.
+     * requiredValue is a required field that configures the value that 'claim' must have when taken from the incoming JWT claims. If the value in the JWT claims does not match, the token will be rejected for authentication.<br><p> <br><p> requiredValue must not be an empty string ("").
      */
     @JsonProperty("requiredValue")
     public String getRequiredValue() {
@@ -106,7 +106,7 @@ public class TokenRequiredClaim implements Editable<TokenRequiredClaimBuilder>, 
     }
 
     /**
-     * requiredValue is the required value for the claim.
+     * requiredValue is a required field that configures the value that 'claim' must have when taken from the incoming JWT claims. If the value in the JWT claims does not match, the token will be rejected for authentication.<br><p> <br><p> requiredValue must not be an empty string ("").
      */
     @JsonProperty("requiredValue")
     public void setRequiredValue(String requiredValue) {

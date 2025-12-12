@@ -108,7 +108,7 @@ public class MachineAutoscaler implements Editable<MachineAutoscalerBuilder>, Ha
     }
 
     /**
-     * APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+     * APIVersion defines the versioned schema of this representation of an object.<br><p> Servers should convert recognized schemas to the latest internal value, and<br><p> may reject unrecognized values.<br><p> More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -116,7 +116,7 @@ public class MachineAutoscaler implements Editable<MachineAutoscalerBuilder>, Ha
     }
 
     /**
-     * APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+     * APIVersion defines the versioned schema of this representation of an object.<br><p> Servers should convert recognized schemas to the latest internal value, and<br><p> may reject unrecognized values.<br><p> More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -124,7 +124,7 @@ public class MachineAutoscaler implements Editable<MachineAutoscalerBuilder>, Ha
     }
 
     /**
-     * Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+     * Kind is a string value representing the REST resource this object represents.<br><p> Servers may infer this from the endpoint the client submits requests to.<br><p> Cannot be updated.<br><p> In CamelCase.<br><p> More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -132,7 +132,7 @@ public class MachineAutoscaler implements Editable<MachineAutoscalerBuilder>, Ha
     }
 
     /**
-     * Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+     * Kind is a string value representing the REST resource this object represents.<br><p> Servers may infer this from the endpoint the client submits requests to.<br><p> Cannot be updated.<br><p> In CamelCase.<br><p> More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

@@ -39,6 +39,7 @@ import lombok.experimental.Accessors;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "address",
+    "certificateVerification",
     "hostName",
     "password",
     "username"
@@ -70,6 +71,8 @@ public class Credential implements Editable<CredentialBuilder>, KubernetesResour
 
     @JsonProperty("address")
     private String address;
+    @JsonProperty("certificateVerification")
+    private String certificateVerification;
     @JsonProperty("hostName")
     private String hostName;
     @JsonProperty("password")
@@ -85,9 +88,10 @@ public class Credential implements Editable<CredentialBuilder>, KubernetesResour
     public Credential() {
     }
 
-    public Credential(String address, String hostName, String password, String username) {
+    public Credential(String address, String certificateVerification, String hostName, String password, String username) {
         super();
         this.address = address;
+        this.certificateVerification = certificateVerification;
         this.hostName = hostName;
         this.password = password;
         this.username = username;
@@ -107,6 +111,22 @@ public class Credential implements Editable<CredentialBuilder>, KubernetesResour
     @JsonProperty("address")
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    /**
+     * CertificateVerification Defines whether ssl certificate verification is required or not. If omitted, the platform chooses a default, that default is enabled.
+     */
+    @JsonProperty("certificateVerification")
+    public String getCertificateVerification() {
+        return certificateVerification;
+    }
+
+    /**
+     * CertificateVerification Defines whether ssl certificate verification is required or not. If omitted, the platform chooses a default, that default is enabled.
+     */
+    @JsonProperty("certificateVerification")
+    public void setCertificateVerification(String certificateVerification) {
+        this.certificateVerification = certificateVerification;
     }
 
     /**

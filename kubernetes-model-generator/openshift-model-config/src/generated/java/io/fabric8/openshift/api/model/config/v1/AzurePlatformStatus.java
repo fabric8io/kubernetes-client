@@ -40,6 +40,7 @@ import lombok.experimental.Accessors;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "armEndpoint",
+    "cloudLoadBalancerConfig",
     "cloudName",
     "networkResourceGroupName",
     "resourceGroupName",
@@ -72,6 +73,8 @@ public class AzurePlatformStatus implements Editable<AzurePlatformStatusBuilder>
 
     @JsonProperty("armEndpoint")
     private String armEndpoint;
+    @JsonProperty("cloudLoadBalancerConfig")
+    private CloudLoadBalancerConfig cloudLoadBalancerConfig;
     @JsonProperty("cloudName")
     private String cloudName;
     @JsonProperty("networkResourceGroupName")
@@ -90,9 +93,10 @@ public class AzurePlatformStatus implements Editable<AzurePlatformStatusBuilder>
     public AzurePlatformStatus() {
     }
 
-    public AzurePlatformStatus(String armEndpoint, String cloudName, String networkResourceGroupName, String resourceGroupName, List<AzureResourceTag> resourceTags) {
+    public AzurePlatformStatus(String armEndpoint, CloudLoadBalancerConfig cloudLoadBalancerConfig, String cloudName, String networkResourceGroupName, String resourceGroupName, List<AzureResourceTag> resourceTags) {
         super();
         this.armEndpoint = armEndpoint;
+        this.cloudLoadBalancerConfig = cloudLoadBalancerConfig;
         this.cloudName = cloudName;
         this.networkResourceGroupName = networkResourceGroupName;
         this.resourceGroupName = resourceGroupName;
@@ -113,6 +117,22 @@ public class AzurePlatformStatus implements Editable<AzurePlatformStatusBuilder>
     @JsonProperty("armEndpoint")
     public void setArmEndpoint(String armEndpoint) {
         this.armEndpoint = armEndpoint;
+    }
+
+    /**
+     * AzurePlatformStatus holds the current status of the Azure infrastructure provider.
+     */
+    @JsonProperty("cloudLoadBalancerConfig")
+    public CloudLoadBalancerConfig getCloudLoadBalancerConfig() {
+        return cloudLoadBalancerConfig;
+    }
+
+    /**
+     * AzurePlatformStatus holds the current status of the Azure infrastructure provider.
+     */
+    @JsonProperty("cloudLoadBalancerConfig")
+    public void setCloudLoadBalancerConfig(CloudLoadBalancerConfig cloudLoadBalancerConfig) {
+        this.cloudLoadBalancerConfig = cloudLoadBalancerConfig;
     }
 
     /**

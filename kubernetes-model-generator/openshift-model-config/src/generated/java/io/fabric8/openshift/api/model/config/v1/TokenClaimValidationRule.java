@@ -92,7 +92,7 @@ public class TokenClaimValidationRule implements Editable<TokenClaimValidationRu
     }
 
     /**
-     * type sets the type of the validation rule
+     * type is an optional field that configures the type of the validation rule.<br><p> <br><p> Allowed values are 'RequiredClaim' and omitted (not provided or an empty string).<br><p> <br><p> When set to 'RequiredClaim', the Kubernetes API server will be configured to validate that the incoming JWT contains the required claim and that its value matches the required value.<br><p> <br><p> Defaults to 'RequiredClaim'.
      */
     @JsonProperty("type")
     public String getType() {
@@ -100,7 +100,7 @@ public class TokenClaimValidationRule implements Editable<TokenClaimValidationRu
     }
 
     /**
-     * type sets the type of the validation rule
+     * type is an optional field that configures the type of the validation rule.<br><p> <br><p> Allowed values are 'RequiredClaim' and omitted (not provided or an empty string).<br><p> <br><p> When set to 'RequiredClaim', the Kubernetes API server will be configured to validate that the incoming JWT contains the required claim and that its value matches the required value.<br><p> <br><p> Defaults to 'RequiredClaim'.
      */
     @JsonProperty("type")
     public void setType(String type) {

@@ -107,7 +107,7 @@ public class ClusterAutoscalerSpecRLGpus implements Editable<ClusterAutoscalerSp
     }
 
     /**
-     * The type of GPU to associate with the minimum and maximum limits. This value is used by the Cluster Autoscaler to identify Nodes that will have GPU capacity by searching for it as a label value on the Node objects. For example, Nodes that carry the label key `cluster-api/accelerator` with the label value being the same as the Type field will be counted towards the resource limits by the Cluster Autoscaler.
+     * The type of GPU to associate with the minimum and maximum limits.<br><p> This value is used by the Cluster Autoscaler to identify Nodes that will have GPU capacity by searching<br><p> for it as a label value on the Node objects. For example, Nodes that carry the label key<br><p> `cluster-api/accelerator` with the label value being the same as the Type field will be counted towards<br><p> the resource limits by the Cluster Autoscaler.
      */
     @JsonProperty("type")
     public String getType() {
@@ -115,7 +115,7 @@ public class ClusterAutoscalerSpecRLGpus implements Editable<ClusterAutoscalerSp
     }
 
     /**
-     * The type of GPU to associate with the minimum and maximum limits. This value is used by the Cluster Autoscaler to identify Nodes that will have GPU capacity by searching for it as a label value on the Node objects. For example, Nodes that carry the label key `cluster-api/accelerator` with the label value being the same as the Type field will be counted towards the resource limits by the Cluster Autoscaler.
+     * The type of GPU to associate with the minimum and maximum limits.<br><p> This value is used by the Cluster Autoscaler to identify Nodes that will have GPU capacity by searching<br><p> for it as a label value on the Node objects. For example, Nodes that carry the label key<br><p> `cluster-api/accelerator` with the label value being the same as the Type field will be counted towards<br><p> the resource limits by the Cluster Autoscaler.
      */
     @JsonProperty("type")
     public void setType(String type) {

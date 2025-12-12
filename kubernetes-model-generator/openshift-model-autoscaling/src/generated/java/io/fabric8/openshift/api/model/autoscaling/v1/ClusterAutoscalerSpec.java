@@ -50,6 +50,7 @@ import lombok.experimental.Accessors;
     "podPriorityThreshold",
     "resourceLimits",
     "scaleDown",
+    "scaleUp",
     "skipNodesWithLocalStorage"
 })
 @ToString
@@ -99,6 +100,8 @@ public class ClusterAutoscalerSpec implements Editable<ClusterAutoscalerSpecBuil
     private ClusterAutoscalerSpecResourceLimits resourceLimits;
     @JsonProperty("scaleDown")
     private ClusterAutoscalerSpecScaleDown scaleDown;
+    @JsonProperty("scaleUp")
+    private ClusterAutoscalerSpecScaleUp scaleUp;
     @JsonProperty("skipNodesWithLocalStorage")
     private Boolean skipNodesWithLocalStorage;
     @JsonIgnore
@@ -110,7 +113,7 @@ public class ClusterAutoscalerSpec implements Editable<ClusterAutoscalerSpecBuil
     public ClusterAutoscalerSpec() {
     }
 
-    public ClusterAutoscalerSpec(Boolean balanceSimilarNodeGroups, List<String> balancingIgnoredLabels, List<String> expanders, Boolean ignoreDaemonsetsUtilization, Integer logVerbosity, String maxNodeProvisionTime, Integer maxPodGracePeriod, Integer podPriorityThreshold, ClusterAutoscalerSpecResourceLimits resourceLimits, ClusterAutoscalerSpecScaleDown scaleDown, Boolean skipNodesWithLocalStorage) {
+    public ClusterAutoscalerSpec(Boolean balanceSimilarNodeGroups, List<String> balancingIgnoredLabels, List<String> expanders, Boolean ignoreDaemonsetsUtilization, Integer logVerbosity, String maxNodeProvisionTime, Integer maxPodGracePeriod, Integer podPriorityThreshold, ClusterAutoscalerSpecResourceLimits resourceLimits, ClusterAutoscalerSpecScaleDown scaleDown, ClusterAutoscalerSpecScaleUp scaleUp, Boolean skipNodesWithLocalStorage) {
         super();
         this.balanceSimilarNodeGroups = balanceSimilarNodeGroups;
         this.balancingIgnoredLabels = balancingIgnoredLabels;
@@ -122,11 +125,12 @@ public class ClusterAutoscalerSpec implements Editable<ClusterAutoscalerSpecBuil
         this.podPriorityThreshold = podPriorityThreshold;
         this.resourceLimits = resourceLimits;
         this.scaleDown = scaleDown;
+        this.scaleUp = scaleUp;
         this.skipNodesWithLocalStorage = skipNodesWithLocalStorage;
     }
 
     /**
-     * BalanceSimilarNodeGroups enables/disables the `--balance-similar-node-groups` cluster-autoscaler feature. This feature will automatically identify node groups with the same instance type and the same set of labels and try to keep the respective sizes of those node groups balanced.
+     * BalanceSimilarNodeGroups enables/disables the<br><p> `--balance-similar-node-groups` cluster-autoscaler feature.<br><p> This feature will automatically identify node groups with<br><p> the same instance type and the same set of labels and try<br><p> to keep the respective sizes of those node groups balanced.
      */
     @JsonProperty("balanceSimilarNodeGroups")
     public Boolean getBalanceSimilarNodeGroups() {
@@ -134,7 +138,7 @@ public class ClusterAutoscalerSpec implements Editable<ClusterAutoscalerSpecBuil
     }
 
     /**
-     * BalanceSimilarNodeGroups enables/disables the `--balance-similar-node-groups` cluster-autoscaler feature. This feature will automatically identify node groups with the same instance type and the same set of labels and try to keep the respective sizes of those node groups balanced.
+     * BalanceSimilarNodeGroups enables/disables the<br><p> `--balance-similar-node-groups` cluster-autoscaler feature.<br><p> This feature will automatically identify node groups with<br><p> the same instance type and the same set of labels and try<br><p> to keep the respective sizes of those node groups balanced.
      */
     @JsonProperty("balanceSimilarNodeGroups")
     public void setBalanceSimilarNodeGroups(Boolean balanceSimilarNodeGroups) {
@@ -142,7 +146,7 @@ public class ClusterAutoscalerSpec implements Editable<ClusterAutoscalerSpecBuil
     }
 
     /**
-     * BalancingIgnoredLabels sets "--balancing-ignore-label &lt;label name&gt;" flag on cluster-autoscaler for each listed label. This option specifies labels that cluster autoscaler should ignore when considering node group similarity. For example, if you have nodes with "topology.ebs.csi.aws.com/zone" label, you can add name of this label here to prevent cluster autoscaler from spliting nodes into different node groups based on its value.
+     * BalancingIgnoredLabels sets "--balancing-ignore-label &lt;label name&gt;" flag on cluster-autoscaler for each listed label.<br><p> This option specifies labels that cluster autoscaler should ignore when considering node group similarity.<br><p> For example, if you have nodes with "topology.ebs.csi.aws.com/zone" label, you can add name of this label here<br><p> to prevent cluster autoscaler from spliting nodes into different node groups based on its value.
      */
     @JsonProperty("balancingIgnoredLabels")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -151,7 +155,7 @@ public class ClusterAutoscalerSpec implements Editable<ClusterAutoscalerSpecBuil
     }
 
     /**
-     * BalancingIgnoredLabels sets "--balancing-ignore-label &lt;label name&gt;" flag on cluster-autoscaler for each listed label. This option specifies labels that cluster autoscaler should ignore when considering node group similarity. For example, if you have nodes with "topology.ebs.csi.aws.com/zone" label, you can add name of this label here to prevent cluster autoscaler from spliting nodes into different node groups based on its value.
+     * BalancingIgnoredLabels sets "--balancing-ignore-label &lt;label name&gt;" flag on cluster-autoscaler for each listed label.<br><p> This option specifies labels that cluster autoscaler should ignore when considering node group similarity.<br><p> For example, if you have nodes with "topology.ebs.csi.aws.com/zone" label, you can add name of this label here<br><p> to prevent cluster autoscaler from spliting nodes into different node groups based on its value.
      */
     @JsonProperty("balancingIgnoredLabels")
     public void setBalancingIgnoredLabels(List<String> balancingIgnoredLabels) {
@@ -159,7 +163,7 @@ public class ClusterAutoscalerSpec implements Editable<ClusterAutoscalerSpecBuil
     }
 
     /**
-     * Sets the type and order of expanders to be used during scale out operations. This option specifies an ordered list, highest priority first, of expanders that will be used by the cluster autoscaler to select node groups for expansion when scaling out. Expanders instruct the autoscaler on how to choose node groups when scaling out the cluster. They can be specified in order so that the result from the first expander is used as the input to the second, and so forth. For example, if set to `[LeastWaste, Random]` the autoscaler will first evaluate node groups to determine which will have the least resource waste, if multiple groups are selected the autoscaler will then randomly choose between those groups to determine the group for scaling. The following expanders are available: &#42; LeastWaste - selects the node group that will have the least idle CPU (if tied, unused memory) after scale-up. &#42; Priority - selects the node group that has the highest priority assigned by the user. For details, please see https://github.com/openshift/kubernetes-autoscaler/blob/master/cluster-autoscaler/expander/priority/readme.md &#42; Random - selects the node group randomly. If not specified, the default value is `Random`, available options are: `LeastWaste`, `Priority`, `Random`.
+     * Sets the type and order of expanders to be used during scale out operations.<br><p> This option specifies an ordered list, highest priority first, of expanders that<br><p> will be used by the cluster autoscaler to select node groups for expansion<br><p> when scaling out.<br><p> Expanders instruct the autoscaler on how to choose node groups when scaling out<br><p> the cluster. They can be specified in order so that the result from the first expander<br><p> is used as the input to the second, and so forth. For example, if set to `[LeastWaste, Random]`<br><p> the autoscaler will first evaluate node groups to determine which will have the least<br><p> resource waste, if multiple groups are selected the autoscaler will then randomly choose<br><p> between those groups to determine the group for scaling.<br><p> The following expanders are available:<br><p> &#42; LeastWaste - selects the node group that will have the least idle CPU (if tied, unused memory) after scale-up.<br><p> &#42; Priority - selects the node group that has the highest priority assigned by the user. For details, please see https://github.com/openshift/kubernetes-autoscaler/blob/master/cluster-autoscaler/expander/priority/readme.md<br><p> &#42; Random - selects the node group randomly.<br><p> If not specified, the default value is `Random`, available options are: `LeastWaste`, `Priority`, `Random`.
      */
     @JsonProperty("expanders")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -168,7 +172,7 @@ public class ClusterAutoscalerSpec implements Editable<ClusterAutoscalerSpecBuil
     }
 
     /**
-     * Sets the type and order of expanders to be used during scale out operations. This option specifies an ordered list, highest priority first, of expanders that will be used by the cluster autoscaler to select node groups for expansion when scaling out. Expanders instruct the autoscaler on how to choose node groups when scaling out the cluster. They can be specified in order so that the result from the first expander is used as the input to the second, and so forth. For example, if set to `[LeastWaste, Random]` the autoscaler will first evaluate node groups to determine which will have the least resource waste, if multiple groups are selected the autoscaler will then randomly choose between those groups to determine the group for scaling. The following expanders are available: &#42; LeastWaste - selects the node group that will have the least idle CPU (if tied, unused memory) after scale-up. &#42; Priority - selects the node group that has the highest priority assigned by the user. For details, please see https://github.com/openshift/kubernetes-autoscaler/blob/master/cluster-autoscaler/expander/priority/readme.md &#42; Random - selects the node group randomly. If not specified, the default value is `Random`, available options are: `LeastWaste`, `Priority`, `Random`.
+     * Sets the type and order of expanders to be used during scale out operations.<br><p> This option specifies an ordered list, highest priority first, of expanders that<br><p> will be used by the cluster autoscaler to select node groups for expansion<br><p> when scaling out.<br><p> Expanders instruct the autoscaler on how to choose node groups when scaling out<br><p> the cluster. They can be specified in order so that the result from the first expander<br><p> is used as the input to the second, and so forth. For example, if set to `[LeastWaste, Random]`<br><p> the autoscaler will first evaluate node groups to determine which will have the least<br><p> resource waste, if multiple groups are selected the autoscaler will then randomly choose<br><p> between those groups to determine the group for scaling.<br><p> The following expanders are available:<br><p> &#42; LeastWaste - selects the node group that will have the least idle CPU (if tied, unused memory) after scale-up.<br><p> &#42; Priority - selects the node group that has the highest priority assigned by the user. For details, please see https://github.com/openshift/kubernetes-autoscaler/blob/master/cluster-autoscaler/expander/priority/readme.md<br><p> &#42; Random - selects the node group randomly.<br><p> If not specified, the default value is `Random`, available options are: `LeastWaste`, `Priority`, `Random`.
      */
     @JsonProperty("expanders")
     public void setExpanders(List<String> expanders) {
@@ -192,7 +196,7 @@ public class ClusterAutoscalerSpec implements Editable<ClusterAutoscalerSpecBuil
     }
 
     /**
-     * Sets the autoscaler log level. Default value is 1, level 4 is recommended for DEBUGGING and level 6 will enable almost everything. <br><p>  This option has priority over log level set by the `CLUSTER_AUTOSCALER_VERBOSITY` environment variable.
+     * Sets the autoscaler log level.<br><p> Default value is 1, level 4 is recommended for DEBUGGING and level 6 will enable almost everything.<br><p> <br><p> This option has priority over log level set by the `CLUSTER_AUTOSCALER_VERBOSITY` environment variable.
      */
     @JsonProperty("logVerbosity")
     public Integer getLogVerbosity() {
@@ -200,7 +204,7 @@ public class ClusterAutoscalerSpec implements Editable<ClusterAutoscalerSpecBuil
     }
 
     /**
-     * Sets the autoscaler log level. Default value is 1, level 4 is recommended for DEBUGGING and level 6 will enable almost everything. <br><p>  This option has priority over log level set by the `CLUSTER_AUTOSCALER_VERBOSITY` environment variable.
+     * Sets the autoscaler log level.<br><p> Default value is 1, level 4 is recommended for DEBUGGING and level 6 will enable almost everything.<br><p> <br><p> This option has priority over log level set by the `CLUSTER_AUTOSCALER_VERBOSITY` environment variable.
      */
     @JsonProperty("logVerbosity")
     public void setLogVerbosity(Integer logVerbosity) {
@@ -240,7 +244,7 @@ public class ClusterAutoscalerSpec implements Editable<ClusterAutoscalerSpecBuil
     }
 
     /**
-     * To allow users to schedule "best-effort" pods, which shouldn't trigger Cluster Autoscaler actions, but only run when there are spare resources available, More info: https://github.com/kubernetes/autoscaler/blob/master/cluster-autoscaler/FAQ.md#how-does-cluster-autoscaler-work-with-pod-priority-and-preemption
+     * To allow users to schedule "best-effort" pods, which shouldn't trigger<br><p> Cluster Autoscaler actions, but only run when there are spare resources available,<br><p> More info: https://github.com/kubernetes/autoscaler/blob/master/cluster-autoscaler/FAQ.md#how-does-cluster-autoscaler-work-with-pod-priority-and-preemption
      */
     @JsonProperty("podPriorityThreshold")
     public Integer getPodPriorityThreshold() {
@@ -248,7 +252,7 @@ public class ClusterAutoscalerSpec implements Editable<ClusterAutoscalerSpecBuil
     }
 
     /**
-     * To allow users to schedule "best-effort" pods, which shouldn't trigger Cluster Autoscaler actions, but only run when there are spare resources available, More info: https://github.com/kubernetes/autoscaler/blob/master/cluster-autoscaler/FAQ.md#how-does-cluster-autoscaler-work-with-pod-priority-and-preemption
+     * To allow users to schedule "best-effort" pods, which shouldn't trigger<br><p> Cluster Autoscaler actions, but only run when there are spare resources available,<br><p> More info: https://github.com/kubernetes/autoscaler/blob/master/cluster-autoscaler/FAQ.md#how-does-cluster-autoscaler-work-with-pod-priority-and-preemption
      */
     @JsonProperty("podPriorityThreshold")
     public void setPodPriorityThreshold(Integer podPriorityThreshold) {
@@ -285,6 +289,22 @@ public class ClusterAutoscalerSpec implements Editable<ClusterAutoscalerSpecBuil
     @JsonProperty("scaleDown")
     public void setScaleDown(ClusterAutoscalerSpecScaleDown scaleDown) {
         this.scaleDown = scaleDown;
+    }
+
+    /**
+     * Desired state of ClusterAutoscaler resource
+     */
+    @JsonProperty("scaleUp")
+    public ClusterAutoscalerSpecScaleUp getScaleUp() {
+        return scaleUp;
+    }
+
+    /**
+     * Desired state of ClusterAutoscaler resource
+     */
+    @JsonProperty("scaleUp")
+    public void setScaleUp(ClusterAutoscalerSpecScaleUp scaleUp) {
+        this.scaleUp = scaleUp;
     }
 
     /**
