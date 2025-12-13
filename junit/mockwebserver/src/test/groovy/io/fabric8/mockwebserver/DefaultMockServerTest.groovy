@@ -15,6 +15,7 @@
  */
 package io.fabric8.mockwebserver
 
+import com.fasterxml.jackson.databind.ObjectMapper
 import io.fabric8.mockwebserver.http.Headers
 import io.fabric8.mockwebserver.http.RecordedRequest
 import io.fabric8.mockwebserver.internal.WebSocketMessage
@@ -328,7 +329,9 @@ class DefaultMockServerTest extends Specification {
 
 		then: "Expect the response to contain the serialized json"
 		req1.result().statusCode() == 200
-		req1.result().body().toString() == "{\"id\":0,\"username\":\"root\",\"enabled\":true}"
+		def responseBody = req1.result().body().toString()
+		def responseJson = new ObjectMapper().readValue(responseBody, Map)
+		responseJson == [id: 0, username: "root", enabled: true]
 	}
 
 	def "when setting a timed websocket String message it should be fired at the specified time"() {
