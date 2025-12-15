@@ -60,6 +60,7 @@
     <module>openshift-model-autoscaling</module>
     <module>openshift-model-config</module>
     <module>openshift-model-hive</module>
+    <module>openshift-model-miscellaneous</module>
     <module>openshift-model-installer</module>
     <module>openshift-model-insights</module>
     <module>openshift-model-operator</module>
@@ -71,7 +72,6 @@
     <module>openshift-model-tuned</module>
     <module>openshift-model-whereabouts</module>
     <module>openshift-model-storageversionmigrator</module>
-    <module>openshift-model-miscellaneous</module>
   </modules>
 
   <properties>

@@ -35,7 +35,6 @@
     <osgi.import>*</osgi.import>
     <osgi.export>
       io.fabric8.openshift.api.model.miscellaneous**,
-      io.fabric8.kubernetes.api.model.clusterapi**,
     </osgi.export>
   </properties>
 
