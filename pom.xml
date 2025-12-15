@@ -324,11 +324,6 @@
       </dependency>
       <dependency>
         <groupId>io.fabric8</groupId>
-        <artifactId>kubernetes-model-clusterapi</artifactId>
-        <version>${project.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>io.fabric8</groupId>
         <artifactId>kubernetes-model-coordination</artifactId>
         <version>${project.version}</version>
       </dependency>

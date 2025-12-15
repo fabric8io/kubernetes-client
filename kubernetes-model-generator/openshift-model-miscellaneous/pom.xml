@@ -35,6 +35,7 @@
     <osgi.import>*</osgi.import>
     <osgi.export>
       io.fabric8.openshift.api.model.miscellaneous**,
+      io.fabric8.kubernetes.api.model.clusterapi**,
     </osgi.export>
   </properties>
 
@@ -46,11 +47,6 @@
     <dependency>
       <groupId>io.fabric8</groupId>
       <artifactId>openshift-model-config</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>io.fabric8</groupId>
-      <artifactId>kubernetes-model-clusterapi</artifactId>
-      <scope>test</scope>
     </dependency>
   </dependencies>
 
@@ -69,6 +65,9 @@
                 </schemas>
                 <packageMappings combine.self="append">
                   <io.cncf.cni.k8s>io.fabric8.openshift.api.model.miscellaneous.cncf.cni</io.cncf.cni.k8s>
+                  <io.x-k8s.cluster.v1beta1>io.fabric8.openshift.api.model.miscellaneous.clusterapi.v1beta1</io.x-k8s.cluster.v1beta1>
+                  <io.x-k8s.cluster.infrastructure.v1beta1>io.fabric8.openshift.api.model.miscellaneous.metal3.v1beta1</io.x-k8s.cluster.infrastructure.v1beta1>
+                  <io.metal3>io.fabric8.openshift.api.model.miscellaneous.metal3</io.metal3>
                 </packageMappings>
                 <includeGenerationRegexes>
                   <includeGenerationRegex>^io\.cncf\.cni\.k8s\..*$</includeGenerationRegex>
@@ -76,6 +75,9 @@
                   <includeGenerationRegex>^io\.openshift\.cloudcredential\..*$</includeGenerationRegex>
                   <includeGenerationRegex>^io\.openshift\.helm\..*$</includeGenerationRegex>
                   <includeGenerationRegex>^io\.openshift\.network\..*$</includeGenerationRegex>
+                  <includeGenerationRegex>^io\.x\-k8s\.cluster\.v1beta1\..*$</includeGenerationRegex>
+                  <includeGenerationRegex>^io\.x\-k8s\.cluster\.infrastructure\.v1beta1\..*$</includeGenerationRegex>
+                  <includeGenerationRegex>^io\.metal3\..*$</includeGenerationRegex>
                 </includeGenerationRegexes>
                 <skipGenerationRegexes>
                   <skipGenerationRegex>^io\.openshift\.cloudcredential\.v1\.ProviderCodec$</skipGenerationRegex>
