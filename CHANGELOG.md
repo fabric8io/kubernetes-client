@@ -16,6 +16,7 @@
 
 #### New Features
 * Fix #7048: Support for Kubernetes v1.34 (Of Wind & Will)
+* Fix #7371: Update Fabric8 OpenShift Model as per OpenShift 4.20
 
 #### _**Note**_: Breaking changes
 * Fix #7266: bump jackson-bom from 2.19.2 to 2.20.0, fix overrides and handle jackson-annotations v2.20
