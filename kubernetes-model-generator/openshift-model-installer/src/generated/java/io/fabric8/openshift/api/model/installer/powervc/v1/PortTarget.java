@@ -1,7 +1,9 @@
 
-package com.github.openshift.installer.pkg.types.powervc;
+package io.fabric8.openshift.api.model.installer.powervc.v1;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import javax.annotation.processing.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
@@ -33,13 +35,13 @@ import lombok.ToString;
 import lombok.experimental.Accessors;
 
 /**
- * SubnetFilter defines a subnet by ID and/or name.
+ * PortTarget defines, directly or indirectly, one or more subnets where to attach a port.
  */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "id",
-    "name"
+    "fixedIPs",
+    "network"
 })
 @ToString
 @EqualsAndHashCode
@@ -63,67 +65,69 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class SubnetFilter implements Editable<SubnetFilterBuilder>, KubernetesResource
+public class PortTarget implements Editable<PortTargetBuilder>, KubernetesResource
 {
 
-    @JsonProperty("id")
-    private String id;
-    @JsonProperty("name")
-    private String name;
+    @JsonProperty("fixedIPs")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<FixedIP> fixedIPs = new ArrayList<>();
+    @JsonProperty("network")
+    private NetworkFilter network;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
      */
-    public SubnetFilter() {
+    public PortTarget() {
     }
 
-    public SubnetFilter(String id, String name) {
+    public PortTarget(List<FixedIP> fixedIPs, NetworkFilter network) {
         super();
-        this.id = id;
-        this.name = name;
+        this.fixedIPs = fixedIPs;
+        this.network = network;
     }
 
     /**
-     * SubnetFilter defines a subnet by ID and/or name.
+     * Specify subnets of the network where control plane port will be discovered.
      */
-    @JsonProperty("id")
-    public String getId() {
-        return id;
+    @JsonProperty("fixedIPs")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public List<FixedIP> getFixedIPs() {
+        return fixedIPs;
     }
 
     /**
-     * SubnetFilter defines a subnet by ID and/or name.
+     * Specify subnets of the network where control plane port will be discovered.
      */
-    @JsonProperty("id")
-    public void setId(String id) {
-        this.id = id;
+    @JsonProperty("fixedIPs")
+    public void setFixedIPs(List<FixedIP> fixedIPs) {
+        this.fixedIPs = fixedIPs;
     }
 
     /**
-     * SubnetFilter defines a subnet by ID and/or name.
+     * PortTarget defines, directly or indirectly, one or more subnets where to attach a port.
      */
-    @JsonProperty("name")
-    public String getName() {
-        return name;
+    @JsonProperty("network")
+    public NetworkFilter getNetwork() {
+        return network;
     }
 
     /**
-     * SubnetFilter defines a subnet by ID and/or name.
+     * PortTarget defines, directly or indirectly, one or more subnets where to attach a port.
      */
-    @JsonProperty("name")
-    public void setName(String name) {
-        this.name = name;
+    @JsonProperty("network")
+    public void setNetwork(NetworkFilter network) {
+        this.network = network;
     }
 
     @JsonIgnore
-    public SubnetFilterBuilder edit() {
-        return new SubnetFilterBuilder(this);
+    public PortTargetBuilder edit() {
+        return new PortTargetBuilder(this);
     }
 
     @JsonIgnore
-    public SubnetFilterBuilder toBuilder() {
+    public PortTargetBuilder toBuilder() {
         return edit();
     }
 

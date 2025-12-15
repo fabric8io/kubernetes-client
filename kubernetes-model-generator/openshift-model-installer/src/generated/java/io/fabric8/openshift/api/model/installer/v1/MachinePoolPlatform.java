@@ -93,7 +93,7 @@ public class MachinePoolPlatform implements Editable<MachinePoolPlatformBuilder>
     @JsonProperty("ovirt")
     private io.fabric8.openshift.api.model.installer.ovirt.v1.MachinePool ovirt;
     @JsonProperty("powervc")
-    private com.github.openshift.installer.pkg.types.powervc.MachinePool powervc;
+    private io.fabric8.openshift.api.model.installer.powervc.v1.MachinePool powervc;
     @JsonProperty("powervs")
     private io.fabric8.openshift.api.model.installer.powervs.v1.MachinePool powervs;
     @JsonProperty("vsphere")
@@ -107,7 +107,7 @@ public class MachinePoolPlatform implements Editable<MachinePoolPlatformBuilder>
     public MachinePoolPlatform() {
     }
 
-    public MachinePoolPlatform(MachinePool aws, io.fabric8.openshift.api.model.installer.azure.v1.MachinePool azure, io.fabric8.openshift.api.model.installer.baremetal.v1.MachinePool baremetal, io.fabric8.openshift.api.model.installer.gcp.v1.MachinePool gcp, io.fabric8.openshift.api.model.installer.ibmcloud.v1.MachinePool ibmcloud, io.fabric8.openshift.api.model.installer.nutanix.v1.MachinePool nutanix, io.fabric8.openshift.api.model.installer.openstack.v1.MachinePool openstack, io.fabric8.openshift.api.model.installer.ovirt.v1.MachinePool ovirt, com.github.openshift.installer.pkg.types.powervc.MachinePool powervc, io.fabric8.openshift.api.model.installer.powervs.v1.MachinePool powervs, io.fabric8.openshift.api.model.installer.vsphere.v1.MachinePool vsphere) {
+    public MachinePoolPlatform(MachinePool aws, io.fabric8.openshift.api.model.installer.azure.v1.MachinePool azure, io.fabric8.openshift.api.model.installer.baremetal.v1.MachinePool baremetal, io.fabric8.openshift.api.model.installer.gcp.v1.MachinePool gcp, io.fabric8.openshift.api.model.installer.ibmcloud.v1.MachinePool ibmcloud, io.fabric8.openshift.api.model.installer.nutanix.v1.MachinePool nutanix, io.fabric8.openshift.api.model.installer.openstack.v1.MachinePool openstack, io.fabric8.openshift.api.model.installer.ovirt.v1.MachinePool ovirt, io.fabric8.openshift.api.model.installer.powervc.v1.MachinePool powervc, io.fabric8.openshift.api.model.installer.powervs.v1.MachinePool powervs, io.fabric8.openshift.api.model.installer.vsphere.v1.MachinePool vsphere) {
         super();
         this.aws = aws;
         this.azure = azure;
@@ -254,7 +254,7 @@ public class MachinePoolPlatform implements Editable<MachinePoolPlatformBuilder>
      * MachinePoolPlatform is the platform-specific configuration for a machine pool. Only one of the platforms should be set.
      */
     @JsonProperty("powervc")
-    public com.github.openshift.installer.pkg.types.powervc.MachinePool getPowervc() {
+    public io.fabric8.openshift.api.model.installer.powervc.v1.MachinePool getPowervc() {
         return powervc;
     }
 
@@ -262,7 +262,7 @@ public class MachinePoolPlatform implements Editable<MachinePoolPlatformBuilder>
      * MachinePoolPlatform is the platform-specific configuration for a machine pool. Only one of the platforms should be set.
      */
     @JsonProperty("powervc")
-    public void setPowervc(com.github.openshift.installer.pkg.types.powervc.MachinePool powervc) {
+    public void setPowervc(io.fabric8.openshift.api.model.installer.powervc.v1.MachinePool powervc) {
         this.powervc = powervc;
     }
 

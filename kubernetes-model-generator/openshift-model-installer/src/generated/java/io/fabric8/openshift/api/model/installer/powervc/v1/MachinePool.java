@@ -1,5 +1,5 @@
 
-package com.github.openshift.installer.pkg.types.powervc;
+package io.fabric8.openshift.api.model.installer.powervc.v1;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;

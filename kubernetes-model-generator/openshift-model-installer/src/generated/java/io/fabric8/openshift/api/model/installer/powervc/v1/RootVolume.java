@@ -1,7 +1,9 @@
 
-package com.github.openshift.installer.pkg.types.powervc;
+package io.fabric8.openshift.api.model.installer.powervc.v1;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import javax.annotation.processing.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
@@ -33,13 +35,15 @@ import lombok.ToString;
 import lombok.experimental.Accessors;
 
 /**
- * NetworkFilter defines a network by name and/or ID.
+ * RootVolume defines the storage for an instance.
  */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "id",
-    "name"
+    "size",
+    "type",
+    "types",
+    "zones"
 })
 @ToString
 @EqualsAndHashCode
@@ -63,67 +67,109 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class NetworkFilter implements Editable<NetworkFilterBuilder>, KubernetesResource
+public class RootVolume implements Editable<RootVolumeBuilder>, KubernetesResource
 {
 
-    @JsonProperty("id")
-    private String id;
-    @JsonProperty("name")
-    private String name;
+    @JsonProperty("size")
+    private Integer size;
+    @JsonProperty("type")
+    private String type;
+    @JsonProperty("types")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<String> types = new ArrayList<>();
+    @JsonProperty("zones")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<String> zones = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
      */
-    public NetworkFilter() {
+    public RootVolume() {
     }
 
-    public NetworkFilter(String id, String name) {
+    public RootVolume(Integer size, String type, List<String> types, List<String> zones) {
         super();
-        this.id = id;
-        this.name = name;
+        this.size = size;
+        this.type = type;
+        this.types = types;
+        this.zones = zones;
     }
 
     /**
-     * NetworkFilter defines a network by name and/or ID.
+     * Size defines the size of the volume in gibibytes (GiB). Required
      */
-    @JsonProperty("id")
-    public String getId() {
-        return id;
+    @JsonProperty("size")
+    public Integer getSize() {
+        return size;
     }
 
     /**
-     * NetworkFilter defines a network by name and/or ID.
+     * Size defines the size of the volume in gibibytes (GiB). Required
      */
-    @JsonProperty("id")
-    public void setId(String id) {
-        this.id = id;
+    @JsonProperty("size")
+    public void setSize(Integer size) {
+        this.size = size;
     }
 
     /**
-     * NetworkFilter defines a network by name and/or ID.
+     * Type defines the type of the volume. Deprecated: Use Types instead.
      */
-    @JsonProperty("name")
-    public String getName() {
-        return name;
+    @JsonProperty("type")
+    public String getType() {
+        return type;
     }
 
     /**
-     * NetworkFilter defines a network by name and/or ID.
+     * Type defines the type of the volume. Deprecated: Use Types instead.
      */
-    @JsonProperty("name")
-    public void setName(String name) {
-        this.name = name;
+    @JsonProperty("type")
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    /**
+     * Types is the list of the volume types of the root volumes. This is mutually exclusive with Type.
+     */
+    @JsonProperty("types")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public List<String> getTypes() {
+        return types;
+    }
+
+    /**
+     * Types is the list of the volume types of the root volumes. This is mutually exclusive with Type.
+     */
+    @JsonProperty("types")
+    public void setTypes(List<String> types) {
+        this.types = types;
+    }
+
+    /**
+     * Zones is the list of availability zones where the root volumes should be deployed. If no zones are provided, all instances will be deployed on OpenStack Cinder default availability zone
+     */
+    @JsonProperty("zones")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public List<String> getZones() {
+        return zones;
+    }
+
+    /**
+     * Zones is the list of availability zones where the root volumes should be deployed. If no zones are provided, all instances will be deployed on OpenStack Cinder default availability zone
+     */
+    @JsonProperty("zones")
+    public void setZones(List<String> zones) {
+        this.zones = zones;
     }
 
     @JsonIgnore
-    public NetworkFilterBuilder edit() {
-        return new NetworkFilterBuilder(this);
+    public RootVolumeBuilder edit() {
+        return new RootVolumeBuilder(this);
     }
 
     @JsonIgnore
-    public NetworkFilterBuilder toBuilder() {
+    public RootVolumeBuilder toBuilder() {
         return edit();
     }
 

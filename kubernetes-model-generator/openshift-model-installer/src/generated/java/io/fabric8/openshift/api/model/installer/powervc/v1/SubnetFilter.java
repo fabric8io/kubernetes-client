@@ -1,5 +1,5 @@
 
-package com.github.openshift.installer.pkg.types.powervc;
+package io.fabric8.openshift.api.model.installer.powervc.v1;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -33,12 +33,13 @@ import lombok.ToString;
 import lombok.experimental.Accessors;
 
 /**
- * FixedIP identifies a subnet defined by a subnet filter.
+ * SubnetFilter defines a subnet by ID and/or name.
  */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "subnet"
+    "id",
+    "name"
 })
 @ToString
 @EqualsAndHashCode
@@ -62,48 +63,67 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class FixedIP implements Editable<FixedIPBuilder>, KubernetesResource
+public class SubnetFilter implements Editable<SubnetFilterBuilder>, KubernetesResource
 {
 
-    @JsonProperty("subnet")
-    private SubnetFilter subnet;
+    @JsonProperty("id")
+    private String id;
+    @JsonProperty("name")
+    private String name;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
      */
-    public FixedIP() {
+    public SubnetFilter() {
     }
 
-    public FixedIP(SubnetFilter subnet) {
+    public SubnetFilter(String id, String name) {
         super();
-        this.subnet = subnet;
+        this.id = id;
+        this.name = name;
     }
 
     /**
-     * FixedIP identifies a subnet defined by a subnet filter.
+     * SubnetFilter defines a subnet by ID and/or name.
      */
-    @JsonProperty("subnet")
-    public SubnetFilter getSubnet() {
-        return subnet;
+    @JsonProperty("id")
+    public String getId() {
+        return id;
     }
 
     /**
-     * FixedIP identifies a subnet defined by a subnet filter.
+     * SubnetFilter defines a subnet by ID and/or name.
      */
-    @JsonProperty("subnet")
-    public void setSubnet(SubnetFilter subnet) {
-        this.subnet = subnet;
+    @JsonProperty("id")
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    /**
+     * SubnetFilter defines a subnet by ID and/or name.
+     */
+    @JsonProperty("name")
+    public String getName() {
+        return name;
+    }
+
+    /**
+     * SubnetFilter defines a subnet by ID and/or name.
+     */
+    @JsonProperty("name")
+    public void setName(String name) {
+        this.name = name;
     }
 
     @JsonIgnore
-    public FixedIPBuilder edit() {
-        return new FixedIPBuilder(this);
+    public SubnetFilterBuilder edit() {
+        return new SubnetFilterBuilder(this);
     }
 
     @JsonIgnore
-    public FixedIPBuilder toBuilder() {
+    public SubnetFilterBuilder toBuilder() {
         return edit();
     }
 

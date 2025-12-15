@@ -1,9 +1,7 @@
 
-package com.github.openshift.installer.pkg.types.powervc;
+package io.fabric8.openshift.api.model.installer.powervc.v1;
 
-import java.util.ArrayList;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 import javax.annotation.processing.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
@@ -35,13 +33,13 @@ import lombok.ToString;
 import lombok.experimental.Accessors;
 
 /**
- * PortTarget defines, directly or indirectly, one or more subnets where to attach a port.
+ * Metadata contains PowerVC and OpenStack metadata (e.g. for uninstalling the cluster).
  */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "fixedIPs",
-    "network"
+    "cloud",
+    "identifier"
 })
 @ToString
 @EqualsAndHashCode
@@ -65,69 +63,69 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class PortTarget implements Editable<PortTargetBuilder>, KubernetesResource
+public class Metadata implements Editable<MetadataBuilder>, KubernetesResource
 {
 
-    @JsonProperty("fixedIPs")
+    @JsonProperty("cloud")
+    private String cloud;
+    @JsonProperty("identifier")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<FixedIP> fixedIPs = new ArrayList<>();
-    @JsonProperty("network")
-    private NetworkFilter network;
+    private Map<String, String> identifier = new LinkedHashMap<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
      */
-    public PortTarget() {
+    public Metadata() {
     }
 
-    public PortTarget(List<FixedIP> fixedIPs, NetworkFilter network) {
+    public Metadata(String cloud, Map<String, String> identifier) {
         super();
-        this.fixedIPs = fixedIPs;
-        this.network = network;
+        this.cloud = cloud;
+        this.identifier = identifier;
     }
 
     /**
-     * Specify subnets of the network where control plane port will be discovered.
+     * Metadata contains PowerVC and OpenStack metadata (e.g. for uninstalling the cluster).
      */
-    @JsonProperty("fixedIPs")
+    @JsonProperty("cloud")
+    public String getCloud() {
+        return cloud;
+    }
+
+    /**
+     * Metadata contains PowerVC and OpenStack metadata (e.g. for uninstalling the cluster).
+     */
+    @JsonProperty("cloud")
+    public void setCloud(String cloud) {
+        this.cloud = cloud;
+    }
+
+    /**
+     * Most OpenStack resources are tagged with these tags as identifier.
+     */
+    @JsonProperty("identifier")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<FixedIP> getFixedIPs() {
-        return fixedIPs;
+    public Map<String, String> getIdentifier() {
+        return identifier;
     }
 
     /**
-     * Specify subnets of the network where control plane port will be discovered.
+     * Most OpenStack resources are tagged with these tags as identifier.
      */
-    @JsonProperty("fixedIPs")
-    public void setFixedIPs(List<FixedIP> fixedIPs) {
-        this.fixedIPs = fixedIPs;
-    }
-
-    /**
-     * PortTarget defines, directly or indirectly, one or more subnets where to attach a port.
-     */
-    @JsonProperty("network")
-    public NetworkFilter getNetwork() {
-        return network;
-    }
-
-    /**
-     * PortTarget defines, directly or indirectly, one or more subnets where to attach a port.
-     */
-    @JsonProperty("network")
-    public void setNetwork(NetworkFilter network) {
-        this.network = network;
+    @JsonProperty("identifier")
+    public void setIdentifier(Map<String, String> identifier) {
+        this.identifier = identifier;
     }
 
     @JsonIgnore
-    public PortTargetBuilder edit() {
-        return new PortTargetBuilder(this);
+    public MetadataBuilder edit() {
+        return new MetadataBuilder(this);
     }
 
     @JsonIgnore
-    public PortTargetBuilder toBuilder() {
+    public MetadataBuilder toBuilder() {
         return edit();
     }
 

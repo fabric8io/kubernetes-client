@@ -84,6 +84,7 @@
                   <com.github.openshift.installer.pkg.types.nutanix>io.fabric8.openshift.api.model.installer.nutanix.v1</com.github.openshift.installer.pkg.types.nutanix>
                   <com.github.openshift.installer.pkg.types.openstack>io.fabric8.openshift.api.model.installer.openstack.v1</com.github.openshift.installer.pkg.types.openstack>
                   <com.github.openshift.installer.pkg.types.ovirt>io.fabric8.openshift.api.model.installer.ovirt.v1</com.github.openshift.installer.pkg.types.ovirt>
+                  <com.github.openshift.installer.pkg.types.powervc>io.fabric8.openshift.api.model.installer.powervc.v1</com.github.openshift.installer.pkg.types.powervc>
                   <com.github.openshift.installer.pkg.types.powervs>io.fabric8.openshift.api.model.installer.powervs.v1</com.github.openshift.installer.pkg.types.powervs>
                   <com.github.openshift.installer.pkg.types.vsphere>io.fabric8.openshift.api.model.installer.vsphere.v1</com.github.openshift.installer.pkg.types.vsphere>
                   <io.x-k8s.cluster.infrastructure.v1beta1>io.fabric8.openshift.api.model.miscellaneous.metal3.v1beta1</io.x-k8s.cluster.infrastructure.v1beta1>

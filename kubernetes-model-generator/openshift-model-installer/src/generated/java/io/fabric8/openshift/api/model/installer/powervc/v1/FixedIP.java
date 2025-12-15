@@ -1,5 +1,5 @@
 
-package com.github.openshift.installer.pkg.types.powervc;
+package io.fabric8.openshift.api.model.installer.powervc.v1;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -33,13 +33,12 @@ import lombok.ToString;
 import lombok.experimental.Accessors;
 
 /**
- * Metadata contains PowerVC and OpenStack metadata (e.g. for uninstalling the cluster).
+ * FixedIP identifies a subnet defined by a subnet filter.
  */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "cloud",
-    "identifier"
+    "subnet"
 })
 @ToString
 @EqualsAndHashCode
@@ -63,69 +62,48 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class Metadata implements Editable<MetadataBuilder>, KubernetesResource
+public class FixedIP implements Editable<FixedIPBuilder>, KubernetesResource
 {
 
-    @JsonProperty("cloud")
-    private String cloud;
-    @JsonProperty("identifier")
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, String> identifier = new LinkedHashMap<>();
+    @JsonProperty("subnet")
+    private SubnetFilter subnet;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
      */
-    public Metadata() {
+    public FixedIP() {
     }
 
-    public Metadata(String cloud, Map<String, String> identifier) {
+    public FixedIP(SubnetFilter subnet) {
         super();
-        this.cloud = cloud;
-        this.identifier = identifier;
+        this.subnet = subnet;
     }
 
     /**
-     * Metadata contains PowerVC and OpenStack metadata (e.g. for uninstalling the cluster).
+     * FixedIP identifies a subnet defined by a subnet filter.
      */
-    @JsonProperty("cloud")
-    public String getCloud() {
-        return cloud;
+    @JsonProperty("subnet")
+    public SubnetFilter getSubnet() {
+        return subnet;
     }
 
     /**
-     * Metadata contains PowerVC and OpenStack metadata (e.g. for uninstalling the cluster).
+     * FixedIP identifies a subnet defined by a subnet filter.
      */
-    @JsonProperty("cloud")
-    public void setCloud(String cloud) {
-        this.cloud = cloud;
-    }
-
-    /**
-     * Most OpenStack resources are tagged with these tags as identifier.
-     */
-    @JsonProperty("identifier")
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public Map<String, String> getIdentifier() {
-        return identifier;
-    }
-
-    /**
-     * Most OpenStack resources are tagged with these tags as identifier.
-     */
-    @JsonProperty("identifier")
-    public void setIdentifier(Map<String, String> identifier) {
-        this.identifier = identifier;
+    @JsonProperty("subnet")
+    public void setSubnet(SubnetFilter subnet) {
+        this.subnet = subnet;
     }
 
     @JsonIgnore
-    public MetadataBuilder edit() {
-        return new MetadataBuilder(this);
+    public FixedIPBuilder edit() {
+        return new FixedIPBuilder(this);
     }
 
     @JsonIgnore
-    public MetadataBuilder toBuilder() {
+    public FixedIPBuilder toBuilder() {
         return edit();
     }
 
