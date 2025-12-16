@@ -18,14 +18,15 @@
 package openapi
 
 import (
+	"strings"
+	"unicode"
+
 	"github.com/fabric8io/kubernetes-client/kubernetes-model-generator/openapi/generator/pkg/kubernetes"
 	"k8s.io/gengo/v2"
 	"k8s.io/gengo/v2/generator"
 	"k8s.io/gengo/v2/types"
 	openapiargs "k8s.io/kube-openapi/cmd/openapi-gen/args"
 	"k8s.io/kube-openapi/pkg/generators"
-	"strings"
-	"unicode"
 )
 
 type GoGenerator struct {
@@ -96,8 +97,8 @@ func (g *GoGenerator) processUniverse(context *generator.Context) {
 	for _, pkg := range context.Universe {
 		for _, t := range pkg.Types {
 			for memberIndex, member := range t.Members {
-				for _, memeberProcessor := range g.memberProcessors {
-					memeberProcessor(context, pkg, t, &member, memberIndex)
+				for _, memberProcessor := range g.memberProcessors {
+					memberProcessor(context, pkg, t, &member, memberIndex)
 				}
 			}
 		}
