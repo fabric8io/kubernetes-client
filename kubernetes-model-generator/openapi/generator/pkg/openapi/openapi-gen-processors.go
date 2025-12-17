@@ -261,93 +261,79 @@ func (v *IstioEnumExtractor) extract() bool {
 	return false
 }
 
-// processDuplicateInlineFields detects and resolves duplicate JSON field names that occur when
+// processInlineDuplicateFields detects and resolves duplicate JSON field names that occur when
 // embedded structs with ",inline" json tag have fields with the same JSON name as the parent struct.
 // This prevents "duplicate key in map literal" compilation errors in generated OpenAPI code.
 //
+// Implementation approach:
+// 1. Check if the member is embedded
+// 2. Gather the embedded type field names
+// 3. Go through all the members of the current type
+// 4. Modify json tag of colliding fields to include omit (-)
+//
 // Resolution strategy:
-// - Tracks all JSON field names and their sources (direct field vs. embedded struct)
-// - When a duplicate is detected, the field from the embedded struct is removed by setting json:"-"
-// - The parent struct's field takes precedence over embedded struct fields
-func processDuplicateInlineFields(_ *generator.Context, _ *types.Package, t *types.Type) {
-	// Map to track JSON field names: map[jsonFieldName]memberIndex
-	jsonFieldMap := make(map[string]int)
-	// Track embedded struct member indices for later processing
-	embeddedMembers := make([]int, 0)
-
-	// First pass: collect all JSON field names and identify embedded structs
-	for i, member := range t.Members {
-		tags := reflect.StructTag(member.Tags)
-		jsonTag := tags.Get("json")
-
-		// Skip if no json tag or if it's already marked as omitted
-		if jsonTag == "" || jsonTag == "-" {
-			continue
-		}
-
-		// Extract the JSON field name (before any comma)
-		jsonFieldName := strings.Split(jsonTag, ",")[0]
-
-		// Check if this is an embedded struct with inline tag
-		isInline := member.Embedded && strings.Contains(jsonTag, ",inline")
-
-		if isInline {
-			// Track embedded members for later processing
-			embeddedMembers = append(embeddedMembers, i)
-		} else if jsonFieldName != "" {
-			// Track non-embedded field names
-			jsonFieldMap[jsonFieldName] = i
-		}
-	}
-
-	// Second pass: process embedded structs and remove duplicate fields
-	for _, embeddedIndex := range embeddedMembers {
-		embeddedMember := &t.Members[embeddedIndex]
-
-		// Process fields from the embedded type
-		if embeddedMember.Type.Kind == types.Struct {
-			processDuplicateFieldsInEmbedded(t, embeddedMember, jsonFieldMap)
-		}
-	}
-}
-
-// processDuplicateFieldsInEmbedded checks fields in an embedded struct for duplicates
-// and marks them with json:"-" if they conflict with parent struct fields
-func processDuplicateFieldsInEmbedded(parentType *types.Type, embeddedMember *types.Member, jsonFieldMap map[string]int) {
-	if embeddedMember.Type.Members == nil {
+// - Inlined/embedded type fields take precedence over parent struct fields
+// - The field from the inlined type should be kept
+func processInlineDuplicateFields(_ *generator.Context, _ *types.Package, t *types.Type, m *types.Member, memberIndex int) {
+	// Only process embedded members
+	if !m.Embedded {
 		return
 	}
 
-	duplicatesFound := make([]string, 0)
+	// Check if this is an embedded struct with inline tag
+	tags := reflect.StructTag(m.Tags)
+	jsonTag := tags.Get("json")
+	isInline := strings.Contains(jsonTag, ",inline")
 
-	// Check each field in the embedded struct
-	for i := range embeddedMember.Type.Members {
-		embeddedField := &embeddedMember.Type.Members[i]
-		tags := reflect.StructTag(embeddedField.Tags)
-		jsonTag := tags.Get("json")
+	if !isInline || m.Type.Kind != types.Struct || m.Type.Members == nil {
+		return
+	}
 
-		if jsonTag == "" || jsonTag == "-" {
+	// Gather the embedded type field names
+	embeddedFieldNames := make(map[string]bool)
+	for _, embeddedMember := range m.Type.Members {
+		embeddedTags := reflect.StructTag(embeddedMember.Tags)
+		embeddedJSON := embeddedTags.Get("json")
+
+		// Skip if no json tag or already marked as omitted
+		if embeddedJSON == "" || embeddedJSON == "-" {
 			continue
 		}
 
 		// Extract JSON field name
-		jsonFieldName := strings.Split(jsonTag, ",")[0]
-
-		// Check if this field name conflicts with parent struct
-		if _, exists := jsonFieldMap[jsonFieldName]; exists {
-			// Duplicate found - mark the embedded field to be ignored
-			duplicatesFound = append(duplicatesFound, jsonFieldName)
-
-			// Update the tag to json:"-" to skip this field in OpenAPI generation
-			newTags := updateJSONTag(embeddedField.Tags, "-")
-			embeddedMember.Type.Members[i].Tags = newTags
+		jsonFieldName := strings.Split(embeddedJSON, ",")[0]
+		if jsonFieldName != "" {
+			embeddedFieldNames[jsonFieldName] = true
 		}
 	}
 
-	// Log duplicates for debugging
-	if len(duplicatesFound) > 0 {
-		fmt.Printf("Resolved duplicate fields in embedded struct %s.%s: %v\n",
-			parentType.Name.Package, parentType.Name.Name, duplicatesFound)
+	// Go through all the members of the current type
+	// Modify json tag of colliding fields to include omit (-)
+	for i := range t.Members {
+		parentMember := &t.Members[i]
+
+		// Skip embedded members
+		if parentMember.Embedded {
+			continue
+		}
+
+		parentTags := reflect.StructTag(parentMember.Tags)
+		parentJSON := parentTags.Get("json")
+
+		if parentJSON == "" || parentJSON == "-" {
+			continue
+		}
+
+		// Extract JSON field name
+		jsonFieldName := strings.Split(parentJSON, ",")[0]
+
+		// If this parent field name conflicts with embedded field, mark PARENT field to be ignored
+		// The field from the inlined type takes precedence
+		if embeddedFieldNames[jsonFieldName] {
+			t.Members[i].Tags = updateJSONTag(parentMember.Tags, "-")
+			fmt.Printf("Resolved duplicate field '%s': keeping field from embedded type %s, omitting from parent %s.%s\n",
+				jsonFieldName, m.Type.Name.Name, t.Name.Package, t.Name.Name)
+		}
 	}
 }
 

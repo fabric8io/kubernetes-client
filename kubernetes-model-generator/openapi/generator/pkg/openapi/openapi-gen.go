@@ -34,8 +34,6 @@ type GoGenerator struct {
 	inputPkgs  map[string]bool
 	// memberProcessors are functions that are applied to each member of a type
 	memberProcessors []func(context *generator.Context, pkg *types.Package, t *types.Type, member *types.Member, memberIndex int)
-	// typeProcessors are functions that are applied to each type after all its members have been processed
-  typeProcessors []func(context *generator.Context, pkg *types.Package, t *types.Type)
 	// packageProcessors are functions that are applied to each package once all type members have been processed for that package
 	packageProcessors []func(context *generator.Context, pkg *types.Package)
 }
@@ -50,10 +48,8 @@ func (g *GoGenerator) Generate() error {
 		processProtobufOneof,
 		processProtobufTags,
 		processSwaggerIgnore,
+		processInlineDuplicateFields,
 	}
-  g.typeProcessors = []func(context *generator.Context, pkg *types.Package, t *types.Type){
-  	processDuplicateInlineFields,
-  }
 	g.packageProcessors = []func(context *generator.Context, pkg *types.Package){
 		processProtobufPackageOneOf,
 	}
@@ -100,16 +96,11 @@ func (g *GoGenerator) processUniverse(context *generator.Context) {
 
 	for _, pkg := range context.Universe {
 		for _, t := range pkg.Types {
-		  // Process each member of the type
 			for memberIndex, member := range t.Members {
 				for _, memeberProcessor := range g.memberProcessors {
 					memeberProcessor(context, pkg, t, &member, memberIndex)
 				}
 			}
-		  // Process the type after all members have been processed
-      for _, typeProcessor := range g.typeProcessors {
-        typeProcessor(context, pkg, t)
-      }
 		}
 		for _, packageProcessor := range g.packageProcessors {
 			packageProcessor(context, pkg)
