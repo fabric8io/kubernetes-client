@@ -60,6 +60,9 @@ func processInlineDuplicateFields(_ *generator.Context, _ *types.Package, t *typ
 	for _, embeddedMember := range m.Type.Members {
 		embeddedJSON := reflect.StructTag(embeddedMember.Tags).Get("json")
 
+		// Skip fields that should be excluded from OpenAPI schema
+		// Note: processSwaggerIgnore runs before this processor (in phase 1),
+		// so ,omitted is guaranteed to be present for fields with swaggerignore tag
 		if embeddedJSON == "" || embeddedJSON == "-" || strings.Contains(embeddedJSON, ",omitted") {
 			continue
 		}

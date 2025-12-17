@@ -42,7 +42,6 @@ type GoGenerator struct {
 func (g *GoGenerator) Generate() error {
 	g.ReportFilename = g.OutputFile + ".report.txt"
 	g.memberProcessors = []func(context *generator.Context, pkg *types.Package, t *types.Type, member *types.Member, memberIndex int){
-		processSwaggerIgnore,
 		processInlineDuplicateFields,
 		processMapKeyTypes,
 		processOmitPrivateFields,
@@ -95,6 +94,17 @@ func (g *GoGenerator) processUniverse(context *generator.Context) {
 		g.inputPkgs[inputPackage] = true
 	}
 
+	// Run processSwaggerIgnore first for all types to guarantee ,omitted is set
+	// before processInlineDuplicateFields accesses embedded type members
+	for _, pkg := range context.Universe {
+		for _, t := range pkg.Types {
+			for memberIndex, member := range t.Members {
+				processSwaggerIgnore(context, pkg, t, &member, memberIndex)
+			}
+		}
+	}
+
+	// Run all other processors
 	for _, pkg := range context.Universe {
 		for _, t := range pkg.Types {
 			for memberIndex, member := range t.Members {

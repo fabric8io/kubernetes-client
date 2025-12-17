@@ -33,15 +33,15 @@ import lombok.ToString;
 import lombok.experimental.Accessors;
 
 /**
- * Image defines information about the image to use for VM creation. There are three ways to specify an image: by ID, Marketplace Image or SharedImageGallery One of ID, SharedImage or Marketplace should be set.
+ * Image holds the details of an image to use during provisioning.
  */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "computeGallery",
-    "id",
-    "marketplace",
-    "sharedGallery"
+    "checksum",
+    "checksumType",
+    "format",
+    "url"
 })
 @ToString
 @EqualsAndHashCode
@@ -68,14 +68,14 @@ import lombok.experimental.Accessors;
 public class Image implements Editable<ImageBuilder>, KubernetesResource
 {
 
-    @JsonProperty("computeGallery")
-    private AzureComputeGalleryImage computeGallery;
-    @JsonProperty("id")
-    private String id;
-    @JsonProperty("marketplace")
-    private AzureMarketplaceImage marketplace;
-    @JsonProperty("sharedGallery")
-    private AzureSharedGalleryImage sharedGallery;
+    @JsonProperty("checksum")
+    private String checksum;
+    @JsonProperty("checksumType")
+    private String checksumType;
+    @JsonProperty("format")
+    private String format;
+    @JsonProperty("url")
+    private String url;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -85,76 +85,76 @@ public class Image implements Editable<ImageBuilder>, KubernetesResource
     public Image() {
     }
 
-    public Image(AzureComputeGalleryImage computeGallery, String id, AzureMarketplaceImage marketplace, AzureSharedGalleryImage sharedGallery) {
+    public Image(String checksum, String checksumType, String format, String url) {
         super();
-        this.computeGallery = computeGallery;
-        this.id = id;
-        this.marketplace = marketplace;
-        this.sharedGallery = sharedGallery;
+        this.checksum = checksum;
+        this.checksumType = checksumType;
+        this.format = format;
+        this.url = url;
     }
 
     /**
-     * Image defines information about the image to use for VM creation. There are three ways to specify an image: by ID, Marketplace Image or SharedImageGallery One of ID, SharedImage or Marketplace should be set.
+     * Checksum is a md5sum, sha256sum or sha512sum value or a URL to retrieve one.
      */
-    @JsonProperty("computeGallery")
-    public AzureComputeGalleryImage getComputeGallery() {
-        return computeGallery;
+    @JsonProperty("checksum")
+    public String getChecksum() {
+        return checksum;
     }
 
     /**
-     * Image defines information about the image to use for VM creation. There are three ways to specify an image: by ID, Marketplace Image or SharedImageGallery One of ID, SharedImage or Marketplace should be set.
+     * Checksum is a md5sum, sha256sum or sha512sum value or a URL to retrieve one.
      */
-    @JsonProperty("computeGallery")
-    public void setComputeGallery(AzureComputeGalleryImage computeGallery) {
-        this.computeGallery = computeGallery;
+    @JsonProperty("checksum")
+    public void setChecksum(String checksum) {
+        this.checksum = checksum;
     }
 
     /**
-     * ID specifies an image to use by ID
+     * ChecksumType is the checksum algorithm for the image. e.g md5, sha256, sha512
      */
-    @JsonProperty("id")
-    public String getId() {
-        return id;
+    @JsonProperty("checksumType")
+    public String getChecksumType() {
+        return checksumType;
     }
 
     /**
-     * ID specifies an image to use by ID
+     * ChecksumType is the checksum algorithm for the image. e.g md5, sha256, sha512
      */
-    @JsonProperty("id")
-    public void setId(String id) {
-        this.id = id;
+    @JsonProperty("checksumType")
+    public void setChecksumType(String checksumType) {
+        this.checksumType = checksumType;
     }
 
     /**
-     * Image defines information about the image to use for VM creation. There are three ways to specify an image: by ID, Marketplace Image or SharedImageGallery One of ID, SharedImage or Marketplace should be set.
+     * DiskFormat contains the image disk format.
      */
-    @JsonProperty("marketplace")
-    public AzureMarketplaceImage getMarketplace() {
-        return marketplace;
+    @JsonProperty("format")
+    public String getFormat() {
+        return format;
     }
 
     /**
-     * Image defines information about the image to use for VM creation. There are three ways to specify an image: by ID, Marketplace Image or SharedImageGallery One of ID, SharedImage or Marketplace should be set.
+     * DiskFormat contains the image disk format.
      */
-    @JsonProperty("marketplace")
-    public void setMarketplace(AzureMarketplaceImage marketplace) {
-        this.marketplace = marketplace;
+    @JsonProperty("format")
+    public void setFormat(String format) {
+        this.format = format;
     }
 
     /**
-     * Image defines information about the image to use for VM creation. There are three ways to specify an image: by ID, Marketplace Image or SharedImageGallery One of ID, SharedImage or Marketplace should be set.
+     * URL is a location of an image to deploy.
      */
-    @JsonProperty("sharedGallery")
-    public AzureSharedGalleryImage getSharedGallery() {
-        return sharedGallery;
+    @JsonProperty("url")
+    public String getUrl() {
+        return url;
     }
 
     /**
-     * Image defines information about the image to use for VM creation. There are three ways to specify an image: by ID, Marketplace Image or SharedImageGallery One of ID, SharedImage or Marketplace should be set.
+     * URL is a location of an image to deploy.
      */
-    @JsonProperty("sharedGallery")
-    public void setSharedGallery(AzureSharedGalleryImage sharedGallery) {
-        this.sharedGallery = sharedGallery;
+    @JsonProperty("url")
+    public void setUrl(String url) {
+        this.url = url;
     }
 
     @JsonIgnore

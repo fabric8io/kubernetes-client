@@ -17,7 +17,6 @@ package io.fabric8.openshift.api.model.miscellaneous.clusterapi.infrastructure.v
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.fabric8.kubernetes.api.model.Namespaced;
-import io.fabric8.kubernetes.api.model.clusterapi.v1beta1.*;
 import io.fabric8.kubernetes.model.util.Helper;
 import org.junit.jupiter.api.Test;
 
