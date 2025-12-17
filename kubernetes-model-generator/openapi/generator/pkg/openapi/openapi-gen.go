@@ -42,6 +42,7 @@ type GoGenerator struct {
 func (g *GoGenerator) Generate() error {
 	g.ReportFilename = g.OutputFile + ".report.txt"
 	g.memberProcessors = []func(context *generator.Context, pkg *types.Package, t *types.Type, member *types.Member, memberIndex int){
+		processSwaggerIgnore,
 		processInlineDuplicateFields,
 		processMapKeyTypes,
 		processOmitPrivateFields,
@@ -49,7 +50,6 @@ func (g *GoGenerator) Generate() error {
 		processProtobufEnumsForIstio,
 		processProtobufOneof,
 		processProtobufTags,
-		processSwaggerIgnore,
 	}
 	g.packageProcessors = []func(context *generator.Context, pkg *types.Package){
 		processProtobufPackageOneOf,

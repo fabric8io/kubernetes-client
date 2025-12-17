@@ -60,7 +60,7 @@ func processInlineDuplicateFields(_ *generator.Context, _ *types.Package, t *typ
 	for _, embeddedMember := range m.Type.Members {
 		embeddedJSON := reflect.StructTag(embeddedMember.Tags).Get("json")
 
-		if embeddedJSON == "" || embeddedJSON == "-" {
+		if embeddedJSON == "" || embeddedJSON == "-" || strings.Contains(embeddedJSON, ",omitted") {
 			continue
 		}
 
