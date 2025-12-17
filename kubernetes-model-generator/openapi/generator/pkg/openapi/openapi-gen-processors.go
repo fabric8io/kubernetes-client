@@ -21,14 +21,16 @@ import (
 	"go/ast"
 	"go/parser"
 	"go/token"
-	"k8s.io/gengo/v2"
-	"k8s.io/gengo/v2/generator"
-	"k8s.io/gengo/v2/types"
 	"reflect"
 	"sort"
 	"strconv"
 	"strings"
 	"unicode"
+
+	"k8s.io/gengo/v2"
+	"k8s.io/gengo/v2/codetags"
+	"k8s.io/gengo/v2/generator"
+	"k8s.io/gengo/v2/types"
 )
 
 const (
@@ -36,6 +38,54 @@ const (
 )
 
 var astFileSet = token.NewFileSet()
+
+// processInlineDuplicateFields detects and resolves duplicate JSON field names that occur when
+// embedded structs with ",inline" json tag have fields with the same JSON name as the parent struct.
+// This prevents "duplicate key in map literal" compilation errors in generated OpenAPI code.
+//
+// Resolution strategy:
+// - Inlined/embedded type fields take precedence over parent struct fields
+// - The field from the inlined type should be kept
+func processInlineDuplicateFields(_ *generator.Context, _ *types.Package, t *types.Type, m *types.Member, memberIndex int) {
+	if !m.Embedded || t.Kind != types.Struct || t.Members == nil {
+		return
+	}
+
+	if !strings.Contains(reflect.StructTag(m.Tags).Get("json"), ",inline") {
+		return
+	}
+
+	// Gather the embedded type field names
+	embeddedFieldNames := make(map[string]bool)
+	for _, embeddedMember := range m.Type.Members {
+		embeddedJSON := reflect.StructTag(embeddedMember.Tags).Get("json")
+
+		if embeddedJSON == "" || embeddedJSON == "-" || strings.Contains(embeddedJSON, ",omitted") {
+			continue
+		}
+
+		jsonFieldName := strings.Split(embeddedJSON, ",")[0]
+		if jsonFieldName != "" {
+			embeddedFieldNames[jsonFieldName] = true
+		}
+	}
+
+	// Go through all the members of the current type
+	for i := range t.Members {
+		jsonTag := reflect.StructTag(t.Members[i].Tags).Get("json")
+		if i == memberIndex || jsonTag == "" || jsonTag == "-" {
+			continue
+		}
+
+		jsonFieldName := strings.Split(jsonTag, ",")[0]
+		if _, exists := embeddedFieldNames[jsonFieldName]; !exists {
+			continue
+		}
+		t.Members[i].Tags = strings.Replace(t.Members[i].Tags, jsonTag, "-", 1)
+		fmt.Printf("Resolved duplicate field '%s': keeping field from embedded type %s, omitting from parent %s.%s\n",
+			jsonFieldName, m.Type.Name.Name, t.Name.Package, t.Name.Name)
+	}
+}
 
 // processMapKeyTypes function to process the map key types and replace them by string in case they are not
 // kube-openapi throws a validation error for maps that have non-string keys such as uint32
@@ -141,10 +191,10 @@ func processProtobufPackageOneOf(_ *generator.Context, pkg *types.Package) {
 		if t.Kind != types.Interface {
 			continue
 		}
-		openApiGen := gengo.ExtractCommentTags("+", t.CommentLines)["k8s:openapi-gen"]
+		openApiGen := codetags.Extract("+k8s:", t.CommentLines)["openapi-gen"]
 		if len(openApiGen) > 0 {
 			for _, openApiGenValue := range openApiGen {
-				if openApiGenValue == "x-kubernetes-fabric8-type:interface" {
+				if openApiGenValue == "openapi-gen=x-kubernetes-fabric8-type:interface" {
 					// Change to Struct so that it's processed by kube-openapi
 					t.Kind = types.Struct
 					// Ensure it's public so that it can be exported
@@ -182,7 +232,7 @@ func processProtobufTags(_ *generator.Context, _ *types.Package, t *types.Type, 
 		updatedJsonTag = name
 	}
 	if jsonTag == "" {
-		t.Members[memberIndex].Tags = t.Members[memberIndex].Tags + " json:\"" + updatedJsonTag+"\""
+		t.Members[memberIndex].Tags = t.Members[memberIndex].Tags + " json:\"" + updatedJsonTag + "\""
 	} else {
 		t.Members[memberIndex].Tags = strings.Replace(t.Members[memberIndex].Tags, jsonTag, updatedJsonTag, 1)
 	}
@@ -223,16 +273,16 @@ func addOrAppend(commentLines []string, prefix, value string) []string {
 }
 
 type IstioEnumExtractor struct {
-	pkg *types.Package
+	pkg      *types.Package
 	typeName string
-	values []string
+	values   []string
 }
 
 func (v *IstioEnumExtractor) Visit(node ast.Node) ast.Visitor {
 	switch node.(type) {
 	case *ast.ValueSpec:
 		valueSpec := node.(*ast.ValueSpec)
-			if valueSpec.Names[0].Name == v.typeName {
+		if valueSpec.Names[0].Name == v.typeName {
 			ast.Inspect(valueSpec, func(valueNode ast.Node) bool {
 				switch valueNode.(type) {
 				case *ast.KeyValueExpr:

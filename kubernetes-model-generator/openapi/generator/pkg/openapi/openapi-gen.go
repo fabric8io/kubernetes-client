@@ -18,20 +18,21 @@
 package openapi
 
 import (
+	"strings"
+	"unicode"
+
 	"github.com/fabric8io/kubernetes-client/kubernetes-model-generator/openapi/generator/pkg/kubernetes"
 	"k8s.io/gengo/v2"
 	"k8s.io/gengo/v2/generator"
 	"k8s.io/gengo/v2/types"
 	openapiargs "k8s.io/kube-openapi/cmd/openapi-gen/args"
 	"k8s.io/kube-openapi/pkg/generators"
-	"strings"
-	"unicode"
 )
 
 type GoGenerator struct {
 	openapiargs.Args
-	Patterns   []string
-	inputPkgs  map[string]bool
+	Patterns  []string
+	inputPkgs map[string]bool
 	// memberProcessors are functions that are applied to each member of a type
 	memberProcessors []func(context *generator.Context, pkg *types.Package, t *types.Type, member *types.Member, memberIndex int)
 	// packageProcessors are functions that are applied to each package once all type members have been processed for that package
@@ -41,13 +42,14 @@ type GoGenerator struct {
 func (g *GoGenerator) Generate() error {
 	g.ReportFilename = g.OutputFile + ".report.txt"
 	g.memberProcessors = []func(context *generator.Context, pkg *types.Package, t *types.Type, member *types.Member, memberIndex int){
+		processSwaggerIgnore,
+		processInlineDuplicateFields,
 		processMapKeyTypes,
 		processOmitPrivateFields,
 		processPatchComments,
 		processProtobufEnumsForIstio,
 		processProtobufOneof,
 		processProtobufTags,
-		processSwaggerIgnore,
 	}
 	g.packageProcessors = []func(context *generator.Context, pkg *types.Package){
 		processProtobufPackageOneOf,
@@ -96,8 +98,8 @@ func (g *GoGenerator) processUniverse(context *generator.Context) {
 	for _, pkg := range context.Universe {
 		for _, t := range pkg.Types {
 			for memberIndex, member := range t.Members {
-				for _, memeberProcessor := range g.memberProcessors {
-					memeberProcessor(context, pkg, t, &member, memberIndex)
+				for _, memberProcessor := range g.memberProcessors {
+					memberProcessor(context, pkg, t, &member, memberIndex)
 				}
 			}
 		}
@@ -164,4 +166,3 @@ func (g *GoGenerator) KubernetesFilterFunc(c *generator.Context, t *types.Type) 
 	}
 	return false
 }
-
