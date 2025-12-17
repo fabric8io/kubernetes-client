@@ -65,7 +65,7 @@
                 <packageMappings combine.self="append">
                   <io.cncf.cni.k8s>io.fabric8.openshift.api.model.miscellaneous.cncf.cni</io.cncf.cni.k8s>
                   <io.x-k8s.cluster.v1beta1>io.fabric8.openshift.api.model.miscellaneous.clusterapi.v1beta1</io.x-k8s.cluster.v1beta1>
-                  <io.x-k8s.cluster.infrastructure.v1beta1>io.fabric8.openshift.api.model.miscellaneous.metal3.v1beta1</io.x-k8s.cluster.infrastructure.v1beta1>
+                  <io.x-k8s.cluster.infrastructure.v1beta1>io.fabric8.openshift.api.model.miscellaneous.clusterapi.infrastructure.v1beta1</io.x-k8s.cluster.infrastructure.v1beta1>
                   <io.metal3>io.fabric8.openshift.api.model.miscellaneous.metal3</io.metal3>
                 </packageMappings>
                 <includeGenerationRegexes>
