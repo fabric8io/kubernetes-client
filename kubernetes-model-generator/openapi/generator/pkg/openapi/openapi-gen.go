@@ -31,8 +31,8 @@ import (
 
 type GoGenerator struct {
 	openapiargs.Args
-	Patterns   []string
-	inputPkgs  map[string]bool
+	Patterns  []string
+	inputPkgs map[string]bool
 	// memberProcessors are functions that are applied to each member of a type
 	memberProcessors []func(context *generator.Context, pkg *types.Package, t *types.Type, member *types.Member, memberIndex int)
 	// packageProcessors are functions that are applied to each package once all type members have been processed for that package
@@ -42,6 +42,7 @@ type GoGenerator struct {
 func (g *GoGenerator) Generate() error {
 	g.ReportFilename = g.OutputFile + ".report.txt"
 	g.memberProcessors = []func(context *generator.Context, pkg *types.Package, t *types.Type, member *types.Member, memberIndex int){
+		processInlineDuplicateFields,
 		processMapKeyTypes,
 		processOmitPrivateFields,
 		processPatchComments,
@@ -49,7 +50,6 @@ func (g *GoGenerator) Generate() error {
 		processProtobufOneof,
 		processProtobufTags,
 		processSwaggerIgnore,
-		processInlineDuplicateFields,
 	}
 	g.packageProcessors = []func(context *generator.Context, pkg *types.Package){
 		processProtobufPackageOneOf,
@@ -166,4 +166,3 @@ func (g *GoGenerator) KubernetesFilterFunc(c *generator.Context, t *types.Type) 
 	}
 	return false
 }
-
