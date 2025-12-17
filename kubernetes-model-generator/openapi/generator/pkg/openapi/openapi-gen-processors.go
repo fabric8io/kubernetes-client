@@ -21,14 +21,16 @@ import (
 	"go/ast"
 	"go/parser"
 	"go/token"
-	"k8s.io/gengo/v2"
-	"k8s.io/gengo/v2/generator"
-	"k8s.io/gengo/v2/types"
 	"reflect"
 	"sort"
 	"strconv"
 	"strings"
 	"unicode"
+
+	"k8s.io/gengo/v2"
+	"k8s.io/gengo/v2/codetags"
+	"k8s.io/gengo/v2/generator"
+	"k8s.io/gengo/v2/types"
 )
 
 const (
@@ -141,10 +143,10 @@ func processProtobufPackageOneOf(_ *generator.Context, pkg *types.Package) {
 		if t.Kind != types.Interface {
 			continue
 		}
-		openApiGen := gengo.ExtractCommentTags("+", t.CommentLines)["k8s:openapi-gen"]
+		openApiGen := codetags.Extract("+k8s:", t.CommentLines)["openapi-gen"]
 		if len(openApiGen) > 0 {
 			for _, openApiGenValue := range openApiGen {
-				if openApiGenValue == "x-kubernetes-fabric8-type:interface" {
+				if openApiGenValue == "openapi-gen=x-kubernetes-fabric8-type:interface" {
 					// Change to Struct so that it's processed by kube-openapi
 					t.Kind = types.Struct
 					// Ensure it's public so that it can be exported
