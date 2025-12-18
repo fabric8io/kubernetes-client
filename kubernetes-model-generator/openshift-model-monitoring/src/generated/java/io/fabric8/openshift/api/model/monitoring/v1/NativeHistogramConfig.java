@@ -142,7 +142,7 @@ public class NativeHistogramConfig implements Editable<NativeHistogramConfigBuil
     }
 
     /**
-     * Whether to scrape a classic histogram that is also exposed as a native histogram. It requires Prometheus &gt;= v2.45.0.
+     * Whether to scrape a classic histogram that is also exposed as a native histogram. It requires Prometheus &gt;= v2.45.0.<br><p> <br><p> Notice: `scrapeClassicHistograms` corresponds to the `always_scrape_classic_histograms` field in the Prometheus configuration.
      */
     @JsonProperty("scrapeClassicHistograms")
     public Boolean getScrapeClassicHistograms() {
@@ -150,7 +150,7 @@ public class NativeHistogramConfig implements Editable<NativeHistogramConfigBuil
     }
 
     /**
-     * Whether to scrape a classic histogram that is also exposed as a native histogram. It requires Prometheus &gt;= v2.45.0.
+     * Whether to scrape a classic histogram that is also exposed as a native histogram. It requires Prometheus &gt;= v2.45.0.<br><p> <br><p> Notice: `scrapeClassicHistograms` corresponds to the `always_scrape_classic_histograms` field in the Prometheus configuration.
      */
     @JsonProperty("scrapeClassicHistograms")
     public void setScrapeClassicHistograms(Boolean scrapeClassicHistograms) {

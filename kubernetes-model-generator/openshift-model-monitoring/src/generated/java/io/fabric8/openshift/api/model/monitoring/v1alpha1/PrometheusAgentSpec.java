@@ -89,6 +89,7 @@ import lombok.experimental.Accessors;
     "externalUrl",
     "hostAliases",
     "hostNetwork",
+    "hostUsers",
     "ignoreNamespaceSelectors",
     "image",
     "imagePullPolicy",
@@ -249,6 +250,8 @@ public class PrometheusAgentSpec implements Editable<PrometheusAgentSpecBuilder>
     private List<HostAlias> hostAliases = new ArrayList<>();
     @JsonProperty("hostNetwork")
     private Boolean hostNetwork;
+    @JsonProperty("hostUsers")
+    private Boolean hostUsers;
     @JsonProperty("ignoreNamespaceSelectors")
     private Boolean ignoreNamespaceSelectors;
     @JsonProperty("image")
@@ -278,7 +281,7 @@ public class PrometheusAgentSpec implements Editable<PrometheusAgentSpecBuilder>
     @JsonProperty("maximumStartupDurationSeconds")
     private Integer maximumStartupDurationSeconds;
     @JsonProperty("minReadySeconds")
-    private Long minReadySeconds;
+    private Integer minReadySeconds;
     @JsonProperty("mode")
     private String mode;
     @JsonProperty("nameEscapingScheme")
@@ -409,7 +412,7 @@ public class PrometheusAgentSpec implements Editable<PrometheusAgentSpecBuilder>
     public PrometheusAgentSpec() {
     }
 
-    public PrometheusAgentSpec(List<Argument> additionalArgs, SecretKeySelector additionalScrapeConfigs, Affinity affinity, APIServerConfig apiserverConfig, ArbitraryFSAccessThroughSMsConfig arbitraryFSAccessThroughSMs, Boolean automountServiceAccountToken, String bodySizeLimit, List<String> configMaps, List<Container> containers, Boolean convertClassicHistogramsToNHCB, PodDNSConfig dnsConfig, String dnsPolicy, List<String> enableFeatures, Boolean enableOTLPReceiver, Boolean enableRemoteWriteReceiver, Boolean enableServiceLinks, String enforcedBodySizeLimit, Long enforcedKeepDroppedTargets, Long enforcedLabelLimit, Long enforcedLabelNameLengthLimit, Long enforcedLabelValueLengthLimit, String enforcedNamespaceLabel, Long enforcedSampleLimit, Long enforcedTargetLimit, List<ObjectReference> excludedFromEnforcement, Map<String, String> externalLabels, String externalUrl, List<HostAlias> hostAliases, Boolean hostNetwork, Boolean ignoreNamespaceSelectors, String image, String imagePullPolicy, List<LocalObjectReference> imagePullSecrets, List<Container> initContainers, Long keepDroppedTargets, Long labelLimit, Long labelNameLengthLimit, Long labelValueLengthLimit, Boolean listenLocal, String logFormat, String logLevel, Integer maximumStartupDurationSeconds, Long minReadySeconds, String mode, String nameEscapingScheme, String nameValidationScheme, Map<String, String> nodeSelector, OTLPConfig otlp, Boolean overrideHonorLabels, Boolean overrideHonorTimestamps, Boolean paused, StatefulSetPersistentVolumeClaimRetentionPolicy persistentVolumeClaimRetentionPolicy, EmbeddedObjectMetadata podMetadata, LabelSelector podMonitorNamespaceSelector, LabelSelector podMonitorSelector, List<String> podTargetLabels, String portName, String priorityClassName, LabelSelector probeNamespaceSelector, LabelSelector probeSelector, String prometheusExternalLabelName, String reloadStrategy, List<RemoteWriteSpec> remoteWrite, List<String> remoteWriteReceiverMessageVersions, String replicaExternalLabelName, Integer replicas, ResourceRequirements resources, String routePrefix, RuntimeConfig runtime, Long sampleLimit, List<ScrapeClass> scrapeClasses, Boolean scrapeClassicHistograms, LabelSelector scrapeConfigNamespaceSelector, LabelSelector scrapeConfigSelector, String scrapeFailureLogFile, String scrapeInterval, List<String> scrapeProtocols, String scrapeTimeout, List<String> secrets, PodSecurityContext securityContext, String serviceAccountName, String serviceDiscoveryRole, LabelSelector serviceMonitorNamespaceSelector, LabelSelector serviceMonitorSelector, String serviceName, Integer shards, StorageSpec storage, Long targetLimit, Long terminationGracePeriodSeconds, List<Toleration> tolerations, List<TopologySpreadConstraint> topologySpreadConstraints, PrometheusTracingConfig tracingConfig, TSDBSpec tsdb, String version, List<VolumeMount> volumeMounts, List<Volume> volumes, Boolean walCompression, PrometheusWebSpec web) {
+    public PrometheusAgentSpec(List<Argument> additionalArgs, SecretKeySelector additionalScrapeConfigs, Affinity affinity, APIServerConfig apiserverConfig, ArbitraryFSAccessThroughSMsConfig arbitraryFSAccessThroughSMs, Boolean automountServiceAccountToken, String bodySizeLimit, List<String> configMaps, List<Container> containers, Boolean convertClassicHistogramsToNHCB, PodDNSConfig dnsConfig, String dnsPolicy, List<String> enableFeatures, Boolean enableOTLPReceiver, Boolean enableRemoteWriteReceiver, Boolean enableServiceLinks, String enforcedBodySizeLimit, Long enforcedKeepDroppedTargets, Long enforcedLabelLimit, Long enforcedLabelNameLengthLimit, Long enforcedLabelValueLengthLimit, String enforcedNamespaceLabel, Long enforcedSampleLimit, Long enforcedTargetLimit, List<ObjectReference> excludedFromEnforcement, Map<String, String> externalLabels, String externalUrl, List<HostAlias> hostAliases, Boolean hostNetwork, Boolean hostUsers, Boolean ignoreNamespaceSelectors, String image, String imagePullPolicy, List<LocalObjectReference> imagePullSecrets, List<Container> initContainers, Long keepDroppedTargets, Long labelLimit, Long labelNameLengthLimit, Long labelValueLengthLimit, Boolean listenLocal, String logFormat, String logLevel, Integer maximumStartupDurationSeconds, Integer minReadySeconds, String mode, String nameEscapingScheme, String nameValidationScheme, Map<String, String> nodeSelector, OTLPConfig otlp, Boolean overrideHonorLabels, Boolean overrideHonorTimestamps, Boolean paused, StatefulSetPersistentVolumeClaimRetentionPolicy persistentVolumeClaimRetentionPolicy, EmbeddedObjectMetadata podMetadata, LabelSelector podMonitorNamespaceSelector, LabelSelector podMonitorSelector, List<String> podTargetLabels, String portName, String priorityClassName, LabelSelector probeNamespaceSelector, LabelSelector probeSelector, String prometheusExternalLabelName, String reloadStrategy, List<RemoteWriteSpec> remoteWrite, List<String> remoteWriteReceiverMessageVersions, String replicaExternalLabelName, Integer replicas, ResourceRequirements resources, String routePrefix, RuntimeConfig runtime, Long sampleLimit, List<ScrapeClass> scrapeClasses, Boolean scrapeClassicHistograms, LabelSelector scrapeConfigNamespaceSelector, LabelSelector scrapeConfigSelector, String scrapeFailureLogFile, String scrapeInterval, List<String> scrapeProtocols, String scrapeTimeout, List<String> secrets, PodSecurityContext securityContext, String serviceAccountName, String serviceDiscoveryRole, LabelSelector serviceMonitorNamespaceSelector, LabelSelector serviceMonitorSelector, String serviceName, Integer shards, StorageSpec storage, Long targetLimit, Long terminationGracePeriodSeconds, List<Toleration> tolerations, List<TopologySpreadConstraint> topologySpreadConstraints, PrometheusTracingConfig tracingConfig, TSDBSpec tsdb, String version, List<VolumeMount> volumeMounts, List<Volume> volumes, Boolean walCompression, PrometheusWebSpec web) {
         super();
         this.additionalArgs = additionalArgs;
         this.additionalScrapeConfigs = additionalScrapeConfigs;
@@ -440,6 +443,7 @@ public class PrometheusAgentSpec implements Editable<PrometheusAgentSpecBuilder>
         this.externalUrl = externalUrl;
         this.hostAliases = hostAliases;
         this.hostNetwork = hostNetwork;
+        this.hostUsers = hostUsers;
         this.ignoreNamespaceSelectors = ignoreNamespaceSelectors;
         this.image = image;
         this.imagePullPolicy = imagePullPolicy;
@@ -983,6 +987,22 @@ public class PrometheusAgentSpec implements Editable<PrometheusAgentSpecBuilder>
     }
 
     /**
+     * HostUsers supports the user space in Kubernetes.<br><p> <br><p> More info: https://kubernetes.io/docs/tasks/configure-pod-container/user-namespaces/<br><p> <br><p> The feature requires at least Kubernetes 1.28 with the `UserNamespacesSupport` feature gate enabled. Starting Kubernetes 1.33, the feature is enabled by default.
+     */
+    @JsonProperty("hostUsers")
+    public Boolean getHostUsers() {
+        return hostUsers;
+    }
+
+    /**
+     * HostUsers supports the user space in Kubernetes.<br><p> <br><p> More info: https://kubernetes.io/docs/tasks/configure-pod-container/user-namespaces/<br><p> <br><p> The feature requires at least Kubernetes 1.28 with the `UserNamespacesSupport` feature gate enabled. Starting Kubernetes 1.33, the feature is enabled by default.
+     */
+    @JsonProperty("hostUsers")
+    public void setHostUsers(Boolean hostUsers) {
+        this.hostUsers = hostUsers;
+    }
+
+    /**
      * When true, `spec.namespaceSelector` from all PodMonitor, ServiceMonitor and Probe objects will be ignored. They will only discover targets within the namespace of the PodMonitor, ServiceMonitor and Probe object.
      */
     @JsonProperty("ignoreNamespaceSelectors")
@@ -1193,18 +1213,18 @@ public class PrometheusAgentSpec implements Editable<PrometheusAgentSpecBuilder>
     }
 
     /**
-     * Minimum number of seconds for which a newly created Pod should be ready without any of its container crashing for it to be considered available. Defaults to 0 (pod will be considered available as soon as it is ready)<br><p> <br><p> This is an alpha field from kubernetes 1.22 until 1.24 which requires enabling the StatefulSetMinReadySeconds feature gate.
+     * Minimum number of seconds for which a newly created Pod should be ready without any of its container crashing for it to be considered available.<br><p> <br><p> If unset, pods will be considered available as soon as they are ready.
      */
     @JsonProperty("minReadySeconds")
-    public Long getMinReadySeconds() {
+    public Integer getMinReadySeconds() {
         return minReadySeconds;
     }
 
     /**
-     * Minimum number of seconds for which a newly created Pod should be ready without any of its container crashing for it to be considered available. Defaults to 0 (pod will be considered available as soon as it is ready)<br><p> <br><p> This is an alpha field from kubernetes 1.22 until 1.24 which requires enabling the StatefulSetMinReadySeconds feature gate.
+     * Minimum number of seconds for which a newly created Pod should be ready without any of its container crashing for it to be considered available.<br><p> <br><p> If unset, pods will be considered available as soon as they are ready.
      */
     @JsonProperty("minReadySeconds")
-    public void setMinReadySeconds(Long minReadySeconds) {
+    public void setMinReadySeconds(Integer minReadySeconds) {
         this.minReadySeconds = minReadySeconds;
     }
 
@@ -1662,7 +1682,7 @@ public class PrometheusAgentSpec implements Editable<PrometheusAgentSpecBuilder>
     }
 
     /**
-     * Whether to scrape a classic histogram that is also exposed as a native histogram. It requires Prometheus &gt;= v3.5.0.
+     * Whether to scrape a classic histogram that is also exposed as a native histogram.<br><p> <br><p> Notice: `scrapeClassicHistograms` corresponds to the `always_scrape_classic_histograms` field in the Prometheus configuration.<br><p> <br><p> It requires Prometheus &gt;= v3.5.0.
      */
     @JsonProperty("scrapeClassicHistograms")
     public Boolean getScrapeClassicHistograms() {
@@ -1670,7 +1690,7 @@ public class PrometheusAgentSpec implements Editable<PrometheusAgentSpecBuilder>
     }
 
     /**
-     * Whether to scrape a classic histogram that is also exposed as a native histogram. It requires Prometheus &gt;= v3.5.0.
+     * Whether to scrape a classic histogram that is also exposed as a native histogram.<br><p> <br><p> Notice: `scrapeClassicHistograms` corresponds to the `always_scrape_classic_histograms` field in the Prometheus configuration.<br><p> <br><p> It requires Prometheus &gt;= v3.5.0.
      */
     @JsonProperty("scrapeClassicHistograms")
     public void setScrapeClassicHistograms(Boolean scrapeClassicHistograms) {

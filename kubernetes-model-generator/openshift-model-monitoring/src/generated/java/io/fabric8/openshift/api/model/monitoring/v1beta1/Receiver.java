@@ -48,6 +48,7 @@ import lombok.experimental.Accessors;
     "opsgenieConfigs",
     "pagerdutyConfigs",
     "pushoverConfigs",
+    "rocketchatConfigs",
     "slackConfigs",
     "snsConfigs",
     "telegramConfigs",
@@ -104,6 +105,9 @@ public class Receiver implements Editable<ReceiverBuilder>, KubernetesResource
     @JsonProperty("pushoverConfigs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<PushoverConfig> pushoverConfigs = new ArrayList<>();
+    @JsonProperty("rocketchatConfigs")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<RocketChatConfig> rocketchatConfigs = new ArrayList<>();
     @JsonProperty("slackConfigs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<SlackConfig> slackConfigs = new ArrayList<>();
@@ -134,7 +138,7 @@ public class Receiver implements Editable<ReceiverBuilder>, KubernetesResource
     public Receiver() {
     }
 
-    public Receiver(List<DiscordConfig> discordConfigs, List<EmailConfig> emailConfigs, List<MSTeamsConfig> msteamsConfigs, List<MSTeamsV2Config> msteamsv2Configs, String name, List<OpsGenieConfig> opsgenieConfigs, List<PagerDutyConfig> pagerdutyConfigs, List<PushoverConfig> pushoverConfigs, List<SlackConfig> slackConfigs, List<SNSConfig> snsConfigs, List<TelegramConfig> telegramConfigs, List<VictorOpsConfig> victoropsConfigs, List<WebexConfig> webexConfigs, List<WebhookConfig> webhookConfigs, List<WeChatConfig> wechatConfigs) {
+    public Receiver(List<DiscordConfig> discordConfigs, List<EmailConfig> emailConfigs, List<MSTeamsConfig> msteamsConfigs, List<MSTeamsV2Config> msteamsv2Configs, String name, List<OpsGenieConfig> opsgenieConfigs, List<PagerDutyConfig> pagerdutyConfigs, List<PushoverConfig> pushoverConfigs, List<RocketChatConfig> rocketchatConfigs, List<SlackConfig> slackConfigs, List<SNSConfig> snsConfigs, List<TelegramConfig> telegramConfigs, List<VictorOpsConfig> victoropsConfigs, List<WebexConfig> webexConfigs, List<WebhookConfig> webhookConfigs, List<WeChatConfig> wechatConfigs) {
         super();
         this.discordConfigs = discordConfigs;
         this.emailConfigs = emailConfigs;
@@ -144,6 +148,7 @@ public class Receiver implements Editable<ReceiverBuilder>, KubernetesResource
         this.opsgenieConfigs = opsgenieConfigs;
         this.pagerdutyConfigs = pagerdutyConfigs;
         this.pushoverConfigs = pushoverConfigs;
+        this.rocketchatConfigs = rocketchatConfigs;
         this.slackConfigs = slackConfigs;
         this.snsConfigs = snsConfigs;
         this.telegramConfigs = telegramConfigs;
@@ -286,6 +291,23 @@ public class Receiver implements Editable<ReceiverBuilder>, KubernetesResource
     @JsonProperty("pushoverConfigs")
     public void setPushoverConfigs(List<PushoverConfig> pushoverConfigs) {
         this.pushoverConfigs = pushoverConfigs;
+    }
+
+    /**
+     * List of RocketChat configurations. It requires Alertmanager &gt;= 0.28.0.
+     */
+    @JsonProperty("rocketchatConfigs")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public List<RocketChatConfig> getRocketchatConfigs() {
+        return rocketchatConfigs;
+    }
+
+    /**
+     * List of RocketChat configurations. It requires Alertmanager &gt;= 0.28.0.
+     */
+    @JsonProperty("rocketchatConfigs")
+    public void setRocketchatConfigs(List<RocketChatConfig> rocketchatConfigs) {
+        this.rocketchatConfigs = rocketchatConfigs;
     }
 
     /**

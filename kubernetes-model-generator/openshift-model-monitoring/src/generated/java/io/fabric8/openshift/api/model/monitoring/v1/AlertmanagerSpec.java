@@ -69,6 +69,7 @@ import lombok.experimental.Accessors;
     "externalUrl",
     "forceEnableClusterMode",
     "hostAliases",
+    "hostUsers",
     "image",
     "imagePullPolicy",
     "imagePullSecrets",
@@ -184,6 +185,8 @@ public class AlertmanagerSpec implements Editable<AlertmanagerSpecBuilder>, Kube
     @JsonProperty("hostAliases")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<HostAlias> hostAliases = new ArrayList<>();
+    @JsonProperty("hostUsers")
+    private Boolean hostUsers;
     @JsonProperty("image")
     private String image;
     @JsonProperty("imagePullPolicy")
@@ -203,7 +206,7 @@ public class AlertmanagerSpec implements Editable<AlertmanagerSpecBuilder>, Kube
     @JsonProperty("logLevel")
     private String logLevel;
     @JsonProperty("minReadySeconds")
-    private Long minReadySeconds;
+    private Integer minReadySeconds;
     @JsonProperty("nodeSelector")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Map<String, String> nodeSelector = new LinkedHashMap<>();
@@ -267,7 +270,7 @@ public class AlertmanagerSpec implements Editable<AlertmanagerSpecBuilder>, Kube
     public AlertmanagerSpec() {
     }
 
-    public AlertmanagerSpec(List<Argument> additionalArgs, List<String> additionalPeers, Affinity affinity, AlertmanagerConfigMatcherStrategy alertmanagerConfigMatcherStrategy, LabelSelector alertmanagerConfigNamespaceSelector, LabelSelector alertmanagerConfigSelector, AlertmanagerConfiguration alertmanagerConfiguration, Boolean automountServiceAccountToken, String baseImage, String clusterAdvertiseAddress, String clusterGossipInterval, String clusterLabel, String clusterPeerTimeout, String clusterPushpullInterval, ClusterTLSConfig clusterTLS, List<String> configMaps, String configSecret, List<Container> containers, PodDNSConfig dnsConfig, String dnsPolicy, List<String> enableFeatures, Boolean enableServiceLinks, String externalUrl, Boolean forceEnableClusterMode, List<HostAlias> hostAliases, String image, String imagePullPolicy, List<LocalObjectReference> imagePullSecrets, List<Container> initContainers, AlertmanagerLimitsSpec limits, Boolean listenLocal, String logFormat, String logLevel, Long minReadySeconds, Map<String, String> nodeSelector, Boolean paused, StatefulSetPersistentVolumeClaimRetentionPolicy persistentVolumeClaimRetentionPolicy, EmbeddedObjectMetadata podMetadata, String portName, String priorityClassName, Integer replicas, ResourceRequirements resources, String retention, String routePrefix, List<String> secrets, PodSecurityContext securityContext, String serviceAccountName, String serviceName, String sha, StorageSpec storage, String tag, Long terminationGracePeriodSeconds, List<Toleration> tolerations, List<TopologySpreadConstraint> topologySpreadConstraints, String version, List<VolumeMount> volumeMounts, List<Volume> volumes, AlertmanagerWebSpec web) {
+    public AlertmanagerSpec(List<Argument> additionalArgs, List<String> additionalPeers, Affinity affinity, AlertmanagerConfigMatcherStrategy alertmanagerConfigMatcherStrategy, LabelSelector alertmanagerConfigNamespaceSelector, LabelSelector alertmanagerConfigSelector, AlertmanagerConfiguration alertmanagerConfiguration, Boolean automountServiceAccountToken, String baseImage, String clusterAdvertiseAddress, String clusterGossipInterval, String clusterLabel, String clusterPeerTimeout, String clusterPushpullInterval, ClusterTLSConfig clusterTLS, List<String> configMaps, String configSecret, List<Container> containers, PodDNSConfig dnsConfig, String dnsPolicy, List<String> enableFeatures, Boolean enableServiceLinks, String externalUrl, Boolean forceEnableClusterMode, List<HostAlias> hostAliases, Boolean hostUsers, String image, String imagePullPolicy, List<LocalObjectReference> imagePullSecrets, List<Container> initContainers, AlertmanagerLimitsSpec limits, Boolean listenLocal, String logFormat, String logLevel, Integer minReadySeconds, Map<String, String> nodeSelector, Boolean paused, StatefulSetPersistentVolumeClaimRetentionPolicy persistentVolumeClaimRetentionPolicy, EmbeddedObjectMetadata podMetadata, String portName, String priorityClassName, Integer replicas, ResourceRequirements resources, String retention, String routePrefix, List<String> secrets, PodSecurityContext securityContext, String serviceAccountName, String serviceName, String sha, StorageSpec storage, String tag, Long terminationGracePeriodSeconds, List<Toleration> tolerations, List<TopologySpreadConstraint> topologySpreadConstraints, String version, List<VolumeMount> volumeMounts, List<Volume> volumes, AlertmanagerWebSpec web) {
         super();
         this.additionalArgs = additionalArgs;
         this.additionalPeers = additionalPeers;
@@ -294,6 +297,7 @@ public class AlertmanagerSpec implements Editable<AlertmanagerSpecBuilder>, Kube
         this.externalUrl = externalUrl;
         this.forceEnableClusterMode = forceEnableClusterMode;
         this.hostAliases = hostAliases;
+        this.hostUsers = hostUsers;
         this.image = image;
         this.imagePullPolicy = imagePullPolicy;
         this.imagePullSecrets = imagePullSecrets;
@@ -736,6 +740,22 @@ public class AlertmanagerSpec implements Editable<AlertmanagerSpecBuilder>, Kube
     }
 
     /**
+     * HostUsers supports the user space in Kubernetes.<br><p> <br><p> More info: https://kubernetes.io/docs/tasks/configure-pod-container/user-namespaces/<br><p> <br><p> The feature requires at least Kubernetes 1.28 with the `UserNamespacesSupport` feature gate enabled. Starting Kubernetes 1.33, the feature is enabled by default.
+     */
+    @JsonProperty("hostUsers")
+    public Boolean getHostUsers() {
+        return hostUsers;
+    }
+
+    /**
+     * HostUsers supports the user space in Kubernetes.<br><p> <br><p> More info: https://kubernetes.io/docs/tasks/configure-pod-container/user-namespaces/<br><p> <br><p> The feature requires at least Kubernetes 1.28 with the `UserNamespacesSupport` feature gate enabled. Starting Kubernetes 1.33, the feature is enabled by default.
+     */
+    @JsonProperty("hostUsers")
+    public void setHostUsers(Boolean hostUsers) {
+        this.hostUsers = hostUsers;
+    }
+
+    /**
      * Image if specified has precedence over baseImage, tag and sha combinations. Specifying the version is still necessary to ensure the Prometheus Operator knows what version of Alertmanager is being configured.
      */
     @JsonProperty("image")
@@ -866,18 +886,18 @@ public class AlertmanagerSpec implements Editable<AlertmanagerSpecBuilder>, Kube
     }
 
     /**
-     * Minimum number of seconds for which a newly created pod should be ready without any of its container crashing for it to be considered available. Defaults to 0 (pod will be considered available as soon as it is ready) This is an alpha field from kubernetes 1.22 until 1.24 which requires enabling the StatefulSetMinReadySeconds feature gate.
+     * Minimum number of seconds for which a newly created pod should be ready without any of its container crashing for it to be considered available.<br><p> <br><p> If unset, pods will be considered available as soon as they are ready.
      */
     @JsonProperty("minReadySeconds")
-    public Long getMinReadySeconds() {
+    public Integer getMinReadySeconds() {
         return minReadySeconds;
     }
 
     /**
-     * Minimum number of seconds for which a newly created pod should be ready without any of its container crashing for it to be considered available. Defaults to 0 (pod will be considered available as soon as it is ready) This is an alpha field from kubernetes 1.22 until 1.24 which requires enabling the StatefulSetMinReadySeconds feature gate.
+     * Minimum number of seconds for which a newly created pod should be ready without any of its container crashing for it to be considered available.<br><p> <br><p> If unset, pods will be considered available as soon as they are ready.
      */
     @JsonProperty("minReadySeconds")
-    public void setMinReadySeconds(Long minReadySeconds) {
+    public void setMinReadySeconds(Integer minReadySeconds) {
         this.minReadySeconds = minReadySeconds;
     }
 
@@ -899,7 +919,7 @@ public class AlertmanagerSpec implements Editable<AlertmanagerSpecBuilder>, Kube
     }
 
     /**
-     * If set to true all actions on the underlying managed objects are not goint to be performed, except for delete actions.
+     * If set to true all actions on the underlying managed objects are not going to be performed, except for delete actions.
      */
     @JsonProperty("paused")
     public Boolean getPaused() {
@@ -907,7 +927,7 @@ public class AlertmanagerSpec implements Editable<AlertmanagerSpecBuilder>, Kube
     }
 
     /**
-     * If set to true all actions on the underlying managed objects are not goint to be performed, except for delete actions.
+     * If set to true all actions on the underlying managed objects are not going to be performed, except for delete actions.
      */
     @JsonProperty("paused")
     public void setPaused(Boolean paused) {
