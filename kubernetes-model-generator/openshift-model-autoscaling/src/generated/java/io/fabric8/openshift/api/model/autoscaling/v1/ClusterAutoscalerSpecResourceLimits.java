@@ -113,7 +113,7 @@ public class ClusterAutoscalerSpecResourceLimits implements Editable<ClusterAuto
     }
 
     /**
-     * Minimum and maximum number of different GPUs in cluster, in the format &lt;gpu_type&gt;:&lt;min&gt;:&lt;max&gt;. Cluster autoscaler will not scale the cluster beyond these numbers. Can be passed multiple times.
+     * Minimum and maximum number of different GPUs in cluster, in the format &lt;gpu_type&gt;:&lt;min&gt;:&lt;max&gt;.<br><p> Cluster autoscaler will not scale the cluster beyond these numbers. Can be passed multiple times.
      */
     @JsonProperty("gpus")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -122,7 +122,7 @@ public class ClusterAutoscalerSpecResourceLimits implements Editable<ClusterAuto
     }
 
     /**
-     * Minimum and maximum number of different GPUs in cluster, in the format &lt;gpu_type&gt;:&lt;min&gt;:&lt;max&gt;. Cluster autoscaler will not scale the cluster beyond these numbers. Can be passed multiple times.
+     * Minimum and maximum number of different GPUs in cluster, in the format &lt;gpu_type&gt;:&lt;min&gt;:&lt;max&gt;.<br><p> Cluster autoscaler will not scale the cluster beyond these numbers. Can be passed multiple times.
      */
     @JsonProperty("gpus")
     public void setGpus(List<ClusterAutoscalerSpecRLGpus> gpus) {
@@ -130,7 +130,7 @@ public class ClusterAutoscalerSpecResourceLimits implements Editable<ClusterAuto
     }
 
     /**
-     * Maximum number of nodes in all node groups. Cluster autoscaler will not grow the cluster beyond this number.
+     * Maximum number of nodes in all node groups.<br><p> Cluster autoscaler will not grow the cluster beyond this number.
      */
     @JsonProperty("maxNodesTotal")
     public Integer getMaxNodesTotal() {
@@ -138,7 +138,7 @@ public class ClusterAutoscalerSpecResourceLimits implements Editable<ClusterAuto
     }
 
     /**
-     * Maximum number of nodes in all node groups. Cluster autoscaler will not grow the cluster beyond this number.
+     * Maximum number of nodes in all node groups.<br><p> Cluster autoscaler will not grow the cluster beyond this number.
      */
     @JsonProperty("maxNodesTotal")
     public void setMaxNodesTotal(Integer maxNodesTotal) {

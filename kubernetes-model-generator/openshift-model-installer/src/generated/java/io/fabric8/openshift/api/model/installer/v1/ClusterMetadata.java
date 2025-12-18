@@ -53,6 +53,7 @@ import lombok.experimental.Accessors;
     "nutanix",
     "openstack",
     "ovirt",
+    "powervc",
     "powervs",
     "vsphere"
 })
@@ -107,6 +108,8 @@ public class ClusterMetadata implements Editable<ClusterMetadataBuilder>, Kubern
     private io.fabric8.openshift.api.model.installer.openstack.v1.Metadata openstack;
     @JsonProperty("ovirt")
     private io.fabric8.openshift.api.model.installer.ovirt.v1.Metadata ovirt;
+    @JsonProperty("powervc")
+    private io.fabric8.openshift.api.model.installer.powervc.v1.Metadata powervc;
     @JsonProperty("powervs")
     private io.fabric8.openshift.api.model.installer.powervs.v1.Metadata powervs;
     @JsonProperty("vsphere")
@@ -120,7 +123,7 @@ public class ClusterMetadata implements Editable<ClusterMetadataBuilder>, Kubern
     public ClusterMetadata() {
     }
 
-    public ClusterMetadata(Metadata aws, io.fabric8.openshift.api.model.installer.azure.v1.Metadata azure, io.fabric8.openshift.api.model.installer.baremetal.v1.Metadata baremetal, String clusterID, String clusterName, CustomFeatureGates customFeatureSet, String featureSet, io.fabric8.openshift.api.model.installer.gcp.v1.Metadata gcp, io.fabric8.openshift.api.model.installer.ibmcloud.v1.Metadata ibmcloud, String infraID, io.fabric8.openshift.api.model.installer.nutanix.v1.Metadata nutanix, io.fabric8.openshift.api.model.installer.openstack.v1.Metadata openstack, io.fabric8.openshift.api.model.installer.ovirt.v1.Metadata ovirt, io.fabric8.openshift.api.model.installer.powervs.v1.Metadata powervs, io.fabric8.openshift.api.model.installer.vsphere.v1.Metadata vsphere) {
+    public ClusterMetadata(Metadata aws, io.fabric8.openshift.api.model.installer.azure.v1.Metadata azure, io.fabric8.openshift.api.model.installer.baremetal.v1.Metadata baremetal, String clusterID, String clusterName, CustomFeatureGates customFeatureSet, String featureSet, io.fabric8.openshift.api.model.installer.gcp.v1.Metadata gcp, io.fabric8.openshift.api.model.installer.ibmcloud.v1.Metadata ibmcloud, String infraID, io.fabric8.openshift.api.model.installer.nutanix.v1.Metadata nutanix, io.fabric8.openshift.api.model.installer.openstack.v1.Metadata openstack, io.fabric8.openshift.api.model.installer.ovirt.v1.Metadata ovirt, io.fabric8.openshift.api.model.installer.powervc.v1.Metadata powervc, io.fabric8.openshift.api.model.installer.powervs.v1.Metadata powervs, io.fabric8.openshift.api.model.installer.vsphere.v1.Metadata vsphere) {
         super();
         this.aws = aws;
         this.azure = azure;
@@ -135,6 +138,7 @@ public class ClusterMetadata implements Editable<ClusterMetadataBuilder>, Kubern
         this.nutanix = nutanix;
         this.openstack = openstack;
         this.ovirt = ovirt;
+        this.powervc = powervc;
         this.powervs = powervs;
         this.vsphere = vsphere;
     }
@@ -345,6 +349,22 @@ public class ClusterMetadata implements Editable<ClusterMetadataBuilder>, Kubern
     @JsonProperty("ovirt")
     public void setOvirt(io.fabric8.openshift.api.model.installer.ovirt.v1.Metadata ovirt) {
         this.ovirt = ovirt;
+    }
+
+    /**
+     * ClusterMetadata contains information regarding the cluster that was created by installer.
+     */
+    @JsonProperty("powervc")
+    public io.fabric8.openshift.api.model.installer.powervc.v1.Metadata getPowervc() {
+        return powervc;
+    }
+
+    /**
+     * ClusterMetadata contains information regarding the cluster that was created by installer.
+     */
+    @JsonProperty("powervc")
+    public void setPowervc(io.fabric8.openshift.api.model.installer.powervc.v1.Metadata powervc) {
+        this.powervc = powervc;
     }
 
     /**

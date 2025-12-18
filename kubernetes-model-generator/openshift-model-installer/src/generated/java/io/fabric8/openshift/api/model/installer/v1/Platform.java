@@ -48,6 +48,7 @@ import lombok.experimental.Accessors;
     "nutanix",
     "openstack",
     "ovirt",
+    "powervc",
     "powervs",
     "vsphere"
 })
@@ -96,6 +97,8 @@ public class Platform implements Editable<PlatformBuilder>, KubernetesResource
     private io.fabric8.openshift.api.model.installer.openstack.v1.Platform openstack;
     @JsonProperty("ovirt")
     private io.fabric8.openshift.api.model.installer.ovirt.v1.Platform ovirt;
+    @JsonProperty("powervc")
+    private io.fabric8.openshift.api.model.installer.powervc.v1.Platform powervc;
     @JsonProperty("powervs")
     private io.fabric8.openshift.api.model.installer.powervs.v1.Platform powervs;
     @JsonProperty("vsphere")
@@ -109,7 +112,7 @@ public class Platform implements Editable<PlatformBuilder>, KubernetesResource
     public Platform() {
     }
 
-    public Platform(io.fabric8.openshift.api.model.installer.aws.v1.Platform aws, io.fabric8.openshift.api.model.installer.azure.v1.Platform azure, io.fabric8.openshift.api.model.installer.baremetal.v1.Platform baremetal, io.fabric8.openshift.api.model.installer.external.v1.Platform external, io.fabric8.openshift.api.model.installer.gcp.v1.Platform gcp, io.fabric8.openshift.api.model.installer.ibmcloud.v1.Platform ibmcloud, io.fabric8.openshift.api.model.installer.none.v1.Platform none, io.fabric8.openshift.api.model.installer.nutanix.v1.Platform nutanix, io.fabric8.openshift.api.model.installer.openstack.v1.Platform openstack, io.fabric8.openshift.api.model.installer.ovirt.v1.Platform ovirt, io.fabric8.openshift.api.model.installer.powervs.v1.Platform powervs, io.fabric8.openshift.api.model.installer.vsphere.v1.Platform vsphere) {
+    public Platform(io.fabric8.openshift.api.model.installer.aws.v1.Platform aws, io.fabric8.openshift.api.model.installer.azure.v1.Platform azure, io.fabric8.openshift.api.model.installer.baremetal.v1.Platform baremetal, io.fabric8.openshift.api.model.installer.external.v1.Platform external, io.fabric8.openshift.api.model.installer.gcp.v1.Platform gcp, io.fabric8.openshift.api.model.installer.ibmcloud.v1.Platform ibmcloud, io.fabric8.openshift.api.model.installer.none.v1.Platform none, io.fabric8.openshift.api.model.installer.nutanix.v1.Platform nutanix, io.fabric8.openshift.api.model.installer.openstack.v1.Platform openstack, io.fabric8.openshift.api.model.installer.ovirt.v1.Platform ovirt, io.fabric8.openshift.api.model.installer.powervc.v1.Platform powervc, io.fabric8.openshift.api.model.installer.powervs.v1.Platform powervs, io.fabric8.openshift.api.model.installer.vsphere.v1.Platform vsphere) {
         super();
         this.aws = aws;
         this.azure = azure;
@@ -121,6 +124,7 @@ public class Platform implements Editable<PlatformBuilder>, KubernetesResource
         this.nutanix = nutanix;
         this.openstack = openstack;
         this.ovirt = ovirt;
+        this.powervc = powervc;
         this.powervs = powervs;
         this.vsphere = vsphere;
     }
@@ -283,6 +287,22 @@ public class Platform implements Editable<PlatformBuilder>, KubernetesResource
     @JsonProperty("ovirt")
     public void setOvirt(io.fabric8.openshift.api.model.installer.ovirt.v1.Platform ovirt) {
         this.ovirt = ovirt;
+    }
+
+    /**
+     * Platform is the configuration for the specific platform upon which to perform the installation. Only one of the platform configuration should be set.
+     */
+    @JsonProperty("powervc")
+    public io.fabric8.openshift.api.model.installer.powervc.v1.Platform getPowervc() {
+        return powervc;
+    }
+
+    /**
+     * Platform is the configuration for the specific platform upon which to perform the installation. Only one of the platform configuration should be set.
+     */
+    @JsonProperty("powervc")
+    public void setPowervc(io.fabric8.openshift.api.model.installer.powervc.v1.Platform powervc) {
+        this.powervc = powervc;
     }
 
     /**

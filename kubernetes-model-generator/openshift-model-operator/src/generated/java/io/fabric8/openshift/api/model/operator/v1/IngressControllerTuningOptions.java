@@ -44,6 +44,7 @@ import lombok.experimental.Accessors;
     "headerBufferBytes",
     "headerBufferMaxRewriteBytes",
     "healthCheckInterval",
+    "httpKeepAliveTimeout",
     "maxConnections",
     "reloadInterval",
     "serverFinTimeout",
@@ -89,6 +90,8 @@ public class IngressControllerTuningOptions implements Editable<IngressControlle
     private Integer headerBufferMaxRewriteBytes;
     @JsonProperty("healthCheckInterval")
     private String healthCheckInterval;
+    @JsonProperty("httpKeepAliveTimeout")
+    private String httpKeepAliveTimeout;
     @JsonProperty("maxConnections")
     private Integer maxConnections;
     @JsonProperty("reloadInterval")
@@ -112,7 +115,7 @@ public class IngressControllerTuningOptions implements Editable<IngressControlle
     public IngressControllerTuningOptions() {
     }
 
-    public IngressControllerTuningOptions(String clientFinTimeout, String clientTimeout, String connectTimeout, Integer headerBufferBytes, Integer headerBufferMaxRewriteBytes, String healthCheckInterval, Integer maxConnections, String reloadInterval, String serverFinTimeout, String serverTimeout, Integer threadCount, String tlsInspectDelay, String tunnelTimeout) {
+    public IngressControllerTuningOptions(String clientFinTimeout, String clientTimeout, String connectTimeout, Integer headerBufferBytes, Integer headerBufferMaxRewriteBytes, String healthCheckInterval, String httpKeepAliveTimeout, Integer maxConnections, String reloadInterval, String serverFinTimeout, String serverTimeout, Integer threadCount, String tlsInspectDelay, String tunnelTimeout) {
         super();
         this.clientFinTimeout = clientFinTimeout;
         this.clientTimeout = clientTimeout;
@@ -120,6 +123,7 @@ public class IngressControllerTuningOptions implements Editable<IngressControlle
         this.headerBufferBytes = headerBufferBytes;
         this.headerBufferMaxRewriteBytes = headerBufferMaxRewriteBytes;
         this.healthCheckInterval = healthCheckInterval;
+        this.httpKeepAliveTimeout = httpKeepAliveTimeout;
         this.maxConnections = maxConnections;
         this.reloadInterval = reloadInterval;
         this.serverFinTimeout = serverFinTimeout;
@@ -223,6 +227,22 @@ public class IngressControllerTuningOptions implements Editable<IngressControlle
     @JsonProperty("healthCheckInterval")
     public void setHealthCheckInterval(String healthCheckInterval) {
         this.healthCheckInterval = healthCheckInterval;
+    }
+
+    /**
+     * IngressControllerTuningOptions specifies options for tuning the performance of ingress controller pods
+     */
+    @JsonProperty("httpKeepAliveTimeout")
+    public String getHttpKeepAliveTimeout() {
+        return httpKeepAliveTimeout;
+    }
+
+    /**
+     * IngressControllerTuningOptions specifies options for tuning the performance of ingress controller pods
+     */
+    @JsonProperty("httpKeepAliveTimeout")
+    public void setHttpKeepAliveTimeout(String httpKeepAliveTimeout) {
+        this.httpKeepAliveTimeout = httpKeepAliveTimeout;
     }
 
     /**

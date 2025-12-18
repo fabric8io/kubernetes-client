@@ -1,7 +1,9 @@
 
 package io.fabric8.openshift.api.model.installer.azure.v1;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import javax.annotation.processing.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
@@ -50,6 +52,8 @@ import lombok.experimental.Accessors;
     "outboundType",
     "region",
     "resourceGroupName",
+    "subnets",
+    "userProvisionedDNS",
     "userTags",
     "virtualNetwork"
 })
@@ -102,6 +106,11 @@ public class Platform implements Editable<PlatformBuilder>, KubernetesResource
     private String region;
     @JsonProperty("resourceGroupName")
     private String resourceGroupName;
+    @JsonProperty("subnets")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<SubnetSpec> subnets = new ArrayList<>();
+    @JsonProperty("userProvisionedDNS")
+    private String userProvisionedDNS;
     @JsonProperty("userTags")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Map<String, String> userTags = new LinkedHashMap<>();
@@ -116,7 +125,7 @@ public class Platform implements Editable<PlatformBuilder>, KubernetesResource
     public Platform() {
     }
 
-    public Platform(String armEndpoint, String baseDomainResourceGroupName, String cloudName, String clusterOSImage, String computeSubnet, String controlPlaneSubnet, CustomerManagedKey customerManagedKey, MachinePool defaultMachinePlatform, String networkResourceGroupName, String outboundType, String region, String resourceGroupName, Map<String, String> userTags, String virtualNetwork) {
+    public Platform(String armEndpoint, String baseDomainResourceGroupName, String cloudName, String clusterOSImage, String computeSubnet, String controlPlaneSubnet, CustomerManagedKey customerManagedKey, MachinePool defaultMachinePlatform, String networkResourceGroupName, String outboundType, String region, String resourceGroupName, List<SubnetSpec> subnets, String userProvisionedDNS, Map<String, String> userTags, String virtualNetwork) {
         super();
         this.armEndpoint = armEndpoint;
         this.baseDomainResourceGroupName = baseDomainResourceGroupName;
@@ -130,6 +139,8 @@ public class Platform implements Editable<PlatformBuilder>, KubernetesResource
         this.outboundType = outboundType;
         this.region = region;
         this.resourceGroupName = resourceGroupName;
+        this.subnets = subnets;
+        this.userProvisionedDNS = userProvisionedDNS;
         this.userTags = userTags;
         this.virtualNetwork = virtualNetwork;
     }
@@ -199,7 +210,7 @@ public class Platform implements Editable<PlatformBuilder>, KubernetesResource
     }
 
     /**
-     * ComputeSubnet specifies an existing subnet for use by compute nodes
+     * ComputeSubnet specifies an existing subnet for use by compute nodes<br><p> <br><p> Deprecated: use platform.Azure.Subnets section
      */
     @JsonProperty("computeSubnet")
     public String getComputeSubnet() {
@@ -207,7 +218,7 @@ public class Platform implements Editable<PlatformBuilder>, KubernetesResource
     }
 
     /**
-     * ComputeSubnet specifies an existing subnet for use by compute nodes
+     * ComputeSubnet specifies an existing subnet for use by compute nodes<br><p> <br><p> Deprecated: use platform.Azure.Subnets section
      */
     @JsonProperty("computeSubnet")
     public void setComputeSubnet(String computeSubnet) {
@@ -215,7 +226,7 @@ public class Platform implements Editable<PlatformBuilder>, KubernetesResource
     }
 
     /**
-     * ControlPlaneSubnet specifies an existing subnet for use by the control plane nodes
+     * ControlPlaneSubnet specifies an existing subnet for use by the control plane nodes<br><p> <br><p> Deprecated: use platform.Azure.Subnets section
      */
     @JsonProperty("controlPlaneSubnet")
     public String getControlPlaneSubnet() {
@@ -223,7 +234,7 @@ public class Platform implements Editable<PlatformBuilder>, KubernetesResource
     }
 
     /**
-     * ControlPlaneSubnet specifies an existing subnet for use by the control plane nodes
+     * ControlPlaneSubnet specifies an existing subnet for use by the control plane nodes<br><p> <br><p> Deprecated: use platform.Azure.Subnets section
      */
     @JsonProperty("controlPlaneSubnet")
     public void setControlPlaneSubnet(String controlPlaneSubnet) {
@@ -279,7 +290,7 @@ public class Platform implements Editable<PlatformBuilder>, KubernetesResource
     }
 
     /**
-     * OutboundType is a strategy for how egress from cluster is achieved. When not specified default is "Loadbalancer". "NatGateway" is only available in TechPreview.
+     * OutboundType is a strategy for how egress from cluster is achieved. When not specified default is "Loadbalancer".
      */
     @JsonProperty("outboundType")
     public String getOutboundType() {
@@ -287,7 +298,7 @@ public class Platform implements Editable<PlatformBuilder>, KubernetesResource
     }
 
     /**
-     * OutboundType is a strategy for how egress from cluster is achieved. When not specified default is "Loadbalancer". "NatGateway" is only available in TechPreview.
+     * OutboundType is a strategy for how egress from cluster is achieved. When not specified default is "Loadbalancer".
      */
     @JsonProperty("outboundType")
     public void setOutboundType(String outboundType) {
@@ -324,6 +335,39 @@ public class Platform implements Editable<PlatformBuilder>, KubernetesResource
     @JsonProperty("resourceGroupName")
     public void setResourceGroupName(String resourceGroupName) {
         this.resourceGroupName = resourceGroupName;
+    }
+
+    /**
+     * Subnets is the list of subnets the user can bring into the cluster to be used.
+     */
+    @JsonProperty("subnets")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public List<SubnetSpec> getSubnets() {
+        return subnets;
+    }
+
+    /**
+     * Subnets is the list of subnets the user can bring into the cluster to be used.
+     */
+    @JsonProperty("subnets")
+    public void setSubnets(List<SubnetSpec> subnets) {
+        this.subnets = subnets;
+    }
+
+    /**
+     * UserProvisionedDNS indicates if the customer is providing their own DNS solution in place of the default provisioned by the Installer.
+     */
+    @JsonProperty("userProvisionedDNS")
+    public String getUserProvisionedDNS() {
+        return userProvisionedDNS;
+    }
+
+    /**
+     * UserProvisionedDNS indicates if the customer is providing their own DNS solution in place of the default provisioned by the Installer.
+     */
+    @JsonProperty("userProvisionedDNS")
+    public void setUserProvisionedDNS(String userProvisionedDNS) {
+        this.userProvisionedDNS = userProvisionedDNS;
     }
 
     /**

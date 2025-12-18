@@ -41,6 +41,7 @@ import lombok.experimental.Accessors;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "conditions",
+    "observedGeneration",
     "tunedProfile"
 })
 @ToString
@@ -70,7 +71,9 @@ public class ProfileStatus implements Editable<ProfileStatusBuilder>, Kubernetes
 
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<ProfileStatusCondition> conditions = new ArrayList<>();
+    private List<StatusCondition> conditions = new ArrayList<>();
+    @JsonProperty("observedGeneration")
+    private Long observedGeneration;
     @JsonProperty("tunedProfile")
     private String tunedProfile;
     @JsonIgnore
@@ -82,9 +85,10 @@ public class ProfileStatus implements Editable<ProfileStatusBuilder>, Kubernetes
     public ProfileStatus() {
     }
 
-    public ProfileStatus(List<ProfileStatusCondition> conditions, String tunedProfile) {
+    public ProfileStatus(List<StatusCondition> conditions, Long observedGeneration, String tunedProfile) {
         super();
         this.conditions = conditions;
+        this.observedGeneration = observedGeneration;
         this.tunedProfile = tunedProfile;
     }
 
@@ -93,7 +97,7 @@ public class ProfileStatus implements Editable<ProfileStatusBuilder>, Kubernetes
      */
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<ProfileStatusCondition> getConditions() {
+    public List<StatusCondition> getConditions() {
         return conditions;
     }
 
@@ -101,8 +105,24 @@ public class ProfileStatus implements Editable<ProfileStatusBuilder>, Kubernetes
      * conditions represents the state of the per-node Profile application
      */
     @JsonProperty("conditions")
-    public void setConditions(List<ProfileStatusCondition> conditions) {
+    public void setConditions(List<StatusCondition> conditions) {
         this.conditions = conditions;
+    }
+
+    /**
+     * If set, this represents the .metadata.generation that the conditions were set based upon.
+     */
+    @JsonProperty("observedGeneration")
+    public Long getObservedGeneration() {
+        return observedGeneration;
+    }
+
+    /**
+     * If set, this represents the .metadata.generation that the conditions were set based upon.
+     */
+    @JsonProperty("observedGeneration")
+    public void setObservedGeneration(Long observedGeneration) {
+        this.observedGeneration = observedGeneration;
     }
 
     /**

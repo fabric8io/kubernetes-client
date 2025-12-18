@@ -90,7 +90,7 @@ public class MachineAutoscalerStatusLastTargetRef implements Editable<MachineAut
     }
 
     /**
-     * APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+     * APIVersion defines the versioned schema of this representation of an<br><p> object. Servers should convert recognized schemas to the latest internal<br><p> value, and may reject unrecognized values. More info:<br><p> https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -98,7 +98,7 @@ public class MachineAutoscalerStatusLastTargetRef implements Editable<MachineAut
     }
 
     /**
-     * APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+     * APIVersion defines the versioned schema of this representation of an<br><p> object. Servers should convert recognized schemas to the latest internal<br><p> value, and may reject unrecognized values. More info:<br><p> https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -106,7 +106,7 @@ public class MachineAutoscalerStatusLastTargetRef implements Editable<MachineAut
     }
 
     /**
-     * Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+     * Kind is a string value representing the REST resource this object<br><p> represents. Servers may infer this from the endpoint the client submits<br><p> requests to. Cannot be updated. In CamelCase. More info:<br><p> https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -114,7 +114,7 @@ public class MachineAutoscalerStatusLastTargetRef implements Editable<MachineAut
     }
 
     /**
-     * Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+     * Kind is a string value representing the REST resource this object<br><p> represents. Servers may infer this from the endpoint the client submits<br><p> requests to. Cannot be updated. In CamelCase. More info:<br><p> https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
      */
     @JsonProperty("kind")
     public void setKind(String kind) {
@@ -122,7 +122,7 @@ public class MachineAutoscalerStatusLastTargetRef implements Editable<MachineAut
     }
 
     /**
-     * Name specifies a name of an object, e.g. worker-us-east-1a. Scalable resources are expected to exist under a single namespace.
+     * Name specifies a name of an object, e.g. worker-us-east-1a.<br><p> Scalable resources are expected to exist under a single namespace.
      */
     @JsonProperty("name")
     public String getName() {
@@ -130,7 +130,7 @@ public class MachineAutoscalerStatusLastTargetRef implements Editable<MachineAut
     }
 
     /**
-     * Name specifies a name of an object, e.g. worker-us-east-1a. Scalable resources are expected to exist under a single namespace.
+     * Name specifies a name of an object, e.g. worker-us-east-1a.<br><p> Scalable resources are expected to exist under a single namespace.
      */
     @JsonProperty("name")
     public void setName(String name) {

@@ -17,10 +17,10 @@ package io.fabric8.openshift.client.server.mock;
 
 import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
 import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
-import io.fabric8.openshift.api.model.miscellaneous.metal3.v1beta1.Metal3RemediationTemplate;
-import io.fabric8.openshift.api.model.miscellaneous.metal3.v1beta1.Metal3RemediationTemplateBuilder;
-import io.fabric8.openshift.api.model.miscellaneous.metal3.v1beta1.Metal3RemediationTemplateList;
-import io.fabric8.openshift.api.model.miscellaneous.metal3.v1beta1.Metal3RemediationTemplateListBuilder;
+import io.fabric8.openshift.api.model.miscellaneous.clusterapi.infrastructure.v1beta1.Metal3RemediationTemplate;
+import io.fabric8.openshift.api.model.miscellaneous.clusterapi.infrastructure.v1beta1.Metal3RemediationTemplateBuilder;
+import io.fabric8.openshift.api.model.miscellaneous.clusterapi.infrastructure.v1beta1.Metal3RemediationTemplateList;
+import io.fabric8.openshift.api.model.miscellaneous.clusterapi.infrastructure.v1beta1.Metal3RemediationTemplateListBuilder;
 import io.fabric8.openshift.client.OpenShiftClient;
 import org.junit.jupiter.api.Test;
 

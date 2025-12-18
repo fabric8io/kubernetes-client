@@ -38,8 +38,11 @@ import lombok.experimental.Accessors;
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
+    "endpoint",
+    "firewallRulesManagement",
     "networkProjectID",
     "privateZoneDomain",
+    "privateZoneProjectID",
     "projectID",
     "region"
 })
@@ -68,10 +71,16 @@ import lombok.experimental.Accessors;
 public class Metadata implements Editable<MetadataBuilder>, KubernetesResource
 {
 
+    @JsonProperty("endpoint")
+    private PSCEndpoint endpoint;
+    @JsonProperty("firewallRulesManagement")
+    private String firewallRulesManagement;
     @JsonProperty("networkProjectID")
     private String networkProjectID;
     @JsonProperty("privateZoneDomain")
     private String privateZoneDomain;
+    @JsonProperty("privateZoneProjectID")
+    private String privateZoneProjectID;
     @JsonProperty("projectID")
     private String projectID;
     @JsonProperty("region")
@@ -85,12 +94,47 @@ public class Metadata implements Editable<MetadataBuilder>, KubernetesResource
     public Metadata() {
     }
 
-    public Metadata(String networkProjectID, String privateZoneDomain, String projectID, String region) {
+    public Metadata(PSCEndpoint endpoint, String firewallRulesManagement, String networkProjectID, String privateZoneDomain, String privateZoneProjectID, String projectID, String region) {
         super();
+        this.endpoint = endpoint;
+        this.firewallRulesManagement = firewallRulesManagement;
         this.networkProjectID = networkProjectID;
         this.privateZoneDomain = privateZoneDomain;
+        this.privateZoneProjectID = privateZoneProjectID;
         this.projectID = projectID;
         this.region = region;
+    }
+
+    /**
+     * Metadata contains GCP metadata (e.g. for uninstalling the cluster).
+     */
+    @JsonProperty("endpoint")
+    public PSCEndpoint getEndpoint() {
+        return endpoint;
+    }
+
+    /**
+     * Metadata contains GCP metadata (e.g. for uninstalling the cluster).
+     */
+    @JsonProperty("endpoint")
+    public void setEndpoint(PSCEndpoint endpoint) {
+        this.endpoint = endpoint;
+    }
+
+    /**
+     * Metadata contains GCP metadata (e.g. for uninstalling the cluster).
+     */
+    @JsonProperty("firewallRulesManagement")
+    public String getFirewallRulesManagement() {
+        return firewallRulesManagement;
+    }
+
+    /**
+     * Metadata contains GCP metadata (e.g. for uninstalling the cluster).
+     */
+    @JsonProperty("firewallRulesManagement")
+    public void setFirewallRulesManagement(String firewallRulesManagement) {
+        this.firewallRulesManagement = firewallRulesManagement;
     }
 
     /**
@@ -123,6 +167,22 @@ public class Metadata implements Editable<MetadataBuilder>, KubernetesResource
     @JsonProperty("privateZoneDomain")
     public void setPrivateZoneDomain(String privateZoneDomain) {
         this.privateZoneDomain = privateZoneDomain;
+    }
+
+    /**
+     * Metadata contains GCP metadata (e.g. for uninstalling the cluster).
+     */
+    @JsonProperty("privateZoneProjectID")
+    public String getPrivateZoneProjectID() {
+        return privateZoneProjectID;
+    }
+
+    /**
+     * Metadata contains GCP metadata (e.g. for uninstalling the cluster).
+     */
+    @JsonProperty("privateZoneProjectID")
+    public void setPrivateZoneProjectID(String privateZoneProjectID) {
+        this.privateZoneProjectID = privateZoneProjectID;
     }
 
     /**

@@ -39,7 +39,6 @@ import lombok.experimental.Accessors;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "armEndpoint",
-    "baseDomainName",
     "baseDomainResourceGroupName",
     "cloudName",
     "region",
@@ -72,8 +71,6 @@ public class Metadata implements Editable<MetadataBuilder>, KubernetesResource
 
     @JsonProperty("armEndpoint")
     private String armEndpoint;
-    @JsonProperty("baseDomainName")
-    private String baseDomainName;
     @JsonProperty("baseDomainResourceGroupName")
     private String baseDomainResourceGroupName;
     @JsonProperty("cloudName")
@@ -91,10 +88,9 @@ public class Metadata implements Editable<MetadataBuilder>, KubernetesResource
     public Metadata() {
     }
 
-    public Metadata(String armEndpoint, String baseDomainName, String baseDomainResourceGroupName, String cloudName, String region, String resourceGroupName) {
+    public Metadata(String armEndpoint, String baseDomainResourceGroupName, String cloudName, String region, String resourceGroupName) {
         super();
         this.armEndpoint = armEndpoint;
-        this.baseDomainName = baseDomainName;
         this.baseDomainResourceGroupName = baseDomainResourceGroupName;
         this.cloudName = cloudName;
         this.region = region;
@@ -115,22 +111,6 @@ public class Metadata implements Editable<MetadataBuilder>, KubernetesResource
     @JsonProperty("armEndpoint")
     public void setArmEndpoint(String armEndpoint) {
         this.armEndpoint = armEndpoint;
-    }
-
-    /**
-     * Metadata contains Azure metadata (e.g. for uninstalling the cluster).
-     */
-    @JsonProperty("baseDomainName")
-    public String getBaseDomainName() {
-        return baseDomainName;
-    }
-
-    /**
-     * Metadata contains Azure metadata (e.g. for uninstalling the cluster).
-     */
-    @JsonProperty("baseDomainName")
-    public void setBaseDomainName(String baseDomainName) {
-        this.baseDomainName = baseDomainName;
     }
 
     /**

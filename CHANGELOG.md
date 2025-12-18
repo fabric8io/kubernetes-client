@@ -24,6 +24,7 @@
 #### New Features
 * Fix #5081: Add support for streaming lists via Watchable.streamingList method
 * Fix #7048: Support for Kubernetes v1.34 (Of Wind & Will)
+* Fix #7371: Update Fabric8 OpenShift Model as per OpenShift 4.20
 * Fix #7355: (crd-generator) Add SchemaCustomizer annotation for advanced schema modification
 
 #### _**Note**_: Breaking changes

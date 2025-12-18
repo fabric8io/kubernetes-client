@@ -60,7 +60,9 @@
     <module>openshift-model-autoscaling</module>
     <module>openshift-model-config</module>
     <module>openshift-model-hive</module>
+    <module>openshift-model-miscellaneous</module>
     <module>openshift-model-installer</module>
+    <module>openshift-model-insights</module>
     <module>openshift-model-operator</module>
     <module>openshift-model-operatorhub</module>
     <module>openshift-model-machine</module>
@@ -70,7 +72,6 @@
     <module>openshift-model-tuned</module>
     <module>openshift-model-whereabouts</module>
     <module>openshift-model-storageversionmigrator</module>
-    <module>openshift-model-miscellaneous</module>
   </modules>
 
   <properties>
@@ -90,7 +91,7 @@
     <openapi.schema.org.chaos-mesh>${project.basedir}/../../../kubernetes-model-generator/openapi/schemas/org.chaos-mesh.json</openapi.schema.org.chaos-mesh>
     <openapi.schema.org.ovn>${project.basedir}/../../../kubernetes-model-generator/openapi/schemas/org.ovn.json</openapi.schema.org.ovn>
     <openapi.schema.sh.volcano>${project.basedir}/../../../kubernetes-model-generator/openapi/schemas/sh.volcano.json</openapi.schema.sh.volcano>
-    <openapi.openshift-version>4.17</openapi.openshift-version>
+    <openapi.openshift-version>4.20</openapi.openshift-version>
     <openapi.storageversionmigrator-revision>5c8923c5ff96ceb4435f66b986b5aec2dd0cbc22</openapi.storageversionmigrator-revision>
     <openapi.whereabouts-revision>5bb9e1542cf987458db181bedee7c051a1538dc1</openapi.whereabouts-revision>
     <osgi.require-capability>
@@ -189,6 +190,8 @@
                 <io.k8s.sigs.cluster-api.api>io.fabric8.kubernetes.api.model.clusterapi</io.k8s.sigs.cluster-api.api>
                 <io.k8s.storage.snapshot.v1>io.fabric8.volumesnapshot.api.model</io.k8s.storage.snapshot.v1>
                 <io.open-cluster-management>io.fabric8.openclustermanagement.api.model</io.open-cluster-management>
+                <io.x-k8s.cluster.v1beta1>io.fabric8.kubernetes.api.model.clusterapi.v1beta1</io.x-k8s.cluster.v1beta1>
+                <io.x-k8s.cluster.infrastructure.v1beta1>io.fabric8.kubernetes.api.model.clusterapi.v1beta1</io.x-k8s.cluster.infrastructure.v1beta1>
                 <io.openshift>io.fabric8.openshift.api.model</io.openshift>
                 <io.openshift.apiserver>io.fabric8.openshift.api.model.miscellaneous.apiserver</io.openshift.apiserver>
                 <io.openshift.apps.v1>io.fabric8.openshift.api.model</io.openshift.apps.v1>
