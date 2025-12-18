@@ -42,7 +42,7 @@ type GoGenerator struct {
 func (g *GoGenerator) Generate() error {
 	g.ReportFilename = g.OutputFile + ".report.txt"
 	g.memberProcessors = []func(context *generator.Context, pkg *types.Package, t *types.Type, member *types.Member, memberIndex int){
-	  processSwaggerIgnore,
+		processSwaggerIgnore,
 		processInlineDuplicateFields,
 		processMapKeyTypes,
 		processOmitPrivateFields,
