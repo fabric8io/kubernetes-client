@@ -22,6 +22,7 @@ import (
 	"unicode"
 
 	"github.com/fabric8io/kubernetes-client/kubernetes-model-generator/openapi/generator/pkg/kubernetes"
+	"github.com/fabric8io/kubernetes-client/kubernetes-model-generator/openapi/generator/pkg/packages"
 	"k8s.io/gengo/v2"
 	"k8s.io/gengo/v2/generator"
 	"k8s.io/gengo/v2/types"
@@ -142,6 +143,12 @@ func (g *GoGenerator) KubernetesFilterFunc(c *generator.Context, t *types.Type) 
 	// There is a conflict between this codegen and codecgen, we should avoid types generated for codecgen
 	if strings.HasPrefix(t.Name.Name, "codecSelfer") {
 		return false
+	}
+	// Check if this type is explicitly excluded to avoid conflicts
+	for _, exclusion := range packages.ExcludedTypes {
+		if t.Name.Name == exclusion.TypeName && strings.Contains(t.Name.Package, exclusion.PackagePattern) {
+			return false
+		}
 	}
 	// Standard +k8s:openapi-gen=true tag
 	pkg := c.Universe.Package(t.Name.Package)
