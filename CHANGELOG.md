@@ -10,6 +10,7 @@
 * Fix #7369: Fix typo in warning log messages
 * Fix #7373: (crd-generator) Improve SchemaCustomizer with @Repeatable support and better exception messages
 * Fix #7380: Go openAPI generator errors out when embedded structs have conflicting JSON field names
+* Fix #7388: Type filters fix for conflicting types - OpenAPI generator
 
 #### Improvements
 * Fix #7277: fix BOM publish to Maven Central
