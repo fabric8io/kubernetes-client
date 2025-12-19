@@ -42,7 +42,6 @@ type GoGenerator struct {
 func (g *GoGenerator) Generate() error {
 	g.ReportFilename = g.OutputFile + ".report.txt"
 	g.memberProcessors = []func(context *generator.Context, pkg *types.Package, t *types.Type, member *types.Member, memberIndex int){
-		processSwaggerIgnore,
 		processInlineDuplicateFields,
 		processMapKeyTypes,
 		processOmitPrivateFields,
@@ -50,6 +49,7 @@ func (g *GoGenerator) Generate() error {
 		processProtobufEnumsForIstio,
 		processProtobufOneof,
 		processProtobufTags,
+		processSwaggerIgnore,
 	}
 	g.packageProcessors = []func(context *generator.Context, pkg *types.Package){
 		processProtobufPackageOneOf,
@@ -97,9 +97,9 @@ func (g *GoGenerator) processUniverse(context *generator.Context) {
 
 	for _, pkg := range context.Universe {
 		for _, t := range pkg.Types {
-			for memberIndex, member := range t.Members {
+			for memberIndex := range t.Members {
 				for _, memberProcessor := range g.memberProcessors {
-					memberProcessor(context, pkg, t, &member, memberIndex)
+					memberProcessor(context, pkg, t, &t.Members[memberIndex], memberIndex)
 				}
 			}
 		}
