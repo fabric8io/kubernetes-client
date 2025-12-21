@@ -22,6 +22,7 @@ import io.fabric8.crd.generator.CRDGenerator;
 import io.fabric8.crd.generator.CRDInfo;
 import io.fabric8.crd.generator.approvaltests.annotated.Annotated;
 import io.fabric8.crd.generator.approvaltests.complex.Complex;
+import io.fabric8.crd.generator.approvaltests.described.Described;
 import io.fabric8.crd.generator.approvaltests.inherited.Child;
 import io.fabric8.crd.generator.approvaltests.json.ContainingJson;
 import io.fabric8.crd.generator.approvaltests.k8svalidation.K8sValidation;
@@ -170,6 +171,7 @@ class CRDGeneratorApprovalTest {
           io.fabric8.crd.generator.approvaltests.multipleversions.v1.Multiple.class,
           io.fabric8.crd.generator.approvaltests.multipleversions.v2.Multiple.class));
       cases.add(new TestCase("nocyclics.sample.fabric8.io", crdVersion, parallel, NoCyclic.class));
+      cases.add(new TestCase("describeds.samples.fabric8.io", crdVersion, parallel, Described.class));
     }
     return cases.stream();
   }

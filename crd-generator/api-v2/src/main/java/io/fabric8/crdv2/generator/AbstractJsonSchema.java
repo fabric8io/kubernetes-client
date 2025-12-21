@@ -15,6 +15,7 @@
  */
 package io.fabric8.crdv2.generator;
 
+import com.fasterxml.jackson.annotation.JsonClassDescription;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.BeanDescription;
 import com.fasterxml.jackson.databind.BeanProperty;
@@ -429,6 +430,11 @@ public abstract class AbstractJsonSchema<T extends KubernetesJSONSchemaProps, V 
 
     Class<?> rawClass = gos.javaType.getRawClass();
     collectDependentClasses(rawClass);
+
+    JsonClassDescription classDescription = rawClass.getAnnotation(JsonClassDescription.class);
+    if (classDescription != null) {
+      objectSchema.setDescription(classDescription.value());
+    }
 
     // while it should not be repeating, we reuse this method to look for preserve unknown on the class hierarchy
     consumeRepeatingAnnotation(rawClass, PreserveUnknownFields.class,
