@@ -254,6 +254,7 @@ When using Vert.x 5, exclude the default Vert.x 4 client and set the `vertx.vers
 
 #### New Features
 * Fix #7045: (java-generator)  Extend the existingJavaTypes to support use of existing enumerations
+* Fix #7375: (crd-generator) Support @JsonClassDescription for top-level CRD description
 
 #### _**Note**_: Breaking changes
 Fix #7204: Rationalized config constructors
