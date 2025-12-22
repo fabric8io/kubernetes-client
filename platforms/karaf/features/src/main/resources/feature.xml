@@ -82,6 +82,7 @@
     <bundle>mvn:io.fabric8/openshift-model-storageversionmigrator/${project.version}</bundle>
     <bundle>mvn:io.fabric8/openshift-model-tuned/${project.version}</bundle>
     <bundle>mvn:io.fabric8/openshift-model-hive/${project.version}</bundle>
+    <bundle>mvn:io.fabric8/openshift-model-installer/${project.version}</bundle>
   </feature>
 
 </features>

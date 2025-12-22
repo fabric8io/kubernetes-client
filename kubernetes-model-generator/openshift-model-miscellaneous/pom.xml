@@ -78,6 +78,7 @@
                 </includeGenerationRegexes>
                 <skipGenerationRegexes>
                   <skipGenerationRegex>^io\.openshift\.cloudcredential\.v1\.ProviderCodec$</skipGenerationRegex>
+                  <skipGenerationRegex>^com\.github\.openshift\.installer\.types\.azure\..*$</skipGenerationRegex>
                 </skipGenerationRegexes>
               </settings>
             </configuration>
