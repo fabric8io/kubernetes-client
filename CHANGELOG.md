@@ -16,6 +16,9 @@
 * Fix #7277: fix BOM publish to Maven Central
 * Fix #7345: skip publishing test and example modules to Maven Central
 
+#### Deprecations
+* **openshift-model-installer**: The `openshift-model-installer` module is now deprecated and will be removed in a future release. Please migrate away from using this module and its models.
+
 #### Dependency Upgrade
 * Fix #7266: bump jackson-bom from 2.19.2 to 2.20.0, fix overrides and handle jackson-annotations v2.20
 * Fix #7293: bump vertx.version from 4.5.14 to 4.5.21

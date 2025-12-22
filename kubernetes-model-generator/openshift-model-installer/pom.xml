@@ -29,6 +29,7 @@
   <artifactId>openshift-model-installer</artifactId>
   <packaging>bundle</packaging>
   <name>Fabric8 :: OpenShift Model :: Installer</name>
+  <description>DEPRECATED: This module is deprecated and will be removed in a future release. Please migrate away from using this module and its models.</description>
 
   <properties>
     <clone-kube>true</clone-kube>
@@ -71,7 +72,6 @@
                 </schemas>
                 <packageMappings combine.self="append">
                   <com.github.openshift.installer.pkg.types.aws>io.fabric8.openshift.api.model.installer.aws.v1</com.github.openshift.installer.pkg.types.aws>
-<!--                  <com.github.openshift.installer.pkg.types.azure>io.fabric8.openshift.api.model.installer.azure.v1</com.github.openshift.installer.pkg.types.azure>-->
                   <com.github.openshift.installer.pkg.types.baremetal>io.fabric8.openshift.api.model.installer.baremetal.v1</com.github.openshift.installer.pkg.types.baremetal>
                   <com.github.openshift.installer.pkg.types.external>io.fabric8.openshift.api.model.installer.external.v1</com.github.openshift.installer.pkg.types.external>
                   <com.github.openshift.installer.pkg.types.gcp>io.fabric8.openshift.api.model.installer.gcp.v1</com.github.openshift.installer.pkg.types.gcp>
@@ -99,6 +99,18 @@
                   <property>
                     <name>#/components/schemas/com.github.openshift.installer.pkg.ipnet.IPNet</name>
                     <value>java.lang.String</value>
+                  </property>
+                  <property>
+                    <name>#/components/schemas/com.github.openshift.installer.pkg.types.azure.MachinePool</name>
+                    <value>java.lang.Object</value>
+                  </property>
+                  <property>
+                    <name>#/components/schemas/com.github.openshift.installer.pkg.types.azure.Platform</name>
+                    <value>java.lang.Object</value>
+                  </property>
+                  <property>
+                    <name>#/components/schemas/com.github.openshift.installer.pkg.types.azure.Metadata</name>
+                    <value>java.lang.Object</value>
                   </property>
                 </refToJavaTypeMappings>
               </settings>

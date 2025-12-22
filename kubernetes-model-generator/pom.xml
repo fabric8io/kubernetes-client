@@ -60,6 +60,7 @@
     <module>openshift-model-autoscaling</module>
     <module>openshift-model-config</module>
     <module>openshift-model-hive</module>
+    <!-- DEPRECATED: This module is deprecated and will be removed in a future release -->
     <module>openshift-model-installer</module>
     <module>openshift-model-miscellaneous</module>
     <module>openshift-model-insights</module>
