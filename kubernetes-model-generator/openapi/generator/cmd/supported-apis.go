@@ -30,7 +30,6 @@ import (
 	openshiftclusternetworkoperatorv1 "github.com/openshift/cluster-network-operator/pkg/apis/network/v1"
 	openshiftclusternodetuningoperatorv1 "github.com/openshift/cluster-node-tuning-operator/pkg/apis/tuned/v1"
 	openshifthivev1 "github.com/openshift/hive/apis/hive/v1"
-	openshiftinstallerv1 "github.com/openshift/installer/pkg/types"
 	operatorframeworkv1 "github.com/operator-framework/api/pkg/operators/v1"
 	operatorframeworkv1alpha1 "github.com/operator-framework/api/pkg/operators/v1alpha1"
 	olm "github.com/operator-framework/operator-lifecycle-manager/pkg/package-server/apis/operators/v1"
@@ -94,7 +93,6 @@ var supportedApisRun = func(cobraCmd *cobra.Command, args []string) {
 		openshiftclusternetworkoperatorv1.GroupVersion.String(),
 		openshiftclusternodetuningoperatorv1.SchemeGroupVersion.String(),
 		openshifthivev1.SchemeGroupVersion.String(),
-		"install.openshift.io/" + openshiftinstallerv1.InstallConfigVersion + " (" + strings.Join(openshiftinstallerv1.PlatformNames, ", ") + ")",
 		operatorframeworkv1alpha1.SchemeGroupVersion.String(),
 		operatorframeworkv1.GroupVersion.String(),
 		ovnadminpolicybasedroutev1.SchemeGroupVersion.String(),

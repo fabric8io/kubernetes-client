@@ -107,10 +107,6 @@ import io.fabric8.openshift.api.model.miscellaneous.apiserver.v1.APIRequestCount
 import io.fabric8.openshift.api.model.miscellaneous.apiserver.v1.APIRequestCountList;
 import io.fabric8.openshift.api.model.miscellaneous.cloudcredential.v1.CredentialsRequest;
 import io.fabric8.openshift.api.model.miscellaneous.cloudcredential.v1.CredentialsRequestList;
-import io.fabric8.openshift.api.model.miscellaneous.clusterapi.infrastructure.v1beta1.Metal3Remediation;
-import io.fabric8.openshift.api.model.miscellaneous.clusterapi.infrastructure.v1beta1.Metal3RemediationList;
-import io.fabric8.openshift.api.model.miscellaneous.clusterapi.infrastructure.v1beta1.Metal3RemediationTemplate;
-import io.fabric8.openshift.api.model.miscellaneous.clusterapi.infrastructure.v1beta1.Metal3RemediationTemplateList;
 import io.fabric8.openshift.api.model.miscellaneous.cncf.cni.v1.NetworkAttachmentDefinition;
 import io.fabric8.openshift.api.model.miscellaneous.cncf.cni.v1.NetworkAttachmentDefinitionList;
 import io.fabric8.openshift.api.model.miscellaneous.helm.v1beta1.HelmChartRepository;
@@ -119,6 +115,10 @@ import io.fabric8.openshift.api.model.miscellaneous.helm.v1beta1.ProjectHelmChar
 import io.fabric8.openshift.api.model.miscellaneous.helm.v1beta1.ProjectHelmChartRepositoryList;
 import io.fabric8.openshift.api.model.miscellaneous.metal3.v1alpha1.BareMetalHost;
 import io.fabric8.openshift.api.model.miscellaneous.metal3.v1alpha1.BareMetalHostList;
+import io.fabric8.openshift.api.model.miscellaneous.metal3.v1beta1.Metal3Remediation;
+import io.fabric8.openshift.api.model.miscellaneous.metal3.v1beta1.Metal3RemediationList;
+import io.fabric8.openshift.api.model.miscellaneous.metal3.v1beta1.Metal3RemediationTemplate;
+import io.fabric8.openshift.api.model.miscellaneous.metal3.v1beta1.Metal3RemediationTemplateList;
 import io.fabric8.openshift.api.model.operator.network.v1.EgressRouter;
 import io.fabric8.openshift.api.model.operator.network.v1.EgressRouterList;
 import io.fabric8.openshift.api.model.operator.network.v1.OperatorPKI;

@@ -17,21 +17,6 @@
 // Package packages provides the patterns required for OpenAPI generation
 package packages
 
-// TypeExclusion defines a type that should be excluded from code generation for a specific package
-type TypeExclusion struct {
-	TypeName       string
-	PackagePattern string
-}
-
-// ExcludedTypes lists types that should be excluded from specific packages to avoid conflicts
-// This allows multiple packages to define the same type name, with explicit control over which one is used
-var ExcludedTypes = []TypeExclusion{
-	// Exclude Azure Image type in favor of Metal3 Image type
-	// Both map to io.x-k8s.cluster.infrastructure.v1beta1.Image
-	{TypeName: "Image", PackagePattern: "sigs.k8s.io/cluster-api-provider-azure/api/v1beta1"},
-	{TypeName: "Image", PackagePattern: "github.com/openshift/installer/pkg/asset/manifests/azure/stack/v1beta1"},
-}
-
 // OpenShiftPackagePatterns are the patterns required for OpenShift GO and JSON OpenAPI generation
 var OpenShiftPackagePatterns = []string{
 	// Always import Kubernetes base packages as they are required by the rest of APIs
@@ -49,22 +34,6 @@ var OpenShiftPackagePatterns = []string{
 	"github.com/openshift/cluster-network-operator/pkg/apis/.../v...",
 	"github.com/openshift/cluster-node-tuning-operator/pkg/apis/tuned/v...",
 	"github.com/openshift/hive/apis/hive/v...",
-	"github.com/openshift/installer/pkg/types", // Add manually each package since some subpackages are problematic with go modules
-	"sigs.k8s.io/cluster-api-provider-azure/api/v1beta1", // cluster-api-provider-azure types
-	"sigs.k8s.io/cluster-api/api/v1beta1",
-	"github.com/openshift/installer/pkg/types/aws",
-	"github.com/openshift/installer/pkg/types/azure",
-	"github.com/openshift/installer/pkg/types/baremetal",
-	"github.com/openshift/installer/pkg/types/external",
-	"github.com/openshift/installer/pkg/types/gcp",
-	"github.com/openshift/installer/pkg/types/ibmcloud",
-	"github.com/openshift/installer/pkg/types/none",
-	"github.com/openshift/installer/pkg/types/nutanix",
-	"github.com/openshift/installer/pkg/types/openstack",
-	"github.com/openshift/installer/pkg/types/ovirt",
-	"github.com/openshift/installer/pkg/types/powervc",
-	"github.com/openshift/installer/pkg/types/powervs",
-	"github.com/openshift/installer/pkg/types/vsphere",
 	"github.com/operator-framework/api/pkg/operators/v...",
 	"github.com/operator-framework/operator-lifecycle-manager/pkg/package-server/apis/operators/v...",
 	"github.com/prometheus-operator/prometheus-operator/pkg/apis/monitoring/v...",

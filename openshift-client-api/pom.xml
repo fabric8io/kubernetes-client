@@ -107,10 +107,6 @@
       <groupId>io.fabric8</groupId>
       <artifactId>openshift-model-hive</artifactId>
     </dependency>
-    <dependency>
-      <groupId>io.fabric8</groupId>
-      <artifactId>openshift-model-installer</artifactId>
-    </dependency>
 
     <!-- Compile Only Dependencies -->
     <dependency>
