@@ -16,7 +16,6 @@
 package io.fabric8.crd.generator;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonClassDescription;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
@@ -112,7 +111,6 @@ public abstract class AbstractJsonSchema<T, B> {
 
   private static final Map<TypeRef, String> COMMON_MAPPINGS = new HashMap<>();
   public static final String ANNOTATION_JSON_FORMAT = "com.fasterxml.jackson.annotation.JsonFormat";
-  public static final String ANNOTATION_JSON_CLASS_DESCRIPTION = "com.fasterxml.jackson.annotation.JsonClassDescription";
   public static final String ANNOTATION_JSON_PROPERTY = "com.fasterxml.jackson.annotation.JsonProperty";
   public static final String ANNOTATION_JSON_PROPERTY_DESCRIPTION = "com.fasterxml.jackson.annotation.JsonPropertyDescription";
   public static final String ANNOTATION_JSON_IGNORE = "com.fasterxml.jackson.annotation.JsonIgnore";
@@ -402,17 +400,7 @@ public abstract class AbstractJsonSchema<T, B> {
     List<String> sortedRequiredProperties = required.stream().sorted()
         .collect(Collectors.toList());
 
-    T buildResult = build(builder, sortedRequiredProperties, validationRules, preserveUnknownFields);
-    
-    String classDescription = definition.getAnnotations().stream()
-        .filter(a -> a.getClassRef().getFullyQualifiedName().equals(JsonClassDescription.class.getName()))
-        .map(a -> a.getParameters().get("value").toString())
-        .findFirst().orElse(null);
-    if (classDescription != null) {
-        buildResult = addDescription(buildResult, classDescription);
-    }
-
-    return buildResult;
+    return build(builder, sortedRequiredProperties, validationRules, preserveUnknownFields);
   }
 
   private Map<String, Method> indexPotentialAccessors(TypeDef definition) {
