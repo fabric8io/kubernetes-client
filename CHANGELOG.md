@@ -16,9 +16,6 @@
 * Fix #7277: fix BOM publish to Maven Central
 * Fix #7345: skip publishing test and example modules to Maven Central
 
-#### Deprecations
-* **openshift-model-installer**: The `openshift-model-installer` module is now deprecated and will be removed in a future release. Please migrate away from using this module and its models.
-
 #### Dependency Upgrade
 * Fix #7266: bump jackson-bom from 2.19.2 to 2.20.0, fix overrides and handle jackson-annotations v2.20
 * Fix #7293: bump vertx.version from 4.5.14 to 4.5.21
@@ -35,6 +32,7 @@
 * Fix #7048: **admissionregistration.v1beta1**: Removed `ValidatingAdmissionPolicy` and related classes (`ValidatingAdmissionPolicyBinding`, `AuditAnnotation`, `Validation`, `ValidatingAdmissionPolicyBindingSpec`) from `v1beta1` as they have graduated to GA in `admissionregistration.v1`. `MutatingAdmissionPolicy` has been promoted from `v1alpha1` to `v1beta1`. The `V1beta1AdmissionRegistrationAPIGroupDSL` and  `V1beta1AdmissionRegistrationAPIGroupClient` have been updated accordingly.
   Users should migrate to `admissionregistration.v1.ValidatingAdmissionPolicy` for GA APIs.
 * Fix #7266: bump jackson-bom from 2.19.2 to 2.20.0, fix overrides and handle jackson-annotations v2.20
+* Fix #7388: **openshift-model-installer**: The `openshift-model-installer` module is now deprecated and will be removed in a future release. Please migrate away from using this module and its models.
 
 ### 7.4.0 (2025-09-08)
 
