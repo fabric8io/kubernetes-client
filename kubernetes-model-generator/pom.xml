@@ -60,8 +60,9 @@
     <module>openshift-model-autoscaling</module>
     <module>openshift-model-config</module>
     <module>openshift-model-hive</module>
-    <module>openshift-model-miscellaneous</module>
+    <!-- DEPRECATED: This module is deprecated and will be removed in a future release -->
     <module>openshift-model-installer</module>
+    <module>openshift-model-miscellaneous</module>
     <module>openshift-model-insights</module>
     <module>openshift-model-operator</module>
     <module>openshift-model-operatorhub</module>
@@ -190,8 +191,6 @@
                 <io.k8s.sigs.cluster-api.api>io.fabric8.kubernetes.api.model.clusterapi</io.k8s.sigs.cluster-api.api>
                 <io.k8s.storage.snapshot.v1>io.fabric8.volumesnapshot.api.model</io.k8s.storage.snapshot.v1>
                 <io.open-cluster-management>io.fabric8.openclustermanagement.api.model</io.open-cluster-management>
-                <io.x-k8s.cluster.v1beta1>io.fabric8.kubernetes.api.model.clusterapi.v1beta1</io.x-k8s.cluster.v1beta1>
-                <io.x-k8s.cluster.infrastructure.v1beta1>io.fabric8.kubernetes.api.model.clusterapi.v1beta1</io.x-k8s.cluster.infrastructure.v1beta1>
                 <io.openshift>io.fabric8.openshift.api.model</io.openshift>
                 <io.openshift.apiserver>io.fabric8.openshift.api.model.miscellaneous.apiserver</io.openshift.apiserver>
                 <io.openshift.apps.v1>io.fabric8.openshift.api.model</io.openshift.apps.v1>

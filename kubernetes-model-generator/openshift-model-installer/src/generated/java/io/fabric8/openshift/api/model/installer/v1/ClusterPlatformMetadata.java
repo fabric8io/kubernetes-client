@@ -79,7 +79,8 @@ public class ClusterPlatformMetadata implements Editable<ClusterPlatformMetadata
     @JsonProperty("aws")
     private Metadata aws;
     @JsonProperty("azure")
-    private io.fabric8.openshift.api.model.installer.azure.v1.Metadata azure;
+    @JsonDeserialize(using = io.fabric8.kubernetes.internal.KubernetesDeserializer.class)
+    private Object azure;
     @JsonProperty("baremetal")
     private io.fabric8.openshift.api.model.installer.baremetal.v1.Metadata baremetal;
     @JsonProperty("gcp")
@@ -107,7 +108,7 @@ public class ClusterPlatformMetadata implements Editable<ClusterPlatformMetadata
     public ClusterPlatformMetadata() {
     }
 
-    public ClusterPlatformMetadata(Metadata aws, io.fabric8.openshift.api.model.installer.azure.v1.Metadata azure, io.fabric8.openshift.api.model.installer.baremetal.v1.Metadata baremetal, io.fabric8.openshift.api.model.installer.gcp.v1.Metadata gcp, io.fabric8.openshift.api.model.installer.ibmcloud.v1.Metadata ibmcloud, io.fabric8.openshift.api.model.installer.nutanix.v1.Metadata nutanix, io.fabric8.openshift.api.model.installer.openstack.v1.Metadata openstack, io.fabric8.openshift.api.model.installer.ovirt.v1.Metadata ovirt, io.fabric8.openshift.api.model.installer.powervc.v1.Metadata powervc, io.fabric8.openshift.api.model.installer.powervs.v1.Metadata powervs, io.fabric8.openshift.api.model.installer.vsphere.v1.Metadata vsphere) {
+    public ClusterPlatformMetadata(Metadata aws, Object azure, io.fabric8.openshift.api.model.installer.baremetal.v1.Metadata baremetal, io.fabric8.openshift.api.model.installer.gcp.v1.Metadata gcp, io.fabric8.openshift.api.model.installer.ibmcloud.v1.Metadata ibmcloud, io.fabric8.openshift.api.model.installer.nutanix.v1.Metadata nutanix, io.fabric8.openshift.api.model.installer.openstack.v1.Metadata openstack, io.fabric8.openshift.api.model.installer.ovirt.v1.Metadata ovirt, io.fabric8.openshift.api.model.installer.powervc.v1.Metadata powervc, io.fabric8.openshift.api.model.installer.powervs.v1.Metadata powervs, io.fabric8.openshift.api.model.installer.vsphere.v1.Metadata vsphere) {
         super();
         this.aws = aws;
         this.azure = azure;
@@ -142,7 +143,7 @@ public class ClusterPlatformMetadata implements Editable<ClusterPlatformMetadata
      * ClusterPlatformMetadata contains metadata for platfrom.
      */
     @JsonProperty("azure")
-    public io.fabric8.openshift.api.model.installer.azure.v1.Metadata getAzure() {
+    public Object getAzure() {
         return azure;
     }
 
@@ -150,7 +151,8 @@ public class ClusterPlatformMetadata implements Editable<ClusterPlatformMetadata
      * ClusterPlatformMetadata contains metadata for platfrom.
      */
     @JsonProperty("azure")
-    public void setAzure(io.fabric8.openshift.api.model.installer.azure.v1.Metadata azure) {
+    @JsonDeserialize(using = io.fabric8.kubernetes.internal.KubernetesDeserializer.class)
+    public void setAzure(Object azure) {
         this.azure = azure;
     }
 
