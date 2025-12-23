@@ -25,7 +25,10 @@ public interface Watcher<T> {
    * Currently only used to indicate if the Watch should ignore the watch reconnect limit
    *
    * @return
+   * 
+   * @deprecated to be removed in a future release.
    */
+  @Deprecated
   default boolean reconnecting() {
     return false;
   }
