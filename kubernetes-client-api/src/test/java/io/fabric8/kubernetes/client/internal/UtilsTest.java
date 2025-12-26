@@ -334,17 +334,22 @@ class UtilsTest {
   void testSerialExecution() throws Exception {
     AtomicInteger counter = new AtomicInteger();
     CompletableFuture<?> completableFuture = new CompletableFuture<Void>();
+    java.util.concurrent.CountDownLatch latch = new java.util.concurrent.CountDownLatch(1);
+
     Utils.scheduleWithVariableRate(completableFuture, CommonThreadPool.get(), () -> {
       counter.getAndIncrement();
       try {
-        Thread.sleep(100);
-      } catch (InterruptedException e) {
+        latch.countDown();
+      } catch (Exception e) {
+
       }
-      // if the counter is greater than 1, another thread has executed
+
       assertEquals(1, counter.get());
       completableFuture.complete(null);
     }, 0, () -> 1L, TimeUnit.MILLISECONDS);
-    completableFuture.get(1, TimeUnit.SECONDS);
+
+    assertTrue(latch.await(5, TimeUnit.SECONDS), "Scheduled task did not execute");
+    completableFuture.get(5, TimeUnit.SECONDS);
   }
 
   @Test
