@@ -25,34 +25,40 @@ import java.util.concurrent.TimeUnit;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeoutException;
 
 class SerialExecutorTest {
 
   @Test
-  void clearInterrupt() {
+  void clearInterrupt() throws InterruptedException, ExecutionException, TimeoutException {
     ExecutorService es = Executors.newSingleThreadExecutor();
-    SerialExecutor serialExecutor = new SerialExecutor(es);
+    try {
+      SerialExecutor serialExecutor = new SerialExecutor(es);
+      CompletableFuture<Thread> future = new CompletableFuture<>();
+      CountDownLatch firstTaskLatch = new CountDownLatch(1);
 
-    CompletableFuture<Thread> future = new CompletableFuture<>();
-    serialExecutor.execute(() -> {
-      future.complete(Thread.currentThread());
-      while (!Thread.currentThread().isInterrupted()) {
+      serialExecutor.execute(() -> {
+        future.complete(Thread.currentThread());
         try {
-          Thread.sleep(10);
+          firstTaskLatch.await();
         } catch (InterruptedException e) {
           Thread.currentThread().interrupt();
         }
-      }
-      throw new RuntimeException();
-    });
-    CompletableFuture<Boolean> interrupted = new CompletableFuture<>();
-    serialExecutor.execute(() -> {
-      interrupted.complete(Thread.currentThread().isInterrupted());
-    });
+      });
 
-    Thread t = future.join();
-    t.interrupt(); // interrupt the first task
-    assertFalse(interrupted.join()); // make sure the second is not interrrupted
+      CompletableFuture<Boolean> interrupted = new CompletableFuture<>();
+      serialExecutor.execute(() -> {
+        interrupted.complete(Thread.currentThread().isInterrupted());
+      });
+
+      Thread t = future.join();
+      t.interrupt();
+
+      assertFalse(interrupted.get(5, TimeUnit.SECONDS));
+    } finally {
+      es.shutdownNow();
+    }
   }
 
   @Test

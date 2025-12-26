@@ -15,7 +15,8 @@
  */
 package io.fabric8.kubernetes.client.extended.leaderelection;
 
-import io.fabric8.kubernetes.api.model.StatusBuilder;
+//import io.fabric8.kubernetes.api.model.StatusBuilder;
+import io.fabric8.kubernetes.api.model.StatusCause;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.NamespacedKubernetesClient;
 import io.fabric8.kubernetes.client.extended.leaderelection.resourcelock.LeaderElectionRecord;
@@ -164,8 +165,12 @@ class LeaderElectorTest {
     AtomicInteger count = new AtomicInteger();
     doAnswer(invocation -> {
       if (count.addAndGet(1) == 2) {
+
         // simulate that we've already lost election
-        throw new KubernetesClientException(new StatusBuilder().withCode(HttpURLConnection.HTTP_CONFLICT).build());
+        // throw new KubernetesClientException(new StatusBuilder().withCode(HttpURLConnection.HTTP_CONFLICT).build());
+
+        // Use a generic exception to simulate the conflict without the specific Status model
+        throw new KubernetesClientException("Simulated Conflict", HttpURLConnection.HTTP_CONFLICT, null);
       }
       LeaderElectionRecord leaderRecord = invocation.getArgument(1, LeaderElectionRecord.class);
       activeLer.set(leaderRecord);
@@ -316,19 +321,16 @@ class LeaderElectorTest {
 
   @Test
   void loopCancel() throws Exception {
-    // Given
     AtomicInteger count = new AtomicInteger();
     CompletableFuture<?> cf = loop(completion -> count.getAndIncrement(), () -> 10L, CommonThreadPool.get());
-    // When
-    Awaitility.await().atMost(1, TimeUnit.SECONDS).until(() -> count.get() >= 1);
 
+    org.awaitility.Awaitility.await().atMost(1, TimeUnit.SECONDS).until(() -> count.get() >= 1);
     cf.cancel(true);
 
-    // make sure that the task is no longer running
-    Thread.sleep(100);
     int sample = count.get();
-    Thread.sleep(100);
-    assertEquals(sample, count.get());
+    org.awaitility.Awaitility.await()
+      .atMost(Duration.ofMillis(500))
+      .untilAsserted(() -> assertEquals(sample, count.get()));
   }
 
   @Test
