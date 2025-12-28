@@ -15,12 +15,37 @@
  */
 package io.fabric8.crd.generator.approvaltests.described;
 
+import com.fasterxml.jackson.annotation.JsonClassDescription;
+import com.fasterxml.jackson.annotation.JsonPropertyDescription;
 import lombok.Data;
 
 /**
  * Test spec for @JsonClassDescription support.
  */
 @Data
+@JsonClassDescription("This is a spec-class-level description.")
 public class DescribedSpec {
+
+  @JsonPropertyDescription("This is a field-level description.")
   private String field;
+
+  private Nested nested;
+
+  @Data
+  @JsonClassDescription("This is a nested-class-level description.")
+  public static class Nested {
+
+    @JsonPropertyDescription("This is a nested-field-level description.")
+    private String nestedField;
+
+    private DeeplyNested deeplyNested;
+  }
+
+  @Data
+  @JsonClassDescription("This is a deeply-nested-class-level description.")
+  public static class DeeplyNested {
+
+    @JsonPropertyDescription("This is a leaf-field-level description.")
+    private String leafField;
+  }
 }
