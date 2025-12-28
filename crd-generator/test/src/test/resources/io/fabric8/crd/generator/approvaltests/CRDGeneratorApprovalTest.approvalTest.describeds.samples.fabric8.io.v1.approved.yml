@@ -14,12 +14,28 @@ spec:
   - name: "v1"
     schema:
       openAPIV3Schema:
-        description: "This is a top-level description for the CRD."
+        description: "This is a top-level description."
         properties:
           spec:
+            description: "This is a spec-class-level description."
             properties:
               field:
+                description: "This is a field-level description."
                 type: "string"
+              nested:
+                description: "This is a nested-class-level description."
+                properties:
+                  deeplyNested:
+                    description: "This is a deeply-nested-class-level description."
+                    properties:
+                      leafField:
+                        description: "This is a leaf-field-level description."
+                        type: "string"
+                    type: "object"
+                  nestedField:
+                    description: "This is a nested-field-level description."
+                    type: "string"
+                type: "object"
             type: "object"
           status:
             type: "object"

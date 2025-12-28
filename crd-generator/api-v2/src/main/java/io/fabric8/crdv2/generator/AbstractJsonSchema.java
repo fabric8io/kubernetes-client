@@ -371,7 +371,9 @@ public abstract class AbstractJsonSchema<T extends KubernetesJSONSchemaProps, V 
     }
 
     public void updateSchema(T schema) {
-      schema.setDescription(description);
+      if (Utils.isNotNullOrEmpty(description)) {
+        schema.setDescription(description);
+      }
       schema.setDefault(defaultValue);
       if (nullable) {
         schema.setNullable(true);

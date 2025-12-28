@@ -22,6 +22,6 @@ import io.fabric8.kubernetes.model.annotation.Version;
 
 @Group("samples.fabric8.io")
 @Version("v1")
-@JsonClassDescription("This is a top-level description for the CRD.")
+@JsonClassDescription("This is a top-level description.")
 public class Described extends CustomResource<DescribedSpec, Void> {
 }
