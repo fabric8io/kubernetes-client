@@ -17,7 +17,6 @@ package io.fabric8.kubernetes.client.dsl.internal;
 
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.ListOptions;
-//import io.fabric8.kubernetes.api.model.StatusBuilder;
 import io.fabric8.kubernetes.client.Watcher;
 import io.fabric8.kubernetes.client.WatcherException;
 import io.fabric8.kubernetes.client.dsl.internal.AbstractWatchManager.WatchRequestState;
@@ -36,8 +35,8 @@ import java.util.Map;
 import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.RETURNS_DEEP_STUBS;
@@ -158,7 +157,7 @@ class AbstractWatchManagerTest {
     final CountDownLatch latch = new CountDownLatch(1);
 
     final WatchManager<HasMetadata> awm = new WatchManager<HasMetadata>(
-      watcher, mock(ListOptions.class, RETURNS_DEEP_STUBS), 1, 0) {
+        watcher, mock(ListOptions.class, RETURNS_DEEP_STUBS), 1, 0) {
 
       boolean first = true;
 

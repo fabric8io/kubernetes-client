@@ -16,7 +16,6 @@
 package io.fabric8.kubernetes.client.extended.leaderelection;
 
 //import io.fabric8.kubernetes.api.model.StatusBuilder;
-import io.fabric8.kubernetes.api.model.StatusCause;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.NamespacedKubernetesClient;
 import io.fabric8.kubernetes.client.extended.leaderelection.resourcelock.LeaderElectionRecord;
@@ -329,8 +328,8 @@ class LeaderElectorTest {
 
     int sample = count.get();
     org.awaitility.Awaitility.await()
-      .atMost(Duration.ofMillis(500))
-      .untilAsserted(() -> assertEquals(sample, count.get()));
+        .atMost(Duration.ofMillis(500))
+        .untilAsserted(() -> assertEquals(sample, count.get()));
   }
 
   @Test
