@@ -15,7 +15,7 @@
  */
 package io.fabric8.kubernetes.client.extended.leaderelection;
 
-//import io.fabric8.kubernetes.api.model.StatusBuilder;
+import io.fabric8.kubernetes.api.model.StatusBuilder;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.NamespacedKubernetesClient;
 import io.fabric8.kubernetes.client.extended.leaderelection.resourcelock.LeaderElectionRecord;
@@ -166,10 +166,7 @@ class LeaderElectorTest {
       if (count.addAndGet(1) == 2) {
 
         // simulate that we've already lost election
-        // throw new KubernetesClientException(new StatusBuilder().withCode(HttpURLConnection.HTTP_CONFLICT).build());
-
-        // Use a generic exception to simulate the conflict without the specific Status model
-        throw new KubernetesClientException("Simulated Conflict", HttpURLConnection.HTTP_CONFLICT, null);
+        throw new KubernetesClientException(new StatusBuilder().withCode(HttpURLConnection.HTTP_CONFLICT).build());
       }
       LeaderElectionRecord leaderRecord = invocation.getArgument(1, LeaderElectionRecord.class);
       activeLer.set(leaderRecord);

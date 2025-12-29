@@ -36,6 +36,7 @@ import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.awaitility.Awaitility.await;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
@@ -110,8 +111,10 @@ class AbstractWatchManagerTest {
     assertThat(awm.nextReconnectInterval()).isEqualTo(320);
 
     // should pick up the interval from the status
-    //awm.onStatus(new StatusBuilder().withNewDetails().withRetryAfterSeconds(7).endDetails().build(), new WatchRequestState());
-    assertThat(awm.nextReconnectInterval()).isEqualTo(7000L);
+    awm.onStatus(new StatusBuilder().withNewDetails().withRetryAfterSeconds(7).endDetails().build(), new WatchRequestState());
+    await()
+        .atMost(10, TimeUnit.SECONDS)
+        .until(() -> awm.nextReconnectInterval() == 7000L);
     // should go back to the base interval after that
     assertThat(awm.nextReconnectInterval()).isEqualTo(320);
   }
