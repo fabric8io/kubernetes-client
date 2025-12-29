@@ -17,7 +17,8 @@ package io.fabric8.kubernetes.client.dsl.internal;
 
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.ListOptions;
-import io.fabric8.kubernetes.api.model.StatusBuilder;
+import io.fabric8.kubernetes.api.model.Status;
+import io.fabric8.kubernetes.api.model.StatusDetails;
 import io.fabric8.kubernetes.client.Watcher;
 import io.fabric8.kubernetes.client.WatcherException;
 import io.fabric8.kubernetes.client.dsl.internal.AbstractWatchManager.WatchRequestState;
@@ -34,6 +35,7 @@ import java.net.ProtocolException;
 import java.net.URL;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.ScheduledFuture;
@@ -41,6 +43,8 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.awaitility.Awaitility.await;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.RETURNS_DEEP_STUBS;
@@ -113,9 +117,16 @@ class AbstractWatchManagerTest {
     assertThat(awm.nextReconnectInterval()).isEqualTo(320);
     assertThat(awm.nextReconnectInterval()).isEqualTo(320);
 
-    // should pick up the interval from the status
-    awm.onStatus(new StatusBuilder().withNewDetails().withRetryAfterSeconds(7).endDetails().build(), new WatchRequestState());
-    assertThat(awm.nextReconnectInterval()).isEqualTo(7000L);
+    Status status = new Status();
+    StatusDetails details = new StatusDetails();
+    details.setRetryAfterSeconds(7);
+    status.setDetails(details);
+
+    awm.onStatus(status, new WatchRequestState());
+
+    await()
+        .atMost(10, TimeUnit.SECONDS)
+        .until(() -> awm.nextReconnectInterval() == 7000L);
     // should go back to the base interval after that
     assertThat(awm.nextReconnectInterval()).isEqualTo(320);
   }
@@ -158,6 +169,8 @@ class AbstractWatchManagerTest {
     // Given
     final WatcherAdapter<HasMetadata> watcher = new WatcherAdapter<>();
     CompletableFuture<Void> done = new CompletableFuture<Void>();
+    final CountDownLatch latch = new CountDownLatch(1);
+
     final WatchManager<HasMetadata> awm = new WatchManager<HasMetadata>(
         watcher, mock(ListOptions.class, RETURNS_DEEP_STUBS), 1, 0) {
 
@@ -167,10 +180,13 @@ class AbstractWatchManagerTest {
       protected void startWatch() {
         if (first) {
           first = false;
-          // simulate failing before the call to startWatch finishes
-          ForkJoinPool.commonPool().execute(() -> scheduleReconnect(new WatchRequestState()));
+          ForkJoinPool.commonPool().execute(() -> {
+            scheduleReconnect(new WatchRequestState());
+            latch.countDown();
+          });
+
           try {
-            Thread.sleep(100);
+            assertTrue(latch.await(5, TimeUnit.SECONDS), "Reconnect was not scheduled in time");
           } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
             throw new AssertionError(e);
@@ -181,10 +197,7 @@ class AbstractWatchManagerTest {
       }
     };
 
-    // When
     awm.cancelReconnect();
-    // Then
-
     done.get(5, TimeUnit.SECONDS);
   }
 
