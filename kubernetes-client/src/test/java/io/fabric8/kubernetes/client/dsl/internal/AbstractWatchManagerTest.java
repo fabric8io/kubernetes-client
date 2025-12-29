@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *         http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -17,6 +17,8 @@ package io.fabric8.kubernetes.client.dsl.internal;
 
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.ListOptions;
+import io.fabric8.kubernetes.api.model.Status;
+import io.fabric8.kubernetes.api.model.StatusDetails;
 import io.fabric8.kubernetes.client.Watcher;
 import io.fabric8.kubernetes.client.WatcherException;
 import io.fabric8.kubernetes.client.dsl.internal.AbstractWatchManager.WatchRequestState;
@@ -32,7 +34,12 @@ import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
 import java.util.Map;
-import java.util.concurrent.*;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.ForkJoinPool;
+import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -110,8 +117,13 @@ class AbstractWatchManagerTest {
     assertThat(awm.nextReconnectInterval()).isEqualTo(320);
     assertThat(awm.nextReconnectInterval()).isEqualTo(320);
 
-    // should pick up the interval from the status
-    awm.onStatus(new StatusBuilder().withNewDetails().withRetryAfterSeconds(7).endDetails().build(), new WatchRequestState());
+    Status status = new Status();
+    StatusDetails details = new StatusDetails();
+    details.setRetryAfterSeconds(7);
+    status.setDetails(details);
+
+    awm.onStatus(status, new WatchRequestState());
+
     await()
         .atMost(10, TimeUnit.SECONDS)
         .until(() -> awm.nextReconnectInterval() == 7000L);
