@@ -125,7 +125,7 @@ public class PodCondition implements Editable<PodConditionBuilder>, KubernetesRe
     }
 
     /**
-     * If set, this represents the .metadata.generation that the pod condition was set based upon. This is an alpha field. Enable PodObservedGenerationTracking to be able to use this field.
+     * If set, this represents the .metadata.generation that the pod condition was set based upon. The PodObservedGenerationTracking feature gate must be enabled to use this field.
      */
     @JsonProperty("observedGeneration")
     public Long getObservedGeneration() {
@@ -133,7 +133,7 @@ public class PodCondition implements Editable<PodConditionBuilder>, KubernetesRe
     }
 
     /**
-     * If set, this represents the .metadata.generation that the pod condition was set based upon. This is an alpha field. Enable PodObservedGenerationTracking to be able to use this field.
+     * If set, this represents the .metadata.generation that the pod condition was set based upon. The PodObservedGenerationTracking feature gate must be enabled to use this field.
      */
     @JsonProperty("observedGeneration")
     public void setObservedGeneration(Long observedGeneration) {

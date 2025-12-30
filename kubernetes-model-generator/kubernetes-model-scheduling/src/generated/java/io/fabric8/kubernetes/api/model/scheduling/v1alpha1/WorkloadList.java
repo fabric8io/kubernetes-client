@@ -1,7 +1,9 @@
 
-package io.fabric8.kubernetes.api.model.storage.v1alpha1;
+package io.fabric8.kubernetes.api.model.scheduling.v1alpha1;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import javax.annotation.processing.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
@@ -15,9 +17,11 @@ import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvVar;
-import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.IntOrString;
+import io.fabric8.kubernetes.api.model.KubernetesResource;
+import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 import io.fabric8.kubernetes.api.model.LabelSelector;
+import io.fabric8.kubernetes.api.model.ListMeta;
 import io.fabric8.kubernetes.api.model.LocalObjectReference;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.ObjectReference;
@@ -37,7 +41,7 @@ import lombok.ToString;
 import lombok.experimental.Accessors;
 
 /**
- * VolumeAttributesClass represents a specification of mutable volume attributes defined by the CSI driver. The class can be specified during dynamic provisioning of PersistentVolumeClaims, and changed in the PersistentVolumeClaim spec after provisioning.
+ * WorkloadList contains a list of Workload resources.
  */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -45,8 +49,7 @@ import lombok.experimental.Accessors;
     "apiVersion",
     "kind",
     "metadata",
-    "driverName",
-    "parameters"
+    "items"
 })
 @ToString
 @EqualsAndHashCode
@@ -73,38 +76,35 @@ import lombok.experimental.Accessors;
     @TemplateTransformation(value = "/manifest.vm", outputPath = "META-INF/services/io.fabric8.kubernetes.api.model.KubernetesResource", gather = true)
 })
 @Version("v1alpha1")
-@Group("storage.k8s.io")
+@Group("scheduling.k8s.io")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class VolumeAttributesClass implements Editable<VolumeAttributesClassBuilder>, HasMetadata
+public class WorkloadList implements Editable<WorkloadListBuilder>, KubernetesResource, KubernetesResourceList<io.fabric8.kubernetes.api.model.scheduling.v1alpha1.Workload>
 {
 
     @JsonProperty("apiVersion")
-    private String apiVersion = "storage.k8s.io/v1alpha1";
-    @JsonProperty("driverName")
-    private String driverName;
-    @JsonProperty("kind")
-    private String kind = "VolumeAttributesClass";
-    @JsonProperty("metadata")
-    private ObjectMeta metadata;
-    @JsonProperty("parameters")
+    private String apiVersion = "scheduling.k8s.io/v1alpha1";
+    @JsonProperty("items")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, String> parameters = new LinkedHashMap<>();
+    private List<io.fabric8.kubernetes.api.model.scheduling.v1alpha1.Workload> items = new ArrayList<>();
+    @JsonProperty("kind")
+    private String kind = "WorkloadList";
+    @JsonProperty("metadata")
+    private ListMeta metadata;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
      */
-    public VolumeAttributesClass() {
+    public WorkloadList() {
     }
 
-    public VolumeAttributesClass(String apiVersion, String driverName, String kind, ObjectMeta metadata, Map<String, String> parameters) {
+    public WorkloadList(String apiVersion, List<io.fabric8.kubernetes.api.model.scheduling.v1alpha1.Workload> items, String kind, ListMeta metadata) {
         super();
         this.apiVersion = apiVersion;
-        this.driverName = driverName;
+        this.items = items;
         this.kind = kind;
         this.metadata = metadata;
-        this.parameters = parameters;
     }
 
     /**
@@ -124,19 +124,20 @@ public class VolumeAttributesClass implements Editable<VolumeAttributesClassBuil
     }
 
     /**
-     * Name of the CSI driver This field is immutable.
+     * Items is the list of Workloads.
      */
-    @JsonProperty("driverName")
-    public String getDriverName() {
-        return driverName;
+    @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public List<io.fabric8.kubernetes.api.model.scheduling.v1alpha1.Workload> getItems() {
+        return items;
     }
 
     /**
-     * Name of the CSI driver This field is immutable.
+     * Items is the list of Workloads.
      */
-    @JsonProperty("driverName")
-    public void setDriverName(String driverName) {
-        this.driverName = driverName;
+    @JsonProperty("items")
+    public void setItems(List<io.fabric8.kubernetes.api.model.scheduling.v1alpha1.Workload> items) {
+        this.items = items;
     }
 
     /**
@@ -156,45 +157,28 @@ public class VolumeAttributesClass implements Editable<VolumeAttributesClassBuil
     }
 
     /**
-     * VolumeAttributesClass represents a specification of mutable volume attributes defined by the CSI driver. The class can be specified during dynamic provisioning of PersistentVolumeClaims, and changed in the PersistentVolumeClaim spec after provisioning.
+     * WorkloadList contains a list of Workload resources.
      */
     @JsonProperty("metadata")
-    public ObjectMeta getMetadata() {
+    public ListMeta getMetadata() {
         return metadata;
     }
 
     /**
-     * VolumeAttributesClass represents a specification of mutable volume attributes defined by the CSI driver. The class can be specified during dynamic provisioning of PersistentVolumeClaims, and changed in the PersistentVolumeClaim spec after provisioning.
+     * WorkloadList contains a list of Workload resources.
      */
     @JsonProperty("metadata")
-    public void setMetadata(ObjectMeta metadata) {
+    public void setMetadata(ListMeta metadata) {
         this.metadata = metadata;
     }
 
-    /**
-     * parameters hold volume attributes defined by the CSI driver. These values are opaque to the Kubernetes and are passed directly to the CSI driver. The underlying storage provider supports changing these attributes on an existing volume, however the parameters field itself is immutable. To invoke a volume update, a new VolumeAttributesClass should be created with new parameters, and the PersistentVolumeClaim should be updated to reference the new VolumeAttributesClass.<br><p> <br><p> This field is required and must contain at least one key/value pair. The keys cannot be empty, and the maximum number of parameters is 512, with a cumulative max size of 256K. If the CSI driver rejects invalid parameters, the target PersistentVolumeClaim will be set to an "Infeasible" state in the modifyVolumeStatus field.
-     */
-    @JsonProperty("parameters")
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public Map<String, String> getParameters() {
-        return parameters;
-    }
-
-    /**
-     * parameters hold volume attributes defined by the CSI driver. These values are opaque to the Kubernetes and are passed directly to the CSI driver. The underlying storage provider supports changing these attributes on an existing volume, however the parameters field itself is immutable. To invoke a volume update, a new VolumeAttributesClass should be created with new parameters, and the PersistentVolumeClaim should be updated to reference the new VolumeAttributesClass.<br><p> <br><p> This field is required and must contain at least one key/value pair. The keys cannot be empty, and the maximum number of parameters is 512, with a cumulative max size of 256K. If the CSI driver rejects invalid parameters, the target PersistentVolumeClaim will be set to an "Infeasible" state in the modifyVolumeStatus field.
-     */
-    @JsonProperty("parameters")
-    public void setParameters(Map<String, String> parameters) {
-        this.parameters = parameters;
+    @JsonIgnore
+    public WorkloadListBuilder edit() {
+        return new WorkloadListBuilder(this);
     }
 
     @JsonIgnore
-    public VolumeAttributesClassBuilder edit() {
-        return new VolumeAttributesClassBuilder(this);
-    }
-
-    @JsonIgnore
-    public VolumeAttributesClassBuilder toBuilder() {
+    public WorkloadListBuilder toBuilder() {
         return edit();
     }
 

@@ -1,7 +1,9 @@
 
-package io.fabric8.kubernetes.api.model.storagemigration.v1alpha1;
+package io.fabric8.kubernetes.api.model.scheduling.v1alpha1;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import javax.annotation.processing.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
@@ -33,14 +35,13 @@ import lombok.ToString;
 import lombok.experimental.Accessors;
 
 /**
- * The names of the group, the version, and the resource.
+ * WorkloadSpec defines the desired state of a Workload.
  */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "group",
-    "resource",
-    "version"
+    "controllerRef",
+    "podGroups"
 })
 @ToString
 @EqualsAndHashCode
@@ -64,86 +65,69 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class GroupVersionResource implements Editable<GroupVersionResourceBuilder>, KubernetesResource
+public class WorkloadSpec implements Editable<WorkloadSpecBuilder>, KubernetesResource
 {
 
-    @JsonProperty("group")
-    private String group;
-    @JsonProperty("resource")
-    private String resource;
-    @JsonProperty("version")
-    private String version;
+    @JsonProperty("controllerRef")
+    private TypedLocalObjectReference controllerRef;
+    @JsonProperty("podGroups")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<PodGroup> podGroups = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
      */
-    public GroupVersionResource() {
+    public WorkloadSpec() {
     }
 
-    public GroupVersionResource(String group, String resource, String version) {
+    public WorkloadSpec(TypedLocalObjectReference controllerRef, List<PodGroup> podGroups) {
         super();
-        this.group = group;
-        this.resource = resource;
-        this.version = version;
+        this.controllerRef = controllerRef;
+        this.podGroups = podGroups;
     }
 
     /**
-     * The name of the group.
+     * WorkloadSpec defines the desired state of a Workload.
      */
-    @JsonProperty("group")
-    public String getGroup() {
-        return group;
+    @JsonProperty("controllerRef")
+    public TypedLocalObjectReference getControllerRef() {
+        return controllerRef;
     }
 
     /**
-     * The name of the group.
+     * WorkloadSpec defines the desired state of a Workload.
      */
-    @JsonProperty("group")
-    public void setGroup(String group) {
-        this.group = group;
+    @JsonProperty("controllerRef")
+    public void setControllerRef(TypedLocalObjectReference controllerRef) {
+        this.controllerRef = controllerRef;
     }
 
     /**
-     * The name of the resource.
+     * PodGroups is the list of pod groups that make up the Workload. The maximum number of pod groups is 8. This field is immutable.
      */
-    @JsonProperty("resource")
-    public String getResource() {
-        return resource;
+    @JsonProperty("podGroups")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public List<PodGroup> getPodGroups() {
+        return podGroups;
     }
 
     /**
-     * The name of the resource.
+     * PodGroups is the list of pod groups that make up the Workload. The maximum number of pod groups is 8. This field is immutable.
      */
-    @JsonProperty("resource")
-    public void setResource(String resource) {
-        this.resource = resource;
-    }
-
-    /**
-     * The name of the version.
-     */
-    @JsonProperty("version")
-    public String getVersion() {
-        return version;
-    }
-
-    /**
-     * The name of the version.
-     */
-    @JsonProperty("version")
-    public void setVersion(String version) {
-        this.version = version;
+    @JsonProperty("podGroups")
+    public void setPodGroups(List<PodGroup> podGroups) {
+        this.podGroups = podGroups;
     }
 
     @JsonIgnore
-    public GroupVersionResourceBuilder edit() {
-        return new GroupVersionResourceBuilder(this);
+    public WorkloadSpecBuilder edit() {
+        return new WorkloadSpecBuilder(this);
     }
 
     @JsonIgnore
-    public GroupVersionResourceBuilder toBuilder() {
+    public WorkloadSpecBuilder toBuilder() {
         return edit();
     }
 

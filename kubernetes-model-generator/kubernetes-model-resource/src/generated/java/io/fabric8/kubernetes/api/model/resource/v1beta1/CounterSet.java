@@ -33,7 +33,7 @@ import lombok.ToString;
 import lombok.experimental.Accessors;
 
 /**
- * CounterSet defines a named set of counters that are available to be used by devices defined in the ResourceSlice.<br><p> <br><p> The counters are not allocatable by themselves, but can be referenced by devices. When a device is allocated, the portion of counters it uses will no longer be available for use by other devices.
+ * CounterSet defines a named set of counters that are available to be used by devices defined in the ResourcePool.<br><p> <br><p> The counters are not allocatable by themselves, but can be referenced by devices. When a device is allocated, the portion of counters it uses will no longer be available for use by other devices.
  */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)

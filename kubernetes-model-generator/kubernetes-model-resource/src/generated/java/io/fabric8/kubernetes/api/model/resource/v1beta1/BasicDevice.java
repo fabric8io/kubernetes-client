@@ -247,7 +247,7 @@ public class BasicDevice implements Editable<BasicDeviceBuilder>, KubernetesReso
     }
 
     /**
-     * ConsumesCounters defines a list of references to sharedCounters and the set of counters that the device will consume from those counter sets.<br><p> <br><p> There can only be a single entry per counterSet.<br><p> <br><p> The total number of device counter consumption entries must be &lt;= 32. In addition, the total number in the entire ResourceSlice must be &lt;= 1024 (for example, 64 devices with 16 counters each).
+     * ConsumesCounters defines a list of references to sharedCounters and the set of counters that the device will consume from those counter sets.<br><p> <br><p> There can only be a single entry per counterSet.<br><p> <br><p> The maximum number of device counter consumptions per device is 2.
      */
     @JsonProperty("consumesCounters")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -256,7 +256,7 @@ public class BasicDevice implements Editable<BasicDeviceBuilder>, KubernetesReso
     }
 
     /**
-     * ConsumesCounters defines a list of references to sharedCounters and the set of counters that the device will consume from those counter sets.<br><p> <br><p> There can only be a single entry per counterSet.<br><p> <br><p> The total number of device counter consumption entries must be &lt;= 32. In addition, the total number in the entire ResourceSlice must be &lt;= 1024 (for example, 64 devices with 16 counters each).
+     * ConsumesCounters defines a list of references to sharedCounters and the set of counters that the device will consume from those counter sets.<br><p> <br><p> There can only be a single entry per counterSet.<br><p> <br><p> The maximum number of device counter consumptions per device is 2.
      */
     @JsonProperty("consumesCounters")
     public void setConsumesCounters(List<DeviceCounterConsumption> consumesCounters) {
@@ -296,7 +296,7 @@ public class BasicDevice implements Editable<BasicDeviceBuilder>, KubernetesReso
     }
 
     /**
-     * If specified, these are the driver-defined taints.<br><p> <br><p> The maximum number of taints is 4.<br><p> <br><p> This is an alpha field and requires enabling the DRADeviceTaints feature gate.
+     * If specified, these are the driver-defined taints.<br><p> <br><p> The maximum number of taints is 16. If taints are set for any device in a ResourceSlice, then the maximum number of allowed devices per ResourceSlice is 64 instead of 128.<br><p> <br><p> This is an alpha field and requires enabling the DRADeviceTaints feature gate.
      */
     @JsonProperty("taints")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -305,7 +305,7 @@ public class BasicDevice implements Editable<BasicDeviceBuilder>, KubernetesReso
     }
 
     /**
-     * If specified, these are the driver-defined taints.<br><p> <br><p> The maximum number of taints is 4.<br><p> <br><p> This is an alpha field and requires enabling the DRADeviceTaints feature gate.
+     * If specified, these are the driver-defined taints.<br><p> <br><p> The maximum number of taints is 16. If taints are set for any device in a ResourceSlice, then the maximum number of allowed devices per ResourceSlice is 64 instead of 128.<br><p> <br><p> This is an alpha field and requires enabling the DRADeviceTaints feature gate.
      */
     @JsonProperty("taints")
     public void setTaints(List<DeviceTaint> taints) {
