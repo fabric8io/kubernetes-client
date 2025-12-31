@@ -1888,7 +1888,44 @@ cronTabClient.inNamespace("default").resource(updatedCronTab).patchStatus();
 ```java
 // generates a json patch between the passed in cronTab and the updated result.  Typically you will use a builder to construct a copy from the current and make modifications
 cronTabClient.inNamespace("default").resource(cronTab1).editStatus(cronTab->updatedCronTab);
-``` 
+```
+- Using `status()` convenience method (equivalent to `subresource("status")`):
+```java
+// Patch status using the status() convenience method
+cronTabClient.inNamespace("default").resource(updatedCronTab).status().patch();
+
+// Edit status using the status() convenience method
+cronTabClient.inNamespace("default").withName("my-cron").status().edit(cronTab -> {
+  CronTabStatus status = new CronTabStatus();
+  status.setReplicas(5);
+  cronTab.setStatus(status);
+  return cronTab;
+});
+
+// Replace status using the status() convenience method
+cronTabClient.inNamespace("default").resource(updatedCronTab).status().replace();
+```
+- Using generic `subresource()` method for any subresource:
+```java
+// Access ephemeralcontainers subresource on a Pod
+client.pods().withName("my-pod")
+  .subresource("ephemeralcontainers")
+  .edit(pod -> new PodBuilder(pod)
+    .editSpec()
+      .addNewEphemeralContainer()
+        .withName("debugger")
+        .withImage("busybox")
+      .endEphemeralContainer()
+    .endSpec()
+    .build());
+
+// Patch custom subresource
+client.resources(MyCustomResource.class)
+  .inNamespace("default")
+  .withName("my-resource")
+  .subresource("my-custom-subresource")
+  .patch();
+```
 - Watch `CustomResource`:
 ```java
 cronTabClient.inNamespace("default").watch(new Watcher<>() {

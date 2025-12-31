@@ -77,6 +77,33 @@ class PodEphemeralContainersIT {
   }
 
   @Test
+  void editStatusSubresourceConvenienceMethod() {
+    // Test the new status() convenience method which is equivalent to subresource("status")
+    Pod pod = client.pods().withName("pod-standard").get();
+    assertNotNull(pod);
+
+    // Use the status() convenience method to edit the pod status
+    Pod updatedPod = client.pods().withName("pod-standard").status().edit(p -> {
+      // Add a custom condition to demonstrate status update
+      return new PodBuilder(p)
+          .editMetadata().withResourceVersion(null).endMetadata()
+          .editOrNewStatus()
+          .addNewCondition()
+          .withType("CustomTest")
+          .withStatus("True")
+          .withReason("TestPassed")
+          .withMessage("Testing status() convenience method")
+          .endCondition()
+          .endStatus()
+          .build();
+    });
+
+    assertNotNull(updatedPod.getStatus());
+    assertTrue(updatedPod.getStatus().getConditions().stream()
+        .anyMatch(c -> c.getType().equals("CustomTest") && c.getStatus().equals("True")));
+  }
+
+  @Test
   void replace() {
     Pod item = client.pods().withName("pod-standard").get();
     Pod replacement = new PodBuilder(item)

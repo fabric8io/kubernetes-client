@@ -258,6 +258,44 @@ class TypedCustomResourceIT {
   }
 
   @Test
+  void statusSubresourceConvenienceMethod() {
+    // Given
+    Pet pet = createNewPet("pet-status-convenience", "Parrot", null);
+    PetStatus petStatusToUpdate = new PetStatus();
+    petStatusToUpdate.setCurrentStatus("Flying");
+    // When
+    petClient.create(pet);
+    petClient.withName("pet-status-convenience")
+        .waitUntilCondition(Objects::nonNull, 5, TimeUnit.SECONDS);
+    pet.setStatus(petStatusToUpdate);
+    // Test the new status() convenience method - should be equivalent to subresource("status")
+    Pet updatedPet = petClient.resource(pet).status().patch();
+    // Then
+    assertPet(updatedPet, "pet-status-convenience", "Parrot", "Flying");
+  }
+
+  @Test
+  void statusSubresourceConvenienceMethodEdit() {
+    // Given
+    Pet pet = createNewPet("pet-status-edit-convenience", "Cat", null);
+    PetStatus petStatusToUpdate = new PetStatus();
+    petStatusToUpdate.setCurrentStatus("Purring");
+    // When
+    petClient.create(pet);
+    petClient.withName("pet-status-edit-convenience")
+        .waitUntilCondition(Objects::nonNull, 5, TimeUnit.SECONDS);
+    // Test edit using status() convenience method
+    Pet updatedPet = petClient.withName("pet-status-edit-convenience").status().edit(p -> {
+      Pet clone = Serialization.clone(p);
+      clone.setStatus(petStatusToUpdate);
+      clone.getSpec().setType("shouldn't change");
+      return clone;
+    });
+    // Then
+    assertPet(updatedPet, "pet-status-edit-convenience", "Cat", "Purring");
+  }
+
+  @Test
   void delete() {
     // Given
     Pet pet = createNewPet("pet-delete", "Cow", "Eating");
