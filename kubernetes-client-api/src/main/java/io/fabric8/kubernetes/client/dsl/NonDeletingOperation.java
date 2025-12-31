@@ -70,8 +70,75 @@ public interface NonDeletingOperation<T> extends
   T patchStatus();
 
   /**
-   * Provides edit, patch, and replace methods for the given subresource
+   * Provides edit, patch, and replace methods for the given subresource.
+   * <p>
+   * This method allows you to perform operations on any subresource of a Kubernetes resource.
+   * Common subresources include "status", "scale", "ephemeralcontainers", etc.
+   * <p>
+   * Example usage:
+   *
+   * <pre>
+   * {@code
+   * // Update ephemeral containers subresource
+   * client.pods().withName("my-pod")
+   *   .subresource("ephemeralcontainers")
+   *   .edit(pod -> new PodBuilder(pod)
+   *     .editSpec()
+   *       .addNewEphemeralContainer()
+   *         .withName("debugger")
+   *         .withImage("busybox")
+   *       .endEphemeralContainer()
+   *     .endSpec()
+   *     .build());
+   *
+   * // Patch status subresource
+   * client.pods().resource(myPod)
+   *   .subresource("status")
+   *   .patch();
+   * }
+   * </pre>
+   *
+   * @param subresource the name of the subresource (e.g., "status", "scale", "ephemeralcontainers")
+   * @return an operation context for the specified subresource
+   * @see #status()
    */
   EditReplacePatchable<T> subresource(String subresource);
+
+  /**
+   * Provides edit, patch, and replace methods for the status subresource.
+   * <p>
+   * This is a convenience method equivalent to {@code subresource("status")}.
+   * The status subresource is used to update the status stanza of a Kubernetes resource
+   * without modifying the spec or metadata.
+   * <p>
+   * Example usage:
+   *
+   * <pre>
+   * {@code
+   * // Update custom resource status
+   * client.resources(MyCustomResource.class)
+   *   .withName("my-resource")
+   *   .status()
+   *   .edit(resource -> {
+   *     resource.setStatus(new MyCustomResourceStatus());
+   *     return resource;
+   *   });
+   *
+   * // Patch status directly
+   * myResource.getStatus().setPhase("Ready");
+   * client.resource(myResource)
+   *   .status()
+   *   .patch();
+   * }
+   * </pre>
+   *
+   * @return an operation context for the status subresource
+   * @see #subresource(String)
+   * @see #editStatus(UnaryOperator)
+   * @see #patchStatus()
+   */
+  default EditReplacePatchable<T> status() {
+    return subresource("status");
+  }
 
 }
