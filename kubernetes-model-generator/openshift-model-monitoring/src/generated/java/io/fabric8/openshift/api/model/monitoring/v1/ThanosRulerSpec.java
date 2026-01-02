@@ -55,6 +55,7 @@ import lombok.experimental.Accessors;
     "containers",
     "dnsConfig",
     "dnsPolicy",
+    "enableFeatures",
     "enableServiceLinks",
     "enforcedNamespaceLabel",
     "evaluationInterval",
@@ -62,6 +63,7 @@ import lombok.experimental.Accessors;
     "externalPrefix",
     "grpcServerTlsConfig",
     "hostAliases",
+    "hostUsers",
     "image",
     "imagePullPolicy",
     "imagePullSecrets",
@@ -83,10 +85,12 @@ import lombok.experimental.Accessors;
     "queryEndpoints",
     "remoteWrite",
     "replicas",
+    "resendDelay",
     "resources",
     "retention",
     "routePrefix",
     "ruleConcurrentEval",
+    "ruleGracePeriod",
     "ruleNamespaceSelector",
     "ruleOutageTolerance",
     "ruleQueryOffset",
@@ -156,6 +160,9 @@ public class ThanosRulerSpec implements Editable<ThanosRulerSpecBuilder>, Kubern
     private PodDNSConfig dnsConfig;
     @JsonProperty("dnsPolicy")
     private String dnsPolicy;
+    @JsonProperty("enableFeatures")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<String> enableFeatures = new ArrayList<>();
     @JsonProperty("enableServiceLinks")
     private Boolean enableServiceLinks;
     @JsonProperty("enforcedNamespaceLabel")
@@ -172,6 +179,8 @@ public class ThanosRulerSpec implements Editable<ThanosRulerSpecBuilder>, Kubern
     @JsonProperty("hostAliases")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<HostAlias> hostAliases = new ArrayList<>();
+    @JsonProperty("hostUsers")
+    private Boolean hostUsers;
     @JsonProperty("image")
     private String image;
     @JsonProperty("imagePullPolicy")
@@ -192,7 +201,7 @@ public class ThanosRulerSpec implements Editable<ThanosRulerSpecBuilder>, Kubern
     @JsonProperty("logLevel")
     private String logLevel;
     @JsonProperty("minReadySeconds")
-    private Long minReadySeconds;
+    private Integer minReadySeconds;
     @JsonProperty("nodeSelector")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Map<String, String> nodeSelector = new LinkedHashMap<>();
@@ -221,6 +230,8 @@ public class ThanosRulerSpec implements Editable<ThanosRulerSpecBuilder>, Kubern
     private List<RemoteWriteSpec> remoteWrite = new ArrayList<>();
     @JsonProperty("replicas")
     private Integer replicas;
+    @JsonProperty("resendDelay")
+    private String resendDelay;
     @JsonProperty("resources")
     private ResourceRequirements resources;
     @JsonProperty("retention")
@@ -229,6 +240,8 @@ public class ThanosRulerSpec implements Editable<ThanosRulerSpecBuilder>, Kubern
     private String routePrefix;
     @JsonProperty("ruleConcurrentEval")
     private Integer ruleConcurrentEval;
+    @JsonProperty("ruleGracePeriod")
+    private String ruleGracePeriod;
     @JsonProperty("ruleNamespaceSelector")
     private LabelSelector ruleNamespaceSelector;
     @JsonProperty("ruleOutageTolerance")
@@ -276,7 +289,7 @@ public class ThanosRulerSpec implements Editable<ThanosRulerSpecBuilder>, Kubern
     public ThanosRulerSpec() {
     }
 
-    public ThanosRulerSpec(List<Argument> additionalArgs, Affinity affinity, List<String> alertDropLabels, String alertQueryUrl, String alertRelabelConfigFile, SecretKeySelector alertRelabelConfigs, SecretKeySelector alertmanagersConfig, List<String> alertmanagersUrl, List<Container> containers, PodDNSConfig dnsConfig, String dnsPolicy, Boolean enableServiceLinks, String enforcedNamespaceLabel, String evaluationInterval, List<ObjectReference> excludedFromEnforcement, String externalPrefix, TLSConfig grpcServerTlsConfig, List<HostAlias> hostAliases, String image, String imagePullPolicy, List<LocalObjectReference> imagePullSecrets, List<Container> initContainers, Map<String, String> labels, Boolean listenLocal, String logFormat, String logLevel, Long minReadySeconds, Map<String, String> nodeSelector, SecretKeySelector objectStorageConfig, String objectStorageConfigFile, Boolean paused, EmbeddedObjectMetadata podMetadata, String portName, String priorityClassName, List<PrometheusRuleExcludeConfig> prometheusRulesExcludedFromEnforce, SecretKeySelector queryConfig, List<String> queryEndpoints, List<RemoteWriteSpec> remoteWrite, Integer replicas, ResourceRequirements resources, String retention, String routePrefix, Integer ruleConcurrentEval, LabelSelector ruleNamespaceSelector, String ruleOutageTolerance, String ruleQueryOffset, LabelSelector ruleSelector, PodSecurityContext securityContext, String serviceAccountName, String serviceName, StorageSpec storage, Long terminationGracePeriodSeconds, List<Toleration> tolerations, List<TopologySpreadConstraint> topologySpreadConstraints, SecretKeySelector tracingConfig, String tracingConfigFile, String version, List<VolumeMount> volumeMounts, List<Volume> volumes, ThanosRulerWebSpec web) {
+    public ThanosRulerSpec(List<Argument> additionalArgs, Affinity affinity, List<String> alertDropLabels, String alertQueryUrl, String alertRelabelConfigFile, SecretKeySelector alertRelabelConfigs, SecretKeySelector alertmanagersConfig, List<String> alertmanagersUrl, List<Container> containers, PodDNSConfig dnsConfig, String dnsPolicy, List<String> enableFeatures, Boolean enableServiceLinks, String enforcedNamespaceLabel, String evaluationInterval, List<ObjectReference> excludedFromEnforcement, String externalPrefix, TLSConfig grpcServerTlsConfig, List<HostAlias> hostAliases, Boolean hostUsers, String image, String imagePullPolicy, List<LocalObjectReference> imagePullSecrets, List<Container> initContainers, Map<String, String> labels, Boolean listenLocal, String logFormat, String logLevel, Integer minReadySeconds, Map<String, String> nodeSelector, SecretKeySelector objectStorageConfig, String objectStorageConfigFile, Boolean paused, EmbeddedObjectMetadata podMetadata, String portName, String priorityClassName, List<PrometheusRuleExcludeConfig> prometheusRulesExcludedFromEnforce, SecretKeySelector queryConfig, List<String> queryEndpoints, List<RemoteWriteSpec> remoteWrite, Integer replicas, String resendDelay, ResourceRequirements resources, String retention, String routePrefix, Integer ruleConcurrentEval, String ruleGracePeriod, LabelSelector ruleNamespaceSelector, String ruleOutageTolerance, String ruleQueryOffset, LabelSelector ruleSelector, PodSecurityContext securityContext, String serviceAccountName, String serviceName, StorageSpec storage, Long terminationGracePeriodSeconds, List<Toleration> tolerations, List<TopologySpreadConstraint> topologySpreadConstraints, SecretKeySelector tracingConfig, String tracingConfigFile, String version, List<VolumeMount> volumeMounts, List<Volume> volumes, ThanosRulerWebSpec web) {
         super();
         this.additionalArgs = additionalArgs;
         this.affinity = affinity;
@@ -289,6 +302,7 @@ public class ThanosRulerSpec implements Editable<ThanosRulerSpecBuilder>, Kubern
         this.containers = containers;
         this.dnsConfig = dnsConfig;
         this.dnsPolicy = dnsPolicy;
+        this.enableFeatures = enableFeatures;
         this.enableServiceLinks = enableServiceLinks;
         this.enforcedNamespaceLabel = enforcedNamespaceLabel;
         this.evaluationInterval = evaluationInterval;
@@ -296,6 +310,7 @@ public class ThanosRulerSpec implements Editable<ThanosRulerSpecBuilder>, Kubern
         this.externalPrefix = externalPrefix;
         this.grpcServerTlsConfig = grpcServerTlsConfig;
         this.hostAliases = hostAliases;
+        this.hostUsers = hostUsers;
         this.image = image;
         this.imagePullPolicy = imagePullPolicy;
         this.imagePullSecrets = imagePullSecrets;
@@ -317,10 +332,12 @@ public class ThanosRulerSpec implements Editable<ThanosRulerSpecBuilder>, Kubern
         this.queryEndpoints = queryEndpoints;
         this.remoteWrite = remoteWrite;
         this.replicas = replicas;
+        this.resendDelay = resendDelay;
         this.resources = resources;
         this.retention = retention;
         this.routePrefix = routePrefix;
         this.ruleConcurrentEval = ruleConcurrentEval;
+        this.ruleGracePeriod = ruleGracePeriod;
         this.ruleNamespaceSelector = ruleNamespaceSelector;
         this.ruleOutageTolerance = ruleOutageTolerance;
         this.ruleQueryOffset = ruleQueryOffset;
@@ -521,6 +538,23 @@ public class ThanosRulerSpec implements Editable<ThanosRulerSpecBuilder>, Kubern
     }
 
     /**
+     * Enable access to Thanos Ruler feature flags. By default, no features are enabled.<br><p> <br><p> Enabling features which are disabled by default is entirely outside the scope of what the maintainers will support and by doing so, you accept that this behaviour may break at any time without notice.<br><p> <br><p> For more information see https://thanos.io/tip/components/rule.md/<br><p> <br><p> It requires Thanos &gt;= 0.39.0.
+     */
+    @JsonProperty("enableFeatures")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public List<String> getEnableFeatures() {
+        return enableFeatures;
+    }
+
+    /**
+     * Enable access to Thanos Ruler feature flags. By default, no features are enabled.<br><p> <br><p> Enabling features which are disabled by default is entirely outside the scope of what the maintainers will support and by doing so, you accept that this behaviour may break at any time without notice.<br><p> <br><p> For more information see https://thanos.io/tip/components/rule.md/<br><p> <br><p> It requires Thanos &gt;= 0.39.0.
+     */
+    @JsonProperty("enableFeatures")
+    public void setEnableFeatures(List<String> enableFeatures) {
+        this.enableFeatures = enableFeatures;
+    }
+
+    /**
      * Indicates whether information about services should be injected into pod's environment variables
      */
     @JsonProperty("enableServiceLinks")
@@ -632,6 +666,22 @@ public class ThanosRulerSpec implements Editable<ThanosRulerSpecBuilder>, Kubern
     @JsonProperty("hostAliases")
     public void setHostAliases(List<HostAlias> hostAliases) {
         this.hostAliases = hostAliases;
+    }
+
+    /**
+     * HostUsers supports the user space in Kubernetes.<br><p> <br><p> More info: https://kubernetes.io/docs/tasks/configure-pod-container/user-namespaces/<br><p> <br><p> The feature requires at least Kubernetes 1.28 with the `UserNamespacesSupport` feature gate enabled. Starting Kubernetes 1.33, the feature is enabled by default.
+     */
+    @JsonProperty("hostUsers")
+    public Boolean getHostUsers() {
+        return hostUsers;
+    }
+
+    /**
+     * HostUsers supports the user space in Kubernetes.<br><p> <br><p> More info: https://kubernetes.io/docs/tasks/configure-pod-container/user-namespaces/<br><p> <br><p> The feature requires at least Kubernetes 1.28 with the `UserNamespacesSupport` feature gate enabled. Starting Kubernetes 1.33, the feature is enabled by default.
+     */
+    @JsonProperty("hostUsers")
+    public void setHostUsers(Boolean hostUsers) {
+        this.hostUsers = hostUsers;
     }
 
     /**
@@ -766,18 +816,18 @@ public class ThanosRulerSpec implements Editable<ThanosRulerSpecBuilder>, Kubern
     }
 
     /**
-     * Minimum number of seconds for which a newly created pod should be ready without any of its container crashing for it to be considered available. Defaults to 0 (pod will be considered available as soon as it is ready) This is an alpha field from kubernetes 1.22 until 1.24 which requires enabling the StatefulSetMinReadySeconds feature gate.
+     * Minimum number of seconds for which a newly created pod should be ready without any of its container crashing for it to be considered available.<br><p> <br><p> If unset, pods will be considered available as soon as they are ready.
      */
     @JsonProperty("minReadySeconds")
-    public Long getMinReadySeconds() {
+    public Integer getMinReadySeconds() {
         return minReadySeconds;
     }
 
     /**
-     * Minimum number of seconds for which a newly created pod should be ready without any of its container crashing for it to be considered available. Defaults to 0 (pod will be considered available as soon as it is ready) This is an alpha field from kubernetes 1.22 until 1.24 which requires enabling the StatefulSetMinReadySeconds feature gate.
+     * Minimum number of seconds for which a newly created pod should be ready without any of its container crashing for it to be considered available.<br><p> <br><p> If unset, pods will be considered available as soon as they are ready.
      */
     @JsonProperty("minReadySeconds")
-    public void setMinReadySeconds(Long minReadySeconds) {
+    public void setMinReadySeconds(Integer minReadySeconds) {
         this.minReadySeconds = minReadySeconds;
     }
 
@@ -978,6 +1028,22 @@ public class ThanosRulerSpec implements Editable<ThanosRulerSpecBuilder>, Kubern
     }
 
     /**
+     * Minimum amount of time to wait before resending an alert to Alertmanager.
+     */
+    @JsonProperty("resendDelay")
+    public String getResendDelay() {
+        return resendDelay;
+    }
+
+    /**
+     * Minimum amount of time to wait before resending an alert to Alertmanager.
+     */
+    @JsonProperty("resendDelay")
+    public void setResendDelay(String resendDelay) {
+        this.resendDelay = resendDelay;
+    }
+
+    /**
      * ThanosRulerSpec is a specification of the desired behavior of the ThanosRuler. More info: https://github.com/kubernetes/community/blob/master/contributors/devel/sig-architecture/api-conventions.md#spec-and-status
      */
     @JsonProperty("resources")
@@ -1039,6 +1105,22 @@ public class ThanosRulerSpec implements Editable<ThanosRulerSpecBuilder>, Kubern
     @JsonProperty("ruleConcurrentEval")
     public void setRuleConcurrentEval(Integer ruleConcurrentEval) {
         this.ruleConcurrentEval = ruleConcurrentEval;
+    }
+
+    /**
+     * Minimum duration between alert and restored "for" state. This is maintained only for alerts with configured "for" time greater than grace period. It requires Thanos &gt;= v0.30.0.
+     */
+    @JsonProperty("ruleGracePeriod")
+    public String getRuleGracePeriod() {
+        return ruleGracePeriod;
+    }
+
+    /**
+     * Minimum duration between alert and restored "for" state. This is maintained only for alerts with configured "for" time greater than grace period. It requires Thanos &gt;= v0.30.0.
+     */
+    @JsonProperty("ruleGracePeriod")
+    public void setRuleGracePeriod(String ruleGracePeriod) {
+        this.ruleGracePeriod = ruleGracePeriod;
     }
 
     /**

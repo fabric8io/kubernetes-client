@@ -41,6 +41,7 @@ import lombok.experimental.Accessors;
     "iops",
     "kmsKeyARN",
     "size",
+    "throughput",
     "type"
 })
 @ToString
@@ -74,6 +75,8 @@ public class EC2RootVolume implements Editable<EC2RootVolumeBuilder>, Kubernetes
     private String kmsKeyARN;
     @JsonProperty("size")
     private Integer size;
+    @JsonProperty("throughput")
+    private Long throughput;
     @JsonProperty("type")
     private String type;
     @JsonIgnore
@@ -85,11 +88,12 @@ public class EC2RootVolume implements Editable<EC2RootVolumeBuilder>, Kubernetes
     public EC2RootVolume() {
     }
 
-    public EC2RootVolume(Integer iops, String kmsKeyARN, Integer size, String type) {
+    public EC2RootVolume(Integer iops, String kmsKeyARN, Integer size, Long throughput, String type) {
         super();
         this.iops = iops;
         this.kmsKeyARN = kmsKeyARN;
         this.size = size;
+        this.throughput = throughput;
         this.type = type;
     }
 
@@ -139,6 +143,22 @@ public class EC2RootVolume implements Editable<EC2RootVolumeBuilder>, Kubernetes
     @JsonProperty("size")
     public void setSize(Integer size) {
         this.size = size;
+    }
+
+    /**
+     * Throughput to provision in MiB/s supported for the volume type. This is currently only applicable to volumes of type gp3.
+     */
+    @JsonProperty("throughput")
+    public Long getThroughput() {
+        return throughput;
+    }
+
+    /**
+     * Throughput to provision in MiB/s supported for the volume type. This is currently only applicable to volumes of type gp3.
+     */
+    @JsonProperty("throughput")
+    public void setThroughput(Long throughput) {
+        this.throughput = throughput;
     }
 
     /**

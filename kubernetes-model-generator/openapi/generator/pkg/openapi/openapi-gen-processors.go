@@ -58,9 +58,9 @@ func processInlineDuplicateFields(_ *generator.Context, _ *types.Package, t *typ
 	// Gather the embedded type field names
 	embeddedFieldNames := make(map[string]bool)
 	for _, embeddedMember := range m.Type.Members {
+		embeddedSwaggerIgnore := reflect.StructTag(embeddedMember.Tags).Get("swaggerignore")
 		embeddedJSON := reflect.StructTag(embeddedMember.Tags).Get("json")
-
-		if embeddedJSON == "" || embeddedJSON == "-" || strings.Contains(embeddedJSON, ",omitted") {
+		if embeddedSwaggerIgnore != "" || embeddedJSON == "" || embeddedJSON == "-" || strings.Contains(embeddedJSON, ",omitted") {
 			continue
 		}
 

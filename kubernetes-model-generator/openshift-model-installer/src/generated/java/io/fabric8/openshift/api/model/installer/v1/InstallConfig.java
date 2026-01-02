@@ -355,7 +355,7 @@ public class InstallConfig implements Editable<InstallConfigBuilder>, HasMetadat
     }
 
     /**
-     * CredentialsMode is used to explicitly set the mode with which CredentialRequests are satisfied.<br><p> <br><p> If this field is set, then the installer will not attempt to query the cloud permissions before attempting installation. If the field is not set or empty, then the installer will perform its normal verification that the credentials provided are sufficient to perform an installation.<br><p> <br><p> There are three possible values for this field, but the valid values are dependent upon the platform being used. "Mint": create new credentials with a subset of the overall permissions for each CredentialsRequest "Passthrough": copy the credentials with all of the overall permissions for each CredentialsRequest "Manual": CredentialsRequests must be handled manually by the user<br><p> <br><p> For each of the following platforms, the field can set to the specified values. For all other platforms, the field must not be set. AWS: "Mint", "Passthrough", "Manual" Azure: "Passthrough", "Manual" AzureStack: "Manual" GCP: "Mint", "Passthrough", "Manual" IBMCloud: "Manual" PowerVS: "Manual" Nutanix: "Manual"
+     * CredentialsMode is used to explicitly set the mode with which CredentialRequests are satisfied.<br><p> <br><p> If this field is set, then the installer will not attempt to query the cloud permissions before attempting installation. If the field is not set or empty, then the installer will perform its normal verification that the credentials provided are sufficient to perform an installation.<br><p> <br><p> There are three possible values for this field, but the valid values are dependent upon the platform being used. "Mint": create new credentials with a subset of the overall permissions for each CredentialsRequest "Passthrough": copy the credentials with all of the overall permissions for each CredentialsRequest "Manual": CredentialsRequests must be handled manually by the user<br><p> <br><p> For each of the following platforms, the field can be set to the specified values. For all other platforms, the field must not be set. AWS: "Mint", "Passthrough", "Manual" Azure: "Passthrough", "Manual" AzureStack: "Manual" GCP: "Mint", "Passthrough", "Manual" IBMCloud: "Manual" OpenStack: "Passthrough" PowerVC: "Passthrough" PowerVS: "Manual" Nutanix: "Manual"
      */
     @JsonProperty("credentialsMode")
     public String getCredentialsMode() {
@@ -363,7 +363,7 @@ public class InstallConfig implements Editable<InstallConfigBuilder>, HasMetadat
     }
 
     /**
-     * CredentialsMode is used to explicitly set the mode with which CredentialRequests are satisfied.<br><p> <br><p> If this field is set, then the installer will not attempt to query the cloud permissions before attempting installation. If the field is not set or empty, then the installer will perform its normal verification that the credentials provided are sufficient to perform an installation.<br><p> <br><p> There are three possible values for this field, but the valid values are dependent upon the platform being used. "Mint": create new credentials with a subset of the overall permissions for each CredentialsRequest "Passthrough": copy the credentials with all of the overall permissions for each CredentialsRequest "Manual": CredentialsRequests must be handled manually by the user<br><p> <br><p> For each of the following platforms, the field can set to the specified values. For all other platforms, the field must not be set. AWS: "Mint", "Passthrough", "Manual" Azure: "Passthrough", "Manual" AzureStack: "Manual" GCP: "Mint", "Passthrough", "Manual" IBMCloud: "Manual" PowerVS: "Manual" Nutanix: "Manual"
+     * CredentialsMode is used to explicitly set the mode with which CredentialRequests are satisfied.<br><p> <br><p> If this field is set, then the installer will not attempt to query the cloud permissions before attempting installation. If the field is not set or empty, then the installer will perform its normal verification that the credentials provided are sufficient to perform an installation.<br><p> <br><p> There are three possible values for this field, but the valid values are dependent upon the platform being used. "Mint": create new credentials with a subset of the overall permissions for each CredentialsRequest "Passthrough": copy the credentials with all of the overall permissions for each CredentialsRequest "Manual": CredentialsRequests must be handled manually by the user<br><p> <br><p> For each of the following platforms, the field can be set to the specified values. For all other platforms, the field must not be set. AWS: "Mint", "Passthrough", "Manual" Azure: "Passthrough", "Manual" AzureStack: "Manual" GCP: "Mint", "Passthrough", "Manual" IBMCloud: "Manual" OpenStack: "Passthrough" PowerVC: "Passthrough" PowerVS: "Manual" Nutanix: "Manual"
      */
     @JsonProperty("credentialsMode")
     public void setCredentialsMode(String credentialsMode) {
@@ -550,7 +550,7 @@ public class InstallConfig implements Editable<InstallConfigBuilder>, HasMetadat
     }
 
     /**
-     * Publish controls how the user facing endpoints of the cluster like the Kubernetes API, OpenShift routes etc. are exposed. When no strategy is specified, the strategy is "External".
+     * Publish controls how the user facing endpoints of the cluster like the Kubernetes API, OpenShift routes etc. are exposed. A "Mixed" strategy only applies to the "azure" platform, and requires "operatorPublishingStrategy" to be configured. When no strategy is specified, the strategy is "External".
      */
     @JsonProperty("publish")
     public String getPublish() {
@@ -558,7 +558,7 @@ public class InstallConfig implements Editable<InstallConfigBuilder>, HasMetadat
     }
 
     /**
-     * Publish controls how the user facing endpoints of the cluster like the Kubernetes API, OpenShift routes etc. are exposed. When no strategy is specified, the strategy is "External".
+     * Publish controls how the user facing endpoints of the cluster like the Kubernetes API, OpenShift routes etc. are exposed. A "Mixed" strategy only applies to the "azure" platform, and requires "operatorPublishingStrategy" to be configured. When no strategy is specified, the strategy is "External".
      */
     @JsonProperty("publish")
     public void setPublish(String publish) {

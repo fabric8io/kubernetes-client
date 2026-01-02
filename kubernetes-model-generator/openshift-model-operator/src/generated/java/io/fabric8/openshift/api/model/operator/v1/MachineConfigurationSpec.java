@@ -37,6 +37,7 @@ import lombok.experimental.Accessors;
 @JsonPropertyOrder({
     "failedRevisionLimit",
     "forceRedeploymentReason",
+    "irreconcilableValidationOverrides",
     "logLevel",
     "managedBootImages",
     "managementState",
@@ -75,6 +76,8 @@ public class MachineConfigurationSpec implements Editable<MachineConfigurationSp
     private Integer failedRevisionLimit;
     @JsonProperty("forceRedeploymentReason")
     private String forceRedeploymentReason;
+    @JsonProperty("irreconcilableValidationOverrides")
+    private IrreconcilableValidationOverrides irreconcilableValidationOverrides;
     @JsonProperty("logLevel")
     private String logLevel;
     @JsonProperty("managedBootImages")
@@ -102,10 +105,11 @@ public class MachineConfigurationSpec implements Editable<MachineConfigurationSp
     public MachineConfigurationSpec() {
     }
 
-    public MachineConfigurationSpec(Integer failedRevisionLimit, String forceRedeploymentReason, String logLevel, ManagedBootImages managedBootImages, String managementState, NodeDisruptionPolicyConfig nodeDisruptionPolicy, Object observedConfig, String operatorLogLevel, Integer succeededRevisionLimit, Object unsupportedConfigOverrides) {
+    public MachineConfigurationSpec(Integer failedRevisionLimit, String forceRedeploymentReason, IrreconcilableValidationOverrides irreconcilableValidationOverrides, String logLevel, ManagedBootImages managedBootImages, String managementState, NodeDisruptionPolicyConfig nodeDisruptionPolicy, Object observedConfig, String operatorLogLevel, Integer succeededRevisionLimit, Object unsupportedConfigOverrides) {
         super();
         this.failedRevisionLimit = failedRevisionLimit;
         this.forceRedeploymentReason = forceRedeploymentReason;
+        this.irreconcilableValidationOverrides = irreconcilableValidationOverrides;
         this.logLevel = logLevel;
         this.managedBootImages = managedBootImages;
         this.managementState = managementState;
@@ -146,6 +150,16 @@ public class MachineConfigurationSpec implements Editable<MachineConfigurationSp
     @JsonProperty("forceRedeploymentReason")
     public void setForceRedeploymentReason(String forceRedeploymentReason) {
         this.forceRedeploymentReason = forceRedeploymentReason;
+    }
+
+    @JsonProperty("irreconcilableValidationOverrides")
+    public IrreconcilableValidationOverrides getIrreconcilableValidationOverrides() {
+        return irreconcilableValidationOverrides;
+    }
+
+    @JsonProperty("irreconcilableValidationOverrides")
+    public void setIrreconcilableValidationOverrides(IrreconcilableValidationOverrides irreconcilableValidationOverrides) {
+        this.irreconcilableValidationOverrides = irreconcilableValidationOverrides;
     }
 
     /**

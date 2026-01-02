@@ -57,6 +57,7 @@ import lombok.experimental.Accessors;
     "nativeHistogramBucketLimit",
     "nativeHistogramMinBucketFactor",
     "oauth2",
+    "params",
     "prober",
     "sampleLimit",
     "scrapeClass",
@@ -125,6 +126,9 @@ public class ProbeSpec implements Editable<ProbeSpecBuilder>, KubernetesResource
     private Quantity nativeHistogramMinBucketFactor;
     @JsonProperty("oauth2")
     private OAuth2 oauth2;
+    @JsonProperty("params")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<ProbeParam> params = new ArrayList<>();
     @JsonProperty("prober")
     private ProberSpec prober;
     @JsonProperty("sampleLimit")
@@ -153,7 +157,7 @@ public class ProbeSpec implements Editable<ProbeSpecBuilder>, KubernetesResource
     public ProbeSpec() {
     }
 
-    public ProbeSpec(SafeAuthorization authorization, BasicAuth basicAuth, SecretKeySelector bearerTokenSecret, Boolean convertClassicHistogramsToNHCB, String fallbackScrapeProtocol, String interval, String jobName, Long keepDroppedTargets, Long labelLimit, Long labelNameLengthLimit, Long labelValueLengthLimit, List<RelabelConfig> metricRelabelings, String module, Long nativeHistogramBucketLimit, Quantity nativeHistogramMinBucketFactor, OAuth2 oauth2, ProberSpec prober, Long sampleLimit, String scrapeClass, Boolean scrapeClassicHistograms, List<String> scrapeProtocols, String scrapeTimeout, Long targetLimit, ProbeTargets targets, SafeTLSConfig tlsConfig) {
+    public ProbeSpec(SafeAuthorization authorization, BasicAuth basicAuth, SecretKeySelector bearerTokenSecret, Boolean convertClassicHistogramsToNHCB, String fallbackScrapeProtocol, String interval, String jobName, Long keepDroppedTargets, Long labelLimit, Long labelNameLengthLimit, Long labelValueLengthLimit, List<RelabelConfig> metricRelabelings, String module, Long nativeHistogramBucketLimit, Quantity nativeHistogramMinBucketFactor, OAuth2 oauth2, List<ProbeParam> params, ProberSpec prober, Long sampleLimit, String scrapeClass, Boolean scrapeClassicHistograms, List<String> scrapeProtocols, String scrapeTimeout, Long targetLimit, ProbeTargets targets, SafeTLSConfig tlsConfig) {
         super();
         this.authorization = authorization;
         this.basicAuth = basicAuth;
@@ -171,6 +175,7 @@ public class ProbeSpec implements Editable<ProbeSpecBuilder>, KubernetesResource
         this.nativeHistogramBucketLimit = nativeHistogramBucketLimit;
         this.nativeHistogramMinBucketFactor = nativeHistogramMinBucketFactor;
         this.oauth2 = oauth2;
+        this.params = params;
         this.prober = prober;
         this.sampleLimit = sampleLimit;
         this.scrapeClass = scrapeClass;
@@ -440,6 +445,23 @@ public class ProbeSpec implements Editable<ProbeSpecBuilder>, KubernetesResource
     }
 
     /**
+     * The list of HTTP query parameters for the scrape. Please note that the `.spec.module` field takes precedence over the `module` parameter from this list when both are defined. The module name must be added using Module under ProbeSpec.
+     */
+    @JsonProperty("params")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public List<ProbeParam> getParams() {
+        return params;
+    }
+
+    /**
+     * The list of HTTP query parameters for the scrape. Please note that the `.spec.module` field takes precedence over the `module` parameter from this list when both are defined. The module name must be added using Module under ProbeSpec.
+     */
+    @JsonProperty("params")
+    public void setParams(List<ProbeParam> params) {
+        this.params = params;
+    }
+
+    /**
      * ProbeSpec contains specification parameters for a Probe.
      */
     @JsonProperty("prober")
@@ -488,7 +510,7 @@ public class ProbeSpec implements Editable<ProbeSpecBuilder>, KubernetesResource
     }
 
     /**
-     * Whether to scrape a classic histogram that is also exposed as a native histogram. It requires Prometheus &gt;= v2.45.0.
+     * Whether to scrape a classic histogram that is also exposed as a native histogram. It requires Prometheus &gt;= v2.45.0.<br><p> <br><p> Notice: `scrapeClassicHistograms` corresponds to the `always_scrape_classic_histograms` field in the Prometheus configuration.
      */
     @JsonProperty("scrapeClassicHistograms")
     public Boolean getScrapeClassicHistograms() {
@@ -496,7 +518,7 @@ public class ProbeSpec implements Editable<ProbeSpecBuilder>, KubernetesResource
     }
 
     /**
-     * Whether to scrape a classic histogram that is also exposed as a native histogram. It requires Prometheus &gt;= v2.45.0.
+     * Whether to scrape a classic histogram that is also exposed as a native histogram. It requires Prometheus &gt;= v2.45.0.<br><p> <br><p> Notice: `scrapeClassicHistograms` corresponds to the `always_scrape_classic_histograms` field in the Prometheus configuration.
      */
     @JsonProperty("scrapeClassicHistograms")
     public void setScrapeClassicHistograms(Boolean scrapeClassicHistograms) {

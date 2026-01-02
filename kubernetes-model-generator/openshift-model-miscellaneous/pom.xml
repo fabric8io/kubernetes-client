@@ -64,8 +64,8 @@
                 </schemas>
                 <packageMappings combine.self="append">
                   <io.cncf.cni.k8s>io.fabric8.openshift.api.model.miscellaneous.cncf.cni</io.cncf.cni.k8s>
-                  <io.metal3>io.fabric8.openshift.api.model.miscellaneous.metal3</io.metal3>
                   <io.x-k8s.cluster.infrastructure.v1beta1>io.fabric8.openshift.api.model.miscellaneous.metal3.v1beta1</io.x-k8s.cluster.infrastructure.v1beta1>
+                  <io.metal3>io.fabric8.openshift.api.model.miscellaneous.metal3</io.metal3>
                 </packageMappings>
                 <includeGenerationRegexes>
                   <includeGenerationRegex>^io\.cncf\.cni\.k8s\..*$</includeGenerationRegex>
@@ -78,6 +78,7 @@
                 </includeGenerationRegexes>
                 <skipGenerationRegexes>
                   <skipGenerationRegex>^io\.openshift\.cloudcredential\.v1\.ProviderCodec$</skipGenerationRegex>
+                  <skipGenerationRegex>^com\.github\.openshift\.installer\.types\.azure\..*$</skipGenerationRegex>
                 </skipGenerationRegexes>
               </settings>
             </configuration>

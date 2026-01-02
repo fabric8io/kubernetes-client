@@ -101,7 +101,7 @@ public class ExtraMapping implements Editable<ExtraMappingBuilder>, KubernetesRe
     }
 
     /**
-     * valueExpression is a required field to specify the CEL expression to extract the extra attribute value from a JWT token's claims. valueExpression must produce a string or string array value. "", [], and null are treated as the extra mapping not being present. Empty string values within an array are filtered out.<br><p> <br><p> CEL expressions have access to the token claims through a CEL variable, 'claims'. 'claims' is a map of claim names to claim values. For example, the 'sub' claim value can be accessed as 'claims.sub'. Nested claims can be accessed using dot notation ('claims.foo.bar').<br><p> <br><p> valueExpression must not exceed 4096 characters in length. valueExpression must not be empty.
+     * valueExpression is a required field to specify the CEL expression to extract the extra attribute value from a JWT token's claims. valueExpression must produce a string or string array value. "", [], and null are treated as the extra mapping not being present. Empty string values within an array are filtered out.<br><p> <br><p> CEL expressions have access to the token claims through a CEL variable, 'claims'. 'claims' is a map of claim names to claim values. For example, the 'sub' claim value can be accessed as 'claims.sub'. Nested claims can be accessed using dot notation ('claims.foo.bar').<br><p> <br><p> valueExpression must not exceed 1024 characters in length. valueExpression must not be empty.
      */
     @JsonProperty("valueExpression")
     public String getValueExpression() {
@@ -109,7 +109,7 @@ public class ExtraMapping implements Editable<ExtraMappingBuilder>, KubernetesRe
     }
 
     /**
-     * valueExpression is a required field to specify the CEL expression to extract the extra attribute value from a JWT token's claims. valueExpression must produce a string or string array value. "", [], and null are treated as the extra mapping not being present. Empty string values within an array are filtered out.<br><p> <br><p> CEL expressions have access to the token claims through a CEL variable, 'claims'. 'claims' is a map of claim names to claim values. For example, the 'sub' claim value can be accessed as 'claims.sub'. Nested claims can be accessed using dot notation ('claims.foo.bar').<br><p> <br><p> valueExpression must not exceed 4096 characters in length. valueExpression must not be empty.
+     * valueExpression is a required field to specify the CEL expression to extract the extra attribute value from a JWT token's claims. valueExpression must produce a string or string array value. "", [], and null are treated as the extra mapping not being present. Empty string values within an array are filtered out.<br><p> <br><p> CEL expressions have access to the token claims through a CEL variable, 'claims'. 'claims' is a map of claim names to claim values. For example, the 'sub' claim value can be accessed as 'claims.sub'. Nested claims can be accessed using dot notation ('claims.foo.bar').<br><p> <br><p> valueExpression must not exceed 1024 characters in length. valueExpression must not be empty.
      */
     @JsonProperty("valueExpression")
     public void setValueExpression(String valueExpression) {
