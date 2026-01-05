@@ -16,6 +16,7 @@
 package io.fabric8.kubernetes.client.extended.leaderelection;
 
 import io.fabric8.kubernetes.api.model.Status;
+import io.fabric8.kubernetes.api.model.StatusBuilder;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.NamespacedKubernetesClient;
 import io.fabric8.kubernetes.client.extended.leaderelection.resourcelock.LeaderElectionRecord;
@@ -44,6 +45,7 @@ import java.util.concurrent.atomic.AtomicReference;
 import static io.fabric8.kubernetes.client.extended.leaderelection.LeaderElector.jitter;
 import static io.fabric8.kubernetes.client.extended.leaderelection.LeaderElector.loop;
 import static io.fabric8.kubernetes.client.extended.leaderelection.LeaderElector.now;
+import static org.awaitility.Awaitility.await;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -166,8 +168,9 @@ class LeaderElectorTest {
       if (count.addAndGet(1) == 2) {
 
         // simulate that we've already lost election
-        Status status = new Status();
-        status.setCode(HttpURLConnection.HTTP_CONFLICT);
+        Status status = new StatusBuilder()
+            .withCode(HttpURLConnection.HTTP_CONFLICT)
+            .build();
         throw new KubernetesClientException(status);
       }
       LeaderElectionRecord leaderRecord = invocation.getArgument(1, LeaderElectionRecord.class);
@@ -322,11 +325,11 @@ class LeaderElectorTest {
     AtomicInteger count = new AtomicInteger();
     CompletableFuture<?> cf = loop(completion -> count.getAndIncrement(), () -> 10L, CommonThreadPool.get());
 
-    org.awaitility.Awaitility.await().atMost(1, TimeUnit.SECONDS).until(() -> count.get() >= 1);
+    await().atMost(1, TimeUnit.SECONDS).until(() -> count.get() >= 1);
     cf.cancel(true);
 
     int sample = count.get();
-    org.awaitility.Awaitility.await()
+    await()
         .atMost(Duration.ofMillis(500))
         .untilAsserted(() -> assertEquals(sample, count.get()));
   }

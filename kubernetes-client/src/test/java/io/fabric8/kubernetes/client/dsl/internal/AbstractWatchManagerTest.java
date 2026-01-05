@@ -18,7 +18,7 @@ package io.fabric8.kubernetes.client.dsl.internal;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.ListOptions;
 import io.fabric8.kubernetes.api.model.Status;
-import io.fabric8.kubernetes.api.model.StatusDetails;
+import io.fabric8.kubernetes.api.model.StatusBuilder;
 import io.fabric8.kubernetes.client.Watcher;
 import io.fabric8.kubernetes.client.WatcherException;
 import io.fabric8.kubernetes.client.dsl.internal.AbstractWatchManager.WatchRequestState;
@@ -43,7 +43,6 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.awaitility.Awaitility.await;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
@@ -117,18 +116,15 @@ class AbstractWatchManagerTest {
     assertThat(awm.nextReconnectInterval()).isEqualTo(320);
     assertThat(awm.nextReconnectInterval()).isEqualTo(320);
 
-    Status status = new Status();
-    StatusDetails details = new StatusDetails();
-    details.setRetryAfterSeconds(7);
-    status.setDetails(details);
+    Status status = new StatusBuilder()
+        .withNewDetails()
+        .withRetryAfterSeconds(7)
+        .endDetails()
+        .build();
 
     awm.onStatus(status, new WatchRequestState());
 
-    await()
-        .atMost(10, TimeUnit.SECONDS)
-        .until(() -> awm.nextReconnectInterval() == 7000L);
-    // should go back to the base interval after that
-    assertThat(awm.nextReconnectInterval()).isEqualTo(320);
+    assertThat(awm.nextReconnectInterval()).isEqualTo(7000L);
   }
 
   @Test
