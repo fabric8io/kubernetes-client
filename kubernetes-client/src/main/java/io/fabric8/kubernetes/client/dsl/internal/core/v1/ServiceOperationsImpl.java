@@ -133,9 +133,9 @@ public class ServiceOperationsImpl extends HasMetadataOperation<Service, Service
     Service s = requireFromServer();
     Pod m = matchingPod(s);
     return new PodOperationsImpl(context.getClient())
-      .inNamespace(m.getMetadata().getNamespace())
-      .withName(m.getMetadata().getName())
-      .portForward(getTargetPortAsInt(s, port), in, out);
+        .inNamespace(m.getMetadata().getNamespace())
+        .withName(m.getMetadata().getName())
+        .portForward(getTargetPortAsInt(s, port), in, out);
   }
 
   @Override
@@ -143,9 +143,9 @@ public class ServiceOperationsImpl extends HasMetadataOperation<Service, Service
     Service s = requireFromServer();
     Pod m = matchingPod(s);
     return new PodOperationsImpl(context.getClient())
-      .inNamespace(m.getMetadata().getNamespace())
-      .withName(m.getMetadata().getName())
-      .portForward(getTargetPortAsInt(s, port), localPort);
+        .inNamespace(m.getMetadata().getNamespace())
+        .withName(m.getMetadata().getName())
+        .portForward(getTargetPortAsInt(s, port), localPort);
   }
 
   @Override
@@ -153,17 +153,17 @@ public class ServiceOperationsImpl extends HasMetadataOperation<Service, Service
     Service s = requireFromServer();
     Pod m = matchingPod(s);
     return new PodOperationsImpl(context.getClient())
-      .inNamespace(m.getMetadata().getNamespace())
-      .withName(m.getMetadata().getName())
-      .portForward(getTargetPortAsInt(s, port), localInetAddress, localPort);
+        .inNamespace(m.getMetadata().getNamespace())
+        .withName(m.getMetadata().getName())
+        .portForward(getTargetPortAsInt(s, port), localInetAddress, localPort);
   }
 
   private int getTargetPortAsInt(Service service, int port) {
     return service.getSpec().getPorts().stream()
-      .filter(p -> p.getPort().equals(port))
-      .map(p -> p.getTargetPort().getIntVal())
-      .findFirst()
-      .orElse(port);
+        .filter(p -> p.getPort().equals(port))
+        .map(p -> p.getTargetPort().getIntVal())
+        .findFirst()
+        .orElse(port);
   }
 
   @Override
@@ -171,9 +171,9 @@ public class ServiceOperationsImpl extends HasMetadataOperation<Service, Service
     Service s = requireFromServer();
     Pod m = matchingPod(s);
     return new PodOperationsImpl(context.getClient())
-      .inNamespace(m.getMetadata().getNamespace())
-      .withName(m.getMetadata().getName())
-      .portForward(getTargetPortAsInt(s, port));
+        .inNamespace(m.getMetadata().getNamespace())
+        .withName(m.getMetadata().getName())
+        .portForward(getTargetPortAsInt(s, port));
   }
 
   public class ServiceToUrlSortComparator implements Comparator<ServiceToURLProvider> {

@@ -48,38 +48,37 @@ class ServiceOperationsImplTest {
     String emptyPodListJson = "{\"apiVersion\":\"v1\",\"kind\":\"PodList\",\"items\":[]}";
 
     factory.expect("/api/v1/namespaces/test/services/test-service", 200,
-      "{\"apiVersion\":\"v1\",\"kind\":\"Service\",\"metadata\":{\"name\":\"test-service\",\"namespace\":\"test\"}," +
-        "\"spec\":{\"selector\":{\"app\":\"test\"},\"ports\":[{\"port\":8080,\"targetPort\":8080}]}}");
+        "{\"apiVersion\":\"v1\",\"kind\":\"Service\",\"metadata\":{\"name\":\"test-service\",\"namespace\":\"test\"}," +
+            "\"spec\":{\"selector\":{\"app\":\"test\"},\"ports\":[{\"port\":8080,\"targetPort\":8080}]}}");
     factory.expect("/api/v1/namespaces/test/pods", 200, emptyPodListJson);
 
     ServiceOperationsImpl serviceOps = new ServiceOperationsImpl(client);
 
     // When - Then - Verify that matchingPod (called internally) throws IllegalStateException
     assertThatThrownBy(() -> serviceOps.inNamespace("test").withName("test-service").portForward(8080))
-      .isInstanceOf(IllegalStateException.class)
-      .hasMessageContaining("Could not find matching pod for service");
+        .isInstanceOf(IllegalStateException.class)
+        .hasMessageContaining("Could not find matching pod for service");
   }
 
   @Test
   void portForward_whenServiceNotFound_thenThrowException() {
     // Given - Service not found
     factory.expect("/api/v1/namespaces/test/services/test-service", 404,
-      "{\"kind\":\"Status\",\"status\":\"Failure\",\"message\":\"services \\\"test-service\\\" not found\",\"code\":404}");
+        "{\"kind\":\"Status\",\"status\":\"Failure\",\"message\":\"services \\\"test-service\\\" not found\",\"code\":404}");
 
     ServiceOperationsImpl serviceOps = new ServiceOperationsImpl(client);
 
     // When - Then
     assertThatThrownBy(() -> serviceOps.inNamespace("test").withName("test-service").portForward(8080))
-      .hasMessageContaining("not found");
+        .hasMessageContaining("not found");
   }
 
   static Stream<Arguments> portForwardSuccessScenarios() {
     return Stream.of(
-      Arguments.of("single pod",
-        "{\"apiVersion\":\"v1\",\"kind\":\"PodList\",\"items\":[{\"apiVersion\":\"v1\",\"kind\":\"Pod\",\"metadata\":{\"name\":\"test-pod\",\"namespace\":\"test\"}}]}"),
-      Arguments.of("multiple pods",
-        "{\"apiVersion\":\"v1\",\"kind\":\"PodList\",\"items\":[{\"apiVersion\":\"v1\",\"kind\":\"Pod\",\"metadata\":{\"name\":\"test-pod-1\",\"namespace\":\"test\"}},{\"apiVersion\":\"v1\",\"kind\":\"Pod\",\"metadata\":{\"name\":\"test-pod-2\",\"namespace\":\"test\"}}]}")
-    );
+        Arguments.of("single pod",
+            "{\"apiVersion\":\"v1\",\"kind\":\"PodList\",\"items\":[{\"apiVersion\":\"v1\",\"kind\":\"Pod\",\"metadata\":{\"name\":\"test-pod\",\"namespace\":\"test\"}}]}"),
+        Arguments.of("multiple pods",
+            "{\"apiVersion\":\"v1\",\"kind\":\"PodList\",\"items\":[{\"apiVersion\":\"v1\",\"kind\":\"Pod\",\"metadata\":{\"name\":\"test-pod-1\",\"namespace\":\"test\"}},{\"apiVersion\":\"v1\",\"kind\":\"Pod\",\"metadata\":{\"name\":\"test-pod-2\",\"namespace\":\"test\"}}]}"));
   }
 
   @ParameterizedTest(name = "portForward with {0} should succeed")
@@ -87,8 +86,8 @@ class ServiceOperationsImplTest {
   void portForward_whenPodsExist_thenDelegateSuccessfully(String scenario, String podListJson) throws Exception {
     // Given
     factory.expect("/api/v1/namespaces/test/services/test-service", 200,
-      "{\"apiVersion\":\"v1\",\"kind\":\"Service\",\"metadata\":{\"name\":\"test-service\",\"namespace\":\"test\"}," +
-        "\"spec\":{\"selector\":{\"app\":\"test\"},\"ports\":[{\"port\":8080,\"targetPort\":9090}]}}");
+        "{\"apiVersion\":\"v1\",\"kind\":\"Service\",\"metadata\":{\"name\":\"test-service\",\"namespace\":\"test\"}," +
+            "\"spec\":{\"selector\":{\"app\":\"test\"},\"ports\":[{\"port\":8080,\"targetPort\":9090}]}}");
     factory.expect("/api/v1/namespaces/test/pods", 200, podListJson);
 
     ServiceOperationsImpl serviceOps = new ServiceOperationsImpl(client);
@@ -105,8 +104,8 @@ class ServiceOperationsImplTest {
     String podListJson = "{\"apiVersion\":\"v1\",\"kind\":\"PodList\",\"items\":[{\"apiVersion\":\"v1\",\"kind\":\"Pod\",\"metadata\":{\"name\":\"test-pod\",\"namespace\":\"test\"}}]}";
 
     factory.expect("/api/v1/namespaces/test/services/test-service", 200,
-      "{\"apiVersion\":\"v1\",\"kind\":\"Service\",\"metadata\":{\"name\":\"test-service\",\"namespace\":\"test\"}," +
-        "\"spec\":{\"selector\":{\"app\":\"test\"},\"ports\":[{\"port\":8080,\"targetPort\":9090}]}}");
+        "{\"apiVersion\":\"v1\",\"kind\":\"Service\",\"metadata\":{\"name\":\"test-service\",\"namespace\":\"test\"}," +
+            "\"spec\":{\"selector\":{\"app\":\"test\"},\"ports\":[{\"port\":8080,\"targetPort\":9090}]}}");
     factory.expect("/api/v1/namespaces/test/pods", 200, podListJson);
 
     ServiceOperationsImpl serviceOps = new ServiceOperationsImpl(client);
@@ -123,8 +122,8 @@ class ServiceOperationsImplTest {
     String podListJson = "{\"apiVersion\":\"v1\",\"kind\":\"PodList\",\"items\":[{\"apiVersion\":\"v1\",\"kind\":\"Pod\",\"metadata\":{\"name\":\"test-pod\",\"namespace\":\"test\"}}]}";
 
     factory.expect("/api/v1/namespaces/test/services/test-service", 200,
-      "{\"apiVersion\":\"v1\",\"kind\":\"Service\",\"metadata\":{\"name\":\"test-service\",\"namespace\":\"test\"}," +
-        "\"spec\":{\"selector\":{\"app\":\"test\"},\"ports\":[{\"port\":8080,\"targetPort\":9090}]}}");
+        "{\"apiVersion\":\"v1\",\"kind\":\"Service\",\"metadata\":{\"name\":\"test-service\",\"namespace\":\"test\"}," +
+            "\"spec\":{\"selector\":{\"app\":\"test\"},\"ports\":[{\"port\":8080,\"targetPort\":9090}]}}");
     factory.expect("/api/v1/namespaces/test/pods", 200, podListJson);
 
     ServiceOperationsImpl serviceOps = new ServiceOperationsImpl(client);
@@ -141,8 +140,8 @@ class ServiceOperationsImplTest {
     String podListJson = "{\"apiVersion\":\"v1\",\"kind\":\"PodList\",\"items\":[{\"apiVersion\":\"v1\",\"kind\":\"Pod\",\"metadata\":{\"name\":\"test-pod\",\"namespace\":\"test\"}}]}";
 
     factory.expect("/api/v1/namespaces/test/services/test-service", 200,
-      "{\"apiVersion\":\"v1\",\"kind\":\"Service\",\"metadata\":{\"name\":\"test-service\",\"namespace\":\"test\"}," +
-        "\"spec\":{\"selector\":{\"app\":\"test\"},\"ports\":[{\"port\":8080,\"targetPort\":9090}]}}");
+        "{\"apiVersion\":\"v1\",\"kind\":\"Service\",\"metadata\":{\"name\":\"test-service\",\"namespace\":\"test\"}," +
+            "\"spec\":{\"selector\":{\"app\":\"test\"},\"ports\":[{\"port\":8080,\"targetPort\":9090}]}}");
     factory.expect("/api/v1/namespaces/test/pods", 200, podListJson);
 
     ServiceOperationsImpl serviceOps = new ServiceOperationsImpl(client);
