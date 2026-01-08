@@ -168,7 +168,7 @@ public class ServiceOperationsImpl extends HasMetadataOperation<Service, Service
         .orElse(port);
   }
 
-  public class ServiceToUrlSortComparator implements Comparator<ServiceToURLProvider> {
+  public static final class ServiceToUrlSortComparator implements Comparator<ServiceToURLProvider> {
     @Override
     public int compare(ServiceToURLProvider first, ServiceToURLProvider second) {
       return first.getPriority() - second.getPriority();
