@@ -44,6 +44,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.ServiceLoader;
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Supplier;
 
@@ -162,6 +163,7 @@ public class ServiceOperationsImpl extends HasMetadataOperation<Service, Service
     return service.getSpec().getPorts().stream()
         .filter(p -> p.getPort().equals(port))
         .map(p -> p.getTargetPort().getIntVal())
+        .filter(Objects::nonNull)
         .findFirst()
         .orElse(port);
   }
