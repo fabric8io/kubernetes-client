@@ -43,8 +43,8 @@ import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.ServiceLoader;
 import java.util.Objects;
+import java.util.ServiceLoader;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Supplier;
 
@@ -140,13 +140,13 @@ public class ServiceOperationsImpl extends HasMetadataOperation<Service, Service
   }
 
   @Override
+  public LocalPortForward portForward(int port) {
+    return portForward(port, 0);
+  }
+
+  @Override
   public LocalPortForward portForward(int port, int localPort) {
-    Service s = requireFromServer();
-    Pod m = matchingPod(s);
-    return new PodOperationsImpl(context.getClient())
-        .inNamespace(m.getMetadata().getNamespace())
-        .withName(m.getMetadata().getName())
-        .portForward(getTargetPortAsInt(s, port), localPort);
+    return portForward(port, null, localPort);
   }
 
   @Override
@@ -166,16 +166,6 @@ public class ServiceOperationsImpl extends HasMetadataOperation<Service, Service
         .filter(Objects::nonNull)
         .findFirst()
         .orElse(port);
-  }
-
-  @Override
-  public LocalPortForward portForward(int port) {
-    Service s = requireFromServer();
-    Pod m = matchingPod(s);
-    return new PodOperationsImpl(context.getClient())
-        .inNamespace(m.getMetadata().getNamespace())
-        .withName(m.getMetadata().getName())
-        .portForward(getTargetPortAsInt(s, port));
   }
 
   public class ServiceToUrlSortComparator implements Comparator<ServiceToURLProvider> {
