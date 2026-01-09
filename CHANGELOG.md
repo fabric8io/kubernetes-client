@@ -1,6 +1,6 @@
 ## CHANGELOG
 
-### 7.5-SNAPSHOT
+### 7.5.0 (2026-01-09)
 
 #### Bugs
 * Fix #7160: Use the duration from current leader record, not from the config
