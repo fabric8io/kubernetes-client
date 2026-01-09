@@ -31,17 +31,17 @@ import java.util.Optional;
 public interface Cache<T> extends Indexer<T> {
 
   // NAMESPACE_INDEX is the default index function for caching objects
-  public static final String NAMESPACE_INDEX = "namespace";
+  String NAMESPACE_INDEX = "namespace";
 
   /**
-   * It's is a convenient default KeyFunc which know show to make keys for API
+   * A convenient default KeyFunc which knows how to make keys for API
    * objects which implement HasMetadata interface. The key uses the format
    * namespace/name unless namespace is empty, then it's just name
    *
    * @param obj specific object
    * @return the key
    */
-  public static String metaNamespaceKeyFunc(HasMetadata obj) {
+  static String metaNamespaceKeyFunc(HasMetadata obj) {
     if (obj == null) {
       return "";
     }
@@ -53,7 +53,7 @@ public interface Cache<T> extends Indexer<T> {
     return namespaceKeyFunc(metadata.getNamespace(), metadata.getName());
   }
 
-  public static String metaUidKeyFunc(HasMetadata obj) {
+  static String metaUidKeyFunc(HasMetadata obj) {
     if (obj == null || obj.getMetadata() == null) {
       return "";
     }
@@ -66,7 +66,7 @@ public interface Cache<T> extends Indexer<T> {
    *
    * @see #metaNamespaceKeyFunc
    */
-  public static String namespaceKeyFunc(String objectNamespace, String objectName) {
+  static String namespaceKeyFunc(String objectNamespace, String objectName) {
     if (Utils.isNullOrEmpty(objectNamespace)) {
       return objectName;
     }
@@ -74,13 +74,14 @@ public interface Cache<T> extends Indexer<T> {
   }
 
   /**
-   * It is a default index function that indexes based on an object's namespace
+   * Default index function that indexes based on an object's namespace
    *
    * @param obj the specific object
    * @return the indexed value
    */
-  public static List<String> metaNamespaceIndexFunc(HasMetadata obj) {
-    return Optional.ofNullable(obj).map(HasMetadata::getMetadata)
-        .map(metadata -> Collections.singletonList(metadata.getNamespace())).orElse(Collections.emptyList());
+  static List<String> metaNamespaceIndexFunc(HasMetadata obj) {
+    return Optional.ofNullable(obj)
+        .map(hm -> List.of(hm.getMetadata().getNamespace()))
+        .orElse(Collections.emptyList());
   }
 }
