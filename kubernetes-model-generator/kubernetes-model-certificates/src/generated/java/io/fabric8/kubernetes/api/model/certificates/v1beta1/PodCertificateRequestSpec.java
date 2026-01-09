@@ -1,5 +1,5 @@
 
-package io.fabric8.kubernetes.api.model.certificates.v1alpha1;
+package io.fabric8.kubernetes.api.model.certificates.v1beta1;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -47,7 +47,8 @@ import lombok.experimental.Accessors;
     "proofOfPossession",
     "serviceAccountName",
     "serviceAccountUID",
-    "signerName"
+    "signerName",
+    "unverifiedUserAnnotations"
 })
 @ToString
 @EqualsAndHashCode
@@ -94,6 +95,9 @@ public class PodCertificateRequestSpec implements Editable<PodCertificateRequest
     private String serviceAccountUID;
     @JsonProperty("signerName")
     private String signerName;
+    @JsonProperty("unverifiedUserAnnotations")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private Map<String, String> unverifiedUserAnnotations = new LinkedHashMap<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -103,7 +107,7 @@ public class PodCertificateRequestSpec implements Editable<PodCertificateRequest
     public PodCertificateRequestSpec() {
     }
 
-    public PodCertificateRequestSpec(Integer maxExpirationSeconds, String nodeName, String nodeUID, String pkixPublicKey, String podName, String podUID, String proofOfPossession, String serviceAccountName, String serviceAccountUID, String signerName) {
+    public PodCertificateRequestSpec(Integer maxExpirationSeconds, String nodeName, String nodeUID, String pkixPublicKey, String podName, String podUID, String proofOfPossession, String serviceAccountName, String serviceAccountUID, String signerName, Map<String, String> unverifiedUserAnnotations) {
         super();
         this.maxExpirationSeconds = maxExpirationSeconds;
         this.nodeName = nodeName;
@@ -115,6 +119,7 @@ public class PodCertificateRequestSpec implements Editable<PodCertificateRequest
         this.serviceAccountName = serviceAccountName;
         this.serviceAccountUID = serviceAccountUID;
         this.signerName = signerName;
+        this.unverifiedUserAnnotations = unverifiedUserAnnotations;
     }
 
     /**
@@ -275,6 +280,23 @@ public class PodCertificateRequestSpec implements Editable<PodCertificateRequest
     @JsonProperty("signerName")
     public void setSignerName(String signerName) {
         this.signerName = signerName;
+    }
+
+    /**
+     * unverifiedUserAnnotations allow pod authors to pass additional information to the signer implementation.  Kubernetes does not restrict or validate this metadata in any way.<br><p> <br><p> Entries are subject to the same validation as object metadata annotations, with the addition that all keys must be domain-prefixed. No restrictions are placed on values, except an overall size limitation on the entire field.<br><p> <br><p> Signers should document the keys and values they support.  Signers should deny requests that contain keys they do not recognize.
+     */
+    @JsonProperty("unverifiedUserAnnotations")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public Map<String, String> getUnverifiedUserAnnotations() {
+        return unverifiedUserAnnotations;
+    }
+
+    /**
+     * unverifiedUserAnnotations allow pod authors to pass additional information to the signer implementation.  Kubernetes does not restrict or validate this metadata in any way.<br><p> <br><p> Entries are subject to the same validation as object metadata annotations, with the addition that all keys must be domain-prefixed. No restrictions are placed on values, except an overall size limitation on the entire field.<br><p> <br><p> Signers should document the keys and values they support.  Signers should deny requests that contain keys they do not recognize.
+     */
+    @JsonProperty("unverifiedUserAnnotations")
+    public void setUnverifiedUserAnnotations(Map<String, String> unverifiedUserAnnotations) {
+        this.unverifiedUserAnnotations = unverifiedUserAnnotations;
     }
 
     @JsonIgnore

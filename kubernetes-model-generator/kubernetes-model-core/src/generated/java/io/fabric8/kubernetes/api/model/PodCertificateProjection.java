@@ -28,7 +28,8 @@ import lombok.experimental.Accessors;
     "keyPath",
     "keyType",
     "maxExpirationSeconds",
-    "signerName"
+    "signerName",
+    "userAnnotations"
 })
 @ToString
 @EqualsAndHashCode
@@ -53,6 +54,9 @@ public class PodCertificateProjection implements Editable<PodCertificateProjecti
     private Integer maxExpirationSeconds;
     @JsonProperty("signerName")
     private String signerName;
+    @JsonProperty("userAnnotations")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private Map<String, String> userAnnotations = new LinkedHashMap<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -62,7 +66,7 @@ public class PodCertificateProjection implements Editable<PodCertificateProjecti
     public PodCertificateProjection() {
     }
 
-    public PodCertificateProjection(String certificateChainPath, String credentialBundlePath, String keyPath, String keyType, Integer maxExpirationSeconds, String signerName) {
+    public PodCertificateProjection(String certificateChainPath, String credentialBundlePath, String keyPath, String keyType, Integer maxExpirationSeconds, String signerName, Map<String, String> userAnnotations) {
         super();
         this.certificateChainPath = certificateChainPath;
         this.credentialBundlePath = credentialBundlePath;
@@ -70,6 +74,7 @@ public class PodCertificateProjection implements Editable<PodCertificateProjecti
         this.keyType = keyType;
         this.maxExpirationSeconds = maxExpirationSeconds;
         this.signerName = signerName;
+        this.userAnnotations = userAnnotations;
     }
 
     /**
@@ -166,6 +171,23 @@ public class PodCertificateProjection implements Editable<PodCertificateProjecti
     @JsonProperty("signerName")
     public void setSignerName(String signerName) {
         this.signerName = signerName;
+    }
+
+    /**
+     * userAnnotations allow pod authors to pass additional information to the signer implementation.  Kubernetes does not restrict or validate this metadata in any way.<br><p> <br><p> These values are copied verbatim into the `spec.unverifiedUserAnnotations` field of the PodCertificateRequest objects that Kubelet creates.<br><p> <br><p> Entries are subject to the same validation as object metadata annotations, with the addition that all keys must be domain-prefixed. No restrictions are placed on values, except an overall size limitation on the entire field.<br><p> <br><p> Signers should document the keys and values they support. Signers should deny requests that contain keys they do not recognize.
+     */
+    @JsonProperty("userAnnotations")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public Map<String, String> getUserAnnotations() {
+        return userAnnotations;
+    }
+
+    /**
+     * userAnnotations allow pod authors to pass additional information to the signer implementation.  Kubernetes does not restrict or validate this metadata in any way.<br><p> <br><p> These values are copied verbatim into the `spec.unverifiedUserAnnotations` field of the PodCertificateRequest objects that Kubelet creates.<br><p> <br><p> Entries are subject to the same validation as object metadata annotations, with the addition that all keys must be domain-prefixed. No restrictions are placed on values, except an overall size limitation on the entire field.<br><p> <br><p> Signers should document the keys and values they support. Signers should deny requests that contain keys they do not recognize.
+     */
+    @JsonProperty("userAnnotations")
+    public void setUserAnnotations(Map<String, String> userAnnotations) {
+        this.userAnnotations = userAnnotations;
     }
 
     @JsonIgnore

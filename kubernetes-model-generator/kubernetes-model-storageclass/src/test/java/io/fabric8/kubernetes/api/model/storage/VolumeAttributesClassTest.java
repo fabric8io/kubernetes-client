@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8.kubernetes.api.model.storage.v1alpha1;
+package io.fabric8.kubernetes.api.model.storage;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.fabric8.kubernetes.api.model.Namespaced;
@@ -35,7 +35,7 @@ class VolumeAttributesClassTest {
   @Test
   void deserializationAndSerializationShouldWorkAsExpected() throws IOException {
     // Given
-    String originalJson = new Scanner(getClass().getResourceAsStream("/valid-v1alpha1-volumeattributesclass.json"))
+    String originalJson = new Scanner(getClass().getResourceAsStream("/valid-v1-volumeattributesclass.json"))
         .useDelimiter("\\A")
         .next();
 

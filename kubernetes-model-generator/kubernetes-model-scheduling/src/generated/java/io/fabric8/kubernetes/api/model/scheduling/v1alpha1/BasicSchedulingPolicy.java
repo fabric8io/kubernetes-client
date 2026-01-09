@@ -1,5 +1,5 @@
 
-package io.fabric8.kubernetes.api.model.resource.v1beta2;
+package io.fabric8.kubernetes.api.model.scheduling.v1alpha1;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -8,7 +8,6 @@ import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
@@ -33,13 +32,12 @@ import lombok.ToString;
 import lombok.experimental.Accessors;
 
 /**
- * OpaqueDeviceConfiguration contains configuration parameters for a driver in a format defined by the driver vendor.
+ * BasicSchedulingPolicy indicates that standard Kubernetes scheduling behavior should be used.
  */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "driver",
-    "parameters"
+
 })
 @ToString
 @EqualsAndHashCode
@@ -63,69 +61,19 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class OpaqueDeviceConfiguration implements Editable<OpaqueDeviceConfigurationBuilder>, KubernetesResource
+public class BasicSchedulingPolicy implements Editable<BasicSchedulingPolicyBuilder>, KubernetesResource
 {
 
-    @JsonProperty("driver")
-    private String driver;
-    @JsonProperty("parameters")
-    @JsonDeserialize(using = io.fabric8.kubernetes.internal.KubernetesDeserializer.class)
-    private Object parameters;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
-    /**
-     * No args constructor for use in serialization
-     */
-    public OpaqueDeviceConfiguration() {
-    }
-
-    public OpaqueDeviceConfiguration(String driver, Object parameters) {
-        super();
-        this.driver = driver;
-        this.parameters = parameters;
-    }
-
-    /**
-     * Driver is used to determine which kubelet plugin needs to be passed these configuration parameters.<br><p> <br><p> An admission policy provided by the driver developer could use this to decide whether it needs to validate them.<br><p> <br><p> Must be a DNS subdomain and should end with a DNS domain owned by the vendor of the driver. It should use only lower case characters.
-     */
-    @JsonProperty("driver")
-    public String getDriver() {
-        return driver;
-    }
-
-    /**
-     * Driver is used to determine which kubelet plugin needs to be passed these configuration parameters.<br><p> <br><p> An admission policy provided by the driver developer could use this to decide whether it needs to validate them.<br><p> <br><p> Must be a DNS subdomain and should end with a DNS domain owned by the vendor of the driver. It should use only lower case characters.
-     */
-    @JsonProperty("driver")
-    public void setDriver(String driver) {
-        this.driver = driver;
-    }
-
-    /**
-     * OpaqueDeviceConfiguration contains configuration parameters for a driver in a format defined by the driver vendor.
-     */
-    @JsonProperty("parameters")
-    public Object getParameters() {
-        return parameters;
-    }
-
-    /**
-     * OpaqueDeviceConfiguration contains configuration parameters for a driver in a format defined by the driver vendor.
-     */
-    @JsonProperty("parameters")
-    @JsonDeserialize(using = io.fabric8.kubernetes.internal.KubernetesDeserializer.class)
-    public void setParameters(Object parameters) {
-        this.parameters = parameters;
+    @JsonIgnore
+    public BasicSchedulingPolicyBuilder edit() {
+        return new BasicSchedulingPolicyBuilder(this);
     }
 
     @JsonIgnore
-    public OpaqueDeviceConfigurationBuilder edit() {
-        return new OpaqueDeviceConfigurationBuilder(this);
-    }
-
-    @JsonIgnore
-    public OpaqueDeviceConfigurationBuilder toBuilder() {
+    public BasicSchedulingPolicyBuilder toBuilder() {
         return edit();
     }
 

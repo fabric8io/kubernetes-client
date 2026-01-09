@@ -1,7 +1,9 @@
 
-package io.fabric8.kubernetes.api.model.resource.v1alpha3;
+package io.fabric8.kubernetes.api.model.storagemigration.v1beta1;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import javax.annotation.processing.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
@@ -12,6 +14,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
+import io.fabric8.kubernetes.api.model.Condition;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvVar;
@@ -33,12 +36,13 @@ import lombok.ToString;
 import lombok.experimental.Accessors;
 
 /**
- * DeviceSelector must have exactly one field set.
+ * Status of the storage version migration.
  */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "cel"
+    "conditions",
+    "resourceVersion"
 })
 @ToString
 @EqualsAndHashCode
@@ -62,48 +66,69 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class DeviceSelector implements Editable<DeviceSelectorBuilder>, KubernetesResource
+public class StorageVersionMigrationStatus implements Editable<StorageVersionMigrationStatusBuilder>, KubernetesResource
 {
 
-    @JsonProperty("cel")
-    private CELDeviceSelector cel;
+    @JsonProperty("conditions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<Condition> conditions = new ArrayList<>();
+    @JsonProperty("resourceVersion")
+    private String resourceVersion;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
      */
-    public DeviceSelector() {
+    public StorageVersionMigrationStatus() {
     }
 
-    public DeviceSelector(CELDeviceSelector cel) {
+    public StorageVersionMigrationStatus(List<Condition> conditions, String resourceVersion) {
         super();
-        this.cel = cel;
+        this.conditions = conditions;
+        this.resourceVersion = resourceVersion;
     }
 
     /**
-     * DeviceSelector must have exactly one field set.
+     * The latest available observations of the migration's current state.
      */
-    @JsonProperty("cel")
-    public CELDeviceSelector getCel() {
-        return cel;
+    @JsonProperty("conditions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public List<Condition> getConditions() {
+        return conditions;
     }
 
     /**
-     * DeviceSelector must have exactly one field set.
+     * The latest available observations of the migration's current state.
      */
-    @JsonProperty("cel")
-    public void setCel(CELDeviceSelector cel) {
-        this.cel = cel;
+    @JsonProperty("conditions")
+    public void setConditions(List<Condition> conditions) {
+        this.conditions = conditions;
+    }
+
+    /**
+     * ResourceVersion to compare with the GC cache for performing the migration. This is the current resource version of given group, version and resource when kube-controller-manager first observes this StorageVersionMigration resource.
+     */
+    @JsonProperty("resourceVersion")
+    public String getResourceVersion() {
+        return resourceVersion;
+    }
+
+    /**
+     * ResourceVersion to compare with the GC cache for performing the migration. This is the current resource version of given group, version and resource when kube-controller-manager first observes this StorageVersionMigration resource.
+     */
+    @JsonProperty("resourceVersion")
+    public void setResourceVersion(String resourceVersion) {
+        this.resourceVersion = resourceVersion;
     }
 
     @JsonIgnore
-    public DeviceSelectorBuilder edit() {
-        return new DeviceSelectorBuilder(this);
+    public StorageVersionMigrationStatusBuilder edit() {
+        return new StorageVersionMigrationStatusBuilder(this);
     }
 
     @JsonIgnore
-    public DeviceSelectorBuilder toBuilder() {
+    public StorageVersionMigrationStatusBuilder toBuilder() {
         return edit();
     }
 

@@ -1,9 +1,7 @@
 
-package io.fabric8.kubernetes.api.model.storagemigration.v1alpha1;
+package io.fabric8.kubernetes.api.model.scheduling.v1alpha1;
 
-import java.util.ArrayList;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 import javax.annotation.processing.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
@@ -17,12 +15,11 @@ import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvVar;
+import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.IntOrString;
-import io.fabric8.kubernetes.api.model.KubernetesResource;
-import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 import io.fabric8.kubernetes.api.model.LabelSelector;
-import io.fabric8.kubernetes.api.model.ListMeta;
 import io.fabric8.kubernetes.api.model.LocalObjectReference;
+import io.fabric8.kubernetes.api.model.Namespaced;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
@@ -41,7 +38,7 @@ import lombok.ToString;
 import lombok.experimental.Accessors;
 
 /**
- * StorageVersionMigrationList is a collection of storage version migrations.
+ * Workload allows for expressing scheduling constraints that should be used when managing lifecycle of workloads from scheduling perspective, including scheduling, preemption, eviction and other phases.
  */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -49,7 +46,7 @@ import lombok.experimental.Accessors;
     "apiVersion",
     "kind",
     "metadata",
-    "items"
+    "spec"
 })
 @ToString
 @EqualsAndHashCode
@@ -76,35 +73,34 @@ import lombok.experimental.Accessors;
     @TemplateTransformation(value = "/manifest.vm", outputPath = "META-INF/services/io.fabric8.kubernetes.api.model.KubernetesResource", gather = true)
 })
 @Version("v1alpha1")
-@Group("storagemigration.k8s.io")
+@Group("scheduling.k8s.io")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class StorageVersionMigrationList implements Editable<StorageVersionMigrationListBuilder>, KubernetesResource, KubernetesResourceList<io.fabric8.kubernetes.api.model.storagemigration.v1alpha1.StorageVersionMigration>
+public class Workload implements Editable<WorkloadBuilder>, HasMetadata, Namespaced
 {
 
     @JsonProperty("apiVersion")
-    private String apiVersion = "storagemigration.k8s.io/v1alpha1";
-    @JsonProperty("items")
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<io.fabric8.kubernetes.api.model.storagemigration.v1alpha1.StorageVersionMigration> items = new ArrayList<>();
+    private String apiVersion = "scheduling.k8s.io/v1alpha1";
     @JsonProperty("kind")
-    private String kind = "StorageVersionMigrationList";
+    private String kind = "Workload";
     @JsonProperty("metadata")
-    private ListMeta metadata;
+    private ObjectMeta metadata;
+    @JsonProperty("spec")
+    private WorkloadSpec spec;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
      */
-    public StorageVersionMigrationList() {
+    public Workload() {
     }
 
-    public StorageVersionMigrationList(String apiVersion, List<io.fabric8.kubernetes.api.model.storagemigration.v1alpha1.StorageVersionMigration> items, String kind, ListMeta metadata) {
+    public Workload(String apiVersion, String kind, ObjectMeta metadata, WorkloadSpec spec) {
         super();
         this.apiVersion = apiVersion;
-        this.items = items;
         this.kind = kind;
         this.metadata = metadata;
+        this.spec = spec;
     }
 
     /**
@@ -124,23 +120,6 @@ public class StorageVersionMigrationList implements Editable<StorageVersionMigra
     }
 
     /**
-     * Items is the list of StorageVersionMigration
-     */
-    @JsonProperty("items")
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<io.fabric8.kubernetes.api.model.storagemigration.v1alpha1.StorageVersionMigration> getItems() {
-        return items;
-    }
-
-    /**
-     * Items is the list of StorageVersionMigration
-     */
-    @JsonProperty("items")
-    public void setItems(List<io.fabric8.kubernetes.api.model.storagemigration.v1alpha1.StorageVersionMigration> items) {
-        this.items = items;
-    }
-
-    /**
      * Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
      */
     @JsonProperty("kind")
@@ -157,28 +136,44 @@ public class StorageVersionMigrationList implements Editable<StorageVersionMigra
     }
 
     /**
-     * StorageVersionMigrationList is a collection of storage version migrations.
+     * Workload allows for expressing scheduling constraints that should be used when managing lifecycle of workloads from scheduling perspective, including scheduling, preemption, eviction and other phases.
      */
     @JsonProperty("metadata")
-    public ListMeta getMetadata() {
+    public ObjectMeta getMetadata() {
         return metadata;
     }
 
     /**
-     * StorageVersionMigrationList is a collection of storage version migrations.
+     * Workload allows for expressing scheduling constraints that should be used when managing lifecycle of workloads from scheduling perspective, including scheduling, preemption, eviction and other phases.
      */
     @JsonProperty("metadata")
-    public void setMetadata(ListMeta metadata) {
+    public void setMetadata(ObjectMeta metadata) {
         this.metadata = metadata;
     }
 
-    @JsonIgnore
-    public StorageVersionMigrationListBuilder edit() {
-        return new StorageVersionMigrationListBuilder(this);
+    /**
+     * Workload allows for expressing scheduling constraints that should be used when managing lifecycle of workloads from scheduling perspective, including scheduling, preemption, eviction and other phases.
+     */
+    @JsonProperty("spec")
+    public WorkloadSpec getSpec() {
+        return spec;
+    }
+
+    /**
+     * Workload allows for expressing scheduling constraints that should be used when managing lifecycle of workloads from scheduling perspective, including scheduling, preemption, eviction and other phases.
+     */
+    @JsonProperty("spec")
+    public void setSpec(WorkloadSpec spec) {
+        this.spec = spec;
     }
 
     @JsonIgnore
-    public StorageVersionMigrationListBuilder toBuilder() {
+    public WorkloadBuilder edit() {
+        return new WorkloadBuilder(this);
+    }
+
+    @JsonIgnore
+    public WorkloadBuilder toBuilder() {
         return edit();
     }
 

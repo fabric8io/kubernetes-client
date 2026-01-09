@@ -1,5 +1,5 @@
 
-package io.fabric8.kubernetes.api.model.certificates.v1alpha1;
+package io.fabric8.kubernetes.api.model.certificates.v1beta1;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;

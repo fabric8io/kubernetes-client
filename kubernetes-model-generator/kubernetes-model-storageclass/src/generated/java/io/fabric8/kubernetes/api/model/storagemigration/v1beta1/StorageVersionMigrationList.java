@@ -1,5 +1,5 @@
 
-package io.fabric8.kubernetes.api.model.certificates.v1alpha1;
+package io.fabric8.kubernetes.api.model.storagemigration.v1beta1;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -41,7 +41,7 @@ import lombok.ToString;
 import lombok.experimental.Accessors;
 
 /**
- * PodCertificateRequestList is a collection of PodCertificateRequest objects
+ * StorageVersionMigrationList is a collection of storage version migrations.
  */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -75,19 +75,19 @@ import lombok.experimental.Accessors;
 @TemplateTransformations({
     @TemplateTransformation(value = "/manifest.vm", outputPath = "META-INF/services/io.fabric8.kubernetes.api.model.KubernetesResource", gather = true)
 })
-@Version("v1alpha1")
-@Group("certificates.k8s.io")
+@Version("v1beta1")
+@Group("storagemigration.k8s.io")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class PodCertificateRequestList implements Editable<PodCertificateRequestListBuilder>, KubernetesResource, KubernetesResourceList<io.fabric8.kubernetes.api.model.certificates.v1alpha1.PodCertificateRequest>
+public class StorageVersionMigrationList implements Editable<StorageVersionMigrationListBuilder>, KubernetesResource, KubernetesResourceList<io.fabric8.kubernetes.api.model.storagemigration.v1beta1.StorageVersionMigration>
 {
 
     @JsonProperty("apiVersion")
-    private String apiVersion = "certificates.k8s.io/v1alpha1";
+    private String apiVersion = "storagemigration.k8s.io/v1beta1";
     @JsonProperty("items")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<io.fabric8.kubernetes.api.model.certificates.v1alpha1.PodCertificateRequest> items = new ArrayList<>();
+    private List<io.fabric8.kubernetes.api.model.storagemigration.v1beta1.StorageVersionMigration> items = new ArrayList<>();
     @JsonProperty("kind")
-    private String kind = "PodCertificateRequestList";
+    private String kind = "StorageVersionMigrationList";
     @JsonProperty("metadata")
     private ListMeta metadata;
     @JsonIgnore
@@ -96,10 +96,10 @@ public class PodCertificateRequestList implements Editable<PodCertificateRequest
     /**
      * No args constructor for use in serialization
      */
-    public PodCertificateRequestList() {
+    public StorageVersionMigrationList() {
     }
 
-    public PodCertificateRequestList(String apiVersion, List<io.fabric8.kubernetes.api.model.certificates.v1alpha1.PodCertificateRequest> items, String kind, ListMeta metadata) {
+    public StorageVersionMigrationList(String apiVersion, List<io.fabric8.kubernetes.api.model.storagemigration.v1beta1.StorageVersionMigration> items, String kind, ListMeta metadata) {
         super();
         this.apiVersion = apiVersion;
         this.items = items;
@@ -124,19 +124,19 @@ public class PodCertificateRequestList implements Editable<PodCertificateRequest
     }
 
     /**
-     * items is a collection of PodCertificateRequest objects
+     * Items is the list of StorageVersionMigration
      */
     @JsonProperty("items")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<io.fabric8.kubernetes.api.model.certificates.v1alpha1.PodCertificateRequest> getItems() {
+    public List<io.fabric8.kubernetes.api.model.storagemigration.v1beta1.StorageVersionMigration> getItems() {
         return items;
     }
 
     /**
-     * items is a collection of PodCertificateRequest objects
+     * Items is the list of StorageVersionMigration
      */
     @JsonProperty("items")
-    public void setItems(List<io.fabric8.kubernetes.api.model.certificates.v1alpha1.PodCertificateRequest> items) {
+    public void setItems(List<io.fabric8.kubernetes.api.model.storagemigration.v1beta1.StorageVersionMigration> items) {
         this.items = items;
     }
 
@@ -157,7 +157,7 @@ public class PodCertificateRequestList implements Editable<PodCertificateRequest
     }
 
     /**
-     * PodCertificateRequestList is a collection of PodCertificateRequest objects
+     * StorageVersionMigrationList is a collection of storage version migrations.
      */
     @JsonProperty("metadata")
     public ListMeta getMetadata() {
@@ -165,7 +165,7 @@ public class PodCertificateRequestList implements Editable<PodCertificateRequest
     }
 
     /**
-     * PodCertificateRequestList is a collection of PodCertificateRequest objects
+     * StorageVersionMigrationList is a collection of storage version migrations.
      */
     @JsonProperty("metadata")
     public void setMetadata(ListMeta metadata) {
@@ -173,12 +173,12 @@ public class PodCertificateRequestList implements Editable<PodCertificateRequest
     }
 
     @JsonIgnore
-    public PodCertificateRequestListBuilder edit() {
-        return new PodCertificateRequestListBuilder(this);
+    public StorageVersionMigrationListBuilder edit() {
+        return new StorageVersionMigrationListBuilder(this);
     }
 
     @JsonIgnore
-    public PodCertificateRequestListBuilder toBuilder() {
+    public StorageVersionMigrationListBuilder toBuilder() {
         return edit();
     }
 

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8.kubernetes.api.model.storagemigration.v1alpha1;
+package io.fabric8.kubernetes.api.model.storagemigration.v1beta1;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.fabric8.kubernetes.api.model.Namespaced;
@@ -34,13 +34,13 @@ class StorageVersionMigrationTest {
 
   @Test
   void apiGroup() {
-    assertThat(new StorageVersionMigration().getApiVersion()).isEqualTo("storagemigration.k8s.io/v1alpha1");
+    assertThat(new StorageVersionMigration().getApiVersion()).isEqualTo("storagemigration.k8s.io/v1beta1");
   }
 
   @Test
   void deserializationAndSerializationShouldWorkAsExpected() throws IOException {
     // Given
-    String originalJson = new Scanner(getClass().getResourceAsStream("/valid-v1alpha1-storageversionmigration.json"))
+    String originalJson = new Scanner(getClass().getResourceAsStream("/valid-v1beta1-storageversionmigration.json"))
         .useDelimiter("\\A")
         .next();
 
@@ -54,9 +54,7 @@ class StorageVersionMigrationTest {
         .isNotNull()
         .hasFieldOrPropertyWithValue("metadata.name", "nameValue")
         .hasFieldOrPropertyWithValue("spec.resource.group", "groupValue")
-        .hasFieldOrPropertyWithValue("spec.resource.version", "versionValue")
-        .hasFieldOrPropertyWithValue("spec.resource.resource", "resourceValue")
-        .hasFieldOrPropertyWithValue("spec.continueToken", "continueTokenValue");
+        .hasFieldOrPropertyWithValue("spec.resource.resource", "resourceValue");
   }
 
   @Test
@@ -67,12 +65,7 @@ class StorageVersionMigrationTest {
         .withName("nameValue")
         .endMetadata()
         .withNewSpec()
-        .withNewResource()
-        .withGroup("groupValue")
-        .withVersion("versionValue")
-        .withResource("resourceValue")
-        .endResource()
-        .withContinueToken("continueTokenValue")
+        .withNewResource("groupValue", "resourceValue")
         .endSpec();
     // When
     StorageVersionMigration storageVersionMigration = storageVersionMigrationBuilder.build();
@@ -82,8 +75,6 @@ class StorageVersionMigrationTest {
         .isNotNull()
         .hasFieldOrPropertyWithValue("metadata.name", "nameValue")
         .hasFieldOrPropertyWithValue("spec.resource.group", "groupValue")
-        .hasFieldOrPropertyWithValue("spec.resource.version", "versionValue")
-        .hasFieldOrPropertyWithValue("spec.resource.resource", "resourceValue")
-        .hasFieldOrPropertyWithValue("spec.continueToken", "continueTokenValue");
+        .hasFieldOrPropertyWithValue("spec.resource.resource", "resourceValue");
   }
 }
