@@ -71,7 +71,7 @@ public class PodOperationUtil {
   public static PodOperationsImpl getGenericPodOperations(OperationContext context, PodOperationContext podOperationContext) {
     return new PodOperationsImpl(
         podOperationContext,
-        context.withName(null).withApiGroupName(null).withApiGroupVersion("v1"));
+        context.withName(null).withItem(null).withApiGroupName(null).withApiGroupVersion("v1"));
   }
 
   public static List<PodResource> getPodOperationsForController(OperationContext context,
