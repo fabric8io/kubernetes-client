@@ -645,7 +645,6 @@
         <version>${project.version}</version>
       </dependency>
 
-
       <!-- Jackson dependencies, imported as a BOM -->
       <dependency>
         <groupId>com.fasterxml.jackson</groupId>
