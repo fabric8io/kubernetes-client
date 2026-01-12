@@ -370,14 +370,6 @@ class TypedCustomResourceIT {
   }
 
   @Test
-  void testTokenConvenienceMethod() {
-    // Test that token() is equivalent to subresource("token")
-    // Verify the methods are equivalent
-    assertNotNull(petClient.withName("test").token());
-    assertNotNull(petClient.withName("test").subresource("token"));
-  }
-
-  @Test
   void testApprovalConvenienceMethod() {
     // Test that approval() is equivalent to subresource("approval")
     // Verify the methods are equivalent

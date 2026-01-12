@@ -1937,70 +1937,6 @@ client.certificates().v1().certificateSigningRequests()
     .endStatus()
     .build());
 ```
-- Using `binding()` convenience method for Pods (equivalent to `subresource("binding")`):
-```java
-// Manually bind a Pod to a specific Node
-// (typically done automatically by the scheduler, but can be done manually for custom scheduling)
-Binding binding = new BindingBuilder()
-  .withNewMetadata()
-    .withName("my-pod")
-    .withNamespace("default")
-  .endMetadata()
-  .withNewTarget()
-    .withKind("Node")
-    .withName("node-1")
-  .endTarget()
-  .build();
-
-client.pods()
-  .inNamespace("default")
-  .withName("my-pod")
-  .binding()
-  .replace(binding);
-
-// Alternative: Patch binding directly
-client.pods()
-  .inNamespace("default")
-  .withName("my-pod")
-  .binding()
-  .patch(PatchContext.of(PatchType.JSON_MERGE),
-    "{\"target\":{\"kind\":\"Node\",\"name\":\"node-1\"}}");
-```
-- Using `token()` convenience method for ServiceAccounts (equivalent to `subresource("token")`):
-```java
-// Request a bound token for a ServiceAccount
-// These tokens are audience-bound and time-bound for enhanced security
-TokenRequest tokenRequest = new TokenRequestBuilder()
-  .withNewSpec()
-    .withAudiences("https://kubernetes.default.svc")
-    .withExpirationSeconds(3600L) // 1 hour
-  .endSpec()
-  .build();
-
-TokenRequest result = client.serviceAccounts()
-  .inNamespace("default")
-  .withName("my-service-account")
-  .token()
-  .replace(tokenRequest);
-
-String token = result.getStatus().getToken();
-// Use the token for authentication
-// Token will expire after the specified duration
-
-// Request token with custom audience and longer expiration
-TokenRequest longLivedToken = new TokenRequestBuilder()
-  .withNewSpec()
-    .withAudiences("custom-audience")
-    .withExpirationSeconds(86400L) // 24 hours
-  .endSpec()
-  .build();
-
-TokenRequest tokenResult = client.serviceAccounts()
-  .inNamespace("default")
-  .withName("my-service-account")
-  .token()
-  .replace(longLivedToken);
-```
 - Using generic `subresource()` method for any subresource:
 
 The `subresource(String)` method provides a generic way to access any Kubernetes subresource, similar to kubectl's `--subresource` flag. Subresources are specialized endpoints that provide additional operations beyond standard CRUD operations.
@@ -2009,9 +1945,9 @@ The `subresource(String)` method provides a generic way to access any Kubernetes
 - **status** - Updates the status stanza independently (use `status()` convenience method)
 - **scale** - Manages replica counts for scalable resources (Deployment, ReplicaSet, StatefulSet, etc.)
 - **ephemeralcontainers** - Manages ephemeral containers for debugging Pods
-- **binding** - Binds Pods to Nodes (use `binding()` convenience method)
+- **binding** - Binds Pods to Nodes (typically handled by the Kubernetes scheduler)
 - **approval** - Approves CertificateSigningRequests (use `approval()` convenience method)
-- **token** - Requests bound service account tokens (use `token()` convenience method)
+- **token** - Requests bound service account tokens (use ServiceAccountResource#requestToken())
 - **Custom subresources** - Defined by CustomResourceDefinitions (CRDs)
 
 **Examples:**
@@ -2092,8 +2028,7 @@ client.certificates().v1().certificateSigningRequests()
 - For scaling operations, use `Scalable` interface methods like `scale(int count)`
 - For Pod ephemeral containers, use `podResource.ephemeralContainers()`
 - For CertificateSigningRequest approval/denial, use `approval()`
-- For Pod binding to Nodes, use `binding()`
-- For ServiceAccount token requests, use `token()`
+- For ServiceAccount token requests, use `serviceAccountResource.requestToken()`
 ```
 - Watch `CustomResource`:
 ```java

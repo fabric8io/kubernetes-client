@@ -81,9 +81,9 @@ public interface NonDeletingOperation<T> extends
    * <li><b>status</b> - Updates the status stanza independently (use {@link #status()} convenience method)</li>
    * <li><b>scale</b> - Manages replica counts for scalable resources (Deployment, ReplicaSet, StatefulSet, etc.)</li>
    * <li><b>ephemeralcontainers</b> - Manages ephemeral containers for debugging Pods</li>
-   * <li><b>binding</b> - Binds Pods to Nodes (use {@link #binding()} convenience method)</li>
+   * <li><b>binding</b> - Binds Pods to Nodes (typically handled by the Kubernetes scheduler)</li>
    * <li><b>approval</b> - Approves CertificateSigningRequests (use {@link #approval()} convenience method)</li>
-   * <li><b>token</b> - Requests bound service account tokens (use {@link #token()} convenience method)</li>
+   * <li><b>token</b> - Requests bound service account tokens (use ServiceAccountResource#requestToken())</li>
    * <li><b>Custom subresources</b> - Defined by CustomResourceDefinitions (CRDs)</li>
    * </ul>
    * <p>
@@ -151,16 +151,12 @@ public interface NonDeletingOperation<T> extends
    * <li>For scaling operations, use {@link io.fabric8.kubernetes.client.dsl.Scalable} interface methods</li>
    * <li>For Pod ephemeral containers, use {@link io.fabric8.kubernetes.client.dsl.PodResource#ephemeralContainers()}</li>
    * <li>For CertificateSigningRequest approval/denial, use {@link #approval()}</li>
-   * <li>For Pod binding to Nodes, use {@link #binding()}</li>
-   * <li>For ServiceAccount token requests, use {@link #token()}</li>
    * </ul>
    *
-   * @param subresource the name of the subresource (e.g., "status", "scale", "ephemeralcontainers", "binding", "approval", "token")
+   * @param subresource the name of the subresource (e.g., "status", "scale", "ephemeralcontainers", "binding", "approval")
    * @return an operation context for the specified subresource that supports edit, patch, and replace operations
    * @see #status()
    * @see #approval()
-   * @see #binding()
-   * @see #token()
    * @see io.fabric8.kubernetes.client.dsl.Scalable
    * @see <a href="https://kubernetes.io/docs/reference/using-api/api-concepts/#resource-uris">Kubernetes API Concepts - Subresources</a>
    */
@@ -254,91 +250,6 @@ public interface NonDeletingOperation<T> extends
     return subresource("approval");
   }
 
-  /**
-   * Provides edit, patch, and replace methods for the binding subresource.
-   * <p>
-   * This is a convenience method equivalent to {@code subresource("binding")}.
-   * The binding subresource is used by the Kubernetes scheduler to bind a Pod to a specific Node.
-   * Typically, this is done automatically by the scheduler, but it can also be done manually
-   * for custom scheduling scenarios.
-   * <p>
-   * Example usage:
-   *
-   * <pre>
-   * {@code
-   * // Manually bind a Pod to a specific Node
-   * Binding binding = new BindingBuilder()
-   *   .withNewMetadata()
-   *     .withName("my-pod")
-   *     .withNamespace("default")
-   *   .endMetadata()
-   *   .withNewTarget()
-   *     .withKind("Node")
-   *     .withName("node-1")
-   *   .endTarget()
-   *   .build();
-   *
-   * client.pods()
-   *   .inNamespace("default")
-   *   .withName("my-pod")
-   *   .binding()
-   *   .replace(binding);
-   *
-   * // Alternative: Create binding directly
-   * client.pods()
-   *   .inNamespace("default")
-   *   .withName("my-pod")
-   *   .binding()
-   *   .patch(PatchContext.of(PatchType.JSON_MERGE),
-   *     "{\"target\":{\"kind\":\"Node\",\"name\":\"node-1\"}}");
-   * }
-   * </pre>
-   *
-   * @return an operation context for the binding subresource
-   * @see #subresource(String)
-   */
-  default EditReplacePatchable<T> binding() {
-    return subresource("binding");
-  }
 
-  /**
-   * Provides edit, patch, and replace methods for the token subresource.
-   * <p>
-   * This is a convenience method equivalent to {@code subresource("token")}.
-   * The token subresource is used with ServiceAccounts to request bound service account tokens.
-   * These tokens can be audience-bound and time-bound, providing enhanced security compared
-   * to the default service account tokens.
-   * <p>
-   * Example usage:
-   *
-   * <pre>
-   * {@code
-   * // Request a bound token for a ServiceAccount
-   * TokenRequest tokenRequest = new TokenRequestBuilder()
-   *   .withNewSpec()
-   *     .withAudiences("https://kubernetes.default.svc")
-   *     .withExpirationSeconds(3600L) // 1 hour
-   *   .endSpec()
-   *   .build();
-   *
-   * TokenRequest result = client.serviceAccounts()
-   *   .inNamespace("default")
-   *   .withName("my-service-account")
-   *   .token()
-   *   .replace(tokenRequest);
-   *
-   * String token = result.getStatus().getToken();
-   *
-   * // Use the token for authentication
-   * // Token will expire after the specified duration
-   * }
-   * </pre>
-   *
-   * @return an operation context for the token subresource
-   * @see #subresource(String)
-   */
-  default EditReplacePatchable<T> token() {
-    return subresource("token");
-  }
 
 }
