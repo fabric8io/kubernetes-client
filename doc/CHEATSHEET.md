@@ -1905,26 +1905,195 @@ cronTabClient.inNamespace("default").withName("my-cron").status().edit(cronTab -
 // Replace status using the status() convenience method
 cronTabClient.inNamespace("default").resource(updatedCronTab).status().replace();
 ```
-- Using generic `subresource()` method for any subresource:
+- Using `approval()` convenience method for CertificateSigningRequests (equivalent to `subresource("approval")`):
 ```java
-// Access ephemeralcontainers subresource on a Pod
+// Approve a CertificateSigningRequest
+client.certificates().v1().certificateSigningRequests()
+  .withName("my-csr")
+  .approval()
+  .edit(csr -> new CertificateSigningRequestBuilder(csr)
+    .editStatus()
+      .addNewCondition()
+        .withType("Approved")
+        .withStatus("True")
+        .withReason("ApprovedByAdmin")
+        .withMessage("This certificate was approved by administrator")
+      .endCondition()
+    .endStatus()
+    .build());
+
+// Deny a CertificateSigningRequest
+client.certificates().v1().certificateSigningRequests()
+  .withName("my-csr")
+  .approval()
+  .edit(csr -> new CertificateSigningRequestBuilder(csr)
+    .editStatus()
+      .addNewCondition()
+        .withType("Denied")
+        .withStatus("True")
+        .withReason("DeniedByPolicy")
+        .withMessage("Certificate request does not meet security policy")
+      .endCondition()
+    .endStatus()
+    .build());
+```
+- Using `binding()` convenience method for Pods (equivalent to `subresource("binding")`):
+```java
+// Manually bind a Pod to a specific Node
+// (typically done automatically by the scheduler, but can be done manually for custom scheduling)
+Binding binding = new BindingBuilder()
+  .withNewMetadata()
+    .withName("my-pod")
+    .withNamespace("default")
+  .endMetadata()
+  .withNewTarget()
+    .withKind("Node")
+    .withName("node-1")
+  .endTarget()
+  .build();
+
+client.pods()
+  .inNamespace("default")
+  .withName("my-pod")
+  .binding()
+  .replace(binding);
+
+// Alternative: Patch binding directly
+client.pods()
+  .inNamespace("default")
+  .withName("my-pod")
+  .binding()
+  .patch(PatchContext.of(PatchType.JSON_MERGE),
+    "{\"target\":{\"kind\":\"Node\",\"name\":\"node-1\"}}");
+```
+- Using `token()` convenience method for ServiceAccounts (equivalent to `subresource("token")`):
+```java
+// Request a bound token for a ServiceAccount
+// These tokens are audience-bound and time-bound for enhanced security
+TokenRequest tokenRequest = new TokenRequestBuilder()
+  .withNewSpec()
+    .withAudiences("https://kubernetes.default.svc")
+    .withExpirationSeconds(3600L) // 1 hour
+  .endSpec()
+  .build();
+
+TokenRequest result = client.serviceAccounts()
+  .inNamespace("default")
+  .withName("my-service-account")
+  .token()
+  .replace(tokenRequest);
+
+String token = result.getStatus().getToken();
+// Use the token for authentication
+// Token will expire after the specified duration
+
+// Request token with custom audience and longer expiration
+TokenRequest longLivedToken = new TokenRequestBuilder()
+  .withNewSpec()
+    .withAudiences("custom-audience")
+    .withExpirationSeconds(86400L) // 24 hours
+  .endSpec()
+  .build();
+
+TokenRequest tokenResult = client.serviceAccounts()
+  .inNamespace("default")
+  .withName("my-service-account")
+  .token()
+  .replace(longLivedToken);
+```
+- Using generic `subresource()` method for any subresource:
+
+The `subresource(String)` method provides a generic way to access any Kubernetes subresource, similar to kubectl's `--subresource` flag. Subresources are specialized endpoints that provide additional operations beyond standard CRUD operations.
+
+**Common Kubernetes Subresources:**
+- **status** - Updates the status stanza independently (use `status()` convenience method)
+- **scale** - Manages replica counts for scalable resources (Deployment, ReplicaSet, StatefulSet, etc.)
+- **ephemeralcontainers** - Manages ephemeral containers for debugging Pods
+- **binding** - Binds Pods to Nodes (use `binding()` convenience method)
+- **approval** - Approves CertificateSigningRequests (use `approval()` convenience method)
+- **token** - Requests bound service account tokens (use `token()` convenience method)
+- **Custom subresources** - Defined by CustomResourceDefinitions (CRDs)
+
+**Examples:**
+
+```java
+// 1. Update ephemeral containers subresource (for debugging)
 client.pods().withName("my-pod")
   .subresource("ephemeralcontainers")
   .edit(pod -> new PodBuilder(pod)
     .editSpec()
       .addNewEphemeralContainer()
         .withName("debugger")
-        .withImage("busybox")
+        .withImage("busybox:latest")
+        .withCommand("sh")
       .endEphemeralContainer()
     .endSpec()
     .build());
 
-// Patch custom subresource
+// 2. Patch scale subresource to change replica count
+// (alternative to using the Scalable interface)
+client.apps().deployments()
+  .inNamespace("default")
+  .withName("my-deployment")
+  .subresource("scale")
+  .patch(PatchContext.of(PatchType.JSON_MERGE),
+    "{\"spec\":{\"replicas\":5}}");
+
+// 3. Get current scale information
+Deployment deployment = client.apps().deployments()
+  .inNamespace("default")
+  .withName("my-deployment")
+  .subresource("scale")
+  .get();
+Integer currentReplicas = deployment.getSpec().getReplicas();
+
+// 4. Edit scale subresource
+client.apps().deployments()
+  .inNamespace("default")
+  .withName("my-deployment")
+  .subresource("scale")
+  .edit(d -> new DeploymentBuilder(d)
+    .editSpec()
+      .withReplicas(3)
+    .endSpec()
+    .build());
+
+// 5. Work with custom subresources on CRDs
 client.resources(MyCustomResource.class)
   .inNamespace("default")
   .withName("my-resource")
   .subresource("my-custom-subresource")
   .patch();
+
+// 6. Replace an entire subresource
+client.resources(MyCustomResource.class)
+  .inNamespace("default")
+  .withName("my-resource")
+  .subresource("scale")
+  .replace(modifiedScaleObject);
+
+// 7. Approve a CertificateSigningRequest using approval subresource
+client.certificates().v1().certificateSigningRequests()
+  .withName("my-csr")
+  .subresource("approval")
+  .edit(csr -> new CertificateSigningRequestBuilder(csr)
+    .editStatus()
+      .addNewCondition()
+        .withType("Approved")
+        .withStatus("True")
+        .withReason("ApprovedByAdmin")
+      .endCondition()
+    .endStatus()
+    .build());
+```
+
+**Note:** For common operations, consider using specialized methods:
+- For status updates, use `status()`, `editStatus()`, or `patchStatus()`
+- For scaling operations, use `Scalable` interface methods like `scale(int count)`
+- For Pod ephemeral containers, use `podResource.ephemeralContainers()`
+- For CertificateSigningRequest approval/denial, use `approval()`
+- For Pod binding to Nodes, use `binding()`
+- For ServiceAccount token requests, use `token()`
 ```
 - Watch `CustomResource`:
 ```java

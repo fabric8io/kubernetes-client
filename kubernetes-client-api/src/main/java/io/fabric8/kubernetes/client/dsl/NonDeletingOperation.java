@@ -72,35 +72,97 @@ public interface NonDeletingOperation<T> extends
   /**
    * Provides edit, patch, and replace methods for the given subresource.
    * <p>
-   * This method allows you to perform operations on any subresource of a Kubernetes resource.
-   * Common subresources include "status", "scale", "ephemeralcontainers", etc.
+   * This method allows you to perform operations on any subresource of a Kubernetes resource,
+   * similar to kubectl's {@code --subresource} flag. Subresources are specialized endpoints
+   * that provide additional operations beyond standard CRUD operations.
    * <p>
-   * Example usage:
+   * <b>Common Kubernetes Subresources:</b>
+   * <ul>
+   * <li><b>status</b> - Updates the status stanza independently (use {@link #status()} convenience method)</li>
+   * <li><b>scale</b> - Manages replica counts for scalable resources (Deployment, ReplicaSet, StatefulSet, etc.)</li>
+   * <li><b>ephemeralcontainers</b> - Manages ephemeral containers for debugging Pods</li>
+   * <li><b>binding</b> - Binds Pods to Nodes (use {@link #binding()} convenience method)</li>
+   * <li><b>approval</b> - Approves CertificateSigningRequests (use {@link #approval()} convenience method)</li>
+   * <li><b>token</b> - Requests bound service account tokens (use {@link #token()} convenience method)</li>
+   * <li><b>Custom subresources</b> - Defined by CustomResourceDefinitions (CRDs)</li>
+   * </ul>
+   * <p>
+   * <b>Example usage:</b>
    *
    * <pre>
    * {@code
-   * // Update ephemeral containers subresource
+   * // 1. Update ephemeral containers subresource (for debugging)
    * client.pods().withName("my-pod")
    *   .subresource("ephemeralcontainers")
    *   .edit(pod -> new PodBuilder(pod)
    *     .editSpec()
    *       .addNewEphemeralContainer()
    *         .withName("debugger")
-   *         .withImage("busybox")
+   *         .withImage("busybox:latest")
+   *         .withCommand("sh")
    *       .endEphemeralContainer()
    *     .endSpec()
    *     .build());
    *
-   * // Patch status subresource
+   * // 2. Patch scale subresource to change replica count
+   * //    (alternative to using the Scalable interface)
+   * client.apps().deployments()
+   *   .inNamespace("default")
+   *   .withName("my-deployment")
+   *   .subresource("scale")
+   *   .patch(PatchContext.of(PatchType.JSON_MERGE),
+   *     "{\"spec\":{\"replicas\":5}}");
+   *
+   * // 3. Get current scale information
+   * Deployment deployment = client.apps().deployments()
+   *   .inNamespace("default")
+   *   .withName("my-deployment")
+   *   .subresource("scale")
+   *   .get();
+   * Integer currentReplicas = deployment.getSpec().getReplicas();
+   *
+   * // 4. Update status subresource (prefer using status() method)
    * client.pods().resource(myPod)
    *   .subresource("status")
    *   .patch();
+   *
+   * // 5. Work with custom subresources on CRDs
+   * client.resources(MyCustomResource.class)
+   *   .inNamespace("default")
+   *   .withName("my-resource")
+   *   .subresource("my-custom-subresource")
+   *   .edit(resource -> {
+   *     // Modify the custom subresource
+   *     return updatedResource;
+   *   });
+   *
+   * // 6. Replace an entire subresource
+   * client.resources(MyCustomResource.class)
+   *   .inNamespace("default")
+   *   .withName("my-resource")
+   *   .subresource("scale")
+   *   .replace(modifiedScaleObject);
    * }
    * </pre>
+   * <p>
+   * <b>Note:</b> For common operations, consider using specialized methods or interfaces:
+   * <ul>
+   * <li>For status updates, use {@link #status()}, {@link #editStatus(UnaryOperator)}, or {@link #patchStatus()}</li>
+   * <li>For scaling operations, use {@link io.fabric8.kubernetes.client.dsl.Scalable} interface methods</li>
+   * <li>For Pod ephemeral containers, use {@link io.fabric8.kubernetes.client.dsl.PodResource#ephemeralContainers()}</li>
+   * <li>For CertificateSigningRequest approval/denial, use {@link #approval()}</li>
+   * <li>For Pod binding to Nodes, use {@link #binding()}</li>
+   * <li>For ServiceAccount token requests, use {@link #token()}</li>
+   * </ul>
    *
-   * @param subresource the name of the subresource (e.g., "status", "scale", "ephemeralcontainers")
-   * @return an operation context for the specified subresource
+   * @param subresource the name of the subresource (e.g., "status", "scale", "ephemeralcontainers", "binding", "approval", "token")
+   * @return an operation context for the specified subresource that supports edit, patch, and replace operations
    * @see #status()
+   * @see #approval()
+   * @see #binding()
+   * @see #token()
+   * @see io.fabric8.kubernetes.client.dsl.Scalable
+   * @see <a href="https://kubernetes.io/docs/reference/using-api/api-concepts/#resource-uris">Kubernetes API Concepts - Subresources</a>
    */
   EditReplacePatchable<T> subresource(String subresource);
 
@@ -139,6 +201,144 @@ public interface NonDeletingOperation<T> extends
    */
   default EditReplacePatchable<T> status() {
     return subresource("status");
+  }
+
+  /**
+   * Provides edit, patch, and replace methods for the approval subresource.
+   * <p>
+   * This is a convenience method equivalent to {@code subresource("approval")}.
+   * The approval subresource is primarily used with CertificateSigningRequests to approve
+   * or deny certificate requests. When you update the approval subresource, you modify the
+   * conditions in the status to indicate whether the request is approved or denied.
+   * <p>
+   * Example usage:
+   *
+   * <pre>
+   * {@code
+   * // Approve a CertificateSigningRequest
+   * client.certificates().v1().certificateSigningRequests()
+   *   .withName("my-csr")
+   *   .approval()
+   *   .edit(csr -> new CertificateSigningRequestBuilder(csr)
+   *     .editStatus()
+   *       .addNewCondition()
+   *         .withType("Approved")
+   *         .withStatus("True")
+   *         .withReason("ApprovedByAdmin")
+   *         .withMessage("This certificate was approved by administrator")
+   *       .endCondition()
+   *     .endStatus()
+   *     .build());
+   *
+   * // Deny a CertificateSigningRequest
+   * client.certificates().v1().certificateSigningRequests()
+   *   .withName("my-csr")
+   *   .approval()
+   *   .edit(csr -> new CertificateSigningRequestBuilder(csr)
+   *     .editStatus()
+   *       .addNewCondition()
+   *         .withType("Denied")
+   *         .withStatus("True")
+   *         .withReason("DeniedByPolicy")
+   *         .withMessage("Certificate request does not meet security policy")
+   *       .endCondition()
+   *     .endStatus()
+   *     .build());
+   * }
+   * </pre>
+   *
+   * @return an operation context for the approval subresource
+   * @see #subresource(String)
+   */
+  default EditReplacePatchable<T> approval() {
+    return subresource("approval");
+  }
+
+  /**
+   * Provides edit, patch, and replace methods for the binding subresource.
+   * <p>
+   * This is a convenience method equivalent to {@code subresource("binding")}.
+   * The binding subresource is used by the Kubernetes scheduler to bind a Pod to a specific Node.
+   * Typically, this is done automatically by the scheduler, but it can also be done manually
+   * for custom scheduling scenarios.
+   * <p>
+   * Example usage:
+   *
+   * <pre>
+   * {@code
+   * // Manually bind a Pod to a specific Node
+   * Binding binding = new BindingBuilder()
+   *   .withNewMetadata()
+   *     .withName("my-pod")
+   *     .withNamespace("default")
+   *   .endMetadata()
+   *   .withNewTarget()
+   *     .withKind("Node")
+   *     .withName("node-1")
+   *   .endTarget()
+   *   .build();
+   *
+   * client.pods()
+   *   .inNamespace("default")
+   *   .withName("my-pod")
+   *   .binding()
+   *   .replace(binding);
+   *
+   * // Alternative: Create binding directly
+   * client.pods()
+   *   .inNamespace("default")
+   *   .withName("my-pod")
+   *   .binding()
+   *   .patch(PatchContext.of(PatchType.JSON_MERGE),
+   *     "{\"target\":{\"kind\":\"Node\",\"name\":\"node-1\"}}");
+   * }
+   * </pre>
+   *
+   * @return an operation context for the binding subresource
+   * @see #subresource(String)
+   */
+  default EditReplacePatchable<T> binding() {
+    return subresource("binding");
+  }
+
+  /**
+   * Provides edit, patch, and replace methods for the token subresource.
+   * <p>
+   * This is a convenience method equivalent to {@code subresource("token")}.
+   * The token subresource is used with ServiceAccounts to request bound service account tokens.
+   * These tokens can be audience-bound and time-bound, providing enhanced security compared
+   * to the default service account tokens.
+   * <p>
+   * Example usage:
+   *
+   * <pre>
+   * {@code
+   * // Request a bound token for a ServiceAccount
+   * TokenRequest tokenRequest = new TokenRequestBuilder()
+   *   .withNewSpec()
+   *     .withAudiences("https://kubernetes.default.svc")
+   *     .withExpirationSeconds(3600L) // 1 hour
+   *   .endSpec()
+   *   .build();
+   *
+   * TokenRequest result = client.serviceAccounts()
+   *   .inNamespace("default")
+   *   .withName("my-service-account")
+   *   .token()
+   *   .replace(tokenRequest);
+   *
+   * String token = result.getStatus().getToken();
+   *
+   * // Use the token for authentication
+   * // Token will expire after the specified duration
+   * }
+   * </pre>
+   *
+   * @return an operation context for the token subresource
+   * @see #subresource(String)
+   */
+  default EditReplacePatchable<T> token() {
+    return subresource("token");
   }
 
 }

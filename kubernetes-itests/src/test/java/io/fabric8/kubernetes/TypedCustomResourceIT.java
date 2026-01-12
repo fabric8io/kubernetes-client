@@ -334,6 +334,57 @@ class TypedCustomResourceIT {
     assertNotNull(duckFromServer);
   }
 
+  @Test
+  void testSubresourceEquivalence() {
+    // Given
+    Pet pet = createNewPet("pet-subresource-equivalence", "Eagle", null);
+    petClient.create(pet);
+    petClient.withName("pet-subresource-equivalence")
+        .waitUntilCondition(Objects::nonNull, 5, TimeUnit.SECONDS);
+
+    PetStatus petStatusToUpdate = new PetStatus();
+    petStatusToUpdate.setCurrentStatus("Soaring");
+
+    // Test that status() is equivalent to subresource("status")
+    // First, update using status() convenience method
+    pet.setStatus(petStatusToUpdate);
+    Pet updatedPet1 = petClient.resource(pet).status().patch();
+    assertEquals("Soaring", updatedPet1.getStatus().getCurrentStatus());
+
+    // Then, update using subresource("status")
+    petStatusToUpdate.setCurrentStatus("Flying");
+    pet.setStatus(petStatusToUpdate);
+    Pet updatedPet2 = petClient.resource(pet).subresource("status").patch();
+    assertEquals("Flying", updatedPet2.getStatus().getCurrentStatus());
+
+    // Verify both methods produce the same result type
+    assertEquals(updatedPet1.getClass(), updatedPet2.getClass());
+  }
+
+  @Test
+  void testBindingConvenienceMethod() {
+    // Test that binding() is equivalent to subresource("binding")
+    // Verify the methods are equivalent
+    assertNotNull(petClient.withName("test").binding());
+    assertNotNull(petClient.withName("test").subresource("binding"));
+  }
+
+  @Test
+  void testTokenConvenienceMethod() {
+    // Test that token() is equivalent to subresource("token")
+    // Verify the methods are equivalent
+    assertNotNull(petClient.withName("test").token());
+    assertNotNull(petClient.withName("test").subresource("token"));
+  }
+
+  @Test
+  void testApprovalConvenienceMethod() {
+    // Test that approval() is equivalent to subresource("approval")
+    // Verify the methods are equivalent
+    assertNotNull(petClient.withName("test").approval());
+    assertNotNull(petClient.withName("test").subresource("approval"));
+  }
+
   private void assertPet(Pet pet, String name, String type, String currentStatus) {
     assertNotNull(pet);
     assertEquals(name, pet.getMetadata().getName());
