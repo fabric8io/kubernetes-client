@@ -135,13 +135,6 @@ public interface NonDeletingOperation<T> extends
    *     // Modify the custom subresource
    *     return updatedResource;
    *   });
-   *
-   * // 6. Replace an entire subresource
-   * client.resources(MyCustomResource.class)
-   *   .inNamespace("default")
-   *   .withName("my-resource")
-   *   .subresource("scale")
-   *   .replace(modifiedScaleObject);
    * }
    * </pre>
    * <p>
