@@ -1967,7 +1967,8 @@ client.pods().withName("my-pod")
     .build());
 
 // 2. Patch scale subresource to change replica count
-// (alternative to using the Scalable interface)
+// Note: For scaling, prefer using the Scalable interface (.scale(count))
+// This shows the subresource approach for educational purposes
 client.apps().deployments()
   .inNamespace("default")
   .withName("my-deployment")
@@ -1975,24 +1976,18 @@ client.apps().deployments()
   .patch(PatchContext.of(PatchType.JSON_MERGE),
     "{\"spec\":{\"replicas\":5}}");
 
-// 3. Get current scale information
+// 3. Get current deployment (scale info is in the main resource)
 Deployment deployment = client.apps().deployments()
   .inNamespace("default")
   .withName("my-deployment")
-  .subresource("scale")
   .get();
 Integer currentReplicas = deployment.getSpec().getReplicas();
 
-// 4. Edit scale subresource
+// 4. Preferred way to scale using Scalable interface (recommended)
 client.apps().deployments()
   .inNamespace("default")
   .withName("my-deployment")
-  .subresource("scale")
-  .edit(d -> new DeploymentBuilder(d)
-    .editSpec()
-      .withReplicas(3)
-    .endSpec()
-    .build());
+  .scale(3);
 
 // 5. Work with custom subresources on CRDs
 client.resources(MyCustomResource.class)
@@ -2001,14 +1996,7 @@ client.resources(MyCustomResource.class)
   .subresource("my-custom-subresource")
   .patch();
 
-// 6. Replace an entire subresource
-client.resources(MyCustomResource.class)
-  .inNamespace("default")
-  .withName("my-resource")
-  .subresource("scale")
-  .replace(modifiedScaleObject);
-
-// 7. Approve a CertificateSigningRequest using approval subresource
+// 6. Using approval subresource (prefer approval() convenience method)
 client.certificates().v1().certificateSigningRequests()
   .withName("my-csr")
   .subresource("approval")
