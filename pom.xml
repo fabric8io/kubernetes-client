@@ -1317,7 +1317,6 @@
             <executions>
               <execution>
                 <id>copy-release-plugins-to-boms</id>
-                <phase>process-classes</phase>
                 <goals>
                   <goal>copy-plugins</goal>
                 </goals>
