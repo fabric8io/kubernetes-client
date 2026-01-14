@@ -1,6 +1,19 @@
 ## CHANGELOG
 
-### 7.5-SNAPSHOT
+### 7.6-SNAPSHOT
+
+#### Bugs
+* Fix #7400: Parent reference added in BOM 7.5.0
+
+#### Improvements
+
+#### Dependency Upgrade
+
+#### New Features
+
+#### _**Note**_: Breaking changes
+
+### 7.5.0 (2026-01-09)
 
 #### Bugs
 * Fix #7160: Use the duration from current leader record, not from the config
@@ -11,6 +24,7 @@
 * Fix #7373: (crd-generator) Improve SchemaCustomizer with @Repeatable support and better exception messages
 * Fix #7380: Go openAPI generator errors out when embedded structs have conflicting JSON field names
 * Fix #7388: Type filters fix for conflicting types - OpenAPI generator
+* Fix #7372: Service Port-Forwarding ignores Service port mapping
 
 #### Improvements
 * Fix #7277: fix BOM publish to Maven Central

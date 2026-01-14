@@ -46,18 +46,13 @@ jobs:
     name: Release Java 11 ${{ github.event.inputs.tag }}
     # Cheap way to prevent accidental releases
     # Modify the list to add users with release permissions
-    if: contains('["manusa","rohanKanojia"]', github.actor)
+    if: contains('["manusa","ash-thakur-rh"]', github.actor)
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v6
         with:
           ref: ${{ github.event.inputs.tag }}
-      - name: Cache .m2 registry
-        uses: actions/cache@v4
-        with:
-          path: ~/.m2/repository
-          key: cache-release-${{ github.sha }}-${{ github.run_id }}
       - name: Setup Java 11
         uses: actions/setup-java@v5
         with:
@@ -68,7 +63,9 @@ jobs:
           server-password: MAVEN_CENTRAL_PASSWORD
           gpg-private-key: ${{ secrets.SIGNINGKEY }}
           gpg-passphrase: SIGNINGPASSWORD
+      - name: Install Maven Plugin
+        run: ./mvnw ${MAVEN_ARGS} clean install -pl bom-manipulator-plugin
       - name: Generate BOM
-        run: ./mvnw ${MAVEN_ARGS} clean sundr:generate-bom
+        run: ./mvnw ${MAVEN_ARGS} -Pbom clean sundr:generate-bom bom-manipulator:copy-plugins
       - name: Build and release Java modules
         run: ./mvnw ${MAVEN_ARGS} ${RELEASE_MAVEN_ARGS} deploy
