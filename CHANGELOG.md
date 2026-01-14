@@ -3,6 +3,7 @@
 ### 7.6-SNAPSHOT
 
 #### Bugs
+* Fix #7400: Parent reference added in BOM 7.5.0
 
 #### Improvements
 
