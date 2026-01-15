@@ -1,5 +1,17 @@
 ## CHANGELOG
 
+### 7.6-SNAPSHOT
+
+#### Bugs
+
+#### Improvements
+
+#### Dependency Upgrade
+
+#### New Features
+
+#### _**Note**_: Breaking changes
+
 ### 7.5.1 (2026-01-15)
 
 #### Bugs
