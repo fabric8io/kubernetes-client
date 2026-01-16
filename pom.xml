@@ -202,7 +202,7 @@
     </osgi.include.resources.default>
     <osgi.include.resources>${osgi.include.resources.default}</osgi.include.resources>
     <karaf.itest.skip>false</karaf.itest.skip>
-    <project.build.outputTimestamp>2026-01-09T14:23:49Z</project.build.outputTimestamp>
+    <project.build.outputTimestamp>2026-01-15T09:50:46Z</project.build.outputTimestamp>
     <validation-api.version>2.0.1.Final</validation-api.version>
   </properties>
   <modules>
@@ -231,6 +231,7 @@
     <module>kubernetes-client-deps-compatibility-tests</module>
     <module>log4j</module>
     <module>kubernetes-examples</module>
+    <module>bom-manipulator-plugin</module>
     <!-- BOM modules are added via profile activation at build time -->
   </modules>
 
@@ -1297,6 +1298,27 @@
               <execution>
                 <goals>
                   <goal>generate-bom</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <groupId>io.fabric8</groupId>
+            <artifactId>bom-manipulator-plugin</artifactId>
+            <version>${project.version}</version>
+            <inherited>false</inherited>
+            <configuration>
+              <sourceProfileId>release</sourceProfileId>
+              <bomDirectories>
+                <bomDirectory>target/classes/kubernetes-client-bom</bomDirectory>
+                <bomDirectory>target/classes/kubernetes-client-bom-with-deps</bomDirectory>
+              </bomDirectories>
+            </configuration>
+            <executions>
+              <execution>
+                <id>copy-release-plugins-to-boms</id>
+                <goals>
+                  <goal>copy-plugins</goal>
                 </goals>
               </execution>
             </executions>
