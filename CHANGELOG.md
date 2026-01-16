@@ -9,6 +9,7 @@
 #### Dependency Upgrade
 
 #### New Features
+* Fix #5495: Add more support for subresource operations with enhanced documentation and examples for the generic `subresource()` method
 
 #### _**Note**_: Breaking changes
 
