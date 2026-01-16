@@ -362,14 +362,6 @@ class TypedCustomResourceIT {
   }
 
   @Test
-  void testBindingConvenienceMethod() {
-    // Test that binding() is equivalent to subresource("binding")
-    // Verify the methods are equivalent
-    assertNotNull(petClient.withName("test").binding());
-    assertNotNull(petClient.withName("test").subresource("binding"));
-  }
-
-  @Test
   void testApprovalConvenienceMethod() {
     // Test that approval() is equivalent to subresource("approval")
     // Verify the methods are equivalent

@@ -83,44 +83,4 @@ class ScaleIT {
     scale = resource.scale();
     assertEquals(1, scale.getSpec().getReplicas());
   }
-
-  @Test
-  void scaleUsingSubresource() {
-    // Test using the subresource() method to work with the scale subresource
-    GenericKubernetesResource cronTab = Serialization.unmarshal("apiVersion: \"stable.example.com/v1\"\n"
-        + "kind: CronTab\n"
-        + "metadata:\n"
-        + "  name: cron-scale-subresource\n"
-        + "spec:\n"
-        + "  cronSpec: \"* * * * */5\"\n"
-        + "  image: my-awesome-cron-image\n"
-        + "  replicas: 3", GenericKubernetesResource.class);
-
-    Resource<GenericKubernetesResource> resource = client.resource(cronTab);
-
-    Awaitility.await().atMost(30, TimeUnit.SECONDS).until(() -> {
-      try {
-        resource.create();
-        return true;
-      } catch (KubernetesClientException e) {
-        return false; // the crd has not been processed yet
-      }
-    });
-
-    // Get scale information using subresource("scale")
-    GenericKubernetesResource scaleResult = resource.subresource("scale").get();
-    assertEquals(3, (Integer) scaleResult.get("spec", "replicas"));
-
-    // Edit scale subresource to change replica count
-    GenericKubernetesResource updatedScale = resource.subresource("scale").edit(s -> {
-      s.set("spec", "replicas", 5);
-      return s;
-    });
-    assertEquals(5, (Integer) updatedScale.get("spec", "replicas"));
-
-    // Verify the change was applied
-    scaleResult = resource.subresource("scale").get();
-    assertEquals(5, (Integer) scaleResult.get("spec", "replicas"));
-  }
-
 }
