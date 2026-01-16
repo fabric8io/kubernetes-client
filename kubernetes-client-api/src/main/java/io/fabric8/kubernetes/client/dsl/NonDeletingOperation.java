@@ -151,7 +151,8 @@ public interface NonDeletingOperation<T> extends
    * @see #status()
    * @see #approval()
    * @see io.fabric8.kubernetes.client.dsl.Scalable
-   * @see <a href="https://kubernetes.io/docs/reference/using-api/api-concepts/#resource-uris">Kubernetes API Concepts - Subresources</a>
+   * @see <a href="https://kubernetes.io/docs/reference/using-api/api-concepts/#resource-uris">Kubernetes API Concepts -
+   *      Subresources</a>
    */
   EditReplacePatchable<T> subresource(String subresource);
 
@@ -242,7 +243,5 @@ public interface NonDeletingOperation<T> extends
   default EditReplacePatchable<T> approval() {
     return subresource("approval");
   }
-
-
 
 }
