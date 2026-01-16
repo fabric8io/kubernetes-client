@@ -31,7 +31,6 @@ import java.util.concurrent.TimeUnit;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @LoadKubernetesManifests("/pod-it.yml")
 @RequireK8sVersionAtLeast(majorVersion = 1, minorVersion = 25)
