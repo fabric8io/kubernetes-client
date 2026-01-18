@@ -168,10 +168,7 @@ class LeaderElectorTest {
       if (count.addAndGet(1) == 2) {
 
         // simulate that we've already lost election
-        Status status = new StatusBuilder()
-            .withCode(HttpURLConnection.HTTP_CONFLICT)
-            .build();
-        throw new KubernetesClientException(status);
+        throw new KubernetesClientException(new StatusBuilder().withCode(HttpURLConnection.HTTP_CONFLICT).build());
       }
       LeaderElectionRecord leaderRecord = invocation.getArgument(1, LeaderElectionRecord.class);
       activeLer.set(leaderRecord);

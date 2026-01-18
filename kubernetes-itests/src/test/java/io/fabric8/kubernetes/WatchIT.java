@@ -105,11 +105,9 @@ class WatchIT {
 
     final CountDownLatch eventLatch = new CountDownLatch(1);
     final CountDownLatch modifyLatch = new CountDownLatch(1);
-    final CountDownLatch holdLatch = new CountDownLatch(1);
     final AtomicBoolean inMethod = new AtomicBoolean();
     final CountDownLatch closeLatch = new CountDownLatch(1);
     final AtomicBoolean concurrent = new AtomicBoolean();
-
     Watch watch = configMapClient.watch(new Watcher<ConfigMap>() {
       @Override
       public void eventReceived(Action action, ConfigMap pod) {
@@ -123,7 +121,7 @@ class WatchIT {
           try {
             // introduce a delay to cause the ping to terminate the connection
             // and that holds the thread for longer than the request timeout
-            holdLatch.await(Config.DEFAULT_REQUEST_TIMEOUT, TimeUnit.MILLISECONDS);
+            Thread.sleep(Config.DEFAULT_REQUEST_TIMEOUT);
             // TODO: could use withRequestConfig to use a shorter timeout
           } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
@@ -161,8 +159,6 @@ class WatchIT {
             .build());
 
     assertTrue(eventLatch.await(10, TimeUnit.SECONDS));
-    holdLatch.countDown();
-
     assertTrue(modifyLatch.await(30, TimeUnit.SECONDS));
     assertFalse(concurrent.get());
     watch.close();

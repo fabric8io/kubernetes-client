@@ -77,7 +77,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -335,22 +334,17 @@ class UtilsTest {
   void testSerialExecution() throws Exception {
     AtomicInteger counter = new AtomicInteger();
     CompletableFuture<?> completableFuture = new CompletableFuture<Void>();
-    CountDownLatch latch = new CountDownLatch(1);
-
     Utils.scheduleWithVariableRate(completableFuture, CommonThreadPool.get(), () -> {
       counter.getAndIncrement();
       try {
-        latch.countDown();
-      } catch (Exception e) {
-
+        Thread.sleep(100);
+      } catch (InterruptedException e) {
       }
-
+      // if the counter is greater than 1, another thread has executed
       assertEquals(1, counter.get());
       completableFuture.complete(null);
     }, 0, () -> 1L, TimeUnit.MILLISECONDS);
-
-    assertTrue(latch.await(5, TimeUnit.SECONDS), "Scheduled task did not execute");
-    completableFuture.get(5, TimeUnit.SECONDS);
+    completableFuture.get(1, TimeUnit.SECONDS);
   }
 
   @Test
