@@ -12,6 +12,11 @@
 
 #### _**Note**_: Breaking changes
 
+### 7.5.1 (2026-01-15)
+
+#### Bugs
+* Fix #7400: Parent reference added in BOM 7.5.0
+
 ### 7.5.0 (2026-01-09)
 
 #### Bugs

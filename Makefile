@@ -87,13 +87,3 @@ quickly: clean
 .PHONY: install
 install: clean
 	mvn $(MAVEN_ARGS) install
-
-.PHONY: boms-add-parent
-boms-add-parent:
-	@for bom in target/classes/kubernetes-client-bom/pom.xml target/classes/kubernetes-client-bom-with-deps/pom.xml; do \
-		if [ -f "$$bom" ]; then \
-			VERSION=$$(grep -m1 '<version>' "$$bom" | sed 's/.*<version>\(.*\)<\/version>.*/\1/'); \
-			sed "s|<modelVersion>4.0.0</modelVersion>|<modelVersion>4.0.0</modelVersion>\\n\\n    <parent>\\n        <groupId>io.fabric8</groupId>\\n        <artifactId>kubernetes-client-project</artifactId>\\n        <version>$$VERSION</version>\\n        <relativePath>../../../pom.xml</relativePath>\\n    </parent>|" "$$bom" > "$$bom.tmp" && mv "$$bom.tmp" "$$bom"; \
-			echo "Added parent to $$bom with version $$VERSION"; \
-		fi \
-	done
