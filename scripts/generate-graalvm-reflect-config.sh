@@ -17,7 +17,6 @@
 #   -o, --output DIR        Output directory for aggregated config (default: ./graalvm-config)
 #   -w, --work-dir DIR      Working directory for clone (default: /tmp/k8s-client-build-XXXXX)
 #   -k, --keep              Keep the cloned repository after completion
-#   -s, --skip-generate     Skip model generation (use existing configs)
 #   -h, --help              Show this help message
 #
 # Examples:
@@ -51,10 +50,8 @@ GIT_REF_TYPE=""  # tag, commit, or branch
 OUTPUT_DIR="./graalvm-config"
 WORK_DIR=""
 KEEP_WORK_DIR=false
-SKIP_GENERATE=false
 USE_CURRENT_DIR=true
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-PROJECT_ROOT="$(dirname "$SCRIPT_DIR")"
 
 ################################################################################
 # Color Output
@@ -132,10 +129,6 @@ parse_args() {
                 KEEP_WORK_DIR=true
                 shift
                 ;;
-            -s|--skip-generate)
-                SKIP_GENERATE=true
-                shift
-                ;;
             -h|--help)
                 show_help
                 ;;
@@ -158,10 +151,6 @@ check_requirements() {
 
     if ! command -v git &> /dev/null; then
         missing_tools+=("git")
-    fi
-
-    if ! command -v mvn &> /dev/null && ! [ -f "./mvnw" ]; then
-        missing_tools+=("maven")
     fi
 
     if ! command -v jq &> /dev/null; then
@@ -235,38 +224,110 @@ clone_repository() {
 }
 
 ################################################################################
-# Generate Models
+# Generate Reflect Config Files from Generated Sources
 ################################################################################
 
-generate_models() {
-    if [ "$SKIP_GENERATE" = true ]; then
-        log_warn "Skipping model generation (--skip-generate flag)"
-        return
-    fi
+generate_reflect_configs() {
+    log_info "Generating GraalVM reflect-config.json files from generated classes..."
 
-    log_info "Navigating to kubernetes-model-generator directory..."
     cd "$BUILD_DIR/kubernetes-model-generator"
 
-    log_info "Starting model generation with -Pgenerate profile..."
-    log_info "This may take several minutes..."
+    # Find all module directories (those with src/generated/java)
+    local modules
+    modules=$(find . -type d -path "*/src/generated/java" -not -path "*/target/*" | sed 's|/src/generated/java||' | sort)
 
-    # Determine which maven command to use
-    if [ -f "$BUILD_DIR/mvnw" ]; then
-        MVN_CMD="$BUILD_DIR/mvnw"
-    else
-        MVN_CMD="mvn"
-    fi
-
-    # Run maven with generate profile and enable GraalVM reflection config generation
-    log_info "Running: $MVN_CMD clean install -Pgenerate -DskipTests -DgenerateGraalVMReflectConfig=true"
-
-    if $MVN_CMD clean install -Pgenerate -DskipTests -DgenerateGraalVMReflectConfig=true 2>&1 | tee /tmp/maven-build.log | grep -E "Building|ERROR|WARNING|SUCCESS"; then
-        log_success "Model generation completed successfully"
-    else
-        log_error "Model generation failed"
-        log_error "Check /tmp/maven-build.log for details"
+    if [ -z "$modules" ]; then
+        log_error "No generated source directories found"
+        log_error "Make sure model generation completed successfully"
         exit 1
     fi
+
+    local config_count=0
+
+    for module_dir in $modules; do
+        local src_dir="$module_dir/src/generated/java"
+        local output_dir="$module_dir/target/classes/META-INF/native-image"
+
+        if [ ! -d "$src_dir" ]; then
+            continue
+        fi
+
+        # Find all generated Java files in this module
+        local java_files
+        java_files=$(find "$src_dir" -name "*.java" -type f)
+
+        if [ -z "$java_files" ]; then
+            continue
+        fi
+
+        # Extract fully qualified class names from the Java files
+        local class_names=""
+        while IFS= read -r java_file; do
+            # Extract package and class name
+            local package
+            package=$(grep -m 1 "^package " "$java_file" | sed 's/package //;s/;//')
+            local classname
+            classname=$(basename "$java_file" .java)
+
+            if [ -n "$package" ] && [ -n "$classname" ]; then
+                if [ -z "$class_names" ]; then
+                    class_names="$package.$classname"
+                else
+                    class_names="$class_names"$'\n'"$package.$classname"
+                fi
+            fi
+        done <<< "$java_files"
+
+        if [ -z "$class_names" ]; then
+            continue
+        fi
+
+        # Create output directory
+        mkdir -p "$output_dir"
+
+        # Generate reflect-config.json
+        local config_file="$output_dir/reflect-config.json"
+        echo "[" > "$config_file"
+
+        local first_entry=true
+        while IFS= read -r class_name; do
+            if [ "$first_entry" = false ]; then
+                echo "," >> "$config_file"
+            fi
+
+            cat >> "$config_file" <<CLASSEOF
+  {
+    "condition": {
+      "typeReachable": "$class_name"
+    },
+    "name": "$class_name",
+    "allDeclaredConstructors": true,
+    "allDeclaredMethods": true,
+    "allDeclaredFields": true
+  }
+CLASSEOF
+            first_entry=false
+        done <<< "$class_names"
+
+        echo "" >> "$config_file"
+        echo "]" >> "$config_file"
+
+        local num_classes
+        num_classes=$(echo "$class_names" | wc -l | tr -d ' ')
+        local module_name
+        module_name=$(basename "$module_dir")
+        log_info "  Generated $config_file with $num_classes entries for $module_name"
+
+        ((config_count++))
+    done
+
+    if [ $config_count -eq 0 ]; then
+        log_error "No reflect-config.json files were generated!"
+        log_error "Check that model generation created source files"
+        exit 1
+    fi
+
+    log_success "Generated reflect-config.json files for $config_count modules"
 }
 
 ################################################################################
@@ -494,7 +555,7 @@ main() {
     parse_args "$@"
     check_requirements
     clone_repository
-    generate_models
+    generate_reflect_configs
     find_reflect_configs
     aggregate_configs
     validate_json

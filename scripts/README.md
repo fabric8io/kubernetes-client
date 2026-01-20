@@ -11,7 +11,7 @@ Comprehensive script that can clone repositories, generate models, and aggregate
 **Quick Usage**:
 ```bash
 # Generate for current project (models must already exist)
-./generate-graalvm-reflect-config.sh --skip-generate
+./generate-graalvm-reflect-config.sh
 
 # Generate for specific tag
 ./generate-graalvm-reflect-config.sh --tag v6.9.0
@@ -28,7 +28,6 @@ Comprehensive script that can clone repositories, generate models, and aggregate
 - `-c, --commit COMMIT` - Clone and checkout a specific commit
 - `-b, --branch BRANCH` - Clone and checkout a specific branch
 - `-o, --output DIR` - Output directory (default: ./graalvm-config)
-- `-s, --skip-generate` - Skip model generation (use existing configs)
 - `-h, --help` - Show help message
 
 See [SCRIPT_USAGE.md](./SCRIPT_USAGE.md) for complete documentation.
@@ -36,30 +35,15 @@ See [SCRIPT_USAGE.md](./SCRIPT_USAGE.md) for complete documentation.
 ## Documentation
 - **[SCRIPT_USAGE.md](./SCRIPT_USAGE.md)** - Detailed script documentation
 
-## Enabling Reflection Config Generation
+## How It Works
 
-The script automatically enables GraalVM reflection config generation by passing `-DgenerateGraalVMReflectConfig=true` to Maven.
+The script generates GraalVM reflection configurations by:
+1. Scanning generated Java model source files in `src/generated/java` directories
+2. Extracting fully qualified class names from package declarations
+3. Creating `reflect-config.json` files in `target/classes/META-INF/native-image/`
+4. Aggregating all individual configs into a single file
 
-Alternatively, to enable it manually when running Maven directly:
-
-```bash
-# Generate models with reflection configs
-mvn clean install -Pgenerate -DskipTests -DgenerateGraalVMReflectConfig=true
-```
-
-Or add it to your module's POM:
-
-```xml
-<plugin>
-  <groupId>io.fabric8</groupId>
-  <artifactId>openapi-model-generator-maven-plugin</artifactId>
-  <configuration>
-    <settings combine.self="append">
-      <generateGraalVMReflectConfig>true</generateGraalVMReflectConfig>
-    </settings>
-  </configuration>
-</plugin>
-```
+This approach is simpler and more reliable than the previous Maven plugin-based generation.
 
 ## Output
 
@@ -69,20 +53,19 @@ The script generates:
 
 ## Requirements
 
-- git
-- Maven (or mvnw)
+- git (for cloning repositories when using --tag, --branch, or --commit)
 - bash 4.0+
 - jq (optional, for JSON validation)
 
 ## Quick Workflow
 
-### Option 1: Use Script Only (Recommended)
+### Basic Workflow
 
 ```bash
 cd scripts
 
-# For existing project with configs already generated
-./generate-graalvm-reflect-config.sh --skip-generate
+# For existing project with generated models
+./generate-graalvm-reflect-config.sh
 
 # For specific release
 ./generate-graalvm-reflect-config.sh --tag v6.9.0
@@ -90,19 +73,11 @@ cd scripts
 # Output: ./graalvm-config/reflect-config.json
 ```
 
-### Option 2: Manual Maven Build
-
-```bash
-# Generate models with reflection configs
-cd kubernetes-model-generator
-mvn clean install -Pgenerate -DskipTests -DgenerateGraalVMReflectConfig=true
-
-# Aggregate configs
-cd ../scripts
-./generate-graalvm-reflect-config.sh --skip-generate
-```
-
-This creates individual configs at `<module>/META-INF/native-image/reflect-config.json` which are then aggregated.
+The script will:
+1. Scan generated source files in `src/generated/java`
+2. Create individual `reflect-config.json` files in `target/classes/META-INF/native-image/`
+3. Aggregate all configs into a single file
+4. Validate and copy to output directory
 
 ## Using the Generated Config
 
