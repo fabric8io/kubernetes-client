@@ -257,10 +257,10 @@ generate_models() {
         MVN_CMD="mvn"
     fi
 
-    # Run maven with generate profile
-    log_info "Running: $MVN_CMD clean install -Pgenerate -DskipTests"
+    # Run maven with generate profile and enable GraalVM reflection config generation
+    log_info "Running: $MVN_CMD clean install -Pgenerate -DskipTests -DgenerateGraalVMReflectConfig=true"
 
-    if $MVN_CMD clean install -Pgenerate -DskipTests 2>&1 | tee /tmp/maven-build.log | grep -E "Building|ERROR|WARNING|SUCCESS"; then
+    if $MVN_CMD clean install -Pgenerate -DskipTests -DgenerateGraalVMReflectConfig=true 2>&1 | tee /tmp/maven-build.log | grep -E "Building|ERROR|WARNING|SUCCESS"; then
         log_success "Model generation completed successfully"
     else
         log_error "Model generation failed"
