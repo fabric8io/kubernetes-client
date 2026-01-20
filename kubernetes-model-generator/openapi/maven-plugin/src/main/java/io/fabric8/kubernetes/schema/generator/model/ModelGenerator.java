@@ -78,7 +78,6 @@ class ModelGenerator {
     final Map<String, Schema<?>> schemas = utils.extractComponentSchemas();
     settings.getLogger().info(String.format("Found %s schemas", schemas.size()));
     final AtomicInteger generatedClasses = new AtomicInteger();
-    final List<String> generatedClassNames = new ArrayList<>();
     final Map<String, Schema<?>> entries = schemas.entrySet().stream()
         .filter(GeneratorUtils.filter(settings))
         .filter(entry -> entry.getValue() instanceof ObjectSchema)
@@ -97,12 +96,8 @@ class ModelGenerator {
       final String fileContents = modelTemplate.execute(templateContext.getContext());
       writeFile(templateContext, fileContents);
       generatedClasses.incrementAndGet();
-      generatedClassNames.add(templateContext.getClassInformation().getClassName());
     }
     settings.getLogger().info(String.format("Generated %s model entries", generatedClasses.get()));
-    if (settings.isGenerateGraalVMReflectConfig()) {
-      generateReflectConfig(generatedClassNames);
-    }
   }
 
   private void processTemplate(TemplateContext ret) {
@@ -303,42 +298,6 @@ class ModelGenerator {
   private static Set<String> initDefaultImports() {
     return new HashSet<>(Collections.singletonList(
         "javax.annotation.processing.Generated"));
-  }
-
-  private void generateReflectConfig(List<String> generatedClassNames) {
-    if (generatedClassNames.isEmpty()) {
-      return;
-    }
-    final StringBuilder jsonBuilder = new StringBuilder();
-    jsonBuilder.append("[\n");
-    for (int i = 0; i < generatedClassNames.size(); i++) {
-      final String className = generatedClassNames.get(i);
-      jsonBuilder.append("  {\n");
-      jsonBuilder.append("    \"condition\": {\n");
-      jsonBuilder.append("      \"typeReachable\": \"").append(className).append("\"\n");
-      jsonBuilder.append("    },\n");
-      jsonBuilder.append("    \"name\": \"").append(className).append("\",\n");
-      jsonBuilder.append("    \"allDeclaredConstructors\": true,\n");
-      jsonBuilder.append("    \"allDeclaredMethods\": true,\n");
-      jsonBuilder.append("    \"allDeclaredFields\": true\n");
-      jsonBuilder.append("  }");
-      if (i < generatedClassNames.size() - 1) {
-        jsonBuilder.append(",");
-      }
-      jsonBuilder.append("\n");
-    }
-    jsonBuilder.append("]\n");
-
-    final Path reflectConfigPath = settings.getOutputDirectory().toPath()
-        .resolve("META-INF").resolve("native-image").resolve("reflect-config.json");
-    try {
-      FileUtils.forceMkdir(reflectConfigPath.getParent().toFile());
-      generatorUtils.writeFile(reflectConfigPath, jsonBuilder.toString());
-      settings.getLogger().info(String.format("Generated reflect-config.json with %s entries at %s",
-          generatedClassNames.size(), reflectConfigPath));
-    } catch (IOException e) {
-      throw new GeneratorException("Can't generate reflect-config.json");
-    }
   }
 
 }
