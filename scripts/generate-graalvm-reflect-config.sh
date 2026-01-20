@@ -505,10 +505,21 @@ $([ -f "$OUTPUT_DIR/QUICK_START.md" ] && echo "  Quick Start: $OUTPUT_DIR/QUICK_
 $([ -f "$OUTPUT_DIR/pom-example.xml" ] && echo "  POM Example: $OUTPUT_DIR/pom-example.xml")
 
 Usage:
-  Copy reflect-config.json to your application's META-INF/native-image/ directory
-  or reference it directly in your GraalVM native-image build configuration.
 
-  See NATIVE_IMAGE_USAGE.md for detailed instructions.
+  Option 1: Copy to your application
+    cp $OUTPUT_DIR/reflect-config.json \\
+       your-app/src/main/resources/META-INF/native-image/
+
+  Option 2: Reference in native-maven-plugin (pom.xml)
+    <buildArgs>
+      <buildArg>-H:ReflectionConfigurationFiles=\${project.basedir}/path/to/reflect-config.json</buildArg>
+    </buildArgs>
+
+  Option 3: Reference via command line
+    native-image -H:ReflectionConfigurationFiles=/path/to/reflect-config.json \\
+                 -jar your-app.jar
+
+  GraalVM automatically discovers configs in META-INF/native-image/ directory.
 
 Sample Configuration Entry:
 EOF
