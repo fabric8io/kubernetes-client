@@ -80,6 +80,8 @@
     <itest>true</itest>
     <skipTests>false</skipTests>
     <testExclusionPattern>**/*KubernetesTest.java</testExclusionPattern>
+    <!-- GraalVM reflection config generation (default: false, enable with -DgenerateGraalVMReflectConfig=true) -->
+    <generateGraalVMReflectConfig>false</generateGraalVMReflectConfig>
     <openapi.schema.kubernetes-latest>${project.parent.basedir}/openapi/schemas/kubernetes-1.34.1.json</openapi.schema.kubernetes-latest>
     <openapi.schema.openshift-generated>${project.parent.basedir}/openapi/schemas/openshift-generated.json</openapi.schema.openshift-generated>
     <openapi.schema.dev.knative>${project.basedir}/../../../kubernetes-model-generator/openapi/schemas/dev.knative.json</openapi.schema.dev.knative>
@@ -169,6 +171,7 @@
               <builderPackage>io.fabric8.kubernetes.api.builder</builderPackage>
               <addBuildableReferences>true</addBuildableReferences>
               <generateJavadoc>true</generateJavadoc>
+              <generateGraalVMReflectConfig>${generateGraalVMReflectConfig}</generateGraalVMReflectConfig>
               <packageMappings>
                 <com.coreos.monitoring>io.fabric8.openshift.api.model.monitoring</com.coreos.monitoring>
                 <com.github.openshift.custom-resource-status>io.fabric8.openshift.api.model.customresourcestatus</com.github.openshift.custom-resource-status>

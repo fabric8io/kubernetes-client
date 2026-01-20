@@ -113,6 +113,14 @@ public class GeneratorSettings {
   @Singular
   private Set<String> includeGenerationRegexes;
   private boolean generateJavadoc;
+  /**
+   * Whether to generate GraalVM reflect-config.json files for native-image compilation.
+   * <p>
+   * When enabled, generates reflection configuration files in META-INF/native-image/
+   * for each model class with conditional registration using typeReachable.
+   */
+  @Builder.Default
+  private boolean generateGraalVMReflectConfig = false;
   @Builder.Default
   private final String genericKubernetesResourceClass = "io.fabric8.kubernetes.api.model.GenericKubernetesResource";
   @Builder.Default
