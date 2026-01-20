@@ -7,6 +7,7 @@
 #### Improvements
 
 #### Dependency Upgrade
+* Fix #7408: bump vertx.version from 4.5.21 to 4.5.24
 
 #### New Features
 
