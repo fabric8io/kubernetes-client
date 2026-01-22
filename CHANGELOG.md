@@ -1,17 +1,9 @@
 ## CHANGELOG
 
-### 7.6-SNAPSHOT
-
-#### Bugs
-
-#### Improvements
+### 7.5.2 (2026-01-22)
 
 #### Dependency Upgrade
 * Fix #7408: bump vertx.version from 4.5.21 to 4.5.24
-
-#### New Features
-
-#### _**Note**_: Breaking changes
 
 ### 7.5.1 (2026-01-15)
 
