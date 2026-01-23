@@ -35,18 +35,26 @@ import org.eclipse.jetty.http2.client.http.ClientConnectionFactoryOverHTTP2;
 import org.eclipse.jetty.io.ClientConnector;
 import org.eclipse.jetty.util.ssl.SslContextFactory;
 import org.eclipse.jetty.websocket.client.WebSocketClient;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.time.Duration;
+import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
+
+import javax.net.ssl.SNIHostName;
+import javax.net.ssl.SNIServerName;
 
 import static io.fabric8.kubernetes.client.utils.HttpClientUtils.decodeBasicCredentials;
 
 public class JettyHttpClientBuilder
     extends StandardHttpClientBuilder<JettyHttpClient, JettyHttpClientFactory, JettyHttpClientBuilder> {
 
+  private static final Logger LOGGER = LoggerFactory.getLogger(JettyHttpClientBuilder.class);
   private static final int MAX_CONNECTIONS = Integer.MAX_VALUE;
   // the default for etcd seems to be 3 MB, but we'll default to unlimited to have the same behavior across clients
   private static final int MAX_WS_MESSAGE_SIZE = Integer.MAX_VALUE;
@@ -70,6 +78,13 @@ public class JettyHttpClientBuilder
     }
     if (tlsVersions != null && tlsVersions.length > 0) {
       sslContextFactory.setIncludeProtocols(Stream.of(tlsVersions).map(TlsVersion::javaName).toArray(String[]::new));
+    }
+    // Configure SNI (Server Name Indication) if tlsServerName is specified
+    // This is needed when connecting through a tunnel where the URL host differs from the TLS certificate hostname
+    if (tlsServerName != null && !tlsServerName.isEmpty()) {
+      LOGGER.debug("Configuring SNI with tlsServerName: {}", tlsServerName);
+      final List<SNIServerName> sniServerNames = Collections.singletonList(new SNIHostName(tlsServerName));
+      sslContextFactory.setSNIProvider((sslEngine, serverNames) -> sniServerNames);
     }
     HttpClient sharedHttpClient = new HttpClient(newTransport(sslContextFactory, preferHttp11));
     WebSocketClient sharedWebSocketClient = new WebSocketClient(new HttpClient(newTransport(sslContextFactory, preferHttp11)));
