@@ -294,14 +294,25 @@ public class JObject extends AbstractJSONSchema2Pojo implements JObjectExtraAnno
 
           if (primitiveDefault != null) {
             objField.getVariable(0).setInitializer(primitiveDefault);
+            objField.addAnnotation(
+                new SingleMemberAnnotationExpr(
+                    new Name("io.fabric8.generator.annotation.Default"),
+                    new StringLiteralExpr(prop.getDefaultValue().isTextual() ? prop.getDefaultValue().asText()
+                        : prop.getDefaultValue().toString())));
           } else {
             objField.getVariable(0).setInitializer(
                 new NameExpr(
                     "io.fabric8.kubernetes.client.utils.Serialization.unmarshal("
                         + "\"" + StringEscapeUtils.escapeJava(Serialization.asJson(prop.getDefaultValue())) + "\""
                         + ", "
-                        + prop.getClassType() + ".class"
+                        + "new com.fasterxml.jackson.core.type.TypeReference<"
+                        + prop.getType()
+                        + ">() {}"
                         + ")"));
+            objField.addAnnotation(
+                new SingleMemberAnnotationExpr(
+                    new Name("io.fabric8.generator.annotation.Default"),
+                    new StringLiteralExpr(StringEscapeUtils.escapeJava(Serialization.asJson(prop.getDefaultValue())))));
           }
         }
 

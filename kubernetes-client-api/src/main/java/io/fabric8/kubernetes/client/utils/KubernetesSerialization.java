@@ -350,6 +350,22 @@ public class KubernetesSerialization {
   }
 
   /**
+   * Unmarshals a {@link String}
+   *
+   * @param str The {@link String}.
+   * @param type The target type reference, supporting generic types.
+   * @param <T> template argument denoting type
+   * @return returns de-serialized object
+   */
+  public <T> T unmarshal(String str, TypeReference<T> type) {
+    try (InputStream is = new ByteArrayInputStream(str.getBytes(StandardCharsets.UTF_8))) {
+      return unmarshal(is, type);
+    } catch (IOException e) {
+      throw KubernetesClientException.launderThrowable(e);
+    }
+  }
+
+  /**
    * Unmarshals an {@link InputStream}.
    *
    * @param is The {@link InputStream}.
