@@ -319,6 +319,9 @@ public class Config extends SundrioConfig {
     if (Utils.isNotNullOrEmpty(config.getOauthToken())) {
       this.setOauthToken(config.getOauthToken());
     }
+    if (Utils.isNotNullOrEmpty(config.getTlsServerName())) {
+      this.setTlsServerName(config.getTlsServerName());
+    }
     if (config.getWebsocketPingInterval() != null) {
       this.setWebsocketPingInterval(config.getWebsocketPingInterval());
     }

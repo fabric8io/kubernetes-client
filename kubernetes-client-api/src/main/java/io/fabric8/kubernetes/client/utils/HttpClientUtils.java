@@ -224,6 +224,10 @@ public class HttpClientUtils {
       builder.tlsVersions(config.getTlsVersions());
     }
 
+    if (config.getTlsServerName() != null && !config.getTlsServerName().isEmpty()) {
+      builder.tlsServerName(config.getTlsServerName());
+    }
+
     HttpClientUtils.createApplicableInterceptors(config, factory).forEach(builder::addOrReplaceInterceptor);
   }
 

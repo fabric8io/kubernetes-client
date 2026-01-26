@@ -23,6 +23,8 @@ import okhttp3.Authenticator;
 import okhttp3.ConnectionSpec;
 import okhttp3.OkHttpClient;
 import okhttp3.Protocol;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.net.Proxy;
 import java.util.Arrays;
@@ -35,6 +37,8 @@ import static okhttp3.ConnectionSpec.CLEARTEXT;
 
 class OkHttpClientBuilderImpl
     extends StandardHttpClientBuilder<OkHttpClientImpl, OkHttpClientFactory, OkHttpClientBuilderImpl> {
+
+  private static final Logger LOGGER = LoggerFactory.getLogger(OkHttpClientBuilderImpl.class);
 
   private final okhttp3.OkHttpClient.Builder builder;
 
@@ -56,6 +60,13 @@ class OkHttpClientBuilderImpl
   }
 
   public OkHttpClientImpl initialBuild(okhttp3.OkHttpClient.Builder builder) {
+    // Warn if tlsServerName is configured but not supported
+    if (tlsServerName != null && !tlsServerName.isEmpty()) {
+      LOGGER.warn(
+          "tlsServerName '{}' is configured but not supported by OkHttp client. Consider using Jetty HTTP client for SNI support.",
+          tlsServerName);
+    }
+
     // configure the main properties
     if (connectTimeout != null) {
       builder.connectTimeout(this.connectTimeout);

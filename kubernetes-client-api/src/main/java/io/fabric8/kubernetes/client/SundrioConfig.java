@@ -111,6 +111,7 @@ public class SundrioConfig {
   private String[] noProxy;
   private String userAgent;
   private TlsVersion[] tlsVersions;
+  private String tlsServerName;
 
   private Boolean onlyHttpWatches;
 
