@@ -225,6 +225,61 @@ class CustomResourceCrudTest {
     assertEquals(resourceVersion, result.getMetadata().getResourceVersion());
   }
 
+  @Test
+  void testStatusSubresourceConvenienceMethod() {
+    CronTab cronTab = createCronTab("my-new-cron-object", "* * * * */5", 3, "my-awesome-cron-image");
+    CronTabStatus status = new CronTabStatus();
+    status.setReplicas(5);
+
+    NonNamespaceOperation<CronTab, KubernetesResourceList<CronTab>, Resource<CronTab>> cronTabClient = client
+        .resources(CronTab.class)
+        .inNamespace("test-ns");
+
+    CronTab result = cronTabClient.resource(cronTab).create();
+
+    // should be null after create
+    assertNull(result.getStatus());
+
+    result.setStatus(status);
+
+    // Test the new status() convenience method - should be equivalent to subresource("status")
+    result = cronTabClient.resource(result).status().patch();
+    assertNotNull(result.getStatus());
+    assertEquals(5, result.getStatus().getReplicas());
+
+    // Verify it works the same as subresource("status")
+    status.setReplicas(10);
+    result.setStatus(status);
+    result = cronTabClient.resource(result).subresource("status").patch();
+    assertNotNull(result.getStatus());
+    assertEquals(10, result.getStatus().getReplicas());
+  }
+
+  @Test
+  void testStatusSubresourceEdit() {
+    CronTab cronTab = createCronTab("my-new-cron-object", "* * * * */5", 3, "my-awesome-cron-image");
+
+    NonNamespaceOperation<CronTab, KubernetesResourceList<CronTab>, Resource<CronTab>> cronTabClient = client
+        .resources(CronTab.class)
+        .inNamespace("test-ns");
+
+    CronTab result = cronTabClient.resource(cronTab).create();
+
+    // should be null after create
+    assertNull(result.getStatus());
+
+    // Test edit method on status subresource
+    result = cronTabClient.withName(result.getMetadata().getName()).status().edit(r -> {
+      CronTabStatus status = new CronTabStatus();
+      status.setReplicas(7);
+      r.setStatus(status);
+      return r;
+    });
+
+    assertNotNull(result.getStatus());
+    assertEquals(7, result.getStatus().getReplicas());
+  }
+
   void assertCronTab(CronTab cronTab, String name, String cronTabSpec, int replicas, String image) {
     assertEquals(name, cronTab.getMetadata().getName());
     assertEquals(cronTabSpec, cronTab.getSpec().getCronSpec());

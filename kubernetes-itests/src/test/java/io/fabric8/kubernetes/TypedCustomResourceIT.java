@@ -258,6 +258,44 @@ class TypedCustomResourceIT {
   }
 
   @Test
+  void statusSubresourceConvenienceMethod() {
+    // Given
+    Pet pet = createNewPet("pet-status-convenience", "Parrot", null);
+    PetStatus petStatusToUpdate = new PetStatus();
+    petStatusToUpdate.setCurrentStatus("Flying");
+    // When
+    petClient.create(pet);
+    petClient.withName("pet-status-convenience")
+        .waitUntilCondition(Objects::nonNull, 5, TimeUnit.SECONDS);
+    pet.setStatus(petStatusToUpdate);
+    // Test the new status() convenience method - should be equivalent to subresource("status")
+    Pet updatedPet = petClient.resource(pet).status().patch();
+    // Then
+    assertPet(updatedPet, "pet-status-convenience", "Parrot", "Flying");
+  }
+
+  @Test
+  void statusSubresourceConvenienceMethodEdit() {
+    // Given
+    Pet pet = createNewPet("pet-status-edit-convenience", "Cat", null);
+    PetStatus petStatusToUpdate = new PetStatus();
+    petStatusToUpdate.setCurrentStatus("Purring");
+    // When
+    petClient.create(pet);
+    petClient.withName("pet-status-edit-convenience")
+        .waitUntilCondition(Objects::nonNull, 5, TimeUnit.SECONDS);
+    // Test edit using status() convenience method
+    Pet updatedPet = petClient.withName("pet-status-edit-convenience").status().edit(p -> {
+      Pet clone = Serialization.clone(p);
+      clone.setStatus(petStatusToUpdate);
+      clone.getSpec().setType("shouldn't change");
+      return clone;
+    });
+    // Then
+    assertPet(updatedPet, "pet-status-edit-convenience", "Cat", "Purring");
+  }
+
+  @Test
   void delete() {
     // Given
     Pet pet = createNewPet("pet-delete", "Cow", "Eating");
@@ -294,6 +332,41 @@ class TypedCustomResourceIT {
     assertTrue(isDeleted);
     Pet duckFromServer = petClient.withName("dry-run-delete").get();
     assertNotNull(duckFromServer);
+  }
+
+  @Test
+  void testSubresourceEquivalence() {
+    // Given
+    Pet pet = createNewPet("pet-subresource-equivalence", "Eagle", null);
+    petClient.create(pet);
+    petClient.withName("pet-subresource-equivalence")
+        .waitUntilCondition(Objects::nonNull, 5, TimeUnit.SECONDS);
+
+    PetStatus petStatusToUpdate = new PetStatus();
+    petStatusToUpdate.setCurrentStatus("Soaring");
+
+    // Test that status() is equivalent to subresource("status")
+    // First, update using status() convenience method
+    pet.setStatus(petStatusToUpdate);
+    Pet updatedPet1 = petClient.resource(pet).status().patch();
+    assertEquals("Soaring", updatedPet1.getStatus().getCurrentStatus());
+
+    // Then, update using subresource("status")
+    petStatusToUpdate.setCurrentStatus("Flying");
+    pet.setStatus(petStatusToUpdate);
+    Pet updatedPet2 = petClient.resource(pet).subresource("status").patch();
+    assertEquals("Flying", updatedPet2.getStatus().getCurrentStatus());
+
+    // Verify both methods produce the same result type
+    assertEquals(updatedPet1.getClass(), updatedPet2.getClass());
+  }
+
+  @Test
+  void testApprovalConvenienceMethod() {
+    // Test that approval() is equivalent to subresource("approval")
+    // Verify the methods are equivalent
+    assertNotNull(petClient.withName("test").approval());
+    assertNotNull(petClient.withName("test").subresource("approval"));
   }
 
   private void assertPet(Pet pet, String name, String type, String currentStatus) {

@@ -1888,7 +1888,136 @@ cronTabClient.inNamespace("default").resource(updatedCronTab).patchStatus();
 ```java
 // generates a json patch between the passed in cronTab and the updated result.  Typically you will use a builder to construct a copy from the current and make modifications
 cronTabClient.inNamespace("default").resource(cronTab1).editStatus(cronTab->updatedCronTab);
-``` 
+```
+- Using `status()` convenience method (equivalent to `subresource("status")`):
+```java
+// Patch status using the status() convenience method
+cronTabClient.inNamespace("default").resource(updatedCronTab).status().patch();
+
+// Edit status using the status() convenience method
+cronTabClient.inNamespace("default").withName("my-cron").status().edit(cronTab -> {
+  CronTabStatus status = new CronTabStatus();
+  status.setReplicas(5);
+  cronTab.setStatus(status);
+  return cronTab;
+});
+
+// Replace status using the status() convenience method
+cronTabClient.inNamespace("default").resource(updatedCronTab).status().replace();
+```
+- Using `approval()` convenience method for CertificateSigningRequests (equivalent to `subresource("approval")`):
+```java
+// Approve a CertificateSigningRequest
+client.certificates().v1().certificateSigningRequests()
+  .withName("my-csr")
+  .approval()
+  .edit(csr -> new CertificateSigningRequestBuilder(csr)
+    .editStatus()
+      .addNewCondition()
+        .withType("Approved")
+        .withStatus("True")
+        .withReason("ApprovedByAdmin")
+        .withMessage("This certificate was approved by administrator")
+      .endCondition()
+    .endStatus()
+    .build());
+
+// Deny a CertificateSigningRequest
+client.certificates().v1().certificateSigningRequests()
+  .withName("my-csr")
+  .approval()
+  .edit(csr -> new CertificateSigningRequestBuilder(csr)
+    .editStatus()
+      .addNewCondition()
+        .withType("Denied")
+        .withStatus("True")
+        .withReason("DeniedByPolicy")
+        .withMessage("Certificate request does not meet security policy")
+      .endCondition()
+    .endStatus()
+    .build());
+```
+- Using generic `subresource()` method for any subresource:
+
+The `subresource(String)` method provides a generic way to access any Kubernetes subresource, similar to kubectl's `--subresource` flag. Subresources are specialized endpoints that provide additional operations beyond standard CRUD operations.
+
+**Common Kubernetes Subresources:**
+- **status** - Updates the status stanza independently (use `status()` convenience method)
+- **scale** - Manages replica counts for scalable resources (Deployment, ReplicaSet, StatefulSet, etc.)
+- **ephemeralcontainers** - Manages ephemeral containers for debugging Pods
+- **binding** - Binds Pods to Nodes (typically handled by the Kubernetes scheduler)
+- **approval** - Approves CertificateSigningRequests (use `approval()` convenience method)
+- **token** - Requests bound service account tokens (use ServiceAccountResource#requestToken())
+- **Custom subresources** - Defined by CustomResourceDefinitions (CRDs)
+
+**Examples:**
+
+```java
+// 1. Update ephemeral containers subresource (for debugging)
+client.pods().withName("my-pod")
+  .subresource("ephemeralcontainers")
+  .edit(pod -> new PodBuilder(pod)
+    .editSpec()
+      .addNewEphemeralContainer()
+        .withName("debugger")
+        .withImage("busybox:latest")
+        .withCommand("sh")
+      .endEphemeralContainer()
+    .endSpec()
+    .build());
+
+// 2. Patch scale subresource to change replica count
+// Note: For scaling, prefer using the Scalable interface (.scale(count))
+// This shows the subresource approach for educational purposes
+client.apps().deployments()
+  .inNamespace("default")
+  .withName("my-deployment")
+  .subresource("scale")
+  .patch(PatchContext.of(PatchType.JSON_MERGE),
+    "{\"spec\":{\"replicas\":5}}");
+
+// 3. Get current deployment (scale info is in the main resource)
+Deployment deployment = client.apps().deployments()
+  .inNamespace("default")
+  .withName("my-deployment")
+  .get();
+Integer currentReplicas = deployment.getSpec().getReplicas();
+
+// 4. Preferred way to scale using Scalable interface (recommended)
+client.apps().deployments()
+  .inNamespace("default")
+  .withName("my-deployment")
+  .scale(3);
+
+// 5. Work with custom subresources on CRDs
+client.resources(MyCustomResource.class)
+  .inNamespace("default")
+  .withName("my-resource")
+  .subresource("my-custom-subresource")
+  .patch();
+
+// 6. Using approval subresource (prefer approval() convenience method)
+client.certificates().v1().certificateSigningRequests()
+  .withName("my-csr")
+  .subresource("approval")
+  .edit(csr -> new CertificateSigningRequestBuilder(csr)
+    .editStatus()
+      .addNewCondition()
+        .withType("Approved")
+        .withStatus("True")
+        .withReason("ApprovedByAdmin")
+      .endCondition()
+    .endStatus()
+    .build());
+```
+
+**Note:** For common operations, consider using specialized methods:
+- For status updates, use `status()`, `editStatus()`, or `patchStatus()`
+- For scaling operations, use `Scalable` interface methods like `scale(int count)`
+- For Pod ephemeral containers, use `podResource.ephemeralContainers()`
+- For CertificateSigningRequest approval/denial, use `approval()`
+- For ServiceAccount token requests, use `serviceAccountResource.requestToken()`
+```
 - Watch `CustomResource`:
 ```java
 cronTabClient.inNamespace("default").watch(new Watcher<>() {
