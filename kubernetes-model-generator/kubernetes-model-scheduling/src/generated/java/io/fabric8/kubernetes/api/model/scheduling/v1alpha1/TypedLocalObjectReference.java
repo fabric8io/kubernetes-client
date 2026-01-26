@@ -1,5 +1,5 @@
 
-package io.fabric8.kubernetes.api.model.storagemigration.v1alpha1;
+package io.fabric8.kubernetes.api.model.scheduling.v1alpha1;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -33,16 +33,14 @@ import lombok.ToString;
 import lombok.experimental.Accessors;
 
 /**
- * Describes the state of a migration at a certain point.
+ * TypedLocalObjectReference allows to reference typed object inside the same namespace.
  */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "lastUpdateTime",
-    "message",
-    "reason",
-    "status",
-    "type"
+    "kind",
+    "apiGroup",
+    "name"
 })
 @ToString
 @EqualsAndHashCode
@@ -66,124 +64,86 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class MigrationCondition implements Editable<MigrationConditionBuilder>, KubernetesResource
+public class TypedLocalObjectReference implements Editable<TypedLocalObjectReferenceBuilder>, KubernetesResource
 {
 
-    @JsonProperty("lastUpdateTime")
-    private String lastUpdateTime;
-    @JsonProperty("message")
-    private String message;
-    @JsonProperty("reason")
-    private String reason;
-    @JsonProperty("status")
-    private String status;
-    @JsonProperty("type")
-    private String type;
+    @JsonProperty("apiGroup")
+    private String apiGroup;
+    @JsonProperty("kind")
+    private String kind;
+    @JsonProperty("name")
+    private String name;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
      */
-    public MigrationCondition() {
+    public TypedLocalObjectReference() {
     }
 
-    public MigrationCondition(String lastUpdateTime, String message, String reason, String status, String type) {
+    public TypedLocalObjectReference(String apiGroup, String kind, String name) {
         super();
-        this.lastUpdateTime = lastUpdateTime;
-        this.message = message;
-        this.reason = reason;
-        this.status = status;
-        this.type = type;
+        this.apiGroup = apiGroup;
+        this.kind = kind;
+        this.name = name;
     }
 
     /**
-     * Describes the state of a migration at a certain point.
+     * APIGroup is the group for the resource being referenced. If APIGroup is empty, the specified Kind must be in the core API group. For any other third-party types, setting APIGroup is required. It must be a DNS subdomain.
      */
-    @JsonProperty("lastUpdateTime")
-    public String getLastUpdateTime() {
-        return lastUpdateTime;
+    @JsonProperty("apiGroup")
+    public String getApiGroup() {
+        return apiGroup;
     }
 
     /**
-     * Describes the state of a migration at a certain point.
+     * APIGroup is the group for the resource being referenced. If APIGroup is empty, the specified Kind must be in the core API group. For any other third-party types, setting APIGroup is required. It must be a DNS subdomain.
      */
-    @JsonProperty("lastUpdateTime")
-    public void setLastUpdateTime(String lastUpdateTime) {
-        this.lastUpdateTime = lastUpdateTime;
+    @JsonProperty("apiGroup")
+    public void setApiGroup(String apiGroup) {
+        this.apiGroup = apiGroup;
     }
 
     /**
-     * A human readable message indicating details about the transition.
+     * Kind is the type of resource being referenced. It must be a path segment name.
      */
-    @JsonProperty("message")
-    public String getMessage() {
-        return message;
+    @JsonProperty("kind")
+    public String getKind() {
+        return kind;
     }
 
     /**
-     * A human readable message indicating details about the transition.
+     * Kind is the type of resource being referenced. It must be a path segment name.
      */
-    @JsonProperty("message")
-    public void setMessage(String message) {
-        this.message = message;
+    @JsonProperty("kind")
+    public void setKind(String kind) {
+        this.kind = kind;
     }
 
     /**
-     * The reason for the condition's last transition.
+     * Name is the name of resource being referenced. It must be a path segment name.
      */
-    @JsonProperty("reason")
-    public String getReason() {
-        return reason;
+    @JsonProperty("name")
+    public String getName() {
+        return name;
     }
 
     /**
-     * The reason for the condition's last transition.
+     * Name is the name of resource being referenced. It must be a path segment name.
      */
-    @JsonProperty("reason")
-    public void setReason(String reason) {
-        this.reason = reason;
-    }
-
-    /**
-     * Status of the condition, one of True, False, Unknown.
-     */
-    @JsonProperty("status")
-    public String getStatus() {
-        return status;
-    }
-
-    /**
-     * Status of the condition, one of True, False, Unknown.
-     */
-    @JsonProperty("status")
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    /**
-     * Type of the condition.
-     */
-    @JsonProperty("type")
-    public String getType() {
-        return type;
-    }
-
-    /**
-     * Type of the condition.
-     */
-    @JsonProperty("type")
-    public void setType(String type) {
-        this.type = type;
+    @JsonProperty("name")
+    public void setName(String name) {
+        this.name = name;
     }
 
     @JsonIgnore
-    public MigrationConditionBuilder edit() {
-        return new MigrationConditionBuilder(this);
+    public TypedLocalObjectReferenceBuilder edit() {
+        return new TypedLocalObjectReferenceBuilder(this);
     }
 
     @JsonIgnore
-    public MigrationConditionBuilder toBuilder() {
+    public TypedLocalObjectReferenceBuilder toBuilder() {
         return edit();
     }
 

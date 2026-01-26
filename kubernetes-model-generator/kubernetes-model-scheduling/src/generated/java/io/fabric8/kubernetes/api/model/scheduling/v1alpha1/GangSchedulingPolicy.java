@@ -1,5 +1,5 @@
 
-package io.fabric8.kubernetes.api.model.resource.v1beta1;
+package io.fabric8.kubernetes.api.model.scheduling.v1alpha1;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -33,15 +33,12 @@ import lombok.ToString;
 import lombok.experimental.Accessors;
 
 /**
- * The device this taint is attached to has the "effect" on any claim which does not tolerate the taint and, through the claim, to pods using the claim.
+ * GangSchedulingPolicy defines the parameters for gang scheduling.
  */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "effect",
-    "key",
-    "timeAdded",
-    "value"
+    "minCount"
 })
 @ToString
 @EqualsAndHashCode
@@ -65,105 +62,48 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class DeviceTaint implements Editable<DeviceTaintBuilder>, KubernetesResource
+public class GangSchedulingPolicy implements Editable<GangSchedulingPolicyBuilder>, KubernetesResource
 {
 
-    @JsonProperty("effect")
-    private String effect;
-    @JsonProperty("key")
-    private String key;
-    @JsonProperty("timeAdded")
-    private String timeAdded;
-    @JsonProperty("value")
-    private String value;
+    @JsonProperty("minCount")
+    private Integer minCount;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
      */
-    public DeviceTaint() {
+    public GangSchedulingPolicy() {
     }
 
-    public DeviceTaint(String effect, String key, String timeAdded, String value) {
+    public GangSchedulingPolicy(Integer minCount) {
         super();
-        this.effect = effect;
-        this.key = key;
-        this.timeAdded = timeAdded;
-        this.value = value;
+        this.minCount = minCount;
     }
 
     /**
-     * The effect of the taint on claims that do not tolerate the taint and through such claims on the pods using them.<br><p> <br><p> Valid effects are None, NoSchedule and NoExecute. PreferNoSchedule as used for nodes is not valid here. More effects may get added in the future. Consumers must treat unknown effects like None.
+     * MinCount is the minimum number of pods that must be schedulable or scheduled at the same time for the scheduler to admit the entire group. It must be a positive integer.
      */
-    @JsonProperty("effect")
-    public String getEffect() {
-        return effect;
+    @JsonProperty("minCount")
+    public Integer getMinCount() {
+        return minCount;
     }
 
     /**
-     * The effect of the taint on claims that do not tolerate the taint and through such claims on the pods using them.<br><p> <br><p> Valid effects are None, NoSchedule and NoExecute. PreferNoSchedule as used for nodes is not valid here. More effects may get added in the future. Consumers must treat unknown effects like None.
+     * MinCount is the minimum number of pods that must be schedulable or scheduled at the same time for the scheduler to admit the entire group. It must be a positive integer.
      */
-    @JsonProperty("effect")
-    public void setEffect(String effect) {
-        this.effect = effect;
-    }
-
-    /**
-     * The taint key to be applied to a device. Must be a label name.
-     */
-    @JsonProperty("key")
-    public String getKey() {
-        return key;
-    }
-
-    /**
-     * The taint key to be applied to a device. Must be a label name.
-     */
-    @JsonProperty("key")
-    public void setKey(String key) {
-        this.key = key;
-    }
-
-    /**
-     * The device this taint is attached to has the "effect" on any claim which does not tolerate the taint and, through the claim, to pods using the claim.
-     */
-    @JsonProperty("timeAdded")
-    public String getTimeAdded() {
-        return timeAdded;
-    }
-
-    /**
-     * The device this taint is attached to has the "effect" on any claim which does not tolerate the taint and, through the claim, to pods using the claim.
-     */
-    @JsonProperty("timeAdded")
-    public void setTimeAdded(String timeAdded) {
-        this.timeAdded = timeAdded;
-    }
-
-    /**
-     * The taint value corresponding to the taint key. Must be a label value.
-     */
-    @JsonProperty("value")
-    public String getValue() {
-        return value;
-    }
-
-    /**
-     * The taint value corresponding to the taint key. Must be a label value.
-     */
-    @JsonProperty("value")
-    public void setValue(String value) {
-        this.value = value;
+    @JsonProperty("minCount")
+    public void setMinCount(Integer minCount) {
+        this.minCount = minCount;
     }
 
     @JsonIgnore
-    public DeviceTaintBuilder edit() {
-        return new DeviceTaintBuilder(this);
+    public GangSchedulingPolicyBuilder edit() {
+        return new GangSchedulingPolicyBuilder(this);
     }
 
     @JsonIgnore
-    public DeviceTaintBuilder toBuilder() {
+    public GangSchedulingPolicyBuilder toBuilder() {
         return edit();
     }
 

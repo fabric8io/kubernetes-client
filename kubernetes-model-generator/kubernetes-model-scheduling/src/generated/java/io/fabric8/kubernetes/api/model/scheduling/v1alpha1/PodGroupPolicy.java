@@ -1,5 +1,5 @@
 
-package io.fabric8.kubernetes.api.model.resource.v1beta1;
+package io.fabric8.kubernetes.api.model.scheduling.v1alpha1;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -33,15 +33,13 @@ import lombok.ToString;
 import lombok.experimental.Accessors;
 
 /**
- * The device this taint is attached to has the "effect" on any claim which does not tolerate the taint and, through the claim, to pods using the claim.
+ * PodGroupPolicy defines the scheduling configuration for a PodGroup.
  */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "effect",
-    "key",
-    "timeAdded",
-    "value"
+    "basic",
+    "gang"
 })
 @ToString
 @EqualsAndHashCode
@@ -65,105 +63,67 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class DeviceTaint implements Editable<DeviceTaintBuilder>, KubernetesResource
+public class PodGroupPolicy implements Editable<PodGroupPolicyBuilder>, KubernetesResource
 {
 
-    @JsonProperty("effect")
-    private String effect;
-    @JsonProperty("key")
-    private String key;
-    @JsonProperty("timeAdded")
-    private String timeAdded;
-    @JsonProperty("value")
-    private String value;
+    @JsonProperty("basic")
+    private BasicSchedulingPolicy basic;
+    @JsonProperty("gang")
+    private GangSchedulingPolicy gang;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
      */
-    public DeviceTaint() {
+    public PodGroupPolicy() {
     }
 
-    public DeviceTaint(String effect, String key, String timeAdded, String value) {
+    public PodGroupPolicy(BasicSchedulingPolicy basic, GangSchedulingPolicy gang) {
         super();
-        this.effect = effect;
-        this.key = key;
-        this.timeAdded = timeAdded;
-        this.value = value;
+        this.basic = basic;
+        this.gang = gang;
     }
 
     /**
-     * The effect of the taint on claims that do not tolerate the taint and through such claims on the pods using them.<br><p> <br><p> Valid effects are None, NoSchedule and NoExecute. PreferNoSchedule as used for nodes is not valid here. More effects may get added in the future. Consumers must treat unknown effects like None.
+     * PodGroupPolicy defines the scheduling configuration for a PodGroup.
      */
-    @JsonProperty("effect")
-    public String getEffect() {
-        return effect;
+    @JsonProperty("basic")
+    public BasicSchedulingPolicy getBasic() {
+        return basic;
     }
 
     /**
-     * The effect of the taint on claims that do not tolerate the taint and through such claims on the pods using them.<br><p> <br><p> Valid effects are None, NoSchedule and NoExecute. PreferNoSchedule as used for nodes is not valid here. More effects may get added in the future. Consumers must treat unknown effects like None.
+     * PodGroupPolicy defines the scheduling configuration for a PodGroup.
      */
-    @JsonProperty("effect")
-    public void setEffect(String effect) {
-        this.effect = effect;
+    @JsonProperty("basic")
+    public void setBasic(BasicSchedulingPolicy basic) {
+        this.basic = basic;
     }
 
     /**
-     * The taint key to be applied to a device. Must be a label name.
+     * PodGroupPolicy defines the scheduling configuration for a PodGroup.
      */
-    @JsonProperty("key")
-    public String getKey() {
-        return key;
+    @JsonProperty("gang")
+    public GangSchedulingPolicy getGang() {
+        return gang;
     }
 
     /**
-     * The taint key to be applied to a device. Must be a label name.
+     * PodGroupPolicy defines the scheduling configuration for a PodGroup.
      */
-    @JsonProperty("key")
-    public void setKey(String key) {
-        this.key = key;
-    }
-
-    /**
-     * The device this taint is attached to has the "effect" on any claim which does not tolerate the taint and, through the claim, to pods using the claim.
-     */
-    @JsonProperty("timeAdded")
-    public String getTimeAdded() {
-        return timeAdded;
-    }
-
-    /**
-     * The device this taint is attached to has the "effect" on any claim which does not tolerate the taint and, through the claim, to pods using the claim.
-     */
-    @JsonProperty("timeAdded")
-    public void setTimeAdded(String timeAdded) {
-        this.timeAdded = timeAdded;
-    }
-
-    /**
-     * The taint value corresponding to the taint key. Must be a label value.
-     */
-    @JsonProperty("value")
-    public String getValue() {
-        return value;
-    }
-
-    /**
-     * The taint value corresponding to the taint key. Must be a label value.
-     */
-    @JsonProperty("value")
-    public void setValue(String value) {
-        this.value = value;
+    @JsonProperty("gang")
+    public void setGang(GangSchedulingPolicy gang) {
+        this.gang = gang;
     }
 
     @JsonIgnore
-    public DeviceTaintBuilder edit() {
-        return new DeviceTaintBuilder(this);
+    public PodGroupPolicyBuilder edit() {
+        return new PodGroupPolicyBuilder(this);
     }
 
     @JsonIgnore
-    public DeviceTaintBuilder toBuilder() {
+    public PodGroupPolicyBuilder toBuilder() {
         return edit();
     }
 
