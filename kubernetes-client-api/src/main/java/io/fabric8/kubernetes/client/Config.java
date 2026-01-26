@@ -57,7 +57,7 @@ import java.util.stream.Collectors;
 @JsonIgnoreProperties(allowGetters = true, allowSetters = true)
 public class Config extends SundrioConfig {
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(Config.class);
+  private static final Logger logger = LoggerFactory.getLogger(Config.class);
 
   /**
    * Disables autoconfiguration based on opinionated defaults in a {@link Config} object in the all arguments constructor
@@ -564,7 +564,7 @@ public class Config extends SundrioConfig {
   }
 
   private static boolean tryServiceAccount(Config config) {
-    LOGGER.debug("Trying to configure client from service account...");
+    logger.debug("Trying to configure client from service account...");
     String masterHost = Utils.getSystemPropertyOrEnvVar(KUBERNETES_SERVICE_HOST_PROPERTY, (String) null);
     String masterPort = Utils.getSystemPropertyOrEnvVar(KUBERNETES_SERVICE_PORT_PROPERTY, (String) null);
     String caCertPath = Utils.getSystemPropertyOrEnvVar(KUBERNETES_CA_CERTIFICATE_FILE_SYSTEM_PROPERTY,
@@ -572,16 +572,16 @@ public class Config extends SundrioConfig {
 
     if (masterHost != null && masterPort != null) {
       String hostPort = joinHostPort(masterHost, masterPort);
-      LOGGER.debug("Found service account host and port: {}", hostPort);
+      logger.debug("Found service account host and port: {}", hostPort);
       config.setMasterUrl("https://" + hostPort);
     }
     if (Utils.getSystemPropertyOrEnvVar(KUBERNETES_AUTH_TRYSERVICEACCOUNT_SYSTEM_PROPERTY, true)) {
       boolean serviceAccountCaCertExists = Files.isRegularFile(new File(caCertPath).toPath());
       if (serviceAccountCaCertExists) {
-        LOGGER.debug("Found service account ca cert at: [{}}].", caCertPath);
+        logger.debug("Found service account ca cert at: [{}}].", caCertPath);
         config.setCaCertFile(caCertPath);
       } else {
-        LOGGER.debug("Did not find service account ca cert at: [{}}].", caCertPath);
+        logger.debug("Did not find service account ca cert at: [{}}].", caCertPath);
       }
 
       File saTokenPathFile = findServiceAccountTokenFile();
@@ -589,12 +589,12 @@ public class Config extends SundrioConfig {
         String saTokenPathLocation = saTokenPathFile.getAbsolutePath();
         try {
           String serviceTokenCandidate = new String(Files.readAllBytes(saTokenPathFile.toPath()));
-          LOGGER.debug("Found service account token at: [{}].", saTokenPathLocation);
+          logger.debug("Found service account token at: [{}].", saTokenPathLocation);
           config.setAutoOAuthToken(serviceTokenCandidate);
           return true;
         } catch (IOException e) {
           // No service account token available...
-          LOGGER.warn("Error reading service account token from: [{}]. Ignoring.", saTokenPathLocation);
+          logger.warn("Error reading service account token from: [{}]. Ignoring.", saTokenPathLocation);
         }
       }
     }
@@ -612,7 +612,7 @@ public class Config extends SundrioConfig {
       saTokenPathFile = new File(KUBERNETES_SERVICE_ACCOUNT_TOKEN_PATH);
       if (!saTokenPathFile.exists()) {
         saTokenPathFile = null;
-        LOGGER.debug("Could not find the service account token at the default location: [{}]. Ignoring.",
+        logger.debug("Could not find the service account token at the default location: [{}]. Ignoring.",
             KUBERNETES_SERVICE_ACCOUNT_TOKEN_PATH);
       }
     }
@@ -701,7 +701,7 @@ public class Config extends SundrioConfig {
   }
 
   private static Collection<File> findKubeConfigFiles() {
-    LOGGER.debug("Trying to configure client from Kubernetes config...");
+    logger.debug("Trying to configure client from Kubernetes config...");
     if (!Utils.getSystemPropertyOrEnvVar(KUBERNETES_AUTH_TRYKUBECONFIG_SYSTEM_PROPERTY, true)) {
       return Collections.emptyList();
     }
@@ -709,7 +709,7 @@ public class Config extends SundrioConfig {
         .map(File::new)
         .filter(f -> {
           if (!f.isFile()) {
-            LOGGER.debug("Did not find Kubernetes config at: [{}]. Ignoring.", f.getPath());
+            logger.debug("Did not find Kubernetes config at: [{}]. Ignoring.", f.getPath());
             return false;
           }
           return true;
@@ -730,7 +730,7 @@ public class Config extends SundrioConfig {
     try (FileReader reader = new FileReader(kubeConfigFile)) {
       return IOHelpers.readFully(reader);
     } catch (IOException e) {
-      LOGGER.error("Could not load Kubernetes config file from {}", kubeConfigFile.getPath(), e);
+      logger.error("Could not load Kubernetes config file from {}", kubeConfigFile.getPath(), e);
       return null;
     }
   }
@@ -756,21 +756,21 @@ public class Config extends SundrioConfig {
   }
 
   private static boolean tryNamespaceFromPath(Config config) {
-    LOGGER.debug("Trying to configure client namespace from Kubernetes service account namespace path...");
+    logger.debug("Trying to configure client namespace from Kubernetes service account namespace path...");
     if (Utils.getSystemPropertyOrEnvVar(KUBERNETES_TRYNAMESPACE_PATH_SYSTEM_PROPERTY, true)) {
       String serviceAccountNamespace = Utils.getSystemPropertyOrEnvVar(KUBERNETES_NAMESPACE_FILE, KUBERNETES_NAMESPACE_PATH);
       boolean serviceAccountNamespaceExists = Files.isRegularFile(new File(serviceAccountNamespace).toPath());
       if (serviceAccountNamespaceExists) {
-        LOGGER.debug("Found service account namespace at: [{}].", serviceAccountNamespace);
+        logger.debug("Found service account namespace at: [{}].", serviceAccountNamespace);
         try {
           String namespace = new String(Files.readAllBytes(new File(serviceAccountNamespace).toPath()));
           config.setNamespace(namespace.replace(System.lineSeparator(), ""));
           return true;
         } catch (IOException e) {
-          LOGGER.error("Error reading service account namespace from: [" + serviceAccountNamespace + "].", e);
+          logger.error("Error reading service account namespace from: [" + serviceAccountNamespace + "].", e);
         }
       } else {
-        LOGGER.debug("Did not find service account namespace at: [{}]. Ignoring.", serviceAccountNamespace);
+        logger.debug("Did not find service account namespace at: [{}]. Ignoring.", serviceAccountNamespace);
       }
     }
     return false;
@@ -842,7 +842,7 @@ public class Config extends SundrioConfig {
         return getKeyAlgorithm(keyInputStream);
       }
     } catch (IOException exception) {
-      LOGGER.debug("Failure in determining private key algorithm type, defaulting to RSA {}", exception.getMessage());
+      logger.debug("Failure in determining private key algorithm type, defaulting to RSA {}", exception.getMessage());
     }
     return null;
   }

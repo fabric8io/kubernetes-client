@@ -26,11 +26,11 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public final class VersionUsageUtils {
 
-  private static final Logger LOG = LoggerFactory.getLogger(VersionUsageUtils.class);
+  private static final Logger logger = LoggerFactory.getLogger(VersionUsageUtils.class);
 
   private static final ConcurrentHashMap<String, Boolean> UNSTABLE_TYPES = new ConcurrentHashMap<>();
 
-  private static final boolean LOG_EACH_USAGE = false;
+  private static final boolean logger_EACH_USAGE = false;
 
   private VersionUsageUtils() {
   }
@@ -41,7 +41,7 @@ public final class VersionUsageUtils {
     }
 
     if (isUnstable(version)) {
-      if (LOG_EACH_USAGE || UNSTABLE_TYPES.putIfAbsent(type + "-" + version, true) == null) {
+      if (logger_EACH_USAGE || UNSTABLE_TYPES.putIfAbsent(type + "-" + version, true) == null) {
         alert(type, version);
       }
     }
@@ -55,9 +55,9 @@ public final class VersionUsageUtils {
   private static void alert(String type, String version) {
     String message = "The client is using resource type '{}' with unstable version '{}'";
     if (type.equals("customresourcedefinitions") && version.equals("v1beta1")) {
-      LOG.debug(message, type, version);
+      logger.debug(message, type, version);
     } else {
-      LOG.warn(message, type, version);
+      logger.warn(message, type, version);
     }
   }
 

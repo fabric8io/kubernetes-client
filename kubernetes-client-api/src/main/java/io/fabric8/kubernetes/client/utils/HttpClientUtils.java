@@ -69,7 +69,7 @@ public class HttpClientUtils {
     }
   }
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(HttpClientUtils.class);
+  private static final Logger logger = LoggerFactory.getLogger(HttpClientUtils.class);
   private static final String HEADER_INTERCEPTOR = "HEADER";
   private static final String KUBERNETES_BACKWARDS_COMPATIBILITY_INTERCEPTOR_DISABLE = "kubernetes.backwardsCompatibilityInterceptor.disable";
   private static final String BACKWARDS_COMPATIBILITY_DISABLE_DEFAULT = "true";
@@ -171,7 +171,7 @@ public class HttpClientUtils {
             "No httpclient implementations found on the context classloader, please ensure your classpath includes an implementation jar");
       }
     }
-    LOGGER.debug("Using httpclient {} factory", factory.getClass().getName());
+    logger.debug("Using httpclient {} factory", factory.getClass().getName());
     return factory;
   }
 
@@ -185,12 +185,12 @@ public class HttpClientUtils {
     HttpClient.Factory factory = factories.get(0);
     if (factories.size() > 1) {
       if (factories.get(1).priority() == factory.priority()) {
-        LOGGER.warn("The following httpclient factories were detected on your classpath: {}, "
+        logger.warn("The following httpclient factories were detected on your classpath: {}, "
             + "multiple of which had the same priority ({}) so one was chosen randomly. "
             + "You should exclude dependencies that aren't needed or use an explicit association of the HttpClient.Factory.",
             factories.stream().map(f -> f.getClass().getName()).toArray(), factory.priority());
-      } else if (LOGGER.isDebugEnabled()) {
-        LOGGER.debug("The following httpclient factories were detected on your classpath: {}",
+      } else if (logger.isDebugEnabled()) {
+        logger.debug("The following httpclient factories were detected on your classpath: {}",
             factories.stream().map(f -> f.getClass().getName()).toArray());
       }
     }

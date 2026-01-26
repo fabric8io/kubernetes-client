@@ -44,7 +44,7 @@ import static io.fabric8.java.generator.CRGeneratorRunner.groupToPackage;
  */
 public class FileJavaGenerator implements JavaGenerator {
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(FileJavaGenerator.class);
+  private static final Logger logger = LoggerFactory.getLogger(FileJavaGenerator.class);
 
   private final Config config;
   private final File source;
@@ -112,10 +112,10 @@ public class FileJavaGenerator implements JavaGenerator {
                   final String basePackage = groupToPackage(crd.getSpec().getGroup());
                   return crGeneratorRunner.generate(crd, basePackage).stream();
                 } else {
-                  LOGGER.warn("Not generating nothing for resource of kind: {}", resource.getKind());
+                  logger.warn("Not generating nothing for resource of kind: {}", resource.getKind());
                 }
               } else {
-                LOGGER.warn("Not generating nothing for unrecognized resource: {}", Serialization.asYaml(rawResource));
+                logger.warn("Not generating nothing for unrecognized resource: {}", Serialization.asYaml(rawResource));
               }
               return Stream.empty();
             })

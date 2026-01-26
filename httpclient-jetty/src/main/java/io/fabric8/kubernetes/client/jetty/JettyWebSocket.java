@@ -44,7 +44,7 @@ import java.util.concurrent.locks.ReentrantLock;
 
 public class JettyWebSocket implements WebSocket, WebSocketListener {
 
-  private static final Logger LOG = LoggerFactory.getLogger(JettyWebSocket.class);
+  private static final Logger logger = LoggerFactory.getLogger(JettyWebSocket.class);
 
   private final WebSocket.Listener listener;
   private final AtomicLong sendQueue;
@@ -76,7 +76,7 @@ public class JettyWebSocket implements WebSocket, WebSocketListener {
       public void writeFailed(Throwable x) {
         sendQueue.addAndGet(-size);
         if (webSocketSession.isOpen()) {
-          LOG.warn("Queued write did not succeed", x);
+          logger.warn("Queued write did not succeed", x);
         }
         webSocketSession.disconnect(); // prevent further writes
       }
@@ -97,7 +97,7 @@ public class JettyWebSocket implements WebSocket, WebSocketListener {
     webSocketSession.close(code, reason, new WriteCallback() {
       @Override
       public void writeFailed(Throwable x) {
-        LOG.warn("Queued close did not succeed", x);
+        logger.warn("Queued close did not succeed", x);
         webSocketSession.disconnect(); // immediately terminate
       }
 

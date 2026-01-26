@@ -44,7 +44,7 @@ import java.util.function.UnaryOperator;
 public class HasMetadataOperation<T extends HasMetadata, L extends KubernetesResourceList<T>, R extends Resource<T>>
     extends BaseOperation<T, L, R> {
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(HasMetadataOperation.class);
+  private static final Logger logger = LoggerFactory.getLogger(HasMetadataOperation.class);
 
   public static final DeletionPropagation DEFAULT_PROPAGATION_POLICY = DeletionPropagation.BACKGROUND;
   public static final long DEFAULT_GRACE_PERIOD_IN_SECONDS = -1L;
@@ -324,8 +324,8 @@ public class HasMetadataOperation<T extends HasMetadata, L extends KubernetesRes
         int specReplicas = Optional.ofNullable(scale.getSpec().getReplicas()).orElse(0);
         if (count == statusReplicas && count == specReplicas) {
           completion.complete(null);
-        } else if (LOGGER.isDebugEnabled()) {
-          LOGGER.debug("Only {}/{} replicas scheduled for {}: {} in namespace: {} seconds so waiting...",
+        } else if (logger.isDebugEnabled()) {
+          logger.debug("Only {}/{} replicas scheduled for {}: {} in namespace: {} seconds so waiting...",
               specReplicas, count, getKind(), getName(), namespace);
         }
       } catch (KubernetesClientException e) {
