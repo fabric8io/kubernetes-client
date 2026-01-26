@@ -9,6 +9,7 @@
 #### Dependency Upgrade
 
 #### New Features
+* Fix #7385: Support for Kubernetes v1.35 (Timbernetes)
 
 #### _**Note**_: Breaking changes
 
@@ -46,7 +47,6 @@
 * Fix #7361: (openapi) update Istio from 1.27 to 1.28
 
 #### New Features
-* Fix #7385: Support for Kubernetes v1.35 (Timbernetes)
 * Fix #5081: Add support for streaming lists via Watchable.streamingList method
 * Fix #7048: Support for Kubernetes v1.34 (Of Wind & Will)
 * Fix #7371: Update Fabric8 OpenShift Model as per OpenShift 4.20
