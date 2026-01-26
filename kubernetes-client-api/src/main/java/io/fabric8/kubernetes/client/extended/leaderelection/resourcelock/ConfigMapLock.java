@@ -28,7 +28,7 @@ import java.util.Optional;
 
 public class ConfigMapLock extends ResourceLock<ConfigMap> {
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(ConfigMapLock.class);
+  private static final Logger logger = LoggerFactory.getLogger(ConfigMapLock.class);
 
   public ConfigMapLock(String configMapNamespace, String configMapName, String identity) {
     super(configMapNamespace, configMapName, identity);
@@ -51,7 +51,7 @@ public class ConfigMapLock extends ResourceLock<ConfigMap> {
           try {
             return Serialization.unmarshal(annotation, LeaderElectionRecord.class);
           } catch (KubernetesClientException ex) {
-            LOGGER.error("Error deserializing LeaderElectionRecord from ConfigMap", ex);
+            logger.error("Error deserializing LeaderElectionRecord from ConfigMap", ex);
             return null;
           }
         })

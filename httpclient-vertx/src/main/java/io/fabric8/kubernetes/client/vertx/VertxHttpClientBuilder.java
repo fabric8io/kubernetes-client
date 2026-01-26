@@ -46,7 +46,7 @@ import static io.vertx.core.spi.resolver.ResolverProvider.DISABLE_DNS_RESOLVER_P
 public class VertxHttpClientBuilder<F extends HttpClient.Factory>
     extends StandardHttpClientBuilder<VertxHttpClient<F>, F, VertxHttpClientBuilder<F>> {
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(VertxHttpClientBuilder.class);
+  private static final Logger logger = LoggerFactory.getLogger(VertxHttpClientBuilder.class);
   private static final int MAX_CONNECTIONS = 8192;
   // the default for etcd seems to be 3 MB, but we'll default to unlimited, so we have the same behavior across clients
   private static final int MAX_WS_MESSAGE_SIZE = Integer.MAX_VALUE;
@@ -75,7 +75,7 @@ public class VertxHttpClientBuilder<F extends HttpClient.Factory>
 
     // Warn if tlsServerName is configured but not supported
     if (tlsServerName != null && !tlsServerName.isEmpty()) {
-      LOGGER.warn(
+      logger.warn(
           "tlsServerName '{}' is configured but not supported by Vert.x HTTP client. Consider using Jetty HTTP client for SNI support.",
           tlsServerName);
     }

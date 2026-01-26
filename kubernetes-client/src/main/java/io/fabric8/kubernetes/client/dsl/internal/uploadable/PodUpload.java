@@ -42,7 +42,7 @@ import static io.fabric8.kubernetes.client.utils.Utils.generateId;
 
 public class PodUpload {
 
-  private static final Logger LOG = LoggerFactory.getLogger(PodUpload.class);
+  private static final Logger logger = LoggerFactory.getLogger(PodUpload.class);
 
   private static final String TAR_PATH_DELIMITER = "/";
 
@@ -95,12 +95,12 @@ public class PodUpload {
     // we may have already exceeded the timeout because of how long it took to write
     if (!Utils.waitUntilReady(exitFuture, Math.max(0, uploadRequestTimeoutEnd - System.currentTimeMillis()),
         TimeUnit.MILLISECONDS)) {
-      LOG.debug("failed to complete upload before timeout expired");
+      logger.debug("failed to complete upload before timeout expired");
       return false;
     }
     final Integer exitCode = exitFuture.getNow(null);
     if (exitCode != null && exitCode != 0) {
-      LOG.debug("upload process failed with exit code {}", exitCode);
+      logger.debug("upload process failed with exit code {}", exitCode);
       return false;
     }
 
@@ -110,12 +110,12 @@ public class PodUpload {
       CompletableFuture<Integer> countExitFuture = countWatch.exitCode();
       if (!Utils.waitUntilReady(countExitFuture, Math.max(0, uploadRequestTimeoutEnd - System.currentTimeMillis()),
           TimeUnit.MILLISECONDS) || !Integer.valueOf(0).equals(countExitFuture.getNow(null))) {
-        LOG.debug("failed to validate the upload size, exit code {}", countExitFuture.getNow(null));
+        logger.debug("failed to validate the upload size, exit code {}", countExitFuture.getNow(null));
         return false;
       }
       String remoteSize = new String(byteCount.toByteArray(), StandardCharsets.UTF_8);
       if (!String.valueOf(expected).equals(remoteSize.trim())) {
-        LOG.debug("upload file size validation failed, expected {}, but was {}", expected, remoteSize);
+        logger.debug("upload file size validation failed, expected {}, but was {}", expected, remoteSize);
         return false;
       }
     }
@@ -147,7 +147,7 @@ public class PodUpload {
           String.format("rm %s", fileName))) {
         if (!Utils.waitUntilReady(rm.exitCode(), operation.getRequestConfig().getUploadRequestTimeout(), TimeUnit.MILLISECONDS)
             || !Integer.valueOf(0).equals(rm.exitCode().getNow(null))) {
-          LOG.warn("delete of temporary tar file {} may not have completed", fileName);
+          logger.warn("delete of temporary tar file {} may not have completed", fileName);
         }
       }
       return false;

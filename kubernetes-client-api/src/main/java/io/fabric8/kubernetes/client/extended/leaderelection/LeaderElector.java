@@ -41,7 +41,7 @@ import java.util.function.LongSupplier;
 
 public class LeaderElector {
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(LeaderElector.class);
+  private static final Logger logger = LoggerFactory.getLogger(LeaderElector.class);
 
   protected static final Double JITTER_FACTOR = 1.2;
 
@@ -71,7 +71,7 @@ public class LeaderElector {
       acquire.cancel(true);
       Thread.currentThread().interrupt();
     } catch (ExecutionException e) {
-      LOGGER.error("Exception during leader election", e);
+      logger.error("Exception during leader election", e);
     }
   }
 
@@ -88,7 +88,7 @@ public class LeaderElector {
       }
       started = true;
     }
-    LOGGER.debug("Leader election started");
+    logger.debug("Leader election started");
     CompletableFuture<Void> result = new CompletableFuture<>();
 
     CompletableFuture<?> acquireFuture = acquire();
@@ -107,7 +107,7 @@ public class LeaderElector {
         });
       } else {
         if (!(t instanceof CancellationException)) {
-          LOGGER.error("Exception during leader election", t);
+          logger.error("Exception during leader election", t);
         }
         // there's a possibility that we'll obtain the lock, but get cancelled
         // before completing the future
@@ -134,9 +134,9 @@ public class LeaderElector {
       } catch (KubernetesClientException e) {
         final String lockDescription = leaderElectionConfig.getLock().describe();
         if (e.getCode() != HttpURLConnection.HTTP_CONFLICT) {
-          LOGGER.error("Exception occurred while releasing lock '{}' on cancel", lockDescription, e);
+          logger.error("Exception occurred while releasing lock '{}' on cancel", lockDescription, e);
         } else {
-          LOGGER.debug("Leadership was likely already lost '{}'", lockDescription, e);
+          logger.debug("Leadership was likely already lost '{}'", lockDescription, e);
         }
       }
     }
@@ -169,24 +169,24 @@ public class LeaderElector {
 
   private CompletableFuture<Void> acquire() {
     final String lockDescription = leaderElectionConfig.getLock().describe();
-    if (LOGGER.isDebugEnabled()) {
-      LOGGER.debug("Attempting to acquire leader lease '{}'...", lockDescription);
+    if (logger.isDebugEnabled()) {
+      logger.debug("Attempting to acquire leader lease '{}'...", lockDescription);
     }
     return loop(completion -> {
       try {
         if (tryAcquireOrRenew()) {
           completion.complete(null);
-          if (LOGGER.isDebugEnabled()) {
-            LOGGER.debug("Acquired lease '{}'", lockDescription);
+          if (logger.isDebugEnabled()) {
+            logger.debug("Acquired lease '{}'", lockDescription);
           }
-        } else if (LOGGER.isDebugEnabled()) {
-          LOGGER.debug("Failed to acquire lease '{}' retrying...", lockDescription);
+        } else if (logger.isDebugEnabled()) {
+          logger.debug("Failed to acquire lease '{}' retrying...", lockDescription);
         }
       } catch (KubernetesClientException exception) {
         if (exception.getCode() == HttpURLConnection.HTTP_CONFLICT) {
-          LOGGER.debug("Conflict while acquiring lock '{} retrying...'", lockDescription, exception);
+          logger.debug("Conflict while acquiring lock '{} retrying...'", lockDescription, exception);
         } else {
-          LOGGER.warn("Exception occurred while acquiring lock '{} retrying...'", lockDescription, exception);
+          logger.warn("Exception occurred while acquiring lock '{} retrying...'", lockDescription, exception);
         }
       }
     }, () -> jitter(leaderElectionConfig.getRetryPeriod(), JITTER_FACTOR).toMillis(), executor);
@@ -194,11 +194,11 @@ public class LeaderElector {
 
   private CompletableFuture<Void> renewWithTimeout() {
     final String lockDescription = leaderElectionConfig.getLock().describe();
-    LOGGER.debug("Attempting to renew leader lease '{}'...", lockDescription);
+    logger.debug("Attempting to renew leader lease '{}'...", lockDescription);
     AtomicLong renewBy = new AtomicLong(System.currentTimeMillis() + leaderElectionConfig.getRenewDeadline().toMillis());
     return loop(completion -> {
       if (System.currentTimeMillis() > renewBy.get()) {
-        LOGGER.debug("Renew deadline reached after {} seconds while renewing lock {}",
+        logger.debug("Renew deadline reached after {} seconds while renewing lock {}",
             leaderElectionConfig.getRenewDeadline().get(ChronoUnit.SECONDS), lockDescription);
         completion.complete(null);
         return;
@@ -213,7 +213,7 @@ public class LeaderElector {
       } catch (KubernetesClientException exception) {
         // this is always a warning as conflict is not expected for renewal, however it is possible
         // should some other actor make an unrelated change to the lock
-        LOGGER.warn("Exception occurred while acquiring lock '{} retrying...'", lockDescription, exception);
+        logger.warn("Exception occurred while acquiring lock '{} retrying...'", lockDescription, exception);
       }
     }, () -> leaderElectionConfig.getRetryPeriod().toMillis(), executor);
   }
@@ -235,7 +235,7 @@ public class LeaderElector {
     updateObserved(oldLeaderElectionRecord);
     final boolean isLeader = isLeader(oldLeaderElectionRecord);
     if (!isLeader && !canBecomeLeader(oldLeaderElectionRecord)) {
-      LOGGER.debug("Lock is held by {} and has not yet expired", oldLeaderElectionRecord.getHolderIdentity());
+      logger.debug("Lock is held by {} and has not yet expired", oldLeaderElectionRecord.getHolderIdentity());
       return false;
     }
     final LeaderElectionRecord newLeaderElectionRecord = new LeaderElectionRecord(
@@ -255,14 +255,14 @@ public class LeaderElector {
       final String currentLeader = current == null ? null : current.getHolderIdentity();
       final String newLeader = leaderElectionRecord.getHolderIdentity();
       if (!Objects.equals(newLeader, currentLeader)) {
-        LOGGER.debug("Leader changed from {} to {}", currentLeader, newLeader);
+        logger.debug("Leader changed from {} to {}", currentLeader, newLeader);
         // this will notify even if the newLeader is null or empty, which is the same behavior as the go client
         // but does not seem entirely correct
         leaderElectionConfig.getLeaderCallbacks().onNewLeader(newLeader);
         if (Objects.equals(currentLeader, leaderElectionConfig.getLock().identity())) {
           leaderElectionConfig.getLeaderCallbacks().onStopLeading();
         } else if (Objects.equals(newLeader, leaderElectionConfig.getLock().identity())) {
-          LOGGER.debug("Successfully Acquired leader lease '{}'", leaderElectionConfig.getLock().describe());
+          logger.debug("Successfully Acquired leader lease '{}'", leaderElectionConfig.getLock().describe());
           leaderElectionConfig.getLeaderCallbacks().onStartLeading();
         }
       }

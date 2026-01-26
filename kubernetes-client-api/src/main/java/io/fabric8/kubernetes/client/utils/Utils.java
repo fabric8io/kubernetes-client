@@ -62,7 +62,7 @@ import java.util.stream.Stream;
 
 public class Utils {
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(Utils.class);
+  private static final Logger logger = LoggerFactory.getLogger(Utils.class);
   private static final String ALL_CHARS = "abcdefghijklmnopqrstuvwxyz0123456789";
   public static final String WINDOWS = "win";
   public static final String OS_NAME = "os.name";
@@ -205,7 +205,7 @@ public class Utils {
           c.close();
         }
       } catch (IOException e) {
-        LOGGER.debug("Error closing: {}", c);
+        logger.debug("Error closing: {}", c);
       }
     }
   }

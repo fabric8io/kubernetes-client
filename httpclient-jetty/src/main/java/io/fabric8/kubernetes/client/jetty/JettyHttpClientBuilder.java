@@ -54,7 +54,7 @@ import static io.fabric8.kubernetes.client.utils.HttpClientUtils.decodeBasicCred
 public class JettyHttpClientBuilder
     extends StandardHttpClientBuilder<JettyHttpClient, JettyHttpClientFactory, JettyHttpClientBuilder> {
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(JettyHttpClientBuilder.class);
+  private static final Logger logger = LoggerFactory.getLogger(JettyHttpClientBuilder.class);
   private static final int MAX_CONNECTIONS = Integer.MAX_VALUE;
   // the default for etcd seems to be 3 MB, but we'll default to unlimited to have the same behavior across clients
   private static final int MAX_WS_MESSAGE_SIZE = Integer.MAX_VALUE;
@@ -82,7 +82,7 @@ public class JettyHttpClientBuilder
     // Configure SNI (Server Name Indication) if tlsServerName is specified
     // This is needed when connecting through a tunnel where the URL host differs from the TLS certificate hostname
     if (tlsServerName != null && !tlsServerName.isEmpty()) {
-      LOGGER.debug("Configuring SNI with tlsServerName: {}", tlsServerName);
+      logger.debug("Configuring SNI with tlsServerName: {}", tlsServerName);
       final List<SNIServerName> sniServerNames = Collections.singletonList(new SNIHostName(tlsServerName));
       sslContextFactory.setSNIProvider((sslEngine, serverNames) -> sniServerNames);
     }

@@ -37,7 +37,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 public class LogWatchCallback implements LogWatch, AutoCloseable {
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(LogWatchCallback.class);
+  private static final Logger logger = LoggerFactory.getLogger(LogWatchCallback.class);
 
   private final OutputStream out;
   private WritableByteChannel outChannel;
@@ -140,7 +140,7 @@ public class LogWatchCallback implements LogWatch, AutoCloseable {
       return;
     }
 
-    LOGGER.error("Log Callback Failure.", u);
+    logger.error("Log Callback Failure.", u);
     cleanUp(u);
   }
 

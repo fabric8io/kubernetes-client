@@ -26,7 +26,7 @@ import org.slf4j.LoggerFactory;
 
 public class KubeAPIServer implements UnexpectedProcessStopHandler {
 
-  private static final Logger log = LoggerFactory.getLogger(KubeAPIServer.class);
+  private static final Logger logger = LoggerFactory.getLogger(KubeAPIServer.class);
 
   private final KubeAPIServerConfig config;
   private final BinaryManager binaryManager;
@@ -50,7 +50,7 @@ public class KubeAPIServer implements UnexpectedProcessStopHandler {
   }
 
   public void start() {
-    log.debug("Stating API Server. Using Kube API Test dir: {}", config.getKubeAPITestDir());
+    logger.debug("Stating API Server. Using Kube API Test dir: {}", config.getKubeAPITestDir());
     binaryManager.initAndDownloadIfRequired();
     certManager.createCertificatesIfNeeded();
     var etcdPort = etcdProcess.startEtcd();
@@ -59,18 +59,18 @@ public class KubeAPIServer implements UnexpectedProcessStopHandler {
       kubeConfig.updateKubeConfig(apiServerPort);
     }
     kubeApiServerProcess.waitUntilReady();
-    log.debug("API Server ready to use");
+    logger.debug("API Server ready to use");
   }
 
   public void stop() {
-    log.debug("Stopping");
+    logger.debug("Stopping");
     kubeApiServerProcess.stopApiServer();
     etcdProcess.stopEtcd();
     if (config.isUpdateKubeConfig()) {
       kubeConfig.restoreKubeConfig();
     }
     etcdProcess.cleanEtcdData();
-    log.debug("Stopped");
+    logger.debug("Stopped");
   }
 
   public String getKubeConfigYaml() {

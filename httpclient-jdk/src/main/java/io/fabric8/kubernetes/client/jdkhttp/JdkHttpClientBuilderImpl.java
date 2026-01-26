@@ -43,7 +43,7 @@ import javax.net.ssl.SSLParameters;
 class JdkHttpClientBuilderImpl
     extends StandardHttpClientBuilder<JdkHttpClientImpl, JdkHttpClientFactory, JdkHttpClientBuilderImpl> {
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(JdkHttpClientBuilderImpl.class);
+  private static final Logger logger = LoggerFactory.getLogger(JdkHttpClientBuilderImpl.class);
 
   public JdkHttpClientBuilderImpl(JdkHttpClientFactory factory) {
     super(factory);
@@ -57,7 +57,7 @@ class JdkHttpClientBuilderImpl
 
     // Warn if tlsServerName is configured but not supported
     if (tlsServerName != null && !tlsServerName.isEmpty()) {
-      LOGGER.warn(
+      logger.warn(
           "tlsServerName '{}' is configured but not supported by JDK HTTP client. Consider using Jetty HTTP client for SNI support.",
           tlsServerName);
     }

@@ -29,7 +29,7 @@ import java.util.Set;
 import java.util.TreeSet;
 
 public class Resources {
-  private static final Logger LOGGER = LoggerFactory.getLogger(Resources.class);
+  private static final Logger logger = LoggerFactory.getLogger(Resources.class);
   private static final int SORT_ROUND_LIMIT = 10;
 
   private final KubernetesListBuilder global = new KubernetesListBuilder();
@@ -94,13 +94,13 @@ public class Resources {
     // We also might need it more than once. So, we'll do it as many times as we have to, till there are not more transformations.
     // But hey, let's have an upper limit just to prevent infinite loops.
     for (int i = 0; i < SORT_ROUND_LIMIT && bubbleSort(array); i++) {
-      LOGGER.debug("Sorting again: {}", i + 1);
+      logger.debug("Sorting again: {}", i + 1);
     }
 
     List<Decorator<?>> result = Collections.unmodifiableList(Arrays.asList(array));
 
-    if (LOGGER.isTraceEnabled()) {
-      result.forEach(decorator -> LOGGER.trace("{}", decorator));
+    if (logger.isTraceEnabled()) {
+      result.forEach(decorator -> logger.trace("{}", decorator));
     }
 
     return result;

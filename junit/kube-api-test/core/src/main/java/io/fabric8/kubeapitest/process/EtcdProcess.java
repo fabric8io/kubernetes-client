@@ -29,7 +29,7 @@ import static io.fabric8.kubeapitest.Utils.deleteDirectory;
 
 public class EtcdProcess {
 
-  private static final Logger log = LoggerFactory.getLogger(EtcdProcess.class);
+  private static final Logger logger = LoggerFactory.getLogger(EtcdProcess.class);
   private static final Logger etcdLog = LoggerFactory.getLogger(EtcdProcess.class.getName() + ".EtcdProcessLogs");
 
   private final BinaryManager binaryManager;
@@ -56,7 +56,7 @@ public class EtcdProcess {
       File etcdBinary = binaryManager.binaries().getEtcd();
       tempWalDir = Files.createTempDirectory("etcdwal").toFile();
       tempDataDir = Files.createTempDirectory("etcddata").toFile();
-      log.trace("Using temp wal dir: {} and temp data dir: {}", tempWalDir.getPath(),
+      logger.trace("Using temp wal dir: {} and temp data dir: {}", tempWalDir.getPath(),
           tempDataDir.getPath());
       var port = Utils.findFreePort();
       var peerPort = Utils.findFreePort();
@@ -80,12 +80,12 @@ public class EtcdProcess {
       etcdProcess.onExit().thenApply(p -> {
         if (!stopped) {
           stopped = true;
-          log.error("etcd process stopped unexpectedly");
+          logger.error("etcd process stopped unexpectedly");
           processStopHandler.processStopped(p);
         }
         return null;
       });
-      log.debug("etcd started on port: {}", port);
+      logger.debug("etcd started on port: {}", port);
       if (waitForHealthCheck) {
         waitUntilEtcdHealthy(port);
       }
@@ -121,6 +121,6 @@ public class EtcdProcess {
         throw new KubeAPITestException(e);
       }
     }
-    log.debug("etcd stopped");
+    logger.debug("etcd stopped");
   }
 }

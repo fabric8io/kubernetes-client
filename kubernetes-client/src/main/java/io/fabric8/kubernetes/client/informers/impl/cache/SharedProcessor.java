@@ -42,7 +42,7 @@ import java.util.function.Supplier;
  * Modified to simplify threading
  */
 public class SharedProcessor<T> {
-  private static final Logger log = LoggerFactory.getLogger(SharedProcessor.class);
+  private static final Logger logger = LoggerFactory.getLogger(SharedProcessor.class);
 
   private final ReadWriteLock lock = new ReentrantReadWriteLock();
 
@@ -112,7 +112,7 @@ public class SharedProcessor<T> {
         try {
           operation.accept(listener);
         } catch (Exception ex) {
-          log.error("{} failed invoking {} event handler: {}", informerDescription, listener.getHandler(), ex.getMessage(),
+          logger.error("{} failed invoking {} event handler: {}", informerDescription, listener.getHandler(), ex.getMessage(),
               ex);
         }
       }
