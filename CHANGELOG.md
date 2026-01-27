@@ -3,6 +3,7 @@
 ### 7.6-SNAPSHOT
 
 #### Bugs
+* Fix #5292: Cluster() configuration should use tlsServerName
 * Fix #7415: (java-generator) Fix generic type erasure for array of enums with default values
 
 #### Improvements
@@ -10,6 +11,7 @@
 #### Dependency Upgrade
 
 #### New Features
+* Fix #7385: Support for Kubernetes v1.35 (Timbernetes)
 
 #### _**Note**_: Breaking changes
 

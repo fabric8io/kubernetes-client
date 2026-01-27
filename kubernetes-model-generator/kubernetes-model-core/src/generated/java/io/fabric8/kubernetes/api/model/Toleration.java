@@ -101,7 +101,7 @@ public class Toleration implements Editable<TolerationBuilder>, KubernetesResour
     }
 
     /**
-     * Operator represents a key's relationship to the value. Valid operators are Exists and Equal. Defaults to Equal. Exists is equivalent to wildcard for value, so that a pod can tolerate all taints of a particular category.
+     * Operator represents a key's relationship to the value. Valid operators are Exists, Equal, Lt, and Gt. Defaults to Equal. Exists is equivalent to wildcard for value, so that a pod can tolerate all taints of a particular category. Lt and Gt perform numeric comparisons (requires feature gate TaintTolerationComparisonOperators).
      */
     @JsonProperty("operator")
     public String getOperator() {
@@ -109,7 +109,7 @@ public class Toleration implements Editable<TolerationBuilder>, KubernetesResour
     }
 
     /**
-     * Operator represents a key's relationship to the value. Valid operators are Exists and Equal. Defaults to Equal. Exists is equivalent to wildcard for value, so that a pod can tolerate all taints of a particular category.
+     * Operator represents a key's relationship to the value. Valid operators are Exists, Equal, Lt, and Gt. Defaults to Equal. Exists is equivalent to wildcard for value, so that a pod can tolerate all taints of a particular category. Lt and Gt perform numeric comparisons (requires feature gate TaintTolerationComparisonOperators).
      */
     @JsonProperty("operator")
     public void setOperator(String operator) {

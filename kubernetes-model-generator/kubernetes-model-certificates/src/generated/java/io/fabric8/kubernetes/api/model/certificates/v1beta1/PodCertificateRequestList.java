@@ -1,7 +1,9 @@
 
-package io.fabric8.kubernetes.api.model.storagemigration.v1alpha1;
+package io.fabric8.kubernetes.api.model.certificates.v1beta1;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import javax.annotation.processing.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
@@ -15,9 +17,11 @@ import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvVar;
-import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.IntOrString;
+import io.fabric8.kubernetes.api.model.KubernetesResource;
+import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 import io.fabric8.kubernetes.api.model.LabelSelector;
+import io.fabric8.kubernetes.api.model.ListMeta;
 import io.fabric8.kubernetes.api.model.LocalObjectReference;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.ObjectReference;
@@ -37,7 +41,7 @@ import lombok.ToString;
 import lombok.experimental.Accessors;
 
 /**
- * StorageVersionMigration represents a migration of stored data to the latest storage version.
+ * PodCertificateRequestList is a collection of PodCertificateRequest objects
  */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -45,8 +49,7 @@ import lombok.experimental.Accessors;
     "apiVersion",
     "kind",
     "metadata",
-    "spec",
-    "status"
+    "items"
 })
 @ToString
 @EqualsAndHashCode
@@ -72,38 +75,36 @@ import lombok.experimental.Accessors;
 @TemplateTransformations({
     @TemplateTransformation(value = "/manifest.vm", outputPath = "META-INF/services/io.fabric8.kubernetes.api.model.KubernetesResource", gather = true)
 })
-@Version("v1alpha1")
-@Group("storagemigration.k8s.io")
+@Version("v1beta1")
+@Group("certificates.k8s.io")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class StorageVersionMigration implements Editable<StorageVersionMigrationBuilder>, HasMetadata
+public class PodCertificateRequestList implements Editable<PodCertificateRequestListBuilder>, KubernetesResource, KubernetesResourceList<io.fabric8.kubernetes.api.model.certificates.v1beta1.PodCertificateRequest>
 {
 
     @JsonProperty("apiVersion")
-    private String apiVersion = "storagemigration.k8s.io/v1alpha1";
+    private String apiVersion = "certificates.k8s.io/v1beta1";
+    @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<io.fabric8.kubernetes.api.model.certificates.v1beta1.PodCertificateRequest> items = new ArrayList<>();
     @JsonProperty("kind")
-    private String kind = "StorageVersionMigration";
+    private String kind = "PodCertificateRequestList";
     @JsonProperty("metadata")
-    private ObjectMeta metadata;
-    @JsonProperty("spec")
-    private StorageVersionMigrationSpec spec;
-    @JsonProperty("status")
-    private StorageVersionMigrationStatus status;
+    private ListMeta metadata;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
      */
-    public StorageVersionMigration() {
+    public PodCertificateRequestList() {
     }
 
-    public StorageVersionMigration(String apiVersion, String kind, ObjectMeta metadata, StorageVersionMigrationSpec spec, StorageVersionMigrationStatus status) {
+    public PodCertificateRequestList(String apiVersion, List<io.fabric8.kubernetes.api.model.certificates.v1beta1.PodCertificateRequest> items, String kind, ListMeta metadata) {
         super();
         this.apiVersion = apiVersion;
+        this.items = items;
         this.kind = kind;
         this.metadata = metadata;
-        this.spec = spec;
-        this.status = status;
     }
 
     /**
@@ -123,6 +124,23 @@ public class StorageVersionMigration implements Editable<StorageVersionMigration
     }
 
     /**
+     * items is a collection of PodCertificateRequest objects
+     */
+    @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public List<io.fabric8.kubernetes.api.model.certificates.v1beta1.PodCertificateRequest> getItems() {
+        return items;
+    }
+
+    /**
+     * items is a collection of PodCertificateRequest objects
+     */
+    @JsonProperty("items")
+    public void setItems(List<io.fabric8.kubernetes.api.model.certificates.v1beta1.PodCertificateRequest> items) {
+        this.items = items;
+    }
+
+    /**
      * Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
      */
     @JsonProperty("kind")
@@ -139,60 +157,28 @@ public class StorageVersionMigration implements Editable<StorageVersionMigration
     }
 
     /**
-     * StorageVersionMigration represents a migration of stored data to the latest storage version.
+     * PodCertificateRequestList is a collection of PodCertificateRequest objects
      */
     @JsonProperty("metadata")
-    public ObjectMeta getMetadata() {
+    public ListMeta getMetadata() {
         return metadata;
     }
 
     /**
-     * StorageVersionMigration represents a migration of stored data to the latest storage version.
+     * PodCertificateRequestList is a collection of PodCertificateRequest objects
      */
     @JsonProperty("metadata")
-    public void setMetadata(ObjectMeta metadata) {
+    public void setMetadata(ListMeta metadata) {
         this.metadata = metadata;
     }
 
-    /**
-     * StorageVersionMigration represents a migration of stored data to the latest storage version.
-     */
-    @JsonProperty("spec")
-    public StorageVersionMigrationSpec getSpec() {
-        return spec;
-    }
-
-    /**
-     * StorageVersionMigration represents a migration of stored data to the latest storage version.
-     */
-    @JsonProperty("spec")
-    public void setSpec(StorageVersionMigrationSpec spec) {
-        this.spec = spec;
-    }
-
-    /**
-     * StorageVersionMigration represents a migration of stored data to the latest storage version.
-     */
-    @JsonProperty("status")
-    public StorageVersionMigrationStatus getStatus() {
-        return status;
-    }
-
-    /**
-     * StorageVersionMigration represents a migration of stored data to the latest storage version.
-     */
-    @JsonProperty("status")
-    public void setStatus(StorageVersionMigrationStatus status) {
-        this.status = status;
+    @JsonIgnore
+    public PodCertificateRequestListBuilder edit() {
+        return new PodCertificateRequestListBuilder(this);
     }
 
     @JsonIgnore
-    public StorageVersionMigrationBuilder edit() {
-        return new StorageVersionMigrationBuilder(this);
-    }
-
-    @JsonIgnore
-    public StorageVersionMigrationBuilder toBuilder() {
+    public PodCertificateRequestListBuilder toBuilder() {
         return edit();
     }
 

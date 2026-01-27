@@ -103,7 +103,7 @@ public class DeviceCounterConsumption implements Editable<DeviceCounterConsumpti
     }
 
     /**
-     * Counters defines the counters that will be consumed by the device.<br><p> <br><p> The maximum number counters in a device is 32. In addition, the maximum number of all counters in all devices is 1024 (for example, 64 devices with 16 counters each).
+     * Counters defines the counters that will be consumed by the device.<br><p> <br><p> The maximum number of counters is 32.
      */
     @JsonProperty("counters")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -112,7 +112,7 @@ public class DeviceCounterConsumption implements Editable<DeviceCounterConsumpti
     }
 
     /**
-     * Counters defines the counters that will be consumed by the device.<br><p> <br><p> The maximum number counters in a device is 32. In addition, the maximum number of all counters in all devices is 1024 (for example, 64 devices with 16 counters each).
+     * Counters defines the counters that will be consumed by the device.<br><p> <br><p> The maximum number of counters is 32.
      */
     @JsonProperty("counters")
     public void setCounters(Map<String, Counter> counters) {

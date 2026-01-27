@@ -1,5 +1,5 @@
 
-package io.fabric8.kubernetes.api.model.certificates.v1alpha1;
+package io.fabric8.kubernetes.api.model.certificates.v1beta1;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -73,14 +73,14 @@ import lombok.experimental.Accessors;
 @TemplateTransformations({
     @TemplateTransformation(value = "/manifest.vm", outputPath = "META-INF/services/io.fabric8.kubernetes.api.model.KubernetesResource", gather = true)
 })
-@Version("v1alpha1")
+@Version("v1beta1")
 @Group("certificates.k8s.io")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
 public class PodCertificateRequest implements Editable<PodCertificateRequestBuilder>, HasMetadata, Namespaced
 {
 
     @JsonProperty("apiVersion")
-    private String apiVersion = "certificates.k8s.io/v1alpha1";
+    private String apiVersion = "certificates.k8s.io/v1beta1";
     @JsonProperty("kind")
     private String kind = "PodCertificateRequest";
     @JsonProperty("metadata")

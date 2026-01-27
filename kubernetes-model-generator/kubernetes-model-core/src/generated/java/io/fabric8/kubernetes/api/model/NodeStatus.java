@@ -31,6 +31,7 @@ import lombok.experimental.Accessors;
     "conditions",
     "config",
     "daemonEndpoints",
+    "declaredFeatures",
     "features",
     "images",
     "nodeInfo",
@@ -66,6 +67,9 @@ public class NodeStatus implements Editable<NodeStatusBuilder>, KubernetesResour
     private NodeConfigStatus config;
     @JsonProperty("daemonEndpoints")
     private NodeDaemonEndpoints daemonEndpoints;
+    @JsonProperty("declaredFeatures")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<String> declaredFeatures = new ArrayList<>();
     @JsonProperty("features")
     private NodeFeatures features;
     @JsonProperty("images")
@@ -93,7 +97,7 @@ public class NodeStatus implements Editable<NodeStatusBuilder>, KubernetesResour
     public NodeStatus() {
     }
 
-    public NodeStatus(List<NodeAddress> addresses, Map<String, Quantity> allocatable, Map<String, Quantity> capacity, List<NodeCondition> conditions, NodeConfigStatus config, NodeDaemonEndpoints daemonEndpoints, NodeFeatures features, List<ContainerImage> images, NodeSystemInfo nodeInfo, String phase, List<NodeRuntimeHandler> runtimeHandlers, List<AttachedVolume> volumesAttached, List<String> volumesInUse) {
+    public NodeStatus(List<NodeAddress> addresses, Map<String, Quantity> allocatable, Map<String, Quantity> capacity, List<NodeCondition> conditions, NodeConfigStatus config, NodeDaemonEndpoints daemonEndpoints, List<String> declaredFeatures, NodeFeatures features, List<ContainerImage> images, NodeSystemInfo nodeInfo, String phase, List<NodeRuntimeHandler> runtimeHandlers, List<AttachedVolume> volumesAttached, List<String> volumesInUse) {
         super();
         this.addresses = addresses;
         this.allocatable = allocatable;
@@ -101,6 +105,7 @@ public class NodeStatus implements Editable<NodeStatusBuilder>, KubernetesResour
         this.conditions = conditions;
         this.config = config;
         this.daemonEndpoints = daemonEndpoints;
+        this.declaredFeatures = declaredFeatures;
         this.features = features;
         this.images = images;
         this.nodeInfo = nodeInfo;
@@ -208,6 +213,23 @@ public class NodeStatus implements Editable<NodeStatusBuilder>, KubernetesResour
     @JsonProperty("daemonEndpoints")
     public void setDaemonEndpoints(NodeDaemonEndpoints daemonEndpoints) {
         this.daemonEndpoints = daemonEndpoints;
+    }
+
+    /**
+     * DeclaredFeatures represents the features related to feature gates that are declared by the node.
+     */
+    @JsonProperty("declaredFeatures")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public List<String> getDeclaredFeatures() {
+        return declaredFeatures;
+    }
+
+    /**
+     * DeclaredFeatures represents the features related to feature gates that are declared by the node.
+     */
+    @JsonProperty("declaredFeatures")
+    public void setDeclaredFeatures(List<String> declaredFeatures) {
+        this.declaredFeatures = declaredFeatures;
     }
 
     /**

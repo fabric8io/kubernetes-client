@@ -52,7 +52,7 @@ import javax.net.ssl.TrustManager;
  * Utility class for OpenID token refresh.
  */
 public class OpenIDConnectionUtils {
-  private static final Logger LOGGER = LoggerFactory.getLogger(OpenIDConnectionUtils.class);
+  private static final Logger logger = LoggerFactory.getLogger(OpenIDConnectionUtils.class);
 
   private static final String ID_TOKEN_KUBECONFIG = "id-token";
   private static final String ISSUER_KUBECONFIG = "idp-issuer-url";
@@ -91,7 +91,7 @@ public class OpenIDConnectionUtils {
           .thenApply(oAuthToken -> persistOAuthToken(currentConfig, oAuthToken, null))
           .thenApply(oAuthToken -> {
             if (oAuthToken == null || Utils.isNullOrEmpty(oAuthToken.idToken)) {
-              LOGGER.warn("token response did not contain an id_token, either the scope \\\"openid\\\" wasn't " +
+              logger.warn("token response did not contain an id_token, either the scope \\\"openid\\\" wasn't " +
                   "requested upon login, or the provider doesn't support id_tokens as part of the refresh response.");
               return originalToken;
             }
@@ -135,10 +135,10 @@ public class OpenIDConnectionUtils {
         } else {
           // Don't produce an error that's too huge (e.g. if we get HTML back for some reason).
           String responseBody = response.body();
-          LOGGER.warn("oidc: failed to query metadata endpoint: {} {}", response.code(), responseBody);
+          logger.warn("oidc: failed to query metadata endpoint: {} {}", response.code(), responseBody);
         }
       } catch (Exception e) {
-        LOGGER.warn("Could not refresh OIDC token, failure in getting refresh URL", e);
+        logger.warn("Could not refresh OIDC token, failure in getting refresh URL", e);
       }
       return null;
     });
@@ -150,7 +150,7 @@ public class OpenIDConnectionUtils {
   private static CompletableFuture<OAuthToken> refreshOpenIdToken(
       HttpClient httpClient, Map<String, String> authProviderConfig, OpenIdConfiguration openIdConfiguration) {
     if (openIdConfiguration == null || Utils.isNullOrEmpty(openIdConfiguration.tokenEndpoint)) {
-      LOGGER.warn("oidc: discovery object doesn't contain a valid token endpoint: {}", openIdConfiguration);
+      logger.warn("oidc: discovery object doesn't contain a valid token endpoint: {}", openIdConfiguration);
       return CompletableFuture.completedFuture(null);
     }
     final HttpRequest request = initTokenRefreshHttpRequest(httpClient, authProviderConfig,
@@ -164,11 +164,11 @@ public class OpenIDConnectionUtils {
           try {
             return Serialization.unmarshal(body, OAuthToken.class);
           } catch (Exception e) {
-            LOGGER.warn("Failure in fetching refresh token: ", e);
+            logger.warn("Failure in fetching refresh token: ", e);
           }
         } else {
           // Log error response body
-          LOGGER.warn("Response: {}", body);
+          logger.warn("Response: {}", body);
         }
       }
       return null;
@@ -213,7 +213,7 @@ public class OpenIDConnectionUtils {
         }
         KubeConfigUtils.persistKubeConfigIntoFile(kubeConfig, currentConfig.getFileWithAuthInfo());
       } catch (Exception ex) {
-        LOGGER.warn("oidc: failure while persisting new tokens into KUBECONFIG", ex);
+        logger.warn("oidc: failure while persisting new tokens into KUBECONFIG", ex);
       }
     }
 
@@ -305,7 +305,7 @@ public class OpenIDConnectionUtils {
         return java.util.Base64.getEncoder().encodeToString(Files.readAllBytes(Paths.get(config.getCaCertFile())));
       }
     } catch (IOException e) {
-      LOGGER.debug("Failure in reading certificate data from {}", config.getCaCertFile());
+      logger.debug("Failure in reading certificate data from {}", config.getCaCertFile());
     }
     return null;
   }

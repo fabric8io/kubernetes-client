@@ -50,7 +50,7 @@ import static io.fabric8.kubernetes.client.internal.CertUtils.createTrustStore;
 
 public final class SSLUtils {
 
-  private static final Logger LOG = LoggerFactory.getLogger(SSLUtils.class);
+  private static final Logger logger = LoggerFactory.getLogger(SSLUtils.class);
 
   private SSLUtils() {
     //Utility
@@ -69,7 +69,7 @@ public final class SSLUtils {
       conn.connect();
       return true;
     } catch (Throwable t) {
-      LOG.warn("SSL handshake failed. Falling back to insecure connection.");
+      logger.warn("SSL handshake failed. Falling back to insecure connection.");
     } finally {
       if (conn != null) {
         conn.disconnect();

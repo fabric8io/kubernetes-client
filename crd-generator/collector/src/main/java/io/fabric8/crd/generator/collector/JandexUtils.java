@@ -40,7 +40,7 @@ import java.util.jar.JarFile;
  */
 class JandexUtils {
 
-  private static final Logger log = LoggerFactory.getLogger(JandexUtils.class);
+  private static final Logger logger = LoggerFactory.getLogger(JandexUtils.class);
 
   static final String JAR_FILE_SUFFIX = ".jar";
   private static final String DEFAULT_JANDEX_INDEX = "META-INF/jandex.idx";
@@ -75,7 +75,7 @@ class JandexUtils {
           // use existing index if exist otherwise create new index
           Optional<Index> index = findIndex(file);
           if (index.isPresent()) {
-            log.trace("Found existing index for {}", file);
+            logger.trace("Found existing index for {}", file);
             allIndices.add(index.get());
           } else {
             actualFilesToScan.add(file);
@@ -84,11 +84,11 @@ class JandexUtils {
       }
 
       if (!actualFilesToScan.isEmpty()) {
-        log.debug("Creating {} indices", actualFilesToScan.size());
+        logger.debug("Creating {} indices", actualFilesToScan.size());
         allIndices.add(createIndex(actualFilesToScan));
       }
     }
-    log.trace("Using {} indices", allIndices.size());
+    logger.trace("Using {} indices", allIndices.size());
     return CompositeIndex.create(allIndices);
   }
 

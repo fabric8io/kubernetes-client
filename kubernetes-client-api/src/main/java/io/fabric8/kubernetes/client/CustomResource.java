@@ -74,7 +74,7 @@ import static io.fabric8.kubernetes.client.utils.Utils.isNullOrEmpty;
     @BuildableReference(io.fabric8.kubernetes.api.model.ObjectMeta.class),
 })
 public abstract class CustomResource<S, T> implements HasMetadata {
-  private static final Logger LOG = LoggerFactory.getLogger(CustomResource.class);
+  private static final Logger logger = LoggerFactory.getLogger(CustomResource.class);
 
   private ObjectMeta metadata = new ObjectMeta();
 
@@ -181,7 +181,7 @@ public abstract class CustomResource<S, T> implements HasMetadata {
   @Override
   public void setApiVersion(String version) {
     // already set in constructor
-    LOG.debug(
+    logger.debug(
         "Calling CustomResource#setApiVersion doesn't do anything because the API version is computed and shouldn't be changed");
   }
 
@@ -192,7 +192,7 @@ public abstract class CustomResource<S, T> implements HasMetadata {
 
   public void setKind(String kind) {
     // already set in constructor
-    LOG.debug("Calling CustomResource#setKind doesn't do anything because the Kind is computed and shouldn't be changed");
+    logger.debug("Calling CustomResource#setKind doesn't do anything because the Kind is computed and shouldn't be changed");
   }
 
   @Override

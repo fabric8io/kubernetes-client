@@ -46,6 +46,7 @@ import lombok.experimental.Accessors;
     "podInfoOnMount",
     "requiresRepublish",
     "seLinuxMount",
+    "serviceAccountTokenInSecrets",
     "storageCapacity",
     "tokenRequests",
     "volumeLifecycleModes"
@@ -87,6 +88,8 @@ public class CSIDriverSpec implements Editable<CSIDriverSpecBuilder>, Kubernetes
     private Boolean requiresRepublish;
     @JsonProperty("seLinuxMount")
     private Boolean seLinuxMount;
+    @JsonProperty("serviceAccountTokenInSecrets")
+    private Boolean serviceAccountTokenInSecrets;
     @JsonProperty("storageCapacity")
     private Boolean storageCapacity;
     @JsonProperty("tokenRequests")
@@ -104,7 +107,7 @@ public class CSIDriverSpec implements Editable<CSIDriverSpecBuilder>, Kubernetes
     public CSIDriverSpec() {
     }
 
-    public CSIDriverSpec(Boolean attachRequired, String fsGroupPolicy, Long nodeAllocatableUpdatePeriodSeconds, Boolean podInfoOnMount, Boolean requiresRepublish, Boolean seLinuxMount, Boolean storageCapacity, List<TokenRequest> tokenRequests, List<String> volumeLifecycleModes) {
+    public CSIDriverSpec(Boolean attachRequired, String fsGroupPolicy, Long nodeAllocatableUpdatePeriodSeconds, Boolean podInfoOnMount, Boolean requiresRepublish, Boolean seLinuxMount, Boolean serviceAccountTokenInSecrets, Boolean storageCapacity, List<TokenRequest> tokenRequests, List<String> volumeLifecycleModes) {
         super();
         this.attachRequired = attachRequired;
         this.fsGroupPolicy = fsGroupPolicy;
@@ -112,6 +115,7 @@ public class CSIDriverSpec implements Editable<CSIDriverSpecBuilder>, Kubernetes
         this.podInfoOnMount = podInfoOnMount;
         this.requiresRepublish = requiresRepublish;
         this.seLinuxMount = seLinuxMount;
+        this.serviceAccountTokenInSecrets = serviceAccountTokenInSecrets;
         this.storageCapacity = storageCapacity;
         this.tokenRequests = tokenRequests;
         this.volumeLifecycleModes = volumeLifecycleModes;
@@ -211,6 +215,22 @@ public class CSIDriverSpec implements Editable<CSIDriverSpecBuilder>, Kubernetes
     @JsonProperty("seLinuxMount")
     public void setSeLinuxMount(Boolean seLinuxMount) {
         this.seLinuxMount = seLinuxMount;
+    }
+
+    /**
+     * serviceAccountTokenInSecrets is an opt-in for CSI drivers to indicate that service account tokens should be passed via the Secrets field in NodePublishVolumeRequest instead of the VolumeContext field. The CSI specification provides a dedicated Secrets field for sensitive information like tokens, which is the appropriate mechanism for handling credentials. This addresses security concerns where sensitive tokens were being logged as part of volume context.<br><p> <br><p> When "true", kubelet will pass the tokens only in the Secrets field with the key "csi.storage.k8s.io/serviceAccount.tokens". The CSI driver must be updated to read tokens from the Secrets field instead of VolumeContext.<br><p> <br><p> When "false" or not set, kubelet will pass the tokens in VolumeContext with the key "csi.storage.k8s.io/serviceAccount.tokens" (existing behavior). This maintains backward compatibility with existing CSI drivers.<br><p> <br><p> This field can only be set when TokenRequests is configured. The API server will reject CSIDriver specs that set this field without TokenRequests.<br><p> <br><p> Default behavior if unset is to pass tokens in the VolumeContext field.
+     */
+    @JsonProperty("serviceAccountTokenInSecrets")
+    public Boolean getServiceAccountTokenInSecrets() {
+        return serviceAccountTokenInSecrets;
+    }
+
+    /**
+     * serviceAccountTokenInSecrets is an opt-in for CSI drivers to indicate that service account tokens should be passed via the Secrets field in NodePublishVolumeRequest instead of the VolumeContext field. The CSI specification provides a dedicated Secrets field for sensitive information like tokens, which is the appropriate mechanism for handling credentials. This addresses security concerns where sensitive tokens were being logged as part of volume context.<br><p> <br><p> When "true", kubelet will pass the tokens only in the Secrets field with the key "csi.storage.k8s.io/serviceAccount.tokens". The CSI driver must be updated to read tokens from the Secrets field instead of VolumeContext.<br><p> <br><p> When "false" or not set, kubelet will pass the tokens in VolumeContext with the key "csi.storage.k8s.io/serviceAccount.tokens" (existing behavior). This maintains backward compatibility with existing CSI drivers.<br><p> <br><p> This field can only be set when TokenRequests is configured. The API server will reject CSIDriver specs that set this field without TokenRequests.<br><p> <br><p> Default behavior if unset is to pass tokens in the VolumeContext field.
+     */
+    @JsonProperty("serviceAccountTokenInSecrets")
+    public void setServiceAccountTokenInSecrets(Boolean serviceAccountTokenInSecrets) {
+        this.serviceAccountTokenInSecrets = serviceAccountTokenInSecrets;
     }
 
     /**

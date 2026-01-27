@@ -341,7 +341,7 @@ public class Container implements Editable<ContainerBuilder>, KubernetesResource
     }
 
     /**
-     * Resources resize policy for the container.
+     * Resources resize policy for the container. This field cannot be set on ephemeral containers.
      */
     @JsonProperty("resizePolicy")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -350,7 +350,7 @@ public class Container implements Editable<ContainerBuilder>, KubernetesResource
     }
 
     /**
-     * Resources resize policy for the container.
+     * Resources resize policy for the container. This field cannot be set on ephemeral containers.
      */
     @JsonProperty("resizePolicy")
     public void setResizePolicy(List<ContainerResizePolicy> resizePolicy) {

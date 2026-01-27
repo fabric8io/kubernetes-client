@@ -69,7 +69,7 @@ import java.util.Set;
 // spotless:on
 public class CRDGeneratorCLI implements Runnable {
 
-  private static final Logger log = LoggerFactory.getLogger(CRDGeneratorCLI.class);
+  private static final Logger logger = LoggerFactory.getLogger(CRDGeneratorCLI.class);
 
   private static final CRDGenerationInfo EMPTY_INFO = new CRDGenerationInfo();
 
@@ -188,9 +188,9 @@ public class CRDGeneratorCLI implements Runnable {
     LoggingConfiguration.configureLogger(verbose);
     List<String> allClasspathElements = getClasspathElements();
 
-    log.trace("Custom Resource Class Names: {}", customResourceClassNames);
-    log.trace("Files to scan: {}", filesToScan);
-    log.trace("Classpath: {}", allClasspathElements);
+    logger.trace("Custom Resource Class Names: {}", customResourceClassNames);
+    logger.trace("Files to scan: {}", filesToScan);
+    logger.trace("Classpath: {}", allClasspathElements);
 
     CustomResourceCollector customResourceCollector = new CustomResourceCollector()
         .withClasspathElements(allClasspathElements)
@@ -207,7 +207,7 @@ public class CRDGeneratorCLI implements Runnable {
       throw new CustomResourceClassNotFoundException();
     }
 
-    log.debug("Generating CRDs for {} Custom Resource classes", customResourceClasses.size());
+    logger.debug("Generating CRDs for {} Custom Resource classes", customResourceClasses.size());
 
     File sanitizedOutputDirectory;
     try {
