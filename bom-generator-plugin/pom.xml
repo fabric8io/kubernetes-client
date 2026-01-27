@@ -55,33 +55,6 @@
       <artifactId>maven-plugin-annotations</artifactId>
       <scope>provided</scope>
     </dependency>
-
-    <!-- Test dependencies -->
-    <dependency>
-      <groupId>org.junit.jupiter</groupId>
-      <artifactId>junit-jupiter-api</artifactId>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.junit.jupiter</groupId>
-      <artifactId>junit-jupiter-engine</artifactId>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.junit.jupiter</groupId>
-      <artifactId>junit-jupiter-params</artifactId>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.assertj</groupId>
-      <artifactId>assertj-core</artifactId>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.mockito</groupId>
-      <artifactId>mockito-core</artifactId>
-      <scope>test</scope>
-    </dependency>
   </dependencies>
 
   <build>
@@ -104,6 +77,61 @@
             <goals>
               <goal>helpmojo</goal>
             </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-invoker-plugin</artifactId>
+        <configuration>
+          <cloneProjectsTo>${project.build.directory}/it</cloneProjectsTo>
+          <cloneClean>true</cloneClean>
+          <postBuildHookScript>verify</postBuildHookScript>
+          <localRepositoryPath>${project.build.directory}/local-repo</localRepositoryPath>
+          <settingsFile>src/it/settings.xml</settingsFile>
+          <skipInvocation>${skipTests}</skipInvocation>
+          <streamLogs>true</streamLogs>
+          <goals>
+            <goal>bom-generator:generate-boms</goal>
+          </goals>
+          <!-- Pass JaCoCo agent to forked Maven for coverage -->
+          <mavenOpts>${argLine}</mavenOpts>
+        </configuration>
+        <executions>
+          <execution>
+            <id>integration-tests</id>
+            <goals>
+              <goal>install</goal>
+              <goal>run</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.jacoco</groupId>
+        <artifactId>jacoco-maven-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>prepare-agent-it</id>
+            <goals>
+              <goal>prepare-agent</goal>
+            </goals>
+            <configuration>
+              <destFile>${project.build.directory}/jacoco-it.exec</destFile>
+              <propertyName>argLine</propertyName>
+              <append>true</append>
+            </configuration>
+          </execution>
+          <execution>
+            <id>report-it</id>
+            <phase>verify</phase>
+            <goals>
+              <goal>report</goal>
+            </goals>
+            <configuration>
+              <dataFile>${project.build.directory}/jacoco-it.exec</dataFile>
+              <outputDirectory>${project.reporting.outputDirectory}/jacoco-it</outputDirectory>
+            </configuration>
           </execution>
         </executions>
       </plugin>
