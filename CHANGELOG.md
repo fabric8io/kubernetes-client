@@ -5,6 +5,7 @@
 #### Bugs
 * Fix #5292: Cluster() configuration should use tlsServerName
 * Fix #7415: (java-generator) Fix generic type erasure for array of enums with default values
+* Fix #3396: Integration tests for Admission and Conversion Controllers written using KubernetesClient
 
 #### Improvements
 
