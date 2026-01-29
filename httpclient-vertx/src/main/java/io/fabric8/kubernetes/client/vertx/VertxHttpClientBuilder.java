@@ -31,6 +31,8 @@ import io.vertx.core.net.ProxyOptions;
 import io.vertx.core.net.ProxyType;
 import io.vertx.core.spi.tls.SslContextFactory;
 import io.vertx.ext.web.client.WebClientOptions;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -44,6 +46,7 @@ import static io.vertx.core.spi.resolver.ResolverProvider.DISABLE_DNS_RESOLVER_P
 public class VertxHttpClientBuilder<F extends HttpClient.Factory>
     extends StandardHttpClientBuilder<VertxHttpClient<F>, F, VertxHttpClientBuilder<F>> {
 
+  private static final Logger logger = LoggerFactory.getLogger(VertxHttpClientBuilder.class);
   private static final int MAX_CONNECTIONS = 8192;
   // the default for etcd seems to be 3 MB, but we'll default to unlimited, so we have the same behavior across clients
   private static final int MAX_WS_MESSAGE_SIZE = Integer.MAX_VALUE;
@@ -68,6 +71,13 @@ public class VertxHttpClientBuilder<F extends HttpClient.Factory>
   public VertxHttpClient<F> build() {
     if (this.client != null) {
       return new VertxHttpClient<>(this, this.client.getClosed(), this.client.getClient(), closeVertx);
+    }
+
+    // Warn if tlsServerName is configured but not supported
+    if (tlsServerName != null && !tlsServerName.isEmpty()) {
+      logger.warn(
+          "tlsServerName '{}' is configured but not supported by Vert.x HTTP client. Consider using Jetty HTTP client for SNI support.",
+          tlsServerName);
     }
 
     WebClientOptions options = new WebClientOptions();

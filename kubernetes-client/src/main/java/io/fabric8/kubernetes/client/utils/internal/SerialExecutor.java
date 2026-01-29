@@ -34,7 +34,7 @@ import java.util.concurrent.RejectedExecutionException;
  */
 public class SerialExecutor implements Executor {
 
-  private static final Logger log = LoggerFactory.getLogger(SerialExecutor.class);
+  private static final Logger logger = LoggerFactory.getLogger(SerialExecutor.class);
 
   final Queue<Runnable> tasks = new LinkedBlockingDeque<>();
   final Executor executor;
@@ -54,7 +54,7 @@ public class SerialExecutor implements Executor {
   @Override
   public synchronized void execute(final Runnable r) {
     if (shutdown) {
-      log.debug("Task submitted after the executor was shutdown");
+      logger.debug("Task submitted after the executor was shutdown");
     }
     tasks.offer(() -> {
       try {
@@ -85,7 +85,7 @@ public class SerialExecutor implements Executor {
       try {
         executor.execute(active);
       } catch (RejectedExecutionException e) {
-        log.debug("Underlying executor rejected execution", e);
+        logger.debug("Underlying executor rejected execution", e);
       }
     }
   }

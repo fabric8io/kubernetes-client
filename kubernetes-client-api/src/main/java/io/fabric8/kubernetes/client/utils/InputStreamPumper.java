@@ -33,7 +33,7 @@ public class InputStreamPumper {
   private InputStreamPumper() {
   }
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(InputStreamPumper.class);
+  private static final Logger logger = LoggerFactory.getLogger(InputStreamPumper.class);
 
   public interface Writable {
 
@@ -96,12 +96,12 @@ public class InputStreamPumper {
       try {
         InputStreamPumper.transferTo(in, out);
       } catch (InterruptedIOException e) {
-        LOGGER.debug("Interrupted while pumping stream.", e);
+        logger.debug("Interrupted while pumping stream.", e);
       } catch (Exception e) {
         if (!Thread.currentThread().isInterrupted()) {
-          LOGGER.error("Error while pumping stream.", e);
+          logger.error("Error while pumping stream.", e);
         } else {
-          LOGGER.debug("Interrupted while pumping stream.");
+          logger.debug("Interrupted while pumping stream.");
         }
       }
     }, executor);

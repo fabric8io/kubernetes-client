@@ -77,7 +77,7 @@ class KubernetesMutationHookHandlingTest {
   @KubeConfig
   static String kubeConfig;
 
-  private static final Logger log = LoggerFactory.getLogger(KubernetesMutationHookHandlingTest.class);
+  private static final Logger logger = LoggerFactory.getLogger(KubernetesMutationHookHandlingTest.class);
 
   public static final String PASSWORD = "secret";
 
@@ -132,7 +132,7 @@ class KubernetesMutationHookHandlingTest {
             httpServletResponse.setStatus(422);
           }
         } catch (Exception e) {
-          log.error("Error in webhook", e);
+          logger.error("Error in webhook", e);
           throw new RuntimeException(e);
         }
       }

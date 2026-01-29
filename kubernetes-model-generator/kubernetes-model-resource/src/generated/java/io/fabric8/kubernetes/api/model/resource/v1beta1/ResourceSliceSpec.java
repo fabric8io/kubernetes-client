@@ -131,7 +131,7 @@ public class ResourceSliceSpec implements Editable<ResourceSliceSpecBuilder>, Ku
     }
 
     /**
-     * Devices lists some or all of the devices in this pool.<br><p> <br><p> Must not have more than 128 entries.
+     * Devices lists some or all of the devices in this pool.<br><p> <br><p> Must not have more than 128 entries. If any device uses taints or consumes counters the limit is 64.<br><p> <br><p> Only one of Devices and SharedCounters can be set in a ResourceSlice.
      */
     @JsonProperty("devices")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -140,7 +140,7 @@ public class ResourceSliceSpec implements Editable<ResourceSliceSpecBuilder>, Ku
     }
 
     /**
-     * Devices lists some or all of the devices in this pool.<br><p> <br><p> Must not have more than 128 entries.
+     * Devices lists some or all of the devices in this pool.<br><p> <br><p> Must not have more than 128 entries. If any device uses taints or consumes counters the limit is 64.<br><p> <br><p> Only one of Devices and SharedCounters can be set in a ResourceSlice.
      */
     @JsonProperty("devices")
     public void setDevices(List<Device> devices) {
@@ -148,7 +148,7 @@ public class ResourceSliceSpec implements Editable<ResourceSliceSpecBuilder>, Ku
     }
 
     /**
-     * Driver identifies the DRA driver providing the capacity information. A field selector can be used to list only ResourceSlice objects with a certain driver name.<br><p> <br><p> Must be a DNS subdomain and should end with a DNS domain owned by the vendor of the driver. This field is immutable.
+     * Driver identifies the DRA driver providing the capacity information. A field selector can be used to list only ResourceSlice objects with a certain driver name.<br><p> <br><p> Must be a DNS subdomain and should end with a DNS domain owned by the vendor of the driver. It should use only lower case characters. This field is immutable.
      */
     @JsonProperty("driver")
     public String getDriver() {
@@ -156,7 +156,7 @@ public class ResourceSliceSpec implements Editable<ResourceSliceSpecBuilder>, Ku
     }
 
     /**
-     * Driver identifies the DRA driver providing the capacity information. A field selector can be used to list only ResourceSlice objects with a certain driver name.<br><p> <br><p> Must be a DNS subdomain and should end with a DNS domain owned by the vendor of the driver. This field is immutable.
+     * Driver identifies the DRA driver providing the capacity information. A field selector can be used to list only ResourceSlice objects with a certain driver name.<br><p> <br><p> Must be a DNS subdomain and should end with a DNS domain owned by the vendor of the driver. It should use only lower case characters. This field is immutable.
      */
     @JsonProperty("driver")
     public void setDriver(String driver) {
@@ -228,7 +228,7 @@ public class ResourceSliceSpec implements Editable<ResourceSliceSpecBuilder>, Ku
     }
 
     /**
-     * SharedCounters defines a list of counter sets, each of which has a name and a list of counters available.<br><p> <br><p> The names of the SharedCounters must be unique in the ResourceSlice.<br><p> <br><p> The maximum number of SharedCounters is 32.
+     * SharedCounters defines a list of counter sets, each of which has a name and a list of counters available.<br><p> <br><p> The names of the counter sets must be unique in the ResourcePool.<br><p> <br><p> Only one of Devices and SharedCounters can be set in a ResourceSlice.<br><p> <br><p> The maximum number of counter sets is 8.
      */
     @JsonProperty("sharedCounters")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -237,7 +237,7 @@ public class ResourceSliceSpec implements Editable<ResourceSliceSpecBuilder>, Ku
     }
 
     /**
-     * SharedCounters defines a list of counter sets, each of which has a name and a list of counters available.<br><p> <br><p> The names of the SharedCounters must be unique in the ResourceSlice.<br><p> <br><p> The maximum number of SharedCounters is 32.
+     * SharedCounters defines a list of counter sets, each of which has a name and a list of counters available.<br><p> <br><p> The names of the counter sets must be unique in the ResourcePool.<br><p> <br><p> Only one of Devices and SharedCounters can be set in a ResourceSlice.<br><p> <br><p> The maximum number of counter sets is 8.
      */
     @JsonProperty("sharedCounters")
     public void setSharedCounters(List<CounterSet> sharedCounters) {

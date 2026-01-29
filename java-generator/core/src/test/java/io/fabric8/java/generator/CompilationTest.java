@@ -75,6 +75,7 @@ class CompilationTest {
         Arguments.of("calico-ippool-crd.yml", 3),
         Arguments.of("emissary-crds.yaml", 242),
         Arguments.of("colliding-enums-crd.yml", 2),
+        Arguments.of("crossplane-resource-crd.yaml", 8),
         Arguments.of("gateway.envoyproxy.io_backendtrafficpolicies.yaml", 76));
   }
 

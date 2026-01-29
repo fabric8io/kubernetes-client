@@ -3,15 +3,27 @@
 ### 7.6-SNAPSHOT
 
 #### Bugs
-* Fix #7400: Parent reference added in BOM 7.5.0
+* Fix #5292: Cluster() configuration should use tlsServerName
+* Fix #7415: (java-generator) Fix generic type erasure for array of enums with default values
 
 #### Improvements
 
 #### Dependency Upgrade
 
 #### New Features
+* Fix #7385: Support for Kubernetes v1.35 (Timbernetes)
 
 #### _**Note**_: Breaking changes
+
+### 7.5.2 (2026-01-22)
+
+#### Dependency Upgrade
+* Fix #7408: bump vertx.version from 4.5.21 to 4.5.24
+
+### 7.5.1 (2026-01-15)
+
+#### Bugs
+* Fix #7400: Parent reference added in BOM 7.5.0
 
 ### 7.5.0 (2026-01-09)
 

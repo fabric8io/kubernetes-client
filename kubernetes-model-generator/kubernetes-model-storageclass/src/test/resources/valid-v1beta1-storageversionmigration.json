@@ -1,6 +1,6 @@
 {
   "kind": "StorageVersionMigration",
-  "apiVersion": "storagemigration.k8s.io/v1alpha1",
+  "apiVersion": "storagemigration.k8s.io/v1beta1",
   "metadata": {
     "name": "nameValue",
     "generateName": "generateNameValue",
@@ -46,10 +46,8 @@
   "spec": {
     "resource": {
       "group": "groupValue",
-      "version": "versionValue",
       "resource": "resourceValue"
-    },
-    "continueToken": "continueTokenValue"
+    }
   },
   "status": {
     "conditions": [

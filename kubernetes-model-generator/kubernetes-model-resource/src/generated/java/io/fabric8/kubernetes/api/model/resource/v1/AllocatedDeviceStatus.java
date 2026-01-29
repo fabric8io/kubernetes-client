@@ -161,7 +161,7 @@ public class AllocatedDeviceStatus implements Editable<AllocatedDeviceStatusBuil
     }
 
     /**
-     * Driver specifies the name of the DRA driver whose kubelet plugin should be invoked to process the allocation once the claim is needed on a node.<br><p> <br><p> Must be a DNS subdomain and should end with a DNS domain owned by the vendor of the driver.
+     * Driver specifies the name of the DRA driver whose kubelet plugin should be invoked to process the allocation once the claim is needed on a node.<br><p> <br><p> Must be a DNS subdomain and should end with a DNS domain owned by the vendor of the driver. It should use only lower case characters.
      */
     @JsonProperty("driver")
     public String getDriver() {
@@ -169,7 +169,7 @@ public class AllocatedDeviceStatus implements Editable<AllocatedDeviceStatusBuil
     }
 
     /**
-     * Driver specifies the name of the DRA driver whose kubelet plugin should be invoked to process the allocation once the claim is needed on a node.<br><p> <br><p> Must be a DNS subdomain and should end with a DNS domain owned by the vendor of the driver.
+     * Driver specifies the name of the DRA driver whose kubelet plugin should be invoked to process the allocation once the claim is needed on a node.<br><p> <br><p> Must be a DNS subdomain and should end with a DNS domain owned by the vendor of the driver. It should use only lower case characters.
      */
     @JsonProperty("driver")
     public void setDriver(String driver) {

@@ -1,9 +1,7 @@
 
-package io.fabric8.kubernetes.api.model.storage.v1alpha1;
+package io.fabric8.kubernetes.api.model.storagemigration.v1beta1;
 
-import java.util.ArrayList;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 import javax.annotation.processing.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
@@ -17,11 +15,9 @@ import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvVar;
+import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.IntOrString;
-import io.fabric8.kubernetes.api.model.KubernetesResource;
-import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 import io.fabric8.kubernetes.api.model.LabelSelector;
-import io.fabric8.kubernetes.api.model.ListMeta;
 import io.fabric8.kubernetes.api.model.LocalObjectReference;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.ObjectReference;
@@ -41,7 +37,7 @@ import lombok.ToString;
 import lombok.experimental.Accessors;
 
 /**
- * VolumeAttributesClassList is a collection of VolumeAttributesClass objects.
+ * StorageVersionMigration represents a migration of stored data to the latest storage version.
  */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -49,7 +45,8 @@ import lombok.experimental.Accessors;
     "apiVersion",
     "kind",
     "metadata",
-    "items"
+    "spec",
+    "status"
 })
 @ToString
 @EqualsAndHashCode
@@ -75,36 +72,38 @@ import lombok.experimental.Accessors;
 @TemplateTransformations({
     @TemplateTransformation(value = "/manifest.vm", outputPath = "META-INF/services/io.fabric8.kubernetes.api.model.KubernetesResource", gather = true)
 })
-@Version("v1alpha1")
-@Group("storage.k8s.io")
+@Version("v1beta1")
+@Group("storagemigration.k8s.io")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class VolumeAttributesClassList implements Editable<VolumeAttributesClassListBuilder>, KubernetesResource, KubernetesResourceList<io.fabric8.kubernetes.api.model.storage.v1alpha1.VolumeAttributesClass>
+public class StorageVersionMigration implements Editable<StorageVersionMigrationBuilder>, HasMetadata
 {
 
     @JsonProperty("apiVersion")
-    private String apiVersion = "storage.k8s.io/v1alpha1";
-    @JsonProperty("items")
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<io.fabric8.kubernetes.api.model.storage.v1alpha1.VolumeAttributesClass> items = new ArrayList<>();
+    private String apiVersion = "storagemigration.k8s.io/v1beta1";
     @JsonProperty("kind")
-    private String kind = "VolumeAttributesClassList";
+    private String kind = "StorageVersionMigration";
     @JsonProperty("metadata")
-    private ListMeta metadata;
+    private ObjectMeta metadata;
+    @JsonProperty("spec")
+    private StorageVersionMigrationSpec spec;
+    @JsonProperty("status")
+    private StorageVersionMigrationStatus status;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
      */
-    public VolumeAttributesClassList() {
+    public StorageVersionMigration() {
     }
 
-    public VolumeAttributesClassList(String apiVersion, List<io.fabric8.kubernetes.api.model.storage.v1alpha1.VolumeAttributesClass> items, String kind, ListMeta metadata) {
+    public StorageVersionMigration(String apiVersion, String kind, ObjectMeta metadata, StorageVersionMigrationSpec spec, StorageVersionMigrationStatus status) {
         super();
         this.apiVersion = apiVersion;
-        this.items = items;
         this.kind = kind;
         this.metadata = metadata;
+        this.spec = spec;
+        this.status = status;
     }
 
     /**
@@ -124,23 +123,6 @@ public class VolumeAttributesClassList implements Editable<VolumeAttributesClass
     }
 
     /**
-     * items is the list of VolumeAttributesClass objects.
-     */
-    @JsonProperty("items")
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<io.fabric8.kubernetes.api.model.storage.v1alpha1.VolumeAttributesClass> getItems() {
-        return items;
-    }
-
-    /**
-     * items is the list of VolumeAttributesClass objects.
-     */
-    @JsonProperty("items")
-    public void setItems(List<io.fabric8.kubernetes.api.model.storage.v1alpha1.VolumeAttributesClass> items) {
-        this.items = items;
-    }
-
-    /**
      * Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
      */
     @JsonProperty("kind")
@@ -157,28 +139,60 @@ public class VolumeAttributesClassList implements Editable<VolumeAttributesClass
     }
 
     /**
-     * VolumeAttributesClassList is a collection of VolumeAttributesClass objects.
+     * StorageVersionMigration represents a migration of stored data to the latest storage version.
      */
     @JsonProperty("metadata")
-    public ListMeta getMetadata() {
+    public ObjectMeta getMetadata() {
         return metadata;
     }
 
     /**
-     * VolumeAttributesClassList is a collection of VolumeAttributesClass objects.
+     * StorageVersionMigration represents a migration of stored data to the latest storage version.
      */
     @JsonProperty("metadata")
-    public void setMetadata(ListMeta metadata) {
+    public void setMetadata(ObjectMeta metadata) {
         this.metadata = metadata;
     }
 
-    @JsonIgnore
-    public VolumeAttributesClassListBuilder edit() {
-        return new VolumeAttributesClassListBuilder(this);
+    /**
+     * StorageVersionMigration represents a migration of stored data to the latest storage version.
+     */
+    @JsonProperty("spec")
+    public StorageVersionMigrationSpec getSpec() {
+        return spec;
+    }
+
+    /**
+     * StorageVersionMigration represents a migration of stored data to the latest storage version.
+     */
+    @JsonProperty("spec")
+    public void setSpec(StorageVersionMigrationSpec spec) {
+        this.spec = spec;
+    }
+
+    /**
+     * StorageVersionMigration represents a migration of stored data to the latest storage version.
+     */
+    @JsonProperty("status")
+    public StorageVersionMigrationStatus getStatus() {
+        return status;
+    }
+
+    /**
+     * StorageVersionMigration represents a migration of stored data to the latest storage version.
+     */
+    @JsonProperty("status")
+    public void setStatus(StorageVersionMigrationStatus status) {
+        this.status = status;
     }
 
     @JsonIgnore
-    public VolumeAttributesClassListBuilder toBuilder() {
+    public StorageVersionMigrationBuilder edit() {
+        return new StorageVersionMigrationBuilder(this);
+    }
+
+    @JsonIgnore
+    public StorageVersionMigrationBuilder toBuilder() {
         return edit();
     }
 

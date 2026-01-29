@@ -57,7 +57,7 @@ jobs:
           gpg-private-key: ${{ secrets.SIGNINGKEY }}
           gpg-passphrase: SIGNINGPASSWORD
       - name: Install Maven Plugin
-        run: /mvnw ${MAVEN_ARGS} clean install -pl bom-manipulator-plugin
+        run: ./mvnw ${MAVEN_ARGS} clean install -pl bom-manipulator-plugin
       - name: Generate BOM
         run: ./mvnw ${MAVEN_ARGS} -Pbom clean sundr:generate-bom bom-manipulator:copy-plugins
       - name: Build and release Java modules
