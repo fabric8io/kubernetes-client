@@ -54,7 +54,7 @@ import java.util.Collections;
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
- * Test demonstrates how to test locally Mutating Webhooks, in real life your implementation of such an
+ * Test demonstrates how to test locally Mutating Webhooks, in real like you implementation such an
  * endpoint would be simpler, using frameworks like
  * <a href="https://github.com/java-operator-sdk/kubernetes-webooks-framework">Kubernetes Webhook
  * Framework</a> with combination of Quarkus or Spring.
