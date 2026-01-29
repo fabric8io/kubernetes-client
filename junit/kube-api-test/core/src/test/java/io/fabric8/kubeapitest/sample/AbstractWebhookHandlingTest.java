@@ -37,8 +37,6 @@ import org.eclipse.jetty.server.ServerConnector;
 import org.eclipse.jetty.server.SslConnectionFactory;
 import org.eclipse.jetty.server.handler.AbstractHandler;
 import org.eclipse.jetty.util.ssl.SslContextFactory;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -62,7 +60,6 @@ import java.util.Objects;
  */
 abstract class AbstractWebhookHandlingTest {
 
-  private static final Logger logger = LoggerFactory.getLogger(AbstractWebhookHandlingTest.class);
   protected static final String PASSWORD = "secret";
 
   /**
@@ -84,7 +81,6 @@ abstract class AbstractWebhookHandlingTest {
           baseRequest.setHandled(true);
           handler.handleWebhook(request, response);
         } catch (Exception e) {
-          logger.error("Error in webhook", e);
           throw new RuntimeException(e);
         }
       }
