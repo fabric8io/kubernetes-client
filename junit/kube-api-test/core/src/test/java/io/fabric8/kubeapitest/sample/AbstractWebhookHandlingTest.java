@@ -177,9 +177,9 @@ abstract class AbstractWebhookHandlingTest {
    * Creates a KeyStore from PEM-formatted key and certificate files.
    */
   private static KeyStore createKeyStoreFrom(File keyPem, File certPem) {
-    try (var certReader = new PEMParser(new InputStreamReader(new FileInputStream(certPem)));
-        var keyReader = new PEMParser(new InputStreamReader(new FileInputStream(keyPem)))) {
-      var certConverter = new JcaX509CertificateConverter();
+    try (PEMParser certReader = new PEMParser(new InputStreamReader(new FileInputStream(certPem)));
+        PEMParser keyReader = new PEMParser(new InputStreamReader(new FileInputStream(keyPem)))) {
+      JcaX509CertificateConverter certConverter = new JcaX509CertificateConverter();
       X509Certificate cert = certConverter.getCertificate((X509CertificateHolder) certReader.readObject());
 
       JcaPEMKeyConverter keyConverter = new JcaPEMKeyConverter();

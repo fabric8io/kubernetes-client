@@ -22,6 +22,7 @@ import io.fabric8.kubeapitest.junit.KubeConfig;
 import io.fabric8.kubernetes.api.model.GenericKubernetesResource;
 import io.fabric8.kubernetes.api.model.GenericKubernetesResourceBuilder;
 import io.fabric8.kubernetes.api.model.StatusBuilder;
+import io.fabric8.kubernetes.api.model.apiextensions.v1.ConversionRequest;
 import io.fabric8.kubernetes.api.model.apiextensions.v1.ConversionReview;
 import io.fabric8.kubernetes.api.model.apiextensions.v1.ConversionReviewBuilder;
 import io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceDefinition;
@@ -30,6 +31,8 @@ import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientBuilder;
 import io.fabric8.kubernetes.client.dsl.base.CustomResourceDefinitionContext;
 import io.fabric8.kubernetes.client.utils.Serialization;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.eclipse.jetty.server.Server;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -37,6 +40,7 @@ import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -65,11 +69,11 @@ class KubernetesConversionWebhookHandlingTest extends AbstractWebhookHandlingTes
 
   @Test
   void conversionWebhookConvertsV1alpha1ToV1beta1() {
-    var client = new KubernetesClientBuilder().withConfig(Config.fromKubeconfig(kubeConfig)).build();
+    KubernetesClient client = new KubernetesClientBuilder().withConfig(Config.fromKubeconfig(kubeConfig)).build();
     applyCrd(client);
 
     // Create a v1alpha1 resource with hostPort
-    var v1alpha1Resource = new GenericKubernetesResourceBuilder()
+    GenericKubernetesResource v1alpha1Resource = new GenericKubernetesResourceBuilder()
         .withApiVersion(GROUP + "/v1alpha1")
         .withKind("TestResource")
         .withNewMetadata()
@@ -82,24 +86,24 @@ class KubernetesConversionWebhookHandlingTest extends AbstractWebhookHandlingTes
     client.genericKubernetesResources(contextForVersion("v1alpha1")).resource(v1alpha1Resource).create();
 
     // Read it back as v1beta1 - the conversion webhook should have converted it
-    var v1beta1Resource = client.genericKubernetesResources(contextForVersion("v1beta1"))
+    GenericKubernetesResource v1beta1Resource = client.genericKubernetesResources(contextForVersion("v1beta1"))
         .inNamespace("default")
         .withName("test-resource-1")
         .get();
 
     assertThat(v1beta1Resource).isNotNull();
     @SuppressWarnings("unchecked")
-    var spec = (Map<String, Object>) v1beta1Resource.getAdditionalProperties().get("spec");
+    Map<String, Object> spec = (Map<String, Object>) v1beta1Resource.getAdditionalProperties().get("spec");
     assertThat(spec).containsEntry("host", "localhost").containsEntry("port", "8080");
   }
 
   @Test
   void conversionWebhookConvertsV1beta1ToV1alpha1() {
-    var client = new KubernetesClientBuilder().withConfig(Config.fromKubeconfig(kubeConfig)).build();
+    KubernetesClient client = new KubernetesClientBuilder().withConfig(Config.fromKubeconfig(kubeConfig)).build();
     applyCrd(client);
 
     // Create a v1beta1 resource with host and port
-    var v1beta1Resource = new GenericKubernetesResourceBuilder()
+    GenericKubernetesResource v1beta1Resource = new GenericKubernetesResourceBuilder()
         .withApiVersion(GROUP + "/v1beta1")
         .withKind("TestResource")
         .withNewMetadata()
@@ -112,14 +116,14 @@ class KubernetesConversionWebhookHandlingTest extends AbstractWebhookHandlingTes
     client.genericKubernetesResources(contextForVersion("v1beta1")).resource(v1beta1Resource).create();
 
     // Read it back as v1alpha1 - the conversion webhook should have converted it
-    var v1alpha1Resource = client.genericKubernetesResources(contextForVersion("v1alpha1"))
+    GenericKubernetesResource v1alpha1Resource = client.genericKubernetesResources(contextForVersion("v1alpha1"))
         .inNamespace("default")
         .withName("test-resource-2")
         .get();
 
     assertThat(v1alpha1Resource).isNotNull();
     @SuppressWarnings("unchecked")
-    var spec = (Map<String, Object>) v1alpha1Resource.getAdditionalProperties().get("spec");
+    Map<String, Object> spec = (Map<String, Object>) v1alpha1Resource.getAdditionalProperties().get("spec");
     assertThat(spec).containsEntry("hostPort", "example.com:443");
   }
 
@@ -135,28 +139,41 @@ class KubernetesConversionWebhookHandlingTest extends AbstractWebhookHandlingTes
 
   @BeforeAll
   static void startWebhookServer() throws Exception {
-    startServer(server, PORT, keyFile, certFile, (request, response) -> {
+    startServer(server, PORT, keyFile, certFile,
+        KubernetesConversionWebhookHandlingTest::handleConversionWebhook);
+  }
+
+  private static void handleConversionWebhook(HttpServletRequest request, HttpServletResponse response) {
+    try {
       ConversionReview conversionReview = Serialization.unmarshal(request.getInputStream());
-      var conversionRequest = conversionReview.getRequest();
-      String desiredVersion = conversionRequest.getDesiredAPIVersion();
-
-      List<Object> convertedObjects = new ArrayList<>();
-      for (Object obj : conversionRequest.getObjects()) {
-        JsonNode node = Serialization.jsonMapper().valueToTree(obj);
-        ObjectNode converted = convertResource((ObjectNode) node, desiredVersion);
-        convertedObjects.add(Serialization.jsonMapper().treeToValue(converted, GenericKubernetesResource.class));
-      }
-
-      var responseReview = new ConversionReviewBuilder()
-          .withNewResponse()
-          .withUid(conversionRequest.getUid())
-          .withConvertedObjects(convertedObjects)
-          .withResult(new StatusBuilder().withStatus("Success").build())
-          .endResponse()
-          .build();
-
+      ConversionReview responseReview = buildConversionResponse(conversionReview.getRequest());
       writeJsonResponse(response, responseReview);
-    });
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
+  }
+
+  private static ConversionReview buildConversionResponse(ConversionRequest conversionRequest) {
+    String desiredVersion = conversionRequest.getDesiredAPIVersion();
+
+    List<Object> convertedObjects = new ArrayList<>();
+    for (Object obj : conversionRequest.getObjects()) {
+      JsonNode node = Serialization.jsonMapper().valueToTree(obj);
+      ObjectNode converted = convertResource((ObjectNode) node, desiredVersion);
+      try {
+        convertedObjects.add(Serialization.jsonMapper().treeToValue(converted, GenericKubernetesResource.class));
+      } catch (Exception e) {
+        throw new RuntimeException(e);
+      }
+    }
+
+    return new ConversionReviewBuilder()
+        .withNewResponse()
+        .withUid(conversionRequest.getUid())
+        .withConvertedObjects(convertedObjects)
+        .withResult(new StatusBuilder().withStatus("Success").build())
+        .endResponse()
+        .build();
   }
 
   /**
@@ -200,7 +217,7 @@ class KubernetesConversionWebhookHandlingTest extends AbstractWebhookHandlingTes
   }
 
   private void applyCrd(KubernetesClient client) {
-    try (var resource = KubernetesConversionWebhookHandlingTest.class
+    try (InputStream resource = KubernetesConversionWebhookHandlingTest.class
         .getResourceAsStream("/ConversionWebhookCRD.yaml")) {
       CustomResourceDefinition crd = (CustomResourceDefinition) client.load(resource).items().get(0);
       crd.getSpec().getConversion().getWebhook().getClientConfig()

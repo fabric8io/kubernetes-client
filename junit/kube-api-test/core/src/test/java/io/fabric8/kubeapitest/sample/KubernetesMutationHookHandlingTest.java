@@ -15,17 +15,30 @@
  */
 package io.fabric8.kubeapitest.sample;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import io.fabric8.kubeapitest.junit.EnableKubeAPIServer;
 import io.fabric8.kubeapitest.junit.KubeConfig;
 import io.fabric8.kubernetes.api.model.HasMetadata;
+import io.fabric8.kubernetes.api.model.admission.v1.AdmissionRequest;
+import io.fabric8.kubernetes.api.model.admission.v1.AdmissionReview;
 import io.fabric8.kubernetes.api.model.admission.v1.AdmissionReviewBuilder;
 import io.fabric8.kubernetes.api.model.admissionregistration.v1.MutatingWebhookConfiguration;
-import io.fabric8.kubernetes.api.model.networking.v1.*;
+import io.fabric8.kubernetes.api.model.networking.v1.HTTPIngressPathBuilder;
+import io.fabric8.kubernetes.api.model.networking.v1.HTTPIngressRuleValueBuilder;
+import io.fabric8.kubernetes.api.model.networking.v1.Ingress;
+import io.fabric8.kubernetes.api.model.networking.v1.IngressBackendBuilder;
+import io.fabric8.kubernetes.api.model.networking.v1.IngressBuilder;
+import io.fabric8.kubernetes.api.model.networking.v1.IngressRuleBuilder;
+import io.fabric8.kubernetes.api.model.networking.v1.IngressServiceBackendBuilder;
+import io.fabric8.kubernetes.api.model.networking.v1.IngressSpecBuilder;
+import io.fabric8.kubernetes.api.model.networking.v1.ServiceBackendPortBuilder;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientBuilder;
 import io.fabric8.kubernetes.client.utils.Serialization;
 import io.fabric8.zjsonpatch.JsonDiff;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.eclipse.jetty.server.Server;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -33,6 +46,7 @@ import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 import java.util.Collections;
@@ -58,28 +72,33 @@ class KubernetesMutationHookHandlingTest extends AbstractWebhookHandlingTest {
 
   @Test
   void handleMutatingWebhook() {
-    var client = new KubernetesClientBuilder().withConfig(Config.fromKubeconfig(kubeConfig)).build();
+    KubernetesClient client = new KubernetesClientBuilder().withConfig(Config.fromKubeconfig(kubeConfig)).build();
     applyConfig(client);
 
-    var ingress = client.resource(testIngress()).create();
+    Ingress ingress = client.resource(testIngress()).create();
 
     assertThat(ingress.getMetadata().getLabels()).containsEntry("test", "mutation");
   }
 
   @BeforeAll
   static void startWebhookServer() throws Exception {
-    startServer(server, PORT, keyFile, certFile, (request, response) -> {
-      var admissionReview = parseAdmissionReview(request);
-      var admissionRequest = admissionReview.getRequest();
-      var resource = getResourceFromAdmissionRequest(admissionRequest);
+    startServer(server, PORT, keyFile, certFile,
+        KubernetesMutationHookHandlingTest::handleMutatingWebhook);
+  }
+
+  private static void handleMutatingWebhook(HttpServletRequest request, HttpServletResponse response) {
+    try {
+      AdmissionReview admissionReview = parseAdmissionReview(request);
+      AdmissionRequest admissionRequest = admissionReview.getRequest();
+      Object resource = getResourceFromAdmissionRequest(admissionRequest);
 
       if (resource instanceof HasMetadata) {
-        var hasMetadata = (HasMetadata) resource;
-        var originalJson = Serialization.jsonMapper().valueToTree(resource);
+        HasMetadata hasMetadata = (HasMetadata) resource;
+        JsonNode originalJson = Serialization.jsonMapper().valueToTree(resource);
         hasMetadata.getMetadata().setLabels(Collections.singletonMap("test", "mutation"));
-        var editedJson = Serialization.jsonMapper().valueToTree(resource);
+        JsonNode editedJson = Serialization.jsonMapper().valueToTree(resource);
 
-        var responseReview = new AdmissionReviewBuilder()
+        AdmissionReview responseReview = new AdmissionReviewBuilder()
             .withNewResponse()
             .withAllowed()
             .withPatchType("JSONPatch")
@@ -93,7 +112,9 @@ class KubernetesMutationHookHandlingTest extends AbstractWebhookHandlingTest {
       } else {
         response.setStatus(422);
       }
-    });
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
   }
 
   @AfterAll
@@ -102,7 +123,7 @@ class KubernetesMutationHookHandlingTest extends AbstractWebhookHandlingTest {
   }
 
   private void applyConfig(KubernetesClient client) {
-    try (var resource = KubernetesMutationHookHandlingTest.class
+    try (InputStream resource = KubernetesMutationHookHandlingTest.class
         .getResourceAsStream("/MutatingWebhookConfig.yaml")) {
       MutatingWebhookConfiguration hook = (MutatingWebhookConfiguration) client.load(resource).items().get(0);
       hook.getWebhooks().get(0).getClientConfig().setCaBundle(getEncodedCertificate(certFile));

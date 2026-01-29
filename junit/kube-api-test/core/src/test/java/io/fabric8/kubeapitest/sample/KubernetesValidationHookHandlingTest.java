@@ -19,13 +19,26 @@ import io.fabric8.kubeapitest.junit.EnableKubeAPIServer;
 import io.fabric8.kubeapitest.junit.KubeConfig;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.StatusBuilder;
+import io.fabric8.kubernetes.api.model.admission.v1.AdmissionRequest;
+import io.fabric8.kubernetes.api.model.admission.v1.AdmissionReview;
 import io.fabric8.kubernetes.api.model.admission.v1.AdmissionReviewBuilder;
 import io.fabric8.kubernetes.api.model.admissionregistration.v1.ValidatingWebhookConfiguration;
-import io.fabric8.kubernetes.api.model.networking.v1.*;
+import io.fabric8.kubernetes.api.model.networking.v1.HTTPIngressPathBuilder;
+import io.fabric8.kubernetes.api.model.networking.v1.HTTPIngressRuleValueBuilder;
+import io.fabric8.kubernetes.api.model.networking.v1.Ingress;
+import io.fabric8.kubernetes.api.model.networking.v1.IngressBackendBuilder;
+import io.fabric8.kubernetes.api.model.networking.v1.IngressBuilder;
+import io.fabric8.kubernetes.api.model.networking.v1.IngressRuleBuilder;
+import io.fabric8.kubernetes.api.model.networking.v1.IngressServiceBackendBuilder;
+import io.fabric8.kubernetes.api.model.networking.v1.IngressSpecBuilder;
+import io.fabric8.kubernetes.api.model.networking.v1.ServiceBackendPortBuilder;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientBuilder;
 import io.fabric8.kubernetes.client.KubernetesClientException;
+import io.fabric8.kubernetes.client.dsl.NamespaceableResource;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.eclipse.jetty.server.Server;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -33,6 +46,7 @@ import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -54,64 +68,68 @@ class KubernetesValidationHookHandlingTest extends AbstractWebhookHandlingTest {
 
   @Test
   void validatingWebhookAllowsValidResource() {
-    var client = new KubernetesClientBuilder().withConfig(Config.fromKubeconfig(kubeConfig)).build();
+    KubernetesClient client = new KubernetesClientBuilder().withConfig(Config.fromKubeconfig(kubeConfig)).build();
     applyConfig(client);
 
-    var ingress = client.resource(validIngress()).create();
+    Ingress ingress = client.resource(validIngress()).create();
 
     assertThat(ingress.getMetadata().getName()).isEqualTo("valid-ingress");
   }
 
   @Test
   void validatingWebhookRejectsInvalidResource() {
-    var client = new KubernetesClientBuilder().withConfig(Config.fromKubeconfig(kubeConfig)).build();
+    KubernetesClient client = new KubernetesClientBuilder().withConfig(Config.fromKubeconfig(kubeConfig)).build();
     applyConfig(client);
 
-    assertThatThrownBy(() -> client.resource(invalidIngress()).create())
+    NamespaceableResource<Ingress> ingressResource = client.resource(invalidIngress());
+    assertThatThrownBy(ingressResource::create)
         .isInstanceOf(KubernetesClientException.class)
         .hasMessageContaining("Ingress with annotation 'reject=true' is not allowed");
   }
 
   @BeforeAll
   static void startWebhookServer() throws Exception {
-    startServer(server, PORT, keyFile, certFile, (request, response) -> {
-      var admissionReview = parseAdmissionReview(request);
-      var admissionRequest = admissionReview.getRequest();
-      var resource = getResourceFromAdmissionRequest(admissionRequest);
+    startServer(server, PORT, keyFile, certFile,
+        KubernetesValidationHookHandlingTest::handleValidatingWebhook);
+  }
 
-      boolean allowed = true;
-      String message = null;
-
-      HasMetadata hasMetadata = asHasMetadata(resource);
-      if (hasMetadata != null) {
-        var metadata = hasMetadata.getMetadata();
-        if (metadata.getAnnotations() != null
-            && "true".equals(metadata.getAnnotations().get("reject"))) {
-          allowed = false;
-          message = "Ingress with annotation 'reject=true' is not allowed";
-        }
-      }
-
-      var responseReview = allowed
-          ? new AdmissionReviewBuilder()
-              .withNewResponse()
-              .withAllowed(true)
-              .withUid(admissionRequest.getUid())
-              .endResponse()
-              .build()
-          : new AdmissionReviewBuilder()
-              .withNewResponse()
-              .withAllowed(false)
-              .withStatus(new StatusBuilder()
-                  .withCode(403)
-                  .withMessage(message)
-                  .build())
-              .withUid(admissionRequest.getUid())
-              .endResponse()
-              .build();
-
+  private static void handleValidatingWebhook(HttpServletRequest request, HttpServletResponse response) {
+    try {
+      AdmissionReview admissionReview = parseAdmissionReview(request);
+      AdmissionRequest admissionRequest = admissionReview.getRequest();
+      AdmissionReview responseReview = buildValidationResponse(admissionRequest);
       writeJsonResponse(response, responseReview);
-    });
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
+  }
+
+  private static AdmissionReview buildValidationResponse(AdmissionRequest admissionRequest) {
+    Object resource = getResourceFromAdmissionRequest(admissionRequest);
+    HasMetadata hasMetadata = asHasMetadata(resource);
+
+    if (hasMetadata != null) {
+      var annotations = hasMetadata.getMetadata().getAnnotations();
+      if (annotations != null && "true".equals(annotations.get("reject"))) {
+        return new AdmissionReviewBuilder()
+            .withNewResponse()
+            .withAllowed(false)
+            .withStatus(new StatusBuilder()
+                .withCode(403)
+                .withMessage("Ingress with annotation 'reject=true' is not allowed")
+                .build())
+            .withUid(admissionRequest.getUid())
+            .endResponse()
+            .build();
+      }
+    }
+
+    return new AdmissionReviewBuilder()
+        .withNewResponse()
+        .withAllowed(true)
+        .withUid(admissionRequest.getUid())
+        .endResponse()
+        .build();
   }
 
   @AfterAll
@@ -120,7 +138,7 @@ class KubernetesValidationHookHandlingTest extends AbstractWebhookHandlingTest {
   }
 
   private void applyConfig(KubernetesClient client) {
-    try (var resource = KubernetesValidationHookHandlingTest.class
+    try (InputStream resource = KubernetesValidationHookHandlingTest.class
         .getResourceAsStream("/ValidatingWebhookConfig.yaml")) {
       ValidatingWebhookConfiguration hook = (ValidatingWebhookConfiguration) client.load(resource).items().get(0);
       hook.getWebhooks().get(0).getClientConfig().setCaBundle(getEncodedCertificate(certFile));
