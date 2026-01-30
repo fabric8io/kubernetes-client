@@ -85,9 +85,9 @@ class WatchHttpManagerTest {
 
     WatchHTTPManager<HasMetadata, KubernetesResourceList<HasMetadata>> watch = new WatchHTTPManager(client,
         baseOperation, Mockito.mock(ListOptions.class), Mockito.mock(Watcher.class), 1, 0) {
-
+      
       @Override
-      void scheduleReconnect(WatchRequestState state) {
+      void scheduleReconnect(WatchRequestState state, Throwable t) {
         reconnect.countDown();
       }
     };
