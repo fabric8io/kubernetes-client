@@ -338,6 +338,7 @@ class UtilsTest {
       counter.getAndIncrement();
       try {
         Thread.sleep(100);
+
       } catch (InterruptedException e) {
       }
       // if the counter is greater than 1, another thread has executed

@@ -1454,6 +1454,7 @@
         <sonar.exclusions>**/src/generated/java/**/*</sonar.exclusions>
         <sonar.coverage.exclusions>**/kubernetes-examples/**/*,**/extensions/**/examples/**/*</sonar.coverage.exclusions>
         <karaf.itest.skip>true</karaf.itest.skip>
+        <links>https://static.javadoc.io/io.fabric8/kubernetes-model/2.1.1</links>
       </properties>
       <build>
         <plugins>
