@@ -231,7 +231,7 @@
     <module>kubernetes-client-deps-compatibility-tests</module>
     <module>log4j</module>
     <module>kubernetes-examples</module>
-    <module>bom-manipulator-plugin</module>
+    <module>bom-generator-plugin</module>
     <!-- BOM modules are added via profile activation at build time -->
   </modules>
 
@@ -1242,18 +1242,16 @@
       <build>
         <plugins>
           <plugin>
-            <groupId>io.sundr</groupId>
-            <artifactId>sundr-maven-plugin</artifactId>
-            <version>${sundrio.version}</version>
+            <groupId>io.fabric8</groupId>
+            <artifactId>bom-generator-plugin</artifactId>
+            <version>${project.version}</version>
+            <inherited>false</inherited>
             <configuration>
+              <sourceProfileId>release</sourceProfileId>
               <boms>
                 <bom>
                   <artifactId>kubernetes-client-bom</artifactId>
                   <name>Fabric8 :: Kubernetes :: BOM</name>
-                  <properties>
-                    <skipStagingRepositoryClose>true</skipStagingRepositoryClose>
-                    <sonar.skip>true</sonar.skip>
-                  </properties>
                   <modules>
                     <excludes>
                       <exclude>io.fabric8:*-tests</exclude>
@@ -1268,10 +1266,6 @@
                 <bom>
                   <artifactId>kubernetes-client-bom-with-deps</artifactId>
                   <name>Fabric8 :: Kubernetes :: BOM with Dependencies</name>
-                  <properties>
-                    <skipStagingRepositoryClose>true</skipStagingRepositoryClose>
-                    <sonar.skip>true</sonar.skip>
-                  </properties>
                   <modules>
                     <excludes>
                       <exclude>io.fabric8:*-tests</exclude>
@@ -1296,29 +1290,9 @@
             </configuration>
             <executions>
               <execution>
+                <id>generate-boms</id>
                 <goals>
-                  <goal>generate-bom</goal>
-                </goals>
-              </execution>
-            </executions>
-          </plugin>
-          <plugin>
-            <groupId>io.fabric8</groupId>
-            <artifactId>bom-manipulator-plugin</artifactId>
-            <version>${project.version}</version>
-            <inherited>false</inherited>
-            <configuration>
-              <sourceProfileId>release</sourceProfileId>
-              <bomDirectories>
-                <bomDirectory>target/classes/kubernetes-client-bom</bomDirectory>
-                <bomDirectory>target/classes/kubernetes-client-bom-with-deps</bomDirectory>
-              </bomDirectories>
-            </configuration>
-            <executions>
-              <execution>
-                <id>copy-release-plugins-to-boms</id>
-                <goals>
-                  <goal>copy-plugins</goal>
+                  <goal>generate-boms</goal>
                 </goals>
               </execution>
             </executions>

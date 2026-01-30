@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    Copyright (C) 2015 Red Hat, Inc.
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+            http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>io.fabric8.it</groupId>
+  <artifactId>simple-bom-parent</artifactId>
+  <version>1.0.0</version>
+  <packaging>pom</packaging>
+  <name>IT :: Simple BOM Parent</name>
+  <url>https://example.com/test-project</url>
+
+  <licenses>
+    <license>
+      <name>Apache License, Version 2.0</name>
+      <url>https://www.apache.org/licenses/LICENSE-2.0.txt</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+
+  <developers>
+    <developer>
+      <id>test</id>
+      <name>Test Developer</name>
+      <organization>Test Org</organization>
+      <organizationUrl>https://example.com</organizationUrl>
+    </developer>
+  </developers>
+
+  <scm>
+    <connection>scm:git:git@github.com:test/test-project.git</connection>
+    <developerConnection>scm:git:git@github.com:test/test-project.git</developerConnection>
+    <tag>${project.version}</tag>
+    <url>https://github.com/test/test-project/</url>
+  </scm>
+
+  <distributionManagement>
+    <snapshotRepository>
+      <id>snapshots</id>
+      <name>Snapshot Repository</name>
+      <url>https://repo.example.com/snapshots/</url>
+    </snapshotRepository>
+  </distributionManagement>
+
+  <properties>
+    <gpg.version>3.2.8</gpg.version>
+    <central.version>0.9.0</central.version>
+    <release.version>3.1.1</release.version>
+    <enforcer.version>3.6.2</enforcer.version>
+  </properties>
+
+  <modules>
+    <module>module-a</module>
+    <module>module-b</module>
+    <module>module-plugin</module>
+  </modules>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>io.fabric8</groupId>
+        <artifactId>bom-generator-plugin</artifactId>
+        <version>@project.version@</version>
+        <configuration>
+          <boms>
+            <bom>
+              <artifactId>test-bom</artifactId>
+              <name>IT :: Test BOM</name>
+            </bom>
+            <bom>
+              <artifactId>test-bom-filtered</artifactId>
+              <name>IT :: Test BOM Filtered</name>
+              <modules>
+                <excludes>
+                  <exclude>io.fabric8.it:module-b</exclude>
+                </excludes>
+              </modules>
+            </bom>
+          </boms>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+
+  <profiles>
+    <profile>
+      <id>release</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-gpg-plugin</artifactId>
+            <version>${gpg.version}</version>
+            <executions>
+              <execution>
+                <id>sign-artifacts</id>
+                <phase>verify</phase>
+                <goals>
+                  <goal>sign</goal>
+                </goals>
+              </execution>
+            </executions>
+            <configuration>
+              <gpgArguments>
+                <arg>--batch</arg>
+                <arg>--pinentry-mode</arg>
+                <arg>loopback</arg>
+              </gpgArguments>
+            </configuration>
+          </plugin>
+          <plugin>
+            <groupId>org.sonatype.central</groupId>
+            <artifactId>central-publishing-maven-plugin</artifactId>
+            <version>${central.version}</version>
+            <extensions>true</extensions>
+            <configuration>
+              <publishingServerId>central-portal</publishingServerId>
+              <autoPublish>false</autoPublish>
+              <skipPublishing>false</skipPublishing>
+            </configuration>
+          </plugin>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-release-plugin</artifactId>
+            <version>${release.version}</version>
+            <configuration>
+              <autoVersionSubmodules>true</autoVersionSubmodules>
+              <pushChanges>false</pushChanges>
+              <localCheckout>true</localCheckout>
+            </configuration>
+          </plugin>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-enforcer-plugin</artifactId>
+            <version>${enforcer.version}</version>
+            <executions>
+              <execution>
+                <id>enforce-no-snapshots</id>
+                <goals>
+                  <goal>enforce</goal>
+                </goals>
+                <configuration>
+                  <rules>
+                    <requireReleaseDeps>
+                      <message>No Snapshots Allowed!</message>
+                    </requireReleaseDeps>
+                  </rules>
+                  <fail>false</fail>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
+</project>
