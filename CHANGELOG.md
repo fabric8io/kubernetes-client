@@ -7,6 +7,7 @@
 * Fix #7415: (java-generator) Fix generic type erasure for array of enums with default values
 
 #### Improvements
+* Fix #7422: bump okhttp from 4.12.0 to 5.3.2
 
 #### Dependency Upgrade
 
@@ -14,6 +15,7 @@
 * Fix #7385: Support for Kubernetes v1.35 (Timbernetes)
 
 #### _**Note**_: Breaking changes
+* Fix #7422: bump okhttp from 4.12.0 to 5.3.2. The versions are binary compatible, but the major version upgrade might cause side effects.
 
 ### 7.5.2 (2026-01-22)
 
