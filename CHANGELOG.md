@@ -19,6 +19,7 @@
 
 #### Dependency Upgrade
 * Fix #7408: bump vertx.version from 4.5.21 to 4.5.24
+* Fix #7422: bump okhttp from 4.12.0 to 5.3.2
 
 ### 7.5.1 (2026-01-15)
 
