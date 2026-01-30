@@ -15,14 +15,14 @@
  */
 package io.fabric8.kubeapitest.sample;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import io.fabric8.kubeapitest.junit.EnableKubeAPIServer;
 import io.fabric8.kubeapitest.junit.KubeConfig;
 import io.fabric8.kubernetes.api.model.HasMetadata;
+import io.fabric8.kubernetes.api.model.StatusBuilder;
 import io.fabric8.kubernetes.api.model.admission.v1.AdmissionRequest;
 import io.fabric8.kubernetes.api.model.admission.v1.AdmissionReview;
 import io.fabric8.kubernetes.api.model.admission.v1.AdmissionReviewBuilder;
-import io.fabric8.kubernetes.api.model.admissionregistration.v1.MutatingWebhookConfiguration;
+import io.fabric8.kubernetes.api.model.admissionregistration.v1.ValidatingWebhookConfiguration;
 import io.fabric8.kubernetes.api.model.networking.v1.HTTPIngressPathBuilder;
 import io.fabric8.kubernetes.api.model.networking.v1.HTTPIngressRuleValueBuilder;
 import io.fabric8.kubernetes.api.model.networking.v1.Ingress;
@@ -35,8 +35,8 @@ import io.fabric8.kubernetes.api.model.networking.v1.ServiceBackendPortBuilder;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientBuilder;
-import io.fabric8.kubernetes.client.utils.Serialization;
-import io.fabric8.zjsonpatch.JsonDiff;
+import io.fabric8.kubernetes.client.KubernetesClientException;
+import io.fabric8.kubernetes.client.dsl.NamespaceableResource;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.eclipse.jetty.server.Server;
@@ -47,74 +47,89 @@ import org.junit.jupiter.api.Test;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
-import java.util.Base64;
-import java.util.Collections;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 /**
- * Test demonstrates how to test locally Mutating Webhooks, in real like you implementation such an
- * endpoint would be simpler, using frameworks like
- * <a href="https://github.com/java-operator-sdk/kubernetes-webooks-framework">Kubernetes Webhook
- * Framework</a> with combination of Quarkus or Spring.
+ * Test demonstrates how to test locally Validating Webhooks using the kube-api-test module.
+ * The validating webhook rejects Ingress resources that have the annotation "reject=true".
  */
 @EnableKubeAPIServer
-class KubernetesMutationHookHandlingTest extends AbstractWebhookHandlingTest {
+class KubernetesValidationHookHandlingTest extends AbstractWebhookHandlingTest {
 
-  private static final int PORT = 8443;
-  private static final File keyFile = new File("target", "mutation.key");
-  private static final File certFile = new File("target", "mutation.crt");
+  private static final int PORT = 8444;
+  private static final File keyFile = new File("target", "validation.key");
+  private static final File certFile = new File("target", "validation.crt");
   private static final Server server = new Server();
 
   @KubeConfig
   static String kubeConfig;
 
   @Test
-  void handleMutatingWebhook() {
+  void validatingWebhookAllowsValidResource() {
     KubernetesClient client = new KubernetesClientBuilder().withConfig(Config.fromKubeconfig(kubeConfig)).build();
     applyConfig(client);
 
-    Ingress ingress = client.resource(testIngress()).create();
+    Ingress ingress = client.resource(validIngress()).create();
 
-    assertThat(ingress.getMetadata().getLabels()).containsEntry("test", "mutation");
+    assertThat(ingress.getMetadata().getName()).isEqualTo("valid-ingress");
+  }
+
+  @Test
+  void validatingWebhookRejectsInvalidResource() {
+    KubernetesClient client = new KubernetesClientBuilder().withConfig(Config.fromKubeconfig(kubeConfig)).build();
+    applyConfig(client);
+
+    NamespaceableResource<Ingress> ingressResource = client.resource(invalidIngress());
+    assertThatThrownBy(ingressResource::create)
+        .isInstanceOf(KubernetesClientException.class)
+        .hasMessageContaining("Ingress with annotation 'reject=true' is not allowed");
   }
 
   @BeforeAll
   static void startWebhookServer() throws Exception {
     startServer(server, PORT, keyFile, certFile,
-        KubernetesMutationHookHandlingTest::handleMutatingWebhook);
+        KubernetesValidationHookHandlingTest::handleValidatingWebhook);
   }
 
-  private static void handleMutatingWebhook(HttpServletRequest request, HttpServletResponse response) {
+  private static void handleValidatingWebhook(HttpServletRequest request, HttpServletResponse response) {
     try {
       AdmissionReview admissionReview = parseAdmissionReview(request);
       AdmissionRequest admissionRequest = admissionReview.getRequest();
-      Object resource = getResourceFromAdmissionRequest(admissionRequest);
-
-      if (resource instanceof HasMetadata) {
-        HasMetadata hasMetadata = (HasMetadata) resource;
-        JsonNode originalJson = Serialization.jsonMapper().valueToTree(resource);
-        hasMetadata.getMetadata().setLabels(Collections.singletonMap("test", "mutation"));
-        JsonNode editedJson = Serialization.jsonMapper().valueToTree(resource);
-
-        AdmissionReview responseReview = new AdmissionReviewBuilder()
-            .withNewResponse()
-            .withAllowed()
-            .withPatchType("JSONPatch")
-            .withPatch(Base64.getEncoder().encodeToString(
-                JsonDiff.asJson(originalJson, editedJson).toString().getBytes(StandardCharsets.UTF_8)))
-            .withUid(admissionRequest.getUid())
-            .endResponse()
-            .build();
-
-        writeJsonResponse(response, responseReview);
-      } else {
-        response.setStatus(422);
-      }
+      AdmissionReview responseReview = buildValidationResponse(admissionRequest);
+      writeJsonResponse(response, responseReview);
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
+  }
+
+  private static AdmissionReview buildValidationResponse(AdmissionRequest admissionRequest) {
+    Object resource = getResourceFromAdmissionRequest(admissionRequest);
+    HasMetadata hasMetadata = asHasMetadata(resource);
+
+    if (hasMetadata != null) {
+      var annotations = hasMetadata.getMetadata().getAnnotations();
+      if (annotations != null && "true".equals(annotations.get("reject"))) {
+        return new AdmissionReviewBuilder()
+            .withNewResponse()
+            .withAllowed(false)
+            .withStatus(new StatusBuilder()
+                .withCode(403)
+                .withMessage("Ingress with annotation 'reject=true' is not allowed")
+                .build())
+            .withUid(admissionRequest.getUid())
+            .endResponse()
+            .build();
+      }
+    }
+
+    return new AdmissionReviewBuilder()
+        .withNewResponse()
+        .withAllowed(true)
+        .withUid(admissionRequest.getUid())
+        .endResponse()
+        .build();
   }
 
   @AfterAll
@@ -123,9 +138,9 @@ class KubernetesMutationHookHandlingTest extends AbstractWebhookHandlingTest {
   }
 
   private void applyConfig(KubernetesClient client) {
-    try (InputStream resource = KubernetesMutationHookHandlingTest.class
-        .getResourceAsStream("/MutatingWebhookConfig.yaml")) {
-      MutatingWebhookConfiguration hook = (MutatingWebhookConfiguration) client.load(resource).items().get(0);
+    try (InputStream resource = KubernetesValidationHookHandlingTest.class
+        .getResourceAsStream("/ValidatingWebhookConfig.yaml")) {
+      ValidatingWebhookConfiguration hook = (ValidatingWebhookConfiguration) client.load(resource).items().get(0);
       hook.getWebhooks().get(0).getClientConfig().setCaBundle(getEncodedCertificate(certFile));
       client.resource(hook).serverSideApply();
     } catch (IOException e) {
@@ -133,17 +148,45 @@ class KubernetesMutationHookHandlingTest extends AbstractWebhookHandlingTest {
     }
   }
 
-  public static Ingress testIngress() {
+  public static Ingress validIngress() {
     return new IngressBuilder()
         .withNewMetadata()
-        .withName("test1")
+        .withName("valid-ingress")
         .endMetadata()
         .withSpec(new IngressSpecBuilder()
             .withIngressClassName("sample")
             .withRules(new IngressRuleBuilder()
                 .withHttp(new HTTPIngressRuleValueBuilder()
                     .withPaths(new HTTPIngressPathBuilder()
-                        .withPath("/test")
+                        .withPath("/valid")
+                        .withPathType("Prefix")
+                        .withBackend(new IngressBackendBuilder()
+                            .withService(new IngressServiceBackendBuilder()
+                                .withName("service")
+                                .withPort(new ServiceBackendPortBuilder()
+                                    .withNumber(80)
+                                    .build())
+                                .build())
+                            .build())
+                        .build())
+                    .build())
+                .build())
+            .build())
+        .build();
+  }
+
+  public static Ingress invalidIngress() {
+    return new IngressBuilder()
+        .withNewMetadata()
+        .withName("invalid-ingress")
+        .addToAnnotations("reject", "true")
+        .endMetadata()
+        .withSpec(new IngressSpecBuilder()
+            .withIngressClassName("sample")
+            .withRules(new IngressRuleBuilder()
+                .withHttp(new HTTPIngressRuleValueBuilder()
+                    .withPaths(new HTTPIngressPathBuilder()
+                        .withPath("/invalid")
                         .withPathType("Prefix")
                         .withBackend(new IngressBackendBuilder()
                             .withService(new IngressServiceBackendBuilder()
