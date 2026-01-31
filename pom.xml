@@ -1483,7 +1483,7 @@
             <artifactId>maven-javadoc-plugin</artifactId>
             <configuration>
               <links>
-                <link>https://static.javadoc.io/io.fabric8/kubernetes-model/2.1.1</link>
+                <link>https://static.javadoc.io/io.fabric8/kubernetes-model/${project.version}</link>
               </links>
               <additionalOptions>
                 <additionalOption>-header</additionalOption>
