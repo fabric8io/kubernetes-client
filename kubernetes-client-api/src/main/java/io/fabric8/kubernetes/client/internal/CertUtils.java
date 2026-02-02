@@ -51,7 +51,7 @@ public class CertUtils {
   private CertUtils() {
   }
 
-  private static final Logger LOG = LoggerFactory.getLogger(CertUtils.class);
+  private static final Logger logger = LoggerFactory.getLogger(CertUtils.class);
   private static final String TRUST_STORE_SYSTEM_PROPERTY = "javax.net.ssl.trustStore";
   private static final String TRUST_STORE_PASSWORD_SYSTEM_PROPERTY = "javax.net.ssl.trustStorePassword";
   private static final String TRUST_STORE_TYPE_SYSTEM_PROPERTY = "javax.net.ssl.trustStoreType";
@@ -103,7 +103,8 @@ public class CertUtils {
           // any remaining input means there is an actual problem with the key contents or file format
           throw e;
         }
-        LOG.debug("The trailing entry generated a certificate exception.  More than likely the contents end with comments.", e);
+        logger.debug("The trailing entry generated a certificate exception.  More than likely the contents end with comments.",
+            e);
         break;
       }
       try {
@@ -256,7 +257,7 @@ public class CertUtils {
         // still no good
       }
     }
-    LOG.info("There is a problem with reading default keystore/truststore file {} "
+    logger.info("There is a problem with reading default keystore/truststore file {} "
         + "- the file won't be loaded. The reason is: {}", fileToLoad, ex.getMessage());
     return false;
   }

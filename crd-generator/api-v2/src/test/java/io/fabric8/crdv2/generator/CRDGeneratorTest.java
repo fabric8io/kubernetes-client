@@ -704,7 +704,7 @@ class CRDGeneratorTest {
 
   private static class TestCRDOutput extends AbstractCRDOutput<ByteArrayOutputStream> {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(TestCRDOutput.class);
+    private static final Logger logger = LoggerFactory.getLogger(TestCRDOutput.class);
     private final static Class<CustomResourceDefinition> crdClass = CustomResourceDefinition.class;
     private final Map<String, CustomResourceInfo> infos = new ConcurrentHashMap<>();
 
@@ -727,7 +727,7 @@ class CRDGeneratorTest {
 
     void outputCRD(Class<? extends CustomResource<?, ?>> customResource) {
       String s = getStreamFor(keyFor(customResource)).toString();
-      LOGGER.debug(s);
+      logger.debug(s);
     }
   }
 }

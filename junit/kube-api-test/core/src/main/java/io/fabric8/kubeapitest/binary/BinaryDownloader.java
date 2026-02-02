@@ -37,7 +37,7 @@ import java.util.stream.Stream;
 
 public class BinaryDownloader {
 
-  private static final Logger log = LoggerFactory.getLogger(BinaryDownloader.class);
+  private static final Logger logger = LoggerFactory.getLogger(BinaryDownloader.class);
 
   private final String kubeAPITestDir;
   private final BinaryRepo binaryRepo;
@@ -65,14 +65,14 @@ public class BinaryDownloader {
         return dirForVersion;
       }
       new File(kubeAPITestDir, BinaryManager.BINARY_LIST_DIR).mkdirs();
-      log.info("Downloading binaries with version: {}", version);
+      logger.info("Downloading binaries with version: {}", version);
       var tempFile = binaryRepo.downloadVersionToTempFile(version);
       File dir = createDirForBinaries(version);
       extractFiles(tempFile, dir);
-      log.debug("Binary downloaded and extracted");
+      logger.debug("Binary downloaded and extracted");
       var deleted = tempFile.delete();
       if (!deleted) {
-        log.warn("Unable to delete temp file: {}", tempFile.getPath());
+        logger.warn("Unable to delete temp file: {}", tempFile.getPath());
       }
     } finally {
       lock.unlock();

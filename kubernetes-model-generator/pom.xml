@@ -82,7 +82,6 @@
     <testExclusionPattern>**/*KubernetesTest.java</testExclusionPattern>
     <!-- Enable/disable GraalVM reflect-config.json generation -->
     <generateGraalVmReflectConfig>false</generateGraalVmReflectConfig>
-    <openapi.schema.kubernetes-latest>${project.parent.basedir}/openapi/schemas/kubernetes-1.34.1.json</openapi.schema.kubernetes-latest>
     <openapi.schema.openshift-generated>${project.parent.basedir}/openapi/schemas/openshift-generated.json</openapi.schema.openshift-generated>
     <openapi.schema.dev.knative>${project.basedir}/../../../kubernetes-model-generator/openapi/schemas/dev.knative.json</openapi.schema.dev.knative>
     <openapi.schema.dev.tekton>${project.basedir}/../../../kubernetes-model-generator/openapi/schemas/dev.tekton.json</openapi.schema.dev.tekton>
