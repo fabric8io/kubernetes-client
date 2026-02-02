@@ -114,6 +114,8 @@ public class GeneratorSettings {
   private Set<String> includeGenerationRegexes;
   private boolean generateJavadoc;
   @Builder.Default
+  private boolean generateGraalVmReflectConfig = false;
+  @Builder.Default
   private final String genericKubernetesResourceClass = "io.fabric8.kubernetes.api.model.GenericKubernetesResource";
   @Builder.Default
   private final String hasMetadataClass = "io.fabric8.kubernetes.api.model.HasMetadata";

@@ -61,11 +61,13 @@ class ModelGenerator {
   private final SchemaUtils utils;
   private final GeneratorUtils generatorUtils;
   private final Template modelTemplate;
+  private final List<String> generatedClasses;
 
   ModelGenerator(GeneratorSettings settings) {
     this.settings = settings;
     this.utils = new SchemaUtils(settings);
     this.generatorUtils = new GeneratorUtils(settings);
+    this.generatedClasses = new ArrayList<>();
     this.modelTemplate = Mustache.compiler()
         .withLoader(name -> new StringReader(generatorUtils.readTemplate(name)))
         .defaultValue("")
@@ -77,7 +79,7 @@ class ModelGenerator {
     cleanSourceDirectory(settings.getGeneratedSourcesDirectory());
     final Map<String, Schema<?>> schemas = utils.extractComponentSchemas();
     settings.getLogger().info(String.format("Found %s schemas", schemas.size()));
-    final AtomicInteger generatedClasses = new AtomicInteger();
+    final AtomicInteger generatedClassesCount = new AtomicInteger();
     final Map<String, Schema<?>> entries = schemas.entrySet().stream()
         .filter(GeneratorUtils.filter(settings))
         .filter(entry -> entry.getValue() instanceof ObjectSchema)
@@ -95,9 +97,11 @@ class ModelGenerator {
       processTemplate(templateContext);
       final String fileContents = modelTemplate.execute(templateContext.getContext());
       writeFile(templateContext, fileContents);
-      generatedClasses.incrementAndGet();
+      generatedClasses.add(templateContext.getClassInformation().getClassName());
+      generatedClassesCount.incrementAndGet();
     }
-    settings.getLogger().info(String.format("Generated %s model entries", generatedClasses.get()));
+    settings.getLogger().info(String.format("Generated %s model entries", generatedClassesCount.get()));
+    generateReflectConfig();
   }
 
   private void processTemplate(TemplateContext ret) {
@@ -298,6 +302,66 @@ class ModelGenerator {
   private static Set<String> initDefaultImports() {
     return new HashSet<>(Collections.singletonList(
         "javax.annotation.processing.Generated"));
+  }
+
+  private void generateReflectConfig() {
+    if (!settings.isGenerateGraalVmReflectConfig()) {
+      settings.getLogger().fine("GraalVM reflect-config generation is disabled");
+      return;
+    }
+
+    if (generatedClasses.isEmpty()) {
+      settings.getLogger().fine("No classes generated, skipping reflect-config.json generation");
+      return;
+    }
+
+    settings.getLogger().info("Generating GraalVM reflect-config.json");
+
+    // Sort classes for consistent output
+    Collections.sort(generatedClasses);
+
+    // Create META-INF/native-image directory in target/classes
+    final Path nativeImageDir = settings.getOutputDirectory().toPath()
+        .resolve("target")
+        .resolve("classes")
+        .resolve("META-INF")
+        .resolve("native-image");
+
+    try {
+      FileUtils.forceMkdir(nativeImageDir.toFile());
+    } catch (IOException e) {
+      throw new GeneratorException("Failed to create META-INF/native-image directory", e);
+    }
+
+    // Generate reflect-config.json
+    final Path reflectConfigPath = nativeImageDir.resolve("reflect-config.json");
+    final StringBuilder json = new StringBuilder();
+    json.append("[\n");
+
+    for (int i = 0; i < generatedClasses.size(); i++) {
+      final String className = generatedClasses.get(i);
+      if (i > 0) {
+        json.append(",\n");
+      }
+      json.append("  {\n");
+      json.append("    \"condition\": {\n");
+      json.append("      \"typeReachable\": \"").append(className).append("\"\n");
+      json.append("    },\n");
+      json.append("    \"name\": \"").append(className).append("\",\n");
+      json.append("    \"allDeclaredConstructors\": true,\n");
+      json.append("    \"allDeclaredMethods\": true,\n");
+      json.append("    \"allDeclaredFields\": true\n");
+      json.append("  }");
+    }
+
+    json.append("\n]");
+
+    generatorUtils.writeFile(reflectConfigPath, json.toString());
+
+    settings.getLogger().info(String.format(
+        "Generated reflect-config.json with %d entries at %s",
+        generatedClasses.size(),
+        reflectConfigPath));
   }
 
 }
