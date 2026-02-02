@@ -98,10 +98,7 @@ class ModelGenerator {
       processTemplate(templateContext);
       final String fileContents = modelTemplate.execute(templateContext.getContext());
       writeFile(templateContext, fileContents);
-      // Only add top-level Kubernetes resources (with apiVersion) to reflect config
-      if (templateContext.getApiVersion() != null) {
-        generatedClasses.add(templateContext.getClassInformation().getClassName());
-      }
+      generatedClasses.add(templateContext.getClassInformation().getClassName());
       generatedClassesCount.incrementAndGet();
     }
     settings.getLogger().info(String.format("Generated %s model entries", generatedClassesCount.get()));
@@ -328,10 +325,11 @@ class ModelGenerator {
     // Sort classes for consistent output
     Collections.sort(generatedClasses);
 
-    // Create META-INF/native-image directory in target/classes
+    // Create META-INF/native-image directory in src/main/resources so it gets packaged
     final Path nativeImageDir = settings.getOutputDirectory().toPath()
-        .resolve("target")
-        .resolve("classes")
+        .resolve("src")
+        .resolve("main")
+        .resolve("resources")
         .resolve("META-INF")
         .resolve("native-image");
 
