@@ -42,6 +42,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.logging.Level;
 import java.util.stream.Collectors;
 
 import static io.fabric8.kubernetes.schema.generator.GeneratorUtils.cleanSourceDirectory;
@@ -97,7 +98,10 @@ class ModelGenerator {
       processTemplate(templateContext);
       final String fileContents = modelTemplate.execute(templateContext.getContext());
       writeFile(templateContext, fileContents);
-      generatedClasses.add(templateContext.getClassInformation().getClassName());
+      // Only add top-level Kubernetes resources (with apiVersion) to reflect config
+      if (templateContext.getApiVersion() != null) {
+        generatedClasses.add(templateContext.getClassInformation().getClassName());
+      }
       generatedClassesCount.incrementAndGet();
     }
     settings.getLogger().info(String.format("Generated %s model entries", generatedClassesCount.get()));
@@ -311,11 +315,15 @@ class ModelGenerator {
     }
 
     if (generatedClasses.isEmpty()) {
-      settings.getLogger().fine("No classes generated, skipping reflect-config.json generation");
+      settings.getLogger().fine("No top-level Kubernetes resources generated, skipping reflect-config.json generation");
       return;
     }
 
-    settings.getLogger().info("Generating GraalVM reflect-config.json");
+    if (settings.getLogger().isLoggable(Level.INFO)) {
+      settings.getLogger().info(String.format(
+          "Generating GraalVM reflect-config.json for %d top-level Kubernetes resources",
+          generatedClasses.size()));
+    }
 
     // Sort classes for consistent output
     Collections.sort(generatedClasses);
@@ -330,7 +338,7 @@ class ModelGenerator {
     try {
       FileUtils.forceMkdir(nativeImageDir.toFile());
     } catch (IOException e) {
-      throw new GeneratorException("Failed to create META-INF/native-image directory", e);
+      throw new GeneratorException("Failed to create META-INF/native-image directory");
     }
 
     // Generate reflect-config.json
@@ -358,10 +366,12 @@ class ModelGenerator {
 
     generatorUtils.writeFile(reflectConfigPath, json.toString());
 
-    settings.getLogger().info(String.format(
-        "Generated reflect-config.json with %d entries at %s",
-        generatedClasses.size(),
-        reflectConfigPath));
+    if (settings.getLogger().isLoggable(Level.INFO)) {
+      settings.getLogger().info(String.format(
+          "Generated reflect-config.json with %d entries at %s",
+          generatedClasses.size(),
+          reflectConfigPath));
+    }
   }
 
 }
