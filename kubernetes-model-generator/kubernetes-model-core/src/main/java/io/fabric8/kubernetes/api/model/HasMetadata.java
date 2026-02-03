@@ -539,4 +539,78 @@ public interface HasMetadata extends KubernetesResource {
     }
     return metaBuilder;
   }
+
+  /**
+   * Same as {@code isSameResource(other, false)}
+   *
+   * @see #isSameResource(HasMetadata, boolean)
+   */
+  default boolean isSameResource(HasMetadata other) {
+    return isSameResource(other, false);
+  }
+
+  /**
+   * Whether the specified HasMetadata represents the same resource on the cluster as this one, i.e. kind, uid, name and
+   * namespace all point to the same logical resource.
+   *
+   * <p>
+   * Note that this doesn't make any other assumption regarding other fields, and in particular,
+   * {@code resource1.isSameResource(resource2)} does NOT imply {@code resource1.equals(resource2)}.
+   * </p>
+   *
+   * @param other the HasMetadata to check
+   * @param strict whether the checks should be strict:
+   *        <ul>
+   *        <li>make sure that {@code kind} is properly set for both resources and that they are equal</li>
+   *        <li>check that the {@code resourceVersion} is the same for both, if set or {@code null} for both</li>
+   *        </ul>
+   *        The only exceptions to this is if the two resources point to the same object (i.e. {@code this == other}) or if the
+   *        UID is set, in which case stricter checks will not be enforced and similarity will only be assessed on the objects'
+   *        identity (either Java identity or via UID).
+   * @return {@code true} if the specified HasMetadata points to the same cluster resource, {@code false} otherwise
+   */
+  default boolean isSameResource(HasMetadata other, boolean strict) {
+    if (this == other) {
+      return true;
+    }
+
+    if (other == null) {
+      return false;
+    }
+
+    final var metadata = this.getMetadata();
+    final var otherMetadata = other.getMetadata();
+    if (metadata == null || otherMetadata == null) {
+      return false;
+    }
+
+    // check UID first
+    final var uid = metadata.getUid();
+    if (uid != null) {
+      return uid.equals(otherMetadata.getUid());
+    }
+
+    final var kind = getKind();
+    final var differentKind = !Objects.equals(other.getKind(), kind);
+    if (differentKind) {
+      return false;
+    }
+
+    // in strict mode, the kind needs to be set
+    if (strict && kind == null) {
+      return false;
+    }
+
+    final var sameNameAndNS = Objects.equals(metadata.getName(), otherMetadata.getName())
+        && Objects.equals(metadata.getNamespace(), otherMetadata.getNamespace());
+    if (!sameNameAndNS) {
+      return false;
+    }
+
+    if (strict) {
+      return Objects.equals(metadata.getResourceVersion(), otherMetadata.getResourceVersion());
+    } else {
+      return true;
+    }
+  }
 }
