@@ -18,6 +18,7 @@ package io.fabric8.kubernetes.api.model;
 import io.fabric8.kubernetes.model.annotation.Group;
 import io.fabric8.kubernetes.model.annotation.Plural;
 import io.fabric8.kubernetes.model.annotation.Version;
+import io.sundr.deps.org.apache.commons.lang.RandomStringUtils;
 import org.junit.jupiter.api.Test;
 
 import java.util.Optional;
@@ -316,6 +317,72 @@ class HasMetadataTest {
     assertEquals(HasMetadata.REQUIRES_NON_NULL_NAMESPACE, exception.getMessage());
   }
 
+  @Test
+  void isSameResource() {
+    HasMetadata one = new TestHasMetadata();
+    assertFalse(one.isSameResource(null));
+
+    HasMetadata two = new TestHasMetadata();
+    assertTrue(one.isSameResource(one));
+    assertTrue(one.isSameResource(one, true)); // should normally be false but since we're comparing the same object, it should always be true
+
+    assertFalse(one.isSameResource(two)); // metadata is null so cannot check if resources are the same
+    assertFalse(one.isSameResource(two, true));
+
+    // generated name and namespace
+    TestHM t1 = new TestHM();
+    TestHM t2 = new TestHM();
+    checkDifferent(t1, t2);
+
+    // if UID is set, nothing else is checked, regardless of strict mode or not
+    final var uid = RandomStringUtils.randomAlphanumeric(10);
+    t1.getMetadata().setUid(uid);
+    checkDifferent(t1, t2);
+    t2.getMetadata().setUid(uid);
+    baseTests(t1, t2);
+    assertTrue(t1.isSameResource(t2, true));
+    assertTrue(t2.isSameResource(t1, true));
+
+    t1 = new TestHM();
+    t2 = new TestHM(t1); // initialized with same name and namespace
+    baseTests(t1, t2);
+    assertTrue(t1.isSameResource(t2, true));
+    assertTrue(t2.isSameResource(t1, true));
+
+    t1.getMetadata().setResourceVersion("t1");
+    t2.getMetadata().setResourceVersion("t1");
+    baseTests(t1, t2);
+    assertTrue(t1.isSameResource(t2, true));
+    assertTrue(t2.isSameResource(t1, true));
+
+    t2.getMetadata().setResourceVersion("t2");
+    baseTests(t1, t2);
+    assertFalse(t1.isSameResource(t2, true));
+    assertFalse(t2.isSameResource(t1, true));
+
+    t2.getMetadata().setName("otherName");
+    checkDifferent(t1, t2);
+
+    t1 = new TestHM();
+    t2 = new TestHM(t1); // initialized with same name and namespace
+    t2.getMetadata().setNamespace("otherNamespace");
+    checkDifferent(t1, t2);
+  }
+
+  private static void checkDifferent(TestHM t1, TestHM t2) {
+    assertFalse(t1.isSameResource(t2));
+    assertFalse(t2.isSameResource(t1));
+    assertFalse(t1.isSameResource(t2, true));
+    assertFalse(t2.isSameResource(t1, true));
+  }
+
+  private static void baseTests(HasMetadata t1, HasMetadata t2) {
+    assertTrue(t1.isSameResource(t1));
+    assertTrue(t1.isSameResource(t1, true));
+    assertTrue(t1.isSameResource(t2));
+    assertTrue(t2.isSameResource(t1));
+  }
+
   static class TestHasMetadata implements HasMetadata {
     private ObjectMeta metadata;
 
@@ -442,6 +509,11 @@ class HasMetadataTest {
       meta.setName(name);
     }
 
+    Default(String name, String namespace) {
+      this(name);
+      meta.setNamespace(namespace);
+    }
+
     @Override
     public ObjectMeta getMetadata() {
       return meta;
@@ -465,6 +537,23 @@ class HasMetadataTest {
     @Override
     public void setApiVersion(String version) {
       throw new RuntimeException("setApiVersion shouldn't be called");
+    }
+  }
+
+  @Group("fabric8.io")
+  @Version("v1")
+  private static class TestHM extends Default {
+    public TestHM(TestHM other) {
+      super(other.getMetadata().getName(), other.getMetadata().getNamespace());
+    }
+
+    public TestHM() {
+      super(RandomStringUtils.randomAlphabetic(5), RandomStringUtils.randomAlphabetic(5));
+    }
+
+    @Override
+    public String getKind() {
+      return "TestHM";
     }
   }
 
