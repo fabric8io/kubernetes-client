@@ -16,7 +16,11 @@
 package io.fabric8.kubeapitest.sample;
 
 import io.fabric8.kubeapitest.junit.EnableKubeAPIServer;
+import io.fabric8.kubeapitest.junit.EnableWebhookServer;
 import io.fabric8.kubeapitest.junit.KubeConfig;
+import io.fabric8.kubeapitest.junit.WebhookCertFile;
+import io.fabric8.kubeapitest.junit.WebhookHandler;
+import io.fabric8.kubeapitest.junit.WebhookServerUtils;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.StatusBuilder;
 import io.fabric8.kubernetes.api.model.admission.v1.AdmissionRequest;
@@ -37,11 +41,8 @@ import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientBuilder;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.dsl.NamespaceableResource;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import org.eclipse.jetty.server.Server;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
+import io.fabric8.mockwebserver.http.MockResponse;
+import io.fabric8.mockwebserver.http.RecordedRequest;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
@@ -56,15 +57,14 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
  * The validating webhook rejects Ingress resources that have the annotation "reject=true".
  */
 @EnableKubeAPIServer
-class KubernetesValidationHookHandlingTest extends AbstractWebhookHandlingTest {
-
-  private static final int PORT = 8444;
-  private static final File keyFile = new File("target", "validation.key");
-  private static final File certFile = new File("target", "validation.crt");
-  private static final Server server = new Server();
+@EnableWebhookServer(port = 8444, certFile = "validation.crt")
+class KubernetesValidationHookHandlingTest {
 
   @KubeConfig
   static String kubeConfig;
+
+  @WebhookCertFile
+  static File certFile;
 
   @Test
   void validatingWebhookAllowsValidResource() {
@@ -87,26 +87,17 @@ class KubernetesValidationHookHandlingTest extends AbstractWebhookHandlingTest {
         .hasMessageContaining("Ingress with annotation 'reject=true' is not allowed");
   }
 
-  @BeforeAll
-  static void startWebhookServer() throws Exception {
-    startServer(server, PORT, keyFile, certFile,
-        KubernetesValidationHookHandlingTest::handleValidatingWebhook);
-  }
-
-  private static void handleValidatingWebhook(HttpServletRequest request, HttpServletResponse response) {
-    try {
-      AdmissionReview admissionReview = parseAdmissionReview(request);
-      AdmissionRequest admissionRequest = admissionReview.getRequest();
-      AdmissionReview responseReview = buildValidationResponse(admissionRequest);
-      writeJsonResponse(response, responseReview);
-    } catch (IOException e) {
-      throw new RuntimeException(e);
-    }
+  @WebhookHandler(path = "/validate")
+  static MockResponse handleValidatingWebhook(RecordedRequest request) {
+    AdmissionReview admissionReview = WebhookServerUtils.parseAdmissionReview(request);
+    AdmissionRequest admissionRequest = admissionReview.getRequest();
+    AdmissionReview responseReview = buildValidationResponse(admissionRequest);
+    return WebhookServerUtils.createJsonResponse(responseReview);
   }
 
   private static AdmissionReview buildValidationResponse(AdmissionRequest admissionRequest) {
-    Object resource = getResourceFromAdmissionRequest(admissionRequest);
-    HasMetadata hasMetadata = asHasMetadata(resource);
+    Object resource = WebhookServerUtils.getResourceFromAdmissionRequest(admissionRequest);
+    HasMetadata hasMetadata = WebhookServerUtils.asHasMetadata(resource);
 
     if (hasMetadata != null) {
       var annotations = hasMetadata.getMetadata().getAnnotations();
@@ -132,16 +123,11 @@ class KubernetesValidationHookHandlingTest extends AbstractWebhookHandlingTest {
         .build();
   }
 
-  @AfterAll
-  static void stopWebhookServer() throws Exception {
-    stopServer(server);
-  }
-
   private void applyConfig(KubernetesClient client) {
     try (InputStream resource = KubernetesValidationHookHandlingTest.class
         .getResourceAsStream("/ValidatingWebhookConfig.yaml")) {
       ValidatingWebhookConfiguration hook = (ValidatingWebhookConfiguration) client.load(resource).items().get(0);
-      hook.getWebhooks().get(0).getClientConfig().setCaBundle(getEncodedCertificate(certFile));
+      hook.getWebhooks().get(0).getClientConfig().setCaBundle(WebhookServerUtils.getEncodedCertificate(certFile));
       client.resource(hook).serverSideApply();
     } catch (IOException e) {
       throw new RuntimeException(e);

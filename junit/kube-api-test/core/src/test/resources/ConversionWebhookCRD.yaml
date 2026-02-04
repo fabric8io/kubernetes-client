@@ -61,4 +61,4 @@ spec:
     webhook:
       conversionReviewVersions: ["v1"]
       clientConfig:
-        url: "https://127.0.0.1:8445/convert"
+        url: "https://localhost:8445/convert"

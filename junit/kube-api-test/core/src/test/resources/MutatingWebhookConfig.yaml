@@ -27,7 +27,7 @@ webhooks:
         resources:   ["ingresses"]
         scope:       "Namespaced"
     clientConfig:
-      url: "https://127.0.0.1:8443/mutate"
+      url: "https://localhost:8443/mutate"
     admissionReviewVersions: ["v1"]
     sideEffects: None
     timeoutSeconds: 10

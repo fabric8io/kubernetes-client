@@ -17,7 +17,11 @@ package io.fabric8.kubeapitest.sample;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import io.fabric8.kubeapitest.junit.EnableKubeAPIServer;
+import io.fabric8.kubeapitest.junit.EnableWebhookServer;
 import io.fabric8.kubeapitest.junit.KubeConfig;
+import io.fabric8.kubeapitest.junit.WebhookCertFile;
+import io.fabric8.kubeapitest.junit.WebhookHandler;
+import io.fabric8.kubeapitest.junit.WebhookServerUtils;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.admission.v1.AdmissionRequest;
 import io.fabric8.kubernetes.api.model.admission.v1.AdmissionReview;
@@ -36,12 +40,9 @@ import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientBuilder;
 import io.fabric8.kubernetes.client.utils.Serialization;
+import io.fabric8.mockwebserver.http.MockResponse;
+import io.fabric8.mockwebserver.http.RecordedRequest;
 import io.fabric8.zjsonpatch.JsonDiff;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import org.eclipse.jetty.server.Server;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
@@ -60,15 +61,14 @@ import static org.assertj.core.api.Assertions.assertThat;
  * Framework</a> with combination of Quarkus or Spring.
  */
 @EnableKubeAPIServer
-class KubernetesMutationHookHandlingTest extends AbstractWebhookHandlingTest {
-
-  private static final int PORT = 8443;
-  private static final File keyFile = new File("target", "mutation.key");
-  private static final File certFile = new File("target", "mutation.crt");
-  private static final Server server = new Server();
+@EnableWebhookServer(port = 8443, certFile = "mutation.crt")
+class KubernetesMutationHookHandlingTest {
 
   @KubeConfig
   static String kubeConfig;
+
+  @WebhookCertFile
+  static File certFile;
 
   @Test
   void handleMutatingWebhook() {
@@ -80,53 +80,39 @@ class KubernetesMutationHookHandlingTest extends AbstractWebhookHandlingTest {
     assertThat(ingress.getMetadata().getLabels()).containsEntry("test", "mutation");
   }
 
-  @BeforeAll
-  static void startWebhookServer() throws Exception {
-    startServer(server, PORT, keyFile, certFile,
-        KubernetesMutationHookHandlingTest::handleMutatingWebhook);
-  }
+  @WebhookHandler(path = "/mutate")
+  static MockResponse handleMutatingWebhook(RecordedRequest request) {
+    AdmissionReview admissionReview = WebhookServerUtils.parseAdmissionReview(request);
+    AdmissionRequest admissionRequest = admissionReview.getRequest();
+    Object resource = WebhookServerUtils.getResourceFromAdmissionRequest(admissionRequest);
 
-  private static void handleMutatingWebhook(HttpServletRequest request, HttpServletResponse response) {
-    try {
-      AdmissionReview admissionReview = parseAdmissionReview(request);
-      AdmissionRequest admissionRequest = admissionReview.getRequest();
-      Object resource = getResourceFromAdmissionRequest(admissionRequest);
+    if (resource instanceof HasMetadata) {
+      HasMetadata hasMetadata = (HasMetadata) resource;
+      JsonNode originalJson = Serialization.jsonMapper().valueToTree(resource);
+      hasMetadata.getMetadata().setLabels(Collections.singletonMap("test", "mutation"));
+      JsonNode editedJson = Serialization.jsonMapper().valueToTree(resource);
 
-      if (resource instanceof HasMetadata) {
-        HasMetadata hasMetadata = (HasMetadata) resource;
-        JsonNode originalJson = Serialization.jsonMapper().valueToTree(resource);
-        hasMetadata.getMetadata().setLabels(Collections.singletonMap("test", "mutation"));
-        JsonNode editedJson = Serialization.jsonMapper().valueToTree(resource);
+      AdmissionReview responseReview = new AdmissionReviewBuilder()
+          .withNewResponse()
+          .withAllowed()
+          .withPatchType("JSONPatch")
+          .withPatch(Base64.getEncoder().encodeToString(
+              JsonDiff.asJson(originalJson, editedJson).toString().getBytes(StandardCharsets.UTF_8)))
+          .withUid(admissionRequest.getUid())
+          .endResponse()
+          .build();
 
-        AdmissionReview responseReview = new AdmissionReviewBuilder()
-            .withNewResponse()
-            .withAllowed()
-            .withPatchType("JSONPatch")
-            .withPatch(Base64.getEncoder().encodeToString(
-                JsonDiff.asJson(originalJson, editedJson).toString().getBytes(StandardCharsets.UTF_8)))
-            .withUid(admissionRequest.getUid())
-            .endResponse()
-            .build();
-
-        writeJsonResponse(response, responseReview);
-      } else {
-        response.setStatus(422);
-      }
-    } catch (IOException e) {
-      throw new RuntimeException(e);
+      return WebhookServerUtils.createJsonResponse(responseReview);
+    } else {
+      return new MockResponse().setResponseCode(422);
     }
-  }
-
-  @AfterAll
-  static void stopWebhookServer() throws Exception {
-    stopServer(server);
   }
 
   private void applyConfig(KubernetesClient client) {
     try (InputStream resource = KubernetesMutationHookHandlingTest.class
         .getResourceAsStream("/MutatingWebhookConfig.yaml")) {
       MutatingWebhookConfiguration hook = (MutatingWebhookConfiguration) client.load(resource).items().get(0);
-      hook.getWebhooks().get(0).getClientConfig().setCaBundle(getEncodedCertificate(certFile));
+      hook.getWebhooks().get(0).getClientConfig().setCaBundle(WebhookServerUtils.getEncodedCertificate(certFile));
       client.resource(hook).serverSideApply();
     } catch (IOException e) {
       throw new RuntimeException(e);

@@ -18,7 +18,11 @@ package io.fabric8.kubeapitest.sample;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.fabric8.kubeapitest.junit.EnableKubeAPIServer;
+import io.fabric8.kubeapitest.junit.EnableWebhookServer;
 import io.fabric8.kubeapitest.junit.KubeConfig;
+import io.fabric8.kubeapitest.junit.WebhookCertFile;
+import io.fabric8.kubeapitest.junit.WebhookHandler;
+import io.fabric8.kubeapitest.junit.WebhookServerUtils;
 import io.fabric8.kubernetes.api.model.GenericKubernetesResource;
 import io.fabric8.kubernetes.api.model.GenericKubernetesResourceBuilder;
 import io.fabric8.kubernetes.api.model.StatusBuilder;
@@ -31,11 +35,8 @@ import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientBuilder;
 import io.fabric8.kubernetes.client.dsl.base.CustomResourceDefinitionContext;
 import io.fabric8.kubernetes.client.utils.Serialization;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import org.eclipse.jetty.server.Server;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
+import io.fabric8.mockwebserver.http.MockResponse;
+import io.fabric8.mockwebserver.http.RecordedRequest;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
@@ -55,17 +56,17 @@ import static org.assertj.core.api.Assertions.assertThat;
  * specifically converting a "hostPort" field to separate "host" and "port" fields (and vice versa).
  */
 @EnableKubeAPIServer
-class KubernetesConversionWebhookHandlingTest extends AbstractWebhookHandlingTest {
+@EnableWebhookServer(port = 8445, certFile = "conversion.crt")
+class KubernetesConversionWebhookHandlingTest {
 
-  private static final int PORT = 8445;
   private static final String GROUP = "kubeapitest.example.com";
   private static final String PLURAL = "testresources";
-  private static final File keyFile = new File("target", "conversion.key");
-  private static final File certFile = new File("target", "conversion.crt");
-  private static final Server server = new Server();
 
   @KubeConfig
   static String kubeConfig;
+
+  @WebhookCertFile
+  static File certFile;
 
   @Test
   void conversionWebhookConvertsV1alpha1ToV1beta1() {
@@ -137,20 +138,12 @@ class KubernetesConversionWebhookHandlingTest extends AbstractWebhookHandlingTes
         .build();
   }
 
-  @BeforeAll
-  static void startWebhookServer() throws Exception {
-    startServer(server, PORT, keyFile, certFile,
-        KubernetesConversionWebhookHandlingTest::handleConversionWebhook);
-  }
-
-  private static void handleConversionWebhook(HttpServletRequest request, HttpServletResponse response) {
-    try {
-      ConversionReview conversionReview = Serialization.unmarshal(request.getInputStream());
-      ConversionReview responseReview = buildConversionResponse(conversionReview.getRequest());
-      writeJsonResponse(response, responseReview);
-    } catch (IOException e) {
-      throw new RuntimeException(e);
-    }
+  @WebhookHandler(path = "/convert")
+  static MockResponse handleConversionWebhook(RecordedRequest request) {
+    String body = request.getUtf8Body();
+    ConversionReview conversionReview = Serialization.unmarshal(body, ConversionReview.class);
+    ConversionReview responseReview = buildConversionResponse(conversionReview.getRequest());
+    return WebhookServerUtils.createJsonResponse(responseReview);
   }
 
   private static ConversionReview buildConversionResponse(ConversionRequest conversionRequest) {
@@ -197,23 +190,15 @@ class KubernetesConversionWebhookHandlingTest extends AbstractWebhookHandlingTes
         spec.put("port", parts.length > 1 ? parts[1] : "80");
         spec.remove("hostPort");
       }
-    } else if (desiredApiVersion.endsWith("/v1alpha1")) {
-      // Convert from v1beta1 to v1alpha1: combine host and port into hostPort
-      if (spec.has("host") && spec.has("port")) {
-        String host = spec.get("host").asText();
-        String port = spec.get("port").asText();
-        spec.put("hostPort", host + ":" + port);
-        spec.remove("host");
-        spec.remove("port");
-      }
+    } else if (desiredApiVersion.endsWith("/v1alpha1") && spec.has("host") && spec.has("port")) {
+      String host = spec.get("host").asText();
+      String port = spec.get("port").asText();
+      spec.put("hostPort", host + ":" + port);
+      spec.remove("host");
+      spec.remove("port");
     }
 
     return result;
-  }
-
-  @AfterAll
-  static void stopWebhookServer() throws Exception {
-    stopServer(server);
   }
 
   private void applyCrd(KubernetesClient client) {
@@ -221,7 +206,7 @@ class KubernetesConversionWebhookHandlingTest extends AbstractWebhookHandlingTes
         .getResourceAsStream("/ConversionWebhookCRD.yaml")) {
       CustomResourceDefinition crd = (CustomResourceDefinition) client.load(resource).items().get(0);
       crd.getSpec().getConversion().getWebhook().getClientConfig()
-          .setCaBundle(getEncodedCertificate(certFile));
+          .setCaBundle(WebhookServerUtils.getEncodedCertificate(certFile));
       client.resource(crd).serverSideApply();
     } catch (IOException e) {
       throw new RuntimeException(e);
