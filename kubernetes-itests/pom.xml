@@ -166,7 +166,7 @@
       -->
       <properties>
         <!-- Override parent vertx.version for this profile -->
-        <vertx.version>5.0.1</vertx.version>
+        <vertx.version>5.0.7</vertx.version>
       </properties>
       <dependencyManagement>
         <dependencies>
