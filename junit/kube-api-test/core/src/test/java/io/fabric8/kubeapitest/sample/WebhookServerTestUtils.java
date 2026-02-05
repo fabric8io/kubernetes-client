@@ -13,13 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8.kubeapitest.junit;
+package io.fabric8.kubeapitest.sample;
 
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.admission.v1.AdmissionRequest;
 import io.fabric8.kubernetes.api.model.admission.v1.AdmissionReview;
 import io.fabric8.kubernetes.client.utils.Serialization;
-import io.fabric8.mockwebserver.MockServerException;
 import io.fabric8.mockwebserver.http.MockResponse;
 import io.fabric8.mockwebserver.http.RecordedRequest;
 
@@ -34,9 +33,9 @@ import java.util.Objects;
  * Utility methods for webhook testing.
  * These methods help with common webhook operations like parsing requests and creating responses.
  */
-public final class WebhookServerUtils {
+public final class WebhookServerTestUtils {
 
-  private WebhookServerUtils() {
+  private WebhookServerTestUtils() {
     // Utility class
   }
 
@@ -93,12 +92,8 @@ public final class WebhookServerUtils {
    * @param certFile the certificate file
    * @return Base64-encoded certificate string
    */
-  public static String getEncodedCertificate(File certFile) {
-    try {
-      String cert = Files.readString(certFile.toPath(), StandardCharsets.UTF_8);
-      return Base64.getEncoder().encodeToString(cert.getBytes(StandardCharsets.UTF_8));
-    } catch (IOException e) {
-      throw new MockServerException("Failed to read certificate file: " + certFile, e);
-    }
+  public static String getEncodedCertificate(File certFile) throws IOException {
+    String cert = Files.readString(certFile.toPath(), StandardCharsets.UTF_8);
+    return Base64.getEncoder().encodeToString(cert.getBytes(StandardCharsets.UTF_8));
   }
 }

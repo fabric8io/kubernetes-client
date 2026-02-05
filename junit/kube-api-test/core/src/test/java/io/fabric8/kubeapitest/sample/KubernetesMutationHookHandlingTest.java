@@ -16,12 +16,9 @@
 package io.fabric8.kubeapitest.sample;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import io.fabric8.kubeapitest.cert.CertManager;
 import io.fabric8.kubeapitest.junit.EnableKubeAPIServer;
-import io.fabric8.kubeapitest.junit.EnableWebhookServer;
 import io.fabric8.kubeapitest.junit.KubeConfig;
-import io.fabric8.kubeapitest.junit.WebhookCertFile;
-import io.fabric8.kubeapitest.junit.WebhookHandler;
-import io.fabric8.kubeapitest.junit.WebhookServerUtils;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.admission.v1.AdmissionRequest;
 import io.fabric8.kubernetes.api.model.admission.v1.AdmissionReview;
@@ -40,9 +37,14 @@ import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientBuilder;
 import io.fabric8.kubernetes.client.utils.Serialization;
+import io.fabric8.mockwebserver.MockWebServer;
+import io.fabric8.mockwebserver.http.Dispatcher;
 import io.fabric8.mockwebserver.http.MockResponse;
 import io.fabric8.mockwebserver.http.RecordedRequest;
 import io.fabric8.zjsonpatch.JsonDiff;
+import org.bouncycastle.asn1.x509.GeneralName;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
@@ -61,14 +63,48 @@ import static org.assertj.core.api.Assertions.assertThat;
  * Framework</a> with combination of Quarkus or Spring.
  */
 @EnableKubeAPIServer
-@EnableWebhookServer(port = 8443, certFile = "mutation.crt")
 class KubernetesMutationHookHandlingTest {
 
   @KubeConfig
   static String kubeConfig;
 
-  @WebhookCertFile
+  static MockWebServer webhookServer;
   static File certFile;
+
+  @BeforeAll
+  static void setupWebhookServer() {
+    certFile = new File("target/conversion.crt");
+    if (certFile.getParentFile() != null) {
+      certFile.getParentFile().mkdirs();
+    }
+
+    File keyFile = new File("target/conversion.key");
+
+    CertManager.generateKeyAndCertificate("CN=localhost", keyFile, certFile,
+      new GeneralName(GeneralName.dNSName, "localhost"));
+
+    webhookServer = new MockWebServer();
+    webhookServer.usePemCertificates(keyFile, certFile);
+    webhookServer.useHttps();
+    webhookServer.setDispatcher(new Dispatcher() {
+      @Override
+      public MockResponse dispatch(RecordedRequest request) {
+        String path = request.getPath();
+        if (path != null && path.startsWith("/mutate")) {
+          return handleMutatingWebhook(request);
+        }
+        return new MockResponse().setResponseCode(404);
+      }
+    });
+    webhookServer.start(8443);
+  }
+
+  @AfterAll
+  static void shutdownWebhookServer() {
+    if (webhookServer != null) {
+      webhookServer.shutdown();
+    }
+  }
 
   @Test
   void handleMutatingWebhook() {
@@ -80,11 +116,10 @@ class KubernetesMutationHookHandlingTest {
     assertThat(ingress.getMetadata().getLabels()).containsEntry("test", "mutation");
   }
 
-  @WebhookHandler(path = "/mutate")
   static MockResponse handleMutatingWebhook(RecordedRequest request) {
-    AdmissionReview admissionReview = WebhookServerUtils.parseAdmissionReview(request);
+    AdmissionReview admissionReview = WebhookServerTestUtils.parseAdmissionReview(request);
     AdmissionRequest admissionRequest = admissionReview.getRequest();
-    Object resource = WebhookServerUtils.getResourceFromAdmissionRequest(admissionRequest);
+    Object resource = WebhookServerTestUtils.getResourceFromAdmissionRequest(admissionRequest);
 
     if (resource instanceof HasMetadata) {
       HasMetadata hasMetadata = (HasMetadata) resource;
@@ -102,7 +137,7 @@ class KubernetesMutationHookHandlingTest {
           .endResponse()
           .build();
 
-      return WebhookServerUtils.createJsonResponse(responseReview);
+      return WebhookServerTestUtils.createJsonResponse(responseReview);
     } else {
       return new MockResponse().setResponseCode(422);
     }
@@ -112,7 +147,7 @@ class KubernetesMutationHookHandlingTest {
     try (InputStream resource = KubernetesMutationHookHandlingTest.class
         .getResourceAsStream("/MutatingWebhookConfig.yaml")) {
       MutatingWebhookConfiguration hook = (MutatingWebhookConfiguration) client.load(resource).items().get(0);
-      hook.getWebhooks().get(0).getClientConfig().setCaBundle(WebhookServerUtils.getEncodedCertificate(certFile));
+      hook.getWebhooks().get(0).getClientConfig().setCaBundle(WebhookServerTestUtils.getEncodedCertificate(certFile));
       client.resource(hook).serverSideApply();
     } catch (IOException e) {
       throw new RuntimeException(e);

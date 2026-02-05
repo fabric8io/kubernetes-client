@@ -17,12 +17,9 @@ package io.fabric8.kubeapitest.sample;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import io.fabric8.kubeapitest.cert.CertManager;
 import io.fabric8.kubeapitest.junit.EnableKubeAPIServer;
-import io.fabric8.kubeapitest.junit.EnableWebhookServer;
 import io.fabric8.kubeapitest.junit.KubeConfig;
-import io.fabric8.kubeapitest.junit.WebhookCertFile;
-import io.fabric8.kubeapitest.junit.WebhookHandler;
-import io.fabric8.kubeapitest.junit.WebhookServerUtils;
 import io.fabric8.kubernetes.api.model.GenericKubernetesResource;
 import io.fabric8.kubernetes.api.model.GenericKubernetesResourceBuilder;
 import io.fabric8.kubernetes.api.model.StatusBuilder;
@@ -35,8 +32,13 @@ import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientBuilder;
 import io.fabric8.kubernetes.client.dsl.base.CustomResourceDefinitionContext;
 import io.fabric8.kubernetes.client.utils.Serialization;
+import io.fabric8.mockwebserver.MockWebServer;
+import io.fabric8.mockwebserver.http.Dispatcher;
 import io.fabric8.mockwebserver.http.MockResponse;
 import io.fabric8.mockwebserver.http.RecordedRequest;
+import org.bouncycastle.asn1.x509.GeneralName;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
@@ -56,7 +58,6 @@ import static org.assertj.core.api.Assertions.assertThat;
  * specifically converting a "hostPort" field to separate "host" and "port" fields (and vice versa).
  */
 @EnableKubeAPIServer
-@EnableWebhookServer(port = 8445, certFile = "conversion.crt")
 class KubernetesConversionWebhookHandlingTest {
 
   private static final String GROUP = "kubeapitest.example.com";
@@ -65,8 +66,43 @@ class KubernetesConversionWebhookHandlingTest {
   @KubeConfig
   static String kubeConfig;
 
-  @WebhookCertFile
+  static MockWebServer webhookServer;
   static File certFile;
+
+  @BeforeAll
+  static void setupWebhookServer() {
+    certFile = new File("target/conversion.crt");
+    if (certFile.getParentFile() != null) {
+      certFile.getParentFile().mkdirs();
+    }
+
+    File keyFile = new File("target/conversion.key");
+
+    CertManager.generateKeyAndCertificate("CN=localhost", keyFile, certFile,
+        new GeneralName(GeneralName.dNSName, "localhost"));
+
+    webhookServer = new MockWebServer();
+    webhookServer.usePemCertificates(keyFile, certFile);
+    webhookServer.useHttps();
+    webhookServer.setDispatcher(new Dispatcher() {
+      @Override
+      public MockResponse dispatch(RecordedRequest request) {
+        String path = request.getPath();
+        if (path != null && path.startsWith("/convert")) {
+          return handleConversionWebhook(request);
+        }
+        return new MockResponse().setResponseCode(404);
+      }
+    });
+    webhookServer.start(8445);
+  }
+
+  @AfterAll
+  static void shutdownWebhookServer() {
+    if (webhookServer != null) {
+      webhookServer.shutdown();
+    }
+  }
 
   @Test
   void conversionWebhookConvertsV1alpha1ToV1beta1() {
@@ -138,12 +174,11 @@ class KubernetesConversionWebhookHandlingTest {
         .build();
   }
 
-  @WebhookHandler(path = "/convert")
   static MockResponse handleConversionWebhook(RecordedRequest request) {
     String body = request.getUtf8Body();
     ConversionReview conversionReview = Serialization.unmarshal(body, ConversionReview.class);
     ConversionReview responseReview = buildConversionResponse(conversionReview.getRequest());
-    return WebhookServerUtils.createJsonResponse(responseReview);
+    return WebhookServerTestUtils.createJsonResponse(responseReview);
   }
 
   private static ConversionReview buildConversionResponse(ConversionRequest conversionRequest) {
@@ -206,7 +241,7 @@ class KubernetesConversionWebhookHandlingTest {
         .getResourceAsStream("/ConversionWebhookCRD.yaml")) {
       CustomResourceDefinition crd = (CustomResourceDefinition) client.load(resource).items().get(0);
       crd.getSpec().getConversion().getWebhook().getClientConfig()
-          .setCaBundle(WebhookServerUtils.getEncodedCertificate(certFile));
+          .setCaBundle(WebhookServerTestUtils.getEncodedCertificate(certFile));
       client.resource(crd).serverSideApply();
     } catch (IOException e) {
       throw new RuntimeException(e);
