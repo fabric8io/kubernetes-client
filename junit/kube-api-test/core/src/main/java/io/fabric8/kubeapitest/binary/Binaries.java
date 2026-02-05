@@ -19,17 +19,9 @@ import java.io.File;
 
 public class Binaries {
 
-  public static final String ETCD_BINARY_NAME = getBinaryName("etcd");
-  public static final String API_SERVER_BINARY_NAME = getBinaryName("kube-apiserver");
-  public static final String KUBECTL_BINARY_NAME = getBinaryName("kubectl");
-
-  private static String getBinaryName(String baseName) {
-    return isWindows() ? baseName + ".exe" : baseName;
-  }
-
-  private static boolean isWindows() {
-    return System.getProperty("os.name").toLowerCase().contains("win");
-  }
+  public static final String ETCD_BINARY_NAME = "etcd";
+  public static final String API_SERVER_BINARY_NAME = "kube-apiserver";
+  public static final String KUBECTL_BINARY_NAME = "kubectl";
 
   private final File etcd;
   private final File apiServer;
