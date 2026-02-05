@@ -95,6 +95,13 @@ class VertxWebSocket implements WebSocket {
    * Implements backpressure by pausing after each message until {@link #request()} is called.
    */
   private void setupEventHandlers() {
+    // Handle multi-frame messages by auto-fetching subsequent frames
+    webSocket.frameHandler(frame -> {
+      if (!frame.isFinal()) {
+        webSocket.fetch(1);
+      }
+    });
+
     // Handle binary messages (e.g., exec terminal data)
     webSocket.binaryMessageHandler(buffer -> {
       webSocket.pause();
