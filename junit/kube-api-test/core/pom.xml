@@ -66,10 +66,12 @@
       <dependency>
         <groupId>io.fabric8</groupId>
         <artifactId>mockwebserver</artifactId>
+        <scope>test</scope>
       </dependency>
       <dependency>
         <groupId>io.fabric8</groupId>
         <artifactId>kubernetes-client-api</artifactId>
+        <scope>test</scope>
       </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
