@@ -81,7 +81,7 @@ class KubernetesMutationHookHandlingTest {
     File keyFile = new File("target/conversion.key");
 
     CertManager.generateKeyAndCertificate("CN=localhost", keyFile, certFile,
-      new GeneralName(GeneralName.dNSName, "localhost"));
+        new GeneralName(GeneralName.dNSName, "localhost"));
 
     webhookServer = new MockWebServer();
     webhookServer.usePemCertificates(keyFile, certFile);
