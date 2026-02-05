@@ -97,7 +97,7 @@ public class BinaryDownloader {
       while (entry != null) {
         if (!entry.isDirectory()) {
           File file = extractEntry(entry, dir, tarIn);
-          if (!file.setExecutable(true)) {
+          if (!file.setExecutable(true) && !isWindows()) {
             throw new KubeAPITestException("Cannot make the file executable: " + file.getPath());
           }
         }
@@ -106,6 +106,10 @@ public class BinaryDownloader {
     } catch (IOException e) {
       throw new KubeAPITestException(e);
     }
+  }
+
+  private static boolean isWindows() {
+    return System.getProperty("os.name").toLowerCase().contains("win");
   }
 
   private File extractEntry(TarArchiveEntry entry, File dir, TarArchiveInputStream tarIn)
