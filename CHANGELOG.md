@@ -13,6 +13,7 @@
 #### New Features
 * Fix #7385: Support for Kubernetes v1.35 (Timbernetes)
 * Fix #7174: Added Vert.x 5 HTTP client implementation with improved async handling and WebSocket separation
+* Fix #5084: Jbang scripts to generate graalVM metadata
 
 #### _**Note**_: Breaking changes
 
