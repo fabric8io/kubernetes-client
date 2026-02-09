@@ -12,6 +12,7 @@
 
 #### New Features
 * Fix #7385: Support for Kubernetes v1.35 (Timbernetes)
+* New graalvm-metadata-generator-plugin Maven plugin to automatically generate GraalVM native-image reflection metadata from Jandex indexes
 
 #### _**Note**_: Breaking changes
 
