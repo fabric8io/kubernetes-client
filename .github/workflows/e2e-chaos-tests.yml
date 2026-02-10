@@ -42,7 +42,7 @@ jobs:
       matrix:
         kubernetes: [v1.34.2]
         java-version: [11,17]
-        http-client: [okhttp,jdk,jetty,vertx]
+        http-client: [okhttp,jdk,jetty,vertx,vertx-5]
         chaos-test: ["network-delay.yaml", "network-loss.yaml", "network-duplicate.yaml"]
     steps:
       - name: Checkout

@@ -59,7 +59,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 class VertxWebSocket implements WebSocket {
 
-  private static final Logger LOG = LoggerFactory.getLogger(VertxWebSocket.class);
+  private static final Logger logger = LoggerFactory.getLogger(VertxWebSocket.class);
 
   /** The underlying Vert.x WebSocket providing the network transport */
   private final io.vertx.core.http.WebSocket webSocket;
@@ -147,15 +147,6 @@ class VertxWebSocket implements WebSocket {
   }
 
   /**
-   * Logs failures from asynchronous WebSocket operations that cannot be propagated to the caller.
-   * 
-   * @param asyncOperation the asynchronous operation to monitor for failures
-   */
-  private void logAsyncOperationFailures(final Future<?> asyncOperation) {
-    asyncOperation.onFailure(error -> LOG.error("Asynchronous WebSocket operation failed", error));
-  }
-
-  /**
    * Sends binary data over the WebSocket connection.
    * 
    * <p>
@@ -182,7 +173,7 @@ class VertxWebSocket implements WebSocket {
     // Handle immediate failure
     if (writeOperation.failed()) {
       pendingBytesCount.addAndGet(-messageLength);
-      LOG.error("WebSocket binary message send failed immediately", writeOperation.cause());
+      logger.error("WebSocket binary message send failed immediately", writeOperation.cause());
       return false;
     }
 
@@ -195,7 +186,7 @@ class VertxWebSocket implements WebSocket {
     // Handle asynchronous completion
     writeOperation.onComplete(result -> {
       if (result.failed()) {
-        LOG.error("WebSocket binary message send failed asynchronously", result.cause());
+        logger.error("WebSocket binary message send failed asynchronously", result.cause());
       }
       pendingBytesCount.addAndGet(-messageLength);
     });
@@ -241,10 +232,13 @@ class VertxWebSocket implements WebSocket {
       return false;
     }
 
-    logAsyncOperationFailures(webSocket.close((short) code, reason));
-
-    // Request one frame to ensure the end handler fires for proper cleanup
-    webSocket.fetch(1);
+    webSocket.close((short) code, reason).onComplete(result -> {
+      // Request one frame to ensure the end handler fires for proper cleanup
+      webSocket.fetch(1);
+      if (result.cause() != null) {
+        logger.error("Queued close did not succeed", result.cause());
+      }
+    });
 
     return true;
   }
