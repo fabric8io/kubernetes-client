@@ -4,7 +4,7 @@ This module provides Vert.x 5.x HTTP client implementation for the Fabric8 Kuber
 
 ## Features
 
-- **Vert.x 5.0.1**: Uses latest stable Vert.x 5.x release
+- **Vert.x 5.0.7**: Uses latest stable Vert.x 5.x release
 - **Async Operations**: Enhanced async HTTP request handling
 - **WebSocket Separation**: Vert.x 5's separate HTTP and WebSocket client architecture
 - **Backpressure Support**: Built-in flow control for streaming operations
@@ -43,7 +43,7 @@ mvn -Phttpclient-vertx-5 test -Dtest=WatchIT -Dtest.httpclient=vertx-5
 
 ### Version Validation Test
 
-A special test (`VertxVersionValidationIT`) validates that Vert.x 5.0.1 is actually being used:
+A special test (`VertxVersionValidationIT`) validates that Vert.x 5.0.7 is actually being used:
 
 ```bash
 mvn -Phttpclient-vertx-5 test -Dtest=VertxVersionValidationIT -Dtest.httpclient=vertx-5
@@ -55,11 +55,11 @@ Verify the correct Vert.x version is being used:
 
 ```bash
 mvn -Phttpclient-vertx-5 dependency:tree | grep vertx
-# Should show: vertx-core:jar:5.0.1:compile
+# Should show: vertx-core:jar:5.0.7:compile
 ```
 
 ## Architecture Notes
 
 - **WebSocket Client Separation**: Unlike Vert.x 4, Vert.x 5 uses separate HTTP and WebSocket clients
-- **Dependency Management**: This module overrides parent POM's Vert.x version to ensure 5.0.1 is used
+- **Dependency Management**: This module overrides parent POM's Vert.x version to ensure 5.0.7 is used
 - **Profile Isolation**: The httpclient-vertx-5 profile ensures no conflicts with default Vert.x 4 usage

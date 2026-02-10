@@ -35,7 +35,7 @@ import java.util.Optional;
  * Thread-safe and immutable once constructed. The {@link AsyncBody} must be
  * consumed or cancelled to prevent resource leaks.
  * 
- * @since 6.0.0
+ * @since 7.6.0
  */
 public class VertxHttpResponse extends StandardHttpHeaders implements HttpResponse<AsyncBody> {
   /** The async body for streaming consumption. Must be consumed or cancelled. */
