@@ -174,10 +174,16 @@ public class VertxHttpClient<F extends io.fabric8.kubernetes.client.http.HttpCli
   public void doClose() {
     try {
       httpClient.close();
-    } finally {
-      if (closeVertx) {
-        vertx.close();
-      }
+    } catch (Exception ignored) {
+      // Continue closing other resources
+    }
+    try {
+      webSocketClient.close();
+    } catch (Exception ignored) {
+      // Continue closing other resources
+    }
+    if (closeVertx) {
+      vertx.close();
     }
   }
 
