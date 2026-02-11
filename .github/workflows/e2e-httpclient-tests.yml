@@ -39,7 +39,7 @@ jobs:
       fail-fast: false
       matrix:
         kubernetes: [v1.34.2,v1.33.0,v1.32.4,v1.31.8,v1.30.12]
-        httpclient: [jdk,jetty,okhttp]
+        httpclient: [jdk,jetty,okhttp,vertx-5]
     steps:
       - name: Checkout
         uses: actions/checkout@v6

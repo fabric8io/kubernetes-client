@@ -213,6 +213,7 @@
     <module>httpclient-jetty</module>
     <module>httpclient-okhttp</module>
     <module>httpclient-vertx</module>
+    <module>httpclient-vertx-5</module>
     <module>kubernetes-client</module>
     <module>junit/mockwebserver</module>
     <module>junit/kubernetes-junit-jupiter</module>
@@ -486,6 +487,11 @@
       <dependency>
         <groupId>io.fabric8</groupId>
         <artifactId>kubernetes-httpclient-vertx</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>io.fabric8</groupId>
+        <artifactId>kubernetes-httpclient-vertx-5</artifactId>
         <version>${project.version}</version>
       </dependency>
       <dependency>
