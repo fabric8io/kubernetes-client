@@ -62,7 +62,8 @@ public class VertxHttpClientFactory implements HttpClient.Factory {
     return new VertxHttpClientBuilder<>(this, vertx);
   }
 
-  protected void additionalConfig(WebSocketClientOptions wsOptions, WebClientOptions webClientOptions, PoolOptions poolOptions) {
+  protected void additionalConfig(WebSocketClientOptions wsOptions, WebClientOptions webClientOptions,
+      PoolOptions poolOptions) {
     // no default implementation
   }
 }
