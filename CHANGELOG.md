@@ -7,6 +7,7 @@
 * Fix #7415: (java-generator) Fix generic type erasure for array of enums with default values
 
 #### Improvements
+* Fix #7252: call additionalConfig when building VertxHttpClient with a VertxHttpClientFactory typed factory with the builder
 
 #### Dependency Upgrade
 
@@ -42,7 +43,6 @@
 #### Improvements
 * Fix #7277: fix BOM publish to Maven Central
 * Fix #7345: skip publishing test and example modules to Maven Central
-* Fix #7252: call additionalConfig(WebClientOptions options) when building VertxHttpClient with a VertxHttpClientFactory typed factory with the builder
 
 #### Dependency Upgrade
 * Fix #7266: bump jackson-bom from 2.19.2 to 2.20.0, fix overrides and handle jackson-annotations v2.20
