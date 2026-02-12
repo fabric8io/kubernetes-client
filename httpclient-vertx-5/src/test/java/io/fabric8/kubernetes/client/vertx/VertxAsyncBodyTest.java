@@ -37,6 +37,7 @@ import java.util.concurrent.TimeUnit;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -189,6 +190,7 @@ class VertxAsyncBodyTest {
 
     verify(response).handler(isNull());
     verify(response).endHandler(isNull());
+    verify(response).exceptionHandler(isNull());
     verify(request).reset();
 
     CompletableFuture<Void> done = asyncBody.done();
@@ -239,5 +241,21 @@ class VertxAsyncBodyTest {
     asyncBody.consume();
 
     verify(response, times(3)).fetch(1);
+  }
+
+  @Test
+  @DisplayName("Should throw IllegalStateException when response has already ended (race condition)")
+  void constructor_shouldThrowWhenResponseAlreadyEnded() {
+    // Given - simulate a response that has already ended
+    // This is the race condition: the response body is consumed and response ends
+    // before the async handler transformation runs to set up handlers
+    HttpClientResponse endedResponse = Mockito.mock(HttpClientResponse.class);
+    when(endedResponse.handler(any()))
+        .thenThrow(new IllegalStateException("Response has already been read"));
+
+    // When/Then - constructing VertxAsyncBody should fail
+    assertThatThrownBy(() -> new VertxAsyncBody(endedResponse, consumer))
+        .isInstanceOf(IllegalStateException.class)
+        .hasMessageContaining("already been read");
   }
 }

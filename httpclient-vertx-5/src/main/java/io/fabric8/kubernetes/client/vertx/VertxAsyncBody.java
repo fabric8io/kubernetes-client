@@ -82,11 +82,17 @@ final class VertxAsyncBody implements AsyncBody {
   /**
    * Cancels the async body by clearing handlers, resetting the connection,
    * and cancelling the completion future.
+   *
+   * <p>
+   * Important: The exception handler must be cleared before calling reset(),
+   * otherwise in Vert.x 5 the reset triggers a StreamResetException that
+   * completes the future before cancel() can run.
    */
   @Override
   public void cancel() {
     resp.handler(null);
     resp.endHandler(null);
+    resp.exceptionHandler(null);
     resp.request().reset();
     done.cancel(false);
   }
