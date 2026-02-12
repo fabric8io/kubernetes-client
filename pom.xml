@@ -204,6 +204,8 @@
     <karaf.itest.skip>false</karaf.itest.skip>
     <project.build.outputTimestamp>2026-01-22T06:37:07Z</project.build.outputTimestamp>
     <validation-api.version>2.0.1.Final</validation-api.version>
+    <revapi.version>0.15.1</revapi.version>
+    <revapi-java.version>0.28.4</revapi-java.version>
   </properties>
   <modules>
     <module>zjsonpatch</module>
@@ -1509,6 +1511,73 @@
           </plugin>
         </plugins>
       </build>
+    </profile>
+    <profile>
+      <id>revapi-compare</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.revapi</groupId>
+            <artifactId>revapi-maven-plugin</artifactId>
+            <version>${revapi.version}</version>
+            <dependencies>
+              <dependency>
+                <groupId>org.revapi</groupId>
+                <artifactId>revapi-java</artifactId>
+                <version>${revapi-java.version}</version>
+              </dependency>
+            </dependencies>
+            <configuration>
+              <checkDependencies>false</checkDependencies>
+              <analysisConfiguration>
+                <revapi.java>
+                  <missing-classes>
+                    <behavior>ignore</behavior>
+                  </missing-classes>
+                </revapi.java>
+                <revapi.differences>
+                  <item>
+                    <code>java.class.nonPublicPartOfAPI</code>
+                    <classQualifiedName>io.fabric8.zjsonpatch.JsonPointer.RefToken</classQualifiedName>
+                    <justification>Internal class usage is intentional.</justification>
+                  </item>
+                </revapi.differences>
+              </analysisConfiguration>
+            </configuration>
+          </plugin>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-site-plugin</artifactId>
+            <configuration>
+              <generateReports>true</generateReports>
+              <stagingDirectory>${project.build.directory}/staging</stagingDirectory>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+      <reporting>
+        <excludeDefaults>true</excludeDefaults>
+        <plugins>
+          <plugin>
+            <groupId>org.revapi</groupId>
+            <artifactId>revapi-maven-plugin</artifactId>
+            <version>${revapi.version}</version>
+            <reportSets>
+              <reportSet>
+                <reports>
+                  <report>report</report>
+                </reports>
+              </reportSet>
+            </reportSets>
+          </plugin>
+        </plugins>
+      </reporting>
+      <distributionManagement>
+        <site>
+          <id>local-staging</id>
+          <url>file://${project.build.directory}/staging</url>
+        </site>
+      </distributionManagement>
     </profile>
   </profiles>
 </project>
