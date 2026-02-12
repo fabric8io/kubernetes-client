@@ -110,7 +110,9 @@ class VertxHttpClientBuilderTest {
 
       assertThat(capturedOptions.get())
           .as("WebClientOptions should be passed to additionalConfig")
-          .isNotNull();
+          .isNotNull()
+          .extracting(WebClientOptions::isKeepAlive)
+          .isEqualTo(true);
     }
   }
 

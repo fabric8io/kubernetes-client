@@ -17,6 +17,9 @@ package io.fabric8.kubernetes.client.vertx;
 
 import io.fabric8.kubernetes.client.http.HttpClient;
 import io.vertx.core.Vertx;
+import io.vertx.core.http.PoolOptions;
+import io.vertx.core.http.WebSocketClientOptions;
+import io.vertx.ext.web.client.WebClientOptions;
 
 /**
  * Vert.x implementation of {@link io.fabric8.kubernetes.client.http.HttpClient.Factory}.
@@ -57,5 +60,9 @@ public class VertxHttpClientFactory implements HttpClient.Factory {
   @Override
   public VertxHttpClientBuilder<VertxHttpClientFactory> newBuilder() {
     return new VertxHttpClientBuilder<>(this, vertx);
+  }
+
+  protected void additionalConfig(WebSocketClientOptions wsOptions, WebClientOptions webClientOptions, PoolOptions poolOptions) {
+    // no default implementation
   }
 }
