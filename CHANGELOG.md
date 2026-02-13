@@ -7,6 +7,7 @@
 * Fix #7415: (java-generator) Fix generic type erasure for array of enums with default values
 
 #### Improvements
+* Fix #7252: call additionalConfig when building VertxHttpClient with a VertxHttpClientFactory typed factory with the builder
 
 #### Dependency Upgrade
 
