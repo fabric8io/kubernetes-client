@@ -87,3 +87,12 @@ quickly: clean
 .PHONY: install
 install: clean
 	mvn $(MAVEN_ARGS) install
+
+.PHONY: revapi-report
+revapi-report:
+	@echo "Creating jars and installing in local..."
+	mvn clean install -DskipTests
+	@echo "Generating Revapi compatibility reports..."
+	mvn site -Prevapi-compare -DskipTests $(MAVEN_ARGS)
+	@echo "Aggregating reports into target/staging..."
+	jbang scripts/aggregate_revapi_reports.java

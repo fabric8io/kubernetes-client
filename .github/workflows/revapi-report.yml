@@ -1,0 +1,96 @@
+#
+# Copyright (C) 2015 Red Hat, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#         http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+
+name: Revapi Compatibility Report
+
+on:
+  workflow_dispatch:
+    inputs:
+      old_version:
+        description: 'Published version to compare against (e.g., 7.0.0)'
+        required: true
+        type: string
+      java_version:
+        description: 'Java version to use'
+        required: false
+        default: '17'
+        type: choice
+        options:
+          - '17'
+          - '21'
+
+env:
+  MAVEN_ARGS: -B -C -V -ntp -Dhttp.keepAlive=false -e -Drevapi.oldVersion=${{ inputs.old_version }}
+
+permissions:
+  contents: read
+
+jobs:
+  revapi-report:
+    name: Generate Revapi Report
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Set open files (threads) limit
+        run: |
+          sudo prlimit --pid $$ --nofile=500000:500000
+
+      - name: Setup Java
+        uses: actions/setup-java@v5
+        with:
+          java-version: ${{ inputs.java_version }}
+          distribution: 'temurin'
+          cache: 'maven'
+
+      - name: Setup JBang
+        uses: jbangdev/setup-jbang@main
+
+      - name: Generate Revapi Reports
+        run: make revapi-report MAVEN_ARGS="${MAVEN_ARGS}"
+
+      - name: Create Report Archive
+        run: |
+          cd target/staging
+          tar -czf ../../revapi-reports.tar.gz .
+          cd ../..
+
+      - name: Upload Revapi Reports
+        uses: actions/upload-artifact@v4
+        with:
+          name: revapi-reports-vs-${{ inputs.old_version }}
+          path: revapi-reports.tar.gz
+          retention-days: 30
+
+      - name: Upload Report Site
+        uses: actions/upload-artifact@v4
+        with:
+          name: revapi-site-vs-${{ inputs.old_version }}
+          path: target/staging/
+          retention-days: 30
+
+      - name: Summary
+        run: |
+          echo "## Revapi Compatibility Report Generated" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Comparison:** Current code vs. version \`${{ inputs.old_version }}\`" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### Artifacts" >> $GITHUB_STEP_SUMMARY
+          echo "- \`revapi-reports-vs-${{ inputs.old_version }}\` - Compressed archive of all reports" >> $GITHUB_STEP_SUMMARY
+          echo "- \`revapi-site-vs-${{ inputs.old_version }}\` - HTML site with aggregated reports" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "Download the \`revapi-site\` artifact and open \`revapi-index.html\` in your browser to view the reports." >> $GITHUB_STEP_SUMMARY
