@@ -103,6 +103,36 @@ The Gradle plugin defines a `crd2java` task (see `gradle tasks --all`), that can
 gradle crd2Java 
 ```
 
+### Incremental Builds and Caching
+
+The `crd2java` task supports Gradle's incremental build and caching features. The task will only re-run when:
+
+- The source CRD files or directories change
+- The list of URLs to download CRDs from changes
+- Any configuration parameter affecting code generation changes (e.g., `enumUppercase`, `extraAnnotations`, etc.)
+- The generated output is missing or has been modified
+
+When the task is up-to-date and nothing has changed, Gradle will skip execution and display `UP-TO-DATE` next to the task name:
+
+```shell
+$ gradle crd2Java
+> Task :crd2Java UP-TO-DATE
+
+BUILD SUCCESSFUL in 1s
+```
+
+This significantly improves build performance when CRDs and configuration haven't changed.
+
+**Note on URL-based sources:** The task tracks the URL strings as inputs, not the content at those URLs. If the content at a URL changes but the URL string remains the same, you may need to force the task to re-run:
+
+```shell
+# Force re-run the task even if inputs haven't changed
+gradle crd2Java --rerun-tasks
+
+# Or clean the outputs first
+gradle clean crd2Java
+```
+
 ## Usage
 
 Provide a `source` referencing a file or a folder containing your CRDs definitions in `yaml` or `json` format and a `target` directory where the relevant Java code should be generated.
