@@ -186,6 +186,15 @@
           </dependency>
         </dependencies>
       </profile>
+      <profile>
+        <id>httpclient-vertx-5</id>
+        <dependencies>
+          <dependency>
+            <groupId>io.fabric8</groupId>
+            <artifactId>kubernetes-httpclient-vertx-5</artifactId>
+          </dependency>
+        </dependencies>
+      </profile>
     </profiles>
 
 </project>

@@ -14,4 +14,4 @@
 # limitations under the License.
 #
 
-io.fabric8.kubernetes.client.vertx.VertxHttpClientFactory
+io.fabric8.kubernetes.client.vertx5.Vertx5HttpClientFactory
