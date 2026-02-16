@@ -233,7 +233,6 @@
     <module>log4j</module>
     <module>kubernetes-examples</module>
     <module>bom-generator-plugin</module>
-    <module>graalvm-metadata-generator-plugin</module>
     <!-- BOM modules are added via profile activation at build time -->
   </modules>
 
@@ -1504,32 +1503,6 @@
                 </goals>
                 <configuration>
                   <doclint>${javadoc.doclint}</doclint>
-                </configuration>
-              </execution>
-            </executions>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-    <profile>
-      <id>generate-graal-metadata</id>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>io.smallrye</groupId>
-            <artifactId>jandex-maven-plugin</artifactId>
-          </plugin>
-          <plugin>
-            <groupId>io.fabric8</groupId>
-            <artifactId>graalvm-metadata-generator-plugin</artifactId>
-            <version>${project.version}</version>
-            <executions>
-              <execution>
-                <goals>
-                  <goal>generate</goal>
-                </goals>
-                <configuration>
-                  <inclusionStrategy>JACKSON_ANNOTATIONS</inclusionStrategy>
                 </configuration>
               </execution>
             </executions>
