@@ -95,4 +95,4 @@ revapi-report:
 	@echo "Generating Revapi compatibility reports..."
 	mvn site -Prevapi-compare -DskipTests $(MAVEN_ARGS)
 	@echo "Aggregating reports into target/staging..."
-	jbang scripts/aggregate_revapi_reports.java
+	jbang scripts/aggregate-revapi-reports.java

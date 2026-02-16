@@ -14,11 +14,16 @@
  * limitations under the License.
  */
 /// usr/bin/env jbang "$0" "$@" ; exit $?
-//JAVA 11+
-//SOURCES generate_revapi_index.java
+//JAVA 17+
+//SOURCES generate-revapi-index.java
 
 import java.io.IOException;
-import java.nio.file.*;
+import java.nio.file.FileVisitResult;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.SimpleFileVisitor;
+import java.nio.file.StandardCopyOption;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,7 +31,7 @@ import java.util.List;
 /**
  * Aggregate Revapi reports from all modules into a consolidated staging directory.
  */
-public class aggregate_revapi_reports {
+class aggregate_revapi_reports {
 
   static final String REDIRECT_HTML = """
     <!DOCTYPE html>

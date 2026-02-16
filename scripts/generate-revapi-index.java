@@ -14,19 +14,21 @@
  * limitations under the License.
  */
 /// usr/bin/env jbang "$0" "$@" ; exit $?
-//JAVA 11+
+//JAVA 17+
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.*;
+import java.util.EnumMap;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
  * Generate an enhanced index for all Revapi reports with categorization.
  */
-public class generate_revapi_index {
+class generate_revapi_index {
 
   static class Module implements Comparable<Module> {
     final String path;
