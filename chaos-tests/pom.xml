@@ -184,7 +184,7 @@
       <profile>
         <id>httpclient-vertx-5</id>
         <properties>
-          <vertx.version>5.0.7</vertx.version>
+          <vertx.version>${vertx5.version}</vertx.version>
         </properties>
         <dependencies>
           <dependency>
