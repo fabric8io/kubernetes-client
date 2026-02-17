@@ -5,6 +5,8 @@
 #### Bugs
 * Fix #5292: Cluster() configuration should use tlsServerName
 * Fix #7174: (httpclient) Fix HTTP client factory priority - VertxHttpClientFactory (default) now has priority -1, OkHttpClientFactory restored to priority 0
+* Fix #7174: (httpclient-vertx-5) Add runtime check for Vert.x 5 classes to provide clear error when Vert.x 4/5 conflict occurs
+* Fix #7174: (chaos-tests) Fix classpath conflict when testing with Vert.x 5 HTTP client
 * Fix #7415: (java-generator) Fix generic type erasure for array of enums with default values
 
 #### Improvements
@@ -16,6 +18,42 @@
 * Fix #7174: Added Vert.x 5 HTTP client implementation with improved async handling and WebSocket separation
 
 #### _**Note**_: Breaking changes
+
+#### _**Note**_: Vert.x HTTP Client Compatibility (Issue #7174)
+
+The `kubernetes-httpclient-vertx` (Vert.x 4.x) and `kubernetes-httpclient-vertx-5` (Vert.x 5.x) modules are **mutually exclusive**.
+They must not be included together in your project dependencies.
+Both modules provide an implementation of `HttpClient.Factory` and use the same `io.vertx` artifact coordinates but with incompatible major versions.
+
+**Problem**: If both modules are present on the classpath, Maven's dependency resolution may pick Vert.x 4.x JARs while the `Vertx5HttpClientFactory` is selected at runtime.
+This causes `NoClassDefFoundError` for Vert.x 5-specific classes like `io.vertx.core.impl.SysProps`.
+
+**Solution**: Ensure your project includes only ONE of these modules:
+- `kubernetes-httpclient-vertx` (default, uses Vert.x 4.x) - included transitively via `kubernetes-client`
+- `kubernetes-httpclient-vertx-5` (optional, uses Vert.x 5.x) - requires explicit dependency and exclusion of vertx-4
+
+When using Vert.x 5, exclude the default Vert.x 4 client and set the `vertx.version` property:
+```xml
+<properties>
+  <vertx.version>${vertx5.version}</vertx.version> <!-- or explicit 5.0.7 -->
+</properties>
+<dependencies>
+  <dependency>
+    <groupId>io.fabric8</groupId>
+    <artifactId>kubernetes-client</artifactId>
+    <exclusions>
+      <exclusion>
+        <groupId>io.fabric8</groupId>
+        <artifactId>kubernetes-httpclient-vertx</artifactId>
+      </exclusion>
+    </exclusions>
+  </dependency>
+  <dependency>
+    <groupId>io.fabric8</groupId>
+    <artifactId>kubernetes-httpclient-vertx-5</artifactId>
+  </dependency>
+</dependencies>
+```
 
 ### 7.5.2 (2026-01-22)
 
