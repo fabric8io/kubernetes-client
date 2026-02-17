@@ -1266,6 +1266,7 @@
                       <exclude>io.fabric8*:*-examples</exclude>
                       <exclude>io.fabric8:crd-generator-test*</exclude>
                       <exclude>io.fabric8:kubernetes-test</exclude>
+                      <exclude>io.fabric8:bom-generator-plugin</exclude>
                     </excludes>
                   </modules>
                 </bom>
@@ -1280,6 +1281,7 @@
                       <exclude>io.fabric8*:*-examples</exclude>
                       <exclude>io.fabric8:crd-generator-test*</exclude>
                       <exclude>io.fabric8:kubernetes-test</exclude>
+                      <exclude>io.fabric8:bom-generator-plugin</exclude>
                     </excludes>
                   </modules>
                   <dependencies>
