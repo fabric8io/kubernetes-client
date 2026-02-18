@@ -53,7 +53,7 @@ import java.util.stream.Collectors;
  * JBang script to generate GraalVM native-image metadata from Jandex indexes.
  *
  * Usage:
- *   jbang generate-graalvm-metadata.java <index-file> [options]
+ *   jbang GenerateGraalvmMetadata.java <index-file> [options]
  *
  * Arguments:
  *   <index-file>                     Path to Jandex index file (required)
@@ -72,24 +72,34 @@ import java.util.stream.Collectors;
  *   -h, --help                       Show this help message
  *
  * Examples:
- *   jbang generate-graalvm-metadata.java target/classes/META-INF/jandex.idx
- *   jbang generate-graalvm-metadata.java target/classes/META-INF/jandex.idx -s COMPREHENSIVE
- *   jbang generate-graalvm-metadata.java target/classes/META-INF/jandex.idx -o output/reflect-config.json
- *   jbang generate-graalvm-metadata.java target/classes/META-INF/jandex.idx -i "io.fabric8.*" -e "*.internal.*"
+ *   jbang GenerateGraalvmMetadata.java target/classes/META-INF/jandex.idx
+ *   jbang GenerateGraalvmMetadata.java target/classes/META-INF/jandex.idx -s COMPREHENSIVE
+ *   jbang GenerateGraalvmMetadata.java target/classes/META-INF/jandex.idx -o output/reflect-config.json
+ *   jbang GenerateGraalvmMetadata.java target/classes/META-INF/jandex.idx -i "io.fabric8.*" -e "*.internal.*"
  */
-class generate_graalvm_metadata {
+class GenerateGraalvmMetadata {
 
   public static void main(String[] args) {
+    int exitCode = generate(args);
+    System.exit(exitCode);
+  }
+
+  /**
+   * Generate GraalVM metadata without calling System.exit().
+   * Returns 0 on success, 1 on failure.
+   * This method can be called from other scripts using jbang SOURCES directive.
+   */
+  static int generate(String[] args) {
     try {
       var config = parseArgs(args);
       if (config == null) {
-        return; // Help was shown or error occurred
+        return 0; // Help was shown
       }
 
       if (!config.indexFile.exists()) {
         System.err.println("ERROR: Jandex index file not found: " + config.indexFile);
         System.err.println("Consider generating index with jandex-maven-plugin");
-        System.exit(1);
+        return 1;
       }
 
       // Determine output file
@@ -121,7 +131,7 @@ class generate_graalvm_metadata {
 
       if (classes.isEmpty()) {
         System.out.println("No classes found matching inclusion criteria");
-        System.exit(0);
+        return 0;
       }
 
       System.out.println("Found " + classes.size() + " classes for reflection configuration");
@@ -135,12 +145,12 @@ class generate_graalvm_metadata {
       generator.generate(classes, config.outputFile, config.mergeWithExisting);
 
       System.out.println("Successfully generated reflection configuration at: " + config.outputFile);
-      System.exit(0);
+      return 0;
 
     } catch (Exception e) {
       System.err.println("ERROR: " + e.getMessage());
       e.printStackTrace();
-      System.exit(1);
+      return 1;
     }
   }
 
@@ -226,7 +236,7 @@ class generate_graalvm_metadata {
   static void showHelp() {
     System.out.println("GraalVM Metadata Generator");
     System.out.println();
-    System.out.println("Usage: jbang generate-graalvm-metadata.java <index-file> [options]");
+    System.out.println("Usage: jbang GenerateGraalvmMetadata.java <index-file> [options]");
     System.out.println();
     System.out.println("Arguments:");
     System.out.println("  <index-file>                     Path to Jandex index file (required)");
@@ -249,9 +259,9 @@ class generate_graalvm_metadata {
     System.out.println("  -h, --help                       Show this help message");
     System.out.println();
     System.out.println("Examples:");
-    System.out.println("  jbang generate-graalvm-metadata.java target/classes/META-INF/jandex.idx");
-    System.out.println("  jbang generate-graalvm-metadata.java target/classes/META-INF/jandex.idx -s COMPREHENSIVE");
-    System.out.println("  jbang generate-graalvm-metadata.java target/classes/META-INF/jandex.idx -i \"io.fabric8.*\"");
+    System.out.println("  jbang GenerateGraalvmMetadata.java target/classes/META-INF/jandex.idx");
+    System.out.println("  jbang GenerateGraalvmMetadata.java target/classes/META-INF/jandex.idx -s COMPREHENSIVE");
+    System.out.println("  jbang GenerateGraalvmMetadata.java target/classes/META-INF/jandex.idx -i \"io.fabric8.*\"");
   }
 
   static class Config {

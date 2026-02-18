@@ -16,6 +16,7 @@
  */
 
 //JAVA 11+
+//SOURCES ./GenerateGraalvmMetadata.java
 
 import javax.xml.parsers.DocumentBuilderFactory;
 
@@ -23,8 +24,6 @@ import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 
 import java.io.File;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,7 +31,7 @@ import java.util.List;
  * JBang wrapper script to generate GraalVM metadata for all Maven modules.
  *
  * Usage:
- *   jbang generate-all-graalvm-metadata.java [OPTIONS]
+ *   jbang GenerateAllGraalvmMetadata.java [OPTIONS]
  *
  * Options:
  *   -r, --root <dir>                 Root directory of the Maven project (default: current directory)
@@ -41,12 +40,12 @@ import java.util.List;
  *   -h, --help                       Show this help message
  *
  * Examples:
- *   jbang generate-all-graalvm-metadata.java
- *   jbang generate-all-graalvm-metadata.java -r /path/to/project
- *   jbang generate-all-graalvm-metadata.java -s COMPREHENSIVE
- *   jbang generate-all-graalvm-metadata.java -d
+ *   jbang GenerateAllGraalvmMetadata.java
+ *   jbang GenerateAllGraalvmMetadata.java -r /path/to/project
+ *   jbang GenerateAllGraalvmMetadata.java -s COMPREHENSIVE
+ *   jbang GenerateAllGraalvmMetadata.java -d
  */
-class generate_all_graalvm_metadata {
+class GenerateAllGraalvmMetadata {
 
   private static final String DEFAULT_STRATEGY = "JACKSON_ANNOTATIONS";
 
@@ -194,31 +193,14 @@ class generate_all_graalvm_metadata {
 
   static boolean generateMetadata(File jandexIndex, String strategy) {
     try {
-      // Get the path to the generate-graalvm-metadata.java script
-      var scriptPath = Paths.get("scripts/generate-graalvm-metadata.java").toAbsolutePath();
-
-      // If we're running from scripts directory, adjust path
-      if (!Files.exists(scriptPath)) {
-        scriptPath = Paths.get("generate-graalvm-metadata.java").toAbsolutePath();
-      }
-
-      if (!Files.exists(scriptPath)) {
-        System.err.println("  ERROR: Could not find generate-graalvm-metadata.java script");
-        return false;
-      }
-
-      var processBuilder = new ProcessBuilder(
-        "jbang",
-        scriptPath.toString(),
+      // Call GenerateGraalvmMetadata directly using jbang SOURCES directive
+      var args = new String[] {
         jandexIndex.getAbsolutePath(),
         "-s",
         strategy
-      );
+      };
 
-      processBuilder.inheritIO();
-      var process = processBuilder.start();
-      var exitCode = process.waitFor();
-
+      var exitCode = GenerateGraalvmMetadata.generate(args);
       return exitCode == 0;
 
     } catch (Exception e) {
@@ -270,7 +252,7 @@ class generate_all_graalvm_metadata {
   static void showHelp() {
     System.out.println("GraalVM Metadata Generator - Batch Mode");
     System.out.println();
-    System.out.println("Usage: jbang generate-all-graalvm-metadata.java [OPTIONS]");
+    System.out.println("Usage: jbang GenerateAllGraalvmMetadata.java [OPTIONS]");
     System.out.println();
     System.out.println("Options:");
     System.out.println("  -r, --root <dir>                 Root directory of Maven project (default: current)");
@@ -283,10 +265,10 @@ class generate_all_graalvm_metadata {
     System.out.println("  -h, --help                       Show this help message");
     System.out.println();
     System.out.println("Examples:");
-    System.out.println("  jbang generate-all-graalvm-metadata.java");
-    System.out.println("  jbang generate-all-graalvm-metadata.java -r /path/to/project");
-    System.out.println("  jbang generate-all-graalvm-metadata.java -s COMPREHENSIVE");
-    System.out.println("  jbang generate-all-graalvm-metadata.java -d");
+    System.out.println("  jbang GenerateAllGraalvmMetadata.java");
+    System.out.println("  jbang GenerateAllGraalvmMetadata.java -r /path/to/project");
+    System.out.println("  jbang GenerateAllGraalvmMetadata.java -s COMPREHENSIVE");
+    System.out.println("  jbang GenerateAllGraalvmMetadata.java -d");
     System.out.println();
     System.out.println("Note: This script requires modules to have Jandex indexes generated.");
     System.out.println("      Run 'mvn clean install' first to generate the indexes.");
