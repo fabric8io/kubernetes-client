@@ -126,9 +126,10 @@ class WatchConnectionManagerTest {
     return new WatchConnectionManager(client,
         baseOperation, Mockito.mock(ListOptions.class), Mockito.mock(Watcher.class), 0, 0, 0) {
       @Override
-      void scheduleReconnect(WatchRequestState state) {
+      void scheduleReconnect(WatchRequestState state, Throwable t) {
         reconnect.countDown();
       }
+
     };
   }
 
