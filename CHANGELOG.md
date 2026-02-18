@@ -97,6 +97,7 @@ When using Vert.x 5, exclude the default Vert.x 4 client and set the `vertx.vers
 * Fix #7048: Support for Kubernetes v1.34 (Of Wind & Will)
 * Fix #7371: Update Fabric8 OpenShift Model as per OpenShift 4.20
 * Fix #7355: (crd-generator) Add SchemaCustomizer annotation for advanced schema modification
+* Fix #7375: (crd-generator) Support @JsonClassDescription for adding descriptions to classes in the generated CRD schema.
 
 #### _**Note**_: Breaking changes
 * Fix #7048: **admissionregistration.v1beta1**: Removed `ValidatingAdmissionPolicy` and related classes (`ValidatingAdmissionPolicyBinding`, `AuditAnnotation`, `Validation`, `ValidatingAdmissionPolicyBindingSpec`) from `v1beta1` as they have graduated to GA in `admissionregistration.v1`. `MutatingAdmissionPolicy` has been promoted from `v1alpha1` to `v1beta1`. The `V1beta1AdmissionRegistrationAPIGroupDSL` and  `V1beta1AdmissionRegistrationAPIGroupClient` have been updated accordingly.
