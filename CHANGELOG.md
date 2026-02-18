@@ -8,12 +8,14 @@
 * Fix #7174: (httpclient-vertx-5) Add runtime check for Vert.x 5 classes to provide clear error when Vert.x 4/5 conflict occurs
 * Fix #7174: (chaos-tests) Fix classpath conflict when testing with Vert.x 5 HTTP client
 * Fix #7415: (java-generator) Fix generic type erasure for array of enums with default values
+* Fix #7422: (okhttp) Remove internal API usage and fix deprecated OkHttp 5 calls
 
 #### Improvements
 * Fix #7422: bump okhttp from 4.12.0 to 5.3.2
 * Fix #7252: call additionalConfig when building VertxHttpClient with a VertxHttpClientFactory typed factory with the builder
 
 #### Dependency Upgrade
+* Fix #7374: bump snakeyaml-engine from 2.10 to 3.0.1
 
 #### New Features
 * Fix #7385: Support for Kubernetes v1.35 (Timbernetes)
