@@ -12,6 +12,7 @@
 
 #### Improvements
 * Fix #7422: bump okhttp from 4.12.0 to 5.3.2
+* Fix #7252: call additionalConfig when building VertxHttpClient with a VertxHttpClientFactory typed factory with the builder
 
 #### Dependency Upgrade
 * Fix #7374: bump snakeyaml-engine from 2.10 to 3.0.1

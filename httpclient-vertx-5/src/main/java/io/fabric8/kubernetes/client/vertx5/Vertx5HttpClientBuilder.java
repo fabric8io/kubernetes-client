@@ -180,6 +180,12 @@ public class Vertx5HttpClientBuilder<F extends HttpClient.Factory>
 
     final WebSocketClientOptions wsOptions = createWebSocketClientOptions(protocols);
 
+    // Since the factory is not explicitly typed as VertxHttpClientFactory, we need to check the type before invoking
+    // additionalConfig as to not break other implementations of HttpClient.Factory for VertxHttpClientBuilder.
+    if (clientFactory instanceof Vertx5HttpClientFactory) {
+      ((Vertx5HttpClientFactory) clientFactory).additionalConfig(wsOptions, httpOptions, poolOptions);
+    }
+
     return Vertx5HttpClient.createWithWebSocketOptions(
         this,
         new AtomicBoolean(),

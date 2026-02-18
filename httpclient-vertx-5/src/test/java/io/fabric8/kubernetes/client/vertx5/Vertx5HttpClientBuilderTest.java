@@ -18,7 +18,10 @@ package io.fabric8.kubernetes.client.vertx5;
 import io.fabric8.kubernetes.client.http.HttpClient;
 import io.fabric8.kubernetes.client.http.TlsVersion;
 import io.vertx.core.Vertx;
+import io.vertx.core.http.PoolOptions;
+import io.vertx.core.http.WebSocketClientOptions;
 import io.vertx.core.impl.VertxImpl;
+import io.vertx.ext.web.client.WebClientOptions;
 import org.assertj.core.api.InstanceOfAssertFactories;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -26,6 +29,8 @@ import org.junit.jupiter.api.Test;
 
 import java.net.InetSocketAddress;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicReference;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -372,6 +377,84 @@ class Vertx5HttpClientBuilderTest {
       try (HttpClient client = builder.build()) {
         assertThat(client).isNotNull();
         assertThat(client).isInstanceOf(Vertx5HttpClient.class);
+      }
+    }
+  }
+
+  @Nested
+  @DisplayName("AdditionalConfig Hook")
+  class AdditionalConfigTests {
+
+    @Test
+    @DisplayName("Should call additionalConfig on VertxHttpClientFactory")
+    void callsAdditionalConfigOnVertxHttpClientFactory() {
+      // Create a custom factory that tracks if additionalConfig was called
+      final AtomicBoolean additionalConfigCalled = new AtomicBoolean(
+          false);
+      final AtomicReference<io.vertx.core.http.WebSocketClientOptions> capturedWsOptions = new AtomicReference<>();
+      final AtomicReference<io.vertx.ext.web.client.WebClientOptions> capturedWebClientOptions = new AtomicReference<>();
+      final AtomicReference<PoolOptions> capturedPoolOptions = new AtomicReference<>();
+
+      Vertx5HttpClientFactory customFactory = new Vertx5HttpClientFactory() {
+        @Override
+        protected void additionalConfig(io.vertx.core.http.WebSocketClientOptions wsOptions,
+            io.vertx.ext.web.client.WebClientOptions webClientOptions,
+            io.vertx.core.http.PoolOptions poolOptions) {
+          additionalConfigCalled.set(true);
+          capturedWsOptions.set(wsOptions);
+          capturedWebClientOptions.set(webClientOptions);
+          capturedPoolOptions.set(poolOptions);
+
+          // add some customization
+          wsOptions.setMaxConnections(9999);
+          webClientOptions.setKeepAlive(true);
+          poolOptions.setHttp1MaxSize(8888);
+        }
+      };
+
+      // Build a client using the custom factory
+      try (HttpClient client = customFactory.newBuilder().build()) {
+        // Verify additionalConfig was called
+        assertThat(additionalConfigCalled.get())
+            .as("additionalConfig should be called during build")
+            .isTrue();
+
+        assertThat(capturedWsOptions.get())
+            .as("WebSocketClientOptions should be passed to additionalConfig")
+            .isNotNull()
+            .extracting(WebSocketClientOptions::getMaxConnections)
+            .isEqualTo(9999);
+
+        assertThat(capturedWebClientOptions.get())
+            .as("WebClientOptions should be passed to additionalConfig")
+            .isNotNull()
+            .extracting(WebClientOptions::isKeepAlive)
+            .isEqualTo(true);
+
+        assertThat(capturedPoolOptions.get())
+            .as("PoolOptions should be passed to additionalConfig")
+            .isNotNull()
+            .extracting(PoolOptions::getHttp1MaxSize)
+            .isEqualTo(8888);
+      }
+    }
+
+    @Test
+    @DisplayName("Should not fail with non-VertxHttpClientFactory")
+    void doesNotFailWithNonVertxHttpClientFactory() {
+      // Test with a generic factory that doesn't have additionalConfig implemented
+      // Since this factory is not an instance of VertxHttpClientFactory, no call to additionalConfig should be made
+      // A runtime exception would happen if it is unexpectedly called
+      HttpClient.Factory genericFactory = new HttpClient.Factory() {
+        @Override
+        public HttpClient.Builder newBuilder() {
+          return new Vertx5HttpClientBuilder<>(this, null);
+        }
+      };
+
+      // Should not throw an exception
+      try (HttpClient client = genericFactory.newBuilder().build()) {
+        assertThat(client).isNotNull();
       }
     }
   }
