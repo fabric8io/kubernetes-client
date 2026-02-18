@@ -15,19 +15,19 @@
 #
 
 apiVersion: admissionregistration.k8s.io/v1
-kind: MutatingWebhookConfiguration
+kind: ValidatingWebhookConfiguration
 metadata:
-  name: "mutating.kubeapitest.example.com"
+  name: "validating.kubeapitest.example.com"
 webhooks:
-  - name: "mutating.kubeapitest.example.com"
+  - name: "validating.kubeapitest.example.com"
     rules:
       - apiGroups:   ["networking.k8s.io"]
         apiVersions: ["v1"]
-        operations:  ["*"]
+        operations:  ["CREATE", "UPDATE"]
         resources:   ["ingresses"]
         scope:       "Namespaced"
     clientConfig:
-      url: "https://localhost:8443/mutate"
+      url: "https://localhost:8444/validate"
     admissionReviewVersions: ["v1"]
     sideEffects: None
     timeoutSeconds: 10

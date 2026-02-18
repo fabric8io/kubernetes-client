@@ -31,9 +31,11 @@ import io.vertx.core.Vertx;
 import io.vertx.core.http.HttpServer;
 import io.vertx.core.http.HttpServerOptions;
 import io.vertx.core.net.NetServerOptions;
+import io.vertx.core.net.PemKeyCertOptions;
 import io.vertx.core.net.SelfSignedCertificate;
 
 import java.io.Closeable;
+import java.io.File;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
@@ -72,6 +74,8 @@ public class MockWebServer implements Closeable {
   private final List<String> enabledSecuredTransportProtocols;
   private boolean ssl;
   private SelfSignedCertificate selfSignedCertificate;
+  private File pemKeyFile;
+  private File pemCertFile;
   private HttpServer httpServer;
   private int port;
   private InetAddress inetAddress;
@@ -120,12 +124,21 @@ public class MockWebServer implements Closeable {
         .setWebSocketSubProtocols(Arrays.asList(SUPPORTED_WEBSOCKET_SUB_PROTOCOLS))
         .setHandle100ContinueAutomatically(true);
     if (ssl) {
-      selfSignedCertificate = SelfSignedCertificate.create(getHostName());
       options
           .setSsl(true)
-          .setEnabledSecureTransportProtocols(new HashSet<>(enabledSecuredTransportProtocols))
-          .setTrustOptions(selfSignedCertificate.trustOptions())
-          .setKeyCertOptions(selfSignedCertificate.keyCertOptions());
+          .setEnabledSecureTransportProtocols(new HashSet<>(enabledSecuredTransportProtocols));
+
+      // Use custom PEM certificates if provided, otherwise use self-signed certificate
+      if (pemKeyFile != null && pemCertFile != null) {
+        options.setPemKeyCertOptions(new PemKeyCertOptions()
+            .setKeyPath(pemKeyFile.getAbsolutePath())
+            .setCertPath(pemCertFile.getAbsolutePath()));
+      } else {
+        selfSignedCertificate = SelfSignedCertificate.create(getHostName());
+        options
+            .setTrustOptions(selfSignedCertificate.trustOptions())
+            .setKeyCertOptions(selfSignedCertificate.keyCertOptions());
+      }
     }
     httpServer = vertx.createHttpServer(options);
     httpServer.connectionHandler(event -> {
@@ -218,6 +231,22 @@ public class MockWebServer implements Closeable {
 
   public void useHttps() {
     this.ssl = true;
+  }
+
+  /**
+   * Configures the server to use custom PEM certificates with proper Subject Alternative Names.
+   * This must be called before start().
+   *
+   * @param keyFile the PEM private key file
+   * @param certFile the PEM certificate file
+   */
+  public void usePemCertificates(File keyFile, File certFile) {
+    if (started) {
+      throw new IllegalStateException("Cannot set certificates after server has started");
+    }
+    this.ssl = true;
+    this.pemKeyFile = keyFile;
+    this.pemCertFile = certFile;
   }
 
   public void enqueue(MockResponse response) {
