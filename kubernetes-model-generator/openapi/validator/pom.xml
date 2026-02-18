@@ -42,7 +42,6 @@
       <groupId>com.atlassian.oai</groupId>
       <artifactId>swagger-request-validator-core</artifactId>
     </dependency>
-
   </dependencies>
   <build>
     <resources>

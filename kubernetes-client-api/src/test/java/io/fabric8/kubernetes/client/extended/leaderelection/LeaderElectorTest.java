@@ -15,6 +15,7 @@
  */
 package io.fabric8.kubernetes.client.extended.leaderelection;
 
+import io.fabric8.kubernetes.api.model.Status;
 import io.fabric8.kubernetes.api.model.StatusBuilder;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.NamespacedKubernetesClient;
@@ -44,6 +45,7 @@ import java.util.concurrent.atomic.AtomicReference;
 import static io.fabric8.kubernetes.client.extended.leaderelection.LeaderElector.jitter;
 import static io.fabric8.kubernetes.client.extended.leaderelection.LeaderElector.loop;
 import static io.fabric8.kubernetes.client.extended.leaderelection.LeaderElector.now;
+import static org.awaitility.Awaitility.await;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -164,6 +166,7 @@ class LeaderElectorTest {
     AtomicInteger count = new AtomicInteger();
     doAnswer(invocation -> {
       if (count.addAndGet(1) == 2) {
+
         // simulate that we've already lost election
         throw new KubernetesClientException(new StatusBuilder().withCode(HttpURLConnection.HTTP_CONFLICT).build());
       }
@@ -316,19 +319,16 @@ class LeaderElectorTest {
 
   @Test
   void loopCancel() throws Exception {
-    // Given
     AtomicInteger count = new AtomicInteger();
     CompletableFuture<?> cf = loop(completion -> count.getAndIncrement(), () -> 10L, CommonThreadPool.get());
-    // When
-    Awaitility.await().atMost(1, TimeUnit.SECONDS).until(() -> count.get() >= 1);
 
+    await().atMost(1, TimeUnit.SECONDS).until(() -> count.get() >= 1);
     cf.cancel(true);
 
-    // make sure that the task is no longer running
-    Thread.sleep(100);
     int sample = count.get();
-    Thread.sleep(100);
-    assertEquals(sample, count.get());
+    await()
+        .atMost(Duration.ofMillis(500))
+        .untilAsserted(() -> assertEquals(sample, count.get()));
   }
 
   @Test
