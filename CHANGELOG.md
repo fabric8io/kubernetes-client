@@ -10,6 +10,7 @@
 * Fix #7415: (java-generator) Fix generic type erasure for array of enums with default values
 
 #### Improvements
+* Fix #7422: bump okhttp from 4.12.0 to 5.3.2
 
 #### Dependency Upgrade
 
@@ -18,6 +19,7 @@
 * Fix #7174: Added Vert.x 5 HTTP client implementation with improved async handling and WebSocket separation
 
 #### _**Note**_: Breaking changes
+* Fix #7422: bump okhttp from 4.12.0 to 5.3.2. The versions are binary compatible, but the major version upgrade might cause side effects.
 
 #### _**Note**_: Vert.x HTTP Client Compatibility (Issue #7174)
 
