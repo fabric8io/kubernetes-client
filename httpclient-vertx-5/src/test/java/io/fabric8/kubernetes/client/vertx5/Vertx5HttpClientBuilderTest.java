@@ -395,7 +395,7 @@ class Vertx5HttpClientBuilderTest {
       final AtomicReference<io.vertx.ext.web.client.WebClientOptions> capturedWebClientOptions = new AtomicReference<>();
       final AtomicReference<PoolOptions> capturedPoolOptions = new AtomicReference<>();
 
-      VertxHttpClientFactory customFactory = new VertxHttpClientFactory() {
+      Vertx5HttpClientFactory customFactory = new Vertx5HttpClientFactory() {
         @Override
         protected void additionalConfig(io.vertx.core.http.WebSocketClientOptions wsOptions,
             io.vertx.ext.web.client.WebClientOptions webClientOptions,
@@ -448,7 +448,7 @@ class Vertx5HttpClientBuilderTest {
       HttpClient.Factory genericFactory = new HttpClient.Factory() {
         @Override
         public HttpClient.Builder newBuilder() {
-          return new VertxHttpClientBuilder<>(this, null);
+          return new Vertx5HttpClientBuilder<>(this, null);
         }
       };
 
