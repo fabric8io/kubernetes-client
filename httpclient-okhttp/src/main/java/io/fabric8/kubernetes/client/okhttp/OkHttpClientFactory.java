@@ -27,11 +27,6 @@ import java.util.concurrent.TimeUnit;
 
 public class OkHttpClientFactory implements HttpClient.Factory {
 
-  @Override
-  public int priority() {
-    return -1;
-  }
-
   /**
    * Subclasses may use this to apply a base configuration to the builder
    */

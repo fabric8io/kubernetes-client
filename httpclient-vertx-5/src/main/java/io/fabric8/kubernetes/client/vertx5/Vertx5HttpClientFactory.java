@@ -22,15 +22,24 @@ import io.vertx.core.http.WebSocketClientOptions;
 import io.vertx.ext.web.client.WebClientOptions;
 
 /**
- * Vert.x implementation of {@link io.fabric8.kubernetes.client.http.HttpClient.Factory}.
+ * Vert.x 5 implementation of {@link io.fabric8.kubernetes.client.http.HttpClient.Factory}.
  *
  * <p>
  * When constructed with a non‑null {@link Vertx} the same instance is reused for every
  * client; otherwise each {@link #newBuilder()} call will lazily create (and own) its own
  * Vert.x runtime.
  * </p>
+ *
+ * <p>
+ * <strong>Important:</strong> This HTTP client requires Vert.x 5.x runtime classes.
+ * It is mutually exclusive with {@code kubernetes-httpclient-vertx} (Vert.x 4.x).
+ * Including both on the classpath will cause runtime errors due to incompatible
+ * Vert.x API versions. Ensure your project excludes one or the other.
+ * </p>
  */
 public class Vertx5HttpClientFactory implements HttpClient.Factory {
+
+  private static final String VERTX5_MARKER_CLASS = "io.vertx.core.impl.SysProps";
 
   final Vertx vertx;
 
@@ -56,10 +65,38 @@ public class Vertx5HttpClientFactory implements HttpClient.Factory {
   /**
    * {@inheritDoc} – reuses the shared Vert.x when present, otherwise defers creation to the
    * builder.
+   *
+   * @throws IllegalStateException if Vert.x 5 runtime classes are not available on the classpath
    */
   @Override
   public Vertx5HttpClientBuilder<Vertx5HttpClientFactory> newBuilder() {
+    validateVertx5Runtime();
     return new Vertx5HttpClientBuilder<>(this, vertx);
+  }
+
+  /**
+   * Validates that Vert.x 5 runtime classes are available on the classpath.
+   *
+   * <p>
+   * This check prevents cryptic {@link NoClassDefFoundError} when both
+   * {@code kubernetes-httpclient-vertx} (Vert.x 4) and {@code kubernetes-httpclient-vertx-5}
+   * are on the classpath, but Maven dependency resolution picks Vert.x 4 JARs.
+   * </p>
+   *
+   * @throws IllegalStateException if Vert.x 5 runtime is not available
+   */
+  private static void validateVertx5Runtime() {
+    try {
+      Class.forName(VERTX5_MARKER_CLASS);
+    } catch (ClassNotFoundException e) {
+      throw new IllegalStateException(
+          "Vert.x 5 runtime classes not found. The kubernetes-httpclient-vertx-5 module requires "
+              + "Vert.x 5.x on the classpath. This error typically occurs when both kubernetes-httpclient-vertx "
+              + "(Vert.x 4) and kubernetes-httpclient-vertx-5 (Vert.x 5) are present, causing Maven to resolve "
+              + "Vert.x 4 JARs. These modules are mutually exclusive - please exclude one from your dependencies "
+              + "and ensure vertx.version property is set appropriately (5.x for vertx-5, 4.x for vertx).",
+          e);
+    }
   }
 
   protected void additionalConfig(WebSocketClientOptions wsOptions, WebClientOptions webClientOptions,

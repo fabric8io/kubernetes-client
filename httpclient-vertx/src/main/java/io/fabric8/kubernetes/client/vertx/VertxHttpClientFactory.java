@@ -23,6 +23,11 @@ public class VertxHttpClientFactory implements io.fabric8.kubernetes.client.http
 
   final Vertx sharedVertx;
 
+  @Override
+  public int priority() {
+    return -1;
+  }
+
   public VertxHttpClientFactory() {
     this(null);
   }
