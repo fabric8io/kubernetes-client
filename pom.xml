@@ -98,7 +98,7 @@
     <vertx.version>4.5.24</vertx.version>
     <vertx5.version>5.0.7</vertx5.version>
     <jandex.version>3.5.0</jandex.version>
-    <snakeyaml.version>2.10</snakeyaml.version>
+    <snakeyaml.version>3.0.1</snakeyaml.version>
     <snakeyaml.bundle.version>2.4</snakeyaml.bundle.version> <!-- Transitive Jackson -->
 
     <!-- API versions -->
