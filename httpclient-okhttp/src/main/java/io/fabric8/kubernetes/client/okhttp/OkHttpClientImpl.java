@@ -41,7 +41,6 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
-import okhttp3.internal.http.HttpMethod;
 import okio.Buffer;
 import okio.BufferedSink;
 import okio.BufferedSource;
@@ -56,10 +55,13 @@ import java.io.InterruptedIOException;
 import java.io.Reader;
 import java.net.MalformedURLException;
 import java.nio.ByteBuffer;
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Executor;
@@ -75,6 +77,9 @@ public class OkHttpClientImpl extends StandardHttpClient<OkHttpClientImpl, OkHtt
   static final Map<String, MediaType> MEDIA_TYPES = new ConcurrentHashMap<>();
 
   public static final MediaType JSON = parseMediaType("application/json");
+
+  private static final Set<String> METHODS_REQUIRING_BODY = new HashSet<>(
+      Arrays.asList("POST", "PUT", "PATCH", "PROPPATCH", "REPORT"));
 
   static MediaType parseMediaType(String contentType) {
     MediaType result = MediaType.parse(contentType);
@@ -354,10 +359,10 @@ public class OkHttpClientImpl extends StandardHttpClient<OkHttpClientImpl, OkHtt
       String contentType = request.getContentType();
       if (body instanceof StringBodyContent) {
         requestBuilder.method(request.method(),
-            RequestBody.create(OkHttpClientImpl.parseMediaType(contentType), ((StringBodyContent) body).getContent()));
+            RequestBody.create(((StringBodyContent) body).getContent(), OkHttpClientImpl.parseMediaType(contentType)));
       } else if (body instanceof ByteArrayBodyContent) {
         requestBuilder.method(request.method(),
-            RequestBody.create(OkHttpClientImpl.parseMediaType(contentType), ((ByteArrayBodyContent) body).getContent()));
+            RequestBody.create(((ByteArrayBodyContent) body).getContent(), OkHttpClientImpl.parseMediaType(contentType)));
       } else if (body instanceof InputStreamBodyContent) {
         InputStreamBodyContent bodyContent = (InputStreamBodyContent) body;
         requestBuilder.method(request.method(), new RequestBody() {
@@ -385,7 +390,7 @@ public class OkHttpClientImpl extends StandardHttpClient<OkHttpClientImpl, OkHtt
       }
     } else if (Utils.isNotNullOrEmpty(request.method())) {
       requestBuilder.method(request.method(),
-          HttpMethod.requiresRequestBody(request.method()) ? RequestBody.create(null, new byte[0]) : null);
+          METHODS_REQUIRING_BODY.contains(request.method()) ? RequestBody.create(new byte[0], null) : null);
     }
 
     request.headers().entrySet().stream()
