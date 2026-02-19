@@ -1,0 +1,14 @@
+io.fabric8.kubernetes.client
+io.fabric8.kubernetes.client.dsl
+io.fabric8.kubernetes.client.dsl.base
+io.fabric8.kubernetes.client.extended.leaderelection
+io.fabric8.kubernetes.client.extended.leaderelection.resourcelock
+io.fabric8.kubernetes.client.extended.run
+io.fabric8.kubernetes.client.extension
+io.fabric8.kubernetes.client.http
+io.fabric8.kubernetes.client.informers
+io.fabric8.kubernetes.client.informers.cache
+io.fabric8.kubernetes.client.internal
+io.fabric8.kubernetes.client.lib
+io.fabric8.kubernetes.client.readiness
+io.fabric8.kubernetes.client.utils

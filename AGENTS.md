@@ -41,6 +41,10 @@ make format
 
 # Generate/regenerate model classes from OpenAPI schemas
 make generate-model
+
+# Regenerate javadoc element-list files for cross-module linking
+# Run after adding/removing packages in core modules
+make generate-javadoc-links
 ```
 
 **Direct Maven commands** (when make targets don't cover the use case):
