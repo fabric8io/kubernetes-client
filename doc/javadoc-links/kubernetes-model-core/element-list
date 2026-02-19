@@ -1,0 +1,6 @@
+io.fabric8.kubernetes.api
+io.fabric8.kubernetes.api.model
+io.fabric8.kubernetes.api.model.clusterapi.v1beta1
+io.fabric8.kubernetes.api.model.runtime
+io.fabric8.kubernetes.api.model.version
+io.fabric8.kubernetes.internal

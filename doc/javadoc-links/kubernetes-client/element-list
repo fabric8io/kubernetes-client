@@ -1,0 +1,13 @@
+io.fabric8.kubernetes.client.dsl.internal
+io.fabric8.kubernetes.client.dsl.internal.apps.v1
+io.fabric8.kubernetes.client.dsl.internal.batch.v1
+io.fabric8.kubernetes.client.dsl.internal.certificates.v1
+io.fabric8.kubernetes.client.dsl.internal.certificates.v1beta1
+io.fabric8.kubernetes.client.dsl.internal.core.v1
+io.fabric8.kubernetes.client.dsl.internal.extensions.v1beta1
+io.fabric8.kubernetes.client.dsl.internal.uploadable
+io.fabric8.kubernetes.client.impl
+io.fabric8.kubernetes.client.informers.impl
+io.fabric8.kubernetes.client.informers.impl.cache
+io.fabric8.kubernetes.client.osgi
+io.fabric8.kubernetes.client.utils.internal
