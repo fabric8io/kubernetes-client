@@ -23,6 +23,11 @@ on:
         description: 'Published version to compare against (e.g., 7.0.0)'
         required: true
         type: string
+      new_version:
+        description: 'Published version to compare with (e.g., 7.1.0)'
+        required: false
+        default: ""
+        type: string
       java_version:
         description: 'Java version to use'
         required: false
@@ -33,7 +38,9 @@ on:
           - '21'
 
 env:
-  MAVEN_ARGS: -B -C -V -ntp -Dhttp.keepAlive=false -e -Drevapi.oldVersion=${{ inputs.old_version }}
+  MAVEN_ARGS: -B -C -V -ntp -Dhttp.keepAlive=false -e
+  OLD_VERSION: ${{ inputs.old_version }}
+  NEW_VERSION: ${{ inputs.new_version }}
 
 permissions:
   contents: read
@@ -61,7 +68,17 @@ jobs:
         uses: jbangdev/setup-jbang@main
 
       - name: Generate Revapi Reports
-        run: make revapi-report MAVEN_ARGS="${MAVEN_ARGS}"
+        run: |
+          if [ -z "${{ inputs.new_version }}" ]; then
+            echo "Comparing current code against published version ${{ inputs.old_version }}"
+            export REVAPI_OLD_VERSION="${{ inputs.old_version }}"
+            make revapi-report MAVEN_ARGS="${MAVEN_ARGS} -Drevapi.oldVersion=${{ inputs.old_version }}"
+          else
+            echo "Comparing two published versions: ${{ inputs.old_version }} -> ${{ inputs.new_version }}"
+            make revapi-compare-jars \
+              OLD_ARTIFACT_VERSION="${{ inputs.old_version }}" \
+              NEW_ARTIFACT_VERSION="${{ inputs.new_version }}"
+          fi
 
       - name: Create Report Archive
         run: |
@@ -69,28 +86,42 @@ jobs:
           tar -czf ../../revapi-reports.tar.gz .
           cd ../..
 
+      - name: Set artifact name
+        id: artifact-name
+        run: |
+          if [ -z "${{ inputs.new_version }}" ]; then
+            echo "suffix=vs-${{ inputs.old_version }}" >> $GITHUB_OUTPUT
+          else
+            echo "suffix=${{ inputs.old_version }}-to-${{ inputs.new_version }}" >> $GITHUB_OUTPUT
+          fi
+
       - name: Upload Revapi Reports
         uses: actions/upload-artifact@v4
         with:
-          name: revapi-reports-vs-${{ inputs.old_version }}
+          name: revapi-reports-${{ steps.artifact-name.outputs.suffix }}
           path: revapi-reports.tar.gz
           retention-days: 30
 
       - name: Upload Report Site
         uses: actions/upload-artifact@v4
         with:
-          name: revapi-site-vs-${{ inputs.old_version }}
+          name: revapi-site-${{ steps.artifact-name.outputs.suffix }}
           path: target/staging/
           retention-days: 30
 
       - name: Summary
         run: |
+          SUFFIX="${{ steps.artifact-name.outputs.suffix }}"
           echo "## Revapi Compatibility Report Generated" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
-          echo "**Comparison:** Current code vs. version \`${{ inputs.old_version }}\`" >> $GITHUB_STEP_SUMMARY
+          if [ -z "${{ inputs.new_version }}" ]; then
+            echo "**Comparison:** Current code vs. published version \`${{ inputs.old_version }}\`" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "**Comparison:** Published version \`${{ inputs.old_version }}\` vs. \`${{ inputs.new_version }}\`" >> $GITHUB_STEP_SUMMARY
+          fi
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "### Artifacts" >> $GITHUB_STEP_SUMMARY
-          echo "- \`revapi-reports-vs-${{ inputs.old_version }}\` - Compressed archive of all reports" >> $GITHUB_STEP_SUMMARY
-          echo "- \`revapi-site-vs-${{ inputs.old_version }}\` - HTML site with aggregated reports" >> $GITHUB_STEP_SUMMARY
+          echo "- \`revapi-reports-${SUFFIX}\` - Compressed archive of all reports" >> $GITHUB_STEP_SUMMARY
+          echo "- \`revapi-site-${SUFFIX}\` - HTML site with aggregated reports" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "Download the \`revapi-site\` artifact and open \`revapi-index.html\` in your browser to view the reports." >> $GITHUB_STEP_SUMMARY

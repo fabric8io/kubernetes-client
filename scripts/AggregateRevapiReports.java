@@ -15,7 +15,7 @@
  */
 /// usr/bin/env jbang "$0" "$@" ; exit $?
 //JAVA 17+
-//SOURCES generate-revapi-index.java
+//SOURCES GenerateRevapiIndex.java
 
 import java.io.IOException;
 import java.nio.file.FileVisitResult;
@@ -31,7 +31,7 @@ import java.util.List;
 /**
  * Aggregate Revapi reports from all modules into a consolidated staging directory.
  */
-class aggregate_revapi_reports {
+class AggregateRevapiReports {
 
   static final String REDIRECT_HTML = """
     <!DOCTYPE html>
@@ -59,6 +59,10 @@ class aggregate_revapi_reports {
 
   public static void main(String[] args) throws IOException {
     System.out.println("Aggregating Revapi reports into target/staging...");
+
+    // Get version information from environment variables
+    String oldVersion = System.getenv("REVAPI_OLD_VERSION");
+    String newVersion = System.getenv("REVAPI_NEW_VERSION");
 
     Path rootDir = Paths.get(".");
     Path stagingDir = rootDir.resolve("target/staging");
@@ -88,6 +92,14 @@ class aggregate_revapi_reports {
       // Copy all site files
       copyDirectory(site.sourcePath, targetDir);
 
+      // Copy revapi-report.json from target directory
+      Path moduleTargetDir = site.sourcePath.getParent();
+      Path jsonSource = moduleTargetDir.resolve("revapi-report.json");
+      if (Files.exists(jsonSource)) {
+        Path jsonTarget = targetDir.resolve("revapi-report.json");
+        Files.copy(jsonSource, jsonTarget, StandardCopyOption.REPLACE_EXISTING);
+      }
+
       // Create index.html redirect if it doesn't exist
       Path indexFile = targetDir.resolve("index.html");
       if (!Files.exists(indexFile)) {
@@ -101,7 +113,7 @@ class aggregate_revapi_reports {
 
     // Generate enhanced index
     System.out.println("Generating enhanced index...");
-    generate_revapi_index.main(new String[0]);
+    GenerateRevapiIndex.main(args);
 
     System.out.println("✓ Open: target/staging/index.html");
     System.out.println("✓ Or view all modules: target/staging/revapi-index.html");

@@ -206,6 +206,7 @@
     <validation-api.version>2.0.1.Final</validation-api.version>
     <revapi.version>0.15.1</revapi.version>
     <revapi-java.version>0.28.4</revapi-java.version>
+    <revapi-reporter-json.version>0.5.1</revapi-reporter-json.version>
   </properties>
   <modules>
     <module>zjsonpatch</module>
@@ -1526,9 +1527,16 @@
                 <artifactId>revapi-java</artifactId>
                 <version>${revapi-java.version}</version>
               </dependency>
+              <dependency>
+                <groupId>org.revapi</groupId>
+                <artifactId>revapi-reporter-json</artifactId>
+                <version>${revapi-reporter-json.version}</version>
+              </dependency>
             </dependencies>
             <configuration>
               <checkDependencies>false</checkDependencies>
+              <failBuildOnProblemsFound>false</failBuildOnProblemsFound>
+              <failSeverity>breaking</failSeverity>
               <analysisConfiguration>
                 <revapi.java>
                   <missing-classes>
@@ -1541,7 +1549,19 @@
                     <classQualifiedName>io.fabric8.zjsonpatch.JsonPointer.RefToken</classQualifiedName>
                     <justification>Internal class usage is intentional.</justification>
                   </item>
+                  <item>
+                    <regex>true</regex>
+                    <code>java\.method\.varargOverloadsOnlyDifferInVarargParameter</code>
+                    <old>.*</old>
+                    <classQualifiedName>com\.fasterxml\.jackson\.databind\..*</classQualifiedName>
+                    <justification>Jackson library internal changes are not under our control.</justification>
+                  </item>
                 </revapi.differences>
+                <revapi.reporter.json>
+                  <minSeverity>NON_BREAKING</minSeverity>
+                  <output>${project.build.directory}/revapi-report.json</output>
+                  <indent>true</indent>
+                </revapi.reporter.json>
               </analysisConfiguration>
             </configuration>
           </plugin>
@@ -1569,6 +1589,111 @@
                 </reports>
               </reportSet>
             </reportSets>
+          </plugin>
+        </plugins>
+      </reporting>
+      <distributionManagement>
+        <site>
+          <id>local-staging</id>
+          <url>file://${project.build.directory}/staging</url>
+        </site>
+      </distributionManagement>
+    </profile>
+    <profile>
+      <id>revapi-compare-jars</id>
+      <activation>
+        <property>
+          <name>revapi.newArtifactVersion</name>
+        </property>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.revapi</groupId>
+            <artifactId>revapi-maven-plugin</artifactId>
+            <version>${revapi.version}</version>
+            <dependencies>
+              <dependency>
+                <groupId>org.revapi</groupId>
+                <artifactId>revapi-java</artifactId>
+                <version>${revapi-java.version}</version>
+              </dependency>
+              <dependency>
+                <groupId>org.revapi</groupId>
+                <artifactId>revapi-reporter-json</artifactId>
+                <version>${revapi-reporter-json.version}</version>
+              </dependency>
+            </dependencies>
+            <configuration>
+              <checkDependencies>false</checkDependencies>
+              <failBuildOnProblemsFound>false</failBuildOnProblemsFound>
+              <failSeverity>breaking</failSeverity>
+              <oldArtifacts>
+                <artifact>${project.groupId}:${project.artifactId}:${revapi.oldArtifactVersion}</artifact>
+              </oldArtifacts>
+              <newArtifacts>
+                <artifact>${project.groupId}:${project.artifactId}:${revapi.newArtifactVersion}</artifact>
+              </newArtifacts>
+              <analysisConfiguration>
+                <revapi.java>
+                  <missing-classes>
+                    <behavior>ignore</behavior>
+                  </missing-classes>
+                </revapi.java>
+                <revapi.differences>
+                  <item>
+                    <code>java.class.nonPublicPartOfAPI</code>
+                    <classQualifiedName>io.fabric8.zjsonpatch.JsonPointer.RefToken</classQualifiedName>
+                    <justification>Internal class usage is intentional.</justification>
+                  </item>
+                  <item>
+                    <regex>true</regex>
+                    <code>java\.method\.varargOverloadsOnlyDifferInVarargParameter</code>
+                    <old>.*</old>
+                    <classQualifiedName>com\.fasterxml\.jackson\.databind\..*</classQualifiedName>
+                    <justification>Jackson library internal changes are not under our control.</justification>
+                  </item>
+                </revapi.differences>
+                <revapi.reporter.json>
+                  <minSeverity>NON_BREAKING</minSeverity>
+                  <output>${project.build.directory}/revapi-report.json</output>
+                  <indent>true</indent>
+                </revapi.reporter.json>
+              </analysisConfiguration>
+            </configuration>
+          </plugin>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-site-plugin</artifactId>
+            <configuration>
+              <generateReports>true</generateReports>
+              <stagingDirectory>${project.build.directory}/staging</stagingDirectory>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+      <reporting>
+        <excludeDefaults>true</excludeDefaults>
+        <plugins>
+          <plugin>
+            <groupId>org.revapi</groupId>
+            <artifactId>revapi-maven-plugin</artifactId>
+            <version>${revapi.version}</version>
+            <reportSets>
+              <reportSet>
+                <reports>
+                  <report>report</report>
+                </reports>
+              </reportSet>
+            </reportSets>
+            <configuration>
+              <oldArtifacts>
+                <artifact>${project.groupId}:${project.artifactId}:${revapi.oldArtifactVersion}</artifact>
+              </oldArtifacts>
+              <newArtifacts>
+                <artifact>${project.groupId}:${project.artifactId}:${revapi.newArtifactVersion}</artifact>
+              </newArtifacts>
+            </configuration>
           </plugin>
         </plugins>
       </reporting>
