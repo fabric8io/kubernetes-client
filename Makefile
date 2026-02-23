@@ -92,11 +92,12 @@ install: clean
 .PHONY: revapi-report
 revapi-report: quickly
 	@echo "Generating Revapi JSON reports"
-	mvn -Prevapi-compare revapi:check || true
+	@if [ -z "$(OLD_ARTIFACT_VERSION)" ]; then \
+		mvn -Prevapi-compare revapi:check || true; \
+	else \
+		mvn -Prevapi-compare -Drevapi.oldVersion=$(OLD_ARTIFACT_VERSION) revapi:check || true; \
+	fi
 	@echo "Aggregating reports into target/staging..."
-	@if [ -z "$$REVAPI_OLD_VERSION" ] && echo "$(MAVEN_ARGS)" | grep -q "revapi.oldVersion="; then \
-		export REVAPI_OLD_VERSION=$$(echo "$(MAVEN_ARGS)" | sed -n 's/.*-Drevapi.oldVersion=\([^ ]*\).*/\1/p'); \
-	fi; \
 	jbang scripts/AggregateRevapiReports.java
 
 # Compare two specific published versions

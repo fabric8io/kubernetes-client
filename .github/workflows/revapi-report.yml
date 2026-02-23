@@ -66,16 +66,18 @@ jobs:
         uses: jbangdev/setup-jbang@main
 
       - name: Generate Revapi Reports
+        env:
+          REVAPI_OLD_VERSION: ${{ inputs.old_version }}
+          NEW_ARTIFACT_VERSION: ${{ inputs.new_version }}
         run: |
-          if [ -z "${{ inputs.new_version }}" ]; then
-            echo "Comparing current code against published version ${{ inputs.old_version }}"
-            export REVAPI_OLD_VERSION="${{ inputs.old_version }}"
-            make revapi-report MAVEN_ARGS="${MAVEN_ARGS} -Drevapi.oldVersion=${{ inputs.old_version }}"
+          if [ -z "$NEW_ARTIFACT_VERSION" ]; then
+            echo "Comparing current code against published version $REVAPI_OLD_VERSION"
+            make revapi-report OLD_ARTIFACT_VERSION=$REVAPI_OLD_VERSION
           else
-            echo "Comparing two published versions: ${{ inputs.old_version }} -> ${{ inputs.new_version }}"
+            echo "Comparing two published versions: $REVAPI_OLD_VERSION -> $NEW_ARTIFACT_VERSION"
             make revapi-compare-jars \
-              OLD_ARTIFACT_VERSION="${{ inputs.old_version }}" \
-              NEW_ARTIFACT_VERSION="${{ inputs.new_version }}"
+              OLD_ARTIFACT_VERSION="$REVAPI_OLD_VERSION" \
+              NEW_ARTIFACT_VERSION="$NEW_ARTIFACT_VERSION"
           fi
 
       - name: Set artifact name

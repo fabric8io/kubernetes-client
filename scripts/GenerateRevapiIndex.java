@@ -163,9 +163,19 @@ class GenerateRevapiIndex {
     m.put("path", mod.path());
     m.put("name", mod.name());
     m.put("stats", toMap(mod.stats()));
-    m.put("oldArchive", mod.oldArchive() != null ? mod.oldArchive() : "");
-    m.put("newArchive", mod.newArchive() != null ? mod.newArchive() : "");
+    m.put("oldArchive", mod.oldArchive() != null ? versionOf(mod.oldArchive()) : "");
+    m.put("newArchive", mod.newArchive() != null ? versionOf(mod.newArchive()) : "");
     return m;
+  }
+
+  /**
+   * Extracts the version from a Maven coordinate (last colon-separated segment).
+   * Returns the input unchanged if it contains no colon (already a bare version).
+   */
+  static String versionOf(String archive) {
+    if (archive == null) return "";
+    int idx = archive.lastIndexOf(':');
+    return idx >= 0 ? archive.substring(idx + 1) : archive;
   }
 
   // ── Entry point ─────────────────────────────────────────────────────────────
@@ -186,7 +196,7 @@ class GenerateRevapiIndex {
     List<Path> jsonFiles = Files.walk(stagingDir)
       .filter(p -> p.getFileName().toString().equals("revapi-report.json"))
       .sorted()
-      .collect(Collectors.toList());
+      .toList();
 
     System.out.println("Generating HTML for " + jsonFiles.size() + " modules...");
 
@@ -239,11 +249,11 @@ class GenerateRevapiIndex {
       System.out.println("  Generated: " + modulePath + "/revapi-report.html");
     }
 
-    // Index header: prefer env-var versions; fall back to first module's archive
+    // Index header: prefer env-var versions; fall back to first module's archive (version only)
     String indexOld = (oldVersion != null && !oldVersion.isEmpty()) ? oldVersion
-      : modules.stream().filter(m -> m.oldArchive() != null).map(Module::oldArchive).findFirst().orElse(null);
+      : modules.stream().filter(m -> m.oldArchive() != null).map(m -> versionOf(m.oldArchive())).findFirst().orElse(null);
     String indexNew = (newVersion != null && !newVersion.isEmpty()) ? newVersion
-      : modules.stream().filter(m -> m.newArchive() != null).map(Module::newArchive).findFirst().orElse(null);
+      : modules.stream().filter(m -> m.newArchive() != null).map(m -> versionOf(m.newArchive())).findFirst().orElse(null);
 
     // Group modules into categories
     Map<ChangeCategory, List<Module>> grouped = modules.stream()
