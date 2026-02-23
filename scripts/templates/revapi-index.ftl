@@ -1,3 +1,4 @@
+<#ftl output_format="HTML">
 <#--
 
     Copyright (C) 2015 Red Hat, Inc.
@@ -15,7 +16,6 @@
     limitations under the License.
 
 -->
-<#ftl output_format="HTML">
 <!DOCTYPE html>
 <html lang="en">
 <head>
