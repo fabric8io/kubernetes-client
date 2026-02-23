@@ -1565,14 +1565,6 @@
               </analysisConfiguration>
             </configuration>
           </plugin>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-site-plugin</artifactId>
-            <configuration>
-              <generateReports>true</generateReports>
-              <stagingDirectory>${project.build.directory}/staging</stagingDirectory>
-            </configuration>
-          </plugin>
         </plugins>
       </build>
       <reporting>
@@ -1660,14 +1652,6 @@
                   <indent>true</indent>
                 </revapi.reporter.json>
               </analysisConfiguration>
-            </configuration>
-          </plugin>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-site-plugin</artifactId>
-            <configuration>
-              <generateReports>true</generateReports>
-              <stagingDirectory>${project.build.directory}/staging</stagingDirectory>
             </configuration>
           </plugin>
         </plugins>

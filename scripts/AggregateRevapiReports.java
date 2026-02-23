@@ -16,6 +16,8 @@
 /// usr/bin/env jbang "$0" "$@" ; exit $?
 //JAVA 17+
 //SOURCES GenerateRevapiIndex.java
+//DEPS com.fasterxml.jackson.core:jackson-databind:2.20.0
+//DEPS org.freemarker:freemarker:2.3.34
 
 import java.io.IOException;
 import java.nio.file.FileVisitResult;
@@ -29,104 +31,68 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Aggregate Revapi reports from all modules into a consolidated staging directory.
+ * Step 1: Find revapi-report.json from each module's target/ directory and copy
+ * into target/staging/ preserving the module path structure.
+ * Step 2: Delegate to GenerateRevapiIndex to parse the staged JSON files and
+ * produce per-module HTML pages and the overall index.
  */
 class AggregateRevapiReports {
 
-  static final String REDIRECT_HTML = """
-    <!DOCTYPE html>
-    <html>
-    <head>
-      <meta charset="UTF-8">
-      <meta http-equiv="refresh" content="0; url=revapi-report.html">
-      <title>Redirecting to Revapi Report</title>
-    </head>
-    <body>
-      <p>Redirecting to <a href="revapi-report.html">Revapi Report</a>...</p>
-    </body>
-    </html>
-    """;
-
-  static class ModuleSite {
-    final Path sourcePath;
+  static class ModuleReport {
+    final Path jsonPath;
     final String modulePath;
 
-    ModuleSite(Path sourcePath, String modulePath) {
-      this.sourcePath = sourcePath;
+    ModuleReport(Path jsonPath, String modulePath) {
+      this.jsonPath = jsonPath;
       this.modulePath = modulePath;
     }
   }
 
-  public static void main(String[] args) throws IOException {
-    System.out.println("Aggregating Revapi reports into target/staging...");
-
-    // Get version information from environment variables
-    String oldVersion = System.getenv("REVAPI_OLD_VERSION");
-    String newVersion = System.getenv("REVAPI_NEW_VERSION");
+  public static void main(String[] args) throws Exception {
+    System.out.println("Copying revapi-report.json files into target/staging...");
 
     Path rootDir = Paths.get(".");
     Path stagingDir = rootDir.resolve("target/staging");
-
-    // Create staging directory
     Files.createDirectories(stagingDir);
 
-    // Copy root project site if it exists
-    Path rootSite = rootDir.resolve("target/site");
-    if (Files.exists(rootSite)) {
-      System.out.println("Copying root site...");
-      copyDirectory(rootSite, stagingDir);
-    }
+    List<ModuleReport> reports = findModuleReports(rootDir);
+    System.out.println("Found " + reports.size() + " modules with revapi-report.json");
 
-    // Find all module sites with revapi-report.html
-    List<ModuleSite> moduleSites = findModuleSites(rootDir);
-
-    System.out.println("Found " + moduleSites.size() + " modules with Revapi reports");
-
-    // Process each module
-    for (ModuleSite site : moduleSites) {
-      System.out.println("Processing module: " + site.modulePath);
-
-      Path targetDir = stagingDir.resolve(site.modulePath);
-      Files.createDirectories(targetDir);
-
-      // Copy all site files
-      copyDirectory(site.sourcePath, targetDir);
-
-      // Copy revapi-report.json from target directory
-      Path moduleTargetDir = site.sourcePath.getParent();
-      Path jsonSource = moduleTargetDir.resolve("revapi-report.json");
-      if (Files.exists(jsonSource)) {
-        Path jsonTarget = targetDir.resolve("revapi-report.json");
-        Files.copy(jsonSource, jsonTarget, StandardCopyOption.REPLACE_EXISTING);
-      }
-
-      // Create index.html redirect if it doesn't exist
-      Path indexFile = targetDir.resolve("index.html");
-      if (!Files.exists(indexFile)) {
-        Files.writeString(indexFile, REDIRECT_HTML);
-      }
+    for (ModuleReport report : reports) {
+      Path dest = stagingDir.resolve(report.modulePath);
+      Files.createDirectories(dest);
+      Files.copy(report.jsonPath, dest.resolve("revapi-report.json"), StandardCopyOption.REPLACE_EXISTING);
+      System.out.println("  Copied: " + report.modulePath);
     }
 
     System.out.println();
-    System.out.println("✓ Aggregation complete!");
-    System.out.println("✓ Total Revapi reports: " + moduleSites.size());
+    System.out.println("✓ Copied " + reports.size() + " JSON reports into target/staging/");
+    System.out.println("Generating HTML reports from staged JSON files...");
 
-    // Generate enhanced index
-    System.out.println("Generating enhanced index...");
     GenerateRevapiIndex.main(args);
 
-    System.out.println("✓ Open: target/staging/index.html");
-    System.out.println("✓ Or view all modules: target/staging/revapi-index.html");
+    System.out.println("✓ Open: target/staging/revapi-index.html");
   }
 
-  static List<ModuleSite> findModuleSites(Path rootDir) throws IOException {
-    List<ModuleSite> sites = new ArrayList<>();
+  static List<ModuleReport> findModuleReports(Path rootDir) throws IOException {
+    List<ModuleReport> reports = new ArrayList<>();
 
     Files.walkFileTree(rootDir, new SimpleFileVisitor<Path>() {
       @Override
       public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs) {
-        // Skip target/staging to avoid recursion
+        String name = dir.getFileName() != null ? dir.getFileName().toString() : "";
+        // Skip hidden directories (.git, .mvn, etc.) but not "." (root) or ".."
+        if (name.length() > 1 && name.startsWith(".")) {
+          return FileVisitResult.SKIP_SUBTREE;
+        }
+        // Avoid re-processing already-staged output
         if (dir.endsWith("target/staging")) {
+          return FileVisitResult.SKIP_SUBTREE;
+        }
+        // revapi-report.json sits directly under target/, skip deeper subdirs
+        Path parent = dir.getParent();
+        if (parent != null && "target".equals(
+          parent.getFileName() != null ? parent.getFileName().toString() : "")) {
           return FileVisitResult.SKIP_SUBTREE;
         }
         return FileVisitResult.CONTINUE;
@@ -134,43 +100,28 @@ class AggregateRevapiReports {
 
       @Override
       public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) {
-        if (file.getFileName().toString().equals("revapi-report.html")) {
-          Path siteDir = file.getParent();
-
-          // Verify this is a target/site directory
-          if (siteDir.endsWith("site") && siteDir.getParent().endsWith("target")) {
-            // Extract module path relative to root
-            Path moduleDir = siteDir.getParent().getParent();
-            Path relativePath = rootDir.toAbsolutePath().normalize()
-              .relativize(moduleDir.toAbsolutePath().normalize());
-
-            sites.add(new ModuleSite(siteDir, relativePath.toString()));
-          }
+        if (!file.getFileName().toString().equals("revapi-report.json")) {
+          return FileVisitResult.CONTINUE;
+        }
+        Path targetDir = file.getParent();
+        if (targetDir == null || !"target".equals(
+          targetDir.getFileName() != null ? targetDir.getFileName().toString() : "")) {
+          return FileVisitResult.CONTINUE;
+        }
+        Path moduleDir = targetDir.getParent();
+        if (moduleDir == null) {
+          return FileVisitResult.CONTINUE;
+        }
+        Path relative = rootDir.toAbsolutePath().normalize()
+          .relativize(moduleDir.toAbsolutePath().normalize());
+        String relStr = relative.toString();
+        if (!relStr.isEmpty()) {
+          reports.add(new ModuleReport(file, relStr));
         }
         return FileVisitResult.CONTINUE;
       }
     });
 
-    return sites;
-  }
-
-  static void copyDirectory(Path source, Path target) throws IOException {
-    Files.walkFileTree(source, new SimpleFileVisitor<Path>() {
-      @Override
-      public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs)
-        throws IOException {
-        Path targetDir = target.resolve(source.relativize(dir));
-        Files.createDirectories(targetDir);
-        return FileVisitResult.CONTINUE;
-      }
-
-      @Override
-      public FileVisitResult visitFile(Path file, BasicFileAttributes attrs)
-        throws IOException {
-        Path targetFile = target.resolve(source.relativize(file));
-        Files.copy(file, targetFile, StandardCopyOption.REPLACE_EXISTING);
-        return FileVisitResult.CONTINUE;
-      }
-    });
+    return reports;
   }
 }

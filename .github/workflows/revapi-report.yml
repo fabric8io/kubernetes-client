@@ -39,8 +39,6 @@ on:
 
 env:
   MAVEN_ARGS: -B -C -V -ntp -Dhttp.keepAlive=false -e
-  OLD_VERSION: ${{ inputs.old_version }}
-  NEW_VERSION: ${{ inputs.new_version }}
 
 permissions:
   contents: read
@@ -80,12 +78,6 @@ jobs:
               NEW_ARTIFACT_VERSION="${{ inputs.new_version }}"
           fi
 
-      - name: Create Report Archive
-        run: |
-          cd target/staging
-          tar -czf ../../revapi-reports.tar.gz .
-          cd ../..
-
       - name: Set artifact name
         id: artifact-name
         run: |
@@ -95,18 +87,14 @@ jobs:
             echo "suffix=${{ inputs.old_version }}-to-${{ inputs.new_version }}" >> $GITHUB_OUTPUT
           fi
 
-      - name: Upload Revapi Reports
-        uses: actions/upload-artifact@v4
+      - name: Compress Reports
+        run: tar -czf revapi-reports.tar.gz -C target/staging .
+
+      - name: Upload Reports
+        uses: actions/upload-artifact@v6
         with:
           name: revapi-reports-${{ steps.artifact-name.outputs.suffix }}
           path: revapi-reports.tar.gz
-          retention-days: 30
-
-      - name: Upload Report Site
-        uses: actions/upload-artifact@v4
-        with:
-          name: revapi-site-${{ steps.artifact-name.outputs.suffix }}
-          path: target/staging/
           retention-days: 30
 
       - name: Summary
@@ -120,8 +108,4 @@ jobs:
             echo "**Comparison:** Published version \`${{ inputs.old_version }}\` vs. \`${{ inputs.new_version }}\`" >> $GITHUB_STEP_SUMMARY
           fi
           echo "" >> $GITHUB_STEP_SUMMARY
-          echo "### Artifacts" >> $GITHUB_STEP_SUMMARY
-          echo "- \`revapi-reports-${SUFFIX}\` - Compressed archive of all reports" >> $GITHUB_STEP_SUMMARY
-          echo "- \`revapi-site-${SUFFIX}\` - HTML site with aggregated reports" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
-          echo "Download the \`revapi-site\` artifact and open \`revapi-index.html\` in your browser to view the reports." >> $GITHUB_STEP_SUMMARY
+          echo "Download the \`revapi-reports-${SUFFIX}\` artifact and open \`revapi-index.html\` in your browser to view the reports." >> $GITHUB_STEP_SUMMARY

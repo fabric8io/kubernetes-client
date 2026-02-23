@@ -91,10 +91,8 @@ install: clean
 # Generate Revapi compatibility reports comparing against last release
 .PHONY: revapi-report
 revapi-report: quickly
-	@echo "Generating Revapi json reports"
+	@echo "Generating Revapi JSON reports"
 	mvn -Prevapi-compare revapi:check || true
-	@echo "Generating Revapi HTML reports..."
-	mvn site -Prevapi-compare -DskipTests $(MAVEN_ARGS)
 	@echo "Aggregating reports into target/staging..."
 	@if [ -z "$$REVAPI_OLD_VERSION" ] && echo "$(MAVEN_ARGS)" | grep -q "revapi.oldVersion="; then \
 		export REVAPI_OLD_VERSION=$$(echo "$(MAVEN_ARGS)" | sed -n 's/.*-Drevapi.oldVersion=\([^ ]*\).*/\1/p'); \
@@ -111,10 +109,8 @@ revapi-compare-jars: clean
 		exit 1; \
 	fi
 	@echo "Comparing $(OLD_ARTIFACT_VERSION) -> $(NEW_ARTIFACT_VERSION)"
-	@echo "Generating Revapi json reports"
+	@echo "Generating Revapi JSON reports"
 	mvn -Prevapi-compare-jars -Drevapi.oldArtifactVersion=$(OLD_ARTIFACT_VERSION) -Drevapi.newArtifactVersion=$(NEW_ARTIFACT_VERSION) revapi:check || true
-	@echo "Generating Revapi HTML reports..."
-	mvn site -Prevapi-compare-jars -Drevapi.oldArtifactVersion=$(OLD_ARTIFACT_VERSION) -Drevapi.newArtifactVersion=$(NEW_ARTIFACT_VERSION) -DskipTests $(MAVEN_ARGS)
 	@echo "Aggregating reports into target/staging..."
 	REVAPI_OLD_VERSION=$(OLD_ARTIFACT_VERSION) REVAPI_NEW_VERSION=$(NEW_ARTIFACT_VERSION) jbang scripts/AggregateRevapiReports.java
 	@echo "✓ Reports generated in target/staging/"
