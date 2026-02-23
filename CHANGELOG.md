@@ -19,6 +19,7 @@
 #### New Features
 * Fix #7385: Support for Kubernetes v1.35 (Timbernetes)
 * Fix #7174: Added Vert.x 5 HTTP client implementation with improved async handling and WebSocket separation
+* Fix #7402: Added Byte code level semver API compatibility report generation using Revapi
 
 #### _**Note**_: Breaking changes
 * Fix #7422: bump okhttp from 4.12.0 to 5.3.2. The versions are binary compatible, but the major version upgrade might cause side effects.
