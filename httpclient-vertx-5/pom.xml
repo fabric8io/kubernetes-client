@@ -29,7 +29,7 @@
   <name>Fabric8 :: Kubernetes :: HttpClient :: Vert.x 5</name>
 
   <properties>
-    <vertx.version>5.0.7</vertx.version>
+    <vertx.version>${vertx5.version}</vertx.version>
     <osgi.require-capability>
       osgi.extender;
       filter:="(osgi.extender=osgi.serviceloader.registrar)",

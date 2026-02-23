@@ -87,7 +87,7 @@
 
     <!-- Core versions -->
     <sundrio.version>0.230.1</sundrio.version>
-    <okhttp.version>4.12.0</okhttp.version>
+    <okhttp.version>5.3.2</okhttp.version>
     <jackson.version>2.20.0</jackson.version>
     <jackson.bundle.version>${jackson.version}</jackson.bundle.version>
     <!-- fix as jackson-annotations version 2.20 was released, Refer: https://github.com/FasterXML/jackson-bom/blob/54f854ba1ce69c5827f8acf6d08ba2d7ce36233c/pom.xml#L53-L62 -->
@@ -96,8 +96,9 @@
     <maven-core.version>3.9.11</maven-core.version>
     <maven-plugin-annotations.version>3.15.1</maven-plugin-annotations.version>
     <vertx.version>4.5.24</vertx.version>
+    <vertx5.version>5.0.7</vertx5.version>
     <jandex.version>3.5.0</jandex.version>
-    <snakeyaml.version>2.10</snakeyaml.version>
+    <snakeyaml.version>3.0.1</snakeyaml.version>
     <snakeyaml.bundle.version>2.4</snakeyaml.bundle.version> <!-- Transitive Jackson -->
 
     <!-- API versions -->
@@ -706,6 +707,11 @@
         <version>${okhttp.version}</version>
       </dependency>
       <dependency>
+        <groupId>com.squareup.okhttp3</groupId>
+        <artifactId>okhttp-jvm</artifactId>
+        <version>${okhttp.version}</version>
+      </dependency>
+      <dependency>
         <groupId>org.apache.commons</groupId>
         <artifactId>commons-compress</artifactId>
         <version>${commons-compress.version}</version>
@@ -1269,6 +1275,7 @@
                       <exclude>io.fabric8*:*-examples</exclude>
                       <exclude>io.fabric8:crd-generator-test*</exclude>
                       <exclude>io.fabric8:kubernetes-test</exclude>
+                      <exclude>io.fabric8:bom-generator-plugin</exclude>
                     </excludes>
                   </modules>
                 </bom>
@@ -1283,6 +1290,7 @@
                       <exclude>io.fabric8*:*-examples</exclude>
                       <exclude>io.fabric8:crd-generator-test*</exclude>
                       <exclude>io.fabric8:kubernetes-test</exclude>
+                      <exclude>io.fabric8:bom-generator-plugin</exclude>
                     </excludes>
                   </modules>
                   <dependencies>
