@@ -308,7 +308,9 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
     CreateOrReplaceHelper<T> createOrReplaceHelper = new CreateOrReplaceHelper<>(
         resource::create,
         resource::replace,
-        m -> resource.waitUntilCondition(Objects::nonNull, 1, TimeUnit.SECONDS),
+        m -> resource.waitUntilCondition(Objects::nonNull,
+            context.getTimeout() == 0 ? 1 : context.getTimeout(),
+            context.getTimeout() == 0 ? TimeUnit.SECONDS : context.getTimeoutUnit()),
         m -> resource.fromServer().get(), this.getKubernetesSerialization());
 
     return createOrReplaceHelper.createOrReplace(item);
