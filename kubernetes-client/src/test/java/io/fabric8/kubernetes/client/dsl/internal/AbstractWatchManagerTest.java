@@ -161,7 +161,7 @@ class AbstractWatchManagerTest {
     CompletableFuture<Void> done = new CompletableFuture<>();
     CountDownLatch scheduleReconnectDone = new CountDownLatch(1);
     final WatchManager<HasMetadata> awm = new WatchManager<>(
-      watcher, mock(ListOptions.class, RETURNS_DEEP_STUBS), 1, 0) {
+        watcher, mock(ListOptions.class, RETURNS_DEEP_STUBS), 1, 0) {
 
       boolean first = true;
 
