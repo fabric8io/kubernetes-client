@@ -107,3 +107,35 @@ quickly: clean
 .PHONY: install
 install: clean
 	mvn $(MAVEN_ARGS) install
+
+# Generate Revapi compatibility reports comparing against last release
+.PHONY: revapi-report
+revapi-report: quickly
+	@echo "Generating Revapi JSON reports"
+	# || true is intentional: revapi:check exits non-zero when it detects API differences, which was
+	# causing the build to fail even when the goal is only to generate a report, not enforce compatibility.
+	@if [ -z "$(OLD_ARTIFACT_VERSION)" ]; then \
+		mvn $(MAVEN_ARGS) -Prevapi-compare revapi:check || true; \
+	else \
+		mvn $(MAVEN_ARGS) -Prevapi-compare -Drevapi.oldVersion=$(OLD_ARTIFACT_VERSION) revapi:check || true; \
+	fi
+	@echo "Aggregating reports into target/staging..."
+	jbang scripts/AggregateRevapiReports.java
+
+# Compare two specific published versions (fetches JARs from Maven Central, no local build needed)
+# Usage: make revapi-compare-jars OLD_ARTIFACT_VERSION=7.5.0 NEW_ARTIFACT_VERSION=7.6.0
+.PHONY: revapi-compare-jars
+revapi-compare-jars:
+	@if [ -z "$(OLD_ARTIFACT_VERSION)" ] || [ -z "$(NEW_ARTIFACT_VERSION)" ]; then \
+		echo "Error: Both OLD_ARTIFACT_VERSION and NEW_ARTIFACT_VERSION must be specified"; \
+		echo "Usage: make revapi-compare-jars OLD_ARTIFACT_VERSION=7.5.0 NEW_ARTIFACT_VERSION=7.6.0"; \
+		exit 1; \
+	fi
+	@echo "Comparing $(OLD_ARTIFACT_VERSION) -> $(NEW_ARTIFACT_VERSION)"
+	@echo "Generating Revapi JSON reports"
+	# || true is intentional: revapi:check exits non-zero when it detects API differences, which was
+	# causing the build to fail even when the goal is only to generate a report, not enforce compatibility.
+	mvn $(MAVEN_ARGS) -Prevapi-compare-jars -Drevapi.oldArtifactVersion=$(OLD_ARTIFACT_VERSION) -Drevapi.newArtifactVersion=$(NEW_ARTIFACT_VERSION) revapi:check || true
+	@echo "Aggregating reports into target/staging..."
+	REVAPI_OLD_VERSION=$(OLD_ARTIFACT_VERSION) REVAPI_NEW_VERSION=$(NEW_ARTIFACT_VERSION) jbang scripts/AggregateRevapiReports.java
+	@echo "✓ Reports generated in target/staging/"
