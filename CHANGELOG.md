@@ -11,6 +11,7 @@
 * Fix #7422: (okhttp) Remove internal API usage and fix deprecated OkHttp 5 calls
 
 #### Improvements
+* Fix #1105: Add javadoc cross-linking for Fabric8 modules and external dependencies
 * Fix #7422: bump okhttp from 4.12.0 to 5.3.2
 
 #### Dependency Upgrade

@@ -80,6 +80,26 @@ format-java:
 .PHONY: format
 format: format-license format-java
 
+JAVADOC_LINK_MODULES = \
+  kubernetes-model-core:kubernetes-model-generator/kubernetes-model-core \
+  kubernetes-model-common:kubernetes-model-generator/kubernetes-model-common \
+  kubernetes-client-api:kubernetes-client-api \
+  kubernetes-client:kubernetes-client \
+  openshift-client-api:openshift-client-api \
+  openshift-client:openshift-client
+
+.PHONY: generate-javadoc-links
+generate-javadoc-links:
+	@for entry in $(JAVADOC_LINK_MODULES); do \
+	  name=$${entry%%:*}; \
+	  path=$${entry##*:}; \
+	  mkdir -p doc/javadoc-links/$$name; \
+	  { find $$path/src/main/java $$path/src/generated/java $$path/target/generated-sources/annotations -name "*.java" 2>/dev/null || true; } | \
+	    sed 's|.*/main/java/||;s|.*/generated/java/||;s|.*/generated-sources/annotations/||;s|/[^/]*\.java$$||;s|/|.|g' | \
+	    sort -u > doc/javadoc-links/$$name/element-list; \
+	  echo "Generated doc/javadoc-links/$$name/element-list"; \
+	done
+
 .PHONY: quickly
 quickly: clean
 	mvn $(MAVEN_ARGS) install -DskipTests -Djacoco.skip=true
