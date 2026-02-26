@@ -15,7 +15,6 @@
  */
 package io.fabric8.kubernetes.client.utils;
 
-import io.fabric8.kubernetes.api.builder.VisitableBuilder;
 import io.fabric8.kubernetes.api.model.ConfigMap;
 import io.fabric8.kubernetes.api.model.ConfigMapBuilder;
 import io.fabric8.kubernetes.api.model.DefaultKubernetesResourceList;
