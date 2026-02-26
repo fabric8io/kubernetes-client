@@ -99,7 +99,15 @@ public class Vertx5HttpClientFactory implements HttpClient.Factory {
     }
   }
 
-  protected void additionalConfig(WebSocketClientOptions wsOptions, WebClientOptions webClientOptions,
+  /**
+   * Additional configuration to be applied to the options after the
+   * {@link io.fabric8.kubernetes.client.Config} has been processed.
+   *
+   * @param webClientOptions the HTTP client options
+   * @param wsOptions the WebSocket client options
+   * @param poolOptions the connection pool options
+   */
+  protected void additionalConfig(WebClientOptions webClientOptions, WebSocketClientOptions wsOptions,
       PoolOptions poolOptions) {
     // no default implementation
   }

@@ -397,8 +397,8 @@ class Vertx5HttpClientBuilderTest {
 
       Vertx5HttpClientFactory customFactory = new Vertx5HttpClientFactory() {
         @Override
-        protected void additionalConfig(io.vertx.core.http.WebSocketClientOptions wsOptions,
-            io.vertx.ext.web.client.WebClientOptions webClientOptions,
+        protected void additionalConfig(io.vertx.ext.web.client.WebClientOptions webClientOptions,
+            io.vertx.core.http.WebSocketClientOptions wsOptions,
             io.vertx.core.http.PoolOptions poolOptions) {
           additionalConfigCalled.set(true);
           capturedWsOptions.set(wsOptions);
@@ -442,9 +442,8 @@ class Vertx5HttpClientBuilderTest {
     @Test
     @DisplayName("Should not fail with non-VertxHttpClientFactory")
     void doesNotFailWithNonVertxHttpClientFactory() {
-      // Test with a generic factory that doesn't have additionalConfig implemented
-      // Since this factory is not an instance of VertxHttpClientFactory, no call to additionalConfig should be made
-      // A runtime exception would happen if it is unexpectedly called
+      // Since this factory is not an instance of Vertx5HttpClientFactory, the instanceof guard
+      // should prevent any call to additionalConfig, avoiding a ClassCastException
       HttpClient.Factory genericFactory = new HttpClient.Factory() {
         @Override
         public HttpClient.Builder newBuilder() {
@@ -455,6 +454,36 @@ class Vertx5HttpClientBuilderTest {
       // Should not throw an exception
       try (HttpClient client = genericFactory.newBuilder().build()) {
         assertThat(client).isNotNull();
+      }
+    }
+
+    @Test
+    @DisplayName("Should not call additionalConfig for derived clients")
+    void doesNotCallAdditionalConfigForDerivedClients() {
+      final AtomicBoolean additionalConfigCalled = new AtomicBoolean(false);
+
+      Vertx5HttpClientFactory customFactory = new Vertx5HttpClientFactory() {
+        @Override
+        protected void additionalConfig(WebClientOptions webClientOptions,
+            WebSocketClientOptions wsOptions, PoolOptions poolOptions) {
+          additionalConfigCalled.set(true);
+        }
+      };
+
+      try (HttpClient client = customFactory.newBuilder().build()) {
+        // additionalConfig should have been called for the initial build
+        assertThat(additionalConfigCalled.get()).isTrue();
+
+        // Reset the flag
+        additionalConfigCalled.set(false);
+
+        // Build a derived client - additionalConfig should NOT be called
+        try (HttpClient derived = client.newBuilder().build()) {
+          assertThat(derived).isNotNull();
+          assertThat(additionalConfigCalled.get())
+              .as("additionalConfig should not be called for derived clients")
+              .isFalse();
+        }
       }
     }
   }

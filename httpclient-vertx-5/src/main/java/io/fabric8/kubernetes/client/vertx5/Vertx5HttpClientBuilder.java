@@ -183,7 +183,7 @@ public class Vertx5HttpClientBuilder<F extends HttpClient.Factory>
     // Since the factory is not explicitly typed as VertxHttpClientFactory, we need to check the type before invoking
     // additionalConfig as to not break other implementations of HttpClient.Factory for VertxHttpClientBuilder.
     if (clientFactory instanceof Vertx5HttpClientFactory) {
-      ((Vertx5HttpClientFactory) clientFactory).additionalConfig(wsOptions, httpOptions, poolOptions);
+      ((Vertx5HttpClientFactory) clientFactory).additionalConfig(httpOptions, wsOptions, poolOptions);
     }
 
     return Vertx5HttpClient.createWithWebSocketOptions(
