@@ -12,6 +12,7 @@
 
 #### Improvements
 * Fix #1105: Add javadoc cross-linking for Fabric8 modules and external dependencies
+* Fix #5756: Use Editable interface instead of reflection to instantiate resource builders
 * Fix #7422: bump okhttp from 4.12.0 to 5.3.2
 * Fix #7252: call additionalConfig when building Vert.x HTTP clients with VertxHttpClientFactory
 
@@ -24,6 +25,7 @@
 * Fix #7402: Added Byte code level semver API compatibility report generation using Revapi
 
 #### _**Note**_: Breaking changes
+* Fix #5756: Resources edited with visitors must now implement `io.fabric8.kubernetes.api.builder.Editable`. All model classes provided by the client already implement this interface. User-provided custom resources that use visitor-based editing will need to implement `Editable` (trivial when a builder already exists).
 * Fix #7422: bump okhttp from 4.12.0 to 5.3.2. The versions are binary compatible, but the major version upgrade might cause side effects.
 
 #### _**Note**_: Vert.x HTTP Client Compatibility (Issue #7174)

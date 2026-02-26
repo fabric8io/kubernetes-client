@@ -15,7 +15,6 @@
  */
 package io.fabric8.kubernetes.client.impl;
 
-import com.fasterxml.jackson.databind.util.ClassUtil;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.builder.VisitableBuilder;
 import io.fabric8.kubernetes.api.model.HasMetadata;
@@ -29,7 +28,6 @@ import io.fabric8.kubernetes.client.dsl.internal.HasMetadataOperationsImpl;
 import io.fabric8.kubernetes.client.utils.KubernetesResourceUtil;
 import io.fabric8.kubernetes.client.utils.Utils;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.function.Function;
 
 class ResourceHandlerImpl<T extends HasMetadata, V extends VisitableBuilder<T, V>> implements ResourceHandler<T, V> {
@@ -40,20 +38,21 @@ class ResourceHandlerImpl<T extends HasMetadata, V extends VisitableBuilder<T, V
   private final Function<Client, HasMetadataOperation<T, ?, Resource<T>>> operationConstructor;
 
   ResourceHandlerImpl(Class<T> type, Function<Client, HasMetadataOperation<T, ?, Resource<T>>> operationConstructor) {
-    this(type, (Class<? extends KubernetesResourceList<T>>) KubernetesResourceUtil.inferListType(type), ResourceDefinitionContext.fromResourceType(type), operationConstructor);
+    this(type, (Class<? extends KubernetesResourceList<T>>) KubernetesResourceUtil.inferListType(type),
+        ResourceDefinitionContext.fromResourceType(type), operationConstructor);
   }
 
   ResourceHandlerImpl(Class<T> type, Class<? extends KubernetesResourceList<T>> listClass, ResourceDefinitionContext context) {
     this(type, listClass, context, null);
   }
 
-  private ResourceHandlerImpl(Class<T> type, Class<? extends KubernetesResourceList<T>> listClass, ResourceDefinitionContext context, Function<Client, HasMetadataOperation<T, ?, Resource<T>>> operationConstructor) {
+  private ResourceHandlerImpl(Class<T> type, Class<? extends KubernetesResourceList<T>> listClass,
+      ResourceDefinitionContext context, Function<Client, HasMetadataOperation<T, ?, Resource<T>>> operationConstructor) {
     this.type = type;
     this.context = context;
     this.defaultListClass = listClass;
     this.operationConstructor = operationConstructor;
   }
-
 
   @Override
   public V edit(T item) {
