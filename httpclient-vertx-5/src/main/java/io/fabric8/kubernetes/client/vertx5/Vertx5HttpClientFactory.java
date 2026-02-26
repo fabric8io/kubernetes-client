@@ -17,6 +17,9 @@ package io.fabric8.kubernetes.client.vertx5;
 
 import io.fabric8.kubernetes.client.http.HttpClient;
 import io.vertx.core.Vertx;
+import io.vertx.core.http.PoolOptions;
+import io.vertx.core.http.WebSocketClientOptions;
+import io.vertx.ext.web.client.WebClientOptions;
 
 /**
  * Vert.x 5 implementation of {@link io.fabric8.kubernetes.client.http.HttpClient.Factory}.
@@ -94,5 +97,10 @@ public class Vertx5HttpClientFactory implements HttpClient.Factory {
               + "and ensure vertx.version property is set appropriately (5.x for vertx-5, 4.x for vertx).",
           e);
     }
+  }
+
+  protected void additionalConfig(WebSocketClientOptions wsOptions, WebClientOptions webClientOptions,
+      PoolOptions poolOptions) {
+    // no default implementation
   }
 }
