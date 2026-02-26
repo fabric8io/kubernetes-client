@@ -187,6 +187,7 @@
       ${project.build.sourceDirectory};
       ${project.build.directory}/generated-sources/annotations;
     </javadoc.sourcepath>
+    <javadoc.links>https://javadoc.io/doc</javadoc.links>
 
     <osgi.import />
     <osgi.export />
@@ -1399,6 +1400,46 @@
               </dependencySourceIncludes>
               <excludePackageNames>${javadoc.package.excludes}</excludePackageNames>
               <sourcepath>${javadoc.sourcepath}</sourcepath>
+              <additionalJOption>-J-Dhttp.agent=maven-javadoc-plugin</additionalJOption>
+              <detectOfflineLinks>false</detectOfflineLinks>
+              <offlineLinks>
+                <offlineLink>
+                  <url>${javadoc.links}/${project.groupId}/kubernetes-model-core/${project.version}</url>
+                  <location>${maven.multiModuleProjectDirectory}/doc/javadoc-links/kubernetes-model-core</location>
+                </offlineLink>
+                <offlineLink>
+                  <url>${javadoc.links}/${project.groupId}/kubernetes-model-common/${project.version}</url>
+                  <location>${maven.multiModuleProjectDirectory}/doc/javadoc-links/kubernetes-model-common</location>
+                </offlineLink>
+                <offlineLink>
+                  <url>${javadoc.links}/${project.groupId}/kubernetes-client-api/${project.version}</url>
+                  <location>${maven.multiModuleProjectDirectory}/doc/javadoc-links/kubernetes-client-api</location>
+                </offlineLink>
+                <offlineLink>
+                  <url>${javadoc.links}/${project.groupId}/kubernetes-client/${project.version}</url>
+                  <location>${maven.multiModuleProjectDirectory}/doc/javadoc-links/kubernetes-client</location>
+                </offlineLink>
+                <offlineLink>
+                  <url>${javadoc.links}/${project.groupId}/openshift-client-api/${project.version}</url>
+                  <location>${maven.multiModuleProjectDirectory}/doc/javadoc-links/openshift-client-api</location>
+                </offlineLink>
+                <offlineLink>
+                  <url>${javadoc.links}/${project.groupId}/openshift-client/${project.version}</url>
+                  <location>${maven.multiModuleProjectDirectory}/doc/javadoc-links/openshift-client</location>
+                </offlineLink>
+                <offlineLink>
+                  <url>${javadoc.links}/com.fasterxml.jackson.core/jackson-databind/${jackson.version}</url>
+                  <location>${maven.multiModuleProjectDirectory}/doc/javadoc-links/jackson-databind</location>
+                </offlineLink>
+                <offlineLink>
+                  <url>${javadoc.links}/com.fasterxml.jackson.core/jackson-core/${jackson.version}</url>
+                  <location>${maven.multiModuleProjectDirectory}/doc/javadoc-links/jackson-core</location>
+                </offlineLink>
+                <offlineLink>
+                  <url>${javadoc.links}/org.slf4j/slf4j-api/${slf4j.version}</url>
+                  <location>${maven.multiModuleProjectDirectory}/doc/javadoc-links/slf4j-api</location>
+                </offlineLink>
+              </offlineLinks>
             </configuration>
             <executions>
               <execution>
@@ -1502,6 +1543,46 @@
               </dependencySourceIncludes>
               <excludePackageNames>${javadoc.package.excludes}</excludePackageNames>
               <sourcepath>${javadoc.sourcepath}</sourcepath>
+              <additionalJOption>-J-Dhttp.agent=maven-javadoc-plugin</additionalJOption>
+              <detectOfflineLinks>false</detectOfflineLinks>
+              <offlineLinks>
+                <offlineLink>
+                  <url>${javadoc.links}/${project.groupId}/kubernetes-model-core/${project.version}</url>
+                  <location>${maven.multiModuleProjectDirectory}/doc/javadoc-links/kubernetes-model-core</location>
+                </offlineLink>
+                <offlineLink>
+                  <url>${javadoc.links}/${project.groupId}/kubernetes-model-common/${project.version}</url>
+                  <location>${maven.multiModuleProjectDirectory}/doc/javadoc-links/kubernetes-model-common</location>
+                </offlineLink>
+                <offlineLink>
+                  <url>${javadoc.links}/${project.groupId}/kubernetes-client-api/${project.version}</url>
+                  <location>${maven.multiModuleProjectDirectory}/doc/javadoc-links/kubernetes-client-api</location>
+                </offlineLink>
+                <offlineLink>
+                  <url>${javadoc.links}/${project.groupId}/kubernetes-client/${project.version}</url>
+                  <location>${maven.multiModuleProjectDirectory}/doc/javadoc-links/kubernetes-client</location>
+                </offlineLink>
+                <offlineLink>
+                  <url>${javadoc.links}/${project.groupId}/openshift-client-api/${project.version}</url>
+                  <location>${maven.multiModuleProjectDirectory}/doc/javadoc-links/openshift-client-api</location>
+                </offlineLink>
+                <offlineLink>
+                  <url>${javadoc.links}/${project.groupId}/openshift-client/${project.version}</url>
+                  <location>${maven.multiModuleProjectDirectory}/doc/javadoc-links/openshift-client</location>
+                </offlineLink>
+                <offlineLink>
+                  <url>${javadoc.links}/com.fasterxml.jackson.core/jackson-databind/${jackson.version}</url>
+                  <location>${maven.multiModuleProjectDirectory}/doc/javadoc-links/jackson-databind</location>
+                </offlineLink>
+                <offlineLink>
+                  <url>${javadoc.links}/com.fasterxml.jackson.core/jackson-core/${jackson.version}</url>
+                  <location>${maven.multiModuleProjectDirectory}/doc/javadoc-links/jackson-core</location>
+                </offlineLink>
+                <offlineLink>
+                  <url>${javadoc.links}/org.slf4j/slf4j-api/${slf4j.version}</url>
+                  <location>${maven.multiModuleProjectDirectory}/doc/javadoc-links/slf4j-api</location>
+                </offlineLink>
+              </offlineLinks>
             </configuration>
             <executions>
               <execution>
