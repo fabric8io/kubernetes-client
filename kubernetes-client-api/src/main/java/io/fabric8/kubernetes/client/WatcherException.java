@@ -31,7 +31,7 @@ public class WatcherException extends Exception {
   }
 
   public WatcherException(String message, Throwable cause, boolean reconnectionError) {
-    super(message);
+    super(message, cause);
     rawWatchMessage = null;
     this.reconnectionError = reconnectionError;
   }
