@@ -18,10 +18,11 @@ package io.fabric8.kubernetes.api.model;
 import io.fabric8.kubernetes.model.annotation.Group;
 import io.fabric8.kubernetes.model.annotation.Plural;
 import io.fabric8.kubernetes.model.annotation.Version;
-import io.sundr.deps.org.apache.commons.lang.RandomStringUtils;
 import org.junit.jupiter.api.Test;
 
+import java.nio.charset.StandardCharsets;
 import java.util.Optional;
+import java.util.Random;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -335,7 +336,9 @@ class HasMetadataTest {
     checkDifferent(t1, t2);
 
     // if UID is set, nothing else is checked, regardless of strict mode or not
-    final var uid = RandomStringUtils.randomAlphanumeric(10);
+    t1 = new TestHM();
+    t2 = new TestHM(t1);
+    final var uid = randomString();
     t1.getMetadata().setUid(uid);
     checkDifferent(t1, t2);
     t2.getMetadata().setUid(uid);
@@ -367,6 +370,12 @@ class HasMetadataTest {
     t2 = new TestHM(t1); // initialized with same name and namespace
     t2.getMetadata().setNamespace("otherNamespace");
     checkDifferent(t1, t2);
+  }
+
+  private static String randomString() {
+    byte[] array = new byte[10];
+    new Random().nextBytes(array);
+    return new String(array, StandardCharsets.UTF_8);
   }
 
   private static void checkDifferent(TestHM t1, TestHM t2) {
@@ -548,7 +557,7 @@ class HasMetadataTest {
     }
 
     public TestHM() {
-      super(RandomStringUtils.randomAlphabetic(5), RandomStringUtils.randomAlphabetic(5));
+      super(randomString(), randomString());
     }
 
     @Override
