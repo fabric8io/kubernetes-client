@@ -584,10 +584,11 @@ public interface HasMetadata extends KubernetesResource {
       return false;
     }
 
-    // check UID first
+    // check UID first, if either is not null, if both are null, look at other fields
     final var uid = metadata.getUid();
-    if (uid != null) {
-      return uid.equals(otherMetadata.getUid());
+    final var otherUID = otherMetadata.getUid();
+    if (uid != null || otherUID != null) {
+      return Objects.equals(uid, otherUID);
     }
 
     final var kind = getKind();
