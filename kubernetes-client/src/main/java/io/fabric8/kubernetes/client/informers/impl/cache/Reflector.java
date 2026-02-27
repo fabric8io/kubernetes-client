@@ -42,8 +42,7 @@ import java.util.function.LongSupplier;
 public class Reflector<T extends HasMetadata, L extends KubernetesResourceList<T>> {
 
   private static final Logger logger = LoggerFactory.getLogger(Reflector.class);
-
-  private static long MIN_TIMEOUT = TimeUnit.MINUTES.toSeconds(5);
+  private static final long MIN_TIMEOUT = TimeUnit.MINUTES.toSeconds(5);
 
   private volatile String lastSyncResourceVersion;
   private final ListerWatcher<T, L> listerWatcher;
@@ -66,11 +65,20 @@ public class Reflector<T extends HasMetadata, L extends KubernetesResourceList<T
 
   private static class WatchListState {
     Set<String> nextKeys = new ConcurrentSkipListSet<>();
-    private CompletableFuture<Void> listDone = new CompletableFuture<>();
+    private final CompletableFuture<Void> listDone = new CompletableFuture<>();
   }
 
   private boolean watchList;
   private volatile WatchListState watchListState;
+
+  public static <T extends HasMetadata, L extends KubernetesResourceList<T>> Reflector<T, L> newWith(
+      ListerWatcher<T, L> listerWatcher, Executor informerExecutor) {
+    // reuse the informer executor, but ensure serial processing
+    final var processor = new SharedProcessor<T>(informerExecutor, listerWatcher.getApiEndpointPath());
+
+    final var processorStore = new ProcessorStore<>(processor);
+    return new Reflector<>(listerWatcher, processorStore, informerExecutor);
+  }
 
   public Reflector(ListerWatcher<T, L> listerWatcher, ProcessorStore<T> store) {
     this(listerWatcher, store, Runnable::run);
@@ -83,6 +91,7 @@ public class Reflector<T extends HasMetadata, L extends KubernetesResourceList<T
     this.retryIntervalCalculator = new ExponentialBackoffIntervalCalculator(listerWatcher.getWatchReconnectInterval(),
         ExponentialBackoffIntervalCalculator.UNLIMITED_RETRIES);
     this.executor = executor;
+    setWatchList(listerWatcher.getConfig().isWatchList());
   }
 
   public CompletableFuture<Void> start() {
@@ -131,7 +140,7 @@ public class Reflector<T extends HasMetadata, L extends KubernetesResourceList<T
       return CompletableFuture.completedFuture(null);
     }
 
-    CompletableFuture<Void> theFuture = null;
+    CompletableFuture<Void> theFuture;
     if (watchList) {
       watchListState = new WatchListState();
       CompletableFuture<Void> cf = watchListState.listDone;
@@ -402,4 +411,11 @@ public class Reflector<T extends HasMetadata, L extends KubernetesResourceList<T
     this.watchList = watchList;
   }
 
+  public ProcessorStore<T> store() {
+    return this.store;
+  }
+
+  public Executor executor() {
+    return this.executor;
+  }
 }

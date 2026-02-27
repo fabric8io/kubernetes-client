@@ -24,7 +24,6 @@ import io.fabric8.kubernetes.client.informers.SharedIndexInformer;
 import io.fabric8.kubernetes.client.informers.cache.Indexer;
 import io.fabric8.kubernetes.client.informers.cache.ItemStore;
 import io.fabric8.kubernetes.client.informers.cache.Store;
-import io.fabric8.kubernetes.client.informers.impl.cache.CacheImpl;
 import io.fabric8.kubernetes.client.informers.impl.cache.ProcessorStore;
 import io.fabric8.kubernetes.client.informers.impl.cache.Reflector;
 import io.fabric8.kubernetes.client.informers.impl.cache.SharedProcessor;
@@ -39,6 +38,7 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.BooleanSupplier;
 import java.util.function.Function;
 import java.util.stream.Stream;
@@ -58,38 +58,70 @@ public class DefaultSharedIndexInformer<T extends HasMetadata, L extends Kuberne
   // value).
   private final long defaultEventHandlerResyncPeriod;
 
+  private volatile long lastChecked = -1;
+  private final int errorThresholdIntervalMillis;
+  private final int maxNumberOfAttempts;
+  private final AtomicInteger numberOfAttempts = new AtomicInteger();
+
   private final Reflector<T, L> reflector;
   private final Class<T> apiTypeClass;
-  private final ProcessorStore<T> processorStore;
-  private final CacheImpl<T> indexer = new CacheImpl<>();
-  private final SharedProcessor<T> processor;
-  private final Executor informerExecutor;
   private final String description;
 
   private final AtomicBoolean started = new AtomicBoolean();
   private volatile boolean stopped = false;
 
   private Future<?> resyncFuture;
-
   private Stream<T> initialState;
 
+  /**
+   * Create a new informer with complete sensitivity to transient disconnections (i.e. configured with no threshold interval or
+   * error number).
+   *
+   * @see DefaultSharedIndexInformer#DefaultSharedIndexInformer(Class, ListerWatcher, long, Executor, int, int)
+   *      DefaultSharedIndexInformer
+   */
   public DefaultSharedIndexInformer(Class<T> apiTypeClass, ListerWatcher<T, L> listerWatcher, long resyncPeriod,
       Executor informerExecutor) {
+    this(apiTypeClass, listerWatcher, resyncPeriod, informerExecutor, -1, -1);
+  }
+
+  /**
+   * Create a new informer.
+   *
+   * @param apiTypeClass the class representing the type of Kubernetes resources this informer watches
+   * @param listerWatcher the {@link ListerWatcher} the informer will use to watch and list resources
+   * @param resyncPeriod maximum number of milliseconds to wait before checking if a resync is required
+   * @param informerExecutor the {@link Executor} the informer will use to schedule its background tasks
+   * @param errorThresholdIntervalMillis interval of time (in milliseconds) within which {@link #isWatching()} probing must
+   *        return a negative response before triggering an actual negative response. Use with {@link #maxNumberOfAttempts} to
+   *        specify the informer's sensitivity to transient disconnections. Null or negative values disable this threshold
+   *        mechanism and the actual result is immediately returned.
+   * @param errorThresholdNumber number of negative probing of {@link #isWatching()} that must occur during the interval
+   *        specified by {@link #errorThresholdIntervalMillis} before an actual negative response is returned by
+   *        {@link #isWatching()}. Use with {@link #errorThresholdIntervalMillis} to specify the informer's sensitivity to
+   *        transient disconnections. Null or negative values disable this threshold mechanism and the actual result is
+   *        immediately returned.
+   */
+  public DefaultSharedIndexInformer(Class<T> apiTypeClass, ListerWatcher<T, L> listerWatcher, long resyncPeriod,
+      Executor informerExecutor, int errorThresholdIntervalMillis, int errorThresholdNumber) {
+    this(apiTypeClass, Reflector.newWith(listerWatcher, informerExecutor), resyncPeriod, errorThresholdIntervalMillis,
+        errorThresholdNumber);
+  }
+
+  DefaultSharedIndexInformer(Class<T> apiTypeClass, Reflector<T, L> reflector, long resyncPeriod,
+      int errorThresholdIntervalMillis, int maxNumberOfAttempts) {
     if (resyncPeriod < 0) {
       throw new IllegalArgumentException("Invalid resync period provided, It should be a non-negative value");
     }
     this.resyncCheckPeriodMillis = resyncPeriod;
     this.defaultEventHandlerResyncPeriod = resyncPeriod;
     this.apiTypeClass = apiTypeClass;
-    this.description = listerWatcher.getApiEndpointPath();
+    this.description = reflector.toString();
 
-    this.informerExecutor = informerExecutor;
-    // reuse the informer executor, but ensure serial processing
-    this.processor = new SharedProcessor<>(informerExecutor, description);
+    this.reflector = reflector;
 
-    processorStore = new ProcessorStore<>(this.indexer, this.processor);
-    this.reflector = new Reflector<>(listerWatcher, processorStore, informerExecutor);
-    this.reflector.setWatchList(listerWatcher.getConfig().isWatchList());
+    this.maxNumberOfAttempts = maxNumberOfAttempts;
+    this.errorThresholdIntervalMillis = errorThresholdIntervalMillis;
   }
 
   /**
@@ -105,11 +137,12 @@ public class DefaultSharedIndexInformer<T extends HasMetadata, L extends Kuberne
 
   @Override
   public SharedIndexInformer<T> removeEventHandler(ResourceEventHandler<? super T> handler) {
-    var listener = this.processor.removeProcessorListener(handler);
+    final var processor = processor();
+    var listener = processor.removeProcessorListener(handler);
     if (!started.get() && listener.isPresent()) {
       var listenerResyncPeriod = listener.orElseThrow().getResyncPeriodInMillis();
       if (listenerResyncPeriod != 0 && resyncCheckPeriodMillis == listenerResyncPeriod) {
-        this.processor.getMinimalNonZeroResyncPeriod()
+        processor.getMinimalNonZeroResyncPeriod()
             .ifPresent(l -> this.resyncCheckPeriodMillis = l);
       }
     }
@@ -147,8 +180,8 @@ public class DefaultSharedIndexInformer<T extends HasMetadata, L extends Kuberne
       }
     }
 
-    this.processor.addProcessorListener(handler,
-        determineResyncPeriod(resyncPeriodMillis, this.resyncCheckPeriodMillis), this.indexer::list);
+    processor().addProcessorListener(handler,
+        determineResyncPeriod(resyncPeriodMillis, this.resyncCheckPeriodMillis), getStore()::list);
 
     return this;
   }
@@ -169,14 +202,14 @@ public class DefaultSharedIndexInformer<T extends HasMetadata, L extends Kuberne
       }
 
       if (initialState != null) {
-        initialState.forEach(indexer::put);
+        initialState.forEach(store().cache()::put);
         reflector.usingInitialState();
       }
     }
 
     logger.debug("Ready to run resync and reflector for {} with resync {}", this, resyncCheckPeriodMillis);
 
-    scheduleResync(processor::shouldResync);
+    scheduleResync(processor()::shouldResync);
 
     return reflector.start();
   }
@@ -196,7 +229,7 @@ public class DefaultSharedIndexInformer<T extends HasMetadata, L extends Kuberne
     stopped = true;
     reflector.stop();
     stopResync();
-    processor.stop();
+    processor().stop();
   }
 
   private synchronized void stopResync() {
@@ -208,18 +241,18 @@ public class DefaultSharedIndexInformer<T extends HasMetadata, L extends Kuberne
 
   @Override
   public SharedIndexInformer<T> addIndexers(Map<String, Function<T, List<String>>> indexers) {
-    indexer.addIndexers(indexers);
+    getIndexer().addIndexers(indexers);
     return this;
   }
 
   @Override
   public Indexer<T> getIndexer() {
-    return this.indexer;
+    return store().cache();
   }
 
   @Override
   public Store<T> getStore() {
-    return this.indexer;
+    return getIndexer();
   }
 
   private long determineResyncPeriod(long desired, long check) {
@@ -240,19 +273,43 @@ public class DefaultSharedIndexInformer<T extends HasMetadata, L extends Kuberne
 
   @Override
   public boolean isWatching() {
-    return reflector.isWatching();
+    final var watching = reflector.isWatching();
+    // if a cooldown window is configured, check if we had too many negative results in the configured window
+    if (errorThresholdIntervalMillis > 0 && maxNumberOfAttempts > 0) {
+      if (!watching) {
+        final var now = System.currentTimeMillis();
+        try {
+          final var timeSinceLastChecked = now - lastChecked;
+          if (lastChecked < 0 || timeSinceLastChecked < errorThresholdIntervalMillis) {
+            // within the threshold window, return true if we haven't reached the max number of attempts, false otherwise
+            return numberOfAttempts.getAndIncrement() < maxNumberOfAttempts;
+          } else {
+            // more time elapsed than the threshold interval, so set the number of attempts to 1 (this becomes the first attempt of the new threshold window) and return true
+            numberOfAttempts.set(1);
+            return true;
+          }
+        } finally {
+          lastChecked = now;
+        }
+      } else {
+        // reset number of attempts
+        numberOfAttempts.set(0);
+      }
+    }
+
+    return watching;
   }
 
   synchronized void scheduleResync(BooleanSupplier resyncFunc) {
     // schedule the resync runnable
     if (resyncCheckPeriodMillis > 0) {
-      resyncFuture = Utils.scheduleAtFixedRate(informerExecutor, () -> {
+      resyncFuture = Utils.scheduleAtFixedRate(reflector.executor(), () -> {
         if (logger.isDebugEnabled()) {
           logger.debug("Checking for resync at interval for {}", this);
         }
         if (resyncFunc.getAsBoolean()) {
           logger.debug("Resync running for {}", this);
-          processorStore.resync();
+          store().resync();
         }
       }, resyncCheckPeriodMillis,
           resyncCheckPeriodMillis, TimeUnit.MILLISECONDS);
@@ -276,7 +333,7 @@ public class DefaultSharedIndexInformer<T extends HasMetadata, L extends Kuberne
 
   @Override
   public SharedIndexInformer<T> removeIndexer(String name) {
-    this.indexer.removeIndexer(name);
+    getIndexer().removeIndexer(name);
     return this;
   }
 
@@ -294,7 +351,7 @@ public class DefaultSharedIndexInformer<T extends HasMetadata, L extends Kuberne
     if (started.get()) {
       throw new KubernetesClientException("Informer cannot be running when setting item store");
     }
-    this.indexer.setItemStore(itemStore);
+    store().cache().setItemStore(itemStore);
     return this;
   }
 
@@ -317,4 +374,11 @@ public class DefaultSharedIndexInformer<T extends HasMetadata, L extends Kuberne
     return this;
   }
 
+  private SharedProcessor<T> processor() {
+    return store().processor();
+  }
+
+  private ProcessorStore<T> store() {
+    return reflector.store();
+  }
 }
