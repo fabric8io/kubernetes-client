@@ -208,6 +208,10 @@ public abstract class AbstractWatchManager<T extends HasMetadata> implements Wat
     }
   }
 
+  void scheduleReconnect(WatchRequestState state) {
+      scheduleReconnect(state, null);
+  }
+
   /**
    * Called to reestablish the connection. Should only be called once per request.
    */

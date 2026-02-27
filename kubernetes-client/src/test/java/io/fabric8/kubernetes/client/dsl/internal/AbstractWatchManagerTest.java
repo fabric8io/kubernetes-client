@@ -146,7 +146,7 @@ class AbstractWatchManagerTest {
     awm.baseOperation.context = Mockito.mock(OperationContext.class);
     Mockito.when(awm.baseOperation.context.getExecutor()).thenReturn(executor);
 
-    awm.scheduleReconnect(new WatchRequestState(), null);
+    awm.scheduleReconnect(new WatchRequestState());
     // When
     awm.cancelReconnect();
     // Then
@@ -168,7 +168,7 @@ class AbstractWatchManagerTest {
         if (first) {
           first = false;
           // simulate failing before the call to startWatch finishes
-          ForkJoinPool.commonPool().execute(() -> scheduleReconnect(new WatchRequestState(), null));
+          ForkJoinPool.commonPool().execute(() -> scheduleReconnect(new WatchRequestState()));
           try {
             Thread.sleep(100);
           } catch (InterruptedException e) {
