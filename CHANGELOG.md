@@ -1,6 +1,6 @@
 ## CHANGELOG
 
-### 7.6-SNAPSHOT
+### 7.6.0 (2026-03-02)
 
 #### Bugs
 * Fix #5292: Cluster() configuration should use tlsServerName
