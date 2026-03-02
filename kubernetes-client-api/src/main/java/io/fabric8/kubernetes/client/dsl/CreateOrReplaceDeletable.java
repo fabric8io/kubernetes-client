@@ -13,22 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8.kubernetes.client.mock;
+package io.fabric8.kubernetes.client.dsl;
 
-import io.fabric8.kubernetes.client.KubernetesClientBuilder;
+import java.util.concurrent.TimeUnit;
 
-import java.util.function.Consumer;
-
-/**
- * Disables HTTP-level request retry so that 5xx errors propagate to higher-level
- * retry handlers (e.g. CreateOrReplaceHelper) instead of being transparently retried
- * by the HTTP client.
- */
-public class NoRetryClientCustomizer implements Consumer<KubernetesClientBuilder> {
+public interface CreateOrReplaceDeletable<T> extends Deletable, CreateOrReplaceable<T> {
 
   @Override
-  public void accept(KubernetesClientBuilder builder) {
-    builder.editOrNewConfig().withRequestRetryBackoffLimit(0).endConfig();
+  CreateOrReplaceDeletable<T> withTimeout(long timeout, TimeUnit unit);
+
+  @Override
+  default CreateOrReplaceDeletable<T> withTimeoutInMillis(long timeoutInMillis) {
+    return withTimeout(timeoutInMillis, TimeUnit.MILLISECONDS);
   }
 
 }

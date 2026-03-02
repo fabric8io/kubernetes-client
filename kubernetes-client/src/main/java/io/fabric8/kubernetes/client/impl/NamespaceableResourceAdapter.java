@@ -22,8 +22,6 @@ import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.internal.HasMetadataOperation;
 import io.fabric8.kubernetes.client.extension.ResourceAdapter;
 
-import java.util.concurrent.TimeUnit;
-
 /**
  * Provides a wrapper to namespace a resource.
  * <p>
@@ -56,8 +54,4 @@ public class NamespaceableResourceAdapter<T extends HasMetadata> extends Resourc
     return operation.inNamespace(name).resource(item);
   }
 
-  @Override
-  public NamespaceableResource<T> withTimeout(long timeout, TimeUnit unit) {
-    return new NamespaceableResourceAdapter<>(item, (HasMetadataOperation<T, ?, ?>) operation.withTimeout(timeout, unit));
-  }
 }

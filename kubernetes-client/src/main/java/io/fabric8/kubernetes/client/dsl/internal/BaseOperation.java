@@ -108,6 +108,8 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
   private static final String WATCH = "watch";
   private static final String READ_ONLY_UPDATE_EXCEPTION_MESSAGE = "Cannot update read-only resources";
   private static final String READ_ONLY_EDIT_EXCEPTION_MESSAGE = "Cannot edit read-only resources";
+  private static final long CREATE_OR_REPLACE_DEFAULT_TIMEOUT = 1;
+  private static final TimeUnit CREATE_OR_REPLACE_DEFAULT_TIMEOUT_UNIT = TimeUnit.SECONDS;
 
   private final T item;
 
@@ -305,12 +307,17 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
     }
     R resource = resource(item);
 
+    long waitTimeout = CREATE_OR_REPLACE_DEFAULT_TIMEOUT;
+    TimeUnit waitTimeoutUnit = CREATE_OR_REPLACE_DEFAULT_TIMEOUT_UNIT;
+    if (context.getTimeout() > 0) {
+      waitTimeout = context.getTimeout();
+      waitTimeoutUnit = context.getTimeoutUnit();
+    }
+
     CreateOrReplaceHelper<T> createOrReplaceHelper = new CreateOrReplaceHelper<>(
         resource::create,
         resource::replace,
-        m -> resource.waitUntilCondition(Objects::nonNull,
-            context.getTimeout() == 0 ? 1 : context.getTimeout(),
-            context.getTimeout() == 0 ? TimeUnit.SECONDS : context.getTimeoutUnit()),
+        m -> resource.waitUntilCondition(Objects::nonNull, waitTimeout, waitTimeoutUnit),
         m -> resource.fromServer().get(), this.getKubernetesSerialization());
 
     return createOrReplaceHelper.createOrReplace(item);
