@@ -307,11 +307,14 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
     }
     R resource = resource(item);
 
-    long waitTimeout = CREATE_OR_REPLACE_DEFAULT_TIMEOUT;
-    TimeUnit waitTimeoutUnit = CREATE_OR_REPLACE_DEFAULT_TIMEOUT_UNIT;
+    final long waitTimeout;
+    final TimeUnit waitTimeoutUnit;
     if (context.getTimeout() > 0) {
       waitTimeout = context.getTimeout();
       waitTimeoutUnit = context.getTimeoutUnit();
+    } else {
+      waitTimeoutUnit = CREATE_OR_REPLACE_DEFAULT_TIMEOUT_UNIT;
+      waitTimeout = CREATE_OR_REPLACE_DEFAULT_TIMEOUT;
     }
 
     CreateOrReplaceHelper<T> createOrReplaceHelper = new CreateOrReplaceHelper<>(
