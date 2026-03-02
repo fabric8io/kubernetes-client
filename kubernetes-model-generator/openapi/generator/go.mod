@@ -1,8 +1,6 @@
 module github.com/fabric8io/kubernetes-client/kubernetes-model-generator/openapi/generator
 
-go 1.24.4
-
-toolchain go1.24.5
+go 1.25.6
 
 require (
 	github.com/cert-manager/cert-manager v1.18.2

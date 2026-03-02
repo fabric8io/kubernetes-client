@@ -23,9 +23,14 @@ import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodBuilder;
 import io.fabric8.kubernetes.api.model.PodList;
+import io.fabric8.kubernetes.api.model.Service;
+import io.fabric8.kubernetes.api.model.ServiceBuilder;
+import io.fabric8.kubernetes.api.model.ServiceListBuilder;
 import io.fabric8.kubernetes.api.model.StatusBuilder;
+import io.fabric8.kubernetes.api.model.WatchEvent;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientException;
+import io.fabric8.kubernetes.client.KubernetesClientTimeoutException;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.NamespaceableResource;
 import io.fabric8.kubernetes.client.dsl.PodResource;
@@ -33,11 +38,14 @@ import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
 import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
 import io.fabric8.mockwebserver.http.RecordedRequest;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
 import java.net.HttpURLConnection;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -350,5 +358,126 @@ class CreateOrReplaceResourceTest {
     final KubernetesClientException result = assertThrows(KubernetesClientException.class,
         () -> resource.patch(configMap));
     assertEquals(HttpURLConnection.HTTP_NOT_FOUND, result.getCode());
+  }
+
+  @Nested
+  @DisplayName("createOrReplace with timeout")
+  class CreateOrReplaceWithTimeout {
+
+    @BeforeEach
+    void setUp() {
+      client.getConfiguration().setRequestRetryBackoffLimit(0);
+    }
+
+    @Test
+    @DisplayName("throws KubernetesClientTimeoutException when resource never becomes available")
+    void testCreateOrReplaceWithTimeoutThrowsTimeoutException() {
+      Service svc = new ServiceBuilder()
+          .withNewMetadata().withName("svc2").withResourceVersion("12345").endMetadata()
+          .build();
+
+      // POST -> 503: shouldRetry(503) == true, drives into retry path
+      server.expect().post().withPath("/api/v1/namespaces/test/services")
+          .andReturn(HttpURLConnection.HTTP_UNAVAILABLE,
+              new StatusBuilder().withCode(HttpURLConnection.HTTP_UNAVAILABLE).build())
+          .once();
+
+      // waitTask: informer LIST returns empty; watch is kept open (no events) so the only
+      // completion path is the configured timeout, which produces KubernetesClientTimeoutException.
+      server.expect().get()
+          .withPath("/api/v1/namespaces/test/services?fieldSelector=metadata.name%3Dsvc2")
+          .andReturn(HttpURLConnection.HTTP_OK,
+              new ServiceListBuilder().withNewMetadata().endMetadata().build())
+          .always();
+
+      server.expect().get()
+          .withPath(
+              "/api/v1/namespaces/test/services?allowWatchBookmarks=true&fieldSelector=metadata.name%3Dsvc2&timeoutSeconds=600&watch=true")
+          .andUpgradeToWebSocket()
+          .open()
+          .done()
+          .once();
+
+      assertThrows(KubernetesClientTimeoutException.class,
+          () -> client.resource(svc).withTimeout(500, TimeUnit.MILLISECONDS).createOrReplace());
+    }
+
+    @Test
+    @DisplayName("succeeds when resource appears via watch ADDED event")
+    void testCreateOrReplaceWithTimeoutSucceedsWhenResourceAppearsViaWatchEvent() {
+      Service svc = new ServiceBuilder()
+          .withNewMetadata().withName("svc3").withResourceVersion("12345").endMetadata()
+          .build();
+
+      Service createdSvc = new ServiceBuilder()
+          .withNewMetadata().withName("svc3").withResourceVersion("100").endMetadata()
+          .build();
+
+      // POST 1st -> 503: shouldRetry(503) == true -> enters retry path
+      server.expect().post().withPath("/api/v1/namespaces/test/services")
+          .andReturn(HttpURLConnection.HTTP_UNAVAILABLE,
+              new StatusBuilder().withCode(HttpURLConnection.HTTP_UNAVAILABLE).build())
+          .once();
+
+      // waitTask: informer LIST -> empty -> condition not yet satisfied
+      server.expect().get()
+          .withPath("/api/v1/namespaces/test/services?fieldSelector=metadata.name%3Dsvc3")
+          .andReturn(HttpURLConnection.HTTP_OK,
+              new ServiceListBuilder().withNewMetadata().endMetadata().build())
+          .once();
+
+      // waitTask: informer WATCH -> sends ADDED event with createdSvc -> condition satisfied
+      server.expect().get()
+          .withPath(
+              "/api/v1/namespaces/test/services?allowWatchBookmarks=true&fieldSelector=metadata.name%3Dsvc3&timeoutSeconds=600&watch=true")
+          .andUpgradeToWebSocket()
+          .open()
+          .waitFor(1000)
+          .andEmit(new WatchEvent(createdSvc, "ADDED"))
+          .done()
+          .once();
+
+      // POST 2nd (retry after waitTask completes) -> 201 Created
+      server.expect().post().withPath("/api/v1/namespaces/test/services")
+          .andReturn(HttpURLConnection.HTTP_CREATED, createdSvc)
+          .once();
+
+      Service result = client.resource(svc).withTimeout(5, TimeUnit.SECONDS).createOrReplace();
+      assertNotNull(result);
+      assertEquals("svc3", result.getMetadata().getName());
+      assertEquals("100", result.getMetadata().getResourceVersion());
+    }
+
+    @Test
+    @DisplayName("throws KubernetesClientTimeoutException via DSL resource path")
+    void testCreateOrReplaceWithTimeoutViaResourceDsl() {
+      // POST -> 503 so CreateOrReplaceHelper enters the retry path
+      server.expect().post().withPath("/api/v1/namespaces/test/services")
+          .andReturn(HttpURLConnection.HTTP_UNAVAILABLE, new StatusBuilder()
+              .withCode(HttpURLConnection.HTTP_UNAVAILABLE).build())
+          .once();
+
+      // The informer's list GET returns an empty list so Objects::nonNull is never satisfied.
+      // The watch is kept open (no events) so the only completion path is the timeout.
+      server.expect().get()
+          .withPath("/api/v1/namespaces/test/services?fieldSelector=metadata.name%3Dsvc1")
+          .andReturn(HttpURLConnection.HTTP_OK, new ServiceListBuilder()
+              .withNewMetadata().endMetadata()
+              .build())
+          .always();
+
+      server.expect().get()
+          .withPath(
+              "/api/v1/namespaces/test/services?allowWatchBookmarks=true&fieldSelector=metadata.name%3Dsvc1&timeoutSeconds=600&watch=true")
+          .andUpgradeToWebSocket()
+          .open()
+          .done()
+          .always();
+
+      assertThrows(KubernetesClientTimeoutException.class, () -> client
+          .services()
+          .resource(new ServiceBuilder().withNewMetadata().withName("svc1").withResourceVersion("12345").and().build())
+          .withTimeout(500, TimeUnit.MILLISECONDS).createOrReplace());
+    }
   }
 }

@@ -39,12 +39,12 @@ jobs:
       fail-fast: false
       matrix:
         kubernetes: [v1.34.2,v1.33.0,v1.32.4,v1.31.8,v1.30.12]
-        httpclient: [jdk,jetty,okhttp]
+        httpclient: [jdk,jetty,okhttp,vertx-5]
     steps:
       - name: Checkout
         uses: actions/checkout@v6
       - name: Setup Minikube-Kubernetes
-        uses: manusa/actions-setup-minikube@v2.14.0
+        uses: manusa/actions-setup-minikube@v2.15.0
         with:
           minikube version: v1.37.0
           kubernetes version: ${{ matrix.kubernetes }}

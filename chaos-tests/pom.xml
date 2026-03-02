@@ -21,7 +21,7 @@
   <parent>
     <groupId>io.fabric8</groupId>
     <artifactId>kubernetes-client-project</artifactId>
-    <version>7.6-SNAPSHOT</version>
+    <version>7.7-SNAPSHOT</version>
   </parent>
 
   <artifactId>chaos-tests</artifactId>
@@ -56,11 +56,6 @@
           <artifactId>kubernetes-httpclient-vertx</artifactId>
         </exclusion>
       </exclusions>
-    </dependency>
-    <dependency>
-      <groupId>io.fabric8</groupId>
-      <artifactId>kubernetes-httpclient-vertx</artifactId>
-      <scope>test</scope>
     </dependency>
 
     <dependency>
@@ -183,6 +178,18 @@
           <dependency>
             <groupId>io.fabric8</groupId>
             <artifactId>kubernetes-httpclient-jetty</artifactId>
+          </dependency>
+        </dependencies>
+      </profile>
+      <profile>
+        <id>httpclient-vertx-5</id>
+        <properties>
+          <vertx.version>${vertx5.version}</vertx.version>
+        </properties>
+        <dependencies>
+          <dependency>
+            <groupId>io.fabric8</groupId>
+            <artifactId>kubernetes-httpclient-vertx-5</artifactId>
           </dependency>
         </dependencies>
       </profile>

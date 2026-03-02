@@ -37,10 +37,23 @@ public class ServerWebSocketHandler implements Handler<ServerWebSocket> {
   public void handle(ServerWebSocket serverWebSocket) {
     final WebSocketListener wsListener = response.getWebSocketListener();
     final VertxMockWebSocket mockWebSocket = new VertxMockWebSocket(request, serverWebSocket);
-    // Important to call onBeforeAccept before sending accept so that WebSockets get registered by dispatchers, handlers, and so on
+    // Important to call onBeforeAccept before configuring so that WebSockets get registered by dispatchers, handlers, and so on
     wsListener.onBeforeAccept(mockWebSocket, response);
-    serverWebSocket.textMessageHandler(text -> wsListener.onMessage(mockWebSocket, text));
-    serverWebSocket.binaryMessageHandler(buff -> wsListener.onMessage(mockWebSocket, buff.getBytes()));
+    configureWebSocket(serverWebSocket, mockWebSocket, wsListener);
+    wsListener.onOpen(mockWebSocket, response);
+    serverWebSocket.fetch(1);
+  }
+
+  public void configureWebSocket(ServerWebSocket serverWebSocket, VertxMockWebSocket mockWebSocket,
+      WebSocketListener wsListener) {
+    serverWebSocket.textMessageHandler(text -> {
+      wsListener.onMessage(mockWebSocket, text);
+      serverWebSocket.fetch(1);
+    });
+    serverWebSocket.binaryMessageHandler(buff -> {
+      wsListener.onMessage(mockWebSocket, buff.getBytes());
+      serverWebSocket.fetch(1);
+    });
     serverWebSocket.frameHandler(frame -> {
       if (frame.isClose()) {
         wsListener.onClosing(mockWebSocket, frame.closeStatusCode(), frame.closeReason());
@@ -54,8 +67,5 @@ public class ServerWebSocketHandler implements Handler<ServerWebSocket> {
             : serverWebSocket.closeStatusCode(),
         serverWebSocket.closeReason()));
     serverWebSocket.exceptionHandler(err -> wsListener.onFailure(mockWebSocket, err, response));
-    serverWebSocket.accept();
-    wsListener.onOpen(mockWebSocket, response);
-    serverWebSocket.fetch(1);
   }
 }
