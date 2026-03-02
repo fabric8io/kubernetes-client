@@ -15,7 +15,12 @@
  */
 package io.fabric8.kubernetes.client.dsl;
 
+import java.util.concurrent.TimeUnit;
+
 public interface NamespaceableResource<T> extends Resource<T> {
 
   Resource<T> inNamespace(String name);
+
+  @Override
+  NamespaceableResource<T> withTimeout(long timeout, TimeUnit unit);
 }

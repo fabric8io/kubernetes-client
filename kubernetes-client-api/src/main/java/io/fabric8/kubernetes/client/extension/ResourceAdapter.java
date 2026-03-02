@@ -331,12 +331,12 @@ public class ResourceAdapter<T> implements Resource<T> {
   }
 
   @Override
-  public Deletable withTimeout(long timeout, TimeUnit unit) {
+  public Resource<T> withTimeout(long timeout, TimeUnit unit) {
     return resource.withTimeout(timeout, unit);
   }
 
   @Override
-  public Deletable withTimeoutInMillis(long timeoutInMillis) {
+  public Resource<T> withTimeoutInMillis(long timeoutInMillis) {
     return withTimeout(timeoutInMillis, TimeUnit.MILLISECONDS);
   }
 

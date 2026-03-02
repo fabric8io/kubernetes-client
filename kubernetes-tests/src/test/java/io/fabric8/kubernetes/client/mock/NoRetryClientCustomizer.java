@@ -13,26 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8.openshift.client.dsl;
+package io.fabric8.kubernetes.client.mock;
 
-import io.fabric8.kubernetes.client.dsl.ScalableResource;
+import io.fabric8.kubernetes.client.KubernetesClientBuilder;
 
-import java.util.concurrent.TimeUnit;
+import java.util.function.Consumer;
 
-public interface DeployableScalableResource<T> extends ScalableResource<T>, TimeoutDeployable<T> {
-
-  /**
-   * @deprecated use {@link TimeoutDeployable} instead to indicate the timeout
-   */
-  @Deprecated
-  T deployLatest(boolean wait);
-
-  @Override
-  DeployableScalableResource<T> withTimeout(long timeout, TimeUnit unit);
+/**
+ * Disables HTTP-level request retry so that 5xx errors propagate to higher-level
+ * retry handlers (e.g. CreateOrReplaceHelper) instead of being transparently retried
+ * by the HTTP client.
+ */
+public class NoRetryClientCustomizer implements Consumer<KubernetesClientBuilder> {
 
   @Override
-  default DeployableScalableResource<T> withTimeoutInMillis(long timeoutInMillis) {
-    return withTimeout(timeoutInMillis, TimeUnit.MILLISECONDS);
+  public void accept(KubernetesClientBuilder builder) {
+    builder.editOrNewConfig().withRequestRetryBackoffLimit(0).endConfig();
   }
 
 }

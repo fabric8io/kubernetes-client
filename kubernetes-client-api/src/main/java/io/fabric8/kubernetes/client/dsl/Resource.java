@@ -20,6 +20,8 @@ import io.fabric8.kubernetes.client.FromServerGettable;
 import io.fabric8.kubernetes.client.GracePeriodConfigurable;
 import io.fabric8.kubernetes.client.ResourceNotFoundException;
 
+import java.util.concurrent.TimeUnit;
+
 /**
  * Interface that describes the operation that can be done on a Kubernetes resource (e.g. Pod, Service etc).
  * This is intended to act as the common denominator of resource operations. To accommodate resources with more specialized
@@ -84,5 +86,13 @@ public interface Resource<T> extends
    *         just from a class.
    */
   T item();
+
+  @Override
+  Resource<T> withTimeout(long timeout, TimeUnit unit);
+
+  @Override
+  default Resource<T> withTimeoutInMillis(long timeoutInMillis) {
+    return withTimeout(timeoutInMillis, TimeUnit.MILLISECONDS);
+  }
 
 }
