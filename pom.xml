@@ -187,6 +187,7 @@
       ${project.build.sourceDirectory};
       ${project.build.directory}/generated-sources/annotations;
     </javadoc.sourcepath>
+    <javadoc.links>https://javadoc.io/doc</javadoc.links>
 
     <osgi.import />
     <osgi.export />
@@ -205,6 +206,9 @@
     <karaf.itest.skip>false</karaf.itest.skip>
     <project.build.outputTimestamp>2026-01-22T06:37:07Z</project.build.outputTimestamp>
     <validation-api.version>2.0.1.Final</validation-api.version>
+    <revapi.version>0.15.1</revapi.version>
+    <revapi-java.version>0.28.4</revapi-java.version>
+    <revapi-reporter-json.version>0.5.1</revapi-reporter-json.version>
   </properties>
   <modules>
     <module>zjsonpatch</module>
@@ -1081,6 +1085,55 @@
           <artifactId>really-executable-jar-maven-plugin</artifactId>
           <version>${really-executable-jar-maven-plugin.version}</version>
         </plugin>
+        <plugin>
+          <groupId>org.revapi</groupId>
+          <artifactId>revapi-maven-plugin</artifactId>
+          <version>${revapi.version}</version>
+          <dependencies>
+            <dependency>
+              <groupId>org.revapi</groupId>
+              <artifactId>revapi-java</artifactId>
+              <version>${revapi-java.version}</version>
+            </dependency>
+            <dependency>
+              <groupId>org.revapi</groupId>
+              <artifactId>revapi-reporter-json</artifactId>
+              <version>${revapi-reporter-json.version}</version>
+            </dependency>
+          </dependencies>
+          <configuration>
+            <outputIgnoreSuggestions>false</outputIgnoreSuggestions>
+            <checkDependencies>false</checkDependencies>
+            <failBuildOnProblemsFound>false</failBuildOnProblemsFound>
+            <failSeverity>breaking</failSeverity>
+            <analysisConfiguration>
+              <revapi.java>
+                <missing-classes>
+                  <behavior>ignore</behavior>
+                </missing-classes>
+              </revapi.java>
+              <revapi.differences>
+                <item>
+                  <code>java.class.nonPublicPartOfAPI</code>
+                  <classQualifiedName>io.fabric8.zjsonpatch.JsonPointer.RefToken</classQualifiedName>
+                  <justification>Internal class usage is intentional.</justification>
+                </item>
+                <item>
+                  <regex>true</regex>
+                  <code>java\.method\.varargOverloadsOnlyDifferInVarargParameter</code>
+                  <old>.*</old>
+                  <classQualifiedName>com\.fasterxml\.jackson\.databind\..*</classQualifiedName>
+                  <justification>Jackson library internal changes are not under our control.</justification>
+                </item>
+              </revapi.differences>
+              <revapi.reporter.json>
+                <minSeverity>NON_BREAKING</minSeverity>
+                <output>${project.build.directory}/revapi-report.json</output>
+                <indent>true</indent>
+              </revapi.reporter.json>
+            </analysisConfiguration>
+          </configuration>
+        </plugin>
       </plugins>
     </pluginManagement>
     <plugins>
@@ -1399,6 +1452,46 @@
               </dependencySourceIncludes>
               <excludePackageNames>${javadoc.package.excludes}</excludePackageNames>
               <sourcepath>${javadoc.sourcepath}</sourcepath>
+              <additionalJOption>-J-Dhttp.agent=maven-javadoc-plugin</additionalJOption>
+              <detectOfflineLinks>false</detectOfflineLinks>
+              <offlineLinks>
+                <offlineLink>
+                  <url>${javadoc.links}/${project.groupId}/kubernetes-model-core/${project.version}</url>
+                  <location>${maven.multiModuleProjectDirectory}/doc/javadoc-links/kubernetes-model-core</location>
+                </offlineLink>
+                <offlineLink>
+                  <url>${javadoc.links}/${project.groupId}/kubernetes-model-common/${project.version}</url>
+                  <location>${maven.multiModuleProjectDirectory}/doc/javadoc-links/kubernetes-model-common</location>
+                </offlineLink>
+                <offlineLink>
+                  <url>${javadoc.links}/${project.groupId}/kubernetes-client-api/${project.version}</url>
+                  <location>${maven.multiModuleProjectDirectory}/doc/javadoc-links/kubernetes-client-api</location>
+                </offlineLink>
+                <offlineLink>
+                  <url>${javadoc.links}/${project.groupId}/kubernetes-client/${project.version}</url>
+                  <location>${maven.multiModuleProjectDirectory}/doc/javadoc-links/kubernetes-client</location>
+                </offlineLink>
+                <offlineLink>
+                  <url>${javadoc.links}/${project.groupId}/openshift-client-api/${project.version}</url>
+                  <location>${maven.multiModuleProjectDirectory}/doc/javadoc-links/openshift-client-api</location>
+                </offlineLink>
+                <offlineLink>
+                  <url>${javadoc.links}/${project.groupId}/openshift-client/${project.version}</url>
+                  <location>${maven.multiModuleProjectDirectory}/doc/javadoc-links/openshift-client</location>
+                </offlineLink>
+                <offlineLink>
+                  <url>${javadoc.links}/com.fasterxml.jackson.core/jackson-databind/${jackson.version}</url>
+                  <location>${maven.multiModuleProjectDirectory}/doc/javadoc-links/jackson-databind</location>
+                </offlineLink>
+                <offlineLink>
+                  <url>${javadoc.links}/com.fasterxml.jackson.core/jackson-core/${jackson.version}</url>
+                  <location>${maven.multiModuleProjectDirectory}/doc/javadoc-links/jackson-core</location>
+                </offlineLink>
+                <offlineLink>
+                  <url>${javadoc.links}/org.slf4j/slf4j-api/${slf4j.version}</url>
+                  <location>${maven.multiModuleProjectDirectory}/doc/javadoc-links/slf4j-api</location>
+                </offlineLink>
+              </offlineLinks>
             </configuration>
             <executions>
               <execution>
@@ -1502,6 +1595,46 @@
               </dependencySourceIncludes>
               <excludePackageNames>${javadoc.package.excludes}</excludePackageNames>
               <sourcepath>${javadoc.sourcepath}</sourcepath>
+              <additionalJOption>-J-Dhttp.agent=maven-javadoc-plugin</additionalJOption>
+              <detectOfflineLinks>false</detectOfflineLinks>
+              <offlineLinks>
+                <offlineLink>
+                  <url>${javadoc.links}/${project.groupId}/kubernetes-model-core/${project.version}</url>
+                  <location>${maven.multiModuleProjectDirectory}/doc/javadoc-links/kubernetes-model-core</location>
+                </offlineLink>
+                <offlineLink>
+                  <url>${javadoc.links}/${project.groupId}/kubernetes-model-common/${project.version}</url>
+                  <location>${maven.multiModuleProjectDirectory}/doc/javadoc-links/kubernetes-model-common</location>
+                </offlineLink>
+                <offlineLink>
+                  <url>${javadoc.links}/${project.groupId}/kubernetes-client-api/${project.version}</url>
+                  <location>${maven.multiModuleProjectDirectory}/doc/javadoc-links/kubernetes-client-api</location>
+                </offlineLink>
+                <offlineLink>
+                  <url>${javadoc.links}/${project.groupId}/kubernetes-client/${project.version}</url>
+                  <location>${maven.multiModuleProjectDirectory}/doc/javadoc-links/kubernetes-client</location>
+                </offlineLink>
+                <offlineLink>
+                  <url>${javadoc.links}/${project.groupId}/openshift-client-api/${project.version}</url>
+                  <location>${maven.multiModuleProjectDirectory}/doc/javadoc-links/openshift-client-api</location>
+                </offlineLink>
+                <offlineLink>
+                  <url>${javadoc.links}/${project.groupId}/openshift-client/${project.version}</url>
+                  <location>${maven.multiModuleProjectDirectory}/doc/javadoc-links/openshift-client</location>
+                </offlineLink>
+                <offlineLink>
+                  <url>${javadoc.links}/com.fasterxml.jackson.core/jackson-databind/${jackson.version}</url>
+                  <location>${maven.multiModuleProjectDirectory}/doc/javadoc-links/jackson-databind</location>
+                </offlineLink>
+                <offlineLink>
+                  <url>${javadoc.links}/com.fasterxml.jackson.core/jackson-core/${jackson.version}</url>
+                  <location>${maven.multiModuleProjectDirectory}/doc/javadoc-links/jackson-core</location>
+                </offlineLink>
+                <offlineLink>
+                  <url>${javadoc.links}/org.slf4j/slf4j-api/${slf4j.version}</url>
+                  <location>${maven.multiModuleProjectDirectory}/doc/javadoc-links/slf4j-api</location>
+                </offlineLink>
+              </offlineLinks>
             </configuration>
             <executions>
               <execution>
@@ -1514,6 +1647,41 @@
                 </configuration>
               </execution>
             </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    <profile>
+      <id>revapi-compare</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.revapi</groupId>
+            <artifactId>revapi-maven-plugin</artifactId>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    <profile>
+      <id>revapi-compare-jars</id>
+      <activation>
+        <property>
+          <name>revapi.newArtifactVersion</name>
+        </property>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.revapi</groupId>
+            <artifactId>revapi-maven-plugin</artifactId>
+            <configuration>
+              <oldArtifacts>
+                <artifact>${project.groupId}:${project.artifactId}:${revapi.oldArtifactVersion}</artifact>
+              </oldArtifacts>
+              <newArtifacts>
+                <artifact>${project.groupId}:${project.artifactId}:${revapi.newArtifactVersion}</artifact>
+              </newArtifacts>
+            </configuration>
           </plugin>
         </plugins>
       </build>

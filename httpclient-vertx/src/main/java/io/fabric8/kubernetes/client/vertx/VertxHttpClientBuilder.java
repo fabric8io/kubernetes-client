@@ -146,6 +146,13 @@ public class VertxHttpClientBuilder<F extends HttpClient.Factory>
         }
       });
     }
+
+    // Since the factory is not explicitly typed as VertxHttpClientFactory, we need to check the type before invoking
+    // additionalConfig as to not break other implementations of HttpClient.Factory for VertxHttpClientBuilder.
+    if (clientFactory instanceof VertxHttpClientFactory) {
+      ((VertxHttpClientFactory) clientFactory).additionalConfig(options);
+    }
+
     return new VertxHttpClient<>(this, new AtomicBoolean(), vertx.createHttpClient(options), closeVertx);
   }
 
