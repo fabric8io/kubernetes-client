@@ -9,6 +9,7 @@
 * Fix #7174: (chaos-tests) Fix classpath conflict when testing with Vert.x 5 HTTP client
 * Fix #7415: (java-generator) Fix generic type erasure for array of enums with default values
 * Fix #7422: (okhttp) Remove internal API usage and fix deprecated OkHttp 5 calls
+* Fix #7446: making the timeout of BaseOperation.createOrReplace() configurable
 
 #### Improvements
 * Fix #1105: Add javadoc cross-linking for Fabric8 modules and external dependencies
