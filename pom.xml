@@ -23,7 +23,7 @@
 
   <groupId>io.fabric8</groupId>
   <artifactId>kubernetes-client-project</artifactId>
-  <version>7.6.0</version>
+  <version>7.7-SNAPSHOT</version>
   <packaging>pom</packaging>
 
   <name>Fabric8 :: Kubernetes :: Project</name>
@@ -204,7 +204,7 @@
     </osgi.include.resources.default>
     <osgi.include.resources>${osgi.include.resources.default}</osgi.include.resources>
     <karaf.itest.skip>false</karaf.itest.skip>
-    <project.build.outputTimestamp>2026-03-02T12:20:46Z</project.build.outputTimestamp>
+    <project.build.outputTimestamp>2026-03-02T12:26:18Z</project.build.outputTimestamp>
     <validation-api.version>2.0.1.Final</validation-api.version>
     <revapi.version>0.15.1</revapi.version>
     <revapi-java.version>0.28.4</revapi-java.version>
