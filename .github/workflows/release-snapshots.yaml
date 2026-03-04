@@ -60,5 +60,12 @@ jobs:
         run: ./mvnw ${MAVEN_ARGS} clean install -pl bom-generator-plugin
       - name: Generate BOM
         run: ./mvnw ${MAVEN_ARGS} -Pbom clean validate
+      # BOMs are deployed separately to avoid SNAPSHOT metadata checksum errors.
+      # The central-publishing-maven-plugin deploys each module individually for SNAPSHOTs.
+      # If BOMs deploy in the same reactor, they may fetch metadata for artifacts that were
+      # just deployed, hitting a brief server-side inconsistency window between the
+      # maven-metadata.xml and its checksum file.
       - name: Build and release Java modules
-        run: ./mvnw ${MAVEN_ARGS} ${RELEASE_MAVEN_ARGS} deploy
+        run: ./mvnw ${MAVEN_ARGS} ${RELEASE_MAVEN_ARGS} deploy -pl '!target/classes/kubernetes-client-bom,!target/classes/kubernetes-client-bom-with-deps'
+      - name: Deploy BOMs
+        run: ./mvnw ${MAVEN_ARGS} ${RELEASE_MAVEN_ARGS} deploy -pl target/classes/kubernetes-client-bom,target/classes/kubernetes-client-bom-with-deps

@@ -127,16 +127,27 @@ Examples:
 ## Example Workflow
 
 ```bash
-# Generate BOMs (single command, no separate plugin invocation needed)
-mvn clean install -Pbom
+# 1. Install the plugin first (it's not published to any repository)
+mvn clean install -pl bom-generator-plugin
+
+# 2. Generate BOMs (runs at the validate phase)
+mvn -Pbom clean validate
 
 # The BOMs are generated in:
 # - target/classes/kubernetes-client-bom/pom.xml
 # - target/classes/kubernetes-client-bom-with-deps/pom.xml
 
-# Release with updated BOMs
-mvn clean install -Prelease
+# 3. Release with generated BOMs (the -Prelease profile adds them as reactor modules)
+mvn -Prelease deploy
 ```
+
+### SNAPSHOT deployment
+
+For SNAPSHOT deployments, the `central-publishing-maven-plugin` deploys each module
+individually (unlike releases, which are bundled). BOMs must be deployed in a separate
+Maven invocation to avoid checksum validation errors caused by the server-side metadata
+inconsistency window for recently deployed SNAPSHOT artifacts. See the
+`release-snapshots.yaml` workflow for the exact commands.
 
 ## Generated BOM Content
 
