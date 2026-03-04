@@ -3,6 +3,7 @@
 ### 7.7-SNAPSHOT
 
 #### Bugs
+* Fix #7460: Add explicit Automatic-Module-Name to httpclient modules to fix invalid JPMS module name for kubernetes-httpclient-vertx-5
 
 #### Improvements
 
