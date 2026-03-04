@@ -36,6 +36,7 @@
 
   <modules>
     <module>kubernetes-client-init-bc-fips</module>
+    <module>kubernetes-client-httpclient-jpms</module>
   </modules>
 
   <build>

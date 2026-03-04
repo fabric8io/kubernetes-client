@@ -29,6 +29,7 @@
   <name>Fabric8 :: Kubernetes :: HttpClient :: JDK</name>
 
   <properties>
+    <jpms.module.name>io.fabric8.kubernetes.client.jdkhttp</jpms.module.name>
     <osgi.require-capability>
       osgi.extender;
       filter:="(osgi.extender=osgi.serviceloader.registrar)",
