@@ -1664,6 +1664,29 @@
       </build>
     </profile>
     <profile>
+      <id>jpms-module-name</id>
+      <activation>
+        <file>
+          <exists>${basedir}/src/main/resources/META-INF/services/io.fabric8.kubernetes.client.http.HttpClient$Factory</exists>
+        </file>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-jar-plugin</artifactId>
+            <configuration>
+              <archive>
+                <manifestEntries>
+                  <Automatic-Module-Name>${jpms.module.name}</Automatic-Module-Name>
+                </manifestEntries>
+              </archive>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    <profile>
       <id>revapi-compare-jars</id>
       <activation>
         <property>
