@@ -144,10 +144,10 @@ mvn -Prelease deploy
 ### SNAPSHOT deployment
 
 For SNAPSHOT deployments, the `central-publishing-maven-plugin` deploys each module
-individually (unlike releases, which are bundled). BOMs must be deployed in a separate
-Maven invocation to avoid checksum validation errors caused by the server-side metadata
-inconsistency window for recently deployed SNAPSHOT artifacts. See the
-`release-snapshots.yaml` workflow for the exact commands.
+individually (unlike releases, which are bundled). Remote SNAPSHOT metadata on the
+Sonatype server can have checksum inconsistencies (`maven-metadata.xml` vs its `.sha1`
+file), so the deploy step must use lax checksums (`-c`) instead of strict (`-C`).
+See the `release-snapshots.yaml` workflow for the exact commands.
 
 ## Generated BOM Content
 
