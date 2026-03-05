@@ -27,7 +27,12 @@ on:
     - cron: '0 2 * * *' # Every day at 2am
 
 env:
-  MAVEN_ARGS: -B -C -V -ntp -Dhttp.keepAlive=false -e ${{ github.event.inputs.additional_args }}
+  # Uses -c (lax checksums) instead of -C (strict checksums) used in the release workflow.
+  # Maven's CLI uses if/else-if for -C/-c, so -C always wins when both are present.
+  # Remote SNAPSHOT metadata on the Sonatype server can have persistent checksum
+  # inconsistencies (maven-metadata.xml vs its .sha1 file). Strict checksums make
+  # these fatal during deploy; lax checksums warn and continue.
+  MAVEN_ARGS: -B -c -V -ntp -Dhttp.keepAlive=false -e ${{ github.event.inputs.additional_args }}
   RELEASE_MAVEN_ARGS: -Prelease -Denforcer.skip=true
   MAVEN_CENTRAL_USERNAME: ${{ secrets.MAVEN_CENTRAL_USERNAME }}
   MAVEN_CENTRAL_PASSWORD: ${{ secrets.MAVEN_CENTRAL_PASSWORD }}
@@ -60,9 +65,5 @@ jobs:
         run: ./mvnw ${MAVEN_ARGS} clean install -pl bom-generator-plugin
       - name: Generate BOM
         run: ./mvnw ${MAVEN_ARGS} -Pbom clean validate
-      # Deploy uses -c (lax checksums) to override -C (strict) from MAVEN_ARGS.
-      # Remote SNAPSHOT metadata on the Sonatype server can have persistent or transient
-      # checksum inconsistencies (maven-metadata.xml vs its .sha1 file). Strict checksums
-      # make these fatal; lax checksums warn and continue.
       - name: Build and release Java modules
-        run: ./mvnw ${MAVEN_ARGS} ${RELEASE_MAVEN_ARGS} -c deploy
+        run: ./mvnw ${MAVEN_ARGS} ${RELEASE_MAVEN_ARGS} deploy
