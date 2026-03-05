@@ -146,8 +146,9 @@ mvn -Prelease deploy
 For SNAPSHOT deployments, the `central-publishing-maven-plugin` deploys each module
 individually (unlike releases, which are bundled). Remote SNAPSHOT metadata on the
 Sonatype server can have checksum inconsistencies (`maven-metadata.xml` vs its `.sha1`
-file), so the deploy step must use lax checksums (`-c`) instead of strict (`-C`).
-See the `release-snapshots.yaml` workflow for the exact commands.
+file), so the snapshot workflow uses `-c` (lax checksums) instead of `-C` (strict).
+Note: Maven's CLI uses `if/else-if` for these flags, so `-C` always wins when both
+are present — they cannot be combined. See `release-snapshots.yaml` for details.
 
 ## Generated BOM Content
 
