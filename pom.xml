@@ -157,7 +157,7 @@
     <maven.shade.plugin.version>3.6.1</maven.shade.plugin.version>
     <maven.install.plugin.version>3.1.4</maven.install.plugin.version>
     <maven.invoker.plugin.version>3.9.1</maven.invoker.plugin.version>
-    <maven.plugin.plugin.version>3.15.1</maven.plugin.plugin.version>
+    <maven.plugin.plugin.version>3.15.2</maven.plugin.plugin.version>
     <gmavenplus-plugin.version>4.3.1</gmavenplus-plugin.version>
     <gradle-api-maven-plugin.version>0.0.7</gradle-api-maven-plugin.version>
     <jacoco-maven-plugin.version>0.8.14</jacoco-maven-plugin.version>
