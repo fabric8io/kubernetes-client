@@ -69,7 +69,7 @@ func (g *GoGenerator) Generate() error {
 func (g *GoGenerator) KubernetesTargets(context *generator.Context) []generator.Target {
 	g.processUniverse(context)
 	// Replace original Filter function with something that includes all Kubernetes Object types regardless of the comment tag
-	openApiGenTargets := generators.GetTargets(context, &g.Args)
+	openApiGenTargets := generators.GetOpenAPITargets(context, &g.Args, nil)
 	for _, target := range openApiGenTargets {
 		// Override standard filter function to include types that haven't been annotated/tagged with k8s:openapi-gen=true
 		target.(*generator.SimpleTarget).FilterFunc = g.KubernetesFilterFunc
