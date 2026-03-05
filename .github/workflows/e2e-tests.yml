@@ -48,7 +48,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v6
       - name: Cache .m2 registry
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: ~/.m2/repository
           key: cache-e2e-${{ github.sha }}-${{ github.run_id }}
@@ -80,7 +80,7 @@ jobs:
           github token: ${{ secrets.GITHUB_TOKEN }}
           start args: '--force'
       - name: Cache .m2 registry
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: ~/.m2/repository
           key: cache-e2e-${{ github.sha }}-${{ github.run_id }}
