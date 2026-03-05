@@ -98,7 +98,7 @@ jobs:
         run: tar -czf revapi-reports.tar.gz -C target/staging .
 
       - name: Upload Reports
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         with:
           name: revapi-reports-${{ steps.artifact-name.outputs.suffix }}
           path: revapi-reports.tar.gz
