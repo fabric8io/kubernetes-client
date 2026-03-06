@@ -9,8 +9,8 @@ require (
 	github.com/k8snetworkplumbingwg/network-attachment-definition-client v1.7.7
 	github.com/kubernetes-csi/external-snapshotter/client/v8 v8.2.0
 	github.com/metal3-io/baremetal-operator/apis v0.9.2
-	github.com/metal3-io/cluster-api-provider-metal3/api v1.9.3
-	github.com/metal3-io/ip-address-manager/api v1.10.1 // indirect; indirect TODO: remove with controller-runtime replacement
+	github.com/metal3-io/cluster-api-provider-metal3/api v1.12.2
+	github.com/metal3-io/ip-address-manager/api v1.12.2 // indirect; indirect TODO: remove with controller-runtime replacement
 	// Match latest commit in the version branch (e.g. release-4.17)
 	github.com/openshift/api v3.9.0+incompatible
 	github.com/openshift/cloud-credential-operator v0.0.0-20251126011841-0e03b7a0fa39
@@ -31,9 +31,9 @@ require (
 	github.com/tektoncd/pipeline v1.3.1
 	github.com/tektoncd/triggers v0.33.0
 	istio.io/client-go v1.28.0
-	k8s.io/api v0.34.1
-	k8s.io/apiextensions-apiserver v0.34.1
-	k8s.io/apimachinery v0.34.1
+	k8s.io/api v0.34.3
+	k8s.io/apiextensions-apiserver v0.34.3
+	k8s.io/apimachinery v0.34.3
 	k8s.io/autoscaler/vertical-pod-autoscaler v1.4.1
 	k8s.io/client-go v12.0.0+incompatible
 	k8s.io/gengo/v2 v2.0.0-20250820003526-c297c0c1eb9d
@@ -53,7 +53,7 @@ require (
 	open-cluster-management.io/governance-policy-propagator v0.16.0
 	open-cluster-management.io/multicloud-operators-channel v0.16.0
 	open-cluster-management.io/multicloud-operators-subscription v0.16.0
-	sigs.k8s.io/cluster-api v1.11.2
+	sigs.k8s.io/cluster-api v1.12.2
 	sigs.k8s.io/gateway-api v1.4.0
 	sigs.k8s.io/kustomize/api v0.20.1
 	// This version is older than v1.10.0 see replacements below
@@ -174,7 +174,7 @@ require (
 	github.com/oasdiff/yaml v0.0.0-20250309154309-f31be36b4037 // indirect
 	github.com/oasdiff/yaml3 v0.0.0-20250309153720-d2182401db90 // indirect
 	github.com/oklog/ulid v1.3.1 // indirect
-	github.com/onsi/gomega v1.38.2 // indirect
+	github.com/onsi/gomega v1.38.3 // indirect
 	github.com/opencontainers/go-digest v1.0.0 // indirect
 	github.com/openshift/custom-resource-status v1.1.3-0.20220503160415-f2fdb4999d87 // indirect
 	github.com/operator-framework/operator-registry v1.56.0 // indirect
@@ -211,7 +211,7 @@ require (
 	golang.org/x/exp v0.0.0-20250718183923-645b1fa84792 // indirect
 	golang.org/x/mod v0.29.0 // indirect
 	golang.org/x/net v0.47.0 // indirect
-	golang.org/x/oauth2 v0.32.0 // indirect
+	golang.org/x/oauth2 v0.33.0 // indirect
 	golang.org/x/sync v0.18.0 // indirect
 	golang.org/x/sys v0.38.0 // indirect
 	golang.org/x/term v0.37.0 // indirect
@@ -229,12 +229,12 @@ require (
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 	istio.io/api v1.28.0 // indirect
-	k8s.io/component-base v0.34.1 // indirect
+	k8s.io/component-base v0.34.3 // indirect
 	k8s.io/klog/v2 v2.130.1 // indirect
 	k8s.io/utils v0.0.0-20250820121507-0af2bda4dd1d // indirect
 	knative.dev/pkg v0.0.0-20250821143151-4ffdcf6b3fa5 // indirect
 	sigs.k8s.io/cluster-api-provider-azure v1.21.1-0.20250929163617-2c4eaa611a39 // indirect
-	sigs.k8s.io/controller-runtime v0.22.1 // indirect
+	sigs.k8s.io/controller-runtime v0.22.5 // indirect
 	sigs.k8s.io/json v0.0.0-20250730193827-2d320260d730 // indirect
 	sigs.k8s.io/kustomize/kyaml v0.20.1 // indirect
 	sigs.k8s.io/randfill v1.0.0 // indirect
