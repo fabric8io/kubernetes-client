@@ -35,7 +35,8 @@ public interface Resource<T> extends
     DryRunable<WritableOperation<T>>,
     Informable<T>,
     CreateOrReplaceDeletable<T>,
-    MetadataGettable {
+    MetadataGettable,
+    TableGettable {
 
   /**
    * deletes dependent resources. Sets `orphanDependents` field to `false` when set `true`
