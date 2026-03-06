@@ -31,14 +31,14 @@ require (
 	github.com/tektoncd/pipeline v1.3.1
 	github.com/tektoncd/triggers v0.33.0
 	istio.io/client-go v1.28.0
-	k8s.io/api v0.34.1
-	k8s.io/apiextensions-apiserver v0.34.1
-	k8s.io/apimachinery v0.34.1
+	k8s.io/api v0.35.2
+	k8s.io/apiextensions-apiserver v0.35.2
+	k8s.io/apimachinery v0.35.2
 	k8s.io/autoscaler/vertical-pod-autoscaler v1.4.1
 	k8s.io/client-go v12.0.0+incompatible
-	k8s.io/gengo/v2 v2.0.0-20250820003526-c297c0c1eb9d
-	k8s.io/kube-openapi v0.0.0-20250814151709-d7b6acb124c3
-	k8s.io/metrics v0.34.1
+	k8s.io/gengo/v2 v2.0.0-20250922181213-ec3ebc5fd46b
+	k8s.io/kube-openapi v0.0.0-20250910181357-589584f1c912
+	k8s.io/metrics v0.35.2
 	knative.dev/caching v0.0.0-20250821143751-b982aa0cd1c1
 	knative.dev/eventing v0.46.2
 	knative.dev/eventing-awssqs v0.29.0
@@ -72,12 +72,12 @@ replace (
 	github.com/openshift/hive => github.com/openshift/hive v1.1.17-0.20251208194543-6648a44ea777 // Latest Master
 	github.com/openshift/installer => github.com/openshift/installer v1.4.21-pre // Most up-to-date tag https://issues.redhat.com/browse/OCPBUGS-42448
 
-	k8s.io/api => k8s.io/api v0.34.1
-	k8s.io/client-go => k8s.io/client-go v0.34.1
-	k8s.io/cloud-provider => k8s.io/cloud-provider v0.34.1
-	k8s.io/csi-translation-lib => k8s.io/csi-translation-lib v0.34.1
-	k8s.io/kube-scheduler => k8s.io/kube-scheduler v0.34.1
-	k8s.io/mount-utils => k8s.io/mount-utils v0.34.1
+	k8s.io/api => k8s.io/api v0.35.2
+	k8s.io/client-go => k8s.io/client-go v0.35.2
+	k8s.io/cloud-provider => k8s.io/cloud-provider v0.35.2
+	k8s.io/csi-translation-lib => k8s.io/csi-translation-lib v0.35.2
+	k8s.io/kube-scheduler => k8s.io/kube-scheduler v0.35.2
+	k8s.io/mount-utils => k8s.io/mount-utils v0.35.2
 
 	// Pin cluster-api to v1.10.9 - v1.11.0+ reorganized API import paths incompatibly
 	sigs.k8s.io/cluster-api => sigs.k8s.io/cluster-api v1.10.9
@@ -142,7 +142,6 @@ require (
 	github.com/go-openapi/swag v0.23.1 // indirect
 	github.com/go-openapi/validate v0.24.0 // indirect
 	github.com/go-test/deep v1.1.1 // indirect
-	github.com/gogo/protobuf v1.3.2 // indirect
 	github.com/golang/groupcache v0.0.0-20241129210726-2c02b8208cf8 // indirect
 	github.com/golang/protobuf v1.5.4 // indirect
 	github.com/google/cel-go v0.26.0 // indirect
@@ -205,7 +204,7 @@ require (
 	go.opentelemetry.io/otel/trace v1.38.0 // indirect
 	go.uber.org/multierr v1.11.0 // indirect
 	go.uber.org/zap v1.27.0 // indirect
-	go.yaml.in/yaml/v2 v2.4.2 // indirect
+	go.yaml.in/yaml/v2 v2.4.3 // indirect
 	go.yaml.in/yaml/v3 v3.0.4 // indirect
 	golang.org/x/crypto v0.45.0 // indirect
 	golang.org/x/exp v0.0.0-20250718183923-645b1fa84792 // indirect
@@ -229,9 +228,9 @@ require (
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 	istio.io/api v1.28.0 // indirect
-	k8s.io/component-base v0.34.1 // indirect
+	k8s.io/component-base v0.35.2 // indirect
 	k8s.io/klog/v2 v2.130.1 // indirect
-	k8s.io/utils v0.0.0-20250820121507-0af2bda4dd1d // indirect
+	k8s.io/utils v0.0.0-20251002143259-bc988d571ff4 // indirect
 	knative.dev/pkg v0.0.0-20250821143151-4ffdcf6b3fa5 // indirect
 	sigs.k8s.io/cluster-api-provider-azure v1.21.1-0.20250929163617-2c4eaa611a39 // indirect
 	sigs.k8s.io/controller-runtime v0.22.1 // indirect
