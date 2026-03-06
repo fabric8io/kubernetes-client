@@ -18,6 +18,7 @@ package io.fabric8.kubernetes.client.extension;
 import io.fabric8.kubernetes.api.builder.Visitor;
 import io.fabric8.kubernetes.api.model.DeletionPropagation;
 import io.fabric8.kubernetes.api.model.ListOptions;
+import io.fabric8.kubernetes.api.model.PartialObjectMetadata;
 import io.fabric8.kubernetes.api.model.StatusDetails;
 import io.fabric8.kubernetes.api.model.autoscaling.v1.Scale;
 import io.fabric8.kubernetes.client.GracePeriodConfigurable;
@@ -386,4 +387,8 @@ public class ResourceAdapter<T> implements Resource<T> {
     return resource.subresource(subresource);
   }
 
+  @Override
+  public PartialObjectMetadata getAsPartialObjectMetadata() {
+    return resource.getAsPartialObjectMetadata();
+  }
 }
