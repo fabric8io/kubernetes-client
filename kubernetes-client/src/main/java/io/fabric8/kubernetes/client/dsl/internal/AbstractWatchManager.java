@@ -120,7 +120,7 @@ public abstract class AbstractWatchManager<T extends HasMetadata> implements Wat
 
   volatile WatchRequestState latestRequestState;
   private final Map<Class<?>, Integer> endErrors = new ConcurrentHashMap<>();
-  private AtomicInteger retryAfterSeconds = new AtomicInteger();
+  private final AtomicInteger retryAfterSeconds = new AtomicInteger();
 
   private int watchEndCheckMs = 120000;
 

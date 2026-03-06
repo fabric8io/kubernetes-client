@@ -18,6 +18,7 @@ package io.fabric8.kubernetes.client.informers.impl.cache;
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodList;
 import io.fabric8.kubernetes.api.model.PodListBuilder;
+import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.Watcher.Action;
 import io.fabric8.kubernetes.client.WatcherException;
@@ -41,8 +42,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.Mockito.atLeast;
+import static org.mockito.Mockito.*;
 
+@SuppressWarnings({ "rawtypes", "unchecked" })
 class ReflectorTest {
 
   private ProcessorStore<Pod> mockStore;
@@ -57,13 +59,19 @@ class ReflectorTest {
         Mockito.any());
   }
 
+  private static ListerWatcher<Pod, PodList> mockListerWatcher() {
+    ListerWatcher<Pod, PodList> mock = Mockito.mock(ListerWatcher.class);
+    Mockito.when(mock.getConfig()).thenReturn(Config.empty());
+    return mock;
+  }
+
   @Test
   void testStateFlags() {
-    ListerWatcher<Pod, PodList> mock = Mockito.mock(ListerWatcher.class);
+    ListerWatcher<Pod, PodList> mock = mockListerWatcher();
     PodList list = new PodListBuilder().withNewMetadata().withResourceVersion("1").endMetadata().build();
     Mockito.when(mock.submitList(Mockito.any())).thenReturn(CompletableFuture.completedFuture(list));
 
-    Reflector<Pod, PodList> reflector = new Reflector<Pod, PodList>(mock, mockStore) {
+    Reflector<Pod, PodList> reflector = new Reflector<>(mock, mockStore) {
       @Override
       protected void reconnect() {
         // do nothing
@@ -97,7 +105,7 @@ class ReflectorTest {
     assertFalse(reflector.isStopped());
     assertFalse(reflector.getStopFuture().isDone());
     assertTrue(future.isDone());
-    assertTrue(!future.isCompletedExceptionally());
+    assertFalse(future.isCompletedExceptionally());
 
     reflector.stop();
 
@@ -108,11 +116,11 @@ class ReflectorTest {
 
   @Test
   void testNotRunningAfterStartError() {
-    ListerWatcher<Pod, PodList> mock = Mockito.mock(ListerWatcher.class);
+    ListerWatcher<Pod, PodList> mock = mockListerWatcher();
     PodList list = new PodListBuilder().withNewMetadata().withResourceVersion("1").endMetadata().build();
     Mockito.when(mock.submitList(Mockito.any())).thenReturn(CompletableFuture.completedFuture(list));
 
-    Reflector<Pod, PodList> reflector = new Reflector<Pod, PodList>(mock, mockStore);
+    Reflector<Pod, PodList> reflector = new Reflector<>(mock, mockStore);
 
     // throw an exception, then watch normally
     Mockito.when(mock.submitWatch(Mockito.any(), Mockito.any()))
@@ -128,7 +136,7 @@ class ReflectorTest {
 
   @Test
   void testNotActuallyWatching() {
-    ListerWatcher<Pod, PodList> mock = Mockito.mock(ListerWatcher.class);
+    ListerWatcher<Pod, PodList> mock = mockListerWatcher();
     PodList list = new PodListBuilder().withNewMetadata().withResourceVersion("1").endMetadata().build();
     Mockito.when(mock.submitList(Mockito.any())).thenReturn(CompletableFuture.completedFuture(list));
 
@@ -147,7 +155,7 @@ class ReflectorTest {
 
   @Test
   void testNonHttpGone() {
-    ListerWatcher<Pod, PodList> mock = Mockito.mock(ListerWatcher.class);
+    ListerWatcher<Pod, PodList> mock = mockListerWatcher();
     PodList list = new PodListBuilder().withNewMetadata().withResourceVersion("1").endMetadata().build();
     Mockito.when(mock.submitList(Mockito.any())).thenReturn(CompletableFuture.completedFuture(list));
 
@@ -172,7 +180,7 @@ class ReflectorTest {
 
   @Test
   void testWatchListException() {
-    ListerWatcher<Pod, PodList> mock = Mockito.mock(ListerWatcher.class);
+    ListerWatcher<Pod, PodList> mock = mockListerWatcher();
 
     Reflector<Pod, PodList> reflector = new Reflector<>(mock, mockStore);
     reflector.setWatchList(true);
@@ -196,7 +204,7 @@ class ReflectorTest {
 
   @Test
   void testWatchListEventException() {
-    ListerWatcher<Pod, PodList> mock = Mockito.mock(ListerWatcher.class);
+    ListerWatcher<Pod, PodList> mock = mockListerWatcher();
 
     Reflector<Pod, PodList> reflector = new Reflector<>(mock, mockStore);
     reflector.setWatchList(true);
@@ -214,7 +222,7 @@ class ReflectorTest {
 
   @Test
   void testTimeout() {
-    ListerWatcher<Pod, PodList> mock = Mockito.mock(ListerWatcher.class);
+    ListerWatcher<Pod, PodList> mock = mockListerWatcher();
     PodList list = new PodListBuilder().withNewMetadata().withResourceVersion("1").endMetadata().build();
     Mockito.when(mock.submitList(Mockito.any())).thenReturn(CompletableFuture.completedFuture(list));
 
@@ -254,9 +262,7 @@ class ReflectorTest {
     }).when(ex).execute(Mockito.any(Runnable.class));
 
     // make sure the reconnect is rejected
-    Awaitility.await().atMost(10, TimeUnit.SECONDS).until(() -> {
-      return rejected.get() > 0;
-    });
+    Awaitility.await().atMost(10, TimeUnit.SECONDS).until(() -> rejected.get() > 0);
 
     long start = System.currentTimeMillis();
     Awaitility.await().atMost(10, TimeUnit.SECONDS).until(() -> {

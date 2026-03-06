@@ -32,14 +32,18 @@ import java.util.function.Consumer;
  */
 public class ProcessorStore<T extends HasMetadata> {
 
-  private CacheImpl<T> cache;
-  private SharedProcessor<T> processor;
-  private AtomicBoolean synced = new AtomicBoolean();
-  private List<String> deferredAdd = new ArrayList<>();
+  private final CacheImpl<T> cache;
+  private final SharedProcessor<T> processor;
+  private final AtomicBoolean synced = new AtomicBoolean();
+  private final List<String> deferredAdd = new ArrayList<>();
 
   public ProcessorStore(CacheImpl<T> cache, SharedProcessor<T> processor) {
     this.cache = cache;
     this.processor = processor;
+  }
+
+  public ProcessorStore(SharedProcessor<T> processor) {
+    this(new CacheImpl<>(), processor);
   }
 
   public void add(T obj) {
@@ -83,6 +87,7 @@ public class ProcessorStore<T extends HasMetadata> {
     return cache.list();
   }
 
+  @SuppressWarnings("unused")
   public List<String> listKeys() {
     return cache.listKeys();
   }
@@ -91,6 +96,7 @@ public class ProcessorStore<T extends HasMetadata> {
     return cache.get(object);
   }
 
+  @SuppressWarnings("unused")
   public T getByKey(String key) {
     return cache.getByKey(key);
   }
@@ -113,7 +119,7 @@ public class ProcessorStore<T extends HasMetadata> {
       }
     });
     if (cacheStateComplete != null) {
-      cacheStateComplete.accept(this.processor.getSerialExecutor()::execute);
+      cacheStateComplete.accept(this.processor.getSerialExecutor());
     }
   }
 
@@ -129,4 +135,11 @@ public class ProcessorStore<T extends HasMetadata> {
     }
   }
 
+  public CacheImpl<T> cache() {
+    return cache;
+  }
+
+  public SharedProcessor<T> processor() {
+    return processor;
+  }
 }

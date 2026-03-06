@@ -5,6 +5,7 @@
 #### Bugs
 
 #### Improvements
+* Fix #7524: Add informer configuration to specify isWatching sensitivity to transient disconnections
 
 #### Dependency Upgrade
 
