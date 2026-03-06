@@ -49,7 +49,7 @@ require (
 	knative.dev/eventing-prometheus v0.28.0
 	knative.dev/networking v0.0.0-20250821144952-042b64d7bbde
 	knative.dev/serving v0.46.2
-	open-cluster-management.io/api v0.16.2
+	open-cluster-management.io/api v1.2.0
 	open-cluster-management.io/governance-policy-propagator v0.16.0
 	open-cluster-management.io/multicloud-operators-channel v0.16.0
 	open-cluster-management.io/multicloud-operators-subscription v0.16.0
@@ -234,7 +234,7 @@ require (
 	k8s.io/utils v0.0.0-20250820121507-0af2bda4dd1d // indirect
 	knative.dev/pkg v0.0.0-20250821143151-4ffdcf6b3fa5 // indirect
 	sigs.k8s.io/cluster-api-provider-azure v1.21.1-0.20250929163617-2c4eaa611a39 // indirect
-	sigs.k8s.io/controller-runtime v0.22.1 // indirect
+	sigs.k8s.io/controller-runtime v0.22.3 // indirect
 	sigs.k8s.io/json v0.0.0-20250730193827-2d320260d730 // indirect
 	sigs.k8s.io/kustomize/kyaml v0.20.1 // indirect
 	sigs.k8s.io/randfill v1.0.0 // indirect
