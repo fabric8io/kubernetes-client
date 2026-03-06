@@ -31,6 +31,7 @@
 * Fix #7582: bump vertical-pod-autoscaler from 1.4.1 to 1.6.0
 
 #### New Features
+* Fix #7451: Add support for server-side content negotiation (Table and PartialObjectMetadata responses) 
 
 #### _**Note**_: Breaking changes
 * Fix #7544: cluster-api model classes moved from package `io.fabric8.kubernetes.api.model.clusterapi.v1beta1` to `io.fabric8.kubernetes.api.model.clusterapi.core.v1beta1` (following upstream cluster-api v1.11+ API reorganization)
