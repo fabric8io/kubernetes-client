@@ -10,6 +10,7 @@
 #### Dependency Upgrade
 
 #### New Features
+* Fix #7451: Add support for server-side content negotiation (Table and PartialObjectMetadata responses) 
 
 #### _**Note**_: Breaking changes
 
