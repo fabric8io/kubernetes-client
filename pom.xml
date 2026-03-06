@@ -116,7 +116,7 @@
     <bc-fips.version>2.1.2</bc-fips.version>
     <bcpkix-fips.version>2.1.10</bcpkix-fips.version>
     <keycloak.version>26.4.0</keycloak.version><!-- Used by CRD Generator integration tests for verifications -->
-    <mockito.version>5.20.0</mockito.version>
+    <mockito.version>5.22.0</mockito.version>
     <mockito-inline.version>5.2.0</mockito-inline.version>
     <spock.version>2.4-M6-groovy-4.0</spock.version>
 
@@ -138,7 +138,7 @@
     <swagger-parser.version>2.1.38</swagger-parser.version>
 
     <!-- Maven plugin versions -->
-    <buildnumber.plugin.version>3.2.1</buildnumber.plugin.version>
+    <buildnumber.plugin.version>3.3.0</buildnumber.plugin.version>
     <exec.maven-plugin.version>3.6.3</exec.maven-plugin.version>
     <maven.compiler.plugin.version>3.15.0</maven.compiler.plugin.version>
     <maven.bundle.plugin.version>5.1.9</maven.bundle.plugin.version>
@@ -152,7 +152,7 @@
     <maven.enforcer.plugin.version>3.6.2</maven.enforcer.plugin.version>
     <maven.deploy.plugin.version>3.1.4</maven.deploy.plugin.version>
     <maven.gpg.plugin.version>3.2.8</maven.gpg.plugin.version>
-    <maven.antrun.plugin.version>3.1.0</maven.antrun.plugin.version>
+    <maven.antrun.plugin.version>3.2.0</maven.antrun.plugin.version>
     <maven.dependency.plugin.version>3.10.0</maven.dependency.plugin.version>
     <maven.shade.plugin.version>3.6.2</maven.shade.plugin.version>
     <maven.install.plugin.version>3.1.4</maven.install.plugin.version>
