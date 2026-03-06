@@ -657,6 +657,13 @@
         <version>${project.version}</version>
       </dependency>
 
+      <dependency>
+        <groupId>com.squareup.okhttp3</groupId>
+        <artifactId>okhttp-bom</artifactId>
+        <version>${okhttp.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
 
       <!-- Jackson dependencies, imported as a BOM -->
       <dependency>
@@ -701,16 +708,6 @@
         <groupId>com.samskivert</groupId>
         <artifactId>jmustache</artifactId>
         <version>${jmustache.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>com.squareup.okhttp3</groupId>
-        <artifactId>okhttp</artifactId>
-        <version>${okhttp.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>com.squareup.okhttp3</groupId>
-        <artifactId>okhttp-jvm</artifactId>
-        <version>${okhttp.version}</version>
       </dependency>
       <dependency>
         <groupId>org.apache.commons</groupId>
