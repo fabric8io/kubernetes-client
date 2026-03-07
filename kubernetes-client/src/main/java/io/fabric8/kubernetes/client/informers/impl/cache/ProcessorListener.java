@@ -127,6 +127,21 @@ public class ProcessorListener<T> {
     }
   }
 
+  public static final class BookmarkNotification<T> extends Notification<T> {
+
+    private String resourceVersion;
+
+    public BookmarkNotification(String resourceVersion) {
+      super(null,null);
+      this.resourceVersion = resourceVersion;
+    }
+
+    @Override
+    public void handle(ResourceEventHandler<? super T> resourceEventHandler) {
+      resourceEventHandler.onBookmark(resourceVersion);
+    }
+  }
+
   public ResourceEventHandler<? super T> getHandler() {
     return handler;
   }

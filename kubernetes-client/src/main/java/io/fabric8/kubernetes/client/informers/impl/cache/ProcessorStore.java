@@ -79,6 +79,10 @@ public class ProcessorStore<T extends HasMetadata> {
     }
   }
 
+  public void bookmark(String resourceVersion) {
+      this.processor.distribute(new ProcessorListener.BookmarkNotification<>(resourceVersion),false);
+  }
+
   public List<T> list() {
     return cache.list();
   }
