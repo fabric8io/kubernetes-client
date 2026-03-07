@@ -345,6 +345,9 @@ public class Reflector<T extends HasMetadata, L extends KubernetesResourceList<T
         case DELETED:
           store.delete(resource);
           break;
+        case BOOKMARK:
+          store.bookmark(resource.getMetadata().getResourceVersion());
+          break;
       }
       lastSyncResourceVersion = resource.getMetadata().getResourceVersion();
     }

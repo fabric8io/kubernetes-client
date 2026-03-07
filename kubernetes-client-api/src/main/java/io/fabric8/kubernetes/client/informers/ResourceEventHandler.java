@@ -71,4 +71,11 @@ public interface ResourceEventHandler<T> {
    */
   void onDelete(T obj, boolean deletedFinalStateUnknown);
 
+  /**
+   * Propagates if a bookmark event received.
+   *
+   * @param resourceVersion from bookmark
+   */
+  default void onBookmark(String resourceVersion) {
+  }
 }
