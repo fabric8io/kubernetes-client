@@ -132,7 +132,7 @@ public class ProcessorListener<T> {
     private String resourceVersion;
 
     public BookmarkNotification(String resourceVersion) {
-      super(null,null);
+      super(null, null);
       this.resourceVersion = resourceVersion;
     }
 

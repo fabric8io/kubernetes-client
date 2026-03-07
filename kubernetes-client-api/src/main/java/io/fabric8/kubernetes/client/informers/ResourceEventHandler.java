@@ -76,5 +76,6 @@ public interface ResourceEventHandler<T> {
    *
    * @param resourceVersion from bookmark
    */
-  void onBookmark(String resourceVersion);
+  default void onBookmark(String resourceVersion) {
+  }
 }
