@@ -68,11 +68,6 @@
       <name>Central Portal (Snapshots)</name>
       <url>https://central.sonatype.com/repository/maven-snapshots/</url>
     </snapshotRepository>
-    <repository>
-      <id>ossrh</id>
-      <name>Sonatype OSS Repository</name>
-      <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
-    </repository>
   </distributionManagement>
 
   <repositories>
@@ -233,6 +228,8 @@
     <module>kubernetes-client-deps-compatibility-tests</module>
     <module>log4j</module>
     <module>kubernetes-examples</module>
+    <module>bom-generator-plugin</module>
+    <!-- BOM modules are added via profile activation at build time -->
   </modules>
 
   <dependencyManagement>
@@ -1228,76 +1225,85 @@
           </execution>
         </executions>
       </plugin>
-      <plugin>
-        <groupId>io.sundr</groupId>
-        <artifactId>sundr-maven-plugin</artifactId>
-        <version>${sundrio.version}</version>
-        <configuration>
-          <boms>
-            <bom>
-              <artifactId>kubernetes-client-bom</artifactId>
-              <name>Fabric8 :: Kubernetes :: BOM</name>
-              <properties>
-                <skipStagingRepositoryClose>true</skipStagingRepositoryClose>
-                <sonar.skip>true</sonar.skip>
-              </properties>
-              <modules>
-                <excludes>
-                  <exclude>io.fabric8:*-tests</exclude>
-                  <exclude>io.fabric8:*-itests</exclude>
-                  <exclude>io.fabric8.kubernetes:*-itests</exclude>
-                  <exclude>io.fabric8*:*-examples</exclude>
-                  <exclude>io.fabric8:crd-generator-test*</exclude>
-                  <exclude>io.fabric8:kubernetes-test</exclude>
-                </excludes>
-              </modules>
-            </bom>
-            <bom>
-              <artifactId>kubernetes-client-bom-with-deps</artifactId>
-              <name>Fabric8 :: Kubernetes :: BOM with Dependencies</name>
-              <dependencies>
-                <includes>
-                  <include>io.sundr*:*</include>
-                  <include>org.projectlombok:lombok*</include>
-                  <include>com.fasterxml.jackson*:*</include>
-                  <include>io.fabric8:kubernetes-model*</include>
-                  <include>io.fabric8:openshift-model*</include>
-                </includes>
-              </dependencies>
-              <modules>
-                <excludes>
-                  <exclude>io.fabric8:*-tests</exclude>
-                  <exclude>io.fabric8:*-itests</exclude>
-                  <exclude>io.fabric8.kubernetes:*-itests</exclude>
-                  <exclude>io.fabric8*:*-examples</exclude>
-                  <exclude>io.fabric8:crd-generator-test*</exclude>
-                  <exclude>io.fabric8:kubernetes-test</exclude>
-                </excludes>
-              </modules>
-              <properties>
-                <skipStagingRepositoryClose>true</skipStagingRepositoryClose>
-                <sonar.skip>true</sonar.skip>
-              </properties>
-            </bom>
-          </boms>
-        </configuration>
-        <executions>
-          <execution>
-            <goals>
-              <goal>generate-bom</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
     </plugins>
   </build>
 
   <profiles>
     <profile>
+      <id>bom</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>io.fabric8</groupId>
+            <artifactId>bom-generator-plugin</artifactId>
+            <version>${project.version}</version>
+            <inherited>false</inherited>
+            <configuration>
+              <sourceProfileId>release</sourceProfileId>
+              <boms>
+                <bom>
+                  <artifactId>kubernetes-client-bom</artifactId>
+                  <name>Fabric8 :: Kubernetes :: BOM</name>
+                  <modules>
+                    <excludes>
+                      <exclude>io.fabric8:*-tests</exclude>
+                      <exclude>io.fabric8:*-itests</exclude>
+                      <exclude>io.fabric8.kubernetes:*-itests</exclude>
+                      <exclude>io.fabric8*:*-examples</exclude>
+                      <exclude>io.fabric8:crd-generator-test*</exclude>
+                      <exclude>io.fabric8:kubernetes-test</exclude>
+                      <exclude>io.fabric8:bom-generator-plugin</exclude>
+                    </excludes>
+                  </modules>
+                </bom>
+                <bom>
+                  <artifactId>kubernetes-client-bom-with-deps</artifactId>
+                  <name>Fabric8 :: Kubernetes :: BOM with Dependencies</name>
+                  <modules>
+                    <excludes>
+                      <exclude>io.fabric8:*-tests</exclude>
+                      <exclude>io.fabric8:*-itests</exclude>
+                      <exclude>io.fabric8.kubernetes:*-itests</exclude>
+                      <exclude>io.fabric8*:*-examples</exclude>
+                      <exclude>io.fabric8:crd-generator-test*</exclude>
+                      <exclude>io.fabric8:kubernetes-test</exclude>
+                      <exclude>io.fabric8:bom-generator-plugin</exclude>
+                    </excludes>
+                  </modules>
+                  <dependencies>
+                    <includes>
+                      <include>io.sundr*:*</include>
+                      <include>org.projectlombok:lombok*</include>
+                      <include>com.fasterxml.jackson*:*</include>
+                      <include>io.fabric8:kubernetes-model*</include>
+                      <include>io.fabric8:openshift-model*</include>
+                    </includes>
+                  </dependencies>
+                </bom>
+              </boms>
+            </configuration>
+            <executions>
+              <execution>
+                <id>generate-boms</id>
+                <goals>
+                  <goal>generate-boms</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    <profile>
       <id>release</id>
       <properties>
         <karaf.itest.skip>true</karaf.itest.skip>
       </properties>
+      <!-- make sure that these modules exists before running release-->
+      <modules>
+        <module>target/classes/kubernetes-client-bom</module>
+        <module>target/classes/kubernetes-client-bom-with-deps</module>
+      </modules>
       <build>
         <plugins>
           <plugin>
