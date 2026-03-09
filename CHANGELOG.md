@@ -6,6 +6,7 @@
 
 #### Improvements
 * Fix #7522: improve dependency management for kubernetes-httpclient-okhttp
+* Fix #7550: add an ResourceEventHandler onList method and deprecated onNothing
 
 #### Dependency Upgrade
 
