@@ -1,7 +1,9 @@
 
-package io.fabric8.kubernetes.api.model.gatewayapi.v1beta1;
+package io.fabric8.kubernetes.api.model.gatewayapi.v1;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import javax.annotation.processing.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
@@ -18,9 +20,7 @@ import io.fabric8.kubernetes.api.model.EnvVar;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.LabelSelector;
-import io.fabric8.kubernetes.api.model.LocalObjectReference;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
-import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
@@ -33,14 +33,13 @@ import lombok.ToString;
 import lombok.experimental.Accessors;
 
 /**
- * ReferenceGrantFrom describes trusted namespaces and kinds.
+ * ReferenceGrantSpec identifies a cross namespace relationship that is trusted for Gateway API.
  */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "kind",
-    "group",
-    "namespace"
+    "from",
+    "to"
 })
 @ToString
 @EqualsAndHashCode
@@ -55,8 +54,8 @@ import lombok.experimental.Accessors;
     @BuildableReference(PodTemplateSpec.class),
     @BuildableReference(ResourceRequirements.class),
     @BuildableReference(IntOrString.class),
-    @BuildableReference(ObjectReference.class),
-    @BuildableReference(LocalObjectReference.class),
+    @BuildableReference(io.fabric8.kubernetes.api.model.ObjectReference.class),
+    @BuildableReference(io.fabric8.kubernetes.api.model.LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class),
     @BuildableReference(EnvVar.class),
     @BuildableReference(ContainerPort.class),
@@ -64,86 +63,71 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class ReferenceGrantFrom implements Editable<ReferenceGrantFromBuilder>, KubernetesResource
+public class ReferenceGrantSpec implements Editable<ReferenceGrantSpecBuilder>, KubernetesResource
 {
 
-    @JsonProperty("group")
-    private String group;
-    @JsonProperty("kind")
-    private String kind;
-    @JsonProperty("namespace")
-    private String namespace;
+    @JsonProperty("from")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<ReferenceGrantFrom> from = new ArrayList<>();
+    @JsonProperty("to")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<ReferenceGrantTo> to = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
      */
-    public ReferenceGrantFrom() {
+    public ReferenceGrantSpec() {
     }
 
-    public ReferenceGrantFrom(String group, String kind, String namespace) {
+    public ReferenceGrantSpec(List<ReferenceGrantFrom> from, List<ReferenceGrantTo> to) {
         super();
-        this.group = group;
-        this.kind = kind;
-        this.namespace = namespace;
+        this.from = from;
+        this.to = to;
     }
 
     /**
-     * Group is the group of the referent. When empty, the Kubernetes core API group is inferred.<br><p> <br><p> Support: Core
+     * From describes the trusted namespaces and kinds that can reference the resources described in "To". Each entry in this list MUST be considered to be an additional place that references can be valid from, or to put this another way, entries MUST be combined using OR.<br><p> <br><p> Support: Core
      */
-    @JsonProperty("group")
-    public String getGroup() {
-        return group;
+    @JsonProperty("from")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public List<ReferenceGrantFrom> getFrom() {
+        return from;
     }
 
     /**
-     * Group is the group of the referent. When empty, the Kubernetes core API group is inferred.<br><p> <br><p> Support: Core
+     * From describes the trusted namespaces and kinds that can reference the resources described in "To". Each entry in this list MUST be considered to be an additional place that references can be valid from, or to put this another way, entries MUST be combined using OR.<br><p> <br><p> Support: Core
      */
-    @JsonProperty("group")
-    public void setGroup(String group) {
-        this.group = group;
+    @JsonProperty("from")
+    public void setFrom(List<ReferenceGrantFrom> from) {
+        this.from = from;
     }
 
     /**
-     * Kind is the kind of the referent. Although implementations may support additional resources, the following types are part of the "Core" support level for this field.<br><p> <br><p> When used to permit a SecretObjectReference:<br><p> <br><p> &#42; Gateway<br><p> <br><p> When used to permit a BackendObjectReference:<br><p> <br><p> &#42; GRPCRoute &#42; HTTPRoute &#42; TCPRoute &#42; TLSRoute &#42; UDPRoute
+     * To describes the resources that may be referenced by the resources described in "From". Each entry in this list MUST be considered to be an additional place that references can be valid to, or to put this another way, entries MUST be combined using OR.<br><p> <br><p> Support: Core
      */
-    @JsonProperty("kind")
-    public String getKind() {
-        return kind;
+    @JsonProperty("to")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public List<ReferenceGrantTo> getTo() {
+        return to;
     }
 
     /**
-     * Kind is the kind of the referent. Although implementations may support additional resources, the following types are part of the "Core" support level for this field.<br><p> <br><p> When used to permit a SecretObjectReference:<br><p> <br><p> &#42; Gateway<br><p> <br><p> When used to permit a BackendObjectReference:<br><p> <br><p> &#42; GRPCRoute &#42; HTTPRoute &#42; TCPRoute &#42; TLSRoute &#42; UDPRoute
+     * To describes the resources that may be referenced by the resources described in "From". Each entry in this list MUST be considered to be an additional place that references can be valid to, or to put this another way, entries MUST be combined using OR.<br><p> <br><p> Support: Core
      */
-    @JsonProperty("kind")
-    public void setKind(String kind) {
-        this.kind = kind;
-    }
-
-    /**
-     * Namespace is the namespace of the referent.<br><p> <br><p> Support: Core
-     */
-    @JsonProperty("namespace")
-    public String getNamespace() {
-        return namespace;
-    }
-
-    /**
-     * Namespace is the namespace of the referent.<br><p> <br><p> Support: Core
-     */
-    @JsonProperty("namespace")
-    public void setNamespace(String namespace) {
-        this.namespace = namespace;
+    @JsonProperty("to")
+    public void setTo(List<ReferenceGrantTo> to) {
+        this.to = to;
     }
 
     @JsonIgnore
-    public ReferenceGrantFromBuilder edit() {
-        return new ReferenceGrantFromBuilder(this);
+    public ReferenceGrantSpecBuilder edit() {
+        return new ReferenceGrantSpecBuilder(this);
     }
 
     @JsonIgnore
-    public ReferenceGrantFromBuilder toBuilder() {
+    public ReferenceGrantSpecBuilder toBuilder() {
         return edit();
     }
 
