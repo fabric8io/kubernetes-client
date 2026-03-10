@@ -8,10 +8,12 @@
 * Fix #7522: improve dependency management for kubernetes-httpclient-okhttp
 
 #### Dependency Upgrade
+* Fix #7530: bump cert-manager from 1.18.2 to 1.19.4
 
 #### New Features
 
 #### _**Note**_: Breaking changes
+* Fix #7530: cert-manager model `ObjectReference` renamed to `IssuerReference` (following upstream rename in cert-manager v1.19.0)
 
 ### 7.4.1 (2026-03-10)
 

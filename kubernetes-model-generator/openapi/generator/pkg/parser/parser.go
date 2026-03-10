@@ -19,14 +19,17 @@ package parser
 
 import (
 	"fmt"
-	"github.com/fabric8io/kubernetes-client/kubernetes-model-generator/openapi/generator/pkg/kubernetes"
+	"go/ast"
 	goparser "go/parser"
 	"go/token"
+	"path"
+	"strconv"
+	"strings"
+
+	"github.com/fabric8io/kubernetes-client/kubernetes-model-generator/openapi/generator/pkg/kubernetes"
 	"k8s.io/gengo/v2"
 	"k8s.io/gengo/v2/parser"
 	"k8s.io/gengo/v2/types"
-	"path"
-	"strings"
 )
 
 const genClient = "+genclient"
@@ -154,6 +157,8 @@ func (oam *Module) resolvePackage(definitionName string) *types.Package {
 // groupName returns the (kubernetes) group name for the given package.
 // The group name is defined by the +groupName tag in the package comments.
 // This function supports having the tag either in doc.go or groupversion_info.go files.
+// As a fallback, it searches for a GroupName constant in the package directory and its parent directory
+// (some packages like cert-manager meta/v1 define the group name as a constant in the parent package).
 func groupName(pkg *types.Package) string {
 	// gengo assumes that all packages have a doc.go file, the pkg comments are only considered from that file.
 	// However, some kubernetes operators have this info in the groupversion_info.go file.
@@ -166,6 +171,53 @@ func groupName(pkg *types.Package) string {
 		for _, c := range f.Doc.List {
 			if strings.HasPrefix(c.Text, "// "+groupNamePrefix) {
 				return strings.TrimPrefix(c.Text, "// "+groupNamePrefix)
+			}
+		}
+	}
+	// Fallback: search for a `const GroupName = "..."` declaration in the package or parent directory.
+	// This handles cases where the +groupName tag has been removed from doc.go but the GroupName constant
+	// is still defined (e.g. cert-manager pkg/apis/meta/v1 since v1.19.0).
+	if gn := findGroupNameConstant(pkg.Dir); gn != "" {
+		return gn
+	}
+	if gn := findGroupNameConstant(path.Dir(pkg.Dir)); gn != "" {
+		return gn
+	}
+	return ""
+}
+
+// findGroupNameConstant searches for a `const GroupName = "..."` declaration with a string literal value
+// in Go source files in the specified directory.
+func findGroupNameConstant(dir string) string {
+	fset := token.NewFileSet()
+	packages, err := goparser.ParseDir(fset, dir, nil, 0)
+	if err != nil {
+		return ""
+	}
+	for _, pkg := range packages {
+		for _, f := range pkg.Files {
+			for _, decl := range f.Decls {
+				genDecl, ok := decl.(*ast.GenDecl)
+				if !ok || genDecl.Tok != token.CONST {
+					continue
+				}
+				for _, spec := range genDecl.Specs {
+					valueSpec, ok := spec.(*ast.ValueSpec)
+					if !ok {
+						continue
+					}
+					for i, name := range valueSpec.Names {
+						if name.Name == "GroupName" && i < len(valueSpec.Values) {
+							basicLit, ok := valueSpec.Values[i].(*ast.BasicLit)
+							if ok && basicLit.Kind == token.STRING {
+								value, err := strconv.Unquote(basicLit.Value)
+								if err == nil {
+									return value
+								}
+							}
+						}
+					}
+				}
 			}
 		}
 	}

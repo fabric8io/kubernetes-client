@@ -1210,7 +1210,7 @@
       },
       "x-fabric8-info": {
         "Type": "object",
-        "Group": "",
+        "Group": "apps",
         "Version": "v1",
         "Kind": "ControllerRevision",
         "Scope": "Namespaced"
@@ -1246,7 +1246,7 @@
       },
       "x-fabric8-info": {
         "Type": "list",
-        "Group": "",
+        "Group": "apps",
         "Version": "v1",
         "Kind": "ControllerRevisionList",
         "Scope": "Namespaced"
@@ -1281,7 +1281,7 @@
       },
       "x-fabric8-info": {
         "Type": "object",
-        "Group": "",
+        "Group": "apps",
         "Version": "v1",
         "Kind": "DaemonSet",
         "Scope": "Namespaced"
@@ -1317,7 +1317,7 @@
       },
       "x-fabric8-info": {
         "Type": "list",
-        "Group": "",
+        "Group": "apps",
         "Version": "v1",
         "Kind": "DaemonSetList",
         "Scope": "Namespaced"
@@ -1352,7 +1352,7 @@
       },
       "x-fabric8-info": {
         "Type": "object",
-        "Group": "",
+        "Group": "apps",
         "Version": "v1",
         "Kind": "Deployment",
         "Scope": "Namespaced"
@@ -1388,7 +1388,7 @@
       },
       "x-fabric8-info": {
         "Type": "list",
-        "Group": "",
+        "Group": "apps",
         "Version": "v1",
         "Kind": "DeploymentList",
         "Scope": "Namespaced"
@@ -1423,7 +1423,7 @@
       },
       "x-fabric8-info": {
         "Type": "object",
-        "Group": "",
+        "Group": "apps",
         "Version": "v1",
         "Kind": "ReplicaSet",
         "Scope": "Namespaced"
@@ -1459,7 +1459,7 @@
       },
       "x-fabric8-info": {
         "Type": "list",
-        "Group": "",
+        "Group": "apps",
         "Version": "v1",
         "Kind": "ReplicaSetList",
         "Scope": "Namespaced"
@@ -1494,7 +1494,7 @@
       },
       "x-fabric8-info": {
         "Type": "object",
-        "Group": "",
+        "Group": "apps",
         "Version": "v1",
         "Kind": "StatefulSet",
         "Scope": "Namespaced"
@@ -1530,7 +1530,7 @@
       },
       "x-fabric8-info": {
         "Type": "list",
-        "Group": "",
+        "Group": "apps",
         "Version": "v1",
         "Kind": "StatefulSetList",
         "Scope": "Namespaced"
@@ -1568,7 +1568,7 @@
       },
       "x-fabric8-info": {
         "Type": "object",
-        "Group": "",
+        "Group": "apps",
         "Version": "v1beta1",
         "Kind": "ControllerRevision",
         "Scope": "Namespaced"
@@ -1604,7 +1604,7 @@
       },
       "x-fabric8-info": {
         "Type": "list",
-        "Group": "",
+        "Group": "apps",
         "Version": "v1beta1",
         "Kind": "ControllerRevisionList",
         "Scope": "Namespaced"
@@ -1639,7 +1639,7 @@
       },
       "x-fabric8-info": {
         "Type": "object",
-        "Group": "",
+        "Group": "apps",
         "Version": "v1beta1",
         "Kind": "Deployment",
         "Scope": "Namespaced"
@@ -1675,7 +1675,7 @@
       },
       "x-fabric8-info": {
         "Type": "list",
-        "Group": "",
+        "Group": "apps",
         "Version": "v1beta1",
         "Kind": "DeploymentList",
         "Scope": "Namespaced"
@@ -1709,7 +1709,7 @@
       },
       "x-fabric8-info": {
         "Type": "object",
-        "Group": "",
+        "Group": "apps",
         "Version": "v1beta1",
         "Kind": "StatefulSet",
         "Scope": "Namespaced"
@@ -1743,7 +1743,7 @@
       },
       "x-fabric8-info": {
         "Type": "list",
-        "Group": "",
+        "Group": "apps",
         "Version": "v1beta1",
         "Kind": "StatefulSetList",
         "Scope": "Namespaced"
@@ -1781,7 +1781,7 @@
       },
       "x-fabric8-info": {
         "Type": "object",
-        "Group": "",
+        "Group": "apps",
         "Version": "v1beta2",
         "Kind": "ControllerRevision",
         "Scope": "Namespaced"
@@ -1817,7 +1817,7 @@
       },
       "x-fabric8-info": {
         "Type": "list",
-        "Group": "",
+        "Group": "apps",
         "Version": "v1beta2",
         "Kind": "ControllerRevisionList",
         "Scope": "Namespaced"
@@ -1852,7 +1852,7 @@
       },
       "x-fabric8-info": {
         "Type": "object",
-        "Group": "",
+        "Group": "apps",
         "Version": "v1beta2",
         "Kind": "DaemonSet",
         "Scope": "Namespaced"
@@ -1888,7 +1888,7 @@
       },
       "x-fabric8-info": {
         "Type": "list",
-        "Group": "",
+        "Group": "apps",
         "Version": "v1beta2",
         "Kind": "DaemonSetList",
         "Scope": "Namespaced"
@@ -1923,7 +1923,7 @@
       },
       "x-fabric8-info": {
         "Type": "object",
-        "Group": "",
+        "Group": "apps",
         "Version": "v1beta2",
         "Kind": "Deployment",
         "Scope": "Namespaced"
@@ -1959,7 +1959,7 @@
       },
       "x-fabric8-info": {
         "Type": "list",
-        "Group": "",
+        "Group": "apps",
         "Version": "v1beta2",
         "Kind": "DeploymentList",
         "Scope": "Namespaced"
@@ -1994,7 +1994,7 @@
       },
       "x-fabric8-info": {
         "Type": "object",
-        "Group": "",
+        "Group": "apps",
         "Version": "v1beta2",
         "Kind": "ReplicaSet",
         "Scope": "Namespaced"
@@ -2030,7 +2030,7 @@
       },
       "x-fabric8-info": {
         "Type": "list",
-        "Group": "",
+        "Group": "apps",
         "Version": "v1beta2",
         "Kind": "ReplicaSetList",
         "Scope": "Namespaced"
@@ -2065,7 +2065,7 @@
       },
       "x-fabric8-info": {
         "Type": "object",
-        "Group": "",
+        "Group": "apps",
         "Version": "v1beta2",
         "Kind": "Scale",
         "Scope": "Namespaced"
@@ -2099,7 +2099,7 @@
       },
       "x-fabric8-info": {
         "Type": "object",
-        "Group": "",
+        "Group": "apps",
         "Version": "v1beta2",
         "Kind": "StatefulSet",
         "Scope": "Namespaced"
@@ -2133,7 +2133,7 @@
       },
       "x-fabric8-info": {
         "Type": "list",
-        "Group": "",
+        "Group": "apps",
         "Version": "v1beta2",
         "Kind": "StatefulSetList",
         "Scope": "Namespaced"
@@ -2676,7 +2676,7 @@
       },
       "x-fabric8-info": {
         "Type": "object",
-        "Group": "",
+        "Group": "autoscaling",
         "Version": "v1",
         "Kind": "HorizontalPodAutoscaler",
         "Scope": "Namespaced"
@@ -2712,7 +2712,7 @@
       },
       "x-fabric8-info": {
         "Type": "list",
-        "Group": "",
+        "Group": "autoscaling",
         "Version": "v1",
         "Kind": "HorizontalPodAutoscalerList",
         "Scope": "Namespaced"
@@ -2747,7 +2747,7 @@
       },
       "x-fabric8-info": {
         "Type": "object",
-        "Group": "",
+        "Group": "autoscaling",
         "Version": "v1",
         "Kind": "Scale",
         "Scope": "Namespaced"
@@ -2782,7 +2782,7 @@
       },
       "x-fabric8-info": {
         "Type": "object",
-        "Group": "",
+        "Group": "autoscaling",
         "Version": "v2",
         "Kind": "HorizontalPodAutoscaler",
         "Scope": "Namespaced"
@@ -2818,7 +2818,7 @@
       },
       "x-fabric8-info": {
         "Type": "list",
-        "Group": "",
+        "Group": "autoscaling",
         "Version": "v2",
         "Kind": "HorizontalPodAutoscalerList",
         "Scope": "Namespaced"
@@ -2853,7 +2853,7 @@
       },
       "x-fabric8-info": {
         "Type": "object",
-        "Group": "",
+        "Group": "autoscaling",
         "Version": "v2beta1",
         "Kind": "HorizontalPodAutoscaler",
         "Scope": "Namespaced"
@@ -2889,7 +2889,7 @@
       },
       "x-fabric8-info": {
         "Type": "list",
-        "Group": "",
+        "Group": "autoscaling",
         "Version": "v2beta1",
         "Kind": "HorizontalPodAutoscalerList",
         "Scope": "Namespaced"
@@ -2924,7 +2924,7 @@
       },
       "x-fabric8-info": {
         "Type": "object",
-        "Group": "",
+        "Group": "autoscaling",
         "Version": "v2beta2",
         "Kind": "HorizontalPodAutoscaler",
         "Scope": "Namespaced"
@@ -2960,7 +2960,7 @@
       },
       "x-fabric8-info": {
         "Type": "list",
-        "Group": "",
+        "Group": "autoscaling",
         "Version": "v2beta2",
         "Kind": "HorizontalPodAutoscalerList",
         "Scope": "Namespaced"
@@ -2995,7 +2995,7 @@
       },
       "x-fabric8-info": {
         "Type": "object",
-        "Group": "",
+        "Group": "batch",
         "Version": "v1",
         "Kind": "CronJob",
         "Scope": "Namespaced"
@@ -3031,7 +3031,7 @@
       },
       "x-fabric8-info": {
         "Type": "list",
-        "Group": "",
+        "Group": "batch",
         "Version": "v1",
         "Kind": "CronJobList",
         "Scope": "Namespaced"
@@ -3066,7 +3066,7 @@
       },
       "x-fabric8-info": {
         "Type": "object",
-        "Group": "",
+        "Group": "batch",
         "Version": "v1",
         "Kind": "Job",
         "Scope": "Namespaced"
@@ -3102,7 +3102,7 @@
       },
       "x-fabric8-info": {
         "Type": "list",
-        "Group": "",
+        "Group": "batch",
         "Version": "v1",
         "Kind": "JobList",
         "Scope": "Namespaced"
@@ -3137,7 +3137,7 @@
       },
       "x-fabric8-info": {
         "Type": "object",
-        "Group": "",
+        "Group": "batch",
         "Version": "v1beta1",
         "Kind": "CronJob",
         "Scope": "Namespaced"
@@ -3173,7 +3173,7 @@
       },
       "x-fabric8-info": {
         "Type": "list",
-        "Group": "",
+        "Group": "batch",
         "Version": "v1beta1",
         "Kind": "CronJobList",
         "Scope": "Namespaced"
@@ -5570,7 +5570,7 @@
       },
       "x-fabric8-info": {
         "Type": "object",
-        "Group": "",
+        "Group": "extensions",
         "Version": "v1beta1",
         "Kind": "DaemonSet",
         "Scope": "Namespaced"
@@ -5606,7 +5606,7 @@
       },
       "x-fabric8-info": {
         "Type": "list",
-        "Group": "",
+        "Group": "extensions",
         "Version": "v1beta1",
         "Kind": "DaemonSetList",
         "Scope": "Namespaced"
@@ -5641,7 +5641,7 @@
       },
       "x-fabric8-info": {
         "Type": "object",
-        "Group": "",
+        "Group": "extensions",
         "Version": "v1beta1",
         "Kind": "Deployment",
         "Scope": "Namespaced"
@@ -5677,7 +5677,7 @@
       },
       "x-fabric8-info": {
         "Type": "list",
-        "Group": "",
+        "Group": "extensions",
         "Version": "v1beta1",
         "Kind": "DeploymentList",
         "Scope": "Namespaced"
@@ -5719,7 +5719,7 @@
       },
       "x-fabric8-info": {
         "Type": "object",
-        "Group": "",
+        "Group": "extensions",
         "Version": "v1beta1",
         "Kind": "DeploymentRollback",
         "Scope": "Namespaced"
@@ -5754,7 +5754,7 @@
       },
       "x-fabric8-info": {
         "Type": "object",
-        "Group": "",
+        "Group": "extensions",
         "Version": "v1beta1",
         "Kind": "Ingress",
         "Scope": "Namespaced"
@@ -5790,7 +5790,7 @@
       },
       "x-fabric8-info": {
         "Type": "list",
-        "Group": "",
+        "Group": "extensions",
         "Version": "v1beta1",
         "Kind": "IngressList",
         "Scope": "Namespaced"
@@ -5820,7 +5820,7 @@
       },
       "x-fabric8-info": {
         "Type": "object",
-        "Group": "",
+        "Group": "extensions",
         "Version": "v1beta1",
         "Kind": "NetworkPolicy",
         "Scope": "Namespaced"
@@ -5856,7 +5856,7 @@
       },
       "x-fabric8-info": {
         "Type": "list",
-        "Group": "",
+        "Group": "extensions",
         "Version": "v1beta1",
         "Kind": "NetworkPolicyList",
         "Scope": "Namespaced"
@@ -5891,7 +5891,7 @@
       },
       "x-fabric8-info": {
         "Type": "object",
-        "Group": "",
+        "Group": "extensions",
         "Version": "v1beta1",
         "Kind": "ReplicaSet",
         "Scope": "Namespaced"
@@ -5927,7 +5927,7 @@
       },
       "x-fabric8-info": {
         "Type": "list",
-        "Group": "",
+        "Group": "extensions",
         "Version": "v1beta1",
         "Kind": "ReplicaSetList",
         "Scope": "Namespaced"
@@ -5962,7 +5962,7 @@
       },
       "x-fabric8-info": {
         "Type": "object",
-        "Group": "",
+        "Group": "extensions",
         "Version": "v1beta1",
         "Kind": "Scale",
         "Scope": "Namespaced"
@@ -7396,7 +7396,7 @@
       },
       "x-fabric8-info": {
         "Type": "object",
-        "Group": "",
+        "Group": "policy",
         "Version": "v1",
         "Kind": "Eviction",
         "Scope": "Namespaced"
@@ -7431,7 +7431,7 @@
       },
       "x-fabric8-info": {
         "Type": "object",
-        "Group": "",
+        "Group": "policy",
         "Version": "v1",
         "Kind": "PodDisruptionBudget",
         "Scope": "Namespaced"
@@ -7467,7 +7467,7 @@
       },
       "x-fabric8-info": {
         "Type": "list",
-        "Group": "",
+        "Group": "policy",
         "Version": "v1",
         "Kind": "PodDisruptionBudgetList",
         "Scope": "Namespaced"
@@ -7496,7 +7496,7 @@
       },
       "x-fabric8-info": {
         "Type": "object",
-        "Group": "",
+        "Group": "policy",
         "Version": "v1beta1",
         "Kind": "Eviction",
         "Scope": "Namespaced"
@@ -7531,7 +7531,7 @@
       },
       "x-fabric8-info": {
         "Type": "object",
-        "Group": "",
+        "Group": "policy",
         "Version": "v1beta1",
         "Kind": "PodDisruptionBudget",
         "Scope": "Namespaced"
@@ -7567,7 +7567,7 @@
       },
       "x-fabric8-info": {
         "Type": "list",
-        "Group": "",
+        "Group": "policy",
         "Version": "v1beta1",
         "Kind": "PodDisruptionBudgetList",
         "Scope": "Namespaced"

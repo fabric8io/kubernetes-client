@@ -40,6 +40,7 @@ import lombok.experimental.Accessors;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "nameserver",
+    "protocol",
     "tsigAlgorithm",
     "tsigKeyName",
     "tsigSecretSecretRef"
@@ -71,6 +72,8 @@ public class ACMEIssuerDNS01ProviderRFC2136 implements Editable<ACMEIssuerDNS01P
 
     @JsonProperty("nameserver")
     private String nameserver;
+    @JsonProperty("protocol")
+    private String protocol;
     @JsonProperty("tsigAlgorithm")
     private String tsigAlgorithm;
     @JsonProperty("tsigKeyName")
@@ -86,9 +89,10 @@ public class ACMEIssuerDNS01ProviderRFC2136 implements Editable<ACMEIssuerDNS01P
     public ACMEIssuerDNS01ProviderRFC2136() {
     }
 
-    public ACMEIssuerDNS01ProviderRFC2136(String nameserver, String tsigAlgorithm, String tsigKeyName, SecretKeySelector tsigSecretSecretRef) {
+    public ACMEIssuerDNS01ProviderRFC2136(String nameserver, String protocol, String tsigAlgorithm, String tsigKeyName, SecretKeySelector tsigSecretSecretRef) {
         super();
         this.nameserver = nameserver;
+        this.protocol = protocol;
         this.tsigAlgorithm = tsigAlgorithm;
         this.tsigKeyName = tsigKeyName;
         this.tsigSecretSecretRef = tsigSecretSecretRef;
@@ -108,6 +112,22 @@ public class ACMEIssuerDNS01ProviderRFC2136 implements Editable<ACMEIssuerDNS01P
     @JsonProperty("nameserver")
     public void setNameserver(String nameserver) {
         this.nameserver = nameserver;
+    }
+
+    /**
+     * Protocol to use for dynamic DNS update queries. Valid values are (case-sensitive) ``TCP`` and ``UDP``; ``UDP`` (default).
+     */
+    @JsonProperty("protocol")
+    public String getProtocol() {
+        return protocol;
+    }
+
+    /**
+     * Protocol to use for dynamic DNS update queries. Valid values are (case-sensitive) ``TCP`` and ``UDP``; ``UDP`` (default).
+     */
+    @JsonProperty("protocol")
+    public void setProtocol(String protocol) {
+        this.protocol = protocol;
     }
 
     /**

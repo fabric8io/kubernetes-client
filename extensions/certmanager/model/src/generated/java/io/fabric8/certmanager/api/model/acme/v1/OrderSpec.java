@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import io.fabric8.certmanager.api.model.meta.v1.ObjectReference;
+import io.fabric8.certmanager.api.model.meta.v1.IssuerReference;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
@@ -24,6 +24,7 @@ import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.LabelSelector;
 import io.fabric8.kubernetes.api.model.LocalObjectReference;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
+import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
@@ -59,7 +60,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(PodTemplateSpec.class),
     @BuildableReference(ResourceRequirements.class),
     @BuildableReference(IntOrString.class),
-    @BuildableReference(io.fabric8.kubernetes.api.model.ObjectReference.class),
+    @BuildableReference(ObjectReference.class),
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class),
     @BuildableReference(EnvVar.class),
@@ -82,7 +83,7 @@ public class OrderSpec implements Editable<OrderSpecBuilder>, KubernetesResource
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> ipAddresses = new ArrayList<>();
     @JsonProperty("issuerRef")
-    private ObjectReference issuerRef;
+    private IssuerReference issuerRef;
     @JsonProperty("profile")
     private String profile;
     @JsonProperty("request")
@@ -96,7 +97,7 @@ public class OrderSpec implements Editable<OrderSpecBuilder>, KubernetesResource
     public OrderSpec() {
     }
 
-    public OrderSpec(String commonName, List<String> dnsNames, Duration duration, List<String> ipAddresses, ObjectReference issuerRef, String profile, String request) {
+    public OrderSpec(String commonName, List<String> dnsNames, Duration duration, List<String> ipAddresses, IssuerReference issuerRef, String profile, String request) {
         super();
         this.commonName = commonName;
         this.dnsNames = dnsNames;
@@ -168,12 +169,12 @@ public class OrderSpec implements Editable<OrderSpecBuilder>, KubernetesResource
     }
 
     @JsonProperty("issuerRef")
-    public ObjectReference getIssuerRef() {
+    public IssuerReference getIssuerRef() {
         return issuerRef;
     }
 
     @JsonProperty("issuerRef")
-    public void setIssuerRef(ObjectReference issuerRef) {
+    public void setIssuerRef(IssuerReference issuerRef) {
         this.issuerRef = issuerRef;
     }
 
