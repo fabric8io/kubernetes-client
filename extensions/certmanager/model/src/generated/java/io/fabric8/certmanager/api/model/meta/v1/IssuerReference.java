@@ -19,6 +19,7 @@ import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.LabelSelector;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
+import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
@@ -31,7 +32,7 @@ import lombok.ToString;
 import lombok.experimental.Accessors;
 
 /**
- * ObjectReference is a reference to an object with a given name, kind and group.
+ * IssuerReference is a reference to a certificate issuer object with a given name, kind and group.
  */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -53,7 +54,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(PodTemplateSpec.class),
     @BuildableReference(ResourceRequirements.class),
     @BuildableReference(IntOrString.class),
-    @BuildableReference(io.fabric8.kubernetes.api.model.ObjectReference.class),
+    @BuildableReference(ObjectReference.class),
     @BuildableReference(io.fabric8.kubernetes.api.model.LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class),
     @BuildableReference(EnvVar.class),
@@ -62,7 +63,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class ObjectReference implements Editable<ObjectReferenceBuilder>, KubernetesResource
+public class IssuerReference implements Editable<IssuerReferenceBuilder>, KubernetesResource
 {
 
     @JsonProperty("group")
@@ -77,10 +78,10 @@ public class ObjectReference implements Editable<ObjectReferenceBuilder>, Kubern
     /**
      * No args constructor for use in serialization
      */
-    public ObjectReference() {
+    public IssuerReference() {
     }
 
-    public ObjectReference(String group, String kind, String name) {
+    public IssuerReference(String group, String kind, String name) {
         super();
         this.group = group;
         this.kind = kind;
@@ -88,7 +89,7 @@ public class ObjectReference implements Editable<ObjectReferenceBuilder>, Kubern
     }
 
     /**
-     * Group of the resource being referred to.
+     * Group of the issuer being referred to. Defaults to 'cert-manager.io'.
      */
     @JsonProperty("group")
     public String getGroup() {
@@ -96,7 +97,7 @@ public class ObjectReference implements Editable<ObjectReferenceBuilder>, Kubern
     }
 
     /**
-     * Group of the resource being referred to.
+     * Group of the issuer being referred to. Defaults to 'cert-manager.io'.
      */
     @JsonProperty("group")
     public void setGroup(String group) {
@@ -104,7 +105,7 @@ public class ObjectReference implements Editable<ObjectReferenceBuilder>, Kubern
     }
 
     /**
-     * Kind of the resource being referred to.
+     * Kind of the issuer being referred to. Defaults to 'Issuer'.
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -112,7 +113,7 @@ public class ObjectReference implements Editable<ObjectReferenceBuilder>, Kubern
     }
 
     /**
-     * Kind of the resource being referred to.
+     * Kind of the issuer being referred to. Defaults to 'Issuer'.
      */
     @JsonProperty("kind")
     public void setKind(String kind) {
@@ -120,7 +121,7 @@ public class ObjectReference implements Editable<ObjectReferenceBuilder>, Kubern
     }
 
     /**
-     * Name of the resource being referred to.
+     * Name of the issuer being referred to.
      */
     @JsonProperty("name")
     public String getName() {
@@ -128,7 +129,7 @@ public class ObjectReference implements Editable<ObjectReferenceBuilder>, Kubern
     }
 
     /**
-     * Name of the resource being referred to.
+     * Name of the issuer being referred to.
      */
     @JsonProperty("name")
     public void setName(String name) {
@@ -136,12 +137,12 @@ public class ObjectReference implements Editable<ObjectReferenceBuilder>, Kubern
     }
 
     @JsonIgnore
-    public ObjectReferenceBuilder edit() {
-        return new ObjectReferenceBuilder(this);
+    public IssuerReferenceBuilder edit() {
+        return new IssuerReferenceBuilder(this);
     }
 
     @JsonIgnore
-    public ObjectReferenceBuilder toBuilder() {
+    public IssuerReferenceBuilder toBuilder() {
         return edit();
     }
 

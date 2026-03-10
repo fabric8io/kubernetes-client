@@ -1,5 +1,5 @@
 
-package io.fabric8.certmanager.api.model.meta.v1;
+package io.fabric8.certmanager.api.model.acme.v1;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -18,10 +18,12 @@ import io.fabric8.kubernetes.api.model.EnvVar;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.LabelSelector;
+import io.fabric8.kubernetes.api.model.LocalObjectReference;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
+import io.fabric8.kubernetes.api.model.Quantity;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
 import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
@@ -32,12 +34,13 @@ import lombok.ToString;
 import lombok.experimental.Accessors;
 
 /**
- * A reference to an object in the same namespace as the referent. If the referent is a cluster-scoped resource (e.g., a ClusterIssuer), the reference instead refers to the resource with the given name in the configured 'cluster resource namespace', which is set as a flag on the controller component (and defaults to the namespace that cert-manager runs in).
+ * ACMEChallengeSolverHTTP01IngressPodResources defines resource requirements for ACME HTTP01 solver pods. To keep API surface essential, this trims down the 'corev1.ResourceRequirements' type to only include the Requests and Limits fields.
  */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "name"
+    "limits",
+    "requests"
 })
 @ToString
 @EqualsAndHashCode
@@ -53,7 +56,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(ResourceRequirements.class),
     @BuildableReference(IntOrString.class),
     @BuildableReference(ObjectReference.class),
-    @BuildableReference(io.fabric8.kubernetes.api.model.LocalObjectReference.class),
+    @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class),
     @BuildableReference(EnvVar.class),
     @BuildableReference(ContainerPort.class),
@@ -61,48 +64,71 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class LocalObjectReference implements Editable<LocalObjectReferenceBuilder>, KubernetesResource
+public class ACMEChallengeSolverHTTP01IngressPodResources implements Editable<ACMEChallengeSolverHTTP01IngressPodResourcesBuilder>, KubernetesResource
 {
 
-    @JsonProperty("name")
-    private String name;
+    @JsonProperty("limits")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private Map<String, Quantity> limits = new LinkedHashMap<>();
+    @JsonProperty("requests")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private Map<String, Quantity> requests = new LinkedHashMap<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
      */
-    public LocalObjectReference() {
+    public ACMEChallengeSolverHTTP01IngressPodResources() {
     }
 
-    public LocalObjectReference(String name) {
+    public ACMEChallengeSolverHTTP01IngressPodResources(Map<String, Quantity> limits, Map<String, Quantity> requests) {
         super();
-        this.name = name;
+        this.limits = limits;
+        this.requests = requests;
     }
 
     /**
-     * Name of the resource being referred to. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+     * Limits describes the maximum amount of compute resources allowed. More info: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/
      */
-    @JsonProperty("name")
-    public String getName() {
-        return name;
+    @JsonProperty("limits")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public Map<String, Quantity> getLimits() {
+        return limits;
     }
 
     /**
-     * Name of the resource being referred to. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+     * Limits describes the maximum amount of compute resources allowed. More info: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/
      */
-    @JsonProperty("name")
-    public void setName(String name) {
-        this.name = name;
+    @JsonProperty("limits")
+    public void setLimits(Map<String, Quantity> limits) {
+        this.limits = limits;
+    }
+
+    /**
+     * Requests describes the minimum amount of compute resources required. If Requests is omitted for a container, it defaults to Limits if that is explicitly specified, otherwise to the global values configured via controller flags. Requests cannot exceed Limits. More info: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/
+     */
+    @JsonProperty("requests")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public Map<String, Quantity> getRequests() {
+        return requests;
+    }
+
+    /**
+     * Requests describes the minimum amount of compute resources required. If Requests is omitted for a container, it defaults to Limits if that is explicitly specified, otherwise to the global values configured via controller flags. Requests cannot exceed Limits. More info: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/
+     */
+    @JsonProperty("requests")
+    public void setRequests(Map<String, Quantity> requests) {
+        this.requests = requests;
     }
 
     @JsonIgnore
-    public LocalObjectReferenceBuilder edit() {
-        return new LocalObjectReferenceBuilder(this);
+    public ACMEChallengeSolverHTTP01IngressPodResourcesBuilder edit() {
+        return new ACMEChallengeSolverHTTP01IngressPodResourcesBuilder(this);
     }
 
     @JsonIgnore
-    public LocalObjectReferenceBuilder toBuilder() {
+    public ACMEChallengeSolverHTTP01IngressPodResourcesBuilder toBuilder() {
         return edit();
     }
 

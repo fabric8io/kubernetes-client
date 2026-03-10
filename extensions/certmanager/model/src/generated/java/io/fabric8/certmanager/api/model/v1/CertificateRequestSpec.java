@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import io.fabric8.certmanager.api.model.meta.v1.ObjectReference;
+import io.fabric8.certmanager.api.model.meta.v1.IssuerReference;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
@@ -24,6 +24,7 @@ import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.LabelSelector;
 import io.fabric8.kubernetes.api.model.LocalObjectReference;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
+import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
@@ -64,7 +65,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(PodTemplateSpec.class),
     @BuildableReference(ResourceRequirements.class),
     @BuildableReference(IntOrString.class),
-    @BuildableReference(io.fabric8.kubernetes.api.model.ObjectReference.class),
+    @BuildableReference(ObjectReference.class),
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class),
     @BuildableReference(EnvVar.class),
@@ -87,7 +88,7 @@ public class CertificateRequestSpec implements Editable<CertificateRequestSpecBu
     @JsonProperty("isCA")
     private Boolean isCA;
     @JsonProperty("issuerRef")
-    private ObjectReference issuerRef;
+    private IssuerReference issuerRef;
     @JsonProperty("request")
     private String request;
     @JsonProperty("uid")
@@ -106,7 +107,7 @@ public class CertificateRequestSpec implements Editable<CertificateRequestSpecBu
     public CertificateRequestSpec() {
     }
 
-    public CertificateRequestSpec(Duration duration, Map<String, List<String>> extra, List<String> groups, Boolean isCA, ObjectReference issuerRef, String request, String uid, List<String> usages, String username) {
+    public CertificateRequestSpec(Duration duration, Map<String, List<String>> extra, List<String> groups, Boolean isCA, IssuerReference issuerRef, String request, String uid, List<String> usages, String username) {
         super();
         this.duration = duration;
         this.extra = extra;
@@ -189,7 +190,7 @@ public class CertificateRequestSpec implements Editable<CertificateRequestSpecBu
      * CertificateRequestSpec defines the desired state of CertificateRequest<br><p> <br><p> NOTE: It is important to note that the issuer can choose to ignore or change any of the requested attributes. How the issuer maps a certificate request to a signed certificate is the full responsibility of the issuer itself. For example, as an edge case, an issuer that inverts the isCA value is free to do so.
      */
     @JsonProperty("issuerRef")
-    public ObjectReference getIssuerRef() {
+    public IssuerReference getIssuerRef() {
         return issuerRef;
     }
 
@@ -197,7 +198,7 @@ public class CertificateRequestSpec implements Editable<CertificateRequestSpecBu
      * CertificateRequestSpec defines the desired state of CertificateRequest<br><p> <br><p> NOTE: It is important to note that the issuer can choose to ignore or change any of the requested attributes. How the issuer maps a certificate request to a signed certificate is the full responsibility of the issuer itself. For example, as an edge case, an issuer that inverts the isCA value is free to do so.
      */
     @JsonProperty("issuerRef")
-    public void setIssuerRef(ObjectReference issuerRef) {
+    public void setIssuerRef(IssuerReference issuerRef) {
         this.issuerRef = issuerRef;
     }
 
