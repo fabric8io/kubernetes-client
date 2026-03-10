@@ -135,7 +135,7 @@
     <jmustache.version>1.16</jmustache.version>
     <picocli.version>4.7.7</picocli.version>
     <swagger-request-validator-core.version>2.46.0</swagger-request-validator-core.version>
-    <swagger-parser.version>2.1.38</swagger-parser.version>
+    <swagger-parser.version>2.1.39</swagger-parser.version>
 
     <!-- Maven plugin versions -->
     <buildnumber.plugin.version>3.3.0</buildnumber.plugin.version>
