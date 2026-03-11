@@ -7,7 +7,7 @@
 
 #### Improvements
 * Fix #7522: improve dependency management for kubernetes-httpclient-okhttp
-* Fix #7550: add an ResourceEventHandler onList method and deprecated onNothing
+* Fix #7550: add a ResourceEventHandler onList method and deprecated onNothing
 * Fix #3396: (mockwebserver) Enhance self-signed certificate generation to include Subject Alternative Names (SANs) for proper TLS verification by modern clients
 
 #### Dependency Upgrade
