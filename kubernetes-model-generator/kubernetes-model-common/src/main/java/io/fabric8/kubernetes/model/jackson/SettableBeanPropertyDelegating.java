@@ -21,6 +21,7 @@ import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.PropertyName;
 import com.fasterxml.jackson.databind.SerializerProvider;
+import com.fasterxml.jackson.annotation.JacksonInject;
 import com.fasterxml.jackson.databind.deser.NullValueProvider;
 import com.fasterxml.jackson.databind.deser.SettableAnyProperty;
 import com.fasterxml.jackson.databind.deser.SettableBeanProperty;
@@ -73,6 +74,14 @@ public class SettableBeanPropertyDelegating extends SettableBeanProperty.Delegat
   @Override
   public boolean isMerging() {
     return delegate.isMerging();
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public JacksonInject.Value getInjectionDefinition() {
+    return delegate.getInjectionDefinition();
   }
 
   /**
