@@ -9,8 +9,8 @@ require (
 	github.com/k8snetworkplumbingwg/network-attachment-definition-client v1.7.7
 	github.com/kubernetes-csi/external-snapshotter/client/v8 v8.2.0
 	github.com/metal3-io/baremetal-operator/apis v0.9.2
-	github.com/metal3-io/cluster-api-provider-metal3/api v1.9.3
-	github.com/metal3-io/ip-address-manager/api v1.10.1 // indirect; indirect TODO: remove with controller-runtime replacement
+	github.com/metal3-io/cluster-api-provider-metal3/api v1.12.2
+	github.com/metal3-io/ip-address-manager/api v1.12.2 // indirect; indirect TODO: remove with controller-runtime replacement
 	// Match latest commit in the version branch (e.g. release-4.17)
 	github.com/openshift/api v3.9.0+incompatible
 	github.com/openshift/cloud-credential-operator v0.0.0-20251126011841-0e03b7a0fa39
@@ -53,7 +53,7 @@ require (
 	open-cluster-management.io/governance-policy-propagator v0.16.0
 	open-cluster-management.io/multicloud-operators-channel v0.16.0
 	open-cluster-management.io/multicloud-operators-subscription v0.16.0
-	sigs.k8s.io/cluster-api v1.11.2
+	sigs.k8s.io/cluster-api v1.12.2
 	sigs.k8s.io/gateway-api v1.5.0
 	sigs.k8s.io/kustomize/api v0.20.1
 	// This version is older than v1.10.0 see replacements below
@@ -234,7 +234,7 @@ require (
 	k8s.io/utils v0.0.0-20260108192941-914a6e750570 // indirect
 	knative.dev/pkg v0.0.0-20250821143151-4ffdcf6b3fa5 // indirect
 	sigs.k8s.io/cluster-api-provider-azure v1.21.1-0.20250929163617-2c4eaa611a39 // indirect
-	sigs.k8s.io/controller-runtime v0.22.3 // indirect
+	sigs.k8s.io/controller-runtime v0.22.5 // indirect
 	sigs.k8s.io/json v0.0.0-20250730193827-2d320260d730 // indirect
 	sigs.k8s.io/kustomize/kyaml v0.20.1 // indirect
 	sigs.k8s.io/randfill v1.0.0 // indirect
