@@ -3,16 +3,34 @@
 ### 7.7-SNAPSHOT
 
 #### Bugs
+* Fix #7543: fix processInlineDuplicateFields to recursively resolve nested inline embeds
 
 #### Improvements
 * Fix #7522: improve dependency management for kubernetes-httpclient-okhttp
 * Fix #7550: add an ResourceEventHandler onList method and deprecated onNothing
+* Fix #3396: (mockwebserver) Enhance self-signed certificate generation to include Subject Alternative Names (SANs) for proper TLS verification by modern clients
 
 #### Dependency Upgrade
+* Fix #7544: bump cluster-api-provider-metal3 from 1.9.3 to 1.12.2
+* Fix #7543: bump prometheus-operator from 0.85.0 to 0.89.0
+* Fix #7542: bump open-cluster-management.io/api from 0.16.2 to 1.2.0
+* Fix #7541: bump gateway-api from 1.4.0 to 1.5.0
+* Fix #7538: bump cert-manager from 1.18.2 to 1.19.4
 
 #### New Features
 
 #### _**Note**_: Breaking changes
+* Fix #7544: cluster-api model classes moved from package `io.fabric8.kubernetes.api.model.clusterapi.v1beta1` to `io.fabric8.kubernetes.api.model.clusterapi.core.v1beta1` (following upstream cluster-api v1.11+ API reorganization)
+* Fix #7543: monitoring model `v1.AuthorizationValidationError`, `v1.OAuth2ValidationError`, `v1.ProbeTargetsValidationError`, and `v1.PrometheusTracingConfig` removed
+* Fix #7542: open-cluster-management model `operator.v1.WebhookConfiguration` removed (replaced by `DefaultWebhookConfiguration` and `HostedWebhookConfiguration` upstream)
+* Fix #7541: gateway-api model `v1beta1.ReferenceGrantFrom`, `v1beta1.ReferenceGrantSpec`, and `v1beta1.ReferenceGrantTo` removed (ReferenceGrant graduated to v1 upstream)
+* Fix #7538: cert-manager model `ObjectReference` renamed to `IssuerReference` (following upstream rename in cert-manager v1.19.0)
+
+### 7.4.1 (2026-03-10)
+
+#### Dependency Upgrade
+Fix #7408: bump vertx.version to 4.5.25
+Fix #7107: bump Jackson version to 2.19.4
 
 ### 7.6.1 (2026-03-05)
 
@@ -27,7 +45,8 @@
 * Fix #7174: (httpclient-vertx-5) Add runtime check for Vert.x 5 classes to provide clear error when Vert.x 4/5 conflict occurs
 * Fix #7174: (chaos-tests) Fix classpath conflict when testing with Vert.x 5 HTTP client
 * Fix #7415: (java-generator) Fix generic type erasure for array of enums with default values
-* Fix #7422: (okhttp) Remove internal API usage and fix deprecated OkHttp 5 calls
+* Fix #7422: (okhttp) Remove internal API usage and fix 
+ated OkHttp 5 calls
 * Fix #7446: making the timeout of BaseOperation.createOrReplace() configurable
 
 #### Improvements

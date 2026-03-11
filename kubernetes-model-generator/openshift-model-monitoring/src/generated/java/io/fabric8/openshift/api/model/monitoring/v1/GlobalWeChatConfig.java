@@ -87,7 +87,7 @@ public class GlobalWeChatConfig implements Editable<GlobalWeChatConfigBuilder>, 
     }
 
     /**
-     * The default WeChat API Corporate ID.
+     * apiCorpID defines the default WeChat API Corporate ID.
      */
     @JsonProperty("apiCorpID")
     public String getApiCorpID() {
@@ -95,7 +95,7 @@ public class GlobalWeChatConfig implements Editable<GlobalWeChatConfigBuilder>, 
     }
 
     /**
-     * The default WeChat API Corporate ID.
+     * apiCorpID defines the default WeChat API Corporate ID.
      */
     @JsonProperty("apiCorpID")
     public void setApiCorpID(String apiCorpID) {
@@ -113,7 +113,7 @@ public class GlobalWeChatConfig implements Editable<GlobalWeChatConfigBuilder>, 
     }
 
     /**
-     * The default WeChat API URL. The default value is "https://qyapi.weixin.qq.com/cgi-bin/"
+     * apiURL defines he default WeChat API URL. The default value is "https://qyapi.weixin.qq.com/cgi-bin/"
      */
     @JsonProperty("apiURL")
     public String getApiURL() {
@@ -121,7 +121,7 @@ public class GlobalWeChatConfig implements Editable<GlobalWeChatConfigBuilder>, 
     }
 
     /**
-     * The default WeChat API URL. The default value is "https://qyapi.weixin.qq.com/cgi-bin/"
+     * apiURL defines he default WeChat API URL. The default value is "https://qyapi.weixin.qq.com/cgi-bin/"
      */
     @JsonProperty("apiURL")
     public void setApiURL(String apiURL) {

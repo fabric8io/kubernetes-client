@@ -114,7 +114,7 @@ public class GlobalSMTPConfig implements Editable<GlobalSMTPConfigBuilder>, Kube
     }
 
     /**
-     * SMTP Auth using PLAIN
+     * authIdentity represents SMTP Auth using PLAIN
      */
     @JsonProperty("authIdentity")
     public String getAuthIdentity() {
@@ -122,7 +122,7 @@ public class GlobalSMTPConfig implements Editable<GlobalSMTPConfigBuilder>, Kube
     }
 
     /**
-     * SMTP Auth using PLAIN
+     * authIdentity represents SMTP Auth using PLAIN
      */
     @JsonProperty("authIdentity")
     public void setAuthIdentity(String authIdentity) {
@@ -162,7 +162,7 @@ public class GlobalSMTPConfig implements Editable<GlobalSMTPConfigBuilder>, Kube
     }
 
     /**
-     * SMTP Auth using CRAM-MD5, LOGIN and PLAIN. If empty, Alertmanager doesn't authenticate to the SMTP server.
+     * authUsername represents SMTP Auth using CRAM-MD5, LOGIN and PLAIN. If empty, Alertmanager doesn't authenticate to the SMTP server.
      */
     @JsonProperty("authUsername")
     public String getAuthUsername() {
@@ -170,7 +170,7 @@ public class GlobalSMTPConfig implements Editable<GlobalSMTPConfigBuilder>, Kube
     }
 
     /**
-     * SMTP Auth using CRAM-MD5, LOGIN and PLAIN. If empty, Alertmanager doesn't authenticate to the SMTP server.
+     * authUsername represents SMTP Auth using CRAM-MD5, LOGIN and PLAIN. If empty, Alertmanager doesn't authenticate to the SMTP server.
      */
     @JsonProperty("authUsername")
     public void setAuthUsername(String authUsername) {
@@ -178,7 +178,7 @@ public class GlobalSMTPConfig implements Editable<GlobalSMTPConfigBuilder>, Kube
     }
 
     /**
-     * The default SMTP From header field.
+     * from defines the default SMTP From header field.
      */
     @JsonProperty("from")
     public String getFrom() {
@@ -186,7 +186,7 @@ public class GlobalSMTPConfig implements Editable<GlobalSMTPConfigBuilder>, Kube
     }
 
     /**
-     * The default SMTP From header field.
+     * from defines the default SMTP From header field.
      */
     @JsonProperty("from")
     public void setFrom(String from) {
@@ -194,7 +194,7 @@ public class GlobalSMTPConfig implements Editable<GlobalSMTPConfigBuilder>, Kube
     }
 
     /**
-     * The default hostname to identify to the SMTP server.
+     * hello defines the default hostname to identify to the SMTP server.
      */
     @JsonProperty("hello")
     public String getHello() {
@@ -202,7 +202,7 @@ public class GlobalSMTPConfig implements Editable<GlobalSMTPConfigBuilder>, Kube
     }
 
     /**
-     * The default hostname to identify to the SMTP server.
+     * hello defines the default hostname to identify to the SMTP server.
      */
     @JsonProperty("hello")
     public void setHello(String hello) {
@@ -210,7 +210,7 @@ public class GlobalSMTPConfig implements Editable<GlobalSMTPConfigBuilder>, Kube
     }
 
     /**
-     * The default SMTP TLS requirement. Note that Go does not support unencrypted connections to remote SMTP endpoints.
+     * requireTLS defines the default SMTP TLS requirement. Note that Go does not support unencrypted connections to remote SMTP endpoints.
      */
     @JsonProperty("requireTLS")
     public Boolean getRequireTLS() {
@@ -218,7 +218,7 @@ public class GlobalSMTPConfig implements Editable<GlobalSMTPConfigBuilder>, Kube
     }
 
     /**
-     * The default SMTP TLS requirement. Note that Go does not support unencrypted connections to remote SMTP endpoints.
+     * requireTLS defines the default SMTP TLS requirement. Note that Go does not support unencrypted connections to remote SMTP endpoints.
      */
     @JsonProperty("requireTLS")
     public void setRequireTLS(Boolean requireTLS) {

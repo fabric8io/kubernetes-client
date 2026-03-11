@@ -86,7 +86,7 @@ public class TimeRange implements Editable<TimeRangeBuilder>, KubernetesResource
     }
 
     /**
-     * EndTime is the end time in 24hr format.
+     * endTime defines the end time in 24hr format.
      */
     @JsonProperty("endTime")
     public String getEndTime() {
@@ -94,7 +94,7 @@ public class TimeRange implements Editable<TimeRangeBuilder>, KubernetesResource
     }
 
     /**
-     * EndTime is the end time in 24hr format.
+     * endTime defines the end time in 24hr format.
      */
     @JsonProperty("endTime")
     public void setEndTime(String endTime) {
@@ -102,7 +102,7 @@ public class TimeRange implements Editable<TimeRangeBuilder>, KubernetesResource
     }
 
     /**
-     * StartTime is the start time in 24hr format.
+     * startTime defines the start time in 24hr format.
      */
     @JsonProperty("startTime")
     public String getStartTime() {
@@ -110,7 +110,7 @@ public class TimeRange implements Editable<TimeRangeBuilder>, KubernetesResource
     }
 
     /**
-     * StartTime is the start time in 24hr format.
+     * startTime defines the start time in 24hr format.
      */
     @JsonProperty("startTime")
     public void setStartTime(String startTime) {

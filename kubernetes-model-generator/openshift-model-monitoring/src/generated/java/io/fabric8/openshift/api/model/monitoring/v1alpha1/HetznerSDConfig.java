@@ -173,7 +173,7 @@ public class HetznerSDConfig implements Editable<HetznerSDConfigBuilder>, Kubern
     }
 
     /**
-     * Whether to enable HTTP2.
+     * enableHTTP2 defines whether to enable HTTP2.
      */
     @JsonProperty("enableHTTP2")
     public Boolean getEnableHTTP2() {
@@ -181,7 +181,7 @@ public class HetznerSDConfig implements Editable<HetznerSDConfigBuilder>, Kubern
     }
 
     /**
-     * Whether to enable HTTP2.
+     * enableHTTP2 defines whether to enable HTTP2.
      */
     @JsonProperty("enableHTTP2")
     public void setEnableHTTP2(Boolean enableHTTP2) {
@@ -189,7 +189,7 @@ public class HetznerSDConfig implements Editable<HetznerSDConfigBuilder>, Kubern
     }
 
     /**
-     * Configure whether HTTP requests follow HTTP 3xx redirects.
+     * followRedirects defines whether HTTP requests follow HTTP 3xx redirects.
      */
     @JsonProperty("followRedirects")
     public Boolean getFollowRedirects() {
@@ -197,7 +197,7 @@ public class HetznerSDConfig implements Editable<HetznerSDConfigBuilder>, Kubern
     }
 
     /**
-     * Configure whether HTTP requests follow HTTP 3xx redirects.
+     * followRedirects defines whether HTTP requests follow HTTP 3xx redirects.
      */
     @JsonProperty("followRedirects")
     public void setFollowRedirects(Boolean followRedirects) {
@@ -205,7 +205,7 @@ public class HetznerSDConfig implements Editable<HetznerSDConfigBuilder>, Kubern
     }
 
     /**
-     * Label selector used to filter the servers when fetching them from the API. It requires Prometheus &gt;= v3.5.0.
+     * labelSelector defines the label selector used to filter the servers when fetching them from the API. It requires Prometheus &gt;= v3.5.0.
      */
     @JsonProperty("labelSelector")
     public String getLabelSelector() {
@@ -213,7 +213,7 @@ public class HetznerSDConfig implements Editable<HetznerSDConfigBuilder>, Kubern
     }
 
     /**
-     * Label selector used to filter the servers when fetching them from the API. It requires Prometheus &gt;= v3.5.0.
+     * labelSelector defines the label selector used to filter the servers when fetching them from the API. It requires Prometheus &gt;= v3.5.0.
      */
     @JsonProperty("labelSelector")
     public void setLabelSelector(String labelSelector) {
@@ -221,7 +221,7 @@ public class HetznerSDConfig implements Editable<HetznerSDConfigBuilder>, Kubern
     }
 
     /**
-     * `noProxy` is a comma-separated string that can contain IPs, CIDR notation, domain names that should be excluded from proxying. IP and domain names can contain port numbers.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
+     * noProxy defines a comma-separated string that can contain IPs, CIDR notation, domain names that should be excluded from proxying. IP and domain names can contain port numbers.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
      */
     @JsonProperty("noProxy")
     public String getNoProxy() {
@@ -229,7 +229,7 @@ public class HetznerSDConfig implements Editable<HetznerSDConfigBuilder>, Kubern
     }
 
     /**
-     * `noProxy` is a comma-separated string that can contain IPs, CIDR notation, domain names that should be excluded from proxying. IP and domain names can contain port numbers.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
+     * noProxy defines a comma-separated string that can contain IPs, CIDR notation, domain names that should be excluded from proxying. IP and domain names can contain port numbers.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
      */
     @JsonProperty("noProxy")
     public void setNoProxy(String noProxy) {
@@ -253,7 +253,7 @@ public class HetznerSDConfig implements Editable<HetznerSDConfigBuilder>, Kubern
     }
 
     /**
-     * The port to scrape metrics from.
+     * port defines the port to scrape metrics from. If using the public IP address, this must
      */
     @JsonProperty("port")
     public Integer getPort() {
@@ -261,7 +261,7 @@ public class HetznerSDConfig implements Editable<HetznerSDConfigBuilder>, Kubern
     }
 
     /**
-     * The port to scrape metrics from.
+     * port defines the port to scrape metrics from. If using the public IP address, this must
      */
     @JsonProperty("port")
     public void setPort(Integer port) {
@@ -269,7 +269,7 @@ public class HetznerSDConfig implements Editable<HetznerSDConfigBuilder>, Kubern
     }
 
     /**
-     * ProxyConnectHeader optionally specifies headers to send to proxies during CONNECT requests.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
+     * proxyConnectHeader optionally specifies headers to send to proxies during CONNECT requests.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
      */
     @JsonProperty("proxyConnectHeader")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -278,7 +278,7 @@ public class HetznerSDConfig implements Editable<HetznerSDConfigBuilder>, Kubern
     }
 
     /**
-     * ProxyConnectHeader optionally specifies headers to send to proxies during CONNECT requests.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
+     * proxyConnectHeader optionally specifies headers to send to proxies during CONNECT requests.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
      */
     @JsonProperty("proxyConnectHeader")
     public void setProxyConnectHeader(Map<String, List<SecretKeySelector>> proxyConnectHeader) {
@@ -286,7 +286,7 @@ public class HetznerSDConfig implements Editable<HetznerSDConfigBuilder>, Kubern
     }
 
     /**
-     * Whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
+     * proxyFromEnvironment defines whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
      */
     @JsonProperty("proxyFromEnvironment")
     public Boolean getProxyFromEnvironment() {
@@ -294,7 +294,7 @@ public class HetznerSDConfig implements Editable<HetznerSDConfigBuilder>, Kubern
     }
 
     /**
-     * Whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
+     * proxyFromEnvironment defines whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
      */
     @JsonProperty("proxyFromEnvironment")
     public void setProxyFromEnvironment(Boolean proxyFromEnvironment) {
@@ -302,7 +302,7 @@ public class HetznerSDConfig implements Editable<HetznerSDConfigBuilder>, Kubern
     }
 
     /**
-     * `proxyURL` defines the HTTP proxy server to use.
+     * proxyUrl defines the HTTP proxy server to use.
      */
     @JsonProperty("proxyUrl")
     public String getProxyUrl() {
@@ -310,7 +310,7 @@ public class HetznerSDConfig implements Editable<HetznerSDConfigBuilder>, Kubern
     }
 
     /**
-     * `proxyURL` defines the HTTP proxy server to use.
+     * proxyUrl defines the HTTP proxy server to use.
      */
     @JsonProperty("proxyUrl")
     public void setProxyUrl(String proxyUrl) {
@@ -318,7 +318,7 @@ public class HetznerSDConfig implements Editable<HetznerSDConfigBuilder>, Kubern
     }
 
     /**
-     * The time after which the servers are refreshed.
+     * refreshInterval defines the time after which the provided names are refreshed. If not set, Prometheus uses its default value.
      */
     @JsonProperty("refreshInterval")
     public String getRefreshInterval() {
@@ -326,7 +326,7 @@ public class HetznerSDConfig implements Editable<HetznerSDConfigBuilder>, Kubern
     }
 
     /**
-     * The time after which the servers are refreshed.
+     * refreshInterval defines the time after which the provided names are refreshed. If not set, Prometheus uses its default value.
      */
     @JsonProperty("refreshInterval")
     public void setRefreshInterval(String refreshInterval) {
@@ -334,7 +334,7 @@ public class HetznerSDConfig implements Editable<HetznerSDConfigBuilder>, Kubern
     }
 
     /**
-     * The Hetzner role of entities that should be discovered.
+     * role defines the Hetzner role of entities that should be discovered.
      */
     @JsonProperty("role")
     public String getRole() {
@@ -342,7 +342,7 @@ public class HetznerSDConfig implements Editable<HetznerSDConfigBuilder>, Kubern
     }
 
     /**
-     * The Hetzner role of entities that should be discovered.
+     * role defines the Hetzner role of entities that should be discovered.
      */
     @JsonProperty("role")
     public void setRole(String role) {

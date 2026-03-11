@@ -34,7 +34,7 @@ import lombok.ToString;
 import lombok.experimental.Accessors;
 
 /**
- * MSTeamsV2Config configures notifications via Microsoft Teams using the new message format with adaptive cards as required by flows See https://prometheus.io/docs/alerting/latest/configuration/#msteamsv2_config It requires Alertmanager &gt;= 0.28.0.
+ * MSTeamsV2Config configures notifications via Microsoft Teams using the new message format with adaptive cards as required by flows. See https://prometheus.io/docs/alerting/latest/configuration/#msteamsv2_config It requires Alertmanager &gt;= 0.28.0.
  */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -99,7 +99,7 @@ public class MSTeamsV2Config implements Editable<MSTeamsV2ConfigBuilder>, Kubern
     }
 
     /**
-     * MSTeamsV2Config configures notifications via Microsoft Teams using the new message format with adaptive cards as required by flows See https://prometheus.io/docs/alerting/latest/configuration/#msteamsv2_config It requires Alertmanager &gt;= 0.28.0.
+     * MSTeamsV2Config configures notifications via Microsoft Teams using the new message format with adaptive cards as required by flows. See https://prometheus.io/docs/alerting/latest/configuration/#msteamsv2_config It requires Alertmanager &gt;= 0.28.0.
      */
     @JsonProperty("httpConfig")
     public HTTPConfig getHttpConfig() {
@@ -107,7 +107,7 @@ public class MSTeamsV2Config implements Editable<MSTeamsV2ConfigBuilder>, Kubern
     }
 
     /**
-     * MSTeamsV2Config configures notifications via Microsoft Teams using the new message format with adaptive cards as required by flows See https://prometheus.io/docs/alerting/latest/configuration/#msteamsv2_config It requires Alertmanager &gt;= 0.28.0.
+     * MSTeamsV2Config configures notifications via Microsoft Teams using the new message format with adaptive cards as required by flows. See https://prometheus.io/docs/alerting/latest/configuration/#msteamsv2_config It requires Alertmanager &gt;= 0.28.0.
      */
     @JsonProperty("httpConfig")
     public void setHttpConfig(HTTPConfig httpConfig) {
@@ -115,7 +115,7 @@ public class MSTeamsV2Config implements Editable<MSTeamsV2ConfigBuilder>, Kubern
     }
 
     /**
-     * Whether to notify about resolved alerts.
+     * sendResolved defines whether or not to notify about resolved alerts.
      */
     @JsonProperty("sendResolved")
     public Boolean getSendResolved() {
@@ -123,7 +123,7 @@ public class MSTeamsV2Config implements Editable<MSTeamsV2ConfigBuilder>, Kubern
     }
 
     /**
-     * Whether to notify about resolved alerts.
+     * sendResolved defines whether or not to notify about resolved alerts.
      */
     @JsonProperty("sendResolved")
     public void setSendResolved(Boolean sendResolved) {
@@ -131,7 +131,7 @@ public class MSTeamsV2Config implements Editable<MSTeamsV2ConfigBuilder>, Kubern
     }
 
     /**
-     * Message body template.
+     * text defines the message body template for adaptive card notifications. This contains the detailed content displayed in the Teams adaptive card format.
      */
     @JsonProperty("text")
     public String getText() {
@@ -139,7 +139,7 @@ public class MSTeamsV2Config implements Editable<MSTeamsV2ConfigBuilder>, Kubern
     }
 
     /**
-     * Message body template.
+     * text defines the message body template for adaptive card notifications. This contains the detailed content displayed in the Teams adaptive card format.
      */
     @JsonProperty("text")
     public void setText(String text) {
@@ -147,7 +147,7 @@ public class MSTeamsV2Config implements Editable<MSTeamsV2ConfigBuilder>, Kubern
     }
 
     /**
-     * Message title template.
+     * title defines the message title template for adaptive card notifications. This appears as the main heading in the Teams adaptive card.
      */
     @JsonProperty("title")
     public String getTitle() {
@@ -155,7 +155,7 @@ public class MSTeamsV2Config implements Editable<MSTeamsV2ConfigBuilder>, Kubern
     }
 
     /**
-     * Message title template.
+     * title defines the message title template for adaptive card notifications. This appears as the main heading in the Teams adaptive card.
      */
     @JsonProperty("title")
     public void setTitle(String title) {
@@ -163,7 +163,7 @@ public class MSTeamsV2Config implements Editable<MSTeamsV2ConfigBuilder>, Kubern
     }
 
     /**
-     * MSTeamsV2Config configures notifications via Microsoft Teams using the new message format with adaptive cards as required by flows See https://prometheus.io/docs/alerting/latest/configuration/#msteamsv2_config It requires Alertmanager &gt;= 0.28.0.
+     * MSTeamsV2Config configures notifications via Microsoft Teams using the new message format with adaptive cards as required by flows. See https://prometheus.io/docs/alerting/latest/configuration/#msteamsv2_config It requires Alertmanager &gt;= 0.28.0.
      */
     @JsonProperty("webhookURL")
     public SecretKeySelector getWebhookURL() {
@@ -171,7 +171,7 @@ public class MSTeamsV2Config implements Editable<MSTeamsV2ConfigBuilder>, Kubern
     }
 
     /**
-     * MSTeamsV2Config configures notifications via Microsoft Teams using the new message format with adaptive cards as required by flows See https://prometheus.io/docs/alerting/latest/configuration/#msteamsv2_config It requires Alertmanager &gt;= 0.28.0.
+     * MSTeamsV2Config configures notifications via Microsoft Teams using the new message format with adaptive cards as required by flows. See https://prometheus.io/docs/alerting/latest/configuration/#msteamsv2_config It requires Alertmanager &gt;= 0.28.0.
      */
     @JsonProperty("webhookURL")
     public void setWebhookURL(SecretKeySelector webhookURL) {

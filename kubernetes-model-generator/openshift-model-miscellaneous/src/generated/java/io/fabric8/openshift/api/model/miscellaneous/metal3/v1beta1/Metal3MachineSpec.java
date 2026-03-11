@@ -42,6 +42,7 @@ import lombok.experimental.Accessors;
     "automatedCleaningMode",
     "customDeploy",
     "dataTemplate",
+    "failureDomain",
     "hostSelector",
     "image",
     "metaData",
@@ -80,6 +81,8 @@ public class Metal3MachineSpec implements Editable<Metal3MachineSpecBuilder>, Ku
     private CustomDeploy customDeploy;
     @JsonProperty("dataTemplate")
     private ObjectReference dataTemplate;
+    @JsonProperty("failureDomain")
+    private String failureDomain;
     @JsonProperty("hostSelector")
     private HostSelector hostSelector;
     @JsonProperty("image")
@@ -101,11 +104,12 @@ public class Metal3MachineSpec implements Editable<Metal3MachineSpecBuilder>, Ku
     public Metal3MachineSpec() {
     }
 
-    public Metal3MachineSpec(String automatedCleaningMode, CustomDeploy customDeploy, ObjectReference dataTemplate, HostSelector hostSelector, Image image, SecretReference metaData, SecretReference networkData, String providerID, SecretReference userData) {
+    public Metal3MachineSpec(String automatedCleaningMode, CustomDeploy customDeploy, ObjectReference dataTemplate, String failureDomain, HostSelector hostSelector, Image image, SecretReference metaData, SecretReference networkData, String providerID, SecretReference userData) {
         super();
         this.automatedCleaningMode = automatedCleaningMode;
         this.customDeploy = customDeploy;
         this.dataTemplate = dataTemplate;
+        this.failureDomain = failureDomain;
         this.hostSelector = hostSelector;
         this.image = image;
         this.metaData = metaData;
@@ -160,6 +164,22 @@ public class Metal3MachineSpec implements Editable<Metal3MachineSpecBuilder>, Ku
     @JsonProperty("dataTemplate")
     public void setDataTemplate(ObjectReference dataTemplate) {
         this.dataTemplate = dataTemplate;
+    }
+
+    /**
+     * FailureDomain is the failure domain unique identifier this Machine should be attached to, as defined in Cluster API.
+     */
+    @JsonProperty("failureDomain")
+    public String getFailureDomain() {
+        return failureDomain;
+    }
+
+    /**
+     * FailureDomain is the failure domain unique identifier this Machine should be attached to, as defined in Cluster API.
+     */
+    @JsonProperty("failureDomain")
+    public void setFailureDomain(String failureDomain) {
+        this.failureDomain = failureDomain;
     }
 
     /**

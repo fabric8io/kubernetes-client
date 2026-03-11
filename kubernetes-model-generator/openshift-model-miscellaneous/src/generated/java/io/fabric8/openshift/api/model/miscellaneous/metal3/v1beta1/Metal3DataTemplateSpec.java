@@ -142,7 +142,7 @@ public class Metal3DataTemplateSpec implements Editable<Metal3DataTemplateSpecBu
     }
 
     /**
-     * TemplateReference refers to the Template the Metal3MachineTemplate refers to. It can be matched against the key or it may also point to the name of the template Metal3Data refers to
+     * TemplateReference refers to the Template the Metal3MachineTemplate refers to. It can be matched against the key or it may also point to the name of the template Metal3Data refers to.<br><p> <br><p> Deprecated: This field is deprecated and will be removed in a future release.
      */
     @JsonProperty("templateReference")
     public String getTemplateReference() {
@@ -150,7 +150,7 @@ public class Metal3DataTemplateSpec implements Editable<Metal3DataTemplateSpecBu
     }
 
     /**
-     * TemplateReference refers to the Template the Metal3MachineTemplate refers to. It can be matched against the key or it may also point to the name of the template Metal3Data refers to
+     * TemplateReference refers to the Template the Metal3MachineTemplate refers to. It can be matched against the key or it may also point to the name of the template Metal3Data refers to.<br><p> <br><p> Deprecated: This field is deprecated and will be removed in a future release.
      */
     @JsonProperty("templateReference")
     public void setTemplateReference(String templateReference) {

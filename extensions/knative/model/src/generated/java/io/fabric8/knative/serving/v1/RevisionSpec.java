@@ -40,6 +40,7 @@ import io.fabric8.kubernetes.api.model.Toleration;
 import io.fabric8.kubernetes.api.model.TopologySpreadConstraint;
 import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
+import io.fabric8.kubernetes.api.model.WorkloadReference;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
@@ -96,7 +97,8 @@ import lombok.experimental.Accessors;
     "timeoutSeconds",
     "tolerations",
     "topologySpreadConstraints",
-    "volumes"
+    "volumes",
+    "workloadRef"
 })
 @ToString
 @EqualsAndHashCode
@@ -226,6 +228,8 @@ public class RevisionSpec implements Editable<RevisionSpecBuilder>, KubernetesRe
     @JsonProperty("volumes")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<Volume> volumes = new ArrayList<>();
+    @JsonProperty("workloadRef")
+    private WorkloadReference workloadRef;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -235,7 +239,7 @@ public class RevisionSpec implements Editable<RevisionSpecBuilder>, KubernetesRe
     public RevisionSpec() {
     }
 
-    public RevisionSpec(Long activeDeadlineSeconds, Affinity affinity, Boolean automountServiceAccountToken, Long containerConcurrency, List<Container> containers, PodDNSConfig dnsConfig, String dnsPolicy, Boolean enableServiceLinks, List<EphemeralContainer> ephemeralContainers, List<HostAlias> hostAliases, Boolean hostIPC, Boolean hostNetwork, Boolean hostPID, Boolean hostUsers, String hostname, String hostnameOverride, Long idleTimeoutSeconds, List<LocalObjectReference> imagePullSecrets, List<Container> initContainers, String nodeName, Map<String, String> nodeSelector, PodOS os, Map<String, Quantity> overhead, String preemptionPolicy, Integer priority, String priorityClassName, List<PodReadinessGate> readinessGates, List<PodResourceClaim> resourceClaims, ResourceRequirements resources, Long responseStartTimeoutSeconds, String restartPolicy, String runtimeClassName, String schedulerName, List<PodSchedulingGate> schedulingGates, PodSecurityContext securityContext, String serviceAccount, String serviceAccountName, Boolean setHostnameAsFQDN, Boolean shareProcessNamespace, String subdomain, Long terminationGracePeriodSeconds, Long timeoutSeconds, List<Toleration> tolerations, List<TopologySpreadConstraint> topologySpreadConstraints, List<Volume> volumes) {
+    public RevisionSpec(Long activeDeadlineSeconds, Affinity affinity, Boolean automountServiceAccountToken, Long containerConcurrency, List<Container> containers, PodDNSConfig dnsConfig, String dnsPolicy, Boolean enableServiceLinks, List<EphemeralContainer> ephemeralContainers, List<HostAlias> hostAliases, Boolean hostIPC, Boolean hostNetwork, Boolean hostPID, Boolean hostUsers, String hostname, String hostnameOverride, Long idleTimeoutSeconds, List<LocalObjectReference> imagePullSecrets, List<Container> initContainers, String nodeName, Map<String, String> nodeSelector, PodOS os, Map<String, Quantity> overhead, String preemptionPolicy, Integer priority, String priorityClassName, List<PodReadinessGate> readinessGates, List<PodResourceClaim> resourceClaims, ResourceRequirements resources, Long responseStartTimeoutSeconds, String restartPolicy, String runtimeClassName, String schedulerName, List<PodSchedulingGate> schedulingGates, PodSecurityContext securityContext, String serviceAccount, String serviceAccountName, Boolean setHostnameAsFQDN, Boolean shareProcessNamespace, String subdomain, Long terminationGracePeriodSeconds, Long timeoutSeconds, List<Toleration> tolerations, List<TopologySpreadConstraint> topologySpreadConstraints, List<Volume> volumes, WorkloadReference workloadRef) {
         super();
         this.activeDeadlineSeconds = activeDeadlineSeconds;
         this.affinity = affinity;
@@ -282,6 +286,7 @@ public class RevisionSpec implements Editable<RevisionSpecBuilder>, KubernetesRe
         this.tolerations = tolerations;
         this.topologySpreadConstraints = topologySpreadConstraints;
         this.volumes = volumes;
+        this.workloadRef = workloadRef;
     }
 
     /**
@@ -725,7 +730,7 @@ public class RevisionSpec implements Editable<RevisionSpecBuilder>, KubernetesRe
     }
 
     /**
-     * ResourceClaims defines which ResourceClaims must be allocated and reserved before the Pod is allowed to start. The resources will be made available to those containers which consume them by name.<br><p> <br><p> This is an alpha field and requires enabling the DynamicResourceAllocation feature gate.<br><p> <br><p> This field is immutable.
+     * ResourceClaims defines which ResourceClaims must be allocated and reserved before the Pod is allowed to start. The resources will be made available to those containers which consume them by name.<br><p> <br><p> This is a stable field but requires that the DynamicResourceAllocation feature gate is enabled.<br><p> <br><p> This field is immutable.
      */
     @JsonProperty("resourceClaims")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -734,7 +739,7 @@ public class RevisionSpec implements Editable<RevisionSpecBuilder>, KubernetesRe
     }
 
     /**
-     * ResourceClaims defines which ResourceClaims must be allocated and reserved before the Pod is allowed to start. The resources will be made available to those containers which consume them by name.<br><p> <br><p> This is an alpha field and requires enabling the DynamicResourceAllocation feature gate.<br><p> <br><p> This field is immutable.
+     * ResourceClaims defines which ResourceClaims must be allocated and reserved before the Pod is allowed to start. The resources will be made available to those containers which consume them by name.<br><p> <br><p> This is a stable field but requires that the DynamicResourceAllocation feature gate is enabled.<br><p> <br><p> This field is immutable.
      */
     @JsonProperty("resourceClaims")
     public void setResourceClaims(List<PodResourceClaim> resourceClaims) {
@@ -1015,6 +1020,22 @@ public class RevisionSpec implements Editable<RevisionSpecBuilder>, KubernetesRe
     @JsonProperty("volumes")
     public void setVolumes(List<Volume> volumes) {
         this.volumes = volumes;
+    }
+
+    /**
+     * RevisionSpec holds the desired state of the Revision (from the client).
+     */
+    @JsonProperty("workloadRef")
+    public WorkloadReference getWorkloadRef() {
+        return workloadRef;
+    }
+
+    /**
+     * RevisionSpec holds the desired state of the Revision (from the client).
+     */
+    @JsonProperty("workloadRef")
+    public void setWorkloadRef(WorkloadReference workloadRef) {
+        this.workloadRef = workloadRef;
     }
 
     @JsonIgnore

@@ -117,7 +117,7 @@ public class QueueConfig implements Editable<QueueConfigBuilder>, KubernetesReso
     }
 
     /**
-     * BatchSendDeadline is the maximum time a sample will wait in buffer.
+     * batchSendDeadline defines the maximum time a sample will wait in buffer.
      */
     @JsonProperty("batchSendDeadline")
     public String getBatchSendDeadline() {
@@ -125,7 +125,7 @@ public class QueueConfig implements Editable<QueueConfigBuilder>, KubernetesReso
     }
 
     /**
-     * BatchSendDeadline is the maximum time a sample will wait in buffer.
+     * batchSendDeadline defines the maximum time a sample will wait in buffer.
      */
     @JsonProperty("batchSendDeadline")
     public void setBatchSendDeadline(String batchSendDeadline) {
@@ -133,7 +133,7 @@ public class QueueConfig implements Editable<QueueConfigBuilder>, KubernetesReso
     }
 
     /**
-     * Capacity is the number of samples to buffer per shard before we start dropping them.
+     * capacity defines the number of samples to buffer per shard before we start dropping them.
      */
     @JsonProperty("capacity")
     public Integer getCapacity() {
@@ -141,7 +141,7 @@ public class QueueConfig implements Editable<QueueConfigBuilder>, KubernetesReso
     }
 
     /**
-     * Capacity is the number of samples to buffer per shard before we start dropping them.
+     * capacity defines the number of samples to buffer per shard before we start dropping them.
      */
     @JsonProperty("capacity")
     public void setCapacity(Integer capacity) {
@@ -149,7 +149,7 @@ public class QueueConfig implements Editable<QueueConfigBuilder>, KubernetesReso
     }
 
     /**
-     * MaxBackoff is the maximum retry delay.
+     * maxBackoff defines the maximum retry delay.
      */
     @JsonProperty("maxBackoff")
     public String getMaxBackoff() {
@@ -157,7 +157,7 @@ public class QueueConfig implements Editable<QueueConfigBuilder>, KubernetesReso
     }
 
     /**
-     * MaxBackoff is the maximum retry delay.
+     * maxBackoff defines the maximum retry delay.
      */
     @JsonProperty("maxBackoff")
     public void setMaxBackoff(String maxBackoff) {
@@ -165,7 +165,7 @@ public class QueueConfig implements Editable<QueueConfigBuilder>, KubernetesReso
     }
 
     /**
-     * MaxRetries is the maximum number of times to retry a batch on recoverable errors.
+     * maxRetries defines the maximum number of times to retry a batch on recoverable errors.
      */
     @JsonProperty("maxRetries")
     public Integer getMaxRetries() {
@@ -173,7 +173,7 @@ public class QueueConfig implements Editable<QueueConfigBuilder>, KubernetesReso
     }
 
     /**
-     * MaxRetries is the maximum number of times to retry a batch on recoverable errors.
+     * maxRetries defines the maximum number of times to retry a batch on recoverable errors.
      */
     @JsonProperty("maxRetries")
     public void setMaxRetries(Integer maxRetries) {
@@ -181,7 +181,7 @@ public class QueueConfig implements Editable<QueueConfigBuilder>, KubernetesReso
     }
 
     /**
-     * MaxSamplesPerSend is the maximum number of samples per send.
+     * maxSamplesPerSend defines the maximum number of samples per send.
      */
     @JsonProperty("maxSamplesPerSend")
     public Integer getMaxSamplesPerSend() {
@@ -189,7 +189,7 @@ public class QueueConfig implements Editable<QueueConfigBuilder>, KubernetesReso
     }
 
     /**
-     * MaxSamplesPerSend is the maximum number of samples per send.
+     * maxSamplesPerSend defines the maximum number of samples per send.
      */
     @JsonProperty("maxSamplesPerSend")
     public void setMaxSamplesPerSend(Integer maxSamplesPerSend) {
@@ -197,7 +197,7 @@ public class QueueConfig implements Editable<QueueConfigBuilder>, KubernetesReso
     }
 
     /**
-     * MaxShards is the maximum number of shards, i.e. amount of concurrency.
+     * maxShards defines the maximum number of shards, i.e. amount of concurrency.
      */
     @JsonProperty("maxShards")
     public Integer getMaxShards() {
@@ -205,7 +205,7 @@ public class QueueConfig implements Editable<QueueConfigBuilder>, KubernetesReso
     }
 
     /**
-     * MaxShards is the maximum number of shards, i.e. amount of concurrency.
+     * maxShards defines the maximum number of shards, i.e. amount of concurrency.
      */
     @JsonProperty("maxShards")
     public void setMaxShards(Integer maxShards) {
@@ -213,7 +213,7 @@ public class QueueConfig implements Editable<QueueConfigBuilder>, KubernetesReso
     }
 
     /**
-     * MinBackoff is the initial retry delay. Gets doubled for every retry.
+     * minBackoff defines the initial retry delay. Gets doubled for every retry.
      */
     @JsonProperty("minBackoff")
     public String getMinBackoff() {
@@ -221,7 +221,7 @@ public class QueueConfig implements Editable<QueueConfigBuilder>, KubernetesReso
     }
 
     /**
-     * MinBackoff is the initial retry delay. Gets doubled for every retry.
+     * minBackoff defines the initial retry delay. Gets doubled for every retry.
      */
     @JsonProperty("minBackoff")
     public void setMinBackoff(String minBackoff) {
@@ -229,7 +229,7 @@ public class QueueConfig implements Editable<QueueConfigBuilder>, KubernetesReso
     }
 
     /**
-     * MinShards is the minimum number of shards, i.e. amount of concurrency.
+     * minShards defines the minimum number of shards, i.e. amount of concurrency.
      */
     @JsonProperty("minShards")
     public Integer getMinShards() {
@@ -237,7 +237,7 @@ public class QueueConfig implements Editable<QueueConfigBuilder>, KubernetesReso
     }
 
     /**
-     * MinShards is the minimum number of shards, i.e. amount of concurrency.
+     * minShards defines the minimum number of shards, i.e. amount of concurrency.
      */
     @JsonProperty("minShards")
     public void setMinShards(Integer minShards) {
@@ -245,7 +245,7 @@ public class QueueConfig implements Editable<QueueConfigBuilder>, KubernetesReso
     }
 
     /**
-     * Retry upon receiving a 429 status code from the remote-write storage.<br><p> <br><p> This is an &#42;experimental feature&#42;, it may change in any upcoming release in a breaking way.
+     * retryOnRateLimit defines the retry upon receiving a 429 status code from the remote-write storage.<br><p> <br><p> This is an &#42;experimental feature&#42;, it may change in any upcoming release in a breaking way.
      */
     @JsonProperty("retryOnRateLimit")
     public Boolean getRetryOnRateLimit() {
@@ -253,7 +253,7 @@ public class QueueConfig implements Editable<QueueConfigBuilder>, KubernetesReso
     }
 
     /**
-     * Retry upon receiving a 429 status code from the remote-write storage.<br><p> <br><p> This is an &#42;experimental feature&#42;, it may change in any upcoming release in a breaking way.
+     * retryOnRateLimit defines the retry upon receiving a 429 status code from the remote-write storage.<br><p> <br><p> This is an &#42;experimental feature&#42;, it may change in any upcoming release in a breaking way.
      */
     @JsonProperty("retryOnRateLimit")
     public void setRetryOnRateLimit(Boolean retryOnRateLimit) {
@@ -261,7 +261,7 @@ public class QueueConfig implements Editable<QueueConfigBuilder>, KubernetesReso
     }
 
     /**
-     * SampleAgeLimit drops samples older than the limit. It requires Prometheus &gt;= v2.50.0 or Thanos &gt;= v0.32.0.
+     * sampleAgeLimit drops samples older than the limit. It requires Prometheus &gt;= v2.50.0 or Thanos &gt;= v0.32.0.
      */
     @JsonProperty("sampleAgeLimit")
     public String getSampleAgeLimit() {
@@ -269,7 +269,7 @@ public class QueueConfig implements Editable<QueueConfigBuilder>, KubernetesReso
     }
 
     /**
-     * SampleAgeLimit drops samples older than the limit. It requires Prometheus &gt;= v2.50.0 or Thanos &gt;= v0.32.0.
+     * sampleAgeLimit drops samples older than the limit. It requires Prometheus &gt;= v2.50.0 or Thanos &gt;= v0.32.0.
      */
     @JsonProperty("sampleAgeLimit")
     public void setSampleAgeLimit(String sampleAgeLimit) {

@@ -55,20 +55,9 @@ func processInlineDuplicateFields(_ *generator.Context, _ *types.Package, t *typ
 		return
 	}
 
-	// Gather the embedded type field names
+	// Gather the embedded type field names (recursively for nested inline embeds)
 	embeddedFieldNames := make(map[string]bool)
-	for _, embeddedMember := range m.Type.Members {
-		embeddedSwaggerIgnore := reflect.StructTag(embeddedMember.Tags).Get("swaggerignore")
-		embeddedJSON := reflect.StructTag(embeddedMember.Tags).Get("json")
-		if embeddedSwaggerIgnore != "" || embeddedJSON == "" || embeddedJSON == "-" || strings.Contains(embeddedJSON, ",omitted") {
-			continue
-		}
-
-		jsonFieldName := strings.Split(embeddedJSON, ",")[0]
-		if jsonFieldName != "" {
-			embeddedFieldNames[jsonFieldName] = true
-		}
-	}
+	collectInlineFieldNames(m.Type, embeddedFieldNames)
 
 	// Go through all the members of the current type
 	for i := range t.Members {
@@ -84,6 +73,25 @@ func processInlineDuplicateFields(_ *generator.Context, _ *types.Package, t *typ
 		t.Members[i].Tags = strings.Replace(t.Members[i].Tags, jsonTag, "-", 1)
 		fmt.Printf("Resolved duplicate field '%s': keeping field from embedded type %s, omitting from parent %s.%s\n",
 			jsonFieldName, m.Type.Name.Name, t.Name.Package, t.Name.Name)
+	}
+}
+
+// collectInlineFieldNames recursively collects all JSON field names from a type,
+// descending into nested inline-embedded structs.
+func collectInlineFieldNames(t *types.Type, fieldNames map[string]bool) {
+	for _, member := range t.Members {
+		swaggerIgnore := reflect.StructTag(member.Tags).Get("swaggerignore")
+		jsonTag := reflect.StructTag(member.Tags).Get("json")
+		if swaggerIgnore != "" || jsonTag == "" || jsonTag == "-" || strings.Contains(jsonTag, ",omitted") {
+			continue
+		}
+		jsonFieldName := strings.Split(jsonTag, ",")[0]
+		if jsonFieldName != "" {
+			fieldNames[jsonFieldName] = true
+		} else if member.Embedded && strings.Contains(jsonTag, ",inline") && member.Type != nil {
+			// Nested inline embed with no explicit field name — recurse
+			collectInlineFieldNames(member.Type, fieldNames)
+		}
 	}
 }
 

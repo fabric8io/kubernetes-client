@@ -19,7 +19,8 @@
           "items": {
             "default": {},
             "$ref": "#/definitions/io.cert-manager.acme.v1.ACMEChallenge"
-          }
+          },
+          "x-kubernetes-list-type": "atomic"
         },
         "identifier": {
           "description": "Identifier is the DNS name to be validated as part of this authorization",
@@ -197,7 +198,8 @@
           "items": {
             "default": {},
             "$ref": "#/definitions/io.k8s.networking.gateway.v1.ParentReference"
-          }
+          },
+          "x-kubernetes-list-type": "atomic"
         },
         "podTemplate": {
           "description": "Optional pod template used to configure the ACME challenge solver pods used for HTTP01 challenges.",
@@ -308,6 +310,33 @@
         "Scope": "Namespaced"
       }
     },
+    "io.cert-manager.acme.v1.ACMEChallengeSolverHTTP01IngressPodResources": {
+      "description": "ACMEChallengeSolverHTTP01IngressPodResources defines resource requirements for ACME HTTP01 solver pods. To keep API surface essential, this trims down the 'corev1.ResourceRequirements' type to only include the Requests and Limits fields.",
+      "type": "object",
+      "properties": {
+        "limits": {
+          "description": "Limits describes the maximum amount of compute resources allowed. More info: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/",
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/definitions/io.k8s.apimachinery.pkg.api.resource.Quantity"
+          }
+        },
+        "requests": {
+          "description": "Requests describes the minimum amount of compute resources required. If Requests is omitted for a container, it defaults to Limits if that is explicitly specified, otherwise to the global values configured via controller flags. Requests cannot exceed Limits. More info: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/",
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/definitions/io.k8s.apimachinery.pkg.api.resource.Quantity"
+          }
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "acme.cert-manager.io",
+        "Version": "v1",
+        "Kind": "ACMEChallengeSolverHTTP01IngressPodResources",
+        "Scope": "Namespaced"
+      }
+    },
     "io.cert-manager.acme.v1.ACMEChallengeSolverHTTP01IngressPodSecurityContext": {
       "type": "object",
       "properties": {
@@ -349,7 +378,8 @@
             "type": "integer",
             "format": "int64",
             "default": 0
-          }
+          },
+          "x-kubernetes-list-type": "atomic"
         },
         "sysctls": {
           "description": "Sysctls hold a list of namespaced sysctls used for the pod. Pods with unsupported sysctls (by the container runtime) might fail to launch. Note that this field cannot be set when spec.os.name is windows.",
@@ -357,7 +387,8 @@
           "items": {
             "default": {},
             "$ref": "#/definitions/io.k8s.api.core.v1.Sysctl"
-          }
+          },
+          "x-kubernetes-list-type": "atomic"
         }
       },
       "x-fabric8-info": {
@@ -382,6 +413,10 @@
             "default": {},
             "$ref": "#/definitions/io.k8s.api.core.v1.LocalObjectReference"
           },
+          "x-kubernetes-list-map-keys": [
+            "name"
+          ],
+          "x-kubernetes-list-type": "map",
           "x-kubernetes-patch-merge-key": "name",
           "x-kubernetes-patch-strategy": "merge"
         },
@@ -397,6 +432,10 @@
           "description": "If specified, the pod's priorityClassName.",
           "type": "string"
         },
+        "resources": {
+          "description": "If specified, the pod's resource requirements. These values override the global resource configuration flags. Note that when only specifying resource limits, ensure they are greater than or equal to the corresponding global resource requests configured via controller flags (--acme-http01-solver-resource-request-cpu, --acme-http01-solver-resource-request-memory). Kubernetes will reject pod creation if limits are lower than requests, causing challenge failures.",
+          "$ref": "#/definitions/io.cert-manager.acme.v1.ACMEChallengeSolverHTTP01IngressPodResources"
+        },
         "securityContext": {
           "description": "If specified, the pod's security context",
           "$ref": "#/definitions/io.cert-manager.acme.v1.ACMEChallengeSolverHTTP01IngressPodSecurityContext"
@@ -411,7 +450,8 @@
           "items": {
             "default": {},
             "$ref": "#/definitions/io.k8s.api.core.v1.Toleration"
-          }
+          },
+          "x-kubernetes-list-type": "atomic"
         }
       },
       "x-fabric8-info": {
@@ -549,7 +589,8 @@
           "items": {
             "default": {},
             "$ref": "#/definitions/io.cert-manager.acme.v1.ACMEChallengeSolver"
-          }
+          },
+          "x-kubernetes-list-type": "atomic"
         }
       },
       "x-fabric8-info": {
@@ -755,6 +796,10 @@
           "type": "string",
           "default": ""
         },
+        "protocol": {
+          "description": "Protocol to use for dynamic DNS update queries. Valid values are (case-sensitive) ``TCP`` and ``UDP``; ``UDP`` (default).",
+          "type": "string"
+        },
         "tsigAlgorithm": {
           "description": "The TSIG Algorithm configured in the DNS supporting RFC2136. Used only when ``tsigSecretSecretRef`` and ``tsigKeyName`` are defined. Supported values are (case-insensitive): ``HMACMD5`` (default), ``HMACSHA1``, ``HMACSHA256`` or ``HMACSHA512``.",
           "type": "string"
@@ -909,7 +954,8 @@
           "items": {
             "type": "string",
             "default": ""
-          }
+          },
+          "x-kubernetes-list-type": "atomic"
         },
         "dnsZones": {
           "description": "List of DNSZones that this solver will be used to solve. The most specific DNS zone match specified here will take precedence over other DNS zone matches, so a solver specifying sys.example.com will be selected over one specifying example.com for the domain www.sys.example.com. If multiple solvers match with the same dnsZones value, the solver with the most matching labels in matchLabels will be selected. If neither has more matches, the solver defined earlier in the list will be selected.",
@@ -917,7 +963,8 @@
           "items": {
             "type": "string",
             "default": ""
-          }
+          },
+          "x-kubernetes-list-type": "atomic"
         },
         "matchLabels": {
           "description": "A label selector that is used to refine the set of certificate's that this challenge solver will apply to.",
@@ -1035,7 +1082,7 @@
         "issuerRef": {
           "description": "References a properly configured ACME-type Issuer which should be used to create this Challenge. If the Issuer does not exist, processing will be retried. If the Issuer is not an 'ACME' Issuer, an error will be returned and the Challenge will be marked as failed.",
           "default": {},
-          "$ref": "#/definitions/io.cert-manager.meta.v1.ObjectReference"
+          "$ref": "#/definitions/io.cert-manager.meta.v1.IssuerReference"
         },
         "key": {
           "description": "The ACME challenge key for this challenge For HTTP01 challenges, this is the value that must be responded with to complete the HTTP01 challenge in the format: `\u003cprivate key JWK thumbprint\u003e.\u003ckey from acme server for challenge\u003e`. For DNS01 challenges, this is the base64 encoded SHA256 sum of the `\u003cprivate key JWK thumbprint\u003e.\u003ckey from acme server for challenge\u003e` text that must be set as the TXT record content.",
@@ -1196,7 +1243,8 @@
           "items": {
             "type": "string",
             "default": ""
-          }
+          },
+          "x-kubernetes-list-type": "atomic"
         },
         "duration": {
           "description": "Duration is the duration for the not after date for the requested certificate. this is set on order creation as pe the ACME spec.",
@@ -1208,12 +1256,13 @@
           "items": {
             "type": "string",
             "default": ""
-          }
+          },
+          "x-kubernetes-list-type": "atomic"
         },
         "issuerRef": {
           "description": "IssuerRef references a properly configured ACME-type Issuer which should be used to create this Order. If the Issuer does not exist, processing will be retried. If the Issuer is not an 'ACME' Issuer, an error will be returned and the Order will be marked as failed.",
           "default": {},
-          "$ref": "#/definitions/io.cert-manager.meta.v1.ObjectReference"
+          "$ref": "#/definitions/io.cert-manager.meta.v1.IssuerReference"
         },
         "profile": {
           "description": "Profile allows requesting a certificate profile from the ACME server. Supported profiles are listed by the server's ACME directory URL.",
@@ -1242,7 +1291,8 @@
           "items": {
             "default": {},
             "$ref": "#/definitions/io.cert-manager.acme.v1.ACMEAuthorization"
-          }
+          },
+          "x-kubernetes-list-type": "atomic"
         },
         "certificate": {
           "description": "Certificate is a copy of the PEM encoded certificate for this Order. This field will be populated after the order has been successfully finalized with the ACME server, and the order has transitioned to the 'valid' state.",
@@ -1331,7 +1381,8 @@
           "items": {
             "type": "string",
             "default": ""
-          }
+          },
+          "x-kubernetes-list-type": "atomic"
         },
         "name": {
           "description": "Name of the ServiceAccount used to request a token.",
@@ -1344,6 +1395,35 @@
         "Group": "acme.cert-manager.io",
         "Version": "v1",
         "Kind": "ServiceAccountRef",
+        "Scope": "Namespaced"
+      }
+    },
+    "io.cert-manager.meta.v1.IssuerReference": {
+      "description": "IssuerReference is a reference to a certificate issuer object with a given name, kind and group.",
+      "type": "object",
+      "required": [
+        "name"
+      ],
+      "properties": {
+        "group": {
+          "description": "Group of the issuer being referred to. Defaults to 'cert-manager.io'.",
+          "type": "string"
+        },
+        "kind": {
+          "description": "Kind of the issuer being referred to. Defaults to 'Issuer'.",
+          "type": "string"
+        },
+        "name": {
+          "description": "Name of the issuer being referred to.",
+          "type": "string",
+          "default": ""
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "meta.cert-manager.io",
+        "Version": "v1",
+        "Kind": "IssuerReference",
         "Scope": "Namespaced"
       }
     },
@@ -1365,35 +1445,6 @@
         "Group": "meta.cert-manager.io",
         "Version": "v1",
         "Kind": "LocalObjectReference",
-        "Scope": "Namespaced"
-      }
-    },
-    "io.cert-manager.meta.v1.ObjectReference": {
-      "description": "ObjectReference is a reference to an object with a given name, kind and group.",
-      "type": "object",
-      "required": [
-        "name"
-      ],
-      "properties": {
-        "group": {
-          "description": "Group of the resource being referred to.",
-          "type": "string"
-        },
-        "kind": {
-          "description": "Kind of the resource being referred to.",
-          "type": "string"
-        },
-        "name": {
-          "description": "Name of the resource being referred to.",
-          "type": "string",
-          "default": ""
-        }
-      },
-      "x-fabric8-info": {
-        "Type": "nested",
-        "Group": "meta.cert-manager.io",
-        "Version": "v1",
-        "Kind": "ObjectReference",
         "Scope": "Namespaced"
       }
     },
@@ -1434,7 +1485,8 @@
           "items": {
             "type": "string",
             "default": ""
-          }
+          },
+          "x-kubernetes-list-type": "atomic"
         },
         "issuingCertificateURLs": {
           "description": "IssuingCertificateURLs is a list of URLs which this issuer should embed into certificates it creates. See https://www.rfc-editor.org/rfc/rfc5280#section-4.2.2.1 for more details. As an example, such a URL might be \"http://ca.domain.com/ca.crt\".",
@@ -1442,7 +1494,8 @@
           "items": {
             "type": "string",
             "default": ""
-          }
+          },
+          "x-kubernetes-list-type": "atomic"
         },
         "ocspServers": {
           "description": "The OCSP server list is an X.509 v3 extension that defines a list of URLs of OCSP responders. The OCSP responders can be queried for the revocation status of an issued certificate. If not set, the certificate will be issued with no OCSP servers set. For example, an OCSP server URL could be \"http://ocsp.int-x3.letsencrypt.org\".",
@@ -1450,7 +1503,8 @@
           "items": {
             "type": "string",
             "default": ""
-          }
+          },
+          "x-kubernetes-list-type": "atomic"
         },
         "secretName": {
           "description": "SecretName is the name of the secret used to sign Certificates issued by this Issuer.",
@@ -1806,7 +1860,7 @@
         "issuerRef": {
           "description": "Reference to the issuer responsible for issuing the certificate. If the issuer is namespace-scoped, it must be in the same namespace as the Certificate. If the issuer is cluster-scoped, it can be used from any namespace.\n\nThe `name` field of the reference must always be specified.",
           "default": {},
-          "$ref": "#/definitions/io.cert-manager.meta.v1.ObjectReference"
+          "$ref": "#/definitions/io.cert-manager.meta.v1.IssuerReference"
         },
         "request": {
           "description": "The PEM-encoded X.509 certificate signing request to be submitted to the issuer for signing.\n\nIf the CSR has a BasicConstraints extension, its isCA attribute must match the `isCA` value of this CertificateRequest. If the CSR has a KeyUsage extension, its key usages must match the key usages in the `usages` field of this CertificateRequest. If the CSR has a ExtKeyUsage extension, its extended key usages must match the extended key usages in the `usages` field of this CertificateRequest.",
@@ -1823,7 +1877,8 @@
           "items": {
             "type": "string",
             "default": ""
-          }
+          },
+          "x-kubernetes-list-type": "atomic"
         },
         "username": {
           "description": "Username contains the name of the user that created the CertificateRequest. Populated by the cert-manager webhook on creation and immutable.",
@@ -1920,7 +1975,8 @@
           "items": {
             "default": {},
             "$ref": "#/definitions/io.cert-manager.v1.CertificateAdditionalOutputFormat"
-          }
+          },
+          "x-kubernetes-list-type": "atomic"
         },
         "commonName": {
           "description": "Requested common name X509 certificate subject attribute. More info: https://datatracker.ietf.org/doc/html/rfc5280#section-4.1.2.6 NOTE: TLS clients will ignore this value when any subject alternative name is set (see https://tools.ietf.org/html/rfc6125#section-6.4.4).\n\nShould have a length of 64 characters or fewer to avoid generating invalid CSRs. Cannot be set if the `literalSubject` field is set.",
@@ -1932,7 +1988,8 @@
           "items": {
             "type": "string",
             "default": ""
-          }
+          },
+          "x-kubernetes-list-type": "atomic"
         },
         "duration": {
           "description": "Requested 'duration' (i.e. lifetime) of the Certificate. Note that the issuer may choose to ignore the requested duration, just like any other requested attribute.\n\nIf unset, this defaults to 90 days. Minimum accepted duration is 1 hour. Value must be in units accepted by Go time.ParseDuration https://golang.org/pkg/time/#ParseDuration.",
@@ -1944,7 +2001,8 @@
           "items": {
             "type": "string",
             "default": ""
-          }
+          },
+          "x-kubernetes-list-type": "atomic"
         },
         "encodeUsagesInRequest": {
           "description": "Whether the KeyUsage and ExtKeyUsage extensions should be set in the encoded CSR.\n\nThis option defaults to true, and should only be disabled if the target issuer does not support CSRs with these X509 KeyUsage/ ExtKeyUsage extensions.",
@@ -1956,7 +2014,8 @@
           "items": {
             "type": "string",
             "default": ""
-          }
+          },
+          "x-kubernetes-list-type": "atomic"
         },
         "isCA": {
           "description": "Requested basic constraints isCA value. The isCA value is used to set the `isCA` field on the created CertificateRequest resources. Note that the issuer may choose to ignore the requested isCA value, just like any other requested attribute.\n\nIf true, this will automatically add the `cert sign` usage to the list of requested `usages`.",
@@ -1965,7 +2024,7 @@
         "issuerRef": {
           "description": "Reference to the issuer responsible for issuing the certificate. If the issuer is namespace-scoped, it must be in the same namespace as the Certificate. If the issuer is cluster-scoped, it can be used from any namespace.\n\nThe `name` field of the reference must always be specified.",
           "default": {},
-          "$ref": "#/definitions/io.cert-manager.meta.v1.ObjectReference"
+          "$ref": "#/definitions/io.cert-manager.meta.v1.IssuerReference"
         },
         "keystores": {
           "description": "Additional keystore output formats to be stored in the Certificate's Secret.",
@@ -1985,7 +2044,8 @@
           "items": {
             "default": {},
             "$ref": "#/definitions/io.cert-manager.v1.OtherName"
-          }
+          },
+          "x-kubernetes-list-type": "atomic"
         },
         "privateKey": {
           "description": "Private key options. These include the key algorithm and size, the used encoding and the rotation policy.",
@@ -2028,7 +2088,8 @@
           "items": {
             "type": "string",
             "default": ""
-          }
+          },
+          "x-kubernetes-list-type": "atomic"
         },
         "usages": {
           "description": "Requested key usages and extended key usages. These usages are used to set the `usages` field on the created CertificateRequest resources. If `encodeUsagesInRequest` is unset or set to `true`, the usages will additionally be encoded in the `request` field which contains the CSR blob.\n\nIf unset, defaults to `digital signature` and `key encipherment`.",
@@ -2036,7 +2097,8 @@
           "items": {
             "type": "string",
             "default": ""
-          }
+          },
+          "x-kubernetes-list-type": "atomic"
         }
       },
       "x-fabric8-info": {
@@ -2432,7 +2494,8 @@
           "items": {
             "type": "string",
             "default": ""
-          }
+          },
+          "x-kubernetes-list-type": "atomic"
         },
         "emailAddresses": {
           "description": "EmailAddresses is a list of Email Addresses that are permitted or excluded.",
@@ -2440,7 +2503,8 @@
           "items": {
             "type": "string",
             "default": ""
-          }
+          },
+          "x-kubernetes-list-type": "atomic"
         },
         "ipRanges": {
           "description": "IPRanges is a list of IP Ranges that are permitted or excluded. This should be a valid CIDR notation.",
@@ -2448,7 +2512,8 @@
           "items": {
             "type": "string",
             "default": ""
-          }
+          },
+          "x-kubernetes-list-type": "atomic"
         },
         "uriDomains": {
           "description": "URIDomains is a list of URI domains that are permitted or excluded.",
@@ -2456,7 +2521,8 @@
           "items": {
             "type": "string",
             "default": ""
-          }
+          },
+          "x-kubernetes-list-type": "atomic"
         }
       },
       "x-fabric8-info": {
@@ -2556,7 +2622,8 @@
           "items": {
             "type": "string",
             "default": ""
-          }
+          },
+          "x-kubernetes-list-type": "atomic"
         }
       },
       "x-fabric8-info": {
@@ -2580,7 +2647,8 @@
           "items": {
             "type": "string",
             "default": ""
-          }
+          },
+          "x-kubernetes-list-type": "atomic"
         },
         "name": {
           "description": "Name of the ServiceAccount used to request a token.",
@@ -2875,7 +2943,8 @@
           "items": {
             "type": "string",
             "default": ""
-          }
+          },
+          "x-kubernetes-list-type": "atomic"
         },
         "localities": {
           "description": "Cities to be used on the Certificate.",
@@ -2883,7 +2952,8 @@
           "items": {
             "type": "string",
             "default": ""
-          }
+          },
+          "x-kubernetes-list-type": "atomic"
         },
         "organizationalUnits": {
           "description": "Organizational Units to be used on the Certificate.",
@@ -2891,7 +2961,8 @@
           "items": {
             "type": "string",
             "default": ""
-          }
+          },
+          "x-kubernetes-list-type": "atomic"
         },
         "organizations": {
           "description": "Organizations to be used on the Certificate.",
@@ -2899,7 +2970,8 @@
           "items": {
             "type": "string",
             "default": ""
-          }
+          },
+          "x-kubernetes-list-type": "atomic"
         },
         "postalCodes": {
           "description": "Postal codes to be used on the Certificate.",
@@ -2907,7 +2979,8 @@
           "items": {
             "type": "string",
             "default": ""
-          }
+          },
+          "x-kubernetes-list-type": "atomic"
         },
         "provinces": {
           "description": "State/Provinces to be used on the Certificate.",
@@ -2915,7 +2988,8 @@
           "items": {
             "type": "string",
             "default": ""
-          }
+          },
+          "x-kubernetes-list-type": "atomic"
         },
         "serialNumber": {
           "description": "Serial number to be used on the Certificate.",
@@ -2927,7 +3001,8 @@
           "items": {
             "type": "string",
             "default": ""
-          }
+          },
+          "x-kubernetes-list-type": "atomic"
         }
       },
       "x-fabric8-info": {

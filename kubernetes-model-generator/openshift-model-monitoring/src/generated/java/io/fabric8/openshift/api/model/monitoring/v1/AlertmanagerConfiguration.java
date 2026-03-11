@@ -108,7 +108,7 @@ public class AlertmanagerConfiguration implements Editable<AlertmanagerConfigura
     }
 
     /**
-     * The name of the AlertmanagerConfig resource which is used to generate the Alertmanager configuration. It must be defined in the same namespace as the Alertmanager object. The operator will not enforce a `namespace` label for routes and inhibition rules.
+     * name defines the name of the AlertmanagerConfig custom resource which is used to generate the Alertmanager configuration. It must be defined in the same namespace as the Alertmanager object. The operator will not enforce a `namespace` label for routes and inhibition rules.
      */
     @JsonProperty("name")
     public String getName() {
@@ -116,7 +116,7 @@ public class AlertmanagerConfiguration implements Editable<AlertmanagerConfigura
     }
 
     /**
-     * The name of the AlertmanagerConfig resource which is used to generate the Alertmanager configuration. It must be defined in the same namespace as the Alertmanager object. The operator will not enforce a `namespace` label for routes and inhibition rules.
+     * name defines the name of the AlertmanagerConfig custom resource which is used to generate the Alertmanager configuration. It must be defined in the same namespace as the Alertmanager object. The operator will not enforce a `namespace` label for routes and inhibition rules.
      */
     @JsonProperty("name")
     public void setName(String name) {
@@ -124,7 +124,7 @@ public class AlertmanagerConfiguration implements Editable<AlertmanagerConfigura
     }
 
     /**
-     * Custom notification templates.
+     * templates defines the custom notification templates.
      */
     @JsonProperty("templates")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -133,7 +133,7 @@ public class AlertmanagerConfiguration implements Editable<AlertmanagerConfigura
     }
 
     /**
-     * Custom notification templates.
+     * templates defines the custom notification templates.
      */
     @JsonProperty("templates")
     public void setTemplates(List<SecretOrConfigMap> templates) {

@@ -79,7 +79,7 @@ public class ClusterClaimSpec implements Editable<ClusterClaimSpecBuilder>, Kube
     }
 
     /**
-     * Value is a claim-dependent string
+     * value is a claim-dependent string
      */
     @JsonProperty("value")
     public String getValue() {
@@ -87,7 +87,7 @@ public class ClusterClaimSpec implements Editable<ClusterClaimSpecBuilder>, Kube
     }
 
     /**
-     * Value is a claim-dependent string
+     * value is a claim-dependent string
      */
     @JsonProperty("value")
     public void setValue(String value) {

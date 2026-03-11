@@ -41,7 +41,8 @@ import lombok.experimental.Accessors;
     "convertClassicHistogramsToNHCB",
     "nativeHistogramBucketLimit",
     "nativeHistogramMinBucketFactor",
-    "scrapeClassicHistograms"
+    "scrapeClassicHistograms",
+    "scrapeNativeHistograms"
 })
 @ToString
 @EqualsAndHashCode
@@ -76,6 +77,8 @@ public class NativeHistogramConfig implements Editable<NativeHistogramConfigBuil
     private Quantity nativeHistogramMinBucketFactor;
     @JsonProperty("scrapeClassicHistograms")
     private Boolean scrapeClassicHistograms;
+    @JsonProperty("scrapeNativeHistograms")
+    private Boolean scrapeNativeHistograms;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -85,16 +88,17 @@ public class NativeHistogramConfig implements Editable<NativeHistogramConfigBuil
     public NativeHistogramConfig() {
     }
 
-    public NativeHistogramConfig(Boolean convertClassicHistogramsToNHCB, Long nativeHistogramBucketLimit, Quantity nativeHistogramMinBucketFactor, Boolean scrapeClassicHistograms) {
+    public NativeHistogramConfig(Boolean convertClassicHistogramsToNHCB, Long nativeHistogramBucketLimit, Quantity nativeHistogramMinBucketFactor, Boolean scrapeClassicHistograms, Boolean scrapeNativeHistograms) {
         super();
         this.convertClassicHistogramsToNHCB = convertClassicHistogramsToNHCB;
         this.nativeHistogramBucketLimit = nativeHistogramBucketLimit;
         this.nativeHistogramMinBucketFactor = nativeHistogramMinBucketFactor;
         this.scrapeClassicHistograms = scrapeClassicHistograms;
+        this.scrapeNativeHistograms = scrapeNativeHistograms;
     }
 
     /**
-     * Whether to convert all scraped classic histograms into a native histogram with custom buckets. It requires Prometheus &gt;= v3.0.0.
+     * convertClassicHistogramsToNHCB defines whether to convert all scraped classic histograms into a native histogram with custom buckets. It requires Prometheus &gt;= v3.0.0.
      */
     @JsonProperty("convertClassicHistogramsToNHCB")
     public Boolean getConvertClassicHistogramsToNHCB() {
@@ -102,7 +106,7 @@ public class NativeHistogramConfig implements Editable<NativeHistogramConfigBuil
     }
 
     /**
-     * Whether to convert all scraped classic histograms into a native histogram with custom buckets. It requires Prometheus &gt;= v3.0.0.
+     * convertClassicHistogramsToNHCB defines whether to convert all scraped classic histograms into a native histogram with custom buckets. It requires Prometheus &gt;= v3.0.0.
      */
     @JsonProperty("convertClassicHistogramsToNHCB")
     public void setConvertClassicHistogramsToNHCB(Boolean convertClassicHistogramsToNHCB) {
@@ -110,7 +114,7 @@ public class NativeHistogramConfig implements Editable<NativeHistogramConfigBuil
     }
 
     /**
-     * If there are more than this many buckets in a native histogram, buckets will be merged to stay within the limit. It requires Prometheus &gt;= v2.45.0.
+     * nativeHistogramBucketLimit defines ff there are more than this many buckets in a native histogram, buckets will be merged to stay within the limit. It requires Prometheus &gt;= v2.45.0.
      */
     @JsonProperty("nativeHistogramBucketLimit")
     public Long getNativeHistogramBucketLimit() {
@@ -118,7 +122,7 @@ public class NativeHistogramConfig implements Editable<NativeHistogramConfigBuil
     }
 
     /**
-     * If there are more than this many buckets in a native histogram, buckets will be merged to stay within the limit. It requires Prometheus &gt;= v2.45.0.
+     * nativeHistogramBucketLimit defines ff there are more than this many buckets in a native histogram, buckets will be merged to stay within the limit. It requires Prometheus &gt;= v2.45.0.
      */
     @JsonProperty("nativeHistogramBucketLimit")
     public void setNativeHistogramBucketLimit(Long nativeHistogramBucketLimit) {
@@ -142,7 +146,7 @@ public class NativeHistogramConfig implements Editable<NativeHistogramConfigBuil
     }
 
     /**
-     * Whether to scrape a classic histogram that is also exposed as a native histogram. It requires Prometheus &gt;= v2.45.0.<br><p> <br><p> Notice: `scrapeClassicHistograms` corresponds to the `always_scrape_classic_histograms` field in the Prometheus configuration.
+     * scrapeClassicHistograms defines whether to scrape a classic histogram that is also exposed as a native histogram. It requires Prometheus &gt;= v2.45.0.<br><p> <br><p> Notice: `scrapeClassicHistograms` corresponds to the `always_scrape_classic_histograms` field in the Prometheus configuration.
      */
     @JsonProperty("scrapeClassicHistograms")
     public Boolean getScrapeClassicHistograms() {
@@ -150,11 +154,27 @@ public class NativeHistogramConfig implements Editable<NativeHistogramConfigBuil
     }
 
     /**
-     * Whether to scrape a classic histogram that is also exposed as a native histogram. It requires Prometheus &gt;= v2.45.0.<br><p> <br><p> Notice: `scrapeClassicHistograms` corresponds to the `always_scrape_classic_histograms` field in the Prometheus configuration.
+     * scrapeClassicHistograms defines whether to scrape a classic histogram that is also exposed as a native histogram. It requires Prometheus &gt;= v2.45.0.<br><p> <br><p> Notice: `scrapeClassicHistograms` corresponds to the `always_scrape_classic_histograms` field in the Prometheus configuration.
      */
     @JsonProperty("scrapeClassicHistograms")
     public void setScrapeClassicHistograms(Boolean scrapeClassicHistograms) {
         this.scrapeClassicHistograms = scrapeClassicHistograms;
+    }
+
+    /**
+     * scrapeNativeHistograms defines whether to enable scraping of native histograms. It requires Prometheus &gt;= v3.8.0.
+     */
+    @JsonProperty("scrapeNativeHistograms")
+    public Boolean getScrapeNativeHistograms() {
+        return scrapeNativeHistograms;
+    }
+
+    /**
+     * scrapeNativeHistograms defines whether to enable scraping of native histograms. It requires Prometheus &gt;= v3.8.0.
+     */
+    @JsonProperty("scrapeNativeHistograms")
+    public void setScrapeNativeHistograms(Boolean scrapeNativeHistograms) {
+        this.scrapeNativeHistograms = scrapeNativeHistograms;
     }
 
     @JsonIgnore
