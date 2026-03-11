@@ -3,13 +3,13 @@
 ### 7.7-SNAPSHOT
 
 #### Bugs
-* Fix #PLACEHOLDER_PROM: fix processInlineDuplicateFields to recursively resolve nested inline embeds
+* Fix #7543: fix processInlineDuplicateFields to recursively resolve nested inline embeds
 
 #### Improvements
 * Fix #7522: improve dependency management for kubernetes-httpclient-okhttp
 
 #### Dependency Upgrade
-* Fix #PLACEHOLDER_PROM: bump prometheus-operator from 0.85.0 to 0.89.0
+* Fix #7543: bump prometheus-operator from 0.85.0 to 0.89.0
 * Fix #7542: bump open-cluster-management.io/api from 0.16.2 to 1.2.0
 * Fix #7541: bump gateway-api from 1.4.0 to 1.5.0
 * Fix #7538: bump cert-manager from 1.18.2 to 1.19.4
@@ -17,7 +17,7 @@
 #### New Features
 
 #### _**Note**_: Breaking changes
-* Fix #PLACEHOLDER_PROM: monitoring model `v1.AuthorizationValidationError`, `v1.OAuth2ValidationError`, `v1.ProbeTargetsValidationError`, and `v1.PrometheusTracingConfig` removed
+* Fix #7543: monitoring model `v1.AuthorizationValidationError`, `v1.OAuth2ValidationError`, `v1.ProbeTargetsValidationError`, and `v1.PrometheusTracingConfig` removed
 * Fix #7542: open-cluster-management model `operator.v1.WebhookConfiguration` removed (replaced by `DefaultWebhookConfiguration` and `HostedWebhookConfiguration` upstream)
 * Fix #7541: gateway-api model `v1beta1.ReferenceGrantFrom`, `v1beta1.ReferenceGrantSpec`, and `v1beta1.ReferenceGrantTo` removed (ReferenceGrant graduated to v1 upstream)
 * Fix #7538: cert-manager model `ObjectReference` renamed to `IssuerReference` (following upstream rename in cert-manager v1.19.0)
