@@ -44,6 +44,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -231,6 +232,14 @@ class KubernetesConversionWebhookHandlingTest {
           .setCaBundle(
               WebhookServerTestUtils.getEncodedCertificate(webhookServer.getSelfSignedCertificate().certificatePath()));
       client.resource(crd).serverSideApply();
+      client.apiextensions().v1().customResourceDefinitions()
+          .withName("testresources." + GROUP)
+          .waitUntilCondition(c -> c.getStatus() != null
+              && c.getStatus().getConditions() != null
+              && c.getStatus().getConditions().stream()
+                  .anyMatch(condition -> "Established".equals(condition.getType())
+                      && "True".equals(condition.getStatus())),
+              30, TimeUnit.SECONDS);
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
