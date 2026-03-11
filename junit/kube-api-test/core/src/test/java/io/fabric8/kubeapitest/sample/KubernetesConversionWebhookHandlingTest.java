@@ -38,8 +38,6 @@ import io.fabric8.mockwebserver.http.RecordedRequest;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.condition.DisabledOnOs;
-import org.junit.jupiter.api.condition.OS;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -57,7 +55,6 @@ import static org.assertj.core.api.Assertions.assertThat;
  * specifically converting a "hostPort" field to separate "host" and "port" fields (and vice versa).
  */
 @EnableKubeAPIServer
-@DisabledOnOs(OS.WINDOWS)
 class KubernetesConversionWebhookHandlingTest {
 
   private static final String GROUP = "kubeapitest.example.com";
