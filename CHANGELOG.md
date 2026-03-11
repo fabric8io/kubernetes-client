@@ -9,13 +9,13 @@
 
 #### Dependency Upgrade
 * Fix #7541: bump gateway-api from 1.4.0 to 1.5.0
-* Fix #7530: bump cert-manager from 1.18.2 to 1.19.4
+* Fix #7538: bump cert-manager from 1.18.2 to 1.19.4
 
 #### New Features
 
 #### _**Note**_: Breaking changes
 * Fix #7541: gateway-api model `v1beta1.ReferenceGrantFrom`, `v1beta1.ReferenceGrantSpec`, and `v1beta1.ReferenceGrantTo` removed (ReferenceGrant graduated to v1 upstream)
-* Fix #7530: cert-manager model `ObjectReference` renamed to `IssuerReference` (following upstream rename in cert-manager v1.19.0)
+* Fix #7538: cert-manager model `ObjectReference` renamed to `IssuerReference` (following upstream rename in cert-manager v1.19.0)
 
 ### 7.4.1 (2026-03-10)
 
