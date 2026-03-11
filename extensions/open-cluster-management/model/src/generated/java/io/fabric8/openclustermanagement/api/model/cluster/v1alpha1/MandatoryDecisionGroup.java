@@ -86,7 +86,7 @@ public class MandatoryDecisionGroup implements Editable<MandatoryDecisionGroupBu
     }
 
     /**
-     * GroupIndex of the decision group should match the placementDecisions label value with label key cluster.open-cluster-management.io/decision-group-index
+     * groupIndex of the decision group should match the placementDecisions label value with label key cluster.open-cluster-management.io/decision-group-index
      */
     @JsonProperty("groupIndex")
     public Integer getGroupIndex() {
@@ -94,7 +94,7 @@ public class MandatoryDecisionGroup implements Editable<MandatoryDecisionGroupBu
     }
 
     /**
-     * GroupIndex of the decision group should match the placementDecisions label value with label key cluster.open-cluster-management.io/decision-group-index
+     * groupIndex of the decision group should match the placementDecisions label value with label key cluster.open-cluster-management.io/decision-group-index
      */
     @JsonProperty("groupIndex")
     public void setGroupIndex(Integer groupIndex) {
@@ -102,7 +102,7 @@ public class MandatoryDecisionGroup implements Editable<MandatoryDecisionGroupBu
     }
 
     /**
-     * GroupName of the decision group should match the placementDecisions label value with label key cluster.open-cluster-management.io/decision-group-name
+     * groupName of the decision group should match the placementDecisions label value with label key cluster.open-cluster-management.io/decision-group-name
      */
     @JsonProperty("groupName")
     public String getGroupName() {
@@ -110,7 +110,7 @@ public class MandatoryDecisionGroup implements Editable<MandatoryDecisionGroupBu
     }
 
     /**
-     * GroupName of the decision group should match the placementDecisions label value with label key cluster.open-cluster-management.io/decision-group-name
+     * groupName of the decision group should match the placementDecisions label value with label key cluster.open-cluster-management.io/decision-group-name
      */
     @JsonProperty("groupName")
     public void setGroupName(String groupName) {

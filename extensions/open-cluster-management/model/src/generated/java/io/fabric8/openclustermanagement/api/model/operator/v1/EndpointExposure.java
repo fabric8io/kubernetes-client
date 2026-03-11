@@ -1,5 +1,5 @@
 
-package io.fabric8.openclustermanagement.api.model.cluster.v1alpha1;
+package io.fabric8.openclustermanagement.api.model.operator.v1;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -32,14 +32,13 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
-/**
- * AddOnPlacementScoreItem represents the score name and value.
- */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "name",
-    "value"
+    "grpc",
+    "https",
+    "protocol",
+    "usage"
 })
 @ToString
 @EqualsAndHashCode
@@ -63,67 +62,93 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class AddOnPlacementScoreItem implements Editable<AddOnPlacementScoreItemBuilder>, KubernetesResource
+public class EndpointExposure implements Editable<EndpointExposureBuilder>, KubernetesResource
 {
 
-    @JsonProperty("name")
-    private String name;
-    @JsonProperty("value")
-    private Integer value;
+    @JsonProperty("grpc")
+    private Endpoint grpc;
+    @JsonProperty("https")
+    private Endpoint https;
+    @JsonProperty("protocol")
+    private String protocol;
+    @JsonProperty("usage")
+    private String usage;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
      */
-    public AddOnPlacementScoreItem() {
+    public EndpointExposure() {
     }
 
-    public AddOnPlacementScoreItem(String name, Integer value) {
+    public EndpointExposure(Endpoint grpc, Endpoint https, String protocol, String usage) {
         super();
-        this.name = name;
-        this.value = value;
+        this.grpc = grpc;
+        this.https = https;
+        this.protocol = protocol;
+        this.usage = usage;
+    }
+
+    @JsonProperty("grpc")
+    public Endpoint getGrpc() {
+        return grpc;
+    }
+
+    @JsonProperty("grpc")
+    public void setGrpc(Endpoint grpc) {
+        this.grpc = grpc;
+    }
+
+    @JsonProperty("https")
+    public Endpoint getHttps() {
+        return https;
+    }
+
+    @JsonProperty("https")
+    public void setHttps(Endpoint https) {
+        this.https = https;
     }
 
     /**
-     * name is the name of the score
+     * protocol is the protocol used for the endpoint, could be https or grpc.
      */
-    @JsonProperty("name")
-    public String getName() {
-        return name;
+    @JsonProperty("protocol")
+    public String getProtocol() {
+        return protocol;
     }
 
     /**
-     * name is the name of the score
+     * protocol is the protocol used for the endpoint, could be https or grpc.
      */
-    @JsonProperty("name")
-    public void setName(String name) {
-        this.name = name;
+    @JsonProperty("protocol")
+    public void setProtocol(String protocol) {
+        this.protocol = protocol;
     }
 
     /**
-     * value is the value of the score. The score range is from -100 to 100.
+     * usage defines the usage of the endpoint. It could be "agentToHub" indicating the endpoint is used for communication between agent and hub, or "consumer" indicating the endpoint is used for external consumer.
      */
-    @JsonProperty("value")
-    public Integer getValue() {
-        return value;
+    @JsonProperty("usage")
+    public String getUsage() {
+        return usage;
     }
 
     /**
-     * value is the value of the score. The score range is from -100 to 100.
+     * usage defines the usage of the endpoint. It could be "agentToHub" indicating the endpoint is used for communication between agent and hub, or "consumer" indicating the endpoint is used for external consumer.
      */
-    @JsonProperty("value")
-    public void setValue(Integer value) {
-        this.value = value;
+    @JsonProperty("usage")
+    public void setUsage(String usage) {
+        this.usage = usage;
     }
 
     @JsonIgnore
-    public AddOnPlacementScoreItemBuilder edit() {
-        return new AddOnPlacementScoreItemBuilder(this);
+    public EndpointExposureBuilder edit() {
+        return new EndpointExposureBuilder(this);
     }
 
     @JsonIgnore
-    public AddOnPlacementScoreItemBuilder toBuilder() {
+    public EndpointExposureBuilder toBuilder() {
         return edit();
     }
 

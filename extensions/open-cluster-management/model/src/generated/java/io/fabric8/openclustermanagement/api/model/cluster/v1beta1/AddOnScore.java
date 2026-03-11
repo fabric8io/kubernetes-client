@@ -86,7 +86,7 @@ public class AddOnScore implements Editable<AddOnScoreBuilder>, KubernetesResour
     }
 
     /**
-     * ResourceName defines the resource name of the AddOnPlacementScore. The placement prioritizer selects AddOnPlacementScore CR by this name.
+     * resourceName defines the resource name of the AddOnPlacementScore. The placement prioritizer selects AddOnPlacementScore CR by this name.
      */
     @JsonProperty("resourceName")
     public String getResourceName() {
@@ -94,7 +94,7 @@ public class AddOnScore implements Editable<AddOnScoreBuilder>, KubernetesResour
     }
 
     /**
-     * ResourceName defines the resource name of the AddOnPlacementScore. The placement prioritizer selects AddOnPlacementScore CR by this name.
+     * resourceName defines the resource name of the AddOnPlacementScore. The placement prioritizer selects AddOnPlacementScore CR by this name.
      */
     @JsonProperty("resourceName")
     public void setResourceName(String resourceName) {
@@ -102,7 +102,7 @@ public class AddOnScore implements Editable<AddOnScoreBuilder>, KubernetesResour
     }
 
     /**
-     * ScoreName defines the score name inside AddOnPlacementScore. AddOnPlacementScore contains a list of score name and score value, ScoreName specify the score to be used by the prioritizer.
+     * scoreName defines the score name inside AddOnPlacementScore. AddOnPlacementScore contains a list of score names and values; scoreName specifies the score to be used by the prioritizer.
      */
     @JsonProperty("scoreName")
     public String getScoreName() {
@@ -110,7 +110,7 @@ public class AddOnScore implements Editable<AddOnScoreBuilder>, KubernetesResour
     }
 
     /**
-     * ScoreName defines the score name inside AddOnPlacementScore. AddOnPlacementScore contains a list of score name and score value, ScoreName specify the score to be used by the prioritizer.
+     * scoreName defines the score name inside AddOnPlacementScore. AddOnPlacementScore contains a list of score names and values; scoreName specifies the score to be used by the prioritizer.
      */
     @JsonProperty("scoreName")
     public void setScoreName(String scoreName) {

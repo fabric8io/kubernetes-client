@@ -1,5 +1,5 @@
 
-package io.fabric8.openclustermanagement.api.model.cluster.v1alpha1;
+package io.fabric8.openclustermanagement.api.model.operator.v1;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -33,13 +33,14 @@ import lombok.ToString;
 import lombok.experimental.Accessors;
 
 /**
- * AddOnPlacementScoreItem represents the score name and value.
+ * HostedWebhookConfiguration represents customization of webhook servers running in hosted installation mode
  */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "name",
-    "value"
+    "address",
+    "bindConfiguration",
+    "port"
 })
 @ToString
 @EqualsAndHashCode
@@ -63,67 +64,86 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class AddOnPlacementScoreItem implements Editable<AddOnPlacementScoreItemBuilder>, KubernetesResource
+public class HostedWebhookConfiguration implements Editable<HostedWebhookConfigurationBuilder>, KubernetesResource
 {
 
-    @JsonProperty("name")
-    private String name;
-    @JsonProperty("value")
-    private Integer value;
+    @JsonProperty("address")
+    private String address;
+    @JsonProperty("bindConfiguration")
+    private BindConfiguration bindConfiguration;
+    @JsonProperty("port")
+    private Integer port;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
      */
-    public AddOnPlacementScoreItem() {
+    public HostedWebhookConfiguration() {
     }
 
-    public AddOnPlacementScoreItem(String name, Integer value) {
+    public HostedWebhookConfiguration(String address, BindConfiguration bindConfiguration, Integer port) {
         super();
-        this.name = name;
-        this.value = value;
+        this.address = address;
+        this.bindConfiguration = bindConfiguration;
+        this.port = port;
     }
 
     /**
-     * name is the name of the score
+     * Address represents the address of a webhook-server. It could be in IP format or fqdn format. The Address must be reachable by apiserver of the hub cluster.
      */
-    @JsonProperty("name")
-    public String getName() {
-        return name;
+    @JsonProperty("address")
+    public String getAddress() {
+        return address;
     }
 
     /**
-     * name is the name of the score
+     * Address represents the address of a webhook-server. It could be in IP format or fqdn format. The Address must be reachable by apiserver of the hub cluster.
      */
-    @JsonProperty("name")
-    public void setName(String name) {
-        this.name = name;
+    @JsonProperty("address")
+    public void setAddress(String address) {
+        this.address = address;
     }
 
     /**
-     * value is the value of the score. The score range is from -100 to 100.
+     * HostedWebhookConfiguration represents customization of webhook servers running in hosted installation mode
      */
-    @JsonProperty("value")
-    public Integer getValue() {
-        return value;
+    @JsonProperty("bindConfiguration")
+    public BindConfiguration getBindConfiguration() {
+        return bindConfiguration;
     }
 
     /**
-     * value is the value of the score. The score range is from -100 to 100.
+     * HostedWebhookConfiguration represents customization of webhook servers running in hosted installation mode
      */
-    @JsonProperty("value")
-    public void setValue(Integer value) {
-        this.value = value;
+    @JsonProperty("bindConfiguration")
+    public void setBindConfiguration(BindConfiguration bindConfiguration) {
+        this.bindConfiguration = bindConfiguration;
+    }
+
+    /**
+     * Port represents the external port of a webhook-server. The default value of Port is 443.
+     */
+    @JsonProperty("port")
+    public Integer getPort() {
+        return port;
+    }
+
+    /**
+     * Port represents the external port of a webhook-server. The default value of Port is 443.
+     */
+    @JsonProperty("port")
+    public void setPort(Integer port) {
+        this.port = port;
     }
 
     @JsonIgnore
-    public AddOnPlacementScoreItemBuilder edit() {
-        return new AddOnPlacementScoreItemBuilder(this);
+    public HostedWebhookConfigurationBuilder edit() {
+        return new HostedWebhookConfigurationBuilder(this);
     }
 
     @JsonIgnore
-    public AddOnPlacementScoreItemBuilder toBuilder() {
+    public HostedWebhookConfigurationBuilder toBuilder() {
         return edit();
     }
 

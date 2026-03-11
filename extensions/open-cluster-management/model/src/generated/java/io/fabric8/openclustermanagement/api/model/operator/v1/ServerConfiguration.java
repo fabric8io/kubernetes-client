@@ -1,7 +1,9 @@
 
-package io.fabric8.openclustermanagement.api.model.cluster.v1alpha1;
+package io.fabric8.openclustermanagement.api.model.operator.v1;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import javax.annotation.processing.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
@@ -32,14 +34,12 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
-/**
- * AddOnPlacementScoreItem represents the score name and value.
- */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "name",
-    "value"
+    "endpointsExposure",
+    "featureGates",
+    "imagePullSpec"
 })
 @ToString
 @EqualsAndHashCode
@@ -63,67 +63,90 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class AddOnPlacementScoreItem implements Editable<AddOnPlacementScoreItemBuilder>, KubernetesResource
+public class ServerConfiguration implements Editable<ServerConfigurationBuilder>, KubernetesResource
 {
 
-    @JsonProperty("name")
-    private String name;
-    @JsonProperty("value")
-    private Integer value;
+    @JsonProperty("endpointsExposure")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<EndpointExposure> endpointsExposure = new ArrayList<>();
+    @JsonProperty("featureGates")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<FeatureGate> featureGates = new ArrayList<>();
+    @JsonProperty("imagePullSpec")
+    private String imagePullSpec;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
      */
-    public AddOnPlacementScoreItem() {
+    public ServerConfiguration() {
     }
 
-    public AddOnPlacementScoreItem(String name, Integer value) {
+    public ServerConfiguration(List<EndpointExposure> endpointsExposure, List<FeatureGate> featureGates, String imagePullSpec) {
         super();
-        this.name = name;
-        this.value = value;
+        this.endpointsExposure = endpointsExposure;
+        this.featureGates = featureGates;
+        this.imagePullSpec = imagePullSpec;
     }
 
     /**
-     * name is the name of the score
+     * endpointsExposure represents the configuration for endpoints exposure of the server.
      */
-    @JsonProperty("name")
-    public String getName() {
-        return name;
+    @JsonProperty("endpointsExposure")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public List<EndpointExposure> getEndpointsExposure() {
+        return endpointsExposure;
     }
 
     /**
-     * name is the name of the score
+     * endpointsExposure represents the configuration for endpoints exposure of the server.
      */
-    @JsonProperty("name")
-    public void setName(String name) {
-        this.name = name;
+    @JsonProperty("endpointsExposure")
+    public void setEndpointsExposure(List<EndpointExposure> endpointsExposure) {
+        this.endpointsExposure = endpointsExposure;
     }
 
     /**
-     * value is the value of the score. The score range is from -100 to 100.
+     * featureGates represents the features enabled for the server
      */
-    @JsonProperty("value")
-    public Integer getValue() {
-        return value;
+    @JsonProperty("featureGates")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public List<FeatureGate> getFeatureGates() {
+        return featureGates;
     }
 
     /**
-     * value is the value of the score. The score range is from -100 to 100.
+     * featureGates represents the features enabled for the server
      */
-    @JsonProperty("value")
-    public void setValue(Integer value) {
-        this.value = value;
+    @JsonProperty("featureGates")
+    public void setFeatureGates(List<FeatureGate> featureGates) {
+        this.featureGates = featureGates;
+    }
+
+    /**
+     * imagePullSpec is the image for the server
+     */
+    @JsonProperty("imagePullSpec")
+    public String getImagePullSpec() {
+        return imagePullSpec;
+    }
+
+    /**
+     * imagePullSpec is the image for the server
+     */
+    @JsonProperty("imagePullSpec")
+    public void setImagePullSpec(String imagePullSpec) {
+        this.imagePullSpec = imagePullSpec;
     }
 
     @JsonIgnore
-    public AddOnPlacementScoreItemBuilder edit() {
-        return new AddOnPlacementScoreItemBuilder(this);
+    public ServerConfigurationBuilder edit() {
+        return new ServerConfigurationBuilder(this);
     }
 
     @JsonIgnore
-    public AddOnPlacementScoreItemBuilder toBuilder() {
+    public ServerConfigurationBuilder toBuilder() {
         return edit();
     }
 

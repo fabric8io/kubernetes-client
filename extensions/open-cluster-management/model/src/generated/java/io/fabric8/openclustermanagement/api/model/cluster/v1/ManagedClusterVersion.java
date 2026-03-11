@@ -82,7 +82,7 @@ public class ManagedClusterVersion implements Editable<ManagedClusterVersionBuil
     }
 
     /**
-     * Kubernetes is the kubernetes version of managed cluster.
+     * kubernetes is the kubernetes version of managed cluster.
      */
     @JsonProperty("kubernetes")
     public String getKubernetes() {
@@ -90,7 +90,7 @@ public class ManagedClusterVersion implements Editable<ManagedClusterVersionBuil
     }
 
     /**
-     * Kubernetes is the kubernetes version of managed cluster.
+     * kubernetes is the kubernetes version of managed cluster.
      */
     @JsonProperty("kubernetes")
     public void setKubernetes(String kubernetes) {

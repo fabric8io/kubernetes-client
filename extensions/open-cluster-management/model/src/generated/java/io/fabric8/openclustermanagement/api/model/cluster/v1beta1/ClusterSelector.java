@@ -38,6 +38,7 @@ import lombok.experimental.Accessors;
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
+    "celSelector",
     "claimSelector",
     "labelSelector"
 })
@@ -66,6 +67,8 @@ import lombok.experimental.Accessors;
 public class ClusterSelector implements Editable<ClusterSelectorBuilder>, KubernetesResource
 {
 
+    @JsonProperty("celSelector")
+    private ClusterCelSelector celSelector;
     @JsonProperty("claimSelector")
     private ClusterClaimSelector claimSelector;
     @JsonProperty("labelSelector")
@@ -79,10 +82,27 @@ public class ClusterSelector implements Editable<ClusterSelectorBuilder>, Kubern
     public ClusterSelector() {
     }
 
-    public ClusterSelector(ClusterClaimSelector claimSelector, LabelSelector labelSelector) {
+    public ClusterSelector(ClusterCelSelector celSelector, ClusterClaimSelector claimSelector, LabelSelector labelSelector) {
         super();
+        this.celSelector = celSelector;
         this.claimSelector = claimSelector;
         this.labelSelector = labelSelector;
+    }
+
+    /**
+     * ClusterSelector represents the AND of the containing selectors. An empty cluster selector matches all objects. A null cluster selector matches no objects.
+     */
+    @JsonProperty("celSelector")
+    public ClusterCelSelector getCelSelector() {
+        return celSelector;
+    }
+
+    /**
+     * ClusterSelector represents the AND of the containing selectors. An empty cluster selector matches all objects. A null cluster selector matches no objects.
+     */
+    @JsonProperty("celSelector")
+    public void setCelSelector(ClusterCelSelector celSelector) {
+        this.celSelector = celSelector;
     }
 
     /**

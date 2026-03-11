@@ -1,7 +1,9 @@
 
-package io.fabric8.openclustermanagement.api.model.cluster.v1alpha1;
+package io.fabric8.openclustermanagement.api.model.cluster.v1;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import javax.annotation.processing.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
@@ -12,6 +14,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
+import io.fabric8.kubernetes.api.model.Condition;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvVar;
@@ -32,14 +35,12 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
-/**
- * AddOnPlacementScoreItem represents the score name and value.
- */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "name",
-    "value"
+    "clusterSet",
+    "conditions",
+    "name"
 })
 @ToString
 @EqualsAndHashCode
@@ -63,30 +64,67 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class AddOnPlacementScoreItem implements Editable<AddOnPlacementScoreItemBuilder>, KubernetesResource
+public class ClusterSetManagedNamespaceConfig implements Editable<ClusterSetManagedNamespaceConfigBuilder>, KubernetesResource
 {
 
+    @JsonProperty("clusterSet")
+    private String clusterSet;
+    @JsonProperty("conditions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<Condition> conditions = new ArrayList<>();
     @JsonProperty("name")
     private String name;
-    @JsonProperty("value")
-    private Integer value;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
      */
-    public AddOnPlacementScoreItem() {
+    public ClusterSetManagedNamespaceConfig() {
     }
 
-    public AddOnPlacementScoreItem(String name, Integer value) {
+    public ClusterSetManagedNamespaceConfig(String clusterSet, List<Condition> conditions, String name) {
         super();
+        this.clusterSet = clusterSet;
+        this.conditions = conditions;
         this.name = name;
-        this.value = value;
     }
 
     /**
-     * name is the name of the score
+     * clusterSet represents the name of the cluster set.
+     */
+    @JsonProperty("clusterSet")
+    public String getClusterSet() {
+        return clusterSet;
+    }
+
+    /**
+     * clusterSet represents the name of the cluster set.
+     */
+    @JsonProperty("clusterSet")
+    public void setClusterSet(String clusterSet) {
+        this.clusterSet = clusterSet;
+    }
+
+    /**
+     * conditions are the status conditions of the managed namespace
+     */
+    @JsonProperty("conditions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public List<Condition> getConditions() {
+        return conditions;
+    }
+
+    /**
+     * conditions are the status conditions of the managed namespace
+     */
+    @JsonProperty("conditions")
+    public void setConditions(List<Condition> conditions) {
+        this.conditions = conditions;
+    }
+
+    /**
+     * name is the name of the namespace.
      */
     @JsonProperty("name")
     public String getName() {
@@ -94,36 +132,20 @@ public class AddOnPlacementScoreItem implements Editable<AddOnPlacementScoreItem
     }
 
     /**
-     * name is the name of the score
+     * name is the name of the namespace.
      */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;
     }
 
-    /**
-     * value is the value of the score. The score range is from -100 to 100.
-     */
-    @JsonProperty("value")
-    public Integer getValue() {
-        return value;
-    }
-
-    /**
-     * value is the value of the score. The score range is from -100 to 100.
-     */
-    @JsonProperty("value")
-    public void setValue(Integer value) {
-        this.value = value;
+    @JsonIgnore
+    public ClusterSetManagedNamespaceConfigBuilder edit() {
+        return new ClusterSetManagedNamespaceConfigBuilder(this);
     }
 
     @JsonIgnore
-    public AddOnPlacementScoreItemBuilder edit() {
-        return new AddOnPlacementScoreItemBuilder(this);
-    }
-
-    @JsonIgnore
-    public AddOnPlacementScoreItemBuilder toBuilder() {
+    public ClusterSetManagedNamespaceConfigBuilder toBuilder() {
         return edit();
     }
 

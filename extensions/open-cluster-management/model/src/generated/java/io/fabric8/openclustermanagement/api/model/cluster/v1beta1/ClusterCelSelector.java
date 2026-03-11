@@ -1,7 +1,9 @@
 
-package io.fabric8.openclustermanagement.api.model.cluster.v1alpha1;
+package io.fabric8.openclustermanagement.api.model.cluster.v1beta1;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import javax.annotation.processing.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
@@ -33,13 +35,12 @@ import lombok.ToString;
 import lombok.experimental.Accessors;
 
 /**
- * AddOnPlacementScoreItem represents the score name and value.
+ * ClusterCelSelector is a list of CEL expressions. The expressions are ANDed.
  */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "name",
-    "value"
+    "celExpressions"
 })
 @ToString
 @EqualsAndHashCode
@@ -63,67 +64,50 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class AddOnPlacementScoreItem implements Editable<AddOnPlacementScoreItemBuilder>, KubernetesResource
+public class ClusterCelSelector implements Editable<ClusterCelSelectorBuilder>, KubernetesResource
 {
 
-    @JsonProperty("name")
-    private String name;
-    @JsonProperty("value")
-    private Integer value;
+    @JsonProperty("celExpressions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<String> celExpressions = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
      */
-    public AddOnPlacementScoreItem() {
+    public ClusterCelSelector() {
     }
 
-    public AddOnPlacementScoreItem(String name, Integer value) {
+    public ClusterCelSelector(List<String> celExpressions) {
         super();
-        this.name = name;
-        this.value = value;
+        this.celExpressions = celExpressions;
     }
 
     /**
-     * name is the name of the score
+     * ClusterCelSelector is a list of CEL expressions. The expressions are ANDed.
      */
-    @JsonProperty("name")
-    public String getName() {
-        return name;
+    @JsonProperty("celExpressions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public List<String> getCelExpressions() {
+        return celExpressions;
     }
 
     /**
-     * name is the name of the score
+     * ClusterCelSelector is a list of CEL expressions. The expressions are ANDed.
      */
-    @JsonProperty("name")
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    /**
-     * value is the value of the score. The score range is from -100 to 100.
-     */
-    @JsonProperty("value")
-    public Integer getValue() {
-        return value;
-    }
-
-    /**
-     * value is the value of the score. The score range is from -100 to 100.
-     */
-    @JsonProperty("value")
-    public void setValue(Integer value) {
-        this.value = value;
+    @JsonProperty("celExpressions")
+    public void setCelExpressions(List<String> celExpressions) {
+        this.celExpressions = celExpressions;
     }
 
     @JsonIgnore
-    public AddOnPlacementScoreItemBuilder edit() {
-        return new AddOnPlacementScoreItemBuilder(this);
+    public ClusterCelSelectorBuilder edit() {
+        return new ClusterCelSelectorBuilder(this);
     }
 
     @JsonIgnore
-    public AddOnPlacementScoreItemBuilder toBuilder() {
+    public ClusterCelSelectorBuilder toBuilder() {
         return edit();
     }
 

@@ -39,6 +39,7 @@ import lombok.experimental.Accessors;
 @JsonPropertyOrder({
     "autoApproveUsers",
     "featureGates",
+    "importerConfiguration",
     "registrationDrivers"
 })
 @ToString
@@ -72,6 +73,8 @@ public class RegistrationHubConfiguration implements Editable<RegistrationHubCon
     @JsonProperty("featureGates")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<FeatureGate> featureGates = new ArrayList<>();
+    @JsonProperty("importerConfiguration")
+    private ImporterConfiguration importerConfiguration;
     @JsonProperty("registrationDrivers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<RegistrationDriverHub> registrationDrivers = new ArrayList<>();
@@ -84,10 +87,11 @@ public class RegistrationHubConfiguration implements Editable<RegistrationHubCon
     public RegistrationHubConfiguration() {
     }
 
-    public RegistrationHubConfiguration(List<String> autoApproveUsers, List<FeatureGate> featureGates, List<RegistrationDriverHub> registrationDrivers) {
+    public RegistrationHubConfiguration(List<String> autoApproveUsers, List<FeatureGate> featureGates, ImporterConfiguration importerConfiguration, List<RegistrationDriverHub> registrationDrivers) {
         super();
         this.autoApproveUsers = autoApproveUsers;
         this.featureGates = featureGates;
+        this.importerConfiguration = importerConfiguration;
         this.registrationDrivers = registrationDrivers;
     }
 
@@ -123,6 +127,16 @@ public class RegistrationHubConfiguration implements Editable<RegistrationHubCon
     @JsonProperty("featureGates")
     public void setFeatureGates(List<FeatureGate> featureGates) {
         this.featureGates = featureGates;
+    }
+
+    @JsonProperty("importerConfiguration")
+    public ImporterConfiguration getImporterConfiguration() {
+        return importerConfiguration;
+    }
+
+    @JsonProperty("importerConfiguration")
+    public void setImporterConfiguration(ImporterConfiguration importerConfiguration) {
+        this.importerConfiguration = importerConfiguration;
     }
 
     /**

@@ -105,7 +105,7 @@ public class GroupStrategy implements Editable<GroupStrategyBuilder>, Kubernetes
     }
 
     /**
-     * DecisionGroups represents a list of predefined groups to put decision results. Decision groups will be constructed based on the DecisionGroups field at first. The clusters not included in the DecisionGroups will be divided to other decision groups afterwards. Each decision group should not have the number of clusters larger than the ClustersPerDecisionGroup.
+     * decisionGroups represents a list of predefined groups to put decision results. Decision groups will be constructed based on the DecisionGroups field at first. The clusters not included in the DecisionGroups will be divided to other decision groups afterwards. Each decision group should not have the number of clusters larger than the ClustersPerDecisionGroup.
      */
     @JsonProperty("decisionGroups")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -114,7 +114,7 @@ public class GroupStrategy implements Editable<GroupStrategyBuilder>, Kubernetes
     }
 
     /**
-     * DecisionGroups represents a list of predefined groups to put decision results. Decision groups will be constructed based on the DecisionGroups field at first. The clusters not included in the DecisionGroups will be divided to other decision groups afterwards. Each decision group should not have the number of clusters larger than the ClustersPerDecisionGroup.
+     * decisionGroups represents a list of predefined groups to put decision results. Decision groups will be constructed based on the DecisionGroups field at first. The clusters not included in the DecisionGroups will be divided to other decision groups afterwards. Each decision group should not have the number of clusters larger than the ClustersPerDecisionGroup.
      */
     @JsonProperty("decisionGroups")
     public void setDecisionGroups(List<DecisionGroup> decisionGroups) {
