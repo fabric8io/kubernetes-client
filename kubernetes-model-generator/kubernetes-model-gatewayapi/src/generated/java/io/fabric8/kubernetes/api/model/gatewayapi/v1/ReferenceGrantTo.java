@@ -1,9 +1,7 @@
 
 package io.fabric8.kubernetes.api.model.gatewayapi.v1;
 
-import java.util.ArrayList;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 import javax.annotation.processing.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
@@ -33,13 +31,14 @@ import lombok.ToString;
 import lombok.experimental.Accessors;
 
 /**
- * FrontendTLSConfig specifies frontend tls configuration for gateway.
+ * ReferenceGrantTo describes what Kinds are allowed as targets of the references.
  */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "default",
-    "perPort"
+    "kind",
+    "group",
+    "name"
 })
 @ToString
 @EqualsAndHashCode
@@ -63,69 +62,86 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class FrontendTLSConfig implements Editable<FrontendTLSConfigBuilder>, KubernetesResource
+public class ReferenceGrantTo implements Editable<ReferenceGrantToBuilder>, KubernetesResource
 {
 
-    @JsonProperty("default")
-    private TLSConfig _default;
-    @JsonProperty("perPort")
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<TLSPortConfig> perPort = new ArrayList<>();
+    @JsonProperty("group")
+    private String group;
+    @JsonProperty("kind")
+    private String kind;
+    @JsonProperty("name")
+    private String name;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
      */
-    public FrontendTLSConfig() {
+    public ReferenceGrantTo() {
     }
 
-    public FrontendTLSConfig(TLSConfig _default, List<TLSPortConfig> perPort) {
+    public ReferenceGrantTo(String group, String kind, String name) {
         super();
-        this._default = _default;
-        this.perPort = perPort;
+        this.group = group;
+        this.kind = kind;
+        this.name = name;
     }
 
     /**
-     * FrontendTLSConfig specifies frontend tls configuration for gateway.
+     * Group is the group of the referent. When empty, the Kubernetes core API group is inferred.<br><p> <br><p> Support: Core
      */
-    @JsonProperty("default")
-    public TLSConfig getDefault() {
-        return _default;
+    @JsonProperty("group")
+    public String getGroup() {
+        return group;
     }
 
     /**
-     * FrontendTLSConfig specifies frontend tls configuration for gateway.
+     * Group is the group of the referent. When empty, the Kubernetes core API group is inferred.<br><p> <br><p> Support: Core
      */
-    @JsonProperty("default")
-    public void setDefault(TLSConfig _default) {
-        this._default = _default;
+    @JsonProperty("group")
+    public void setGroup(String group) {
+        this.group = group;
     }
 
     /**
-     * PerPort specifies tls configuration assigned per port. Per port configuration is optional. Once set this configuration overrides the default configuration for all Listeners handling HTTPS traffic that match this port. Each override port requires a unique TLS configuration.<br><p> <br><p> support: Core
+     * Kind is the kind of the referent. Although implementations may support additional resources, the following types are part of the "Core" support level for this field:<br><p> <br><p> &#42; Secret when used to permit a SecretObjectReference &#42; Service when used to permit a BackendObjectReference
      */
-    @JsonProperty("perPort")
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<TLSPortConfig> getPerPort() {
-        return perPort;
+    @JsonProperty("kind")
+    public String getKind() {
+        return kind;
     }
 
     /**
-     * PerPort specifies tls configuration assigned per port. Per port configuration is optional. Once set this configuration overrides the default configuration for all Listeners handling HTTPS traffic that match this port. Each override port requires a unique TLS configuration.<br><p> <br><p> support: Core
+     * Kind is the kind of the referent. Although implementations may support additional resources, the following types are part of the "Core" support level for this field:<br><p> <br><p> &#42; Secret when used to permit a SecretObjectReference &#42; Service when used to permit a BackendObjectReference
      */
-    @JsonProperty("perPort")
-    public void setPerPort(List<TLSPortConfig> perPort) {
-        this.perPort = perPort;
+    @JsonProperty("kind")
+    public void setKind(String kind) {
+        this.kind = kind;
+    }
+
+    /**
+     * Name is the name of the referent. When unspecified, this policy refers to all resources of the specified Group and Kind in the local namespace.
+     */
+    @JsonProperty("name")
+    public String getName() {
+        return name;
+    }
+
+    /**
+     * Name is the name of the referent. When unspecified, this policy refers to all resources of the specified Group and Kind in the local namespace.
+     */
+    @JsonProperty("name")
+    public void setName(String name) {
+        this.name = name;
     }
 
     @JsonIgnore
-    public FrontendTLSConfigBuilder edit() {
-        return new FrontendTLSConfigBuilder(this);
+    public ReferenceGrantToBuilder edit() {
+        return new ReferenceGrantToBuilder(this);
     }
 
     @JsonIgnore
-    public FrontendTLSConfigBuilder toBuilder() {
+    public ReferenceGrantToBuilder toBuilder() {
         return edit();
     }
 

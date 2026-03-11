@@ -66,7 +66,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class ListenerStatus implements Editable<ListenerStatusBuilder>, KubernetesResource
+public class ListenerEntryStatus implements Editable<ListenerEntryStatusBuilder>, KubernetesResource
 {
 
     @JsonProperty("attachedRoutes")
@@ -85,10 +85,10 @@ public class ListenerStatus implements Editable<ListenerStatusBuilder>, Kubernet
     /**
      * No args constructor for use in serialization
      */
-    public ListenerStatus() {
+    public ListenerEntryStatus() {
     }
 
-    public ListenerStatus(Integer attachedRoutes, List<Condition> conditions, String name, List<RouteGroupKind> supportedKinds) {
+    public ListenerEntryStatus(Integer attachedRoutes, List<Condition> conditions, String name, List<RouteGroupKind> supportedKinds) {
         super();
         this.attachedRoutes = attachedRoutes;
         this.conditions = conditions;
@@ -97,7 +97,7 @@ public class ListenerStatus implements Editable<ListenerStatusBuilder>, Kubernet
     }
 
     /**
-     * AttachedRoutes represents the total number of Routes that have been successfully attached to this Listener.<br><p> <br><p> Successful attachment of a Route to a Listener is based solely on the combination of the AllowedRoutes field on the corresponding Listener and the Route's ParentRefs field. A Route is successfully attached to a Listener when it is selected by the Listener's AllowedRoutes field AND the Route has a valid ParentRef selecting the whole Gateway resource or a specific Listener as a parent resource (more detail on attachment semantics can be found in the documentation on the various Route kinds ParentRefs fields). Listener or Route status does not impact successful attachment, i.e. the AttachedRoutes field count MUST be set for Listeners, even if the Accepted condition of an individual Listener is set to "False". The AttachedRoutes number represents the number of Routes with the Accepted condition set to "True" that have been attached to this Listener. Routes with any other value for the Accepted condition MUST NOT be included in this count.<br><p> <br><p> Uses for this field include troubleshooting Route attachment and measuring blast radius/impact of changes to a Listener.
+     * AttachedRoutes represents the total number of Routes that have been successfully attached to this Listener.<br><p> <br><p> Successful attachment of a Route to a Listener is based solely on the combination of the AllowedRoutes field on the corresponding Listener and the Route's ParentRefs field. A Route is successfully attached to a Listener when it is selected by the Listener's AllowedRoutes field AND the Route has a valid ParentRef selecting the whole Gateway resource or a specific Listener as a parent resource (more detail on attachment semantics can be found in the documentation on the various Route kinds ParentRefs fields). Listener status does not impact successful attachment, i.e. the AttachedRoutes field count MUST be set for Listeners, even if the Accepted condition of an individual Listener is set to "False". The AttachedRoutes number represents the number of Routes with the Accepted condition set to "True" that have been attached to this Listener. Routes with any other value for the Accepted condition MUST NOT be included in this count.<br><p> <br><p> Uses for this field include troubleshooting Route attachment and measuring blast radius/impact of changes to a Listener.
      */
     @JsonProperty("attachedRoutes")
     public Integer getAttachedRoutes() {
@@ -105,7 +105,7 @@ public class ListenerStatus implements Editable<ListenerStatusBuilder>, Kubernet
     }
 
     /**
-     * AttachedRoutes represents the total number of Routes that have been successfully attached to this Listener.<br><p> <br><p> Successful attachment of a Route to a Listener is based solely on the combination of the AllowedRoutes field on the corresponding Listener and the Route's ParentRefs field. A Route is successfully attached to a Listener when it is selected by the Listener's AllowedRoutes field AND the Route has a valid ParentRef selecting the whole Gateway resource or a specific Listener as a parent resource (more detail on attachment semantics can be found in the documentation on the various Route kinds ParentRefs fields). Listener or Route status does not impact successful attachment, i.e. the AttachedRoutes field count MUST be set for Listeners, even if the Accepted condition of an individual Listener is set to "False". The AttachedRoutes number represents the number of Routes with the Accepted condition set to "True" that have been attached to this Listener. Routes with any other value for the Accepted condition MUST NOT be included in this count.<br><p> <br><p> Uses for this field include troubleshooting Route attachment and measuring blast radius/impact of changes to a Listener.
+     * AttachedRoutes represents the total number of Routes that have been successfully attached to this Listener.<br><p> <br><p> Successful attachment of a Route to a Listener is based solely on the combination of the AllowedRoutes field on the corresponding Listener and the Route's ParentRefs field. A Route is successfully attached to a Listener when it is selected by the Listener's AllowedRoutes field AND the Route has a valid ParentRef selecting the whole Gateway resource or a specific Listener as a parent resource (more detail on attachment semantics can be found in the documentation on the various Route kinds ParentRefs fields). Listener status does not impact successful attachment, i.e. the AttachedRoutes field count MUST be set for Listeners, even if the Accepted condition of an individual Listener is set to "False". The AttachedRoutes number represents the number of Routes with the Accepted condition set to "True" that have been attached to this Listener. Routes with any other value for the Accepted condition MUST NOT be included in this count.<br><p> <br><p> Uses for this field include troubleshooting Route attachment and measuring blast radius/impact of changes to a Listener.
      */
     @JsonProperty("attachedRoutes")
     public void setAttachedRoutes(Integer attachedRoutes) {
@@ -113,7 +113,7 @@ public class ListenerStatus implements Editable<ListenerStatusBuilder>, Kubernet
     }
 
     /**
-     * Conditions describe the current condition of this listener.<br><p> <br><p> &lt;gateway:util:excludeFromCRD&gt; Notes for implementors:<br><p> <br><p> Conditions are a listType `map`, which means that they function like a map with a key of the `type` field _in the k8s apiserver_.<br><p> <br><p> This means that implementations must obey some rules when updating this section.<br><p> <br><p> &#42; Implementations MUST perform a read-modify-write cycle on this field<br><p>   before modifying it. That is, when modifying this field, implementations<br><p>   must be confident they have fetched the most recent version of this field,<br><p>   and ensure that changes they make are on that recent version.<br><p> &#42; Implementations MUST NOT remove or reorder Conditions that they are not<br><p>   directly responsible for. For example, if an implementation sees a Condition<br><p>   with type `special.io/SomeField`, it MUST NOT remove, change or update that<br><p>   Condition.<br><p> &#42; Implementations MUST always _merge_ changes into Conditions of the same Type,<br><p>   rather than creating more than one Condition of the same Type.<br><p> &#42; Implementations MUST always update the `observedGeneration` field of the<br><p>   Condition to the `metadata.generation` of the Gateway at the time of update creation.<br><p> &#42; If the `observedGeneration` of a Condition is _greater than_ the value the<br><p>   implementation knows about, then it MUST NOT perform the update on that Condition,<br><p>   but must wait for a future reconciliation and status update. (The assumption is that<br><p>   the implementation's copy of the object is stale and an update will be re-triggered<br><p>   if relevant.)<br><p> <br><p> &lt;/gateway:util:excludeFromCRD&gt;
+     * Conditions describe the current condition of this listener.
      */
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -122,7 +122,7 @@ public class ListenerStatus implements Editable<ListenerStatusBuilder>, Kubernet
     }
 
     /**
-     * Conditions describe the current condition of this listener.<br><p> <br><p> &lt;gateway:util:excludeFromCRD&gt; Notes for implementors:<br><p> <br><p> Conditions are a listType `map`, which means that they function like a map with a key of the `type` field _in the k8s apiserver_.<br><p> <br><p> This means that implementations must obey some rules when updating this section.<br><p> <br><p> &#42; Implementations MUST perform a read-modify-write cycle on this field<br><p>   before modifying it. That is, when modifying this field, implementations<br><p>   must be confident they have fetched the most recent version of this field,<br><p>   and ensure that changes they make are on that recent version.<br><p> &#42; Implementations MUST NOT remove or reorder Conditions that they are not<br><p>   directly responsible for. For example, if an implementation sees a Condition<br><p>   with type `special.io/SomeField`, it MUST NOT remove, change or update that<br><p>   Condition.<br><p> &#42; Implementations MUST always _merge_ changes into Conditions of the same Type,<br><p>   rather than creating more than one Condition of the same Type.<br><p> &#42; Implementations MUST always update the `observedGeneration` field of the<br><p>   Condition to the `metadata.generation` of the Gateway at the time of update creation.<br><p> &#42; If the `observedGeneration` of a Condition is _greater than_ the value the<br><p>   implementation knows about, then it MUST NOT perform the update on that Condition,<br><p>   but must wait for a future reconciliation and status update. (The assumption is that<br><p>   the implementation's copy of the object is stale and an update will be re-triggered<br><p>   if relevant.)<br><p> <br><p> &lt;/gateway:util:excludeFromCRD&gt;
+     * Conditions describe the current condition of this listener.
      */
     @JsonProperty("conditions")
     public void setConditions(List<Condition> conditions) {
@@ -163,12 +163,12 @@ public class ListenerStatus implements Editable<ListenerStatusBuilder>, Kubernet
     }
 
     @JsonIgnore
-    public ListenerStatusBuilder edit() {
-        return new ListenerStatusBuilder(this);
+    public ListenerEntryStatusBuilder edit() {
+        return new ListenerEntryStatusBuilder(this);
     }
 
     @JsonIgnore
-    public ListenerStatusBuilder toBuilder() {
+    public ListenerEntryStatusBuilder toBuilder() {
         return edit();
     }
 

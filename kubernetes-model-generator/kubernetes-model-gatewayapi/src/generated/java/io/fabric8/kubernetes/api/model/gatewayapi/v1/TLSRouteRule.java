@@ -33,13 +33,13 @@ import lombok.ToString;
 import lombok.experimental.Accessors;
 
 /**
- * FrontendTLSConfig specifies frontend tls configuration for gateway.
+ * TLSRouteRule is the configuration for a given rule.
  */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "default",
-    "perPort"
+    "backendRefs",
+    "name"
 })
 @ToString
 @EqualsAndHashCode
@@ -63,69 +63,69 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class FrontendTLSConfig implements Editable<FrontendTLSConfigBuilder>, KubernetesResource
+public class TLSRouteRule implements Editable<TLSRouteRuleBuilder>, KubernetesResource
 {
 
-    @JsonProperty("default")
-    private TLSConfig _default;
-    @JsonProperty("perPort")
+    @JsonProperty("backendRefs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<TLSPortConfig> perPort = new ArrayList<>();
+    private List<BackendRef> backendRefs = new ArrayList<>();
+    @JsonProperty("name")
+    private String name;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
      */
-    public FrontendTLSConfig() {
+    public TLSRouteRule() {
     }
 
-    public FrontendTLSConfig(TLSConfig _default, List<TLSPortConfig> perPort) {
+    public TLSRouteRule(List<BackendRef> backendRefs, String name) {
         super();
-        this._default = _default;
-        this.perPort = perPort;
+        this.backendRefs = backendRefs;
+        this.name = name;
     }
 
     /**
-     * FrontendTLSConfig specifies frontend tls configuration for gateway.
+     * BackendRefs defines the backend(s) where matching requests should be sent. If unspecified or invalid (refers to a nonexistent resource or a Service with no endpoints), the rule performs no forwarding; if no filters are specified that would result in a response being sent, the underlying implementation must actively reject request attempts to this backend, by rejecting the connection. Request rejections must respect weight; if an invalid backend is requested to have 80% of requests, then 80% of requests must be rejected instead.<br><p> <br><p> Support: Core for Kubernetes Service<br><p> <br><p> Support: Extended for Kubernetes ServiceImport<br><p> <br><p> Support: Implementation-specific for any other resource<br><p> <br><p> Support for weight: Extended
      */
-    @JsonProperty("default")
-    public TLSConfig getDefault() {
-        return _default;
-    }
-
-    /**
-     * FrontendTLSConfig specifies frontend tls configuration for gateway.
-     */
-    @JsonProperty("default")
-    public void setDefault(TLSConfig _default) {
-        this._default = _default;
-    }
-
-    /**
-     * PerPort specifies tls configuration assigned per port. Per port configuration is optional. Once set this configuration overrides the default configuration for all Listeners handling HTTPS traffic that match this port. Each override port requires a unique TLS configuration.<br><p> <br><p> support: Core
-     */
-    @JsonProperty("perPort")
+    @JsonProperty("backendRefs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<TLSPortConfig> getPerPort() {
-        return perPort;
+    public List<BackendRef> getBackendRefs() {
+        return backendRefs;
     }
 
     /**
-     * PerPort specifies tls configuration assigned per port. Per port configuration is optional. Once set this configuration overrides the default configuration for all Listeners handling HTTPS traffic that match this port. Each override port requires a unique TLS configuration.<br><p> <br><p> support: Core
+     * BackendRefs defines the backend(s) where matching requests should be sent. If unspecified or invalid (refers to a nonexistent resource or a Service with no endpoints), the rule performs no forwarding; if no filters are specified that would result in a response being sent, the underlying implementation must actively reject request attempts to this backend, by rejecting the connection. Request rejections must respect weight; if an invalid backend is requested to have 80% of requests, then 80% of requests must be rejected instead.<br><p> <br><p> Support: Core for Kubernetes Service<br><p> <br><p> Support: Extended for Kubernetes ServiceImport<br><p> <br><p> Support: Implementation-specific for any other resource<br><p> <br><p> Support for weight: Extended
      */
-    @JsonProperty("perPort")
-    public void setPerPort(List<TLSPortConfig> perPort) {
-        this.perPort = perPort;
+    @JsonProperty("backendRefs")
+    public void setBackendRefs(List<BackendRef> backendRefs) {
+        this.backendRefs = backendRefs;
+    }
+
+    /**
+     * Name is the name of the route rule. This name MUST be unique within a Route if it is set.
+     */
+    @JsonProperty("name")
+    public String getName() {
+        return name;
+    }
+
+    /**
+     * Name is the name of the route rule. This name MUST be unique within a Route if it is set.
+     */
+    @JsonProperty("name")
+    public void setName(String name) {
+        this.name = name;
     }
 
     @JsonIgnore
-    public FrontendTLSConfigBuilder edit() {
-        return new FrontendTLSConfigBuilder(this);
+    public TLSRouteRuleBuilder edit() {
+        return new TLSRouteRuleBuilder(this);
     }
 
     @JsonIgnore
-    public FrontendTLSConfigBuilder toBuilder() {
+    public TLSRouteRuleBuilder toBuilder() {
         return edit();
     }
 

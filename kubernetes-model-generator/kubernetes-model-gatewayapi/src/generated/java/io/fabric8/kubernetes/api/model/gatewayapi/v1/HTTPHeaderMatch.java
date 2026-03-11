@@ -120,7 +120,7 @@ public class HTTPHeaderMatch implements Editable<HTTPHeaderMatchBuilder>, Kubern
     }
 
     /**
-     * Value is the value of HTTP Header to be matched.
+     * Value is the value of HTTP Header to be matched. &lt;gateway:experimental:description&gt; Must consist of printable US-ASCII characters, optionally separated by single tabs or spaces. See: https://tools.ietf.org/html/rfc7230#section-3.2 &lt;/gateway:experimental:description&gt;<br><p> <br><p> &lt;gateway:experimental:validation:Pattern=`^[!-~]+([\t ]?[!-~]+)&#42;$`&gt;
      */
     @JsonProperty("value")
     public String getValue() {
@@ -128,7 +128,7 @@ public class HTTPHeaderMatch implements Editable<HTTPHeaderMatchBuilder>, Kubern
     }
 
     /**
-     * Value is the value of HTTP Header to be matched.
+     * Value is the value of HTTP Header to be matched. &lt;gateway:experimental:description&gt; Must consist of printable US-ASCII characters, optionally separated by single tabs or spaces. See: https://tools.ietf.org/html/rfc7230#section-3.2 &lt;/gateway:experimental:description&gt;<br><p> <br><p> &lt;gateway:experimental:validation:Pattern=`^[!-~]+([\t ]?[!-~]+)&#42;$`&gt;
      */
     @JsonProperty("value")
     public void setValue(String value) {

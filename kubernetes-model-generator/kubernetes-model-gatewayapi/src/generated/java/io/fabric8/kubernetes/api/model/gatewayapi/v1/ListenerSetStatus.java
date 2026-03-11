@@ -1,7 +1,9 @@
 
-package io.fabric8.kubernetes.api.model.gatewayapi.v1beta1;
+package io.fabric8.kubernetes.api.model.gatewayapi.v1;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import javax.annotation.processing.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
@@ -12,15 +14,14 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
+import io.fabric8.kubernetes.api.model.Condition;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvVar;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.LabelSelector;
-import io.fabric8.kubernetes.api.model.LocalObjectReference;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
-import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
@@ -32,15 +33,11 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
-/**
- * ReferenceGrantTo describes what Kinds are allowed as targets of the references.
- */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "kind",
-    "group",
-    "name"
+    "conditions",
+    "listeners"
 })
 @ToString
 @EqualsAndHashCode
@@ -55,8 +52,8 @@ import lombok.experimental.Accessors;
     @BuildableReference(PodTemplateSpec.class),
     @BuildableReference(ResourceRequirements.class),
     @BuildableReference(IntOrString.class),
-    @BuildableReference(ObjectReference.class),
-    @BuildableReference(LocalObjectReference.class),
+    @BuildableReference(io.fabric8.kubernetes.api.model.ObjectReference.class),
+    @BuildableReference(io.fabric8.kubernetes.api.model.LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class),
     @BuildableReference(EnvVar.class),
     @BuildableReference(ContainerPort.class),
@@ -64,86 +61,71 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class ReferenceGrantTo implements Editable<ReferenceGrantToBuilder>, KubernetesResource
+public class ListenerSetStatus implements Editable<ListenerSetStatusBuilder>, KubernetesResource
 {
 
-    @JsonProperty("group")
-    private String group;
-    @JsonProperty("kind")
-    private String kind;
-    @JsonProperty("name")
-    private String name;
+    @JsonProperty("conditions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<Condition> conditions = new ArrayList<>();
+    @JsonProperty("listeners")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<ListenerEntryStatus> listeners = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
      */
-    public ReferenceGrantTo() {
+    public ListenerSetStatus() {
     }
 
-    public ReferenceGrantTo(String group, String kind, String name) {
+    public ListenerSetStatus(List<Condition> conditions, List<ListenerEntryStatus> listeners) {
         super();
-        this.group = group;
-        this.kind = kind;
-        this.name = name;
+        this.conditions = conditions;
+        this.listeners = listeners;
     }
 
     /**
-     * Group is the group of the referent. When empty, the Kubernetes core API group is inferred.<br><p> <br><p> Support: Core
+     * Conditions describe the current conditions of the ListenerSet.<br><p> <br><p> Implementations MUST express ListenerSet conditions using the `ListenerSetConditionType` and `ListenerSetConditionReason` constants so that operators and tools can converge on a common vocabulary to describe ListenerSet state.<br><p> <br><p> Known condition types are:<br><p> <br><p> &#42; "Accepted" &#42; "Programmed"
      */
-    @JsonProperty("group")
-    public String getGroup() {
-        return group;
+    @JsonProperty("conditions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public List<Condition> getConditions() {
+        return conditions;
     }
 
     /**
-     * Group is the group of the referent. When empty, the Kubernetes core API group is inferred.<br><p> <br><p> Support: Core
+     * Conditions describe the current conditions of the ListenerSet.<br><p> <br><p> Implementations MUST express ListenerSet conditions using the `ListenerSetConditionType` and `ListenerSetConditionReason` constants so that operators and tools can converge on a common vocabulary to describe ListenerSet state.<br><p> <br><p> Known condition types are:<br><p> <br><p> &#42; "Accepted" &#42; "Programmed"
      */
-    @JsonProperty("group")
-    public void setGroup(String group) {
-        this.group = group;
+    @JsonProperty("conditions")
+    public void setConditions(List<Condition> conditions) {
+        this.conditions = conditions;
     }
 
     /**
-     * Kind is the kind of the referent. Although implementations may support additional resources, the following types are part of the "Core" support level for this field:<br><p> <br><p> &#42; Secret when used to permit a SecretObjectReference &#42; Service when used to permit a BackendObjectReference
+     * Listeners provide status for each unique listener port defined in the Spec.
      */
-    @JsonProperty("kind")
-    public String getKind() {
-        return kind;
+    @JsonProperty("listeners")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public List<ListenerEntryStatus> getListeners() {
+        return listeners;
     }
 
     /**
-     * Kind is the kind of the referent. Although implementations may support additional resources, the following types are part of the "Core" support level for this field:<br><p> <br><p> &#42; Secret when used to permit a SecretObjectReference &#42; Service when used to permit a BackendObjectReference
+     * Listeners provide status for each unique listener port defined in the Spec.
      */
-    @JsonProperty("kind")
-    public void setKind(String kind) {
-        this.kind = kind;
-    }
-
-    /**
-     * Name is the name of the referent. When unspecified, this policy refers to all resources of the specified Group and Kind in the local namespace.
-     */
-    @JsonProperty("name")
-    public String getName() {
-        return name;
-    }
-
-    /**
-     * Name is the name of the referent. When unspecified, this policy refers to all resources of the specified Group and Kind in the local namespace.
-     */
-    @JsonProperty("name")
-    public void setName(String name) {
-        this.name = name;
+    @JsonProperty("listeners")
+    public void setListeners(List<ListenerEntryStatus> listeners) {
+        this.listeners = listeners;
     }
 
     @JsonIgnore
-    public ReferenceGrantToBuilder edit() {
-        return new ReferenceGrantToBuilder(this);
+    public ListenerSetStatusBuilder edit() {
+        return new ListenerSetStatusBuilder(this);
     }
 
     @JsonIgnore
-    public ReferenceGrantToBuilder toBuilder() {
+    public ListenerSetStatusBuilder toBuilder() {
         return edit();
     }
 

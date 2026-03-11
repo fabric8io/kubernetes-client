@@ -1,9 +1,7 @@
 
-package io.fabric8.kubernetes.api.model.gatewayapi.v1beta1;
+package io.fabric8.kubernetes.api.model.gatewayapi.v1;
 
-import java.util.ArrayList;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 import javax.annotation.processing.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
@@ -20,9 +18,7 @@ import io.fabric8.kubernetes.api.model.EnvVar;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.LabelSelector;
-import io.fabric8.kubernetes.api.model.LocalObjectReference;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
-import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
@@ -35,13 +31,15 @@ import lombok.ToString;
 import lombok.experimental.Accessors;
 
 /**
- * ReferenceGrantSpec identifies a cross namespace relationship that is trusted for Gateway API.
+ * ParentGatewayReference identifies an API object including its namespace, defaulting to Gateway.
  */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "from",
-    "to"
+    "kind",
+    "group",
+    "name",
+    "namespace"
 })
 @ToString
 @EqualsAndHashCode
@@ -56,8 +54,8 @@ import lombok.experimental.Accessors;
     @BuildableReference(PodTemplateSpec.class),
     @BuildableReference(ResourceRequirements.class),
     @BuildableReference(IntOrString.class),
-    @BuildableReference(ObjectReference.class),
-    @BuildableReference(LocalObjectReference.class),
+    @BuildableReference(io.fabric8.kubernetes.api.model.ObjectReference.class),
+    @BuildableReference(io.fabric8.kubernetes.api.model.LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class),
     @BuildableReference(EnvVar.class),
     @BuildableReference(ContainerPort.class),
@@ -65,71 +63,105 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class ReferenceGrantSpec implements Editable<ReferenceGrantSpecBuilder>, KubernetesResource
+public class ParentGatewayReference implements Editable<ParentGatewayReferenceBuilder>, KubernetesResource
 {
 
-    @JsonProperty("from")
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<ReferenceGrantFrom> from = new ArrayList<>();
-    @JsonProperty("to")
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<ReferenceGrantTo> to = new ArrayList<>();
+    @JsonProperty("group")
+    private String group;
+    @JsonProperty("kind")
+    private String kind;
+    @JsonProperty("name")
+    private String name;
+    @JsonProperty("namespace")
+    private String namespace;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
      */
-    public ReferenceGrantSpec() {
+    public ParentGatewayReference() {
     }
 
-    public ReferenceGrantSpec(List<ReferenceGrantFrom> from, List<ReferenceGrantTo> to) {
+    public ParentGatewayReference(String group, String kind, String name, String namespace) {
         super();
-        this.from = from;
-        this.to = to;
+        this.group = group;
+        this.kind = kind;
+        this.name = name;
+        this.namespace = namespace;
     }
 
     /**
-     * From describes the trusted namespaces and kinds that can reference the resources described in "To". Each entry in this list MUST be considered to be an additional place that references can be valid from, or to put this another way, entries MUST be combined using OR.<br><p> <br><p> Support: Core
+     * Group is the group of the referent.
      */
-    @JsonProperty("from")
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<ReferenceGrantFrom> getFrom() {
-        return from;
+    @JsonProperty("group")
+    public String getGroup() {
+        return group;
     }
 
     /**
-     * From describes the trusted namespaces and kinds that can reference the resources described in "To". Each entry in this list MUST be considered to be an additional place that references can be valid from, or to put this another way, entries MUST be combined using OR.<br><p> <br><p> Support: Core
+     * Group is the group of the referent.
      */
-    @JsonProperty("from")
-    public void setFrom(List<ReferenceGrantFrom> from) {
-        this.from = from;
+    @JsonProperty("group")
+    public void setGroup(String group) {
+        this.group = group;
     }
 
     /**
-     * To describes the resources that may be referenced by the resources described in "From". Each entry in this list MUST be considered to be an additional place that references can be valid to, or to put this another way, entries MUST be combined using OR.<br><p> <br><p> Support: Core
+     * Kind is kind of the referent. For example "Gateway".
      */
-    @JsonProperty("to")
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<ReferenceGrantTo> getTo() {
-        return to;
+    @JsonProperty("kind")
+    public String getKind() {
+        return kind;
     }
 
     /**
-     * To describes the resources that may be referenced by the resources described in "From". Each entry in this list MUST be considered to be an additional place that references can be valid to, or to put this another way, entries MUST be combined using OR.<br><p> <br><p> Support: Core
+     * Kind is kind of the referent. For example "Gateway".
      */
-    @JsonProperty("to")
-    public void setTo(List<ReferenceGrantTo> to) {
-        this.to = to;
+    @JsonProperty("kind")
+    public void setKind(String kind) {
+        this.kind = kind;
+    }
+
+    /**
+     * Name is the name of the referent.
+     */
+    @JsonProperty("name")
+    public String getName() {
+        return name;
+    }
+
+    /**
+     * Name is the name of the referent.
+     */
+    @JsonProperty("name")
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    /**
+     * Namespace is the namespace of the referent.  If not present, the namespace of the referent is assumed to be the same as the namespace of the referring object.
+     */
+    @JsonProperty("namespace")
+    public String getNamespace() {
+        return namespace;
+    }
+
+    /**
+     * Namespace is the namespace of the referent.  If not present, the namespace of the referent is assumed to be the same as the namespace of the referring object.
+     */
+    @JsonProperty("namespace")
+    public void setNamespace(String namespace) {
+        this.namespace = namespace;
     }
 
     @JsonIgnore
-    public ReferenceGrantSpecBuilder edit() {
-        return new ReferenceGrantSpecBuilder(this);
+    public ParentGatewayReferenceBuilder edit() {
+        return new ParentGatewayReferenceBuilder(this);
     }
 
     @JsonIgnore
-    public ReferenceGrantSpecBuilder toBuilder() {
+    public ParentGatewayReferenceBuilder toBuilder() {
         return edit();
     }
 

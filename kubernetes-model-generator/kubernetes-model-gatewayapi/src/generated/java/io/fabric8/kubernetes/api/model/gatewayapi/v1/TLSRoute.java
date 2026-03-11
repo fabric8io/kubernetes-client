@@ -1,5 +1,5 @@
 
-package io.fabric8.kubernetes.api.model.gatewayapi.v1beta1;
+package io.fabric8.kubernetes.api.model.gatewayapi.v1;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -18,16 +18,13 @@ import io.fabric8.kubernetes.api.model.EnvVar;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.LabelSelector;
-import io.fabric8.kubernetes.api.model.LocalObjectReference;
 import io.fabric8.kubernetes.api.model.Namespaced;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
-import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
 import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
-import io.fabric8.kubernetes.api.model.gatewayapi.v1.ReferenceGrantSpec;
 import io.fabric8.kubernetes.model.annotation.Group;
 import io.fabric8.kubernetes.model.annotation.Version;
 import io.sundr.builder.annotations.Buildable;
@@ -39,7 +36,7 @@ import lombok.ToString;
 import lombok.experimental.Accessors;
 
 /**
- * ReferenceGrant identifies kinds of resources in other namespaces that are trusted to reference the specified kinds of resources in the same namespace as the policy.<br><p> <br><p> Each ReferenceGrant can be used to represent a unique trust relationship. Additional Reference Grants can be used to add to the set of trusted sources of inbound references for the namespace they are defined within.<br><p> <br><p> All cross-namespace references in Gateway API (with the exception of cross-namespace Gateway-route attachment) require a ReferenceGrant.<br><p> <br><p> ReferenceGrant is a form of runtime verification allowing users to assert which cross-namespace object references are permitted. Implementations that support ReferenceGrant MUST NOT permit cross-namespace references which have no grant, and MUST respond to the removal of a grant by revoking the access that the grant allowed.
+ * The TLSRoute resource is similar to TCPRoute, but can be configured to match against TLS-specific metadata. This allows more flexibility in matching streams for a given TLS listener.<br><p> <br><p> If you need to forward traffic to a single target for a TLS listener, you could choose to use a TCPRoute with a TLS listener.
  */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -47,7 +44,8 @@ import lombok.experimental.Accessors;
     "apiVersion",
     "kind",
     "metadata",
-    "spec"
+    "spec",
+    "status"
 })
 @ToString
 @EqualsAndHashCode
@@ -62,8 +60,8 @@ import lombok.experimental.Accessors;
     @BuildableReference(PodTemplateSpec.class),
     @BuildableReference(ResourceRequirements.class),
     @BuildableReference(IntOrString.class),
-    @BuildableReference(ObjectReference.class),
-    @BuildableReference(LocalObjectReference.class),
+    @BuildableReference(io.fabric8.kubernetes.api.model.ObjectReference.class),
+    @BuildableReference(io.fabric8.kubernetes.api.model.LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class),
     @BuildableReference(EnvVar.class),
     @BuildableReference(ContainerPort.class),
@@ -73,35 +71,38 @@ import lombok.experimental.Accessors;
 @TemplateTransformations({
     @TemplateTransformation(value = "/manifest.vm", outputPath = "META-INF/services/io.fabric8.kubernetes.api.model.KubernetesResource", gather = true)
 })
-@Version("v1beta1")
+@Version("v1")
 @Group("gateway.networking.k8s.io")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class ReferenceGrant implements Editable<ReferenceGrantBuilder>, HasMetadata, Namespaced
+public class TLSRoute implements Editable<TLSRouteBuilder>, HasMetadata, Namespaced
 {
 
     @JsonProperty("apiVersion")
-    private String apiVersion = "gateway.networking.k8s.io/v1beta1";
+    private String apiVersion = "gateway.networking.k8s.io/v1";
     @JsonProperty("kind")
-    private String kind = "ReferenceGrant";
+    private String kind = "TLSRoute";
     @JsonProperty("metadata")
     private ObjectMeta metadata;
     @JsonProperty("spec")
-    private ReferenceGrantSpec spec;
+    private TLSRouteSpec spec;
+    @JsonProperty("status")
+    private TLSRouteStatus status;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
      */
-    public ReferenceGrant() {
+    public TLSRoute() {
     }
 
-    public ReferenceGrant(String apiVersion, String kind, ObjectMeta metadata, ReferenceGrantSpec spec) {
+    public TLSRoute(String apiVersion, String kind, ObjectMeta metadata, TLSRouteSpec spec, TLSRouteStatus status) {
         super();
         this.apiVersion = apiVersion;
         this.kind = kind;
         this.metadata = metadata;
         this.spec = spec;
+        this.status = status;
     }
 
     /**
@@ -137,7 +138,7 @@ public class ReferenceGrant implements Editable<ReferenceGrantBuilder>, HasMetad
     }
 
     /**
-     * ReferenceGrant identifies kinds of resources in other namespaces that are trusted to reference the specified kinds of resources in the same namespace as the policy.<br><p> <br><p> Each ReferenceGrant can be used to represent a unique trust relationship. Additional Reference Grants can be used to add to the set of trusted sources of inbound references for the namespace they are defined within.<br><p> <br><p> All cross-namespace references in Gateway API (with the exception of cross-namespace Gateway-route attachment) require a ReferenceGrant.<br><p> <br><p> ReferenceGrant is a form of runtime verification allowing users to assert which cross-namespace object references are permitted. Implementations that support ReferenceGrant MUST NOT permit cross-namespace references which have no grant, and MUST respond to the removal of a grant by revoking the access that the grant allowed.
+     * The TLSRoute resource is similar to TCPRoute, but can be configured to match against TLS-specific metadata. This allows more flexibility in matching streams for a given TLS listener.<br><p> <br><p> If you need to forward traffic to a single target for a TLS listener, you could choose to use a TCPRoute with a TLS listener.
      */
     @JsonProperty("metadata")
     public ObjectMeta getMetadata() {
@@ -145,7 +146,7 @@ public class ReferenceGrant implements Editable<ReferenceGrantBuilder>, HasMetad
     }
 
     /**
-     * ReferenceGrant identifies kinds of resources in other namespaces that are trusted to reference the specified kinds of resources in the same namespace as the policy.<br><p> <br><p> Each ReferenceGrant can be used to represent a unique trust relationship. Additional Reference Grants can be used to add to the set of trusted sources of inbound references for the namespace they are defined within.<br><p> <br><p> All cross-namespace references in Gateway API (with the exception of cross-namespace Gateway-route attachment) require a ReferenceGrant.<br><p> <br><p> ReferenceGrant is a form of runtime verification allowing users to assert which cross-namespace object references are permitted. Implementations that support ReferenceGrant MUST NOT permit cross-namespace references which have no grant, and MUST respond to the removal of a grant by revoking the access that the grant allowed.
+     * The TLSRoute resource is similar to TCPRoute, but can be configured to match against TLS-specific metadata. This allows more flexibility in matching streams for a given TLS listener.<br><p> <br><p> If you need to forward traffic to a single target for a TLS listener, you could choose to use a TCPRoute with a TLS listener.
      */
     @JsonProperty("metadata")
     public void setMetadata(ObjectMeta metadata) {
@@ -153,28 +154,44 @@ public class ReferenceGrant implements Editable<ReferenceGrantBuilder>, HasMetad
     }
 
     /**
-     * ReferenceGrant identifies kinds of resources in other namespaces that are trusted to reference the specified kinds of resources in the same namespace as the policy.<br><p> <br><p> Each ReferenceGrant can be used to represent a unique trust relationship. Additional Reference Grants can be used to add to the set of trusted sources of inbound references for the namespace they are defined within.<br><p> <br><p> All cross-namespace references in Gateway API (with the exception of cross-namespace Gateway-route attachment) require a ReferenceGrant.<br><p> <br><p> ReferenceGrant is a form of runtime verification allowing users to assert which cross-namespace object references are permitted. Implementations that support ReferenceGrant MUST NOT permit cross-namespace references which have no grant, and MUST respond to the removal of a grant by revoking the access that the grant allowed.
+     * The TLSRoute resource is similar to TCPRoute, but can be configured to match against TLS-specific metadata. This allows more flexibility in matching streams for a given TLS listener.<br><p> <br><p> If you need to forward traffic to a single target for a TLS listener, you could choose to use a TCPRoute with a TLS listener.
      */
     @JsonProperty("spec")
-    public ReferenceGrantSpec getSpec() {
+    public TLSRouteSpec getSpec() {
         return spec;
     }
 
     /**
-     * ReferenceGrant identifies kinds of resources in other namespaces that are trusted to reference the specified kinds of resources in the same namespace as the policy.<br><p> <br><p> Each ReferenceGrant can be used to represent a unique trust relationship. Additional Reference Grants can be used to add to the set of trusted sources of inbound references for the namespace they are defined within.<br><p> <br><p> All cross-namespace references in Gateway API (with the exception of cross-namespace Gateway-route attachment) require a ReferenceGrant.<br><p> <br><p> ReferenceGrant is a form of runtime verification allowing users to assert which cross-namespace object references are permitted. Implementations that support ReferenceGrant MUST NOT permit cross-namespace references which have no grant, and MUST respond to the removal of a grant by revoking the access that the grant allowed.
+     * The TLSRoute resource is similar to TCPRoute, but can be configured to match against TLS-specific metadata. This allows more flexibility in matching streams for a given TLS listener.<br><p> <br><p> If you need to forward traffic to a single target for a TLS listener, you could choose to use a TCPRoute with a TLS listener.
      */
     @JsonProperty("spec")
-    public void setSpec(ReferenceGrantSpec spec) {
+    public void setSpec(TLSRouteSpec spec) {
         this.spec = spec;
     }
 
-    @JsonIgnore
-    public ReferenceGrantBuilder edit() {
-        return new ReferenceGrantBuilder(this);
+    /**
+     * The TLSRoute resource is similar to TCPRoute, but can be configured to match against TLS-specific metadata. This allows more flexibility in matching streams for a given TLS listener.<br><p> <br><p> If you need to forward traffic to a single target for a TLS listener, you could choose to use a TCPRoute with a TLS listener.
+     */
+    @JsonProperty("status")
+    public TLSRouteStatus getStatus() {
+        return status;
+    }
+
+    /**
+     * The TLSRoute resource is similar to TCPRoute, but can be configured to match against TLS-specific metadata. This allows more flexibility in matching streams for a given TLS listener.<br><p> <br><p> If you need to forward traffic to a single target for a TLS listener, you could choose to use a TCPRoute with a TLS listener.
+     */
+    @JsonProperty("status")
+    public void setStatus(TLSRouteStatus status) {
+        this.status = status;
     }
 
     @JsonIgnore
-    public ReferenceGrantBuilder toBuilder() {
+    public TLSRouteBuilder edit() {
+        return new TLSRouteBuilder(this);
+    }
+
+    @JsonIgnore
+    public TLSRouteBuilder toBuilder() {
         return edit();
     }
 
