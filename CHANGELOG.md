@@ -8,14 +8,14 @@
 * Fix #7522: improve dependency management for kubernetes-httpclient-okhttp
 
 #### Dependency Upgrade
-* Fix #PLACEHOLDER_OCM: bump open-cluster-management.io/api from 0.16.2 to 1.2.0
+* Fix #7542: bump open-cluster-management.io/api from 0.16.2 to 1.2.0
 * Fix #7541: bump gateway-api from 1.4.0 to 1.5.0
 * Fix #7538: bump cert-manager from 1.18.2 to 1.19.4
 
 #### New Features
 
 #### _**Note**_: Breaking changes
-* Fix #PLACEHOLDER_OCM: open-cluster-management model `operator.v1.WebhookConfiguration` removed (replaced by `DefaultWebhookConfiguration` and `HostedWebhookConfiguration` upstream)
+* Fix #7542: open-cluster-management model `operator.v1.WebhookConfiguration` removed (replaced by `DefaultWebhookConfiguration` and `HostedWebhookConfiguration` upstream)
 * Fix #7541: gateway-api model `v1beta1.ReferenceGrantFrom`, `v1beta1.ReferenceGrantSpec`, and `v1beta1.ReferenceGrantTo` removed (ReferenceGrant graduated to v1 upstream)
 * Fix #7538: cert-manager model `ObjectReference` renamed to `IssuerReference` (following upstream rename in cert-manager v1.19.0)
 
