@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
@@ -31,12 +32,12 @@ import lombok.ToString;
 import lombok.experimental.Accessors;
 
 /**
- * AuthorizationValidationError is returned by Authorization.Validate() on semantically invalid configurations.
+ * RollingUpdateStatefulSetStrategy is used to communicate parameter for the RollingUpdate strategy.
  */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-
+    "maxUnavailable"
 })
 @ToString
 @EqualsAndHashCode
@@ -60,19 +61,48 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class AuthorizationValidationError implements Editable<AuthorizationValidationErrorBuilder>, KubernetesResource
+public class RollingUpdateStatefulSetStrategy implements Editable<RollingUpdateStatefulSetStrategyBuilder>, KubernetesResource
 {
 
+    @JsonProperty("maxUnavailable")
+    private IntOrString maxUnavailable;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
-    @JsonIgnore
-    public AuthorizationValidationErrorBuilder edit() {
-        return new AuthorizationValidationErrorBuilder(this);
+    /**
+     * No args constructor for use in serialization
+     */
+    public RollingUpdateStatefulSetStrategy() {
+    }
+
+    public RollingUpdateStatefulSetStrategy(IntOrString maxUnavailable) {
+        super();
+        this.maxUnavailable = maxUnavailable;
+    }
+
+    /**
+     * RollingUpdateStatefulSetStrategy is used to communicate parameter for the RollingUpdate strategy.
+     */
+    @JsonProperty("maxUnavailable")
+    public IntOrString getMaxUnavailable() {
+        return maxUnavailable;
+    }
+
+    /**
+     * RollingUpdateStatefulSetStrategy is used to communicate parameter for the RollingUpdate strategy.
+     */
+    @JsonProperty("maxUnavailable")
+    public void setMaxUnavailable(IntOrString maxUnavailable) {
+        this.maxUnavailable = maxUnavailable;
     }
 
     @JsonIgnore
-    public AuthorizationValidationErrorBuilder toBuilder() {
+    public RollingUpdateStatefulSetStrategyBuilder edit() {
+        return new RollingUpdateStatefulSetStrategyBuilder(this);
+    }
+
+    @JsonIgnore
+    public RollingUpdateStatefulSetStrategyBuilder toBuilder() {
         return edit();
     }
 

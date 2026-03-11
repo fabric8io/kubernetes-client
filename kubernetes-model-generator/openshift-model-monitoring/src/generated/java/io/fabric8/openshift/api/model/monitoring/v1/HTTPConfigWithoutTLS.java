@@ -33,7 +33,7 @@ import lombok.ToString;
 import lombok.experimental.Accessors;
 
 /**
- * HTTPConfig defines the HTTP configuration + TLS configuration (only from secret/configmap references).
+ * HTTPConfigWithoutTLS defines the configuration for the HTTP client.
  */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -43,8 +43,7 @@ import lombok.experimental.Accessors;
     "bearerTokenSecret",
     "enableHttp2",
     "followRedirects",
-    "oauth2",
-    "tlsConfig"
+    "oauth2"
 })
 @ToString
 @EqualsAndHashCode
@@ -68,7 +67,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class HTTPConfig implements Editable<HTTPConfigBuilder>, KubernetesResource
+public class HTTPConfigWithoutTLS implements Editable<HTTPConfigWithoutTLSBuilder>, KubernetesResource
 {
 
     @JsonProperty("authorization")
@@ -83,18 +82,16 @@ public class HTTPConfig implements Editable<HTTPConfigBuilder>, KubernetesResour
     private Boolean followRedirects;
     @JsonProperty("oauth2")
     private OAuth2 oauth2;
-    @JsonProperty("tlsConfig")
-    private SafeTLSConfig tlsConfig;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
      */
-    public HTTPConfig() {
+    public HTTPConfigWithoutTLS() {
     }
 
-    public HTTPConfig(SafeAuthorization authorization, BasicAuth basicAuth, SecretKeySelector bearerTokenSecret, Boolean enableHttp2, Boolean followRedirects, OAuth2 oauth2, SafeTLSConfig tlsConfig) {
+    public HTTPConfigWithoutTLS(SafeAuthorization authorization, BasicAuth basicAuth, SecretKeySelector bearerTokenSecret, Boolean enableHttp2, Boolean followRedirects, OAuth2 oauth2) {
         super();
         this.authorization = authorization;
         this.basicAuth = basicAuth;
@@ -102,11 +99,10 @@ public class HTTPConfig implements Editable<HTTPConfigBuilder>, KubernetesResour
         this.enableHttp2 = enableHttp2;
         this.followRedirects = followRedirects;
         this.oauth2 = oauth2;
-        this.tlsConfig = tlsConfig;
     }
 
     /**
-     * HTTPConfig defines the HTTP configuration + TLS configuration (only from secret/configmap references).
+     * HTTPConfigWithoutTLS defines the configuration for the HTTP client.
      */
     @JsonProperty("authorization")
     public SafeAuthorization getAuthorization() {
@@ -114,7 +110,7 @@ public class HTTPConfig implements Editable<HTTPConfigBuilder>, KubernetesResour
     }
 
     /**
-     * HTTPConfig defines the HTTP configuration + TLS configuration (only from secret/configmap references).
+     * HTTPConfigWithoutTLS defines the configuration for the HTTP client.
      */
     @JsonProperty("authorization")
     public void setAuthorization(SafeAuthorization authorization) {
@@ -122,7 +118,7 @@ public class HTTPConfig implements Editable<HTTPConfigBuilder>, KubernetesResour
     }
 
     /**
-     * HTTPConfig defines the HTTP configuration + TLS configuration (only from secret/configmap references).
+     * HTTPConfigWithoutTLS defines the configuration for the HTTP client.
      */
     @JsonProperty("basicAuth")
     public BasicAuth getBasicAuth() {
@@ -130,7 +126,7 @@ public class HTTPConfig implements Editable<HTTPConfigBuilder>, KubernetesResour
     }
 
     /**
-     * HTTPConfig defines the HTTP configuration + TLS configuration (only from secret/configmap references).
+     * HTTPConfigWithoutTLS defines the configuration for the HTTP client.
      */
     @JsonProperty("basicAuth")
     public void setBasicAuth(BasicAuth basicAuth) {
@@ -138,7 +134,7 @@ public class HTTPConfig implements Editable<HTTPConfigBuilder>, KubernetesResour
     }
 
     /**
-     * HTTPConfig defines the HTTP configuration + TLS configuration (only from secret/configmap references).
+     * HTTPConfigWithoutTLS defines the configuration for the HTTP client.
      */
     @JsonProperty("bearerTokenSecret")
     public SecretKeySelector getBearerTokenSecret() {
@@ -146,7 +142,7 @@ public class HTTPConfig implements Editable<HTTPConfigBuilder>, KubernetesResour
     }
 
     /**
-     * HTTPConfig defines the HTTP configuration + TLS configuration (only from secret/configmap references).
+     * HTTPConfigWithoutTLS defines the configuration for the HTTP client.
      */
     @JsonProperty("bearerTokenSecret")
     public void setBearerTokenSecret(SecretKeySelector bearerTokenSecret) {
@@ -186,7 +182,7 @@ public class HTTPConfig implements Editable<HTTPConfigBuilder>, KubernetesResour
     }
 
     /**
-     * HTTPConfig defines the HTTP configuration + TLS configuration (only from secret/configmap references).
+     * HTTPConfigWithoutTLS defines the configuration for the HTTP client.
      */
     @JsonProperty("oauth2")
     public OAuth2 getOauth2() {
@@ -194,36 +190,20 @@ public class HTTPConfig implements Editable<HTTPConfigBuilder>, KubernetesResour
     }
 
     /**
-     * HTTPConfig defines the HTTP configuration + TLS configuration (only from secret/configmap references).
+     * HTTPConfigWithoutTLS defines the configuration for the HTTP client.
      */
     @JsonProperty("oauth2")
     public void setOauth2(OAuth2 oauth2) {
         this.oauth2 = oauth2;
     }
 
-    /**
-     * HTTPConfig defines the HTTP configuration + TLS configuration (only from secret/configmap references).
-     */
-    @JsonProperty("tlsConfig")
-    public SafeTLSConfig getTlsConfig() {
-        return tlsConfig;
-    }
-
-    /**
-     * HTTPConfig defines the HTTP configuration + TLS configuration (only from secret/configmap references).
-     */
-    @JsonProperty("tlsConfig")
-    public void setTlsConfig(SafeTLSConfig tlsConfig) {
-        this.tlsConfig = tlsConfig;
+    @JsonIgnore
+    public HTTPConfigWithoutTLSBuilder edit() {
+        return new HTTPConfigWithoutTLSBuilder(this);
     }
 
     @JsonIgnore
-    public HTTPConfigBuilder edit() {
-        return new HTTPConfigBuilder(this);
-    }
-
-    @JsonIgnore
-    public HTTPConfigBuilder toBuilder() {
+    public HTTPConfigWithoutTLSBuilder toBuilder() {
         return edit();
     }
 

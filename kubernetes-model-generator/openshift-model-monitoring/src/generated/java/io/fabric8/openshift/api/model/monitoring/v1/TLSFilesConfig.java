@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
@@ -31,12 +32,14 @@ import lombok.ToString;
 import lombok.experimental.Accessors;
 
 /**
- * ProbeTargetsValidationError is returned by ProbeTargets.Validate() on semantically invalid configurations.
+ * TLSFilesConfig extends the TLS configuration with file parameters.
  */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-
+    "caFile",
+    "certFile",
+    "keyFile"
 })
 @ToString
 @EqualsAndHashCode
@@ -60,19 +63,86 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class ProbeTargetsValidationError implements Editable<ProbeTargetsValidationErrorBuilder>, KubernetesResource
+public class TLSFilesConfig implements Editable<TLSFilesConfigBuilder>, KubernetesResource
 {
 
+    @JsonProperty("caFile")
+    private String caFile;
+    @JsonProperty("certFile")
+    private String certFile;
+    @JsonProperty("keyFile")
+    private String keyFile;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
-    @JsonIgnore
-    public ProbeTargetsValidationErrorBuilder edit() {
-        return new ProbeTargetsValidationErrorBuilder(this);
+    /**
+     * No args constructor for use in serialization
+     */
+    public TLSFilesConfig() {
+    }
+
+    public TLSFilesConfig(String caFile, String certFile, String keyFile) {
+        super();
+        this.caFile = caFile;
+        this.certFile = certFile;
+        this.keyFile = keyFile;
+    }
+
+    /**
+     * caFile defines the path to the CA cert in the Prometheus container to use for the targets.
+     */
+    @JsonProperty("caFile")
+    public String getCaFile() {
+        return caFile;
+    }
+
+    /**
+     * caFile defines the path to the CA cert in the Prometheus container to use for the targets.
+     */
+    @JsonProperty("caFile")
+    public void setCaFile(String caFile) {
+        this.caFile = caFile;
+    }
+
+    /**
+     * certFile defines the path to the client cert file in the Prometheus container for the targets.
+     */
+    @JsonProperty("certFile")
+    public String getCertFile() {
+        return certFile;
+    }
+
+    /**
+     * certFile defines the path to the client cert file in the Prometheus container for the targets.
+     */
+    @JsonProperty("certFile")
+    public void setCertFile(String certFile) {
+        this.certFile = certFile;
+    }
+
+    /**
+     * keyFile defines the path to the client key file in the Prometheus container for the targets.
+     */
+    @JsonProperty("keyFile")
+    public String getKeyFile() {
+        return keyFile;
+    }
+
+    /**
+     * keyFile defines the path to the client key file in the Prometheus container for the targets.
+     */
+    @JsonProperty("keyFile")
+    public void setKeyFile(String keyFile) {
+        this.keyFile = keyFile;
     }
 
     @JsonIgnore
-    public ProbeTargetsValidationErrorBuilder toBuilder() {
+    public TLSFilesConfigBuilder edit() {
+        return new TLSFilesConfigBuilder(this);
+    }
+
+    @JsonIgnore
+    public TLSFilesConfigBuilder toBuilder() {
         return edit();
     }
 

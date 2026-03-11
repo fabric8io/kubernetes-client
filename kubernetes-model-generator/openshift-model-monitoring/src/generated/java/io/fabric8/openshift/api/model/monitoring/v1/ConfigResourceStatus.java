@@ -34,7 +34,7 @@ import lombok.ToString;
 import lombok.experimental.Accessors;
 
 /**
- * ConfigResourceStatus is the most recent observed status of the Configuration Resource (ServiceMonitor, PodMonitor and Probes). Read-only. More info: https://github.com/kubernetes/community/blob/master/contributors/devel/sig-architecture/api-conventions.md#spec-and-status
+ * ConfigResourceStatus is the most recent observed status of the Configuration Resource (ServiceMonitor, PodMonitor, Probes, ScrapeConfig, PrometheusRule or AlertmanagerConfig). Read-only. More info: https://github.com/kubernetes/community/blob/master/contributors/devel/sig-architecture/api-conventions.md#spec-and-status
  */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -84,7 +84,7 @@ public class ConfigResourceStatus implements Editable<ConfigResourceStatusBuilde
     }
 
     /**
-     * The list of workload resources (Prometheus or PrometheusAgent) which select the configuration resource.
+     * bindings defines the list of workload resources (Prometheus, PrometheusAgent, ThanosRuler or Alertmanager) which select the configuration resource.
      */
     @JsonProperty("bindings")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -93,7 +93,7 @@ public class ConfigResourceStatus implements Editable<ConfigResourceStatusBuilde
     }
 
     /**
-     * The list of workload resources (Prometheus or PrometheusAgent) which select the configuration resource.
+     * bindings defines the list of workload resources (Prometheus, PrometheusAgent, ThanosRuler or Alertmanager) which select the configuration resource.
      */
     @JsonProperty("bindings")
     public void setBindings(List<WorkloadBinding> bindings) {

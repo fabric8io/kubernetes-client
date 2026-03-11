@@ -78,7 +78,7 @@ public class Exemplars implements Editable<ExemplarsBuilder>, KubernetesResource
     }
 
     /**
-     * Maximum number of exemplars stored in memory for all series.<br><p> <br><p> exemplar-storage itself must be enabled using the `spec.enableFeature` option for exemplars to be scraped in the first place.<br><p> <br><p> If not set, Prometheus uses its default value. A value of zero or less than zero disables the storage.
+     * maxSize defines the maximum number of exemplars stored in memory for all series.<br><p> <br><p> exemplar-storage itself must be enabled using the `spec.enableFeature` option for exemplars to be scraped in the first place.<br><p> <br><p> If not set, Prometheus uses its default value. A value of zero or less than zero disables the storage.
      */
     @JsonProperty("maxSize")
     public Long getMaxSize() {
@@ -86,7 +86,7 @@ public class Exemplars implements Editable<ExemplarsBuilder>, KubernetesResource
     }
 
     /**
-     * Maximum number of exemplars stored in memory for all series.<br><p> <br><p> exemplar-storage itself must be enabled using the `spec.enableFeature` option for exemplars to be scraped in the first place.<br><p> <br><p> If not set, Prometheus uses its default value. A value of zero or less than zero disables the storage.
+     * maxSize defines the maximum number of exemplars stored in memory for all series.<br><p> <br><p> exemplar-storage itself must be enabled using the `spec.enableFeature` option for exemplars to be scraped in the first place.<br><p> <br><p> If not set, Prometheus uses its default value. A value of zero or less than zero disables the storage.
      */
     @JsonProperty("maxSize")
     public void setMaxSize(Long maxSize) {

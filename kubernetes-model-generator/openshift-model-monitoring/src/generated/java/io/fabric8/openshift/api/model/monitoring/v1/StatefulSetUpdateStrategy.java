@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
@@ -30,10 +31,14 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * StatefulSetUpdateStrategy indicates the strategy used when updating the StatefulSet. It includes any additional parameters necessary to perform the update for the indicated strategy.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-
+    "rollingUpdate",
+    "type"
 })
 @ToString
 @EqualsAndHashCode
@@ -57,19 +62,67 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class OAuth2ValidationError implements Editable<OAuth2ValidationErrorBuilder>, KubernetesResource
+public class StatefulSetUpdateStrategy implements Editable<StatefulSetUpdateStrategyBuilder>, KubernetesResource
 {
 
+    @JsonProperty("rollingUpdate")
+    private RollingUpdateStatefulSetStrategy rollingUpdate;
+    @JsonProperty("type")
+    private String type;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
-    @JsonIgnore
-    public OAuth2ValidationErrorBuilder edit() {
-        return new OAuth2ValidationErrorBuilder(this);
+    /**
+     * No args constructor for use in serialization
+     */
+    public StatefulSetUpdateStrategy() {
+    }
+
+    public StatefulSetUpdateStrategy(RollingUpdateStatefulSetStrategy rollingUpdate, String type) {
+        super();
+        this.rollingUpdate = rollingUpdate;
+        this.type = type;
+    }
+
+    /**
+     * StatefulSetUpdateStrategy indicates the strategy used when updating the StatefulSet. It includes any additional parameters necessary to perform the update for the indicated strategy.
+     */
+    @JsonProperty("rollingUpdate")
+    public RollingUpdateStatefulSetStrategy getRollingUpdate() {
+        return rollingUpdate;
+    }
+
+    /**
+     * StatefulSetUpdateStrategy indicates the strategy used when updating the StatefulSet. It includes any additional parameters necessary to perform the update for the indicated strategy.
+     */
+    @JsonProperty("rollingUpdate")
+    public void setRollingUpdate(RollingUpdateStatefulSetStrategy rollingUpdate) {
+        this.rollingUpdate = rollingUpdate;
+    }
+
+    /**
+     * type indicates the type of the StatefulSetUpdateStrategy.<br><p> <br><p> Default is RollingUpdate.
+     */
+    @JsonProperty("type")
+    public String getType() {
+        return type;
+    }
+
+    /**
+     * type indicates the type of the StatefulSetUpdateStrategy.<br><p> <br><p> Default is RollingUpdate.
+     */
+    @JsonProperty("type")
+    public void setType(String type) {
+        this.type = type;
     }
 
     @JsonIgnore
-    public OAuth2ValidationErrorBuilder toBuilder() {
+    public StatefulSetUpdateStrategyBuilder edit() {
+        return new StatefulSetUpdateStrategyBuilder(this);
+    }
+
+    @JsonIgnore
+    public StatefulSetUpdateStrategyBuilder toBuilder() {
         return edit();
     }
 

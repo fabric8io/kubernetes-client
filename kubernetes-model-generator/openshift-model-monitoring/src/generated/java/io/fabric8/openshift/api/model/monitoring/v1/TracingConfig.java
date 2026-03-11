@@ -66,7 +66,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class PrometheusTracingConfig implements Editable<PrometheusTracingConfigBuilder>, KubernetesResource
+public class TracingConfig implements Editable<TracingConfigBuilder>, KubernetesResource
 {
 
     @JsonProperty("clientType")
@@ -92,10 +92,10 @@ public class PrometheusTracingConfig implements Editable<PrometheusTracingConfig
     /**
      * No args constructor for use in serialization
      */
-    public PrometheusTracingConfig() {
+    public TracingConfig() {
     }
 
-    public PrometheusTracingConfig(String clientType, String compression, String endpoint, Map<String, String> headers, Boolean insecure, Quantity samplingFraction, String timeout, TLSConfig tlsConfig) {
+    public TracingConfig(String clientType, String compression, String endpoint, Map<String, String> headers, Boolean insecure, Quantity samplingFraction, String timeout, TLSConfig tlsConfig) {
         super();
         this.clientType = clientType;
         this.compression = compression;
@@ -108,7 +108,7 @@ public class PrometheusTracingConfig implements Editable<PrometheusTracingConfig
     }
 
     /**
-     * Client used to export the traces. Supported values are `http` or `grpc`.
+     * clientType defines the client used to export the traces. Supported values are `HTTP` and `GRPC`.
      */
     @JsonProperty("clientType")
     public String getClientType() {
@@ -116,7 +116,7 @@ public class PrometheusTracingConfig implements Editable<PrometheusTracingConfig
     }
 
     /**
-     * Client used to export the traces. Supported values are `http` or `grpc`.
+     * clientType defines the client used to export the traces. Supported values are `HTTP` and `GRPC`.
      */
     @JsonProperty("clientType")
     public void setClientType(String clientType) {
@@ -124,7 +124,7 @@ public class PrometheusTracingConfig implements Editable<PrometheusTracingConfig
     }
 
     /**
-     * Compression key for supported compression types. The only supported value is `gzip`.
+     * compression key for supported compression types. The only supported value is `Gzip`.
      */
     @JsonProperty("compression")
     public String getCompression() {
@@ -132,7 +132,7 @@ public class PrometheusTracingConfig implements Editable<PrometheusTracingConfig
     }
 
     /**
-     * Compression key for supported compression types. The only supported value is `gzip`.
+     * compression key for supported compression types. The only supported value is `Gzip`.
      */
     @JsonProperty("compression")
     public void setCompression(String compression) {
@@ -140,7 +140,7 @@ public class PrometheusTracingConfig implements Editable<PrometheusTracingConfig
     }
 
     /**
-     * Endpoint to send the traces to. Should be provided in format &lt;host&gt;:&lt;port&gt;.
+     * endpoint to send the traces to. Should be provided in format &lt;host&gt;:&lt;port&gt;.
      */
     @JsonProperty("endpoint")
     public String getEndpoint() {
@@ -148,7 +148,7 @@ public class PrometheusTracingConfig implements Editable<PrometheusTracingConfig
     }
 
     /**
-     * Endpoint to send the traces to. Should be provided in format &lt;host&gt;:&lt;port&gt;.
+     * endpoint to send the traces to. Should be provided in format &lt;host&gt;:&lt;port&gt;.
      */
     @JsonProperty("endpoint")
     public void setEndpoint(String endpoint) {
@@ -156,7 +156,7 @@ public class PrometheusTracingConfig implements Editable<PrometheusTracingConfig
     }
 
     /**
-     * Key-value pairs to be used as headers associated with gRPC or HTTP requests.
+     * headers defines the key-value pairs to be used as headers associated with gRPC or HTTP requests.
      */
     @JsonProperty("headers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -165,7 +165,7 @@ public class PrometheusTracingConfig implements Editable<PrometheusTracingConfig
     }
 
     /**
-     * Key-value pairs to be used as headers associated with gRPC or HTTP requests.
+     * headers defines the key-value pairs to be used as headers associated with gRPC or HTTP requests.
      */
     @JsonProperty("headers")
     public void setHeaders(Map<String, String> headers) {
@@ -173,7 +173,7 @@ public class PrometheusTracingConfig implements Editable<PrometheusTracingConfig
     }
 
     /**
-     * If disabled, the client will use a secure connection.
+     * insecure if disabled, the client will use a secure connection.
      */
     @JsonProperty("insecure")
     public Boolean getInsecure() {
@@ -181,7 +181,7 @@ public class PrometheusTracingConfig implements Editable<PrometheusTracingConfig
     }
 
     /**
-     * If disabled, the client will use a secure connection.
+     * insecure if disabled, the client will use a secure connection.
      */
     @JsonProperty("insecure")
     public void setInsecure(Boolean insecure) {
@@ -199,7 +199,7 @@ public class PrometheusTracingConfig implements Editable<PrometheusTracingConfig
     }
 
     /**
-     * Maximum time the exporter will wait for each batch export.
+     * timeout defines the maximum time the exporter will wait for each batch export.
      */
     @JsonProperty("timeout")
     public String getTimeout() {
@@ -207,7 +207,7 @@ public class PrometheusTracingConfig implements Editable<PrometheusTracingConfig
     }
 
     /**
-     * Maximum time the exporter will wait for each batch export.
+     * timeout defines the maximum time the exporter will wait for each batch export.
      */
     @JsonProperty("timeout")
     public void setTimeout(String timeout) {
@@ -225,12 +225,12 @@ public class PrometheusTracingConfig implements Editable<PrometheusTracingConfig
     }
 
     @JsonIgnore
-    public PrometheusTracingConfigBuilder edit() {
-        return new PrometheusTracingConfigBuilder(this);
+    public TracingConfigBuilder edit() {
+        return new TracingConfigBuilder(this);
     }
 
     @JsonIgnore
-    public PrometheusTracingConfigBuilder toBuilder() {
+    public TracingConfigBuilder toBuilder() {
         return edit();
     }
 

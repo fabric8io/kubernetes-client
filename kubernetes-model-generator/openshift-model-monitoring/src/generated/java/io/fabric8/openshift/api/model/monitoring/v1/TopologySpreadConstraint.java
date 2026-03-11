@@ -113,7 +113,7 @@ public class TopologySpreadConstraint implements Editable<TopologySpreadConstrai
     }
 
     /**
-     * Defines what Prometheus Operator managed labels should be added to labelSelector on the topologySpreadConstraint.
+     * additionalLabelSelectors Defines what Prometheus Operator managed labels should be added to labelSelector on the topologySpreadConstraint.
      */
     @JsonProperty("additionalLabelSelectors")
     public String getAdditionalLabelSelectors() {
@@ -121,7 +121,7 @@ public class TopologySpreadConstraint implements Editable<TopologySpreadConstrai
     }
 
     /**
-     * Defines what Prometheus Operator managed labels should be added to labelSelector on the topologySpreadConstraint.
+     * additionalLabelSelectors Defines what Prometheus Operator managed labels should be added to labelSelector on the topologySpreadConstraint.
      */
     @JsonProperty("additionalLabelSelectors")
     public void setAdditionalLabelSelectors(String additionalLabelSelectors) {

@@ -117,7 +117,7 @@ public class Condition implements Editable<ConditionBuilder>, KubernetesResource
     }
 
     /**
-     * Human-readable message indicating details for the condition's last transition.
+     * message defines human-readable message indicating details for the condition's last transition.
      */
     @JsonProperty("message")
     public String getMessage() {
@@ -125,7 +125,7 @@ public class Condition implements Editable<ConditionBuilder>, KubernetesResource
     }
 
     /**
-     * Human-readable message indicating details for the condition's last transition.
+     * message defines human-readable message indicating details for the condition's last transition.
      */
     @JsonProperty("message")
     public void setMessage(String message) {
@@ -133,7 +133,7 @@ public class Condition implements Editable<ConditionBuilder>, KubernetesResource
     }
 
     /**
-     * ObservedGeneration represents the .metadata.generation that the condition was set based upon. For instance, if `.metadata.generation` is currently 12, but the `.status.conditions[].observedGeneration` is 9, the condition is out of date with respect to the current state of the instance.
+     * observedGeneration defines the .metadata.generation that the condition was set based upon. For instance, if `.metadata.generation` is currently 12, but the `.status.conditions[].observedGeneration` is 9, the condition is out of date with respect to the current state of the instance.
      */
     @JsonProperty("observedGeneration")
     public Long getObservedGeneration() {
@@ -141,7 +141,7 @@ public class Condition implements Editable<ConditionBuilder>, KubernetesResource
     }
 
     /**
-     * ObservedGeneration represents the .metadata.generation that the condition was set based upon. For instance, if `.metadata.generation` is currently 12, but the `.status.conditions[].observedGeneration` is 9, the condition is out of date with respect to the current state of the instance.
+     * observedGeneration defines the .metadata.generation that the condition was set based upon. For instance, if `.metadata.generation` is currently 12, but the `.status.conditions[].observedGeneration` is 9, the condition is out of date with respect to the current state of the instance.
      */
     @JsonProperty("observedGeneration")
     public void setObservedGeneration(Long observedGeneration) {
@@ -149,7 +149,7 @@ public class Condition implements Editable<ConditionBuilder>, KubernetesResource
     }
 
     /**
-     * Reason for the condition's last transition.
+     * reason for the condition's last transition.
      */
     @JsonProperty("reason")
     public String getReason() {
@@ -157,7 +157,7 @@ public class Condition implements Editable<ConditionBuilder>, KubernetesResource
     }
 
     /**
-     * Reason for the condition's last transition.
+     * reason for the condition's last transition.
      */
     @JsonProperty("reason")
     public void setReason(String reason) {
@@ -165,7 +165,7 @@ public class Condition implements Editable<ConditionBuilder>, KubernetesResource
     }
 
     /**
-     * Status of the condition.
+     * status of the condition.
      */
     @JsonProperty("status")
     public String getStatus() {
@@ -173,7 +173,7 @@ public class Condition implements Editable<ConditionBuilder>, KubernetesResource
     }
 
     /**
-     * Status of the condition.
+     * status of the condition.
      */
     @JsonProperty("status")
     public void setStatus(String status) {
@@ -181,7 +181,7 @@ public class Condition implements Editable<ConditionBuilder>, KubernetesResource
     }
 
     /**
-     * Type of the condition being reported.
+     * type of the condition being reported.
      */
     @JsonProperty("type")
     public String getType() {
@@ -189,7 +189,7 @@ public class Condition implements Editable<ConditionBuilder>, KubernetesResource
     }
 
     /**
-     * Type of the condition being reported.
+     * type of the condition being reported.
      */
     @JsonProperty("type")
     public void setType(String type) {

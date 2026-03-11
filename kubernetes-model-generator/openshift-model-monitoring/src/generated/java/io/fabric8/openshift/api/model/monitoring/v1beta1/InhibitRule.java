@@ -95,7 +95,7 @@ public class InhibitRule implements Editable<InhibitRuleBuilder>, KubernetesReso
     }
 
     /**
-     * Labels that must have an equal value in the source and target alert for the inhibition to take effect.
+     * equal defines labels that must have an equal value in the source and target alert for the inhibition to take effect. This ensures related alerts are properly grouped.
      */
     @JsonProperty("equal")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -104,7 +104,7 @@ public class InhibitRule implements Editable<InhibitRuleBuilder>, KubernetesReso
     }
 
     /**
-     * Labels that must have an equal value in the source and target alert for the inhibition to take effect.
+     * equal defines labels that must have an equal value in the source and target alert for the inhibition to take effect. This ensures related alerts are properly grouped.
      */
     @JsonProperty("equal")
     public void setEqual(List<String> equal) {
@@ -112,7 +112,7 @@ public class InhibitRule implements Editable<InhibitRuleBuilder>, KubernetesReso
     }
 
     /**
-     * Matchers for which one or more alerts have to exist for the inhibition to take effect. The operator enforces that the alert matches the resource's namespace.
+     * sourceMatch defines matchers for which one or more alerts have to exist for the inhibition to take effect. The operator enforces that the alert matches the resource's namespace. These are the "trigger" alerts that cause other alerts to be inhibited.
      */
     @JsonProperty("sourceMatch")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -121,7 +121,7 @@ public class InhibitRule implements Editable<InhibitRuleBuilder>, KubernetesReso
     }
 
     /**
-     * Matchers for which one or more alerts have to exist for the inhibition to take effect. The operator enforces that the alert matches the resource's namespace.
+     * sourceMatch defines matchers for which one or more alerts have to exist for the inhibition to take effect. The operator enforces that the alert matches the resource's namespace. These are the "trigger" alerts that cause other alerts to be inhibited.
      */
     @JsonProperty("sourceMatch")
     public void setSourceMatch(List<Matcher> sourceMatch) {
@@ -129,7 +129,7 @@ public class InhibitRule implements Editable<InhibitRuleBuilder>, KubernetesReso
     }
 
     /**
-     * Matchers that have to be fulfilled in the alerts to be muted. The operator enforces that the alert matches the resource's namespace.
+     * targetMatch defines matchers that have to be fulfilled in the alerts to be muted. The operator enforces that the alert matches the resource's namespace. When these conditions are met, matching alerts will be inhibited (silenced).
      */
     @JsonProperty("targetMatch")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -138,7 +138,7 @@ public class InhibitRule implements Editable<InhibitRuleBuilder>, KubernetesReso
     }
 
     /**
-     * Matchers that have to be fulfilled in the alerts to be muted. The operator enforces that the alert matches the resource's namespace.
+     * targetMatch defines matchers that have to be fulfilled in the alerts to be muted. The operator enforces that the alert matches the resource's namespace. When these conditions are met, matching alerts will be inhibited (silenced).
      */
     @JsonProperty("targetMatch")
     public void setTargetMatch(List<Matcher> targetMatch) {

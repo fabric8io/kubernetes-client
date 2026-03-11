@@ -33,7 +33,7 @@ import lombok.ToString;
 import lombok.experimental.Accessors;
 
 /**
- * HTTPConfig defines the HTTP configuration + TLS configuration (only from secret/configmap references).
+ * HTTPConfigWithTLSFiles defines HTTP configuration + TLS configuration (from secret/configmap references as well as files).
  */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -68,7 +68,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class HTTPConfig implements Editable<HTTPConfigBuilder>, KubernetesResource
+public class HTTPConfigWithTLSFiles implements Editable<HTTPConfigWithTLSFilesBuilder>, KubernetesResource
 {
 
     @JsonProperty("authorization")
@@ -84,17 +84,17 @@ public class HTTPConfig implements Editable<HTTPConfigBuilder>, KubernetesResour
     @JsonProperty("oauth2")
     private OAuth2 oauth2;
     @JsonProperty("tlsConfig")
-    private SafeTLSConfig tlsConfig;
+    private TLSConfig tlsConfig;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
      */
-    public HTTPConfig() {
+    public HTTPConfigWithTLSFiles() {
     }
 
-    public HTTPConfig(SafeAuthorization authorization, BasicAuth basicAuth, SecretKeySelector bearerTokenSecret, Boolean enableHttp2, Boolean followRedirects, OAuth2 oauth2, SafeTLSConfig tlsConfig) {
+    public HTTPConfigWithTLSFiles(SafeAuthorization authorization, BasicAuth basicAuth, SecretKeySelector bearerTokenSecret, Boolean enableHttp2, Boolean followRedirects, OAuth2 oauth2, TLSConfig tlsConfig) {
         super();
         this.authorization = authorization;
         this.basicAuth = basicAuth;
@@ -106,7 +106,7 @@ public class HTTPConfig implements Editable<HTTPConfigBuilder>, KubernetesResour
     }
 
     /**
-     * HTTPConfig defines the HTTP configuration + TLS configuration (only from secret/configmap references).
+     * HTTPConfigWithTLSFiles defines HTTP configuration + TLS configuration (from secret/configmap references as well as files).
      */
     @JsonProperty("authorization")
     public SafeAuthorization getAuthorization() {
@@ -114,7 +114,7 @@ public class HTTPConfig implements Editable<HTTPConfigBuilder>, KubernetesResour
     }
 
     /**
-     * HTTPConfig defines the HTTP configuration + TLS configuration (only from secret/configmap references).
+     * HTTPConfigWithTLSFiles defines HTTP configuration + TLS configuration (from secret/configmap references as well as files).
      */
     @JsonProperty("authorization")
     public void setAuthorization(SafeAuthorization authorization) {
@@ -122,7 +122,7 @@ public class HTTPConfig implements Editable<HTTPConfigBuilder>, KubernetesResour
     }
 
     /**
-     * HTTPConfig defines the HTTP configuration + TLS configuration (only from secret/configmap references).
+     * HTTPConfigWithTLSFiles defines HTTP configuration + TLS configuration (from secret/configmap references as well as files).
      */
     @JsonProperty("basicAuth")
     public BasicAuth getBasicAuth() {
@@ -130,7 +130,7 @@ public class HTTPConfig implements Editable<HTTPConfigBuilder>, KubernetesResour
     }
 
     /**
-     * HTTPConfig defines the HTTP configuration + TLS configuration (only from secret/configmap references).
+     * HTTPConfigWithTLSFiles defines HTTP configuration + TLS configuration (from secret/configmap references as well as files).
      */
     @JsonProperty("basicAuth")
     public void setBasicAuth(BasicAuth basicAuth) {
@@ -138,7 +138,7 @@ public class HTTPConfig implements Editable<HTTPConfigBuilder>, KubernetesResour
     }
 
     /**
-     * HTTPConfig defines the HTTP configuration + TLS configuration (only from secret/configmap references).
+     * HTTPConfigWithTLSFiles defines HTTP configuration + TLS configuration (from secret/configmap references as well as files).
      */
     @JsonProperty("bearerTokenSecret")
     public SecretKeySelector getBearerTokenSecret() {
@@ -146,7 +146,7 @@ public class HTTPConfig implements Editable<HTTPConfigBuilder>, KubernetesResour
     }
 
     /**
-     * HTTPConfig defines the HTTP configuration + TLS configuration (only from secret/configmap references).
+     * HTTPConfigWithTLSFiles defines HTTP configuration + TLS configuration (from secret/configmap references as well as files).
      */
     @JsonProperty("bearerTokenSecret")
     public void setBearerTokenSecret(SecretKeySelector bearerTokenSecret) {
@@ -186,7 +186,7 @@ public class HTTPConfig implements Editable<HTTPConfigBuilder>, KubernetesResour
     }
 
     /**
-     * HTTPConfig defines the HTTP configuration + TLS configuration (only from secret/configmap references).
+     * HTTPConfigWithTLSFiles defines HTTP configuration + TLS configuration (from secret/configmap references as well as files).
      */
     @JsonProperty("oauth2")
     public OAuth2 getOauth2() {
@@ -194,7 +194,7 @@ public class HTTPConfig implements Editable<HTTPConfigBuilder>, KubernetesResour
     }
 
     /**
-     * HTTPConfig defines the HTTP configuration + TLS configuration (only from secret/configmap references).
+     * HTTPConfigWithTLSFiles defines HTTP configuration + TLS configuration (from secret/configmap references as well as files).
      */
     @JsonProperty("oauth2")
     public void setOauth2(OAuth2 oauth2) {
@@ -202,28 +202,28 @@ public class HTTPConfig implements Editable<HTTPConfigBuilder>, KubernetesResour
     }
 
     /**
-     * HTTPConfig defines the HTTP configuration + TLS configuration (only from secret/configmap references).
+     * HTTPConfigWithTLSFiles defines HTTP configuration + TLS configuration (from secret/configmap references as well as files).
      */
     @JsonProperty("tlsConfig")
-    public SafeTLSConfig getTlsConfig() {
+    public TLSConfig getTlsConfig() {
         return tlsConfig;
     }
 
     /**
-     * HTTPConfig defines the HTTP configuration + TLS configuration (only from secret/configmap references).
+     * HTTPConfigWithTLSFiles defines HTTP configuration + TLS configuration (from secret/configmap references as well as files).
      */
     @JsonProperty("tlsConfig")
-    public void setTlsConfig(SafeTLSConfig tlsConfig) {
+    public void setTlsConfig(TLSConfig tlsConfig) {
         this.tlsConfig = tlsConfig;
     }
 
     @JsonIgnore
-    public HTTPConfigBuilder edit() {
-        return new HTTPConfigBuilder(this);
+    public HTTPConfigWithTLSFilesBuilder edit() {
+        return new HTTPConfigWithTLSFilesBuilder(this);
     }
 
     @JsonIgnore
-    public HTTPConfigBuilder toBuilder() {
+    public HTTPConfigWithTLSFilesBuilder toBuilder() {
         return edit();
     }
 

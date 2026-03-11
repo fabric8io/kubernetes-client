@@ -1,7 +1,6 @@
 
-package io.fabric8.openshift.api.model.monitoring.v1alpha1;
+package io.fabric8.openshift.api.model.monitoring.v1;
 
-import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -22,17 +21,12 @@ import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.LabelSelector;
 import io.fabric8.kubernetes.api.model.LocalObjectReference;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
-import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
 import io.fabric8.kubernetes.api.model.SecretKeySelector;
 import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
-import io.fabric8.openshift.api.model.monitoring.v1.BasicAuth;
-import io.fabric8.openshift.api.model.monitoring.v1.OAuth2;
-import io.fabric8.openshift.api.model.monitoring.v1.SafeAuthorization;
-import io.fabric8.openshift.api.model.monitoring.v1.SafeTLSConfig;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
@@ -40,25 +34,21 @@ import lombok.ToString;
 import lombok.experimental.Accessors;
 
 /**
- * KubernetesSDConfig allows retrieving scrape targets from Kubernetes' REST API. See https://prometheus.io/docs/prometheus/latest/configuration/configuration/#kubernetes_sd_config
+ * HTTPConfigWithProxyAndTLSFiles defines the configuration for the HTTP client with proxy configuration and TLS configuration. It is used for ServiceMonitor endpoints.
  */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "apiServer",
-    "attachMetadata",
     "authorization",
     "basicAuth",
-    "enableHTTP2",
+    "bearerTokenSecret",
+    "enableHttp2",
     "followRedirects",
-    "namespaces",
     "noProxy",
     "oauth2",
     "proxyConnectHeader",
     "proxyFromEnvironment",
     "proxyUrl",
-    "role",
-    "selectors",
     "tlsConfig"
 })
 @ToString
@@ -74,7 +64,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(PodTemplateSpec.class),
     @BuildableReference(ResourceRequirements.class),
     @BuildableReference(IntOrString.class),
-    @BuildableReference(ObjectReference.class),
+    @BuildableReference(io.fabric8.kubernetes.api.model.ObjectReference.class),
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class),
     @BuildableReference(EnvVar.class),
@@ -83,23 +73,19 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class KubernetesSDConfig implements Editable<KubernetesSDConfigBuilder>, KubernetesResource
+public class HTTPConfigWithProxyAndTLSFiles implements Editable<HTTPConfigWithProxyAndTLSFilesBuilder>, KubernetesResource
 {
 
-    @JsonProperty("apiServer")
-    private String apiServer;
-    @JsonProperty("attachMetadata")
-    private AttachMetadata attachMetadata;
     @JsonProperty("authorization")
     private SafeAuthorization authorization;
     @JsonProperty("basicAuth")
     private BasicAuth basicAuth;
-    @JsonProperty("enableHTTP2")
-    private Boolean enableHTTP2;
+    @JsonProperty("bearerTokenSecret")
+    private SecretKeySelector bearerTokenSecret;
+    @JsonProperty("enableHttp2")
+    private Boolean enableHttp2;
     @JsonProperty("followRedirects")
     private Boolean followRedirects;
-    @JsonProperty("namespaces")
-    private NamespaceDiscovery namespaces;
     @JsonProperty("noProxy")
     private String noProxy;
     @JsonProperty("oauth2")
@@ -111,75 +97,34 @@ public class KubernetesSDConfig implements Editable<KubernetesSDConfigBuilder>, 
     private Boolean proxyFromEnvironment;
     @JsonProperty("proxyUrl")
     private String proxyUrl;
-    @JsonProperty("role")
-    private String role;
-    @JsonProperty("selectors")
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<K8SSelectorConfig> selectors = new ArrayList<>();
     @JsonProperty("tlsConfig")
-    private SafeTLSConfig tlsConfig;
+    private TLSConfig tlsConfig;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
      */
-    public KubernetesSDConfig() {
+    public HTTPConfigWithProxyAndTLSFiles() {
     }
 
-    public KubernetesSDConfig(String apiServer, AttachMetadata attachMetadata, SafeAuthorization authorization, BasicAuth basicAuth, Boolean enableHTTP2, Boolean followRedirects, NamespaceDiscovery namespaces, String noProxy, OAuth2 oauth2, Map<String, List<SecretKeySelector>> proxyConnectHeader, Boolean proxyFromEnvironment, String proxyUrl, String role, List<K8SSelectorConfig> selectors, SafeTLSConfig tlsConfig) {
+    public HTTPConfigWithProxyAndTLSFiles(SafeAuthorization authorization, BasicAuth basicAuth, SecretKeySelector bearerTokenSecret, Boolean enableHttp2, Boolean followRedirects, String noProxy, OAuth2 oauth2, Map<String, List<SecretKeySelector>> proxyConnectHeader, Boolean proxyFromEnvironment, String proxyUrl, TLSConfig tlsConfig) {
         super();
-        this.apiServer = apiServer;
-        this.attachMetadata = attachMetadata;
         this.authorization = authorization;
         this.basicAuth = basicAuth;
-        this.enableHTTP2 = enableHTTP2;
+        this.bearerTokenSecret = bearerTokenSecret;
+        this.enableHttp2 = enableHttp2;
         this.followRedirects = followRedirects;
-        this.namespaces = namespaces;
         this.noProxy = noProxy;
         this.oauth2 = oauth2;
         this.proxyConnectHeader = proxyConnectHeader;
         this.proxyFromEnvironment = proxyFromEnvironment;
         this.proxyUrl = proxyUrl;
-        this.role = role;
-        this.selectors = selectors;
         this.tlsConfig = tlsConfig;
     }
 
     /**
-     * apiServer defines the API server address consisting of a hostname or IP address followed by an optional port number. If left empty, Prometheus is assumed to run inside of the cluster. It will discover API servers automatically and use the pod's CA certificate and bearer token file at /var/run/secrets/kubernetes.io/serviceaccount/.
-     */
-    @JsonProperty("apiServer")
-    public String getApiServer() {
-        return apiServer;
-    }
-
-    /**
-     * apiServer defines the API server address consisting of a hostname or IP address followed by an optional port number. If left empty, Prometheus is assumed to run inside of the cluster. It will discover API servers automatically and use the pod's CA certificate and bearer token file at /var/run/secrets/kubernetes.io/serviceaccount/.
-     */
-    @JsonProperty("apiServer")
-    public void setApiServer(String apiServer) {
-        this.apiServer = apiServer;
-    }
-
-    /**
-     * KubernetesSDConfig allows retrieving scrape targets from Kubernetes' REST API. See https://prometheus.io/docs/prometheus/latest/configuration/configuration/#kubernetes_sd_config
-     */
-    @JsonProperty("attachMetadata")
-    public AttachMetadata getAttachMetadata() {
-        return attachMetadata;
-    }
-
-    /**
-     * KubernetesSDConfig allows retrieving scrape targets from Kubernetes' REST API. See https://prometheus.io/docs/prometheus/latest/configuration/configuration/#kubernetes_sd_config
-     */
-    @JsonProperty("attachMetadata")
-    public void setAttachMetadata(AttachMetadata attachMetadata) {
-        this.attachMetadata = attachMetadata;
-    }
-
-    /**
-     * KubernetesSDConfig allows retrieving scrape targets from Kubernetes' REST API. See https://prometheus.io/docs/prometheus/latest/configuration/configuration/#kubernetes_sd_config
+     * HTTPConfigWithProxyAndTLSFiles defines the configuration for the HTTP client with proxy configuration and TLS configuration. It is used for ServiceMonitor endpoints.
      */
     @JsonProperty("authorization")
     public SafeAuthorization getAuthorization() {
@@ -187,7 +132,7 @@ public class KubernetesSDConfig implements Editable<KubernetesSDConfigBuilder>, 
     }
 
     /**
-     * KubernetesSDConfig allows retrieving scrape targets from Kubernetes' REST API. See https://prometheus.io/docs/prometheus/latest/configuration/configuration/#kubernetes_sd_config
+     * HTTPConfigWithProxyAndTLSFiles defines the configuration for the HTTP client with proxy configuration and TLS configuration. It is used for ServiceMonitor endpoints.
      */
     @JsonProperty("authorization")
     public void setAuthorization(SafeAuthorization authorization) {
@@ -195,7 +140,7 @@ public class KubernetesSDConfig implements Editable<KubernetesSDConfigBuilder>, 
     }
 
     /**
-     * KubernetesSDConfig allows retrieving scrape targets from Kubernetes' REST API. See https://prometheus.io/docs/prometheus/latest/configuration/configuration/#kubernetes_sd_config
+     * HTTPConfigWithProxyAndTLSFiles defines the configuration for the HTTP client with proxy configuration and TLS configuration. It is used for ServiceMonitor endpoints.
      */
     @JsonProperty("basicAuth")
     public BasicAuth getBasicAuth() {
@@ -203,7 +148,7 @@ public class KubernetesSDConfig implements Editable<KubernetesSDConfigBuilder>, 
     }
 
     /**
-     * KubernetesSDConfig allows retrieving scrape targets from Kubernetes' REST API. See https://prometheus.io/docs/prometheus/latest/configuration/configuration/#kubernetes_sd_config
+     * HTTPConfigWithProxyAndTLSFiles defines the configuration for the HTTP client with proxy configuration and TLS configuration. It is used for ServiceMonitor endpoints.
      */
     @JsonProperty("basicAuth")
     public void setBasicAuth(BasicAuth basicAuth) {
@@ -211,23 +156,39 @@ public class KubernetesSDConfig implements Editable<KubernetesSDConfigBuilder>, 
     }
 
     /**
-     * enableHTTP2 defines whether to enable HTTP2.
+     * HTTPConfigWithProxyAndTLSFiles defines the configuration for the HTTP client with proxy configuration and TLS configuration. It is used for ServiceMonitor endpoints.
      */
-    @JsonProperty("enableHTTP2")
-    public Boolean getEnableHTTP2() {
-        return enableHTTP2;
+    @JsonProperty("bearerTokenSecret")
+    public SecretKeySelector getBearerTokenSecret() {
+        return bearerTokenSecret;
     }
 
     /**
-     * enableHTTP2 defines whether to enable HTTP2.
+     * HTTPConfigWithProxyAndTLSFiles defines the configuration for the HTTP client with proxy configuration and TLS configuration. It is used for ServiceMonitor endpoints.
      */
-    @JsonProperty("enableHTTP2")
-    public void setEnableHTTP2(Boolean enableHTTP2) {
-        this.enableHTTP2 = enableHTTP2;
+    @JsonProperty("bearerTokenSecret")
+    public void setBearerTokenSecret(SecretKeySelector bearerTokenSecret) {
+        this.bearerTokenSecret = bearerTokenSecret;
     }
 
     /**
-     * followRedirects defines whether HTTP requests follow HTTP 3xx redirects.
+     * enableHttp2 can be used to disable HTTP2.
+     */
+    @JsonProperty("enableHttp2")
+    public Boolean getEnableHttp2() {
+        return enableHttp2;
+    }
+
+    /**
+     * enableHttp2 can be used to disable HTTP2.
+     */
+    @JsonProperty("enableHttp2")
+    public void setEnableHttp2(Boolean enableHttp2) {
+        this.enableHttp2 = enableHttp2;
+    }
+
+    /**
+     * followRedirects defines whether the client should follow HTTP 3xx redirects.
      */
     @JsonProperty("followRedirects")
     public Boolean getFollowRedirects() {
@@ -235,27 +196,11 @@ public class KubernetesSDConfig implements Editable<KubernetesSDConfigBuilder>, 
     }
 
     /**
-     * followRedirects defines whether HTTP requests follow HTTP 3xx redirects.
+     * followRedirects defines whether the client should follow HTTP 3xx redirects.
      */
     @JsonProperty("followRedirects")
     public void setFollowRedirects(Boolean followRedirects) {
         this.followRedirects = followRedirects;
-    }
-
-    /**
-     * KubernetesSDConfig allows retrieving scrape targets from Kubernetes' REST API. See https://prometheus.io/docs/prometheus/latest/configuration/configuration/#kubernetes_sd_config
-     */
-    @JsonProperty("namespaces")
-    public NamespaceDiscovery getNamespaces() {
-        return namespaces;
-    }
-
-    /**
-     * KubernetesSDConfig allows retrieving scrape targets from Kubernetes' REST API. See https://prometheus.io/docs/prometheus/latest/configuration/configuration/#kubernetes_sd_config
-     */
-    @JsonProperty("namespaces")
-    public void setNamespaces(NamespaceDiscovery namespaces) {
-        this.namespaces = namespaces;
     }
 
     /**
@@ -275,7 +220,7 @@ public class KubernetesSDConfig implements Editable<KubernetesSDConfigBuilder>, 
     }
 
     /**
-     * KubernetesSDConfig allows retrieving scrape targets from Kubernetes' REST API. See https://prometheus.io/docs/prometheus/latest/configuration/configuration/#kubernetes_sd_config
+     * HTTPConfigWithProxyAndTLSFiles defines the configuration for the HTTP client with proxy configuration and TLS configuration. It is used for ServiceMonitor endpoints.
      */
     @JsonProperty("oauth2")
     public OAuth2 getOauth2() {
@@ -283,7 +228,7 @@ public class KubernetesSDConfig implements Editable<KubernetesSDConfigBuilder>, 
     }
 
     /**
-     * KubernetesSDConfig allows retrieving scrape targets from Kubernetes' REST API. See https://prometheus.io/docs/prometheus/latest/configuration/configuration/#kubernetes_sd_config
+     * HTTPConfigWithProxyAndTLSFiles defines the configuration for the HTTP client with proxy configuration and TLS configuration. It is used for ServiceMonitor endpoints.
      */
     @JsonProperty("oauth2")
     public void setOauth2(OAuth2 oauth2) {
@@ -340,61 +285,28 @@ public class KubernetesSDConfig implements Editable<KubernetesSDConfigBuilder>, 
     }
 
     /**
-     * role defines the Kubernetes role of the entities that should be discovered. Role `Endpointslice` requires Prometheus &gt;= v2.21.0
-     */
-    @JsonProperty("role")
-    public String getRole() {
-        return role;
-    }
-
-    /**
-     * role defines the Kubernetes role of the entities that should be discovered. Role `Endpointslice` requires Prometheus &gt;= v2.21.0
-     */
-    @JsonProperty("role")
-    public void setRole(String role) {
-        this.role = role;
-    }
-
-    /**
-     * selectors defines the selector to select objects. It requires Prometheus &gt;= v2.17.0
-     */
-    @JsonProperty("selectors")
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<K8SSelectorConfig> getSelectors() {
-        return selectors;
-    }
-
-    /**
-     * selectors defines the selector to select objects. It requires Prometheus &gt;= v2.17.0
-     */
-    @JsonProperty("selectors")
-    public void setSelectors(List<K8SSelectorConfig> selectors) {
-        this.selectors = selectors;
-    }
-
-    /**
-     * KubernetesSDConfig allows retrieving scrape targets from Kubernetes' REST API. See https://prometheus.io/docs/prometheus/latest/configuration/configuration/#kubernetes_sd_config
+     * HTTPConfigWithProxyAndTLSFiles defines the configuration for the HTTP client with proxy configuration and TLS configuration. It is used for ServiceMonitor endpoints.
      */
     @JsonProperty("tlsConfig")
-    public SafeTLSConfig getTlsConfig() {
+    public TLSConfig getTlsConfig() {
         return tlsConfig;
     }
 
     /**
-     * KubernetesSDConfig allows retrieving scrape targets from Kubernetes' REST API. See https://prometheus.io/docs/prometheus/latest/configuration/configuration/#kubernetes_sd_config
+     * HTTPConfigWithProxyAndTLSFiles defines the configuration for the HTTP client with proxy configuration and TLS configuration. It is used for ServiceMonitor endpoints.
      */
     @JsonProperty("tlsConfig")
-    public void setTlsConfig(SafeTLSConfig tlsConfig) {
+    public void setTlsConfig(TLSConfig tlsConfig) {
         this.tlsConfig = tlsConfig;
     }
 
     @JsonIgnore
-    public KubernetesSDConfigBuilder edit() {
-        return new KubernetesSDConfigBuilder(this);
+    public HTTPConfigWithProxyAndTLSFilesBuilder edit() {
+        return new HTTPConfigWithProxyAndTLSFilesBuilder(this);
     }
 
     @JsonIgnore
-    public KubernetesSDConfigBuilder toBuilder() {
+    public HTTPConfigWithProxyAndTLSFilesBuilder toBuilder() {
         return edit();
     }
 

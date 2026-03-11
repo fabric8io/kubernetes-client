@@ -97,7 +97,7 @@ public class Authorization implements Editable<AuthorizationBuilder>, Kubernetes
     }
 
     /**
-     * File to read a secret from, mutually exclusive with `credentials`.
+     * credentialsFile defines the file to read a secret from, mutually exclusive with `credentials`.
      */
     @JsonProperty("credentialsFile")
     public String getCredentialsFile() {
@@ -105,7 +105,7 @@ public class Authorization implements Editable<AuthorizationBuilder>, Kubernetes
     }
 
     /**
-     * File to read a secret from, mutually exclusive with `credentials`.
+     * credentialsFile defines the file to read a secret from, mutually exclusive with `credentials`.
      */
     @JsonProperty("credentialsFile")
     public void setCredentialsFile(String credentialsFile) {
@@ -113,7 +113,7 @@ public class Authorization implements Editable<AuthorizationBuilder>, Kubernetes
     }
 
     /**
-     * Defines the authentication type. The value is case-insensitive.<br><p> <br><p> "Basic" is not a supported value.<br><p> <br><p> Default: "Bearer"
+     * type defines the authentication type. The value is case-insensitive.<br><p> <br><p> "Basic" is not a supported value.<br><p> <br><p> Default: "Bearer"
      */
     @JsonProperty("type")
     public String getType() {
@@ -121,7 +121,7 @@ public class Authorization implements Editable<AuthorizationBuilder>, Kubernetes
     }
 
     /**
-     * Defines the authentication type. The value is case-insensitive.<br><p> <br><p> "Basic" is not a supported value.<br><p> <br><p> Default: "Bearer"
+     * type defines the authentication type. The value is case-insensitive.<br><p> <br><p> "Basic" is not a supported value.<br><p> <br><p> Default: "Bearer"
      */
     @JsonProperty("type")
     public void setType(String type) {
