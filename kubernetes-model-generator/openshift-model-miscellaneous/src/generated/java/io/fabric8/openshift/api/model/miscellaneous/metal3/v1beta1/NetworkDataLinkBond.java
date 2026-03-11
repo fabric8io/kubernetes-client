@@ -12,6 +12,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
@@ -45,7 +46,8 @@ import lombok.experimental.Accessors;
     "bondXmitHashPolicy",
     "id",
     "macAddress",
-    "mtu"
+    "mtu",
+    "parameters"
 })
 @ToString
 @EqualsAndHashCode
@@ -85,6 +87,9 @@ public class NetworkDataLinkBond implements Editable<NetworkDataLinkBondBuilder>
     private NetworkLinkEthernetMac macAddress;
     @JsonProperty("mtu")
     private Integer mtu;
+    @JsonProperty("parameters")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private Map<String, JsonNode> parameters = new LinkedHashMap<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -94,7 +99,7 @@ public class NetworkDataLinkBond implements Editable<NetworkDataLinkBondBuilder>
     public NetworkDataLinkBond() {
     }
 
-    public NetworkDataLinkBond(List<String> bondLinks, String bondMode, String bondXmitHashPolicy, String id, NetworkLinkEthernetMac macAddress, Integer mtu) {
+    public NetworkDataLinkBond(List<String> bondLinks, String bondMode, String bondXmitHashPolicy, String id, NetworkLinkEthernetMac macAddress, Integer mtu, Map<String, JsonNode> parameters) {
         super();
         this.bondLinks = bondLinks;
         this.bondMode = bondMode;
@@ -102,6 +107,7 @@ public class NetworkDataLinkBond implements Editable<NetworkDataLinkBondBuilder>
         this.id = id;
         this.macAddress = macAddress;
         this.mtu = mtu;
+        this.parameters = parameters;
     }
 
     /**
@@ -199,6 +205,23 @@ public class NetworkDataLinkBond implements Editable<NetworkDataLinkBondBuilder>
     @JsonProperty("mtu")
     public void setMtu(Integer mtu) {
         this.mtu = mtu;
+    }
+
+    /**
+     * params blob passed without any validation/modifications into cloud-init config
+     */
+    @JsonProperty("parameters")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public Map<String, JsonNode> getParameters() {
+        return parameters;
+    }
+
+    /**
+     * params blob passed without any validation/modifications into cloud-init config
+     */
+    @JsonProperty("parameters")
+    public void setParameters(Map<String, JsonNode> parameters) {
+        this.parameters = parameters;
     }
 
     @JsonIgnore

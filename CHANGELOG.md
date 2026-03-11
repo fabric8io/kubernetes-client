@@ -9,6 +9,7 @@
 * Fix #7522: improve dependency management for kubernetes-httpclient-okhttp
 
 #### Dependency Upgrade
+* Fix #7544: bump cluster-api-provider-metal3 from 1.9.3 to 1.12.2
 * Fix #7543: bump prometheus-operator from 0.85.0 to 0.89.0
 * Fix #7542: bump open-cluster-management.io/api from 0.16.2 to 1.2.0
 * Fix #7541: bump gateway-api from 1.4.0 to 1.5.0
@@ -17,6 +18,7 @@
 #### New Features
 
 #### _**Note**_: Breaking changes
+* Fix #7544: cluster-api model classes moved from package `io.fabric8.kubernetes.api.model.clusterapi.v1beta1` to `io.fabric8.kubernetes.api.model.clusterapi.core.v1beta1` (following upstream cluster-api v1.11+ API reorganization)
 * Fix #7543: monitoring model `v1.AuthorizationValidationError`, `v1.OAuth2ValidationError`, `v1.ProbeTargetsValidationError`, and `v1.PrometheusTracingConfig` removed
 * Fix #7542: open-cluster-management model `operator.v1.WebhookConfiguration` removed (replaced by `DefaultWebhookConfiguration` and `HostedWebhookConfiguration` upstream)
 * Fix #7541: gateway-api model `v1beta1.ReferenceGrantFrom`, `v1beta1.ReferenceGrantSpec`, and `v1beta1.ReferenceGrantTo` removed (ReferenceGrant graduated to v1 upstream)

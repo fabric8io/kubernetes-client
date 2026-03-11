@@ -67,6 +67,20 @@
                   <io.x-k8s.cluster.infrastructure.v1beta1>io.fabric8.openshift.api.model.miscellaneous.metal3.v1beta1</io.x-k8s.cluster.infrastructure.v1beta1>
                   <io.metal3>io.fabric8.openshift.api.model.miscellaneous.metal3</io.metal3>
                 </packageMappings>
+                <refToJavaTypeMappings>
+                  <property>
+                    <name>#/components/schemas/io.x-k8s.cluster.v1beta1.Condition</name>
+                    <value>io.fabric8.kubernetes.api.model.clusterapi.core.v1beta1.Condition</value>
+                  </property>
+                  <property>
+                    <name>#/components/schemas/io.x-k8s.cluster.v1beta1.FailureDomainSpec</name>
+                    <value>io.fabric8.kubernetes.api.model.clusterapi.core.v1beta1.FailureDomainSpec</value>
+                  </property>
+                  <property>
+                    <name>#/components/schemas/io.x-k8s.cluster.v1beta1.MachineAddress</name>
+                    <value>io.fabric8.kubernetes.api.model.clusterapi.core.v1beta1.MachineAddress</value>
+                  </property>
+                </refToJavaTypeMappings>
                 <includeGenerationRegexes>
                   <includeGenerationRegex>^io\.cncf\.cni\.k8s\..*$</includeGenerationRegex>
                   <includeGenerationRegex>^io\.x\-k8s\.cluster\.infrastructure\.v1beta1\..*$</includeGenerationRegex>

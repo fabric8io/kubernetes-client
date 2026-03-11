@@ -26,6 +26,7 @@ import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
 import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
+import io.fabric8.kubernetes.api.model.clusterapi.core.v1beta1.FailureDomainSpec;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
@@ -38,7 +39,9 @@ import lombok.experimental.Accessors;
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
+    "cloudProviderEnabled",
     "controlPlaneEndpoint",
+    "failureDomains",
     "noCloudProvider"
 })
 @ToString
@@ -66,8 +69,13 @@ import lombok.experimental.Accessors;
 public class Metal3ClusterSpec implements Editable<Metal3ClusterSpecBuilder>, KubernetesResource
 {
 
+    @JsonProperty("cloudProviderEnabled")
+    private Boolean cloudProviderEnabled;
     @JsonProperty("controlPlaneEndpoint")
     private APIEndpoint controlPlaneEndpoint;
+    @JsonProperty("failureDomains")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private Map<String, FailureDomainSpec> failureDomains = new LinkedHashMap<>();
     @JsonProperty("noCloudProvider")
     private Boolean noCloudProvider;
     @JsonIgnore
@@ -79,10 +87,28 @@ public class Metal3ClusterSpec implements Editable<Metal3ClusterSpecBuilder>, Ku
     public Metal3ClusterSpec() {
     }
 
-    public Metal3ClusterSpec(APIEndpoint controlPlaneEndpoint, Boolean noCloudProvider) {
+    public Metal3ClusterSpec(Boolean cloudProviderEnabled, APIEndpoint controlPlaneEndpoint, Map<String, FailureDomainSpec> failureDomains, Boolean noCloudProvider) {
         super();
+        this.cloudProviderEnabled = cloudProviderEnabled;
         this.controlPlaneEndpoint = controlPlaneEndpoint;
+        this.failureDomains = failureDomains;
         this.noCloudProvider = noCloudProvider;
+    }
+
+    /**
+     * Determines if the cluster is to be deployed with an external cloud provider. If set to false, CAPM3 will use node labels to set providerID on the kubernetes nodes. If set to true, providerID is set on nodes by other entities and CAPM3 uses the value of the providerID on the m3m resource. Default value is true, it is set in the webhook.
+     */
+    @JsonProperty("cloudProviderEnabled")
+    public Boolean getCloudProviderEnabled() {
+        return cloudProviderEnabled;
+    }
+
+    /**
+     * Determines if the cluster is to be deployed with an external cloud provider. If set to false, CAPM3 will use node labels to set providerID on the kubernetes nodes. If set to true, providerID is set on nodes by other entities and CAPM3 uses the value of the providerID on the m3m resource. Default value is true, it is set in the webhook.
+     */
+    @JsonProperty("cloudProviderEnabled")
+    public void setCloudProviderEnabled(Boolean cloudProviderEnabled) {
+        this.cloudProviderEnabled = cloudProviderEnabled;
     }
 
     /**
@@ -102,7 +128,24 @@ public class Metal3ClusterSpec implements Editable<Metal3ClusterSpecBuilder>, Ku
     }
 
     /**
-     * Determines if the cluster is not to be deployed with an external cloud provider. If set to true, CAPM3 will use node labels to set providerID on the kubernetes nodes. If set to false, providerID is set on nodes by other entities and CAPM3 uses the value of the providerID on the m3m resource.
+     * FailureDomains specifies a list fo failure zones that can be used
+     */
+    @JsonProperty("failureDomains")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public Map<String, FailureDomainSpec> getFailureDomains() {
+        return failureDomains;
+    }
+
+    /**
+     * FailureDomains specifies a list fo failure zones that can be used
+     */
+    @JsonProperty("failureDomains")
+    public void setFailureDomains(Map<String, FailureDomainSpec> failureDomains) {
+        this.failureDomains = failureDomains;
+    }
+
+    /**
+     * Determines if the cluster is not to be deployed with an external cloud provider. If set to true, CAPM3 will use node labels to set providerID on the kubernetes nodes. If set to false, providerID is set on nodes by other entities and CAPM3 uses the value of the providerID on the m3m resource.<br><p> <br><p> Deprecated: This field is deprecated, use cloudProviderEnabled instead
      */
     @JsonProperty("noCloudProvider")
     public Boolean getNoCloudProvider() {
@@ -110,7 +153,7 @@ public class Metal3ClusterSpec implements Editable<Metal3ClusterSpecBuilder>, Ku
     }
 
     /**
-     * Determines if the cluster is not to be deployed with an external cloud provider. If set to true, CAPM3 will use node labels to set providerID on the kubernetes nodes. If set to false, providerID is set on nodes by other entities and CAPM3 uses the value of the providerID on the m3m resource.
+     * Determines if the cluster is not to be deployed with an external cloud provider. If set to true, CAPM3 will use node labels to set providerID on the kubernetes nodes. If set to false, providerID is set on nodes by other entities and CAPM3 uses the value of the providerID on the m3m resource.<br><p> <br><p> Deprecated: This field is deprecated, use cloudProviderEnabled instead
      */
     @JsonProperty("noCloudProvider")
     public void setNoCloudProvider(Boolean noCloudProvider) {

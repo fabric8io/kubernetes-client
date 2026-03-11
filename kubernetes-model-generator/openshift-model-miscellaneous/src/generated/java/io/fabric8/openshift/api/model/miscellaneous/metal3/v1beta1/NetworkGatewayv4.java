@@ -24,6 +24,7 @@ import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
+import io.fabric8.kubernetes.api.model.TypedLocalObjectReference;
 import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
@@ -39,6 +40,8 @@ import lombok.experimental.Accessors;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "fromIPPool",
+    "fromPoolAnnotation",
+    "fromPoolRef",
     "string"
 })
 @ToString
@@ -68,6 +71,10 @@ public class NetworkGatewayv4 implements Editable<NetworkGatewayv4Builder>, Kube
 
     @JsonProperty("fromIPPool")
     private String fromIPPool;
+    @JsonProperty("fromPoolAnnotation")
+    private FromPoolAnnotation fromPoolAnnotation;
+    @JsonProperty("fromPoolRef")
+    private TypedLocalObjectReference fromPoolRef;
     @JsonProperty("string")
     private String string;
     @JsonIgnore
@@ -79,9 +86,11 @@ public class NetworkGatewayv4 implements Editable<NetworkGatewayv4Builder>, Kube
     public NetworkGatewayv4() {
     }
 
-    public NetworkGatewayv4(String fromIPPool, String string) {
+    public NetworkGatewayv4(String fromIPPool, FromPoolAnnotation fromPoolAnnotation, TypedLocalObjectReference fromPoolRef, String string) {
         super();
         this.fromIPPool = fromIPPool;
+        this.fromPoolAnnotation = fromPoolAnnotation;
+        this.fromPoolRef = fromPoolRef;
         this.string = string;
     }
 
@@ -99,6 +108,38 @@ public class NetworkGatewayv4 implements Editable<NetworkGatewayv4Builder>, Kube
     @JsonProperty("fromIPPool")
     public void setFromIPPool(String fromIPPool) {
         this.fromIPPool = fromIPPool;
+    }
+
+    /**
+     * NetworkGatewayv4 represents a gateway, given as a string or as a reference to a Metal3IPPool.
+     */
+    @JsonProperty("fromPoolAnnotation")
+    public FromPoolAnnotation getFromPoolAnnotation() {
+        return fromPoolAnnotation;
+    }
+
+    /**
+     * NetworkGatewayv4 represents a gateway, given as a string or as a reference to a Metal3IPPool.
+     */
+    @JsonProperty("fromPoolAnnotation")
+    public void setFromPoolAnnotation(FromPoolAnnotation fromPoolAnnotation) {
+        this.fromPoolAnnotation = fromPoolAnnotation;
+    }
+
+    /**
+     * NetworkGatewayv4 represents a gateway, given as a string or as a reference to a Metal3IPPool.
+     */
+    @JsonProperty("fromPoolRef")
+    public TypedLocalObjectReference getFromPoolRef() {
+        return fromPoolRef;
+    }
+
+    /**
+     * NetworkGatewayv4 represents a gateway, given as a string or as a reference to a Metal3IPPool.
+     */
+    @JsonProperty("fromPoolRef")
+    public void setFromPoolRef(TypedLocalObjectReference fromPoolRef) {
+        this.fromPoolRef = fromPoolRef;
     }
 
     /**
