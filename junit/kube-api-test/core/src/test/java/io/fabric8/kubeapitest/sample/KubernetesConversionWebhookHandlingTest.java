@@ -17,7 +17,6 @@ package io.fabric8.kubeapitest.sample;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import io.fabric8.kubeapitest.cert.CertManager;
 import io.fabric8.kubeapitest.junit.EnableKubeAPIServer;
 import io.fabric8.kubeapitest.junit.KubeConfig;
 import io.fabric8.kubernetes.api.model.GenericKubernetesResource;
@@ -36,14 +35,12 @@ import io.fabric8.mockwebserver.MockWebServer;
 import io.fabric8.mockwebserver.http.Dispatcher;
 import io.fabric8.mockwebserver.http.MockResponse;
 import io.fabric8.mockwebserver.http.RecordedRequest;
-import org.bouncycastle.asn1.x509.GeneralName;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.DisabledOnOs;
 import org.junit.jupiter.api.condition.OS;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -70,22 +67,10 @@ class KubernetesConversionWebhookHandlingTest {
   static String kubeConfig;
 
   static MockWebServer webhookServer;
-  static File certFile;
 
   @BeforeAll
   static void setupWebhookServer() {
-    certFile = new File("target/conversion.crt");
-    if (certFile.getParentFile() != null) {
-      certFile.getParentFile().mkdirs();
-    }
-
-    File keyFile = new File("target/conversion.key");
-
-    CertManager.generateKeyAndCertificate("CN=localhost", keyFile, certFile,
-        new GeneralName(GeneralName.dNSName, "localhost"));
-
     webhookServer = new MockWebServer();
-    webhookServer.usePemCertificates(keyFile, certFile);
     webhookServer.useHttps();
     webhookServer.setDispatcher(new Dispatcher() {
       @Override
@@ -97,7 +82,7 @@ class KubernetesConversionWebhookHandlingTest {
         return new MockResponse().setResponseCode(404);
       }
     });
-    webhookServer.start(8445);
+    webhookServer.start(0);
   }
 
   @AfterAll
@@ -244,7 +229,10 @@ class KubernetesConversionWebhookHandlingTest {
         .getResourceAsStream("/ConversionWebhookCRD.yaml")) {
       CustomResourceDefinition crd = (CustomResourceDefinition) client.load(resource).items().get(0);
       crd.getSpec().getConversion().getWebhook().getClientConfig()
-          .setCaBundle(WebhookServerTestUtils.getEncodedCertificate(certFile));
+          .setUrl("https://localhost:" + webhookServer.getPort() + "/convert");
+      crd.getSpec().getConversion().getWebhook().getClientConfig()
+          .setCaBundle(
+              WebhookServerTestUtils.getEncodedCertificate(webhookServer.getSelfSignedCertificate().certificatePath()));
       client.resource(crd).serverSideApply();
     } catch (IOException e) {
       throw new RuntimeException(e);

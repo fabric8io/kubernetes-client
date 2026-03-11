@@ -22,10 +22,10 @@ import io.fabric8.kubernetes.client.utils.Serialization;
 import io.fabric8.mockwebserver.http.MockResponse;
 import io.fabric8.mockwebserver.http.RecordedRequest;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Base64;
 import java.util.Objects;
 
@@ -86,14 +86,14 @@ public final class WebhookServerTestUtils {
   }
 
   /**
-   * Reads the certificate from file and returns it as a Base64-encoded string
+   * Reads the certificate from the given path and returns it as a Base64-encoded string
    * suitable for use in webhook configurations.
    *
-   * @param certFile the certificate file
+   * @param certPath the path to the PEM certificate file
    * @return Base64-encoded certificate string
    */
-  public static String getEncodedCertificate(File certFile) throws IOException {
-    String cert = Files.readString(certFile.toPath(), StandardCharsets.UTF_8);
+  public static String getEncodedCertificate(String certPath) throws IOException {
+    String cert = Files.readString(Path.of(certPath), StandardCharsets.UTF_8);
     return Base64.getEncoder().encodeToString(cert.getBytes(StandardCharsets.UTF_8));
   }
 }

@@ -9,9 +9,9 @@
 * Fix #7174: (chaos-tests) Fix classpath conflict when testing with Vert.x 5 HTTP client
 * Fix #7415: (java-generator) Fix generic type erasure for array of enums with default values
 * Fix #7422: (okhttp) Remove internal API usage and fix deprecated OkHttp 5 calls
-* Fix #3396: Integration tests for Admission and Conversion Controllers written using KubernetesClient
 
 #### Improvements
+* Fix #3396: (mockwebserver) Enhance self-signed certificate generation to include Subject Alternative Names (SANs) for proper TLS verification by modern clients
 * Fix #7422: bump okhttp from 4.12.0 to 5.3.2
 
 #### Dependency Upgrade

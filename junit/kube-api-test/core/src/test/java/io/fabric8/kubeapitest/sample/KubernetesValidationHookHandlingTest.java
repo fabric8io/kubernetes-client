@@ -15,7 +15,6 @@
  */
 package io.fabric8.kubeapitest.sample;
 
-import io.fabric8.kubeapitest.cert.CertManager;
 import io.fabric8.kubeapitest.junit.EnableKubeAPIServer;
 import io.fabric8.kubeapitest.junit.KubeConfig;
 import io.fabric8.kubernetes.api.model.HasMetadata;
@@ -42,12 +41,10 @@ import io.fabric8.mockwebserver.MockWebServer;
 import io.fabric8.mockwebserver.http.Dispatcher;
 import io.fabric8.mockwebserver.http.MockResponse;
 import io.fabric8.mockwebserver.http.RecordedRequest;
-import org.bouncycastle.asn1.x509.GeneralName;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -65,22 +62,10 @@ class KubernetesValidationHookHandlingTest {
   static String kubeConfig;
 
   static MockWebServer webhookServer;
-  static File certFile;
 
   @BeforeAll
   static void setupWebhookServer() {
-    certFile = new File("target/conversion.crt");
-    if (certFile.getParentFile() != null) {
-      certFile.getParentFile().mkdirs();
-    }
-
-    File keyFile = new File("target/conversion.key");
-
-    CertManager.generateKeyAndCertificate("CN=localhost", keyFile, certFile,
-        new GeneralName(GeneralName.dNSName, "localhost"));
-
     webhookServer = new MockWebServer();
-    webhookServer.usePemCertificates(keyFile, certFile);
     webhookServer.useHttps();
     webhookServer.setDispatcher(new Dispatcher() {
       @Override
@@ -92,7 +77,7 @@ class KubernetesValidationHookHandlingTest {
         return new MockResponse().setResponseCode(404);
       }
     });
-    webhookServer.start(8444);
+    webhookServer.start(0);
   }
 
   @AfterAll
@@ -162,7 +147,9 @@ class KubernetesValidationHookHandlingTest {
     try (InputStream resource = KubernetesValidationHookHandlingTest.class
         .getResourceAsStream("/ValidatingWebhookConfig.yaml")) {
       ValidatingWebhookConfiguration hook = (ValidatingWebhookConfiguration) client.load(resource).items().get(0);
-      hook.getWebhooks().get(0).getClientConfig().setCaBundle(WebhookServerTestUtils.getEncodedCertificate(certFile));
+      hook.getWebhooks().get(0).getClientConfig().setUrl("https://localhost:" + webhookServer.getPort() + "/validate");
+      hook.getWebhooks().get(0).getClientConfig().setCaBundle(
+          WebhookServerTestUtils.getEncodedCertificate(webhookServer.getSelfSignedCertificate().certificatePath()));
       client.resource(hook).serverSideApply();
     } catch (IOException e) {
       throw new RuntimeException(e);
