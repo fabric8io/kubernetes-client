@@ -1,5 +1,5 @@
 
-package io.fabric8.kubernetes.api.model.gatewayapi.v1beta1;
+package io.fabric8.openclustermanagement.api.model.operator.v1;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -33,14 +33,13 @@ import lombok.ToString;
 import lombok.experimental.Accessors;
 
 /**
- * ReferenceGrantTo describes what Kinds are allowed as targets of the references.
+ * LoadBalancerConfig references customized configuration for LoadBalancer type.
  */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "kind",
-    "group",
-    "name"
+    "caBundle",
+    "host"
 })
 @ToString
 @EqualsAndHashCode
@@ -64,86 +63,67 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class ReferenceGrantTo implements Editable<ReferenceGrantToBuilder>, KubernetesResource
+public class LoadBalancerConfig implements Editable<LoadBalancerConfigBuilder>, KubernetesResource
 {
 
-    @JsonProperty("group")
-    private String group;
-    @JsonProperty("kind")
-    private String kind;
-    @JsonProperty("name")
-    private String name;
+    @JsonProperty("caBundle")
+    private String caBundle;
+    @JsonProperty("host")
+    private String host;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
      */
-    public ReferenceGrantTo() {
+    public LoadBalancerConfig() {
     }
 
-    public ReferenceGrantTo(String group, String kind, String name) {
+    public LoadBalancerConfig(String caBundle, String host) {
         super();
-        this.group = group;
-        this.kind = kind;
-        this.name = name;
+        this.caBundle = caBundle;
+        this.host = host;
     }
 
     /**
-     * Group is the group of the referent. When empty, the Kubernetes core API group is inferred.<br><p> <br><p> Support: Core
+     * CABundle is a customized caBundle of the endpoint.
      */
-    @JsonProperty("group")
-    public String getGroup() {
-        return group;
+    @JsonProperty("caBundle")
+    public String getCaBundle() {
+        return caBundle;
     }
 
     /**
-     * Group is the group of the referent. When empty, the Kubernetes core API group is inferred.<br><p> <br><p> Support: Core
+     * CABundle is a customized caBundle of the endpoint.
      */
-    @JsonProperty("group")
-    public void setGroup(String group) {
-        this.group = group;
+    @JsonProperty("caBundle")
+    public void setCaBundle(String caBundle) {
+        this.caBundle = caBundle;
     }
 
     /**
-     * Kind is the kind of the referent. Although implementations may support additional resources, the following types are part of the "Core" support level for this field:<br><p> <br><p> &#42; Secret when used to permit a SecretObjectReference &#42; Service when used to permit a BackendObjectReference
+     * Host is the customized host name of the endpoint.
      */
-    @JsonProperty("kind")
-    public String getKind() {
-        return kind;
+    @JsonProperty("host")
+    public String getHost() {
+        return host;
     }
 
     /**
-     * Kind is the kind of the referent. Although implementations may support additional resources, the following types are part of the "Core" support level for this field:<br><p> <br><p> &#42; Secret when used to permit a SecretObjectReference &#42; Service when used to permit a BackendObjectReference
+     * Host is the customized host name of the endpoint.
      */
-    @JsonProperty("kind")
-    public void setKind(String kind) {
-        this.kind = kind;
-    }
-
-    /**
-     * Name is the name of the referent. When unspecified, this policy refers to all resources of the specified Group and Kind in the local namespace.
-     */
-    @JsonProperty("name")
-    public String getName() {
-        return name;
-    }
-
-    /**
-     * Name is the name of the referent. When unspecified, this policy refers to all resources of the specified Group and Kind in the local namespace.
-     */
-    @JsonProperty("name")
-    public void setName(String name) {
-        this.name = name;
+    @JsonProperty("host")
+    public void setHost(String host) {
+        this.host = host;
     }
 
     @JsonIgnore
-    public ReferenceGrantToBuilder edit() {
-        return new ReferenceGrantToBuilder(this);
+    public LoadBalancerConfigBuilder edit() {
+        return new LoadBalancerConfigBuilder(this);
     }
 
     @JsonIgnore
-    public ReferenceGrantToBuilder toBuilder() {
+    public LoadBalancerConfigBuilder toBuilder() {
         return edit();
     }
 

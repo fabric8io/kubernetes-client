@@ -25,6 +25,7 @@ import io.fabric8.kubernetes.client.PropagationPolicyConfigurable;
 import io.fabric8.kubernetes.client.ResourceNotFoundException;
 import io.fabric8.kubernetes.client.Watch;
 import io.fabric8.kubernetes.client.Watcher;
+import io.fabric8.kubernetes.client.dsl.CreateOrReplaceDeletable;
 import io.fabric8.kubernetes.client.dsl.Deletable;
 import io.fabric8.kubernetes.client.dsl.EditReplacePatchable;
 import io.fabric8.kubernetes.client.dsl.Gettable;
@@ -331,12 +332,12 @@ public class ResourceAdapter<T> implements Resource<T> {
   }
 
   @Override
-  public Deletable withTimeout(long timeout, TimeUnit unit) {
+  public CreateOrReplaceDeletable<T> withTimeout(long timeout, TimeUnit unit) {
     return resource.withTimeout(timeout, unit);
   }
 
   @Override
-  public Deletable withTimeoutInMillis(long timeoutInMillis) {
+  public CreateOrReplaceDeletable<T> withTimeoutInMillis(long timeoutInMillis) {
     return withTimeout(timeoutInMillis, TimeUnit.MILLISECONDS);
   }
 

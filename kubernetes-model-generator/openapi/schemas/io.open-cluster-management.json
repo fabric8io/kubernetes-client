@@ -1210,7 +1210,7 @@
       },
       "x-fabric8-info": {
         "Type": "object",
-        "Group": "",
+        "Group": "apps",
         "Version": "v1",
         "Kind": "ControllerRevision",
         "Scope": "Namespaced"
@@ -1246,7 +1246,7 @@
       },
       "x-fabric8-info": {
         "Type": "list",
-        "Group": "",
+        "Group": "apps",
         "Version": "v1",
         "Kind": "ControllerRevisionList",
         "Scope": "Namespaced"
@@ -1281,7 +1281,7 @@
       },
       "x-fabric8-info": {
         "Type": "object",
-        "Group": "",
+        "Group": "apps",
         "Version": "v1",
         "Kind": "DaemonSet",
         "Scope": "Namespaced"
@@ -1317,7 +1317,7 @@
       },
       "x-fabric8-info": {
         "Type": "list",
-        "Group": "",
+        "Group": "apps",
         "Version": "v1",
         "Kind": "DaemonSetList",
         "Scope": "Namespaced"
@@ -1352,7 +1352,7 @@
       },
       "x-fabric8-info": {
         "Type": "object",
-        "Group": "",
+        "Group": "apps",
         "Version": "v1",
         "Kind": "Deployment",
         "Scope": "Namespaced"
@@ -1388,7 +1388,7 @@
       },
       "x-fabric8-info": {
         "Type": "list",
-        "Group": "",
+        "Group": "apps",
         "Version": "v1",
         "Kind": "DeploymentList",
         "Scope": "Namespaced"
@@ -1423,7 +1423,7 @@
       },
       "x-fabric8-info": {
         "Type": "object",
-        "Group": "",
+        "Group": "apps",
         "Version": "v1",
         "Kind": "ReplicaSet",
         "Scope": "Namespaced"
@@ -1459,7 +1459,7 @@
       },
       "x-fabric8-info": {
         "Type": "list",
-        "Group": "",
+        "Group": "apps",
         "Version": "v1",
         "Kind": "ReplicaSetList",
         "Scope": "Namespaced"
@@ -1494,7 +1494,7 @@
       },
       "x-fabric8-info": {
         "Type": "object",
-        "Group": "",
+        "Group": "apps",
         "Version": "v1",
         "Kind": "StatefulSet",
         "Scope": "Namespaced"
@@ -1530,7 +1530,7 @@
       },
       "x-fabric8-info": {
         "Type": "list",
-        "Group": "",
+        "Group": "apps",
         "Version": "v1",
         "Kind": "StatefulSetList",
         "Scope": "Namespaced"
@@ -1568,7 +1568,7 @@
       },
       "x-fabric8-info": {
         "Type": "object",
-        "Group": "",
+        "Group": "apps",
         "Version": "v1beta1",
         "Kind": "ControllerRevision",
         "Scope": "Namespaced"
@@ -1604,7 +1604,7 @@
       },
       "x-fabric8-info": {
         "Type": "list",
-        "Group": "",
+        "Group": "apps",
         "Version": "v1beta1",
         "Kind": "ControllerRevisionList",
         "Scope": "Namespaced"
@@ -1639,7 +1639,7 @@
       },
       "x-fabric8-info": {
         "Type": "object",
-        "Group": "",
+        "Group": "apps",
         "Version": "v1beta1",
         "Kind": "Deployment",
         "Scope": "Namespaced"
@@ -1675,7 +1675,7 @@
       },
       "x-fabric8-info": {
         "Type": "list",
-        "Group": "",
+        "Group": "apps",
         "Version": "v1beta1",
         "Kind": "DeploymentList",
         "Scope": "Namespaced"
@@ -1709,7 +1709,7 @@
       },
       "x-fabric8-info": {
         "Type": "object",
-        "Group": "",
+        "Group": "apps",
         "Version": "v1beta1",
         "Kind": "StatefulSet",
         "Scope": "Namespaced"
@@ -1743,7 +1743,7 @@
       },
       "x-fabric8-info": {
         "Type": "list",
-        "Group": "",
+        "Group": "apps",
         "Version": "v1beta1",
         "Kind": "StatefulSetList",
         "Scope": "Namespaced"
@@ -1781,7 +1781,7 @@
       },
       "x-fabric8-info": {
         "Type": "object",
-        "Group": "",
+        "Group": "apps",
         "Version": "v1beta2",
         "Kind": "ControllerRevision",
         "Scope": "Namespaced"
@@ -1817,7 +1817,7 @@
       },
       "x-fabric8-info": {
         "Type": "list",
-        "Group": "",
+        "Group": "apps",
         "Version": "v1beta2",
         "Kind": "ControllerRevisionList",
         "Scope": "Namespaced"
@@ -1852,7 +1852,7 @@
       },
       "x-fabric8-info": {
         "Type": "object",
-        "Group": "",
+        "Group": "apps",
         "Version": "v1beta2",
         "Kind": "DaemonSet",
         "Scope": "Namespaced"
@@ -1888,7 +1888,7 @@
       },
       "x-fabric8-info": {
         "Type": "list",
-        "Group": "",
+        "Group": "apps",
         "Version": "v1beta2",
         "Kind": "DaemonSetList",
         "Scope": "Namespaced"
@@ -1923,7 +1923,7 @@
       },
       "x-fabric8-info": {
         "Type": "object",
-        "Group": "",
+        "Group": "apps",
         "Version": "v1beta2",
         "Kind": "Deployment",
         "Scope": "Namespaced"
@@ -1959,7 +1959,7 @@
       },
       "x-fabric8-info": {
         "Type": "list",
-        "Group": "",
+        "Group": "apps",
         "Version": "v1beta2",
         "Kind": "DeploymentList",
         "Scope": "Namespaced"
@@ -1994,7 +1994,7 @@
       },
       "x-fabric8-info": {
         "Type": "object",
-        "Group": "",
+        "Group": "apps",
         "Version": "v1beta2",
         "Kind": "ReplicaSet",
         "Scope": "Namespaced"
@@ -2030,7 +2030,7 @@
       },
       "x-fabric8-info": {
         "Type": "list",
-        "Group": "",
+        "Group": "apps",
         "Version": "v1beta2",
         "Kind": "ReplicaSetList",
         "Scope": "Namespaced"
@@ -2065,7 +2065,7 @@
       },
       "x-fabric8-info": {
         "Type": "object",
-        "Group": "",
+        "Group": "apps",
         "Version": "v1beta2",
         "Kind": "Scale",
         "Scope": "Namespaced"
@@ -2099,7 +2099,7 @@
       },
       "x-fabric8-info": {
         "Type": "object",
-        "Group": "",
+        "Group": "apps",
         "Version": "v1beta2",
         "Kind": "StatefulSet",
         "Scope": "Namespaced"
@@ -2133,7 +2133,7 @@
       },
       "x-fabric8-info": {
         "Type": "list",
-        "Group": "",
+        "Group": "apps",
         "Version": "v1beta2",
         "Kind": "StatefulSetList",
         "Scope": "Namespaced"
@@ -2676,7 +2676,7 @@
       },
       "x-fabric8-info": {
         "Type": "object",
-        "Group": "",
+        "Group": "autoscaling",
         "Version": "v1",
         "Kind": "HorizontalPodAutoscaler",
         "Scope": "Namespaced"
@@ -2712,7 +2712,7 @@
       },
       "x-fabric8-info": {
         "Type": "list",
-        "Group": "",
+        "Group": "autoscaling",
         "Version": "v1",
         "Kind": "HorizontalPodAutoscalerList",
         "Scope": "Namespaced"
@@ -2747,7 +2747,7 @@
       },
       "x-fabric8-info": {
         "Type": "object",
-        "Group": "",
+        "Group": "autoscaling",
         "Version": "v1",
         "Kind": "Scale",
         "Scope": "Namespaced"
@@ -2782,7 +2782,7 @@
       },
       "x-fabric8-info": {
         "Type": "object",
-        "Group": "",
+        "Group": "autoscaling",
         "Version": "v2",
         "Kind": "HorizontalPodAutoscaler",
         "Scope": "Namespaced"
@@ -2818,7 +2818,7 @@
       },
       "x-fabric8-info": {
         "Type": "list",
-        "Group": "",
+        "Group": "autoscaling",
         "Version": "v2",
         "Kind": "HorizontalPodAutoscalerList",
         "Scope": "Namespaced"
@@ -2853,7 +2853,7 @@
       },
       "x-fabric8-info": {
         "Type": "object",
-        "Group": "",
+        "Group": "autoscaling",
         "Version": "v2beta1",
         "Kind": "HorizontalPodAutoscaler",
         "Scope": "Namespaced"
@@ -2889,7 +2889,7 @@
       },
       "x-fabric8-info": {
         "Type": "list",
-        "Group": "",
+        "Group": "autoscaling",
         "Version": "v2beta1",
         "Kind": "HorizontalPodAutoscalerList",
         "Scope": "Namespaced"
@@ -2924,7 +2924,7 @@
       },
       "x-fabric8-info": {
         "Type": "object",
-        "Group": "",
+        "Group": "autoscaling",
         "Version": "v2beta2",
         "Kind": "HorizontalPodAutoscaler",
         "Scope": "Namespaced"
@@ -2960,7 +2960,7 @@
       },
       "x-fabric8-info": {
         "Type": "list",
-        "Group": "",
+        "Group": "autoscaling",
         "Version": "v2beta2",
         "Kind": "HorizontalPodAutoscalerList",
         "Scope": "Namespaced"
@@ -2995,7 +2995,7 @@
       },
       "x-fabric8-info": {
         "Type": "object",
-        "Group": "",
+        "Group": "batch",
         "Version": "v1",
         "Kind": "CronJob",
         "Scope": "Namespaced"
@@ -3031,7 +3031,7 @@
       },
       "x-fabric8-info": {
         "Type": "list",
-        "Group": "",
+        "Group": "batch",
         "Version": "v1",
         "Kind": "CronJobList",
         "Scope": "Namespaced"
@@ -3066,7 +3066,7 @@
       },
       "x-fabric8-info": {
         "Type": "object",
-        "Group": "",
+        "Group": "batch",
         "Version": "v1",
         "Kind": "Job",
         "Scope": "Namespaced"
@@ -3102,7 +3102,7 @@
       },
       "x-fabric8-info": {
         "Type": "list",
-        "Group": "",
+        "Group": "batch",
         "Version": "v1",
         "Kind": "JobList",
         "Scope": "Namespaced"
@@ -3137,7 +3137,7 @@
       },
       "x-fabric8-info": {
         "Type": "object",
-        "Group": "",
+        "Group": "batch",
         "Version": "v1beta1",
         "Kind": "CronJob",
         "Scope": "Namespaced"
@@ -3173,7 +3173,7 @@
       },
       "x-fabric8-info": {
         "Type": "list",
-        "Group": "",
+        "Group": "batch",
         "Version": "v1beta1",
         "Kind": "CronJobList",
         "Scope": "Namespaced"
@@ -3320,80 +3320,6 @@
         "Scope": "Namespaced"
       }
     },
-    "io.k8s.api.certificates.v1alpha1.PodCertificateRequest": {
-      "type": "object",
-      "required": [
-        "spec"
-      ],
-      "properties": {
-        "apiVersion": {
-          "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
-          "type": "string"
-        },
-        "kind": {
-          "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
-          "type": "string"
-        },
-        "metadata": {
-          "description": "metadata contains the object metadata.",
-          "default": {},
-          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta"
-        },
-        "spec": {
-          "description": "spec contains the details about the certificate being requested.",
-          "default": {},
-          "$ref": "#/definitions/io.k8s.api.certificates.v1alpha1.PodCertificateRequestSpec"
-        },
-        "status": {
-          "description": "status contains the issued certificate, and a standard set of conditions.",
-          "default": {},
-          "$ref": "#/definitions/io.k8s.api.certificates.v1alpha1.PodCertificateRequestStatus"
-        }
-      },
-      "x-fabric8-info": {
-        "Type": "object",
-        "Group": "certificates.k8s.io",
-        "Version": "v1alpha1",
-        "Kind": "PodCertificateRequest",
-        "Scope": "Namespaced"
-      }
-    },
-    "io.k8s.api.certificates.v1alpha1.PodCertificateRequestList": {
-      "type": "object",
-      "required": [
-        "items"
-      ],
-      "properties": {
-        "apiVersion": {
-          "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
-          "type": "string"
-        },
-        "items": {
-          "description": "items is a collection of PodCertificateRequest objects",
-          "type": "array",
-          "items": {
-            "default": {},
-            "$ref": "#/definitions/io.k8s.api.certificates.v1alpha1.PodCertificateRequest"
-          }
-        },
-        "kind": {
-          "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
-          "type": "string"
-        },
-        "metadata": {
-          "description": "metadata contains the list metadata.",
-          "default": {},
-          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ListMeta"
-        }
-      },
-      "x-fabric8-info": {
-        "Type": "list",
-        "Group": "certificates.k8s.io",
-        "Version": "v1alpha1",
-        "Kind": "PodCertificateRequestList",
-        "Scope": "Namespaced"
-      }
-    },
     "io.k8s.api.certificates.v1beta1.CertificateSigningRequest": {
       "type": "object",
       "required": [
@@ -3531,6 +3457,80 @@
         "Group": "certificates.k8s.io",
         "Version": "v1beta1",
         "Kind": "ClusterTrustBundleList",
+        "Scope": "Namespaced"
+      }
+    },
+    "io.k8s.api.certificates.v1beta1.PodCertificateRequest": {
+      "type": "object",
+      "required": [
+        "spec"
+      ],
+      "properties": {
+        "apiVersion": {
+          "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
+          "type": "string"
+        },
+        "kind": {
+          "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
+          "type": "string"
+        },
+        "metadata": {
+          "description": "metadata contains the object metadata.",
+          "default": {},
+          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta"
+        },
+        "spec": {
+          "description": "spec contains the details about the certificate being requested.",
+          "default": {},
+          "$ref": "#/definitions/io.k8s.api.certificates.v1beta1.PodCertificateRequestSpec"
+        },
+        "status": {
+          "description": "status contains the issued certificate, and a standard set of conditions.",
+          "default": {},
+          "$ref": "#/definitions/io.k8s.api.certificates.v1beta1.PodCertificateRequestStatus"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "object",
+        "Group": "certificates.k8s.io",
+        "Version": "v1beta1",
+        "Kind": "PodCertificateRequest",
+        "Scope": "Namespaced"
+      }
+    },
+    "io.k8s.api.certificates.v1beta1.PodCertificateRequestList": {
+      "type": "object",
+      "required": [
+        "items"
+      ],
+      "properties": {
+        "apiVersion": {
+          "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
+          "type": "string"
+        },
+        "items": {
+          "description": "items is a collection of PodCertificateRequest objects",
+          "type": "array",
+          "items": {
+            "default": {},
+            "$ref": "#/definitions/io.k8s.api.certificates.v1beta1.PodCertificateRequest"
+          }
+        },
+        "kind": {
+          "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
+          "type": "string"
+        },
+        "metadata": {
+          "description": "metadata contains the list metadata.",
+          "default": {},
+          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ListMeta"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "list",
+        "Group": "certificates.k8s.io",
+        "Version": "v1beta1",
+        "Kind": "PodCertificateRequestList",
         "Scope": "Namespaced"
       }
     },
@@ -5570,7 +5570,7 @@
       },
       "x-fabric8-info": {
         "Type": "object",
-        "Group": "",
+        "Group": "extensions",
         "Version": "v1beta1",
         "Kind": "DaemonSet",
         "Scope": "Namespaced"
@@ -5606,7 +5606,7 @@
       },
       "x-fabric8-info": {
         "Type": "list",
-        "Group": "",
+        "Group": "extensions",
         "Version": "v1beta1",
         "Kind": "DaemonSetList",
         "Scope": "Namespaced"
@@ -5641,7 +5641,7 @@
       },
       "x-fabric8-info": {
         "Type": "object",
-        "Group": "",
+        "Group": "extensions",
         "Version": "v1beta1",
         "Kind": "Deployment",
         "Scope": "Namespaced"
@@ -5677,7 +5677,7 @@
       },
       "x-fabric8-info": {
         "Type": "list",
-        "Group": "",
+        "Group": "extensions",
         "Version": "v1beta1",
         "Kind": "DeploymentList",
         "Scope": "Namespaced"
@@ -5719,7 +5719,7 @@
       },
       "x-fabric8-info": {
         "Type": "object",
-        "Group": "",
+        "Group": "extensions",
         "Version": "v1beta1",
         "Kind": "DeploymentRollback",
         "Scope": "Namespaced"
@@ -5754,7 +5754,7 @@
       },
       "x-fabric8-info": {
         "Type": "object",
-        "Group": "",
+        "Group": "extensions",
         "Version": "v1beta1",
         "Kind": "Ingress",
         "Scope": "Namespaced"
@@ -5790,7 +5790,7 @@
       },
       "x-fabric8-info": {
         "Type": "list",
-        "Group": "",
+        "Group": "extensions",
         "Version": "v1beta1",
         "Kind": "IngressList",
         "Scope": "Namespaced"
@@ -5820,7 +5820,7 @@
       },
       "x-fabric8-info": {
         "Type": "object",
-        "Group": "",
+        "Group": "extensions",
         "Version": "v1beta1",
         "Kind": "NetworkPolicy",
         "Scope": "Namespaced"
@@ -5856,7 +5856,7 @@
       },
       "x-fabric8-info": {
         "Type": "list",
-        "Group": "",
+        "Group": "extensions",
         "Version": "v1beta1",
         "Kind": "NetworkPolicyList",
         "Scope": "Namespaced"
@@ -5891,7 +5891,7 @@
       },
       "x-fabric8-info": {
         "Type": "object",
-        "Group": "",
+        "Group": "extensions",
         "Version": "v1beta1",
         "Kind": "ReplicaSet",
         "Scope": "Namespaced"
@@ -5927,7 +5927,7 @@
       },
       "x-fabric8-info": {
         "Type": "list",
-        "Group": "",
+        "Group": "extensions",
         "Version": "v1beta1",
         "Kind": "ReplicaSetList",
         "Scope": "Namespaced"
@@ -5962,7 +5962,7 @@
       },
       "x-fabric8-info": {
         "Type": "object",
-        "Group": "",
+        "Group": "extensions",
         "Version": "v1beta1",
         "Kind": "Scale",
         "Scope": "Namespaced"
@@ -7396,7 +7396,7 @@
       },
       "x-fabric8-info": {
         "Type": "object",
-        "Group": "",
+        "Group": "policy",
         "Version": "v1",
         "Kind": "Eviction",
         "Scope": "Namespaced"
@@ -7431,7 +7431,7 @@
       },
       "x-fabric8-info": {
         "Type": "object",
-        "Group": "",
+        "Group": "policy",
         "Version": "v1",
         "Kind": "PodDisruptionBudget",
         "Scope": "Namespaced"
@@ -7467,7 +7467,7 @@
       },
       "x-fabric8-info": {
         "Type": "list",
-        "Group": "",
+        "Group": "policy",
         "Version": "v1",
         "Kind": "PodDisruptionBudgetList",
         "Scope": "Namespaced"
@@ -7496,7 +7496,7 @@
       },
       "x-fabric8-info": {
         "Type": "object",
-        "Group": "",
+        "Group": "policy",
         "Version": "v1beta1",
         "Kind": "Eviction",
         "Scope": "Namespaced"
@@ -7531,7 +7531,7 @@
       },
       "x-fabric8-info": {
         "Type": "object",
-        "Group": "",
+        "Group": "policy",
         "Version": "v1beta1",
         "Kind": "PodDisruptionBudget",
         "Scope": "Namespaced"
@@ -7567,7 +7567,7 @@
       },
       "x-fabric8-info": {
         "Type": "list",
-        "Group": "",
+        "Group": "policy",
         "Version": "v1beta1",
         "Kind": "PodDisruptionBudgetList",
         "Scope": "Namespaced"
@@ -8777,6 +8777,11 @@
           "description": "Spec specifies the selector and one taint.\n\nChanging the spec automatically increments the metadata.generation number.",
           "default": {},
           "$ref": "#/definitions/io.k8s.api.resource.v1alpha3.DeviceTaintRuleSpec"
+        },
+        "status": {
+          "description": "Status provides information about what was requested in the spec.",
+          "default": {},
+          "$ref": "#/definitions/io.k8s.api.resource.v1alpha3.DeviceTaintRuleStatus"
         }
       },
       "x-fabric8-info": {
@@ -9546,6 +9551,75 @@
         "Group": "scheduling.k8s.io",
         "Version": "v1alpha1",
         "Kind": "PriorityClassList",
+        "Scope": "Namespaced"
+      }
+    },
+    "io.k8s.api.scheduling.v1alpha1.Workload": {
+      "type": "object",
+      "required": [
+        "spec"
+      ],
+      "properties": {
+        "apiVersion": {
+          "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
+          "type": "string"
+        },
+        "kind": {
+          "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
+          "type": "string"
+        },
+        "metadata": {
+          "description": "Standard object's metadata. Name must be a DNS subdomain.",
+          "default": {},
+          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta"
+        },
+        "spec": {
+          "description": "Spec defines the desired behavior of a Workload.",
+          "default": {},
+          "$ref": "#/definitions/io.k8s.api.scheduling.v1alpha1.WorkloadSpec"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "object",
+        "Group": "scheduling.k8s.io",
+        "Version": "v1alpha1",
+        "Kind": "Workload",
+        "Scope": "Namespaced"
+      }
+    },
+    "io.k8s.api.scheduling.v1alpha1.WorkloadList": {
+      "type": "object",
+      "required": [
+        "items"
+      ],
+      "properties": {
+        "apiVersion": {
+          "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
+          "type": "string"
+        },
+        "items": {
+          "description": "Items is the list of Workloads.",
+          "type": "array",
+          "items": {
+            "default": {},
+            "$ref": "#/definitions/io.k8s.api.scheduling.v1alpha1.Workload"
+          }
+        },
+        "kind": {
+          "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
+          "type": "string"
+        },
+        "metadata": {
+          "description": "Standard list metadata.",
+          "default": {},
+          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ListMeta"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "list",
+        "Group": "scheduling.k8s.io",
+        "Version": "v1alpha1",
+        "Kind": "WorkloadList",
         "Scope": "Namespaced"
       }
     },
@@ -10817,7 +10891,7 @@
         "Scope": "Namespaced"
       }
     },
-    "io.k8s.api.storagemigration.v1alpha1.StorageVersionMigration": {
+    "io.k8s.api.storagemigration.v1beta1.StorageVersionMigration": {
       "type": "object",
       "properties": {
         "apiVersion": {
@@ -10836,23 +10910,23 @@
         "spec": {
           "description": "Specification of the migration.",
           "default": {},
-          "$ref": "#/definitions/io.k8s.api.storagemigration.v1alpha1.StorageVersionMigrationSpec"
+          "$ref": "#/definitions/io.k8s.api.storagemigration.v1beta1.StorageVersionMigrationSpec"
         },
         "status": {
           "description": "Status of the migration.",
           "default": {},
-          "$ref": "#/definitions/io.k8s.api.storagemigration.v1alpha1.StorageVersionMigrationStatus"
+          "$ref": "#/definitions/io.k8s.api.storagemigration.v1beta1.StorageVersionMigrationStatus"
         }
       },
       "x-fabric8-info": {
         "Type": "object",
         "Group": "storagemigration.k8s.io",
-        "Version": "v1alpha1",
+        "Version": "v1beta1",
         "Kind": "StorageVersionMigration",
         "Scope": "Clustered"
       }
     },
-    "io.k8s.api.storagemigration.v1alpha1.StorageVersionMigrationList": {
+    "io.k8s.api.storagemigration.v1beta1.StorageVersionMigrationList": {
       "type": "object",
       "required": [
         "items"
@@ -10867,14 +10941,8 @@
           "type": "array",
           "items": {
             "default": {},
-            "$ref": "#/definitions/io.k8s.api.storagemigration.v1alpha1.StorageVersionMigration"
-          },
-          "x-kubernetes-list-map-keys": [
-            "type"
-          ],
-          "x-kubernetes-list-type": "map",
-          "x-kubernetes-patch-merge-key": "type",
-          "x-kubernetes-patch-strategy": "merge"
+            "$ref": "#/definitions/io.k8s.api.storagemigration.v1beta1.StorageVersionMigration"
+          }
         },
         "kind": {
           "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
@@ -10889,7 +10957,7 @@
       "x-fabric8-info": {
         "Type": "list",
         "Group": "storagemigration.k8s.io",
-        "Version": "v1alpha1",
+        "Version": "v1beta1",
         "Kind": "StorageVersionMigrationList",
         "Scope": "Namespaced"
       }
@@ -12599,6 +12667,44 @@
         "Scope": "Namespaced"
       }
     },
+    "io.open-cluster-management.cluster.v1.ClusterSetManagedNamespaceConfig": {
+      "type": "object",
+      "required": [
+        "name",
+        "clusterSet"
+      ],
+      "properties": {
+        "clusterSet": {
+          "description": "clusterSet represents the name of the cluster set.",
+          "type": "string",
+          "default": ""
+        },
+        "conditions": {
+          "description": "conditions are the status conditions of the managed namespace",
+          "type": "array",
+          "items": {
+            "default": {},
+            "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.Condition"
+          },
+          "x-kubernetes-list-map-keys": [
+            "type"
+          ],
+          "x-kubernetes-list-type": "map"
+        },
+        "name": {
+          "description": "name is the name of the namespace.",
+          "type": "string",
+          "default": ""
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "cluster.open-cluster-management.io",
+        "Version": "v1",
+        "Kind": "ClusterSetManagedNamespaceConfig",
+        "Scope": "Namespaced"
+      }
+    },
     "io.open-cluster-management.cluster.v1.ManagedCluster": {
       "description": "ManagedCluster represents the desired state and current status of a managed cluster. ManagedCluster is a cluster-scoped resource. The name is the cluster UID.\n\nThe cluster join process is a double opt-in process. See the following join process steps:\n\n1. The agent on the managed cluster creates a CSR on the hub with the cluster UID and agent name. 2. The agent on the managed cluster creates a ManagedCluster on the hub. 3. The cluster admin on the hub cluster approves the CSR for the UID and agent name of the ManagedCluster. 4. The cluster admin sets the spec.acceptClient of the ManagedCluster to true. 5. The cluster admin on the managed cluster creates a credential of the kubeconfig for the hub cluster.\n\nAfter the hub cluster creates the cluster namespace, the klusterlet agent on the ManagedCluster pushes the credential to the hub cluster to use against the kube-apiserver of the ManagedCluster.",
       "type": "object",
@@ -12642,11 +12748,11 @@
       "type": "object",
       "properties": {
         "name": {
-          "description": "Name is the name of a ClusterClaim resource on managed cluster. It's a well known or customized name to identify the claim.",
+          "description": "name is the name of a ClusterClaim resource on managed cluster. It's a well known or customized name to identify the claim.",
           "type": "string"
         },
         "value": {
-          "description": "Value is a claim-dependent string",
+          "description": "value is a claim-dependent string",
           "type": "string"
         }
       },
@@ -12698,9 +12804,6 @@
     "io.open-cluster-management.cluster.v1.ManagedClusterSpec": {
       "description": "ManagedClusterSpec provides the information to securely connect to a remote server and verify its identity.",
       "type": "object",
-      "required": [
-        "hubAcceptsClient"
-      ],
       "properties": {
         "hubAcceptsClient": {
           "description": "hubAcceptsClient represents that hub accepts the joining of Klusterlet agent on the managed cluster with the hub. The default value is false, and can only be set true when the user on hub has an RBAC rule to UPDATE on the virtual subresource of managedclusters/accept. When the value is set true, a namespace whose name is the same as the name of ManagedCluster is created on the hub. This namespace represents the managed cluster, also role/rolebinding is created on the namespace to grant the permision of access from the agent on the managed cluster. When the value is set to false, the namespace representing the managed cluster is deleted.",
@@ -12708,7 +12811,7 @@
           "default": false
         },
         "leaseDurationSeconds": {
-          "description": "LeaseDurationSeconds is used to coordinate the lease update time of Klusterlet agents on the managed cluster. If its value is zero, the Klusterlet agent will update its lease every 60 seconds by default",
+          "description": "leaseDurationSeconds is used to coordinate the lease update time of Klusterlet agents on the managed cluster. If its value is zero, the Klusterlet agent will update its lease every 60 seconds by default",
           "type": "integer",
           "format": "int32"
         },
@@ -12721,7 +12824,7 @@
           }
         },
         "taints": {
-          "description": "Taints is a property of managed cluster that allow the cluster to be repelled when scheduling. Taints, including 'ManagedClusterUnavailable' and 'ManagedClusterUnreachable', can not be added/removed by agent running on the managed cluster; while it's fine to add/remove other taints from either hub cluser or managed cluster.",
+          "description": "taints is a property of managed cluster that allow the cluster to be repelled when scheduling. Taints, including 'ManagedClusterUnavailable' and 'ManagedClusterUnreachable', can not be added/removed by agent running on the managed cluster; while it's fine to add/remove other taints from either hub cluser or managed cluster.",
           "type": "array",
           "items": {
             "default": {},
@@ -12745,21 +12848,21 @@
       ],
       "properties": {
         "allocatable": {
-          "description": "Allocatable represents the total allocatable resources on the managed cluster.",
+          "description": "allocatable represents the total allocatable resources on the managed cluster.",
           "type": "object",
           "additionalProperties": {
             "$ref": "#/definitions/io.k8s.apimachinery.pkg.api.resource.Quantity"
           }
         },
         "capacity": {
-          "description": "Capacity represents the total resource capacity from all nodeStatuses on the managed cluster.",
+          "description": "capacity represents the total resource capacity from all nodeStatuses on the managed cluster.",
           "type": "object",
           "additionalProperties": {
             "$ref": "#/definitions/io.k8s.apimachinery.pkg.api.resource.Quantity"
           }
         },
         "clusterClaims": {
-          "description": "ClusterClaims represents cluster information that a managed cluster claims, for example a unique cluster identifier (id.k8s.io) and kubernetes version (kubeversion.open-cluster-management.io). They are written from the managed cluster. The set of claims is not uniform across a fleet, some claims can be vendor or version specific and may not be included from all managed clusters.",
+          "description": "clusterClaims represents cluster information that a managed cluster claims, for example a unique cluster identifier (id.k8s.io) and kubernetes version (kubeversion.open-cluster-management.io). They are written from the managed cluster. The set of claims is not uniform across a fleet, some claims can be vendor or version specific and may not be included from all managed clusters.",
           "type": "array",
           "items": {
             "default": {},
@@ -12767,15 +12870,32 @@
           }
         },
         "conditions": {
-          "description": "Conditions contains the different condition statuses for this managed cluster.",
+          "description": "conditions contains the different condition statuses for this managed cluster.",
           "type": "array",
           "items": {
             "default": {},
             "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.Condition"
-          }
+          },
+          "x-kubernetes-list-map-keys": [
+            "type"
+          ],
+          "x-kubernetes-list-type": "map"
+        },
+        "managedNamespaces": {
+          "description": "managedNamespaces are a list of namespaces managed by the clustersets the cluster belongs to.",
+          "type": "array",
+          "items": {
+            "default": {},
+            "$ref": "#/definitions/io.open-cluster-management.cluster.v1.ClusterSetManagedNamespaceConfig"
+          },
+          "x-kubernetes-list-map-keys": [
+            "clusterSet",
+            "name"
+          ],
+          "x-kubernetes-list-type": "map"
         },
         "version": {
-          "description": "Version represents the kubernetes version of the managed cluster.",
+          "description": "version represents the kubernetes version of the managed cluster.",
           "default": {},
           "$ref": "#/definitions/io.open-cluster-management.cluster.v1.ManagedClusterVersion"
         }
@@ -12793,7 +12913,7 @@
       "type": "object",
       "properties": {
         "kubernetes": {
-          "description": "Kubernetes is the kubernetes version of managed cluster.",
+          "description": "kubernetes is the kubernetes version of managed cluster.",
           "type": "string"
         }
       },
@@ -12805,31 +12925,51 @@
         "Scope": "Namespaced"
       }
     },
+    "io.open-cluster-management.cluster.v1.ManagedNamespaceConfig": {
+      "description": "managedNamespaces defines a namespace on the managedclusters across the clusterset to be managed by this clusterset.",
+      "type": "object",
+      "required": [
+        "name"
+      ],
+      "properties": {
+        "name": {
+          "description": "name is the name of the namespace.",
+          "type": "string",
+          "default": ""
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "cluster.open-cluster-management.io",
+        "Version": "v1",
+        "Kind": "ManagedNamespaceConfig",
+        "Scope": "Namespaced"
+      }
+    },
     "io.open-cluster-management.cluster.v1.Taint": {
       "description": "The managed cluster this Taint is attached to has the \"effect\" on any placement that does not tolerate the Taint.",
       "type": "object",
       "required": [
         "key",
-        "effect",
-        "timeAdded"
+        "effect"
       ],
       "properties": {
         "effect": {
-          "description": "Effect indicates the effect of the taint on placements that do not tolerate the taint. Valid effects are NoSelect, PreferNoSelect and NoSelectIfNew.",
+          "description": "effect indicates the effect of the taint on placements that do not tolerate the taint. Valid effects are NoSelect, PreferNoSelect and NoSelectIfNew.",
           "type": "string",
           "default": ""
         },
         "key": {
-          "description": "Key is the taint key applied to a cluster. e.g. bar or foo.example.com/bar. The regex it matches is (dns1123SubdomainFmt/)?(qualifiedNameFmt)",
+          "description": "key is the taint key applied to a cluster. e.g. bar or foo.example.com/bar. The regex it matches is (dns1123SubdomainFmt/)?(qualifiedNameFmt)",
           "type": "string",
           "default": ""
         },
         "timeAdded": {
-          "description": "TimeAdded represents the time at which the taint was added.",
+          "description": "timeAdded represents the time at which the taint was added.",
           "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.Time"
         },
         "value": {
-          "description": "Value is the taint value corresponding to the taint key.",
+          "description": "value is the taint value corresponding to the taint key.",
           "type": "string"
         }
       },
@@ -12880,12 +13020,12 @@
       ],
       "properties": {
         "name": {
-          "description": "Name is the name of the score",
+          "description": "name is the name of the score",
           "type": "string",
           "default": ""
         },
         "value": {
-          "description": "Value is the value of the score. The score range is from -100 to 100.",
+          "description": "value is the value of the score. The score range is from -100 to 100.",
           "type": "integer",
           "format": "int32",
           "default": 0
@@ -12950,9 +13090,7 @@
           "x-kubernetes-list-map-keys": [
             "type"
           ],
-          "x-kubernetes-list-type": "map",
-          "x-kubernetes-patch-merge-key": "type",
-          "x-kubernetes-patch-strategy": "merge"
+          "x-kubernetes-list-type": "map"
         },
         "scores": {
           "description": "Scores contain a list of score name and value of this managed cluster.",
@@ -12967,7 +13105,7 @@
           "x-kubernetes-list-type": "map"
         },
         "validUntil": {
-          "description": "ValidUntil defines the valid time of the scores. After this time, the scores are considered to be invalid by placement. nil means never expire. The controller owning this resource should keep the scores up-to-date.",
+          "description": "validUntil defines the valid time of the scores. After this time, the scores are considered to be invalid by placement. nil means never expire. The controller owning this resource should keep the scores up-to-date.",
           "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.Time"
         }
       },
@@ -13050,7 +13188,7 @@
       "type": "object",
       "properties": {
         "value": {
-          "description": "Value is a claim-dependent string",
+          "description": "value is a claim-dependent string",
           "type": "string"
         }
       },
@@ -13067,12 +13205,12 @@
       "type": "object",
       "properties": {
         "groupIndex": {
-          "description": "GroupIndex of the decision group should match the placementDecisions label value with label key cluster.open-cluster-management.io/decision-group-index",
+          "description": "groupIndex of the decision group should match the placementDecisions label value with label key cluster.open-cluster-management.io/decision-group-index",
           "type": "integer",
           "format": "int32"
         },
         "groupName": {
-          "description": "GroupName of the decision group should match the placementDecisions label value with label key cluster.open-cluster-management.io/decision-group-name",
+          "description": "groupName of the decision group should match the placementDecisions label value with label key cluster.open-cluster-management.io/decision-group-name",
           "type": "string"
         }
       },
@@ -13168,7 +13306,7 @@
           }
         },
         "maxConcurrency": {
-          "description": "MaxConcurrency is the max number of clusters to deploy workload concurrently. The default value for MaxConcurrency is determined from the clustersPerDecisionGroup defined in the placement-\u003eDecisionStrategy.",
+          "description": "maxConcurrency is the max number of clusters to deploy workload concurrently. The default value for MaxConcurrency is determined from the clustersPerDecisionGroup defined in the placement-\u003eDecisionStrategy.",
           "$ref": "#/definitions/io.k8s.apimachinery.pkg.util.intstr.IntOrString"
         },
         "maxFailures": {
@@ -13230,15 +13368,15 @@
       "type": "object",
       "properties": {
         "all": {
-          "description": "All defines required fields for RolloutStrategy type All",
+          "description": "all defines required fields for RolloutStrategy type All",
           "$ref": "#/definitions/io.open-cluster-management.cluster.v1alpha1.RolloutAll"
         },
         "progressive": {
-          "description": "Progressive defines required fields for RolloutStrategy type Progressive",
+          "description": "progressive defines required fields for RolloutStrategy type Progressive",
           "$ref": "#/definitions/io.open-cluster-management.cluster.v1alpha1.RolloutProgressive"
         },
         "progressivePerGroup": {
-          "description": "ProgressivePerGroup defines required fields for RolloutStrategy type ProgressivePerGroup",
+          "description": "progressivePerGroup defines required fields for RolloutStrategy type ProgressivePerGroup",
           "$ref": "#/definitions/io.open-cluster-management.cluster.v1alpha1.RolloutProgressivePerGroup"
         },
         "type": {
@@ -13262,12 +13400,12 @@
       ],
       "properties": {
         "resourceName": {
-          "description": "ResourceName defines the resource name of the AddOnPlacementScore. The placement prioritizer selects AddOnPlacementScore CR by this name.",
+          "description": "resourceName defines the resource name of the AddOnPlacementScore. The placement prioritizer selects AddOnPlacementScore CR by this name.",
           "type": "string",
           "default": ""
         },
         "scoreName": {
-          "description": "ScoreName defines the score name inside AddOnPlacementScore. AddOnPlacementScore contains a list of score name and score value, ScoreName specify the score to be used by the prioritizer.",
+          "description": "scoreName defines the score name inside AddOnPlacementScore. AddOnPlacementScore contains a list of score names and values; scoreName specifies the score to be used by the prioritizer.",
           "type": "string",
           "default": ""
         }
@@ -13277,6 +13415,26 @@
         "Group": "cluster.open-cluster-management.io",
         "Version": "v1beta1",
         "Kind": "AddOnScore",
+        "Scope": "Namespaced"
+      }
+    },
+    "io.open-cluster-management.cluster.v1beta1.ClusterCelSelector": {
+      "description": "ClusterCelSelector is a list of CEL expressions. The expressions are ANDed.",
+      "type": "object",
+      "properties": {
+        "celExpressions": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "default": ""
+          }
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "cluster.open-cluster-management.io",
+        "Version": "v1beta1",
+        "Kind": "ClusterCelSelector",
         "Scope": "Namespaced"
       }
     },
@@ -13310,12 +13468,12 @@
       ],
       "properties": {
         "clusterName": {
-          "description": "ClusterName is the name of the ManagedCluster. If it is not empty, its value should be unique cross all placement decisions for the Placement.",
+          "description": "clusterName is the name of the ManagedCluster. If it is not empty, its value should be unique across all placement decisions for the Placement.",
           "type": "string",
           "default": ""
         },
         "reason": {
-          "description": "Reason represents the reason why the ManagedCluster is selected.",
+          "description": "reason represents the reason why the ManagedCluster is selected.",
           "type": "string",
           "default": ""
         }
@@ -13333,7 +13491,7 @@
       "type": "object",
       "properties": {
         "requiredClusterSelector": {
-          "description": "RequiredClusterSelector represents a selector of ManagedClusters by label and claim. If specified, 1) Any ManagedCluster, which does not match the selector, should not be selected by this ClusterPredicate; 2) If a selected ManagedCluster (of this ClusterPredicate) ceases to match the selector (e.g. due to\n   an update) of any ClusterPredicate, it will be eventually removed from the placement decisions;\n3) If a ManagedCluster (not selected previously) starts to match the selector, it will either\n   be selected or at least has a chance to be selected (when NumberOfClusters is specified);",
+          "description": "requiredClusterSelector represents a selector of ManagedClusters by label and claim. If specified, 1) Any ManagedCluster, which does not match the selector, should not be selected by this ClusterPredicate; 2) If a selected ManagedCluster (of this ClusterPredicate) ceases to match the selector (e.g. due to\n   an update) of any ClusterPredicate, it will be eventually removed from the placement decisions;\n3) If a ManagedCluster (not selected previously) starts to match the selector, it will either\n   be selected or at least has a chance to be selected (when NumberOfClusters is specified);",
           "default": {},
           "$ref": "#/definitions/io.open-cluster-management.cluster.v1beta1.ClusterSelector"
         }
@@ -13350,13 +13508,18 @@
       "description": "ClusterSelector represents the AND of the containing selectors. An empty cluster selector matches all objects. A null cluster selector matches no objects.",
       "type": "object",
       "properties": {
+        "celSelector": {
+          "description": "celSelector represents a selector of ManagedClusters by CEL expressions on ManagedCluster fields",
+          "default": {},
+          "$ref": "#/definitions/io.open-cluster-management.cluster.v1beta1.ClusterCelSelector"
+        },
         "claimSelector": {
-          "description": "ClaimSelector represents a selector of ManagedClusters by clusterClaims in status",
+          "description": "claimSelector represents a selector of ManagedClusters by clusterClaims in status",
           "default": {},
           "$ref": "#/definitions/io.open-cluster-management.cluster.v1beta1.ClusterClaimSelector"
         },
         "labelSelector": {
-          "description": "LabelSelector represents a selector of ManagedClusters by label",
+          "description": "labelSelector represents a selector of ManagedClusters by label",
           "default": {},
           "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.LabelSelector"
         }
@@ -13378,12 +13541,12 @@
       ],
       "properties": {
         "groupClusterSelector": {
-          "description": "LabelSelector to select clusters subset by label.",
+          "description": "groupClusterSelector selects a subset of clusters by labels.",
           "default": {},
-          "$ref": "#/definitions/io.open-cluster-management.cluster.v1beta1.ClusterSelector"
+          "$ref": "#/definitions/io.open-cluster-management.cluster.v1beta1.GroupClusterSelector"
         },
         "groupName": {
-          "description": "Group name to be added as label value to the created placement Decisions labels with label key cluster.open-cluster-management.io/decision-group-name",
+          "description": "groupName to set as the label value on created PlacementDecision resources using the label key cluster.open-cluster-management.io/decision-group-name.",
           "type": "string"
         }
       },
@@ -13438,7 +13601,7 @@
       "type": "object",
       "properties": {
         "groupStrategy": {
-          "description": "GroupStrategy define strategies to divide selected clusters to decision groups.",
+          "description": "groupStrategy defines strategies to divide selected clusters into decision groups.",
           "default": {},
           "$ref": "#/definitions/io.open-cluster-management.cluster.v1beta1.GroupStrategy"
         }
@@ -13451,16 +13614,39 @@
         "Scope": "Namespaced"
       }
     },
+    "io.open-cluster-management.cluster.v1beta1.GroupClusterSelector": {
+      "description": "GroupClusterSelector represents the AND of the containing selectors for groupClusterSelector. An empty group cluster selector matches all objects. A null group cluster selector matches no objects.",
+      "type": "object",
+      "properties": {
+        "claimSelector": {
+          "description": "claimSelector represents a selector of ManagedClusters by clusterClaims in status",
+          "default": {},
+          "$ref": "#/definitions/io.open-cluster-management.cluster.v1beta1.ClusterClaimSelector"
+        },
+        "labelSelector": {
+          "description": "labelSelector represents a selector of ManagedClusters by label",
+          "default": {},
+          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.LabelSelector"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "cluster.open-cluster-management.io",
+        "Version": "v1beta1",
+        "Kind": "GroupClusterSelector",
+        "Scope": "Namespaced"
+      }
+    },
     "io.open-cluster-management.cluster.v1beta1.GroupStrategy": {
       "description": "Group the created placementDecision into decision groups based on the number of clusters per decision group.",
       "type": "object",
       "properties": {
         "clustersPerDecisionGroup": {
-          "description": "ClustersPerDecisionGroup is a specific number or percentage of the total selected clusters. The specific number will divide the placementDecisions to decisionGroups each group has max number of clusters equal to that specific number. The percentage will divide the placementDecisions to decisionGroups each group has max number of clusters based on the total num of selected clusters and percentage. ex; for a total 100 clusters selected, ClustersPerDecisionGroup equal to 20% will divide the placement decision to 5 groups each group should have 20 clusters. Default is having all clusters in a single group.\n\nThe predefined decisionGroups is expected to be a subset of the selected clusters and the number of items in each group SHOULD be less than ClustersPerDecisionGroup. Once the number of items exceeds the ClustersPerDecisionGroup, the decisionGroups will also be be divided into multiple decisionGroups with same GroupName but different GroupIndex.",
+          "description": "clustersPerDecisionGroup is a specific number or percentage of the total selected clusters. The specific number will divide the placementDecisions to decisionGroups each group has max number of clusters equal to that specific number. The percentage will divide the placementDecisions to decisionGroups each group has max number of clusters based on the total num of selected clusters and percentage. ex; for a total 100 clusters selected, ClustersPerDecisionGroup equal to 20% will divide the placement decision to 5 groups each group should have 20 clusters. Default is having all clusters in a single group.\n\nThe predefined decisionGroups is expected to be a subset of the selected clusters and the number of items in each group SHOULD be less than ClustersPerDecisionGroup. Once the number of items exceeds the ClustersPerDecisionGroup, the decisionGroups will also be be divided into multiple decisionGroups with same GroupName but different GroupIndex.",
           "$ref": "#/definitions/io.k8s.apimachinery.pkg.util.intstr.IntOrString"
         },
         "decisionGroups": {
-          "description": "DecisionGroups represents a list of predefined groups to put decision results. Decision groups will be constructed based on the DecisionGroups field at first. The clusters not included in the DecisionGroups will be divided to other decision groups afterwards. Each decision group should not have the number of clusters larger than the ClustersPerDecisionGroup.",
+          "description": "decisionGroups represents a list of predefined groups to put decision results. Decision groups will be constructed based on the DecisionGroups field at first. The clusters not included in the DecisionGroups will be divided to other decision groups afterwards. Each decision group should not have the number of clusters larger than the ClustersPerDecisionGroup.",
           "type": "array",
           "items": {
             "default": {},
@@ -13589,7 +13775,7 @@
       ],
       "properties": {
         "decisions": {
-          "description": "Decisions is a slice of decisions according to a placement The number of decisions should not be larger than 100",
+          "description": "decisions is a slice of decisions according to a placement The number of decisions should not be larger than 100",
           "type": "array",
           "items": {
             "default": {},
@@ -13647,7 +13833,7 @@
       "type": "object",
       "properties": {
         "clusterSets": {
-          "description": "ClusterSets represent the ManagedClusterSets from which the ManagedClusters are selected. If the slice is empty, ManagedClusters will be selected from the ManagedClusterSets bound to the placement namespace, otherwise ManagedClusters will be selected from the intersection of this slice and the ManagedClusterSets bound to the placement namespace.",
+          "description": "clusterSets represent the ManagedClusterSets from which the ManagedClusters are selected. If the slice is empty, ManagedClusters will be selected from the ManagedClusterSets bound to the placement namespace, otherwise ManagedClusters will be selected from the intersection of this slice and the ManagedClusterSets bound to the placement namespace.",
           "type": "array",
           "items": {
             "type": "string",
@@ -13655,17 +13841,17 @@
           }
         },
         "decisionStrategy": {
-          "description": "DecisionStrategy divide the created placement decision to groups and define number of clusters per decision group.",
+          "description": "decisionStrategy divides the created placement decisions into groups and defines the number of clusters per decision group.",
           "default": {},
           "$ref": "#/definitions/io.open-cluster-management.cluster.v1beta1.DecisionStrategy"
         },
         "numberOfClusters": {
-          "description": "NumberOfClusters represents the desired number of ManagedClusters to be selected which meet the placement requirements. 1) If not specified, all ManagedClusters which meet the placement requirements (including ClusterSets,\n   and Predicates) will be selected;\n2) Otherwise if the nubmer of ManagedClusters meet the placement requirements is larger than\n   NumberOfClusters, a random subset with desired number of ManagedClusters will be selected;\n3) If the nubmer of ManagedClusters meet the placement requirements is equal to NumberOfClusters,\n   all of them will be selected;\n4) If the nubmer of ManagedClusters meet the placement requirements is less than NumberOfClusters,\n   all of them will be selected, and the status of condition `PlacementConditionSatisfied` will be\n   set to false;",
+          "description": "numberOfClusters represents the desired number of ManagedClusters to be selected which meet the placement requirements. 1) If not specified, all ManagedClusters which meet the placement requirements (including ClusterSets,\n   and Predicates) will be selected;\n2) Otherwise if the nubmer of ManagedClusters meet the placement requirements is larger than\n   NumberOfClusters, a random subset with desired number of ManagedClusters will be selected;\n3) If the nubmer of ManagedClusters meet the placement requirements is equal to NumberOfClusters,\n   all of them will be selected;\n4) If the nubmer of ManagedClusters meet the placement requirements is less than NumberOfClusters,\n   all of them will be selected, and the status of condition `PlacementConditionSatisfied` will be\n   set to false;",
           "type": "integer",
           "format": "int32"
         },
         "predicates": {
-          "description": "Predicates represent a slice of predicates to select ManagedClusters. The predicates are ORed.",
+          "description": "predicates represent a slice of predicates to select ManagedClusters. The predicates are ORed.",
           "type": "array",
           "items": {
             "default": {},
@@ -13673,17 +13859,17 @@
           }
         },
         "prioritizerPolicy": {
-          "description": "PrioritizerPolicy defines the policy of the prioritizers. If this field is unset, then default prioritizer mode and configurations are used. Referring to PrioritizerPolicy to see more description about Mode and Configurations.",
+          "description": "prioritizerPolicy defines the policy of the prioritizers. If this field is unset, then default prioritizer mode and configurations are used. Referring to PrioritizerPolicy to see more description about Mode and Configurations.",
           "default": {},
           "$ref": "#/definitions/io.open-cluster-management.cluster.v1beta1.PrioritizerPolicy"
         },
         "spreadPolicy": {
-          "description": "SpreadPolicy defines how placement decisions should be distributed among a set of ManagedClusters.",
+          "description": "spreadPolicy defines how placement decisions should be distributed among a set of ManagedClusters.",
           "default": {},
           "$ref": "#/definitions/io.open-cluster-management.cluster.v1beta1.SpreadPolicy"
         },
         "tolerations": {
-          "description": "Tolerations are applied to placements, and allow (but do not require) the managed clusters with certain taints to be selected by placements with matching tolerations.",
+          "description": "tolerations are applied to placements, and allow (but do not require) the managed clusters with certain taints to be selected by placements with matching tolerations.",
           "type": "array",
           "items": {
             "default": {},
@@ -13708,7 +13894,11 @@
           "items": {
             "default": {},
             "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.Condition"
-          }
+          },
+          "x-kubernetes-list-map-keys": [
+            "type"
+          ],
+          "x-kubernetes-list-type": "map"
         },
         "decisionGroups": {
           "description": "List of decision groups determined by the placement and DecisionStrategy.",
@@ -13719,7 +13909,7 @@
           }
         },
         "numberOfSelectedClusters": {
-          "description": "NumberOfSelectedClusters represents the number of selected ManagedClusters",
+          "description": "numberOfSelectedClusters represents the number of selected ManagedClusters",
           "type": "integer",
           "format": "int32",
           "default": 0
@@ -13741,11 +13931,11 @@
       ],
       "properties": {
         "scoreCoordinate": {
-          "description": "ScoreCoordinate represents the configuration of the prioritizer and score source.",
+          "description": "scoreCoordinate represents the configuration of the prioritizer and score source.",
           "$ref": "#/definitions/io.open-cluster-management.cluster.v1beta1.ScoreCoordinate"
         },
         "weight": {
-          "description": "Weight defines the weight of the prioritizer score. The value must be ranged in [-10,10]. Each prioritizer will calculate an integer score of a cluster in the range of [-100, 100]. The final score of a cluster will be sum(weight * prioritizer_score). A higher weight indicates that the prioritizer weights more in the cluster selection, while 0 weight indicates that the prioritizer is disabled. A negative weight indicates wants to select the last ones.",
+          "description": "weight defines the weight of the prioritizer score. The value must be ranged in [-10,10]. Each prioritizer will calculate an integer score of a cluster in the range of [-100, 100]. The final score of a cluster will be sum(weight * prioritizer_score). A higher weight indicates that the prioritizer weights more in the cluster selection, while 0 weight indicates that the prioritizer is disabled. A negative weight indicates wants to select the last ones.",
           "type": "integer",
           "format": "int32"
         }
@@ -13798,7 +13988,7 @@
           "type": "string"
         },
         "type": {
-          "description": "Type defines the type of the prioritizer score. Type is either \"BuiltIn\", \"AddOn\" or \"\", where \"\" is \"BuiltIn\" by default. When the type is \"BuiltIn\", need to specify a BuiltIn prioritizer name in BuiltIn. When the type is \"AddOn\", need to configure the score source in AddOn.",
+          "description": "type defines the type of the prioritizer score. Type is either \"BuiltIn\", \"AddOn\" or \"\", where \"\" is \"BuiltIn\" by default. When the type is \"BuiltIn\", need to specify a BuiltIn prioritizer name in BuiltIn. When the type is \"AddOn\", need to configure the score source in AddOn.",
           "type": "string"
         }
       },
@@ -13911,11 +14101,11 @@
       ],
       "properties": {
         "labelSelector": {
-          "description": "LabelSelector define the general labelSelector which clusterset will use to select target managedClusters",
+          "description": "labelSelector define the general labelSelector which clusterset will use to select target managedClusters",
           "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.LabelSelector"
         },
         "selectorType": {
-          "description": "SelectorType could only be \"ExclusiveClusterSetLabel\" or \"LabelSelector\" \"ExclusiveClusterSetLabel\" means to use label \"cluster.open-cluster-management.io/clusterset:\u003cManagedClusterSet Name\u003e\"\" to select target clusters. \"LabelSelector\" means use labelSelector to select target managedClusters",
+          "description": "selectorType could only be \"ExclusiveClusterSetLabel\" or \"LabelSelector\" \"ExclusiveClusterSetLabel\" means to use label \"cluster.open-cluster-management.io/clusterset:\u003cManagedClusterSet Name\u003e\"\" to select target clusters. \"LabelSelector\" means use labelSelector to select target managedClusters",
           "type": "string"
         }
       },
@@ -14048,7 +14238,7 @@
       ],
       "properties": {
         "clusterSet": {
-          "description": "ClusterSet is the name of the ManagedClusterSet to bind. It must match the instance name of the ManagedClusterSetBinding and cannot change once created. User is allowed to set this field if they have an RBAC rule to CREATE on the virtual subresource of managedclustersets/bind.",
+          "description": "clusterSet is the name of the ManagedClusterSet to bind. It must match the instance name of the ManagedClusterSetBinding and cannot change once created. User is allowed to set this field if they have an RBAC rule to CREATE on the virtual subresource of managedclustersets/bind.",
           "type": "string",
           "default": ""
         }
@@ -14127,9 +14317,21 @@
       "type": "object",
       "properties": {
         "clusterSelector": {
-          "description": "ClusterSelector represents a selector of ManagedClusters",
+          "description": "clusterSelector represents a selector of ManagedClusters",
           "default": {},
           "$ref": "#/definitions/io.open-cluster-management.cluster.v1beta2.ManagedClusterSelector"
+        },
+        "managedNamespaces": {
+          "description": "managedNamespaces defines the list of namespace on the managedclusters across the clusterset to be managed.",
+          "type": "array",
+          "items": {
+            "default": {},
+            "$ref": "#/definitions/io.open-cluster-management.cluster.v1.ManagedNamespaceConfig"
+          },
+          "x-kubernetes-list-map-keys": [
+            "name"
+          ],
+          "x-kubernetes-list-type": "map"
         }
       },
       "x-fabric8-info": {
@@ -16161,6 +16363,26 @@
         "Scope": "Namespaced"
       }
     },
+    "io.open-cluster-management.operator.v1.AddOnRegistrationDriver": {
+      "type": "object",
+      "properties": {
+        "authType": {
+          "description": "AuthType is the authentication driver used for add-on registration. Possible values are csr and token. Currently, this field only affects kubeClient type add-on registration. The csr type add-on registration always uses csr driver. In the future, this may be extended to customize authentication for csr type add-on registration as well.",
+          "type": "string"
+        },
+        "token": {
+          "description": "Token contains the configuration for token-based registration.",
+          "$ref": "#/definitions/io.open-cluster-management.operator.v1.TokenConfig"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "operator.open-cluster-management.io",
+        "Version": "v1",
+        "Kind": "AddOnRegistrationDriver",
+        "Scope": "Namespaced"
+      }
+    },
     "io.open-cluster-management.operator.v1.AwsIrsa": {
       "type": "object",
       "required": [
@@ -16242,6 +16464,40 @@
         "Scope": "Namespaced"
       }
     },
+    "io.open-cluster-management.operator.v1.BindConfiguration": {
+      "description": "BindConfiguration represents customization of server bindings",
+      "type": "object",
+      "properties": {
+        "healthProbePort": {
+          "description": "HealthProbePort represents the bind port of a webhook-server's healthcheck endpoint. The default value is 8000. Healthchecks may be disabled by setting a value less than or equal to 0.",
+          "type": "integer",
+          "format": "int32",
+          "default": 0
+        },
+        "hostNetwork": {
+          "description": "HostNetwork enables running webhook pods in host networking mode. This may be required in some installations, such as EKS with Calico CNI, to allow the API Server to communicate with the webhook pods.",
+          "type": "boolean"
+        },
+        "metricsPort": {
+          "description": "MetricsPort represents the bind port for a webhook-server's metric endpoint. The default value is 8080. Metrics may be disabled by setting a value less than or equal to 0.",
+          "type": "integer",
+          "format": "int32",
+          "default": 0
+        },
+        "port": {
+          "description": "Port represents the primary bind port of a server. The default value is 9443.",
+          "type": "integer",
+          "format": "int32"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "operator.open-cluster-management.io",
+        "Version": "v1",
+        "Kind": "BindConfiguration",
+        "Scope": "Namespaced"
+      }
+    },
     "io.open-cluster-management.operator.v1.BlockDeletionResource": {
       "type": "object",
       "required": [
@@ -16296,7 +16552,6 @@
       "properties": {
         "localSecretsConfig": {
           "description": "LocalSecretsConfig include a list of secrets that contains the kubeconfigs for ordered bootstrap kubeconifigs. The secrets must be in the same namespace where the agent controller runs.",
-          "default": {},
           "$ref": "#/definitions/io.open-cluster-management.operator.v1.LocalSecretsConfig"
         },
         "type": {
@@ -16329,6 +16584,36 @@
         "Group": "operator.open-cluster-management.io",
         "Version": "v1",
         "Kind": "CSRConfig",
+        "Scope": "Namespaced"
+      }
+    },
+    "io.open-cluster-management.operator.v1.ClusterClaimConfiguration": {
+      "description": "ClusterClaimConfiguration represents the configuration of ClusterClaim",
+      "type": "object",
+      "required": [
+        "maxCustomClusterClaims"
+      ],
+      "properties": {
+        "maxCustomClusterClaims": {
+          "description": "Maximum number of custom ClusterClaims allowed.",
+          "type": "integer",
+          "format": "int32",
+          "default": 0
+        },
+        "reservedClusterClaimSuffixes": {
+          "description": "Custom suffixes for reserved ClusterClaims.",
+          "type": "array",
+          "items": {
+            "type": "string",
+            "default": ""
+          }
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "operator.open-cluster-management.io",
+        "Version": "v1",
+        "Kind": "ClusterClaimConfiguration",
         "Scope": "Namespaced"
       }
     },
@@ -16377,6 +16662,10 @@
         "mode"
       ],
       "properties": {
+        "default": {
+          "description": "Default includes optional configurations for clustermanager in the Default mode.",
+          "$ref": "#/definitions/io.open-cluster-management.operator.v1.DefaultClusterManagerConfiguration"
+        },
         "hosted": {
           "description": "Hosted includes configurations we need for clustermanager in the Hosted mode.",
           "$ref": "#/definitions/io.open-cluster-management.operator.v1.HostedClusterManagerConfiguration"
@@ -16436,45 +16725,49 @@
       "type": "object",
       "properties": {
         "addOnManagerConfiguration": {
-          "description": "AddOnManagerConfiguration contains the configuration of addon manager",
+          "description": "addOnManagerConfiguration contains the configuration of addon manager",
           "$ref": "#/definitions/io.open-cluster-management.operator.v1.AddOnManagerConfiguration"
         },
         "addOnManagerImagePullSpec": {
-          "description": "AddOnManagerImagePullSpec represents the desired image configuration of addon manager controller/webhook installed on hub.",
+          "description": "addOnManagerImagePullSpec represents the desired image configuration of addon manager controller/webhook installed on hub.",
           "type": "string"
         },
         "deployOption": {
-          "description": "DeployOption contains the options of deploying a cluster-manager Default mode is used if DeployOption is not set.",
+          "description": "deployOption contains the options of deploying a cluster-manager Default mode is used if DeployOption is not set.",
           "default": {},
           "$ref": "#/definitions/io.open-cluster-management.operator.v1.ClusterManagerDeployOption"
         },
         "nodePlacement": {
-          "description": "NodePlacement enables explicit control over the scheduling of the deployed pods.",
+          "description": "nodePlacement enables explicit control over the scheduling of the deployed pods.",
           "default": {},
           "$ref": "#/definitions/io.open-cluster-management.operator.v1.NodePlacement"
         },
         "placementImagePullSpec": {
-          "description": "PlacementImagePullSpec represents the desired image configuration of placement controller/webhook installed on hub.",
+          "description": "placementImagePullSpec represents the desired image configuration of placement controller/webhook installed on hub.",
           "type": "string"
         },
         "registrationConfiguration": {
-          "description": "RegistrationConfiguration contains the configuration of registration",
+          "description": "registrationConfiguration contains the configuration of registration",
           "$ref": "#/definitions/io.open-cluster-management.operator.v1.RegistrationHubConfiguration"
         },
         "registrationImagePullSpec": {
-          "description": "RegistrationImagePullSpec represents the desired image of registration controller/webhook installed on hub.",
+          "description": "registrationImagePullSpec represents the desired image of registration controller/webhook installed on hub.",
           "type": "string"
         },
         "resourceRequirement": {
           "description": "ResourceRequirement specify QoS classes of deployments managed by clustermanager. It applies to all the containers in the deployments.",
           "$ref": "#/definitions/io.open-cluster-management.operator.v1.ResourceRequirement"
         },
+        "serverConfiguration": {
+          "description": "serverConfiguration contains the configuration for http/grpc server.",
+          "$ref": "#/definitions/io.open-cluster-management.operator.v1.ServerConfiguration"
+        },
         "workConfiguration": {
-          "description": "WorkConfiguration contains the configuration of work",
+          "description": "workConfiguration contains the configuration of work",
           "$ref": "#/definitions/io.open-cluster-management.operator.v1.WorkConfiguration"
         },
         "workImagePullSpec": {
-          "description": "WorkImagePullSpec represents the desired image configuration of work controller/webhook installed on hub.",
+          "description": "workImagePullSpec represents the desired image configuration of work controller/webhook installed on hub.",
           "type": "string"
         }
       },
@@ -16499,7 +16792,11 @@
           "items": {
             "default": {},
             "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.Condition"
-          }
+          },
+          "x-kubernetes-list-map-keys": [
+            "type"
+          ],
+          "x-kubernetes-list-type": "map"
         },
         "generations": {
           "description": "Generations are used to determine when an item needs to be reconciled or has changed in a way that needs a reaction.",
@@ -16614,6 +16911,46 @@
         "Scope": "Namespaced"
       }
     },
+    "io.open-cluster-management.operator.v1.DefaultClusterManagerConfiguration": {
+      "description": "DefaultClusterManagerConfiguration represents customized configurations for clustermanager in the Default mode.",
+      "type": "object",
+      "properties": {
+        "registrationWebhookConfiguration": {
+          "description": "RegistrationWebhookConfiguration represents the customized webhook-server configuration of registration.",
+          "default": {},
+          "$ref": "#/definitions/io.open-cluster-management.operator.v1.DefaultWebhookConfiguration"
+        },
+        "workWebhookConfiguration": {
+          "description": "WorkWebhookConfiguration represents the customized webhook-server configuration of work.",
+          "default": {},
+          "$ref": "#/definitions/io.open-cluster-management.operator.v1.DefaultWebhookConfiguration"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "operator.open-cluster-management.io",
+        "Version": "v1",
+        "Kind": "DefaultClusterManagerConfiguration",
+        "Scope": "Namespaced"
+      }
+    },
+    "io.open-cluster-management.operator.v1.DefaultWebhookConfiguration": {
+      "description": "DefaultWebhookConfiguration represents customization of webhook servers running in default installation mode",
+      "type": "object",
+      "properties": {
+        "bindConfiguration": {
+          "description": "BindConfiguration represents server bind configuration for the webhook server",
+          "$ref": "#/definitions/io.open-cluster-management.operator.v1.BindConfiguration"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "operator.open-cluster-management.io",
+        "Version": "v1",
+        "Kind": "DefaultWebhookConfiguration",
+        "Scope": "Namespaced"
+      }
+    },
     "io.open-cluster-management.operator.v1.DeploymentConfig": {
       "description": "DeploymentConfig provides configuration details for a specific deployment.",
       "type": "object",
@@ -16641,6 +16978,69 @@
         "Group": "operator.open-cluster-management.io",
         "Version": "v1",
         "Kind": "DeploymentConfig",
+        "Scope": "Namespaced"
+      }
+    },
+    "io.open-cluster-management.operator.v1.Endpoint": {
+      "type": "object",
+      "required": [
+        "type"
+      ],
+      "properties": {
+        "hostname": {
+          "description": "hostname points to a fixed hostname for serving agents' handshakes.",
+          "$ref": "#/definitions/io.open-cluster-management.operator.v1.HostnameConfig"
+        },
+        "loadBalancer": {
+          "description": "LoadBalancer points customized configuration for loadBalancer type.",
+          "$ref": "#/definitions/io.open-cluster-management.operator.v1.LoadBalancerConfig"
+        },
+        "route": {
+          "description": "Route points customized configuration for route type.",
+          "$ref": "#/definitions/io.open-cluster-management.operator.v1.RouteConfig"
+        },
+        "type": {
+          "description": "type specifies how the endpoint is exposed. You may need to apply an object to expose the endpoint, for example: a route.",
+          "type": "string"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "operator.open-cluster-management.io",
+        "Version": "v1",
+        "Kind": "Endpoint",
+        "Scope": "Namespaced"
+      }
+    },
+    "io.open-cluster-management.operator.v1.EndpointExposure": {
+      "type": "object",
+      "required": [
+        "protocol"
+      ],
+      "properties": {
+        "grpc": {
+          "description": "grpc represents the configuration for grpc endpoint.",
+          "$ref": "#/definitions/io.open-cluster-management.operator.v1.Endpoint"
+        },
+        "https": {
+          "description": "https represents the configuration for https endpoint.",
+          "$ref": "#/definitions/io.open-cluster-management.operator.v1.Endpoint"
+        },
+        "protocol": {
+          "description": "protocol is the protocol used for the endpoint, could be https or grpc.",
+          "type": "string",
+          "default": ""
+        },
+        "usage": {
+          "description": "usage defines the usage of the endpoint. It could be \"agentToHub\" indicating the endpoint is used for communication between agent and hub, or \"consumer\" indicating the endpoint is used for external consumer.",
+          "type": "string"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "operator.open-cluster-management.io",
+        "Version": "v1",
+        "Kind": "EndpointExposure",
         "Scope": "Namespaced"
       }
     },
@@ -16760,6 +17160,27 @@
         "Group": "operator.open-cluster-management.io",
         "Version": "v1",
         "Kind": "FeatureGate",
+        "Scope": "Namespaced"
+      }
+    },
+    "io.open-cluster-management.operator.v1.GRPCRegistrationConfig": {
+      "description": "GRPC represents the configuration for gRPC registration driver.",
+      "type": "object",
+      "properties": {
+        "autoApprovedIdentities": {
+          "description": "AutoApprovedIdentities represent a list of approved users",
+          "type": "array",
+          "items": {
+            "type": "string",
+            "default": ""
+          }
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "operator.open-cluster-management.io",
+        "Version": "v1",
+        "Kind": "GRPCRegistrationConfig",
         "Scope": "Namespaced"
       }
     },
@@ -16883,12 +17304,12 @@
         "registrationWebhookConfiguration": {
           "description": "RegistrationWebhookConfiguration represents the customized webhook-server configuration of registration.",
           "default": {},
-          "$ref": "#/definitions/io.open-cluster-management.operator.v1.WebhookConfiguration"
+          "$ref": "#/definitions/io.open-cluster-management.operator.v1.HostedWebhookConfiguration"
         },
         "workWebhookConfiguration": {
           "description": "WorkWebhookConfiguration represents the customized webhook-server configuration of work.",
           "default": {},
-          "$ref": "#/definitions/io.open-cluster-management.operator.v1.WebhookConfiguration"
+          "$ref": "#/definitions/io.open-cluster-management.operator.v1.HostedWebhookConfiguration"
         }
       },
       "x-fabric8-info": {
@@ -16896,6 +17317,62 @@
         "Group": "operator.open-cluster-management.io",
         "Version": "v1",
         "Kind": "HostedClusterManagerConfiguration",
+        "Scope": "Namespaced"
+      }
+    },
+    "io.open-cluster-management.operator.v1.HostedWebhookConfiguration": {
+      "description": "HostedWebhookConfiguration represents customization of webhook servers running in hosted installation mode",
+      "type": "object",
+      "required": [
+        "address"
+      ],
+      "properties": {
+        "address": {
+          "description": "Address represents the address of a webhook-server. It could be in IP format or fqdn format. The Address must be reachable by apiserver of the hub cluster.",
+          "type": "string",
+          "default": ""
+        },
+        "bindConfiguration": {
+          "description": "BindConfiguration represents server bind configuration for the webhook server",
+          "$ref": "#/definitions/io.open-cluster-management.operator.v1.BindConfiguration"
+        },
+        "port": {
+          "description": "Port represents the external port of a webhook-server. The default value of Port is 443.",
+          "type": "integer",
+          "format": "int32"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "operator.open-cluster-management.io",
+        "Version": "v1",
+        "Kind": "HostedWebhookConfiguration",
+        "Scope": "Namespaced"
+      }
+    },
+    "io.open-cluster-management.operator.v1.HostnameConfig": {
+      "description": "HostnameConfig references a fixed hostname.",
+      "type": "object",
+      "required": [
+        "host"
+      ],
+      "properties": {
+        "caBundle": {
+          "description": "caBundle of the endpoint.",
+          "type": "string",
+          "format": "byte"
+        },
+        "host": {
+          "description": "host is the host name of the endpoint.",
+          "type": "string",
+          "default": ""
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "operator.open-cluster-management.io",
+        "Version": "v1",
+        "Kind": "HostnameConfig",
         "Scope": "Namespaced"
       }
     },
@@ -16966,6 +17443,26 @@
         "Group": "operator.open-cluster-management.io",
         "Version": "v1",
         "Kind": "HubCondition",
+        "Scope": "Namespaced"
+      }
+    },
+    "io.open-cluster-management.operator.v1.ImporterConfiguration": {
+      "type": "object",
+      "properties": {
+        "renderers": {
+          "description": "renderers specifies which import renderers to use. Valid values are: \"render-auto\", \"render-from-config-secret\"",
+          "type": "array",
+          "items": {
+            "type": "string",
+            "default": ""
+          }
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "operator.open-cluster-management.io",
+        "Version": "v1",
+        "Kind": "ImporterConfiguration",
         "Scope": "Namespaced"
       }
     },
@@ -17157,7 +17654,7 @@
       "type": "object",
       "properties": {
         "clusterName": {
-          "description": "ClusterName is the name of the managed cluster to be created on hub. The Klusterlet agent generates a random name if it is not set, or discovers the appropriate cluster name on OpenShift.",
+          "description": "clusterName is the name of the managed cluster to be created on hub. The Klusterlet agent generates a random name if it is not set, or discovers the appropriate cluster name on OpenShift.",
           "type": "string"
         },
         "deployOption": {
@@ -17182,7 +17679,7 @@
           "type": "string"
         },
         "namespace": {
-          "description": "Namespace is the namespace to deploy the agent on the managed cluster. The namespace must have a prefix of \"open-cluster-management-\", and if it is not set, the namespace of \"open-cluster-management-agent\" is used to deploy agent. In addition, the add-ons are deployed to the namespace of \"{Namespace}-addon\". In the Hosted mode, this namespace still exists on the managed cluster to contain necessary resources, like service accounts, roles and rolebindings, while the agent is deployed to the namespace with the same name as klusterlet on the management cluster.",
+          "description": "namespace is the namespace to deploy the agent on the managed cluster. The namespace must have a prefix of \"open-cluster-management-\", and if it is not set, the namespace of \"open-cluster-management-agent\" is used to deploy agent. In addition, the add-ons are deployed to the namespace of \"{Namespace}-addon\". In the Hosted mode, this namespace still exists on the managed cluster to contain necessary resources, like service accounts, roles and rolebindings, while the agent is deployed to the namespace with the same name as klusterlet on the management cluster.",
           "type": "string"
         },
         "nodePlacement": {
@@ -17236,7 +17733,11 @@
           "items": {
             "default": {},
             "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.Condition"
-          }
+          },
+          "x-kubernetes-list-map-keys": [
+            "type"
+          ],
+          "x-kubernetes-list-type": "map"
         },
         "generations": {
           "description": "Generations are used to determine when an item needs to be reconciled or has changed in a way that needs a reaction.",
@@ -17285,6 +17786,28 @@
         "Group": "operator.open-cluster-management.io",
         "Version": "v1",
         "Kind": "KubeConfigSecret",
+        "Scope": "Namespaced"
+      }
+    },
+    "io.open-cluster-management.operator.v1.LoadBalancerConfig": {
+      "description": "LoadBalancerConfig references customized configuration for LoadBalancer type.",
+      "type": "object",
+      "properties": {
+        "caBundle": {
+          "description": "CABundle is a customized caBundle of the endpoint.",
+          "type": "string",
+          "format": "byte"
+        },
+        "host": {
+          "description": "Host is the customized host name of the endpoint.",
+          "type": "string"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "operator.open-cluster-management.io",
+        "Version": "v1",
+        "Kind": "LoadBalancerConfig",
         "Scope": "Namespaced"
       }
     },
@@ -17563,6 +18086,10 @@
     "io.open-cluster-management.operator.v1.RegistrationConfiguration": {
       "type": "object",
       "properties": {
+        "addOnKubeClientRegistrationDriver": {
+          "description": "This provides driver details required to register add-ons with hub for kubeClient type",
+          "$ref": "#/definitions/io.open-cluster-management.operator.v1.AddOnRegistrationDriver"
+        },
         "bootstrapKubeConfigs": {
           "description": "BootstrapKubeConfigs defines the ordered list of bootstrap kubeconfigs. The order decides which bootstrap kubeconfig to use first when rebootstrap.\n\nWhen the agent loses the connection to the current hub over HubConnectionTimeoutSeconds, or the managedcluster CR is set `hubAcceptsClient=false` on the hub, the controller marks the related bootstrap kubeconfig as \"failed\".\n\nA failed bootstrapkubeconfig won't be used for the duration specified by SkipFailedBootstrapKubeConfigSeconds. But if the user updates the content of a failed bootstrapkubeconfig, the \"failed\" mark will be cleared.",
           "default": {},
@@ -17581,6 +18108,18 @@
             "default": ""
           }
         },
+        "clusterClaimConfiguration": {
+          "description": "ClusterClaimConfiguration represents the configuration of ClusterClaim Effective only when the `ClusterClaim` feature gate is enabled.",
+          "$ref": "#/definitions/io.open-cluster-management.operator.v1.ClusterClaimConfiguration"
+        },
+        "clusterLabels": {
+          "description": "ClusterLabels is labels set on ManagedCluster when creating only, other actors can update it afterwards.",
+          "type": "object",
+          "additionalProperties": {
+            "type": "string",
+            "default": ""
+          }
+        },
         "featureGates": {
           "description": "FeatureGates represents the list of feature gates for registration If it is set empty, default feature gates will be used. If it is set, featuregate/Foo is an example of one item in FeatureGates:\n  1. If featuregate/Foo does not exist, registration-operator will discard it\n  2. If featuregate/Foo exists and is false by default. It is now possible to set featuregate/Foo=[false|true]\n  3. If featuregate/Foo exists and is true by default. If a cluster-admin upgrading from 1 to 2 wants to continue having featuregate/Foo=false,\n \the can set featuregate/Foo=false before upgrading. Let's say the cluster-admin wants featuregate/Foo=false.",
           "type": "array",
@@ -17590,17 +18129,17 @@
           }
         },
         "kubeAPIBurst": {
-          "description": "KubeAPIBurst indicates the maximum burst of the throttle while talking with apiserver of hub cluster from the spoke cluster. If it is set empty, use the default value: 100",
+          "description": "KubeAPIBurst indicates the maximum burst of the throttle while talking with apiserver on the spoke cluster. If it is set empty, use the default value: 100",
           "type": "integer",
           "format": "int32"
         },
         "kubeAPIQPS": {
-          "description": "KubeAPIQPS indicates the maximum QPS while talking with apiserver of hub cluster from the spoke cluster. If it is set empty, use the default value: 50",
+          "description": "KubeAPIQPS indicates the maximum QPS while talking with apiserver on the spoke cluster. If it is set empty, use the default value: 50",
           "type": "integer",
           "format": "int32"
         },
         "registrationDriver": {
-          "description": "This provides driver details required to register with hub",
+          "description": "This provides driver details required to register klusterlet agent with hub",
           "default": {},
           "$ref": "#/definitions/io.open-cluster-management.operator.v1.RegistrationDriver"
         }
@@ -17643,16 +18182,20 @@
       ],
       "properties": {
         "authType": {
-          "description": "Type of the authentication used by hub to initialize the Hub cluster. Possible values are csr and awsirsa.",
+          "description": "authType is the type of the authentication used by hub to initialize the Hub cluster. Possible values are csr, awsirsa and grpc.",
           "type": "string"
         },
         "awsirsa": {
-          "description": "AwsIrsa represents the configuration for awsirsa driver.",
+          "description": "awsirsa represents the configuration for awsirsa driver.",
           "$ref": "#/definitions/io.open-cluster-management.operator.v1.AwsIrsaConfig"
         },
         "csr": {
-          "description": "CSR represents the configuration for csr driver.",
+          "description": "csr represents the configuration for csr driver.",
           "$ref": "#/definitions/io.open-cluster-management.operator.v1.CSRConfig"
+        },
+        "grpc": {
+          "description": "grpc represents the configuration for gRPC driver.",
+          "$ref": "#/definitions/io.open-cluster-management.operator.v1.GRPCRegistrationConfig"
         }
       },
       "x-fabric8-info": {
@@ -17681,6 +18224,10 @@
             "default": {},
             "$ref": "#/definitions/io.open-cluster-management.operator.v1.FeatureGate"
           }
+        },
+        "importerConfiguration": {
+          "description": "ImporterConfiguration represents the configuration of the cluster importer",
+          "$ref": "#/definitions/io.open-cluster-management.operator.v1.ImporterConfiguration"
         },
         "registrationDrivers": {
           "description": "RegistrationDrivers represent the list of hub registration drivers that contain information used by hub to initialize the hub cluster A RegistrationDriverHub contains details of authentication type and the hub cluster ARN",
@@ -17805,6 +18352,60 @@
         "Scope": "Namespaced"
       }
     },
+    "io.open-cluster-management.operator.v1.RouteConfig": {
+      "description": "RouteConfig references customized configuration for Route type.",
+      "type": "object",
+      "properties": {
+        "caBundle": {
+          "description": "CABundle is a customized caBundle of the endpoint.",
+          "type": "string",
+          "format": "byte"
+        },
+        "host": {
+          "description": "Host is the customized host name of the endpoint.",
+          "type": "string"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "operator.open-cluster-management.io",
+        "Version": "v1",
+        "Kind": "RouteConfig",
+        "Scope": "Namespaced"
+      }
+    },
+    "io.open-cluster-management.operator.v1.ServerConfiguration": {
+      "type": "object",
+      "properties": {
+        "endpointsExposure": {
+          "description": "endpointsExposure represents the configuration for endpoints exposure of the server.",
+          "type": "array",
+          "items": {
+            "default": {},
+            "$ref": "#/definitions/io.open-cluster-management.operator.v1.EndpointExposure"
+          }
+        },
+        "featureGates": {
+          "description": "featureGates represents the features enabled for the server",
+          "type": "array",
+          "items": {
+            "default": {},
+            "$ref": "#/definitions/io.open-cluster-management.operator.v1.FeatureGate"
+          }
+        },
+        "imagePullSpec": {
+          "description": "imagePullSpec is the image for the server",
+          "type": "string"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "operator.open-cluster-management.io",
+        "Version": "v1",
+        "Kind": "ServerConfiguration",
+        "Scope": "Namespaced"
+      }
+    },
     "io.open-cluster-management.operator.v1.ServerURL": {
       "description": "ServerURL represents the apiserver url and ca bundle that is accessible externally",
       "type": "object",
@@ -17878,6 +18479,23 @@
         "Scope": "Namespaced"
       }
     },
+    "io.open-cluster-management.operator.v1.TokenConfig": {
+      "type": "object",
+      "properties": {
+        "expirationSeconds": {
+          "description": "ExpirationSeconds represents the seconds of a token to expire. If it is not set or 0, the default duration will be used, which is the same as the certificate expiration set by the hub cluster's kube-controller-manager (typically 1 year). The minimum valid value for production use is 3600 (1 hour), though smaller values are allowed for testing.",
+          "type": "integer",
+          "format": "int64"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "operator.open-cluster-management.io",
+        "Version": "v1",
+        "Kind": "TokenConfig",
+        "Scope": "Namespaced"
+      }
+    },
     "io.open-cluster-management.operator.v1.VeleroBackupConfig": {
       "description": "VeleroBackupConfig contains settings for the Velero backup integration.",
       "type": "object",
@@ -17892,32 +18510,6 @@
         "Group": "operator.open-cluster-management.io",
         "Version": "v1",
         "Kind": "VeleroBackupConfig",
-        "Scope": "Namespaced"
-      }
-    },
-    "io.open-cluster-management.operator.v1.WebhookConfiguration": {
-      "description": "WebhookConfiguration has two properties: Address and Port.",
-      "type": "object",
-      "required": [
-        "address"
-      ],
-      "properties": {
-        "address": {
-          "description": "Address represents the address of a webhook-server. It could be in IP format or fqdn format. The Address must be reachable by apiserver of the hub cluster.",
-          "type": "string",
-          "default": ""
-        },
-        "port": {
-          "description": "Port represents the port of a webhook-server. The default value of Port is 443.",
-          "type": "integer",
-          "format": "int32"
-        }
-      },
-      "x-fabric8-info": {
-        "Type": "nested",
-        "Group": "operator.open-cluster-management.io",
-        "Version": "v1",
-        "Kind": "WebhookConfiguration",
         "Scope": "Namespaced"
       }
     },
@@ -17936,15 +18528,29 @@
             "$ref": "#/definitions/io.open-cluster-management.operator.v1.FeatureGate"
           }
         },
+        "hubKubeAPIBurst": {
+          "description": "HubKubeAPIBurst indicates the maximum burst of the throttle while talking with apiserver on the hub cluster. If it is set empty, use the default value: 100",
+          "type": "integer",
+          "format": "int32"
+        },
+        "hubKubeAPIQPS": {
+          "description": "HubKubeAPIQPS indicates the maximum QPS while talking with apiserver on the hub cluster. If it is set empty, use the default value: 50",
+          "type": "integer",
+          "format": "int32"
+        },
         "kubeAPIBurst": {
-          "description": "KubeAPIBurst indicates the maximum burst of the throttle while talking with apiserver of hub cluster from the spoke cluster. If it is set empty, use the default value: 100",
+          "description": "KubeAPIBurst indicates the maximum burst of the throttle while talking with apiserver on the spoke cluster. If it is set empty, use the default value: 100",
           "type": "integer",
           "format": "int32"
         },
         "kubeAPIQPS": {
-          "description": "KubeAPIQPS indicates the maximum QPS while talking with apiserver of hub cluster from the spoke cluster. If it is set empty, use the default value: 50",
+          "description": "KubeAPIQPS indicates the maximum QPS while talking with apiserver on the spoke cluster. If it is set empty, use the default value: 50",
           "type": "integer",
           "format": "int32"
+        },
+        "statusSyncInterval": {
+          "description": "StatusSyncInterval is the interval for the work agent to check the status of ManifestWorks. Larger value means less frequent status sync and less api calls to the managed cluster, vice versa. The value(x) should be: 5s \u003c= x \u003c= 1h.",
+          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.Duration"
         }
       },
       "x-fabric8-info": {

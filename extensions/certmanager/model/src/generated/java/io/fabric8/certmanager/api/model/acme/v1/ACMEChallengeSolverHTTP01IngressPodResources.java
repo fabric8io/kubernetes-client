@@ -1,5 +1,5 @@
 
-package io.fabric8.certmanager.api.model.meta.v1;
+package io.fabric8.certmanager.api.model.acme.v1;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -18,9 +18,12 @@ import io.fabric8.kubernetes.api.model.EnvVar;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.LabelSelector;
+import io.fabric8.kubernetes.api.model.LocalObjectReference;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
+import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
+import io.fabric8.kubernetes.api.model.Quantity;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
 import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
@@ -31,14 +34,13 @@ import lombok.ToString;
 import lombok.experimental.Accessors;
 
 /**
- * ObjectReference is a reference to an object with a given name, kind and group.
+ * ACMEChallengeSolverHTTP01IngressPodResources defines resource requirements for ACME HTTP01 solver pods. To keep API surface essential, this trims down the 'corev1.ResourceRequirements' type to only include the Requests and Limits fields.
  */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "kind",
-    "group",
-    "name"
+    "limits",
+    "requests"
 })
 @ToString
 @EqualsAndHashCode
@@ -53,8 +55,8 @@ import lombok.experimental.Accessors;
     @BuildableReference(PodTemplateSpec.class),
     @BuildableReference(ResourceRequirements.class),
     @BuildableReference(IntOrString.class),
-    @BuildableReference(io.fabric8.kubernetes.api.model.ObjectReference.class),
-    @BuildableReference(io.fabric8.kubernetes.api.model.LocalObjectReference.class),
+    @BuildableReference(ObjectReference.class),
+    @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class),
     @BuildableReference(EnvVar.class),
     @BuildableReference(ContainerPort.class),
@@ -62,86 +64,71 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class ObjectReference implements Editable<ObjectReferenceBuilder>, KubernetesResource
+public class ACMEChallengeSolverHTTP01IngressPodResources implements Editable<ACMEChallengeSolverHTTP01IngressPodResourcesBuilder>, KubernetesResource
 {
 
-    @JsonProperty("group")
-    private String group;
-    @JsonProperty("kind")
-    private String kind;
-    @JsonProperty("name")
-    private String name;
+    @JsonProperty("limits")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private Map<String, Quantity> limits = new LinkedHashMap<>();
+    @JsonProperty("requests")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private Map<String, Quantity> requests = new LinkedHashMap<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
      */
-    public ObjectReference() {
+    public ACMEChallengeSolverHTTP01IngressPodResources() {
     }
 
-    public ObjectReference(String group, String kind, String name) {
+    public ACMEChallengeSolverHTTP01IngressPodResources(Map<String, Quantity> limits, Map<String, Quantity> requests) {
         super();
-        this.group = group;
-        this.kind = kind;
-        this.name = name;
+        this.limits = limits;
+        this.requests = requests;
     }
 
     /**
-     * Group of the resource being referred to.
+     * Limits describes the maximum amount of compute resources allowed. More info: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/
      */
-    @JsonProperty("group")
-    public String getGroup() {
-        return group;
+    @JsonProperty("limits")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public Map<String, Quantity> getLimits() {
+        return limits;
     }
 
     /**
-     * Group of the resource being referred to.
+     * Limits describes the maximum amount of compute resources allowed. More info: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/
      */
-    @JsonProperty("group")
-    public void setGroup(String group) {
-        this.group = group;
+    @JsonProperty("limits")
+    public void setLimits(Map<String, Quantity> limits) {
+        this.limits = limits;
     }
 
     /**
-     * Kind of the resource being referred to.
+     * Requests describes the minimum amount of compute resources required. If Requests is omitted for a container, it defaults to Limits if that is explicitly specified, otherwise to the global values configured via controller flags. Requests cannot exceed Limits. More info: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/
      */
-    @JsonProperty("kind")
-    public String getKind() {
-        return kind;
+    @JsonProperty("requests")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public Map<String, Quantity> getRequests() {
+        return requests;
     }
 
     /**
-     * Kind of the resource being referred to.
+     * Requests describes the minimum amount of compute resources required. If Requests is omitted for a container, it defaults to Limits if that is explicitly specified, otherwise to the global values configured via controller flags. Requests cannot exceed Limits. More info: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/
      */
-    @JsonProperty("kind")
-    public void setKind(String kind) {
-        this.kind = kind;
-    }
-
-    /**
-     * Name of the resource being referred to.
-     */
-    @JsonProperty("name")
-    public String getName() {
-        return name;
-    }
-
-    /**
-     * Name of the resource being referred to.
-     */
-    @JsonProperty("name")
-    public void setName(String name) {
-        this.name = name;
+    @JsonProperty("requests")
+    public void setRequests(Map<String, Quantity> requests) {
+        this.requests = requests;
     }
 
     @JsonIgnore
-    public ObjectReferenceBuilder edit() {
-        return new ObjectReferenceBuilder(this);
+    public ACMEChallengeSolverHTTP01IngressPodResourcesBuilder edit() {
+        return new ACMEChallengeSolverHTTP01IngressPodResourcesBuilder(this);
     }
 
     @JsonIgnore
-    public ObjectReferenceBuilder toBuilder() {
+    public ACMEChallengeSolverHTTP01IngressPodResourcesBuilder toBuilder() {
         return edit();
     }
 

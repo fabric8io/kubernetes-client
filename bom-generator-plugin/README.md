@@ -127,16 +127,28 @@ Examples:
 ## Example Workflow
 
 ```bash
-# Generate BOMs (single command, no separate plugin invocation needed)
-mvn clean install -Pbom
+# 1. Install the plugin first (it's not published to any repository)
+mvn clean install -pl bom-generator-plugin
+
+# 2. Generate BOMs (runs at the validate phase)
+mvn -Pbom clean validate
 
 # The BOMs are generated in:
 # - target/classes/kubernetes-client-bom/pom.xml
 # - target/classes/kubernetes-client-bom-with-deps/pom.xml
 
-# Release with updated BOMs
-mvn clean install -Prelease
+# 3. Release with generated BOMs (the -Prelease profile adds them as reactor modules)
+mvn -Prelease deploy
 ```
+
+### SNAPSHOT deployment
+
+For SNAPSHOT deployments, the `central-publishing-maven-plugin` deploys each module
+individually (unlike releases, which are bundled). Remote SNAPSHOT metadata on the
+Sonatype server can have checksum inconsistencies (`maven-metadata.xml` vs its `.sha1`
+file), so the snapshot workflow uses `-c` (lax checksums) instead of `-C` (strict).
+Note: Maven's CLI uses `if/else-if` for these flags, so `-C` always wins when both
+are present — they cannot be combined. See `release-snapshots.yaml` for details.
 
 ## Generated BOM Content
 

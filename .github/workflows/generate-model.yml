@@ -33,6 +33,7 @@ concurrency:
 
 permissions:
   contents: read
+  actions: write
 
 jobs:
   generate-model:
@@ -65,3 +66,6 @@ jobs:
             echo "Schema files modified. Build Failure";
             exit 1;
           fi;
+      - name: Cancel PR workflows on failure
+        if: ${{ failure() && github.event_name == 'pull_request' }}
+        uses: ./.github/actions/cancel-pr-workflows

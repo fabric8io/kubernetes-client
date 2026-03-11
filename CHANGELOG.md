@@ -1,6 +1,37 @@
 ## CHANGELOG
 
-### 7.6-SNAPSHOT
+### 7.7-SNAPSHOT
+
+#### Bugs
+
+#### Improvements
+* Fix #7522: improve dependency management for kubernetes-httpclient-okhttp
+* Fix #3396: (mockwebserver) Enhance self-signed certificate generation to include Subject Alternative Names (SANs) for proper TLS verification by modern clients
+
+#### Dependency Upgrade
+* Fix #7542: bump open-cluster-management.io/api from 0.16.2 to 1.2.0
+* Fix #7541: bump gateway-api from 1.4.0 to 1.5.0
+* Fix #7538: bump cert-manager from 1.18.2 to 1.19.4
+
+#### New Features
+
+#### _**Note**_: Breaking changes
+* Fix #7542: open-cluster-management model `operator.v1.WebhookConfiguration` removed (replaced by `DefaultWebhookConfiguration` and `HostedWebhookConfiguration` upstream)
+* Fix #7541: gateway-api model `v1beta1.ReferenceGrantFrom`, `v1beta1.ReferenceGrantSpec`, and `v1beta1.ReferenceGrantTo` removed (ReferenceGrant graduated to v1 upstream)
+* Fix #7538: cert-manager model `ObjectReference` renamed to `IssuerReference` (following upstream rename in cert-manager v1.19.0)
+
+### 7.4.1 (2026-03-10)
+
+#### Dependency Upgrade
+Fix #7408: bump vertx.version to 4.5.25
+Fix #7107: bump Jackson version to 2.19.4
+
+### 7.6.1 (2026-03-05)
+
+#### Bugs
+* Fix #7460: Add explicit Automatic-Module-Name to all httpclient modules to fix invalid auto-derived JPMS module names and vertx/vertx-5 collision
+
+### 7.6.0 (2026-03-02)
 
 #### Bugs
 * Fix #5292: Cluster() configuration should use tlsServerName
@@ -9,10 +40,11 @@
 * Fix #7174: (chaos-tests) Fix classpath conflict when testing with Vert.x 5 HTTP client
 * Fix #7415: (java-generator) Fix generic type erasure for array of enums with default values
 * Fix #7422: (okhttp) Remove internal API usage and fix deprecated OkHttp 5 calls
+* Fix #7446: making the timeout of BaseOperation.createOrReplace() configurable
 
 #### Improvements
-* Fix #3396: (mockwebserver) Enhance self-signed certificate generation to include Subject Alternative Names (SANs) for proper TLS verification by modern clients
 * Fix #7422: bump okhttp from 4.12.0 to 5.3.2
+* Fix #7252: call additionalConfig when building Vert.x HTTP clients with VertxHttpClientFactory
 
 #### Dependency Upgrade
 * Fix #7374: bump snakeyaml-engine from 2.10 to 3.0.1
@@ -20,8 +52,10 @@
 #### New Features
 * Fix #7385: Support for Kubernetes v1.35 (Timbernetes)
 * Fix #7174: Added Vert.x 5 HTTP client implementation with improved async handling and WebSocket separation
+* Fix #7402: Added Byte code level semver API compatibility report generation using Revapi
 
 #### _**Note**_: Breaking changes
+* Fix #5756: Resources edited with visitors must now implement `io.fabric8.kubernetes.api.builder.Editable`. All model classes provided by the client already implement this interface. User-provided custom resources that use visitor-based editing will need to implement `Editable` (trivial when a builder already exists).
 * Fix #7422: bump okhttp from 4.12.0 to 5.3.2. The versions are binary compatible, but the major version upgrade might cause side effects.
 
 #### _**Note**_: Vert.x HTTP Client Compatibility (Issue #7174)

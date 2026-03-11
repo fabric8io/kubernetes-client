@@ -1,5 +1,5 @@
 
-package io.fabric8.kubernetes.api.model.gatewayapi.v1beta1;
+package io.fabric8.openclustermanagement.api.model.operator.v1;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -33,14 +33,12 @@ import lombok.ToString;
 import lombok.experimental.Accessors;
 
 /**
- * ReferenceGrantFrom describes trusted namespaces and kinds.
+ * DefaultWebhookConfiguration represents customization of webhook servers running in default installation mode
  */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "kind",
-    "group",
-    "namespace"
+    "bindConfiguration"
 })
 @ToString
 @EqualsAndHashCode
@@ -64,86 +62,48 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class ReferenceGrantFrom implements Editable<ReferenceGrantFromBuilder>, KubernetesResource
+public class DefaultWebhookConfiguration implements Editable<DefaultWebhookConfigurationBuilder>, KubernetesResource
 {
 
-    @JsonProperty("group")
-    private String group;
-    @JsonProperty("kind")
-    private String kind;
-    @JsonProperty("namespace")
-    private String namespace;
+    @JsonProperty("bindConfiguration")
+    private BindConfiguration bindConfiguration;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
      */
-    public ReferenceGrantFrom() {
+    public DefaultWebhookConfiguration() {
     }
 
-    public ReferenceGrantFrom(String group, String kind, String namespace) {
+    public DefaultWebhookConfiguration(BindConfiguration bindConfiguration) {
         super();
-        this.group = group;
-        this.kind = kind;
-        this.namespace = namespace;
+        this.bindConfiguration = bindConfiguration;
     }
 
     /**
-     * Group is the group of the referent. When empty, the Kubernetes core API group is inferred.<br><p> <br><p> Support: Core
+     * DefaultWebhookConfiguration represents customization of webhook servers running in default installation mode
      */
-    @JsonProperty("group")
-    public String getGroup() {
-        return group;
+    @JsonProperty("bindConfiguration")
+    public BindConfiguration getBindConfiguration() {
+        return bindConfiguration;
     }
 
     /**
-     * Group is the group of the referent. When empty, the Kubernetes core API group is inferred.<br><p> <br><p> Support: Core
+     * DefaultWebhookConfiguration represents customization of webhook servers running in default installation mode
      */
-    @JsonProperty("group")
-    public void setGroup(String group) {
-        this.group = group;
-    }
-
-    /**
-     * Kind is the kind of the referent. Although implementations may support additional resources, the following types are part of the "Core" support level for this field.<br><p> <br><p> When used to permit a SecretObjectReference:<br><p> <br><p> &#42; Gateway<br><p> <br><p> When used to permit a BackendObjectReference:<br><p> <br><p> &#42; GRPCRoute &#42; HTTPRoute &#42; TCPRoute &#42; TLSRoute &#42; UDPRoute
-     */
-    @JsonProperty("kind")
-    public String getKind() {
-        return kind;
-    }
-
-    /**
-     * Kind is the kind of the referent. Although implementations may support additional resources, the following types are part of the "Core" support level for this field.<br><p> <br><p> When used to permit a SecretObjectReference:<br><p> <br><p> &#42; Gateway<br><p> <br><p> When used to permit a BackendObjectReference:<br><p> <br><p> &#42; GRPCRoute &#42; HTTPRoute &#42; TCPRoute &#42; TLSRoute &#42; UDPRoute
-     */
-    @JsonProperty("kind")
-    public void setKind(String kind) {
-        this.kind = kind;
-    }
-
-    /**
-     * Namespace is the namespace of the referent.<br><p> <br><p> Support: Core
-     */
-    @JsonProperty("namespace")
-    public String getNamespace() {
-        return namespace;
-    }
-
-    /**
-     * Namespace is the namespace of the referent.<br><p> <br><p> Support: Core
-     */
-    @JsonProperty("namespace")
-    public void setNamespace(String namespace) {
-        this.namespace = namespace;
+    @JsonProperty("bindConfiguration")
+    public void setBindConfiguration(BindConfiguration bindConfiguration) {
+        this.bindConfiguration = bindConfiguration;
     }
 
     @JsonIgnore
-    public ReferenceGrantFromBuilder edit() {
-        return new ReferenceGrantFromBuilder(this);
+    public DefaultWebhookConfigurationBuilder edit() {
+        return new DefaultWebhookConfigurationBuilder(this);
     }
 
     @JsonIgnore
-    public ReferenceGrantFromBuilder toBuilder() {
+    public DefaultWebhookConfigurationBuilder toBuilder() {
         return edit();
     }
 

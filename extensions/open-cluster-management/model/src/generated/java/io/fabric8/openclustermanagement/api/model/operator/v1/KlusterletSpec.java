@@ -133,7 +133,7 @@ public class KlusterletSpec implements Editable<KlusterletSpecBuilder>, Kubernet
     }
 
     /**
-     * ClusterName is the name of the managed cluster to be created on hub. The Klusterlet agent generates a random name if it is not set, or discovers the appropriate cluster name on OpenShift.
+     * clusterName is the name of the managed cluster to be created on hub. The Klusterlet agent generates a random name if it is not set, or discovers the appropriate cluster name on OpenShift.
      */
     @JsonProperty("clusterName")
     public String getClusterName() {
@@ -141,7 +141,7 @@ public class KlusterletSpec implements Editable<KlusterletSpecBuilder>, Kubernet
     }
 
     /**
-     * ClusterName is the name of the managed cluster to be created on hub. The Klusterlet agent generates a random name if it is not set, or discovers the appropriate cluster name on OpenShift.
+     * clusterName is the name of the managed cluster to be created on hub. The Klusterlet agent generates a random name if it is not set, or discovers the appropriate cluster name on OpenShift.
      */
     @JsonProperty("clusterName")
     public void setClusterName(String clusterName) {
@@ -214,7 +214,7 @@ public class KlusterletSpec implements Editable<KlusterletSpecBuilder>, Kubernet
     }
 
     /**
-     * Namespace is the namespace to deploy the agent on the managed cluster. The namespace must have a prefix of "open-cluster-management-", and if it is not set, the namespace of "open-cluster-management-agent" is used to deploy agent. In addition, the add-ons are deployed to the namespace of "{Namespace}-addon". In the Hosted mode, this namespace still exists on the managed cluster to contain necessary resources, like service accounts, roles and rolebindings, while the agent is deployed to the namespace with the same name as klusterlet on the management cluster.
+     * namespace is the namespace to deploy the agent on the managed cluster. The namespace must have a prefix of "open-cluster-management-", and if it is not set, the namespace of "open-cluster-management-agent" is used to deploy agent. In addition, the add-ons are deployed to the namespace of "{Namespace}-addon". In the Hosted mode, this namespace still exists on the managed cluster to contain necessary resources, like service accounts, roles and rolebindings, while the agent is deployed to the namespace with the same name as klusterlet on the management cluster.
      */
     @JsonProperty("namespace")
     public String getNamespace() {
@@ -222,7 +222,7 @@ public class KlusterletSpec implements Editable<KlusterletSpecBuilder>, Kubernet
     }
 
     /**
-     * Namespace is the namespace to deploy the agent on the managed cluster. The namespace must have a prefix of "open-cluster-management-", and if it is not set, the namespace of "open-cluster-management-agent" is used to deploy agent. In addition, the add-ons are deployed to the namespace of "{Namespace}-addon". In the Hosted mode, this namespace still exists on the managed cluster to contain necessary resources, like service accounts, roles and rolebindings, while the agent is deployed to the namespace with the same name as klusterlet on the management cluster.
+     * namespace is the namespace to deploy the agent on the managed cluster. The namespace must have a prefix of "open-cluster-management-", and if it is not set, the namespace of "open-cluster-management-agent" is used to deploy agent. In addition, the add-ons are deployed to the namespace of "{Namespace}-addon". In the Hosted mode, this namespace still exists on the managed cluster to contain necessary resources, like service accounts, roles and rolebindings, while the agent is deployed to the namespace with the same name as klusterlet on the management cluster.
      */
     @JsonProperty("namespace")
     public void setNamespace(String namespace) {

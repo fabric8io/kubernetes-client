@@ -1,5 +1,5 @@
 
-package io.fabric8.openclustermanagement.api.model.operator.v1;
+package io.fabric8.certmanager.api.model.meta.v1;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -18,7 +18,6 @@ import io.fabric8.kubernetes.api.model.EnvVar;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.LabelSelector;
-import io.fabric8.kubernetes.api.model.LocalObjectReference;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
@@ -33,13 +32,14 @@ import lombok.ToString;
 import lombok.experimental.Accessors;
 
 /**
- * WebhookConfiguration has two properties: Address and Port.
+ * IssuerReference is a reference to a certificate issuer object with a given name, kind and group.
  */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "address",
-    "port"
+    "kind",
+    "group",
+    "name"
 })
 @ToString
 @EqualsAndHashCode
@@ -55,7 +55,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(ResourceRequirements.class),
     @BuildableReference(IntOrString.class),
     @BuildableReference(ObjectReference.class),
-    @BuildableReference(LocalObjectReference.class),
+    @BuildableReference(io.fabric8.kubernetes.api.model.LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class),
     @BuildableReference(EnvVar.class),
     @BuildableReference(ContainerPort.class),
@@ -63,67 +63,86 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class WebhookConfiguration implements Editable<WebhookConfigurationBuilder>, KubernetesResource
+public class IssuerReference implements Editable<IssuerReferenceBuilder>, KubernetesResource
 {
 
-    @JsonProperty("address")
-    private String address;
-    @JsonProperty("port")
-    private Integer port;
+    @JsonProperty("group")
+    private String group;
+    @JsonProperty("kind")
+    private String kind;
+    @JsonProperty("name")
+    private String name;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
      */
-    public WebhookConfiguration() {
+    public IssuerReference() {
     }
 
-    public WebhookConfiguration(String address, Integer port) {
+    public IssuerReference(String group, String kind, String name) {
         super();
-        this.address = address;
-        this.port = port;
+        this.group = group;
+        this.kind = kind;
+        this.name = name;
     }
 
     /**
-     * Address represents the address of a webhook-server. It could be in IP format or fqdn format. The Address must be reachable by apiserver of the hub cluster.
+     * Group of the issuer being referred to. Defaults to 'cert-manager.io'.
      */
-    @JsonProperty("address")
-    public String getAddress() {
-        return address;
+    @JsonProperty("group")
+    public String getGroup() {
+        return group;
     }
 
     /**
-     * Address represents the address of a webhook-server. It could be in IP format or fqdn format. The Address must be reachable by apiserver of the hub cluster.
+     * Group of the issuer being referred to. Defaults to 'cert-manager.io'.
      */
-    @JsonProperty("address")
-    public void setAddress(String address) {
-        this.address = address;
+    @JsonProperty("group")
+    public void setGroup(String group) {
+        this.group = group;
     }
 
     /**
-     * Port represents the port of a webhook-server. The default value of Port is 443.
+     * Kind of the issuer being referred to. Defaults to 'Issuer'.
      */
-    @JsonProperty("port")
-    public Integer getPort() {
-        return port;
+    @JsonProperty("kind")
+    public String getKind() {
+        return kind;
     }
 
     /**
-     * Port represents the port of a webhook-server. The default value of Port is 443.
+     * Kind of the issuer being referred to. Defaults to 'Issuer'.
      */
-    @JsonProperty("port")
-    public void setPort(Integer port) {
-        this.port = port;
+    @JsonProperty("kind")
+    public void setKind(String kind) {
+        this.kind = kind;
+    }
+
+    /**
+     * Name of the issuer being referred to.
+     */
+    @JsonProperty("name")
+    public String getName() {
+        return name;
+    }
+
+    /**
+     * Name of the issuer being referred to.
+     */
+    @JsonProperty("name")
+    public void setName(String name) {
+        this.name = name;
     }
 
     @JsonIgnore
-    public WebhookConfigurationBuilder edit() {
-        return new WebhookConfigurationBuilder(this);
+    public IssuerReferenceBuilder edit() {
+        return new IssuerReferenceBuilder(this);
     }
 
     @JsonIgnore
-    public WebhookConfigurationBuilder toBuilder() {
+    public IssuerReferenceBuilder toBuilder() {
         return edit();
     }
 
