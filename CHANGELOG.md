@@ -7,6 +7,7 @@
 
 #### Improvements
 * Fix #7522: improve dependency management for kubernetes-httpclient-okhttp
+* Fix #3396: (mockwebserver) Enhance self-signed certificate generation to include Subject Alternative Names (SANs) for proper TLS verification by modern clients
 
 #### Dependency Upgrade
 * Fix #7544: bump cluster-api-provider-metal3 from 1.9.3 to 1.12.2
