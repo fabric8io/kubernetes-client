@@ -32,12 +32,13 @@ import lombok.ToString;
 import lombok.experimental.Accessors;
 
 /**
- * ArbitraryFSAccessThroughSMsConfig enables users to configure, whether a service monitor selected by the Prometheus instance is allowed to use arbitrary files on the file system of the Prometheus container. This is the case when e.g. a service monitor specifies a BearerTokenFile in an endpoint. A malicious user could create a service monitor selecting arbitrary secret files in the Prometheus container. Those secrets would then be sent with a scrape request by Prometheus to a malicious target. Denying the above would prevent the attack, users can instead use the BearerTokenSecret field.
+ * AzureWorkloadIdentity defines the Azure Workload Identity authentication configuration.
  */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "deny"
+    "clientId",
+    "tenantId"
 })
 @ToString
 @EqualsAndHashCode
@@ -61,48 +62,67 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class ArbitraryFSAccessThroughSMsConfig implements Editable<ArbitraryFSAccessThroughSMsConfigBuilder>, KubernetesResource
+public class AzureWorkloadIdentity implements Editable<AzureWorkloadIdentityBuilder>, KubernetesResource
 {
 
-    @JsonProperty("deny")
-    private Boolean deny;
+    @JsonProperty("clientId")
+    private String clientId;
+    @JsonProperty("tenantId")
+    private String tenantId;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
      */
-    public ArbitraryFSAccessThroughSMsConfig() {
+    public AzureWorkloadIdentity() {
     }
 
-    public ArbitraryFSAccessThroughSMsConfig(Boolean deny) {
+    public AzureWorkloadIdentity(String clientId, String tenantId) {
         super();
-        this.deny = deny;
+        this.clientId = clientId;
+        this.tenantId = tenantId;
     }
 
     /**
-     * deny prevents service monitors from accessing arbitrary files on the file system. When true, service monitors cannot use file-based configurations like BearerTokenFile that could potentially access sensitive files. When false (default), such access is allowed. Setting this to true enhances security by preventing potential credential theft attacks.
+     * clientId is the clientID of the Azure Active Directory application.
      */
-    @JsonProperty("deny")
-    public Boolean getDeny() {
-        return deny;
+    @JsonProperty("clientId")
+    public String getClientId() {
+        return clientId;
     }
 
     /**
-     * deny prevents service monitors from accessing arbitrary files on the file system. When true, service monitors cannot use file-based configurations like BearerTokenFile that could potentially access sensitive files. When false (default), such access is allowed. Setting this to true enhances security by preventing potential credential theft attacks.
+     * clientId is the clientID of the Azure Active Directory application.
      */
-    @JsonProperty("deny")
-    public void setDeny(Boolean deny) {
-        this.deny = deny;
+    @JsonProperty("clientId")
+    public void setClientId(String clientId) {
+        this.clientId = clientId;
+    }
+
+    /**
+     * tenantId is the tenant ID of the Azure Active Directory application.
+     */
+    @JsonProperty("tenantId")
+    public String getTenantId() {
+        return tenantId;
+    }
+
+    /**
+     * tenantId is the tenant ID of the Azure Active Directory application.
+     */
+    @JsonProperty("tenantId")
+    public void setTenantId(String tenantId) {
+        this.tenantId = tenantId;
     }
 
     @JsonIgnore
-    public ArbitraryFSAccessThroughSMsConfigBuilder edit() {
-        return new ArbitraryFSAccessThroughSMsConfigBuilder(this);
+    public AzureWorkloadIdentityBuilder edit() {
+        return new AzureWorkloadIdentityBuilder(this);
     }
 
     @JsonIgnore
-    public ArbitraryFSAccessThroughSMsConfigBuilder toBuilder() {
+    public AzureWorkloadIdentityBuilder toBuilder() {
         return edit();
     }
 

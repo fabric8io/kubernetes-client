@@ -86,7 +86,7 @@ public class ParsedRange implements Editable<ParsedRangeBuilder>, KubernetesReso
     }
 
     /**
-     * End of the range
+     * end defines the end of the range
      */
     @JsonProperty("end")
     public Integer getEnd() {
@@ -94,7 +94,7 @@ public class ParsedRange implements Editable<ParsedRangeBuilder>, KubernetesReso
     }
 
     /**
-     * End of the range
+     * end defines the end of the range
      */
     @JsonProperty("end")
     public void setEnd(Integer end) {
@@ -102,7 +102,7 @@ public class ParsedRange implements Editable<ParsedRangeBuilder>, KubernetesReso
     }
 
     /**
-     * Start is the beginning of the range
+     * start defines the beginning of the range
      */
     @JsonProperty("start")
     public Integer getStart() {
@@ -110,7 +110,7 @@ public class ParsedRange implements Editable<ParsedRangeBuilder>, KubernetesReso
     }
 
     /**
-     * Start is the beginning of the range
+     * start defines the beginning of the range
      */
     @JsonProperty("start")
     public void setStart(Integer start) {

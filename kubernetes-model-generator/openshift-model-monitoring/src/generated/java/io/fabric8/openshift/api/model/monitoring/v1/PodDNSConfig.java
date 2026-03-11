@@ -94,7 +94,7 @@ public class PodDNSConfig implements Editable<PodDNSConfigBuilder>, KubernetesRe
     }
 
     /**
-     * A list of DNS name server IP addresses. This will be appended to the base nameservers generated from DNSPolicy.
+     * nameservers defines the list of DNS name server IP addresses. This will be appended to the base nameservers generated from DNSPolicy.
      */
     @JsonProperty("nameservers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -103,7 +103,7 @@ public class PodDNSConfig implements Editable<PodDNSConfigBuilder>, KubernetesRe
     }
 
     /**
-     * A list of DNS name server IP addresses. This will be appended to the base nameservers generated from DNSPolicy.
+     * nameservers defines the list of DNS name server IP addresses. This will be appended to the base nameservers generated from DNSPolicy.
      */
     @JsonProperty("nameservers")
     public void setNameservers(List<String> nameservers) {
@@ -111,7 +111,7 @@ public class PodDNSConfig implements Editable<PodDNSConfigBuilder>, KubernetesRe
     }
 
     /**
-     * A list of DNS resolver options. This will be merged with the base options generated from DNSPolicy. Resolution options given in Options will override those that appear in the base DNSPolicy.
+     * options defines the list of DNS resolver options. This will be merged with the base options generated from DNSPolicy. Resolution options given in Options will override those that appear in the base DNSPolicy.
      */
     @JsonProperty("options")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -120,7 +120,7 @@ public class PodDNSConfig implements Editable<PodDNSConfigBuilder>, KubernetesRe
     }
 
     /**
-     * A list of DNS resolver options. This will be merged with the base options generated from DNSPolicy. Resolution options given in Options will override those that appear in the base DNSPolicy.
+     * options defines the list of DNS resolver options. This will be merged with the base options generated from DNSPolicy. Resolution options given in Options will override those that appear in the base DNSPolicy.
      */
     @JsonProperty("options")
     public void setOptions(List<PodDNSConfigOption> options) {
@@ -128,7 +128,7 @@ public class PodDNSConfig implements Editable<PodDNSConfigBuilder>, KubernetesRe
     }
 
     /**
-     * A list of DNS search domains for host-name lookup. This will be appended to the base search paths generated from DNSPolicy.
+     * searches defines the list of DNS search domains for host-name lookup. This will be appended to the base search paths generated from DNSPolicy.
      */
     @JsonProperty("searches")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -137,7 +137,7 @@ public class PodDNSConfig implements Editable<PodDNSConfigBuilder>, KubernetesRe
     }
 
     /**
-     * A list of DNS search domains for host-name lookup. This will be appended to the base search paths generated from DNSPolicy.
+     * searches defines the list of DNS search domains for host-name lookup. This will be appended to the base search paths generated from DNSPolicy.
      */
     @JsonProperty("searches")
     public void setSearches(List<String> searches) {

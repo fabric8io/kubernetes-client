@@ -86,7 +86,7 @@ public class DayOfMonthRange implements Editable<DayOfMonthRangeBuilder>, Kubern
     }
 
     /**
-     * End of the inclusive range
+     * end of the inclusive range
      */
     @JsonProperty("end")
     public Integer getEnd() {
@@ -94,7 +94,7 @@ public class DayOfMonthRange implements Editable<DayOfMonthRangeBuilder>, Kubern
     }
 
     /**
-     * End of the inclusive range
+     * end of the inclusive range
      */
     @JsonProperty("end")
     public void setEnd(Integer end) {
@@ -102,7 +102,7 @@ public class DayOfMonthRange implements Editable<DayOfMonthRangeBuilder>, Kubern
     }
 
     /**
-     * Start of the inclusive range
+     * start of the inclusive range
      */
     @JsonProperty("start")
     public Integer getStart() {
@@ -110,7 +110,7 @@ public class DayOfMonthRange implements Editable<DayOfMonthRangeBuilder>, Kubern
     }
 
     /**
-     * Start of the inclusive range
+     * start of the inclusive range
      */
     @JsonProperty("start")
     public void setStart(Integer start) {

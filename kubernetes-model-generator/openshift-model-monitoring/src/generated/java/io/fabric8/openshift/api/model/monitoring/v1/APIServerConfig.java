@@ -152,7 +152,7 @@ public class APIServerConfig implements Editable<APIServerConfigBuilder>, Kubern
     }
 
     /**
-     * &#42;Warning: this field shouldn't be used because the token value appears in clear-text. Prefer using `authorization`.&#42;<br><p> <br><p> Deprecated: this will be removed in a future release.
+     * bearerToken is deprecated: this will be removed in a future release.<br><p>  &#42;Warning: this field shouldn't be used because the token value appears<br><p> in clear-text. Prefer using `authorization`.&#42;
      */
     @JsonProperty("bearerToken")
     public String getBearerToken() {
@@ -160,7 +160,7 @@ public class APIServerConfig implements Editable<APIServerConfigBuilder>, Kubern
     }
 
     /**
-     * &#42;Warning: this field shouldn't be used because the token value appears in clear-text. Prefer using `authorization`.&#42;<br><p> <br><p> Deprecated: this will be removed in a future release.
+     * bearerToken is deprecated: this will be removed in a future release.<br><p>  &#42;Warning: this field shouldn't be used because the token value appears<br><p> in clear-text. Prefer using `authorization`.&#42;
      */
     @JsonProperty("bearerToken")
     public void setBearerToken(String bearerToken) {
@@ -168,7 +168,7 @@ public class APIServerConfig implements Editable<APIServerConfigBuilder>, Kubern
     }
 
     /**
-     * File to read bearer token for accessing apiserver.<br><p> <br><p> Cannot be set at the same time as `basicAuth`, `authorization`, or `bearerToken`.<br><p> <br><p> Deprecated: this will be removed in a future release. Prefer using `authorization`.
+     * bearerTokenFile defines the file to read bearer token for accessing apiserver.<br><p> <br><p> Cannot be set at the same time as `basicAuth`, `authorization`, or `bearerToken`.<br><p> <br><p> Deprecated: this will be removed in a future release. Prefer using `authorization`.
      */
     @JsonProperty("bearerTokenFile")
     public String getBearerTokenFile() {
@@ -176,7 +176,7 @@ public class APIServerConfig implements Editable<APIServerConfigBuilder>, Kubern
     }
 
     /**
-     * File to read bearer token for accessing apiserver.<br><p> <br><p> Cannot be set at the same time as `basicAuth`, `authorization`, or `bearerToken`.<br><p> <br><p> Deprecated: this will be removed in a future release. Prefer using `authorization`.
+     * bearerTokenFile defines the file to read bearer token for accessing apiserver.<br><p> <br><p> Cannot be set at the same time as `basicAuth`, `authorization`, or `bearerToken`.<br><p> <br><p> Deprecated: this will be removed in a future release. Prefer using `authorization`.
      */
     @JsonProperty("bearerTokenFile")
     public void setBearerTokenFile(String bearerTokenFile) {
@@ -184,7 +184,7 @@ public class APIServerConfig implements Editable<APIServerConfigBuilder>, Kubern
     }
 
     /**
-     * Kubernetes API address consisting of a hostname or IP address followed by an optional port number.
+     * host defines the Kubernetes API address consisting of a hostname or IP address followed by an optional port number.
      */
     @JsonProperty("host")
     public String getHost() {
@@ -192,7 +192,7 @@ public class APIServerConfig implements Editable<APIServerConfigBuilder>, Kubern
     }
 
     /**
-     * Kubernetes API address consisting of a hostname or IP address followed by an optional port number.
+     * host defines the Kubernetes API address consisting of a hostname or IP address followed by an optional port number.
      */
     @JsonProperty("host")
     public void setHost(String host) {
@@ -200,7 +200,7 @@ public class APIServerConfig implements Editable<APIServerConfigBuilder>, Kubern
     }
 
     /**
-     * `noProxy` is a comma-separated string that can contain IPs, CIDR notation, domain names that should be excluded from proxying. IP and domain names can contain port numbers.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
+     * noProxy defines a comma-separated string that can contain IPs, CIDR notation, domain names that should be excluded from proxying. IP and domain names can contain port numbers.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
      */
     @JsonProperty("noProxy")
     public String getNoProxy() {
@@ -208,7 +208,7 @@ public class APIServerConfig implements Editable<APIServerConfigBuilder>, Kubern
     }
 
     /**
-     * `noProxy` is a comma-separated string that can contain IPs, CIDR notation, domain names that should be excluded from proxying. IP and domain names can contain port numbers.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
+     * noProxy defines a comma-separated string that can contain IPs, CIDR notation, domain names that should be excluded from proxying. IP and domain names can contain port numbers.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
      */
     @JsonProperty("noProxy")
     public void setNoProxy(String noProxy) {
@@ -216,7 +216,7 @@ public class APIServerConfig implements Editable<APIServerConfigBuilder>, Kubern
     }
 
     /**
-     * ProxyConnectHeader optionally specifies headers to send to proxies during CONNECT requests.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
+     * proxyConnectHeader optionally specifies headers to send to proxies during CONNECT requests.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
      */
     @JsonProperty("proxyConnectHeader")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -225,7 +225,7 @@ public class APIServerConfig implements Editable<APIServerConfigBuilder>, Kubern
     }
 
     /**
-     * ProxyConnectHeader optionally specifies headers to send to proxies during CONNECT requests.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
+     * proxyConnectHeader optionally specifies headers to send to proxies during CONNECT requests.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
      */
     @JsonProperty("proxyConnectHeader")
     public void setProxyConnectHeader(Map<String, List<SecretKeySelector>> proxyConnectHeader) {
@@ -233,7 +233,7 @@ public class APIServerConfig implements Editable<APIServerConfigBuilder>, Kubern
     }
 
     /**
-     * Whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
+     * proxyFromEnvironment defines whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
      */
     @JsonProperty("proxyFromEnvironment")
     public Boolean getProxyFromEnvironment() {
@@ -241,7 +241,7 @@ public class APIServerConfig implements Editable<APIServerConfigBuilder>, Kubern
     }
 
     /**
-     * Whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
+     * proxyFromEnvironment defines whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
      */
     @JsonProperty("proxyFromEnvironment")
     public void setProxyFromEnvironment(Boolean proxyFromEnvironment) {
@@ -249,7 +249,7 @@ public class APIServerConfig implements Editable<APIServerConfigBuilder>, Kubern
     }
 
     /**
-     * `proxyURL` defines the HTTP proxy server to use.
+     * proxyUrl defines the HTTP proxy server to use.
      */
     @JsonProperty("proxyUrl")
     public String getProxyUrl() {
@@ -257,7 +257,7 @@ public class APIServerConfig implements Editable<APIServerConfigBuilder>, Kubern
     }
 
     /**
-     * `proxyURL` defines the HTTP proxy server to use.
+     * proxyUrl defines the HTTP proxy server to use.
      */
     @JsonProperty("proxyUrl")
     public void setProxyUrl(String proxyUrl) {

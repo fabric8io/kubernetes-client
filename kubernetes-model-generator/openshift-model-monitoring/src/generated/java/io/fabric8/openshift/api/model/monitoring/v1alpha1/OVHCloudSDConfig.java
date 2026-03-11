@@ -103,7 +103,7 @@ public class OVHCloudSDConfig implements Editable<OVHCloudSDConfigBuilder>, Kube
     }
 
     /**
-     * Access key to use. https://api.ovh.com.
+     * applicationKey defines the access key to use for OVHCloud API authentication. This is obtained from the OVHCloud API credentials at https://api.ovh.com.
      */
     @JsonProperty("applicationKey")
     public String getApplicationKey() {
@@ -111,7 +111,7 @@ public class OVHCloudSDConfig implements Editable<OVHCloudSDConfigBuilder>, Kube
     }
 
     /**
-     * Access key to use. https://api.ovh.com.
+     * applicationKey defines the access key to use for OVHCloud API authentication. This is obtained from the OVHCloud API credentials at https://api.ovh.com.
      */
     @JsonProperty("applicationKey")
     public void setApplicationKey(String applicationKey) {
@@ -151,7 +151,7 @@ public class OVHCloudSDConfig implements Editable<OVHCloudSDConfigBuilder>, Kube
     }
 
     /**
-     * Custom endpoint to be used.
+     * endpoint defines a custom API endpoint to be used. When not specified, defaults to the standard OVHCloud API endpoint for the region.
      */
     @JsonProperty("endpoint")
     public String getEndpoint() {
@@ -159,7 +159,7 @@ public class OVHCloudSDConfig implements Editable<OVHCloudSDConfigBuilder>, Kube
     }
 
     /**
-     * Custom endpoint to be used.
+     * endpoint defines a custom API endpoint to be used. When not specified, defaults to the standard OVHCloud API endpoint for the region.
      */
     @JsonProperty("endpoint")
     public void setEndpoint(String endpoint) {
@@ -167,7 +167,7 @@ public class OVHCloudSDConfig implements Editable<OVHCloudSDConfigBuilder>, Kube
     }
 
     /**
-     * Refresh interval to re-read the resources list.
+     * refreshInterval defines the time after which the provided names are refreshed. If not set, Prometheus uses its default value.
      */
     @JsonProperty("refreshInterval")
     public String getRefreshInterval() {
@@ -175,7 +175,7 @@ public class OVHCloudSDConfig implements Editable<OVHCloudSDConfigBuilder>, Kube
     }
 
     /**
-     * Refresh interval to re-read the resources list.
+     * refreshInterval defines the time after which the provided names are refreshed. If not set, Prometheus uses its default value.
      */
     @JsonProperty("refreshInterval")
     public void setRefreshInterval(String refreshInterval) {
@@ -183,7 +183,7 @@ public class OVHCloudSDConfig implements Editable<OVHCloudSDConfigBuilder>, Kube
     }
 
     /**
-     * Service of the targets to retrieve. Must be `VPS` or `DedicatedServer`.
+     * service defines the service type of the targets to retrieve. Must be either `VPS` or `DedicatedServer` to specify which OVHCloud resources to discover.
      */
     @JsonProperty("service")
     public String getService() {
@@ -191,7 +191,7 @@ public class OVHCloudSDConfig implements Editable<OVHCloudSDConfigBuilder>, Kube
     }
 
     /**
-     * Service of the targets to retrieve. Must be `VPS` or `DedicatedServer`.
+     * service defines the service type of the targets to retrieve. Must be either `VPS` or `DedicatedServer` to specify which OVHCloud resources to discover.
      */
     @JsonProperty("service")
     public void setService(String service) {

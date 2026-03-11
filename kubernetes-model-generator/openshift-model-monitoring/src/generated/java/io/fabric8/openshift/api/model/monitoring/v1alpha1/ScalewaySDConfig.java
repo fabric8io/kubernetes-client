@@ -152,7 +152,7 @@ public class ScalewaySDConfig implements Editable<ScalewaySDConfigBuilder>, Kube
     }
 
     /**
-     * Access key to use. https://console.scaleway.com/project/credentials
+     * accessKey defines the access key to use. https://console.scaleway.com/project/credentials
      */
     @JsonProperty("accessKey")
     public String getAccessKey() {
@@ -160,7 +160,7 @@ public class ScalewaySDConfig implements Editable<ScalewaySDConfigBuilder>, Kube
     }
 
     /**
-     * Access key to use. https://console.scaleway.com/project/credentials
+     * accessKey defines the access key to use. https://console.scaleway.com/project/credentials
      */
     @JsonProperty("accessKey")
     public void setAccessKey(String accessKey) {
@@ -168,7 +168,7 @@ public class ScalewaySDConfig implements Editable<ScalewaySDConfigBuilder>, Kube
     }
 
     /**
-     * API URL to use when doing the server listing requests.
+     * apiURL defines the API URL to use when doing the server listing requests.
      */
     @JsonProperty("apiURL")
     public String getApiURL() {
@@ -176,7 +176,7 @@ public class ScalewaySDConfig implements Editable<ScalewaySDConfigBuilder>, Kube
     }
 
     /**
-     * API URL to use when doing the server listing requests.
+     * apiURL defines the API URL to use when doing the server listing requests.
      */
     @JsonProperty("apiURL")
     public void setApiURL(String apiURL) {
@@ -184,7 +184,7 @@ public class ScalewaySDConfig implements Editable<ScalewaySDConfigBuilder>, Kube
     }
 
     /**
-     * Whether to enable HTTP2.
+     * enableHTTP2 defines whether to enable HTTP2.
      */
     @JsonProperty("enableHTTP2")
     public Boolean getEnableHTTP2() {
@@ -192,7 +192,7 @@ public class ScalewaySDConfig implements Editable<ScalewaySDConfigBuilder>, Kube
     }
 
     /**
-     * Whether to enable HTTP2.
+     * enableHTTP2 defines whether to enable HTTP2.
      */
     @JsonProperty("enableHTTP2")
     public void setEnableHTTP2(Boolean enableHTTP2) {
@@ -200,7 +200,7 @@ public class ScalewaySDConfig implements Editable<ScalewaySDConfigBuilder>, Kube
     }
 
     /**
-     * Configure whether HTTP requests follow HTTP 3xx redirects.
+     * followRedirects defines whether HTTP requests follow HTTP 3xx redirects.
      */
     @JsonProperty("followRedirects")
     public Boolean getFollowRedirects() {
@@ -208,7 +208,7 @@ public class ScalewaySDConfig implements Editable<ScalewaySDConfigBuilder>, Kube
     }
 
     /**
-     * Configure whether HTTP requests follow HTTP 3xx redirects.
+     * followRedirects defines whether HTTP requests follow HTTP 3xx redirects.
      */
     @JsonProperty("followRedirects")
     public void setFollowRedirects(Boolean followRedirects) {
@@ -216,7 +216,7 @@ public class ScalewaySDConfig implements Editable<ScalewaySDConfigBuilder>, Kube
     }
 
     /**
-     * NameFilter specify a name filter (works as a LIKE) to apply on the server listing request.
+     * nameFilter defines a name filter (works as a LIKE) to apply on the server listing request.
      */
     @JsonProperty("nameFilter")
     public String getNameFilter() {
@@ -224,7 +224,7 @@ public class ScalewaySDConfig implements Editable<ScalewaySDConfigBuilder>, Kube
     }
 
     /**
-     * NameFilter specify a name filter (works as a LIKE) to apply on the server listing request.
+     * nameFilter defines a name filter (works as a LIKE) to apply on the server listing request.
      */
     @JsonProperty("nameFilter")
     public void setNameFilter(String nameFilter) {
@@ -232,7 +232,7 @@ public class ScalewaySDConfig implements Editable<ScalewaySDConfigBuilder>, Kube
     }
 
     /**
-     * `noProxy` is a comma-separated string that can contain IPs, CIDR notation, domain names that should be excluded from proxying. IP and domain names can contain port numbers.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
+     * noProxy defines a comma-separated string that can contain IPs, CIDR notation, domain names that should be excluded from proxying. IP and domain names can contain port numbers.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
      */
     @JsonProperty("noProxy")
     public String getNoProxy() {
@@ -240,7 +240,7 @@ public class ScalewaySDConfig implements Editable<ScalewaySDConfigBuilder>, Kube
     }
 
     /**
-     * `noProxy` is a comma-separated string that can contain IPs, CIDR notation, domain names that should be excluded from proxying. IP and domain names can contain port numbers.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
+     * noProxy defines a comma-separated string that can contain IPs, CIDR notation, domain names that should be excluded from proxying. IP and domain names can contain port numbers.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
      */
     @JsonProperty("noProxy")
     public void setNoProxy(String noProxy) {
@@ -248,7 +248,7 @@ public class ScalewaySDConfig implements Editable<ScalewaySDConfigBuilder>, Kube
     }
 
     /**
-     * The port to scrape metrics from.
+     * port defines the port to scrape metrics from. If using the public IP address, this must
      */
     @JsonProperty("port")
     public Integer getPort() {
@@ -256,7 +256,7 @@ public class ScalewaySDConfig implements Editable<ScalewaySDConfigBuilder>, Kube
     }
 
     /**
-     * The port to scrape metrics from.
+     * port defines the port to scrape metrics from. If using the public IP address, this must
      */
     @JsonProperty("port")
     public void setPort(Integer port) {
@@ -264,7 +264,7 @@ public class ScalewaySDConfig implements Editable<ScalewaySDConfigBuilder>, Kube
     }
 
     /**
-     * Project ID of the targets.
+     * projectID defines the Project ID of the targets.
      */
     @JsonProperty("projectID")
     public String getProjectID() {
@@ -272,7 +272,7 @@ public class ScalewaySDConfig implements Editable<ScalewaySDConfigBuilder>, Kube
     }
 
     /**
-     * Project ID of the targets.
+     * projectID defines the Project ID of the targets.
      */
     @JsonProperty("projectID")
     public void setProjectID(String projectID) {
@@ -280,7 +280,7 @@ public class ScalewaySDConfig implements Editable<ScalewaySDConfigBuilder>, Kube
     }
 
     /**
-     * ProxyConnectHeader optionally specifies headers to send to proxies during CONNECT requests.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
+     * proxyConnectHeader optionally specifies headers to send to proxies during CONNECT requests.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
      */
     @JsonProperty("proxyConnectHeader")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -289,7 +289,7 @@ public class ScalewaySDConfig implements Editable<ScalewaySDConfigBuilder>, Kube
     }
 
     /**
-     * ProxyConnectHeader optionally specifies headers to send to proxies during CONNECT requests.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
+     * proxyConnectHeader optionally specifies headers to send to proxies during CONNECT requests.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
      */
     @JsonProperty("proxyConnectHeader")
     public void setProxyConnectHeader(Map<String, List<SecretKeySelector>> proxyConnectHeader) {
@@ -297,7 +297,7 @@ public class ScalewaySDConfig implements Editable<ScalewaySDConfigBuilder>, Kube
     }
 
     /**
-     * Whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
+     * proxyFromEnvironment defines whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
      */
     @JsonProperty("proxyFromEnvironment")
     public Boolean getProxyFromEnvironment() {
@@ -305,7 +305,7 @@ public class ScalewaySDConfig implements Editable<ScalewaySDConfigBuilder>, Kube
     }
 
     /**
-     * Whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
+     * proxyFromEnvironment defines whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
      */
     @JsonProperty("proxyFromEnvironment")
     public void setProxyFromEnvironment(Boolean proxyFromEnvironment) {
@@ -313,7 +313,7 @@ public class ScalewaySDConfig implements Editable<ScalewaySDConfigBuilder>, Kube
     }
 
     /**
-     * `proxyURL` defines the HTTP proxy server to use.
+     * proxyUrl defines the HTTP proxy server to use.
      */
     @JsonProperty("proxyUrl")
     public String getProxyUrl() {
@@ -321,7 +321,7 @@ public class ScalewaySDConfig implements Editable<ScalewaySDConfigBuilder>, Kube
     }
 
     /**
-     * `proxyURL` defines the HTTP proxy server to use.
+     * proxyUrl defines the HTTP proxy server to use.
      */
     @JsonProperty("proxyUrl")
     public void setProxyUrl(String proxyUrl) {
@@ -329,7 +329,7 @@ public class ScalewaySDConfig implements Editable<ScalewaySDConfigBuilder>, Kube
     }
 
     /**
-     * Refresh interval to re-read the list of instances.
+     * refreshInterval defines the time after which the provided names are refreshed. If not set, Prometheus uses its default value.
      */
     @JsonProperty("refreshInterval")
     public String getRefreshInterval() {
@@ -337,7 +337,7 @@ public class ScalewaySDConfig implements Editable<ScalewaySDConfigBuilder>, Kube
     }
 
     /**
-     * Refresh interval to re-read the list of instances.
+     * refreshInterval defines the time after which the provided names are refreshed. If not set, Prometheus uses its default value.
      */
     @JsonProperty("refreshInterval")
     public void setRefreshInterval(String refreshInterval) {
@@ -345,7 +345,7 @@ public class ScalewaySDConfig implements Editable<ScalewaySDConfigBuilder>, Kube
     }
 
     /**
-     * Service of the targets to retrieve. Must be `Instance` or `Baremetal`.
+     * role defines the service of the targets to retrieve. Must be `Instance` or `Baremetal`.
      */
     @JsonProperty("role")
     public String getRole() {
@@ -353,7 +353,7 @@ public class ScalewaySDConfig implements Editable<ScalewaySDConfigBuilder>, Kube
     }
 
     /**
-     * Service of the targets to retrieve. Must be `Instance` or `Baremetal`.
+     * role defines the service of the targets to retrieve. Must be `Instance` or `Baremetal`.
      */
     @JsonProperty("role")
     public void setRole(String role) {
@@ -377,7 +377,7 @@ public class ScalewaySDConfig implements Editable<ScalewaySDConfigBuilder>, Kube
     }
 
     /**
-     * TagsFilter specify a tag filter (a server needs to have all defined tags to be listed) to apply on the server listing request.
+     * tagsFilter defines a tag filter (a server needs to have all defined tags to be listed) to apply on the server listing request.
      */
     @JsonProperty("tagsFilter")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -386,7 +386,7 @@ public class ScalewaySDConfig implements Editable<ScalewaySDConfigBuilder>, Kube
     }
 
     /**
-     * TagsFilter specify a tag filter (a server needs to have all defined tags to be listed) to apply on the server listing request.
+     * tagsFilter defines a tag filter (a server needs to have all defined tags to be listed) to apply on the server listing request.
      */
     @JsonProperty("tagsFilter")
     public void setTagsFilter(List<String> tagsFilter) {
@@ -410,7 +410,7 @@ public class ScalewaySDConfig implements Editable<ScalewaySDConfigBuilder>, Kube
     }
 
     /**
-     * Zone is the availability zone of your targets (e.g. fr-par-1).
+     * zone defines the availability zone of your targets (e.g. fr-par-1).
      */
     @JsonProperty("zone")
     public String getZone() {
@@ -418,7 +418,7 @@ public class ScalewaySDConfig implements Editable<ScalewaySDConfigBuilder>, Kube
     }
 
     /**
-     * Zone is the availability zone of your targets (e.g. fr-par-1).
+     * zone defines the availability zone of your targets (e.g. fr-par-1).
      */
     @JsonProperty("zone")
     public void setZone(String zone) {

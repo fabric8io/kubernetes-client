@@ -161,7 +161,7 @@ public class AzureSDConfig implements Editable<AzureSDConfigBuilder>, Kubernetes
     }
 
     /**
-     * # The authentication method, either `OAuth` or `ManagedIdentity` or `SDK`. See https://docs.microsoft.com/en-us/azure/active-directory/managed-identities-azure-resources/overview SDK authentication method uses environment variables by default. See https://learn.microsoft.com/en-us/azure/developer/go/azure-sdk-authentication
+     * authenticationMethod defines the authentication method, either `OAuth` or `ManagedIdentity` or `SDK`. See https://docs.microsoft.com/en-us/azure/active-directory/managed-identities-azure-resources/overview SDK authentication method uses environment variables by default. See https://learn.microsoft.com/en-us/azure/developer/go/azure-sdk-authentication
      */
     @JsonProperty("authenticationMethod")
     public String getAuthenticationMethod() {
@@ -169,7 +169,7 @@ public class AzureSDConfig implements Editable<AzureSDConfigBuilder>, Kubernetes
     }
 
     /**
-     * # The authentication method, either `OAuth` or `ManagedIdentity` or `SDK`. See https://docs.microsoft.com/en-us/azure/active-directory/managed-identities-azure-resources/overview SDK authentication method uses environment variables by default. See https://learn.microsoft.com/en-us/azure/developer/go/azure-sdk-authentication
+     * authenticationMethod defines the authentication method, either `OAuth` or `ManagedIdentity` or `SDK`. See https://docs.microsoft.com/en-us/azure/active-directory/managed-identities-azure-resources/overview SDK authentication method uses environment variables by default. See https://learn.microsoft.com/en-us/azure/developer/go/azure-sdk-authentication
      */
     @JsonProperty("authenticationMethod")
     public void setAuthenticationMethod(String authenticationMethod) {
@@ -209,7 +209,7 @@ public class AzureSDConfig implements Editable<AzureSDConfigBuilder>, Kubernetes
     }
 
     /**
-     * Optional client ID. Only required with the OAuth authentication method.
+     * clientID defines client ID. Only required with the OAuth authentication method.
      */
     @JsonProperty("clientID")
     public String getClientID() {
@@ -217,7 +217,7 @@ public class AzureSDConfig implements Editable<AzureSDConfigBuilder>, Kubernetes
     }
 
     /**
-     * Optional client ID. Only required with the OAuth authentication method.
+     * clientID defines client ID. Only required with the OAuth authentication method.
      */
     @JsonProperty("clientID")
     public void setClientID(String clientID) {
@@ -241,7 +241,7 @@ public class AzureSDConfig implements Editable<AzureSDConfigBuilder>, Kubernetes
     }
 
     /**
-     * Whether to enable HTTP2.
+     * enableHTTP2 defines whether to enable HTTP2.
      */
     @JsonProperty("enableHTTP2")
     public Boolean getEnableHTTP2() {
@@ -249,7 +249,7 @@ public class AzureSDConfig implements Editable<AzureSDConfigBuilder>, Kubernetes
     }
 
     /**
-     * Whether to enable HTTP2.
+     * enableHTTP2 defines whether to enable HTTP2.
      */
     @JsonProperty("enableHTTP2")
     public void setEnableHTTP2(Boolean enableHTTP2) {
@@ -257,7 +257,7 @@ public class AzureSDConfig implements Editable<AzureSDConfigBuilder>, Kubernetes
     }
 
     /**
-     * The Azure environment.
+     * environment defines the Azure environment.
      */
     @JsonProperty("environment")
     public String getEnvironment() {
@@ -265,7 +265,7 @@ public class AzureSDConfig implements Editable<AzureSDConfigBuilder>, Kubernetes
     }
 
     /**
-     * The Azure environment.
+     * environment defines the Azure environment.
      */
     @JsonProperty("environment")
     public void setEnvironment(String environment) {
@@ -273,7 +273,7 @@ public class AzureSDConfig implements Editable<AzureSDConfigBuilder>, Kubernetes
     }
 
     /**
-     * Configure whether HTTP requests follow HTTP 3xx redirects.
+     * followRedirects defines whether HTTP requests follow HTTP 3xx redirects.
      */
     @JsonProperty("followRedirects")
     public Boolean getFollowRedirects() {
@@ -281,7 +281,7 @@ public class AzureSDConfig implements Editable<AzureSDConfigBuilder>, Kubernetes
     }
 
     /**
-     * Configure whether HTTP requests follow HTTP 3xx redirects.
+     * followRedirects defines whether HTTP requests follow HTTP 3xx redirects.
      */
     @JsonProperty("followRedirects")
     public void setFollowRedirects(Boolean followRedirects) {
@@ -289,7 +289,7 @@ public class AzureSDConfig implements Editable<AzureSDConfigBuilder>, Kubernetes
     }
 
     /**
-     * `noProxy` is a comma-separated string that can contain IPs, CIDR notation, domain names that should be excluded from proxying. IP and domain names can contain port numbers.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
+     * noProxy defines a comma-separated string that can contain IPs, CIDR notation, domain names that should be excluded from proxying. IP and domain names can contain port numbers.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
      */
     @JsonProperty("noProxy")
     public String getNoProxy() {
@@ -297,7 +297,7 @@ public class AzureSDConfig implements Editable<AzureSDConfigBuilder>, Kubernetes
     }
 
     /**
-     * `noProxy` is a comma-separated string that can contain IPs, CIDR notation, domain names that should be excluded from proxying. IP and domain names can contain port numbers.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
+     * noProxy defines a comma-separated string that can contain IPs, CIDR notation, domain names that should be excluded from proxying. IP and domain names can contain port numbers.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
      */
     @JsonProperty("noProxy")
     public void setNoProxy(String noProxy) {
@@ -321,7 +321,7 @@ public class AzureSDConfig implements Editable<AzureSDConfigBuilder>, Kubernetes
     }
 
     /**
-     * The port to scrape metrics from. If using the public IP address, this must instead be specified in the relabeling rule.
+     * port defines the port to scrape metrics from. If using the public IP address, this must instead be specified in the relabeling rule.
      */
     @JsonProperty("port")
     public Integer getPort() {
@@ -329,7 +329,7 @@ public class AzureSDConfig implements Editable<AzureSDConfigBuilder>, Kubernetes
     }
 
     /**
-     * The port to scrape metrics from. If using the public IP address, this must instead be specified in the relabeling rule.
+     * port defines the port to scrape metrics from. If using the public IP address, this must instead be specified in the relabeling rule.
      */
     @JsonProperty("port")
     public void setPort(Integer port) {
@@ -337,7 +337,7 @@ public class AzureSDConfig implements Editable<AzureSDConfigBuilder>, Kubernetes
     }
 
     /**
-     * ProxyConnectHeader optionally specifies headers to send to proxies during CONNECT requests.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
+     * proxyConnectHeader optionally specifies headers to send to proxies during CONNECT requests.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
      */
     @JsonProperty("proxyConnectHeader")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -346,7 +346,7 @@ public class AzureSDConfig implements Editable<AzureSDConfigBuilder>, Kubernetes
     }
 
     /**
-     * ProxyConnectHeader optionally specifies headers to send to proxies during CONNECT requests.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
+     * proxyConnectHeader optionally specifies headers to send to proxies during CONNECT requests.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
      */
     @JsonProperty("proxyConnectHeader")
     public void setProxyConnectHeader(Map<String, List<SecretKeySelector>> proxyConnectHeader) {
@@ -354,7 +354,7 @@ public class AzureSDConfig implements Editable<AzureSDConfigBuilder>, Kubernetes
     }
 
     /**
-     * Whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
+     * proxyFromEnvironment defines whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
      */
     @JsonProperty("proxyFromEnvironment")
     public Boolean getProxyFromEnvironment() {
@@ -362,7 +362,7 @@ public class AzureSDConfig implements Editable<AzureSDConfigBuilder>, Kubernetes
     }
 
     /**
-     * Whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
+     * proxyFromEnvironment defines whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
      */
     @JsonProperty("proxyFromEnvironment")
     public void setProxyFromEnvironment(Boolean proxyFromEnvironment) {
@@ -370,7 +370,7 @@ public class AzureSDConfig implements Editable<AzureSDConfigBuilder>, Kubernetes
     }
 
     /**
-     * `proxyURL` defines the HTTP proxy server to use.
+     * proxyUrl defines the HTTP proxy server to use.
      */
     @JsonProperty("proxyUrl")
     public String getProxyUrl() {
@@ -378,7 +378,7 @@ public class AzureSDConfig implements Editable<AzureSDConfigBuilder>, Kubernetes
     }
 
     /**
-     * `proxyURL` defines the HTTP proxy server to use.
+     * proxyUrl defines the HTTP proxy server to use.
      */
     @JsonProperty("proxyUrl")
     public void setProxyUrl(String proxyUrl) {
@@ -386,7 +386,7 @@ public class AzureSDConfig implements Editable<AzureSDConfigBuilder>, Kubernetes
     }
 
     /**
-     * RefreshInterval configures the refresh interval at which Prometheus will re-read the instance list.
+     * refreshInterval defines the time after which the provided names are refreshed. If not set, Prometheus uses its default value.
      */
     @JsonProperty("refreshInterval")
     public String getRefreshInterval() {
@@ -394,7 +394,7 @@ public class AzureSDConfig implements Editable<AzureSDConfigBuilder>, Kubernetes
     }
 
     /**
-     * RefreshInterval configures the refresh interval at which Prometheus will re-read the instance list.
+     * refreshInterval defines the time after which the provided names are refreshed. If not set, Prometheus uses its default value.
      */
     @JsonProperty("refreshInterval")
     public void setRefreshInterval(String refreshInterval) {
@@ -402,7 +402,7 @@ public class AzureSDConfig implements Editable<AzureSDConfigBuilder>, Kubernetes
     }
 
     /**
-     * Optional resource group name. Limits discovery to this resource group. Requires  Prometheus v2.35.0 and above
+     * resourceGroup defines resource group name. Limits discovery to this resource group. Requires  Prometheus v2.35.0 and above
      */
     @JsonProperty("resourceGroup")
     public String getResourceGroup() {
@@ -410,7 +410,7 @@ public class AzureSDConfig implements Editable<AzureSDConfigBuilder>, Kubernetes
     }
 
     /**
-     * Optional resource group name. Limits discovery to this resource group. Requires  Prometheus v2.35.0 and above
+     * resourceGroup defines resource group name. Limits discovery to this resource group. Requires  Prometheus v2.35.0 and above
      */
     @JsonProperty("resourceGroup")
     public void setResourceGroup(String resourceGroup) {
@@ -418,7 +418,7 @@ public class AzureSDConfig implements Editable<AzureSDConfigBuilder>, Kubernetes
     }
 
     /**
-     * The subscription ID. Always required.
+     * subscriptionID defines subscription ID. Always required.
      */
     @JsonProperty("subscriptionID")
     public String getSubscriptionID() {
@@ -426,7 +426,7 @@ public class AzureSDConfig implements Editable<AzureSDConfigBuilder>, Kubernetes
     }
 
     /**
-     * The subscription ID. Always required.
+     * subscriptionID defines subscription ID. Always required.
      */
     @JsonProperty("subscriptionID")
     public void setSubscriptionID(String subscriptionID) {
@@ -434,7 +434,7 @@ public class AzureSDConfig implements Editable<AzureSDConfigBuilder>, Kubernetes
     }
 
     /**
-     * Optional tenant ID. Only required with the OAuth authentication method.
+     * tenantID defines tenant ID. Only required with the OAuth authentication method.
      */
     @JsonProperty("tenantID")
     public String getTenantID() {
@@ -442,7 +442,7 @@ public class AzureSDConfig implements Editable<AzureSDConfigBuilder>, Kubernetes
     }
 
     /**
-     * Optional tenant ID. Only required with the OAuth authentication method.
+     * tenantID defines tenant ID. Only required with the OAuth authentication method.
      */
     @JsonProperty("tenantID")
     public void setTenantID(String tenantID) {

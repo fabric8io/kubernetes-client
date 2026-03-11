@@ -94,7 +94,7 @@ public class ShardStatus implements Editable<ShardStatusBuilder>, KubernetesReso
     }
 
     /**
-     * Total number of available pods (ready for at least minReadySeconds) targeted by this shard.
+     * availableReplicas defines the total number of available pods (ready for at least minReadySeconds) targeted by this shard.
      */
     @JsonProperty("availableReplicas")
     public Integer getAvailableReplicas() {
@@ -102,7 +102,7 @@ public class ShardStatus implements Editable<ShardStatusBuilder>, KubernetesReso
     }
 
     /**
-     * Total number of available pods (ready for at least minReadySeconds) targeted by this shard.
+     * availableReplicas defines the total number of available pods (ready for at least minReadySeconds) targeted by this shard.
      */
     @JsonProperty("availableReplicas")
     public void setAvailableReplicas(Integer availableReplicas) {
@@ -110,7 +110,7 @@ public class ShardStatus implements Editable<ShardStatusBuilder>, KubernetesReso
     }
 
     /**
-     * Total number of pods targeted by this shard.
+     * replicas defines the total number of pods targeted by this shard.
      */
     @JsonProperty("replicas")
     public Integer getReplicas() {
@@ -118,7 +118,7 @@ public class ShardStatus implements Editable<ShardStatusBuilder>, KubernetesReso
     }
 
     /**
-     * Total number of pods targeted by this shard.
+     * replicas defines the total number of pods targeted by this shard.
      */
     @JsonProperty("replicas")
     public void setReplicas(Integer replicas) {
@@ -126,7 +126,7 @@ public class ShardStatus implements Editable<ShardStatusBuilder>, KubernetesReso
     }
 
     /**
-     * Identifier of the shard.
+     * shardID defines the identifier of the shard.
      */
     @JsonProperty("shardID")
     public String getShardID() {
@@ -134,7 +134,7 @@ public class ShardStatus implements Editable<ShardStatusBuilder>, KubernetesReso
     }
 
     /**
-     * Identifier of the shard.
+     * shardID defines the identifier of the shard.
      */
     @JsonProperty("shardID")
     public void setShardID(String shardID) {
@@ -142,7 +142,7 @@ public class ShardStatus implements Editable<ShardStatusBuilder>, KubernetesReso
     }
 
     /**
-     * Total number of unavailable pods targeted by this shard.
+     * unavailableReplicas defines the Total number of unavailable pods targeted by this shard.
      */
     @JsonProperty("unavailableReplicas")
     public Integer getUnavailableReplicas() {
@@ -150,7 +150,7 @@ public class ShardStatus implements Editable<ShardStatusBuilder>, KubernetesReso
     }
 
     /**
-     * Total number of unavailable pods targeted by this shard.
+     * unavailableReplicas defines the Total number of unavailable pods targeted by this shard.
      */
     @JsonProperty("unavailableReplicas")
     public void setUnavailableReplicas(Integer unavailableReplicas) {
@@ -158,7 +158,7 @@ public class ShardStatus implements Editable<ShardStatusBuilder>, KubernetesReso
     }
 
     /**
-     * Total number of non-terminated pods targeted by this shard that have the desired spec.
+     * updatedReplicas defines the total number of non-terminated pods targeted by this shard that have the desired spec.
      */
     @JsonProperty("updatedReplicas")
     public Integer getUpdatedReplicas() {
@@ -166,7 +166,7 @@ public class ShardStatus implements Editable<ShardStatusBuilder>, KubernetesReso
     }
 
     /**
-     * Total number of non-terminated pods targeted by this shard that have the desired spec.
+     * updatedReplicas defines the total number of non-terminated pods targeted by this shard that have the desired spec.
      */
     @JsonProperty("updatedReplicas")
     public void setUpdatedReplicas(Integer updatedReplicas) {

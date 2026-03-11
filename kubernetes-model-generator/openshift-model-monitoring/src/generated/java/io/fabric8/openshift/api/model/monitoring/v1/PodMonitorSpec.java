@@ -57,6 +57,7 @@ import lombok.experimental.Accessors;
     "sampleLimit",
     "scrapeClass",
     "scrapeClassicHistograms",
+    "scrapeNativeHistograms",
     "scrapeProtocols",
     "selector",
     "selectorMechanism",
@@ -123,6 +124,8 @@ public class PodMonitorSpec implements Editable<PodMonitorSpecBuilder>, Kubernet
     private String scrapeClass;
     @JsonProperty("scrapeClassicHistograms")
     private Boolean scrapeClassicHistograms;
+    @JsonProperty("scrapeNativeHistograms")
+    private Boolean scrapeNativeHistograms;
     @JsonProperty("scrapeProtocols")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> scrapeProtocols = new ArrayList<>();
@@ -141,7 +144,7 @@ public class PodMonitorSpec implements Editable<PodMonitorSpecBuilder>, Kubernet
     public PodMonitorSpec() {
     }
 
-    public PodMonitorSpec(AttachMetadata attachMetadata, String bodySizeLimit, Boolean convertClassicHistogramsToNHCB, String fallbackScrapeProtocol, String jobLabel, Long keepDroppedTargets, Long labelLimit, Long labelNameLengthLimit, Long labelValueLengthLimit, NamespaceSelector namespaceSelector, Long nativeHistogramBucketLimit, Quantity nativeHistogramMinBucketFactor, List<PodMetricsEndpoint> podMetricsEndpoints, List<String> podTargetLabels, Long sampleLimit, String scrapeClass, Boolean scrapeClassicHistograms, List<String> scrapeProtocols, LabelSelector selector, String selectorMechanism, Long targetLimit) {
+    public PodMonitorSpec(AttachMetadata attachMetadata, String bodySizeLimit, Boolean convertClassicHistogramsToNHCB, String fallbackScrapeProtocol, String jobLabel, Long keepDroppedTargets, Long labelLimit, Long labelNameLengthLimit, Long labelValueLengthLimit, NamespaceSelector namespaceSelector, Long nativeHistogramBucketLimit, Quantity nativeHistogramMinBucketFactor, List<PodMetricsEndpoint> podMetricsEndpoints, List<String> podTargetLabels, Long sampleLimit, String scrapeClass, Boolean scrapeClassicHistograms, Boolean scrapeNativeHistograms, List<String> scrapeProtocols, LabelSelector selector, String selectorMechanism, Long targetLimit) {
         super();
         this.attachMetadata = attachMetadata;
         this.bodySizeLimit = bodySizeLimit;
@@ -160,6 +163,7 @@ public class PodMonitorSpec implements Editable<PodMonitorSpecBuilder>, Kubernet
         this.sampleLimit = sampleLimit;
         this.scrapeClass = scrapeClass;
         this.scrapeClassicHistograms = scrapeClassicHistograms;
+        this.scrapeNativeHistograms = scrapeNativeHistograms;
         this.scrapeProtocols = scrapeProtocols;
         this.selector = selector;
         this.selectorMechanism = selectorMechanism;
@@ -183,7 +187,7 @@ public class PodMonitorSpec implements Editable<PodMonitorSpecBuilder>, Kubernet
     }
 
     /**
-     * When defined, bodySizeLimit specifies a job level limit on the size of uncompressed response body that will be accepted by Prometheus.<br><p> <br><p> It requires Prometheus &gt;= v2.28.0.
+     * bodySizeLimit when defined specifies a job level limit on the size of uncompressed response body that will be accepted by Prometheus.<br><p> <br><p> It requires Prometheus &gt;= v2.28.0.
      */
     @JsonProperty("bodySizeLimit")
     public String getBodySizeLimit() {
@@ -191,7 +195,7 @@ public class PodMonitorSpec implements Editable<PodMonitorSpecBuilder>, Kubernet
     }
 
     /**
-     * When defined, bodySizeLimit specifies a job level limit on the size of uncompressed response body that will be accepted by Prometheus.<br><p> <br><p> It requires Prometheus &gt;= v2.28.0.
+     * bodySizeLimit when defined specifies a job level limit on the size of uncompressed response body that will be accepted by Prometheus.<br><p> <br><p> It requires Prometheus &gt;= v2.28.0.
      */
     @JsonProperty("bodySizeLimit")
     public void setBodySizeLimit(String bodySizeLimit) {
@@ -199,7 +203,7 @@ public class PodMonitorSpec implements Editable<PodMonitorSpecBuilder>, Kubernet
     }
 
     /**
-     * Whether to convert all scraped classic histograms into a native histogram with custom buckets. It requires Prometheus &gt;= v3.0.0.
+     * convertClassicHistogramsToNHCB defines whether to convert all scraped classic histograms into a native histogram with custom buckets. It requires Prometheus &gt;= v3.0.0.
      */
     @JsonProperty("convertClassicHistogramsToNHCB")
     public Boolean getConvertClassicHistogramsToNHCB() {
@@ -207,7 +211,7 @@ public class PodMonitorSpec implements Editable<PodMonitorSpecBuilder>, Kubernet
     }
 
     /**
-     * Whether to convert all scraped classic histograms into a native histogram with custom buckets. It requires Prometheus &gt;= v3.0.0.
+     * convertClassicHistogramsToNHCB defines whether to convert all scraped classic histograms into a native histogram with custom buckets. It requires Prometheus &gt;= v3.0.0.
      */
     @JsonProperty("convertClassicHistogramsToNHCB")
     public void setConvertClassicHistogramsToNHCB(Boolean convertClassicHistogramsToNHCB) {
@@ -215,7 +219,7 @@ public class PodMonitorSpec implements Editable<PodMonitorSpecBuilder>, Kubernet
     }
 
     /**
-     * The protocol to use if a scrape returns blank, unparseable, or otherwise invalid Content-Type.<br><p> <br><p> It requires Prometheus &gt;= v3.0.0.
+     * fallbackScrapeProtocol defines the protocol to use if a scrape returns blank, unparseable, or otherwise invalid Content-Type.<br><p> <br><p> It requires Prometheus &gt;= v3.0.0.
      */
     @JsonProperty("fallbackScrapeProtocol")
     public String getFallbackScrapeProtocol() {
@@ -223,7 +227,7 @@ public class PodMonitorSpec implements Editable<PodMonitorSpecBuilder>, Kubernet
     }
 
     /**
-     * The protocol to use if a scrape returns blank, unparseable, or otherwise invalid Content-Type.<br><p> <br><p> It requires Prometheus &gt;= v3.0.0.
+     * fallbackScrapeProtocol defines the protocol to use if a scrape returns blank, unparseable, or otherwise invalid Content-Type.<br><p> <br><p> It requires Prometheus &gt;= v3.0.0.
      */
     @JsonProperty("fallbackScrapeProtocol")
     public void setFallbackScrapeProtocol(String fallbackScrapeProtocol) {
@@ -231,7 +235,7 @@ public class PodMonitorSpec implements Editable<PodMonitorSpecBuilder>, Kubernet
     }
 
     /**
-     * The label to use to retrieve the job name from. `jobLabel` selects the label from the associated Kubernetes `Pod` object which will be used as the `job` label for all metrics.<br><p> <br><p> For example if `jobLabel` is set to `foo` and the Kubernetes `Pod` object is labeled with `foo: bar`, then Prometheus adds the `job="bar"` label to all ingested metrics.<br><p> <br><p> If the value of this field is empty, the `job` label of the metrics defaults to the namespace and name of the PodMonitor object (e.g. `&lt;namespace&gt;/&lt;name&gt;`).
+     * jobLabel defines the label to use to retrieve the job name from. `jobLabel` selects the label from the associated Kubernetes `Pod` object which will be used as the `job` label for all metrics.<br><p> <br><p> For example if `jobLabel` is set to `foo` and the Kubernetes `Pod` object is labeled with `foo: bar`, then Prometheus adds the `job="bar"` label to all ingested metrics.<br><p> <br><p> If the value of this field is empty, the `job` label of the metrics defaults to the namespace and name of the PodMonitor object (e.g. `&lt;namespace&gt;/&lt;name&gt;`).
      */
     @JsonProperty("jobLabel")
     public String getJobLabel() {
@@ -239,7 +243,7 @@ public class PodMonitorSpec implements Editable<PodMonitorSpecBuilder>, Kubernet
     }
 
     /**
-     * The label to use to retrieve the job name from. `jobLabel` selects the label from the associated Kubernetes `Pod` object which will be used as the `job` label for all metrics.<br><p> <br><p> For example if `jobLabel` is set to `foo` and the Kubernetes `Pod` object is labeled with `foo: bar`, then Prometheus adds the `job="bar"` label to all ingested metrics.<br><p> <br><p> If the value of this field is empty, the `job` label of the metrics defaults to the namespace and name of the PodMonitor object (e.g. `&lt;namespace&gt;/&lt;name&gt;`).
+     * jobLabel defines the label to use to retrieve the job name from. `jobLabel` selects the label from the associated Kubernetes `Pod` object which will be used as the `job` label for all metrics.<br><p> <br><p> For example if `jobLabel` is set to `foo` and the Kubernetes `Pod` object is labeled with `foo: bar`, then Prometheus adds the `job="bar"` label to all ingested metrics.<br><p> <br><p> If the value of this field is empty, the `job` label of the metrics defaults to the namespace and name of the PodMonitor object (e.g. `&lt;namespace&gt;/&lt;name&gt;`).
      */
     @JsonProperty("jobLabel")
     public void setJobLabel(String jobLabel) {
@@ -247,7 +251,7 @@ public class PodMonitorSpec implements Editable<PodMonitorSpecBuilder>, Kubernet
     }
 
     /**
-     * Per-scrape limit on the number of targets dropped by relabeling that will be kept in memory. 0 means no limit.<br><p> <br><p> It requires Prometheus &gt;= v2.47.0.
+     * keepDroppedTargets defines the per-scrape limit on the number of targets dropped by relabeling that will be kept in memory. 0 means no limit.<br><p> <br><p> It requires Prometheus &gt;= v2.47.0.
      */
     @JsonProperty("keepDroppedTargets")
     public Long getKeepDroppedTargets() {
@@ -255,7 +259,7 @@ public class PodMonitorSpec implements Editable<PodMonitorSpecBuilder>, Kubernet
     }
 
     /**
-     * Per-scrape limit on the number of targets dropped by relabeling that will be kept in memory. 0 means no limit.<br><p> <br><p> It requires Prometheus &gt;= v2.47.0.
+     * keepDroppedTargets defines the per-scrape limit on the number of targets dropped by relabeling that will be kept in memory. 0 means no limit.<br><p> <br><p> It requires Prometheus &gt;= v2.47.0.
      */
     @JsonProperty("keepDroppedTargets")
     public void setKeepDroppedTargets(Long keepDroppedTargets) {
@@ -263,7 +267,7 @@ public class PodMonitorSpec implements Editable<PodMonitorSpecBuilder>, Kubernet
     }
 
     /**
-     * Per-scrape limit on number of labels that will be accepted for a sample.<br><p> <br><p> It requires Prometheus &gt;= v2.27.0.
+     * labelLimit defines the per-scrape limit on number of labels that will be accepted for a sample.<br><p> <br><p> It requires Prometheus &gt;= v2.27.0.
      */
     @JsonProperty("labelLimit")
     public Long getLabelLimit() {
@@ -271,7 +275,7 @@ public class PodMonitorSpec implements Editable<PodMonitorSpecBuilder>, Kubernet
     }
 
     /**
-     * Per-scrape limit on number of labels that will be accepted for a sample.<br><p> <br><p> It requires Prometheus &gt;= v2.27.0.
+     * labelLimit defines the per-scrape limit on number of labels that will be accepted for a sample.<br><p> <br><p> It requires Prometheus &gt;= v2.27.0.
      */
     @JsonProperty("labelLimit")
     public void setLabelLimit(Long labelLimit) {
@@ -279,7 +283,7 @@ public class PodMonitorSpec implements Editable<PodMonitorSpecBuilder>, Kubernet
     }
 
     /**
-     * Per-scrape limit on length of labels name that will be accepted for a sample.<br><p> <br><p> It requires Prometheus &gt;= v2.27.0.
+     * labelNameLengthLimit defines the per-scrape limit on length of labels name that will be accepted for a sample.<br><p> <br><p> It requires Prometheus &gt;= v2.27.0.
      */
     @JsonProperty("labelNameLengthLimit")
     public Long getLabelNameLengthLimit() {
@@ -287,7 +291,7 @@ public class PodMonitorSpec implements Editable<PodMonitorSpecBuilder>, Kubernet
     }
 
     /**
-     * Per-scrape limit on length of labels name that will be accepted for a sample.<br><p> <br><p> It requires Prometheus &gt;= v2.27.0.
+     * labelNameLengthLimit defines the per-scrape limit on length of labels name that will be accepted for a sample.<br><p> <br><p> It requires Prometheus &gt;= v2.27.0.
      */
     @JsonProperty("labelNameLengthLimit")
     public void setLabelNameLengthLimit(Long labelNameLengthLimit) {
@@ -295,7 +299,7 @@ public class PodMonitorSpec implements Editable<PodMonitorSpecBuilder>, Kubernet
     }
 
     /**
-     * Per-scrape limit on length of labels value that will be accepted for a sample.<br><p> <br><p> It requires Prometheus &gt;= v2.27.0.
+     * labelValueLengthLimit defines the per-scrape limit on length of labels value that will be accepted for a sample.<br><p> <br><p> It requires Prometheus &gt;= v2.27.0.
      */
     @JsonProperty("labelValueLengthLimit")
     public Long getLabelValueLengthLimit() {
@@ -303,7 +307,7 @@ public class PodMonitorSpec implements Editable<PodMonitorSpecBuilder>, Kubernet
     }
 
     /**
-     * Per-scrape limit on length of labels value that will be accepted for a sample.<br><p> <br><p> It requires Prometheus &gt;= v2.27.0.
+     * labelValueLengthLimit defines the per-scrape limit on length of labels value that will be accepted for a sample.<br><p> <br><p> It requires Prometheus &gt;= v2.27.0.
      */
     @JsonProperty("labelValueLengthLimit")
     public void setLabelValueLengthLimit(Long labelValueLengthLimit) {
@@ -327,7 +331,7 @@ public class PodMonitorSpec implements Editable<PodMonitorSpecBuilder>, Kubernet
     }
 
     /**
-     * If there are more than this many buckets in a native histogram, buckets will be merged to stay within the limit. It requires Prometheus &gt;= v2.45.0.
+     * nativeHistogramBucketLimit defines ff there are more than this many buckets in a native histogram, buckets will be merged to stay within the limit. It requires Prometheus &gt;= v2.45.0.
      */
     @JsonProperty("nativeHistogramBucketLimit")
     public Long getNativeHistogramBucketLimit() {
@@ -335,7 +339,7 @@ public class PodMonitorSpec implements Editable<PodMonitorSpecBuilder>, Kubernet
     }
 
     /**
-     * If there are more than this many buckets in a native histogram, buckets will be merged to stay within the limit. It requires Prometheus &gt;= v2.45.0.
+     * nativeHistogramBucketLimit defines ff there are more than this many buckets in a native histogram, buckets will be merged to stay within the limit. It requires Prometheus &gt;= v2.45.0.
      */
     @JsonProperty("nativeHistogramBucketLimit")
     public void setNativeHistogramBucketLimit(Long nativeHistogramBucketLimit) {
@@ -359,7 +363,7 @@ public class PodMonitorSpec implements Editable<PodMonitorSpecBuilder>, Kubernet
     }
 
     /**
-     * Defines how to scrape metrics from the selected pods.
+     * podMetricsEndpoints defines how to scrape metrics from the selected pods.
      */
     @JsonProperty("podMetricsEndpoints")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -368,7 +372,7 @@ public class PodMonitorSpec implements Editable<PodMonitorSpecBuilder>, Kubernet
     }
 
     /**
-     * Defines how to scrape metrics from the selected pods.
+     * podMetricsEndpoints defines how to scrape metrics from the selected pods.
      */
     @JsonProperty("podMetricsEndpoints")
     public void setPodMetricsEndpoints(List<PodMetricsEndpoint> podMetricsEndpoints) {
@@ -376,7 +380,7 @@ public class PodMonitorSpec implements Editable<PodMonitorSpecBuilder>, Kubernet
     }
 
     /**
-     * `podTargetLabels` defines the labels which are transferred from the associated Kubernetes `Pod` object onto the ingested metrics.
+     * podTargetLabels defines the labels which are transferred from the associated Kubernetes `Pod` object onto the ingested metrics.
      */
     @JsonProperty("podTargetLabels")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -385,7 +389,7 @@ public class PodMonitorSpec implements Editable<PodMonitorSpecBuilder>, Kubernet
     }
 
     /**
-     * `podTargetLabels` defines the labels which are transferred from the associated Kubernetes `Pod` object onto the ingested metrics.
+     * podTargetLabels defines the labels which are transferred from the associated Kubernetes `Pod` object onto the ingested metrics.
      */
     @JsonProperty("podTargetLabels")
     public void setPodTargetLabels(List<String> podTargetLabels) {
@@ -393,7 +397,7 @@ public class PodMonitorSpec implements Editable<PodMonitorSpecBuilder>, Kubernet
     }
 
     /**
-     * `sampleLimit` defines a per-scrape limit on the number of scraped samples that will be accepted.
+     * sampleLimit defines a per-scrape limit on the number of scraped samples that will be accepted.
      */
     @JsonProperty("sampleLimit")
     public Long getSampleLimit() {
@@ -401,7 +405,7 @@ public class PodMonitorSpec implements Editable<PodMonitorSpecBuilder>, Kubernet
     }
 
     /**
-     * `sampleLimit` defines a per-scrape limit on the number of scraped samples that will be accepted.
+     * sampleLimit defines a per-scrape limit on the number of scraped samples that will be accepted.
      */
     @JsonProperty("sampleLimit")
     public void setSampleLimit(Long sampleLimit) {
@@ -409,7 +413,7 @@ public class PodMonitorSpec implements Editable<PodMonitorSpecBuilder>, Kubernet
     }
 
     /**
-     * The scrape class to apply.
+     * scrapeClass defines the scrape class to apply.
      */
     @JsonProperty("scrapeClass")
     public String getScrapeClass() {
@@ -417,7 +421,7 @@ public class PodMonitorSpec implements Editable<PodMonitorSpecBuilder>, Kubernet
     }
 
     /**
-     * The scrape class to apply.
+     * scrapeClass defines the scrape class to apply.
      */
     @JsonProperty("scrapeClass")
     public void setScrapeClass(String scrapeClass) {
@@ -425,7 +429,7 @@ public class PodMonitorSpec implements Editable<PodMonitorSpecBuilder>, Kubernet
     }
 
     /**
-     * Whether to scrape a classic histogram that is also exposed as a native histogram. It requires Prometheus &gt;= v2.45.0.<br><p> <br><p> Notice: `scrapeClassicHistograms` corresponds to the `always_scrape_classic_histograms` field in the Prometheus configuration.
+     * scrapeClassicHistograms defines whether to scrape a classic histogram that is also exposed as a native histogram. It requires Prometheus &gt;= v2.45.0.<br><p> <br><p> Notice: `scrapeClassicHistograms` corresponds to the `always_scrape_classic_histograms` field in the Prometheus configuration.
      */
     @JsonProperty("scrapeClassicHistograms")
     public Boolean getScrapeClassicHistograms() {
@@ -433,7 +437,7 @@ public class PodMonitorSpec implements Editable<PodMonitorSpecBuilder>, Kubernet
     }
 
     /**
-     * Whether to scrape a classic histogram that is also exposed as a native histogram. It requires Prometheus &gt;= v2.45.0.<br><p> <br><p> Notice: `scrapeClassicHistograms` corresponds to the `always_scrape_classic_histograms` field in the Prometheus configuration.
+     * scrapeClassicHistograms defines whether to scrape a classic histogram that is also exposed as a native histogram. It requires Prometheus &gt;= v2.45.0.<br><p> <br><p> Notice: `scrapeClassicHistograms` corresponds to the `always_scrape_classic_histograms` field in the Prometheus configuration.
      */
     @JsonProperty("scrapeClassicHistograms")
     public void setScrapeClassicHistograms(Boolean scrapeClassicHistograms) {
@@ -441,7 +445,23 @@ public class PodMonitorSpec implements Editable<PodMonitorSpecBuilder>, Kubernet
     }
 
     /**
-     * `scrapeProtocols` defines the protocols to negotiate during a scrape. It tells clients the protocols supported by Prometheus in order of preference (from most to least preferred).<br><p> <br><p> If unset, Prometheus uses its default value.<br><p> <br><p> It requires Prometheus &gt;= v2.49.0.
+     * scrapeNativeHistograms defines whether to enable scraping of native histograms. It requires Prometheus &gt;= v3.8.0.
+     */
+    @JsonProperty("scrapeNativeHistograms")
+    public Boolean getScrapeNativeHistograms() {
+        return scrapeNativeHistograms;
+    }
+
+    /**
+     * scrapeNativeHistograms defines whether to enable scraping of native histograms. It requires Prometheus &gt;= v3.8.0.
+     */
+    @JsonProperty("scrapeNativeHistograms")
+    public void setScrapeNativeHistograms(Boolean scrapeNativeHistograms) {
+        this.scrapeNativeHistograms = scrapeNativeHistograms;
+    }
+
+    /**
+     * scrapeProtocols defines the protocols to negotiate during a scrape. It tells clients the protocols supported by Prometheus in order of preference (from most to least preferred).<br><p> <br><p> If unset, Prometheus uses its default value.<br><p> <br><p> It requires Prometheus &gt;= v2.49.0.
      */
     @JsonProperty("scrapeProtocols")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -450,7 +470,7 @@ public class PodMonitorSpec implements Editable<PodMonitorSpecBuilder>, Kubernet
     }
 
     /**
-     * `scrapeProtocols` defines the protocols to negotiate during a scrape. It tells clients the protocols supported by Prometheus in order of preference (from most to least preferred).<br><p> <br><p> If unset, Prometheus uses its default value.<br><p> <br><p> It requires Prometheus &gt;= v2.49.0.
+     * scrapeProtocols defines the protocols to negotiate during a scrape. It tells clients the protocols supported by Prometheus in order of preference (from most to least preferred).<br><p> <br><p> If unset, Prometheus uses its default value.<br><p> <br><p> It requires Prometheus &gt;= v2.49.0.
      */
     @JsonProperty("scrapeProtocols")
     public void setScrapeProtocols(List<String> scrapeProtocols) {
@@ -474,7 +494,7 @@ public class PodMonitorSpec implements Editable<PodMonitorSpecBuilder>, Kubernet
     }
 
     /**
-     * Mechanism used to select the endpoints to scrape. By default, the selection process relies on relabel configurations to filter the discovered targets. Alternatively, you can opt in for role selectors, which may offer better efficiency in large clusters. Which strategy is best for your use case needs to be carefully evaluated.<br><p> <br><p> It requires Prometheus &gt;= v2.17.0.
+     * selectorMechanism defines the mechanism used to select the endpoints to scrape. By default, the selection process relies on relabel configurations to filter the discovered targets. Alternatively, you can opt in for role selectors, which may offer better efficiency in large clusters. Which strategy is best for your use case needs to be carefully evaluated.<br><p> <br><p> It requires Prometheus &gt;= v2.17.0.
      */
     @JsonProperty("selectorMechanism")
     public String getSelectorMechanism() {
@@ -482,7 +502,7 @@ public class PodMonitorSpec implements Editable<PodMonitorSpecBuilder>, Kubernet
     }
 
     /**
-     * Mechanism used to select the endpoints to scrape. By default, the selection process relies on relabel configurations to filter the discovered targets. Alternatively, you can opt in for role selectors, which may offer better efficiency in large clusters. Which strategy is best for your use case needs to be carefully evaluated.<br><p> <br><p> It requires Prometheus &gt;= v2.17.0.
+     * selectorMechanism defines the mechanism used to select the endpoints to scrape. By default, the selection process relies on relabel configurations to filter the discovered targets. Alternatively, you can opt in for role selectors, which may offer better efficiency in large clusters. Which strategy is best for your use case needs to be carefully evaluated.<br><p> <br><p> It requires Prometheus &gt;= v2.17.0.
      */
     @JsonProperty("selectorMechanism")
     public void setSelectorMechanism(String selectorMechanism) {
@@ -490,7 +510,7 @@ public class PodMonitorSpec implements Editable<PodMonitorSpecBuilder>, Kubernet
     }
 
     /**
-     * `targetLimit` defines a limit on the number of scraped targets that will be accepted.
+     * targetLimit defines a limit on the number of scraped targets that will be accepted.
      */
     @JsonProperty("targetLimit")
     public Long getTargetLimit() {
@@ -498,7 +518,7 @@ public class PodMonitorSpec implements Editable<PodMonitorSpecBuilder>, Kubernet
     }
 
     /**
-     * `targetLimit` defines a limit on the number of scraped targets that will be accepted.
+     * targetLimit defines a limit on the number of scraped targets that will be accepted.
      */
     @JsonProperty("targetLimit")
     public void setTargetLimit(Long targetLimit) {

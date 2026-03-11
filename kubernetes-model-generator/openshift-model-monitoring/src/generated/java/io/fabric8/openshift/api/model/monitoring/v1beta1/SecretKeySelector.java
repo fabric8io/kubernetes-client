@@ -86,7 +86,7 @@ public class SecretKeySelector implements Editable<SecretKeySelectorBuilder>, Ku
     }
 
     /**
-     * The key of the secret to select from.  Must be a valid secret key.
+     * key defines the key of the secret to select from.  Must be a valid secret key.
      */
     @JsonProperty("key")
     public String getKey() {
@@ -94,7 +94,7 @@ public class SecretKeySelector implements Editable<SecretKeySelectorBuilder>, Ku
     }
 
     /**
-     * The key of the secret to select from.  Must be a valid secret key.
+     * key defines the key of the secret to select from.  Must be a valid secret key.
      */
     @JsonProperty("key")
     public void setKey(String key) {
@@ -102,7 +102,7 @@ public class SecretKeySelector implements Editable<SecretKeySelectorBuilder>, Ku
     }
 
     /**
-     * The name of the secret in the object's namespace to select from.
+     * name defines the name of the secret in the object's namespace to select from.
      */
     @JsonProperty("name")
     public String getName() {
@@ -110,7 +110,7 @@ public class SecretKeySelector implements Editable<SecretKeySelectorBuilder>, Ku
     }
 
     /**
-     * The name of the secret in the object's namespace to select from.
+     * name defines the name of the secret in the object's namespace to select from.
      */
     @JsonProperty("name")
     public void setName(String name) {

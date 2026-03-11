@@ -108,7 +108,7 @@ public class ProbeTargetIngress implements Editable<ProbeTargetIngressBuilder>, 
     }
 
     /**
-     * RelabelConfigs to apply to the label set of the target before it gets scraped. The original ingress address is available via the `__tmp_prometheus_ingress_address` label. It can be used to customize the probed URL. The original scrape job's name is available via the `__tmp_prometheus_job_name` label. More info: https://prometheus.io/docs/prometheus/latest/configuration/configuration/#relabel_config
+     * relabelingConfigs to apply to the label set of the target before it gets scraped. The original ingress address is available via the `__tmp_prometheus_ingress_address` label. It can be used to customize the probed URL. The original scrape job's name is available via the `__tmp_prometheus_job_name` label. More info: https://prometheus.io/docs/prometheus/latest/configuration/configuration/#relabel_config
      */
     @JsonProperty("relabelingConfigs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -117,7 +117,7 @@ public class ProbeTargetIngress implements Editable<ProbeTargetIngressBuilder>, 
     }
 
     /**
-     * RelabelConfigs to apply to the label set of the target before it gets scraped. The original ingress address is available via the `__tmp_prometheus_ingress_address` label. It can be used to customize the probed URL. The original scrape job's name is available via the `__tmp_prometheus_job_name` label. More info: https://prometheus.io/docs/prometheus/latest/configuration/configuration/#relabel_config
+     * relabelingConfigs to apply to the label set of the target before it gets scraped. The original ingress address is available via the `__tmp_prometheus_ingress_address` label. It can be used to customize the probed URL. The original scrape job's name is available via the `__tmp_prometheus_job_name` label. More info: https://prometheus.io/docs/prometheus/latest/configuration/configuration/#relabel_config
      */
     @JsonProperty("relabelingConfigs")
     public void setRelabelingConfigs(List<RelabelConfig> relabelingConfigs) {

@@ -85,7 +85,7 @@ public class Argument implements Editable<ArgumentBuilder>, KubernetesResource
     }
 
     /**
-     * Name of the argument, e.g. "scrape.discovery-reload-interval".
+     * name of the argument, e.g. "scrape.discovery-reload-interval".
      */
     @JsonProperty("name")
     public String getName() {
@@ -93,7 +93,7 @@ public class Argument implements Editable<ArgumentBuilder>, KubernetesResource
     }
 
     /**
-     * Name of the argument, e.g. "scrape.discovery-reload-interval".
+     * name of the argument, e.g. "scrape.discovery-reload-interval".
      */
     @JsonProperty("name")
     public void setName(String name) {
@@ -101,7 +101,7 @@ public class Argument implements Editable<ArgumentBuilder>, KubernetesResource
     }
 
     /**
-     * Argument value, e.g. 30s. Can be empty for name-only arguments (e.g. --storage.tsdb.no-lockfile)
+     * value defines the argument value, e.g. 30s. Can be empty for name-only arguments (e.g. --storage.tsdb.no-lockfile)
      */
     @JsonProperty("value")
     public String getValue() {
@@ -109,7 +109,7 @@ public class Argument implements Editable<ArgumentBuilder>, KubernetesResource
     }
 
     /**
-     * Argument value, e.g. 30s. Can be empty for name-only arguments (e.g. --storage.tsdb.no-lockfile)
+     * value defines the argument value, e.g. 30s. Can be empty for name-only arguments (e.g. --storage.tsdb.no-lockfile)
      */
     @JsonProperty("value")
     public void setValue(String value) {

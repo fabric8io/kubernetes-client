@@ -57,9 +57,11 @@ import lombok.experimental.Accessors;
     "sampleLimit",
     "scrapeClass",
     "scrapeClassicHistograms",
+    "scrapeNativeHistograms",
     "scrapeProtocols",
     "selector",
     "selectorMechanism",
+    "serviceDiscoveryRole",
     "targetLabels",
     "targetLimit"
 })
@@ -124,6 +126,8 @@ public class ServiceMonitorSpec implements Editable<ServiceMonitorSpecBuilder>, 
     private String scrapeClass;
     @JsonProperty("scrapeClassicHistograms")
     private Boolean scrapeClassicHistograms;
+    @JsonProperty("scrapeNativeHistograms")
+    private Boolean scrapeNativeHistograms;
     @JsonProperty("scrapeProtocols")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> scrapeProtocols = new ArrayList<>();
@@ -131,6 +135,8 @@ public class ServiceMonitorSpec implements Editable<ServiceMonitorSpecBuilder>, 
     private LabelSelector selector;
     @JsonProperty("selectorMechanism")
     private String selectorMechanism;
+    @JsonProperty("serviceDiscoveryRole")
+    private String serviceDiscoveryRole;
     @JsonProperty("targetLabels")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> targetLabels = new ArrayList<>();
@@ -145,7 +151,7 @@ public class ServiceMonitorSpec implements Editable<ServiceMonitorSpecBuilder>, 
     public ServiceMonitorSpec() {
     }
 
-    public ServiceMonitorSpec(AttachMetadata attachMetadata, String bodySizeLimit, Boolean convertClassicHistogramsToNHCB, List<Endpoint> endpoints, String fallbackScrapeProtocol, String jobLabel, Long keepDroppedTargets, Long labelLimit, Long labelNameLengthLimit, Long labelValueLengthLimit, NamespaceSelector namespaceSelector, Long nativeHistogramBucketLimit, Quantity nativeHistogramMinBucketFactor, List<String> podTargetLabels, Long sampleLimit, String scrapeClass, Boolean scrapeClassicHistograms, List<String> scrapeProtocols, LabelSelector selector, String selectorMechanism, List<String> targetLabels, Long targetLimit) {
+    public ServiceMonitorSpec(AttachMetadata attachMetadata, String bodySizeLimit, Boolean convertClassicHistogramsToNHCB, List<Endpoint> endpoints, String fallbackScrapeProtocol, String jobLabel, Long keepDroppedTargets, Long labelLimit, Long labelNameLengthLimit, Long labelValueLengthLimit, NamespaceSelector namespaceSelector, Long nativeHistogramBucketLimit, Quantity nativeHistogramMinBucketFactor, List<String> podTargetLabels, Long sampleLimit, String scrapeClass, Boolean scrapeClassicHistograms, Boolean scrapeNativeHistograms, List<String> scrapeProtocols, LabelSelector selector, String selectorMechanism, String serviceDiscoveryRole, List<String> targetLabels, Long targetLimit) {
         super();
         this.attachMetadata = attachMetadata;
         this.bodySizeLimit = bodySizeLimit;
@@ -164,9 +170,11 @@ public class ServiceMonitorSpec implements Editable<ServiceMonitorSpecBuilder>, 
         this.sampleLimit = sampleLimit;
         this.scrapeClass = scrapeClass;
         this.scrapeClassicHistograms = scrapeClassicHistograms;
+        this.scrapeNativeHistograms = scrapeNativeHistograms;
         this.scrapeProtocols = scrapeProtocols;
         this.selector = selector;
         this.selectorMechanism = selectorMechanism;
+        this.serviceDiscoveryRole = serviceDiscoveryRole;
         this.targetLabels = targetLabels;
         this.targetLimit = targetLimit;
     }
@@ -188,7 +196,7 @@ public class ServiceMonitorSpec implements Editable<ServiceMonitorSpecBuilder>, 
     }
 
     /**
-     * When defined, bodySizeLimit specifies a job level limit on the size of uncompressed response body that will be accepted by Prometheus.<br><p> <br><p> It requires Prometheus &gt;= v2.28.0.
+     * bodySizeLimit when defined, bodySizeLimit specifies a job level limit on the size of uncompressed response body that will be accepted by Prometheus.<br><p> <br><p> It requires Prometheus &gt;= v2.28.0.
      */
     @JsonProperty("bodySizeLimit")
     public String getBodySizeLimit() {
@@ -196,7 +204,7 @@ public class ServiceMonitorSpec implements Editable<ServiceMonitorSpecBuilder>, 
     }
 
     /**
-     * When defined, bodySizeLimit specifies a job level limit on the size of uncompressed response body that will be accepted by Prometheus.<br><p> <br><p> It requires Prometheus &gt;= v2.28.0.
+     * bodySizeLimit when defined, bodySizeLimit specifies a job level limit on the size of uncompressed response body that will be accepted by Prometheus.<br><p> <br><p> It requires Prometheus &gt;= v2.28.0.
      */
     @JsonProperty("bodySizeLimit")
     public void setBodySizeLimit(String bodySizeLimit) {
@@ -204,7 +212,7 @@ public class ServiceMonitorSpec implements Editable<ServiceMonitorSpecBuilder>, 
     }
 
     /**
-     * Whether to convert all scraped classic histograms into a native histogram with custom buckets. It requires Prometheus &gt;= v3.0.0.
+     * convertClassicHistogramsToNHCB defines whether to convert all scraped classic histograms into a native histogram with custom buckets. It requires Prometheus &gt;= v3.0.0.
      */
     @JsonProperty("convertClassicHistogramsToNHCB")
     public Boolean getConvertClassicHistogramsToNHCB() {
@@ -212,7 +220,7 @@ public class ServiceMonitorSpec implements Editable<ServiceMonitorSpecBuilder>, 
     }
 
     /**
-     * Whether to convert all scraped classic histograms into a native histogram with custom buckets. It requires Prometheus &gt;= v3.0.0.
+     * convertClassicHistogramsToNHCB defines whether to convert all scraped classic histograms into a native histogram with custom buckets. It requires Prometheus &gt;= v3.0.0.
      */
     @JsonProperty("convertClassicHistogramsToNHCB")
     public void setConvertClassicHistogramsToNHCB(Boolean convertClassicHistogramsToNHCB) {
@@ -220,7 +228,7 @@ public class ServiceMonitorSpec implements Editable<ServiceMonitorSpecBuilder>, 
     }
 
     /**
-     * List of endpoints part of this ServiceMonitor. Defines how to scrape metrics from Kubernetes [Endpoints](https://kubernetes.io/docs/concepts/services-networking/service/#endpoints) objects. In most cases, an Endpoints object is backed by a Kubernetes [Service](https://kubernetes.io/docs/concepts/services-networking/service/) object with the same name and labels.
+     * endpoints defines the list of endpoints part of this ServiceMonitor. Defines how to scrape metrics from Kubernetes [Endpoints](https://kubernetes.io/docs/concepts/services-networking/service/#endpoints) objects. In most cases, an Endpoints object is backed by a Kubernetes [Service](https://kubernetes.io/docs/concepts/services-networking/service/) object with the same name and labels.
      */
     @JsonProperty("endpoints")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -229,7 +237,7 @@ public class ServiceMonitorSpec implements Editable<ServiceMonitorSpecBuilder>, 
     }
 
     /**
-     * List of endpoints part of this ServiceMonitor. Defines how to scrape metrics from Kubernetes [Endpoints](https://kubernetes.io/docs/concepts/services-networking/service/#endpoints) objects. In most cases, an Endpoints object is backed by a Kubernetes [Service](https://kubernetes.io/docs/concepts/services-networking/service/) object with the same name and labels.
+     * endpoints defines the list of endpoints part of this ServiceMonitor. Defines how to scrape metrics from Kubernetes [Endpoints](https://kubernetes.io/docs/concepts/services-networking/service/#endpoints) objects. In most cases, an Endpoints object is backed by a Kubernetes [Service](https://kubernetes.io/docs/concepts/services-networking/service/) object with the same name and labels.
      */
     @JsonProperty("endpoints")
     public void setEndpoints(List<Endpoint> endpoints) {
@@ -237,7 +245,7 @@ public class ServiceMonitorSpec implements Editable<ServiceMonitorSpecBuilder>, 
     }
 
     /**
-     * The protocol to use if a scrape returns blank, unparseable, or otherwise invalid Content-Type.<br><p> <br><p> It requires Prometheus &gt;= v3.0.0.
+     * fallbackScrapeProtocol defines the protocol to use if a scrape returns blank, unparseable, or otherwise invalid Content-Type.<br><p> <br><p> It requires Prometheus &gt;= v3.0.0.
      */
     @JsonProperty("fallbackScrapeProtocol")
     public String getFallbackScrapeProtocol() {
@@ -245,7 +253,7 @@ public class ServiceMonitorSpec implements Editable<ServiceMonitorSpecBuilder>, 
     }
 
     /**
-     * The protocol to use if a scrape returns blank, unparseable, or otherwise invalid Content-Type.<br><p> <br><p> It requires Prometheus &gt;= v3.0.0.
+     * fallbackScrapeProtocol defines the protocol to use if a scrape returns blank, unparseable, or otherwise invalid Content-Type.<br><p> <br><p> It requires Prometheus &gt;= v3.0.0.
      */
     @JsonProperty("fallbackScrapeProtocol")
     public void setFallbackScrapeProtocol(String fallbackScrapeProtocol) {
@@ -253,7 +261,7 @@ public class ServiceMonitorSpec implements Editable<ServiceMonitorSpecBuilder>, 
     }
 
     /**
-     * `jobLabel` selects the label from the associated Kubernetes `Service` object which will be used as the `job` label for all metrics.<br><p> <br><p> For example if `jobLabel` is set to `foo` and the Kubernetes `Service` object is labeled with `foo: bar`, then Prometheus adds the `job="bar"` label to all ingested metrics.<br><p> <br><p> If the value of this field is empty or if the label doesn't exist for the given Service, the `job` label of the metrics defaults to the name of the associated Kubernetes `Service`.
+     * jobLabel selects the label from the associated Kubernetes `Service` object which will be used as the `job` label for all metrics.<br><p> <br><p> For example if `jobLabel` is set to `foo` and the Kubernetes `Service` object is labeled with `foo: bar`, then Prometheus adds the `job="bar"` label to all ingested metrics.<br><p> <br><p> If the value of this field is empty or if the label doesn't exist for the given Service, the `job` label of the metrics defaults to the name of the associated Kubernetes `Service`.
      */
     @JsonProperty("jobLabel")
     public String getJobLabel() {
@@ -261,7 +269,7 @@ public class ServiceMonitorSpec implements Editable<ServiceMonitorSpecBuilder>, 
     }
 
     /**
-     * `jobLabel` selects the label from the associated Kubernetes `Service` object which will be used as the `job` label for all metrics.<br><p> <br><p> For example if `jobLabel` is set to `foo` and the Kubernetes `Service` object is labeled with `foo: bar`, then Prometheus adds the `job="bar"` label to all ingested metrics.<br><p> <br><p> If the value of this field is empty or if the label doesn't exist for the given Service, the `job` label of the metrics defaults to the name of the associated Kubernetes `Service`.
+     * jobLabel selects the label from the associated Kubernetes `Service` object which will be used as the `job` label for all metrics.<br><p> <br><p> For example if `jobLabel` is set to `foo` and the Kubernetes `Service` object is labeled with `foo: bar`, then Prometheus adds the `job="bar"` label to all ingested metrics.<br><p> <br><p> If the value of this field is empty or if the label doesn't exist for the given Service, the `job` label of the metrics defaults to the name of the associated Kubernetes `Service`.
      */
     @JsonProperty("jobLabel")
     public void setJobLabel(String jobLabel) {
@@ -269,7 +277,7 @@ public class ServiceMonitorSpec implements Editable<ServiceMonitorSpecBuilder>, 
     }
 
     /**
-     * Per-scrape limit on the number of targets dropped by relabeling that will be kept in memory. 0 means no limit.<br><p> <br><p> It requires Prometheus &gt;= v2.47.0.
+     * keepDroppedTargets defines the per-scrape limit on the number of targets dropped by relabeling that will be kept in memory. 0 means no limit.<br><p> <br><p> It requires Prometheus &gt;= v2.47.0.
      */
     @JsonProperty("keepDroppedTargets")
     public Long getKeepDroppedTargets() {
@@ -277,7 +285,7 @@ public class ServiceMonitorSpec implements Editable<ServiceMonitorSpecBuilder>, 
     }
 
     /**
-     * Per-scrape limit on the number of targets dropped by relabeling that will be kept in memory. 0 means no limit.<br><p> <br><p> It requires Prometheus &gt;= v2.47.0.
+     * keepDroppedTargets defines the per-scrape limit on the number of targets dropped by relabeling that will be kept in memory. 0 means no limit.<br><p> <br><p> It requires Prometheus &gt;= v2.47.0.
      */
     @JsonProperty("keepDroppedTargets")
     public void setKeepDroppedTargets(Long keepDroppedTargets) {
@@ -285,7 +293,7 @@ public class ServiceMonitorSpec implements Editable<ServiceMonitorSpecBuilder>, 
     }
 
     /**
-     * Per-scrape limit on number of labels that will be accepted for a sample.<br><p> <br><p> It requires Prometheus &gt;= v2.27.0.
+     * labelLimit defines the per-scrape limit on number of labels that will be accepted for a sample.<br><p> <br><p> It requires Prometheus &gt;= v2.27.0.
      */
     @JsonProperty("labelLimit")
     public Long getLabelLimit() {
@@ -293,7 +301,7 @@ public class ServiceMonitorSpec implements Editable<ServiceMonitorSpecBuilder>, 
     }
 
     /**
-     * Per-scrape limit on number of labels that will be accepted for a sample.<br><p> <br><p> It requires Prometheus &gt;= v2.27.0.
+     * labelLimit defines the per-scrape limit on number of labels that will be accepted for a sample.<br><p> <br><p> It requires Prometheus &gt;= v2.27.0.
      */
     @JsonProperty("labelLimit")
     public void setLabelLimit(Long labelLimit) {
@@ -301,7 +309,7 @@ public class ServiceMonitorSpec implements Editable<ServiceMonitorSpecBuilder>, 
     }
 
     /**
-     * Per-scrape limit on length of labels name that will be accepted for a sample.<br><p> <br><p> It requires Prometheus &gt;= v2.27.0.
+     * labelNameLengthLimit defines the per-scrape limit on length of labels name that will be accepted for a sample.<br><p> <br><p> It requires Prometheus &gt;= v2.27.0.
      */
     @JsonProperty("labelNameLengthLimit")
     public Long getLabelNameLengthLimit() {
@@ -309,7 +317,7 @@ public class ServiceMonitorSpec implements Editable<ServiceMonitorSpecBuilder>, 
     }
 
     /**
-     * Per-scrape limit on length of labels name that will be accepted for a sample.<br><p> <br><p> It requires Prometheus &gt;= v2.27.0.
+     * labelNameLengthLimit defines the per-scrape limit on length of labels name that will be accepted for a sample.<br><p> <br><p> It requires Prometheus &gt;= v2.27.0.
      */
     @JsonProperty("labelNameLengthLimit")
     public void setLabelNameLengthLimit(Long labelNameLengthLimit) {
@@ -317,7 +325,7 @@ public class ServiceMonitorSpec implements Editable<ServiceMonitorSpecBuilder>, 
     }
 
     /**
-     * Per-scrape limit on length of labels value that will be accepted for a sample.<br><p> <br><p> It requires Prometheus &gt;= v2.27.0.
+     * labelValueLengthLimit defines the per-scrape limit on length of labels value that will be accepted for a sample.<br><p> <br><p> It requires Prometheus &gt;= v2.27.0.
      */
     @JsonProperty("labelValueLengthLimit")
     public Long getLabelValueLengthLimit() {
@@ -325,7 +333,7 @@ public class ServiceMonitorSpec implements Editable<ServiceMonitorSpecBuilder>, 
     }
 
     /**
-     * Per-scrape limit on length of labels value that will be accepted for a sample.<br><p> <br><p> It requires Prometheus &gt;= v2.27.0.
+     * labelValueLengthLimit defines the per-scrape limit on length of labels value that will be accepted for a sample.<br><p> <br><p> It requires Prometheus &gt;= v2.27.0.
      */
     @JsonProperty("labelValueLengthLimit")
     public void setLabelValueLengthLimit(Long labelValueLengthLimit) {
@@ -349,7 +357,7 @@ public class ServiceMonitorSpec implements Editable<ServiceMonitorSpecBuilder>, 
     }
 
     /**
-     * If there are more than this many buckets in a native histogram, buckets will be merged to stay within the limit. It requires Prometheus &gt;= v2.45.0.
+     * nativeHistogramBucketLimit defines ff there are more than this many buckets in a native histogram, buckets will be merged to stay within the limit. It requires Prometheus &gt;= v2.45.0.
      */
     @JsonProperty("nativeHistogramBucketLimit")
     public Long getNativeHistogramBucketLimit() {
@@ -357,7 +365,7 @@ public class ServiceMonitorSpec implements Editable<ServiceMonitorSpecBuilder>, 
     }
 
     /**
-     * If there are more than this many buckets in a native histogram, buckets will be merged to stay within the limit. It requires Prometheus &gt;= v2.45.0.
+     * nativeHistogramBucketLimit defines ff there are more than this many buckets in a native histogram, buckets will be merged to stay within the limit. It requires Prometheus &gt;= v2.45.0.
      */
     @JsonProperty("nativeHistogramBucketLimit")
     public void setNativeHistogramBucketLimit(Long nativeHistogramBucketLimit) {
@@ -381,7 +389,7 @@ public class ServiceMonitorSpec implements Editable<ServiceMonitorSpecBuilder>, 
     }
 
     /**
-     * `podTargetLabels` defines the labels which are transferred from the associated Kubernetes `Pod` object onto the ingested metrics.
+     * podTargetLabels defines the labels which are transferred from the associated Kubernetes `Pod` object onto the ingested metrics.
      */
     @JsonProperty("podTargetLabels")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -390,7 +398,7 @@ public class ServiceMonitorSpec implements Editable<ServiceMonitorSpecBuilder>, 
     }
 
     /**
-     * `podTargetLabels` defines the labels which are transferred from the associated Kubernetes `Pod` object onto the ingested metrics.
+     * podTargetLabels defines the labels which are transferred from the associated Kubernetes `Pod` object onto the ingested metrics.
      */
     @JsonProperty("podTargetLabels")
     public void setPodTargetLabels(List<String> podTargetLabels) {
@@ -398,7 +406,7 @@ public class ServiceMonitorSpec implements Editable<ServiceMonitorSpecBuilder>, 
     }
 
     /**
-     * `sampleLimit` defines a per-scrape limit on the number of scraped samples that will be accepted.
+     * sampleLimit defines a per-scrape limit on the number of scraped samples that will be accepted.
      */
     @JsonProperty("sampleLimit")
     public Long getSampleLimit() {
@@ -406,7 +414,7 @@ public class ServiceMonitorSpec implements Editable<ServiceMonitorSpecBuilder>, 
     }
 
     /**
-     * `sampleLimit` defines a per-scrape limit on the number of scraped samples that will be accepted.
+     * sampleLimit defines a per-scrape limit on the number of scraped samples that will be accepted.
      */
     @JsonProperty("sampleLimit")
     public void setSampleLimit(Long sampleLimit) {
@@ -414,7 +422,7 @@ public class ServiceMonitorSpec implements Editable<ServiceMonitorSpecBuilder>, 
     }
 
     /**
-     * The scrape class to apply.
+     * scrapeClass defines the scrape class to apply.
      */
     @JsonProperty("scrapeClass")
     public String getScrapeClass() {
@@ -422,7 +430,7 @@ public class ServiceMonitorSpec implements Editable<ServiceMonitorSpecBuilder>, 
     }
 
     /**
-     * The scrape class to apply.
+     * scrapeClass defines the scrape class to apply.
      */
     @JsonProperty("scrapeClass")
     public void setScrapeClass(String scrapeClass) {
@@ -430,7 +438,7 @@ public class ServiceMonitorSpec implements Editable<ServiceMonitorSpecBuilder>, 
     }
 
     /**
-     * Whether to scrape a classic histogram that is also exposed as a native histogram. It requires Prometheus &gt;= v2.45.0.<br><p> <br><p> Notice: `scrapeClassicHistograms` corresponds to the `always_scrape_classic_histograms` field in the Prometheus configuration.
+     * scrapeClassicHistograms defines whether to scrape a classic histogram that is also exposed as a native histogram. It requires Prometheus &gt;= v2.45.0.<br><p> <br><p> Notice: `scrapeClassicHistograms` corresponds to the `always_scrape_classic_histograms` field in the Prometheus configuration.
      */
     @JsonProperty("scrapeClassicHistograms")
     public Boolean getScrapeClassicHistograms() {
@@ -438,7 +446,7 @@ public class ServiceMonitorSpec implements Editable<ServiceMonitorSpecBuilder>, 
     }
 
     /**
-     * Whether to scrape a classic histogram that is also exposed as a native histogram. It requires Prometheus &gt;= v2.45.0.<br><p> <br><p> Notice: `scrapeClassicHistograms` corresponds to the `always_scrape_classic_histograms` field in the Prometheus configuration.
+     * scrapeClassicHistograms defines whether to scrape a classic histogram that is also exposed as a native histogram. It requires Prometheus &gt;= v2.45.0.<br><p> <br><p> Notice: `scrapeClassicHistograms` corresponds to the `always_scrape_classic_histograms` field in the Prometheus configuration.
      */
     @JsonProperty("scrapeClassicHistograms")
     public void setScrapeClassicHistograms(Boolean scrapeClassicHistograms) {
@@ -446,7 +454,23 @@ public class ServiceMonitorSpec implements Editable<ServiceMonitorSpecBuilder>, 
     }
 
     /**
-     * `scrapeProtocols` defines the protocols to negotiate during a scrape. It tells clients the protocols supported by Prometheus in order of preference (from most to least preferred).<br><p> <br><p> If unset, Prometheus uses its default value.<br><p> <br><p> It requires Prometheus &gt;= v2.49.0.
+     * scrapeNativeHistograms defines whether to enable scraping of native histograms. It requires Prometheus &gt;= v3.8.0.
+     */
+    @JsonProperty("scrapeNativeHistograms")
+    public Boolean getScrapeNativeHistograms() {
+        return scrapeNativeHistograms;
+    }
+
+    /**
+     * scrapeNativeHistograms defines whether to enable scraping of native histograms. It requires Prometheus &gt;= v3.8.0.
+     */
+    @JsonProperty("scrapeNativeHistograms")
+    public void setScrapeNativeHistograms(Boolean scrapeNativeHistograms) {
+        this.scrapeNativeHistograms = scrapeNativeHistograms;
+    }
+
+    /**
+     * scrapeProtocols defines the protocols to negotiate during a scrape. It tells clients the protocols supported by Prometheus in order of preference (from most to least preferred).<br><p> <br><p> If unset, Prometheus uses its default value.<br><p> <br><p> It requires Prometheus &gt;= v2.49.0.
      */
     @JsonProperty("scrapeProtocols")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -455,7 +479,7 @@ public class ServiceMonitorSpec implements Editable<ServiceMonitorSpecBuilder>, 
     }
 
     /**
-     * `scrapeProtocols` defines the protocols to negotiate during a scrape. It tells clients the protocols supported by Prometheus in order of preference (from most to least preferred).<br><p> <br><p> If unset, Prometheus uses its default value.<br><p> <br><p> It requires Prometheus &gt;= v2.49.0.
+     * scrapeProtocols defines the protocols to negotiate during a scrape. It tells clients the protocols supported by Prometheus in order of preference (from most to least preferred).<br><p> <br><p> If unset, Prometheus uses its default value.<br><p> <br><p> It requires Prometheus &gt;= v2.49.0.
      */
     @JsonProperty("scrapeProtocols")
     public void setScrapeProtocols(List<String> scrapeProtocols) {
@@ -479,7 +503,7 @@ public class ServiceMonitorSpec implements Editable<ServiceMonitorSpecBuilder>, 
     }
 
     /**
-     * Mechanism used to select the endpoints to scrape. By default, the selection process relies on relabel configurations to filter the discovered targets. Alternatively, you can opt in for role selectors, which may offer better efficiency in large clusters. Which strategy is best for your use case needs to be carefully evaluated.<br><p> <br><p> It requires Prometheus &gt;= v2.17.0.
+     * selectorMechanism defines the mechanism used to select the endpoints to scrape. By default, the selection process relies on relabel configurations to filter the discovered targets. Alternatively, you can opt in for role selectors, which may offer better efficiency in large clusters. Which strategy is best for your use case needs to be carefully evaluated.<br><p> <br><p> It requires Prometheus &gt;= v2.17.0.
      */
     @JsonProperty("selectorMechanism")
     public String getSelectorMechanism() {
@@ -487,7 +511,7 @@ public class ServiceMonitorSpec implements Editable<ServiceMonitorSpecBuilder>, 
     }
 
     /**
-     * Mechanism used to select the endpoints to scrape. By default, the selection process relies on relabel configurations to filter the discovered targets. Alternatively, you can opt in for role selectors, which may offer better efficiency in large clusters. Which strategy is best for your use case needs to be carefully evaluated.<br><p> <br><p> It requires Prometheus &gt;= v2.17.0.
+     * selectorMechanism defines the mechanism used to select the endpoints to scrape. By default, the selection process relies on relabel configurations to filter the discovered targets. Alternatively, you can opt in for role selectors, which may offer better efficiency in large clusters. Which strategy is best for your use case needs to be carefully evaluated.<br><p> <br><p> It requires Prometheus &gt;= v2.17.0.
      */
     @JsonProperty("selectorMechanism")
     public void setSelectorMechanism(String selectorMechanism) {
@@ -495,7 +519,23 @@ public class ServiceMonitorSpec implements Editable<ServiceMonitorSpecBuilder>, 
     }
 
     /**
-     * `targetLabels` defines the labels which are transferred from the associated Kubernetes `Service` object onto the ingested metrics.
+     * serviceDiscoveryRole defines the service discovery role used to discover targets.<br><p> <br><p> If set, the value should be either "Endpoints" or "EndpointSlice". Otherwise it defaults to the value defined in the Prometheus/PrometheusAgent resource.
+     */
+    @JsonProperty("serviceDiscoveryRole")
+    public String getServiceDiscoveryRole() {
+        return serviceDiscoveryRole;
+    }
+
+    /**
+     * serviceDiscoveryRole defines the service discovery role used to discover targets.<br><p> <br><p> If set, the value should be either "Endpoints" or "EndpointSlice". Otherwise it defaults to the value defined in the Prometheus/PrometheusAgent resource.
+     */
+    @JsonProperty("serviceDiscoveryRole")
+    public void setServiceDiscoveryRole(String serviceDiscoveryRole) {
+        this.serviceDiscoveryRole = serviceDiscoveryRole;
+    }
+
+    /**
+     * targetLabels defines the labels which are transferred from the associated Kubernetes `Service` object onto the ingested metrics.
      */
     @JsonProperty("targetLabels")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -504,7 +544,7 @@ public class ServiceMonitorSpec implements Editable<ServiceMonitorSpecBuilder>, 
     }
 
     /**
-     * `targetLabels` defines the labels which are transferred from the associated Kubernetes `Service` object onto the ingested metrics.
+     * targetLabels defines the labels which are transferred from the associated Kubernetes `Service` object onto the ingested metrics.
      */
     @JsonProperty("targetLabels")
     public void setTargetLabels(List<String> targetLabels) {
@@ -512,7 +552,7 @@ public class ServiceMonitorSpec implements Editable<ServiceMonitorSpecBuilder>, 
     }
 
     /**
-     * `targetLimit` defines a limit on the number of scraped targets that will be accepted.
+     * targetLimit defines a limit on the number of scraped targets that will be accepted.
      */
     @JsonProperty("targetLimit")
     public Long getTargetLimit() {
@@ -520,7 +560,7 @@ public class ServiceMonitorSpec implements Editable<ServiceMonitorSpecBuilder>, 
     }
 
     /**
-     * `targetLimit` defines a limit on the number of scraped targets that will be accepted.
+     * targetLimit defines a limit on the number of scraped targets that will be accepted.
      */
     @JsonProperty("targetLimit")
     public void setTargetLimit(Long targetLimit) {

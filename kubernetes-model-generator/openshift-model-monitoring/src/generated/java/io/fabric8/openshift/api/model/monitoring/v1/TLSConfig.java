@@ -33,7 +33,7 @@ import lombok.ToString;
 import lombok.experimental.Accessors;
 
 /**
- * TLSConfig extends the safe TLS configuration with file parameters.
+ * TLSConfig defines full TLS configuration.
  */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -118,7 +118,7 @@ public class TLSConfig implements Editable<TLSConfigBuilder>, KubernetesResource
     }
 
     /**
-     * TLSConfig extends the safe TLS configuration with file parameters.
+     * TLSConfig defines full TLS configuration.
      */
     @JsonProperty("ca")
     public SecretOrConfigMap getCa() {
@@ -126,7 +126,7 @@ public class TLSConfig implements Editable<TLSConfigBuilder>, KubernetesResource
     }
 
     /**
-     * TLSConfig extends the safe TLS configuration with file parameters.
+     * TLSConfig defines full TLS configuration.
      */
     @JsonProperty("ca")
     public void setCa(SecretOrConfigMap ca) {
@@ -134,7 +134,7 @@ public class TLSConfig implements Editable<TLSConfigBuilder>, KubernetesResource
     }
 
     /**
-     * Path to the CA cert in the Prometheus container to use for the targets.
+     * caFile defines the path to the CA cert in the Prometheus container to use for the targets.
      */
     @JsonProperty("caFile")
     public String getCaFile() {
@@ -142,7 +142,7 @@ public class TLSConfig implements Editable<TLSConfigBuilder>, KubernetesResource
     }
 
     /**
-     * Path to the CA cert in the Prometheus container to use for the targets.
+     * caFile defines the path to the CA cert in the Prometheus container to use for the targets.
      */
     @JsonProperty("caFile")
     public void setCaFile(String caFile) {
@@ -150,7 +150,7 @@ public class TLSConfig implements Editable<TLSConfigBuilder>, KubernetesResource
     }
 
     /**
-     * TLSConfig extends the safe TLS configuration with file parameters.
+     * TLSConfig defines full TLS configuration.
      */
     @JsonProperty("cert")
     public SecretOrConfigMap getCert() {
@@ -158,7 +158,7 @@ public class TLSConfig implements Editable<TLSConfigBuilder>, KubernetesResource
     }
 
     /**
-     * TLSConfig extends the safe TLS configuration with file parameters.
+     * TLSConfig defines full TLS configuration.
      */
     @JsonProperty("cert")
     public void setCert(SecretOrConfigMap cert) {
@@ -166,7 +166,7 @@ public class TLSConfig implements Editable<TLSConfigBuilder>, KubernetesResource
     }
 
     /**
-     * Path to the client cert file in the Prometheus container for the targets.
+     * certFile defines the path to the client cert file in the Prometheus container for the targets.
      */
     @JsonProperty("certFile")
     public String getCertFile() {
@@ -174,7 +174,7 @@ public class TLSConfig implements Editable<TLSConfigBuilder>, KubernetesResource
     }
 
     /**
-     * Path to the client cert file in the Prometheus container for the targets.
+     * certFile defines the path to the client cert file in the Prometheus container for the targets.
      */
     @JsonProperty("certFile")
     public void setCertFile(String certFile) {
@@ -182,7 +182,7 @@ public class TLSConfig implements Editable<TLSConfigBuilder>, KubernetesResource
     }
 
     /**
-     * Disable target certificate validation.
+     * insecureSkipVerify defines how to disable target certificate validation.
      */
     @JsonProperty("insecureSkipVerify")
     public Boolean getInsecureSkipVerify() {
@@ -190,7 +190,7 @@ public class TLSConfig implements Editable<TLSConfigBuilder>, KubernetesResource
     }
 
     /**
-     * Disable target certificate validation.
+     * insecureSkipVerify defines how to disable target certificate validation.
      */
     @JsonProperty("insecureSkipVerify")
     public void setInsecureSkipVerify(Boolean insecureSkipVerify) {
@@ -198,7 +198,7 @@ public class TLSConfig implements Editable<TLSConfigBuilder>, KubernetesResource
     }
 
     /**
-     * Path to the client key file in the Prometheus container for the targets.
+     * keyFile defines the path to the client key file in the Prometheus container for the targets.
      */
     @JsonProperty("keyFile")
     public String getKeyFile() {
@@ -206,7 +206,7 @@ public class TLSConfig implements Editable<TLSConfigBuilder>, KubernetesResource
     }
 
     /**
-     * Path to the client key file in the Prometheus container for the targets.
+     * keyFile defines the path to the client key file in the Prometheus container for the targets.
      */
     @JsonProperty("keyFile")
     public void setKeyFile(String keyFile) {
@@ -214,7 +214,7 @@ public class TLSConfig implements Editable<TLSConfigBuilder>, KubernetesResource
     }
 
     /**
-     * TLSConfig extends the safe TLS configuration with file parameters.
+     * TLSConfig defines full TLS configuration.
      */
     @JsonProperty("keySecret")
     public SecretKeySelector getKeySecret() {
@@ -222,7 +222,7 @@ public class TLSConfig implements Editable<TLSConfigBuilder>, KubernetesResource
     }
 
     /**
-     * TLSConfig extends the safe TLS configuration with file parameters.
+     * TLSConfig defines full TLS configuration.
      */
     @JsonProperty("keySecret")
     public void setKeySecret(SecretKeySelector keySecret) {
@@ -230,7 +230,7 @@ public class TLSConfig implements Editable<TLSConfigBuilder>, KubernetesResource
     }
 
     /**
-     * Maximum acceptable TLS version.<br><p> <br><p> It requires Prometheus &gt;= v2.41.0 or Thanos &gt;= v0.31.0.
+     * maxVersion defines the maximum acceptable TLS version.<br><p> <br><p> It requires Prometheus &gt;= v2.41.0 or Thanos &gt;= v0.31.0.
      */
     @JsonProperty("maxVersion")
     public String getMaxVersion() {
@@ -238,7 +238,7 @@ public class TLSConfig implements Editable<TLSConfigBuilder>, KubernetesResource
     }
 
     /**
-     * Maximum acceptable TLS version.<br><p> <br><p> It requires Prometheus &gt;= v2.41.0 or Thanos &gt;= v0.31.0.
+     * maxVersion defines the maximum acceptable TLS version.<br><p> <br><p> It requires Prometheus &gt;= v2.41.0 or Thanos &gt;= v0.31.0.
      */
     @JsonProperty("maxVersion")
     public void setMaxVersion(String maxVersion) {
@@ -246,7 +246,7 @@ public class TLSConfig implements Editable<TLSConfigBuilder>, KubernetesResource
     }
 
     /**
-     * Minimum acceptable TLS version.<br><p> <br><p> It requires Prometheus &gt;= v2.35.0 or Thanos &gt;= v0.28.0.
+     * minVersion defines the minimum acceptable TLS version.<br><p> <br><p> It requires Prometheus &gt;= v2.35.0 or Thanos &gt;= v0.28.0.
      */
     @JsonProperty("minVersion")
     public String getMinVersion() {
@@ -254,7 +254,7 @@ public class TLSConfig implements Editable<TLSConfigBuilder>, KubernetesResource
     }
 
     /**
-     * Minimum acceptable TLS version.<br><p> <br><p> It requires Prometheus &gt;= v2.35.0 or Thanos &gt;= v0.28.0.
+     * minVersion defines the minimum acceptable TLS version.<br><p> <br><p> It requires Prometheus &gt;= v2.35.0 or Thanos &gt;= v0.28.0.
      */
     @JsonProperty("minVersion")
     public void setMinVersion(String minVersion) {
@@ -262,7 +262,7 @@ public class TLSConfig implements Editable<TLSConfigBuilder>, KubernetesResource
     }
 
     /**
-     * Used to verify the hostname for the targets.
+     * serverName is used to verify the hostname for the targets.
      */
     @JsonProperty("serverName")
     public String getServerName() {
@@ -270,7 +270,7 @@ public class TLSConfig implements Editable<TLSConfigBuilder>, KubernetesResource
     }
 
     /**
-     * Used to verify the hostname for the targets.
+     * serverName is used to verify the hostname for the targets.
      */
     @JsonProperty("serverName")
     public void setServerName(String serverName) {

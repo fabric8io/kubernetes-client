@@ -174,7 +174,7 @@ public class ThanosSpec implements Editable<ThanosSpecBuilder>, KubernetesResour
     }
 
     /**
-     * AdditionalArgs allows setting additional arguments for the Thanos container. The arguments are passed as-is to the Thanos container which may cause issues if they are invalid or not supported the given Thanos version. In case of an argument conflict (e.g. an argument which is already set by the operator itself) or when providing an invalid argument, the reconciliation will fail and an error will be logged.
+     * additionalArgs allows setting additional arguments for the Thanos container. The arguments are passed as-is to the Thanos container which may cause issues if they are invalid or not supported the given Thanos version. In case of an argument conflict (e.g. an argument which is already set by the operator itself) or when providing an invalid argument, the reconciliation will fail and an error will be logged.
      */
     @JsonProperty("additionalArgs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -183,7 +183,7 @@ public class ThanosSpec implements Editable<ThanosSpecBuilder>, KubernetesResour
     }
 
     /**
-     * AdditionalArgs allows setting additional arguments for the Thanos container. The arguments are passed as-is to the Thanos container which may cause issues if they are invalid or not supported the given Thanos version. In case of an argument conflict (e.g. an argument which is already set by the operator itself) or when providing an invalid argument, the reconciliation will fail and an error will be logged.
+     * additionalArgs allows setting additional arguments for the Thanos container. The arguments are passed as-is to the Thanos container which may cause issues if they are invalid or not supported the given Thanos version. In case of an argument conflict (e.g. an argument which is already set by the operator itself) or when providing an invalid argument, the reconciliation will fail and an error will be logged.
      */
     @JsonProperty("additionalArgs")
     public void setAdditionalArgs(List<Argument> additionalArgs) {
@@ -191,7 +191,7 @@ public class ThanosSpec implements Editable<ThanosSpecBuilder>, KubernetesResour
     }
 
     /**
-     * Deprecated: use 'image' instead.
+     * baseImage is deprecated: use 'image' instead.
      */
     @JsonProperty("baseImage")
     public String getBaseImage() {
@@ -199,7 +199,7 @@ public class ThanosSpec implements Editable<ThanosSpecBuilder>, KubernetesResour
     }
 
     /**
-     * Deprecated: use 'image' instead.
+     * baseImage is deprecated: use 'image' instead.
      */
     @JsonProperty("baseImage")
     public void setBaseImage(String baseImage) {
@@ -207,7 +207,7 @@ public class ThanosSpec implements Editable<ThanosSpecBuilder>, KubernetesResour
     }
 
     /**
-     * BlockDuration controls the size of TSDB blocks produced by Prometheus. The default value is 2h to match the upstream Prometheus defaults.<br><p> <br><p> WARNING: Changing the block duration can impact the performance and efficiency of the entire Prometheus/Thanos stack due to how it interacts with memory and Thanos compactors. It is recommended to keep this value set to a multiple of 120 times your longest scrape or rule interval. For example, 30s &#42; 120 = 1h.
+     * blockSize controls the size of TSDB blocks produced by Prometheus. The default value is 2h to match the upstream Prometheus defaults.<br><p> <br><p> WARNING: Changing the block duration can impact the performance and efficiency of the entire Prometheus/Thanos stack due to how it interacts with memory and Thanos compactors. It is recommended to keep this value set to a multiple of 120 times your longest scrape or rule interval. For example, 30s &#42; 120 = 1h.
      */
     @JsonProperty("blockSize")
     public String getBlockSize() {
@@ -215,7 +215,7 @@ public class ThanosSpec implements Editable<ThanosSpecBuilder>, KubernetesResour
     }
 
     /**
-     * BlockDuration controls the size of TSDB blocks produced by Prometheus. The default value is 2h to match the upstream Prometheus defaults.<br><p> <br><p> WARNING: Changing the block duration can impact the performance and efficiency of the entire Prometheus/Thanos stack due to how it interacts with memory and Thanos compactors. It is recommended to keep this value set to a multiple of 120 times your longest scrape or rule interval. For example, 30s &#42; 120 = 1h.
+     * blockSize controls the size of TSDB blocks produced by Prometheus. The default value is 2h to match the upstream Prometheus defaults.<br><p> <br><p> WARNING: Changing the block duration can impact the performance and efficiency of the entire Prometheus/Thanos stack due to how it interacts with memory and Thanos compactors. It is recommended to keep this value set to a multiple of 120 times your longest scrape or rule interval. For example, 30s &#42; 120 = 1h.
      */
     @JsonProperty("blockSize")
     public void setBlockSize(String blockSize) {
@@ -223,7 +223,7 @@ public class ThanosSpec implements Editable<ThanosSpecBuilder>, KubernetesResour
     }
 
     /**
-     * How often to retrieve the Prometheus configuration.
+     * getConfigInterval defines how often to retrieve the Prometheus configuration.
      */
     @JsonProperty("getConfigInterval")
     public String getGetConfigInterval() {
@@ -231,7 +231,7 @@ public class ThanosSpec implements Editable<ThanosSpecBuilder>, KubernetesResour
     }
 
     /**
-     * How often to retrieve the Prometheus configuration.
+     * getConfigInterval defines how often to retrieve the Prometheus configuration.
      */
     @JsonProperty("getConfigInterval")
     public void setGetConfigInterval(String getConfigInterval) {
@@ -239,7 +239,7 @@ public class ThanosSpec implements Editable<ThanosSpecBuilder>, KubernetesResour
     }
 
     /**
-     * Maximum time to wait when retrieving the Prometheus configuration.
+     * getConfigTimeout defines the maximum time to wait when retrieving the Prometheus configuration.
      */
     @JsonProperty("getConfigTimeout")
     public String getGetConfigTimeout() {
@@ -247,7 +247,7 @@ public class ThanosSpec implements Editable<ThanosSpecBuilder>, KubernetesResour
     }
 
     /**
-     * Maximum time to wait when retrieving the Prometheus configuration.
+     * getConfigTimeout defines the maximum time to wait when retrieving the Prometheus configuration.
      */
     @JsonProperty("getConfigTimeout")
     public void setGetConfigTimeout(String getConfigTimeout) {
@@ -255,7 +255,7 @@ public class ThanosSpec implements Editable<ThanosSpecBuilder>, KubernetesResour
     }
 
     /**
-     * When true, the Thanos sidecar listens on the loopback interface instead of the Pod IP's address for the gRPC endpoints.<br><p> <br><p> It has no effect if `listenLocal` is true.
+     * grpcListenLocal defines when true, the Thanos sidecar listens on the loopback interface instead of the Pod IP's address for the gRPC endpoints.<br><p> <br><p> It has no effect if `listenLocal` is true.
      */
     @JsonProperty("grpcListenLocal")
     public Boolean getGrpcListenLocal() {
@@ -263,7 +263,7 @@ public class ThanosSpec implements Editable<ThanosSpecBuilder>, KubernetesResour
     }
 
     /**
-     * When true, the Thanos sidecar listens on the loopback interface instead of the Pod IP's address for the gRPC endpoints.<br><p> <br><p> It has no effect if `listenLocal` is true.
+     * grpcListenLocal defines when true, the Thanos sidecar listens on the loopback interface instead of the Pod IP's address for the gRPC endpoints.<br><p> <br><p> It has no effect if `listenLocal` is true.
      */
     @JsonProperty("grpcListenLocal")
     public void setGrpcListenLocal(Boolean grpcListenLocal) {
@@ -287,7 +287,7 @@ public class ThanosSpec implements Editable<ThanosSpecBuilder>, KubernetesResour
     }
 
     /**
-     * When true, the Thanos sidecar listens on the loopback interface instead of the Pod IP's address for the HTTP endpoints.<br><p> <br><p> It has no effect if `listenLocal` is true.
+     * httpListenLocal when true, the Thanos sidecar listens on the loopback interface instead of the Pod IP's address for the HTTP endpoints.<br><p> <br><p> It has no effect if `listenLocal` is true.
      */
     @JsonProperty("httpListenLocal")
     public Boolean getHttpListenLocal() {
@@ -295,7 +295,7 @@ public class ThanosSpec implements Editable<ThanosSpecBuilder>, KubernetesResour
     }
 
     /**
-     * When true, the Thanos sidecar listens on the loopback interface instead of the Pod IP's address for the HTTP endpoints.<br><p> <br><p> It has no effect if `listenLocal` is true.
+     * httpListenLocal when true, the Thanos sidecar listens on the loopback interface instead of the Pod IP's address for the HTTP endpoints.<br><p> <br><p> It has no effect if `listenLocal` is true.
      */
     @JsonProperty("httpListenLocal")
     public void setHttpListenLocal(Boolean httpListenLocal) {
@@ -303,7 +303,7 @@ public class ThanosSpec implements Editable<ThanosSpecBuilder>, KubernetesResour
     }
 
     /**
-     * Container image name for Thanos. If specified, it takes precedence over the `spec.thanos.baseImage`, `spec.thanos.tag` and `spec.thanos.sha` fields.<br><p> <br><p> Specifying `spec.thanos.version` is still necessary to ensure the Prometheus Operator knows which version of Thanos is being configured.<br><p> <br><p> If neither `spec.thanos.image` nor `spec.thanos.baseImage` are defined, the operator will use the latest upstream version of Thanos available at the time when the operator was released.
+     * image defines the container image name for Thanos. If specified, it takes precedence over the `spec.thanos.baseImage`, `spec.thanos.tag` and `spec.thanos.sha` fields.<br><p> <br><p> Specifying `spec.thanos.version` is still necessary to ensure the Prometheus Operator knows which version of Thanos is being configured.<br><p> <br><p> If neither `spec.thanos.image` nor `spec.thanos.baseImage` are defined, the operator will use the latest upstream version of Thanos available at the time when the operator was released.
      */
     @JsonProperty("image")
     public String getImage() {
@@ -311,7 +311,7 @@ public class ThanosSpec implements Editable<ThanosSpecBuilder>, KubernetesResour
     }
 
     /**
-     * Container image name for Thanos. If specified, it takes precedence over the `spec.thanos.baseImage`, `spec.thanos.tag` and `spec.thanos.sha` fields.<br><p> <br><p> Specifying `spec.thanos.version` is still necessary to ensure the Prometheus Operator knows which version of Thanos is being configured.<br><p> <br><p> If neither `spec.thanos.image` nor `spec.thanos.baseImage` are defined, the operator will use the latest upstream version of Thanos available at the time when the operator was released.
+     * image defines the container image name for Thanos. If specified, it takes precedence over the `spec.thanos.baseImage`, `spec.thanos.tag` and `spec.thanos.sha` fields.<br><p> <br><p> Specifying `spec.thanos.version` is still necessary to ensure the Prometheus Operator knows which version of Thanos is being configured.<br><p> <br><p> If neither `spec.thanos.image` nor `spec.thanos.baseImage` are defined, the operator will use the latest upstream version of Thanos available at the time when the operator was released.
      */
     @JsonProperty("image")
     public void setImage(String image) {
@@ -319,7 +319,7 @@ public class ThanosSpec implements Editable<ThanosSpecBuilder>, KubernetesResour
     }
 
     /**
-     * Deprecated: use `grpcListenLocal` and `httpListenLocal` instead.
+     * listenLocal is deprecated: use `grpcListenLocal` and `httpListenLocal` instead.
      */
     @JsonProperty("listenLocal")
     public Boolean getListenLocal() {
@@ -327,7 +327,7 @@ public class ThanosSpec implements Editable<ThanosSpecBuilder>, KubernetesResour
     }
 
     /**
-     * Deprecated: use `grpcListenLocal` and `httpListenLocal` instead.
+     * listenLocal is deprecated: use `grpcListenLocal` and `httpListenLocal` instead.
      */
     @JsonProperty("listenLocal")
     public void setListenLocal(Boolean listenLocal) {
@@ -335,7 +335,7 @@ public class ThanosSpec implements Editable<ThanosSpecBuilder>, KubernetesResour
     }
 
     /**
-     * Log format for the Thanos sidecar.
+     * logFormat for the Thanos sidecar.
      */
     @JsonProperty("logFormat")
     public String getLogFormat() {
@@ -343,7 +343,7 @@ public class ThanosSpec implements Editable<ThanosSpecBuilder>, KubernetesResour
     }
 
     /**
-     * Log format for the Thanos sidecar.
+     * logFormat for the Thanos sidecar.
      */
     @JsonProperty("logFormat")
     public void setLogFormat(String logFormat) {
@@ -351,7 +351,7 @@ public class ThanosSpec implements Editable<ThanosSpecBuilder>, KubernetesResour
     }
 
     /**
-     * Log level for the Thanos sidecar.
+     * logLevel for the Thanos sidecar.
      */
     @JsonProperty("logLevel")
     public String getLogLevel() {
@@ -359,7 +359,7 @@ public class ThanosSpec implements Editable<ThanosSpecBuilder>, KubernetesResour
     }
 
     /**
-     * Log level for the Thanos sidecar.
+     * logLevel for the Thanos sidecar.
      */
     @JsonProperty("logLevel")
     public void setLogLevel(String logLevel) {
@@ -367,7 +367,7 @@ public class ThanosSpec implements Editable<ThanosSpecBuilder>, KubernetesResour
     }
 
     /**
-     * Defines the start of time range limit served by the Thanos sidecar's StoreAPI. The field's value should be a constant time in RFC3339 format or a time duration relative to current time, such as -1d or 2h45m. Valid duration units are ms, s, m, h, d, w, y.
+     * minTime defines the start of time range limit served by the Thanos sidecar's StoreAPI. The field's value should be a constant time in RFC3339 format or a time duration relative to current time, such as -1d or 2h45m. Valid duration units are ms, s, m, h, d, w, y.
      */
     @JsonProperty("minTime")
     public String getMinTime() {
@@ -375,7 +375,7 @@ public class ThanosSpec implements Editable<ThanosSpecBuilder>, KubernetesResour
     }
 
     /**
-     * Defines the start of time range limit served by the Thanos sidecar's StoreAPI. The field's value should be a constant time in RFC3339 format or a time duration relative to current time, such as -1d or 2h45m. Valid duration units are ms, s, m, h, d, w, y.
+     * minTime defines the start of time range limit served by the Thanos sidecar's StoreAPI. The field's value should be a constant time in RFC3339 format or a time duration relative to current time, such as -1d or 2h45m. Valid duration units are ms, s, m, h, d, w, y.
      */
     @JsonProperty("minTime")
     public void setMinTime(String minTime) {
@@ -399,7 +399,7 @@ public class ThanosSpec implements Editable<ThanosSpecBuilder>, KubernetesResour
     }
 
     /**
-     * Defines the Thanos sidecar's configuration file to upload TSDB blocks to object storage.<br><p> <br><p> More info: https://thanos.io/tip/thanos/storage.md/<br><p> <br><p> This field takes precedence over objectStorageConfig.
+     * objectStorageConfigFile defines the Thanos sidecar's configuration file to upload TSDB blocks to object storage.<br><p> <br><p> More info: https://thanos.io/tip/thanos/storage.md/<br><p> <br><p> This field takes precedence over objectStorageConfig.
      */
     @JsonProperty("objectStorageConfigFile")
     public String getObjectStorageConfigFile() {
@@ -407,7 +407,7 @@ public class ThanosSpec implements Editable<ThanosSpecBuilder>, KubernetesResour
     }
 
     /**
-     * Defines the Thanos sidecar's configuration file to upload TSDB blocks to object storage.<br><p> <br><p> More info: https://thanos.io/tip/thanos/storage.md/<br><p> <br><p> This field takes precedence over objectStorageConfig.
+     * objectStorageConfigFile defines the Thanos sidecar's configuration file to upload TSDB blocks to object storage.<br><p> <br><p> More info: https://thanos.io/tip/thanos/storage.md/<br><p> <br><p> This field takes precedence over objectStorageConfig.
      */
     @JsonProperty("objectStorageConfigFile")
     public void setObjectStorageConfigFile(String objectStorageConfigFile) {
@@ -415,7 +415,7 @@ public class ThanosSpec implements Editable<ThanosSpecBuilder>, KubernetesResour
     }
 
     /**
-     * ReadyTimeout is the maximum time that the Thanos sidecar will wait for Prometheus to start.
+     * readyTimeout defines the maximum time that the Thanos sidecar will wait for Prometheus to start.
      */
     @JsonProperty("readyTimeout")
     public String getReadyTimeout() {
@@ -423,7 +423,7 @@ public class ThanosSpec implements Editable<ThanosSpecBuilder>, KubernetesResour
     }
 
     /**
-     * ReadyTimeout is the maximum time that the Thanos sidecar will wait for Prometheus to start.
+     * readyTimeout defines the maximum time that the Thanos sidecar will wait for Prometheus to start.
      */
     @JsonProperty("readyTimeout")
     public void setReadyTimeout(String readyTimeout) {
@@ -447,7 +447,7 @@ public class ThanosSpec implements Editable<ThanosSpecBuilder>, KubernetesResour
     }
 
     /**
-     * Deprecated: use 'image' instead.  The image digest can be specified as part of the image name.
+     * sha is deprecated: use 'image' instead.  The image digest can be specified as part of the image name.
      */
     @JsonProperty("sha")
     public String getSha() {
@@ -455,7 +455,7 @@ public class ThanosSpec implements Editable<ThanosSpecBuilder>, KubernetesResour
     }
 
     /**
-     * Deprecated: use 'image' instead.  The image digest can be specified as part of the image name.
+     * sha is deprecated: use 'image' instead.  The image digest can be specified as part of the image name.
      */
     @JsonProperty("sha")
     public void setSha(String sha) {
@@ -463,7 +463,7 @@ public class ThanosSpec implements Editable<ThanosSpecBuilder>, KubernetesResour
     }
 
     /**
-     * Deprecated: use 'image' instead. The image's tag can be specified as as part of the image name.
+     * tag is deprecated: use 'image' instead. The image's tag can be specified as as part of the image name.
      */
     @JsonProperty("tag")
     public String getTag() {
@@ -471,7 +471,7 @@ public class ThanosSpec implements Editable<ThanosSpecBuilder>, KubernetesResour
     }
 
     /**
-     * Deprecated: use 'image' instead. The image's tag can be specified as as part of the image name.
+     * tag is deprecated: use 'image' instead. The image's tag can be specified as as part of the image name.
      */
     @JsonProperty("tag")
     public void setTag(String tag) {
@@ -495,7 +495,7 @@ public class ThanosSpec implements Editable<ThanosSpecBuilder>, KubernetesResour
     }
 
     /**
-     * Defines the tracing configuration file for the Thanos sidecar.<br><p> <br><p> This field takes precedence over `tracingConfig`.<br><p> <br><p> More info: https://thanos.io/tip/thanos/tracing.md/<br><p> <br><p> This is an &#42;experimental feature&#42;, it may change in any upcoming release in a breaking way.
+     * tracingConfigFile defines the tracing configuration file for the Thanos sidecar.<br><p> <br><p> This field takes precedence over `tracingConfig`.<br><p> <br><p> More info: https://thanos.io/tip/thanos/tracing.md/<br><p> <br><p> This is an &#42;experimental feature&#42;, it may change in any upcoming release in a breaking way.
      */
     @JsonProperty("tracingConfigFile")
     public String getTracingConfigFile() {
@@ -503,7 +503,7 @@ public class ThanosSpec implements Editable<ThanosSpecBuilder>, KubernetesResour
     }
 
     /**
-     * Defines the tracing configuration file for the Thanos sidecar.<br><p> <br><p> This field takes precedence over `tracingConfig`.<br><p> <br><p> More info: https://thanos.io/tip/thanos/tracing.md/<br><p> <br><p> This is an &#42;experimental feature&#42;, it may change in any upcoming release in a breaking way.
+     * tracingConfigFile defines the tracing configuration file for the Thanos sidecar.<br><p> <br><p> This field takes precedence over `tracingConfig`.<br><p> <br><p> More info: https://thanos.io/tip/thanos/tracing.md/<br><p> <br><p> This is an &#42;experimental feature&#42;, it may change in any upcoming release in a breaking way.
      */
     @JsonProperty("tracingConfigFile")
     public void setTracingConfigFile(String tracingConfigFile) {
@@ -511,7 +511,7 @@ public class ThanosSpec implements Editable<ThanosSpecBuilder>, KubernetesResour
     }
 
     /**
-     * Version of Thanos being deployed. The operator uses this information to generate the Prometheus StatefulSet + configuration files.<br><p> <br><p> If not specified, the operator assumes the latest upstream release of Thanos available at the time when the version of the operator was released.
+     * version of Thanos being deployed. The operator uses this information to generate the Prometheus StatefulSet + configuration files.<br><p> <br><p> If not specified, the operator assumes the latest upstream release of Thanos available at the time when the version of the operator was released.
      */
     @JsonProperty("version")
     public String getVersion() {
@@ -519,7 +519,7 @@ public class ThanosSpec implements Editable<ThanosSpecBuilder>, KubernetesResour
     }
 
     /**
-     * Version of Thanos being deployed. The operator uses this information to generate the Prometheus StatefulSet + configuration files.<br><p> <br><p> If not specified, the operator assumes the latest upstream release of Thanos available at the time when the version of the operator was released.
+     * version of Thanos being deployed. The operator uses this information to generate the Prometheus StatefulSet + configuration files.<br><p> <br><p> If not specified, the operator assumes the latest upstream release of Thanos available at the time when the version of the operator was released.
      */
     @JsonProperty("version")
     public void setVersion(String version) {
@@ -527,7 +527,7 @@ public class ThanosSpec implements Editable<ThanosSpecBuilder>, KubernetesResour
     }
 
     /**
-     * VolumeMounts allows configuration of additional VolumeMounts for Thanos. VolumeMounts specified will be appended to other VolumeMounts in the 'thanos-sidecar' container.
+     * volumeMounts allows configuration of additional VolumeMounts for Thanos. VolumeMounts specified will be appended to other VolumeMounts in the 'thanos-sidecar' container.
      */
     @JsonProperty("volumeMounts")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -536,7 +536,7 @@ public class ThanosSpec implements Editable<ThanosSpecBuilder>, KubernetesResour
     }
 
     /**
-     * VolumeMounts allows configuration of additional VolumeMounts for Thanos. VolumeMounts specified will be appended to other VolumeMounts in the 'thanos-sidecar' container.
+     * volumeMounts allows configuration of additional VolumeMounts for Thanos. VolumeMounts specified will be appended to other VolumeMounts in the 'thanos-sidecar' container.
      */
     @JsonProperty("volumeMounts")
     public void setVolumeMounts(List<VolumeMount> volumeMounts) {

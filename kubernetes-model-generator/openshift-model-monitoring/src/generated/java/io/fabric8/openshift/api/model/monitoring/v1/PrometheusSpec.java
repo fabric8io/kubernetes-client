@@ -105,6 +105,7 @@ import lombok.experimental.Accessors;
     "overrideHonorTimestamps",
     "paused",
     "persistentVolumeClaimRetentionPolicy",
+    "podManagementPolicy",
     "podMetadata",
     "podMonitorNamespaceSelector",
     "podMonitorSelector",
@@ -139,6 +140,7 @@ import lombok.experimental.Accessors;
     "scrapeConfigSelector",
     "scrapeFailureLogFile",
     "scrapeInterval",
+    "scrapeNativeHistograms",
     "scrapeProtocols",
     "scrapeTimeout",
     "secrets",
@@ -160,6 +162,7 @@ import lombok.experimental.Accessors;
     "topologySpreadConstraints",
     "tracingConfig",
     "tsdb",
+    "updateStrategy",
     "version",
     "volumeMounts",
     "volumes",
@@ -323,6 +326,8 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder>, Kubernet
     private Boolean paused;
     @JsonProperty("persistentVolumeClaimRetentionPolicy")
     private StatefulSetPersistentVolumeClaimRetentionPolicy persistentVolumeClaimRetentionPolicy;
+    @JsonProperty("podManagementPolicy")
+    private String podManagementPolicy;
     @JsonProperty("podMetadata")
     private EmbeddedObjectMetadata podMetadata;
     @JsonProperty("podMonitorNamespaceSelector")
@@ -397,6 +402,8 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder>, Kubernet
     private String scrapeFailureLogFile;
     @JsonProperty("scrapeInterval")
     private String scrapeInterval;
+    @JsonProperty("scrapeNativeHistograms")
+    private Boolean scrapeNativeHistograms;
     @JsonProperty("scrapeProtocols")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> scrapeProtocols = new ArrayList<>();
@@ -440,9 +447,11 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder>, Kubernet
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<TopologySpreadConstraint> topologySpreadConstraints = new ArrayList<>();
     @JsonProperty("tracingConfig")
-    private PrometheusTracingConfig tracingConfig;
+    private TracingConfig tracingConfig;
     @JsonProperty("tsdb")
     private TSDBSpec tsdb;
+    @JsonProperty("updateStrategy")
+    private StatefulSetUpdateStrategy updateStrategy;
     @JsonProperty("version")
     private String version;
     @JsonProperty("volumeMounts")
@@ -464,7 +473,7 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder>, Kubernet
     public PrometheusSpec() {
     }
 
-    public PrometheusSpec(SecretKeySelector additionalAlertManagerConfigs, SecretKeySelector additionalAlertRelabelConfigs, List<Argument> additionalArgs, SecretKeySelector additionalScrapeConfigs, Affinity affinity, AlertingSpec alerting, Boolean allowOverlappingBlocks, APIServerConfig apiserverConfig, ArbitraryFSAccessThroughSMsConfig arbitraryFSAccessThroughSMs, Boolean automountServiceAccountToken, String baseImage, String bodySizeLimit, List<String> configMaps, List<Container> containers, Boolean convertClassicHistogramsToNHCB, Boolean disableCompaction, PodDNSConfig dnsConfig, String dnsPolicy, Boolean enableAdminAPI, List<String> enableFeatures, Boolean enableOTLPReceiver, Boolean enableRemoteWriteReceiver, Boolean enableServiceLinks, String enforcedBodySizeLimit, Long enforcedKeepDroppedTargets, Long enforcedLabelLimit, Long enforcedLabelNameLengthLimit, Long enforcedLabelValueLengthLimit, String enforcedNamespaceLabel, Long enforcedSampleLimit, Long enforcedTargetLimit, String evaluationInterval, List<ObjectReference> excludedFromEnforcement, Exemplars exemplars, Map<String, String> externalLabels, String externalUrl, List<HostAlias> hostAliases, Boolean hostNetwork, Boolean hostUsers, Boolean ignoreNamespaceSelectors, String image, String imagePullPolicy, List<LocalObjectReference> imagePullSecrets, List<Container> initContainers, Long keepDroppedTargets, Long labelLimit, Long labelNameLengthLimit, Long labelValueLengthLimit, Boolean listenLocal, String logFormat, String logLevel, Integer maximumStartupDurationSeconds, Integer minReadySeconds, String nameEscapingScheme, String nameValidationScheme, Map<String, String> nodeSelector, OTLPConfig otlp, Boolean overrideHonorLabels, Boolean overrideHonorTimestamps, Boolean paused, StatefulSetPersistentVolumeClaimRetentionPolicy persistentVolumeClaimRetentionPolicy, EmbeddedObjectMetadata podMetadata, LabelSelector podMonitorNamespaceSelector, LabelSelector podMonitorSelector, List<String> podTargetLabels, String portName, String priorityClassName, LabelSelector probeNamespaceSelector, LabelSelector probeSelector, String prometheusExternalLabelName, List<PrometheusRuleExcludeConfig> prometheusRulesExcludedFromEnforce, QuerySpec query, String queryLogFile, String reloadStrategy, List<RemoteReadSpec> remoteRead, List<RemoteWriteSpec> remoteWrite, List<String> remoteWriteReceiverMessageVersions, String replicaExternalLabelName, Integer replicas, ResourceRequirements resources, String retention, String retentionSize, String routePrefix, LabelSelector ruleNamespaceSelector, String ruleQueryOffset, LabelSelector ruleSelector, Rules rules, RuntimeConfig runtime, Long sampleLimit, List<ScrapeClass> scrapeClasses, Boolean scrapeClassicHistograms, LabelSelector scrapeConfigNamespaceSelector, LabelSelector scrapeConfigSelector, String scrapeFailureLogFile, String scrapeInterval, List<String> scrapeProtocols, String scrapeTimeout, List<String> secrets, PodSecurityContext securityContext, String serviceAccountName, String serviceDiscoveryRole, LabelSelector serviceMonitorNamespaceSelector, LabelSelector serviceMonitorSelector, String serviceName, String sha, ShardRetentionPolicy shardRetentionPolicy, Integer shards, StorageSpec storage, String tag, Long targetLimit, Long terminationGracePeriodSeconds, ThanosSpec thanos, List<Toleration> tolerations, List<TopologySpreadConstraint> topologySpreadConstraints, PrometheusTracingConfig tracingConfig, TSDBSpec tsdb, String version, List<VolumeMount> volumeMounts, List<Volume> volumes, Boolean walCompression, PrometheusWebSpec web) {
+    public PrometheusSpec(SecretKeySelector additionalAlertManagerConfigs, SecretKeySelector additionalAlertRelabelConfigs, List<Argument> additionalArgs, SecretKeySelector additionalScrapeConfigs, Affinity affinity, AlertingSpec alerting, Boolean allowOverlappingBlocks, APIServerConfig apiserverConfig, ArbitraryFSAccessThroughSMsConfig arbitraryFSAccessThroughSMs, Boolean automountServiceAccountToken, String baseImage, String bodySizeLimit, List<String> configMaps, List<Container> containers, Boolean convertClassicHistogramsToNHCB, Boolean disableCompaction, PodDNSConfig dnsConfig, String dnsPolicy, Boolean enableAdminAPI, List<String> enableFeatures, Boolean enableOTLPReceiver, Boolean enableRemoteWriteReceiver, Boolean enableServiceLinks, String enforcedBodySizeLimit, Long enforcedKeepDroppedTargets, Long enforcedLabelLimit, Long enforcedLabelNameLengthLimit, Long enforcedLabelValueLengthLimit, String enforcedNamespaceLabel, Long enforcedSampleLimit, Long enforcedTargetLimit, String evaluationInterval, List<ObjectReference> excludedFromEnforcement, Exemplars exemplars, Map<String, String> externalLabels, String externalUrl, List<HostAlias> hostAliases, Boolean hostNetwork, Boolean hostUsers, Boolean ignoreNamespaceSelectors, String image, String imagePullPolicy, List<LocalObjectReference> imagePullSecrets, List<Container> initContainers, Long keepDroppedTargets, Long labelLimit, Long labelNameLengthLimit, Long labelValueLengthLimit, Boolean listenLocal, String logFormat, String logLevel, Integer maximumStartupDurationSeconds, Integer minReadySeconds, String nameEscapingScheme, String nameValidationScheme, Map<String, String> nodeSelector, OTLPConfig otlp, Boolean overrideHonorLabels, Boolean overrideHonorTimestamps, Boolean paused, StatefulSetPersistentVolumeClaimRetentionPolicy persistentVolumeClaimRetentionPolicy, String podManagementPolicy, EmbeddedObjectMetadata podMetadata, LabelSelector podMonitorNamespaceSelector, LabelSelector podMonitorSelector, List<String> podTargetLabels, String portName, String priorityClassName, LabelSelector probeNamespaceSelector, LabelSelector probeSelector, String prometheusExternalLabelName, List<PrometheusRuleExcludeConfig> prometheusRulesExcludedFromEnforce, QuerySpec query, String queryLogFile, String reloadStrategy, List<RemoteReadSpec> remoteRead, List<RemoteWriteSpec> remoteWrite, List<String> remoteWriteReceiverMessageVersions, String replicaExternalLabelName, Integer replicas, ResourceRequirements resources, String retention, String retentionSize, String routePrefix, LabelSelector ruleNamespaceSelector, String ruleQueryOffset, LabelSelector ruleSelector, Rules rules, RuntimeConfig runtime, Long sampleLimit, List<ScrapeClass> scrapeClasses, Boolean scrapeClassicHistograms, LabelSelector scrapeConfigNamespaceSelector, LabelSelector scrapeConfigSelector, String scrapeFailureLogFile, String scrapeInterval, Boolean scrapeNativeHistograms, List<String> scrapeProtocols, String scrapeTimeout, List<String> secrets, PodSecurityContext securityContext, String serviceAccountName, String serviceDiscoveryRole, LabelSelector serviceMonitorNamespaceSelector, LabelSelector serviceMonitorSelector, String serviceName, String sha, ShardRetentionPolicy shardRetentionPolicy, Integer shards, StorageSpec storage, String tag, Long targetLimit, Long terminationGracePeriodSeconds, ThanosSpec thanos, List<Toleration> tolerations, List<TopologySpreadConstraint> topologySpreadConstraints, TracingConfig tracingConfig, TSDBSpec tsdb, StatefulSetUpdateStrategy updateStrategy, String version, List<VolumeMount> volumeMounts, List<Volume> volumes, Boolean walCompression, PrometheusWebSpec web) {
         super();
         this.additionalAlertManagerConfigs = additionalAlertManagerConfigs;
         this.additionalAlertRelabelConfigs = additionalAlertRelabelConfigs;
@@ -527,6 +536,7 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder>, Kubernet
         this.overrideHonorTimestamps = overrideHonorTimestamps;
         this.paused = paused;
         this.persistentVolumeClaimRetentionPolicy = persistentVolumeClaimRetentionPolicy;
+        this.podManagementPolicy = podManagementPolicy;
         this.podMetadata = podMetadata;
         this.podMonitorNamespaceSelector = podMonitorNamespaceSelector;
         this.podMonitorSelector = podMonitorSelector;
@@ -561,6 +571,7 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder>, Kubernet
         this.scrapeConfigSelector = scrapeConfigSelector;
         this.scrapeFailureLogFile = scrapeFailureLogFile;
         this.scrapeInterval = scrapeInterval;
+        this.scrapeNativeHistograms = scrapeNativeHistograms;
         this.scrapeProtocols = scrapeProtocols;
         this.scrapeTimeout = scrapeTimeout;
         this.secrets = secrets;
@@ -582,6 +593,7 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder>, Kubernet
         this.topologySpreadConstraints = topologySpreadConstraints;
         this.tracingConfig = tracingConfig;
         this.tsdb = tsdb;
+        this.updateStrategy = updateStrategy;
         this.version = version;
         this.volumeMounts = volumeMounts;
         this.volumes = volumes;
@@ -622,7 +634,7 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder>, Kubernet
     }
 
     /**
-     * AdditionalArgs allows setting additional arguments for the 'prometheus' container.<br><p> <br><p> It is intended for e.g. activating hidden flags which are not supported by the dedicated configuration options yet. The arguments are passed as-is to the Prometheus container which may cause issues if they are invalid or not supported by the given Prometheus version.<br><p> <br><p> In case of an argument conflict (e.g. an argument which is already set by the operator itself) or when providing an invalid argument, the reconciliation will fail and an error will be logged.
+     * additionalArgs allows setting additional arguments for the 'prometheus' container.<br><p> <br><p> It is intended for e.g. activating hidden flags which are not supported by the dedicated configuration options yet. The arguments are passed as-is to the Prometheus container which may cause issues if they are invalid or not supported by the given Prometheus version.<br><p> <br><p> In case of an argument conflict (e.g. an argument which is already set by the operator itself) or when providing an invalid argument, the reconciliation will fail and an error will be logged.
      */
     @JsonProperty("additionalArgs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -631,7 +643,7 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder>, Kubernet
     }
 
     /**
-     * AdditionalArgs allows setting additional arguments for the 'prometheus' container.<br><p> <br><p> It is intended for e.g. activating hidden flags which are not supported by the dedicated configuration options yet. The arguments are passed as-is to the Prometheus container which may cause issues if they are invalid or not supported by the given Prometheus version.<br><p> <br><p> In case of an argument conflict (e.g. an argument which is already set by the operator itself) or when providing an invalid argument, the reconciliation will fail and an error will be logged.
+     * additionalArgs allows setting additional arguments for the 'prometheus' container.<br><p> <br><p> It is intended for e.g. activating hidden flags which are not supported by the dedicated configuration options yet. The arguments are passed as-is to the Prometheus container which may cause issues if they are invalid or not supported by the given Prometheus version.<br><p> <br><p> In case of an argument conflict (e.g. an argument which is already set by the operator itself) or when providing an invalid argument, the reconciliation will fail and an error will be logged.
      */
     @JsonProperty("additionalArgs")
     public void setAdditionalArgs(List<Argument> additionalArgs) {
@@ -687,7 +699,7 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder>, Kubernet
     }
 
     /**
-     * AllowOverlappingBlocks enables vertical compaction and vertical query merge in Prometheus.<br><p> <br><p> Deprecated: this flag has no effect for Prometheus &gt;= 2.39.0 where overlapping blocks are enabled by default.
+     * allowOverlappingBlocks enables vertical compaction and vertical query merge in Prometheus.<br><p> <br><p> Deprecated: this flag has no effect for Prometheus &gt;= 2.39.0 where overlapping blocks are enabled by default.
      */
     @JsonProperty("allowOverlappingBlocks")
     public Boolean getAllowOverlappingBlocks() {
@@ -695,7 +707,7 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder>, Kubernet
     }
 
     /**
-     * AllowOverlappingBlocks enables vertical compaction and vertical query merge in Prometheus.<br><p> <br><p> Deprecated: this flag has no effect for Prometheus &gt;= 2.39.0 where overlapping blocks are enabled by default.
+     * allowOverlappingBlocks enables vertical compaction and vertical query merge in Prometheus.<br><p> <br><p> Deprecated: this flag has no effect for Prometheus &gt;= 2.39.0 where overlapping blocks are enabled by default.
      */
     @JsonProperty("allowOverlappingBlocks")
     public void setAllowOverlappingBlocks(Boolean allowOverlappingBlocks) {
@@ -735,7 +747,7 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder>, Kubernet
     }
 
     /**
-     * AutomountServiceAccountToken indicates whether a service account token should be automatically mounted in the pod. If the field isn't set, the operator mounts the service account token by default.<br><p> <br><p> &#42;&#42;Warning:&#42;&#42; be aware that by default, Prometheus requires the service account token for Kubernetes service discovery. It is possible to use strategic merge patch to project the service account token into the 'prometheus' container.
+     * automountServiceAccountToken defines whether a service account token should be automatically mounted in the pod. If the field isn't set, the operator mounts the service account token by default.<br><p> <br><p> &#42;&#42;Warning:&#42;&#42; be aware that by default, Prometheus requires the service account token for Kubernetes service discovery. It is possible to use strategic merge patch to project the service account token into the 'prometheus' container.
      */
     @JsonProperty("automountServiceAccountToken")
     public Boolean getAutomountServiceAccountToken() {
@@ -743,7 +755,7 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder>, Kubernet
     }
 
     /**
-     * AutomountServiceAccountToken indicates whether a service account token should be automatically mounted in the pod. If the field isn't set, the operator mounts the service account token by default.<br><p> <br><p> &#42;&#42;Warning:&#42;&#42; be aware that by default, Prometheus requires the service account token for Kubernetes service discovery. It is possible to use strategic merge patch to project the service account token into the 'prometheus' container.
+     * automountServiceAccountToken defines whether a service account token should be automatically mounted in the pod. If the field isn't set, the operator mounts the service account token by default.<br><p> <br><p> &#42;&#42;Warning:&#42;&#42; be aware that by default, Prometheus requires the service account token for Kubernetes service discovery. It is possible to use strategic merge patch to project the service account token into the 'prometheus' container.
      */
     @JsonProperty("automountServiceAccountToken")
     public void setAutomountServiceAccountToken(Boolean automountServiceAccountToken) {
@@ -751,7 +763,7 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder>, Kubernet
     }
 
     /**
-     * Deprecated: use 'spec.image' instead.
+     * baseImage is deprecated: use 'spec.image' instead.
      */
     @JsonProperty("baseImage")
     public String getBaseImage() {
@@ -759,7 +771,7 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder>, Kubernet
     }
 
     /**
-     * Deprecated: use 'spec.image' instead.
+     * baseImage is deprecated: use 'spec.image' instead.
      */
     @JsonProperty("baseImage")
     public void setBaseImage(String baseImage) {
@@ -767,7 +779,7 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder>, Kubernet
     }
 
     /**
-     * BodySizeLimit defines per-scrape on response body size. Only valid in Prometheus versions 2.45.0 and newer.<br><p> <br><p> Note that the global limit only applies to scrape objects that don't specify an explicit limit value. If you want to enforce a maximum limit for all scrape objects, refer to enforcedBodySizeLimit.
+     * bodySizeLimit defines per-scrape on response body size. Only valid in Prometheus versions 2.45.0 and newer.<br><p> <br><p> Note that the global limit only applies to scrape objects that don't specify an explicit limit value. If you want to enforce a maximum limit for all scrape objects, refer to enforcedBodySizeLimit.
      */
     @JsonProperty("bodySizeLimit")
     public String getBodySizeLimit() {
@@ -775,7 +787,7 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder>, Kubernet
     }
 
     /**
-     * BodySizeLimit defines per-scrape on response body size. Only valid in Prometheus versions 2.45.0 and newer.<br><p> <br><p> Note that the global limit only applies to scrape objects that don't specify an explicit limit value. If you want to enforce a maximum limit for all scrape objects, refer to enforcedBodySizeLimit.
+     * bodySizeLimit defines per-scrape on response body size. Only valid in Prometheus versions 2.45.0 and newer.<br><p> <br><p> Note that the global limit only applies to scrape objects that don't specify an explicit limit value. If you want to enforce a maximum limit for all scrape objects, refer to enforcedBodySizeLimit.
      */
     @JsonProperty("bodySizeLimit")
     public void setBodySizeLimit(String bodySizeLimit) {
@@ -783,7 +795,7 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder>, Kubernet
     }
 
     /**
-     * ConfigMaps is a list of ConfigMaps in the same namespace as the Prometheus object, which shall be mounted into the Prometheus Pods. Each ConfigMap is added to the StatefulSet definition as a volume named `configmap-&lt;configmap-name&gt;`. The ConfigMaps are mounted into /etc/prometheus/configmaps/&lt;configmap-name&gt; in the 'prometheus' container.
+     * configMaps defines a list of ConfigMaps in the same namespace as the Prometheus object, which shall be mounted into the Prometheus Pods. Each ConfigMap is added to the StatefulSet definition as a volume named `configmap-&lt;configmap-name&gt;`. The ConfigMaps are mounted into /etc/prometheus/configmaps/&lt;configmap-name&gt; in the 'prometheus' container.
      */
     @JsonProperty("configMaps")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -792,7 +804,7 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder>, Kubernet
     }
 
     /**
-     * ConfigMaps is a list of ConfigMaps in the same namespace as the Prometheus object, which shall be mounted into the Prometheus Pods. Each ConfigMap is added to the StatefulSet definition as a volume named `configmap-&lt;configmap-name&gt;`. The ConfigMaps are mounted into /etc/prometheus/configmaps/&lt;configmap-name&gt; in the 'prometheus' container.
+     * configMaps defines a list of ConfigMaps in the same namespace as the Prometheus object, which shall be mounted into the Prometheus Pods. Each ConfigMap is added to the StatefulSet definition as a volume named `configmap-&lt;configmap-name&gt;`. The ConfigMaps are mounted into /etc/prometheus/configmaps/&lt;configmap-name&gt; in the 'prometheus' container.
      */
     @JsonProperty("configMaps")
     public void setConfigMaps(List<String> configMaps) {
@@ -800,7 +812,7 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder>, Kubernet
     }
 
     /**
-     * Containers allows injecting additional containers or modifying operator generated containers. This can be used to allow adding an authentication proxy to the Pods or to change the behavior of an operator generated container. Containers described here modify an operator generated container if they share the same name and modifications are done via a strategic merge patch.<br><p> <br><p> The names of containers managed by the operator are: &#42; `prometheus` &#42; `config-reloader` &#42; `thanos-sidecar`<br><p> <br><p> Overriding containers is entirely outside the scope of what the maintainers will support and by doing so, you accept that this behaviour may break at any time without notice.
+     * containers allows injecting additional containers or modifying operator generated containers. This can be used to allow adding an authentication proxy to the Pods or to change the behavior of an operator generated container. Containers described here modify an operator generated container if they share the same name and modifications are done via a strategic merge patch.<br><p> <br><p> The names of containers managed by the operator are: &#42; `prometheus` &#42; `config-reloader` &#42; `thanos-sidecar`<br><p> <br><p> Overriding containers is entirely outside the scope of what the maintainers will support and by doing so, you accept that this behaviour may break at any time without notice.
      */
     @JsonProperty("containers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -809,7 +821,7 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder>, Kubernet
     }
 
     /**
-     * Containers allows injecting additional containers or modifying operator generated containers. This can be used to allow adding an authentication proxy to the Pods or to change the behavior of an operator generated container. Containers described here modify an operator generated container if they share the same name and modifications are done via a strategic merge patch.<br><p> <br><p> The names of containers managed by the operator are: &#42; `prometheus` &#42; `config-reloader` &#42; `thanos-sidecar`<br><p> <br><p> Overriding containers is entirely outside the scope of what the maintainers will support and by doing so, you accept that this behaviour may break at any time without notice.
+     * containers allows injecting additional containers or modifying operator generated containers. This can be used to allow adding an authentication proxy to the Pods or to change the behavior of an operator generated container. Containers described here modify an operator generated container if they share the same name and modifications are done via a strategic merge patch.<br><p> <br><p> The names of containers managed by the operator are: &#42; `prometheus` &#42; `config-reloader` &#42; `thanos-sidecar`<br><p> <br><p> Overriding containers is entirely outside the scope of what the maintainers will support and by doing so, you accept that this behaviour may break at any time without notice.
      */
     @JsonProperty("containers")
     public void setContainers(List<Container> containers) {
@@ -817,7 +829,7 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder>, Kubernet
     }
 
     /**
-     * Whether to convert all scraped classic histograms into a native histogram with custom buckets.<br><p> <br><p> It requires Prometheus &gt;= v3.4.0.
+     * convertClassicHistogramsToNHCB defines whether to convert all scraped classic histograms into a native histogram with custom buckets.<br><p> <br><p> It requires Prometheus &gt;= v3.4.0.
      */
     @JsonProperty("convertClassicHistogramsToNHCB")
     public Boolean getConvertClassicHistogramsToNHCB() {
@@ -825,7 +837,7 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder>, Kubernet
     }
 
     /**
-     * Whether to convert all scraped classic histograms into a native histogram with custom buckets.<br><p> <br><p> It requires Prometheus &gt;= v3.4.0.
+     * convertClassicHistogramsToNHCB defines whether to convert all scraped classic histograms into a native histogram with custom buckets.<br><p> <br><p> It requires Prometheus &gt;= v3.4.0.
      */
     @JsonProperty("convertClassicHistogramsToNHCB")
     public void setConvertClassicHistogramsToNHCB(Boolean convertClassicHistogramsToNHCB) {
@@ -833,7 +845,7 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder>, Kubernet
     }
 
     /**
-     * When true, the Prometheus compaction is disabled. When `spec.thanos.objectStorageConfig` or `spec.objectStorageConfigFile` are defined, the operator automatically disables block compaction to avoid race conditions during block uploads (as the Thanos documentation recommends).
+     * disableCompaction when true, the Prometheus compaction is disabled. When `spec.thanos.objectStorageConfig` or `spec.objectStorageConfigFile` are defined, the operator automatically disables block compaction to avoid race conditions during block uploads (as the Thanos documentation recommends).
      */
     @JsonProperty("disableCompaction")
     public Boolean getDisableCompaction() {
@@ -841,7 +853,7 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder>, Kubernet
     }
 
     /**
-     * When true, the Prometheus compaction is disabled. When `spec.thanos.objectStorageConfig` or `spec.objectStorageConfigFile` are defined, the operator automatically disables block compaction to avoid race conditions during block uploads (as the Thanos documentation recommends).
+     * disableCompaction when true, the Prometheus compaction is disabled. When `spec.thanos.objectStorageConfig` or `spec.objectStorageConfigFile` are defined, the operator automatically disables block compaction to avoid race conditions during block uploads (as the Thanos documentation recommends).
      */
     @JsonProperty("disableCompaction")
     public void setDisableCompaction(Boolean disableCompaction) {
@@ -865,7 +877,7 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder>, Kubernet
     }
 
     /**
-     * Defines the DNS policy for the pods.
+     * dnsPolicy defines the DNS policy for the pods.
      */
     @JsonProperty("dnsPolicy")
     public String getDnsPolicy() {
@@ -873,7 +885,7 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder>, Kubernet
     }
 
     /**
-     * Defines the DNS policy for the pods.
+     * dnsPolicy defines the DNS policy for the pods.
      */
     @JsonProperty("dnsPolicy")
     public void setDnsPolicy(String dnsPolicy) {
@@ -881,7 +893,7 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder>, Kubernet
     }
 
     /**
-     * Enables access to the Prometheus web admin API.<br><p> <br><p> WARNING: Enabling the admin APIs enables mutating endpoints, to delete data, shutdown Prometheus, and more. Enabling this should be done with care and the user is advised to add additional authentication authorization via a proxy to ensure only clients authorized to perform these actions can do so.<br><p> <br><p> For more information: https://prometheus.io/docs/prometheus/latest/querying/api/#tsdb-admin-apis
+     * enableAdminAPI defines access to the Prometheus web admin API.<br><p> <br><p> WARNING: Enabling the admin APIs enables mutating endpoints, to delete data, shutdown Prometheus, and more. Enabling this should be done with care and the user is advised to add additional authentication authorization via a proxy to ensure only clients authorized to perform these actions can do so.<br><p> <br><p> For more information: https://prometheus.io/docs/prometheus/latest/querying/api/#tsdb-admin-apis
      */
     @JsonProperty("enableAdminAPI")
     public Boolean getEnableAdminAPI() {
@@ -889,7 +901,7 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder>, Kubernet
     }
 
     /**
-     * Enables access to the Prometheus web admin API.<br><p> <br><p> WARNING: Enabling the admin APIs enables mutating endpoints, to delete data, shutdown Prometheus, and more. Enabling this should be done with care and the user is advised to add additional authentication authorization via a proxy to ensure only clients authorized to perform these actions can do so.<br><p> <br><p> For more information: https://prometheus.io/docs/prometheus/latest/querying/api/#tsdb-admin-apis
+     * enableAdminAPI defines access to the Prometheus web admin API.<br><p> <br><p> WARNING: Enabling the admin APIs enables mutating endpoints, to delete data, shutdown Prometheus, and more. Enabling this should be done with care and the user is advised to add additional authentication authorization via a proxy to ensure only clients authorized to perform these actions can do so.<br><p> <br><p> For more information: https://prometheus.io/docs/prometheus/latest/querying/api/#tsdb-admin-apis
      */
     @JsonProperty("enableAdminAPI")
     public void setEnableAdminAPI(Boolean enableAdminAPI) {
@@ -897,7 +909,7 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder>, Kubernet
     }
 
     /**
-     * Enable access to Prometheus feature flags. By default, no features are enabled.<br><p> <br><p> Enabling features which are disabled by default is entirely outside the scope of what the maintainers will support and by doing so, you accept that this behaviour may break at any time without notice.<br><p> <br><p> For more information see https://prometheus.io/docs/prometheus/latest/feature_flags/
+     * enableFeatures enables access to Prometheus feature flags. By default, no features are enabled.<br><p> <br><p> Enabling features which are disabled by default is entirely outside the scope of what the maintainers will support and by doing so, you accept that this behaviour may break at any time without notice.<br><p> <br><p> For more information see https://prometheus.io/docs/prometheus/latest/feature_flags/
      */
     @JsonProperty("enableFeatures")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -906,7 +918,7 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder>, Kubernet
     }
 
     /**
-     * Enable access to Prometheus feature flags. By default, no features are enabled.<br><p> <br><p> Enabling features which are disabled by default is entirely outside the scope of what the maintainers will support and by doing so, you accept that this behaviour may break at any time without notice.<br><p> <br><p> For more information see https://prometheus.io/docs/prometheus/latest/feature_flags/
+     * enableFeatures enables access to Prometheus feature flags. By default, no features are enabled.<br><p> <br><p> Enabling features which are disabled by default is entirely outside the scope of what the maintainers will support and by doing so, you accept that this behaviour may break at any time without notice.<br><p> <br><p> For more information see https://prometheus.io/docs/prometheus/latest/feature_flags/
      */
     @JsonProperty("enableFeatures")
     public void setEnableFeatures(List<String> enableFeatures) {
@@ -914,7 +926,7 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder>, Kubernet
     }
 
     /**
-     * Enable Prometheus to be used as a receiver for the OTLP Metrics protocol.<br><p> <br><p> Note that the OTLP receiver endpoint is automatically enabled if `.spec.otlpConfig` is defined.<br><p> <br><p> It requires Prometheus &gt;= v2.47.0.
+     * enableOTLPReceiver defines the Prometheus to be used as a receiver for the OTLP Metrics protocol.<br><p> <br><p> Note that the OTLP receiver endpoint is automatically enabled if `.spec.otlpConfig` is defined.<br><p> <br><p> It requires Prometheus &gt;= v2.47.0.
      */
     @JsonProperty("enableOTLPReceiver")
     public Boolean getEnableOTLPReceiver() {
@@ -922,7 +934,7 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder>, Kubernet
     }
 
     /**
-     * Enable Prometheus to be used as a receiver for the OTLP Metrics protocol.<br><p> <br><p> Note that the OTLP receiver endpoint is automatically enabled if `.spec.otlpConfig` is defined.<br><p> <br><p> It requires Prometheus &gt;= v2.47.0.
+     * enableOTLPReceiver defines the Prometheus to be used as a receiver for the OTLP Metrics protocol.<br><p> <br><p> Note that the OTLP receiver endpoint is automatically enabled if `.spec.otlpConfig` is defined.<br><p> <br><p> It requires Prometheus &gt;= v2.47.0.
      */
     @JsonProperty("enableOTLPReceiver")
     public void setEnableOTLPReceiver(Boolean enableOTLPReceiver) {
@@ -930,7 +942,7 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder>, Kubernet
     }
 
     /**
-     * Enable Prometheus to be used as a receiver for the Prometheus remote write protocol.<br><p> <br><p> WARNING: This is not considered an efficient way of ingesting samples. Use it with caution for specific low-volume use cases. It is not suitable for replacing the ingestion via scraping and turning Prometheus into a push-based metrics collection system. For more information see https://prometheus.io/docs/prometheus/latest/querying/api/#remote-write-receiver<br><p> <br><p> It requires Prometheus &gt;= v2.33.0.
+     * enableRemoteWriteReceiver defines the Prometheus to be used as a receiver for the Prometheus remote write protocol.<br><p> <br><p> WARNING: This is not considered an efficient way of ingesting samples. Use it with caution for specific low-volume use cases. It is not suitable for replacing the ingestion via scraping and turning Prometheus into a push-based metrics collection system. For more information see https://prometheus.io/docs/prometheus/latest/querying/api/#remote-write-receiver<br><p> <br><p> It requires Prometheus &gt;= v2.33.0.
      */
     @JsonProperty("enableRemoteWriteReceiver")
     public Boolean getEnableRemoteWriteReceiver() {
@@ -938,7 +950,7 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder>, Kubernet
     }
 
     /**
-     * Enable Prometheus to be used as a receiver for the Prometheus remote write protocol.<br><p> <br><p> WARNING: This is not considered an efficient way of ingesting samples. Use it with caution for specific low-volume use cases. It is not suitable for replacing the ingestion via scraping and turning Prometheus into a push-based metrics collection system. For more information see https://prometheus.io/docs/prometheus/latest/querying/api/#remote-write-receiver<br><p> <br><p> It requires Prometheus &gt;= v2.33.0.
+     * enableRemoteWriteReceiver defines the Prometheus to be used as a receiver for the Prometheus remote write protocol.<br><p> <br><p> WARNING: This is not considered an efficient way of ingesting samples. Use it with caution for specific low-volume use cases. It is not suitable for replacing the ingestion via scraping and turning Prometheus into a push-based metrics collection system. For more information see https://prometheus.io/docs/prometheus/latest/querying/api/#remote-write-receiver<br><p> <br><p> It requires Prometheus &gt;= v2.33.0.
      */
     @JsonProperty("enableRemoteWriteReceiver")
     public void setEnableRemoteWriteReceiver(Boolean enableRemoteWriteReceiver) {
@@ -946,7 +958,7 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder>, Kubernet
     }
 
     /**
-     * Indicates whether information about services should be injected into pod's environment variables
+     * enableServiceLinks defines whether information about services should be injected into pod's environment variables
      */
     @JsonProperty("enableServiceLinks")
     public Boolean getEnableServiceLinks() {
@@ -954,7 +966,7 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder>, Kubernet
     }
 
     /**
-     * Indicates whether information about services should be injected into pod's environment variables
+     * enableServiceLinks defines whether information about services should be injected into pod's environment variables
      */
     @JsonProperty("enableServiceLinks")
     public void setEnableServiceLinks(Boolean enableServiceLinks) {
@@ -962,7 +974,7 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder>, Kubernet
     }
 
     /**
-     * When defined, enforcedBodySizeLimit specifies a global limit on the size of uncompressed response body that will be accepted by Prometheus. Targets responding with a body larger than this many bytes will cause the scrape to fail.<br><p> <br><p> It requires Prometheus &gt;= v2.28.0.<br><p> <br><p> When both `enforcedBodySizeLimit` and `bodySizeLimit` are defined and greater than zero, the following rules apply: &#42; Scrape objects without a defined bodySizeLimit value will inherit the global bodySizeLimit value (Prometheus &gt;= 2.45.0) or the enforcedBodySizeLimit value (Prometheus &lt; v2.45.0).<br><p>   If Prometheus version is &gt;= 2.45.0 and the `enforcedBodySizeLimit` is greater than the `bodySizeLimit`, the `bodySizeLimit` will be set to `enforcedBodySizeLimit`.<br><p> &#42; Scrape objects with a bodySizeLimit value less than or equal to enforcedBodySizeLimit keep their specific value. &#42; Scrape objects with a bodySizeLimit value greater than enforcedBodySizeLimit are set to enforcedBodySizeLimit.
+     * enforcedBodySizeLimit when defined specifies a global limit on the size of uncompressed response body that will be accepted by Prometheus. Targets responding with a body larger than this many bytes will cause the scrape to fail.<br><p> <br><p> It requires Prometheus &gt;= v2.28.0.<br><p> <br><p> When both `enforcedBodySizeLimit` and `bodySizeLimit` are defined and greater than zero, the following rules apply: &#42; Scrape objects without a defined bodySizeLimit value will inherit the global bodySizeLimit value (Prometheus &gt;= 2.45.0) or the enforcedBodySizeLimit value (Prometheus &lt; v2.45.0).<br><p>   If Prometheus version is &gt;= 2.45.0 and the `enforcedBodySizeLimit` is greater than the `bodySizeLimit`, the `bodySizeLimit` will be set to `enforcedBodySizeLimit`.<br><p> &#42; Scrape objects with a bodySizeLimit value less than or equal to enforcedBodySizeLimit keep their specific value. &#42; Scrape objects with a bodySizeLimit value greater than enforcedBodySizeLimit are set to enforcedBodySizeLimit.
      */
     @JsonProperty("enforcedBodySizeLimit")
     public String getEnforcedBodySizeLimit() {
@@ -970,7 +982,7 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder>, Kubernet
     }
 
     /**
-     * When defined, enforcedBodySizeLimit specifies a global limit on the size of uncompressed response body that will be accepted by Prometheus. Targets responding with a body larger than this many bytes will cause the scrape to fail.<br><p> <br><p> It requires Prometheus &gt;= v2.28.0.<br><p> <br><p> When both `enforcedBodySizeLimit` and `bodySizeLimit` are defined and greater than zero, the following rules apply: &#42; Scrape objects without a defined bodySizeLimit value will inherit the global bodySizeLimit value (Prometheus &gt;= 2.45.0) or the enforcedBodySizeLimit value (Prometheus &lt; v2.45.0).<br><p>   If Prometheus version is &gt;= 2.45.0 and the `enforcedBodySizeLimit` is greater than the `bodySizeLimit`, the `bodySizeLimit` will be set to `enforcedBodySizeLimit`.<br><p> &#42; Scrape objects with a bodySizeLimit value less than or equal to enforcedBodySizeLimit keep their specific value. &#42; Scrape objects with a bodySizeLimit value greater than enforcedBodySizeLimit are set to enforcedBodySizeLimit.
+     * enforcedBodySizeLimit when defined specifies a global limit on the size of uncompressed response body that will be accepted by Prometheus. Targets responding with a body larger than this many bytes will cause the scrape to fail.<br><p> <br><p> It requires Prometheus &gt;= v2.28.0.<br><p> <br><p> When both `enforcedBodySizeLimit` and `bodySizeLimit` are defined and greater than zero, the following rules apply: &#42; Scrape objects without a defined bodySizeLimit value will inherit the global bodySizeLimit value (Prometheus &gt;= 2.45.0) or the enforcedBodySizeLimit value (Prometheus &lt; v2.45.0).<br><p>   If Prometheus version is &gt;= 2.45.0 and the `enforcedBodySizeLimit` is greater than the `bodySizeLimit`, the `bodySizeLimit` will be set to `enforcedBodySizeLimit`.<br><p> &#42; Scrape objects with a bodySizeLimit value less than or equal to enforcedBodySizeLimit keep their specific value. &#42; Scrape objects with a bodySizeLimit value greater than enforcedBodySizeLimit are set to enforcedBodySizeLimit.
      */
     @JsonProperty("enforcedBodySizeLimit")
     public void setEnforcedBodySizeLimit(String enforcedBodySizeLimit) {
@@ -978,7 +990,7 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder>, Kubernet
     }
 
     /**
-     * When defined, enforcedKeepDroppedTargets specifies a global limit on the number of targets dropped by relabeling that will be kept in memory. The value overrides any `spec.keepDroppedTargets` set by ServiceMonitor, PodMonitor, Probe objects unless `spec.keepDroppedTargets` is greater than zero and less than `spec.enforcedKeepDroppedTargets`.<br><p> <br><p> It requires Prometheus &gt;= v2.47.0.<br><p> <br><p> When both `enforcedKeepDroppedTargets` and `keepDroppedTargets` are defined and greater than zero, the following rules apply: &#42; Scrape objects without a defined keepDroppedTargets value will inherit the global keepDroppedTargets value (Prometheus &gt;= 2.45.0) or the enforcedKeepDroppedTargets value (Prometheus &lt; v2.45.0).<br><p>   If Prometheus version is &gt;= 2.45.0 and the `enforcedKeepDroppedTargets` is greater than the `keepDroppedTargets`, the `keepDroppedTargets` will be set to `enforcedKeepDroppedTargets`.<br><p> &#42; Scrape objects with a keepDroppedTargets value less than or equal to enforcedKeepDroppedTargets keep their specific value. &#42; Scrape objects with a keepDroppedTargets value greater than enforcedKeepDroppedTargets are set to enforcedKeepDroppedTargets.
+     * enforcedKeepDroppedTargets when defined specifies a global limit on the number of targets dropped by relabeling that will be kept in memory. The value overrides any `spec.keepDroppedTargets` set by ServiceMonitor, PodMonitor, Probe objects unless `spec.keepDroppedTargets` is greater than zero and less than `spec.enforcedKeepDroppedTargets`.<br><p> <br><p> It requires Prometheus &gt;= v2.47.0.<br><p> <br><p> When both `enforcedKeepDroppedTargets` and `keepDroppedTargets` are defined and greater than zero, the following rules apply: &#42; Scrape objects without a defined keepDroppedTargets value will inherit the global keepDroppedTargets value (Prometheus &gt;= 2.45.0) or the enforcedKeepDroppedTargets value (Prometheus &lt; v2.45.0).<br><p>   If Prometheus version is &gt;= 2.45.0 and the `enforcedKeepDroppedTargets` is greater than the `keepDroppedTargets`, the `keepDroppedTargets` will be set to `enforcedKeepDroppedTargets`.<br><p> &#42; Scrape objects with a keepDroppedTargets value less than or equal to enforcedKeepDroppedTargets keep their specific value. &#42; Scrape objects with a keepDroppedTargets value greater than enforcedKeepDroppedTargets are set to enforcedKeepDroppedTargets.
      */
     @JsonProperty("enforcedKeepDroppedTargets")
     public Long getEnforcedKeepDroppedTargets() {
@@ -986,7 +998,7 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder>, Kubernet
     }
 
     /**
-     * When defined, enforcedKeepDroppedTargets specifies a global limit on the number of targets dropped by relabeling that will be kept in memory. The value overrides any `spec.keepDroppedTargets` set by ServiceMonitor, PodMonitor, Probe objects unless `spec.keepDroppedTargets` is greater than zero and less than `spec.enforcedKeepDroppedTargets`.<br><p> <br><p> It requires Prometheus &gt;= v2.47.0.<br><p> <br><p> When both `enforcedKeepDroppedTargets` and `keepDroppedTargets` are defined and greater than zero, the following rules apply: &#42; Scrape objects without a defined keepDroppedTargets value will inherit the global keepDroppedTargets value (Prometheus &gt;= 2.45.0) or the enforcedKeepDroppedTargets value (Prometheus &lt; v2.45.0).<br><p>   If Prometheus version is &gt;= 2.45.0 and the `enforcedKeepDroppedTargets` is greater than the `keepDroppedTargets`, the `keepDroppedTargets` will be set to `enforcedKeepDroppedTargets`.<br><p> &#42; Scrape objects with a keepDroppedTargets value less than or equal to enforcedKeepDroppedTargets keep their specific value. &#42; Scrape objects with a keepDroppedTargets value greater than enforcedKeepDroppedTargets are set to enforcedKeepDroppedTargets.
+     * enforcedKeepDroppedTargets when defined specifies a global limit on the number of targets dropped by relabeling that will be kept in memory. The value overrides any `spec.keepDroppedTargets` set by ServiceMonitor, PodMonitor, Probe objects unless `spec.keepDroppedTargets` is greater than zero and less than `spec.enforcedKeepDroppedTargets`.<br><p> <br><p> It requires Prometheus &gt;= v2.47.0.<br><p> <br><p> When both `enforcedKeepDroppedTargets` and `keepDroppedTargets` are defined and greater than zero, the following rules apply: &#42; Scrape objects without a defined keepDroppedTargets value will inherit the global keepDroppedTargets value (Prometheus &gt;= 2.45.0) or the enforcedKeepDroppedTargets value (Prometheus &lt; v2.45.0).<br><p>   If Prometheus version is &gt;= 2.45.0 and the `enforcedKeepDroppedTargets` is greater than the `keepDroppedTargets`, the `keepDroppedTargets` will be set to `enforcedKeepDroppedTargets`.<br><p> &#42; Scrape objects with a keepDroppedTargets value less than or equal to enforcedKeepDroppedTargets keep their specific value. &#42; Scrape objects with a keepDroppedTargets value greater than enforcedKeepDroppedTargets are set to enforcedKeepDroppedTargets.
      */
     @JsonProperty("enforcedKeepDroppedTargets")
     public void setEnforcedKeepDroppedTargets(Long enforcedKeepDroppedTargets) {
@@ -994,7 +1006,7 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder>, Kubernet
     }
 
     /**
-     * When defined, enforcedLabelLimit specifies a global limit on the number of labels per sample. The value overrides any `spec.labelLimit` set by ServiceMonitor, PodMonitor, Probe objects unless `spec.labelLimit` is greater than zero and less than `spec.enforcedLabelLimit`.<br><p> <br><p> It requires Prometheus &gt;= v2.27.0.<br><p> <br><p> When both `enforcedLabelLimit` and `labelLimit` are defined and greater than zero, the following rules apply: &#42; Scrape objects without a defined labelLimit value will inherit the global labelLimit value (Prometheus &gt;= 2.45.0) or the enforcedLabelLimit value (Prometheus &lt; v2.45.0).<br><p>   If Prometheus version is &gt;= 2.45.0 and the `enforcedLabelLimit` is greater than the `labelLimit`, the `labelLimit` will be set to `enforcedLabelLimit`.<br><p> &#42; Scrape objects with a labelLimit value less than or equal to enforcedLabelLimit keep their specific value. &#42; Scrape objects with a labelLimit value greater than enforcedLabelLimit are set to enforcedLabelLimit.
+     * enforcedLabelLimit when defined specifies a global limit on the number of labels per sample. The value overrides any `spec.labelLimit` set by ServiceMonitor, PodMonitor, Probe objects unless `spec.labelLimit` is greater than zero and less than `spec.enforcedLabelLimit`.<br><p> <br><p> It requires Prometheus &gt;= v2.27.0.<br><p> <br><p> When both `enforcedLabelLimit` and `labelLimit` are defined and greater than zero, the following rules apply: &#42; Scrape objects without a defined labelLimit value will inherit the global labelLimit value (Prometheus &gt;= 2.45.0) or the enforcedLabelLimit value (Prometheus &lt; v2.45.0).<br><p>   If Prometheus version is &gt;= 2.45.0 and the `enforcedLabelLimit` is greater than the `labelLimit`, the `labelLimit` will be set to `enforcedLabelLimit`.<br><p> &#42; Scrape objects with a labelLimit value less than or equal to enforcedLabelLimit keep their specific value. &#42; Scrape objects with a labelLimit value greater than enforcedLabelLimit are set to enforcedLabelLimit.
      */
     @JsonProperty("enforcedLabelLimit")
     public Long getEnforcedLabelLimit() {
@@ -1002,7 +1014,7 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder>, Kubernet
     }
 
     /**
-     * When defined, enforcedLabelLimit specifies a global limit on the number of labels per sample. The value overrides any `spec.labelLimit` set by ServiceMonitor, PodMonitor, Probe objects unless `spec.labelLimit` is greater than zero and less than `spec.enforcedLabelLimit`.<br><p> <br><p> It requires Prometheus &gt;= v2.27.0.<br><p> <br><p> When both `enforcedLabelLimit` and `labelLimit` are defined and greater than zero, the following rules apply: &#42; Scrape objects without a defined labelLimit value will inherit the global labelLimit value (Prometheus &gt;= 2.45.0) or the enforcedLabelLimit value (Prometheus &lt; v2.45.0).<br><p>   If Prometheus version is &gt;= 2.45.0 and the `enforcedLabelLimit` is greater than the `labelLimit`, the `labelLimit` will be set to `enforcedLabelLimit`.<br><p> &#42; Scrape objects with a labelLimit value less than or equal to enforcedLabelLimit keep their specific value. &#42; Scrape objects with a labelLimit value greater than enforcedLabelLimit are set to enforcedLabelLimit.
+     * enforcedLabelLimit when defined specifies a global limit on the number of labels per sample. The value overrides any `spec.labelLimit` set by ServiceMonitor, PodMonitor, Probe objects unless `spec.labelLimit` is greater than zero and less than `spec.enforcedLabelLimit`.<br><p> <br><p> It requires Prometheus &gt;= v2.27.0.<br><p> <br><p> When both `enforcedLabelLimit` and `labelLimit` are defined and greater than zero, the following rules apply: &#42; Scrape objects without a defined labelLimit value will inherit the global labelLimit value (Prometheus &gt;= 2.45.0) or the enforcedLabelLimit value (Prometheus &lt; v2.45.0).<br><p>   If Prometheus version is &gt;= 2.45.0 and the `enforcedLabelLimit` is greater than the `labelLimit`, the `labelLimit` will be set to `enforcedLabelLimit`.<br><p> &#42; Scrape objects with a labelLimit value less than or equal to enforcedLabelLimit keep their specific value. &#42; Scrape objects with a labelLimit value greater than enforcedLabelLimit are set to enforcedLabelLimit.
      */
     @JsonProperty("enforcedLabelLimit")
     public void setEnforcedLabelLimit(Long enforcedLabelLimit) {
@@ -1010,7 +1022,7 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder>, Kubernet
     }
 
     /**
-     * When defined, enforcedLabelNameLengthLimit specifies a global limit on the length of labels name per sample. The value overrides any `spec.labelNameLengthLimit` set by ServiceMonitor, PodMonitor, Probe objects unless `spec.labelNameLengthLimit` is greater than zero and less than `spec.enforcedLabelNameLengthLimit`.<br><p> <br><p> It requires Prometheus &gt;= v2.27.0.<br><p> <br><p> When both `enforcedLabelNameLengthLimit` and `labelNameLengthLimit` are defined and greater than zero, the following rules apply: &#42; Scrape objects without a defined labelNameLengthLimit value will inherit the global labelNameLengthLimit value (Prometheus &gt;= 2.45.0) or the enforcedLabelNameLengthLimit value (Prometheus &lt; v2.45.0).<br><p>   If Prometheus version is &gt;= 2.45.0 and the `enforcedLabelNameLengthLimit` is greater than the `labelNameLengthLimit`, the `labelNameLengthLimit` will be set to `enforcedLabelNameLengthLimit`.<br><p> &#42; Scrape objects with a labelNameLengthLimit value less than or equal to enforcedLabelNameLengthLimit keep their specific value. &#42; Scrape objects with a labelNameLengthLimit value greater than enforcedLabelNameLengthLimit are set to enforcedLabelNameLengthLimit.
+     * enforcedLabelNameLengthLimit when defined specifies a global limit on the length of labels name per sample. The value overrides any `spec.labelNameLengthLimit` set by ServiceMonitor, PodMonitor, Probe objects unless `spec.labelNameLengthLimit` is greater than zero and less than `spec.enforcedLabelNameLengthLimit`.<br><p> <br><p> It requires Prometheus &gt;= v2.27.0.<br><p> <br><p> When both `enforcedLabelNameLengthLimit` and `labelNameLengthLimit` are defined and greater than zero, the following rules apply: &#42; Scrape objects without a defined labelNameLengthLimit value will inherit the global labelNameLengthLimit value (Prometheus &gt;= 2.45.0) or the enforcedLabelNameLengthLimit value (Prometheus &lt; v2.45.0).<br><p>   If Prometheus version is &gt;= 2.45.0 and the `enforcedLabelNameLengthLimit` is greater than the `labelNameLengthLimit`, the `labelNameLengthLimit` will be set to `enforcedLabelNameLengthLimit`.<br><p> &#42; Scrape objects with a labelNameLengthLimit value less than or equal to enforcedLabelNameLengthLimit keep their specific value. &#42; Scrape objects with a labelNameLengthLimit value greater than enforcedLabelNameLengthLimit are set to enforcedLabelNameLengthLimit.
      */
     @JsonProperty("enforcedLabelNameLengthLimit")
     public Long getEnforcedLabelNameLengthLimit() {
@@ -1018,7 +1030,7 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder>, Kubernet
     }
 
     /**
-     * When defined, enforcedLabelNameLengthLimit specifies a global limit on the length of labels name per sample. The value overrides any `spec.labelNameLengthLimit` set by ServiceMonitor, PodMonitor, Probe objects unless `spec.labelNameLengthLimit` is greater than zero and less than `spec.enforcedLabelNameLengthLimit`.<br><p> <br><p> It requires Prometheus &gt;= v2.27.0.<br><p> <br><p> When both `enforcedLabelNameLengthLimit` and `labelNameLengthLimit` are defined and greater than zero, the following rules apply: &#42; Scrape objects without a defined labelNameLengthLimit value will inherit the global labelNameLengthLimit value (Prometheus &gt;= 2.45.0) or the enforcedLabelNameLengthLimit value (Prometheus &lt; v2.45.0).<br><p>   If Prometheus version is &gt;= 2.45.0 and the `enforcedLabelNameLengthLimit` is greater than the `labelNameLengthLimit`, the `labelNameLengthLimit` will be set to `enforcedLabelNameLengthLimit`.<br><p> &#42; Scrape objects with a labelNameLengthLimit value less than or equal to enforcedLabelNameLengthLimit keep their specific value. &#42; Scrape objects with a labelNameLengthLimit value greater than enforcedLabelNameLengthLimit are set to enforcedLabelNameLengthLimit.
+     * enforcedLabelNameLengthLimit when defined specifies a global limit on the length of labels name per sample. The value overrides any `spec.labelNameLengthLimit` set by ServiceMonitor, PodMonitor, Probe objects unless `spec.labelNameLengthLimit` is greater than zero and less than `spec.enforcedLabelNameLengthLimit`.<br><p> <br><p> It requires Prometheus &gt;= v2.27.0.<br><p> <br><p> When both `enforcedLabelNameLengthLimit` and `labelNameLengthLimit` are defined and greater than zero, the following rules apply: &#42; Scrape objects without a defined labelNameLengthLimit value will inherit the global labelNameLengthLimit value (Prometheus &gt;= 2.45.0) or the enforcedLabelNameLengthLimit value (Prometheus &lt; v2.45.0).<br><p>   If Prometheus version is &gt;= 2.45.0 and the `enforcedLabelNameLengthLimit` is greater than the `labelNameLengthLimit`, the `labelNameLengthLimit` will be set to `enforcedLabelNameLengthLimit`.<br><p> &#42; Scrape objects with a labelNameLengthLimit value less than or equal to enforcedLabelNameLengthLimit keep their specific value. &#42; Scrape objects with a labelNameLengthLimit value greater than enforcedLabelNameLengthLimit are set to enforcedLabelNameLengthLimit.
      */
     @JsonProperty("enforcedLabelNameLengthLimit")
     public void setEnforcedLabelNameLengthLimit(Long enforcedLabelNameLengthLimit) {
@@ -1026,7 +1038,7 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder>, Kubernet
     }
 
     /**
-     * When not null, enforcedLabelValueLengthLimit defines a global limit on the length of labels value per sample. The value overrides any `spec.labelValueLengthLimit` set by ServiceMonitor, PodMonitor, Probe objects unless `spec.labelValueLengthLimit` is greater than zero and less than `spec.enforcedLabelValueLengthLimit`.<br><p> <br><p> It requires Prometheus &gt;= v2.27.0.<br><p> <br><p> When both `enforcedLabelValueLengthLimit` and `labelValueLengthLimit` are defined and greater than zero, the following rules apply: &#42; Scrape objects without a defined labelValueLengthLimit value will inherit the global labelValueLengthLimit value (Prometheus &gt;= 2.45.0) or the enforcedLabelValueLengthLimit value (Prometheus &lt; v2.45.0).<br><p>   If Prometheus version is &gt;= 2.45.0 and the `enforcedLabelValueLengthLimit` is greater than the `labelValueLengthLimit`, the `labelValueLengthLimit` will be set to `enforcedLabelValueLengthLimit`.<br><p> &#42; Scrape objects with a labelValueLengthLimit value less than or equal to enforcedLabelValueLengthLimit keep their specific value. &#42; Scrape objects with a labelValueLengthLimit value greater than enforcedLabelValueLengthLimit are set to enforcedLabelValueLengthLimit.
+     * enforcedLabelValueLengthLimit when not null defines a global limit on the length of labels value per sample. The value overrides any `spec.labelValueLengthLimit` set by ServiceMonitor, PodMonitor, Probe objects unless `spec.labelValueLengthLimit` is greater than zero and less than `spec.enforcedLabelValueLengthLimit`.<br><p> <br><p> It requires Prometheus &gt;= v2.27.0.<br><p> <br><p> When both `enforcedLabelValueLengthLimit` and `labelValueLengthLimit` are defined and greater than zero, the following rules apply: &#42; Scrape objects without a defined labelValueLengthLimit value will inherit the global labelValueLengthLimit value (Prometheus &gt;= 2.45.0) or the enforcedLabelValueLengthLimit value (Prometheus &lt; v2.45.0).<br><p>   If Prometheus version is &gt;= 2.45.0 and the `enforcedLabelValueLengthLimit` is greater than the `labelValueLengthLimit`, the `labelValueLengthLimit` will be set to `enforcedLabelValueLengthLimit`.<br><p> &#42; Scrape objects with a labelValueLengthLimit value less than or equal to enforcedLabelValueLengthLimit keep their specific value. &#42; Scrape objects with a labelValueLengthLimit value greater than enforcedLabelValueLengthLimit are set to enforcedLabelValueLengthLimit.
      */
     @JsonProperty("enforcedLabelValueLengthLimit")
     public Long getEnforcedLabelValueLengthLimit() {
@@ -1034,7 +1046,7 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder>, Kubernet
     }
 
     /**
-     * When not null, enforcedLabelValueLengthLimit defines a global limit on the length of labels value per sample. The value overrides any `spec.labelValueLengthLimit` set by ServiceMonitor, PodMonitor, Probe objects unless `spec.labelValueLengthLimit` is greater than zero and less than `spec.enforcedLabelValueLengthLimit`.<br><p> <br><p> It requires Prometheus &gt;= v2.27.0.<br><p> <br><p> When both `enforcedLabelValueLengthLimit` and `labelValueLengthLimit` are defined and greater than zero, the following rules apply: &#42; Scrape objects without a defined labelValueLengthLimit value will inherit the global labelValueLengthLimit value (Prometheus &gt;= 2.45.0) or the enforcedLabelValueLengthLimit value (Prometheus &lt; v2.45.0).<br><p>   If Prometheus version is &gt;= 2.45.0 and the `enforcedLabelValueLengthLimit` is greater than the `labelValueLengthLimit`, the `labelValueLengthLimit` will be set to `enforcedLabelValueLengthLimit`.<br><p> &#42; Scrape objects with a labelValueLengthLimit value less than or equal to enforcedLabelValueLengthLimit keep their specific value. &#42; Scrape objects with a labelValueLengthLimit value greater than enforcedLabelValueLengthLimit are set to enforcedLabelValueLengthLimit.
+     * enforcedLabelValueLengthLimit when not null defines a global limit on the length of labels value per sample. The value overrides any `spec.labelValueLengthLimit` set by ServiceMonitor, PodMonitor, Probe objects unless `spec.labelValueLengthLimit` is greater than zero and less than `spec.enforcedLabelValueLengthLimit`.<br><p> <br><p> It requires Prometheus &gt;= v2.27.0.<br><p> <br><p> When both `enforcedLabelValueLengthLimit` and `labelValueLengthLimit` are defined and greater than zero, the following rules apply: &#42; Scrape objects without a defined labelValueLengthLimit value will inherit the global labelValueLengthLimit value (Prometheus &gt;= 2.45.0) or the enforcedLabelValueLengthLimit value (Prometheus &lt; v2.45.0).<br><p>   If Prometheus version is &gt;= 2.45.0 and the `enforcedLabelValueLengthLimit` is greater than the `labelValueLengthLimit`, the `labelValueLengthLimit` will be set to `enforcedLabelValueLengthLimit`.<br><p> &#42; Scrape objects with a labelValueLengthLimit value less than or equal to enforcedLabelValueLengthLimit keep their specific value. &#42; Scrape objects with a labelValueLengthLimit value greater than enforcedLabelValueLengthLimit are set to enforcedLabelValueLengthLimit.
      */
     @JsonProperty("enforcedLabelValueLengthLimit")
     public void setEnforcedLabelValueLengthLimit(Long enforcedLabelValueLengthLimit) {
@@ -1042,7 +1054,7 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder>, Kubernet
     }
 
     /**
-     * When not empty, a label will be added to:<br><p> <br><p> 1. All metrics scraped from `ServiceMonitor`, `PodMonitor`, `Probe` and `ScrapeConfig` objects. 2. All metrics generated from recording rules defined in `PrometheusRule` objects. 3. All alerts generated from alerting rules defined in `PrometheusRule` objects. 4. All vector selectors of PromQL expressions defined in `PrometheusRule` objects.<br><p> <br><p> The label will not added for objects referenced in `spec.excludedFromEnforcement`.<br><p> <br><p> The label's name is this field's value. The label's value is the namespace of the `ServiceMonitor`, `PodMonitor`, `Probe`, `PrometheusRule` or `ScrapeConfig` object.
+     * enforcedNamespaceLabel when not empty, a label will be added to:<br><p> <br><p> 1. All metrics scraped from `ServiceMonitor`, `PodMonitor`, `Probe` and `ScrapeConfig` objects. 2. All metrics generated from recording rules defined in `PrometheusRule` objects. 3. All alerts generated from alerting rules defined in `PrometheusRule` objects. 4. All vector selectors of PromQL expressions defined in `PrometheusRule` objects.<br><p> <br><p> The label will not added for objects referenced in `spec.excludedFromEnforcement`.<br><p> <br><p> The label's name is this field's value. The label's value is the namespace of the `ServiceMonitor`, `PodMonitor`, `Probe`, `PrometheusRule` or `ScrapeConfig` object.
      */
     @JsonProperty("enforcedNamespaceLabel")
     public String getEnforcedNamespaceLabel() {
@@ -1050,7 +1062,7 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder>, Kubernet
     }
 
     /**
-     * When not empty, a label will be added to:<br><p> <br><p> 1. All metrics scraped from `ServiceMonitor`, `PodMonitor`, `Probe` and `ScrapeConfig` objects. 2. All metrics generated from recording rules defined in `PrometheusRule` objects. 3. All alerts generated from alerting rules defined in `PrometheusRule` objects. 4. All vector selectors of PromQL expressions defined in `PrometheusRule` objects.<br><p> <br><p> The label will not added for objects referenced in `spec.excludedFromEnforcement`.<br><p> <br><p> The label's name is this field's value. The label's value is the namespace of the `ServiceMonitor`, `PodMonitor`, `Probe`, `PrometheusRule` or `ScrapeConfig` object.
+     * enforcedNamespaceLabel when not empty, a label will be added to:<br><p> <br><p> 1. All metrics scraped from `ServiceMonitor`, `PodMonitor`, `Probe` and `ScrapeConfig` objects. 2. All metrics generated from recording rules defined in `PrometheusRule` objects. 3. All alerts generated from alerting rules defined in `PrometheusRule` objects. 4. All vector selectors of PromQL expressions defined in `PrometheusRule` objects.<br><p> <br><p> The label will not added for objects referenced in `spec.excludedFromEnforcement`.<br><p> <br><p> The label's name is this field's value. The label's value is the namespace of the `ServiceMonitor`, `PodMonitor`, `Probe`, `PrometheusRule` or `ScrapeConfig` object.
      */
     @JsonProperty("enforcedNamespaceLabel")
     public void setEnforcedNamespaceLabel(String enforcedNamespaceLabel) {
@@ -1058,7 +1070,7 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder>, Kubernet
     }
 
     /**
-     * When defined, enforcedSampleLimit specifies a global limit on the number of scraped samples that will be accepted. This overrides any `spec.sampleLimit` set by ServiceMonitor, PodMonitor, Probe objects unless `spec.sampleLimit` is greater than zero and less than `spec.enforcedSampleLimit`.<br><p> <br><p> It is meant to be used by admins to keep the overall number of samples/series under a desired limit.<br><p> <br><p> When both `enforcedSampleLimit` and `sampleLimit` are defined and greater than zero, the following rules apply: &#42; Scrape objects without a defined sampleLimit value will inherit the global sampleLimit value (Prometheus &gt;= 2.45.0) or the enforcedSampleLimit value (Prometheus &lt; v2.45.0).<br><p>   If Prometheus version is &gt;= 2.45.0 and the `enforcedSampleLimit` is greater than the `sampleLimit`, the `sampleLimit` will be set to `enforcedSampleLimit`.<br><p> &#42; Scrape objects with a sampleLimit value less than or equal to enforcedSampleLimit keep their specific value. &#42; Scrape objects with a sampleLimit value greater than enforcedSampleLimit are set to enforcedSampleLimit.
+     * enforcedSampleLimit when defined specifies a global limit on the number of scraped samples that will be accepted. This overrides any `spec.sampleLimit` set by ServiceMonitor, PodMonitor, Probe objects unless `spec.sampleLimit` is greater than zero and less than `spec.enforcedSampleLimit`.<br><p> <br><p> It is meant to be used by admins to keep the overall number of samples/series under a desired limit.<br><p> <br><p> When both `enforcedSampleLimit` and `sampleLimit` are defined and greater than zero, the following rules apply: &#42; Scrape objects without a defined sampleLimit value will inherit the global sampleLimit value (Prometheus &gt;= 2.45.0) or the enforcedSampleLimit value (Prometheus &lt; v2.45.0).<br><p>   If Prometheus version is &gt;= 2.45.0 and the `enforcedSampleLimit` is greater than the `sampleLimit`, the `sampleLimit` will be set to `enforcedSampleLimit`.<br><p> &#42; Scrape objects with a sampleLimit value less than or equal to enforcedSampleLimit keep their specific value. &#42; Scrape objects with a sampleLimit value greater than enforcedSampleLimit are set to enforcedSampleLimit.
      */
     @JsonProperty("enforcedSampleLimit")
     public Long getEnforcedSampleLimit() {
@@ -1066,7 +1078,7 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder>, Kubernet
     }
 
     /**
-     * When defined, enforcedSampleLimit specifies a global limit on the number of scraped samples that will be accepted. This overrides any `spec.sampleLimit` set by ServiceMonitor, PodMonitor, Probe objects unless `spec.sampleLimit` is greater than zero and less than `spec.enforcedSampleLimit`.<br><p> <br><p> It is meant to be used by admins to keep the overall number of samples/series under a desired limit.<br><p> <br><p> When both `enforcedSampleLimit` and `sampleLimit` are defined and greater than zero, the following rules apply: &#42; Scrape objects without a defined sampleLimit value will inherit the global sampleLimit value (Prometheus &gt;= 2.45.0) or the enforcedSampleLimit value (Prometheus &lt; v2.45.0).<br><p>   If Prometheus version is &gt;= 2.45.0 and the `enforcedSampleLimit` is greater than the `sampleLimit`, the `sampleLimit` will be set to `enforcedSampleLimit`.<br><p> &#42; Scrape objects with a sampleLimit value less than or equal to enforcedSampleLimit keep their specific value. &#42; Scrape objects with a sampleLimit value greater than enforcedSampleLimit are set to enforcedSampleLimit.
+     * enforcedSampleLimit when defined specifies a global limit on the number of scraped samples that will be accepted. This overrides any `spec.sampleLimit` set by ServiceMonitor, PodMonitor, Probe objects unless `spec.sampleLimit` is greater than zero and less than `spec.enforcedSampleLimit`.<br><p> <br><p> It is meant to be used by admins to keep the overall number of samples/series under a desired limit.<br><p> <br><p> When both `enforcedSampleLimit` and `sampleLimit` are defined and greater than zero, the following rules apply: &#42; Scrape objects without a defined sampleLimit value will inherit the global sampleLimit value (Prometheus &gt;= 2.45.0) or the enforcedSampleLimit value (Prometheus &lt; v2.45.0).<br><p>   If Prometheus version is &gt;= 2.45.0 and the `enforcedSampleLimit` is greater than the `sampleLimit`, the `sampleLimit` will be set to `enforcedSampleLimit`.<br><p> &#42; Scrape objects with a sampleLimit value less than or equal to enforcedSampleLimit keep their specific value. &#42; Scrape objects with a sampleLimit value greater than enforcedSampleLimit are set to enforcedSampleLimit.
      */
     @JsonProperty("enforcedSampleLimit")
     public void setEnforcedSampleLimit(Long enforcedSampleLimit) {
@@ -1074,7 +1086,7 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder>, Kubernet
     }
 
     /**
-     * When defined, enforcedTargetLimit specifies a global limit on the number of scraped targets. The value overrides any `spec.targetLimit` set by ServiceMonitor, PodMonitor, Probe objects unless `spec.targetLimit` is greater than zero and less than `spec.enforcedTargetLimit`.<br><p> <br><p> It is meant to be used by admins to to keep the overall number of targets under a desired limit.<br><p> <br><p> When both `enforcedTargetLimit` and `targetLimit` are defined and greater than zero, the following rules apply: &#42; Scrape objects without a defined targetLimit value will inherit the global targetLimit value (Prometheus &gt;= 2.45.0) or the enforcedTargetLimit value (Prometheus &lt; v2.45.0).<br><p>   If Prometheus version is &gt;= 2.45.0 and the `enforcedTargetLimit` is greater than the `targetLimit`, the `targetLimit` will be set to `enforcedTargetLimit`.<br><p> &#42; Scrape objects with a targetLimit value less than or equal to enforcedTargetLimit keep their specific value. &#42; Scrape objects with a targetLimit value greater than enforcedTargetLimit are set to enforcedTargetLimit.
+     * enforcedTargetLimit when defined specifies a global limit on the number of scraped targets. The value overrides any `spec.targetLimit` set by ServiceMonitor, PodMonitor, Probe objects unless `spec.targetLimit` is greater than zero and less than `spec.enforcedTargetLimit`.<br><p> <br><p> It is meant to be used by admins to to keep the overall number of targets under a desired limit.<br><p> <br><p> When both `enforcedTargetLimit` and `targetLimit` are defined and greater than zero, the following rules apply: &#42; Scrape objects without a defined targetLimit value will inherit the global targetLimit value (Prometheus &gt;= 2.45.0) or the enforcedTargetLimit value (Prometheus &lt; v2.45.0).<br><p>   If Prometheus version is &gt;= 2.45.0 and the `enforcedTargetLimit` is greater than the `targetLimit`, the `targetLimit` will be set to `enforcedTargetLimit`.<br><p> &#42; Scrape objects with a targetLimit value less than or equal to enforcedTargetLimit keep their specific value. &#42; Scrape objects with a targetLimit value greater than enforcedTargetLimit are set to enforcedTargetLimit.
      */
     @JsonProperty("enforcedTargetLimit")
     public Long getEnforcedTargetLimit() {
@@ -1082,7 +1094,7 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder>, Kubernet
     }
 
     /**
-     * When defined, enforcedTargetLimit specifies a global limit on the number of scraped targets. The value overrides any `spec.targetLimit` set by ServiceMonitor, PodMonitor, Probe objects unless `spec.targetLimit` is greater than zero and less than `spec.enforcedTargetLimit`.<br><p> <br><p> It is meant to be used by admins to to keep the overall number of targets under a desired limit.<br><p> <br><p> When both `enforcedTargetLimit` and `targetLimit` are defined and greater than zero, the following rules apply: &#42; Scrape objects without a defined targetLimit value will inherit the global targetLimit value (Prometheus &gt;= 2.45.0) or the enforcedTargetLimit value (Prometheus &lt; v2.45.0).<br><p>   If Prometheus version is &gt;= 2.45.0 and the `enforcedTargetLimit` is greater than the `targetLimit`, the `targetLimit` will be set to `enforcedTargetLimit`.<br><p> &#42; Scrape objects with a targetLimit value less than or equal to enforcedTargetLimit keep their specific value. &#42; Scrape objects with a targetLimit value greater than enforcedTargetLimit are set to enforcedTargetLimit.
+     * enforcedTargetLimit when defined specifies a global limit on the number of scraped targets. The value overrides any `spec.targetLimit` set by ServiceMonitor, PodMonitor, Probe objects unless `spec.targetLimit` is greater than zero and less than `spec.enforcedTargetLimit`.<br><p> <br><p> It is meant to be used by admins to to keep the overall number of targets under a desired limit.<br><p> <br><p> When both `enforcedTargetLimit` and `targetLimit` are defined and greater than zero, the following rules apply: &#42; Scrape objects without a defined targetLimit value will inherit the global targetLimit value (Prometheus &gt;= 2.45.0) or the enforcedTargetLimit value (Prometheus &lt; v2.45.0).<br><p>   If Prometheus version is &gt;= 2.45.0 and the `enforcedTargetLimit` is greater than the `targetLimit`, the `targetLimit` will be set to `enforcedTargetLimit`.<br><p> &#42; Scrape objects with a targetLimit value less than or equal to enforcedTargetLimit keep their specific value. &#42; Scrape objects with a targetLimit value greater than enforcedTargetLimit are set to enforcedTargetLimit.
      */
     @JsonProperty("enforcedTargetLimit")
     public void setEnforcedTargetLimit(Long enforcedTargetLimit) {
@@ -1090,7 +1102,7 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder>, Kubernet
     }
 
     /**
-     * Interval between rule evaluations. Default: "30s"
+     * evaluationInterval defines the interval between rule evaluations. Default: "30s"
      */
     @JsonProperty("evaluationInterval")
     public String getEvaluationInterval() {
@@ -1098,7 +1110,7 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder>, Kubernet
     }
 
     /**
-     * Interval between rule evaluations. Default: "30s"
+     * evaluationInterval defines the interval between rule evaluations. Default: "30s"
      */
     @JsonProperty("evaluationInterval")
     public void setEvaluationInterval(String evaluationInterval) {
@@ -1106,7 +1118,7 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder>, Kubernet
     }
 
     /**
-     * List of references to PodMonitor, ServiceMonitor, Probe and PrometheusRule objects to be excluded from enforcing a namespace label of origin.<br><p> <br><p> It is only applicable if `spec.enforcedNamespaceLabel` set to true.
+     * excludedFromEnforcement defines the list of references to PodMonitor, ServiceMonitor, Probe and PrometheusRule objects to be excluded from enforcing a namespace label of origin.<br><p> <br><p> It is only applicable if `spec.enforcedNamespaceLabel` set to true.
      */
     @JsonProperty("excludedFromEnforcement")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -1115,7 +1127,7 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder>, Kubernet
     }
 
     /**
-     * List of references to PodMonitor, ServiceMonitor, Probe and PrometheusRule objects to be excluded from enforcing a namespace label of origin.<br><p> <br><p> It is only applicable if `spec.enforcedNamespaceLabel` set to true.
+     * excludedFromEnforcement defines the list of references to PodMonitor, ServiceMonitor, Probe and PrometheusRule objects to be excluded from enforcing a namespace label of origin.<br><p> <br><p> It is only applicable if `spec.enforcedNamespaceLabel` set to true.
      */
     @JsonProperty("excludedFromEnforcement")
     public void setExcludedFromEnforcement(List<ObjectReference> excludedFromEnforcement) {
@@ -1139,7 +1151,7 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder>, Kubernet
     }
 
     /**
-     * The labels to add to any time series or alerts when communicating with external systems (federation, remote storage, Alertmanager). Labels defined by `spec.replicaExternalLabelName` and `spec.prometheusExternalLabelName` take precedence over this list.
+     * externalLabels defines the labels to add to any time series or alerts when communicating with external systems (federation, remote storage, Alertmanager). Labels defined by `spec.replicaExternalLabelName` and `spec.prometheusExternalLabelName` take precedence over this list.
      */
     @JsonProperty("externalLabels")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -1148,7 +1160,7 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder>, Kubernet
     }
 
     /**
-     * The labels to add to any time series or alerts when communicating with external systems (federation, remote storage, Alertmanager). Labels defined by `spec.replicaExternalLabelName` and `spec.prometheusExternalLabelName` take precedence over this list.
+     * externalLabels defines the labels to add to any time series or alerts when communicating with external systems (federation, remote storage, Alertmanager). Labels defined by `spec.replicaExternalLabelName` and `spec.prometheusExternalLabelName` take precedence over this list.
      */
     @JsonProperty("externalLabels")
     public void setExternalLabels(Map<String, String> externalLabels) {
@@ -1156,7 +1168,7 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder>, Kubernet
     }
 
     /**
-     * The external URL under which the Prometheus service is externally available. This is necessary to generate correct URLs (for instance if Prometheus is accessible behind an Ingress resource).
+     * externalUrl defines the external URL under which the Prometheus service is externally available. This is necessary to generate correct URLs (for instance if Prometheus is accessible behind an Ingress resource).
      */
     @JsonProperty("externalUrl")
     public String getExternalUrl() {
@@ -1164,7 +1176,7 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder>, Kubernet
     }
 
     /**
-     * The external URL under which the Prometheus service is externally available. This is necessary to generate correct URLs (for instance if Prometheus is accessible behind an Ingress resource).
+     * externalUrl defines the external URL under which the Prometheus service is externally available. This is necessary to generate correct URLs (for instance if Prometheus is accessible behind an Ingress resource).
      */
     @JsonProperty("externalUrl")
     public void setExternalUrl(String externalUrl) {
@@ -1172,7 +1184,7 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder>, Kubernet
     }
 
     /**
-     * Optional list of hosts and IPs that will be injected into the Pod's hosts file if specified.
+     * hostAliases defines the optional list of hosts and IPs that will be injected into the Pod's hosts file if specified.
      */
     @JsonProperty("hostAliases")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -1181,7 +1193,7 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder>, Kubernet
     }
 
     /**
-     * Optional list of hosts and IPs that will be injected into the Pod's hosts file if specified.
+     * hostAliases defines the optional list of hosts and IPs that will be injected into the Pod's hosts file if specified.
      */
     @JsonProperty("hostAliases")
     public void setHostAliases(List<HostAlias> hostAliases) {
@@ -1189,7 +1201,7 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder>, Kubernet
     }
 
     /**
-     * Use the host's network namespace if true.<br><p> <br><p> Make sure to understand the security implications if you want to enable it (https://kubernetes.io/docs/concepts/configuration/overview/ ).<br><p> <br><p> When hostNetwork is enabled, this will set the DNS policy to `ClusterFirstWithHostNet` automatically (unless `.spec.DNSPolicy` is set to a different value).
+     * hostNetwork defines the host's network namespace if true.<br><p> <br><p> Make sure to understand the security implications if you want to enable it (https://kubernetes.io/docs/concepts/configuration/overview/ ).<br><p> <br><p> When hostNetwork is enabled, this will set the DNS policy to `ClusterFirstWithHostNet` automatically (unless `.spec.DNSPolicy` is set to a different value).
      */
     @JsonProperty("hostNetwork")
     public Boolean getHostNetwork() {
@@ -1197,7 +1209,7 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder>, Kubernet
     }
 
     /**
-     * Use the host's network namespace if true.<br><p> <br><p> Make sure to understand the security implications if you want to enable it (https://kubernetes.io/docs/concepts/configuration/overview/ ).<br><p> <br><p> When hostNetwork is enabled, this will set the DNS policy to `ClusterFirstWithHostNet` automatically (unless `.spec.DNSPolicy` is set to a different value).
+     * hostNetwork defines the host's network namespace if true.<br><p> <br><p> Make sure to understand the security implications if you want to enable it (https://kubernetes.io/docs/concepts/configuration/overview/ ).<br><p> <br><p> When hostNetwork is enabled, this will set the DNS policy to `ClusterFirstWithHostNet` automatically (unless `.spec.DNSPolicy` is set to a different value).
      */
     @JsonProperty("hostNetwork")
     public void setHostNetwork(Boolean hostNetwork) {
@@ -1205,7 +1217,7 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder>, Kubernet
     }
 
     /**
-     * HostUsers supports the user space in Kubernetes.<br><p> <br><p> More info: https://kubernetes.io/docs/tasks/configure-pod-container/user-namespaces/<br><p> <br><p> The feature requires at least Kubernetes 1.28 with the `UserNamespacesSupport` feature gate enabled. Starting Kubernetes 1.33, the feature is enabled by default.
+     * hostUsers supports the user space in Kubernetes.<br><p> <br><p> More info: https://kubernetes.io/docs/tasks/configure-pod-container/user-namespaces/<br><p> <br><p> The feature requires at least Kubernetes 1.28 with the `UserNamespacesSupport` feature gate enabled. Starting Kubernetes 1.33, the feature is enabled by default.
      */
     @JsonProperty("hostUsers")
     public Boolean getHostUsers() {
@@ -1213,7 +1225,7 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder>, Kubernet
     }
 
     /**
-     * HostUsers supports the user space in Kubernetes.<br><p> <br><p> More info: https://kubernetes.io/docs/tasks/configure-pod-container/user-namespaces/<br><p> <br><p> The feature requires at least Kubernetes 1.28 with the `UserNamespacesSupport` feature gate enabled. Starting Kubernetes 1.33, the feature is enabled by default.
+     * hostUsers supports the user space in Kubernetes.<br><p> <br><p> More info: https://kubernetes.io/docs/tasks/configure-pod-container/user-namespaces/<br><p> <br><p> The feature requires at least Kubernetes 1.28 with the `UserNamespacesSupport` feature gate enabled. Starting Kubernetes 1.33, the feature is enabled by default.
      */
     @JsonProperty("hostUsers")
     public void setHostUsers(Boolean hostUsers) {
@@ -1221,7 +1233,7 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder>, Kubernet
     }
 
     /**
-     * When true, `spec.namespaceSelector` from all PodMonitor, ServiceMonitor and Probe objects will be ignored. They will only discover targets within the namespace of the PodMonitor, ServiceMonitor and Probe object.
+     * ignoreNamespaceSelectors when true, `spec.namespaceSelector` from all PodMonitor, ServiceMonitor and Probe objects will be ignored. They will only discover targets within the namespace of the PodMonitor, ServiceMonitor and Probe object.
      */
     @JsonProperty("ignoreNamespaceSelectors")
     public Boolean getIgnoreNamespaceSelectors() {
@@ -1229,7 +1241,7 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder>, Kubernet
     }
 
     /**
-     * When true, `spec.namespaceSelector` from all PodMonitor, ServiceMonitor and Probe objects will be ignored. They will only discover targets within the namespace of the PodMonitor, ServiceMonitor and Probe object.
+     * ignoreNamespaceSelectors when true, `spec.namespaceSelector` from all PodMonitor, ServiceMonitor and Probe objects will be ignored. They will only discover targets within the namespace of the PodMonitor, ServiceMonitor and Probe object.
      */
     @JsonProperty("ignoreNamespaceSelectors")
     public void setIgnoreNamespaceSelectors(Boolean ignoreNamespaceSelectors) {
@@ -1237,7 +1249,7 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder>, Kubernet
     }
 
     /**
-     * Container image name for Prometheus. If specified, it takes precedence over the `spec.baseImage`, `spec.tag` and `spec.sha` fields.<br><p> <br><p> Specifying `spec.version` is still necessary to ensure the Prometheus Operator knows which version of Prometheus is being configured.<br><p> <br><p> If neither `spec.image` nor `spec.baseImage` are defined, the operator will use the latest upstream version of Prometheus available at the time when the operator was released.
+     * image defines the container image name for Prometheus. If specified, it takes precedence over the `spec.baseImage`, `spec.tag` and `spec.sha` fields.<br><p> <br><p> Specifying `spec.version` is still necessary to ensure the Prometheus Operator knows which version of Prometheus is being configured.<br><p> <br><p> If neither `spec.image` nor `spec.baseImage` are defined, the operator will use the latest upstream version of Prometheus available at the time when the operator was released.
      */
     @JsonProperty("image")
     public String getImage() {
@@ -1245,7 +1257,7 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder>, Kubernet
     }
 
     /**
-     * Container image name for Prometheus. If specified, it takes precedence over the `spec.baseImage`, `spec.tag` and `spec.sha` fields.<br><p> <br><p> Specifying `spec.version` is still necessary to ensure the Prometheus Operator knows which version of Prometheus is being configured.<br><p> <br><p> If neither `spec.image` nor `spec.baseImage` are defined, the operator will use the latest upstream version of Prometheus available at the time when the operator was released.
+     * image defines the container image name for Prometheus. If specified, it takes precedence over the `spec.baseImage`, `spec.tag` and `spec.sha` fields.<br><p> <br><p> Specifying `spec.version` is still necessary to ensure the Prometheus Operator knows which version of Prometheus is being configured.<br><p> <br><p> If neither `spec.image` nor `spec.baseImage` are defined, the operator will use the latest upstream version of Prometheus available at the time when the operator was released.
      */
     @JsonProperty("image")
     public void setImage(String image) {
@@ -1253,7 +1265,7 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder>, Kubernet
     }
 
     /**
-     * Image pull policy for the 'prometheus', 'init-config-reloader' and 'config-reloader' containers. See https://kubernetes.io/docs/concepts/containers/images/#image-pull-policy for more details.<br><p> <br><p> Possible enum values:<br><p>  - `"Always"` means that kubelet always attempts to pull the latest image. Container will fail If the pull fails.<br><p>  - `"IfNotPresent"` means that kubelet pulls if the image isn't present on disk. Container will fail if the image isn't present and the pull fails.<br><p>  - `"Never"` means that kubelet never pulls an image, but only uses a local image. Container will fail if the image isn't present
+     * imagePullPolicy defines the image pull policy for the 'prometheus', 'init-config-reloader' and 'config-reloader' containers. See https://kubernetes.io/docs/concepts/containers/images/#image-pull-policy for more details.<br><p> <br><p> Possible enum values:<br><p>  - `"Always"` means that kubelet always attempts to pull the latest image. Container will fail If the pull fails.<br><p>  - `"IfNotPresent"` means that kubelet pulls if the image isn't present on disk. Container will fail if the image isn't present and the pull fails.<br><p>  - `"Never"` means that kubelet never pulls an image, but only uses a local image. Container will fail if the image isn't present
      */
     @JsonProperty("imagePullPolicy")
     public String getImagePullPolicy() {
@@ -1261,7 +1273,7 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder>, Kubernet
     }
 
     /**
-     * Image pull policy for the 'prometheus', 'init-config-reloader' and 'config-reloader' containers. See https://kubernetes.io/docs/concepts/containers/images/#image-pull-policy for more details.<br><p> <br><p> Possible enum values:<br><p>  - `"Always"` means that kubelet always attempts to pull the latest image. Container will fail If the pull fails.<br><p>  - `"IfNotPresent"` means that kubelet pulls if the image isn't present on disk. Container will fail if the image isn't present and the pull fails.<br><p>  - `"Never"` means that kubelet never pulls an image, but only uses a local image. Container will fail if the image isn't present
+     * imagePullPolicy defines the image pull policy for the 'prometheus', 'init-config-reloader' and 'config-reloader' containers. See https://kubernetes.io/docs/concepts/containers/images/#image-pull-policy for more details.<br><p> <br><p> Possible enum values:<br><p>  - `"Always"` means that kubelet always attempts to pull the latest image. Container will fail If the pull fails.<br><p>  - `"IfNotPresent"` means that kubelet pulls if the image isn't present on disk. Container will fail if the image isn't present and the pull fails.<br><p>  - `"Never"` means that kubelet never pulls an image, but only uses a local image. Container will fail if the image isn't present
      */
     @JsonProperty("imagePullPolicy")
     public void setImagePullPolicy(String imagePullPolicy) {
@@ -1269,7 +1281,7 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder>, Kubernet
     }
 
     /**
-     * An optional list of references to Secrets in the same namespace to use for pulling images from registries. See http://kubernetes.io/docs/user-guide/images#specifying-imagepullsecrets-on-a-pod
+     * imagePullSecrets defines an optional list of references to Secrets in the same namespace to use for pulling images from registries. See http://kubernetes.io/docs/user-guide/images#specifying-imagepullsecrets-on-a-pod
      */
     @JsonProperty("imagePullSecrets")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -1278,7 +1290,7 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder>, Kubernet
     }
 
     /**
-     * An optional list of references to Secrets in the same namespace to use for pulling images from registries. See http://kubernetes.io/docs/user-guide/images#specifying-imagepullsecrets-on-a-pod
+     * imagePullSecrets defines an optional list of references to Secrets in the same namespace to use for pulling images from registries. See http://kubernetes.io/docs/user-guide/images#specifying-imagepullsecrets-on-a-pod
      */
     @JsonProperty("imagePullSecrets")
     public void setImagePullSecrets(List<LocalObjectReference> imagePullSecrets) {
@@ -1286,7 +1298,7 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder>, Kubernet
     }
 
     /**
-     * InitContainers allows injecting initContainers to the Pod definition. Those can be used to e.g.  fetch secrets for injection into the Prometheus configuration from external sources. Any errors during the execution of an initContainer will lead to a restart of the Pod. More info: https://kubernetes.io/docs/concepts/workloads/pods/init-containers/ InitContainers described here modify an operator generated init containers if they share the same name and modifications are done via a strategic merge patch.<br><p> <br><p> The names of init container name managed by the operator are: &#42; `init-config-reloader`.<br><p> <br><p> Overriding init containers is entirely outside the scope of what the maintainers will support and by doing so, you accept that this behaviour may break at any time without notice.
+     * initContainers allows injecting initContainers to the Pod definition. Those can be used to e.g.  fetch secrets for injection into the Prometheus configuration from external sources. Any errors during the execution of an initContainer will lead to a restart of the Pod. More info: https://kubernetes.io/docs/concepts/workloads/pods/init-containers/ InitContainers described here modify an operator generated init containers if they share the same name and modifications are done via a strategic merge patch.<br><p> <br><p> The names of init container name managed by the operator are: &#42; `init-config-reloader`.<br><p> <br><p> Overriding init containers is entirely outside the scope of what the maintainers will support and by doing so, you accept that this behaviour may break at any time without notice.
      */
     @JsonProperty("initContainers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -1295,7 +1307,7 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder>, Kubernet
     }
 
     /**
-     * InitContainers allows injecting initContainers to the Pod definition. Those can be used to e.g.  fetch secrets for injection into the Prometheus configuration from external sources. Any errors during the execution of an initContainer will lead to a restart of the Pod. More info: https://kubernetes.io/docs/concepts/workloads/pods/init-containers/ InitContainers described here modify an operator generated init containers if they share the same name and modifications are done via a strategic merge patch.<br><p> <br><p> The names of init container name managed by the operator are: &#42; `init-config-reloader`.<br><p> <br><p> Overriding init containers is entirely outside the scope of what the maintainers will support and by doing so, you accept that this behaviour may break at any time without notice.
+     * initContainers allows injecting initContainers to the Pod definition. Those can be used to e.g.  fetch secrets for injection into the Prometheus configuration from external sources. Any errors during the execution of an initContainer will lead to a restart of the Pod. More info: https://kubernetes.io/docs/concepts/workloads/pods/init-containers/ InitContainers described here modify an operator generated init containers if they share the same name and modifications are done via a strategic merge patch.<br><p> <br><p> The names of init container name managed by the operator are: &#42; `init-config-reloader`.<br><p> <br><p> Overriding init containers is entirely outside the scope of what the maintainers will support and by doing so, you accept that this behaviour may break at any time without notice.
      */
     @JsonProperty("initContainers")
     public void setInitContainers(List<Container> initContainers) {
@@ -1303,7 +1315,7 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder>, Kubernet
     }
 
     /**
-     * Per-scrape limit on the number of targets dropped by relabeling that will be kept in memory. 0 means no limit.<br><p> <br><p> It requires Prometheus &gt;= v2.47.0.<br><p> <br><p> Note that the global limit only applies to scrape objects that don't specify an explicit limit value. If you want to enforce a maximum limit for all scrape objects, refer to enforcedKeepDroppedTargets.
+     * keepDroppedTargets defines the per-scrape limit on the number of targets dropped by relabeling that will be kept in memory. 0 means no limit.<br><p> <br><p> It requires Prometheus &gt;= v2.47.0.<br><p> <br><p> Note that the global limit only applies to scrape objects that don't specify an explicit limit value. If you want to enforce a maximum limit for all scrape objects, refer to enforcedKeepDroppedTargets.
      */
     @JsonProperty("keepDroppedTargets")
     public Long getKeepDroppedTargets() {
@@ -1311,7 +1323,7 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder>, Kubernet
     }
 
     /**
-     * Per-scrape limit on the number of targets dropped by relabeling that will be kept in memory. 0 means no limit.<br><p> <br><p> It requires Prometheus &gt;= v2.47.0.<br><p> <br><p> Note that the global limit only applies to scrape objects that don't specify an explicit limit value. If you want to enforce a maximum limit for all scrape objects, refer to enforcedKeepDroppedTargets.
+     * keepDroppedTargets defines the per-scrape limit on the number of targets dropped by relabeling that will be kept in memory. 0 means no limit.<br><p> <br><p> It requires Prometheus &gt;= v2.47.0.<br><p> <br><p> Note that the global limit only applies to scrape objects that don't specify an explicit limit value. If you want to enforce a maximum limit for all scrape objects, refer to enforcedKeepDroppedTargets.
      */
     @JsonProperty("keepDroppedTargets")
     public void setKeepDroppedTargets(Long keepDroppedTargets) {
@@ -1319,7 +1331,7 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder>, Kubernet
     }
 
     /**
-     * Per-scrape limit on number of labels that will be accepted for a sample. Only valid in Prometheus versions 2.45.0 and newer.<br><p> <br><p> Note that the global limit only applies to scrape objects that don't specify an explicit limit value. If you want to enforce a maximum limit for all scrape objects, refer to enforcedLabelLimit.
+     * labelLimit defines per-scrape limit on number of labels that will be accepted for a sample. Only valid in Prometheus versions 2.45.0 and newer.<br><p> <br><p> Note that the global limit only applies to scrape objects that don't specify an explicit limit value. If you want to enforce a maximum limit for all scrape objects, refer to enforcedLabelLimit.
      */
     @JsonProperty("labelLimit")
     public Long getLabelLimit() {
@@ -1327,7 +1339,7 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder>, Kubernet
     }
 
     /**
-     * Per-scrape limit on number of labels that will be accepted for a sample. Only valid in Prometheus versions 2.45.0 and newer.<br><p> <br><p> Note that the global limit only applies to scrape objects that don't specify an explicit limit value. If you want to enforce a maximum limit for all scrape objects, refer to enforcedLabelLimit.
+     * labelLimit defines per-scrape limit on number of labels that will be accepted for a sample. Only valid in Prometheus versions 2.45.0 and newer.<br><p> <br><p> Note that the global limit only applies to scrape objects that don't specify an explicit limit value. If you want to enforce a maximum limit for all scrape objects, refer to enforcedLabelLimit.
      */
     @JsonProperty("labelLimit")
     public void setLabelLimit(Long labelLimit) {
@@ -1335,7 +1347,7 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder>, Kubernet
     }
 
     /**
-     * Per-scrape limit on length of labels name that will be accepted for a sample. Only valid in Prometheus versions 2.45.0 and newer.<br><p> <br><p> Note that the global limit only applies to scrape objects that don't specify an explicit limit value. If you want to enforce a maximum limit for all scrape objects, refer to enforcedLabelNameLengthLimit.
+     * labelNameLengthLimit defines the per-scrape limit on length of labels name that will be accepted for a sample. Only valid in Prometheus versions 2.45.0 and newer.<br><p> <br><p> Note that the global limit only applies to scrape objects that don't specify an explicit limit value. If you want to enforce a maximum limit for all scrape objects, refer to enforcedLabelNameLengthLimit.
      */
     @JsonProperty("labelNameLengthLimit")
     public Long getLabelNameLengthLimit() {
@@ -1343,7 +1355,7 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder>, Kubernet
     }
 
     /**
-     * Per-scrape limit on length of labels name that will be accepted for a sample. Only valid in Prometheus versions 2.45.0 and newer.<br><p> <br><p> Note that the global limit only applies to scrape objects that don't specify an explicit limit value. If you want to enforce a maximum limit for all scrape objects, refer to enforcedLabelNameLengthLimit.
+     * labelNameLengthLimit defines the per-scrape limit on length of labels name that will be accepted for a sample. Only valid in Prometheus versions 2.45.0 and newer.<br><p> <br><p> Note that the global limit only applies to scrape objects that don't specify an explicit limit value. If you want to enforce a maximum limit for all scrape objects, refer to enforcedLabelNameLengthLimit.
      */
     @JsonProperty("labelNameLengthLimit")
     public void setLabelNameLengthLimit(Long labelNameLengthLimit) {
@@ -1351,7 +1363,7 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder>, Kubernet
     }
 
     /**
-     * Per-scrape limit on length of labels value that will be accepted for a sample. Only valid in Prometheus versions 2.45.0 and newer.<br><p> <br><p> Note that the global limit only applies to scrape objects that don't specify an explicit limit value. If you want to enforce a maximum limit for all scrape objects, refer to enforcedLabelValueLengthLimit.
+     * labelValueLengthLimit defines the per-scrape limit on length of labels value that will be accepted for a sample. Only valid in Prometheus versions 2.45.0 and newer.<br><p> <br><p> Note that the global limit only applies to scrape objects that don't specify an explicit limit value. If you want to enforce a maximum limit for all scrape objects, refer to enforcedLabelValueLengthLimit.
      */
     @JsonProperty("labelValueLengthLimit")
     public Long getLabelValueLengthLimit() {
@@ -1359,7 +1371,7 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder>, Kubernet
     }
 
     /**
-     * Per-scrape limit on length of labels value that will be accepted for a sample. Only valid in Prometheus versions 2.45.0 and newer.<br><p> <br><p> Note that the global limit only applies to scrape objects that don't specify an explicit limit value. If you want to enforce a maximum limit for all scrape objects, refer to enforcedLabelValueLengthLimit.
+     * labelValueLengthLimit defines the per-scrape limit on length of labels value that will be accepted for a sample. Only valid in Prometheus versions 2.45.0 and newer.<br><p> <br><p> Note that the global limit only applies to scrape objects that don't specify an explicit limit value. If you want to enforce a maximum limit for all scrape objects, refer to enforcedLabelValueLengthLimit.
      */
     @JsonProperty("labelValueLengthLimit")
     public void setLabelValueLengthLimit(Long labelValueLengthLimit) {
@@ -1367,7 +1379,7 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder>, Kubernet
     }
 
     /**
-     * When true, the Prometheus server listens on the loopback address instead of the Pod IP's address.
+     * listenLocal when true, the Prometheus server listens on the loopback address instead of the Pod IP's address.
      */
     @JsonProperty("listenLocal")
     public Boolean getListenLocal() {
@@ -1375,7 +1387,7 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder>, Kubernet
     }
 
     /**
-     * When true, the Prometheus server listens on the loopback address instead of the Pod IP's address.
+     * listenLocal when true, the Prometheus server listens on the loopback address instead of the Pod IP's address.
      */
     @JsonProperty("listenLocal")
     public void setListenLocal(Boolean listenLocal) {
@@ -1383,7 +1395,7 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder>, Kubernet
     }
 
     /**
-     * Log format for Log level for Prometheus and the config-reloader sidecar.
+     * logFormat for Log level for Prometheus and the config-reloader sidecar.
      */
     @JsonProperty("logFormat")
     public String getLogFormat() {
@@ -1391,7 +1403,7 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder>, Kubernet
     }
 
     /**
-     * Log format for Log level for Prometheus and the config-reloader sidecar.
+     * logFormat for Log level for Prometheus and the config-reloader sidecar.
      */
     @JsonProperty("logFormat")
     public void setLogFormat(String logFormat) {
@@ -1399,7 +1411,7 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder>, Kubernet
     }
 
     /**
-     * Log level for Prometheus and the config-reloader sidecar.
+     * logLevel for Prometheus and the config-reloader sidecar.
      */
     @JsonProperty("logLevel")
     public String getLogLevel() {
@@ -1407,7 +1419,7 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder>, Kubernet
     }
 
     /**
-     * Log level for Prometheus and the config-reloader sidecar.
+     * logLevel for Prometheus and the config-reloader sidecar.
      */
     @JsonProperty("logLevel")
     public void setLogLevel(String logLevel) {
@@ -1415,7 +1427,7 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder>, Kubernet
     }
 
     /**
-     * Defines the maximum time that the `prometheus` container's startup probe will wait before being considered failed. The startup probe will return success after the WAL replay is complete. If set, the value should be greater than 60 (seconds). Otherwise it will be equal to 600 seconds (15 minutes).
+     * maximumStartupDurationSeconds defines the maximum time that the `prometheus` container's startup probe will wait before being considered failed. The startup probe will return success after the WAL replay is complete. If set, the value should be greater than 60 (seconds). Otherwise it will be equal to 900 seconds (15 minutes).
      */
     @JsonProperty("maximumStartupDurationSeconds")
     public Integer getMaximumStartupDurationSeconds() {
@@ -1423,7 +1435,7 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder>, Kubernet
     }
 
     /**
-     * Defines the maximum time that the `prometheus` container's startup probe will wait before being considered failed. The startup probe will return success after the WAL replay is complete. If set, the value should be greater than 60 (seconds). Otherwise it will be equal to 600 seconds (15 minutes).
+     * maximumStartupDurationSeconds defines the maximum time that the `prometheus` container's startup probe will wait before being considered failed. The startup probe will return success after the WAL replay is complete. If set, the value should be greater than 60 (seconds). Otherwise it will be equal to 900 seconds (15 minutes).
      */
     @JsonProperty("maximumStartupDurationSeconds")
     public void setMaximumStartupDurationSeconds(Integer maximumStartupDurationSeconds) {
@@ -1431,7 +1443,7 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder>, Kubernet
     }
 
     /**
-     * Minimum number of seconds for which a newly created Pod should be ready without any of its container crashing for it to be considered available.<br><p> <br><p> If unset, pods will be considered available as soon as they are ready.
+     * minReadySeconds defines the minimum number of seconds for which a newly created Pod should be ready without any of its container crashing for it to be considered available.<br><p> <br><p> If unset, pods will be considered available as soon as they are ready.
      */
     @JsonProperty("minReadySeconds")
     public Integer getMinReadySeconds() {
@@ -1439,7 +1451,7 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder>, Kubernet
     }
 
     /**
-     * Minimum number of seconds for which a newly created Pod should be ready without any of its container crashing for it to be considered available.<br><p> <br><p> If unset, pods will be considered available as soon as they are ready.
+     * minReadySeconds defines the minimum number of seconds for which a newly created Pod should be ready without any of its container crashing for it to be considered available.<br><p> <br><p> If unset, pods will be considered available as soon as they are ready.
      */
     @JsonProperty("minReadySeconds")
     public void setMinReadySeconds(Integer minReadySeconds) {
@@ -1447,7 +1459,7 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder>, Kubernet
     }
 
     /**
-     * Specifies the character escaping scheme that will be requested when scraping for metric and label names that do not conform to the legacy Prometheus character set.<br><p> <br><p> It requires Prometheus &gt;= v3.4.0.
+     * nameEscapingScheme defines the character escaping scheme that will be requested when scraping for metric and label names that do not conform to the legacy Prometheus character set.<br><p> <br><p> It requires Prometheus &gt;= v3.4.0.
      */
     @JsonProperty("nameEscapingScheme")
     public String getNameEscapingScheme() {
@@ -1455,7 +1467,7 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder>, Kubernet
     }
 
     /**
-     * Specifies the character escaping scheme that will be requested when scraping for metric and label names that do not conform to the legacy Prometheus character set.<br><p> <br><p> It requires Prometheus &gt;= v3.4.0.
+     * nameEscapingScheme defines the character escaping scheme that will be requested when scraping for metric and label names that do not conform to the legacy Prometheus character set.<br><p> <br><p> It requires Prometheus &gt;= v3.4.0.
      */
     @JsonProperty("nameEscapingScheme")
     public void setNameEscapingScheme(String nameEscapingScheme) {
@@ -1463,7 +1475,7 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder>, Kubernet
     }
 
     /**
-     * Specifies the validation scheme for metric and label names.<br><p> <br><p> It requires Prometheus &gt;= v2.55.0.
+     * nameValidationScheme defines the validation scheme for metric and label names.<br><p> <br><p> It requires Prometheus &gt;= v2.55.0.
      */
     @JsonProperty("nameValidationScheme")
     public String getNameValidationScheme() {
@@ -1471,7 +1483,7 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder>, Kubernet
     }
 
     /**
-     * Specifies the validation scheme for metric and label names.<br><p> <br><p> It requires Prometheus &gt;= v2.55.0.
+     * nameValidationScheme defines the validation scheme for metric and label names.<br><p> <br><p> It requires Prometheus &gt;= v2.55.0.
      */
     @JsonProperty("nameValidationScheme")
     public void setNameValidationScheme(String nameValidationScheme) {
@@ -1479,7 +1491,7 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder>, Kubernet
     }
 
     /**
-     * Defines on which Nodes the Pods are scheduled.
+     * nodeSelector defines on which Nodes the Pods are scheduled.
      */
     @JsonProperty("nodeSelector")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -1488,7 +1500,7 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder>, Kubernet
     }
 
     /**
-     * Defines on which Nodes the Pods are scheduled.
+     * nodeSelector defines on which Nodes the Pods are scheduled.
      */
     @JsonProperty("nodeSelector")
     public void setNodeSelector(Map<String, String> nodeSelector) {
@@ -1512,7 +1524,7 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder>, Kubernet
     }
 
     /**
-     * When true, Prometheus resolves label conflicts by renaming the labels in the scraped data<br><p>  to "exported_" for all targets created from ServiceMonitor, PodMonitor and<br><p> ScrapeConfig objects. Otherwise the HonorLabels field of the service or pod monitor applies. In practice,`overrideHonorLaels:true` enforces `honorLabels:false` for all ServiceMonitor, PodMonitor and ScrapeConfig objects.
+     * overrideHonorLabels when true, Prometheus resolves label conflicts by renaming the labels in the scraped data<br><p>  to "exported_" for all targets created from ServiceMonitor, PodMonitor and<br><p> ScrapeConfig objects. Otherwise the HonorLabels field of the service or pod monitor applies. In practice,`OverrideHonorLabels:true` enforces `honorLabels:false` for all ServiceMonitor, PodMonitor and ScrapeConfig objects.
      */
     @JsonProperty("overrideHonorLabels")
     public Boolean getOverrideHonorLabels() {
@@ -1520,7 +1532,7 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder>, Kubernet
     }
 
     /**
-     * When true, Prometheus resolves label conflicts by renaming the labels in the scraped data<br><p>  to "exported_" for all targets created from ServiceMonitor, PodMonitor and<br><p> ScrapeConfig objects. Otherwise the HonorLabels field of the service or pod monitor applies. In practice,`overrideHonorLaels:true` enforces `honorLabels:false` for all ServiceMonitor, PodMonitor and ScrapeConfig objects.
+     * overrideHonorLabels when true, Prometheus resolves label conflicts by renaming the labels in the scraped data<br><p>  to "exported_" for all targets created from ServiceMonitor, PodMonitor and<br><p> ScrapeConfig objects. Otherwise the HonorLabels field of the service or pod monitor applies. In practice,`OverrideHonorLabels:true` enforces `honorLabels:false` for all ServiceMonitor, PodMonitor and ScrapeConfig objects.
      */
     @JsonProperty("overrideHonorLabels")
     public void setOverrideHonorLabels(Boolean overrideHonorLabels) {
@@ -1528,7 +1540,7 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder>, Kubernet
     }
 
     /**
-     * When true, Prometheus ignores the timestamps for all the targets created from service and pod monitors. Otherwise the HonorTimestamps field of the service or pod monitor applies.
+     * overrideHonorTimestamps when true, Prometheus ignores the timestamps for all the targets created from service and pod monitors. Otherwise the HonorTimestamps field of the service or pod monitor applies.
      */
     @JsonProperty("overrideHonorTimestamps")
     public Boolean getOverrideHonorTimestamps() {
@@ -1536,7 +1548,7 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder>, Kubernet
     }
 
     /**
-     * When true, Prometheus ignores the timestamps for all the targets created from service and pod monitors. Otherwise the HonorTimestamps field of the service or pod monitor applies.
+     * overrideHonorTimestamps when true, Prometheus ignores the timestamps for all the targets created from service and pod monitors. Otherwise the HonorTimestamps field of the service or pod monitor applies.
      */
     @JsonProperty("overrideHonorTimestamps")
     public void setOverrideHonorTimestamps(Boolean overrideHonorTimestamps) {
@@ -1544,7 +1556,7 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder>, Kubernet
     }
 
     /**
-     * When a Prometheus deployment is paused, no actions except for deletion will be performed on the underlying objects.
+     * paused defines when a Prometheus deployment is paused, no actions except for deletion will be performed on the underlying objects.
      */
     @JsonProperty("paused")
     public Boolean getPaused() {
@@ -1552,7 +1564,7 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder>, Kubernet
     }
 
     /**
-     * When a Prometheus deployment is paused, no actions except for deletion will be performed on the underlying objects.
+     * paused defines when a Prometheus deployment is paused, no actions except for deletion will be performed on the underlying objects.
      */
     @JsonProperty("paused")
     public void setPaused(Boolean paused) {
@@ -1573,6 +1585,22 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder>, Kubernet
     @JsonProperty("persistentVolumeClaimRetentionPolicy")
     public void setPersistentVolumeClaimRetentionPolicy(StatefulSetPersistentVolumeClaimRetentionPolicy persistentVolumeClaimRetentionPolicy) {
         this.persistentVolumeClaimRetentionPolicy = persistentVolumeClaimRetentionPolicy;
+    }
+
+    /**
+     * podManagementPolicy defines the policy for creating/deleting pods when scaling up and down.<br><p> <br><p> Unlike the default StatefulSet behavior, the default policy is `Parallel` to avoid manual intervention in case a pod gets stuck during a rollout.<br><p> <br><p> Note that updating this value implies the recreation of the StatefulSet which incurs a service outage.
+     */
+    @JsonProperty("podManagementPolicy")
+    public String getPodManagementPolicy() {
+        return podManagementPolicy;
+    }
+
+    /**
+     * podManagementPolicy defines the policy for creating/deleting pods when scaling up and down.<br><p> <br><p> Unlike the default StatefulSet behavior, the default policy is `Parallel` to avoid manual intervention in case a pod gets stuck during a rollout.<br><p> <br><p> Note that updating this value implies the recreation of the StatefulSet which incurs a service outage.
+     */
+    @JsonProperty("podManagementPolicy")
+    public void setPodManagementPolicy(String podManagementPolicy) {
+        this.podManagementPolicy = podManagementPolicy;
     }
 
     /**
@@ -1624,7 +1652,7 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder>, Kubernet
     }
 
     /**
-     * PodTargetLabels are appended to the `spec.podTargetLabels` field of all PodMonitor and ServiceMonitor objects.
+     * podTargetLabels are appended to the `spec.podTargetLabels` field of all PodMonitor and ServiceMonitor objects.
      */
     @JsonProperty("podTargetLabels")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -1633,7 +1661,7 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder>, Kubernet
     }
 
     /**
-     * PodTargetLabels are appended to the `spec.podTargetLabels` field of all PodMonitor and ServiceMonitor objects.
+     * podTargetLabels are appended to the `spec.podTargetLabels` field of all PodMonitor and ServiceMonitor objects.
      */
     @JsonProperty("podTargetLabels")
     public void setPodTargetLabels(List<String> podTargetLabels) {
@@ -1641,7 +1669,7 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder>, Kubernet
     }
 
     /**
-     * Port name used for the pods and governing service. Default: "web"
+     * portName used for the pods and governing service. Default: "web"
      */
     @JsonProperty("portName")
     public String getPortName() {
@@ -1649,7 +1677,7 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder>, Kubernet
     }
 
     /**
-     * Port name used for the pods and governing service. Default: "web"
+     * portName used for the pods and governing service. Default: "web"
      */
     @JsonProperty("portName")
     public void setPortName(String portName) {
@@ -1657,7 +1685,7 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder>, Kubernet
     }
 
     /**
-     * Priority class assigned to the Pods.
+     * priorityClassName assigned to the Pods.
      */
     @JsonProperty("priorityClassName")
     public String getPriorityClassName() {
@@ -1665,7 +1693,7 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder>, Kubernet
     }
 
     /**
-     * Priority class assigned to the Pods.
+     * priorityClassName assigned to the Pods.
      */
     @JsonProperty("priorityClassName")
     public void setPriorityClassName(String priorityClassName) {
@@ -1705,7 +1733,7 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder>, Kubernet
     }
 
     /**
-     * Name of Prometheus external label used to denote the Prometheus instance name. The external label will _not_ be added when the field is set to the empty string (`""`).<br><p> <br><p> Default: "prometheus"
+     * prometheusExternalLabelName defines the name of Prometheus external label used to denote the Prometheus instance name. The external label will _not_ be added when the field is set to the empty string (`""`).<br><p> <br><p> Default: "prometheus"
      */
     @JsonProperty("prometheusExternalLabelName")
     public String getPrometheusExternalLabelName() {
@@ -1713,7 +1741,7 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder>, Kubernet
     }
 
     /**
-     * Name of Prometheus external label used to denote the Prometheus instance name. The external label will _not_ be added when the field is set to the empty string (`""`).<br><p> <br><p> Default: "prometheus"
+     * prometheusExternalLabelName defines the name of Prometheus external label used to denote the Prometheus instance name. The external label will _not_ be added when the field is set to the empty string (`""`).<br><p> <br><p> Default: "prometheus"
      */
     @JsonProperty("prometheusExternalLabelName")
     public void setPrometheusExternalLabelName(String prometheusExternalLabelName) {
@@ -1721,7 +1749,7 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder>, Kubernet
     }
 
     /**
-     * Defines the list of PrometheusRule objects to which the namespace label enforcement doesn't apply. This is only relevant when `spec.enforcedNamespaceLabel` is set to true. Deprecated: use `spec.excludedFromEnforcement` instead.
+     * prometheusRulesExcludedFromEnforce defines the list of PrometheusRule objects to which the namespace label enforcement doesn't apply. This is only relevant when `spec.enforcedNamespaceLabel` is set to true. Deprecated: use `spec.excludedFromEnforcement` instead.
      */
     @JsonProperty("prometheusRulesExcludedFromEnforce")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -1730,7 +1758,7 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder>, Kubernet
     }
 
     /**
-     * Defines the list of PrometheusRule objects to which the namespace label enforcement doesn't apply. This is only relevant when `spec.enforcedNamespaceLabel` is set to true. Deprecated: use `spec.excludedFromEnforcement` instead.
+     * prometheusRulesExcludedFromEnforce defines the list of PrometheusRule objects to which the namespace label enforcement doesn't apply. This is only relevant when `spec.enforcedNamespaceLabel` is set to true. Deprecated: use `spec.excludedFromEnforcement` instead.
      */
     @JsonProperty("prometheusRulesExcludedFromEnforce")
     public void setPrometheusRulesExcludedFromEnforce(List<PrometheusRuleExcludeConfig> prometheusRulesExcludedFromEnforce) {
@@ -1770,7 +1798,7 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder>, Kubernet
     }
 
     /**
-     * Defines the strategy used to reload the Prometheus configuration. If not specified, the configuration is reloaded using the /-/reload HTTP endpoint.
+     * reloadStrategy defines the strategy used to reload the Prometheus configuration. If not specified, the configuration is reloaded using the /-/reload HTTP endpoint.
      */
     @JsonProperty("reloadStrategy")
     public String getReloadStrategy() {
@@ -1778,7 +1806,7 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder>, Kubernet
     }
 
     /**
-     * Defines the strategy used to reload the Prometheus configuration. If not specified, the configuration is reloaded using the /-/reload HTTP endpoint.
+     * reloadStrategy defines the strategy used to reload the Prometheus configuration. If not specified, the configuration is reloaded using the /-/reload HTTP endpoint.
      */
     @JsonProperty("reloadStrategy")
     public void setReloadStrategy(String reloadStrategy) {
@@ -1786,7 +1814,7 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder>, Kubernet
     }
 
     /**
-     * Defines the list of remote read configurations.
+     * remoteRead defines the list of remote read configurations.
      */
     @JsonProperty("remoteRead")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -1795,7 +1823,7 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder>, Kubernet
     }
 
     /**
-     * Defines the list of remote read configurations.
+     * remoteRead defines the list of remote read configurations.
      */
     @JsonProperty("remoteRead")
     public void setRemoteRead(List<RemoteReadSpec> remoteRead) {
@@ -1803,7 +1831,7 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder>, Kubernet
     }
 
     /**
-     * Defines the list of remote write configurations.
+     * remoteWrite defines the list of remote write configurations.
      */
     @JsonProperty("remoteWrite")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -1812,7 +1840,7 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder>, Kubernet
     }
 
     /**
-     * Defines the list of remote write configurations.
+     * remoteWrite defines the list of remote write configurations.
      */
     @JsonProperty("remoteWrite")
     public void setRemoteWrite(List<RemoteWriteSpec> remoteWrite) {
@@ -1820,7 +1848,7 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder>, Kubernet
     }
 
     /**
-     * List of the protobuf message versions to accept when receiving the remote writes.<br><p> <br><p> It requires Prometheus &gt;= v2.54.0.
+     * remoteWriteReceiverMessageVersions list of the protobuf message versions to accept when receiving the remote writes.<br><p> <br><p> It requires Prometheus &gt;= v2.54.0.
      */
     @JsonProperty("remoteWriteReceiverMessageVersions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -1829,7 +1857,7 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder>, Kubernet
     }
 
     /**
-     * List of the protobuf message versions to accept when receiving the remote writes.<br><p> <br><p> It requires Prometheus &gt;= v2.54.0.
+     * remoteWriteReceiverMessageVersions list of the protobuf message versions to accept when receiving the remote writes.<br><p> <br><p> It requires Prometheus &gt;= v2.54.0.
      */
     @JsonProperty("remoteWriteReceiverMessageVersions")
     public void setRemoteWriteReceiverMessageVersions(List<String> remoteWriteReceiverMessageVersions) {
@@ -1837,7 +1865,7 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder>, Kubernet
     }
 
     /**
-     * Name of Prometheus external label used to denote the replica name. The external label will _not_ be added when the field is set to the empty string (`""`).<br><p> <br><p> Default: "prometheus_replica"
+     * replicaExternalLabelName defines the name of Prometheus external label used to denote the replica name. The external label will _not_ be added when the field is set to the empty string (`""`).<br><p> <br><p> Default: "prometheus_replica"
      */
     @JsonProperty("replicaExternalLabelName")
     public String getReplicaExternalLabelName() {
@@ -1845,7 +1873,7 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder>, Kubernet
     }
 
     /**
-     * Name of Prometheus external label used to denote the replica name. The external label will _not_ be added when the field is set to the empty string (`""`).<br><p> <br><p> Default: "prometheus_replica"
+     * replicaExternalLabelName defines the name of Prometheus external label used to denote the replica name. The external label will _not_ be added when the field is set to the empty string (`""`).<br><p> <br><p> Default: "prometheus_replica"
      */
     @JsonProperty("replicaExternalLabelName")
     public void setReplicaExternalLabelName(String replicaExternalLabelName) {
@@ -1853,7 +1881,7 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder>, Kubernet
     }
 
     /**
-     * Number of replicas of each shard to deploy for a Prometheus deployment. `spec.replicas` multiplied by `spec.shards` is the total number of Pods created.<br><p> <br><p> Default: 1
+     * replicas defines the number of replicas of each shard to deploy for a Prometheus deployment. `spec.replicas` multiplied by `spec.shards` is the total number of Pods created.<br><p> <br><p> Default: 1
      */
     @JsonProperty("replicas")
     public Integer getReplicas() {
@@ -1861,7 +1889,7 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder>, Kubernet
     }
 
     /**
-     * Number of replicas of each shard to deploy for a Prometheus deployment. `spec.replicas` multiplied by `spec.shards` is the total number of Pods created.<br><p> <br><p> Default: 1
+     * replicas defines the number of replicas of each shard to deploy for a Prometheus deployment. `spec.replicas` multiplied by `spec.shards` is the total number of Pods created.<br><p> <br><p> Default: 1
      */
     @JsonProperty("replicas")
     public void setReplicas(Integer replicas) {
@@ -1885,7 +1913,7 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder>, Kubernet
     }
 
     /**
-     * How long to retain the Prometheus data.<br><p> <br><p> Default: "24h" if `spec.retention` and `spec.retentionSize` are empty.
+     * retention defines how long to retain the Prometheus data.<br><p> <br><p> Default: "24h" if `spec.retention` and `spec.retentionSize` are empty.
      */
     @JsonProperty("retention")
     public String getRetention() {
@@ -1893,7 +1921,7 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder>, Kubernet
     }
 
     /**
-     * How long to retain the Prometheus data.<br><p> <br><p> Default: "24h" if `spec.retention` and `spec.retentionSize` are empty.
+     * retention defines how long to retain the Prometheus data.<br><p> <br><p> Default: "24h" if `spec.retention` and `spec.retentionSize` are empty.
      */
     @JsonProperty("retention")
     public void setRetention(String retention) {
@@ -1901,7 +1929,7 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder>, Kubernet
     }
 
     /**
-     * Maximum number of bytes used by the Prometheus data.
+     * retentionSize defines the maximum number of bytes used by the Prometheus data.
      */
     @JsonProperty("retentionSize")
     public String getRetentionSize() {
@@ -1909,7 +1937,7 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder>, Kubernet
     }
 
     /**
-     * Maximum number of bytes used by the Prometheus data.
+     * retentionSize defines the maximum number of bytes used by the Prometheus data.
      */
     @JsonProperty("retentionSize")
     public void setRetentionSize(String retentionSize) {
@@ -1917,7 +1945,7 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder>, Kubernet
     }
 
     /**
-     * The route prefix Prometheus registers HTTP handlers for.<br><p> <br><p> This is useful when using `spec.externalURL`, and a proxy is rewriting HTTP routes of a request, and the actual ExternalURL is still true, but the server serves requests under a different route prefix. For example for use with `kubectl proxy`.
+     * routePrefix defines the route prefix Prometheus registers HTTP handlers for.<br><p> <br><p> This is useful when using `spec.externalURL`, and a proxy is rewriting HTTP routes of a request, and the actual ExternalURL is still true, but the server serves requests under a different route prefix. For example for use with `kubectl proxy`.
      */
     @JsonProperty("routePrefix")
     public String getRoutePrefix() {
@@ -1925,7 +1953,7 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder>, Kubernet
     }
 
     /**
-     * The route prefix Prometheus registers HTTP handlers for.<br><p> <br><p> This is useful when using `spec.externalURL`, and a proxy is rewriting HTTP routes of a request, and the actual ExternalURL is still true, but the server serves requests under a different route prefix. For example for use with `kubectl proxy`.
+     * routePrefix defines the route prefix Prometheus registers HTTP handlers for.<br><p> <br><p> This is useful when using `spec.externalURL`, and a proxy is rewriting HTTP routes of a request, and the actual ExternalURL is still true, but the server serves requests under a different route prefix. For example for use with `kubectl proxy`.
      */
     @JsonProperty("routePrefix")
     public void setRoutePrefix(String routePrefix) {
@@ -1949,7 +1977,7 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder>, Kubernet
     }
 
     /**
-     * Defines the offset the rule evaluation timestamp of this particular group by the specified duration into the past. It requires Prometheus &gt;= v2.53.0.
+     * ruleQueryOffset defines the offset the rule evaluation timestamp of this particular group by the specified duration into the past. It requires Prometheus &gt;= v2.53.0.
      */
     @JsonProperty("ruleQueryOffset")
     public String getRuleQueryOffset() {
@@ -1957,7 +1985,7 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder>, Kubernet
     }
 
     /**
-     * Defines the offset the rule evaluation timestamp of this particular group by the specified duration into the past. It requires Prometheus &gt;= v2.53.0.
+     * ruleQueryOffset defines the offset the rule evaluation timestamp of this particular group by the specified duration into the past. It requires Prometheus &gt;= v2.53.0.
      */
     @JsonProperty("ruleQueryOffset")
     public void setRuleQueryOffset(String ruleQueryOffset) {
@@ -2013,7 +2041,7 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder>, Kubernet
     }
 
     /**
-     * SampleLimit defines per-scrape limit on number of scraped samples that will be accepted. Only valid in Prometheus versions 2.45.0 and newer.<br><p> <br><p> Note that the global limit only applies to scrape objects that don't specify an explicit limit value. If you want to enforce a maximum limit for all scrape objects, refer to enforcedSampleLimit.
+     * sampleLimit defines per-scrape limit on number of scraped samples that will be accepted. Only valid in Prometheus versions 2.45.0 and newer.<br><p> <br><p> Note that the global limit only applies to scrape objects that don't specify an explicit limit value. If you want to enforce a maximum limit for all scrape objects, refer to enforcedSampleLimit.
      */
     @JsonProperty("sampleLimit")
     public Long getSampleLimit() {
@@ -2021,7 +2049,7 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder>, Kubernet
     }
 
     /**
-     * SampleLimit defines per-scrape limit on number of scraped samples that will be accepted. Only valid in Prometheus versions 2.45.0 and newer.<br><p> <br><p> Note that the global limit only applies to scrape objects that don't specify an explicit limit value. If you want to enforce a maximum limit for all scrape objects, refer to enforcedSampleLimit.
+     * sampleLimit defines per-scrape limit on number of scraped samples that will be accepted. Only valid in Prometheus versions 2.45.0 and newer.<br><p> <br><p> Note that the global limit only applies to scrape objects that don't specify an explicit limit value. If you want to enforce a maximum limit for all scrape objects, refer to enforcedSampleLimit.
      */
     @JsonProperty("sampleLimit")
     public void setSampleLimit(Long sampleLimit) {
@@ -2029,7 +2057,7 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder>, Kubernet
     }
 
     /**
-     * List of scrape classes to expose to scraping objects such as PodMonitors, ServiceMonitors, Probes and ScrapeConfigs.<br><p> <br><p> This is an &#42;experimental feature&#42;, it may change in any upcoming release in a breaking way.
+     * scrapeClasses defines the list of scrape classes to expose to scraping objects such as PodMonitors, ServiceMonitors, Probes and ScrapeConfigs.<br><p> <br><p> This is an &#42;experimental feature&#42;, it may change in any upcoming release in a breaking way.
      */
     @JsonProperty("scrapeClasses")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -2038,7 +2066,7 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder>, Kubernet
     }
 
     /**
-     * List of scrape classes to expose to scraping objects such as PodMonitors, ServiceMonitors, Probes and ScrapeConfigs.<br><p> <br><p> This is an &#42;experimental feature&#42;, it may change in any upcoming release in a breaking way.
+     * scrapeClasses defines the list of scrape classes to expose to scraping objects such as PodMonitors, ServiceMonitors, Probes and ScrapeConfigs.<br><p> <br><p> This is an &#42;experimental feature&#42;, it may change in any upcoming release in a breaking way.
      */
     @JsonProperty("scrapeClasses")
     public void setScrapeClasses(List<ScrapeClass> scrapeClasses) {
@@ -2046,7 +2074,7 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder>, Kubernet
     }
 
     /**
-     * Whether to scrape a classic histogram that is also exposed as a native histogram.<br><p> <br><p> Notice: `scrapeClassicHistograms` corresponds to the `always_scrape_classic_histograms` field in the Prometheus configuration.<br><p> <br><p> It requires Prometheus &gt;= v3.5.0.
+     * scrapeClassicHistograms defines whether to scrape a classic histogram that is also exposed as a native histogram.<br><p> <br><p> Notice: `scrapeClassicHistograms` corresponds to the `always_scrape_classic_histograms` field in the Prometheus configuration.<br><p> <br><p> It requires Prometheus &gt;= v3.5.0.
      */
     @JsonProperty("scrapeClassicHistograms")
     public Boolean getScrapeClassicHistograms() {
@@ -2054,7 +2082,7 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder>, Kubernet
     }
 
     /**
-     * Whether to scrape a classic histogram that is also exposed as a native histogram.<br><p> <br><p> Notice: `scrapeClassicHistograms` corresponds to the `always_scrape_classic_histograms` field in the Prometheus configuration.<br><p> <br><p> It requires Prometheus &gt;= v3.5.0.
+     * scrapeClassicHistograms defines whether to scrape a classic histogram that is also exposed as a native histogram.<br><p> <br><p> Notice: `scrapeClassicHistograms` corresponds to the `always_scrape_classic_histograms` field in the Prometheus configuration.<br><p> <br><p> It requires Prometheus &gt;= v3.5.0.
      */
     @JsonProperty("scrapeClassicHistograms")
     public void setScrapeClassicHistograms(Boolean scrapeClassicHistograms) {
@@ -2094,7 +2122,7 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder>, Kubernet
     }
 
     /**
-     * File to which scrape failures are logged. Reloading the configuration will reopen the file.<br><p> <br><p> If the filename has an empty path, e.g. 'file.log', The Prometheus Pods will mount the file into an emptyDir volume at `/var/log/prometheus`. If a full path is provided, e.g. '/var/log/prometheus/file.log', you must mount a volume in the specified directory and it must be writable. It requires Prometheus &gt;= v2.55.0.
+     * scrapeFailureLogFile defines the file to which scrape failures are logged. Reloading the configuration will reopen the file.<br><p> <br><p> If the filename has an empty path, e.g. 'file.log', The Prometheus Pods will mount the file into an emptyDir volume at `/var/log/prometheus`. If a full path is provided, e.g. '/var/log/prometheus/file.log', you must mount a volume in the specified directory and it must be writable. It requires Prometheus &gt;= v2.55.0.
      */
     @JsonProperty("scrapeFailureLogFile")
     public String getScrapeFailureLogFile() {
@@ -2102,7 +2130,7 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder>, Kubernet
     }
 
     /**
-     * File to which scrape failures are logged. Reloading the configuration will reopen the file.<br><p> <br><p> If the filename has an empty path, e.g. 'file.log', The Prometheus Pods will mount the file into an emptyDir volume at `/var/log/prometheus`. If a full path is provided, e.g. '/var/log/prometheus/file.log', you must mount a volume in the specified directory and it must be writable. It requires Prometheus &gt;= v2.55.0.
+     * scrapeFailureLogFile defines the file to which scrape failures are logged. Reloading the configuration will reopen the file.<br><p> <br><p> If the filename has an empty path, e.g. 'file.log', The Prometheus Pods will mount the file into an emptyDir volume at `/var/log/prometheus`. If a full path is provided, e.g. '/var/log/prometheus/file.log', you must mount a volume in the specified directory and it must be writable. It requires Prometheus &gt;= v2.55.0.
      */
     @JsonProperty("scrapeFailureLogFile")
     public void setScrapeFailureLogFile(String scrapeFailureLogFile) {
@@ -2110,7 +2138,7 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder>, Kubernet
     }
 
     /**
-     * Interval between consecutive scrapes.<br><p> <br><p> Default: "30s"
+     * scrapeInterval defines interval between consecutive scrapes.<br><p> <br><p> Default: "30s"
      */
     @JsonProperty("scrapeInterval")
     public String getScrapeInterval() {
@@ -2118,7 +2146,7 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder>, Kubernet
     }
 
     /**
-     * Interval between consecutive scrapes.<br><p> <br><p> Default: "30s"
+     * scrapeInterval defines interval between consecutive scrapes.<br><p> <br><p> Default: "30s"
      */
     @JsonProperty("scrapeInterval")
     public void setScrapeInterval(String scrapeInterval) {
@@ -2126,7 +2154,23 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder>, Kubernet
     }
 
     /**
-     * The protocols to negotiate during a scrape. It tells clients the protocols supported by Prometheus in order of preference (from most to least preferred).<br><p> <br><p> If unset, Prometheus uses its default value.<br><p> <br><p> It requires Prometheus &gt;= v2.49.0.<br><p> <br><p> `PrometheusText1.0.0` requires Prometheus &gt;= v3.0.0.
+     * scrapeNativeHistograms defines whether to enable scraping of native histograms. It requires Prometheus &gt;= v3.8.0.
+     */
+    @JsonProperty("scrapeNativeHistograms")
+    public Boolean getScrapeNativeHistograms() {
+        return scrapeNativeHistograms;
+    }
+
+    /**
+     * scrapeNativeHistograms defines whether to enable scraping of native histograms. It requires Prometheus &gt;= v3.8.0.
+     */
+    @JsonProperty("scrapeNativeHistograms")
+    public void setScrapeNativeHistograms(Boolean scrapeNativeHistograms) {
+        this.scrapeNativeHistograms = scrapeNativeHistograms;
+    }
+
+    /**
+     * scrapeProtocols defines the protocols to negotiate during a scrape. It tells clients the protocols supported by Prometheus in order of preference (from most to least preferred).<br><p> <br><p> If unset, Prometheus uses its default value.<br><p> <br><p> It requires Prometheus &gt;= v2.49.0.<br><p> <br><p> `PrometheusText1.0.0` requires Prometheus &gt;= v3.0.0.
      */
     @JsonProperty("scrapeProtocols")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -2135,7 +2179,7 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder>, Kubernet
     }
 
     /**
-     * The protocols to negotiate during a scrape. It tells clients the protocols supported by Prometheus in order of preference (from most to least preferred).<br><p> <br><p> If unset, Prometheus uses its default value.<br><p> <br><p> It requires Prometheus &gt;= v2.49.0.<br><p> <br><p> `PrometheusText1.0.0` requires Prometheus &gt;= v3.0.0.
+     * scrapeProtocols defines the protocols to negotiate during a scrape. It tells clients the protocols supported by Prometheus in order of preference (from most to least preferred).<br><p> <br><p> If unset, Prometheus uses its default value.<br><p> <br><p> It requires Prometheus &gt;= v2.49.0.<br><p> <br><p> `PrometheusText1.0.0` requires Prometheus &gt;= v3.0.0.
      */
     @JsonProperty("scrapeProtocols")
     public void setScrapeProtocols(List<String> scrapeProtocols) {
@@ -2143,7 +2187,7 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder>, Kubernet
     }
 
     /**
-     * Number of seconds to wait until a scrape request times out. The value cannot be greater than the scrape interval otherwise the operator will reject the resource.
+     * scrapeTimeout defines the number of seconds to wait until a scrape request times out. The value cannot be greater than the scrape interval otherwise the operator will reject the resource.
      */
     @JsonProperty("scrapeTimeout")
     public String getScrapeTimeout() {
@@ -2151,7 +2195,7 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder>, Kubernet
     }
 
     /**
-     * Number of seconds to wait until a scrape request times out. The value cannot be greater than the scrape interval otherwise the operator will reject the resource.
+     * scrapeTimeout defines the number of seconds to wait until a scrape request times out. The value cannot be greater than the scrape interval otherwise the operator will reject the resource.
      */
     @JsonProperty("scrapeTimeout")
     public void setScrapeTimeout(String scrapeTimeout) {
@@ -2159,7 +2203,7 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder>, Kubernet
     }
 
     /**
-     * Secrets is a list of Secrets in the same namespace as the Prometheus object, which shall be mounted into the Prometheus Pods. Each Secret is added to the StatefulSet definition as a volume named `secret-&lt;secret-name&gt;`. The Secrets are mounted into /etc/prometheus/secrets/&lt;secret-name&gt; in the 'prometheus' container.
+     * secrets defines a list of Secrets in the same namespace as the Prometheus object, which shall be mounted into the Prometheus Pods. Each Secret is added to the StatefulSet definition as a volume named `secret-&lt;secret-name&gt;`. The Secrets are mounted into /etc/prometheus/secrets/&lt;secret-name&gt; in the 'prometheus' container.
      */
     @JsonProperty("secrets")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -2168,7 +2212,7 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder>, Kubernet
     }
 
     /**
-     * Secrets is a list of Secrets in the same namespace as the Prometheus object, which shall be mounted into the Prometheus Pods. Each Secret is added to the StatefulSet definition as a volume named `secret-&lt;secret-name&gt;`. The Secrets are mounted into /etc/prometheus/secrets/&lt;secret-name&gt; in the 'prometheus' container.
+     * secrets defines a list of Secrets in the same namespace as the Prometheus object, which shall be mounted into the Prometheus Pods. Each Secret is added to the StatefulSet definition as a volume named `secret-&lt;secret-name&gt;`. The Secrets are mounted into /etc/prometheus/secrets/&lt;secret-name&gt; in the 'prometheus' container.
      */
     @JsonProperty("secrets")
     public void setSecrets(List<String> secrets) {
@@ -2192,7 +2236,7 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder>, Kubernet
     }
 
     /**
-     * ServiceAccountName is the name of the ServiceAccount to use to run the Prometheus Pods.
+     * serviceAccountName is the name of the ServiceAccount to use to run the Prometheus Pods.
      */
     @JsonProperty("serviceAccountName")
     public String getServiceAccountName() {
@@ -2200,7 +2244,7 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder>, Kubernet
     }
 
     /**
-     * ServiceAccountName is the name of the ServiceAccount to use to run the Prometheus Pods.
+     * serviceAccountName is the name of the ServiceAccount to use to run the Prometheus Pods.
      */
     @JsonProperty("serviceAccountName")
     public void setServiceAccountName(String serviceAccountName) {
@@ -2208,7 +2252,7 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder>, Kubernet
     }
 
     /**
-     * Defines the service discovery role used to discover targets from `ServiceMonitor` objects and Alertmanager endpoints.<br><p> <br><p> If set, the value should be either "Endpoints" or "EndpointSlice". If unset, the operator assumes the "Endpoints" role.
+     * serviceDiscoveryRole defines the service discovery role used to discover targets from `ServiceMonitor` objects and Alertmanager endpoints.<br><p> <br><p> If set, the value should be either "Endpoints" or "EndpointSlice". If unset, the operator assumes the "Endpoints" role.
      */
     @JsonProperty("serviceDiscoveryRole")
     public String getServiceDiscoveryRole() {
@@ -2216,7 +2260,7 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder>, Kubernet
     }
 
     /**
-     * Defines the service discovery role used to discover targets from `ServiceMonitor` objects and Alertmanager endpoints.<br><p> <br><p> If set, the value should be either "Endpoints" or "EndpointSlice". If unset, the operator assumes the "Endpoints" role.
+     * serviceDiscoveryRole defines the service discovery role used to discover targets from `ServiceMonitor` objects and Alertmanager endpoints.<br><p> <br><p> If set, the value should be either "Endpoints" or "EndpointSlice". If unset, the operator assumes the "Endpoints" role.
      */
     @JsonProperty("serviceDiscoveryRole")
     public void setServiceDiscoveryRole(String serviceDiscoveryRole) {
@@ -2256,7 +2300,7 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder>, Kubernet
     }
 
     /**
-     * The name of the service name used by the underlying StatefulSet(s) as the governing service. If defined, the Service  must be created before the Prometheus/PrometheusAgent resource in the same namespace and it must define a selector that matches the pod labels. If empty, the operator will create and manage a headless service named `prometheus-operated` for Prometheus resources, or `prometheus-agent-operated` for PrometheusAgent resources. When deploying multiple Prometheus/PrometheusAgent resources in the same namespace, it is recommended to specify a different value for each. See https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/#stable-network-id for more details.
+     * serviceName defines the name of the service name used by the underlying StatefulSet(s) as the governing service. If defined, the Service  must be created before the Prometheus/PrometheusAgent resource in the same namespace and it must define a selector that matches the pod labels. If empty, the operator will create and manage a headless service named `prometheus-operated` for Prometheus resources, or `prometheus-agent-operated` for PrometheusAgent resources. When deploying multiple Prometheus/PrometheusAgent resources in the same namespace, it is recommended to specify a different value for each. See https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/#stable-network-id for more details.
      */
     @JsonProperty("serviceName")
     public String getServiceName() {
@@ -2264,7 +2308,7 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder>, Kubernet
     }
 
     /**
-     * The name of the service name used by the underlying StatefulSet(s) as the governing service. If defined, the Service  must be created before the Prometheus/PrometheusAgent resource in the same namespace and it must define a selector that matches the pod labels. If empty, the operator will create and manage a headless service named `prometheus-operated` for Prometheus resources, or `prometheus-agent-operated` for PrometheusAgent resources. When deploying multiple Prometheus/PrometheusAgent resources in the same namespace, it is recommended to specify a different value for each. See https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/#stable-network-id for more details.
+     * serviceName defines the name of the service name used by the underlying StatefulSet(s) as the governing service. If defined, the Service  must be created before the Prometheus/PrometheusAgent resource in the same namespace and it must define a selector that matches the pod labels. If empty, the operator will create and manage a headless service named `prometheus-operated` for Prometheus resources, or `prometheus-agent-operated` for PrometheusAgent resources. When deploying multiple Prometheus/PrometheusAgent resources in the same namespace, it is recommended to specify a different value for each. See https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/#stable-network-id for more details.
      */
     @JsonProperty("serviceName")
     public void setServiceName(String serviceName) {
@@ -2272,7 +2316,7 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder>, Kubernet
     }
 
     /**
-     * Deprecated: use 'spec.image' instead. The image's digest can be specified as part of the image name.
+     * sha is deprecated: use 'spec.image' instead. The image's digest can be specified as part of the image name.
      */
     @JsonProperty("sha")
     public String getSha() {
@@ -2280,7 +2324,7 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder>, Kubernet
     }
 
     /**
-     * Deprecated: use 'spec.image' instead. The image's digest can be specified as part of the image name.
+     * sha is deprecated: use 'spec.image' instead. The image's digest can be specified as part of the image name.
      */
     @JsonProperty("sha")
     public void setSha(String sha) {
@@ -2304,7 +2348,7 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder>, Kubernet
     }
 
     /**
-     * Number of shards to distribute the scraped targets onto.<br><p> <br><p> `spec.replicas` multiplied by `spec.shards` is the total number of Pods being created.<br><p> <br><p> When not defined, the operator assumes only one shard.<br><p> <br><p> Note that scaling down shards will not reshard data onto the remaining instances, it must be manually moved. Increasing shards will not reshard data either but it will continue to be available from the same instances. To query globally, use either &#42; Thanos sidecar + querier for query federation and Thanos Ruler for rules. &#42; Remote-write to send metrics to a central location.<br><p> <br><p> By default, the sharding of targets is performed on: &#42; The `__address__` target's metadata label for PodMonitor, ServiceMonitor and ScrapeConfig resources. &#42; The `__param_target__` label for Probe resources.<br><p> <br><p> Users can define their own sharding implementation by setting the `__tmp_hash` label during the target discovery with relabeling configuration (either in the monitoring resources or via scrape class).<br><p> <br><p> You can also disable sharding on a specific target by setting the `__tmp_disable_sharding` label with relabeling configuration. When the label value isn't empty, all Prometheus shards will scrape the target.
+     * shards defines the number of shards to distribute the scraped targets onto.<br><p> <br><p> `spec.replicas` multiplied by `spec.shards` is the total number of Pods being created.<br><p> <br><p> When not defined, the operator assumes only one shard.<br><p> <br><p> Note that scaling down shards will not reshard data onto the remaining instances, it must be manually moved. Increasing shards will not reshard data either but it will continue to be available from the same instances. To query globally, use either &#42; Thanos sidecar + querier for query federation and Thanos Ruler for rules. &#42; Remote-write to send metrics to a central location.<br><p> <br><p> By default, the sharding of targets is performed on: &#42; The `__address__` target's metadata label for PodMonitor, ServiceMonitor and ScrapeConfig resources. &#42; The `__param_target__` label for Probe resources.<br><p> <br><p> Users can define their own sharding implementation by setting the `__tmp_hash` label during the target discovery with relabeling configuration (either in the monitoring resources or via scrape class).<br><p> <br><p> You can also disable sharding on a specific target by setting the `__tmp_disable_sharding` label with relabeling configuration. When the label value isn't empty, all Prometheus shards will scrape the target.
      */
     @JsonProperty("shards")
     public Integer getShards() {
@@ -2312,7 +2356,7 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder>, Kubernet
     }
 
     /**
-     * Number of shards to distribute the scraped targets onto.<br><p> <br><p> `spec.replicas` multiplied by `spec.shards` is the total number of Pods being created.<br><p> <br><p> When not defined, the operator assumes only one shard.<br><p> <br><p> Note that scaling down shards will not reshard data onto the remaining instances, it must be manually moved. Increasing shards will not reshard data either but it will continue to be available from the same instances. To query globally, use either &#42; Thanos sidecar + querier for query federation and Thanos Ruler for rules. &#42; Remote-write to send metrics to a central location.<br><p> <br><p> By default, the sharding of targets is performed on: &#42; The `__address__` target's metadata label for PodMonitor, ServiceMonitor and ScrapeConfig resources. &#42; The `__param_target__` label for Probe resources.<br><p> <br><p> Users can define their own sharding implementation by setting the `__tmp_hash` label during the target discovery with relabeling configuration (either in the monitoring resources or via scrape class).<br><p> <br><p> You can also disable sharding on a specific target by setting the `__tmp_disable_sharding` label with relabeling configuration. When the label value isn't empty, all Prometheus shards will scrape the target.
+     * shards defines the number of shards to distribute the scraped targets onto.<br><p> <br><p> `spec.replicas` multiplied by `spec.shards` is the total number of Pods being created.<br><p> <br><p> When not defined, the operator assumes only one shard.<br><p> <br><p> Note that scaling down shards will not reshard data onto the remaining instances, it must be manually moved. Increasing shards will not reshard data either but it will continue to be available from the same instances. To query globally, use either &#42; Thanos sidecar + querier for query federation and Thanos Ruler for rules. &#42; Remote-write to send metrics to a central location.<br><p> <br><p> By default, the sharding of targets is performed on: &#42; The `__address__` target's metadata label for PodMonitor, ServiceMonitor and ScrapeConfig resources. &#42; The `__param_target__` label for Probe resources.<br><p> <br><p> Users can define their own sharding implementation by setting the `__tmp_hash` label during the target discovery with relabeling configuration (either in the monitoring resources or via scrape class).<br><p> <br><p> You can also disable sharding on a specific target by setting the `__tmp_disable_sharding` label with relabeling configuration. When the label value isn't empty, all Prometheus shards will scrape the target.
      */
     @JsonProperty("shards")
     public void setShards(Integer shards) {
@@ -2336,7 +2380,7 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder>, Kubernet
     }
 
     /**
-     * Deprecated: use 'spec.image' instead. The image's tag can be specified as part of the image name.
+     * tag is deprecated: use 'spec.image' instead. The image's tag can be specified as part of the image name.
      */
     @JsonProperty("tag")
     public String getTag() {
@@ -2344,7 +2388,7 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder>, Kubernet
     }
 
     /**
-     * Deprecated: use 'spec.image' instead. The image's tag can be specified as part of the image name.
+     * tag is deprecated: use 'spec.image' instead. The image's tag can be specified as part of the image name.
      */
     @JsonProperty("tag")
     public void setTag(String tag) {
@@ -2352,7 +2396,7 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder>, Kubernet
     }
 
     /**
-     * TargetLimit defines a limit on the number of scraped targets that will be accepted. Only valid in Prometheus versions 2.45.0 and newer.<br><p> <br><p> Note that the global limit only applies to scrape objects that don't specify an explicit limit value. If you want to enforce a maximum limit for all scrape objects, refer to enforcedTargetLimit.
+     * targetLimit defines a limit on the number of scraped targets that will be accepted. Only valid in Prometheus versions 2.45.0 and newer.<br><p> <br><p> Note that the global limit only applies to scrape objects that don't specify an explicit limit value. If you want to enforce a maximum limit for all scrape objects, refer to enforcedTargetLimit.
      */
     @JsonProperty("targetLimit")
     public Long getTargetLimit() {
@@ -2360,7 +2404,7 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder>, Kubernet
     }
 
     /**
-     * TargetLimit defines a limit on the number of scraped targets that will be accepted. Only valid in Prometheus versions 2.45.0 and newer.<br><p> <br><p> Note that the global limit only applies to scrape objects that don't specify an explicit limit value. If you want to enforce a maximum limit for all scrape objects, refer to enforcedTargetLimit.
+     * targetLimit defines a limit on the number of scraped targets that will be accepted. Only valid in Prometheus versions 2.45.0 and newer.<br><p> <br><p> Note that the global limit only applies to scrape objects that don't specify an explicit limit value. If you want to enforce a maximum limit for all scrape objects, refer to enforcedTargetLimit.
      */
     @JsonProperty("targetLimit")
     public void setTargetLimit(Long targetLimit) {
@@ -2368,7 +2412,7 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder>, Kubernet
     }
 
     /**
-     * Optional duration in seconds the pod needs to terminate gracefully. Value must be non-negative integer. The value zero indicates stop immediately via the kill signal (no opportunity to shut down) which may lead to data corruption.<br><p> <br><p> Defaults to 600 seconds.
+     * terminationGracePeriodSeconds defines the optional duration in seconds the pod needs to terminate gracefully. Value must be non-negative integer. The value zero indicates stop immediately via the kill signal (no opportunity to shut down) which may lead to data corruption.<br><p> <br><p> Defaults to 600 seconds.
      */
     @JsonProperty("terminationGracePeriodSeconds")
     public Long getTerminationGracePeriodSeconds() {
@@ -2376,7 +2420,7 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder>, Kubernet
     }
 
     /**
-     * Optional duration in seconds the pod needs to terminate gracefully. Value must be non-negative integer. The value zero indicates stop immediately via the kill signal (no opportunity to shut down) which may lead to data corruption.<br><p> <br><p> Defaults to 600 seconds.
+     * terminationGracePeriodSeconds defines the optional duration in seconds the pod needs to terminate gracefully. Value must be non-negative integer. The value zero indicates stop immediately via the kill signal (no opportunity to shut down) which may lead to data corruption.<br><p> <br><p> Defaults to 600 seconds.
      */
     @JsonProperty("terminationGracePeriodSeconds")
     public void setTerminationGracePeriodSeconds(Long terminationGracePeriodSeconds) {
@@ -2400,7 +2444,7 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder>, Kubernet
     }
 
     /**
-     * Defines the Pods' tolerations if specified.
+     * tolerations defines the Pods' tolerations if specified.
      */
     @JsonProperty("tolerations")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -2409,7 +2453,7 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder>, Kubernet
     }
 
     /**
-     * Defines the Pods' tolerations if specified.
+     * tolerations defines the Pods' tolerations if specified.
      */
     @JsonProperty("tolerations")
     public void setTolerations(List<Toleration> tolerations) {
@@ -2417,7 +2461,7 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder>, Kubernet
     }
 
     /**
-     * Defines the pod's topology spread constraints if specified.
+     * topologySpreadConstraints defines the pod's topology spread constraints if specified.
      */
     @JsonProperty("topologySpreadConstraints")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -2426,7 +2470,7 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder>, Kubernet
     }
 
     /**
-     * Defines the pod's topology spread constraints if specified.
+     * topologySpreadConstraints defines the pod's topology spread constraints if specified.
      */
     @JsonProperty("topologySpreadConstraints")
     public void setTopologySpreadConstraints(List<TopologySpreadConstraint> topologySpreadConstraints) {
@@ -2437,7 +2481,7 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder>, Kubernet
      * PrometheusSpec is a specification of the desired behavior of the Prometheus cluster. More info: https://github.com/kubernetes/community/blob/master/contributors/devel/sig-architecture/api-conventions.md#spec-and-status
      */
     @JsonProperty("tracingConfig")
-    public PrometheusTracingConfig getTracingConfig() {
+    public TracingConfig getTracingConfig() {
         return tracingConfig;
     }
 
@@ -2445,7 +2489,7 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder>, Kubernet
      * PrometheusSpec is a specification of the desired behavior of the Prometheus cluster. More info: https://github.com/kubernetes/community/blob/master/contributors/devel/sig-architecture/api-conventions.md#spec-and-status
      */
     @JsonProperty("tracingConfig")
-    public void setTracingConfig(PrometheusTracingConfig tracingConfig) {
+    public void setTracingConfig(TracingConfig tracingConfig) {
         this.tracingConfig = tracingConfig;
     }
 
@@ -2466,7 +2510,23 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder>, Kubernet
     }
 
     /**
-     * Version of Prometheus being deployed. The operator uses this information to generate the Prometheus StatefulSet + configuration files.<br><p> <br><p> If not specified, the operator assumes the latest upstream version of Prometheus available at the time when the version of the operator was released.
+     * PrometheusSpec is a specification of the desired behavior of the Prometheus cluster. More info: https://github.com/kubernetes/community/blob/master/contributors/devel/sig-architecture/api-conventions.md#spec-and-status
+     */
+    @JsonProperty("updateStrategy")
+    public StatefulSetUpdateStrategy getUpdateStrategy() {
+        return updateStrategy;
+    }
+
+    /**
+     * PrometheusSpec is a specification of the desired behavior of the Prometheus cluster. More info: https://github.com/kubernetes/community/blob/master/contributors/devel/sig-architecture/api-conventions.md#spec-and-status
+     */
+    @JsonProperty("updateStrategy")
+    public void setUpdateStrategy(StatefulSetUpdateStrategy updateStrategy) {
+        this.updateStrategy = updateStrategy;
+    }
+
+    /**
+     * version of Prometheus being deployed. The operator uses this information to generate the Prometheus StatefulSet + configuration files.<br><p> <br><p> If not specified, the operator assumes the latest upstream version of Prometheus available at the time when the version of the operator was released.
      */
     @JsonProperty("version")
     public String getVersion() {
@@ -2474,7 +2534,7 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder>, Kubernet
     }
 
     /**
-     * Version of Prometheus being deployed. The operator uses this information to generate the Prometheus StatefulSet + configuration files.<br><p> <br><p> If not specified, the operator assumes the latest upstream version of Prometheus available at the time when the version of the operator was released.
+     * version of Prometheus being deployed. The operator uses this information to generate the Prometheus StatefulSet + configuration files.<br><p> <br><p> If not specified, the operator assumes the latest upstream version of Prometheus available at the time when the version of the operator was released.
      */
     @JsonProperty("version")
     public void setVersion(String version) {
@@ -2482,7 +2542,7 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder>, Kubernet
     }
 
     /**
-     * VolumeMounts allows the configuration of additional VolumeMounts.<br><p> <br><p> VolumeMounts will be appended to other VolumeMounts in the 'prometheus' container, that are generated as a result of StorageSpec objects.
+     * volumeMounts allows the configuration of additional VolumeMounts.<br><p> <br><p> VolumeMounts will be appended to other VolumeMounts in the 'prometheus' container, that are generated as a result of StorageSpec objects.
      */
     @JsonProperty("volumeMounts")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -2491,7 +2551,7 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder>, Kubernet
     }
 
     /**
-     * VolumeMounts allows the configuration of additional VolumeMounts.<br><p> <br><p> VolumeMounts will be appended to other VolumeMounts in the 'prometheus' container, that are generated as a result of StorageSpec objects.
+     * volumeMounts allows the configuration of additional VolumeMounts.<br><p> <br><p> VolumeMounts will be appended to other VolumeMounts in the 'prometheus' container, that are generated as a result of StorageSpec objects.
      */
     @JsonProperty("volumeMounts")
     public void setVolumeMounts(List<VolumeMount> volumeMounts) {
@@ -2499,7 +2559,7 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder>, Kubernet
     }
 
     /**
-     * Volumes allows the configuration of additional volumes on the output StatefulSet definition. Volumes specified will be appended to other volumes that are generated as a result of StorageSpec objects.
+     * volumes allows the configuration of additional volumes on the output StatefulSet definition. Volumes specified will be appended to other volumes that are generated as a result of StorageSpec objects.
      */
     @JsonProperty("volumes")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -2508,7 +2568,7 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder>, Kubernet
     }
 
     /**
-     * Volumes allows the configuration of additional volumes on the output StatefulSet definition. Volumes specified will be appended to other volumes that are generated as a result of StorageSpec objects.
+     * volumes allows the configuration of additional volumes on the output StatefulSet definition. Volumes specified will be appended to other volumes that are generated as a result of StorageSpec objects.
      */
     @JsonProperty("volumes")
     public void setVolumes(List<Volume> volumes) {
@@ -2516,7 +2576,7 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder>, Kubernet
     }
 
     /**
-     * Configures compression of the write-ahead log (WAL) using Snappy.<br><p> <br><p> WAL compression is enabled by default for Prometheus &gt;= 2.20.0<br><p> <br><p> Requires Prometheus v2.11.0 and above.
+     * walCompression defines the compression of the write-ahead log (WAL) using Snappy.<br><p> <br><p> WAL compression is enabled by default for Prometheus &gt;= 2.20.0<br><p> <br><p> Requires Prometheus v2.11.0 and above.
      */
     @JsonProperty("walCompression")
     public Boolean getWalCompression() {
@@ -2524,7 +2584,7 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder>, Kubernet
     }
 
     /**
-     * Configures compression of the write-ahead log (WAL) using Snappy.<br><p> <br><p> WAL compression is enabled by default for Prometheus &gt;= 2.20.0<br><p> <br><p> Requires Prometheus v2.11.0 and above.
+     * walCompression defines the compression of the write-ahead log (WAL) using Snappy.<br><p> <br><p> WAL compression is enabled by default for Prometheus &gt;= 2.20.0<br><p> <br><p> Requires Prometheus v2.11.0 and above.
      */
     @JsonProperty("walCompression")
     public void setWalCompression(Boolean walCompression) {

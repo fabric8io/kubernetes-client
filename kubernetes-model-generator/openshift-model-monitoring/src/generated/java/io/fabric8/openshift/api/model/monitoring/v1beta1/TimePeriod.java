@@ -105,7 +105,7 @@ public class TimePeriod implements Editable<TimePeriodBuilder>, KubernetesResour
     }
 
     /**
-     * DaysOfMonth is a list of DayOfMonthRange
+     * daysOfMonth defines a list of DayOfMonthRange
      */
     @JsonProperty("daysOfMonth")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -114,7 +114,7 @@ public class TimePeriod implements Editable<TimePeriodBuilder>, KubernetesResour
     }
 
     /**
-     * DaysOfMonth is a list of DayOfMonthRange
+     * daysOfMonth defines a list of DayOfMonthRange
      */
     @JsonProperty("daysOfMonth")
     public void setDaysOfMonth(List<DayOfMonthRange> daysOfMonth) {
@@ -122,7 +122,7 @@ public class TimePeriod implements Editable<TimePeriodBuilder>, KubernetesResour
     }
 
     /**
-     * Months is a list of MonthRange
+     * months defines a list of MonthRange
      */
     @JsonProperty("months")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -131,7 +131,7 @@ public class TimePeriod implements Editable<TimePeriodBuilder>, KubernetesResour
     }
 
     /**
-     * Months is a list of MonthRange
+     * months defines a list of MonthRange
      */
     @JsonProperty("months")
     public void setMonths(List<String> months) {
@@ -139,7 +139,7 @@ public class TimePeriod implements Editable<TimePeriodBuilder>, KubernetesResour
     }
 
     /**
-     * Times is a list of TimeRange
+     * times defines a list of TimeRange
      */
     @JsonProperty("times")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -148,7 +148,7 @@ public class TimePeriod implements Editable<TimePeriodBuilder>, KubernetesResour
     }
 
     /**
-     * Times is a list of TimeRange
+     * times defines a list of TimeRange
      */
     @JsonProperty("times")
     public void setTimes(List<TimeRange> times) {
@@ -156,7 +156,7 @@ public class TimePeriod implements Editable<TimePeriodBuilder>, KubernetesResour
     }
 
     /**
-     * Weekdays is a list of WeekdayRange
+     * weekdays defines a list of WeekdayRange
      */
     @JsonProperty("weekdays")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -165,7 +165,7 @@ public class TimePeriod implements Editable<TimePeriodBuilder>, KubernetesResour
     }
 
     /**
-     * Weekdays is a list of WeekdayRange
+     * weekdays defines a list of WeekdayRange
      */
     @JsonProperty("weekdays")
     public void setWeekdays(List<String> weekdays) {
@@ -173,7 +173,7 @@ public class TimePeriod implements Editable<TimePeriodBuilder>, KubernetesResour
     }
 
     /**
-     * Years is a list of YearRange
+     * years defines a list of YearRange
      */
     @JsonProperty("years")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -182,7 +182,7 @@ public class TimePeriod implements Editable<TimePeriodBuilder>, KubernetesResour
     }
 
     /**
-     * Years is a list of YearRange
+     * years defines a list of YearRange
      */
     @JsonProperty("years")
     public void setYears(List<String> years) {

@@ -55,6 +55,7 @@ import lombok.experimental.Accessors;
     "serviceKey",
     "severity",
     "source",
+    "timeout",
     "url"
 })
 @ToString
@@ -115,6 +116,8 @@ public class PagerDutyConfig implements Editable<PagerDutyConfigBuilder>, Kubern
     private String severity;
     @JsonProperty("source")
     private String source;
+    @JsonProperty("timeout")
+    private String timeout;
     @JsonProperty("url")
     private String url;
     @JsonIgnore
@@ -126,7 +129,7 @@ public class PagerDutyConfig implements Editable<PagerDutyConfigBuilder>, Kubern
     public PagerDutyConfig() {
     }
 
-    public PagerDutyConfig(String className, String client, String clientURL, String component, String description, List<KeyValue> details, String group, HTTPConfig httpConfig, List<PagerDutyImageConfig> pagerDutyImageConfigs, List<PagerDutyLinkConfig> pagerDutyLinkConfigs, SecretKeySelector routingKey, Boolean sendResolved, SecretKeySelector serviceKey, String severity, String source, String url) {
+    public PagerDutyConfig(String className, String client, String clientURL, String component, String description, List<KeyValue> details, String group, HTTPConfig httpConfig, List<PagerDutyImageConfig> pagerDutyImageConfigs, List<PagerDutyLinkConfig> pagerDutyLinkConfigs, SecretKeySelector routingKey, Boolean sendResolved, SecretKeySelector serviceKey, String severity, String source, String timeout, String url) {
         super();
         this.className = className;
         this.client = client;
@@ -143,11 +146,12 @@ public class PagerDutyConfig implements Editable<PagerDutyConfigBuilder>, Kubern
         this.serviceKey = serviceKey;
         this.severity = severity;
         this.source = source;
+        this.timeout = timeout;
         this.url = url;
     }
 
     /**
-     * The class/type of the event.
+     * class defines the class/type of the event.
      */
     @JsonProperty("class")
     public String getClassName() {
@@ -155,7 +159,7 @@ public class PagerDutyConfig implements Editable<PagerDutyConfigBuilder>, Kubern
     }
 
     /**
-     * The class/type of the event.
+     * class defines the class/type of the event.
      */
     @JsonProperty("class")
     public void setClassName(String className) {
@@ -163,7 +167,7 @@ public class PagerDutyConfig implements Editable<PagerDutyConfigBuilder>, Kubern
     }
 
     /**
-     * Client identification.
+     * client defines the client identification.
      */
     @JsonProperty("client")
     public String getClient() {
@@ -171,7 +175,7 @@ public class PagerDutyConfig implements Editable<PagerDutyConfigBuilder>, Kubern
     }
 
     /**
-     * Client identification.
+     * client defines the client identification.
      */
     @JsonProperty("client")
     public void setClient(String client) {
@@ -179,7 +183,7 @@ public class PagerDutyConfig implements Editable<PagerDutyConfigBuilder>, Kubern
     }
 
     /**
-     * Backlink to the sender of notification.
+     * clientURL defines the backlink to the sender of notification.
      */
     @JsonProperty("clientURL")
     public String getClientURL() {
@@ -187,7 +191,7 @@ public class PagerDutyConfig implements Editable<PagerDutyConfigBuilder>, Kubern
     }
 
     /**
-     * Backlink to the sender of notification.
+     * clientURL defines the backlink to the sender of notification.
      */
     @JsonProperty("clientURL")
     public void setClientURL(String clientURL) {
@@ -195,7 +199,7 @@ public class PagerDutyConfig implements Editable<PagerDutyConfigBuilder>, Kubern
     }
 
     /**
-     * The part or component of the affected system that is broken.
+     * component defines the part or component of the affected system that is broken.
      */
     @JsonProperty("component")
     public String getComponent() {
@@ -203,7 +207,7 @@ public class PagerDutyConfig implements Editable<PagerDutyConfigBuilder>, Kubern
     }
 
     /**
-     * The part or component of the affected system that is broken.
+     * component defines the part or component of the affected system that is broken.
      */
     @JsonProperty("component")
     public void setComponent(String component) {
@@ -211,7 +215,7 @@ public class PagerDutyConfig implements Editable<PagerDutyConfigBuilder>, Kubern
     }
 
     /**
-     * Description of the incident.
+     * description of the incident.
      */
     @JsonProperty("description")
     public String getDescription() {
@@ -219,7 +223,7 @@ public class PagerDutyConfig implements Editable<PagerDutyConfigBuilder>, Kubern
     }
 
     /**
-     * Description of the incident.
+     * description of the incident.
      */
     @JsonProperty("description")
     public void setDescription(String description) {
@@ -227,7 +231,7 @@ public class PagerDutyConfig implements Editable<PagerDutyConfigBuilder>, Kubern
     }
 
     /**
-     * Arbitrary key/value pairs that provide further detail about the incident.
+     * details defines the arbitrary key/value pairs that provide further detail about the incident.
      */
     @JsonProperty("details")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -236,7 +240,7 @@ public class PagerDutyConfig implements Editable<PagerDutyConfigBuilder>, Kubern
     }
 
     /**
-     * Arbitrary key/value pairs that provide further detail about the incident.
+     * details defines the arbitrary key/value pairs that provide further detail about the incident.
      */
     @JsonProperty("details")
     public void setDetails(List<KeyValue> details) {
@@ -244,7 +248,7 @@ public class PagerDutyConfig implements Editable<PagerDutyConfigBuilder>, Kubern
     }
 
     /**
-     * A cluster or grouping of sources.
+     * group defines a cluster or grouping of sources.
      */
     @JsonProperty("group")
     public String getGroup() {
@@ -252,7 +256,7 @@ public class PagerDutyConfig implements Editable<PagerDutyConfigBuilder>, Kubern
     }
 
     /**
-     * A cluster or grouping of sources.
+     * group defines a cluster or grouping of sources.
      */
     @JsonProperty("group")
     public void setGroup(String group) {
@@ -276,7 +280,7 @@ public class PagerDutyConfig implements Editable<PagerDutyConfigBuilder>, Kubern
     }
 
     /**
-     * A list of image details to attach that provide further detail about an incident.
+     * pagerDutyImageConfigs defines a list of image details to attach that provide further detail about an incident.
      */
     @JsonProperty("pagerDutyImageConfigs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -285,7 +289,7 @@ public class PagerDutyConfig implements Editable<PagerDutyConfigBuilder>, Kubern
     }
 
     /**
-     * A list of image details to attach that provide further detail about an incident.
+     * pagerDutyImageConfigs defines a list of image details to attach that provide further detail about an incident.
      */
     @JsonProperty("pagerDutyImageConfigs")
     public void setPagerDutyImageConfigs(List<PagerDutyImageConfig> pagerDutyImageConfigs) {
@@ -293,7 +297,7 @@ public class PagerDutyConfig implements Editable<PagerDutyConfigBuilder>, Kubern
     }
 
     /**
-     * A list of link details to attach that provide further detail about an incident.
+     * pagerDutyLinkConfigs defines a list of link details to attach that provide further detail about an incident.
      */
     @JsonProperty("pagerDutyLinkConfigs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -302,7 +306,7 @@ public class PagerDutyConfig implements Editable<PagerDutyConfigBuilder>, Kubern
     }
 
     /**
-     * A list of link details to attach that provide further detail about an incident.
+     * pagerDutyLinkConfigs defines a list of link details to attach that provide further detail about an incident.
      */
     @JsonProperty("pagerDutyLinkConfigs")
     public void setPagerDutyLinkConfigs(List<PagerDutyLinkConfig> pagerDutyLinkConfigs) {
@@ -326,7 +330,7 @@ public class PagerDutyConfig implements Editable<PagerDutyConfigBuilder>, Kubern
     }
 
     /**
-     * Whether or not to notify about resolved alerts.
+     * sendResolved defines whether or not to notify about resolved alerts.
      */
     @JsonProperty("sendResolved")
     public Boolean getSendResolved() {
@@ -334,7 +338,7 @@ public class PagerDutyConfig implements Editable<PagerDutyConfigBuilder>, Kubern
     }
 
     /**
-     * Whether or not to notify about resolved alerts.
+     * sendResolved defines whether or not to notify about resolved alerts.
      */
     @JsonProperty("sendResolved")
     public void setSendResolved(Boolean sendResolved) {
@@ -358,7 +362,7 @@ public class PagerDutyConfig implements Editable<PagerDutyConfigBuilder>, Kubern
     }
 
     /**
-     * Severity of the incident.
+     * severity of the incident.
      */
     @JsonProperty("severity")
     public String getSeverity() {
@@ -366,7 +370,7 @@ public class PagerDutyConfig implements Editable<PagerDutyConfigBuilder>, Kubern
     }
 
     /**
-     * Severity of the incident.
+     * severity of the incident.
      */
     @JsonProperty("severity")
     public void setSeverity(String severity) {
@@ -374,7 +378,7 @@ public class PagerDutyConfig implements Editable<PagerDutyConfigBuilder>, Kubern
     }
 
     /**
-     * Unique location of the affected system.
+     * source defines the unique location of the affected system.
      */
     @JsonProperty("source")
     public String getSource() {
@@ -382,7 +386,7 @@ public class PagerDutyConfig implements Editable<PagerDutyConfigBuilder>, Kubern
     }
 
     /**
-     * Unique location of the affected system.
+     * source defines the unique location of the affected system.
      */
     @JsonProperty("source")
     public void setSource(String source) {
@@ -390,7 +394,23 @@ public class PagerDutyConfig implements Editable<PagerDutyConfigBuilder>, Kubern
     }
 
     /**
-     * The URL to send requests to.
+     * timeout is the maximum time allowed to invoke the pagerduty It requires Alertmanager &gt;= v0.30.0.
+     */
+    @JsonProperty("timeout")
+    public String getTimeout() {
+        return timeout;
+    }
+
+    /**
+     * timeout is the maximum time allowed to invoke the pagerduty It requires Alertmanager &gt;= v0.30.0.
+     */
+    @JsonProperty("timeout")
+    public void setTimeout(String timeout) {
+        this.timeout = timeout;
+    }
+
+    /**
+     * url defines the URL to send requests to.
      */
     @JsonProperty("url")
     public String getUrl() {
@@ -398,7 +418,7 @@ public class PagerDutyConfig implements Editable<PagerDutyConfigBuilder>, Kubern
     }
 
     /**
-     * The URL to send requests to.
+     * url defines the URL to send requests to.
      */
     @JsonProperty("url")
     public void setUrl(String url) {
