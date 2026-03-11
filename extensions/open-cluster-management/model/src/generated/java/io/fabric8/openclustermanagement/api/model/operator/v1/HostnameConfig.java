@@ -1,5 +1,5 @@
 
-package io.fabric8.openclustermanagement.api.model.cluster.v1alpha1;
+package io.fabric8.openclustermanagement.api.model.operator.v1;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -33,13 +33,13 @@ import lombok.ToString;
 import lombok.experimental.Accessors;
 
 /**
- * AddOnPlacementScoreItem represents the score name and value.
+ * HostnameConfig references a fixed hostname.
  */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "name",
-    "value"
+    "caBundle",
+    "host"
 })
 @ToString
 @EqualsAndHashCode
@@ -63,67 +63,67 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class AddOnPlacementScoreItem implements Editable<AddOnPlacementScoreItemBuilder>, KubernetesResource
+public class HostnameConfig implements Editable<HostnameConfigBuilder>, KubernetesResource
 {
 
-    @JsonProperty("name")
-    private String name;
-    @JsonProperty("value")
-    private Integer value;
+    @JsonProperty("caBundle")
+    private String caBundle;
+    @JsonProperty("host")
+    private String host;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
      */
-    public AddOnPlacementScoreItem() {
+    public HostnameConfig() {
     }
 
-    public AddOnPlacementScoreItem(String name, Integer value) {
+    public HostnameConfig(String caBundle, String host) {
         super();
-        this.name = name;
-        this.value = value;
+        this.caBundle = caBundle;
+        this.host = host;
     }
 
     /**
-     * name is the name of the score
+     * caBundle of the endpoint.
      */
-    @JsonProperty("name")
-    public String getName() {
-        return name;
+    @JsonProperty("caBundle")
+    public String getCaBundle() {
+        return caBundle;
     }
 
     /**
-     * name is the name of the score
+     * caBundle of the endpoint.
      */
-    @JsonProperty("name")
-    public void setName(String name) {
-        this.name = name;
+    @JsonProperty("caBundle")
+    public void setCaBundle(String caBundle) {
+        this.caBundle = caBundle;
     }
 
     /**
-     * value is the value of the score. The score range is from -100 to 100.
+     * host is the host name of the endpoint.
      */
-    @JsonProperty("value")
-    public Integer getValue() {
-        return value;
+    @JsonProperty("host")
+    public String getHost() {
+        return host;
     }
 
     /**
-     * value is the value of the score. The score range is from -100 to 100.
+     * host is the host name of the endpoint.
      */
-    @JsonProperty("value")
-    public void setValue(Integer value) {
-        this.value = value;
+    @JsonProperty("host")
+    public void setHost(String host) {
+        this.host = host;
     }
 
     @JsonIgnore
-    public AddOnPlacementScoreItemBuilder edit() {
-        return new AddOnPlacementScoreItemBuilder(this);
+    public HostnameConfigBuilder edit() {
+        return new HostnameConfigBuilder(this);
     }
 
     @JsonIgnore
-    public AddOnPlacementScoreItemBuilder toBuilder() {
+    public HostnameConfigBuilder toBuilder() {
         return edit();
     }
 

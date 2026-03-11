@@ -1,7 +1,9 @@
 
-package io.fabric8.openclustermanagement.api.model.cluster.v1alpha1;
+package io.fabric8.openclustermanagement.api.model.operator.v1;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import javax.annotation.processing.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
@@ -32,14 +34,10 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
-/**
- * AddOnPlacementScoreItem represents the score name and value.
- */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "name",
-    "value"
+    "renderers"
 })
 @ToString
 @EqualsAndHashCode
@@ -63,67 +61,50 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class AddOnPlacementScoreItem implements Editable<AddOnPlacementScoreItemBuilder>, KubernetesResource
+public class ImporterConfiguration implements Editable<ImporterConfigurationBuilder>, KubernetesResource
 {
 
-    @JsonProperty("name")
-    private String name;
-    @JsonProperty("value")
-    private Integer value;
+    @JsonProperty("renderers")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<String> renderers = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
      */
-    public AddOnPlacementScoreItem() {
+    public ImporterConfiguration() {
     }
 
-    public AddOnPlacementScoreItem(String name, Integer value) {
+    public ImporterConfiguration(List<String> renderers) {
         super();
-        this.name = name;
-        this.value = value;
+        this.renderers = renderers;
     }
 
     /**
-     * name is the name of the score
+     * renderers specifies which import renderers to use. Valid values are: "render-auto", "render-from-config-secret"
      */
-    @JsonProperty("name")
-    public String getName() {
-        return name;
+    @JsonProperty("renderers")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public List<String> getRenderers() {
+        return renderers;
     }
 
     /**
-     * name is the name of the score
+     * renderers specifies which import renderers to use. Valid values are: "render-auto", "render-from-config-secret"
      */
-    @JsonProperty("name")
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    /**
-     * value is the value of the score. The score range is from -100 to 100.
-     */
-    @JsonProperty("value")
-    public Integer getValue() {
-        return value;
-    }
-
-    /**
-     * value is the value of the score. The score range is from -100 to 100.
-     */
-    @JsonProperty("value")
-    public void setValue(Integer value) {
-        this.value = value;
+    @JsonProperty("renderers")
+    public void setRenderers(List<String> renderers) {
+        this.renderers = renderers;
     }
 
     @JsonIgnore
-    public AddOnPlacementScoreItemBuilder edit() {
-        return new AddOnPlacementScoreItemBuilder(this);
+    public ImporterConfigurationBuilder edit() {
+        return new ImporterConfigurationBuilder(this);
     }
 
     @JsonIgnore
-    public AddOnPlacementScoreItemBuilder toBuilder() {
+    public ImporterConfigurationBuilder toBuilder() {
         return edit();
     }
 

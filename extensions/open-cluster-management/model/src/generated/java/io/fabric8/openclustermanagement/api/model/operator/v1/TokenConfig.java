@@ -1,5 +1,5 @@
 
-package io.fabric8.openclustermanagement.api.model.cluster.v1alpha1;
+package io.fabric8.openclustermanagement.api.model.operator.v1;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -32,14 +32,10 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
-/**
- * AddOnPlacementScoreItem represents the score name and value.
- */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "name",
-    "value"
+    "expirationSeconds"
 })
 @ToString
 @EqualsAndHashCode
@@ -63,67 +59,48 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class AddOnPlacementScoreItem implements Editable<AddOnPlacementScoreItemBuilder>, KubernetesResource
+public class TokenConfig implements Editable<TokenConfigBuilder>, KubernetesResource
 {
 
-    @JsonProperty("name")
-    private String name;
-    @JsonProperty("value")
-    private Integer value;
+    @JsonProperty("expirationSeconds")
+    private Long expirationSeconds;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
      */
-    public AddOnPlacementScoreItem() {
+    public TokenConfig() {
     }
 
-    public AddOnPlacementScoreItem(String name, Integer value) {
+    public TokenConfig(Long expirationSeconds) {
         super();
-        this.name = name;
-        this.value = value;
+        this.expirationSeconds = expirationSeconds;
     }
 
     /**
-     * name is the name of the score
+     * ExpirationSeconds represents the seconds of a token to expire. If it is not set or 0, the default duration will be used, which is the same as the certificate expiration set by the hub cluster's kube-controller-manager (typically 1 year). The minimum valid value for production use is 3600 (1 hour), though smaller values are allowed for testing.
      */
-    @JsonProperty("name")
-    public String getName() {
-        return name;
+    @JsonProperty("expirationSeconds")
+    public Long getExpirationSeconds() {
+        return expirationSeconds;
     }
 
     /**
-     * name is the name of the score
+     * ExpirationSeconds represents the seconds of a token to expire. If it is not set or 0, the default duration will be used, which is the same as the certificate expiration set by the hub cluster's kube-controller-manager (typically 1 year). The minimum valid value for production use is 3600 (1 hour), though smaller values are allowed for testing.
      */
-    @JsonProperty("name")
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    /**
-     * value is the value of the score. The score range is from -100 to 100.
-     */
-    @JsonProperty("value")
-    public Integer getValue() {
-        return value;
-    }
-
-    /**
-     * value is the value of the score. The score range is from -100 to 100.
-     */
-    @JsonProperty("value")
-    public void setValue(Integer value) {
-        this.value = value;
+    @JsonProperty("expirationSeconds")
+    public void setExpirationSeconds(Long expirationSeconds) {
+        this.expirationSeconds = expirationSeconds;
     }
 
     @JsonIgnore
-    public AddOnPlacementScoreItemBuilder edit() {
-        return new AddOnPlacementScoreItemBuilder(this);
+    public TokenConfigBuilder edit() {
+        return new TokenConfigBuilder(this);
     }
 
     @JsonIgnore
-    public AddOnPlacementScoreItemBuilder toBuilder() {
+    public TokenConfigBuilder toBuilder() {
         return edit();
     }
 

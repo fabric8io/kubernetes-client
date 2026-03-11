@@ -1,5 +1,5 @@
 
-package io.fabric8.openclustermanagement.api.model.cluster.v1alpha1;
+package io.fabric8.openclustermanagement.api.model.cluster.v1beta1;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -33,13 +33,13 @@ import lombok.ToString;
 import lombok.experimental.Accessors;
 
 /**
- * AddOnPlacementScoreItem represents the score name and value.
+ * GroupClusterSelector represents the AND of the containing selectors for groupClusterSelector. An empty group cluster selector matches all objects. A null group cluster selector matches no objects.
  */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "name",
-    "value"
+    "claimSelector",
+    "labelSelector"
 })
 @ToString
 @EqualsAndHashCode
@@ -63,67 +63,67 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class AddOnPlacementScoreItem implements Editable<AddOnPlacementScoreItemBuilder>, KubernetesResource
+public class GroupClusterSelector implements Editable<GroupClusterSelectorBuilder>, KubernetesResource
 {
 
-    @JsonProperty("name")
-    private String name;
-    @JsonProperty("value")
-    private Integer value;
+    @JsonProperty("claimSelector")
+    private ClusterClaimSelector claimSelector;
+    @JsonProperty("labelSelector")
+    private LabelSelector labelSelector;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
      */
-    public AddOnPlacementScoreItem() {
+    public GroupClusterSelector() {
     }
 
-    public AddOnPlacementScoreItem(String name, Integer value) {
+    public GroupClusterSelector(ClusterClaimSelector claimSelector, LabelSelector labelSelector) {
         super();
-        this.name = name;
-        this.value = value;
+        this.claimSelector = claimSelector;
+        this.labelSelector = labelSelector;
     }
 
     /**
-     * name is the name of the score
+     * GroupClusterSelector represents the AND of the containing selectors for groupClusterSelector. An empty group cluster selector matches all objects. A null group cluster selector matches no objects.
      */
-    @JsonProperty("name")
-    public String getName() {
-        return name;
+    @JsonProperty("claimSelector")
+    public ClusterClaimSelector getClaimSelector() {
+        return claimSelector;
     }
 
     /**
-     * name is the name of the score
+     * GroupClusterSelector represents the AND of the containing selectors for groupClusterSelector. An empty group cluster selector matches all objects. A null group cluster selector matches no objects.
      */
-    @JsonProperty("name")
-    public void setName(String name) {
-        this.name = name;
+    @JsonProperty("claimSelector")
+    public void setClaimSelector(ClusterClaimSelector claimSelector) {
+        this.claimSelector = claimSelector;
     }
 
     /**
-     * value is the value of the score. The score range is from -100 to 100.
+     * GroupClusterSelector represents the AND of the containing selectors for groupClusterSelector. An empty group cluster selector matches all objects. A null group cluster selector matches no objects.
      */
-    @JsonProperty("value")
-    public Integer getValue() {
-        return value;
+    @JsonProperty("labelSelector")
+    public LabelSelector getLabelSelector() {
+        return labelSelector;
     }
 
     /**
-     * value is the value of the score. The score range is from -100 to 100.
+     * GroupClusterSelector represents the AND of the containing selectors for groupClusterSelector. An empty group cluster selector matches all objects. A null group cluster selector matches no objects.
      */
-    @JsonProperty("value")
-    public void setValue(Integer value) {
-        this.value = value;
+    @JsonProperty("labelSelector")
+    public void setLabelSelector(LabelSelector labelSelector) {
+        this.labelSelector = labelSelector;
     }
 
     @JsonIgnore
-    public AddOnPlacementScoreItemBuilder edit() {
-        return new AddOnPlacementScoreItemBuilder(this);
+    public GroupClusterSelectorBuilder edit() {
+        return new GroupClusterSelectorBuilder(this);
     }
 
     @JsonIgnore
-    public AddOnPlacementScoreItemBuilder toBuilder() {
+    public GroupClusterSelectorBuilder toBuilder() {
         return edit();
     }
 

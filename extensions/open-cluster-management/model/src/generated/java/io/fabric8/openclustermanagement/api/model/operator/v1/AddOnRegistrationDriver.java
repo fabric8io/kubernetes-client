@@ -1,5 +1,5 @@
 
-package io.fabric8.openclustermanagement.api.model.cluster.v1alpha1;
+package io.fabric8.openclustermanagement.api.model.operator.v1;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -32,14 +32,11 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
-/**
- * AddOnPlacementScoreItem represents the score name and value.
- */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "name",
-    "value"
+    "authType",
+    "token"
 })
 @ToString
 @EqualsAndHashCode
@@ -63,67 +60,61 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class AddOnPlacementScoreItem implements Editable<AddOnPlacementScoreItemBuilder>, KubernetesResource
+public class AddOnRegistrationDriver implements Editable<AddOnRegistrationDriverBuilder>, KubernetesResource
 {
 
-    @JsonProperty("name")
-    private String name;
-    @JsonProperty("value")
-    private Integer value;
+    @JsonProperty("authType")
+    private String authType;
+    @JsonProperty("token")
+    private TokenConfig token;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
      */
-    public AddOnPlacementScoreItem() {
+    public AddOnRegistrationDriver() {
     }
 
-    public AddOnPlacementScoreItem(String name, Integer value) {
+    public AddOnRegistrationDriver(String authType, TokenConfig token) {
         super();
-        this.name = name;
-        this.value = value;
+        this.authType = authType;
+        this.token = token;
     }
 
     /**
-     * name is the name of the score
+     * AuthType is the authentication driver used for add-on registration. Possible values are csr and token. Currently, this field only affects kubeClient type add-on registration. The csr type add-on registration always uses csr driver. In the future, this may be extended to customize authentication for csr type add-on registration as well.
      */
-    @JsonProperty("name")
-    public String getName() {
-        return name;
+    @JsonProperty("authType")
+    public String getAuthType() {
+        return authType;
     }
 
     /**
-     * name is the name of the score
+     * AuthType is the authentication driver used for add-on registration. Possible values are csr and token. Currently, this field only affects kubeClient type add-on registration. The csr type add-on registration always uses csr driver. In the future, this may be extended to customize authentication for csr type add-on registration as well.
      */
-    @JsonProperty("name")
-    public void setName(String name) {
-        this.name = name;
+    @JsonProperty("authType")
+    public void setAuthType(String authType) {
+        this.authType = authType;
     }
 
-    /**
-     * value is the value of the score. The score range is from -100 to 100.
-     */
-    @JsonProperty("value")
-    public Integer getValue() {
-        return value;
+    @JsonProperty("token")
+    public TokenConfig getToken() {
+        return token;
     }
 
-    /**
-     * value is the value of the score. The score range is from -100 to 100.
-     */
-    @JsonProperty("value")
-    public void setValue(Integer value) {
-        this.value = value;
+    @JsonProperty("token")
+    public void setToken(TokenConfig token) {
+        this.token = token;
     }
 
     @JsonIgnore
-    public AddOnPlacementScoreItemBuilder edit() {
-        return new AddOnPlacementScoreItemBuilder(this);
+    public AddOnRegistrationDriverBuilder edit() {
+        return new AddOnRegistrationDriverBuilder(this);
     }
 
     @JsonIgnore
-    public AddOnPlacementScoreItemBuilder toBuilder() {
+    public AddOnRegistrationDriverBuilder toBuilder() {
         return edit();
     }
 

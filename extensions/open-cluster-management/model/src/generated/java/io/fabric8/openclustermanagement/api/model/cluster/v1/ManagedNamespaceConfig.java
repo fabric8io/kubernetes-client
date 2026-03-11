@@ -1,5 +1,5 @@
 
-package io.fabric8.openclustermanagement.api.model.cluster.v1alpha1;
+package io.fabric8.openclustermanagement.api.model.cluster.v1;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -33,13 +33,12 @@ import lombok.ToString;
 import lombok.experimental.Accessors;
 
 /**
- * AddOnPlacementScoreItem represents the score name and value.
+ * managedNamespaces defines a namespace on the managedclusters across the clusterset to be managed by this clusterset.
  */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "name",
-    "value"
+    "name"
 })
 @ToString
 @EqualsAndHashCode
@@ -63,30 +62,27 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class AddOnPlacementScoreItem implements Editable<AddOnPlacementScoreItemBuilder>, KubernetesResource
+public class ManagedNamespaceConfig implements Editable<ManagedNamespaceConfigBuilder>, KubernetesResource
 {
 
     @JsonProperty("name")
     private String name;
-    @JsonProperty("value")
-    private Integer value;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
      */
-    public AddOnPlacementScoreItem() {
+    public ManagedNamespaceConfig() {
     }
 
-    public AddOnPlacementScoreItem(String name, Integer value) {
+    public ManagedNamespaceConfig(String name) {
         super();
         this.name = name;
-        this.value = value;
     }
 
     /**
-     * name is the name of the score
+     * name is the name of the namespace.
      */
     @JsonProperty("name")
     public String getName() {
@@ -94,36 +90,20 @@ public class AddOnPlacementScoreItem implements Editable<AddOnPlacementScoreItem
     }
 
     /**
-     * name is the name of the score
+     * name is the name of the namespace.
      */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;
     }
 
-    /**
-     * value is the value of the score. The score range is from -100 to 100.
-     */
-    @JsonProperty("value")
-    public Integer getValue() {
-        return value;
-    }
-
-    /**
-     * value is the value of the score. The score range is from -100 to 100.
-     */
-    @JsonProperty("value")
-    public void setValue(Integer value) {
-        this.value = value;
+    @JsonIgnore
+    public ManagedNamespaceConfigBuilder edit() {
+        return new ManagedNamespaceConfigBuilder(this);
     }
 
     @JsonIgnore
-    public AddOnPlacementScoreItemBuilder edit() {
-        return new AddOnPlacementScoreItemBuilder(this);
-    }
-
-    @JsonIgnore
-    public AddOnPlacementScoreItemBuilder toBuilder() {
+    public ManagedNamespaceConfigBuilder toBuilder() {
         return edit();
     }
 

@@ -1,5 +1,5 @@
 
-package io.fabric8.openclustermanagement.api.model.cluster.v1alpha1;
+package io.fabric8.openclustermanagement.api.model.operator.v1;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -32,14 +32,13 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
-/**
- * AddOnPlacementScoreItem represents the score name and value.
- */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "name",
-    "value"
+    "hostname",
+    "loadBalancer",
+    "route",
+    "type"
 })
 @ToString
 @EqualsAndHashCode
@@ -63,67 +62,87 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class AddOnPlacementScoreItem implements Editable<AddOnPlacementScoreItemBuilder>, KubernetesResource
+public class Endpoint implements Editable<EndpointBuilder>, KubernetesResource
 {
 
-    @JsonProperty("name")
-    private String name;
-    @JsonProperty("value")
-    private Integer value;
+    @JsonProperty("hostname")
+    private HostnameConfig hostname;
+    @JsonProperty("loadBalancer")
+    private LoadBalancerConfig loadBalancer;
+    @JsonProperty("route")
+    private RouteConfig route;
+    @JsonProperty("type")
+    private String type;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
      */
-    public AddOnPlacementScoreItem() {
+    public Endpoint() {
     }
 
-    public AddOnPlacementScoreItem(String name, Integer value) {
+    public Endpoint(HostnameConfig hostname, LoadBalancerConfig loadBalancer, RouteConfig route, String type) {
         super();
-        this.name = name;
-        this.value = value;
+        this.hostname = hostname;
+        this.loadBalancer = loadBalancer;
+        this.route = route;
+        this.type = type;
+    }
+
+    @JsonProperty("hostname")
+    public HostnameConfig getHostname() {
+        return hostname;
+    }
+
+    @JsonProperty("hostname")
+    public void setHostname(HostnameConfig hostname) {
+        this.hostname = hostname;
+    }
+
+    @JsonProperty("loadBalancer")
+    public LoadBalancerConfig getLoadBalancer() {
+        return loadBalancer;
+    }
+
+    @JsonProperty("loadBalancer")
+    public void setLoadBalancer(LoadBalancerConfig loadBalancer) {
+        this.loadBalancer = loadBalancer;
+    }
+
+    @JsonProperty("route")
+    public RouteConfig getRoute() {
+        return route;
+    }
+
+    @JsonProperty("route")
+    public void setRoute(RouteConfig route) {
+        this.route = route;
     }
 
     /**
-     * name is the name of the score
+     * type specifies how the endpoint is exposed. You may need to apply an object to expose the endpoint, for example: a route.
      */
-    @JsonProperty("name")
-    public String getName() {
-        return name;
+    @JsonProperty("type")
+    public String getType() {
+        return type;
     }
 
     /**
-     * name is the name of the score
+     * type specifies how the endpoint is exposed. You may need to apply an object to expose the endpoint, for example: a route.
      */
-    @JsonProperty("name")
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    /**
-     * value is the value of the score. The score range is from -100 to 100.
-     */
-    @JsonProperty("value")
-    public Integer getValue() {
-        return value;
-    }
-
-    /**
-     * value is the value of the score. The score range is from -100 to 100.
-     */
-    @JsonProperty("value")
-    public void setValue(Integer value) {
-        this.value = value;
+    @JsonProperty("type")
+    public void setType(String type) {
+        this.type = type;
     }
 
     @JsonIgnore
-    public AddOnPlacementScoreItemBuilder edit() {
-        return new AddOnPlacementScoreItemBuilder(this);
+    public EndpointBuilder edit() {
+        return new EndpointBuilder(this);
     }
 
     @JsonIgnore
-    public AddOnPlacementScoreItemBuilder toBuilder() {
+    public EndpointBuilder toBuilder() {
         return edit();
     }
 

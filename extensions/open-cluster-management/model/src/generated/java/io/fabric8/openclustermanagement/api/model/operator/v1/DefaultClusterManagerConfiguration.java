@@ -1,5 +1,5 @@
 
-package io.fabric8.openclustermanagement.api.model.cluster.v1alpha1;
+package io.fabric8.openclustermanagement.api.model.operator.v1;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -33,13 +33,13 @@ import lombok.ToString;
 import lombok.experimental.Accessors;
 
 /**
- * AddOnPlacementScoreItem represents the score name and value.
+ * DefaultClusterManagerConfiguration represents customized configurations for clustermanager in the Default mode.
  */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "name",
-    "value"
+    "registrationWebhookConfiguration",
+    "workWebhookConfiguration"
 })
 @ToString
 @EqualsAndHashCode
@@ -63,67 +63,67 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class AddOnPlacementScoreItem implements Editable<AddOnPlacementScoreItemBuilder>, KubernetesResource
+public class DefaultClusterManagerConfiguration implements Editable<DefaultClusterManagerConfigurationBuilder>, KubernetesResource
 {
 
-    @JsonProperty("name")
-    private String name;
-    @JsonProperty("value")
-    private Integer value;
+    @JsonProperty("registrationWebhookConfiguration")
+    private DefaultWebhookConfiguration registrationWebhookConfiguration;
+    @JsonProperty("workWebhookConfiguration")
+    private DefaultWebhookConfiguration workWebhookConfiguration;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
      */
-    public AddOnPlacementScoreItem() {
+    public DefaultClusterManagerConfiguration() {
     }
 
-    public AddOnPlacementScoreItem(String name, Integer value) {
+    public DefaultClusterManagerConfiguration(DefaultWebhookConfiguration registrationWebhookConfiguration, DefaultWebhookConfiguration workWebhookConfiguration) {
         super();
-        this.name = name;
-        this.value = value;
+        this.registrationWebhookConfiguration = registrationWebhookConfiguration;
+        this.workWebhookConfiguration = workWebhookConfiguration;
     }
 
     /**
-     * name is the name of the score
+     * DefaultClusterManagerConfiguration represents customized configurations for clustermanager in the Default mode.
      */
-    @JsonProperty("name")
-    public String getName() {
-        return name;
+    @JsonProperty("registrationWebhookConfiguration")
+    public DefaultWebhookConfiguration getRegistrationWebhookConfiguration() {
+        return registrationWebhookConfiguration;
     }
 
     /**
-     * name is the name of the score
+     * DefaultClusterManagerConfiguration represents customized configurations for clustermanager in the Default mode.
      */
-    @JsonProperty("name")
-    public void setName(String name) {
-        this.name = name;
+    @JsonProperty("registrationWebhookConfiguration")
+    public void setRegistrationWebhookConfiguration(DefaultWebhookConfiguration registrationWebhookConfiguration) {
+        this.registrationWebhookConfiguration = registrationWebhookConfiguration;
     }
 
     /**
-     * value is the value of the score. The score range is from -100 to 100.
+     * DefaultClusterManagerConfiguration represents customized configurations for clustermanager in the Default mode.
      */
-    @JsonProperty("value")
-    public Integer getValue() {
-        return value;
+    @JsonProperty("workWebhookConfiguration")
+    public DefaultWebhookConfiguration getWorkWebhookConfiguration() {
+        return workWebhookConfiguration;
     }
 
     /**
-     * value is the value of the score. The score range is from -100 to 100.
+     * DefaultClusterManagerConfiguration represents customized configurations for clustermanager in the Default mode.
      */
-    @JsonProperty("value")
-    public void setValue(Integer value) {
-        this.value = value;
+    @JsonProperty("workWebhookConfiguration")
+    public void setWorkWebhookConfiguration(DefaultWebhookConfiguration workWebhookConfiguration) {
+        this.workWebhookConfiguration = workWebhookConfiguration;
     }
 
     @JsonIgnore
-    public AddOnPlacementScoreItemBuilder edit() {
-        return new AddOnPlacementScoreItemBuilder(this);
+    public DefaultClusterManagerConfigurationBuilder edit() {
+        return new DefaultClusterManagerConfigurationBuilder(this);
     }
 
     @JsonIgnore
-    public AddOnPlacementScoreItemBuilder toBuilder() {
+    public DefaultClusterManagerConfigurationBuilder toBuilder() {
         return edit();
     }
 

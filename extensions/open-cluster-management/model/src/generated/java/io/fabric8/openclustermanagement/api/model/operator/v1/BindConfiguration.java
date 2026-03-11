@@ -1,5 +1,5 @@
 
-package io.fabric8.openclustermanagement.api.model.cluster.v1alpha1;
+package io.fabric8.openclustermanagement.api.model.operator.v1;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -33,13 +33,15 @@ import lombok.ToString;
 import lombok.experimental.Accessors;
 
 /**
- * AddOnPlacementScoreItem represents the score name and value.
+ * BindConfiguration represents customization of server bindings
  */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "name",
-    "value"
+    "healthProbePort",
+    "hostNetwork",
+    "metricsPort",
+    "port"
 })
 @ToString
 @EqualsAndHashCode
@@ -63,67 +65,105 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class AddOnPlacementScoreItem implements Editable<AddOnPlacementScoreItemBuilder>, KubernetesResource
+public class BindConfiguration implements Editable<BindConfigurationBuilder>, KubernetesResource
 {
 
-    @JsonProperty("name")
-    private String name;
-    @JsonProperty("value")
-    private Integer value;
+    @JsonProperty("healthProbePort")
+    private Integer healthProbePort;
+    @JsonProperty("hostNetwork")
+    private Boolean hostNetwork;
+    @JsonProperty("metricsPort")
+    private Integer metricsPort;
+    @JsonProperty("port")
+    private Integer port;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
      */
-    public AddOnPlacementScoreItem() {
+    public BindConfiguration() {
     }
 
-    public AddOnPlacementScoreItem(String name, Integer value) {
+    public BindConfiguration(Integer healthProbePort, Boolean hostNetwork, Integer metricsPort, Integer port) {
         super();
-        this.name = name;
-        this.value = value;
+        this.healthProbePort = healthProbePort;
+        this.hostNetwork = hostNetwork;
+        this.metricsPort = metricsPort;
+        this.port = port;
     }
 
     /**
-     * name is the name of the score
+     * HealthProbePort represents the bind port of a webhook-server's healthcheck endpoint. The default value is 8000. Healthchecks may be disabled by setting a value less than or equal to 0.
      */
-    @JsonProperty("name")
-    public String getName() {
-        return name;
+    @JsonProperty("healthProbePort")
+    public Integer getHealthProbePort() {
+        return healthProbePort;
     }
 
     /**
-     * name is the name of the score
+     * HealthProbePort represents the bind port of a webhook-server's healthcheck endpoint. The default value is 8000. Healthchecks may be disabled by setting a value less than or equal to 0.
      */
-    @JsonProperty("name")
-    public void setName(String name) {
-        this.name = name;
+    @JsonProperty("healthProbePort")
+    public void setHealthProbePort(Integer healthProbePort) {
+        this.healthProbePort = healthProbePort;
     }
 
     /**
-     * value is the value of the score. The score range is from -100 to 100.
+     * HostNetwork enables running webhook pods in host networking mode. This may be required in some installations, such as EKS with Calico CNI, to allow the API Server to communicate with the webhook pods.
      */
-    @JsonProperty("value")
-    public Integer getValue() {
-        return value;
+    @JsonProperty("hostNetwork")
+    public Boolean getHostNetwork() {
+        return hostNetwork;
     }
 
     /**
-     * value is the value of the score. The score range is from -100 to 100.
+     * HostNetwork enables running webhook pods in host networking mode. This may be required in some installations, such as EKS with Calico CNI, to allow the API Server to communicate with the webhook pods.
      */
-    @JsonProperty("value")
-    public void setValue(Integer value) {
-        this.value = value;
+    @JsonProperty("hostNetwork")
+    public void setHostNetwork(Boolean hostNetwork) {
+        this.hostNetwork = hostNetwork;
+    }
+
+    /**
+     * MetricsPort represents the bind port for a webhook-server's metric endpoint. The default value is 8080. Metrics may be disabled by setting a value less than or equal to 0.
+     */
+    @JsonProperty("metricsPort")
+    public Integer getMetricsPort() {
+        return metricsPort;
+    }
+
+    /**
+     * MetricsPort represents the bind port for a webhook-server's metric endpoint. The default value is 8080. Metrics may be disabled by setting a value less than or equal to 0.
+     */
+    @JsonProperty("metricsPort")
+    public void setMetricsPort(Integer metricsPort) {
+        this.metricsPort = metricsPort;
+    }
+
+    /**
+     * Port represents the primary bind port of a server. The default value is 9443.
+     */
+    @JsonProperty("port")
+    public Integer getPort() {
+        return port;
+    }
+
+    /**
+     * Port represents the primary bind port of a server. The default value is 9443.
+     */
+    @JsonProperty("port")
+    public void setPort(Integer port) {
+        this.port = port;
     }
 
     @JsonIgnore
-    public AddOnPlacementScoreItemBuilder edit() {
-        return new AddOnPlacementScoreItemBuilder(this);
+    public BindConfigurationBuilder edit() {
+        return new BindConfigurationBuilder(this);
     }
 
     @JsonIgnore
-    public AddOnPlacementScoreItemBuilder toBuilder() {
+    public BindConfigurationBuilder toBuilder() {
         return edit();
     }
 

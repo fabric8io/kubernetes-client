@@ -1,7 +1,9 @@
 
-package io.fabric8.openclustermanagement.api.model.cluster.v1alpha1;
+package io.fabric8.openclustermanagement.api.model.operator.v1;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import javax.annotation.processing.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
@@ -33,13 +35,13 @@ import lombok.ToString;
 import lombok.experimental.Accessors;
 
 /**
- * AddOnPlacementScoreItem represents the score name and value.
+ * ClusterClaimConfiguration represents the configuration of ClusterClaim
  */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "name",
-    "value"
+    "maxCustomClusterClaims",
+    "reservedClusterClaimSuffixes"
 })
 @ToString
 @EqualsAndHashCode
@@ -63,67 +65,69 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class AddOnPlacementScoreItem implements Editable<AddOnPlacementScoreItemBuilder>, KubernetesResource
+public class ClusterClaimConfiguration implements Editable<ClusterClaimConfigurationBuilder>, KubernetesResource
 {
 
-    @JsonProperty("name")
-    private String name;
-    @JsonProperty("value")
-    private Integer value;
+    @JsonProperty("maxCustomClusterClaims")
+    private Integer maxCustomClusterClaims;
+    @JsonProperty("reservedClusterClaimSuffixes")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<String> reservedClusterClaimSuffixes = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
      */
-    public AddOnPlacementScoreItem() {
+    public ClusterClaimConfiguration() {
     }
 
-    public AddOnPlacementScoreItem(String name, Integer value) {
+    public ClusterClaimConfiguration(Integer maxCustomClusterClaims, List<String> reservedClusterClaimSuffixes) {
         super();
-        this.name = name;
-        this.value = value;
+        this.maxCustomClusterClaims = maxCustomClusterClaims;
+        this.reservedClusterClaimSuffixes = reservedClusterClaimSuffixes;
     }
 
     /**
-     * name is the name of the score
+     * Maximum number of custom ClusterClaims allowed.
      */
-    @JsonProperty("name")
-    public String getName() {
-        return name;
+    @JsonProperty("maxCustomClusterClaims")
+    public Integer getMaxCustomClusterClaims() {
+        return maxCustomClusterClaims;
     }
 
     /**
-     * name is the name of the score
+     * Maximum number of custom ClusterClaims allowed.
      */
-    @JsonProperty("name")
-    public void setName(String name) {
-        this.name = name;
+    @JsonProperty("maxCustomClusterClaims")
+    public void setMaxCustomClusterClaims(Integer maxCustomClusterClaims) {
+        this.maxCustomClusterClaims = maxCustomClusterClaims;
     }
 
     /**
-     * value is the value of the score. The score range is from -100 to 100.
+     * Custom suffixes for reserved ClusterClaims.
      */
-    @JsonProperty("value")
-    public Integer getValue() {
-        return value;
+    @JsonProperty("reservedClusterClaimSuffixes")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public List<String> getReservedClusterClaimSuffixes() {
+        return reservedClusterClaimSuffixes;
     }
 
     /**
-     * value is the value of the score. The score range is from -100 to 100.
+     * Custom suffixes for reserved ClusterClaims.
      */
-    @JsonProperty("value")
-    public void setValue(Integer value) {
-        this.value = value;
+    @JsonProperty("reservedClusterClaimSuffixes")
+    public void setReservedClusterClaimSuffixes(List<String> reservedClusterClaimSuffixes) {
+        this.reservedClusterClaimSuffixes = reservedClusterClaimSuffixes;
     }
 
     @JsonIgnore
-    public AddOnPlacementScoreItemBuilder edit() {
-        return new AddOnPlacementScoreItemBuilder(this);
+    public ClusterClaimConfigurationBuilder edit() {
+        return new ClusterClaimConfigurationBuilder(this);
     }
 
     @JsonIgnore
-    public AddOnPlacementScoreItemBuilder toBuilder() {
+    public ClusterClaimConfigurationBuilder toBuilder() {
         return edit();
     }
 

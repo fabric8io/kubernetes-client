@@ -102,7 +102,7 @@ public class PrioritizerConfig implements Editable<PrioritizerConfigBuilder>, Ku
     }
 
     /**
-     * Weight defines the weight of the prioritizer score. The value must be ranged in [-10,10]. Each prioritizer will calculate an integer score of a cluster in the range of [-100, 100]. The final score of a cluster will be sum(weight &#42; prioritizer_score). A higher weight indicates that the prioritizer weights more in the cluster selection, while 0 weight indicates that the prioritizer is disabled. A negative weight indicates wants to select the last ones.
+     * weight defines the weight of the prioritizer score. The value must be ranged in [-10,10]. Each prioritizer will calculate an integer score of a cluster in the range of [-100, 100]. The final score of a cluster will be sum(weight &#42; prioritizer_score). A higher weight indicates that the prioritizer weights more in the cluster selection, while 0 weight indicates that the prioritizer is disabled. A negative weight indicates wants to select the last ones.
      */
     @JsonProperty("weight")
     public Integer getWeight() {
@@ -110,7 +110,7 @@ public class PrioritizerConfig implements Editable<PrioritizerConfigBuilder>, Ku
     }
 
     /**
-     * Weight defines the weight of the prioritizer score. The value must be ranged in [-10,10]. Each prioritizer will calculate an integer score of a cluster in the range of [-100, 100]. The final score of a cluster will be sum(weight &#42; prioritizer_score). A higher weight indicates that the prioritizer weights more in the cluster selection, while 0 weight indicates that the prioritizer is disabled. A negative weight indicates wants to select the last ones.
+     * weight defines the weight of the prioritizer score. The value must be ranged in [-10,10]. Each prioritizer will calculate an integer score of a cluster in the range of [-100, 100]. The final score of a cluster will be sum(weight &#42; prioritizer_score). A higher weight indicates that the prioritizer weights more in the cluster selection, while 0 weight indicates that the prioritizer is disabled. A negative weight indicates wants to select the last ones.
      */
     @JsonProperty("weight")
     public void setWeight(Integer weight) {
