@@ -6,6 +6,7 @@
 
 #### Improvements
 * Fix #7522: improve dependency management for kubernetes-httpclient-okhttp
+* Fix #6923: Make the crd-generator-maven-plugin be toolchain aware
 
 #### Dependency Upgrade
 * Fix #7541: bump gateway-api from 1.4.0 to 1.5.0
