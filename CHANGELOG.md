@@ -45,8 +45,7 @@ Fix #7107: bump Jackson version to 2.19.4
 * Fix #7174: (httpclient-vertx-5) Add runtime check for Vert.x 5 classes to provide clear error when Vert.x 4/5 conflict occurs
 * Fix #7174: (chaos-tests) Fix classpath conflict when testing with Vert.x 5 HTTP client
 * Fix #7415: (java-generator) Fix generic type erasure for array of enums with default values
-* Fix #7422: (okhttp) Remove internal API usage and fix 
-ated OkHttp 5 calls
+* Fix #7422: (okhttp) Remove internal API usage and fix deprecated OkHttp 5 calls
 * Fix #7446: making the timeout of BaseOperation.createOrReplace() configurable
 
 #### Improvements
