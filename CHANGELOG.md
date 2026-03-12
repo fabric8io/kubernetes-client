@@ -11,6 +11,7 @@
 
 #### Dependency Upgrade
 * Fix #7551: bump jackson-bom from 2.20.0 to 2.21.1
+* Fix #7552: bump tektoncd/triggers from 0.33.0 to 0.35.0
 * Fix #7544: bump cluster-api-provider-metal3 from 1.9.3 to 1.12.2
 * Fix #7543: bump prometheus-operator from 0.85.0 to 0.89.0
 * Fix #7542: bump open-cluster-management.io/api from 0.16.2 to 1.2.0

@@ -49,6 +49,7 @@ import lombok.experimental.Accessors;
 @JsonPropertyOrder({
     "args",
     "command",
+    "displayName",
     "env",
     "envFrom",
     "image",
@@ -111,6 +112,8 @@ public class Step implements Editable<StepBuilder>, KubernetesResource
     @JsonProperty("command")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> command = new ArrayList<>();
+    @JsonProperty("displayName")
+    private String displayName;
     @JsonProperty("env")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<EnvVar> env = new ArrayList<>();
@@ -189,10 +192,11 @@ public class Step implements Editable<StepBuilder>, KubernetesResource
     public Step() {
     }
 
-    public Step(List<String> args, List<String> command, List<EnvVar> env, List<EnvFromSource> envFrom, String image, String imagePullPolicy, Lifecycle lifecycle, Probe livenessProbe, String name, String onError, List<Param> params, List<ContainerPort> ports, Probe readinessProbe, Ref ref, ResourceRequirements resources, List<StepResult> results, String script, SecurityContext securityContext, Probe startupProbe, StepOutputConfig stderrConfig, Boolean stdin, Boolean stdinOnce, StepOutputConfig stdoutConfig, String terminationMessagePath, String terminationMessagePolicy, Duration timeout, Boolean tty, List<VolumeDevice> volumeDevices, List<VolumeMount> volumeMounts, List<WhenExpression> when, String workingDir, List<WorkspaceUsage> workspaces) {
+    public Step(List<String> args, List<String> command, String displayName, List<EnvVar> env, List<EnvFromSource> envFrom, String image, String imagePullPolicy, Lifecycle lifecycle, Probe livenessProbe, String name, String onError, List<Param> params, List<ContainerPort> ports, Probe readinessProbe, Ref ref, ResourceRequirements resources, List<StepResult> results, String script, SecurityContext securityContext, Probe startupProbe, StepOutputConfig stderrConfig, Boolean stdin, Boolean stdinOnce, StepOutputConfig stdoutConfig, String terminationMessagePath, String terminationMessagePolicy, Duration timeout, Boolean tty, List<VolumeDevice> volumeDevices, List<VolumeMount> volumeMounts, List<WhenExpression> when, String workingDir, List<WorkspaceUsage> workspaces) {
         super();
         this.args = args;
         this.command = command;
+        this.displayName = displayName;
         this.env = env;
         this.envFrom = envFrom;
         this.image = image;
@@ -257,6 +261,22 @@ public class Step implements Editable<StepBuilder>, KubernetesResource
     @JsonProperty("command")
     public void setCommand(List<String> command) {
         this.command = command;
+    }
+
+    /**
+     * DisplayName is a user-facing name of the step that may be used to populate a UI.
+     */
+    @JsonProperty("displayName")
+    public String getDisplayName() {
+        return displayName;
+    }
+
+    /**
+     * DisplayName is a user-facing name of the step that may be used to populate a UI.
+     */
+    @JsonProperty("displayName")
+    public void setDisplayName(String displayName) {
+        this.displayName = displayName;
     }
 
     /**

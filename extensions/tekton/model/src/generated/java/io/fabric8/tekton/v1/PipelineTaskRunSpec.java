@@ -16,6 +16,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
+import io.fabric8.kubernetes.api.model.Duration;
 import io.fabric8.kubernetes.api.model.EnvVar;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
@@ -47,7 +48,8 @@ import lombok.experimental.Accessors;
     "podTemplate",
     "serviceAccountName",
     "sidecarSpecs",
-    "stepSpecs"
+    "stepSpecs",
+    "timeout"
 })
 @ToString
 @EqualsAndHashCode
@@ -90,6 +92,8 @@ public class PipelineTaskRunSpec implements Editable<PipelineTaskRunSpecBuilder>
     @JsonProperty("stepSpecs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<TaskRunStepSpec> stepSpecs = new ArrayList<>();
+    @JsonProperty("timeout")
+    private Duration timeout;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -99,7 +103,7 @@ public class PipelineTaskRunSpec implements Editable<PipelineTaskRunSpecBuilder>
     public PipelineTaskRunSpec() {
     }
 
-    public PipelineTaskRunSpec(ResourceRequirements computeResources, PipelineTaskMetadata metadata, String pipelineTaskName, Template podTemplate, String serviceAccountName, List<TaskRunSidecarSpec> sidecarSpecs, List<TaskRunStepSpec> stepSpecs) {
+    public PipelineTaskRunSpec(ResourceRequirements computeResources, PipelineTaskMetadata metadata, String pipelineTaskName, Template podTemplate, String serviceAccountName, List<TaskRunSidecarSpec> sidecarSpecs, List<TaskRunStepSpec> stepSpecs, Duration timeout) {
         super();
         this.computeResources = computeResources;
         this.metadata = metadata;
@@ -108,6 +112,7 @@ public class PipelineTaskRunSpec implements Editable<PipelineTaskRunSpecBuilder>
         this.serviceAccountName = serviceAccountName;
         this.sidecarSpecs = sidecarSpecs;
         this.stepSpecs = stepSpecs;
+        this.timeout = timeout;
     }
 
     /**
@@ -222,6 +227,22 @@ public class PipelineTaskRunSpec implements Editable<PipelineTaskRunSpecBuilder>
     @JsonProperty("stepSpecs")
     public void setStepSpecs(List<TaskRunStepSpec> stepSpecs) {
         this.stepSpecs = stepSpecs;
+    }
+
+    /**
+     * PipelineTaskRunSpec  can be used to configure specific specs for a concrete Task
+     */
+    @JsonProperty("timeout")
+    public Duration getTimeout() {
+        return timeout;
+    }
+
+    /**
+     * PipelineTaskRunSpec  can be used to configure specific specs for a concrete Task
+     */
+    @JsonProperty("timeout")
+    public void setTimeout(Duration timeout) {
+        this.timeout = timeout;
     }
 
     @JsonIgnore
