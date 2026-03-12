@@ -14,6 +14,7 @@
 * Fix #7552: bump tektoncd/triggers from 0.33.0 to 0.35.0
 * Fix #7556: bump eventing-kafka-broker from 0.46.2 to 0.48.1
 * Fix #7553: bump cert-manager from 1.19.4 to 1.20.0
+* Fix #7557: bump baremetal-operator/apis from 0.9.2 to 0.12.2
 * Fix #7544: bump cluster-api-provider-metal3 from 1.9.3 to 1.12.2
 * Fix #7543: bump prometheus-operator from 0.85.0 to 0.89.0
 * Fix #7542: bump open-cluster-management.io/api from 0.16.2 to 1.2.0
