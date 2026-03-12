@@ -47,8 +47,10 @@ import lombok.experimental.Accessors;
     "addresses",
     "annotations",
     "conditions",
+    "desiredReplicas",
     "observedGeneration",
-    "policies"
+    "policies",
+    "readyReplicas"
 })
 @ToString
 @EqualsAndHashCode
@@ -86,11 +88,15 @@ public class RequestReplyStatus implements Editable<RequestReplyStatusBuilder>, 
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<Condition> conditions = new ArrayList<>();
+    @JsonProperty("desiredReplicas")
+    private Integer desiredReplicas;
     @JsonProperty("observedGeneration")
     private Long observedGeneration;
     @JsonProperty("policies")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<AppliedEventPolicyRef> policies = new ArrayList<>();
+    @JsonProperty("readyReplicas")
+    private Integer readyReplicas;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -100,14 +106,16 @@ public class RequestReplyStatus implements Editable<RequestReplyStatusBuilder>, 
     public RequestReplyStatus() {
     }
 
-    public RequestReplyStatus(Addressable address, List<Addressable> addresses, Map<String, String> annotations, List<Condition> conditions, Long observedGeneration, List<AppliedEventPolicyRef> policies) {
+    public RequestReplyStatus(Addressable address, List<Addressable> addresses, Map<String, String> annotations, List<Condition> conditions, Integer desiredReplicas, Long observedGeneration, List<AppliedEventPolicyRef> policies, Integer readyReplicas) {
         super();
         this.address = address;
         this.addresses = addresses;
         this.annotations = annotations;
         this.conditions = conditions;
+        this.desiredReplicas = desiredReplicas;
         this.observedGeneration = observedGeneration;
         this.policies = policies;
+        this.readyReplicas = readyReplicas;
     }
 
     /**
@@ -178,6 +186,22 @@ public class RequestReplyStatus implements Editable<RequestReplyStatusBuilder>, 
     }
 
     /**
+     * DesiredReplicas is the number of replicas (StatefulSet pod + trigger) that is desired
+     */
+    @JsonProperty("desiredReplicas")
+    public Integer getDesiredReplicas() {
+        return desiredReplicas;
+    }
+
+    /**
+     * DesiredReplicas is the number of replicas (StatefulSet pod + trigger) that is desired
+     */
+    @JsonProperty("desiredReplicas")
+    public void setDesiredReplicas(Integer desiredReplicas) {
+        this.desiredReplicas = desiredReplicas;
+    }
+
+    /**
      * ObservedGeneration is the 'Generation' of the Service that was last processed by the controller.
      */
     @JsonProperty("observedGeneration")
@@ -208,6 +232,22 @@ public class RequestReplyStatus implements Editable<RequestReplyStatusBuilder>, 
     @JsonProperty("policies")
     public void setPolicies(List<AppliedEventPolicyRef> policies) {
         this.policies = policies;
+    }
+
+    /**
+     * ReadyReplicas is the number of ready replicas (StatefulSet pod + trigger) for this RequestReply resource
+     */
+    @JsonProperty("readyReplicas")
+    public Integer getReadyReplicas() {
+        return readyReplicas;
+    }
+
+    /**
+     * ReadyReplicas is the number of ready replicas (StatefulSet pod + trigger) for this RequestReply resource
+     */
+    @JsonProperty("readyReplicas")
+    public void setReadyReplicas(Integer readyReplicas) {
+        this.readyReplicas = readyReplicas;
     }
 
     @JsonIgnore

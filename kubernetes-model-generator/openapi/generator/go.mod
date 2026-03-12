@@ -40,12 +40,12 @@ require (
 	k8s.io/kube-openapi v0.0.0-20250910181357-589584f1c912
 	k8s.io/metrics v0.35.2
 	knative.dev/caching v0.0.0-20250821143751-b982aa0cd1c1
-	knative.dev/eventing v0.46.2
+	knative.dev/eventing v0.48.0
 	knative.dev/eventing-awssqs v0.29.0
 	knative.dev/eventing-couchdb v0.28.0
 	knative.dev/eventing-github v0.46.3
 	knative.dev/eventing-gitlab v0.46.3
-	knative.dev/eventing-kafka-broker v0.46.2
+	knative.dev/eventing-kafka-broker v0.48.1
 	knative.dev/eventing-prometheus v0.28.0
 	knative.dev/networking v0.0.0-20250821144952-042b64d7bbde
 	knative.dev/serving v0.46.2
@@ -77,6 +77,9 @@ replace (
 	k8s.io/csi-translation-lib => k8s.io/csi-translation-lib v0.35.2
 	k8s.io/kube-scheduler => k8s.io/kube-scheduler v0.35.2
 	k8s.io/mount-utils => k8s.io/mount-utils v0.35.2
+
+	// knative.dev/pkg/metrics was removed in latest versions, pin to version compatible with tektoncd/pipeline
+	knative.dev/pkg => knative.dev/pkg v0.0.0-20250821143151-4ffdcf6b3fa5
 
 	sigs.k8s.io/cluster-api => sigs.k8s.io/cluster-api v1.12.2
 
@@ -181,7 +184,7 @@ require (
 	github.com/pmezard/go-difflib v1.0.1-0.20181226105442-5d4384ee4fb2 // indirect
 	github.com/prometheus/client_golang v1.23.2 // indirect
 	github.com/prometheus/client_model v0.6.2 // indirect
-	github.com/prometheus/common v0.66.1 // indirect
+	github.com/prometheus/common v0.67.4 // indirect
 	github.com/prometheus/procfs v0.19.2 // indirect
 	github.com/prometheus/statsd_exporter v0.22.7 // indirect
 	github.com/rickb777/date v1.14.1 // indirect
@@ -229,7 +232,7 @@ require (
 	k8s.io/component-base v0.35.2 // indirect
 	k8s.io/klog/v2 v2.130.1 // indirect
 	k8s.io/utils v0.0.0-20260108192941-914a6e750570 // indirect
-	knative.dev/pkg v0.0.0-20250821143151-4ffdcf6b3fa5 // indirect
+	knative.dev/pkg v0.0.0-20260120122510-4a022ed9999a // indirect
 	sigs.k8s.io/cluster-api-provider-azure v1.22.1 // indirect
 	sigs.k8s.io/controller-runtime v0.22.5 // indirect
 	sigs.k8s.io/json v0.0.0-20250730193827-2d320260d730 // indirect
