@@ -2814,10 +2814,8 @@ github.com/matttproud/golang_protobuf_extensions v1.0.2-0.20181231171920-c182aff
 github.com/matttproud/golang_protobuf_extensions v1.0.4/go.mod h1:BSXmuO+STAnVfrANrmjBb36TMTDstsz7MSK+HVaYKv4=
 github.com/matttproud/golang_protobuf_extensions/v2 v2.0.0/go.mod h1:QUyp042oQthUoa9bqDv0ER0wrtXnBruoNd7aNjkbP+k=
 github.com/maxatome/go-testdeep v1.12.0/go.mod h1:lPZc/HAcJMP92l7yI6TRz1aZN5URwUBUAfUNvrclaNM=
-github.com/metal3-io/baremetal-operator/apis v0.9.2 h1:jNVLSgwKgqxnLpH4yZo+MrYPgdNKsfjZGVhngWhT+rE=
-github.com/metal3-io/baremetal-operator/apis v0.9.2/go.mod h1:tw2xgvd+voXIYuQ5PNpS3sJvupP3b6nVc54HYadKxwE=
-github.com/metal3-io/baremetal-operator/pkg/hardwareutils v0.5.1 h1:X0+MWsJ+Gj/TAkmhGybvesvxk6zQKu3NQXzvC6l0iJs=
-github.com/metal3-io/baremetal-operator/pkg/hardwareutils v0.5.1/go.mod h1:399nvdaqoU9rTI25UdFw2EWcVjmJPpeZPIhfDAIx/XU=
+github.com/metal3-io/baremetal-operator/apis v0.12.2 h1:oQy8vMubmP0VmT3QbOWWhDavgHOoFSYuKnhTveCDCao=
+github.com/metal3-io/baremetal-operator/apis v0.12.2/go.mod h1:eCsvjrY4IDvu6gpQiRxeeTDkWo3GsYfwNO+q6/dfz0g=
 github.com/metal3-io/cluster-api-provider-metal3/api v1.12.2 h1:KRS3B4ByPwXvd7ZT67b7X4g7wiUo8LD5f40vMUsZM/k=
 github.com/metal3-io/cluster-api-provider-metal3/api v1.12.2/go.mod h1:5zXw6qkTpnwTzMAEnFSJMV5FCiPdGrc2QzbXD89iZEM=
 github.com/metal3-io/ip-address-manager/api v1.12.2 h1:y6ilLRhRYPPQX4C53yfTjAtc6f0jRsQWafXNpolWjJk=
