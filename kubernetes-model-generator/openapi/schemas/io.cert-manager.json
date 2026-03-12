@@ -702,6 +702,10 @@
         "tenantID": {
           "description": "Auth: Azure Service Principal: The TenantID of the Azure Service Principal used to authenticate with Azure DNS. If set, ClientID and ClientSecret must also be set.",
           "type": "string"
+        },
+        "zoneType": {
+          "description": "ZoneType determines which type of Azure DNS zone to use.\n\nValid values are:\n  - AzurePublicZone  (default): Use a public Azure DNS zone.\n  - AzurePrivateZone: Use an Azure Private DNS zone.\n\nIf not specified, AzurePublicZone is used.\n\nSupport for Azure Private DNS zones is currently experimental and may change in future releases.",
+          "type": "string"
         }
       },
       "x-fabric8-info": {
@@ -792,7 +796,7 @@
       ],
       "properties": {
         "nameserver": {
-          "description": "The IP address or hostname of an authoritative DNS server supporting RFC2136 in the form host:port. If the host is an IPv6 address it must be enclosed in square brackets (e.g [2001:db8::1]) ; port is optional. This field is required.",
+          "description": "The IP address or hostname of an authoritative DNS server supporting RFC2136 in the form host:port. If the host is an IPv6 address it must be enclosed in square brackets (e.g [2001:db8::1]); port is optional. This field is required.",
           "type": "string",
           "default": ""
         },
@@ -827,11 +831,11 @@
       "type": "object",
       "properties": {
         "accessKeyID": {
-          "description": "The AccessKeyID is used for authentication. Cannot be set when SecretAccessKeyID is set. If neither the Access Key nor Key ID are set, we fall-back to using env vars, shared credentials file or AWS Instance metadata, see: https://docs.aws.amazon.com/sdk-for-go/v1/developer-guide/configuring-sdk.html#specifying-credentials",
+          "description": "The AccessKeyID is used for authentication. Cannot be set when SecretAccessKeyID is set. If neither the Access Key nor Key ID are set, we fall back to using env vars, shared credentials file, or AWS Instance metadata, see: https://docs.aws.amazon.com/sdk-for-go/v1/developer-guide/configuring-sdk.html#specifying-credentials",
           "type": "string"
         },
         "accessKeyIDSecretRef": {
-          "description": "The SecretAccessKey is used for authentication. If set, pull the AWS access key ID from a key within a Kubernetes Secret. Cannot be set when AccessKeyID is set. If neither the Access Key nor Key ID are set, we fall-back to using env vars, shared credentials file or AWS Instance metadata, see: https://docs.aws.amazon.com/sdk-for-go/v1/developer-guide/configuring-sdk.html#specifying-credentials",
+          "description": "The SecretAccessKey is used for authentication. If set, pull the AWS access key ID from a key within a Kubernetes Secret. Cannot be set when AccessKeyID is set. If neither the Access Key nor Key ID are set, we fall back to using env vars, shared credentials file, or AWS Instance metadata, see: https://docs.aws.amazon.com/sdk-for-go/v1/developer-guide/configuring-sdk.html#specifying-credentials",
           "$ref": "#/definitions/io.cert-manager.meta.v1.SecretKeySelector"
         },
         "auth": {
@@ -851,7 +855,7 @@
           "type": "string"
         },
         "secretAccessKeySecretRef": {
-          "description": "The SecretAccessKey is used for authentication. If neither the Access Key nor Key ID are set, we fall-back to using env vars, shared credentials file or AWS Instance metadata, see: https://docs.aws.amazon.com/sdk-for-go/v1/developer-guide/configuring-sdk.html#specifying-credentials",
+          "description": "The SecretAccessKey is used for authentication. If neither the Access Key nor Key ID are set, we fall back to using env vars, shared credentials file, or AWS Instance metadata, see: https://docs.aws.amazon.com/sdk-for-go/v1/developer-guide/configuring-sdk.html#specifying-credentials",
           "default": {},
           "$ref": "#/definitions/io.cert-manager.meta.v1.SecretKeySelector"
         }
@@ -920,7 +924,7 @@
       }
     },
     "io.cert-manager.acme.v1.AzureManagedIdentity": {
-      "description": "AzureManagedIdentity contains the configuration for Azure Workload Identity or Azure Managed Service Identity If the AZURE_FEDERATED_TOKEN_FILE environment variable is set, the Azure Workload Identity will be used. Otherwise, we fall-back to using Azure Managed Service Identity.",
+      "description": "AzureManagedIdentity contains the configuration for Azure Workload Identity or Azure Managed Service Identity If the AZURE_FEDERATED_TOKEN_FILE environment variable is set, the Azure Workload Identity will be used. Otherwise, we fall back to using Azure Managed Service Identity.",
       "type": "object",
       "properties": {
         "clientID": {
@@ -1692,7 +1696,7 @@
           "type": "string"
         },
         "rotationPolicy": {
-          "description": "RotationPolicy controls how private keys should be regenerated when a re-issuance is being processed.\n\nIf set to `Never`, a private key will only be generated if one does not already exist in the target `spec.secretName`. If one does exist but it does not have the correct algorithm or size, a warning will be raised to await user intervention. If set to `Always`, a private key matching the specified requirements will be generated whenever a re-issuance occurs. Default is `Always`. The default was changed from `Never` to `Always` in cert-manager \u003e=v1.18.0. The new default can be disabled by setting the `--feature-gates=DefaultPrivateKeyRotationPolicyAlways=false` option on the controller component.",
+          "description": "RotationPolicy controls how private keys should be regenerated when a re-issuance is being processed.\n\nIf set to `Never`, a private key will only be generated if one does not already exist in the target `spec.secretName`. If one does exist but it does not have the correct algorithm or size, a warning will be raised to await user intervention. If set to `Always`, a private key matching the specified requirements will be generated whenever a re-issuance occurs. Default is `Always`. The default was changed from `Never` to `Always` in cert-manager \u003e=v1.18.0.",
           "type": "string"
         },
         "size": {
@@ -2341,7 +2345,7 @@
           "$ref": "#/definitions/io.cert-manager.v1.VaultIssuer"
         },
         "venafi": {
-          "description": "Venafi configures this issuer to sign certificates using a Venafi TPP or Venafi Cloud policy zone.",
+          "description": "Venafi configures this issuer to sign certificates using a CyberArk Certificate Manager Self-Hosted or SaaS policy zone.",
           "$ref": "#/definitions/io.cert-manager.v1.VenafiIssuer"
         }
       },
@@ -2410,7 +2414,7 @@
           "$ref": "#/definitions/io.cert-manager.v1.VaultIssuer"
         },
         "venafi": {
-          "description": "Venafi configures this issuer to sign certificates using a Venafi TPP or Venafi Cloud policy zone.",
+          "description": "Venafi configures this issuer to sign certificates using a CyberArk Certificate Manager Self-Hosted or SaaS policy zone.",
           "$ref": "#/definitions/io.cert-manager.v1.VenafiIssuer"
         }
       },
@@ -2635,14 +2639,14 @@
       }
     },
     "io.cert-manager.v1.ServiceAccountRef": {
-      "description": "ServiceAccountRef is a service account used by cert-manager to request a token. Default audience is generated by cert-manager and takes the form `vault://namespace-name/issuer-name` for an Issuer and `vault://issuer-name` for a ClusterIssuer. The expiration of the token is also set by cert-manager to 10 minutes.",
+      "description": "ServiceAccountRef is a service account used by cert-manager to request a token. By default two audiences are included: the address of the Vault server as specified on the issuer, and a generated audience taking the form of `vault://namespace-name/issuer-name` for an Issuer and `vault://issuer-name` for a ClusterIssuer. The expiration of the token is also set by cert-manager to 10 minutes.",
       "type": "object",
       "required": [
         "name"
       ],
       "properties": {
         "audiences": {
-          "description": "TokenAudiences is an optional list of extra audiences to include in the token passed to Vault. The default token consisting of the issuer's namespace and name is always included.",
+          "description": "TokenAudiences is an optional list of extra audiences to include in the token passed to Vault. The default audiences are always included in the token.",
           "type": "array",
           "items": {
             "type": "string",
@@ -2727,7 +2731,7 @@
       }
     },
     "io.cert-manager.v1.VaultClientCertificateAuth": {
-      "description": "VaultKubernetesAuth is used to authenticate against Vault using a client certificate stored in a Secret.",
+      "description": "VaultClientCertificateAuth is used to authenticate against Vault using a client certificate stored in a Secret.",
       "type": "object",
       "properties": {
         "mountPath": {
@@ -2844,19 +2848,19 @@
       }
     },
     "io.cert-manager.v1.VenafiCloud": {
-      "description": "VenafiCloud defines connection configuration details for Venafi Cloud",
+      "description": "VenafiCloud defines connection configuration details for CyberArk Certificate Manager SaaS",
       "type": "object",
       "required": [
         "apiTokenSecretRef"
       ],
       "properties": {
         "apiTokenSecretRef": {
-          "description": "APITokenSecretRef is a secret key selector for the Venafi Cloud API token.",
+          "description": "APITokenSecretRef is a secret key selector for the CyberArk Certificate Manager SaaS API token.",
           "default": {},
           "$ref": "#/definitions/io.cert-manager.meta.v1.SecretKeySelector"
         },
         "url": {
-          "description": "URL is the base URL for Venafi Cloud. Defaults to \"https://api.venafi.cloud/\".",
+          "description": "URL is the base URL for CyberArk Certificate Manager SaaS. Defaults to \"https://api.venafi.cloud/\".",
           "type": "string"
         }
       },
@@ -2869,22 +2873,22 @@
       }
     },
     "io.cert-manager.v1.VenafiIssuer": {
-      "description": "Configures an issuer to sign certificates using a Venafi TPP or Cloud policy zone.",
+      "description": "Configures an issuer to sign certificates using a CyberArk Certificate Manager Self-Hosted or SaaS policy zone.",
       "type": "object",
       "required": [
         "zone"
       ],
       "properties": {
         "cloud": {
-          "description": "Cloud specifies the Venafi cloud configuration settings. Only one of TPP or Cloud may be specified.",
+          "description": "Cloud specifies the CyberArk Certificate Manager SaaS configuration settings. Only one of CyberArk Certificate Manager may be specified.",
           "$ref": "#/definitions/io.cert-manager.v1.VenafiCloud"
         },
         "tpp": {
-          "description": "TPP specifies Trust Protection Platform configuration settings. Only one of TPP or Cloud may be specified.",
+          "description": "TPP specifies CyberArk Certificate Manager Self-Hosted configuration settings. Only one of CyberArk Certificate Manager may be specified.",
           "$ref": "#/definitions/io.cert-manager.v1.VenafiTPP"
         },
         "zone": {
-          "description": "Zone is the Venafi Policy Zone to use for this issuer. All requests made to the Venafi platform will be restricted by the named zone policy. This field is required.",
+          "description": "Zone is the Certificate Manager Policy Zone to use for this issuer. All requests made to the Certificate Manager platform will be restricted by the named zone policy. This field is required.",
           "type": "string",
           "default": ""
         }
@@ -2898,7 +2902,7 @@
       }
     },
     "io.cert-manager.v1.VenafiTPP": {
-      "description": "VenafiTPP defines connection configuration details for a Venafi TPP instance",
+      "description": "VenafiTPP defines connection configuration details for a CyberArk Certificate Manager Self-Hosted instance",
       "type": "object",
       "required": [
         "url",
@@ -2906,21 +2910,21 @@
       ],
       "properties": {
         "caBundle": {
-          "description": "Base64-encoded bundle of PEM CAs which will be used to validate the certificate chain presented by the TPP server. Only used if using HTTPS; ignored for HTTP. If undefined, the certificate bundle in the cert-manager controller container is used to validate the chain.",
+          "description": "Base64-encoded bundle of PEM CAs which will be used to validate the certificate chain presented by the CyberArk Certificate Manager Self-Hosted server. Only used if using HTTPS; ignored for HTTP. If undefined, the certificate bundle in the cert-manager controller container is used to validate the chain.",
           "type": "string",
           "format": "byte"
         },
         "caBundleSecretRef": {
-          "description": "Reference to a Secret containing a base64-encoded bundle of PEM CAs which will be used to validate the certificate chain presented by the TPP server. Only used if using HTTPS; ignored for HTTP. Mutually exclusive with CABundle. If neither CABundle nor CABundleSecretRef is defined, the certificate bundle in the cert-manager controller container is used to validate the TLS connection.",
+          "description": "Reference to a Secret containing a base64-encoded bundle of PEM CAs which will be used to validate the certificate chain presented by the CyberArk Certificate Manager Self-Hosted server. Only used if using HTTPS; ignored for HTTP. Mutually exclusive with CABundle. If neither CABundle nor CABundleSecretRef is defined, the certificate bundle in the cert-manager controller container is used to validate the TLS connection.",
           "$ref": "#/definitions/io.cert-manager.meta.v1.SecretKeySelector"
         },
         "credentialsRef": {
-          "description": "CredentialsRef is a reference to a Secret containing the Venafi TPP API credentials. The secret must contain the key 'access-token' for the Access Token Authentication, or two keys, 'username' and 'password' for the API Keys Authentication.",
+          "description": "CredentialsRef is a reference to a Secret containing the CyberArk Certificate Manager Self-Hosted API credentials. The secret must contain the key 'access-token' for the Access Token Authentication, or two keys, 'username' and 'password' for the API Keys Authentication.",
           "default": {},
           "$ref": "#/definitions/io.cert-manager.meta.v1.LocalObjectReference"
         },
         "url": {
-          "description": "URL is the base URL for the vedsdk endpoint of the Venafi TPP instance, for example: \"https://tpp.example.com/vedsdk\".",
+          "description": "URL is the base URL for the vedsdk endpoint of the CyberArk Certificate Manager Self-Hosted instance, for example: \"https://tpp.example.com/vedsdk\".",
           "type": "string",
           "default": ""
         }
