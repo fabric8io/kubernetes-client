@@ -131,7 +131,7 @@ class ProcessorStoreTest {
     processorStore.update(pods);
 
     Mockito.doAnswer(invocation -> {
-      assertTrue(Thread.holdsLock(podCache.getLockObject()));
+      assertTrue(((java.util.concurrent.locks.ReentrantReadWriteLock) podCache.getLock()).isWriteLockedByCurrentThread());
       return null;
     }).when(processor).distribute(Mockito.any(ProcessorListener.Notification.class), Mockito.anyBoolean());
     processorStore.resync();
