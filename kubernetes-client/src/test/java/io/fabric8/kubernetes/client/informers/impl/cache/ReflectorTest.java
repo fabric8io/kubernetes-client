@@ -35,7 +35,6 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.RejectedExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.function.Consumer;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -50,11 +49,7 @@ class ReflectorTest {
   @BeforeEach
   void setup() {
     mockStore = Mockito.mock(ProcessorStore.class);
-    Mockito.doAnswer(invocation -> {
-      ((Consumer<Executor>) invocation.getArguments()[1]).accept(Runnable::run);
-      return null;
-    }).when(mockStore).retainAll(Mockito.anySet(),
-        Mockito.any());
+    Mockito.when(mockStore.onList(Mockito.anyString(), Mockito.anyBoolean())).thenReturn(Runnable::run);
   }
 
   @Test

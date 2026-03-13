@@ -25,7 +25,6 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.Executor;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.function.Consumer;
 
 /**
  * Wraps a {@link Cache} and a {@link SharedProcessor} to distribute events related to changes and syncs
@@ -95,16 +94,13 @@ public class ProcessorStore<T extends HasMetadata> {
     return cache.getByKey(key);
   }
 
-  public void retainAll(Set<String> nextKeys, Consumer<Executor> cacheStateComplete) {
+  public boolean syncList(Set<String> nextKeys) {
     if (synced.compareAndSet(false, true)) {
       deferredAdd.stream().map(cache::getByKey).filter(Objects::nonNull)
           .forEach(v -> this.processor.distribute(new ProcessorListener.AddNotification<>(v), false));
       deferredAdd.clear();
     }
     List<T> current = cache.list();
-    if (nextKeys.isEmpty() && current.isEmpty()) {
-      this.processor.distribute(l -> l.getHandler().onNothing(), false);
-    }
     current.forEach(v -> {
       String key = cache.getKey(v);
       if (!nextKeys.contains(key)) {
@@ -112,9 +108,12 @@ public class ProcessorStore<T extends HasMetadata> {
         this.processor.distribute(new ProcessorListener.DeleteNotification<>(v, true), false);
       }
     });
-    if (cacheStateComplete != null) {
-      cacheStateComplete.accept(this.processor.getSerialExecutor()::execute);
-    }
+    return current.isEmpty();
+  }
+
+  public Executor onList(String resourceVersion, boolean remainedEmpty) {
+    this.processor.distribute(l -> l.getHandler().onList(resourceVersion, remainedEmpty), false);
+    return this.processor.getSerialExecutor();
   }
 
   public String getKey(T obj) {

@@ -1001,8 +1001,10 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
       }
 
       @Override
-      public void onNothing() {
-        test.accept(informer.getStore().list());
+      public void onList(String resourceVersion, boolean remainedEmpty) {
+        if (remainedEmpty) {
+          test.accept(Collections.emptyList());
+        }
       }
     }).start().whenComplete((v, t) -> {
       if (t != null) {

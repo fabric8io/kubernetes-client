@@ -7,11 +7,15 @@
 
 #### Improvements
 * Fix #7522: improve dependency management for kubernetes-httpclient-okhttp
+* Fix #7550: add a ResourceEventHandler onList method and deprecated onNothing
 * Fix #3396: (mockwebserver) Enhance self-signed certificate generation to include Subject Alternative Names (SANs) for proper TLS verification by modern clients
 
 #### Dependency Upgrade
 * Fix #7551: bump jackson-bom from 2.20.0 to 2.21.1
 * Fix #7552: bump tektoncd/triggers from 0.33.0 to 0.35.0
+* Fix #7556: bump eventing-kafka-broker from 0.46.2 to 0.48.1
+* Fix #7553: bump cert-manager from 1.19.4 to 1.20.0
+* Fix #7557: bump baremetal-operator/apis from 0.9.2 to 0.12.2
 * Fix #7544: bump cluster-api-provider-metal3 from 1.9.3 to 1.12.2
 * Fix #7543: bump prometheus-operator from 0.85.0 to 0.89.0
 * Fix #7542: bump open-cluster-management.io/api from 0.16.2 to 1.2.0
@@ -30,8 +34,8 @@
 ### 7.4.1 (2026-03-10)
 
 #### Dependency Upgrade
-Fix #7408: bump vertx.version to 4.5.25
-Fix #7107: bump Jackson version to 2.19.4
+* Fix #7408: bump vertx.version to 4.5.25
+* Fix #7107: bump Jackson version to 2.19.4
 
 ### 7.6.1 (2026-03-05)
 

@@ -33,7 +33,7 @@ import lombok.ToString;
 import lombok.experimental.Accessors;
 
 /**
- * VaultKubernetesAuth is used to authenticate against Vault using a client certificate stored in a Secret.
+ * VaultClientCertificateAuth is used to authenticate against Vault using a client certificate stored in a Secret.
  */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
