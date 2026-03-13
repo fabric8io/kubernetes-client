@@ -33,8 +33,8 @@
 ### 7.4.1 (2026-03-10)
 
 #### Dependency Upgrade
-Fix #7408: bump vertx.version to 4.5.25
-Fix #7107: bump Jackson version to 2.19.4
+* Fix #7408: bump vertx.version to 4.5.25
+* Fix #7107: bump Jackson version to 2.19.4
 
 ### 7.6.1 (2026-03-05)
 
