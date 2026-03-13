@@ -1,6 +1,6 @@
 module github.com/fabric8io/kubernetes-client/kubernetes-model-generator/openapi/generator
 
-go 1.25.6
+go 1.25.7
 
 require (
 	github.com/cert-manager/cert-manager v1.20.0
@@ -18,7 +18,7 @@ require (
 	github.com/openshift/cluster-node-tuning-operator v0.0.0-20251108153041-2ed182ba5710
 	github.com/openshift/hive/apis v0.0.0-20240930213556-2d25383963db
 	github.com/openshift/installer v0.0.0-00010101000000-000000000000
-	github.com/operator-framework/api v0.33.0
+	github.com/operator-framework/api v0.41.0
 	github.com/operator-framework/operator-lifecycle-manager v0.33.0
 	github.com/ovn-org/ovn-kubernetes/go-controller v0.0.0-20241030140127-a68ef49d9441
 	github.com/prometheus-operator/prometheus-operator/pkg/apis/monitoring v0.89.0
@@ -163,7 +163,7 @@ require (
 	github.com/google/go-github/v31 v31.0.0 // indirect
 	github.com/google/go-querystring v1.1.0 // indirect
 	github.com/google/uuid v1.6.0 // indirect
-	github.com/grpc-ecosystem/grpc-gateway/v2 v2.27.3 // indirect
+	github.com/grpc-ecosystem/grpc-gateway/v2 v2.27.7 // indirect
 	github.com/h2non/filetype v1.1.3 // indirect
 	github.com/h2non/go-is-svg v0.0.0-20160927212452-35e8c4b0612c // indirect
 	github.com/hashicorp/go-cleanhttp v0.5.2 // indirect
@@ -218,7 +218,7 @@ require (
 	go.yaml.in/yaml/v2 v2.4.3 // indirect
 	go.yaml.in/yaml/v3 v3.0.4 // indirect
 	golang.org/x/crypto v0.48.0 // indirect
-	golang.org/x/exp v0.0.0-20250718183923-645b1fa84792 // indirect
+	golang.org/x/exp v0.0.0-20260112195511-716be5621a96 // indirect
 	golang.org/x/mod v0.32.0 // indirect
 	golang.org/x/net v0.51.0 // indirect
 	golang.org/x/oauth2 v0.35.0 // indirect
@@ -230,7 +230,7 @@ require (
 	golang.org/x/tools v0.41.0 // indirect
 	gomodules.xyz/jsonpatch/v2 v2.5.0 // indirect
 	google.golang.org/api v0.269.0 // indirect
-	google.golang.org/genproto/googleapis/api v0.0.0-20260128011058-8636f8732409 // indirect
+	google.golang.org/genproto/googleapis/api v0.0.0-20260202165425-ce8ad4cf556b // indirect
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20260217215200-42d3e9bedb6d // indirect
 	google.golang.org/grpc v1.79.1 // indirect
 	google.golang.org/protobuf v1.36.11 // indirect
