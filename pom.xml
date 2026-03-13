@@ -93,7 +93,7 @@
     <!-- fix as jackson-annotations version 2.20 was released, Refer: https://github.com/FasterXML/jackson-bom/blob/54f854ba1ce69c5827f8acf6d08ba2d7ce36233c/pom.xml#L53-L62 -->
     <jackson.bundle.version.annotations>2.21</jackson.bundle.version.annotations>
     <jetty.version>11.0.26</jetty.version>
-    <maven-core.version>3.9.13</maven-core.version>
+    <maven-core.version>3.9.14</maven-core.version>
     <maven-plugin-annotations.version>3.15.2</maven-plugin-annotations.version>
     <vertx.version>4.5.24</vertx.version>
     <vertx5.version>5.0.7</vertx5.version>
