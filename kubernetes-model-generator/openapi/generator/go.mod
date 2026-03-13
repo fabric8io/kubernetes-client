@@ -7,7 +7,7 @@ require (
 	github.com/chaos-mesh/chaos-mesh/api v0.0.0-20250513055240-4db47f53978c
 	github.com/getkin/kin-openapi v0.133.0
 	github.com/k8snetworkplumbingwg/network-attachment-definition-client v1.7.7
-	github.com/kubernetes-csi/external-snapshotter/client/v8 v8.2.0
+	github.com/kubernetes-csi/external-snapshotter/client/v8 v8.4.0
 	github.com/metal3-io/baremetal-operator/apis v0.12.2
 	github.com/metal3-io/cluster-api-provider-metal3/api v1.12.2
 	github.com/metal3-io/ip-address-manager/api v1.12.2 // indirect
