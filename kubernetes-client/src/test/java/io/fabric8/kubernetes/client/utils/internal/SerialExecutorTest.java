@@ -36,12 +36,10 @@ class SerialExecutorTest {
     CompletableFuture<Thread> future = new CompletableFuture<>();
     serialExecutor.execute(() -> {
       future.complete(Thread.currentThread());
-      while (!Thread.currentThread().isInterrupted()) {
-        try {
-          Thread.sleep(10);
-        } catch (InterruptedException e) {
-          Thread.currentThread().interrupt();
-        }
+      try {
+        new CountDownLatch(1).await(); // blocks until interrupted
+      } catch (InterruptedException e) {
+        Thread.currentThread().interrupt();
       }
       throw new RuntimeException();
     });
@@ -61,11 +59,12 @@ class SerialExecutorTest {
     try {
       final StringBuffer sb = new StringBuffer();
       final SerialExecutor se = new SerialExecutor(es);
+      final CountDownLatch allSubmitted = new CountDownLatch(1);
       final CountDownLatch latch = new CountDownLatch(1);
       se.execute(() -> {
         sb.append("1");
         try {
-          Thread.sleep(100L);
+          allSubmitted.await(); // block until all tasks have been submitted
         } catch (InterruptedException e) {
           throw new RuntimeException(e);
         }
@@ -75,6 +74,7 @@ class SerialExecutorTest {
       se.execute(() -> sb.append("4"));
       se.execute(() -> sb.append("5"));
       se.execute(latch::countDown);
+      allSubmitted.countDown(); // release task 1 now that all tasks are queued
       assertThat(latch.await(500L, TimeUnit.MILLISECONDS)).isTrue();
       assertThat(sb).hasToString("12345");
     } finally {
