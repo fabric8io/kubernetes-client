@@ -32,14 +32,17 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
+import java.util.concurrent.locks.ReadWriteLock;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
  * It basically saves and indexes all the entries.
  * <br>
- * Index reads {@link #byIndex(String, String)}, {@link #indexKeys(String, String)}, {@link #index(String, HasMetadata)}
- * are not globally locked and thus may not be fully consistent with the current state
+ * A {@link ReentrantReadWriteLock} is used to ensure that index reads
+ * ({@link #byIndex(String, String)}, {@link #indexKeys(String, String)}, {@link #index(String, HasMetadata)})
+ * are consistent with write operations and never observe partially-updated index state.
  *
  * @param <T> type for cache object
  */
@@ -68,13 +71,15 @@ public class CacheImpl<T extends HasMetadata> implements Cache<T> {
   public static final String NAMESPACE_INDEX = "namespace";
 
   // indexers stores index functions by their names
-  private final Map<String, Function<T, List<String>>> indexers = Collections.synchronizedMap(new HashMap<>());
+  private final Map<String, Function<T, List<String>>> indexers = new HashMap<>();
 
   // items stores object instances
   private ItemStore<T> items;
 
   // indices stores objects' key by their indices
   private final ConcurrentMap<String, Index> indices = new ConcurrentHashMap<>();
+
+  private final ReadWriteLock lock = new ReentrantReadWriteLock();
 
   public CacheImpl() {
     this(NAMESPACE_INDEX, Cache::metaNamespaceIndexFunc, Cache::metaNamespaceKeyFunc);
@@ -96,21 +101,29 @@ public class CacheImpl<T extends HasMetadata> implements Cache<T> {
    */
   @Override
   public Map<String, Function<T, List<String>>> getIndexers() {
-    synchronized (indexers) {
-      return Collections.unmodifiableMap(indexers);
+    lock.readLock().lock();
+    try {
+      return Collections.unmodifiableMap(new HashMap<>(indexers));
+    } finally {
+      lock.readLock().unlock();
     }
   }
 
   @Override
-  public synchronized void addIndexers(Map<String, Function<T, List<String>>> indexersNew) {
-    Set<String> intersection = new HashSet<>(indexers.keySet());
-    intersection.retainAll(indexersNew.keySet());
-    if (!intersection.isEmpty()) {
-      throw new IllegalArgumentException("Indexer conflict: " + intersection);
-    }
+  public void addIndexers(Map<String, Function<T, List<String>>> indexersNew) {
+    lock.writeLock().lock();
+    try {
+      Set<String> intersection = new HashSet<>(indexers.keySet());
+      intersection.retainAll(indexersNew.keySet());
+      if (!intersection.isEmpty()) {
+        throw new IllegalArgumentException("Indexer conflict: " + intersection);
+      }
 
-    for (Map.Entry<String, Function<T, List<String>>> indexEntry : indexersNew.entrySet()) {
-      addIndexFunc(indexEntry.getKey(), indexEntry.getValue());
+      for (Map.Entry<String, Function<T, List<String>>> indexEntry : indexersNew.entrySet()) {
+        addIndexFuncUnlocked(indexEntry.getKey(), indexEntry.getValue());
+      }
+    } finally {
+      lock.writeLock().unlock();
     }
   }
 
@@ -120,14 +133,19 @@ public class CacheImpl<T extends HasMetadata> implements Cache<T> {
    * @param obj the object
    * @return the old object
    */
-  public synchronized T put(T obj) {
+  public T put(T obj) {
     if (obj == null) {
       return null;
     }
-    String key = getKey(obj);
-    T oldObj = this.items.put(key, obj);
-    this.updateIndices(oldObj, obj, key);
-    return oldObj;
+    lock.writeLock().lock();
+    try {
+      String key = getKey(obj);
+      T oldObj = this.items.put(key, obj);
+      this.updateIndices(oldObj, obj, key);
+      return oldObj;
+    } finally {
+      lock.writeLock().unlock();
+    }
   }
 
   /**
@@ -136,13 +154,18 @@ public class CacheImpl<T extends HasMetadata> implements Cache<T> {
    * @param obj object
    * @return the old object
    */
-  public synchronized T remove(T obj) {
-    String key = getKey(obj);
-    T old = this.items.remove(key);
-    if (old != null) {
-      this.updateIndices(old, null, key);
+  public T remove(T obj) {
+    lock.writeLock().lock();
+    try {
+      String key = getKey(obj);
+      T old = this.items.remove(key);
+      if (old != null) {
+        this.updateIndices(old, null, key);
+      }
+      return old;
+    } finally {
+      lock.writeLock().unlock();
     }
-    return old;
   }
 
   /**
@@ -206,18 +229,23 @@ public class CacheImpl<T extends HasMetadata> implements Cache<T> {
    */
   @Override
   public List<T> index(String indexName, T obj) {
-    Function<T, List<String>> indexFunc = this.indexers.get(indexName);
-    if (indexFunc == null) {
-      throw new IllegalArgumentException(String.format("index %s doesn't exist!", indexName));
-    }
-    Index index = getIndex(indexName);
-    List<String> indexKeys = indexFunc.apply(obj);
-    Set<String> returnKeySet = new HashSet<>();
-    for (String indexKey : indexKeys) {
-      returnKeySet.addAll(index.get(indexKey));
-    }
+    lock.readLock().lock();
+    try {
+      Function<T, List<String>> indexFunc = this.indexers.get(indexName);
+      if (indexFunc == null) {
+        throw new IllegalArgumentException(String.format("index %s doesn't exist!", indexName));
+      }
+      Index index = getIndex(indexName);
+      List<String> indexKeys = indexFunc.apply(obj);
+      Set<String> returnKeySet = new HashSet<>();
+      for (String indexKey : indexKeys) {
+        returnKeySet.addAll(index.get(indexKey));
+      }
 
-    return getItems(returnKeySet);
+      return getItems(returnKeySet);
+    } finally {
+      lock.readLock().unlock();
+    }
   }
 
   private List<T> getItems(Set<String> returnKeySet) {
@@ -242,8 +270,13 @@ public class CacheImpl<T extends HasMetadata> implements Cache<T> {
    */
   @Override
   public List<String> indexKeys(String indexName, String indexKey) {
-    Index index = getIndex(indexName);
-    return new ArrayList<>(index.get(indexKey));
+    lock.readLock().lock();
+    try {
+      Index index = getIndex(indexName);
+      return new ArrayList<>(index.get(indexKey));
+    } finally {
+      lock.readLock().unlock();
+    }
   }
 
   /**
@@ -255,8 +288,13 @@ public class CacheImpl<T extends HasMetadata> implements Cache<T> {
    */
   @Override
   public List<T> byIndex(String indexName, String indexKey) {
-    Index index = getIndex(indexName);
-    return getItems(index.get(indexKey));
+    lock.readLock().lock();
+    try {
+      Index index = getIndex(indexName);
+      return getItems(index.get(indexKey));
+    } finally {
+      lock.readLock().unlock();
+    }
   }
 
   /**
@@ -300,7 +338,16 @@ public class CacheImpl<T extends HasMetadata> implements Cache<T> {
    * @param indexName the index name
    * @param indexFunc the index func
    */
-  public synchronized CacheImpl<T> addIndexFunc(String indexName, Function<T, List<String>> indexFunc) {
+  public CacheImpl<T> addIndexFunc(String indexName, Function<T, List<String>> indexFunc) {
+    lock.writeLock().lock();
+    try {
+      return addIndexFuncUnlocked(indexName, indexFunc);
+    } finally {
+      lock.writeLock().unlock();
+    }
+  }
+
+  private CacheImpl<T> addIndexFuncUnlocked(String indexName, Function<T, List<String>> indexFunc) {
     if (this.indices.containsKey(indexName)) {
       throw new IllegalArgumentException("Indexer conflict: " + indexName);
     }
@@ -370,17 +417,22 @@ public class CacheImpl<T extends HasMetadata> implements Cache<T> {
   }
 
   @Override
-  public synchronized void removeIndexer(String name) {
-    this.indices.remove(name);
-    this.indexers.remove(name);
+  public void removeIndexer(String name) {
+    lock.writeLock().lock();
+    try {
+      this.indices.remove(name);
+      this.indexers.remove(name);
+    } finally {
+      lock.writeLock().unlock();
+    }
   }
 
   public boolean isFullState() {
     return items.isFullState();
   }
 
-  public Object getLockObject() {
-    return this;
+  public ReadWriteLock getLock() {
+    return lock;
   }
 
 }
