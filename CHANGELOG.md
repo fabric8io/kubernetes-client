@@ -4,6 +4,7 @@
 
 #### Bugs
 * Fix #7543: fix processInlineDuplicateFields to recursively resolve nested inline embeds
+* Fix #7450: StandardHttpClient.shouldRetry() does not retry on Vert.x HttpClosedException
 
 #### Improvements
 * Fix #7522: improve dependency management for kubernetes-httpclient-okhttp
