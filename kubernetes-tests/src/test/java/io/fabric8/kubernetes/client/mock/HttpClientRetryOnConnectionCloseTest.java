@@ -15,6 +15,7 @@
  */
 package io.fabric8.kubernetes.client.mock;
 
+import io.fabric8.kubernetes.client.ConfigBuilder;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientBuilder;
 import io.fabric8.kubernetes.client.KubernetesClientException;
@@ -28,11 +29,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-/**
- * Integration test verifying that the Kubernetes client retries API calls when the server
- * closes the connection without sending a response (simulating the stale-connection scenario
- * that produces {@code HttpClosedException} in the Vert.x HTTP client).
- */
 class HttpClientRetryOnConnectionCloseTest {
 
   @Test
@@ -57,7 +53,7 @@ class HttpClientRetryOnConnectionCloseTest {
       String masterUrl = "http://localhost:" + serverSocket.getLocalPort();
 
       try (KubernetesClient client = new KubernetesClientBuilder()
-          .withConfig(new io.fabric8.kubernetes.client.ConfigBuilder()
+          .withConfig(new ConfigBuilder()
               .withMasterUrl(masterUrl)
               .withRequestRetryBackoffLimit(2)
               .withRequestRetryBackoffInterval(50)
