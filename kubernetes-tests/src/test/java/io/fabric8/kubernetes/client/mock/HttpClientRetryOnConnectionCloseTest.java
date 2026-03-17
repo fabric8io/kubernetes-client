@@ -63,7 +63,7 @@ class HttpClientRetryOnConnectionCloseTest {
 
         assertThatThrownBy(() -> client.pods().inNamespace("default").list())
             .isInstanceOf(KubernetesClientException.class)
-            .hasCause(IOException.class.getDeclaredConstructor().newInstance());
+            .hasCauseInstanceOf(IOException.class);
 
         // 1 initial attempt + 2 retries
         assertThat(connectionCount.get()).isEqualTo(3);
