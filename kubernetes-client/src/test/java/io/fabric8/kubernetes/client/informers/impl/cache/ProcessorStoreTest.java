@@ -29,6 +29,7 @@ import org.mockito.Mockito;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -131,7 +132,7 @@ class ProcessorStoreTest {
     processorStore.update(pods);
 
     Mockito.doAnswer(invocation -> {
-      assertTrue(((java.util.concurrent.locks.ReentrantReadWriteLock) podCache.getLock()).isWriteLockedByCurrentThread());
+      assertTrue(((ReentrantReadWriteLock) podCache.getLock()).isWriteLockedByCurrentThread());
       return null;
     }).when(processor).distribute(Mockito.any(ProcessorListener.Notification.class), Mockito.anyBoolean());
     processorStore.resync();
