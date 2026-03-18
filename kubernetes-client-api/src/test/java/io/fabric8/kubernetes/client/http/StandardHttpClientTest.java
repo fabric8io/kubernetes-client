@@ -17,6 +17,7 @@ package io.fabric8.kubernetes.client.http;
 
 import io.fabric8.kubernetes.client.RequestConfigBuilder;
 import io.fabric8.kubernetes.client.http.WebSocket.Listener;
+import io.vertx.core.http.HttpClosedException;
 import org.awaitility.Awaitility;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -309,6 +310,27 @@ class StandardHttpClientTest {
         .hasMessage("connection closed");
     // No retry should occur for a plain RuntimeException
     assertThat(client.getRecordedConsumeBytesDirects()).hasSize(1);
+  }
+
+  @Test
+  void iOExceptionIsRetried() throws Exception {
+    client = client.newBuilder().tag(new RequestConfigBuilder()
+        .withRequestRetryBackoffLimit(3)
+        .withRequestRetryBackoffInterval(50).build())
+        .build();
+
+    // Simulate what the Vert.x client produces when HttpClosedException occurs:
+    client.expect(".*", new IOException("connection closed", new HttpClosedException("connection closed")));
+    client.expect(".*", new TestHttpResponse<AsyncBody>().withCode(200));
+
+    CompletableFuture<HttpResponse<AsyncBody>> consumeFuture = client.consumeBytes(
+        client.newHttpRequestBuilder().uri("http://localhost").build(),
+        (value, asyncBody) -> {
+        });
+
+    assertEquals(200, consumeFuture.get(10, TimeUnit.SECONDS).code());
+    // Retry should occur: 1 failed attempt + 1 successful retry
+    assertThat(client.getRecordedConsumeBytesDirects()).hasSize(2);
   }
 
   @Test
