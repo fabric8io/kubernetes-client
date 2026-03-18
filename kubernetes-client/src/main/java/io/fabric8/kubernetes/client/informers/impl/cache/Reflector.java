@@ -160,10 +160,12 @@ public class Reflector<T extends HasMetadata, L extends KubernetesResourceList<T
 
   /**
    * There are 4 steps here
+   * <ol>
    * <li>sync the underlying store based upon the keySet
    * <li>update the last sync version
    * <li>emit the onList event
    * <li>signal the watch to start
+   * </ol>
    */
   private void syncList(Set<String> nextKeys, final String latestResourceVersion, CompletableFuture<?> cf) {
     logger.debug("Listing items ({}) for {} at v{}", nextKeys.size(), this, latestResourceVersion);
