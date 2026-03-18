@@ -1,7 +1,9 @@
 
 package io.fabric8.openclustermanagement.api.model.cluster.v1beta2;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import javax.annotation.processing.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
@@ -26,6 +28,7 @@ import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
 import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
+import io.fabric8.openclustermanagement.api.model.cluster.v1.ManagedNamespaceConfig;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
@@ -38,7 +41,8 @@ import lombok.experimental.Accessors;
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "clusterSelector"
+    "clusterSelector",
+    "managedNamespaces"
 })
 @ToString
 @EqualsAndHashCode
@@ -67,6 +71,9 @@ public class ManagedClusterSetSpec implements Editable<ManagedClusterSetSpecBuil
 
     @JsonProperty("clusterSelector")
     private ManagedClusterSelector clusterSelector;
+    @JsonProperty("managedNamespaces")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<ManagedNamespaceConfig> managedNamespaces = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -76,9 +83,10 @@ public class ManagedClusterSetSpec implements Editable<ManagedClusterSetSpecBuil
     public ManagedClusterSetSpec() {
     }
 
-    public ManagedClusterSetSpec(ManagedClusterSelector clusterSelector) {
+    public ManagedClusterSetSpec(ManagedClusterSelector clusterSelector, List<ManagedNamespaceConfig> managedNamespaces) {
         super();
         this.clusterSelector = clusterSelector;
+        this.managedNamespaces = managedNamespaces;
     }
 
     /**
@@ -95,6 +103,23 @@ public class ManagedClusterSetSpec implements Editable<ManagedClusterSetSpecBuil
     @JsonProperty("clusterSelector")
     public void setClusterSelector(ManagedClusterSelector clusterSelector) {
         this.clusterSelector = clusterSelector;
+    }
+
+    /**
+     * managedNamespaces defines the list of namespace on the managedclusters across the clusterset to be managed.
+     */
+    @JsonProperty("managedNamespaces")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public List<ManagedNamespaceConfig> getManagedNamespaces() {
+        return managedNamespaces;
+    }
+
+    /**
+     * managedNamespaces defines the list of namespace on the managedclusters across the clusterset to be managed.
+     */
+    @JsonProperty("managedNamespaces")
+    public void setManagedNamespaces(List<ManagedNamespaceConfig> managedNamespaces) {
+        this.managedNamespaces = managedNamespaces;
     }
 
     @JsonIgnore

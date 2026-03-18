@@ -82,7 +82,7 @@ public class ManagedClusterSetBindingSpec implements Editable<ManagedClusterSetB
     }
 
     /**
-     * ClusterSet is the name of the ManagedClusterSet to bind. It must match the instance name of the ManagedClusterSetBinding and cannot change once created. User is allowed to set this field if they have an RBAC rule to CREATE on the virtual subresource of managedclustersets/bind.
+     * clusterSet is the name of the ManagedClusterSet to bind. It must match the instance name of the ManagedClusterSetBinding and cannot change once created. User is allowed to set this field if they have an RBAC rule to CREATE on the virtual subresource of managedclustersets/bind.
      */
     @JsonProperty("clusterSet")
     public String getClusterSet() {
@@ -90,7 +90,7 @@ public class ManagedClusterSetBindingSpec implements Editable<ManagedClusterSetB
     }
 
     /**
-     * ClusterSet is the name of the ManagedClusterSet to bind. It must match the instance name of the ManagedClusterSetBinding and cannot change once created. User is allowed to set this field if they have an RBAC rule to CREATE on the virtual subresource of managedclustersets/bind.
+     * clusterSet is the name of the ManagedClusterSet to bind. It must match the instance name of the ManagedClusterSetBinding and cannot change once created. User is allowed to set this field if they have an RBAC rule to CREATE on the virtual subresource of managedclustersets/bind.
      */
     @JsonProperty("clusterSet")
     public void setClusterSet(String clusterSet) {

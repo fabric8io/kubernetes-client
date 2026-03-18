@@ -21,7 +21,7 @@
   <parent>
     <artifactId>kubernetes-client-project</artifactId>
     <groupId>io.fabric8</groupId>
-    <version>7.6-SNAPSHOT</version>
+    <version>7.7-SNAPSHOT</version>
   </parent>
 
   <artifactId>kubernetes-httpclient-vertx-5</artifactId>
@@ -29,7 +29,8 @@
   <name>Fabric8 :: Kubernetes :: HttpClient :: Vert.x 5</name>
 
   <properties>
-    <vertx.version>5.0.7</vertx.version>
+    <jpms.module.name>io.fabric8.kubernetes.client.vertx5</jpms.module.name>
+    <vertx.version>${vertx5.version}</vertx.version>
     <osgi.require-capability>
       osgi.extender;
       filter:="(osgi.extender=osgi.serviceloader.registrar)",

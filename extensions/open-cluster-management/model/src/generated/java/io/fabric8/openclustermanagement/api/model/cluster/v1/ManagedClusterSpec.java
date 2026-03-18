@@ -114,7 +114,7 @@ public class ManagedClusterSpec implements Editable<ManagedClusterSpecBuilder>, 
     }
 
     /**
-     * LeaseDurationSeconds is used to coordinate the lease update time of Klusterlet agents on the managed cluster. If its value is zero, the Klusterlet agent will update its lease every 60 seconds by default
+     * leaseDurationSeconds is used to coordinate the lease update time of Klusterlet agents on the managed cluster. If its value is zero, the Klusterlet agent will update its lease every 60 seconds by default
      */
     @JsonProperty("leaseDurationSeconds")
     public Integer getLeaseDurationSeconds() {
@@ -122,7 +122,7 @@ public class ManagedClusterSpec implements Editable<ManagedClusterSpecBuilder>, 
     }
 
     /**
-     * LeaseDurationSeconds is used to coordinate the lease update time of Klusterlet agents on the managed cluster. If its value is zero, the Klusterlet agent will update its lease every 60 seconds by default
+     * leaseDurationSeconds is used to coordinate the lease update time of Klusterlet agents on the managed cluster. If its value is zero, the Klusterlet agent will update its lease every 60 seconds by default
      */
     @JsonProperty("leaseDurationSeconds")
     public void setLeaseDurationSeconds(Integer leaseDurationSeconds) {
@@ -147,7 +147,7 @@ public class ManagedClusterSpec implements Editable<ManagedClusterSpecBuilder>, 
     }
 
     /**
-     * Taints is a property of managed cluster that allow the cluster to be repelled when scheduling. Taints, including 'ManagedClusterUnavailable' and 'ManagedClusterUnreachable', can not be added/removed by agent running on the managed cluster; while it's fine to add/remove other taints from either hub cluser or managed cluster.
+     * taints is a property of managed cluster that allow the cluster to be repelled when scheduling. Taints, including 'ManagedClusterUnavailable' and 'ManagedClusterUnreachable', can not be added/removed by agent running on the managed cluster; while it's fine to add/remove other taints from either hub cluser or managed cluster.
      */
     @JsonProperty("taints")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -156,7 +156,7 @@ public class ManagedClusterSpec implements Editable<ManagedClusterSpecBuilder>, 
     }
 
     /**
-     * Taints is a property of managed cluster that allow the cluster to be repelled when scheduling. Taints, including 'ManagedClusterUnavailable' and 'ManagedClusterUnreachable', can not be added/removed by agent running on the managed cluster; while it's fine to add/remove other taints from either hub cluser or managed cluster.
+     * taints is a property of managed cluster that allow the cluster to be repelled when scheduling. Taints, including 'ManagedClusterUnavailable' and 'ManagedClusterUnreachable', can not be added/removed by agent running on the managed cluster; while it's fine to add/remove other taints from either hub cluser or managed cluster.
      */
     @JsonProperty("taints")
     public void setTaints(List<Taint> taints) {

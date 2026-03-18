@@ -33,7 +33,7 @@ import (
 	metaV1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	configapiV1 "k8s.io/client-go/tools/clientcmd/api/v1"
 	metricsV1Beta1 "k8s.io/metrics/pkg/apis/metrics/v1beta1"
-	clusterapiv1beta1 "sigs.k8s.io/cluster-api/api/v1beta1"
+	clusterapiv1beta1 "sigs.k8s.io/cluster-api/api/core/v1beta1"
 	kustomize "sigs.k8s.io/kustomize/api/types"
 )
 
@@ -94,6 +94,7 @@ var reflectionRun = func(cmd *cobra.Command, args []string) {
 		}, "apiextensions"),
 		NewTypeSchema([]reflect.Type{
 			reflect.TypeOf(clusterapiv1beta1.Condition{}),
+			reflect.TypeOf(clusterapiv1beta1.FailureDomainSpec{}),
 			reflect.TypeOf(clusterapiv1beta1.Machine{}),
 		}, "cluster-api"),
 		NewTypeSchema([]reflect.Type{

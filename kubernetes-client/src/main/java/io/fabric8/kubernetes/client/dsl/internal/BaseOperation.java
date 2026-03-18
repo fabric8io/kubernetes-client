@@ -108,6 +108,8 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
   private static final String WATCH = "watch";
   private static final String READ_ONLY_UPDATE_EXCEPTION_MESSAGE = "Cannot update read-only resources";
   private static final String READ_ONLY_EDIT_EXCEPTION_MESSAGE = "Cannot edit read-only resources";
+  private static final long CREATE_OR_REPLACE_DEFAULT_TIMEOUT = 1;
+  private static final TimeUnit CREATE_OR_REPLACE_DEFAULT_TIMEOUT_UNIT = TimeUnit.SECONDS;
 
   private final T item;
 
@@ -305,10 +307,20 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
     }
     R resource = resource(item);
 
+    final long waitTimeout;
+    final TimeUnit waitTimeoutUnit;
+    if (context.getTimeout() > 0) {
+      waitTimeout = context.getTimeout();
+      waitTimeoutUnit = context.getTimeoutUnit();
+    } else {
+      waitTimeoutUnit = CREATE_OR_REPLACE_DEFAULT_TIMEOUT_UNIT;
+      waitTimeout = CREATE_OR_REPLACE_DEFAULT_TIMEOUT;
+    }
+
     CreateOrReplaceHelper<T> createOrReplaceHelper = new CreateOrReplaceHelper<>(
         resource::create,
         resource::replace,
-        m -> resource.waitUntilCondition(Objects::nonNull, 1, TimeUnit.SECONDS),
+        m -> resource.waitUntilCondition(Objects::nonNull, waitTimeout, waitTimeoutUnit),
         m -> resource.fromServer().get(), this.getKubernetesSerialization());
 
     return createOrReplaceHelper.createOrReplace(item);
@@ -989,8 +1001,10 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
       }
 
       @Override
-      public void onNothing() {
-        test.accept(informer.getStore().list());
+      public void onList(String resourceVersion, boolean remainedEmpty) {
+        if (remainedEmpty) {
+          test.accept(Collections.emptyList());
+        }
       }
     }).start().whenComplete((v, t) -> {
       if (t != null) {

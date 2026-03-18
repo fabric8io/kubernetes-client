@@ -33,7 +33,7 @@ import lombok.ToString;
 import lombok.experimental.Accessors;
 
 /**
- * SafeTLSConfig specifies safe TLS configuration parameters.
+ * SafeTLSConfig defines safe TLS configurations.
  */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -106,7 +106,7 @@ public class SafeTLSConfig implements Editable<SafeTLSConfigBuilder>, Kubernetes
     }
 
     /**
-     * SafeTLSConfig specifies safe TLS configuration parameters.
+     * SafeTLSConfig defines safe TLS configurations.
      */
     @JsonProperty("ca")
     public SecretOrConfigMap getCa() {
@@ -114,7 +114,7 @@ public class SafeTLSConfig implements Editable<SafeTLSConfigBuilder>, Kubernetes
     }
 
     /**
-     * SafeTLSConfig specifies safe TLS configuration parameters.
+     * SafeTLSConfig defines safe TLS configurations.
      */
     @JsonProperty("ca")
     public void setCa(SecretOrConfigMap ca) {
@@ -122,7 +122,7 @@ public class SafeTLSConfig implements Editable<SafeTLSConfigBuilder>, Kubernetes
     }
 
     /**
-     * SafeTLSConfig specifies safe TLS configuration parameters.
+     * SafeTLSConfig defines safe TLS configurations.
      */
     @JsonProperty("cert")
     public SecretOrConfigMap getCert() {
@@ -130,7 +130,7 @@ public class SafeTLSConfig implements Editable<SafeTLSConfigBuilder>, Kubernetes
     }
 
     /**
-     * SafeTLSConfig specifies safe TLS configuration parameters.
+     * SafeTLSConfig defines safe TLS configurations.
      */
     @JsonProperty("cert")
     public void setCert(SecretOrConfigMap cert) {
@@ -138,7 +138,7 @@ public class SafeTLSConfig implements Editable<SafeTLSConfigBuilder>, Kubernetes
     }
 
     /**
-     * Disable target certificate validation.
+     * insecureSkipVerify defines how to disable target certificate validation.
      */
     @JsonProperty("insecureSkipVerify")
     public Boolean getInsecureSkipVerify() {
@@ -146,7 +146,7 @@ public class SafeTLSConfig implements Editable<SafeTLSConfigBuilder>, Kubernetes
     }
 
     /**
-     * Disable target certificate validation.
+     * insecureSkipVerify defines how to disable target certificate validation.
      */
     @JsonProperty("insecureSkipVerify")
     public void setInsecureSkipVerify(Boolean insecureSkipVerify) {
@@ -154,7 +154,7 @@ public class SafeTLSConfig implements Editable<SafeTLSConfigBuilder>, Kubernetes
     }
 
     /**
-     * SafeTLSConfig specifies safe TLS configuration parameters.
+     * SafeTLSConfig defines safe TLS configurations.
      */
     @JsonProperty("keySecret")
     public SecretKeySelector getKeySecret() {
@@ -162,7 +162,7 @@ public class SafeTLSConfig implements Editable<SafeTLSConfigBuilder>, Kubernetes
     }
 
     /**
-     * SafeTLSConfig specifies safe TLS configuration parameters.
+     * SafeTLSConfig defines safe TLS configurations.
      */
     @JsonProperty("keySecret")
     public void setKeySecret(SecretKeySelector keySecret) {
@@ -170,7 +170,7 @@ public class SafeTLSConfig implements Editable<SafeTLSConfigBuilder>, Kubernetes
     }
 
     /**
-     * Maximum acceptable TLS version.<br><p> <br><p> It requires Prometheus &gt;= v2.41.0 or Thanos &gt;= v0.31.0.
+     * maxVersion defines the maximum acceptable TLS version.<br><p> <br><p> It requires Prometheus &gt;= v2.41.0 or Thanos &gt;= v0.31.0.
      */
     @JsonProperty("maxVersion")
     public String getMaxVersion() {
@@ -178,7 +178,7 @@ public class SafeTLSConfig implements Editable<SafeTLSConfigBuilder>, Kubernetes
     }
 
     /**
-     * Maximum acceptable TLS version.<br><p> <br><p> It requires Prometheus &gt;= v2.41.0 or Thanos &gt;= v0.31.0.
+     * maxVersion defines the maximum acceptable TLS version.<br><p> <br><p> It requires Prometheus &gt;= v2.41.0 or Thanos &gt;= v0.31.0.
      */
     @JsonProperty("maxVersion")
     public void setMaxVersion(String maxVersion) {
@@ -186,7 +186,7 @@ public class SafeTLSConfig implements Editable<SafeTLSConfigBuilder>, Kubernetes
     }
 
     /**
-     * Minimum acceptable TLS version.<br><p> <br><p> It requires Prometheus &gt;= v2.35.0 or Thanos &gt;= v0.28.0.
+     * minVersion defines the minimum acceptable TLS version.<br><p> <br><p> It requires Prometheus &gt;= v2.35.0 or Thanos &gt;= v0.28.0.
      */
     @JsonProperty("minVersion")
     public String getMinVersion() {
@@ -194,7 +194,7 @@ public class SafeTLSConfig implements Editable<SafeTLSConfigBuilder>, Kubernetes
     }
 
     /**
-     * Minimum acceptable TLS version.<br><p> <br><p> It requires Prometheus &gt;= v2.35.0 or Thanos &gt;= v0.28.0.
+     * minVersion defines the minimum acceptable TLS version.<br><p> <br><p> It requires Prometheus &gt;= v2.35.0 or Thanos &gt;= v0.28.0.
      */
     @JsonProperty("minVersion")
     public void setMinVersion(String minVersion) {
@@ -202,7 +202,7 @@ public class SafeTLSConfig implements Editable<SafeTLSConfigBuilder>, Kubernetes
     }
 
     /**
-     * Used to verify the hostname for the targets.
+     * serverName is used to verify the hostname for the targets.
      */
     @JsonProperty("serverName")
     public String getServerName() {
@@ -210,7 +210,7 @@ public class SafeTLSConfig implements Editable<SafeTLSConfigBuilder>, Kubernetes
     }
 
     /**
-     * Used to verify the hostname for the targets.
+     * serverName is used to verify the hostname for the targets.
      */
     @JsonProperty("serverName")
     public void setServerName(String serverName) {

@@ -202,8 +202,18 @@
           "default": {},
           "$ref": "#/definitions/dev.knative.bindings.v1.SecretValueFromSource"
         },
+        "roleARN": {
+          "description": "RoleARN is the Kubernetes secret containing the ARN of the IAM role to assume. Only used if saslType is OAUTHBEARER and tokenProvider is MSKRoleAccessTokenProvider.",
+          "default": {},
+          "$ref": "#/definitions/dev.knative.bindings.v1.SecretValueFromSource"
+        },
+        "tokenProvider": {
+          "description": "Token Provider is the Kubernetes secret containing the OAUTHBEARER token provider function. Only used if saslType is OAUTHBEARER.",
+          "default": {},
+          "$ref": "#/definitions/dev.knative.bindings.v1.SecretValueFromSource"
+        },
         "type": {
-          "description": "Type of saslType, defaults to plain (vs SCRAM-SHA-512 or SCRAM-SHA-256)",
+          "description": "Type of saslType, defaults to plain (vs SCRAM-SHA-512 or SCRAM-SHA-256 or OAUTHBEARER).",
           "default": {},
           "$ref": "#/definitions/dev.knative.bindings.v1.SecretValueFromSource"
         },
@@ -4012,6 +4022,9 @@
         "secretKey": {
           "description": "SecretKey is the AWS secret access key.",
           "type": "string"
+        },
+        "serviceAccountName": {
+          "type": "string"
         }
       },
       "x-fabric8-info": {
@@ -5189,7 +5202,7 @@
       }
     },
     "dev.knative.eventing.v1alpha1.RequestReply": {
-      "description": "RequestRepluy represents synchronous interface to sending and receiving events from a Broker.",
+      "description": "RequestReply represents synchronous interface to sending and receiving events from a Broker.",
       "type": "object",
       "properties": {
         "apiVersion": {
@@ -5263,8 +5276,7 @@
       "required": [
         "brokerRef",
         "correlationAttribute",
-        "replyAttribute",
-        "secrets"
+        "replyAttribute"
       ],
       "properties": {
         "brokerRef": {
@@ -5282,13 +5294,6 @@
         "replyAttribute": {
           "type": "string",
           "default": ""
-        },
-        "secrets": {
-          "type": "array",
-          "items": {
-            "type": "string",
-            "default": ""
-          }
         },
         "timeout": {
           "type": "string"
@@ -5336,6 +5341,11 @@
           "x-kubernetes-patch-merge-key": "type",
           "x-kubernetes-patch-strategy": "merge"
         },
+        "desiredReplicas": {
+          "description": "DesiredReplicas is the number of replicas (StatefulSet pod + trigger) that is desired",
+          "type": "integer",
+          "format": "int32"
+        },
         "observedGeneration": {
           "description": "ObservedGeneration is the 'Generation' of the Service that was last processed by the controller.",
           "type": "integer",
@@ -5348,6 +5358,11 @@
             "default": {},
             "$ref": "#/definitions/dev.knative.duck.v1.AppliedEventPolicyRef"
           }
+        },
+        "readyReplicas": {
+          "description": "ReadyReplicas is the number of ready replicas (StatefulSet pod + trigger) for this RequestReply resource",
+          "type": "integer",
+          "format": "int32"
         }
       },
       "x-fabric8-info": {
@@ -9483,7 +9498,7 @@
           "x-kubernetes-list-type": "atomic"
         },
         "resourceClaims": {
-          "description": "ResourceClaims defines which ResourceClaims must be allocated and reserved before the Pod is allowed to start. The resources will be made available to those containers which consume them by name.\n\nThis is an alpha field and requires enabling the DynamicResourceAllocation feature gate.\n\nThis field is immutable.",
+          "description": "ResourceClaims defines which ResourceClaims must be allocated and reserved before the Pod is allowed to start. The resources will be made available to those containers which consume them by name.\n\nThis is a stable field but requires that the DynamicResourceAllocation feature gate is enabled.\n\nThis field is immutable.",
           "type": "array",
           "items": {
             "default": {},
@@ -9602,6 +9617,10 @@
           "x-kubernetes-list-type": "map",
           "x-kubernetes-patch-merge-key": "name",
           "x-kubernetes-patch-strategy": "merge,retainKeys"
+        },
+        "workloadRef": {
+          "description": "WorkloadRef provides a reference to the Workload object that this Pod belongs to. This field is used by the scheduler to identify the PodGroup and apply the correct group scheduling policies. The Workload object referenced by this field may not exist at the time the Pod is created. This field is immutable, but a Workload object with the same name may be recreated with different policies. Doing this during pod scheduling may result in the placement not conforming to the expected policies.",
+          "$ref": "#/definitions/io.k8s.api.core.v1.WorkloadReference"
         }
       },
       "x-fabric8-info": {
@@ -10282,18 +10301,18 @@
       "type": "object",
       "properties": {
         "auth": {
-          "description": "SNS source configuration",
+          "description": "SNS sink configuration",
           "$ref": "#/definitions/dev.knative.eventing.pkg.apis.common.integration.v1alpha1.Auth"
         },
         "s3": {
           "$ref": "#/definitions/dev.knative.eventing.pkg.apis.common.integration.v1alpha1.AWSS3"
         },
         "sns": {
-          "description": "SQS source configuration",
+          "description": "SQS sink configuration",
           "$ref": "#/definitions/dev.knative.eventing.pkg.apis.common.integration.v1alpha1.AWSSNS"
         },
         "sqs": {
-          "description": "S3 source configuration",
+          "description": "S3 sink configuration",
           "$ref": "#/definitions/dev.knative.eventing.pkg.apis.common.integration.v1alpha1.AWSSQS"
         }
       },
@@ -10380,7 +10399,7 @@
           "$ref": "#/definitions/dev.knative.sinks.v1alpha1.Aws"
         },
         "log": {
-          "description": "AWS source configuration",
+          "description": "AWS sink configuration",
           "$ref": "#/definitions/dev.knative.sinks.v1alpha1.Log"
         }
       },
@@ -14254,7 +14273,7 @@
       },
       "x-fabric8-info": {
         "Type": "object",
-        "Group": "",
+        "Group": "apps",
         "Version": "v1",
         "Kind": "ControllerRevision",
         "Scope": "Namespaced"
@@ -14290,7 +14309,7 @@
       },
       "x-fabric8-info": {
         "Type": "list",
-        "Group": "",
+        "Group": "apps",
         "Version": "v1",
         "Kind": "ControllerRevisionList",
         "Scope": "Namespaced"
@@ -14325,7 +14344,7 @@
       },
       "x-fabric8-info": {
         "Type": "object",
-        "Group": "",
+        "Group": "apps",
         "Version": "v1",
         "Kind": "DaemonSet",
         "Scope": "Namespaced"
@@ -14361,7 +14380,7 @@
       },
       "x-fabric8-info": {
         "Type": "list",
-        "Group": "",
+        "Group": "apps",
         "Version": "v1",
         "Kind": "DaemonSetList",
         "Scope": "Namespaced"
@@ -14396,7 +14415,7 @@
       },
       "x-fabric8-info": {
         "Type": "object",
-        "Group": "",
+        "Group": "apps",
         "Version": "v1",
         "Kind": "Deployment",
         "Scope": "Namespaced"
@@ -14432,7 +14451,7 @@
       },
       "x-fabric8-info": {
         "Type": "list",
-        "Group": "",
+        "Group": "apps",
         "Version": "v1",
         "Kind": "DeploymentList",
         "Scope": "Namespaced"
@@ -14467,7 +14486,7 @@
       },
       "x-fabric8-info": {
         "Type": "object",
-        "Group": "",
+        "Group": "apps",
         "Version": "v1",
         "Kind": "ReplicaSet",
         "Scope": "Namespaced"
@@ -14503,7 +14522,7 @@
       },
       "x-fabric8-info": {
         "Type": "list",
-        "Group": "",
+        "Group": "apps",
         "Version": "v1",
         "Kind": "ReplicaSetList",
         "Scope": "Namespaced"
@@ -14538,7 +14557,7 @@
       },
       "x-fabric8-info": {
         "Type": "object",
-        "Group": "",
+        "Group": "apps",
         "Version": "v1",
         "Kind": "StatefulSet",
         "Scope": "Namespaced"
@@ -14574,7 +14593,7 @@
       },
       "x-fabric8-info": {
         "Type": "list",
-        "Group": "",
+        "Group": "apps",
         "Version": "v1",
         "Kind": "StatefulSetList",
         "Scope": "Namespaced"
@@ -14612,7 +14631,7 @@
       },
       "x-fabric8-info": {
         "Type": "object",
-        "Group": "",
+        "Group": "apps",
         "Version": "v1beta1",
         "Kind": "ControllerRevision",
         "Scope": "Namespaced"
@@ -14648,7 +14667,7 @@
       },
       "x-fabric8-info": {
         "Type": "list",
-        "Group": "",
+        "Group": "apps",
         "Version": "v1beta1",
         "Kind": "ControllerRevisionList",
         "Scope": "Namespaced"
@@ -14683,7 +14702,7 @@
       },
       "x-fabric8-info": {
         "Type": "object",
-        "Group": "",
+        "Group": "apps",
         "Version": "v1beta1",
         "Kind": "Deployment",
         "Scope": "Namespaced"
@@ -14719,7 +14738,7 @@
       },
       "x-fabric8-info": {
         "Type": "list",
-        "Group": "",
+        "Group": "apps",
         "Version": "v1beta1",
         "Kind": "DeploymentList",
         "Scope": "Namespaced"
@@ -14753,7 +14772,7 @@
       },
       "x-fabric8-info": {
         "Type": "object",
-        "Group": "",
+        "Group": "apps",
         "Version": "v1beta1",
         "Kind": "StatefulSet",
         "Scope": "Namespaced"
@@ -14787,7 +14806,7 @@
       },
       "x-fabric8-info": {
         "Type": "list",
-        "Group": "",
+        "Group": "apps",
         "Version": "v1beta1",
         "Kind": "StatefulSetList",
         "Scope": "Namespaced"
@@ -14825,7 +14844,7 @@
       },
       "x-fabric8-info": {
         "Type": "object",
-        "Group": "",
+        "Group": "apps",
         "Version": "v1beta2",
         "Kind": "ControllerRevision",
         "Scope": "Namespaced"
@@ -14861,7 +14880,7 @@
       },
       "x-fabric8-info": {
         "Type": "list",
-        "Group": "",
+        "Group": "apps",
         "Version": "v1beta2",
         "Kind": "ControllerRevisionList",
         "Scope": "Namespaced"
@@ -14896,7 +14915,7 @@
       },
       "x-fabric8-info": {
         "Type": "object",
-        "Group": "",
+        "Group": "apps",
         "Version": "v1beta2",
         "Kind": "DaemonSet",
         "Scope": "Namespaced"
@@ -14932,7 +14951,7 @@
       },
       "x-fabric8-info": {
         "Type": "list",
-        "Group": "",
+        "Group": "apps",
         "Version": "v1beta2",
         "Kind": "DaemonSetList",
         "Scope": "Namespaced"
@@ -14967,7 +14986,7 @@
       },
       "x-fabric8-info": {
         "Type": "object",
-        "Group": "",
+        "Group": "apps",
         "Version": "v1beta2",
         "Kind": "Deployment",
         "Scope": "Namespaced"
@@ -15003,7 +15022,7 @@
       },
       "x-fabric8-info": {
         "Type": "list",
-        "Group": "",
+        "Group": "apps",
         "Version": "v1beta2",
         "Kind": "DeploymentList",
         "Scope": "Namespaced"
@@ -15038,7 +15057,7 @@
       },
       "x-fabric8-info": {
         "Type": "object",
-        "Group": "",
+        "Group": "apps",
         "Version": "v1beta2",
         "Kind": "ReplicaSet",
         "Scope": "Namespaced"
@@ -15074,7 +15093,7 @@
       },
       "x-fabric8-info": {
         "Type": "list",
-        "Group": "",
+        "Group": "apps",
         "Version": "v1beta2",
         "Kind": "ReplicaSetList",
         "Scope": "Namespaced"
@@ -15109,7 +15128,7 @@
       },
       "x-fabric8-info": {
         "Type": "object",
-        "Group": "",
+        "Group": "apps",
         "Version": "v1beta2",
         "Kind": "Scale",
         "Scope": "Namespaced"
@@ -15143,7 +15162,7 @@
       },
       "x-fabric8-info": {
         "Type": "object",
-        "Group": "",
+        "Group": "apps",
         "Version": "v1beta2",
         "Kind": "StatefulSet",
         "Scope": "Namespaced"
@@ -15177,7 +15196,7 @@
       },
       "x-fabric8-info": {
         "Type": "list",
-        "Group": "",
+        "Group": "apps",
         "Version": "v1beta2",
         "Kind": "StatefulSetList",
         "Scope": "Namespaced"
@@ -15720,7 +15739,7 @@
       },
       "x-fabric8-info": {
         "Type": "object",
-        "Group": "",
+        "Group": "autoscaling",
         "Version": "v1",
         "Kind": "HorizontalPodAutoscaler",
         "Scope": "Namespaced"
@@ -15756,7 +15775,7 @@
       },
       "x-fabric8-info": {
         "Type": "list",
-        "Group": "",
+        "Group": "autoscaling",
         "Version": "v1",
         "Kind": "HorizontalPodAutoscalerList",
         "Scope": "Namespaced"
@@ -15791,7 +15810,7 @@
       },
       "x-fabric8-info": {
         "Type": "object",
-        "Group": "",
+        "Group": "autoscaling",
         "Version": "v1",
         "Kind": "Scale",
         "Scope": "Namespaced"
@@ -15826,7 +15845,7 @@
       },
       "x-fabric8-info": {
         "Type": "object",
-        "Group": "",
+        "Group": "autoscaling",
         "Version": "v2",
         "Kind": "HorizontalPodAutoscaler",
         "Scope": "Namespaced"
@@ -15862,7 +15881,7 @@
       },
       "x-fabric8-info": {
         "Type": "list",
-        "Group": "",
+        "Group": "autoscaling",
         "Version": "v2",
         "Kind": "HorizontalPodAutoscalerList",
         "Scope": "Namespaced"
@@ -15897,7 +15916,7 @@
       },
       "x-fabric8-info": {
         "Type": "object",
-        "Group": "",
+        "Group": "autoscaling",
         "Version": "v2beta1",
         "Kind": "HorizontalPodAutoscaler",
         "Scope": "Namespaced"
@@ -15933,7 +15952,7 @@
       },
       "x-fabric8-info": {
         "Type": "list",
-        "Group": "",
+        "Group": "autoscaling",
         "Version": "v2beta1",
         "Kind": "HorizontalPodAutoscalerList",
         "Scope": "Namespaced"
@@ -15968,7 +15987,7 @@
       },
       "x-fabric8-info": {
         "Type": "object",
-        "Group": "",
+        "Group": "autoscaling",
         "Version": "v2beta2",
         "Kind": "HorizontalPodAutoscaler",
         "Scope": "Namespaced"
@@ -16004,7 +16023,7 @@
       },
       "x-fabric8-info": {
         "Type": "list",
-        "Group": "",
+        "Group": "autoscaling",
         "Version": "v2beta2",
         "Kind": "HorizontalPodAutoscalerList",
         "Scope": "Namespaced"
@@ -16039,7 +16058,7 @@
       },
       "x-fabric8-info": {
         "Type": "object",
-        "Group": "",
+        "Group": "batch",
         "Version": "v1",
         "Kind": "CronJob",
         "Scope": "Namespaced"
@@ -16075,7 +16094,7 @@
       },
       "x-fabric8-info": {
         "Type": "list",
-        "Group": "",
+        "Group": "batch",
         "Version": "v1",
         "Kind": "CronJobList",
         "Scope": "Namespaced"
@@ -16110,7 +16129,7 @@
       },
       "x-fabric8-info": {
         "Type": "object",
-        "Group": "",
+        "Group": "batch",
         "Version": "v1",
         "Kind": "Job",
         "Scope": "Namespaced"
@@ -16146,7 +16165,7 @@
       },
       "x-fabric8-info": {
         "Type": "list",
-        "Group": "",
+        "Group": "batch",
         "Version": "v1",
         "Kind": "JobList",
         "Scope": "Namespaced"
@@ -16181,7 +16200,7 @@
       },
       "x-fabric8-info": {
         "Type": "object",
-        "Group": "",
+        "Group": "batch",
         "Version": "v1beta1",
         "Kind": "CronJob",
         "Scope": "Namespaced"
@@ -16217,7 +16236,7 @@
       },
       "x-fabric8-info": {
         "Type": "list",
-        "Group": "",
+        "Group": "batch",
         "Version": "v1beta1",
         "Kind": "CronJobList",
         "Scope": "Namespaced"
@@ -16364,80 +16383,6 @@
         "Scope": "Namespaced"
       }
     },
-    "io.k8s.api.certificates.v1alpha1.PodCertificateRequest": {
-      "type": "object",
-      "required": [
-        "spec"
-      ],
-      "properties": {
-        "apiVersion": {
-          "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
-          "type": "string"
-        },
-        "kind": {
-          "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
-          "type": "string"
-        },
-        "metadata": {
-          "description": "metadata contains the object metadata.",
-          "default": {},
-          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta"
-        },
-        "spec": {
-          "description": "spec contains the details about the certificate being requested.",
-          "default": {},
-          "$ref": "#/definitions/io.k8s.api.certificates.v1alpha1.PodCertificateRequestSpec"
-        },
-        "status": {
-          "description": "status contains the issued certificate, and a standard set of conditions.",
-          "default": {},
-          "$ref": "#/definitions/io.k8s.api.certificates.v1alpha1.PodCertificateRequestStatus"
-        }
-      },
-      "x-fabric8-info": {
-        "Type": "object",
-        "Group": "certificates.k8s.io",
-        "Version": "v1alpha1",
-        "Kind": "PodCertificateRequest",
-        "Scope": "Namespaced"
-      }
-    },
-    "io.k8s.api.certificates.v1alpha1.PodCertificateRequestList": {
-      "type": "object",
-      "required": [
-        "items"
-      ],
-      "properties": {
-        "apiVersion": {
-          "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
-          "type": "string"
-        },
-        "items": {
-          "description": "items is a collection of PodCertificateRequest objects",
-          "type": "array",
-          "items": {
-            "default": {},
-            "$ref": "#/definitions/io.k8s.api.certificates.v1alpha1.PodCertificateRequest"
-          }
-        },
-        "kind": {
-          "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
-          "type": "string"
-        },
-        "metadata": {
-          "description": "metadata contains the list metadata.",
-          "default": {},
-          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ListMeta"
-        }
-      },
-      "x-fabric8-info": {
-        "Type": "list",
-        "Group": "certificates.k8s.io",
-        "Version": "v1alpha1",
-        "Kind": "PodCertificateRequestList",
-        "Scope": "Namespaced"
-      }
-    },
     "io.k8s.api.certificates.v1beta1.CertificateSigningRequest": {
       "type": "object",
       "required": [
@@ -16575,6 +16520,80 @@
         "Group": "certificates.k8s.io",
         "Version": "v1beta1",
         "Kind": "ClusterTrustBundleList",
+        "Scope": "Namespaced"
+      }
+    },
+    "io.k8s.api.certificates.v1beta1.PodCertificateRequest": {
+      "type": "object",
+      "required": [
+        "spec"
+      ],
+      "properties": {
+        "apiVersion": {
+          "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
+          "type": "string"
+        },
+        "kind": {
+          "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
+          "type": "string"
+        },
+        "metadata": {
+          "description": "metadata contains the object metadata.",
+          "default": {},
+          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta"
+        },
+        "spec": {
+          "description": "spec contains the details about the certificate being requested.",
+          "default": {},
+          "$ref": "#/definitions/io.k8s.api.certificates.v1beta1.PodCertificateRequestSpec"
+        },
+        "status": {
+          "description": "status contains the issued certificate, and a standard set of conditions.",
+          "default": {},
+          "$ref": "#/definitions/io.k8s.api.certificates.v1beta1.PodCertificateRequestStatus"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "object",
+        "Group": "certificates.k8s.io",
+        "Version": "v1beta1",
+        "Kind": "PodCertificateRequest",
+        "Scope": "Namespaced"
+      }
+    },
+    "io.k8s.api.certificates.v1beta1.PodCertificateRequestList": {
+      "type": "object",
+      "required": [
+        "items"
+      ],
+      "properties": {
+        "apiVersion": {
+          "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
+          "type": "string"
+        },
+        "items": {
+          "description": "items is a collection of PodCertificateRequest objects",
+          "type": "array",
+          "items": {
+            "default": {},
+            "$ref": "#/definitions/io.k8s.api.certificates.v1beta1.PodCertificateRequest"
+          }
+        },
+        "kind": {
+          "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
+          "type": "string"
+        },
+        "metadata": {
+          "description": "metadata contains the list metadata.",
+          "default": {},
+          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ListMeta"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "list",
+        "Group": "certificates.k8s.io",
+        "Version": "v1beta1",
+        "Kind": "PodCertificateRequestList",
         "Scope": "Namespaced"
       }
     },
@@ -18614,7 +18633,7 @@
       },
       "x-fabric8-info": {
         "Type": "object",
-        "Group": "",
+        "Group": "extensions",
         "Version": "v1beta1",
         "Kind": "DaemonSet",
         "Scope": "Namespaced"
@@ -18650,7 +18669,7 @@
       },
       "x-fabric8-info": {
         "Type": "list",
-        "Group": "",
+        "Group": "extensions",
         "Version": "v1beta1",
         "Kind": "DaemonSetList",
         "Scope": "Namespaced"
@@ -18685,7 +18704,7 @@
       },
       "x-fabric8-info": {
         "Type": "object",
-        "Group": "",
+        "Group": "extensions",
         "Version": "v1beta1",
         "Kind": "Deployment",
         "Scope": "Namespaced"
@@ -18721,7 +18740,7 @@
       },
       "x-fabric8-info": {
         "Type": "list",
-        "Group": "",
+        "Group": "extensions",
         "Version": "v1beta1",
         "Kind": "DeploymentList",
         "Scope": "Namespaced"
@@ -18763,7 +18782,7 @@
       },
       "x-fabric8-info": {
         "Type": "object",
-        "Group": "",
+        "Group": "extensions",
         "Version": "v1beta1",
         "Kind": "DeploymentRollback",
         "Scope": "Namespaced"
@@ -18798,7 +18817,7 @@
       },
       "x-fabric8-info": {
         "Type": "object",
-        "Group": "",
+        "Group": "extensions",
         "Version": "v1beta1",
         "Kind": "Ingress",
         "Scope": "Namespaced"
@@ -18834,7 +18853,7 @@
       },
       "x-fabric8-info": {
         "Type": "list",
-        "Group": "",
+        "Group": "extensions",
         "Version": "v1beta1",
         "Kind": "IngressList",
         "Scope": "Namespaced"
@@ -18864,7 +18883,7 @@
       },
       "x-fabric8-info": {
         "Type": "object",
-        "Group": "",
+        "Group": "extensions",
         "Version": "v1beta1",
         "Kind": "NetworkPolicy",
         "Scope": "Namespaced"
@@ -18900,7 +18919,7 @@
       },
       "x-fabric8-info": {
         "Type": "list",
-        "Group": "",
+        "Group": "extensions",
         "Version": "v1beta1",
         "Kind": "NetworkPolicyList",
         "Scope": "Namespaced"
@@ -18935,7 +18954,7 @@
       },
       "x-fabric8-info": {
         "Type": "object",
-        "Group": "",
+        "Group": "extensions",
         "Version": "v1beta1",
         "Kind": "ReplicaSet",
         "Scope": "Namespaced"
@@ -18971,7 +18990,7 @@
       },
       "x-fabric8-info": {
         "Type": "list",
-        "Group": "",
+        "Group": "extensions",
         "Version": "v1beta1",
         "Kind": "ReplicaSetList",
         "Scope": "Namespaced"
@@ -19006,7 +19025,7 @@
       },
       "x-fabric8-info": {
         "Type": "object",
-        "Group": "",
+        "Group": "extensions",
         "Version": "v1beta1",
         "Kind": "Scale",
         "Scope": "Namespaced"
@@ -20440,7 +20459,7 @@
       },
       "x-fabric8-info": {
         "Type": "object",
-        "Group": "",
+        "Group": "policy",
         "Version": "v1",
         "Kind": "Eviction",
         "Scope": "Namespaced"
@@ -20475,7 +20494,7 @@
       },
       "x-fabric8-info": {
         "Type": "object",
-        "Group": "",
+        "Group": "policy",
         "Version": "v1",
         "Kind": "PodDisruptionBudget",
         "Scope": "Namespaced"
@@ -20511,7 +20530,7 @@
       },
       "x-fabric8-info": {
         "Type": "list",
-        "Group": "",
+        "Group": "policy",
         "Version": "v1",
         "Kind": "PodDisruptionBudgetList",
         "Scope": "Namespaced"
@@ -20540,7 +20559,7 @@
       },
       "x-fabric8-info": {
         "Type": "object",
-        "Group": "",
+        "Group": "policy",
         "Version": "v1beta1",
         "Kind": "Eviction",
         "Scope": "Namespaced"
@@ -20575,7 +20594,7 @@
       },
       "x-fabric8-info": {
         "Type": "object",
-        "Group": "",
+        "Group": "policy",
         "Version": "v1beta1",
         "Kind": "PodDisruptionBudget",
         "Scope": "Namespaced"
@@ -20611,7 +20630,7 @@
       },
       "x-fabric8-info": {
         "Type": "list",
-        "Group": "",
+        "Group": "policy",
         "Version": "v1beta1",
         "Kind": "PodDisruptionBudgetList",
         "Scope": "Namespaced"
@@ -21821,6 +21840,11 @@
           "description": "Spec specifies the selector and one taint.\n\nChanging the spec automatically increments the metadata.generation number.",
           "default": {},
           "$ref": "#/definitions/io.k8s.api.resource.v1alpha3.DeviceTaintRuleSpec"
+        },
+        "status": {
+          "description": "Status provides information about what was requested in the spec.",
+          "default": {},
+          "$ref": "#/definitions/io.k8s.api.resource.v1alpha3.DeviceTaintRuleStatus"
         }
       },
       "x-fabric8-info": {
@@ -22590,6 +22614,75 @@
         "Group": "scheduling.k8s.io",
         "Version": "v1alpha1",
         "Kind": "PriorityClassList",
+        "Scope": "Namespaced"
+      }
+    },
+    "io.k8s.api.scheduling.v1alpha1.Workload": {
+      "type": "object",
+      "required": [
+        "spec"
+      ],
+      "properties": {
+        "apiVersion": {
+          "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
+          "type": "string"
+        },
+        "kind": {
+          "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
+          "type": "string"
+        },
+        "metadata": {
+          "description": "Standard object's metadata. Name must be a DNS subdomain.",
+          "default": {},
+          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta"
+        },
+        "spec": {
+          "description": "Spec defines the desired behavior of a Workload.",
+          "default": {},
+          "$ref": "#/definitions/io.k8s.api.scheduling.v1alpha1.WorkloadSpec"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "object",
+        "Group": "scheduling.k8s.io",
+        "Version": "v1alpha1",
+        "Kind": "Workload",
+        "Scope": "Namespaced"
+      }
+    },
+    "io.k8s.api.scheduling.v1alpha1.WorkloadList": {
+      "type": "object",
+      "required": [
+        "items"
+      ],
+      "properties": {
+        "apiVersion": {
+          "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
+          "type": "string"
+        },
+        "items": {
+          "description": "Items is the list of Workloads.",
+          "type": "array",
+          "items": {
+            "default": {},
+            "$ref": "#/definitions/io.k8s.api.scheduling.v1alpha1.Workload"
+          }
+        },
+        "kind": {
+          "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
+          "type": "string"
+        },
+        "metadata": {
+          "description": "Standard list metadata.",
+          "default": {},
+          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ListMeta"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "list",
+        "Group": "scheduling.k8s.io",
+        "Version": "v1alpha1",
+        "Kind": "WorkloadList",
         "Scope": "Namespaced"
       }
     },
@@ -23861,7 +23954,7 @@
         "Scope": "Namespaced"
       }
     },
-    "io.k8s.api.storagemigration.v1alpha1.StorageVersionMigration": {
+    "io.k8s.api.storagemigration.v1beta1.StorageVersionMigration": {
       "type": "object",
       "properties": {
         "apiVersion": {
@@ -23880,23 +23973,23 @@
         "spec": {
           "description": "Specification of the migration.",
           "default": {},
-          "$ref": "#/definitions/io.k8s.api.storagemigration.v1alpha1.StorageVersionMigrationSpec"
+          "$ref": "#/definitions/io.k8s.api.storagemigration.v1beta1.StorageVersionMigrationSpec"
         },
         "status": {
           "description": "Status of the migration.",
           "default": {},
-          "$ref": "#/definitions/io.k8s.api.storagemigration.v1alpha1.StorageVersionMigrationStatus"
+          "$ref": "#/definitions/io.k8s.api.storagemigration.v1beta1.StorageVersionMigrationStatus"
         }
       },
       "x-fabric8-info": {
         "Type": "object",
         "Group": "storagemigration.k8s.io",
-        "Version": "v1alpha1",
+        "Version": "v1beta1",
         "Kind": "StorageVersionMigration",
         "Scope": "Clustered"
       }
     },
-    "io.k8s.api.storagemigration.v1alpha1.StorageVersionMigrationList": {
+    "io.k8s.api.storagemigration.v1beta1.StorageVersionMigrationList": {
       "type": "object",
       "required": [
         "items"
@@ -23911,14 +24004,8 @@
           "type": "array",
           "items": {
             "default": {},
-            "$ref": "#/definitions/io.k8s.api.storagemigration.v1alpha1.StorageVersionMigration"
-          },
-          "x-kubernetes-list-map-keys": [
-            "type"
-          ],
-          "x-kubernetes-list-type": "map",
-          "x-kubernetes-patch-merge-key": "type",
-          "x-kubernetes-patch-strategy": "merge"
+            "$ref": "#/definitions/io.k8s.api.storagemigration.v1beta1.StorageVersionMigration"
+          }
         },
         "kind": {
           "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
@@ -23933,7 +24020,7 @@
       "x-fabric8-info": {
         "Type": "list",
         "Group": "storagemigration.k8s.io",
-        "Version": "v1alpha1",
+        "Version": "v1beta1",
         "Kind": "StorageVersionMigrationList",
         "Scope": "Namespaced"
       }

@@ -40,8 +40,11 @@ import lombok.experimental.Accessors;
 @JsonPropertyOrder({
     "appliedManifestWorkEvictionGracePeriod",
     "featureGates",
+    "hubKubeAPIBurst",
+    "hubKubeAPIQPS",
     "kubeAPIBurst",
-    "kubeAPIQPS"
+    "kubeAPIQPS",
+    "statusSyncInterval"
 })
 @ToString
 @EqualsAndHashCode
@@ -73,10 +76,16 @@ public class WorkAgentConfiguration implements Editable<WorkAgentConfigurationBu
     @JsonProperty("featureGates")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<FeatureGate> featureGates = new ArrayList<>();
+    @JsonProperty("hubKubeAPIBurst")
+    private Integer hubKubeAPIBurst;
+    @JsonProperty("hubKubeAPIQPS")
+    private Integer hubKubeAPIQPS;
     @JsonProperty("kubeAPIBurst")
     private Integer kubeAPIBurst;
     @JsonProperty("kubeAPIQPS")
     private Integer kubeAPIQPS;
+    @JsonProperty("statusSyncInterval")
+    private Duration statusSyncInterval;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -86,12 +95,15 @@ public class WorkAgentConfiguration implements Editable<WorkAgentConfigurationBu
     public WorkAgentConfiguration() {
     }
 
-    public WorkAgentConfiguration(Duration appliedManifestWorkEvictionGracePeriod, List<FeatureGate> featureGates, Integer kubeAPIBurst, Integer kubeAPIQPS) {
+    public WorkAgentConfiguration(Duration appliedManifestWorkEvictionGracePeriod, List<FeatureGate> featureGates, Integer hubKubeAPIBurst, Integer hubKubeAPIQPS, Integer kubeAPIBurst, Integer kubeAPIQPS, Duration statusSyncInterval) {
         super();
         this.appliedManifestWorkEvictionGracePeriod = appliedManifestWorkEvictionGracePeriod;
         this.featureGates = featureGates;
+        this.hubKubeAPIBurst = hubKubeAPIBurst;
+        this.hubKubeAPIQPS = hubKubeAPIQPS;
         this.kubeAPIBurst = kubeAPIBurst;
         this.kubeAPIQPS = kubeAPIQPS;
+        this.statusSyncInterval = statusSyncInterval;
     }
 
     @JsonProperty("appliedManifestWorkEvictionGracePeriod")
@@ -122,7 +134,39 @@ public class WorkAgentConfiguration implements Editable<WorkAgentConfigurationBu
     }
 
     /**
-     * KubeAPIBurst indicates the maximum burst of the throttle while talking with apiserver of hub cluster from the spoke cluster. If it is set empty, use the default value: 100
+     * HubKubeAPIBurst indicates the maximum burst of the throttle while talking with apiserver on the hub cluster. If it is set empty, use the default value: 100
+     */
+    @JsonProperty("hubKubeAPIBurst")
+    public Integer getHubKubeAPIBurst() {
+        return hubKubeAPIBurst;
+    }
+
+    /**
+     * HubKubeAPIBurst indicates the maximum burst of the throttle while talking with apiserver on the hub cluster. If it is set empty, use the default value: 100
+     */
+    @JsonProperty("hubKubeAPIBurst")
+    public void setHubKubeAPIBurst(Integer hubKubeAPIBurst) {
+        this.hubKubeAPIBurst = hubKubeAPIBurst;
+    }
+
+    /**
+     * HubKubeAPIQPS indicates the maximum QPS while talking with apiserver on the hub cluster. If it is set empty, use the default value: 50
+     */
+    @JsonProperty("hubKubeAPIQPS")
+    public Integer getHubKubeAPIQPS() {
+        return hubKubeAPIQPS;
+    }
+
+    /**
+     * HubKubeAPIQPS indicates the maximum QPS while talking with apiserver on the hub cluster. If it is set empty, use the default value: 50
+     */
+    @JsonProperty("hubKubeAPIQPS")
+    public void setHubKubeAPIQPS(Integer hubKubeAPIQPS) {
+        this.hubKubeAPIQPS = hubKubeAPIQPS;
+    }
+
+    /**
+     * KubeAPIBurst indicates the maximum burst of the throttle while talking with apiserver on the spoke cluster. If it is set empty, use the default value: 100
      */
     @JsonProperty("kubeAPIBurst")
     public Integer getKubeAPIBurst() {
@@ -130,7 +174,7 @@ public class WorkAgentConfiguration implements Editable<WorkAgentConfigurationBu
     }
 
     /**
-     * KubeAPIBurst indicates the maximum burst of the throttle while talking with apiserver of hub cluster from the spoke cluster. If it is set empty, use the default value: 100
+     * KubeAPIBurst indicates the maximum burst of the throttle while talking with apiserver on the spoke cluster. If it is set empty, use the default value: 100
      */
     @JsonProperty("kubeAPIBurst")
     public void setKubeAPIBurst(Integer kubeAPIBurst) {
@@ -138,7 +182,7 @@ public class WorkAgentConfiguration implements Editable<WorkAgentConfigurationBu
     }
 
     /**
-     * KubeAPIQPS indicates the maximum QPS while talking with apiserver of hub cluster from the spoke cluster. If it is set empty, use the default value: 50
+     * KubeAPIQPS indicates the maximum QPS while talking with apiserver on the spoke cluster. If it is set empty, use the default value: 50
      */
     @JsonProperty("kubeAPIQPS")
     public Integer getKubeAPIQPS() {
@@ -146,11 +190,21 @@ public class WorkAgentConfiguration implements Editable<WorkAgentConfigurationBu
     }
 
     /**
-     * KubeAPIQPS indicates the maximum QPS while talking with apiserver of hub cluster from the spoke cluster. If it is set empty, use the default value: 50
+     * KubeAPIQPS indicates the maximum QPS while talking with apiserver on the spoke cluster. If it is set empty, use the default value: 50
      */
     @JsonProperty("kubeAPIQPS")
     public void setKubeAPIQPS(Integer kubeAPIQPS) {
         this.kubeAPIQPS = kubeAPIQPS;
+    }
+
+    @JsonProperty("statusSyncInterval")
+    public Duration getStatusSyncInterval() {
+        return statusSyncInterval;
+    }
+
+    @JsonProperty("statusSyncInterval")
+    public void setStatusSyncInterval(Duration statusSyncInterval) {
+        this.statusSyncInterval = statusSyncInterval;
     }
 
     @JsonIgnore

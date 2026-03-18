@@ -183,7 +183,7 @@ public class DockerSDConfig implements Editable<DockerSDConfigBuilder>, Kubernet
     }
 
     /**
-     * Whether to enable HTTP2.
+     * enableHTTP2 defines whether to enable HTTP2.
      */
     @JsonProperty("enableHTTP2")
     public Boolean getEnableHTTP2() {
@@ -191,7 +191,7 @@ public class DockerSDConfig implements Editable<DockerSDConfigBuilder>, Kubernet
     }
 
     /**
-     * Whether to enable HTTP2.
+     * enableHTTP2 defines whether to enable HTTP2.
      */
     @JsonProperty("enableHTTP2")
     public void setEnableHTTP2(Boolean enableHTTP2) {
@@ -199,7 +199,7 @@ public class DockerSDConfig implements Editable<DockerSDConfigBuilder>, Kubernet
     }
 
     /**
-     * Optional filters to limit the discovery process to a subset of the available resources.
+     * filters defines filters to limit the discovery process to a subset of the available resources.
      */
     @JsonProperty("filters")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -208,7 +208,7 @@ public class DockerSDConfig implements Editable<DockerSDConfigBuilder>, Kubernet
     }
 
     /**
-     * Optional filters to limit the discovery process to a subset of the available resources.
+     * filters defines filters to limit the discovery process to a subset of the available resources.
      */
     @JsonProperty("filters")
     public void setFilters(List<Filter> filters) {
@@ -216,7 +216,7 @@ public class DockerSDConfig implements Editable<DockerSDConfigBuilder>, Kubernet
     }
 
     /**
-     * Configure whether HTTP requests follow HTTP 3xx redirects.
+     * followRedirects defines whether HTTP requests follow HTTP 3xx redirects.
      */
     @JsonProperty("followRedirects")
     public Boolean getFollowRedirects() {
@@ -224,7 +224,7 @@ public class DockerSDConfig implements Editable<DockerSDConfigBuilder>, Kubernet
     }
 
     /**
-     * Configure whether HTTP requests follow HTTP 3xx redirects.
+     * followRedirects defines whether HTTP requests follow HTTP 3xx redirects.
      */
     @JsonProperty("followRedirects")
     public void setFollowRedirects(Boolean followRedirects) {
@@ -232,7 +232,7 @@ public class DockerSDConfig implements Editable<DockerSDConfigBuilder>, Kubernet
     }
 
     /**
-     * Address of the docker daemon
+     * host defines the address of the docker daemon
      */
     @JsonProperty("host")
     public String getHost() {
@@ -240,7 +240,7 @@ public class DockerSDConfig implements Editable<DockerSDConfigBuilder>, Kubernet
     }
 
     /**
-     * Address of the docker daemon
+     * host defines the address of the docker daemon
      */
     @JsonProperty("host")
     public void setHost(String host) {
@@ -248,7 +248,7 @@ public class DockerSDConfig implements Editable<DockerSDConfigBuilder>, Kubernet
     }
 
     /**
-     * The host to use if the container is in host networking mode.
+     * hostNetworkingHost defines the host to use if the container is in host networking mode.
      */
     @JsonProperty("hostNetworkingHost")
     public String getHostNetworkingHost() {
@@ -256,7 +256,7 @@ public class DockerSDConfig implements Editable<DockerSDConfigBuilder>, Kubernet
     }
 
     /**
-     * The host to use if the container is in host networking mode.
+     * hostNetworkingHost defines the host to use if the container is in host networking mode.
      */
     @JsonProperty("hostNetworkingHost")
     public void setHostNetworkingHost(String hostNetworkingHost) {
@@ -264,7 +264,7 @@ public class DockerSDConfig implements Editable<DockerSDConfigBuilder>, Kubernet
     }
 
     /**
-     * Configure whether to match the first network if the container has multiple networks defined. If unset, Prometheus uses true by default. It requires Prometheus &gt;= v2.54.1.
+     * matchFirstNetwork defines whether to match the first network if the container has multiple networks defined. If unset, Prometheus uses true by default. It requires Prometheus &gt;= v2.54.1.
      */
     @JsonProperty("matchFirstNetwork")
     public Boolean getMatchFirstNetwork() {
@@ -272,7 +272,7 @@ public class DockerSDConfig implements Editable<DockerSDConfigBuilder>, Kubernet
     }
 
     /**
-     * Configure whether to match the first network if the container has multiple networks defined. If unset, Prometheus uses true by default. It requires Prometheus &gt;= v2.54.1.
+     * matchFirstNetwork defines whether to match the first network if the container has multiple networks defined. If unset, Prometheus uses true by default. It requires Prometheus &gt;= v2.54.1.
      */
     @JsonProperty("matchFirstNetwork")
     public void setMatchFirstNetwork(Boolean matchFirstNetwork) {
@@ -280,7 +280,7 @@ public class DockerSDConfig implements Editable<DockerSDConfigBuilder>, Kubernet
     }
 
     /**
-     * `noProxy` is a comma-separated string that can contain IPs, CIDR notation, domain names that should be excluded from proxying. IP and domain names can contain port numbers.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
+     * noProxy defines a comma-separated string that can contain IPs, CIDR notation, domain names that should be excluded from proxying. IP and domain names can contain port numbers.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
      */
     @JsonProperty("noProxy")
     public String getNoProxy() {
@@ -288,7 +288,7 @@ public class DockerSDConfig implements Editable<DockerSDConfigBuilder>, Kubernet
     }
 
     /**
-     * `noProxy` is a comma-separated string that can contain IPs, CIDR notation, domain names that should be excluded from proxying. IP and domain names can contain port numbers.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
+     * noProxy defines a comma-separated string that can contain IPs, CIDR notation, domain names that should be excluded from proxying. IP and domain names can contain port numbers.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
      */
     @JsonProperty("noProxy")
     public void setNoProxy(String noProxy) {
@@ -312,7 +312,7 @@ public class DockerSDConfig implements Editable<DockerSDConfigBuilder>, Kubernet
     }
 
     /**
-     * The port to scrape metrics from.
+     * port defines the port to scrape metrics from. If using the public IP address, this must
      */
     @JsonProperty("port")
     public Integer getPort() {
@@ -320,7 +320,7 @@ public class DockerSDConfig implements Editable<DockerSDConfigBuilder>, Kubernet
     }
 
     /**
-     * The port to scrape metrics from.
+     * port defines the port to scrape metrics from. If using the public IP address, this must
      */
     @JsonProperty("port")
     public void setPort(Integer port) {
@@ -328,7 +328,7 @@ public class DockerSDConfig implements Editable<DockerSDConfigBuilder>, Kubernet
     }
 
     /**
-     * ProxyConnectHeader optionally specifies headers to send to proxies during CONNECT requests.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
+     * proxyConnectHeader optionally specifies headers to send to proxies during CONNECT requests.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
      */
     @JsonProperty("proxyConnectHeader")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -337,7 +337,7 @@ public class DockerSDConfig implements Editable<DockerSDConfigBuilder>, Kubernet
     }
 
     /**
-     * ProxyConnectHeader optionally specifies headers to send to proxies during CONNECT requests.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
+     * proxyConnectHeader optionally specifies headers to send to proxies during CONNECT requests.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
      */
     @JsonProperty("proxyConnectHeader")
     public void setProxyConnectHeader(Map<String, List<SecretKeySelector>> proxyConnectHeader) {
@@ -345,7 +345,7 @@ public class DockerSDConfig implements Editable<DockerSDConfigBuilder>, Kubernet
     }
 
     /**
-     * Whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
+     * proxyFromEnvironment defines whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
      */
     @JsonProperty("proxyFromEnvironment")
     public Boolean getProxyFromEnvironment() {
@@ -353,7 +353,7 @@ public class DockerSDConfig implements Editable<DockerSDConfigBuilder>, Kubernet
     }
 
     /**
-     * Whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
+     * proxyFromEnvironment defines whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
      */
     @JsonProperty("proxyFromEnvironment")
     public void setProxyFromEnvironment(Boolean proxyFromEnvironment) {
@@ -361,7 +361,7 @@ public class DockerSDConfig implements Editable<DockerSDConfigBuilder>, Kubernet
     }
 
     /**
-     * `proxyURL` defines the HTTP proxy server to use.
+     * proxyUrl defines the HTTP proxy server to use.
      */
     @JsonProperty("proxyUrl")
     public String getProxyUrl() {
@@ -369,7 +369,7 @@ public class DockerSDConfig implements Editable<DockerSDConfigBuilder>, Kubernet
     }
 
     /**
-     * `proxyURL` defines the HTTP proxy server to use.
+     * proxyUrl defines the HTTP proxy server to use.
      */
     @JsonProperty("proxyUrl")
     public void setProxyUrl(String proxyUrl) {
@@ -377,7 +377,7 @@ public class DockerSDConfig implements Editable<DockerSDConfigBuilder>, Kubernet
     }
 
     /**
-     * Time after which the container is refreshed.
+     * refreshInterval defines the time after which the provided names are refreshed. If not set, Prometheus uses its default value.
      */
     @JsonProperty("refreshInterval")
     public String getRefreshInterval() {
@@ -385,7 +385,7 @@ public class DockerSDConfig implements Editable<DockerSDConfigBuilder>, Kubernet
     }
 
     /**
-     * Time after which the container is refreshed.
+     * refreshInterval defines the time after which the provided names are refreshed. If not set, Prometheus uses its default value.
      */
     @JsonProperty("refreshInterval")
     public void setRefreshInterval(String refreshInterval) {

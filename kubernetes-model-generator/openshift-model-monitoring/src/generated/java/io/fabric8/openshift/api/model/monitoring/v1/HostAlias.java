@@ -88,7 +88,7 @@ public class HostAlias implements Editable<HostAliasBuilder>, KubernetesResource
     }
 
     /**
-     * Hostnames for the above IP address.
+     * hostnames defines hostnames for the above IP address.
      */
     @JsonProperty("hostnames")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -97,7 +97,7 @@ public class HostAlias implements Editable<HostAliasBuilder>, KubernetesResource
     }
 
     /**
-     * Hostnames for the above IP address.
+     * hostnames defines hostnames for the above IP address.
      */
     @JsonProperty("hostnames")
     public void setHostnames(List<String> hostnames) {
@@ -105,7 +105,7 @@ public class HostAlias implements Editable<HostAliasBuilder>, KubernetesResource
     }
 
     /**
-     * IP address of the host file entry.
+     * ip defines the IP address of the host file entry.
      */
     @JsonProperty("ip")
     public String getIp() {
@@ -113,7 +113,7 @@ public class HostAlias implements Editable<HostAliasBuilder>, KubernetesResource
     }
 
     /**
-     * IP address of the host file entry.
+     * ip defines the IP address of the host file entry.
      */
     @JsonProperty("ip")
     public void setIp(String ip) {

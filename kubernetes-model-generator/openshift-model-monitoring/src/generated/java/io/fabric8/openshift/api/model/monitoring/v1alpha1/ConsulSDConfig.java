@@ -185,7 +185,7 @@ public class ConsulSDConfig implements Editable<ConsulSDConfigBuilder>, Kubernet
     }
 
     /**
-     * Allow stale Consul results (see https://www.consul.io/api/features/consistency.html). Will reduce load on Consul. If unset, Prometheus uses its default value.
+     * allowStale Consul results (see https://www.consul.io/api/features/consistency.html). Will reduce load on Consul. If unset, Prometheus uses its default value.
      */
     @JsonProperty("allowStale")
     public Boolean getAllowStale() {
@@ -193,7 +193,7 @@ public class ConsulSDConfig implements Editable<ConsulSDConfigBuilder>, Kubernet
     }
 
     /**
-     * Allow stale Consul results (see https://www.consul.io/api/features/consistency.html). Will reduce load on Consul. If unset, Prometheus uses its default value.
+     * allowStale Consul results (see https://www.consul.io/api/features/consistency.html). Will reduce load on Consul. If unset, Prometheus uses its default value.
      */
     @JsonProperty("allowStale")
     public void setAllowStale(Boolean allowStale) {
@@ -233,7 +233,7 @@ public class ConsulSDConfig implements Editable<ConsulSDConfigBuilder>, Kubernet
     }
 
     /**
-     * Consul Datacenter name, if not provided it will use the local Consul Agent Datacenter.
+     * datacenter defines the consul Datacenter name, if not provided it will use the local Consul Agent Datacenter.
      */
     @JsonProperty("datacenter")
     public String getDatacenter() {
@@ -241,7 +241,7 @@ public class ConsulSDConfig implements Editable<ConsulSDConfigBuilder>, Kubernet
     }
 
     /**
-     * Consul Datacenter name, if not provided it will use the local Consul Agent Datacenter.
+     * datacenter defines the consul Datacenter name, if not provided it will use the local Consul Agent Datacenter.
      */
     @JsonProperty("datacenter")
     public void setDatacenter(String datacenter) {
@@ -249,7 +249,7 @@ public class ConsulSDConfig implements Editable<ConsulSDConfigBuilder>, Kubernet
     }
 
     /**
-     * Whether to enable HTTP2. If unset, Prometheus uses its default value.
+     * enableHTTP2 defines whether to enable HTTP2.
      */
     @JsonProperty("enableHTTP2")
     public Boolean getEnableHTTP2() {
@@ -257,7 +257,7 @@ public class ConsulSDConfig implements Editable<ConsulSDConfigBuilder>, Kubernet
     }
 
     /**
-     * Whether to enable HTTP2. If unset, Prometheus uses its default value.
+     * enableHTTP2 defines whether to enable HTTP2.
      */
     @JsonProperty("enableHTTP2")
     public void setEnableHTTP2(Boolean enableHTTP2) {
@@ -265,7 +265,7 @@ public class ConsulSDConfig implements Editable<ConsulSDConfigBuilder>, Kubernet
     }
 
     /**
-     * Filter expression used to filter the catalog results. See https://www.consul.io/api-docs/catalog#list-services It requires Prometheus &gt;= 3.0.0.
+     * filter defines the filter expression used to filter the catalog results. See https://www.consul.io/api-docs/catalog#list-services It requires Prometheus &gt;= 3.0.0.
      */
     @JsonProperty("filter")
     public String getFilter() {
@@ -273,7 +273,7 @@ public class ConsulSDConfig implements Editable<ConsulSDConfigBuilder>, Kubernet
     }
 
     /**
-     * Filter expression used to filter the catalog results. See https://www.consul.io/api-docs/catalog#list-services It requires Prometheus &gt;= 3.0.0.
+     * filter defines the filter expression used to filter the catalog results. See https://www.consul.io/api-docs/catalog#list-services It requires Prometheus &gt;= 3.0.0.
      */
     @JsonProperty("filter")
     public void setFilter(String filter) {
@@ -281,7 +281,7 @@ public class ConsulSDConfig implements Editable<ConsulSDConfigBuilder>, Kubernet
     }
 
     /**
-     * Configure whether HTTP requests follow HTTP 3xx redirects. If unset, Prometheus uses its default value.
+     * followRedirects defines whether HTTP requests follow HTTP 3xx redirects.
      */
     @JsonProperty("followRedirects")
     public Boolean getFollowRedirects() {
@@ -289,7 +289,7 @@ public class ConsulSDConfig implements Editable<ConsulSDConfigBuilder>, Kubernet
     }
 
     /**
-     * Configure whether HTTP requests follow HTTP 3xx redirects. If unset, Prometheus uses its default value.
+     * followRedirects defines whether HTTP requests follow HTTP 3xx redirects.
      */
     @JsonProperty("followRedirects")
     public void setFollowRedirects(Boolean followRedirects) {
@@ -297,7 +297,7 @@ public class ConsulSDConfig implements Editable<ConsulSDConfigBuilder>, Kubernet
     }
 
     /**
-     * Namespaces are only supported in Consul Enterprise.<br><p> <br><p> It requires Prometheus &gt;= 2.28.0.
+     * namespace are only supported in Consul Enterprise.<br><p> <br><p> It requires Prometheus &gt;= 2.28.0.
      */
     @JsonProperty("namespace")
     public String getNamespace() {
@@ -305,7 +305,7 @@ public class ConsulSDConfig implements Editable<ConsulSDConfigBuilder>, Kubernet
     }
 
     /**
-     * Namespaces are only supported in Consul Enterprise.<br><p> <br><p> It requires Prometheus &gt;= 2.28.0.
+     * namespace are only supported in Consul Enterprise.<br><p> <br><p> It requires Prometheus &gt;= 2.28.0.
      */
     @JsonProperty("namespace")
     public void setNamespace(String namespace) {
@@ -313,7 +313,7 @@ public class ConsulSDConfig implements Editable<ConsulSDConfigBuilder>, Kubernet
     }
 
     /**
-     * `noProxy` is a comma-separated string that can contain IPs, CIDR notation, domain names that should be excluded from proxying. IP and domain names can contain port numbers.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
+     * noProxy defines a comma-separated string that can contain IPs, CIDR notation, domain names that should be excluded from proxying. IP and domain names can contain port numbers.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
      */
     @JsonProperty("noProxy")
     public String getNoProxy() {
@@ -321,7 +321,7 @@ public class ConsulSDConfig implements Editable<ConsulSDConfigBuilder>, Kubernet
     }
 
     /**
-     * `noProxy` is a comma-separated string that can contain IPs, CIDR notation, domain names that should be excluded from proxying. IP and domain names can contain port numbers.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
+     * noProxy defines a comma-separated string that can contain IPs, CIDR notation, domain names that should be excluded from proxying. IP and domain names can contain port numbers.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
      */
     @JsonProperty("noProxy")
     public void setNoProxy(String noProxy) {
@@ -329,7 +329,7 @@ public class ConsulSDConfig implements Editable<ConsulSDConfigBuilder>, Kubernet
     }
 
     /**
-     * Node metadata key/value pairs to filter nodes for a given service. Starting with Consul 1.14, it is recommended to use `filter` with the `NodeMeta` selector instead.
+     * nodeMeta defines the node metadata key/value pairs to filter nodes for a given service. Starting with Consul 1.14, it is recommended to use `filter` with the `NodeMeta` selector instead.
      */
     @JsonProperty("nodeMeta")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -338,7 +338,7 @@ public class ConsulSDConfig implements Editable<ConsulSDConfigBuilder>, Kubernet
     }
 
     /**
-     * Node metadata key/value pairs to filter nodes for a given service. Starting with Consul 1.14, it is recommended to use `filter` with the `NodeMeta` selector instead.
+     * nodeMeta defines the node metadata key/value pairs to filter nodes for a given service. Starting with Consul 1.14, it is recommended to use `filter` with the `NodeMeta` selector instead.
      */
     @JsonProperty("nodeMeta")
     public void setNodeMeta(Map<String, String> nodeMeta) {
@@ -362,7 +362,7 @@ public class ConsulSDConfig implements Editable<ConsulSDConfigBuilder>, Kubernet
     }
 
     /**
-     * Admin Partitions are only supported in Consul Enterprise.
+     * partition defines the admin Partitions are only supported in Consul Enterprise.
      */
     @JsonProperty("partition")
     public String getPartition() {
@@ -370,7 +370,7 @@ public class ConsulSDConfig implements Editable<ConsulSDConfigBuilder>, Kubernet
     }
 
     /**
-     * Admin Partitions are only supported in Consul Enterprise.
+     * partition defines the admin Partitions are only supported in Consul Enterprise.
      */
     @JsonProperty("partition")
     public void setPartition(String partition) {
@@ -378,7 +378,7 @@ public class ConsulSDConfig implements Editable<ConsulSDConfigBuilder>, Kubernet
     }
 
     /**
-     * Prefix for URIs for when consul is behind an API gateway (reverse proxy).<br><p> <br><p> It requires Prometheus &gt;= 2.45.0.
+     * pathPrefix defines the prefix for URIs for when consul is behind an API gateway (reverse proxy).<br><p> <br><p> It requires Prometheus &gt;= 2.45.0.
      */
     @JsonProperty("pathPrefix")
     public String getPathPrefix() {
@@ -386,7 +386,7 @@ public class ConsulSDConfig implements Editable<ConsulSDConfigBuilder>, Kubernet
     }
 
     /**
-     * Prefix for URIs for when consul is behind an API gateway (reverse proxy).<br><p> <br><p> It requires Prometheus &gt;= 2.45.0.
+     * pathPrefix defines the prefix for URIs for when consul is behind an API gateway (reverse proxy).<br><p> <br><p> It requires Prometheus &gt;= 2.45.0.
      */
     @JsonProperty("pathPrefix")
     public void setPathPrefix(String pathPrefix) {
@@ -394,7 +394,7 @@ public class ConsulSDConfig implements Editable<ConsulSDConfigBuilder>, Kubernet
     }
 
     /**
-     * ProxyConnectHeader optionally specifies headers to send to proxies during CONNECT requests.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
+     * proxyConnectHeader optionally specifies headers to send to proxies during CONNECT requests.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
      */
     @JsonProperty("proxyConnectHeader")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -403,7 +403,7 @@ public class ConsulSDConfig implements Editable<ConsulSDConfigBuilder>, Kubernet
     }
 
     /**
-     * ProxyConnectHeader optionally specifies headers to send to proxies during CONNECT requests.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
+     * proxyConnectHeader optionally specifies headers to send to proxies during CONNECT requests.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
      */
     @JsonProperty("proxyConnectHeader")
     public void setProxyConnectHeader(Map<String, List<SecretKeySelector>> proxyConnectHeader) {
@@ -411,7 +411,7 @@ public class ConsulSDConfig implements Editable<ConsulSDConfigBuilder>, Kubernet
     }
 
     /**
-     * Whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
+     * proxyFromEnvironment defines whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
      */
     @JsonProperty("proxyFromEnvironment")
     public Boolean getProxyFromEnvironment() {
@@ -419,7 +419,7 @@ public class ConsulSDConfig implements Editable<ConsulSDConfigBuilder>, Kubernet
     }
 
     /**
-     * Whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
+     * proxyFromEnvironment defines whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
      */
     @JsonProperty("proxyFromEnvironment")
     public void setProxyFromEnvironment(Boolean proxyFromEnvironment) {
@@ -427,7 +427,7 @@ public class ConsulSDConfig implements Editable<ConsulSDConfigBuilder>, Kubernet
     }
 
     /**
-     * `proxyURL` defines the HTTP proxy server to use.
+     * proxyUrl defines the HTTP proxy server to use.
      */
     @JsonProperty("proxyUrl")
     public String getProxyUrl() {
@@ -435,7 +435,7 @@ public class ConsulSDConfig implements Editable<ConsulSDConfigBuilder>, Kubernet
     }
 
     /**
-     * `proxyURL` defines the HTTP proxy server to use.
+     * proxyUrl defines the HTTP proxy server to use.
      */
     @JsonProperty("proxyUrl")
     public void setProxyUrl(String proxyUrl) {
@@ -443,7 +443,7 @@ public class ConsulSDConfig implements Editable<ConsulSDConfigBuilder>, Kubernet
     }
 
     /**
-     * The time after which the provided names are refreshed. On large setup it might be a good idea to increase this value because the catalog will change all the time. If unset, Prometheus uses its default value.
+     * refreshInterval defines the time after which the provided names are refreshed. If not set, Prometheus uses its default value.
      */
     @JsonProperty("refreshInterval")
     public String getRefreshInterval() {
@@ -451,7 +451,7 @@ public class ConsulSDConfig implements Editable<ConsulSDConfigBuilder>, Kubernet
     }
 
     /**
-     * The time after which the provided names are refreshed. On large setup it might be a good idea to increase this value because the catalog will change all the time. If unset, Prometheus uses its default value.
+     * refreshInterval defines the time after which the provided names are refreshed. If not set, Prometheus uses its default value.
      */
     @JsonProperty("refreshInterval")
     public void setRefreshInterval(String refreshInterval) {
@@ -459,7 +459,7 @@ public class ConsulSDConfig implements Editable<ConsulSDConfigBuilder>, Kubernet
     }
 
     /**
-     * HTTP Scheme default "http"
+     * scheme defines the HTTP Scheme.
      */
     @JsonProperty("scheme")
     public String getScheme() {
@@ -467,7 +467,7 @@ public class ConsulSDConfig implements Editable<ConsulSDConfigBuilder>, Kubernet
     }
 
     /**
-     * HTTP Scheme default "http"
+     * scheme defines the HTTP Scheme.
      */
     @JsonProperty("scheme")
     public void setScheme(String scheme) {
@@ -475,7 +475,7 @@ public class ConsulSDConfig implements Editable<ConsulSDConfigBuilder>, Kubernet
     }
 
     /**
-     * Consul server address. A valid string consisting of a hostname or IP followed by an optional port number.
+     * server defines the consul server address. A valid string consisting of a hostname or IP followed by an optional port number.
      */
     @JsonProperty("server")
     public String getServer() {
@@ -483,7 +483,7 @@ public class ConsulSDConfig implements Editable<ConsulSDConfigBuilder>, Kubernet
     }
 
     /**
-     * Consul server address. A valid string consisting of a hostname or IP followed by an optional port number.
+     * server defines the consul server address. A valid string consisting of a hostname or IP followed by an optional port number.
      */
     @JsonProperty("server")
     public void setServer(String server) {
@@ -491,7 +491,7 @@ public class ConsulSDConfig implements Editable<ConsulSDConfigBuilder>, Kubernet
     }
 
     /**
-     * A list of services for which targets are retrieved. If omitted, all services are scraped.
+     * services defines a list of services for which targets are retrieved. If omitted, all services are scraped.
      */
     @JsonProperty("services")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -500,7 +500,7 @@ public class ConsulSDConfig implements Editable<ConsulSDConfigBuilder>, Kubernet
     }
 
     /**
-     * A list of services for which targets are retrieved. If omitted, all services are scraped.
+     * services defines a list of services for which targets are retrieved. If omitted, all services are scraped.
      */
     @JsonProperty("services")
     public void setServices(List<String> services) {
@@ -508,7 +508,7 @@ public class ConsulSDConfig implements Editable<ConsulSDConfigBuilder>, Kubernet
     }
 
     /**
-     * The string by which Consul tags are joined into the tag label. If unset, Prometheus uses its default value.
+     * tagSeparator defines the string by which Consul tags are joined into the tag label. If unset, Prometheus uses its default value.
      */
     @JsonProperty("tagSeparator")
     public String getTagSeparator() {
@@ -516,7 +516,7 @@ public class ConsulSDConfig implements Editable<ConsulSDConfigBuilder>, Kubernet
     }
 
     /**
-     * The string by which Consul tags are joined into the tag label. If unset, Prometheus uses its default value.
+     * tagSeparator defines the string by which Consul tags are joined into the tag label. If unset, Prometheus uses its default value.
      */
     @JsonProperty("tagSeparator")
     public void setTagSeparator(String tagSeparator) {
@@ -524,7 +524,7 @@ public class ConsulSDConfig implements Editable<ConsulSDConfigBuilder>, Kubernet
     }
 
     /**
-     * An optional list of tags used to filter nodes for a given service. Services must contain all tags in the list. Starting with Consul 1.14, it is recommended to use `filter` with the `ServiceTags` selector instead.
+     * tags defines an optional list of tags used to filter nodes for a given service. Services must contain all tags in the list. Starting with Consul 1.14, it is recommended to use `filter` with the `ServiceTags` selector instead.
      */
     @JsonProperty("tags")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -533,7 +533,7 @@ public class ConsulSDConfig implements Editable<ConsulSDConfigBuilder>, Kubernet
     }
 
     /**
-     * An optional list of tags used to filter nodes for a given service. Services must contain all tags in the list. Starting with Consul 1.14, it is recommended to use `filter` with the `ServiceTags` selector instead.
+     * tags defines an optional list of tags used to filter nodes for a given service. Services must contain all tags in the list. Starting with Consul 1.14, it is recommended to use `filter` with the `ServiceTags` selector instead.
      */
     @JsonProperty("tags")
     public void setTags(List<String> tags) {

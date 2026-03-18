@@ -33,7 +33,7 @@ import lombok.ToString;
 import lombok.experimental.Accessors;
 
 /**
- * Sigv4 optionally configures AWS's Signature Verification 4 signing process to sign requests.
+ * Sigv4 defines AWS's Signature Verification 4 signing process to sign requests.
  */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -42,7 +42,8 @@ import lombok.experimental.Accessors;
     "profile",
     "region",
     "roleArn",
-    "secretKey"
+    "secretKey",
+    "useFIPSSTSEndpoint"
 })
 @ToString
 @EqualsAndHashCode
@@ -79,6 +80,8 @@ public class Sigv4 implements Editable<Sigv4Builder>, KubernetesResource
     private String roleArn;
     @JsonProperty("secretKey")
     private SecretKeySelector secretKey;
+    @JsonProperty("useFIPSSTSEndpoint")
+    private Boolean useFIPSSTSEndpoint;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -88,17 +91,18 @@ public class Sigv4 implements Editable<Sigv4Builder>, KubernetesResource
     public Sigv4() {
     }
 
-    public Sigv4(SecretKeySelector accessKey, String profile, String region, String roleArn, SecretKeySelector secretKey) {
+    public Sigv4(SecretKeySelector accessKey, String profile, String region, String roleArn, SecretKeySelector secretKey, Boolean useFIPSSTSEndpoint) {
         super();
         this.accessKey = accessKey;
         this.profile = profile;
         this.region = region;
         this.roleArn = roleArn;
         this.secretKey = secretKey;
+        this.useFIPSSTSEndpoint = useFIPSSTSEndpoint;
     }
 
     /**
-     * Sigv4 optionally configures AWS's Signature Verification 4 signing process to sign requests.
+     * Sigv4 defines AWS's Signature Verification 4 signing process to sign requests.
      */
     @JsonProperty("accessKey")
     public SecretKeySelector getAccessKey() {
@@ -106,7 +110,7 @@ public class Sigv4 implements Editable<Sigv4Builder>, KubernetesResource
     }
 
     /**
-     * Sigv4 optionally configures AWS's Signature Verification 4 signing process to sign requests.
+     * Sigv4 defines AWS's Signature Verification 4 signing process to sign requests.
      */
     @JsonProperty("accessKey")
     public void setAccessKey(SecretKeySelector accessKey) {
@@ -114,7 +118,7 @@ public class Sigv4 implements Editable<Sigv4Builder>, KubernetesResource
     }
 
     /**
-     * Profile is the named AWS profile used to authenticate.
+     * profile defines the named AWS profile used to authenticate.
      */
     @JsonProperty("profile")
     public String getProfile() {
@@ -122,7 +126,7 @@ public class Sigv4 implements Editable<Sigv4Builder>, KubernetesResource
     }
 
     /**
-     * Profile is the named AWS profile used to authenticate.
+     * profile defines the named AWS profile used to authenticate.
      */
     @JsonProperty("profile")
     public void setProfile(String profile) {
@@ -130,7 +134,7 @@ public class Sigv4 implements Editable<Sigv4Builder>, KubernetesResource
     }
 
     /**
-     * Region is the AWS region. If blank, the region from the default credentials chain used.
+     * region defines the AWS region. If blank, the region from the default credentials chain used.
      */
     @JsonProperty("region")
     public String getRegion() {
@@ -138,7 +142,7 @@ public class Sigv4 implements Editable<Sigv4Builder>, KubernetesResource
     }
 
     /**
-     * Region is the AWS region. If blank, the region from the default credentials chain used.
+     * region defines the AWS region. If blank, the region from the default credentials chain used.
      */
     @JsonProperty("region")
     public void setRegion(String region) {
@@ -146,7 +150,7 @@ public class Sigv4 implements Editable<Sigv4Builder>, KubernetesResource
     }
 
     /**
-     * RoleArn is the named AWS profile used to authenticate.
+     * roleArn defines the named AWS profile used to authenticate.
      */
     @JsonProperty("roleArn")
     public String getRoleArn() {
@@ -154,7 +158,7 @@ public class Sigv4 implements Editable<Sigv4Builder>, KubernetesResource
     }
 
     /**
-     * RoleArn is the named AWS profile used to authenticate.
+     * roleArn defines the named AWS profile used to authenticate.
      */
     @JsonProperty("roleArn")
     public void setRoleArn(String roleArn) {
@@ -162,7 +166,7 @@ public class Sigv4 implements Editable<Sigv4Builder>, KubernetesResource
     }
 
     /**
-     * Sigv4 optionally configures AWS's Signature Verification 4 signing process to sign requests.
+     * Sigv4 defines AWS's Signature Verification 4 signing process to sign requests.
      */
     @JsonProperty("secretKey")
     public SecretKeySelector getSecretKey() {
@@ -170,11 +174,27 @@ public class Sigv4 implements Editable<Sigv4Builder>, KubernetesResource
     }
 
     /**
-     * Sigv4 optionally configures AWS's Signature Verification 4 signing process to sign requests.
+     * Sigv4 defines AWS's Signature Verification 4 signing process to sign requests.
      */
     @JsonProperty("secretKey")
     public void setSecretKey(SecretKeySelector secretKey) {
         this.secretKey = secretKey;
+    }
+
+    /**
+     * useFIPSSTSEndpoint defines the FIPS mode for the AWS STS endpoint. It requires Prometheus &gt;= v2.54.0.
+     */
+    @JsonProperty("useFIPSSTSEndpoint")
+    public Boolean getUseFIPSSTSEndpoint() {
+        return useFIPSSTSEndpoint;
+    }
+
+    /**
+     * useFIPSSTSEndpoint defines the FIPS mode for the AWS STS endpoint. It requires Prometheus &gt;= v2.54.0.
+     */
+    @JsonProperty("useFIPSSTSEndpoint")
+    public void setUseFIPSSTSEndpoint(Boolean useFIPSSTSEndpoint) {
+        this.useFIPSSTSEndpoint = useFIPSSTSEndpoint;
     }
 
     @JsonIgnore

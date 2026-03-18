@@ -50,6 +50,7 @@ import lombok.experimental.Accessors;
     "authorization",
     "azureSDConfigs",
     "basicAuth",
+    "bodySizeLimit",
     "consulSDConfigs",
     "convertClassicHistogramsToNHCB",
     "digitalOceanSDConfigs",
@@ -100,6 +101,7 @@ import lombok.experimental.Accessors;
     "scrapeClass",
     "scrapeClassicHistograms",
     "scrapeInterval",
+    "scrapeNativeHistograms",
     "scrapeProtocols",
     "scrapeTimeout",
     "staticConfigs",
@@ -139,6 +141,8 @@ public class ScrapeConfigSpec implements Editable<ScrapeConfigSpecBuilder>, Kube
     private List<AzureSDConfig> azureSDConfigs = new ArrayList<>();
     @JsonProperty("basicAuth")
     private BasicAuth basicAuth;
+    @JsonProperty("bodySizeLimit")
+    private String bodySizeLimit;
     @JsonProperty("consulSDConfigs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<ConsulSDConfig> consulSDConfigs = new ArrayList<>();
@@ -264,6 +268,8 @@ public class ScrapeConfigSpec implements Editable<ScrapeConfigSpecBuilder>, Kube
     private Boolean scrapeClassicHistograms;
     @JsonProperty("scrapeInterval")
     private String scrapeInterval;
+    @JsonProperty("scrapeNativeHistograms")
+    private Boolean scrapeNativeHistograms;
     @JsonProperty("scrapeProtocols")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> scrapeProtocols = new ArrayList<>();
@@ -287,11 +293,12 @@ public class ScrapeConfigSpec implements Editable<ScrapeConfigSpecBuilder>, Kube
     public ScrapeConfigSpec() {
     }
 
-    public ScrapeConfigSpec(SafeAuthorization authorization, List<AzureSDConfig> azureSDConfigs, BasicAuth basicAuth, List<ConsulSDConfig> consulSDConfigs, Boolean convertClassicHistogramsToNHCB, List<DigitalOceanSDConfig> digitalOceanSDConfigs, List<DNSSDConfig> dnsSDConfigs, List<DockerSDConfig> dockerSDConfigs, List<DockerSwarmSDConfig> dockerSwarmSDConfigs, List<EC2SDConfig> ec2SDConfigs, Boolean enableCompression, Boolean enableHTTP2, List<EurekaSDConfig> eurekaSDConfigs, String fallbackScrapeProtocol, List<FileSDConfig> fileSDConfigs, List<GCESDConfig> gceSDConfigs, List<HetznerSDConfig> hetznerSDConfigs, Boolean honorLabels, Boolean honorTimestamps, List<HTTPSDConfig> httpSDConfigs, List<IonosSDConfig> ionosSDConfigs, String jobName, Long keepDroppedTargets, List<KubernetesSDConfig> kubernetesSDConfigs, List<KumaSDConfig> kumaSDConfigs, Long labelLimit, Long labelNameLengthLimit, Long labelValueLengthLimit, List<LightSailSDConfig> lightSailSDConfigs, List<LinodeSDConfig> linodeSDConfigs, List<RelabelConfig> metricRelabelings, String metricsPath, String nameEscapingScheme, String nameValidationScheme, Long nativeHistogramBucketLimit, Quantity nativeHistogramMinBucketFactor, String noProxy, List<NomadSDConfig> nomadSDConfigs, OAuth2 oauth2, List<OpenStackSDConfig> openstackSDConfigs, List<OVHCloudSDConfig> ovhcloudSDConfigs, Map<String, List<String>> params, Map<String, List<SecretKeySelector>> proxyConnectHeader, Boolean proxyFromEnvironment, String proxyUrl, List<PuppetDBSDConfig> puppetDBSDConfigs, List<RelabelConfig> relabelings, Long sampleLimit, List<ScalewaySDConfig> scalewaySDConfigs, String scheme, String scrapeClass, Boolean scrapeClassicHistograms, String scrapeInterval, List<String> scrapeProtocols, String scrapeTimeout, List<StaticConfig> staticConfigs, Long targetLimit, SafeTLSConfig tlsConfig, Boolean trackTimestampsStaleness) {
+    public ScrapeConfigSpec(SafeAuthorization authorization, List<AzureSDConfig> azureSDConfigs, BasicAuth basicAuth, String bodySizeLimit, List<ConsulSDConfig> consulSDConfigs, Boolean convertClassicHistogramsToNHCB, List<DigitalOceanSDConfig> digitalOceanSDConfigs, List<DNSSDConfig> dnsSDConfigs, List<DockerSDConfig> dockerSDConfigs, List<DockerSwarmSDConfig> dockerSwarmSDConfigs, List<EC2SDConfig> ec2SDConfigs, Boolean enableCompression, Boolean enableHTTP2, List<EurekaSDConfig> eurekaSDConfigs, String fallbackScrapeProtocol, List<FileSDConfig> fileSDConfigs, List<GCESDConfig> gceSDConfigs, List<HetznerSDConfig> hetznerSDConfigs, Boolean honorLabels, Boolean honorTimestamps, List<HTTPSDConfig> httpSDConfigs, List<IonosSDConfig> ionosSDConfigs, String jobName, Long keepDroppedTargets, List<KubernetesSDConfig> kubernetesSDConfigs, List<KumaSDConfig> kumaSDConfigs, Long labelLimit, Long labelNameLengthLimit, Long labelValueLengthLimit, List<LightSailSDConfig> lightSailSDConfigs, List<LinodeSDConfig> linodeSDConfigs, List<RelabelConfig> metricRelabelings, String metricsPath, String nameEscapingScheme, String nameValidationScheme, Long nativeHistogramBucketLimit, Quantity nativeHistogramMinBucketFactor, String noProxy, List<NomadSDConfig> nomadSDConfigs, OAuth2 oauth2, List<OpenStackSDConfig> openstackSDConfigs, List<OVHCloudSDConfig> ovhcloudSDConfigs, Map<String, List<String>> params, Map<String, List<SecretKeySelector>> proxyConnectHeader, Boolean proxyFromEnvironment, String proxyUrl, List<PuppetDBSDConfig> puppetDBSDConfigs, List<RelabelConfig> relabelings, Long sampleLimit, List<ScalewaySDConfig> scalewaySDConfigs, String scheme, String scrapeClass, Boolean scrapeClassicHistograms, String scrapeInterval, Boolean scrapeNativeHistograms, List<String> scrapeProtocols, String scrapeTimeout, List<StaticConfig> staticConfigs, Long targetLimit, SafeTLSConfig tlsConfig, Boolean trackTimestampsStaleness) {
         super();
         this.authorization = authorization;
         this.azureSDConfigs = azureSDConfigs;
         this.basicAuth = basicAuth;
+        this.bodySizeLimit = bodySizeLimit;
         this.consulSDConfigs = consulSDConfigs;
         this.convertClassicHistogramsToNHCB = convertClassicHistogramsToNHCB;
         this.digitalOceanSDConfigs = digitalOceanSDConfigs;
@@ -342,6 +349,7 @@ public class ScrapeConfigSpec implements Editable<ScrapeConfigSpecBuilder>, Kube
         this.scrapeClass = scrapeClass;
         this.scrapeClassicHistograms = scrapeClassicHistograms;
         this.scrapeInterval = scrapeInterval;
+        this.scrapeNativeHistograms = scrapeNativeHistograms;
         this.scrapeProtocols = scrapeProtocols;
         this.scrapeTimeout = scrapeTimeout;
         this.staticConfigs = staticConfigs;
@@ -367,7 +375,7 @@ public class ScrapeConfigSpec implements Editable<ScrapeConfigSpecBuilder>, Kube
     }
 
     /**
-     * AzureSDConfigs defines a list of Azure service discovery configurations.
+     * azureSDConfigs defines a list of Azure service discovery configurations.
      */
     @JsonProperty("azureSDConfigs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -376,7 +384,7 @@ public class ScrapeConfigSpec implements Editable<ScrapeConfigSpecBuilder>, Kube
     }
 
     /**
-     * AzureSDConfigs defines a list of Azure service discovery configurations.
+     * azureSDConfigs defines a list of Azure service discovery configurations.
      */
     @JsonProperty("azureSDConfigs")
     public void setAzureSDConfigs(List<AzureSDConfig> azureSDConfigs) {
@@ -400,7 +408,23 @@ public class ScrapeConfigSpec implements Editable<ScrapeConfigSpecBuilder>, Kube
     }
 
     /**
-     * ConsulSDConfigs defines a list of Consul service discovery configurations.
+     * bodySizeLimit defines a per-scrape limit on the size of the uncompressed response body that will be accepted by Prometheus. Targets responding with a body larger than this many bytes will cause the scrape to fail.<br><p> <br><p> It requires Prometheus &gt;= v2.28.0.
+     */
+    @JsonProperty("bodySizeLimit")
+    public String getBodySizeLimit() {
+        return bodySizeLimit;
+    }
+
+    /**
+     * bodySizeLimit defines a per-scrape limit on the size of the uncompressed response body that will be accepted by Prometheus. Targets responding with a body larger than this many bytes will cause the scrape to fail.<br><p> <br><p> It requires Prometheus &gt;= v2.28.0.
+     */
+    @JsonProperty("bodySizeLimit")
+    public void setBodySizeLimit(String bodySizeLimit) {
+        this.bodySizeLimit = bodySizeLimit;
+    }
+
+    /**
+     * consulSDConfigs defines a list of Consul service discovery configurations.
      */
     @JsonProperty("consulSDConfigs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -409,7 +433,7 @@ public class ScrapeConfigSpec implements Editable<ScrapeConfigSpecBuilder>, Kube
     }
 
     /**
-     * ConsulSDConfigs defines a list of Consul service discovery configurations.
+     * consulSDConfigs defines a list of Consul service discovery configurations.
      */
     @JsonProperty("consulSDConfigs")
     public void setConsulSDConfigs(List<ConsulSDConfig> consulSDConfigs) {
@@ -417,7 +441,7 @@ public class ScrapeConfigSpec implements Editable<ScrapeConfigSpecBuilder>, Kube
     }
 
     /**
-     * Whether to convert all scraped classic histograms into a native histogram with custom buckets. It requires Prometheus &gt;= v3.0.0.
+     * convertClassicHistogramsToNHCB defines whether to convert all scraped classic histograms into a native histogram with custom buckets. It requires Prometheus &gt;= v3.0.0.
      */
     @JsonProperty("convertClassicHistogramsToNHCB")
     public Boolean getConvertClassicHistogramsToNHCB() {
@@ -425,7 +449,7 @@ public class ScrapeConfigSpec implements Editable<ScrapeConfigSpecBuilder>, Kube
     }
 
     /**
-     * Whether to convert all scraped classic histograms into a native histogram with custom buckets. It requires Prometheus &gt;= v3.0.0.
+     * convertClassicHistogramsToNHCB defines whether to convert all scraped classic histograms into a native histogram with custom buckets. It requires Prometheus &gt;= v3.0.0.
      */
     @JsonProperty("convertClassicHistogramsToNHCB")
     public void setConvertClassicHistogramsToNHCB(Boolean convertClassicHistogramsToNHCB) {
@@ -433,7 +457,7 @@ public class ScrapeConfigSpec implements Editable<ScrapeConfigSpecBuilder>, Kube
     }
 
     /**
-     * DigitalOceanSDConfigs defines a list of DigitalOcean service discovery configurations.
+     * digitalOceanSDConfigs defines a list of DigitalOcean service discovery configurations.
      */
     @JsonProperty("digitalOceanSDConfigs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -442,7 +466,7 @@ public class ScrapeConfigSpec implements Editable<ScrapeConfigSpecBuilder>, Kube
     }
 
     /**
-     * DigitalOceanSDConfigs defines a list of DigitalOcean service discovery configurations.
+     * digitalOceanSDConfigs defines a list of DigitalOcean service discovery configurations.
      */
     @JsonProperty("digitalOceanSDConfigs")
     public void setDigitalOceanSDConfigs(List<DigitalOceanSDConfig> digitalOceanSDConfigs) {
@@ -450,7 +474,7 @@ public class ScrapeConfigSpec implements Editable<ScrapeConfigSpecBuilder>, Kube
     }
 
     /**
-     * DNSSDConfigs defines a list of DNS service discovery configurations.
+     * dnsSDConfigs defines a list of DNS service discovery configurations.
      */
     @JsonProperty("dnsSDConfigs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -459,7 +483,7 @@ public class ScrapeConfigSpec implements Editable<ScrapeConfigSpecBuilder>, Kube
     }
 
     /**
-     * DNSSDConfigs defines a list of DNS service discovery configurations.
+     * dnsSDConfigs defines a list of DNS service discovery configurations.
      */
     @JsonProperty("dnsSDConfigs")
     public void setDnsSDConfigs(List<DNSSDConfig> dnsSDConfigs) {
@@ -467,7 +491,7 @@ public class ScrapeConfigSpec implements Editable<ScrapeConfigSpecBuilder>, Kube
     }
 
     /**
-     * DockerSDConfigs defines a list of Docker service discovery configurations.
+     * dockerSDConfigs defines a list of Docker service discovery configurations.
      */
     @JsonProperty("dockerSDConfigs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -476,7 +500,7 @@ public class ScrapeConfigSpec implements Editable<ScrapeConfigSpecBuilder>, Kube
     }
 
     /**
-     * DockerSDConfigs defines a list of Docker service discovery configurations.
+     * dockerSDConfigs defines a list of Docker service discovery configurations.
      */
     @JsonProperty("dockerSDConfigs")
     public void setDockerSDConfigs(List<DockerSDConfig> dockerSDConfigs) {
@@ -484,7 +508,7 @@ public class ScrapeConfigSpec implements Editable<ScrapeConfigSpecBuilder>, Kube
     }
 
     /**
-     * DockerswarmSDConfigs defines a list of Dockerswarm service discovery configurations.
+     * dockerSwarmSDConfigs defines a list of Dockerswarm service discovery configurations.
      */
     @JsonProperty("dockerSwarmSDConfigs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -493,7 +517,7 @@ public class ScrapeConfigSpec implements Editable<ScrapeConfigSpecBuilder>, Kube
     }
 
     /**
-     * DockerswarmSDConfigs defines a list of Dockerswarm service discovery configurations.
+     * dockerSwarmSDConfigs defines a list of Dockerswarm service discovery configurations.
      */
     @JsonProperty("dockerSwarmSDConfigs")
     public void setDockerSwarmSDConfigs(List<DockerSwarmSDConfig> dockerSwarmSDConfigs) {
@@ -501,7 +525,7 @@ public class ScrapeConfigSpec implements Editable<ScrapeConfigSpecBuilder>, Kube
     }
 
     /**
-     * EC2SDConfigs defines a list of EC2 service discovery configurations.
+     * ec2SDConfigs defines a list of EC2 service discovery configurations.
      */
     @JsonProperty("ec2SDConfigs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -510,7 +534,7 @@ public class ScrapeConfigSpec implements Editable<ScrapeConfigSpecBuilder>, Kube
     }
 
     /**
-     * EC2SDConfigs defines a list of EC2 service discovery configurations.
+     * ec2SDConfigs defines a list of EC2 service discovery configurations.
      */
     @JsonProperty("ec2SDConfigs")
     public void setEc2SDConfigs(List<EC2SDConfig> ec2SDConfigs) {
@@ -518,7 +542,7 @@ public class ScrapeConfigSpec implements Editable<ScrapeConfigSpecBuilder>, Kube
     }
 
     /**
-     * When false, Prometheus will request uncompressed response from the scraped target.<br><p> <br><p> It requires Prometheus &gt;= v2.49.0.<br><p> <br><p> If unset, Prometheus uses true by default.
+     * enableCompression when false, Prometheus will request uncompressed response from the scraped target.<br><p> <br><p> It requires Prometheus &gt;= v2.49.0.<br><p> <br><p> If unset, Prometheus uses true by default.
      */
     @JsonProperty("enableCompression")
     public Boolean getEnableCompression() {
@@ -526,7 +550,7 @@ public class ScrapeConfigSpec implements Editable<ScrapeConfigSpecBuilder>, Kube
     }
 
     /**
-     * When false, Prometheus will request uncompressed response from the scraped target.<br><p> <br><p> It requires Prometheus &gt;= v2.49.0.<br><p> <br><p> If unset, Prometheus uses true by default.
+     * enableCompression when false, Prometheus will request uncompressed response from the scraped target.<br><p> <br><p> It requires Prometheus &gt;= v2.49.0.<br><p> <br><p> If unset, Prometheus uses true by default.
      */
     @JsonProperty("enableCompression")
     public void setEnableCompression(Boolean enableCompression) {
@@ -534,7 +558,7 @@ public class ScrapeConfigSpec implements Editable<ScrapeConfigSpecBuilder>, Kube
     }
 
     /**
-     * Whether to enable HTTP2.
+     * enableHTTP2 defines whether to enable HTTP2.
      */
     @JsonProperty("enableHTTP2")
     public Boolean getEnableHTTP2() {
@@ -542,7 +566,7 @@ public class ScrapeConfigSpec implements Editable<ScrapeConfigSpecBuilder>, Kube
     }
 
     /**
-     * Whether to enable HTTP2.
+     * enableHTTP2 defines whether to enable HTTP2.
      */
     @JsonProperty("enableHTTP2")
     public void setEnableHTTP2(Boolean enableHTTP2) {
@@ -550,7 +574,7 @@ public class ScrapeConfigSpec implements Editable<ScrapeConfigSpecBuilder>, Kube
     }
 
     /**
-     * EurekaSDConfigs defines a list of Eureka service discovery configurations.
+     * eurekaSDConfigs defines a list of Eureka service discovery configurations.
      */
     @JsonProperty("eurekaSDConfigs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -559,7 +583,7 @@ public class ScrapeConfigSpec implements Editable<ScrapeConfigSpecBuilder>, Kube
     }
 
     /**
-     * EurekaSDConfigs defines a list of Eureka service discovery configurations.
+     * eurekaSDConfigs defines a list of Eureka service discovery configurations.
      */
     @JsonProperty("eurekaSDConfigs")
     public void setEurekaSDConfigs(List<EurekaSDConfig> eurekaSDConfigs) {
@@ -567,7 +591,7 @@ public class ScrapeConfigSpec implements Editable<ScrapeConfigSpecBuilder>, Kube
     }
 
     /**
-     * The protocol to use if a scrape returns blank, unparseable, or otherwise invalid Content-Type.<br><p> <br><p> It requires Prometheus &gt;= v3.0.0.
+     * fallbackScrapeProtocol defines the protocol to use if a scrape returns blank, unparseable, or otherwise invalid Content-Type.<br><p> <br><p> It requires Prometheus &gt;= v3.0.0.
      */
     @JsonProperty("fallbackScrapeProtocol")
     public String getFallbackScrapeProtocol() {
@@ -575,7 +599,7 @@ public class ScrapeConfigSpec implements Editable<ScrapeConfigSpecBuilder>, Kube
     }
 
     /**
-     * The protocol to use if a scrape returns blank, unparseable, or otherwise invalid Content-Type.<br><p> <br><p> It requires Prometheus &gt;= v3.0.0.
+     * fallbackScrapeProtocol defines the protocol to use if a scrape returns blank, unparseable, or otherwise invalid Content-Type.<br><p> <br><p> It requires Prometheus &gt;= v3.0.0.
      */
     @JsonProperty("fallbackScrapeProtocol")
     public void setFallbackScrapeProtocol(String fallbackScrapeProtocol) {
@@ -583,7 +607,7 @@ public class ScrapeConfigSpec implements Editable<ScrapeConfigSpecBuilder>, Kube
     }
 
     /**
-     * FileSDConfigs defines a list of file service discovery configurations.
+     * fileSDConfigs defines a list of file service discovery configurations.
      */
     @JsonProperty("fileSDConfigs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -592,7 +616,7 @@ public class ScrapeConfigSpec implements Editable<ScrapeConfigSpecBuilder>, Kube
     }
 
     /**
-     * FileSDConfigs defines a list of file service discovery configurations.
+     * fileSDConfigs defines a list of file service discovery configurations.
      */
     @JsonProperty("fileSDConfigs")
     public void setFileSDConfigs(List<FileSDConfig> fileSDConfigs) {
@@ -600,7 +624,7 @@ public class ScrapeConfigSpec implements Editable<ScrapeConfigSpecBuilder>, Kube
     }
 
     /**
-     * GCESDConfigs defines a list of GCE service discovery configurations.
+     * gceSDConfigs defines a list of GCE service discovery configurations.
      */
     @JsonProperty("gceSDConfigs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -609,7 +633,7 @@ public class ScrapeConfigSpec implements Editable<ScrapeConfigSpecBuilder>, Kube
     }
 
     /**
-     * GCESDConfigs defines a list of GCE service discovery configurations.
+     * gceSDConfigs defines a list of GCE service discovery configurations.
      */
     @JsonProperty("gceSDConfigs")
     public void setGceSDConfigs(List<GCESDConfig> gceSDConfigs) {
@@ -617,7 +641,7 @@ public class ScrapeConfigSpec implements Editable<ScrapeConfigSpecBuilder>, Kube
     }
 
     /**
-     * HetznerSDConfigs defines a list of Hetzner service discovery configurations.
+     * hetznerSDConfigs defines a list of Hetzner service discovery configurations.
      */
     @JsonProperty("hetznerSDConfigs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -626,7 +650,7 @@ public class ScrapeConfigSpec implements Editable<ScrapeConfigSpecBuilder>, Kube
     }
 
     /**
-     * HetznerSDConfigs defines a list of Hetzner service discovery configurations.
+     * hetznerSDConfigs defines a list of Hetzner service discovery configurations.
      */
     @JsonProperty("hetznerSDConfigs")
     public void setHetznerSDConfigs(List<HetznerSDConfig> hetznerSDConfigs) {
@@ -634,7 +658,7 @@ public class ScrapeConfigSpec implements Editable<ScrapeConfigSpecBuilder>, Kube
     }
 
     /**
-     * HonorLabels chooses the metric's labels on collisions with target labels.
+     * honorLabels defines when true the metric's labels when they collide with the target's labels.
      */
     @JsonProperty("honorLabels")
     public Boolean getHonorLabels() {
@@ -642,7 +666,7 @@ public class ScrapeConfigSpec implements Editable<ScrapeConfigSpecBuilder>, Kube
     }
 
     /**
-     * HonorLabels chooses the metric's labels on collisions with target labels.
+     * honorLabels defines when true the metric's labels when they collide with the target's labels.
      */
     @JsonProperty("honorLabels")
     public void setHonorLabels(Boolean honorLabels) {
@@ -650,7 +674,7 @@ public class ScrapeConfigSpec implements Editable<ScrapeConfigSpecBuilder>, Kube
     }
 
     /**
-     * HonorTimestamps controls whether Prometheus respects the timestamps present in scraped data.
+     * honorTimestamps defines whether Prometheus preserves the timestamps when exposed by the target.
      */
     @JsonProperty("honorTimestamps")
     public Boolean getHonorTimestamps() {
@@ -658,7 +682,7 @@ public class ScrapeConfigSpec implements Editable<ScrapeConfigSpecBuilder>, Kube
     }
 
     /**
-     * HonorTimestamps controls whether Prometheus respects the timestamps present in scraped data.
+     * honorTimestamps defines whether Prometheus preserves the timestamps when exposed by the target.
      */
     @JsonProperty("honorTimestamps")
     public void setHonorTimestamps(Boolean honorTimestamps) {
@@ -666,7 +690,7 @@ public class ScrapeConfigSpec implements Editable<ScrapeConfigSpecBuilder>, Kube
     }
 
     /**
-     * HTTPSDConfigs defines a list of HTTP service discovery configurations.
+     * httpSDConfigs defines a list of HTTP service discovery configurations.
      */
     @JsonProperty("httpSDConfigs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -675,7 +699,7 @@ public class ScrapeConfigSpec implements Editable<ScrapeConfigSpecBuilder>, Kube
     }
 
     /**
-     * HTTPSDConfigs defines a list of HTTP service discovery configurations.
+     * httpSDConfigs defines a list of HTTP service discovery configurations.
      */
     @JsonProperty("httpSDConfigs")
     public void setHttpSDConfigs(List<HTTPSDConfig> httpSDConfigs) {
@@ -683,7 +707,7 @@ public class ScrapeConfigSpec implements Editable<ScrapeConfigSpecBuilder>, Kube
     }
 
     /**
-     * IonosSDConfigs defines a list of IONOS service discovery configurations.
+     * ionosSDConfigs defines a list of IONOS service discovery configurations.
      */
     @JsonProperty("ionosSDConfigs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -692,7 +716,7 @@ public class ScrapeConfigSpec implements Editable<ScrapeConfigSpecBuilder>, Kube
     }
 
     /**
-     * IonosSDConfigs defines a list of IONOS service discovery configurations.
+     * ionosSDConfigs defines a list of IONOS service discovery configurations.
      */
     @JsonProperty("ionosSDConfigs")
     public void setIonosSDConfigs(List<IonosSDConfig> ionosSDConfigs) {
@@ -700,7 +724,7 @@ public class ScrapeConfigSpec implements Editable<ScrapeConfigSpecBuilder>, Kube
     }
 
     /**
-     * The value of the `job` label assigned to the scraped metrics by default.<br><p> <br><p> The `job_name` field in the rendered scrape configuration is always controlled by the operator to prevent duplicate job names, which Prometheus does not allow. Instead the `job` label is set by means of relabeling configs.
+     * jobName defines the value of the `job` label assigned to the scraped metrics by default.<br><p> <br><p> The `job_name` field in the rendered scrape configuration is always controlled by the operator to prevent duplicate job names, which Prometheus does not allow. Instead the `job` label is set by means of relabeling configs.
      */
     @JsonProperty("jobName")
     public String getJobName() {
@@ -708,7 +732,7 @@ public class ScrapeConfigSpec implements Editable<ScrapeConfigSpecBuilder>, Kube
     }
 
     /**
-     * The value of the `job` label assigned to the scraped metrics by default.<br><p> <br><p> The `job_name` field in the rendered scrape configuration is always controlled by the operator to prevent duplicate job names, which Prometheus does not allow. Instead the `job` label is set by means of relabeling configs.
+     * jobName defines the value of the `job` label assigned to the scraped metrics by default.<br><p> <br><p> The `job_name` field in the rendered scrape configuration is always controlled by the operator to prevent duplicate job names, which Prometheus does not allow. Instead the `job` label is set by means of relabeling configs.
      */
     @JsonProperty("jobName")
     public void setJobName(String jobName) {
@@ -716,7 +740,7 @@ public class ScrapeConfigSpec implements Editable<ScrapeConfigSpecBuilder>, Kube
     }
 
     /**
-     * Per-scrape limit on the number of targets dropped by relabeling that will be kept in memory. 0 means no limit.<br><p> <br><p> It requires Prometheus &gt;= v2.47.0.
+     * keepDroppedTargets defines the per-scrape limit on the number of targets dropped by relabeling that will be kept in memory. 0 means no limit.<br><p> <br><p> It requires Prometheus &gt;= v2.47.0.
      */
     @JsonProperty("keepDroppedTargets")
     public Long getKeepDroppedTargets() {
@@ -724,7 +748,7 @@ public class ScrapeConfigSpec implements Editable<ScrapeConfigSpecBuilder>, Kube
     }
 
     /**
-     * Per-scrape limit on the number of targets dropped by relabeling that will be kept in memory. 0 means no limit.<br><p> <br><p> It requires Prometheus &gt;= v2.47.0.
+     * keepDroppedTargets defines the per-scrape limit on the number of targets dropped by relabeling that will be kept in memory. 0 means no limit.<br><p> <br><p> It requires Prometheus &gt;= v2.47.0.
      */
     @JsonProperty("keepDroppedTargets")
     public void setKeepDroppedTargets(Long keepDroppedTargets) {
@@ -732,7 +756,7 @@ public class ScrapeConfigSpec implements Editable<ScrapeConfigSpecBuilder>, Kube
     }
 
     /**
-     * KubernetesSDConfigs defines a list of Kubernetes service discovery configurations.
+     * kubernetesSDConfigs defines a list of Kubernetes service discovery configurations.
      */
     @JsonProperty("kubernetesSDConfigs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -741,7 +765,7 @@ public class ScrapeConfigSpec implements Editable<ScrapeConfigSpecBuilder>, Kube
     }
 
     /**
-     * KubernetesSDConfigs defines a list of Kubernetes service discovery configurations.
+     * kubernetesSDConfigs defines a list of Kubernetes service discovery configurations.
      */
     @JsonProperty("kubernetesSDConfigs")
     public void setKubernetesSDConfigs(List<KubernetesSDConfig> kubernetesSDConfigs) {
@@ -749,7 +773,7 @@ public class ScrapeConfigSpec implements Editable<ScrapeConfigSpecBuilder>, Kube
     }
 
     /**
-     * KumaSDConfigs defines a list of Kuma service discovery configurations.
+     * kumaSDConfigs defines a list of Kuma service discovery configurations.
      */
     @JsonProperty("kumaSDConfigs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -758,7 +782,7 @@ public class ScrapeConfigSpec implements Editable<ScrapeConfigSpecBuilder>, Kube
     }
 
     /**
-     * KumaSDConfigs defines a list of Kuma service discovery configurations.
+     * kumaSDConfigs defines a list of Kuma service discovery configurations.
      */
     @JsonProperty("kumaSDConfigs")
     public void setKumaSDConfigs(List<KumaSDConfig> kumaSDConfigs) {
@@ -766,7 +790,7 @@ public class ScrapeConfigSpec implements Editable<ScrapeConfigSpecBuilder>, Kube
     }
 
     /**
-     * Per-scrape limit on number of labels that will be accepted for a sample. Only valid in Prometheus versions 2.27.0 and newer.
+     * labelLimit defines the per-scrape limit on number of labels that will be accepted for a sample. Only valid in Prometheus versions 2.27.0 and newer.
      */
     @JsonProperty("labelLimit")
     public Long getLabelLimit() {
@@ -774,7 +798,7 @@ public class ScrapeConfigSpec implements Editable<ScrapeConfigSpecBuilder>, Kube
     }
 
     /**
-     * Per-scrape limit on number of labels that will be accepted for a sample. Only valid in Prometheus versions 2.27.0 and newer.
+     * labelLimit defines the per-scrape limit on number of labels that will be accepted for a sample. Only valid in Prometheus versions 2.27.0 and newer.
      */
     @JsonProperty("labelLimit")
     public void setLabelLimit(Long labelLimit) {
@@ -782,7 +806,7 @@ public class ScrapeConfigSpec implements Editable<ScrapeConfigSpecBuilder>, Kube
     }
 
     /**
-     * Per-scrape limit on length of labels name that will be accepted for a sample. Only valid in Prometheus versions 2.27.0 and newer.
+     * labelNameLengthLimit defines the per-scrape limit on length of labels name that will be accepted for a sample. Only valid in Prometheus versions 2.27.0 and newer.
      */
     @JsonProperty("labelNameLengthLimit")
     public Long getLabelNameLengthLimit() {
@@ -790,7 +814,7 @@ public class ScrapeConfigSpec implements Editable<ScrapeConfigSpecBuilder>, Kube
     }
 
     /**
-     * Per-scrape limit on length of labels name that will be accepted for a sample. Only valid in Prometheus versions 2.27.0 and newer.
+     * labelNameLengthLimit defines the per-scrape limit on length of labels name that will be accepted for a sample. Only valid in Prometheus versions 2.27.0 and newer.
      */
     @JsonProperty("labelNameLengthLimit")
     public void setLabelNameLengthLimit(Long labelNameLengthLimit) {
@@ -798,7 +822,7 @@ public class ScrapeConfigSpec implements Editable<ScrapeConfigSpecBuilder>, Kube
     }
 
     /**
-     * Per-scrape limit on length of labels value that will be accepted for a sample. Only valid in Prometheus versions 2.27.0 and newer.
+     * labelValueLengthLimit defines the per-scrape limit on length of labels value that will be accepted for a sample. Only valid in Prometheus versions 2.27.0 and newer.
      */
     @JsonProperty("labelValueLengthLimit")
     public Long getLabelValueLengthLimit() {
@@ -806,7 +830,7 @@ public class ScrapeConfigSpec implements Editable<ScrapeConfigSpecBuilder>, Kube
     }
 
     /**
-     * Per-scrape limit on length of labels value that will be accepted for a sample. Only valid in Prometheus versions 2.27.0 and newer.
+     * labelValueLengthLimit defines the per-scrape limit on length of labels value that will be accepted for a sample. Only valid in Prometheus versions 2.27.0 and newer.
      */
     @JsonProperty("labelValueLengthLimit")
     public void setLabelValueLengthLimit(Long labelValueLengthLimit) {
@@ -814,7 +838,7 @@ public class ScrapeConfigSpec implements Editable<ScrapeConfigSpecBuilder>, Kube
     }
 
     /**
-     * LightsailSDConfigs defines a list of Lightsail service discovery configurations.
+     * lightSailSDConfigs defines a list of Lightsail service discovery configurations.
      */
     @JsonProperty("lightSailSDConfigs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -823,7 +847,7 @@ public class ScrapeConfigSpec implements Editable<ScrapeConfigSpecBuilder>, Kube
     }
 
     /**
-     * LightsailSDConfigs defines a list of Lightsail service discovery configurations.
+     * lightSailSDConfigs defines a list of Lightsail service discovery configurations.
      */
     @JsonProperty("lightSailSDConfigs")
     public void setLightSailSDConfigs(List<LightSailSDConfig> lightSailSDConfigs) {
@@ -831,7 +855,7 @@ public class ScrapeConfigSpec implements Editable<ScrapeConfigSpecBuilder>, Kube
     }
 
     /**
-     * LinodeSDConfigs defines a list of Linode service discovery configurations.
+     * linodeSDConfigs defines a list of Linode service discovery configurations.
      */
     @JsonProperty("linodeSDConfigs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -840,7 +864,7 @@ public class ScrapeConfigSpec implements Editable<ScrapeConfigSpecBuilder>, Kube
     }
 
     /**
-     * LinodeSDConfigs defines a list of Linode service discovery configurations.
+     * linodeSDConfigs defines a list of Linode service discovery configurations.
      */
     @JsonProperty("linodeSDConfigs")
     public void setLinodeSDConfigs(List<LinodeSDConfig> linodeSDConfigs) {
@@ -848,7 +872,7 @@ public class ScrapeConfigSpec implements Editable<ScrapeConfigSpecBuilder>, Kube
     }
 
     /**
-     * MetricRelabelConfigs to apply to samples before ingestion.
+     * metricRelabelings defines the metricRelabelings to apply to samples before ingestion.
      */
     @JsonProperty("metricRelabelings")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -857,7 +881,7 @@ public class ScrapeConfigSpec implements Editable<ScrapeConfigSpecBuilder>, Kube
     }
 
     /**
-     * MetricRelabelConfigs to apply to samples before ingestion.
+     * metricRelabelings defines the metricRelabelings to apply to samples before ingestion.
      */
     @JsonProperty("metricRelabelings")
     public void setMetricRelabelings(List<RelabelConfig> metricRelabelings) {
@@ -865,7 +889,7 @@ public class ScrapeConfigSpec implements Editable<ScrapeConfigSpecBuilder>, Kube
     }
 
     /**
-     * MetricsPath HTTP path to scrape for metrics. If empty, Prometheus uses the default value (e.g. /metrics).
+     * metricsPath defines the HTTP path to scrape for metrics. If empty, Prometheus uses the default value (e.g. /metrics).
      */
     @JsonProperty("metricsPath")
     public String getMetricsPath() {
@@ -873,7 +897,7 @@ public class ScrapeConfigSpec implements Editable<ScrapeConfigSpecBuilder>, Kube
     }
 
     /**
-     * MetricsPath HTTP path to scrape for metrics. If empty, Prometheus uses the default value (e.g. /metrics).
+     * metricsPath defines the HTTP path to scrape for metrics. If empty, Prometheus uses the default value (e.g. /metrics).
      */
     @JsonProperty("metricsPath")
     public void setMetricsPath(String metricsPath) {
@@ -881,7 +905,7 @@ public class ScrapeConfigSpec implements Editable<ScrapeConfigSpecBuilder>, Kube
     }
 
     /**
-     * Metric name escaping mode to request through content negotiation.<br><p> <br><p> It requires Prometheus &gt;= v3.4.0.
+     * nameEscapingScheme defines the metric name escaping mode to request through content negotiation.<br><p> <br><p> It requires Prometheus &gt;= v3.4.0.
      */
     @JsonProperty("nameEscapingScheme")
     public String getNameEscapingScheme() {
@@ -889,7 +913,7 @@ public class ScrapeConfigSpec implements Editable<ScrapeConfigSpecBuilder>, Kube
     }
 
     /**
-     * Metric name escaping mode to request through content negotiation.<br><p> <br><p> It requires Prometheus &gt;= v3.4.0.
+     * nameEscapingScheme defines the metric name escaping mode to request through content negotiation.<br><p> <br><p> It requires Prometheus &gt;= v3.4.0.
      */
     @JsonProperty("nameEscapingScheme")
     public void setNameEscapingScheme(String nameEscapingScheme) {
@@ -897,7 +921,7 @@ public class ScrapeConfigSpec implements Editable<ScrapeConfigSpecBuilder>, Kube
     }
 
     /**
-     * Specifies the validation scheme for metric and label names.<br><p> <br><p> It requires Prometheus &gt;= v3.0.0.
+     * nameValidationScheme defines the validation scheme for metric and label names.<br><p> <br><p> It requires Prometheus &gt;= v3.0.0.
      */
     @JsonProperty("nameValidationScheme")
     public String getNameValidationScheme() {
@@ -905,7 +929,7 @@ public class ScrapeConfigSpec implements Editable<ScrapeConfigSpecBuilder>, Kube
     }
 
     /**
-     * Specifies the validation scheme for metric and label names.<br><p> <br><p> It requires Prometheus &gt;= v3.0.0.
+     * nameValidationScheme defines the validation scheme for metric and label names.<br><p> <br><p> It requires Prometheus &gt;= v3.0.0.
      */
     @JsonProperty("nameValidationScheme")
     public void setNameValidationScheme(String nameValidationScheme) {
@@ -913,7 +937,7 @@ public class ScrapeConfigSpec implements Editable<ScrapeConfigSpecBuilder>, Kube
     }
 
     /**
-     * If there are more than this many buckets in a native histogram, buckets will be merged to stay within the limit. It requires Prometheus &gt;= v2.45.0.
+     * nativeHistogramBucketLimit defines ff there are more than this many buckets in a native histogram, buckets will be merged to stay within the limit. It requires Prometheus &gt;= v2.45.0.
      */
     @JsonProperty("nativeHistogramBucketLimit")
     public Long getNativeHistogramBucketLimit() {
@@ -921,7 +945,7 @@ public class ScrapeConfigSpec implements Editable<ScrapeConfigSpecBuilder>, Kube
     }
 
     /**
-     * If there are more than this many buckets in a native histogram, buckets will be merged to stay within the limit. It requires Prometheus &gt;= v2.45.0.
+     * nativeHistogramBucketLimit defines ff there are more than this many buckets in a native histogram, buckets will be merged to stay within the limit. It requires Prometheus &gt;= v2.45.0.
      */
     @JsonProperty("nativeHistogramBucketLimit")
     public void setNativeHistogramBucketLimit(Long nativeHistogramBucketLimit) {
@@ -945,7 +969,7 @@ public class ScrapeConfigSpec implements Editable<ScrapeConfigSpecBuilder>, Kube
     }
 
     /**
-     * `noProxy` is a comma-separated string that can contain IPs, CIDR notation, domain names that should be excluded from proxying. IP and domain names can contain port numbers.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
+     * noProxy defines a comma-separated string that can contain IPs, CIDR notation, domain names that should be excluded from proxying. IP and domain names can contain port numbers.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
      */
     @JsonProperty("noProxy")
     public String getNoProxy() {
@@ -953,7 +977,7 @@ public class ScrapeConfigSpec implements Editable<ScrapeConfigSpecBuilder>, Kube
     }
 
     /**
-     * `noProxy` is a comma-separated string that can contain IPs, CIDR notation, domain names that should be excluded from proxying. IP and domain names can contain port numbers.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
+     * noProxy defines a comma-separated string that can contain IPs, CIDR notation, domain names that should be excluded from proxying. IP and domain names can contain port numbers.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
      */
     @JsonProperty("noProxy")
     public void setNoProxy(String noProxy) {
@@ -961,7 +985,7 @@ public class ScrapeConfigSpec implements Editable<ScrapeConfigSpecBuilder>, Kube
     }
 
     /**
-     * NomadSDConfigs defines a list of Nomad service discovery configurations.
+     * nomadSDConfigs defines a list of Nomad service discovery configurations.
      */
     @JsonProperty("nomadSDConfigs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -970,7 +994,7 @@ public class ScrapeConfigSpec implements Editable<ScrapeConfigSpecBuilder>, Kube
     }
 
     /**
-     * NomadSDConfigs defines a list of Nomad service discovery configurations.
+     * nomadSDConfigs defines a list of Nomad service discovery configurations.
      */
     @JsonProperty("nomadSDConfigs")
     public void setNomadSDConfigs(List<NomadSDConfig> nomadSDConfigs) {
@@ -994,7 +1018,7 @@ public class ScrapeConfigSpec implements Editable<ScrapeConfigSpecBuilder>, Kube
     }
 
     /**
-     * OpenStackSDConfigs defines a list of OpenStack service discovery configurations.
+     * openstackSDConfigs defines a list of OpenStack service discovery configurations.
      */
     @JsonProperty("openstackSDConfigs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -1003,7 +1027,7 @@ public class ScrapeConfigSpec implements Editable<ScrapeConfigSpecBuilder>, Kube
     }
 
     /**
-     * OpenStackSDConfigs defines a list of OpenStack service discovery configurations.
+     * openstackSDConfigs defines a list of OpenStack service discovery configurations.
      */
     @JsonProperty("openstackSDConfigs")
     public void setOpenstackSDConfigs(List<OpenStackSDConfig> openstackSDConfigs) {
@@ -1011,7 +1035,7 @@ public class ScrapeConfigSpec implements Editable<ScrapeConfigSpecBuilder>, Kube
     }
 
     /**
-     * OVHCloudSDConfigs defines a list of OVHcloud service discovery configurations.
+     * ovhcloudSDConfigs defines a list of OVHcloud service discovery configurations.
      */
     @JsonProperty("ovhcloudSDConfigs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -1020,7 +1044,7 @@ public class ScrapeConfigSpec implements Editable<ScrapeConfigSpecBuilder>, Kube
     }
 
     /**
-     * OVHCloudSDConfigs defines a list of OVHcloud service discovery configurations.
+     * ovhcloudSDConfigs defines a list of OVHcloud service discovery configurations.
      */
     @JsonProperty("ovhcloudSDConfigs")
     public void setOvhcloudSDConfigs(List<OVHCloudSDConfig> ovhcloudSDConfigs) {
@@ -1028,7 +1052,7 @@ public class ScrapeConfigSpec implements Editable<ScrapeConfigSpecBuilder>, Kube
     }
 
     /**
-     * Optional HTTP URL parameters
+     * params defines optional HTTP URL parameters
      */
     @JsonProperty("params")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -1037,7 +1061,7 @@ public class ScrapeConfigSpec implements Editable<ScrapeConfigSpecBuilder>, Kube
     }
 
     /**
-     * Optional HTTP URL parameters
+     * params defines optional HTTP URL parameters
      */
     @JsonProperty("params")
     public void setParams(Map<String, List<String>> params) {
@@ -1045,7 +1069,7 @@ public class ScrapeConfigSpec implements Editable<ScrapeConfigSpecBuilder>, Kube
     }
 
     /**
-     * ProxyConnectHeader optionally specifies headers to send to proxies during CONNECT requests.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
+     * proxyConnectHeader optionally specifies headers to send to proxies during CONNECT requests.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
      */
     @JsonProperty("proxyConnectHeader")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -1054,7 +1078,7 @@ public class ScrapeConfigSpec implements Editable<ScrapeConfigSpecBuilder>, Kube
     }
 
     /**
-     * ProxyConnectHeader optionally specifies headers to send to proxies during CONNECT requests.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
+     * proxyConnectHeader optionally specifies headers to send to proxies during CONNECT requests.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
      */
     @JsonProperty("proxyConnectHeader")
     public void setProxyConnectHeader(Map<String, List<SecretKeySelector>> proxyConnectHeader) {
@@ -1062,7 +1086,7 @@ public class ScrapeConfigSpec implements Editable<ScrapeConfigSpecBuilder>, Kube
     }
 
     /**
-     * Whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
+     * proxyFromEnvironment defines whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
      */
     @JsonProperty("proxyFromEnvironment")
     public Boolean getProxyFromEnvironment() {
@@ -1070,7 +1094,7 @@ public class ScrapeConfigSpec implements Editable<ScrapeConfigSpecBuilder>, Kube
     }
 
     /**
-     * Whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
+     * proxyFromEnvironment defines whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
      */
     @JsonProperty("proxyFromEnvironment")
     public void setProxyFromEnvironment(Boolean proxyFromEnvironment) {
@@ -1078,7 +1102,7 @@ public class ScrapeConfigSpec implements Editable<ScrapeConfigSpecBuilder>, Kube
     }
 
     /**
-     * `proxyURL` defines the HTTP proxy server to use.
+     * proxyUrl defines the HTTP proxy server to use.
      */
     @JsonProperty("proxyUrl")
     public String getProxyUrl() {
@@ -1086,7 +1110,7 @@ public class ScrapeConfigSpec implements Editable<ScrapeConfigSpecBuilder>, Kube
     }
 
     /**
-     * `proxyURL` defines the HTTP proxy server to use.
+     * proxyUrl defines the HTTP proxy server to use.
      */
     @JsonProperty("proxyUrl")
     public void setProxyUrl(String proxyUrl) {
@@ -1094,7 +1118,7 @@ public class ScrapeConfigSpec implements Editable<ScrapeConfigSpecBuilder>, Kube
     }
 
     /**
-     * PuppetDBSDConfigs defines a list of PuppetDB service discovery configurations.
+     * puppetDBSDConfigs defines a list of PuppetDB service discovery configurations.
      */
     @JsonProperty("puppetDBSDConfigs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -1103,7 +1127,7 @@ public class ScrapeConfigSpec implements Editable<ScrapeConfigSpecBuilder>, Kube
     }
 
     /**
-     * PuppetDBSDConfigs defines a list of PuppetDB service discovery configurations.
+     * puppetDBSDConfigs defines a list of PuppetDB service discovery configurations.
      */
     @JsonProperty("puppetDBSDConfigs")
     public void setPuppetDBSDConfigs(List<PuppetDBSDConfig> puppetDBSDConfigs) {
@@ -1111,7 +1135,7 @@ public class ScrapeConfigSpec implements Editable<ScrapeConfigSpecBuilder>, Kube
     }
 
     /**
-     * RelabelConfigs defines how to rewrite the target's labels before scraping. Prometheus Operator automatically adds relabelings for a few standard Kubernetes fields. The original scrape job's name is available via the `__tmp_prometheus_job_name` label. More info: https://prometheus.io/docs/prometheus/latest/configuration/configuration/#relabel_config
+     * relabelings defines how to rewrite the target's labels before scraping. Prometheus Operator automatically adds relabelings for a few standard Kubernetes fields. The original scrape job's name is available via the `__tmp_prometheus_job_name` label. More info: https://prometheus.io/docs/prometheus/latest/configuration/configuration/#relabel_config
      */
     @JsonProperty("relabelings")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -1120,7 +1144,7 @@ public class ScrapeConfigSpec implements Editable<ScrapeConfigSpecBuilder>, Kube
     }
 
     /**
-     * RelabelConfigs defines how to rewrite the target's labels before scraping. Prometheus Operator automatically adds relabelings for a few standard Kubernetes fields. The original scrape job's name is available via the `__tmp_prometheus_job_name` label. More info: https://prometheus.io/docs/prometheus/latest/configuration/configuration/#relabel_config
+     * relabelings defines how to rewrite the target's labels before scraping. Prometheus Operator automatically adds relabelings for a few standard Kubernetes fields. The original scrape job's name is available via the `__tmp_prometheus_job_name` label. More info: https://prometheus.io/docs/prometheus/latest/configuration/configuration/#relabel_config
      */
     @JsonProperty("relabelings")
     public void setRelabelings(List<RelabelConfig> relabelings) {
@@ -1128,7 +1152,7 @@ public class ScrapeConfigSpec implements Editable<ScrapeConfigSpecBuilder>, Kube
     }
 
     /**
-     * SampleLimit defines per-scrape limit on number of scraped samples that will be accepted.
+     * sampleLimit defines per-scrape limit on number of scraped samples that will be accepted.
      */
     @JsonProperty("sampleLimit")
     public Long getSampleLimit() {
@@ -1136,7 +1160,7 @@ public class ScrapeConfigSpec implements Editable<ScrapeConfigSpecBuilder>, Kube
     }
 
     /**
-     * SampleLimit defines per-scrape limit on number of scraped samples that will be accepted.
+     * sampleLimit defines per-scrape limit on number of scraped samples that will be accepted.
      */
     @JsonProperty("sampleLimit")
     public void setSampleLimit(Long sampleLimit) {
@@ -1144,7 +1168,7 @@ public class ScrapeConfigSpec implements Editable<ScrapeConfigSpecBuilder>, Kube
     }
 
     /**
-     * ScalewaySDConfigs defines a list of Scaleway instances and baremetal service discovery configurations.
+     * scalewaySDConfigs defines a list of Scaleway instances and baremetal service discovery configurations.
      */
     @JsonProperty("scalewaySDConfigs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -1153,7 +1177,7 @@ public class ScrapeConfigSpec implements Editable<ScrapeConfigSpecBuilder>, Kube
     }
 
     /**
-     * ScalewaySDConfigs defines a list of Scaleway instances and baremetal service discovery configurations.
+     * scalewaySDConfigs defines a list of Scaleway instances and baremetal service discovery configurations.
      */
     @JsonProperty("scalewaySDConfigs")
     public void setScalewaySDConfigs(List<ScalewaySDConfig> scalewaySDConfigs) {
@@ -1161,7 +1185,7 @@ public class ScrapeConfigSpec implements Editable<ScrapeConfigSpecBuilder>, Kube
     }
 
     /**
-     * Configures the protocol scheme used for requests. If empty, Prometheus uses HTTP by default.
+     * scheme defines the protocol scheme used for requests.
      */
     @JsonProperty("scheme")
     public String getScheme() {
@@ -1169,7 +1193,7 @@ public class ScrapeConfigSpec implements Editable<ScrapeConfigSpecBuilder>, Kube
     }
 
     /**
-     * Configures the protocol scheme used for requests. If empty, Prometheus uses HTTP by default.
+     * scheme defines the protocol scheme used for requests.
      */
     @JsonProperty("scheme")
     public void setScheme(String scheme) {
@@ -1177,7 +1201,7 @@ public class ScrapeConfigSpec implements Editable<ScrapeConfigSpecBuilder>, Kube
     }
 
     /**
-     * The scrape class to apply.
+     * scrapeClass defines the scrape class to apply.
      */
     @JsonProperty("scrapeClass")
     public String getScrapeClass() {
@@ -1185,7 +1209,7 @@ public class ScrapeConfigSpec implements Editable<ScrapeConfigSpecBuilder>, Kube
     }
 
     /**
-     * The scrape class to apply.
+     * scrapeClass defines the scrape class to apply.
      */
     @JsonProperty("scrapeClass")
     public void setScrapeClass(String scrapeClass) {
@@ -1193,7 +1217,7 @@ public class ScrapeConfigSpec implements Editable<ScrapeConfigSpecBuilder>, Kube
     }
 
     /**
-     * Whether to scrape a classic histogram that is also exposed as a native histogram. It requires Prometheus &gt;= v2.45.0.<br><p> <br><p> Notice: `scrapeClassicHistograms` corresponds to the `always_scrape_classic_histograms` field in the Prometheus configuration.
+     * scrapeClassicHistograms defines whether to scrape a classic histogram that is also exposed as a native histogram. It requires Prometheus &gt;= v2.45.0.<br><p> <br><p> Notice: `scrapeClassicHistograms` corresponds to the `always_scrape_classic_histograms` field in the Prometheus configuration.
      */
     @JsonProperty("scrapeClassicHistograms")
     public Boolean getScrapeClassicHistograms() {
@@ -1201,7 +1225,7 @@ public class ScrapeConfigSpec implements Editable<ScrapeConfigSpecBuilder>, Kube
     }
 
     /**
-     * Whether to scrape a classic histogram that is also exposed as a native histogram. It requires Prometheus &gt;= v2.45.0.<br><p> <br><p> Notice: `scrapeClassicHistograms` corresponds to the `always_scrape_classic_histograms` field in the Prometheus configuration.
+     * scrapeClassicHistograms defines whether to scrape a classic histogram that is also exposed as a native histogram. It requires Prometheus &gt;= v2.45.0.<br><p> <br><p> Notice: `scrapeClassicHistograms` corresponds to the `always_scrape_classic_histograms` field in the Prometheus configuration.
      */
     @JsonProperty("scrapeClassicHistograms")
     public void setScrapeClassicHistograms(Boolean scrapeClassicHistograms) {
@@ -1209,7 +1233,7 @@ public class ScrapeConfigSpec implements Editable<ScrapeConfigSpecBuilder>, Kube
     }
 
     /**
-     * ScrapeInterval is the interval between consecutive scrapes.
+     * scrapeInterval defines the interval between consecutive scrapes.
      */
     @JsonProperty("scrapeInterval")
     public String getScrapeInterval() {
@@ -1217,7 +1241,7 @@ public class ScrapeConfigSpec implements Editable<ScrapeConfigSpecBuilder>, Kube
     }
 
     /**
-     * ScrapeInterval is the interval between consecutive scrapes.
+     * scrapeInterval defines the interval between consecutive scrapes.
      */
     @JsonProperty("scrapeInterval")
     public void setScrapeInterval(String scrapeInterval) {
@@ -1225,7 +1249,23 @@ public class ScrapeConfigSpec implements Editable<ScrapeConfigSpecBuilder>, Kube
     }
 
     /**
-     * The protocols to negotiate during a scrape. It tells clients the protocols supported by Prometheus in order of preference (from most to least preferred).<br><p> <br><p> If unset, Prometheus uses its default value.<br><p> <br><p> It requires Prometheus &gt;= v2.49.0.
+     * scrapeNativeHistograms defines whether to enable scraping of native histograms. It requires Prometheus &gt;= v3.8.0.
+     */
+    @JsonProperty("scrapeNativeHistograms")
+    public Boolean getScrapeNativeHistograms() {
+        return scrapeNativeHistograms;
+    }
+
+    /**
+     * scrapeNativeHistograms defines whether to enable scraping of native histograms. It requires Prometheus &gt;= v3.8.0.
+     */
+    @JsonProperty("scrapeNativeHistograms")
+    public void setScrapeNativeHistograms(Boolean scrapeNativeHistograms) {
+        this.scrapeNativeHistograms = scrapeNativeHistograms;
+    }
+
+    /**
+     * scrapeProtocols defines the protocols to negotiate during a scrape. It tells clients the protocols supported by Prometheus in order of preference (from most to least preferred).<br><p> <br><p> If unset, Prometheus uses its default value.<br><p> <br><p> It requires Prometheus &gt;= v2.49.0.
      */
     @JsonProperty("scrapeProtocols")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -1234,7 +1274,7 @@ public class ScrapeConfigSpec implements Editable<ScrapeConfigSpecBuilder>, Kube
     }
 
     /**
-     * The protocols to negotiate during a scrape. It tells clients the protocols supported by Prometheus in order of preference (from most to least preferred).<br><p> <br><p> If unset, Prometheus uses its default value.<br><p> <br><p> It requires Prometheus &gt;= v2.49.0.
+     * scrapeProtocols defines the protocols to negotiate during a scrape. It tells clients the protocols supported by Prometheus in order of preference (from most to least preferred).<br><p> <br><p> If unset, Prometheus uses its default value.<br><p> <br><p> It requires Prometheus &gt;= v2.49.0.
      */
     @JsonProperty("scrapeProtocols")
     public void setScrapeProtocols(List<String> scrapeProtocols) {
@@ -1242,7 +1282,7 @@ public class ScrapeConfigSpec implements Editable<ScrapeConfigSpecBuilder>, Kube
     }
 
     /**
-     * ScrapeTimeout is the number of seconds to wait until a scrape request times out. The value cannot be greater than the scrape interval otherwise the operator will reject the resource.
+     * scrapeTimeout defines the number of seconds to wait until a scrape request times out. The value cannot be greater than the scrape interval otherwise the operator will reject the resource.
      */
     @JsonProperty("scrapeTimeout")
     public String getScrapeTimeout() {
@@ -1250,7 +1290,7 @@ public class ScrapeConfigSpec implements Editable<ScrapeConfigSpecBuilder>, Kube
     }
 
     /**
-     * ScrapeTimeout is the number of seconds to wait until a scrape request times out. The value cannot be greater than the scrape interval otherwise the operator will reject the resource.
+     * scrapeTimeout defines the number of seconds to wait until a scrape request times out. The value cannot be greater than the scrape interval otherwise the operator will reject the resource.
      */
     @JsonProperty("scrapeTimeout")
     public void setScrapeTimeout(String scrapeTimeout) {
@@ -1258,7 +1298,7 @@ public class ScrapeConfigSpec implements Editable<ScrapeConfigSpecBuilder>, Kube
     }
 
     /**
-     * StaticConfigs defines a list of static targets with a common label set.
+     * staticConfigs defines a list of static targets with a common label set.
      */
     @JsonProperty("staticConfigs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -1267,7 +1307,7 @@ public class ScrapeConfigSpec implements Editable<ScrapeConfigSpecBuilder>, Kube
     }
 
     /**
-     * StaticConfigs defines a list of static targets with a common label set.
+     * staticConfigs defines a list of static targets with a common label set.
      */
     @JsonProperty("staticConfigs")
     public void setStaticConfigs(List<StaticConfig> staticConfigs) {
@@ -1275,7 +1315,7 @@ public class ScrapeConfigSpec implements Editable<ScrapeConfigSpecBuilder>, Kube
     }
 
     /**
-     * TargetLimit defines a limit on the number of scraped targets that will be accepted.
+     * targetLimit defines a limit on the number of scraped targets that will be accepted.
      */
     @JsonProperty("targetLimit")
     public Long getTargetLimit() {
@@ -1283,7 +1323,7 @@ public class ScrapeConfigSpec implements Editable<ScrapeConfigSpecBuilder>, Kube
     }
 
     /**
-     * TargetLimit defines a limit on the number of scraped targets that will be accepted.
+     * targetLimit defines a limit on the number of scraped targets that will be accepted.
      */
     @JsonProperty("targetLimit")
     public void setTargetLimit(Long targetLimit) {
@@ -1307,7 +1347,7 @@ public class ScrapeConfigSpec implements Editable<ScrapeConfigSpecBuilder>, Kube
     }
 
     /**
-     * TrackTimestampsStaleness whether Prometheus tracks staleness of the metrics that have an explicit timestamp present in scraped data. Has no effect if `honorTimestamps` is false. It requires Prometheus &gt;= v2.48.0.
+     * trackTimestampsStaleness defines whether Prometheus tracks staleness of the metrics that have an explicit timestamp present in scraped data. Has no effect if `honorTimestamps` is false. It requires Prometheus &gt;= v2.48.0.
      */
     @JsonProperty("trackTimestampsStaleness")
     public Boolean getTrackTimestampsStaleness() {
@@ -1315,7 +1355,7 @@ public class ScrapeConfigSpec implements Editable<ScrapeConfigSpecBuilder>, Kube
     }
 
     /**
-     * TrackTimestampsStaleness whether Prometheus tracks staleness of the metrics that have an explicit timestamp present in scraped data. Has no effect if `honorTimestamps` is false. It requires Prometheus &gt;= v2.48.0.
+     * trackTimestampsStaleness defines whether Prometheus tracks staleness of the metrics that have an explicit timestamp present in scraped data. Has no effect if `honorTimestamps` is false. It requires Prometheus &gt;= v2.48.0.
      */
     @JsonProperty("trackTimestampsStaleness")
     public void setTrackTimestampsStaleness(Boolean trackTimestampsStaleness) {

@@ -34,7 +34,7 @@ import lombok.ToString;
 import lombok.experimental.Accessors;
 
 /**
- * VenafiTPP defines connection configuration details for a Venafi TPP instance
+ * VenafiTPP defines connection configuration details for a CyberArk Certificate Manager Self-Hosted instance
  */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -95,7 +95,7 @@ public class VenafiTPP implements Editable<VenafiTPPBuilder>, KubernetesResource
     }
 
     /**
-     * Base64-encoded bundle of PEM CAs which will be used to validate the certificate chain presented by the TPP server. Only used if using HTTPS; ignored for HTTP. If undefined, the certificate bundle in the cert-manager controller container is used to validate the chain.
+     * Base64-encoded bundle of PEM CAs which will be used to validate the certificate chain presented by the CyberArk Certificate Manager Self-Hosted server. Only used if using HTTPS; ignored for HTTP. If undefined, the certificate bundle in the cert-manager controller container is used to validate the chain.
      */
     @JsonProperty("caBundle")
     public String getCaBundle() {
@@ -103,7 +103,7 @@ public class VenafiTPP implements Editable<VenafiTPPBuilder>, KubernetesResource
     }
 
     /**
-     * Base64-encoded bundle of PEM CAs which will be used to validate the certificate chain presented by the TPP server. Only used if using HTTPS; ignored for HTTP. If undefined, the certificate bundle in the cert-manager controller container is used to validate the chain.
+     * Base64-encoded bundle of PEM CAs which will be used to validate the certificate chain presented by the CyberArk Certificate Manager Self-Hosted server. Only used if using HTTPS; ignored for HTTP. If undefined, the certificate bundle in the cert-manager controller container is used to validate the chain.
      */
     @JsonProperty("caBundle")
     public void setCaBundle(String caBundle) {
@@ -111,7 +111,7 @@ public class VenafiTPP implements Editable<VenafiTPPBuilder>, KubernetesResource
     }
 
     /**
-     * VenafiTPP defines connection configuration details for a Venafi TPP instance
+     * VenafiTPP defines connection configuration details for a CyberArk Certificate Manager Self-Hosted instance
      */
     @JsonProperty("caBundleSecretRef")
     public SecretKeySelector getCaBundleSecretRef() {
@@ -119,7 +119,7 @@ public class VenafiTPP implements Editable<VenafiTPPBuilder>, KubernetesResource
     }
 
     /**
-     * VenafiTPP defines connection configuration details for a Venafi TPP instance
+     * VenafiTPP defines connection configuration details for a CyberArk Certificate Manager Self-Hosted instance
      */
     @JsonProperty("caBundleSecretRef")
     public void setCaBundleSecretRef(SecretKeySelector caBundleSecretRef) {
@@ -127,7 +127,7 @@ public class VenafiTPP implements Editable<VenafiTPPBuilder>, KubernetesResource
     }
 
     /**
-     * VenafiTPP defines connection configuration details for a Venafi TPP instance
+     * VenafiTPP defines connection configuration details for a CyberArk Certificate Manager Self-Hosted instance
      */
     @JsonProperty("credentialsRef")
     public LocalObjectReference getCredentialsRef() {
@@ -135,7 +135,7 @@ public class VenafiTPP implements Editable<VenafiTPPBuilder>, KubernetesResource
     }
 
     /**
-     * VenafiTPP defines connection configuration details for a Venafi TPP instance
+     * VenafiTPP defines connection configuration details for a CyberArk Certificate Manager Self-Hosted instance
      */
     @JsonProperty("credentialsRef")
     public void setCredentialsRef(LocalObjectReference credentialsRef) {
@@ -143,7 +143,7 @@ public class VenafiTPP implements Editable<VenafiTPPBuilder>, KubernetesResource
     }
 
     /**
-     * URL is the base URL for the vedsdk endpoint of the Venafi TPP instance, for example: "https://tpp.example.com/vedsdk".
+     * URL is the base URL for the vedsdk endpoint of the CyberArk Certificate Manager Self-Hosted instance, for example: "https://tpp.example.com/vedsdk".
      */
     @JsonProperty("url")
     public String getUrl() {
@@ -151,7 +151,7 @@ public class VenafiTPP implements Editable<VenafiTPPBuilder>, KubernetesResource
     }
 
     /**
-     * URL is the base URL for the vedsdk endpoint of the Venafi TPP instance, for example: "https://tpp.example.com/vedsdk".
+     * URL is the base URL for the vedsdk endpoint of the CyberArk Certificate Manager Self-Hosted instance, for example: "https://tpp.example.com/vedsdk".
      */
     @JsonProperty("url")
     public void setUrl(String url) {

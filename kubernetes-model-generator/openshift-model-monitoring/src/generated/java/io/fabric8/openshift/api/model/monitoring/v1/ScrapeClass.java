@@ -130,7 +130,7 @@ public class ScrapeClass implements Editable<ScrapeClassBuilder>, KubernetesReso
     }
 
     /**
-     * Default indicates that the scrape applies to all scrape objects that don't configure an explicit scrape class name.<br><p> <br><p> Only one scrape class can be set as the default.
+     * default defines that the scrape applies to all scrape objects that don't configure an explicit scrape class name.<br><p> <br><p> Only one scrape class can be set as the default.
      */
     @JsonProperty("default")
     public Boolean getDefault() {
@@ -138,7 +138,7 @@ public class ScrapeClass implements Editable<ScrapeClassBuilder>, KubernetesReso
     }
 
     /**
-     * Default indicates that the scrape applies to all scrape objects that don't configure an explicit scrape class name.<br><p> <br><p> Only one scrape class can be set as the default.
+     * default defines that the scrape applies to all scrape objects that don't configure an explicit scrape class name.<br><p> <br><p> Only one scrape class can be set as the default.
      */
     @JsonProperty("default")
     public void setDefault(Boolean _default) {
@@ -146,7 +146,7 @@ public class ScrapeClass implements Editable<ScrapeClassBuilder>, KubernetesReso
     }
 
     /**
-     * The protocol to use if a scrape returns blank, unparseable, or otherwise invalid Content-Type. It will only apply if the scrape resource doesn't specify any FallbackScrapeProtocol<br><p> <br><p> It requires Prometheus &gt;= v3.0.0.
+     * fallbackScrapeProtocol defines the protocol to use if a scrape returns blank, unparseable, or otherwise invalid Content-Type. It will only apply if the scrape resource doesn't specify any FallbackScrapeProtocol<br><p> <br><p> It requires Prometheus &gt;= v3.0.0.
      */
     @JsonProperty("fallbackScrapeProtocol")
     public String getFallbackScrapeProtocol() {
@@ -154,7 +154,7 @@ public class ScrapeClass implements Editable<ScrapeClassBuilder>, KubernetesReso
     }
 
     /**
-     * The protocol to use if a scrape returns blank, unparseable, or otherwise invalid Content-Type. It will only apply if the scrape resource doesn't specify any FallbackScrapeProtocol<br><p> <br><p> It requires Prometheus &gt;= v3.0.0.
+     * fallbackScrapeProtocol defines the protocol to use if a scrape returns blank, unparseable, or otherwise invalid Content-Type. It will only apply if the scrape resource doesn't specify any FallbackScrapeProtocol<br><p> <br><p> It requires Prometheus &gt;= v3.0.0.
      */
     @JsonProperty("fallbackScrapeProtocol")
     public void setFallbackScrapeProtocol(String fallbackScrapeProtocol) {
@@ -162,7 +162,7 @@ public class ScrapeClass implements Editable<ScrapeClassBuilder>, KubernetesReso
     }
 
     /**
-     * MetricRelabelings configures the relabeling rules to apply to all samples before ingestion.<br><p> <br><p> The Operator adds the scrape class metric relabelings defined here. Then the Operator adds the target-specific metric relabelings defined in ServiceMonitors, PodMonitors, Probes and ScrapeConfigs. Then the Operator adds namespace enforcement relabeling rule, specified in '.spec.enforcedNamespaceLabel'.<br><p> <br><p> More info: https://prometheus.io/docs/prometheus/latest/configuration/configuration/#metric_relabel_configs
+     * metricRelabelings defines the relabeling rules to apply to all samples before ingestion.<br><p> <br><p> The Operator adds the scrape class metric relabelings defined here. Then the Operator adds the target-specific metric relabelings defined in ServiceMonitors, PodMonitors, Probes and ScrapeConfigs. Then the Operator adds namespace enforcement relabeling rule, specified in '.spec.enforcedNamespaceLabel'.<br><p> <br><p> More info: https://prometheus.io/docs/prometheus/latest/configuration/configuration/#metric_relabel_configs
      */
     @JsonProperty("metricRelabelings")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -171,7 +171,7 @@ public class ScrapeClass implements Editable<ScrapeClassBuilder>, KubernetesReso
     }
 
     /**
-     * MetricRelabelings configures the relabeling rules to apply to all samples before ingestion.<br><p> <br><p> The Operator adds the scrape class metric relabelings defined here. Then the Operator adds the target-specific metric relabelings defined in ServiceMonitors, PodMonitors, Probes and ScrapeConfigs. Then the Operator adds namespace enforcement relabeling rule, specified in '.spec.enforcedNamespaceLabel'.<br><p> <br><p> More info: https://prometheus.io/docs/prometheus/latest/configuration/configuration/#metric_relabel_configs
+     * metricRelabelings defines the relabeling rules to apply to all samples before ingestion.<br><p> <br><p> The Operator adds the scrape class metric relabelings defined here. Then the Operator adds the target-specific metric relabelings defined in ServiceMonitors, PodMonitors, Probes and ScrapeConfigs. Then the Operator adds namespace enforcement relabeling rule, specified in '.spec.enforcedNamespaceLabel'.<br><p> <br><p> More info: https://prometheus.io/docs/prometheus/latest/configuration/configuration/#metric_relabel_configs
      */
     @JsonProperty("metricRelabelings")
     public void setMetricRelabelings(List<RelabelConfig> metricRelabelings) {
@@ -179,7 +179,7 @@ public class ScrapeClass implements Editable<ScrapeClassBuilder>, KubernetesReso
     }
 
     /**
-     * Name of the scrape class.
+     * name of the scrape class.
      */
     @JsonProperty("name")
     public String getName() {
@@ -187,7 +187,7 @@ public class ScrapeClass implements Editable<ScrapeClassBuilder>, KubernetesReso
     }
 
     /**
-     * Name of the scrape class.
+     * name of the scrape class.
      */
     @JsonProperty("name")
     public void setName(String name) {
@@ -195,7 +195,7 @@ public class ScrapeClass implements Editable<ScrapeClassBuilder>, KubernetesReso
     }
 
     /**
-     * Relabelings configures the relabeling rules to apply to all scrape targets.<br><p> <br><p> The Operator automatically adds relabelings for a few standard Kubernetes fields like `__meta_kubernetes_namespace` and `__meta_kubernetes_service_name`. Then the Operator adds the scrape class relabelings defined here. Then the Operator adds the target-specific relabelings defined in the scrape object.<br><p> <br><p> More info: https://prometheus.io/docs/prometheus/latest/configuration/configuration/#relabel_config
+     * relabelings defines the relabeling rules to apply to all scrape targets.<br><p> <br><p> The Operator automatically adds relabelings for a few standard Kubernetes fields like `__meta_kubernetes_namespace` and `__meta_kubernetes_service_name`. Then the Operator adds the scrape class relabelings defined here. Then the Operator adds the target-specific relabelings defined in the scrape object.<br><p> <br><p> More info: https://prometheus.io/docs/prometheus/latest/configuration/configuration/#relabel_config
      */
     @JsonProperty("relabelings")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -204,7 +204,7 @@ public class ScrapeClass implements Editable<ScrapeClassBuilder>, KubernetesReso
     }
 
     /**
-     * Relabelings configures the relabeling rules to apply to all scrape targets.<br><p> <br><p> The Operator automatically adds relabelings for a few standard Kubernetes fields like `__meta_kubernetes_namespace` and `__meta_kubernetes_service_name`. Then the Operator adds the scrape class relabelings defined here. Then the Operator adds the target-specific relabelings defined in the scrape object.<br><p> <br><p> More info: https://prometheus.io/docs/prometheus/latest/configuration/configuration/#relabel_config
+     * relabelings defines the relabeling rules to apply to all scrape targets.<br><p> <br><p> The Operator automatically adds relabelings for a few standard Kubernetes fields like `__meta_kubernetes_namespace` and `__meta_kubernetes_service_name`. Then the Operator adds the scrape class relabelings defined here. Then the Operator adds the target-specific relabelings defined in the scrape object.<br><p> <br><p> More info: https://prometheus.io/docs/prometheus/latest/configuration/configuration/#relabel_config
      */
     @JsonProperty("relabelings")
     public void setRelabelings(List<RelabelConfig> relabelings) {

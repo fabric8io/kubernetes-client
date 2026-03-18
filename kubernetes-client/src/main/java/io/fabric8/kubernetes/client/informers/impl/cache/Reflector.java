@@ -140,17 +140,8 @@ public class Reflector<T extends HasMetadata, L extends KubernetesResourceList<T
       Set<String> nextKeys = new ConcurrentSkipListSet<>();
       CompletableFuture<? extends Watch> startWatcher = processList(nextKeys, null).thenCompose(result -> {
         final String latestResourceVersion = result.getMetadata().getResourceVersion();
-        logger.debug("Listing items ({}) for {} at v{}", nextKeys.size(), this, latestResourceVersion);
         CompletableFuture<?> cf = new CompletableFuture<>();
-        store.retainAll(nextKeys, executor -> {
-          boolean startWatchImmediately = cachedListing && lastSyncResourceVersion == null;
-          lastSyncResourceVersion = latestResourceVersion;
-          if (startWatchImmediately) {
-            cf.complete(null);
-          } else {
-            executor.execute(() -> cf.complete(null));
-          }
-        });
+        syncList(nextKeys, latestResourceVersion, cf);
         return cf.thenCompose(ignored -> startWatcher(latestResourceVersion));
       });
       theFuture = establishWatch(startWatcher);
@@ -165,6 +156,28 @@ public class Reflector<T extends HasMetadata, L extends KubernetesResourceList<T
       }
     });
     return theFuture;
+  }
+
+  /**
+   * There are 4 steps here
+   * <ol>
+   * <li>sync the underlying store based upon the keySet
+   * <li>update the last sync version
+   * <li>emit the onList event
+   * <li>signal the watch to start
+   * </ol>
+   */
+  private void syncList(Set<String> nextKeys, final String latestResourceVersion, CompletableFuture<?> cf) {
+    logger.debug("Listing items ({}) for {} at v{}", nextKeys.size(), this, latestResourceVersion);
+    boolean wasEmpty = store.syncList(nextKeys);
+    boolean startWatchImmediately = cachedListing && lastSyncResourceVersion == null;
+    lastSyncResourceVersion = latestResourceVersion;
+    Executor executor = store.onList(latestResourceVersion, wasEmpty && nextKeys.isEmpty());
+    if (startWatchImmediately) {
+      cf.complete(null);
+    } else {
+      executor.execute(() -> cf.complete(null));
+    }
   }
 
   private CompletableFuture<Void> establishWatch(CompletableFuture<? extends Watch> future) {
@@ -321,11 +334,9 @@ public class Reflector<T extends HasMetadata, L extends KubernetesResourceList<T
           case BOOKMARK:
             // done with the initial events, trigger that we are ready and switch to regular
             // watching
-            logger.debug("Listing items ({}) for {} at v{}", watchListState.nextKeys.size(), this,
-                resource.getMetadata().getResourceVersion());
-            store.retainAll(watchListState.nextKeys, ignored -> watchListState.listDone.complete(null));
+            syncList(watchListState.nextKeys, resource.getMetadata().getResourceVersion(), watchListState.listDone);
             watchListState = null;
-            break;
+            return; // don't fall through to the general action handling as the lastSyncResourceVersion was already set
           case MODIFIED:
           case DELETED:
             onClose(new WatcherException("Unexpected event before list ending bookmark: " + action));

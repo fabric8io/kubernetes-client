@@ -45,7 +45,8 @@ import lombok.experimental.Accessors;
     "apiVersion",
     "kind",
     "metadata",
-    "spec"
+    "spec",
+    "status"
 })
 @ToString
 @EqualsAndHashCode
@@ -85,6 +86,8 @@ public class PrometheusRule implements Editable<PrometheusRuleBuilder>, HasMetad
     private ObjectMeta metadata;
     @JsonProperty("spec")
     private PrometheusRuleSpec spec;
+    @JsonProperty("status")
+    private ConfigResourceStatus status;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -94,12 +97,13 @@ public class PrometheusRule implements Editable<PrometheusRuleBuilder>, HasMetad
     public PrometheusRule() {
     }
 
-    public PrometheusRule(String apiVersion, String kind, ObjectMeta metadata, PrometheusRuleSpec spec) {
+    public PrometheusRule(String apiVersion, String kind, ObjectMeta metadata, PrometheusRuleSpec spec, ConfigResourceStatus status) {
         super();
         this.apiVersion = apiVersion;
         this.kind = kind;
         this.metadata = metadata;
         this.spec = spec;
+        this.status = status;
     }
 
     /**
@@ -164,6 +168,22 @@ public class PrometheusRule implements Editable<PrometheusRuleBuilder>, HasMetad
     @JsonProperty("spec")
     public void setSpec(PrometheusRuleSpec spec) {
         this.spec = spec;
+    }
+
+    /**
+     * The `PrometheusRule` custom resource definition (CRD) defines [alerting](https://prometheus.io/docs/prometheus/latest/configuration/alerting_rules/) and [recording](https://prometheus.io/docs/prometheus/latest/configuration/recording_rules/) rules to be evaluated by `Prometheus` or `ThanosRuler` objects.<br><p> <br><p> `Prometheus` and `ThanosRuler` objects select `PrometheusRule` objects using label and namespace selectors.
+     */
+    @JsonProperty("status")
+    public ConfigResourceStatus getStatus() {
+        return status;
+    }
+
+    /**
+     * The `PrometheusRule` custom resource definition (CRD) defines [alerting](https://prometheus.io/docs/prometheus/latest/configuration/alerting_rules/) and [recording](https://prometheus.io/docs/prometheus/latest/configuration/recording_rules/) rules to be evaluated by `Prometheus` or `ThanosRuler` objects.<br><p> <br><p> `Prometheus` and `ThanosRuler` objects select `PrometheusRule` objects using label and namespace selectors.
+     */
+    @JsonProperty("status")
+    public void setStatus(ConfigResourceStatus status) {
+        this.status = status;
     }
 
     @JsonIgnore

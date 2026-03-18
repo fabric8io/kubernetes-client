@@ -67,7 +67,7 @@ public class DecisionGroup implements Editable<DecisionGroupBuilder>, Kubernetes
 {
 
     @JsonProperty("groupClusterSelector")
-    private ClusterSelector groupClusterSelector;
+    private GroupClusterSelector groupClusterSelector;
     @JsonProperty("groupName")
     private String groupName;
     @JsonIgnore
@@ -79,7 +79,7 @@ public class DecisionGroup implements Editable<DecisionGroupBuilder>, Kubernetes
     public DecisionGroup() {
     }
 
-    public DecisionGroup(ClusterSelector groupClusterSelector, String groupName) {
+    public DecisionGroup(GroupClusterSelector groupClusterSelector, String groupName) {
         super();
         this.groupClusterSelector = groupClusterSelector;
         this.groupName = groupName;
@@ -89,7 +89,7 @@ public class DecisionGroup implements Editable<DecisionGroupBuilder>, Kubernetes
      * DecisionGroup define a subset of clusters that will be added to placementDecisions with groupName label.
      */
     @JsonProperty("groupClusterSelector")
-    public ClusterSelector getGroupClusterSelector() {
+    public GroupClusterSelector getGroupClusterSelector() {
         return groupClusterSelector;
     }
 
@@ -97,12 +97,12 @@ public class DecisionGroup implements Editable<DecisionGroupBuilder>, Kubernetes
      * DecisionGroup define a subset of clusters that will be added to placementDecisions with groupName label.
      */
     @JsonProperty("groupClusterSelector")
-    public void setGroupClusterSelector(ClusterSelector groupClusterSelector) {
+    public void setGroupClusterSelector(GroupClusterSelector groupClusterSelector) {
         this.groupClusterSelector = groupClusterSelector;
     }
 
     /**
-     * Group name to be added as label value to the created placement Decisions labels with label key cluster.open-cluster-management.io/decision-group-name
+     * groupName to set as the label value on created PlacementDecision resources using the label key cluster.open-cluster-management.io/decision-group-name.
      */
     @JsonProperty("groupName")
     public String getGroupName() {
@@ -110,7 +110,7 @@ public class DecisionGroup implements Editable<DecisionGroupBuilder>, Kubernetes
     }
 
     /**
-     * Group name to be added as label value to the created placement Decisions labels with label key cluster.open-cluster-management.io/decision-group-name
+     * groupName to set as the label value on created PlacementDecision resources using the label key cluster.open-cluster-management.io/decision-group-name.
      */
     @JsonProperty("groupName")
     public void setGroupName(String groupName) {

@@ -86,7 +86,7 @@ public class ManagedClusterClaim implements Editable<ManagedClusterClaimBuilder>
     }
 
     /**
-     * Name is the name of a ClusterClaim resource on managed cluster. It's a well known or customized name to identify the claim.
+     * name is the name of a ClusterClaim resource on managed cluster. It's a well known or customized name to identify the claim.
      */
     @JsonProperty("name")
     public String getName() {
@@ -94,7 +94,7 @@ public class ManagedClusterClaim implements Editable<ManagedClusterClaimBuilder>
     }
 
     /**
-     * Name is the name of a ClusterClaim resource on managed cluster. It's a well known or customized name to identify the claim.
+     * name is the name of a ClusterClaim resource on managed cluster. It's a well known or customized name to identify the claim.
      */
     @JsonProperty("name")
     public void setName(String name) {
@@ -102,7 +102,7 @@ public class ManagedClusterClaim implements Editable<ManagedClusterClaimBuilder>
     }
 
     /**
-     * Value is a claim-dependent string
+     * value is a claim-dependent string
      */
     @JsonProperty("value")
     public String getValue() {
@@ -110,7 +110,7 @@ public class ManagedClusterClaim implements Editable<ManagedClusterClaimBuilder>
     }
 
     /**
-     * Value is a claim-dependent string
+     * value is a claim-dependent string
      */
     @JsonProperty("value")
     public void setValue(String value) {

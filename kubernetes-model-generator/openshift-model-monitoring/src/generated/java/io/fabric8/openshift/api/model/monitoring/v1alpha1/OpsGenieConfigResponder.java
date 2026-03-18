@@ -94,7 +94,7 @@ public class OpsGenieConfigResponder implements Editable<OpsGenieConfigResponder
     }
 
     /**
-     * ID of the responder.
+     * id defines the unique identifier of the responder. This corresponds to the responder's ID within OpsGenie.
      */
     @JsonProperty("id")
     public String getId() {
@@ -102,7 +102,7 @@ public class OpsGenieConfigResponder implements Editable<OpsGenieConfigResponder
     }
 
     /**
-     * ID of the responder.
+     * id defines the unique identifier of the responder. This corresponds to the responder's ID within OpsGenie.
      */
     @JsonProperty("id")
     public void setId(String id) {
@@ -110,7 +110,7 @@ public class OpsGenieConfigResponder implements Editable<OpsGenieConfigResponder
     }
 
     /**
-     * Name of the responder.
+     * name defines the display name of the responder. This is used when the responder is identified by name rather than ID.
      */
     @JsonProperty("name")
     public String getName() {
@@ -118,7 +118,7 @@ public class OpsGenieConfigResponder implements Editable<OpsGenieConfigResponder
     }
 
     /**
-     * Name of the responder.
+     * name defines the display name of the responder. This is used when the responder is identified by name rather than ID.
      */
     @JsonProperty("name")
     public void setName(String name) {
@@ -126,7 +126,7 @@ public class OpsGenieConfigResponder implements Editable<OpsGenieConfigResponder
     }
 
     /**
-     * Type of responder.
+     * type defines the type of responder. Valid values include "user", "team", "schedule", and "escalation". This determines how OpsGenie interprets the other identifier fields.
      */
     @JsonProperty("type")
     public String getType() {
@@ -134,7 +134,7 @@ public class OpsGenieConfigResponder implements Editable<OpsGenieConfigResponder
     }
 
     /**
-     * Type of responder.
+     * type defines the type of responder. Valid values include "user", "team", "schedule", and "escalation". This determines how OpsGenie interprets the other identifier fields.
      */
     @JsonProperty("type")
     public void setType(String type) {
@@ -142,7 +142,7 @@ public class OpsGenieConfigResponder implements Editable<OpsGenieConfigResponder
     }
 
     /**
-     * Username of the responder.
+     * username defines the username of the responder. This is typically used for user-type responders when identifying by username.
      */
     @JsonProperty("username")
     public String getUsername() {
@@ -150,7 +150,7 @@ public class OpsGenieConfigResponder implements Editable<OpsGenieConfigResponder
     }
 
     /**
-     * Username of the responder.
+     * username defines the username of the responder. This is typically used for user-type responders when identifying by username.
      */
     @JsonProperty("username")
     public void setUsername(String username) {

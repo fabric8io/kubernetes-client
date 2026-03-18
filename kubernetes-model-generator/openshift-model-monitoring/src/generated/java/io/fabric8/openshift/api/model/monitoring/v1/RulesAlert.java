@@ -86,7 +86,7 @@ public class RulesAlert implements Editable<RulesAlertBuilder>, KubernetesResour
     }
 
     /**
-     * Minimum duration between alert and restored 'for' state.<br><p> <br><p> This is maintained only for alerts with a configured 'for' time greater than the grace period.
+     * forGracePeriod defines the minimum duration between alert and restored 'for' state.<br><p> <br><p> This is maintained only for alerts with a configured 'for' time greater than the grace period.
      */
     @JsonProperty("forGracePeriod")
     public String getForGracePeriod() {
@@ -94,7 +94,7 @@ public class RulesAlert implements Editable<RulesAlertBuilder>, KubernetesResour
     }
 
     /**
-     * Minimum duration between alert and restored 'for' state.<br><p> <br><p> This is maintained only for alerts with a configured 'for' time greater than the grace period.
+     * forGracePeriod defines the minimum duration between alert and restored 'for' state.<br><p> <br><p> This is maintained only for alerts with a configured 'for' time greater than the grace period.
      */
     @JsonProperty("forGracePeriod")
     public void setForGracePeriod(String forGracePeriod) {
@@ -102,7 +102,7 @@ public class RulesAlert implements Editable<RulesAlertBuilder>, KubernetesResour
     }
 
     /**
-     * Max time to tolerate prometheus outage for restoring 'for' state of alert.
+     * forOutageTolerance defines the max time to tolerate prometheus outage for restoring 'for' state of alert.
      */
     @JsonProperty("forOutageTolerance")
     public String getForOutageTolerance() {
@@ -110,7 +110,7 @@ public class RulesAlert implements Editable<RulesAlertBuilder>, KubernetesResour
     }
 
     /**
-     * Max time to tolerate prometheus outage for restoring 'for' state of alert.
+     * forOutageTolerance defines the max time to tolerate prometheus outage for restoring 'for' state of alert.
      */
     @JsonProperty("forOutageTolerance")
     public void setForOutageTolerance(String forOutageTolerance) {
@@ -118,7 +118,7 @@ public class RulesAlert implements Editable<RulesAlertBuilder>, KubernetesResour
     }
 
     /**
-     * Minimum amount of time to wait before resending an alert to Alertmanager.
+     * resendDelay defines the minimum amount of time to wait before resending an alert to Alertmanager.
      */
     @JsonProperty("resendDelay")
     public String getResendDelay() {
@@ -126,7 +126,7 @@ public class RulesAlert implements Editable<RulesAlertBuilder>, KubernetesResour
     }
 
     /**
-     * Minimum amount of time to wait before resending an alert to Alertmanager.
+     * resendDelay defines the minimum amount of time to wait before resending an alert to Alertmanager.
      */
     @JsonProperty("resendDelay")
     public void setResendDelay(String resendDelay) {

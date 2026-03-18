@@ -78,7 +78,7 @@ public class AlertmanagerConfigMatcherStrategy implements Editable<AlertmanagerC
     }
 
     /**
-     * AlertmanagerConfigMatcherStrategyType defines the strategy used by AlertmanagerConfig objects to match alerts in the routes and inhibition rules.<br><p> <br><p> The default value is `OnNamespace`.
+     * type defines the strategy used by AlertmanagerConfig objects to match alerts in the routes and inhibition rules.<br><p> <br><p> The default value is `OnNamespace`.
      */
     @JsonProperty("type")
     public String getType() {
@@ -86,7 +86,7 @@ public class AlertmanagerConfigMatcherStrategy implements Editable<AlertmanagerC
     }
 
     /**
-     * AlertmanagerConfigMatcherStrategyType defines the strategy used by AlertmanagerConfig objects to match alerts in the routes and inhibition rules.<br><p> <br><p> The default value is `OnNamespace`.
+     * type defines the strategy used by AlertmanagerConfig objects to match alerts in the routes and inhibition rules.<br><p> <br><p> The default value is `OnNamespace`.
      */
     @JsonProperty("type")
     public void setType(String type) {
