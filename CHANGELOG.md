@@ -3,6 +3,7 @@
 ### 7.7-SNAPSHOT
 
 #### Bugs
+* Fix #7265: (informer) use ReadWriteLock in CacheImpl to prevent index read inconsistency during concurrent updates
 * Fix #7543: fix processInlineDuplicateFields to recursively resolve nested inline embeds
 
 #### Improvements

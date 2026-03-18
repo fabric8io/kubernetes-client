@@ -18,7 +18,8 @@ package io.fabric8.kubernetes.client.informers.impl.cache;
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodBuilder;
 import io.fabric8.kubernetes.client.informers.cache.Cache;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import java.util.Collections;
 import java.util.List;
@@ -40,12 +41,12 @@ class CacheImplConcurrencyTest {
 
   private static final String LABEL_INDEX = "label-index";
 
-  @Test
-  void byIndexShouldNeverMissObjectDuringConcurrentUpdates() throws InterruptedException {
+  @ParameterizedTest(name = "{0} should never miss object during concurrent updates")
+  @ValueSource(strings = { "byIndex", "indexKeys" })
+  void indexReadShouldNeverMissObjectDuringConcurrentUpdates(String readMethod) throws InterruptedException {
     CacheImpl<Pod> cache = new CacheImpl<>(Cache.NAMESPACE_INDEX, Cache::metaNamespaceIndexFunc, Cache::metaNamespaceKeyFunc);
     cache.addIndexFunc(LABEL_INDEX, pod -> Collections.singletonList(pod.getMetadata().getLabels().get("app")));
 
-    // Pre-populate a pod that should always be findable by index
     Pod pod = new PodBuilder()
         .withNewMetadata()
         .withName("test-pod")
@@ -91,14 +92,14 @@ class CacheImplConcurrencyTest {
       });
     }
 
-    // Readers: continuously query byIndex and verify the pod is always found
+    // Readers: continuously query the index and verify the pod is always found
     for (int r = 0; r < readerThreads; r++) {
       executor.submit(() -> {
         try {
           startLatch.await();
           for (int i = 0; i < iterations; i++) {
-            List<Pod> result = cache.byIndex(LABEL_INDEX, "myapp");
-            if (result.isEmpty()) {
+            boolean empty = readIndex(cache, readMethod);
+            if (empty) {
               missDetected.set(true);
               missCount.incrementAndGet();
             }
@@ -118,85 +119,17 @@ class CacheImplConcurrencyTest {
     executor.awaitTermination(5, TimeUnit.SECONDS);
 
     assertThat(missDetected.get())
-        .as("byIndex() should never return empty during concurrent updates, but missed %d times", missCount.get())
+        .as("%s() should never return empty during concurrent updates, but missed %d times", readMethod, missCount.get())
         .isFalse();
   }
 
-  @Test
-  void indexKeysShouldNeverMissObjectDuringConcurrentUpdates() throws InterruptedException {
-    CacheImpl<Pod> cache = new CacheImpl<>(Cache.NAMESPACE_INDEX, Cache::metaNamespaceIndexFunc, Cache::metaNamespaceKeyFunc);
-    cache.addIndexFunc(LABEL_INDEX, pod -> Collections.singletonList(pod.getMetadata().getLabels().get("app")));
-
-    Pod pod = new PodBuilder()
-        .withNewMetadata()
-        .withName("test-pod")
-        .withNamespace("default")
-        .withResourceVersion("1")
-        .addToLabels("app", "myapp")
-        .endMetadata()
-        .build();
-    cache.put(pod);
-
-    int writerThreads = 4;
-    int readerThreads = 8;
-    int iterations = 5000;
-    AtomicBoolean missDetected = new AtomicBoolean(false);
-    AtomicInteger missCount = new AtomicInteger(0);
-    CountDownLatch startLatch = new CountDownLatch(1);
-    CountDownLatch doneLatch = new CountDownLatch(writerThreads + readerThreads);
-
-    ExecutorService executor = Executors.newFixedThreadPool(writerThreads + readerThreads);
-
-    for (int w = 0; w < writerThreads; w++) {
-      final int writerId = w;
-      executor.submit(() -> {
-        try {
-          startLatch.await();
-          for (int i = 0; i < iterations; i++) {
-            Pod updated = new PodBuilder()
-                .withNewMetadata()
-                .withName("test-pod")
-                .withNamespace("default")
-                .withResourceVersion(String.valueOf(writerId * iterations + i + 2))
-                .addToLabels("app", "myapp")
-                .endMetadata()
-                .build();
-            cache.put(updated);
-          }
-        } catch (InterruptedException e) {
-          Thread.currentThread().interrupt();
-        } finally {
-          doneLatch.countDown();
-        }
-      });
+  private boolean readIndex(CacheImpl<Pod> cache, String method) {
+    if ("byIndex".equals(method)) {
+      List<Pod> result = cache.byIndex(LABEL_INDEX, "myapp");
+      return result.isEmpty();
+    } else {
+      List<String> keys = cache.indexKeys(LABEL_INDEX, "myapp");
+      return keys.isEmpty();
     }
-
-    for (int r = 0; r < readerThreads; r++) {
-      executor.submit(() -> {
-        try {
-          startLatch.await();
-          for (int i = 0; i < iterations; i++) {
-            List<String> keys = cache.indexKeys(LABEL_INDEX, "myapp");
-            if (keys.isEmpty()) {
-              missDetected.set(true);
-              missCount.incrementAndGet();
-            }
-          }
-        } catch (InterruptedException e) {
-          Thread.currentThread().interrupt();
-        } finally {
-          doneLatch.countDown();
-        }
-      });
-    }
-
-    startLatch.countDown();
-    doneLatch.await(30, TimeUnit.SECONDS);
-    executor.shutdown();
-    executor.awaitTermination(5, TimeUnit.SECONDS);
-
-    assertThat(missDetected.get())
-        .as("indexKeys() should never return empty during concurrent updates, but missed %d times", missCount.get())
-        .isFalse();
   }
 }
