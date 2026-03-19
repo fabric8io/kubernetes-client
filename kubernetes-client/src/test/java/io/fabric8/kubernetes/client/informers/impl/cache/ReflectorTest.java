@@ -16,6 +16,7 @@
 package io.fabric8.kubernetes.client.informers.impl.cache;
 
 import io.fabric8.kubernetes.api.model.Pod;
+import io.fabric8.kubernetes.api.model.PodBuilder;
 import io.fabric8.kubernetes.api.model.PodList;
 import io.fabric8.kubernetes.api.model.PodListBuilder;
 import io.fabric8.kubernetes.client.KubernetesClientException;
@@ -205,6 +206,48 @@ class ReflectorTest {
 
     assertFalse(reflector.isWatching());
     assertTrue(reflector.isStopped());
+  }
+
+  @Test
+  void testWatchListBookmarkCompletesListAndSwitchesToNormalWatching() {
+    ListerWatcher<Pod, PodList> mock = Mockito.mock(ListerWatcher.class);
+
+    Reflector<Pod, PodList> reflector = new Reflector<>(mock, mockStore);
+    reflector.setWatchList(true);
+
+    AbstractWatchManager manager = Mockito.mock(AbstractWatchManager.class);
+    Mockito.when(manager.isWatching()).thenReturn(true);
+
+    Mockito.when(mock.submitWatch(Mockito.any(), Mockito.any()))
+        .thenReturn(CompletableFuture.completedFuture(manager));
+
+    reflector.start();
+
+    // BOOKMARK event completes the watch list
+    Pod bookmarkPod = new PodBuilder()
+        .withNewMetadata().withResourceVersion("42").endMetadata()
+        .build();
+    reflector.getWatcher().eventReceived(Action.BOOKMARK, bookmarkPod);
+
+    // Verify syncList and onList were called
+    Mockito.verify(mockStore).syncList(Mockito.anySet());
+    Mockito.verify(mockStore).onList(Mockito.eq("42"), Mockito.anyBoolean());
+
+    // Verify lastSyncResourceVersion was set from the bookmark
+    assertEquals("42", reflector.getLastSyncResourceVersion());
+
+    // Verify the bookmark resource was NOT added to the store
+    Mockito.verify(mockStore, Mockito.never()).add(Mockito.any());
+
+    // After bookmark, subsequent events should be processed normally (not in watchList mode)
+    Pod laterPod = new PodBuilder()
+        .withNewMetadata().withName("pod2").withNamespace("ns").withResourceVersion("50").endMetadata()
+        .build();
+    reflector.getWatcher().eventReceived(Action.ADDED, laterPod);
+
+    // In normal mode, the ADDED event should add to the store
+    Mockito.verify(mockStore).add(laterPod);
+    assertEquals("50", reflector.getLastSyncResourceVersion());
   }
 
   @Test
