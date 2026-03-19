@@ -13,6 +13,7 @@
 * Fix #7543: fix processInlineDuplicateFields to recursively resolve nested inline embeds
 * Fix #7450: StandardHttpClient.shouldRetry() does not retry on Vert.x HttpClosedException
 * Fix #7350: Improper callback timing in leaderelection leads to the dual-leader
+* Fix #7265: fix ephemeral removal of index entries from informer caches
 
 #### Improvements
 * Fix #7662: (mockwebserver) new `MockWebServer#setHttp2ClearTextEnabled(boolean)` setter to opt out of HTTP/2 cleartext (h2c) upgrade
