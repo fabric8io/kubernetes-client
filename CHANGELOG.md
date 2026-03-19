@@ -4,6 +4,7 @@
 
 #### Bugs
 * Fix #7543: fix processInlineDuplicateFields to recursively resolve nested inline embeds
+* Fix #7265: fix ephemeral removal of index entries from informer caches
 
 #### Improvements
 * Fix #7522: improve dependency management for kubernetes-httpclient-okhttp
