@@ -6,7 +6,7 @@ set -euo pipefail
 PR_NUMBER="${1:?Usage: get-dep-context.sh <pr-number>}"
 REPO="fabric8io/kubernetes-client"
 
-REPO_ROOT="$(cd "$(dirname "$0")/../../.." && pwd)"
+REPO_ROOT="$(cd "$(dirname "$0")/../../../.." && pwd)"
 
 echo "=== PR Details ==="
 gh pr view "$PR_NUMBER" --repo "$REPO" --json number,title,state,headRefName,body,url \
@@ -44,8 +44,8 @@ fi
 
 echo ""
 echo "=== Current go.mod direct dependencies (first require block) ==="
-awk '/^require \(/,/^\)/' $REPO_ROOT/kubernetes-model-generator/openapi/generator/go.mod | head -60
+awk '/^require \(/,/^\)/' "$REPO_ROOT/kubernetes-model-generator/openapi/generator/go.mod" | head -60
 
 echo ""
 echo "=== Current replace directives ==="
-awk '/^\/\/ Required|^\/\/ Issues|^replace \(/,/^\)/' $REPO_ROOT/kubernetes-model-generator/openapi/generator/go.mod
+awk '/^\/\/ Required|^\/\/ Issues|^replace \(/,/^\)/' "$REPO_ROOT/kubernetes-model-generator/openapi/generator/go.mod"
