@@ -2,6 +2,8 @@
 # Fetches context for a Dependabot Go dependency bump PR
 # Usage: get-dep-context.sh <pr-number>
 set -euo pipefail
+# Redirect stderr to stdout so Claude Code doesn't treat gh CLI warnings as errors
+exec 2>&1
 
 PR_NUMBER="${1:?Usage: get-dep-context.sh <pr-number>}"
 REPO="fabric8io/kubernetes-client"
@@ -14,7 +16,7 @@ gh pr view "$PR_NUMBER" --repo "$REPO" --json number,title,state,headRefName,bod
 
 echo ""
 echo "=== PR Body (first 40 lines) ==="
-gh pr view "$PR_NUMBER" --repo "$REPO" --json body -q '.body' | head -40
+gh pr view "$PR_NUMBER" --repo "$REPO" --json body -q '.body' | head -40 || true
 
 echo ""
 echo "=== CI Check Status ==="
@@ -44,7 +46,7 @@ fi
 
 echo ""
 echo "=== Current go.mod direct dependencies (first require block) ==="
-awk '/^require \(/,/^\)/' "$REPO_ROOT/kubernetes-model-generator/openapi/generator/go.mod" | head -60
+awk '/^require \(/{found++} found==1{print} found==1 && /^\)/{exit}' "$REPO_ROOT/kubernetes-model-generator/openapi/generator/go.mod"
 
 echo ""
 echo "=== Current replace directives ==="
