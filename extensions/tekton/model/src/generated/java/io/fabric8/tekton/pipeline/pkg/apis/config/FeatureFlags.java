@@ -51,6 +51,7 @@ import lombok.experimental.Accessors;
     "enableParamEnum",
     "enableProvenanceInStatus",
     "enableStepActions",
+    "enableTektonOCIBundles",
     "enableWaitExponentialBackoff",
     "enforceNonfalsifiability",
     "maxResultSize",
@@ -113,6 +114,8 @@ public class FeatureFlags implements Editable<FeatureFlagsBuilder>, KubernetesRe
     private Boolean enableProvenanceInStatus;
     @JsonProperty("enableStepActions")
     private Boolean enableStepActions;
+    @JsonProperty("enableTektonOCIBundles")
+    private Boolean enableTektonOCIBundles;
     @JsonProperty("enableWaitExponentialBackoff")
     private Boolean enableWaitExponentialBackoff;
     @JsonProperty("enforceNonfalsifiability")
@@ -142,7 +145,7 @@ public class FeatureFlags implements Editable<FeatureFlagsBuilder>, KubernetesRe
     public FeatureFlags() {
     }
 
-    public FeatureFlags(Boolean awaitSidecarReadiness, String coschedule, Boolean disableCredsInit, String disableInlineSpec, String enableAPIFields, Boolean enableArtifacts, Boolean enableCELInWhenExpression, Boolean enableConciseResolverSyntax, Boolean enableKeepPodOnCancel, Boolean enableKubernetesSidecar, Boolean enableParamEnum, Boolean enableProvenanceInStatus, Boolean enableStepActions, Boolean enableWaitExponentialBackoff, String enforceNonfalsifiability, Integer maxResultSize, Boolean requireGitSSHSecretKnownHosts, String resultExtractionMethod, Boolean runningInEnvWithInjectedSidecars, Boolean sendCloudEventsForRuns, Boolean setSecurityContext, Boolean setSecurityContextReadOnlyRootFilesystem, String verificationNoMatchPolicy) {
+    public FeatureFlags(Boolean awaitSidecarReadiness, String coschedule, Boolean disableCredsInit, String disableInlineSpec, String enableAPIFields, Boolean enableArtifacts, Boolean enableCELInWhenExpression, Boolean enableConciseResolverSyntax, Boolean enableKeepPodOnCancel, Boolean enableKubernetesSidecar, Boolean enableParamEnum, Boolean enableProvenanceInStatus, Boolean enableStepActions, Boolean enableTektonOCIBundles, Boolean enableWaitExponentialBackoff, String enforceNonfalsifiability, Integer maxResultSize, Boolean requireGitSSHSecretKnownHosts, String resultExtractionMethod, Boolean runningInEnvWithInjectedSidecars, Boolean sendCloudEventsForRuns, Boolean setSecurityContext, Boolean setSecurityContextReadOnlyRootFilesystem, String verificationNoMatchPolicy) {
         super();
         this.awaitSidecarReadiness = awaitSidecarReadiness;
         this.coschedule = coschedule;
@@ -157,6 +160,7 @@ public class FeatureFlags implements Editable<FeatureFlagsBuilder>, KubernetesRe
         this.enableParamEnum = enableParamEnum;
         this.enableProvenanceInStatus = enableProvenanceInStatus;
         this.enableStepActions = enableStepActions;
+        this.enableTektonOCIBundles = enableTektonOCIBundles;
         this.enableWaitExponentialBackoff = enableWaitExponentialBackoff;
         this.enforceNonfalsifiability = enforceNonfalsifiability;
         this.maxResultSize = maxResultSize;
@@ -375,6 +379,22 @@ public class FeatureFlags implements Editable<FeatureFlagsBuilder>, KubernetesRe
     @JsonProperty("enableStepActions")
     public void setEnableStepActions(Boolean enableStepActions) {
         this.enableStepActions = enableStepActions;
+    }
+
+    /**
+     * DeprecatedEnableTektonOCIBundles is maintained for backward compatibility to allow deletion of PipelineRuns created before v0.62.x. This field is not used and can be removed in a future release once we're confident old PipelineRuns have been cleaned up. See issue #8359 for context.
+     */
+    @JsonProperty("enableTektonOCIBundles")
+    public Boolean getEnableTektonOCIBundles() {
+        return enableTektonOCIBundles;
+    }
+
+    /**
+     * DeprecatedEnableTektonOCIBundles is maintained for backward compatibility to allow deletion of PipelineRuns created before v0.62.x. This field is not used and can be removed in a future release once we're confident old PipelineRuns have been cleaned up. See issue #8359 for context.
+     */
+    @JsonProperty("enableTektonOCIBundles")
+    public void setEnableTektonOCIBundles(Boolean enableTektonOCIBundles) {
+        this.enableTektonOCIBundles = enableTektonOCIBundles;
     }
 
     /**
