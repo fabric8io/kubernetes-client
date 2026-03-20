@@ -34,9 +34,9 @@ require (
 	k8s.io/api v0.35.2
 	k8s.io/apiextensions-apiserver v0.35.2
 	k8s.io/apimachinery v0.35.2
-	k8s.io/autoscaler/vertical-pod-autoscaler v1.4.1
+	k8s.io/autoscaler/vertical-pod-autoscaler v1.6.0
 	k8s.io/client-go v12.0.0+incompatible
-	k8s.io/gengo/v2 v2.0.0-20250922181213-ec3ebc5fd46b
+	k8s.io/gengo/v2 v2.0.0-20251215205346-5ee0d033ba5b
 	k8s.io/kube-openapi v0.0.0-20260127142750-a19766b6e2d4
 	k8s.io/metrics v0.35.2
 	knative.dev/caching v0.0.0-20260120130310-f1fc03b7f5ee
