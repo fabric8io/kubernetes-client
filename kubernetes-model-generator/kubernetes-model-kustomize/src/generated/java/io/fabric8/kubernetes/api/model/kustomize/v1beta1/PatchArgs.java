@@ -35,10 +35,8 @@ import lombok.experimental.Accessors;
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "options",
-    "patch",
-    "path",
-    "target"
+    "allowKindChange",
+    "allowNameChange"
 })
 @ToString
 @EqualsAndHashCode
@@ -62,81 +60,55 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class Patch implements Editable<PatchBuilder>, KubernetesResource
+public class PatchArgs implements Editable<PatchArgsBuilder>, KubernetesResource
 {
 
-    @JsonProperty("options")
-    private PatchArgs options;
-    @JsonProperty("patch")
-    private String patch;
-    @JsonProperty("path")
-    private String path;
-    @JsonProperty("target")
-    private Selector target;
+    @JsonProperty("allowKindChange")
+    private Boolean allowKindChange;
+    @JsonProperty("allowNameChange")
+    private Boolean allowNameChange;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
      */
-    public Patch() {
+    public PatchArgs() {
     }
 
-    public Patch(PatchArgs options, String patch, String path, Selector target) {
+    public PatchArgs(Boolean allowKindChange, Boolean allowNameChange) {
         super();
-        this.options = options;
-        this.patch = patch;
-        this.path = path;
-        this.target = target;
+        this.allowKindChange = allowKindChange;
+        this.allowNameChange = allowNameChange;
     }
 
-    @JsonProperty("options")
-    public PatchArgs getOptions() {
-        return options;
+    @JsonProperty("allowKindChange")
+    public Boolean getAllowKindChange() {
+        return allowKindChange;
     }
 
-    @JsonProperty("options")
-    public void setOptions(PatchArgs options) {
-        this.options = options;
+    @JsonProperty("allowKindChange")
+    public void setAllowKindChange(Boolean allowKindChange) {
+        this.allowKindChange = allowKindChange;
     }
 
-    @JsonProperty("patch")
-    public String getPatch() {
-        return patch;
+    @JsonProperty("allowNameChange")
+    public Boolean getAllowNameChange() {
+        return allowNameChange;
     }
 
-    @JsonProperty("patch")
-    public void setPatch(String patch) {
-        this.patch = patch;
-    }
-
-    @JsonProperty("path")
-    public String getPath() {
-        return path;
-    }
-
-    @JsonProperty("path")
-    public void setPath(String path) {
-        this.path = path;
-    }
-
-    @JsonProperty("target")
-    public Selector getTarget() {
-        return target;
-    }
-
-    @JsonProperty("target")
-    public void setTarget(Selector target) {
-        this.target = target;
+    @JsonProperty("allowNameChange")
+    public void setAllowNameChange(Boolean allowNameChange) {
+        this.allowNameChange = allowNameChange;
     }
 
     @JsonIgnore
-    public PatchBuilder edit() {
-        return new PatchBuilder(this);
+    public PatchArgsBuilder edit() {
+        return new PatchArgsBuilder(this);
     }
 
     @JsonIgnore
-    public PatchBuilder toBuilder() {
+    public PatchArgsBuilder toBuilder() {
         return edit();
     }
 
