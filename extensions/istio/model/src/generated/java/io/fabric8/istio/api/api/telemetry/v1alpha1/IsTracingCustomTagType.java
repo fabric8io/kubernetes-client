@@ -14,6 +14,7 @@ import io.fabric8.kubernetes.api.model.KubernetesResource;
 @JsonTypeResolver(io.fabric8.kubernetes.model.jackson.UnwrappedTypeResolverBuilder.class)
 @JsonSubTypes({
     @JsonSubTypes.Type(TracingCustomTagEnvironment.class),
+    @JsonSubTypes.Type(TracingCustomTagFormatter.class),
     @JsonSubTypes.Type(TracingCustomTagHeader.class),
     @JsonSubTypes.Type(TracingCustomTagLiteral.class),
 })
