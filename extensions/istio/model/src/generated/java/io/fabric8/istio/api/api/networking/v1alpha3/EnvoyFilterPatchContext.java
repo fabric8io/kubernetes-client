@@ -13,7 +13,8 @@ public enum EnvoyFilterPatchContext
     ANY(0),
     GATEWAY(3),
     SIDECAR_INBOUND(1),
-    SIDECAR_OUTBOUND(2);
+    SIDECAR_OUTBOUND(2),
+    WAYPOINT(4);
     private final int value;
     private EnvoyFilterPatchContext(int value) {
         this.value = value;

@@ -115,7 +115,7 @@
     <bouncycastle.version>1.83</bouncycastle.version>
     <bc-fips.version>2.1.2</bc-fips.version>
     <bcpkix-fips.version>2.1.10</bcpkix-fips.version>
-    <keycloak.version>26.5.5</keycloak.version><!-- Used by CRD Generator integration tests for verifications -->
+    <keycloak.version>26.5.6</keycloak.version><!-- Used by CRD Generator integration tests for verifications -->
     <mockito.version>5.23.0</mockito.version>
     <mockito-inline.version>5.2.0</mockito-inline.version>
     <spock.version>2.4-M6-groovy-4.0</spock.version>
@@ -165,7 +165,7 @@
     <sonar-maven-plugin.version>5.5.0.6356</sonar-maven-plugin.version>
     <central-publishing-maven-plugin>0.10.0</central-publishing-maven-plugin>
     <properties.maven.plugin.version>1.0.0</properties.maven.plugin.version>
-    <spotless-maven-plugin.version>3.3.0</spotless-maven-plugin.version>
+    <spotless-maven-plugin.version>3.4.0</spotless-maven-plugin.version>
     <really-executable-jar-maven-plugin.version>2.1.1</really-executable-jar-maven-plugin.version>
 
     <!-- Other options -->
