@@ -3379,6 +3379,7 @@ github.com/stretchr/objx v0.4.0/go.mod h1:YvHI0jy2hoMjB+UWwv71VJQ9isScKT/TqJzVSS
 github.com/stretchr/objx v0.5.0/go.mod h1:Yh+to48EsGEfYuaHDzXPcE3xhTkx73EhmCGUpEOglKo=
 github.com/stretchr/objx v0.5.2 h1:xuMeJ0Sdp5ZMRXx/aWO6RZxdr3beISkG5/G/aIRr3pY=
 github.com/stretchr/objx v0.5.2/go.mod h1:FRsXN1f5AsAjCGJKqEizvkpNtU+EGNCLh3NxZ/8L+MA=
+github.com/stretchr/objx v0.5.3 h1:jmXUvGomnU1o3W/V5h2VEradbpJDwGrzugQQvL0POH4=
 github.com/stretchr/testify v1.2.2/go.mod h1:a8OnRcib4nhh0OaRAV+Yts87kKdq0PP7pXfy6kDkUVs=
 github.com/stretchr/testify v1.3.0/go.mod h1:M5WIy9Dh21IEIfnGCwXGc5bZfKNJtfHm1UVUgZn+9EI=
 github.com/stretchr/testify v1.3.1-0.20190311161405-34c6fa2dc709/go.mod h1:M5WIy9Dh21IEIfnGCwXGc5bZfKNJtfHm1UVUgZn+9EI=
@@ -5170,6 +5171,8 @@ k8s.io/apiserver v0.35.2 h1:rb52v0CZGEL0FkhjS+I6jHflAp7fZ4MIaKcEHX7wmDk=
 k8s.io/apiserver v0.35.2/go.mod h1:CROJUAu0tfjZLyYgSeBsBan2T7LUJGh0ucWwTCSSk7g=
 k8s.io/autoscaler/vertical-pod-autoscaler v1.4.1 h1:egVuwoIPvX7EPRi57bxpoIu/+9z1fK1AqyyhI/p8+v0=
 k8s.io/autoscaler/vertical-pod-autoscaler v1.4.1/go.mod h1:rIBiAf+sK2mw8ryeHIZuY5juhJ4e2rNLwo59SDRXF7I=
+k8s.io/autoscaler/vertical-pod-autoscaler v1.6.0 h1:JC2YsVS6njOY8+a2mr8YX2FwZCpWfe7oVzjk98YPKZg=
+k8s.io/autoscaler/vertical-pod-autoscaler v1.6.0/go.mod h1:w7pOVKXZAZsct/dXWsGJflrGOTkMpBxI75KyQjUYg7Y=
 k8s.io/client-go v0.35.2 h1:YUfPefdGJA4aljDdayAXkc98DnPkIetMl4PrKX97W9o=
 k8s.io/client-go v0.35.2/go.mod h1:4QqEwh4oQpeK8AaefZ0jwTFJw/9kIjdQi0jpKeYvz7g=
 k8s.io/code-generator v0.21.4/go.mod h1:K3y0Bv9Cz2cOW2vXUrNZlFbflhuPvuadW6JdnN6gGKo=
@@ -5193,6 +5196,8 @@ k8s.io/gengo/v2 v2.0.0-20250207200755-1244d31929d7/go.mod h1:EJykeLsmFC60UQbYJez
 k8s.io/gengo/v2 v2.0.0-20250604051438-85fd79dbfd9f/go.mod h1:EJykeLsmFC60UQbYJezXkEsG2FLrt0GPNkU5iK5GWxU=
 k8s.io/gengo/v2 v2.0.0-20250922181213-ec3ebc5fd46b h1:gMplByicHV/TJBizHd9aVEsTYoJBnnUAT5MHlTkbjhQ=
 k8s.io/gengo/v2 v2.0.0-20250922181213-ec3ebc5fd46b/go.mod h1:CgujABENc3KuTrcsdpGmrrASjtQsWCT7R99mEV4U/fM=
+k8s.io/gengo/v2 v2.0.0-20251215205346-5ee0d033ba5b h1:0YkdvW3rX2vaBWsqCGZAekxPRwaI5NuYNprOsMNVLns=
+k8s.io/gengo/v2 v2.0.0-20251215205346-5ee0d033ba5b/go.mod h1:yvyl3l9E+UxlqOMUULdKTAYB0rEhsmjr7+2Vb/1pCSo=
 k8s.io/klog v0.2.0/go.mod h1:Gq+BEi5rUBO/HRz0bTSXDUcqjScdoY3a9IHpCEIOOfk=
 k8s.io/klog v1.0.0/go.mod h1:4Bi6QPql/J/LkTDqv7R/cd3hPo4k2DG6Ptcz060Ez5I=
 k8s.io/klog/v2 v2.0.0/go.mod h1:PBfzABfn139FHAV07az/IF9Wp1bkk3vpT2XSJ76fSDE=

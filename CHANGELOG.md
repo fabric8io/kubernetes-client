@@ -25,6 +25,7 @@
 * Fix #7541: bump gateway-api from 1.4.0 to 1.5.0
 * Fix #7538: bump cert-manager from 1.18.2 to 1.19.4
 * Fix #7578: bump tektoncd/pipeline from 1.9.0 to 1.10.2
+* Fix #7582: bump vertical-pod-autoscaler from 1.4.1 to 1.6.0
 
 #### New Features
 
