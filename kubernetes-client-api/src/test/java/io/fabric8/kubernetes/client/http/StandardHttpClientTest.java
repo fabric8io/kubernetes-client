@@ -17,7 +17,6 @@ package io.fabric8.kubernetes.client.http;
 
 import io.fabric8.kubernetes.client.RequestConfigBuilder;
 import io.fabric8.kubernetes.client.http.WebSocket.Listener;
-import io.vertx.core.http.HttpClosedException;
 import org.awaitility.Awaitility;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -319,8 +318,7 @@ class StandardHttpClientTest {
         .withRequestRetryBackoffInterval(50).build())
         .build();
 
-    // Simulate what the Vert.x client produces when HttpClosedException occurs:
-    client.expect(".*", new IOException("connection closed", new HttpClosedException("connection closed")));
+    client.expect(".*", new IOException("connection closed"));
     client.expect(".*", new TestHttpResponse<AsyncBody>().withCode(200));
 
     CompletableFuture<HttpResponse<AsyncBody>> consumeFuture = client.consumeBytes(
