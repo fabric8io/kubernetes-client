@@ -401,6 +401,20 @@ public interface HasMetadata extends KubernetesResource {
    * @return the newly added {@link OwnerReference}
    */
   default OwnerReference addOwnerReference(HasMetadata owner) {
+    return addOwnerReference(owner, false, false);
+  }
+
+  /**
+   * Adds an {@link OwnerReference} to the specified owner if possible. See the owner references section of the
+   * <a href="https://kubernetes.io/docs/reference/kubernetes-api/common-definitions/object-meta/#System">ObjectMeta
+   * documentation</a> for more details
+   *
+   * @param owner the owner to add a reference to
+   * @param controller whether the owner is the managing controller for this resource
+   * @param blockOwnerDeletion whether the owner deletion should be blocked until the new owner reference to be added is removed
+   * @return the newly added {@link OwnerReference}
+   */
+  default OwnerReference addOwnerReference(HasMetadata owner, boolean controller, boolean blockOwnerDeletion) {
     if (owner == null) {
       throw new IllegalArgumentException("Cannot add a reference to a null owner to "
           + optionalMetadata().map(m -> "'" + m.getName() + "' ").orElse("unnamed ")
@@ -436,6 +450,8 @@ public interface HasMetadata extends KubernetesResource {
         .withApiVersion(owner.getApiVersion())
         .withName(metadata.getName())
         .withKind(owner.getKind())
+        .withBlockOwnerDeletion(blockOwnerDeletion)
+        .withController(controller)
         .build();
     return addOwnerReference(sanitizeAndValidate(ownerReference));
   }
