@@ -54,7 +54,7 @@ require (
 	open-cluster-management.io/multicloud-operators-channel v0.16.0
 	open-cluster-management.io/multicloud-operators-subscription v0.16.0
 	sigs.k8s.io/cluster-api v1.12.2
-	sigs.k8s.io/gateway-api v1.5.0
+	sigs.k8s.io/gateway-api v1.5.1
 	sigs.k8s.io/kustomize/api v0.21.1
 	// This version is older than v1.10.0 see replacements below
 	volcano.sh/apis v1.19.6
