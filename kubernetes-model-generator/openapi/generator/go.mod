@@ -48,7 +48,7 @@ require (
 	knative.dev/eventing-kafka-broker v0.48.1
 	knative.dev/eventing-prometheus v0.28.0
 	knative.dev/networking v0.0.0-20260120131110-a7cdca238a0d
-	knative.dev/serving v0.48.1
+	knative.dev/serving v0.48.2
 	open-cluster-management.io/api v1.2.0
 	open-cluster-management.io/governance-policy-propagator v0.18.0
 	open-cluster-management.io/multicloud-operators-channel v0.16.0
@@ -242,7 +242,7 @@ require (
 	k8s.io/component-base v0.35.3 // indirect
 	k8s.io/klog/v2 v2.140.0 // indirect
 	k8s.io/utils v0.0.0-20260210185600-b8788abfbbc2 // indirect
-	knative.dev/pkg v0.0.0-20260120122510-4a022ed9999a // indirect
+	knative.dev/pkg v0.0.0-20260319144603-18c5d580ae64 // indirect
 	sigs.k8s.io/cluster-api-provider-azure v1.22.1 // indirect
 	sigs.k8s.io/controller-runtime v0.23.3 // indirect
 	sigs.k8s.io/json v0.0.0-20250730193827-2d320260d730 // indirect
