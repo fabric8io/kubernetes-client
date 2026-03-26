@@ -30,7 +30,7 @@
 
   <properties>
     <jpms.module.name>io.fabric8.kubernetes.client.vertx5</jpms.module.name>
-    <vertx.version>${vertx5.version}</vertx.version>
+    <vertx.version>5.0.9</vertx.version>
     <osgi.require-capability>
       osgi.extender;
       filter:="(osgi.extender=osgi.serviceloader.registrar)",
