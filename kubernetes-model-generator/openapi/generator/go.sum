@@ -3053,8 +3053,8 @@ github.com/openzipkin/zipkin-go v0.2.2/go.mod h1:NaW6tEwdmWMaCDZzg8sh+IBNOxHMPnh
 github.com/openzipkin/zipkin-go v0.2.5/go.mod h1:KpXfKdgRDnnhsxw4pNIH9Md5lyFqKUa4YDFlwRYAMyE=
 github.com/openzipkin/zipkin-go v0.3.0/go.mod h1:4c3sLeE8xjNqehmF5RpAFLPLJxXscc0R4l6Zg0P1tTQ=
 github.com/openzipkin/zipkin-go v0.4.3/go.mod h1:M9wCJZFWCo2RiY+o1eBCEMe0Dp2S5LDHcMZmk3RmK7c=
-github.com/operator-framework/api v0.41.0 h1:B0nutndl95elbLXJGRlkFNTI8OuZIjSqvTEeORPhTKo=
-github.com/operator-framework/api v0.41.0/go.mod h1:Ouud+eqruzll9X3iv8wuAOTNAyyEncYXp4IVgbIlIdg=
+github.com/operator-framework/api v0.42.0 h1:rkc5V3zW8RxZMjePAe12jdL7Co/hwsYo1pLnkkhuR7s=
+github.com/operator-framework/api v0.42.0/go.mod h1:bMEj+wl/8tGqcGNtxt38cLUYagu9chNsbYzb/5HQaUQ=
 github.com/operator-framework/operator-lifecycle-manager v0.41.0 h1:t7NZbtKXojAqqGD1LwL0F8pdrlplzqVunMUgrwRdHJo=
 github.com/operator-framework/operator-lifecycle-manager v0.41.0/go.mod h1:1mj85s4T+COUThpspqLY96c+ngWXrEKJloed590pjJc=
 github.com/operator-framework/operator-registry v1.64.0 h1:aEz8ERg+p9U50LCk2Lda4kuhFrSnqDu37yLFs0ex0qE=
