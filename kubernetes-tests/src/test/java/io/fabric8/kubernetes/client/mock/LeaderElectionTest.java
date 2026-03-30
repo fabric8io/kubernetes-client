@@ -36,9 +36,13 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
+import static java.util.concurrent.TimeUnit.MILLISECONDS;
+import static org.awaitility.Awaitility.await;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -127,6 +131,61 @@ class LeaderElectionTest {
     // When - Then
     testAndAssertSingleLeader(client, "lead-lease",
         new LeaseLock("namespace", "name", "lead-lease"));
+  }
+
+  @Test
+  void noDualLeaderOnRestartAfterConflictTest() throws Exception {
+    // Simulates a crash-and-restart scenario: the lock still shows our identity as
+    // holder, but another node already claimed it (409 on update).
+    // onStartLeading() must NOT fire before the update succeeds.
+    final String identity = "restarted-node";
+    server.expect()
+        .get()
+        .withPath("/apis/coordination.k8s.io/v1/namespaces/namespace/leases/name")
+        .andReturn(200, new LeaseBuilder()
+            .withNewMetadata()
+            .withName("name")
+            .withResourceVersion("1")
+            .endMetadata()
+            .withNewSpec()
+            .withHolderIdentity(identity)
+            .withLeaseDurationSeconds(15)
+            .withAcquireTime(ZonedDateTime.now().minusSeconds(10))
+            .withRenewTime(ZonedDateTime.now().minusSeconds(5))
+            .withLeaseTransitions(0)
+            .endSpec()
+            .build())
+        .always();
+    server.expect()
+        .patch()
+        .withPath("/apis/coordination.k8s.io/v1/namespaces/namespace/leases/name")
+        .andReturn(409, null)
+        .always();
+    final AtomicBoolean startLeadingCalled = new AtomicBoolean(false);
+    final ExecutorService executorService = Executors.newSingleThreadExecutor();
+    final Future<?> leaderElectorTask = executorService.submit(() -> assertThrows(InterruptedException.class,
+        () -> client.leaderElector()
+            .withConfig(new LeaderElectionConfigBuilder()
+                .withName("Dual leader prevention test")
+                .withLeaseDuration(Duration.ofSeconds(15L))
+                .withLock(new LeaseLock("namespace", "name", identity))
+                .withRenewDeadline(Duration.ofSeconds(10L))
+                .withRetryPeriod(Duration.ofMillis(100L))
+                .withLeaderCallbacks(new LeaderCallbacks(
+                    () -> startLeadingCalled.set(true),
+                    () -> {
+                    },
+                    newLeader -> {
+                    }))
+                .build())
+            .build()
+            .run()));
+    await().pollDelay(100, MILLISECONDS).during(600, MILLISECONDS).atMost(2, TimeUnit.SECONDS)
+        .until(() -> !startLeadingCalled.get());
+    leaderElectorTask.cancel(true);
+    executorService.shutdownNow();
+    assertTrue(executorService.awaitTermination(10, TimeUnit.SECONDS));
+    assertFalse(startLeadingCalled.get(), "onStartLeading() must not be called when lock.update() fails with 409");
   }
 
   static void testAndAssertSingleLeader(KubernetesClient client, String id, Lock lock) throws Exception {
