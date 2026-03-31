@@ -103,7 +103,7 @@ public class FrontendTLSConfig implements Editable<FrontendTLSConfigBuilder>, Ku
     }
 
     /**
-     * PerPort specifies tls configuration assigned per port. Per port configuration is optional. Once set this configuration overrides the default configuration for all Listeners handling HTTPS traffic that match this port. Each override port requires a unique TLS configuration.<br><p> <br><p> support: Core<br><p> <br><p> &lt;gateway:experimental&gt;
+     * PerPort specifies tls configuration assigned per port. Per port configuration is optional. Once set this configuration overrides the default configuration for all Listeners handling HTTPS traffic that match this port. Each override port requires a unique TLS configuration.<br><p> <br><p> support: Core
      */
     @JsonProperty("perPort")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -112,7 +112,7 @@ public class FrontendTLSConfig implements Editable<FrontendTLSConfigBuilder>, Ku
     }
 
     /**
-     * PerPort specifies tls configuration assigned per port. Per port configuration is optional. Once set this configuration overrides the default configuration for all Listeners handling HTTPS traffic that match this port. Each override port requires a unique TLS configuration.<br><p> <br><p> support: Core<br><p> <br><p> &lt;gateway:experimental&gt;
+     * PerPort specifies tls configuration assigned per port. Per port configuration is optional. Once set this configuration overrides the default configuration for all Listeners handling HTTPS traffic that match this port. Each override port requires a unique TLS configuration.<br><p> <br><p> support: Core
      */
     @JsonProperty("perPort")
     public void setPerPort(List<TLSPortConfig> perPort) {

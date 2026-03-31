@@ -88,7 +88,7 @@ public class ProbeParam implements Editable<ProbeParamBuilder>, KubernetesResour
     }
 
     /**
-     * The parameter name
+     * name defines the parameter name
      */
     @JsonProperty("name")
     public String getName() {
@@ -96,7 +96,7 @@ public class ProbeParam implements Editable<ProbeParamBuilder>, KubernetesResour
     }
 
     /**
-     * The parameter name
+     * name defines the parameter name
      */
     @JsonProperty("name")
     public void setName(String name) {
@@ -104,7 +104,7 @@ public class ProbeParam implements Editable<ProbeParamBuilder>, KubernetesResour
     }
 
     /**
-     * The parameter values
+     * values defines the parameter values
      */
     @JsonProperty("values")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -113,7 +113,7 @@ public class ProbeParam implements Editable<ProbeParamBuilder>, KubernetesResour
     }
 
     /**
-     * The parameter values
+     * values defines the parameter values
      */
     @JsonProperty("values")
     public void setValues(List<String> values) {

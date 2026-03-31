@@ -179,7 +179,7 @@ public class DockerSwarmSDConfig implements Editable<DockerSwarmSDConfigBuilder>
     }
 
     /**
-     * Whether to enable HTTP2.
+     * enableHTTP2 defines whether to enable HTTP2.
      */
     @JsonProperty("enableHTTP2")
     public Boolean getEnableHTTP2() {
@@ -187,7 +187,7 @@ public class DockerSwarmSDConfig implements Editable<DockerSwarmSDConfigBuilder>
     }
 
     /**
-     * Whether to enable HTTP2.
+     * enableHTTP2 defines whether to enable HTTP2.
      */
     @JsonProperty("enableHTTP2")
     public void setEnableHTTP2(Boolean enableHTTP2) {
@@ -195,7 +195,7 @@ public class DockerSwarmSDConfig implements Editable<DockerSwarmSDConfigBuilder>
     }
 
     /**
-     * Optional filters to limit the discovery process to a subset of available resources. The available filters are listed in the upstream documentation: Services: https://docs.docker.com/engine/api/v1.40/#operation/ServiceList Tasks: https://docs.docker.com/engine/api/v1.40/#operation/TaskList Nodes: https://docs.docker.com/engine/api/v1.40/#operation/NodeList
+     * filters defines the filters to limit the discovery process to a subset of available resources. The available filters are listed in the upstream documentation: Services: https://docs.docker.com/engine/api/v1.40/#operation/ServiceList Tasks: https://docs.docker.com/engine/api/v1.40/#operation/TaskList Nodes: https://docs.docker.com/engine/api/v1.40/#operation/NodeList
      */
     @JsonProperty("filters")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -204,7 +204,7 @@ public class DockerSwarmSDConfig implements Editable<DockerSwarmSDConfigBuilder>
     }
 
     /**
-     * Optional filters to limit the discovery process to a subset of available resources. The available filters are listed in the upstream documentation: Services: https://docs.docker.com/engine/api/v1.40/#operation/ServiceList Tasks: https://docs.docker.com/engine/api/v1.40/#operation/TaskList Nodes: https://docs.docker.com/engine/api/v1.40/#operation/NodeList
+     * filters defines the filters to limit the discovery process to a subset of available resources. The available filters are listed in the upstream documentation: Services: https://docs.docker.com/engine/api/v1.40/#operation/ServiceList Tasks: https://docs.docker.com/engine/api/v1.40/#operation/TaskList Nodes: https://docs.docker.com/engine/api/v1.40/#operation/NodeList
      */
     @JsonProperty("filters")
     public void setFilters(List<Filter> filters) {
@@ -212,7 +212,7 @@ public class DockerSwarmSDConfig implements Editable<DockerSwarmSDConfigBuilder>
     }
 
     /**
-     * Configure whether HTTP requests follow HTTP 3xx redirects.
+     * followRedirects defines whether HTTP requests follow HTTP 3xx redirects.
      */
     @JsonProperty("followRedirects")
     public Boolean getFollowRedirects() {
@@ -220,7 +220,7 @@ public class DockerSwarmSDConfig implements Editable<DockerSwarmSDConfigBuilder>
     }
 
     /**
-     * Configure whether HTTP requests follow HTTP 3xx redirects.
+     * followRedirects defines whether HTTP requests follow HTTP 3xx redirects.
      */
     @JsonProperty("followRedirects")
     public void setFollowRedirects(Boolean followRedirects) {
@@ -228,7 +228,7 @@ public class DockerSwarmSDConfig implements Editable<DockerSwarmSDConfigBuilder>
     }
 
     /**
-     * Address of the Docker daemon
+     * host defines the address of the Docker daemon
      */
     @JsonProperty("host")
     public String getHost() {
@@ -236,7 +236,7 @@ public class DockerSwarmSDConfig implements Editable<DockerSwarmSDConfigBuilder>
     }
 
     /**
-     * Address of the Docker daemon
+     * host defines the address of the Docker daemon
      */
     @JsonProperty("host")
     public void setHost(String host) {
@@ -244,7 +244,7 @@ public class DockerSwarmSDConfig implements Editable<DockerSwarmSDConfigBuilder>
     }
 
     /**
-     * `noProxy` is a comma-separated string that can contain IPs, CIDR notation, domain names that should be excluded from proxying. IP and domain names can contain port numbers.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
+     * noProxy defines a comma-separated string that can contain IPs, CIDR notation, domain names that should be excluded from proxying. IP and domain names can contain port numbers.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
      */
     @JsonProperty("noProxy")
     public String getNoProxy() {
@@ -252,7 +252,7 @@ public class DockerSwarmSDConfig implements Editable<DockerSwarmSDConfigBuilder>
     }
 
     /**
-     * `noProxy` is a comma-separated string that can contain IPs, CIDR notation, domain names that should be excluded from proxying. IP and domain names can contain port numbers.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
+     * noProxy defines a comma-separated string that can contain IPs, CIDR notation, domain names that should be excluded from proxying. IP and domain names can contain port numbers.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
      */
     @JsonProperty("noProxy")
     public void setNoProxy(String noProxy) {
@@ -276,7 +276,7 @@ public class DockerSwarmSDConfig implements Editable<DockerSwarmSDConfigBuilder>
     }
 
     /**
-     * The port to scrape metrics from, when `role` is nodes, and for discovered tasks and services that don't have published ports.
+     * port defines the port to scrape metrics from. If using the public IP address, this must tasks and services that don't have published ports.
      */
     @JsonProperty("port")
     public Integer getPort() {
@@ -284,7 +284,7 @@ public class DockerSwarmSDConfig implements Editable<DockerSwarmSDConfigBuilder>
     }
 
     /**
-     * The port to scrape metrics from, when `role` is nodes, and for discovered tasks and services that don't have published ports.
+     * port defines the port to scrape metrics from. If using the public IP address, this must tasks and services that don't have published ports.
      */
     @JsonProperty("port")
     public void setPort(Integer port) {
@@ -292,7 +292,7 @@ public class DockerSwarmSDConfig implements Editable<DockerSwarmSDConfigBuilder>
     }
 
     /**
-     * ProxyConnectHeader optionally specifies headers to send to proxies during CONNECT requests.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
+     * proxyConnectHeader optionally specifies headers to send to proxies during CONNECT requests.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
      */
     @JsonProperty("proxyConnectHeader")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -301,7 +301,7 @@ public class DockerSwarmSDConfig implements Editable<DockerSwarmSDConfigBuilder>
     }
 
     /**
-     * ProxyConnectHeader optionally specifies headers to send to proxies during CONNECT requests.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
+     * proxyConnectHeader optionally specifies headers to send to proxies during CONNECT requests.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
      */
     @JsonProperty("proxyConnectHeader")
     public void setProxyConnectHeader(Map<String, List<SecretKeySelector>> proxyConnectHeader) {
@@ -309,7 +309,7 @@ public class DockerSwarmSDConfig implements Editable<DockerSwarmSDConfigBuilder>
     }
 
     /**
-     * Whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
+     * proxyFromEnvironment defines whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
      */
     @JsonProperty("proxyFromEnvironment")
     public Boolean getProxyFromEnvironment() {
@@ -317,7 +317,7 @@ public class DockerSwarmSDConfig implements Editable<DockerSwarmSDConfigBuilder>
     }
 
     /**
-     * Whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
+     * proxyFromEnvironment defines whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
      */
     @JsonProperty("proxyFromEnvironment")
     public void setProxyFromEnvironment(Boolean proxyFromEnvironment) {
@@ -325,7 +325,7 @@ public class DockerSwarmSDConfig implements Editable<DockerSwarmSDConfigBuilder>
     }
 
     /**
-     * `proxyURL` defines the HTTP proxy server to use.
+     * proxyUrl defines the HTTP proxy server to use.
      */
     @JsonProperty("proxyUrl")
     public String getProxyUrl() {
@@ -333,7 +333,7 @@ public class DockerSwarmSDConfig implements Editable<DockerSwarmSDConfigBuilder>
     }
 
     /**
-     * `proxyURL` defines the HTTP proxy server to use.
+     * proxyUrl defines the HTTP proxy server to use.
      */
     @JsonProperty("proxyUrl")
     public void setProxyUrl(String proxyUrl) {
@@ -341,7 +341,7 @@ public class DockerSwarmSDConfig implements Editable<DockerSwarmSDConfigBuilder>
     }
 
     /**
-     * The time after which the service discovery data is refreshed.
+     * refreshInterval defines the time after which the provided names are refreshed. If not set, Prometheus uses its default value.
      */
     @JsonProperty("refreshInterval")
     public String getRefreshInterval() {
@@ -349,7 +349,7 @@ public class DockerSwarmSDConfig implements Editable<DockerSwarmSDConfigBuilder>
     }
 
     /**
-     * The time after which the service discovery data is refreshed.
+     * refreshInterval defines the time after which the provided names are refreshed. If not set, Prometheus uses its default value.
      */
     @JsonProperty("refreshInterval")
     public void setRefreshInterval(String refreshInterval) {
@@ -357,7 +357,7 @@ public class DockerSwarmSDConfig implements Editable<DockerSwarmSDConfigBuilder>
     }
 
     /**
-     * Role of the targets to retrieve. Must be `Services`, `Tasks`, or `Nodes`.
+     * role of the targets to retrieve. Must be `Services`, `Tasks`, or `Nodes`.
      */
     @JsonProperty("role")
     public String getRole() {
@@ -365,7 +365,7 @@ public class DockerSwarmSDConfig implements Editable<DockerSwarmSDConfigBuilder>
     }
 
     /**
-     * Role of the targets to retrieve. Must be `Services`, `Tasks`, or `Nodes`.
+     * role of the targets to retrieve. Must be `Services`, `Tasks`, or `Nodes`.
      */
     @JsonProperty("role")
     public void setRole(String role) {

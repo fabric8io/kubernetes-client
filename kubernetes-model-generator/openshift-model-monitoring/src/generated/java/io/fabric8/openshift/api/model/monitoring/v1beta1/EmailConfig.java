@@ -45,6 +45,7 @@ import lombok.experimental.Accessors;
     "authPassword",
     "authSecret",
     "authUsername",
+    "forceImplicitTLS",
     "from",
     "headers",
     "hello",
@@ -89,6 +90,8 @@ public class EmailConfig implements Editable<EmailConfigBuilder>, KubernetesReso
     private SecretKeySelector authSecret;
     @JsonProperty("authUsername")
     private String authUsername;
+    @JsonProperty("forceImplicitTLS")
+    private Boolean forceImplicitTLS;
     @JsonProperty("from")
     private String from;
     @JsonProperty("headers")
@@ -119,12 +122,13 @@ public class EmailConfig implements Editable<EmailConfigBuilder>, KubernetesReso
     public EmailConfig() {
     }
 
-    public EmailConfig(String authIdentity, SecretKeySelector authPassword, SecretKeySelector authSecret, String authUsername, String from, List<KeyValue> headers, String hello, String html, Boolean requireTLS, Boolean sendResolved, String smarthost, String text, SafeTLSConfig tlsConfig, String to) {
+    public EmailConfig(String authIdentity, SecretKeySelector authPassword, SecretKeySelector authSecret, String authUsername, Boolean forceImplicitTLS, String from, List<KeyValue> headers, String hello, String html, Boolean requireTLS, Boolean sendResolved, String smarthost, String text, SafeTLSConfig tlsConfig, String to) {
         super();
         this.authIdentity = authIdentity;
         this.authPassword = authPassword;
         this.authSecret = authSecret;
         this.authUsername = authUsername;
+        this.forceImplicitTLS = forceImplicitTLS;
         this.from = from;
         this.headers = headers;
         this.hello = hello;
@@ -138,7 +142,7 @@ public class EmailConfig implements Editable<EmailConfigBuilder>, KubernetesReso
     }
 
     /**
-     * The identity to use for authentication.
+     * authIdentity defines the identity to use for SMTP authentication. This is typically used with PLAIN authentication mechanism.
      */
     @JsonProperty("authIdentity")
     public String getAuthIdentity() {
@@ -146,7 +150,7 @@ public class EmailConfig implements Editable<EmailConfigBuilder>, KubernetesReso
     }
 
     /**
-     * The identity to use for authentication.
+     * authIdentity defines the identity to use for SMTP authentication. This is typically used with PLAIN authentication mechanism.
      */
     @JsonProperty("authIdentity")
     public void setAuthIdentity(String authIdentity) {
@@ -186,7 +190,7 @@ public class EmailConfig implements Editable<EmailConfigBuilder>, KubernetesReso
     }
 
     /**
-     * The username to use for authentication.
+     * authUsername defines the username to use for SMTP authentication. This is used for SMTP AUTH when the server requires authentication.
      */
     @JsonProperty("authUsername")
     public String getAuthUsername() {
@@ -194,7 +198,7 @@ public class EmailConfig implements Editable<EmailConfigBuilder>, KubernetesReso
     }
 
     /**
-     * The username to use for authentication.
+     * authUsername defines the username to use for SMTP authentication. This is used for SMTP AUTH when the server requires authentication.
      */
     @JsonProperty("authUsername")
     public void setAuthUsername(String authUsername) {
@@ -202,7 +206,23 @@ public class EmailConfig implements Editable<EmailConfigBuilder>, KubernetesReso
     }
 
     /**
-     * The sender address.
+     * forceImplicitTLS defines whether to force use of implicit TLS (direct TLS connection) for better security. true: force use of implicit TLS (direct TLS connection on any port) false: force disable implicit TLS (use explicit TLS/STARTTLS if required) nil (default): auto-detect based on port (465=implicit, other=explicit) for backward compatibility It requires Alertmanager &gt;= v0.31.0.
+     */
+    @JsonProperty("forceImplicitTLS")
+    public Boolean getForceImplicitTLS() {
+        return forceImplicitTLS;
+    }
+
+    /**
+     * forceImplicitTLS defines whether to force use of implicit TLS (direct TLS connection) for better security. true: force use of implicit TLS (direct TLS connection on any port) false: force disable implicit TLS (use explicit TLS/STARTTLS if required) nil (default): auto-detect based on port (465=implicit, other=explicit) for backward compatibility It requires Alertmanager &gt;= v0.31.0.
+     */
+    @JsonProperty("forceImplicitTLS")
+    public void setForceImplicitTLS(Boolean forceImplicitTLS) {
+        this.forceImplicitTLS = forceImplicitTLS;
+    }
+
+    /**
+     * from defines the sender address for email notifications. This appears as the "From" field in the email header.
      */
     @JsonProperty("from")
     public String getFrom() {
@@ -210,7 +230,7 @@ public class EmailConfig implements Editable<EmailConfigBuilder>, KubernetesReso
     }
 
     /**
-     * The sender address.
+     * from defines the sender address for email notifications. This appears as the "From" field in the email header.
      */
     @JsonProperty("from")
     public void setFrom(String from) {
@@ -218,7 +238,7 @@ public class EmailConfig implements Editable<EmailConfigBuilder>, KubernetesReso
     }
 
     /**
-     * Further headers email header key/value pairs. Overrides any headers previously set by the notification implementation.
+     * headers defines additional email header key/value pairs. These override any headers previously set by the notification implementation.
      */
     @JsonProperty("headers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -227,7 +247,7 @@ public class EmailConfig implements Editable<EmailConfigBuilder>, KubernetesReso
     }
 
     /**
-     * Further headers email header key/value pairs. Overrides any headers previously set by the notification implementation.
+     * headers defines additional email header key/value pairs. These override any headers previously set by the notification implementation.
      */
     @JsonProperty("headers")
     public void setHeaders(List<KeyValue> headers) {
@@ -235,7 +255,7 @@ public class EmailConfig implements Editable<EmailConfigBuilder>, KubernetesReso
     }
 
     /**
-     * The hostname to identify to the SMTP server.
+     * hello defines the hostname to identify to the SMTP server. This is used in the SMTP HELO/EHLO command during the connection handshake.
      */
     @JsonProperty("hello")
     public String getHello() {
@@ -243,7 +263,7 @@ public class EmailConfig implements Editable<EmailConfigBuilder>, KubernetesReso
     }
 
     /**
-     * The hostname to identify to the SMTP server.
+     * hello defines the hostname to identify to the SMTP server. This is used in the SMTP HELO/EHLO command during the connection handshake.
      */
     @JsonProperty("hello")
     public void setHello(String hello) {
@@ -251,7 +271,7 @@ public class EmailConfig implements Editable<EmailConfigBuilder>, KubernetesReso
     }
 
     /**
-     * The HTML body of the email notification.
+     * html defines the HTML body of the email notification. This allows for rich formatting in the email content.
      */
     @JsonProperty("html")
     public String getHtml() {
@@ -259,7 +279,7 @@ public class EmailConfig implements Editable<EmailConfigBuilder>, KubernetesReso
     }
 
     /**
-     * The HTML body of the email notification.
+     * html defines the HTML body of the email notification. This allows for rich formatting in the email content.
      */
     @JsonProperty("html")
     public void setHtml(String html) {
@@ -267,7 +287,7 @@ public class EmailConfig implements Editable<EmailConfigBuilder>, KubernetesReso
     }
 
     /**
-     * The SMTP TLS requirement. Note that Go does not support unencrypted connections to remote SMTP endpoints.
+     * requireTLS defines the SMTP TLS requirement. Note that Go does not support unencrypted connections to remote SMTP endpoints.
      */
     @JsonProperty("requireTLS")
     public Boolean getRequireTLS() {
@@ -275,7 +295,7 @@ public class EmailConfig implements Editable<EmailConfigBuilder>, KubernetesReso
     }
 
     /**
-     * The SMTP TLS requirement. Note that Go does not support unencrypted connections to remote SMTP endpoints.
+     * requireTLS defines the SMTP TLS requirement. Note that Go does not support unencrypted connections to remote SMTP endpoints.
      */
     @JsonProperty("requireTLS")
     public void setRequireTLS(Boolean requireTLS) {
@@ -283,7 +303,7 @@ public class EmailConfig implements Editable<EmailConfigBuilder>, KubernetesReso
     }
 
     /**
-     * Whether or not to notify about resolved alerts.
+     * sendResolved defines whether or not to notify about resolved alerts.
      */
     @JsonProperty("sendResolved")
     public Boolean getSendResolved() {
@@ -291,7 +311,7 @@ public class EmailConfig implements Editable<EmailConfigBuilder>, KubernetesReso
     }
 
     /**
-     * Whether or not to notify about resolved alerts.
+     * sendResolved defines whether or not to notify about resolved alerts.
      */
     @JsonProperty("sendResolved")
     public void setSendResolved(Boolean sendResolved) {
@@ -299,7 +319,7 @@ public class EmailConfig implements Editable<EmailConfigBuilder>, KubernetesReso
     }
 
     /**
-     * The SMTP host and port through which emails are sent. E.g. example.com:25
+     * smarthost defines the SMTP host and port through which emails are sent. Format should be "hostname:port", e.g. "smtp.example.com:587".
      */
     @JsonProperty("smarthost")
     public String getSmarthost() {
@@ -307,7 +327,7 @@ public class EmailConfig implements Editable<EmailConfigBuilder>, KubernetesReso
     }
 
     /**
-     * The SMTP host and port through which emails are sent. E.g. example.com:25
+     * smarthost defines the SMTP host and port through which emails are sent. Format should be "hostname:port", e.g. "smtp.example.com:587".
      */
     @JsonProperty("smarthost")
     public void setSmarthost(String smarthost) {
@@ -315,7 +335,7 @@ public class EmailConfig implements Editable<EmailConfigBuilder>, KubernetesReso
     }
 
     /**
-     * The text body of the email notification.
+     * text defines the plain text body of the email notification. This provides a fallback for email clients that don't support HTML.
      */
     @JsonProperty("text")
     public String getText() {
@@ -323,7 +343,7 @@ public class EmailConfig implements Editable<EmailConfigBuilder>, KubernetesReso
     }
 
     /**
-     * The text body of the email notification.
+     * text defines the plain text body of the email notification. This provides a fallback for email clients that don't support HTML.
      */
     @JsonProperty("text")
     public void setText(String text) {
@@ -347,7 +367,7 @@ public class EmailConfig implements Editable<EmailConfigBuilder>, KubernetesReso
     }
 
     /**
-     * The email address to send notifications to.
+     * to defines the email address to send notifications to. This is the recipient address for alert notifications.
      */
     @JsonProperty("to")
     public String getTo() {
@@ -355,7 +375,7 @@ public class EmailConfig implements Editable<EmailConfigBuilder>, KubernetesReso
     }
 
     /**
-     * The email address to send notifications to.
+     * to defines the email address to send notifications to. This is the recipient address for alert notifications.
      */
     @JsonProperty("to")
     public void setTo(String to) {

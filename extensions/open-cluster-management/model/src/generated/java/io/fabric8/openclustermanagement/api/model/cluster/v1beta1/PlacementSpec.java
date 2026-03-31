@@ -111,7 +111,7 @@ public class PlacementSpec implements Editable<PlacementSpecBuilder>, Kubernetes
     }
 
     /**
-     * ClusterSets represent the ManagedClusterSets from which the ManagedClusters are selected. If the slice is empty, ManagedClusters will be selected from the ManagedClusterSets bound to the placement namespace, otherwise ManagedClusters will be selected from the intersection of this slice and the ManagedClusterSets bound to the placement namespace.
+     * clusterSets represent the ManagedClusterSets from which the ManagedClusters are selected. If the slice is empty, ManagedClusters will be selected from the ManagedClusterSets bound to the placement namespace, otherwise ManagedClusters will be selected from the intersection of this slice and the ManagedClusterSets bound to the placement namespace.
      */
     @JsonProperty("clusterSets")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -120,7 +120,7 @@ public class PlacementSpec implements Editable<PlacementSpecBuilder>, Kubernetes
     }
 
     /**
-     * ClusterSets represent the ManagedClusterSets from which the ManagedClusters are selected. If the slice is empty, ManagedClusters will be selected from the ManagedClusterSets bound to the placement namespace, otherwise ManagedClusters will be selected from the intersection of this slice and the ManagedClusterSets bound to the placement namespace.
+     * clusterSets represent the ManagedClusterSets from which the ManagedClusters are selected. If the slice is empty, ManagedClusters will be selected from the ManagedClusterSets bound to the placement namespace, otherwise ManagedClusters will be selected from the intersection of this slice and the ManagedClusterSets bound to the placement namespace.
      */
     @JsonProperty("clusterSets")
     public void setClusterSets(List<String> clusterSets) {
@@ -144,7 +144,7 @@ public class PlacementSpec implements Editable<PlacementSpecBuilder>, Kubernetes
     }
 
     /**
-     * NumberOfClusters represents the desired number of ManagedClusters to be selected which meet the placement requirements. 1) If not specified, all ManagedClusters which meet the placement requirements (including ClusterSets,<br><p>    and Predicates) will be selected;<br><p> 2) Otherwise if the nubmer of ManagedClusters meet the placement requirements is larger than<br><p>    NumberOfClusters, a random subset with desired number of ManagedClusters will be selected;<br><p> 3) If the nubmer of ManagedClusters meet the placement requirements is equal to NumberOfClusters,<br><p>    all of them will be selected;<br><p> 4) If the nubmer of ManagedClusters meet the placement requirements is less than NumberOfClusters,<br><p>    all of them will be selected, and the status of condition `PlacementConditionSatisfied` will be<br><p>    set to false;
+     * numberOfClusters represents the desired number of ManagedClusters to be selected which meet the placement requirements. 1) If not specified, all ManagedClusters which meet the placement requirements (including ClusterSets,<br><p>    and Predicates) will be selected;<br><p> 2) Otherwise if the nubmer of ManagedClusters meet the placement requirements is larger than<br><p>    NumberOfClusters, a random subset with desired number of ManagedClusters will be selected;<br><p> 3) If the nubmer of ManagedClusters meet the placement requirements is equal to NumberOfClusters,<br><p>    all of them will be selected;<br><p> 4) If the nubmer of ManagedClusters meet the placement requirements is less than NumberOfClusters,<br><p>    all of them will be selected, and the status of condition `PlacementConditionSatisfied` will be<br><p>    set to false;
      */
     @JsonProperty("numberOfClusters")
     public Integer getNumberOfClusters() {
@@ -152,7 +152,7 @@ public class PlacementSpec implements Editable<PlacementSpecBuilder>, Kubernetes
     }
 
     /**
-     * NumberOfClusters represents the desired number of ManagedClusters to be selected which meet the placement requirements. 1) If not specified, all ManagedClusters which meet the placement requirements (including ClusterSets,<br><p>    and Predicates) will be selected;<br><p> 2) Otherwise if the nubmer of ManagedClusters meet the placement requirements is larger than<br><p>    NumberOfClusters, a random subset with desired number of ManagedClusters will be selected;<br><p> 3) If the nubmer of ManagedClusters meet the placement requirements is equal to NumberOfClusters,<br><p>    all of them will be selected;<br><p> 4) If the nubmer of ManagedClusters meet the placement requirements is less than NumberOfClusters,<br><p>    all of them will be selected, and the status of condition `PlacementConditionSatisfied` will be<br><p>    set to false;
+     * numberOfClusters represents the desired number of ManagedClusters to be selected which meet the placement requirements. 1) If not specified, all ManagedClusters which meet the placement requirements (including ClusterSets,<br><p>    and Predicates) will be selected;<br><p> 2) Otherwise if the nubmer of ManagedClusters meet the placement requirements is larger than<br><p>    NumberOfClusters, a random subset with desired number of ManagedClusters will be selected;<br><p> 3) If the nubmer of ManagedClusters meet the placement requirements is equal to NumberOfClusters,<br><p>    all of them will be selected;<br><p> 4) If the nubmer of ManagedClusters meet the placement requirements is less than NumberOfClusters,<br><p>    all of them will be selected, and the status of condition `PlacementConditionSatisfied` will be<br><p>    set to false;
      */
     @JsonProperty("numberOfClusters")
     public void setNumberOfClusters(Integer numberOfClusters) {
@@ -160,7 +160,7 @@ public class PlacementSpec implements Editable<PlacementSpecBuilder>, Kubernetes
     }
 
     /**
-     * Predicates represent a slice of predicates to select ManagedClusters. The predicates are ORed.
+     * predicates represent a slice of predicates to select ManagedClusters. The predicates are ORed.
      */
     @JsonProperty("predicates")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -169,7 +169,7 @@ public class PlacementSpec implements Editable<PlacementSpecBuilder>, Kubernetes
     }
 
     /**
-     * Predicates represent a slice of predicates to select ManagedClusters. The predicates are ORed.
+     * predicates represent a slice of predicates to select ManagedClusters. The predicates are ORed.
      */
     @JsonProperty("predicates")
     public void setPredicates(List<ClusterPredicate> predicates) {
@@ -209,7 +209,7 @@ public class PlacementSpec implements Editable<PlacementSpecBuilder>, Kubernetes
     }
 
     /**
-     * Tolerations are applied to placements, and allow (but do not require) the managed clusters with certain taints to be selected by placements with matching tolerations.
+     * tolerations are applied to placements, and allow (but do not require) the managed clusters with certain taints to be selected by placements with matching tolerations.
      */
     @JsonProperty("tolerations")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -218,7 +218,7 @@ public class PlacementSpec implements Editable<PlacementSpecBuilder>, Kubernetes
     }
 
     /**
-     * Tolerations are applied to placements, and allow (but do not require) the managed clusters with certain taints to be selected by placements with matching tolerations.
+     * tolerations are applied to placements, and allow (but do not require) the managed clusters with certain taints to be selected by placements with matching tolerations.
      */
     @JsonProperty("tolerations")
     public void setTolerations(List<Toleration> tolerations) {

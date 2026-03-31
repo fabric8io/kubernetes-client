@@ -85,7 +85,7 @@ public class PrometheusRuleExcludeConfig implements Editable<PrometheusRuleExclu
     }
 
     /**
-     * Name of the excluded PrometheusRule object.
+     * ruleName defines the name of the excluded PrometheusRule object.
      */
     @JsonProperty("ruleName")
     public String getRuleName() {
@@ -93,7 +93,7 @@ public class PrometheusRuleExcludeConfig implements Editable<PrometheusRuleExclu
     }
 
     /**
-     * Name of the excluded PrometheusRule object.
+     * ruleName defines the name of the excluded PrometheusRule object.
      */
     @JsonProperty("ruleName")
     public void setRuleName(String ruleName) {
@@ -101,7 +101,7 @@ public class PrometheusRuleExcludeConfig implements Editable<PrometheusRuleExclu
     }
 
     /**
-     * Namespace of the excluded PrometheusRule object.
+     * ruleNamespace defines the namespace of the excluded PrometheusRule object.
      */
     @JsonProperty("ruleNamespace")
     public String getRuleNamespace() {
@@ -109,7 +109,7 @@ public class PrometheusRuleExcludeConfig implements Editable<PrometheusRuleExclu
     }
 
     /**
-     * Namespace of the excluded PrometheusRule object.
+     * ruleNamespace defines the namespace of the excluded PrometheusRule object.
      */
     @JsonProperty("ruleNamespace")
     public void setRuleNamespace(String ruleNamespace) {

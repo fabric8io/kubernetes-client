@@ -122,7 +122,7 @@ public class ScoreCoordinate implements Editable<ScoreCoordinateBuilder>, Kubern
     }
 
     /**
-     * Type defines the type of the prioritizer score. Type is either "BuiltIn", "AddOn" or "", where "" is "BuiltIn" by default. When the type is "BuiltIn", need to specify a BuiltIn prioritizer name in BuiltIn. When the type is "AddOn", need to configure the score source in AddOn.
+     * type defines the type of the prioritizer score. Type is either "BuiltIn", "AddOn" or "", where "" is "BuiltIn" by default. When the type is "BuiltIn", need to specify a BuiltIn prioritizer name in BuiltIn. When the type is "AddOn", need to configure the score source in AddOn.
      */
     @JsonProperty("type")
     public String getType() {
@@ -130,7 +130,7 @@ public class ScoreCoordinate implements Editable<ScoreCoordinateBuilder>, Kubern
     }
 
     /**
-     * Type defines the type of the prioritizer score. Type is either "BuiltIn", "AddOn" or "", where "" is "BuiltIn" by default. When the type is "BuiltIn", need to specify a BuiltIn prioritizer name in BuiltIn. When the type is "AddOn", need to configure the score source in AddOn.
+     * type defines the type of the prioritizer score. Type is either "BuiltIn", "AddOn" or "", where "" is "BuiltIn" by default. When the type is "BuiltIn", need to specify a BuiltIn prioritizer name in BuiltIn. When the type is "AddOn", need to configure the score source in AddOn.
      */
     @JsonProperty("type")
     public void setType(String type) {

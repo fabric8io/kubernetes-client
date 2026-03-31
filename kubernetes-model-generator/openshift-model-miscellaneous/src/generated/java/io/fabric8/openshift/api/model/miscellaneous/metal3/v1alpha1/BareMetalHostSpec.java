@@ -50,10 +50,12 @@ import lombok.experimental.Accessors;
     "consumerRef",
     "customDeploy",
     "description",
+    "disablePowerOff",
     "externallyProvisioned",
     "firmware",
     "hardwareProfile",
     "image",
+    "inspectionMode",
     "metaData",
     "networkData",
     "online",
@@ -104,6 +106,8 @@ public class BareMetalHostSpec implements Editable<BareMetalHostSpecBuilder>, Ku
     private CustomDeploy customDeploy;
     @JsonProperty("description")
     private String description;
+    @JsonProperty("disablePowerOff")
+    private Boolean disablePowerOff;
     @JsonProperty("externallyProvisioned")
     private Boolean externallyProvisioned;
     @JsonProperty("firmware")
@@ -112,6 +116,8 @@ public class BareMetalHostSpec implements Editable<BareMetalHostSpecBuilder>, Ku
     private String hardwareProfile;
     @JsonProperty("image")
     private Image image;
+    @JsonProperty("inspectionMode")
+    private String inspectionMode;
     @JsonProperty("metaData")
     private SecretReference metaData;
     @JsonProperty("networkData")
@@ -138,7 +144,7 @@ public class BareMetalHostSpec implements Editable<BareMetalHostSpecBuilder>, Ku
     public BareMetalHostSpec() {
     }
 
-    public BareMetalHostSpec(String architecture, String automatedCleaningMode, BMCDetails bmc, String bootMACAddress, String bootMode, ObjectReference consumerRef, CustomDeploy customDeploy, String description, Boolean externallyProvisioned, FirmwareConfig firmware, String hardwareProfile, Image image, SecretReference metaData, SecretReference networkData, Boolean online, String preprovisioningNetworkDataName, RAIDConfig raid, RootDeviceHints rootDeviceHints, List<Taint> taints, SecretReference userData) {
+    public BareMetalHostSpec(String architecture, String automatedCleaningMode, BMCDetails bmc, String bootMACAddress, String bootMode, ObjectReference consumerRef, CustomDeploy customDeploy, String description, Boolean disablePowerOff, Boolean externallyProvisioned, FirmwareConfig firmware, String hardwareProfile, Image image, String inspectionMode, SecretReference metaData, SecretReference networkData, Boolean online, String preprovisioningNetworkDataName, RAIDConfig raid, RootDeviceHints rootDeviceHints, List<Taint> taints, SecretReference userData) {
         super();
         this.architecture = architecture;
         this.automatedCleaningMode = automatedCleaningMode;
@@ -148,10 +154,12 @@ public class BareMetalHostSpec implements Editable<BareMetalHostSpecBuilder>, Ku
         this.consumerRef = consumerRef;
         this.customDeploy = customDeploy;
         this.description = description;
+        this.disablePowerOff = disablePowerOff;
         this.externallyProvisioned = externallyProvisioned;
         this.firmware = firmware;
         this.hardwareProfile = hardwareProfile;
         this.image = image;
+        this.inspectionMode = inspectionMode;
         this.metaData = metaData;
         this.networkData = networkData;
         this.online = online;
@@ -291,6 +299,22 @@ public class BareMetalHostSpec implements Editable<BareMetalHostSpecBuilder>, Ku
     }
 
     /**
+     * When set to true, power off of the node will be disabled, instead, a reboot will be used in place of power on/off
+     */
+    @JsonProperty("disablePowerOff")
+    public Boolean getDisablePowerOff() {
+        return disablePowerOff;
+    }
+
+    /**
+     * When set to true, power off of the node will be disabled, instead, a reboot will be used in place of power on/off
+     */
+    @JsonProperty("disablePowerOff")
+    public void setDisablePowerOff(Boolean disablePowerOff) {
+        this.disablePowerOff = disablePowerOff;
+    }
+
+    /**
      * ExternallyProvisioned means something else has provisioned the image running on the host, and the operator should only manage the power status. This field is used for integration with already provisioned hosts and when pivoting hosts between clusters. If unsure, leave this field as false.
      */
     @JsonProperty("externallyProvisioned")
@@ -352,6 +376,22 @@ public class BareMetalHostSpec implements Editable<BareMetalHostSpecBuilder>, Ku
     @JsonProperty("image")
     public void setImage(Image image) {
         this.image = image;
+    }
+
+    /**
+     * Specifies the mode for host inspection. "disabled" - no inspection will be performed "agent" - normal agent-based inspection will run
+     */
+    @JsonProperty("inspectionMode")
+    public String getInspectionMode() {
+        return inspectionMode;
+    }
+
+    /**
+     * Specifies the mode for host inspection. "disabled" - no inspection will be performed "agent" - normal agent-based inspection will run
+     */
+    @JsonProperty("inspectionMode")
+    public void setInspectionMode(String inspectionMode) {
+        this.inspectionMode = inspectionMode;
     }
 
     /**

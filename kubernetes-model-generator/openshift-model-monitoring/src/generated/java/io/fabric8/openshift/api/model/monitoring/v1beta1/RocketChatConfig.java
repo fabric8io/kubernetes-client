@@ -155,7 +155,7 @@ public class RocketChatConfig implements Editable<RocketChatConfigBuilder>, Kube
     }
 
     /**
-     * Actions to include in the message.
+     * actions defines interactive actions to include in the message. These appear as buttons that users can click to trigger responses.
      */
     @JsonProperty("actions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -164,7 +164,7 @@ public class RocketChatConfig implements Editable<RocketChatConfigBuilder>, Kube
     }
 
     /**
-     * Actions to include in the message.
+     * actions defines interactive actions to include in the message. These appear as buttons that users can click to trigger responses.
      */
     @JsonProperty("actions")
     public void setActions(List<RocketChatActionConfig> actions) {
@@ -172,7 +172,7 @@ public class RocketChatConfig implements Editable<RocketChatConfigBuilder>, Kube
     }
 
     /**
-     * The API URL for RocketChat. Defaults to https://open.rocket.chat/ if not specified.
+     * apiURL defines the API URL for RocketChat. Defaults to https://open.rocket.chat/ if not specified.
      */
     @JsonProperty("apiURL")
     public String getApiURL() {
@@ -180,7 +180,7 @@ public class RocketChatConfig implements Editable<RocketChatConfigBuilder>, Kube
     }
 
     /**
-     * The API URL for RocketChat. Defaults to https://open.rocket.chat/ if not specified.
+     * apiURL defines the API URL for RocketChat. Defaults to https://open.rocket.chat/ if not specified.
      */
     @JsonProperty("apiURL")
     public void setApiURL(String apiURL) {
@@ -188,7 +188,7 @@ public class RocketChatConfig implements Editable<RocketChatConfigBuilder>, Kube
     }
 
     /**
-     * The channel to send alerts to.
+     * channel defines the channel to send alerts to. This can be a channel name (e.g., "#alerts") or a direct message recipient.
      */
     @JsonProperty("channel")
     public String getChannel() {
@@ -196,7 +196,7 @@ public class RocketChatConfig implements Editable<RocketChatConfigBuilder>, Kube
     }
 
     /**
-     * The channel to send alerts to.
+     * channel defines the channel to send alerts to. This can be a channel name (e.g., "#alerts") or a direct message recipient.
      */
     @JsonProperty("channel")
     public void setChannel(String channel) {
@@ -204,7 +204,7 @@ public class RocketChatConfig implements Editable<RocketChatConfigBuilder>, Kube
     }
 
     /**
-     * The message color.
+     * color defines the message color displayed in RocketChat. This appears as a colored bar alongside the message.
      */
     @JsonProperty("color")
     public String getColor() {
@@ -212,7 +212,7 @@ public class RocketChatConfig implements Editable<RocketChatConfigBuilder>, Kube
     }
 
     /**
-     * The message color.
+     * color defines the message color displayed in RocketChat. This appears as a colored bar alongside the message.
      */
     @JsonProperty("color")
     public void setColor(String color) {
@@ -220,7 +220,7 @@ public class RocketChatConfig implements Editable<RocketChatConfigBuilder>, Kube
     }
 
     /**
-     * If provided, the avatar will be displayed as an emoji.
+     * emoji defines the emoji to be displayed as an avatar. If provided, this emoji will be used instead of the default avatar or iconURL.
      */
     @JsonProperty("emoji")
     public String getEmoji() {
@@ -228,7 +228,7 @@ public class RocketChatConfig implements Editable<RocketChatConfigBuilder>, Kube
     }
 
     /**
-     * If provided, the avatar will be displayed as an emoji.
+     * emoji defines the emoji to be displayed as an avatar. If provided, this emoji will be used instead of the default avatar or iconURL.
      */
     @JsonProperty("emoji")
     public void setEmoji(String emoji) {
@@ -236,7 +236,7 @@ public class RocketChatConfig implements Editable<RocketChatConfigBuilder>, Kube
     }
 
     /**
-     * Additional fields for the message.
+     * fields defines additional fields for the message attachment. These appear as structured key-value pairs within the message.
      */
     @JsonProperty("fields")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -245,7 +245,7 @@ public class RocketChatConfig implements Editable<RocketChatConfigBuilder>, Kube
     }
 
     /**
-     * Additional fields for the message.
+     * fields defines additional fields for the message attachment. These appear as structured key-value pairs within the message.
      */
     @JsonProperty("fields")
     public void setFields(List<RocketChatFieldConfig> fields) {
@@ -269,7 +269,7 @@ public class RocketChatConfig implements Editable<RocketChatConfigBuilder>, Kube
     }
 
     /**
-     * Icon URL for the message.
+     * iconURL defines the icon URL for the message avatar. This displays a custom image as the message sender's avatar.
      */
     @JsonProperty("iconURL")
     public String getIconURL() {
@@ -277,7 +277,7 @@ public class RocketChatConfig implements Editable<RocketChatConfigBuilder>, Kube
     }
 
     /**
-     * Icon URL for the message.
+     * iconURL defines the icon URL for the message avatar. This displays a custom image as the message sender's avatar.
      */
     @JsonProperty("iconURL")
     public void setIconURL(String iconURL) {
@@ -285,7 +285,7 @@ public class RocketChatConfig implements Editable<RocketChatConfigBuilder>, Kube
     }
 
     /**
-     * Image URL for the message.
+     * imageURL defines the image URL to display within the message. This embeds an image directly in the message attachment.
      */
     @JsonProperty("imageURL")
     public String getImageURL() {
@@ -293,7 +293,7 @@ public class RocketChatConfig implements Editable<RocketChatConfigBuilder>, Kube
     }
 
     /**
-     * Image URL for the message.
+     * imageURL defines the image URL to display within the message. This embeds an image directly in the message attachment.
      */
     @JsonProperty("imageURL")
     public void setImageURL(String imageURL) {
@@ -301,7 +301,7 @@ public class RocketChatConfig implements Editable<RocketChatConfigBuilder>, Kube
     }
 
     /**
-     * Whether to enable link names.
+     * linkNames defines whether to enable automatic linking of usernames and channels. When true, @username and #channel references become clickable links.
      */
     @JsonProperty("linkNames")
     public Boolean getLinkNames() {
@@ -309,7 +309,7 @@ public class RocketChatConfig implements Editable<RocketChatConfigBuilder>, Kube
     }
 
     /**
-     * Whether to enable link names.
+     * linkNames defines whether to enable automatic linking of usernames and channels. When true, @username and #channel references become clickable links.
      */
     @JsonProperty("linkNames")
     public void setLinkNames(Boolean linkNames) {
@@ -317,7 +317,7 @@ public class RocketChatConfig implements Editable<RocketChatConfigBuilder>, Kube
     }
 
     /**
-     * Whether to notify about resolved alerts.
+     * sendResolved defines whether or not to notify about resolved alerts.
      */
     @JsonProperty("sendResolved")
     public Boolean getSendResolved() {
@@ -325,7 +325,7 @@ public class RocketChatConfig implements Editable<RocketChatConfigBuilder>, Kube
     }
 
     /**
-     * Whether to notify about resolved alerts.
+     * sendResolved defines whether or not to notify about resolved alerts.
      */
     @JsonProperty("sendResolved")
     public void setSendResolved(Boolean sendResolved) {
@@ -333,7 +333,7 @@ public class RocketChatConfig implements Editable<RocketChatConfigBuilder>, Kube
     }
 
     /**
-     * Whether to use short fields.
+     * shortFields defines whether to use short fields in the message layout. When true, fields may be displayed side by side to save space.
      */
     @JsonProperty("shortFields")
     public Boolean getShortFields() {
@@ -341,7 +341,7 @@ public class RocketChatConfig implements Editable<RocketChatConfigBuilder>, Kube
     }
 
     /**
-     * Whether to use short fields.
+     * shortFields defines whether to use short fields in the message layout. When true, fields may be displayed side by side to save space.
      */
     @JsonProperty("shortFields")
     public void setShortFields(Boolean shortFields) {
@@ -349,7 +349,7 @@ public class RocketChatConfig implements Editable<RocketChatConfigBuilder>, Kube
     }
 
     /**
-     * The main message text.
+     * text defines the message text to send. This is optional because attachments can be used instead of or alongside text.
      */
     @JsonProperty("text")
     public String getText() {
@@ -357,7 +357,7 @@ public class RocketChatConfig implements Editable<RocketChatConfigBuilder>, Kube
     }
 
     /**
-     * The main message text.
+     * text defines the message text to send. This is optional because attachments can be used instead of or alongside text.
      */
     @JsonProperty("text")
     public void setText(String text) {
@@ -365,7 +365,7 @@ public class RocketChatConfig implements Editable<RocketChatConfigBuilder>, Kube
     }
 
     /**
-     * Thumbnail URL for the message.
+     * thumbURL defines the thumbnail URL for the message. This displays a small thumbnail image alongside the message content.
      */
     @JsonProperty("thumbURL")
     public String getThumbURL() {
@@ -373,7 +373,7 @@ public class RocketChatConfig implements Editable<RocketChatConfigBuilder>, Kube
     }
 
     /**
-     * Thumbnail URL for the message.
+     * thumbURL defines the thumbnail URL for the message. This displays a small thumbnail image alongside the message content.
      */
     @JsonProperty("thumbURL")
     public void setThumbURL(String thumbURL) {
@@ -381,7 +381,7 @@ public class RocketChatConfig implements Editable<RocketChatConfigBuilder>, Kube
     }
 
     /**
-     * The message title.
+     * title defines the message title displayed prominently in the message. This appears as bold text at the top of the message attachment.
      */
     @JsonProperty("title")
     public String getTitle() {
@@ -389,7 +389,7 @@ public class RocketChatConfig implements Editable<RocketChatConfigBuilder>, Kube
     }
 
     /**
-     * The message title.
+     * title defines the message title displayed prominently in the message. This appears as bold text at the top of the message attachment.
      */
     @JsonProperty("title")
     public void setTitle(String title) {
@@ -397,7 +397,7 @@ public class RocketChatConfig implements Editable<RocketChatConfigBuilder>, Kube
     }
 
     /**
-     * The title link for the message.
+     * titleLink defines the URL that the title will link to when clicked. This makes the message title clickable in the RocketChat interface.
      */
     @JsonProperty("titleLink")
     public String getTitleLink() {
@@ -405,7 +405,7 @@ public class RocketChatConfig implements Editable<RocketChatConfigBuilder>, Kube
     }
 
     /**
-     * The title link for the message.
+     * titleLink defines the URL that the title will link to when clicked. This makes the message title clickable in the RocketChat interface.
      */
     @JsonProperty("titleLink")
     public void setTitleLink(String titleLink) {

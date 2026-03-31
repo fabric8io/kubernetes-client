@@ -19,14 +19,17 @@ package parser
 
 import (
 	"fmt"
-	"github.com/fabric8io/kubernetes-client/kubernetes-model-generator/openapi/generator/pkg/kubernetes"
+	"go/ast"
 	goparser "go/parser"
 	"go/token"
+	"path"
+	"strconv"
+	"strings"
+
+	"github.com/fabric8io/kubernetes-client/kubernetes-model-generator/openapi/generator/pkg/kubernetes"
 	"k8s.io/gengo/v2"
 	"k8s.io/gengo/v2/parser"
 	"k8s.io/gengo/v2/types"
-	"path"
-	"strings"
 )
 
 const genClient = "+genclient"
@@ -37,9 +40,10 @@ const versionNamePrefix = "+versionName="
 var astFileSet = token.NewFileSet()
 
 type Module struct {
-	patterns []string
-	parser   *parser.Parser
-	universe *types.Universe
+	patterns          []string
+	parser            *parser.Parser
+	universe          *types.Universe
+	friendlyToGoPath  map[string]string
 }
 
 type Fabric8Info struct {
@@ -61,14 +65,43 @@ func NewModule(patterns ...string) *Module {
 	if err != nil {
 		panic(fmt.Sprintf("error creating universe: %v", err))
 	}
-	return &Module{
-		patterns: patterns,
-		parser:   p,
-		universe: &universe,
+	m := &Module{
+		patterns:         patterns,
+		parser:           p,
+		universe:         &universe,
+		friendlyToGoPath: make(map[string]string),
 	}
+	// Build reverse lookup for friendly names → Go fully qualified type names.
+	// This is needed because kube-openapi 0.35+ generates OpenAPIModelName() calls
+	// that return friendly names (e.g. "io.k8s.api.core.v1.Pod") instead of Go import
+	// paths (e.g. "k8s.io/api/core/v1.Pod") as map keys in zz_generated.openapi.go.
+	for _, pkg := range universe {
+		for _, t := range pkg.Types {
+			goName := t.Name.Package + "." + t.Name.Name
+			friendly := FriendlyName(goName)
+			if friendly != goName {
+				m.friendlyToGoPath[friendly] = goName
+			}
+		}
+	}
+	return m
+}
+
+// toGoName converts a definition name to a Go fully qualified type name.
+// If the name is already a Go import path (contains '/'), it's returned as-is.
+// If it's a friendly/OpenAPI name (no '/'), the reverse lookup is used.
+func (oam *Module) toGoName(definitionName string) string {
+	if strings.Contains(definitionName, "/") {
+		return definitionName
+	}
+	if goName, ok := oam.friendlyToGoPath[definitionName]; ok {
+		return goName
+	}
+	return definitionName
 }
 
 func (oam *Module) ExtractInfo(definitionName string) *Fabric8Info {
+	definitionName = oam.toGoName(definitionName)
 	pkg := oam.resolvePackage(definitionName)
 	typ := oam.universe.Type(types.ParseFullyQualifiedName(definitionName))
 	fabric8Info := &Fabric8Info{}
@@ -86,6 +119,7 @@ func (oam *Module) ExtractInfo(definitionName string) *Fabric8Info {
 // This method attempts to resolve the additional information from the gengo processed/parsed package and
 // type information.
 func (oam *Module) ApiName(definitionName string) string {
+	definitionName = oam.toGoName(definitionName)
 	// Don't treat k8s.io/api(.*) types (api,apimachinery,api-extensions...), json is expected to contain the full Go definition name instead of the group/version
 	if strings.HasPrefix(definitionName, "k8s.io/api") {
 		return FriendlyName(definitionName)
@@ -123,6 +157,8 @@ func (oam *Module) resolvePackage(definitionName string) *types.Package {
 // groupName returns the (kubernetes) group name for the given package.
 // The group name is defined by the +groupName tag in the package comments.
 // This function supports having the tag either in doc.go or groupversion_info.go files.
+// As a fallback, it searches for a GroupName constant in the package directory and its parent directory
+// (some packages like cert-manager meta/v1 define the group name as a constant in the parent package).
 func groupName(pkg *types.Package) string {
 	// gengo assumes that all packages have a doc.go file, the pkg comments are only considered from that file.
 	// However, some kubernetes operators have this info in the groupversion_info.go file.
@@ -135,6 +171,53 @@ func groupName(pkg *types.Package) string {
 		for _, c := range f.Doc.List {
 			if strings.HasPrefix(c.Text, "// "+groupNamePrefix) {
 				return strings.TrimPrefix(c.Text, "// "+groupNamePrefix)
+			}
+		}
+	}
+	// Fallback: search for a `const GroupName = "..."` declaration in the package or parent directory.
+	// This handles cases where the +groupName tag has been removed from doc.go but the GroupName constant
+	// is still defined (e.g. cert-manager pkg/apis/meta/v1 since v1.19.0).
+	if gn := findGroupNameConstant(pkg.Dir); gn != "" {
+		return gn
+	}
+	if gn := findGroupNameConstant(path.Dir(pkg.Dir)); gn != "" {
+		return gn
+	}
+	return ""
+}
+
+// findGroupNameConstant searches for a `const GroupName = "..."` declaration with a string literal value
+// in Go source files in the specified directory.
+func findGroupNameConstant(dir string) string {
+	fset := token.NewFileSet()
+	packages, err := goparser.ParseDir(fset, dir, nil, 0)
+	if err != nil {
+		return ""
+	}
+	for _, pkg := range packages {
+		for _, f := range pkg.Files {
+			for _, decl := range f.Decls {
+				genDecl, ok := decl.(*ast.GenDecl)
+				if !ok || genDecl.Tok != token.CONST {
+					continue
+				}
+				for _, spec := range genDecl.Specs {
+					valueSpec, ok := spec.(*ast.ValueSpec)
+					if !ok {
+						continue
+					}
+					for i, name := range valueSpec.Names {
+						if name.Name == "GroupName" && i < len(valueSpec.Values) {
+							basicLit, ok := valueSpec.Values[i].(*ast.BasicLit)
+							if ok && basicLit.Kind == token.STRING {
+								value, err := strconv.Unquote(basicLit.Value)
+								if err == nil {
+									return value
+								}
+							}
+						}
+					}
+				}
 			}
 		}
 	}

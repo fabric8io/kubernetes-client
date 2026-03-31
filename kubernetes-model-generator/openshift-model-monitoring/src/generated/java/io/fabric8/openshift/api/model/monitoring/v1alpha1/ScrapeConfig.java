@@ -29,6 +29,7 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.fabric8.kubernetes.model.annotation.Group;
 import io.fabric8.kubernetes.model.annotation.Version;
+import io.fabric8.openshift.api.model.monitoring.v1.ConfigResourceStatus;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
 import io.sundr.transform.annotations.TemplateTransformation;
@@ -46,7 +47,8 @@ import lombok.experimental.Accessors;
     "apiVersion",
     "kind",
     "metadata",
-    "spec"
+    "spec",
+    "status"
 })
 @ToString
 @EqualsAndHashCode
@@ -86,6 +88,8 @@ public class ScrapeConfig implements Editable<ScrapeConfigBuilder>, HasMetadata,
     private ObjectMeta metadata;
     @JsonProperty("spec")
     private ScrapeConfigSpec spec;
+    @JsonProperty("status")
+    private ConfigResourceStatus status;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -95,12 +99,13 @@ public class ScrapeConfig implements Editable<ScrapeConfigBuilder>, HasMetadata,
     public ScrapeConfig() {
     }
 
-    public ScrapeConfig(String apiVersion, String kind, ObjectMeta metadata, ScrapeConfigSpec spec) {
+    public ScrapeConfig(String apiVersion, String kind, ObjectMeta metadata, ScrapeConfigSpec spec, ConfigResourceStatus status) {
         super();
         this.apiVersion = apiVersion;
         this.kind = kind;
         this.metadata = metadata;
         this.spec = spec;
+        this.status = status;
     }
 
     /**
@@ -165,6 +170,22 @@ public class ScrapeConfig implements Editable<ScrapeConfigBuilder>, HasMetadata,
     @JsonProperty("spec")
     public void setSpec(ScrapeConfigSpec spec) {
         this.spec = spec;
+    }
+
+    /**
+     * ScrapeConfig defines a namespaced Prometheus scrape_config to be aggregated across multiple namespaces into the Prometheus configuration.
+     */
+    @JsonProperty("status")
+    public ConfigResourceStatus getStatus() {
+        return status;
+    }
+
+    /**
+     * ScrapeConfig defines a namespaced Prometheus scrape_config to be aggregated across multiple namespaces into the Prometheus configuration.
+     */
+    @JsonProperty("status")
+    public void setStatus(ConfigResourceStatus status) {
+        this.status = status;
     }
 
     @JsonIgnore

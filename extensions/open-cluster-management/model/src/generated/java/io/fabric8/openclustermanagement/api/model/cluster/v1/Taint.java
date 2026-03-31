@@ -94,7 +94,7 @@ public class Taint implements Editable<TaintBuilder>, KubernetesResource
     }
 
     /**
-     * Effect indicates the effect of the taint on placements that do not tolerate the taint. Valid effects are NoSelect, PreferNoSelect and NoSelectIfNew.
+     * effect indicates the effect of the taint on placements that do not tolerate the taint. Valid effects are NoSelect, PreferNoSelect and NoSelectIfNew.
      */
     @JsonProperty("effect")
     public String getEffect() {
@@ -102,7 +102,7 @@ public class Taint implements Editable<TaintBuilder>, KubernetesResource
     }
 
     /**
-     * Effect indicates the effect of the taint on placements that do not tolerate the taint. Valid effects are NoSelect, PreferNoSelect and NoSelectIfNew.
+     * effect indicates the effect of the taint on placements that do not tolerate the taint. Valid effects are NoSelect, PreferNoSelect and NoSelectIfNew.
      */
     @JsonProperty("effect")
     public void setEffect(String effect) {
@@ -110,7 +110,7 @@ public class Taint implements Editable<TaintBuilder>, KubernetesResource
     }
 
     /**
-     * Key is the taint key applied to a cluster. e.g. bar or foo.example.com/bar. The regex it matches is (dns1123SubdomainFmt/)?(qualifiedNameFmt)
+     * key is the taint key applied to a cluster. e.g. bar or foo.example.com/bar. The regex it matches is (dns1123SubdomainFmt/)?(qualifiedNameFmt)
      */
     @JsonProperty("key")
     public String getKey() {
@@ -118,7 +118,7 @@ public class Taint implements Editable<TaintBuilder>, KubernetesResource
     }
 
     /**
-     * Key is the taint key applied to a cluster. e.g. bar or foo.example.com/bar. The regex it matches is (dns1123SubdomainFmt/)?(qualifiedNameFmt)
+     * key is the taint key applied to a cluster. e.g. bar or foo.example.com/bar. The regex it matches is (dns1123SubdomainFmt/)?(qualifiedNameFmt)
      */
     @JsonProperty("key")
     public void setKey(String key) {
@@ -142,7 +142,7 @@ public class Taint implements Editable<TaintBuilder>, KubernetesResource
     }
 
     /**
-     * Value is the taint value corresponding to the taint key.
+     * value is the taint value corresponding to the taint key.
      */
     @JsonProperty("value")
     public String getValue() {
@@ -150,7 +150,7 @@ public class Taint implements Editable<TaintBuilder>, KubernetesResource
     }
 
     /**
-     * Value is the taint value corresponding to the taint key.
+     * value is the taint value corresponding to the taint key.
      */
     @JsonProperty("value")
     public void setValue(String value) {

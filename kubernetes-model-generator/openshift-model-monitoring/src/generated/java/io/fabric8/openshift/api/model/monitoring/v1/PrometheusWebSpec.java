@@ -109,7 +109,7 @@ public class PrometheusWebSpec implements Editable<PrometheusWebSpecBuilder>, Ku
     }
 
     /**
-     * Defines the maximum number of simultaneous connections A zero value means that Prometheus doesn't accept any incoming connection.
+     * maxConnections defines the maximum number of simultaneous connections A zero value means that Prometheus doesn't accept any incoming connection.
      */
     @JsonProperty("maxConnections")
     public Integer getMaxConnections() {
@@ -117,7 +117,7 @@ public class PrometheusWebSpec implements Editable<PrometheusWebSpecBuilder>, Ku
     }
 
     /**
-     * Defines the maximum number of simultaneous connections A zero value means that Prometheus doesn't accept any incoming connection.
+     * maxConnections defines the maximum number of simultaneous connections A zero value means that Prometheus doesn't accept any incoming connection.
      */
     @JsonProperty("maxConnections")
     public void setMaxConnections(Integer maxConnections) {
@@ -125,7 +125,7 @@ public class PrometheusWebSpec implements Editable<PrometheusWebSpecBuilder>, Ku
     }
 
     /**
-     * The prometheus web page title.
+     * pageTitle defines the prometheus web page title.
      */
     @JsonProperty("pageTitle")
     public String getPageTitle() {
@@ -133,7 +133,7 @@ public class PrometheusWebSpec implements Editable<PrometheusWebSpecBuilder>, Ku
     }
 
     /**
-     * The prometheus web page title.
+     * pageTitle defines the prometheus web page title.
      */
     @JsonProperty("pageTitle")
     public void setPageTitle(String pageTitle) {

@@ -94,7 +94,7 @@ public class ProbeTargetStaticConfig implements Editable<ProbeTargetStaticConfig
     }
 
     /**
-     * Labels assigned to all metrics scraped from the targets.
+     * labels defines all labels assigned to all metrics scraped from the targets.
      */
     @JsonProperty("labels")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -103,7 +103,7 @@ public class ProbeTargetStaticConfig implements Editable<ProbeTargetStaticConfig
     }
 
     /**
-     * Labels assigned to all metrics scraped from the targets.
+     * labels defines all labels assigned to all metrics scraped from the targets.
      */
     @JsonProperty("labels")
     public void setLabels(Map<String, String> labels) {
@@ -111,7 +111,7 @@ public class ProbeTargetStaticConfig implements Editable<ProbeTargetStaticConfig
     }
 
     /**
-     * RelabelConfigs to apply to the label set of the targets before it gets scraped. More info: https://prometheus.io/docs/prometheus/latest/configuration/configuration/#relabel_config
+     * relabelingConfigs defines relabelings to be apply to the label set of the targets before it gets scraped. More info: https://prometheus.io/docs/prometheus/latest/configuration/configuration/#relabel_config
      */
     @JsonProperty("relabelingConfigs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -120,7 +120,7 @@ public class ProbeTargetStaticConfig implements Editable<ProbeTargetStaticConfig
     }
 
     /**
-     * RelabelConfigs to apply to the label set of the targets before it gets scraped. More info: https://prometheus.io/docs/prometheus/latest/configuration/configuration/#relabel_config
+     * relabelingConfigs defines relabelings to be apply to the label set of the targets before it gets scraped. More info: https://prometheus.io/docs/prometheus/latest/configuration/configuration/#relabel_config
      */
     @JsonProperty("relabelingConfigs")
     public void setRelabelingConfigs(List<RelabelConfig> relabelingConfigs) {
@@ -128,7 +128,7 @@ public class ProbeTargetStaticConfig implements Editable<ProbeTargetStaticConfig
     }
 
     /**
-     * The list of hosts to probe.
+     * static defines the list of hosts to probe.
      */
     @JsonProperty("static")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -137,7 +137,7 @@ public class ProbeTargetStaticConfig implements Editable<ProbeTargetStaticConfig
     }
 
     /**
-     * The list of hosts to probe.
+     * static defines the list of hosts to probe.
      */
     @JsonProperty("static")
     public void setStatic(List<String> _static) {

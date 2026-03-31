@@ -119,7 +119,7 @@ public class MSTeamsConfig implements Editable<MSTeamsConfigBuilder>, Kubernetes
     }
 
     /**
-     * Whether to notify about resolved alerts.
+     * sendResolved defines whether or not to notify about resolved alerts.
      */
     @JsonProperty("sendResolved")
     public Boolean getSendResolved() {
@@ -127,7 +127,7 @@ public class MSTeamsConfig implements Editable<MSTeamsConfigBuilder>, Kubernetes
     }
 
     /**
-     * Whether to notify about resolved alerts.
+     * sendResolved defines whether or not to notify about resolved alerts.
      */
     @JsonProperty("sendResolved")
     public void setSendResolved(Boolean sendResolved) {
@@ -135,7 +135,7 @@ public class MSTeamsConfig implements Editable<MSTeamsConfigBuilder>, Kubernetes
     }
 
     /**
-     * Message summary template. It requires Alertmanager &gt;= 0.27.0.
+     * summary defines the message summary template for Teams notifications. This provides a brief overview that appears in Teams notification previews. It requires Alertmanager &gt;= 0.27.0.
      */
     @JsonProperty("summary")
     public String getSummary() {
@@ -143,7 +143,7 @@ public class MSTeamsConfig implements Editable<MSTeamsConfigBuilder>, Kubernetes
     }
 
     /**
-     * Message summary template. It requires Alertmanager &gt;= 0.27.0.
+     * summary defines the message summary template for Teams notifications. This provides a brief overview that appears in Teams notification previews. It requires Alertmanager &gt;= 0.27.0.
      */
     @JsonProperty("summary")
     public void setSummary(String summary) {
@@ -151,7 +151,7 @@ public class MSTeamsConfig implements Editable<MSTeamsConfigBuilder>, Kubernetes
     }
 
     /**
-     * Message body template.
+     * text defines the message body template for Teams notifications. This contains the detailed content of the Teams message.
      */
     @JsonProperty("text")
     public String getText() {
@@ -159,7 +159,7 @@ public class MSTeamsConfig implements Editable<MSTeamsConfigBuilder>, Kubernetes
     }
 
     /**
-     * Message body template.
+     * text defines the message body template for Teams notifications. This contains the detailed content of the Teams message.
      */
     @JsonProperty("text")
     public void setText(String text) {
@@ -167,7 +167,7 @@ public class MSTeamsConfig implements Editable<MSTeamsConfigBuilder>, Kubernetes
     }
 
     /**
-     * Message title template.
+     * title defines the message title template for Teams notifications. This appears as the main heading of the Teams message card.
      */
     @JsonProperty("title")
     public String getTitle() {
@@ -175,7 +175,7 @@ public class MSTeamsConfig implements Editable<MSTeamsConfigBuilder>, Kubernetes
     }
 
     /**
-     * Message title template.
+     * title defines the message title template for Teams notifications. This appears as the main heading of the Teams message card.
      */
     @JsonProperty("title")
     public void setTitle(String title) {

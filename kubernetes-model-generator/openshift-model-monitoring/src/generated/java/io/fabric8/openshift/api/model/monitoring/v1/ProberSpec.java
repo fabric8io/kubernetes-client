@@ -108,7 +108,7 @@ public class ProberSpec implements Editable<ProberSpecBuilder>, KubernetesResour
     }
 
     /**
-     * `noProxy` is a comma-separated string that can contain IPs, CIDR notation, domain names that should be excluded from proxying. IP and domain names can contain port numbers.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
+     * noProxy defines a comma-separated string that can contain IPs, CIDR notation, domain names that should be excluded from proxying. IP and domain names can contain port numbers.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
      */
     @JsonProperty("noProxy")
     public String getNoProxy() {
@@ -116,7 +116,7 @@ public class ProberSpec implements Editable<ProberSpecBuilder>, KubernetesResour
     }
 
     /**
-     * `noProxy` is a comma-separated string that can contain IPs, CIDR notation, domain names that should be excluded from proxying. IP and domain names can contain port numbers.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
+     * noProxy defines a comma-separated string that can contain IPs, CIDR notation, domain names that should be excluded from proxying. IP and domain names can contain port numbers.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
      */
     @JsonProperty("noProxy")
     public void setNoProxy(String noProxy) {
@@ -124,7 +124,7 @@ public class ProberSpec implements Editable<ProberSpecBuilder>, KubernetesResour
     }
 
     /**
-     * Path to collect metrics from. Defaults to `/probe`.
+     * path to collect metrics from. Defaults to `/probe`.
      */
     @JsonProperty("path")
     public String getPath() {
@@ -132,7 +132,7 @@ public class ProberSpec implements Editable<ProberSpecBuilder>, KubernetesResour
     }
 
     /**
-     * Path to collect metrics from. Defaults to `/probe`.
+     * path to collect metrics from. Defaults to `/probe`.
      */
     @JsonProperty("path")
     public void setPath(String path) {
@@ -140,7 +140,7 @@ public class ProberSpec implements Editable<ProberSpecBuilder>, KubernetesResour
     }
 
     /**
-     * ProxyConnectHeader optionally specifies headers to send to proxies during CONNECT requests.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
+     * proxyConnectHeader optionally specifies headers to send to proxies during CONNECT requests.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
      */
     @JsonProperty("proxyConnectHeader")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -149,7 +149,7 @@ public class ProberSpec implements Editable<ProberSpecBuilder>, KubernetesResour
     }
 
     /**
-     * ProxyConnectHeader optionally specifies headers to send to proxies during CONNECT requests.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
+     * proxyConnectHeader optionally specifies headers to send to proxies during CONNECT requests.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
      */
     @JsonProperty("proxyConnectHeader")
     public void setProxyConnectHeader(Map<String, List<SecretKeySelector>> proxyConnectHeader) {
@@ -157,7 +157,7 @@ public class ProberSpec implements Editable<ProberSpecBuilder>, KubernetesResour
     }
 
     /**
-     * Whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
+     * proxyFromEnvironment defines whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
      */
     @JsonProperty("proxyFromEnvironment")
     public Boolean getProxyFromEnvironment() {
@@ -165,7 +165,7 @@ public class ProberSpec implements Editable<ProberSpecBuilder>, KubernetesResour
     }
 
     /**
-     * Whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
+     * proxyFromEnvironment defines whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
      */
     @JsonProperty("proxyFromEnvironment")
     public void setProxyFromEnvironment(Boolean proxyFromEnvironment) {
@@ -173,7 +173,7 @@ public class ProberSpec implements Editable<ProberSpecBuilder>, KubernetesResour
     }
 
     /**
-     * `proxyURL` defines the HTTP proxy server to use.
+     * proxyUrl defines the HTTP proxy server to use.
      */
     @JsonProperty("proxyUrl")
     public String getProxyUrl() {
@@ -181,7 +181,7 @@ public class ProberSpec implements Editable<ProberSpecBuilder>, KubernetesResour
     }
 
     /**
-     * `proxyURL` defines the HTTP proxy server to use.
+     * proxyUrl defines the HTTP proxy server to use.
      */
     @JsonProperty("proxyUrl")
     public void setProxyUrl(String proxyUrl) {
@@ -189,7 +189,7 @@ public class ProberSpec implements Editable<ProberSpecBuilder>, KubernetesResour
     }
 
     /**
-     * HTTP scheme to use for scraping. `http` and `https` are the expected values unless you rewrite the `__scheme__` label via relabeling. If empty, Prometheus uses the default value `http`.
+     * scheme defines the HTTP scheme to use when scraping the prober.
      */
     @JsonProperty("scheme")
     public String getScheme() {
@@ -197,7 +197,7 @@ public class ProberSpec implements Editable<ProberSpecBuilder>, KubernetesResour
     }
 
     /**
-     * HTTP scheme to use for scraping. `http` and `https` are the expected values unless you rewrite the `__scheme__` label via relabeling. If empty, Prometheus uses the default value `http`.
+     * scheme defines the HTTP scheme to use when scraping the prober.
      */
     @JsonProperty("scheme")
     public void setScheme(String scheme) {
@@ -205,7 +205,7 @@ public class ProberSpec implements Editable<ProberSpecBuilder>, KubernetesResour
     }
 
     /**
-     * Mandatory URL of the prober.
+     * url defines the address of the prober.<br><p> <br><p> Unlike what the name indicates, the value should be in the form of `address:port` without any scheme which should be specified in the `scheme` field.
      */
     @JsonProperty("url")
     public String getUrl() {
@@ -213,7 +213,7 @@ public class ProberSpec implements Editable<ProberSpecBuilder>, KubernetesResour
     }
 
     /**
-     * Mandatory URL of the prober.
+     * url defines the address of the prober.<br><p> <br><p> Unlike what the name indicates, the value should be in the form of `address:port` without any scheme which should be specified in the `scheme` field.
      */
     @JsonProperty("url")
     public void setUrl(String url) {

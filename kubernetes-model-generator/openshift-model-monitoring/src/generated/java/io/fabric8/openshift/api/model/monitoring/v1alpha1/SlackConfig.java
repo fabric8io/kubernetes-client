@@ -54,12 +54,14 @@ import lombok.experimental.Accessors;
     "iconURL",
     "imageURL",
     "linkNames",
+    "messageText",
     "mrkdwnIn",
     "pretext",
     "sendResolved",
     "shortFields",
     "text",
     "thumbURL",
+    "timeout",
     "title",
     "titleLink",
     "username"
@@ -117,6 +119,8 @@ public class SlackConfig implements Editable<SlackConfigBuilder>, KubernetesReso
     private String imageURL;
     @JsonProperty("linkNames")
     private Boolean linkNames;
+    @JsonProperty("messageText")
+    private String messageText;
     @JsonProperty("mrkdwnIn")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> mrkdwnIn = new ArrayList<>();
@@ -130,6 +134,8 @@ public class SlackConfig implements Editable<SlackConfigBuilder>, KubernetesReso
     private String text;
     @JsonProperty("thumbURL")
     private String thumbURL;
+    @JsonProperty("timeout")
+    private String timeout;
     @JsonProperty("title")
     private String title;
     @JsonProperty("titleLink")
@@ -145,7 +151,7 @@ public class SlackConfig implements Editable<SlackConfigBuilder>, KubernetesReso
     public SlackConfig() {
     }
 
-    public SlackConfig(List<SlackAction> actions, SecretKeySelector apiURL, String callbackId, String channel, String color, String fallback, List<SlackField> fields, String footer, HTTPConfig httpConfig, String iconEmoji, String iconURL, String imageURL, Boolean linkNames, List<String> mrkdwnIn, String pretext, Boolean sendResolved, Boolean shortFields, String text, String thumbURL, String title, String titleLink, String username) {
+    public SlackConfig(List<SlackAction> actions, SecretKeySelector apiURL, String callbackId, String channel, String color, String fallback, List<SlackField> fields, String footer, HTTPConfig httpConfig, String iconEmoji, String iconURL, String imageURL, Boolean linkNames, String messageText, List<String> mrkdwnIn, String pretext, Boolean sendResolved, Boolean shortFields, String text, String thumbURL, String timeout, String title, String titleLink, String username) {
         super();
         this.actions = actions;
         this.apiURL = apiURL;
@@ -160,19 +166,21 @@ public class SlackConfig implements Editable<SlackConfigBuilder>, KubernetesReso
         this.iconURL = iconURL;
         this.imageURL = imageURL;
         this.linkNames = linkNames;
+        this.messageText = messageText;
         this.mrkdwnIn = mrkdwnIn;
         this.pretext = pretext;
         this.sendResolved = sendResolved;
         this.shortFields = shortFields;
         this.text = text;
         this.thumbURL = thumbURL;
+        this.timeout = timeout;
         this.title = title;
         this.titleLink = titleLink;
         this.username = username;
     }
 
     /**
-     * A list of Slack actions that are sent with each notification.
+     * actions defines a list of Slack actions that are sent with each notification.
      */
     @JsonProperty("actions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -181,7 +189,7 @@ public class SlackConfig implements Editable<SlackConfigBuilder>, KubernetesReso
     }
 
     /**
-     * A list of Slack actions that are sent with each notification.
+     * actions defines a list of Slack actions that are sent with each notification.
      */
     @JsonProperty("actions")
     public void setActions(List<SlackAction> actions) {
@@ -205,7 +213,7 @@ public class SlackConfig implements Editable<SlackConfigBuilder>, KubernetesReso
     }
 
     /**
-     * SlackConfig configures notifications via Slack. See https://prometheus.io/docs/alerting/latest/configuration/#slack_config
+     * callbackId defines an identifier for the message used in interactive components.
      */
     @JsonProperty("callbackId")
     public String getCallbackId() {
@@ -213,7 +221,7 @@ public class SlackConfig implements Editable<SlackConfigBuilder>, KubernetesReso
     }
 
     /**
-     * SlackConfig configures notifications via Slack. See https://prometheus.io/docs/alerting/latest/configuration/#slack_config
+     * callbackId defines an identifier for the message used in interactive components.
      */
     @JsonProperty("callbackId")
     public void setCallbackId(String callbackId) {
@@ -221,7 +229,7 @@ public class SlackConfig implements Editable<SlackConfigBuilder>, KubernetesReso
     }
 
     /**
-     * The channel or user to send notifications to.
+     * channel defines the channel or user to send notifications to.
      */
     @JsonProperty("channel")
     public String getChannel() {
@@ -229,7 +237,7 @@ public class SlackConfig implements Editable<SlackConfigBuilder>, KubernetesReso
     }
 
     /**
-     * The channel or user to send notifications to.
+     * channel defines the channel or user to send notifications to.
      */
     @JsonProperty("channel")
     public void setChannel(String channel) {
@@ -237,7 +245,7 @@ public class SlackConfig implements Editable<SlackConfigBuilder>, KubernetesReso
     }
 
     /**
-     * SlackConfig configures notifications via Slack. See https://prometheus.io/docs/alerting/latest/configuration/#slack_config
+     * color defines the color of the left border of the Slack message attachment. Can be a hex color code (e.g., "#ff0000") or a predefined color name.
      */
     @JsonProperty("color")
     public String getColor() {
@@ -245,7 +253,7 @@ public class SlackConfig implements Editable<SlackConfigBuilder>, KubernetesReso
     }
 
     /**
-     * SlackConfig configures notifications via Slack. See https://prometheus.io/docs/alerting/latest/configuration/#slack_config
+     * color defines the color of the left border of the Slack message attachment. Can be a hex color code (e.g., "#ff0000") or a predefined color name.
      */
     @JsonProperty("color")
     public void setColor(String color) {
@@ -253,7 +261,7 @@ public class SlackConfig implements Editable<SlackConfigBuilder>, KubernetesReso
     }
 
     /**
-     * SlackConfig configures notifications via Slack. See https://prometheus.io/docs/alerting/latest/configuration/#slack_config
+     * fallback defines a plain-text summary of the attachment for clients that don't support attachments.
      */
     @JsonProperty("fallback")
     public String getFallback() {
@@ -261,7 +269,7 @@ public class SlackConfig implements Editable<SlackConfigBuilder>, KubernetesReso
     }
 
     /**
-     * SlackConfig configures notifications via Slack. See https://prometheus.io/docs/alerting/latest/configuration/#slack_config
+     * fallback defines a plain-text summary of the attachment for clients that don't support attachments.
      */
     @JsonProperty("fallback")
     public void setFallback(String fallback) {
@@ -269,7 +277,7 @@ public class SlackConfig implements Editable<SlackConfigBuilder>, KubernetesReso
     }
 
     /**
-     * A list of Slack fields that are sent with each notification.
+     * fields defines a list of Slack fields that are sent with each notification.
      */
     @JsonProperty("fields")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -278,7 +286,7 @@ public class SlackConfig implements Editable<SlackConfigBuilder>, KubernetesReso
     }
 
     /**
-     * A list of Slack fields that are sent with each notification.
+     * fields defines a list of Slack fields that are sent with each notification.
      */
     @JsonProperty("fields")
     public void setFields(List<SlackField> fields) {
@@ -286,7 +294,7 @@ public class SlackConfig implements Editable<SlackConfigBuilder>, KubernetesReso
     }
 
     /**
-     * SlackConfig configures notifications via Slack. See https://prometheus.io/docs/alerting/latest/configuration/#slack_config
+     * footer defines small text displayed at the bottom of the message attachment.
      */
     @JsonProperty("footer")
     public String getFooter() {
@@ -294,7 +302,7 @@ public class SlackConfig implements Editable<SlackConfigBuilder>, KubernetesReso
     }
 
     /**
-     * SlackConfig configures notifications via Slack. See https://prometheus.io/docs/alerting/latest/configuration/#slack_config
+     * footer defines small text displayed at the bottom of the message attachment.
      */
     @JsonProperty("footer")
     public void setFooter(String footer) {
@@ -318,7 +326,7 @@ public class SlackConfig implements Editable<SlackConfigBuilder>, KubernetesReso
     }
 
     /**
-     * SlackConfig configures notifications via Slack. See https://prometheus.io/docs/alerting/latest/configuration/#slack_config
+     * iconEmoji defines the emoji to use as the bot's avatar (e.g., ":ghost:").
      */
     @JsonProperty("iconEmoji")
     public String getIconEmoji() {
@@ -326,7 +334,7 @@ public class SlackConfig implements Editable<SlackConfigBuilder>, KubernetesReso
     }
 
     /**
-     * SlackConfig configures notifications via Slack. See https://prometheus.io/docs/alerting/latest/configuration/#slack_config
+     * iconEmoji defines the emoji to use as the bot's avatar (e.g., ":ghost:").
      */
     @JsonProperty("iconEmoji")
     public void setIconEmoji(String iconEmoji) {
@@ -334,7 +342,7 @@ public class SlackConfig implements Editable<SlackConfigBuilder>, KubernetesReso
     }
 
     /**
-     * SlackConfig configures notifications via Slack. See https://prometheus.io/docs/alerting/latest/configuration/#slack_config
+     * iconURL defines the URL to an image to use as the bot's avatar.
      */
     @JsonProperty("iconURL")
     public String getIconURL() {
@@ -342,7 +350,7 @@ public class SlackConfig implements Editable<SlackConfigBuilder>, KubernetesReso
     }
 
     /**
-     * SlackConfig configures notifications via Slack. See https://prometheus.io/docs/alerting/latest/configuration/#slack_config
+     * iconURL defines the URL to an image to use as the bot's avatar.
      */
     @JsonProperty("iconURL")
     public void setIconURL(String iconURL) {
@@ -350,7 +358,7 @@ public class SlackConfig implements Editable<SlackConfigBuilder>, KubernetesReso
     }
 
     /**
-     * SlackConfig configures notifications via Slack. See https://prometheus.io/docs/alerting/latest/configuration/#slack_config
+     * imageURL defines the URL to an image file that will be displayed inside the message attachment.
      */
     @JsonProperty("imageURL")
     public String getImageURL() {
@@ -358,7 +366,7 @@ public class SlackConfig implements Editable<SlackConfigBuilder>, KubernetesReso
     }
 
     /**
-     * SlackConfig configures notifications via Slack. See https://prometheus.io/docs/alerting/latest/configuration/#slack_config
+     * imageURL defines the URL to an image file that will be displayed inside the message attachment.
      */
     @JsonProperty("imageURL")
     public void setImageURL(String imageURL) {
@@ -366,7 +374,7 @@ public class SlackConfig implements Editable<SlackConfigBuilder>, KubernetesReso
     }
 
     /**
-     * SlackConfig configures notifications via Slack. See https://prometheus.io/docs/alerting/latest/configuration/#slack_config
+     * linkNames enables automatic linking of channel names and usernames in the message. When true, @channel and @username will be converted to clickable links.
      */
     @JsonProperty("linkNames")
     public Boolean getLinkNames() {
@@ -374,7 +382,7 @@ public class SlackConfig implements Editable<SlackConfigBuilder>, KubernetesReso
     }
 
     /**
-     * SlackConfig configures notifications via Slack. See https://prometheus.io/docs/alerting/latest/configuration/#slack_config
+     * linkNames enables automatic linking of channel names and usernames in the message. When true, @channel and @username will be converted to clickable links.
      */
     @JsonProperty("linkNames")
     public void setLinkNames(Boolean linkNames) {
@@ -382,7 +390,23 @@ public class SlackConfig implements Editable<SlackConfigBuilder>, KubernetesReso
     }
 
     /**
-     * SlackConfig configures notifications via Slack. See https://prometheus.io/docs/alerting/latest/configuration/#slack_config
+     * messageText defines text content of the Slack message. If set, this is sent as the top-level 'text' field in the Slack payload. It requires Alertmanager &gt;= v0.31.0.
+     */
+    @JsonProperty("messageText")
+    public String getMessageText() {
+        return messageText;
+    }
+
+    /**
+     * messageText defines text content of the Slack message. If set, this is sent as the top-level 'text' field in the Slack payload. It requires Alertmanager &gt;= v0.31.0.
+     */
+    @JsonProperty("messageText")
+    public void setMessageText(String messageText) {
+        this.messageText = messageText;
+    }
+
+    /**
+     * mrkdwnIn defines which fields should be parsed as Slack markdown. Valid values include "pretext", "text", and "fields".
      */
     @JsonProperty("mrkdwnIn")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -391,7 +415,7 @@ public class SlackConfig implements Editable<SlackConfigBuilder>, KubernetesReso
     }
 
     /**
-     * SlackConfig configures notifications via Slack. See https://prometheus.io/docs/alerting/latest/configuration/#slack_config
+     * mrkdwnIn defines which fields should be parsed as Slack markdown. Valid values include "pretext", "text", and "fields".
      */
     @JsonProperty("mrkdwnIn")
     public void setMrkdwnIn(List<String> mrkdwnIn) {
@@ -399,7 +423,7 @@ public class SlackConfig implements Editable<SlackConfigBuilder>, KubernetesReso
     }
 
     /**
-     * SlackConfig configures notifications via Slack. See https://prometheus.io/docs/alerting/latest/configuration/#slack_config
+     * pretext defines optional text that appears above the message attachment block.
      */
     @JsonProperty("pretext")
     public String getPretext() {
@@ -407,7 +431,7 @@ public class SlackConfig implements Editable<SlackConfigBuilder>, KubernetesReso
     }
 
     /**
-     * SlackConfig configures notifications via Slack. See https://prometheus.io/docs/alerting/latest/configuration/#slack_config
+     * pretext defines optional text that appears above the message attachment block.
      */
     @JsonProperty("pretext")
     public void setPretext(String pretext) {
@@ -415,7 +439,7 @@ public class SlackConfig implements Editable<SlackConfigBuilder>, KubernetesReso
     }
 
     /**
-     * Whether or not to notify about resolved alerts.
+     * sendResolved defines whether or not to notify about resolved alerts.
      */
     @JsonProperty("sendResolved")
     public Boolean getSendResolved() {
@@ -423,7 +447,7 @@ public class SlackConfig implements Editable<SlackConfigBuilder>, KubernetesReso
     }
 
     /**
-     * Whether or not to notify about resolved alerts.
+     * sendResolved defines whether or not to notify about resolved alerts.
      */
     @JsonProperty("sendResolved")
     public void setSendResolved(Boolean sendResolved) {
@@ -431,7 +455,7 @@ public class SlackConfig implements Editable<SlackConfigBuilder>, KubernetesReso
     }
 
     /**
-     * SlackConfig configures notifications via Slack. See https://prometheus.io/docs/alerting/latest/configuration/#slack_config
+     * shortFields determines whether fields are displayed in a compact format. When true, fields are shown side by side when possible.
      */
     @JsonProperty("shortFields")
     public Boolean getShortFields() {
@@ -439,7 +463,7 @@ public class SlackConfig implements Editable<SlackConfigBuilder>, KubernetesReso
     }
 
     /**
-     * SlackConfig configures notifications via Slack. See https://prometheus.io/docs/alerting/latest/configuration/#slack_config
+     * shortFields determines whether fields are displayed in a compact format. When true, fields are shown side by side when possible.
      */
     @JsonProperty("shortFields")
     public void setShortFields(Boolean shortFields) {
@@ -447,7 +471,7 @@ public class SlackConfig implements Editable<SlackConfigBuilder>, KubernetesReso
     }
 
     /**
-     * SlackConfig configures notifications via Slack. See https://prometheus.io/docs/alerting/latest/configuration/#slack_config
+     * text defines the main text content of the Slack message attachment.
      */
     @JsonProperty("text")
     public String getText() {
@@ -455,7 +479,7 @@ public class SlackConfig implements Editable<SlackConfigBuilder>, KubernetesReso
     }
 
     /**
-     * SlackConfig configures notifications via Slack. See https://prometheus.io/docs/alerting/latest/configuration/#slack_config
+     * text defines the main text content of the Slack message attachment.
      */
     @JsonProperty("text")
     public void setText(String text) {
@@ -463,7 +487,7 @@ public class SlackConfig implements Editable<SlackConfigBuilder>, KubernetesReso
     }
 
     /**
-     * SlackConfig configures notifications via Slack. See https://prometheus.io/docs/alerting/latest/configuration/#slack_config
+     * thumbURL defines the URL to an image file that will be displayed as a thumbnail on the right side of the message attachment.
      */
     @JsonProperty("thumbURL")
     public String getThumbURL() {
@@ -471,7 +495,7 @@ public class SlackConfig implements Editable<SlackConfigBuilder>, KubernetesReso
     }
 
     /**
-     * SlackConfig configures notifications via Slack. See https://prometheus.io/docs/alerting/latest/configuration/#slack_config
+     * thumbURL defines the URL to an image file that will be displayed as a thumbnail on the right side of the message attachment.
      */
     @JsonProperty("thumbURL")
     public void setThumbURL(String thumbURL) {
@@ -479,7 +503,23 @@ public class SlackConfig implements Editable<SlackConfigBuilder>, KubernetesReso
     }
 
     /**
-     * SlackConfig configures notifications via Slack. See https://prometheus.io/docs/alerting/latest/configuration/#slack_config
+     * timeout defines the maximum time to wait for a webhook request to complete, before failing the request and allowing it to be retried. It requires Alertmanager &gt;= v0.30.0.
+     */
+    @JsonProperty("timeout")
+    public String getTimeout() {
+        return timeout;
+    }
+
+    /**
+     * timeout defines the maximum time to wait for a webhook request to complete, before failing the request and allowing it to be retried. It requires Alertmanager &gt;= v0.30.0.
+     */
+    @JsonProperty("timeout")
+    public void setTimeout(String timeout) {
+        this.timeout = timeout;
+    }
+
+    /**
+     * title defines the title text displayed in the Slack message attachment.
      */
     @JsonProperty("title")
     public String getTitle() {
@@ -487,7 +527,7 @@ public class SlackConfig implements Editable<SlackConfigBuilder>, KubernetesReso
     }
 
     /**
-     * SlackConfig configures notifications via Slack. See https://prometheus.io/docs/alerting/latest/configuration/#slack_config
+     * title defines the title text displayed in the Slack message attachment.
      */
     @JsonProperty("title")
     public void setTitle(String title) {
@@ -495,7 +535,7 @@ public class SlackConfig implements Editable<SlackConfigBuilder>, KubernetesReso
     }
 
     /**
-     * SlackConfig configures notifications via Slack. See https://prometheus.io/docs/alerting/latest/configuration/#slack_config
+     * titleLink defines the URL that the title will link to when clicked.
      */
     @JsonProperty("titleLink")
     public String getTitleLink() {
@@ -503,7 +543,7 @@ public class SlackConfig implements Editable<SlackConfigBuilder>, KubernetesReso
     }
 
     /**
-     * SlackConfig configures notifications via Slack. See https://prometheus.io/docs/alerting/latest/configuration/#slack_config
+     * titleLink defines the URL that the title will link to when clicked.
      */
     @JsonProperty("titleLink")
     public void setTitleLink(String titleLink) {
@@ -511,7 +551,7 @@ public class SlackConfig implements Editable<SlackConfigBuilder>, KubernetesReso
     }
 
     /**
-     * SlackConfig configures notifications via Slack. See https://prometheus.io/docs/alerting/latest/configuration/#slack_config
+     * username defines the slack bot user name.
      */
     @JsonProperty("username")
     public String getUsername() {
@@ -519,7 +559,7 @@ public class SlackConfig implements Editable<SlackConfigBuilder>, KubernetesReso
     }
 
     /**
-     * SlackConfig configures notifications via Slack. See https://prometheus.io/docs/alerting/latest/configuration/#slack_config
+     * username defines the slack bot user name.
      */
     @JsonProperty("username")
     public void setUsername(String username) {

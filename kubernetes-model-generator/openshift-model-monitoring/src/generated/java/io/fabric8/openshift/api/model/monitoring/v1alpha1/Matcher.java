@@ -94,7 +94,7 @@ public class Matcher implements Editable<MatcherBuilder>, KubernetesResource
     }
 
     /**
-     * Match operation available with AlertManager &gt;= v0.22.0 and takes precedence over Regex (deprecated) if non-empty.
+     * matchType defines the match operation available with AlertManager &gt;= v0.22.0. Takes precedence over Regex (deprecated) if non-empty. Valid values: "=" (equality), "!=" (inequality), "=~" (regex match), "!~" (regex non-match).
      */
     @JsonProperty("matchType")
     public String getMatchType() {
@@ -102,7 +102,7 @@ public class Matcher implements Editable<MatcherBuilder>, KubernetesResource
     }
 
     /**
-     * Match operation available with AlertManager &gt;= v0.22.0 and takes precedence over Regex (deprecated) if non-empty.
+     * matchType defines the match operation available with AlertManager &gt;= v0.22.0. Takes precedence over Regex (deprecated) if non-empty. Valid values: "=" (equality), "!=" (inequality), "=~" (regex match), "!~" (regex non-match).
      */
     @JsonProperty("matchType")
     public void setMatchType(String matchType) {
@@ -110,7 +110,7 @@ public class Matcher implements Editable<MatcherBuilder>, KubernetesResource
     }
 
     /**
-     * Label to match.
+     * name defines the label to match. This specifies which alert label should be evaluated.
      */
     @JsonProperty("name")
     public String getName() {
@@ -118,7 +118,7 @@ public class Matcher implements Editable<MatcherBuilder>, KubernetesResource
     }
 
     /**
-     * Label to match.
+     * name defines the label to match. This specifies which alert label should be evaluated.
      */
     @JsonProperty("name")
     public void setName(String name) {
@@ -126,7 +126,7 @@ public class Matcher implements Editable<MatcherBuilder>, KubernetesResource
     }
 
     /**
-     * Whether to match on equality (false) or regular-expression (true). Deprecated: for AlertManager &gt;= v0.22.0, `matchType` should be used instead.
+     * regex defines whether to match on equality (false) or regular-expression (true). Deprecated: for AlertManager &gt;= v0.22.0, `matchType` should be used instead.
      */
     @JsonProperty("regex")
     public Boolean getRegex() {
@@ -134,7 +134,7 @@ public class Matcher implements Editable<MatcherBuilder>, KubernetesResource
     }
 
     /**
-     * Whether to match on equality (false) or regular-expression (true). Deprecated: for AlertManager &gt;= v0.22.0, `matchType` should be used instead.
+     * regex defines whether to match on equality (false) or regular-expression (true). Deprecated: for AlertManager &gt;= v0.22.0, `matchType` should be used instead.
      */
     @JsonProperty("regex")
     public void setRegex(Boolean regex) {
@@ -142,7 +142,7 @@ public class Matcher implements Editable<MatcherBuilder>, KubernetesResource
     }
 
     /**
-     * Label value to match.
+     * value defines the label value to match. This is the expected value for the specified label.
      */
     @JsonProperty("value")
     public String getValue() {
@@ -150,7 +150,7 @@ public class Matcher implements Editable<MatcherBuilder>, KubernetesResource
     }
 
     /**
-     * Label value to match.
+     * value defines the label value to match. This is the expected value for the specified label.
      */
     @JsonProperty("value")
     public void setValue(String value) {

@@ -90,7 +90,7 @@ public class RocketChatActionConfig implements Editable<RocketChatActionConfigBu
     }
 
     /**
-     * The message to send when the button is clicked.
+     * msg defines the message to send when the button is clicked. This allows the button to post a predefined message to the channel.
      */
     @JsonProperty("msg")
     public String getMsg() {
@@ -98,7 +98,7 @@ public class RocketChatActionConfig implements Editable<RocketChatActionConfigBu
     }
 
     /**
-     * The message to send when the button is clicked.
+     * msg defines the message to send when the button is clicked. This allows the button to post a predefined message to the channel.
      */
     @JsonProperty("msg")
     public void setMsg(String msg) {
@@ -106,7 +106,7 @@ public class RocketChatActionConfig implements Editable<RocketChatActionConfigBu
     }
 
     /**
-     * The button text.
+     * text defines the button text displayed to users. This is the label that appears on the interactive button.
      */
     @JsonProperty("text")
     public String getText() {
@@ -114,7 +114,7 @@ public class RocketChatActionConfig implements Editable<RocketChatActionConfigBu
     }
 
     /**
-     * The button text.
+     * text defines the button text displayed to users. This is the label that appears on the interactive button.
      */
     @JsonProperty("text")
     public void setText(String text) {
@@ -122,7 +122,7 @@ public class RocketChatActionConfig implements Editable<RocketChatActionConfigBu
     }
 
     /**
-     * The URL the button links to.
+     * url defines the URL the button links to when clicked. This creates a clickable button that opens the specified URL.
      */
     @JsonProperty("url")
     public String getUrl() {
@@ -130,7 +130,7 @@ public class RocketChatActionConfig implements Editable<RocketChatActionConfigBu
     }
 
     /**
-     * The URL the button links to.
+     * url defines the URL the button links to when clicked. This creates a clickable button that opens the specified URL.
      */
     @JsonProperty("url")
     public void setUrl(String url) {

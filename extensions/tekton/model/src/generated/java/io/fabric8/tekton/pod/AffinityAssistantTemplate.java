@@ -46,6 +46,7 @@ import lombok.experimental.Accessors;
     "nodeSelector",
     "priorityClassName",
     "securityContext",
+    "serviceAccountName",
     "tolerations"
 })
 @ToString
@@ -83,6 +84,8 @@ public class AffinityAssistantTemplate implements Editable<AffinityAssistantTemp
     private String priorityClassName;
     @JsonProperty("securityContext")
     private PodSecurityContext securityContext;
+    @JsonProperty("serviceAccountName")
+    private String serviceAccountName;
     @JsonProperty("tolerations")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<Toleration> tolerations = new ArrayList<>();
@@ -95,12 +98,13 @@ public class AffinityAssistantTemplate implements Editable<AffinityAssistantTemp
     public AffinityAssistantTemplate() {
     }
 
-    public AffinityAssistantTemplate(List<LocalObjectReference> imagePullSecrets, Map<String, String> nodeSelector, String priorityClassName, PodSecurityContext securityContext, List<Toleration> tolerations) {
+    public AffinityAssistantTemplate(List<LocalObjectReference> imagePullSecrets, Map<String, String> nodeSelector, String priorityClassName, PodSecurityContext securityContext, String serviceAccountName, List<Toleration> tolerations) {
         super();
         this.imagePullSecrets = imagePullSecrets;
         this.nodeSelector = nodeSelector;
         this.priorityClassName = priorityClassName;
         this.securityContext = securityContext;
+        this.serviceAccountName = serviceAccountName;
         this.tolerations = tolerations;
     }
 
@@ -168,6 +172,22 @@ public class AffinityAssistantTemplate implements Editable<AffinityAssistantTemp
     @JsonProperty("securityContext")
     public void setSecurityContext(PodSecurityContext securityContext) {
         this.securityContext = securityContext;
+    }
+
+    /**
+     * ServiceAccountName is the name of the ServiceAccount to use for the affinity assistant pod. If not specified, the affinity assistant will inherit the serviceAccountName from the PipelineRun's taskRunTemplate. If that is also not specified, the pod will use the namespace's default ServiceAccount. More info: https://kubernetes.io/docs/tasks/configure-pod-container/configure-service-account/
+     */
+    @JsonProperty("serviceAccountName")
+    public String getServiceAccountName() {
+        return serviceAccountName;
+    }
+
+    /**
+     * ServiceAccountName is the name of the ServiceAccount to use for the affinity assistant pod. If not specified, the affinity assistant will inherit the serviceAccountName from the PipelineRun's taskRunTemplate. If that is also not specified, the pod will use the namespace's default ServiceAccount. More info: https://kubernetes.io/docs/tasks/configure-pod-container/configure-service-account/
+     */
+    @JsonProperty("serviceAccountName")
+    public void setServiceAccountName(String serviceAccountName) {
+        this.serviceAccountName = serviceAccountName;
     }
 
     /**

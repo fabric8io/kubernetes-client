@@ -90,7 +90,7 @@ public class RocketChatFieldConfig implements Editable<RocketChatFieldConfigBuil
     }
 
     /**
-     * Whether the field is displayed in a compact form.
+     * short defines whether this field should be a short field. When true, the field may be displayed inline with other short fields to save space.
      */
     @JsonProperty("short")
     public Boolean getShort() {
@@ -98,7 +98,7 @@ public class RocketChatFieldConfig implements Editable<RocketChatFieldConfigBuil
     }
 
     /**
-     * Whether the field is displayed in a compact form.
+     * short defines whether this field should be a short field. When true, the field may be displayed inline with other short fields to save space.
      */
     @JsonProperty("short")
     public void setShort(Boolean _short) {
@@ -106,7 +106,7 @@ public class RocketChatFieldConfig implements Editable<RocketChatFieldConfigBuil
     }
 
     /**
-     * The field title.
+     * title defines the title of this field. This appears as bold text labeling the field content.
      */
     @JsonProperty("title")
     public String getTitle() {
@@ -114,7 +114,7 @@ public class RocketChatFieldConfig implements Editable<RocketChatFieldConfigBuil
     }
 
     /**
-     * The field title.
+     * title defines the title of this field. This appears as bold text labeling the field content.
      */
     @JsonProperty("title")
     public void setTitle(String title) {
@@ -122,7 +122,7 @@ public class RocketChatFieldConfig implements Editable<RocketChatFieldConfigBuil
     }
 
     /**
-     * The field value.
+     * value defines the value of this field, displayed underneath the title. This contains the actual data or content for the field.
      */
     @JsonProperty("value")
     public String getValue() {
@@ -130,7 +130,7 @@ public class RocketChatFieldConfig implements Editable<RocketChatFieldConfigBuil
     }
 
     /**
-     * The field value.
+     * value defines the value of this field, displayed underneath the title. This contains the actual data or content for the field.
      */
     @JsonProperty("value")
     public void setValue(String value) {

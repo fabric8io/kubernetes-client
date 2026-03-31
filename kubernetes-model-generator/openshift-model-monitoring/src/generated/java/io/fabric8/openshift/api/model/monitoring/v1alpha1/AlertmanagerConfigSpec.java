@@ -99,7 +99,7 @@ public class AlertmanagerConfigSpec implements Editable<AlertmanagerConfigSpecBu
     }
 
     /**
-     * List of inhibition rules. The rules will only apply to alerts matching the resource's namespace.
+     * inhibitRules defines the list of inhibition rules. The rules will only apply to alerts matching the resource's namespace.
      */
     @JsonProperty("inhibitRules")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -108,7 +108,7 @@ public class AlertmanagerConfigSpec implements Editable<AlertmanagerConfigSpecBu
     }
 
     /**
-     * List of inhibition rules. The rules will only apply to alerts matching the resource's namespace.
+     * inhibitRules defines the list of inhibition rules. The rules will only apply to alerts matching the resource's namespace.
      */
     @JsonProperty("inhibitRules")
     public void setInhibitRules(List<InhibitRule> inhibitRules) {
@@ -116,7 +116,7 @@ public class AlertmanagerConfigSpec implements Editable<AlertmanagerConfigSpecBu
     }
 
     /**
-     * List of MuteTimeInterval specifying when the routes should be muted.
+     * muteTimeIntervals defines the list of MuteTimeInterval specifying when the routes should be muted.
      */
     @JsonProperty("muteTimeIntervals")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -125,7 +125,7 @@ public class AlertmanagerConfigSpec implements Editable<AlertmanagerConfigSpecBu
     }
 
     /**
-     * List of MuteTimeInterval specifying when the routes should be muted.
+     * muteTimeIntervals defines the list of MuteTimeInterval specifying when the routes should be muted.
      */
     @JsonProperty("muteTimeIntervals")
     public void setMuteTimeIntervals(List<MuteTimeInterval> muteTimeIntervals) {
@@ -133,7 +133,7 @@ public class AlertmanagerConfigSpec implements Editable<AlertmanagerConfigSpecBu
     }
 
     /**
-     * List of receivers.
+     * receivers defines the list of receivers.
      */
     @JsonProperty("receivers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -142,7 +142,7 @@ public class AlertmanagerConfigSpec implements Editable<AlertmanagerConfigSpecBu
     }
 
     /**
-     * List of receivers.
+     * receivers defines the list of receivers.
      */
     @JsonProperty("receivers")
     public void setReceivers(List<Receiver> receivers) {

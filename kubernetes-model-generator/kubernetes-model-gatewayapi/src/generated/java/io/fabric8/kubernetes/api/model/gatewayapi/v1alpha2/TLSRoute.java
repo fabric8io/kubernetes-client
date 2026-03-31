@@ -38,7 +38,7 @@ import lombok.ToString;
 import lombok.experimental.Accessors;
 
 /**
- * The TLSRoute resource is similar to TCPRoute, but can be configured to match against TLS-specific metadata. This allows more flexibility in matching streams for a given TLS listener.<br><p> <br><p> If you need to forward traffic to a single target for a TLS listener, you could choose to use a TCPRoute with a TLS listener.
+ * The TLSRoute resource is similar to TCPRoute, but can be configured to match against TLS-specific metadata. This allows more flexibility in matching streams for a given TLS listener.
  */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -140,7 +140,7 @@ public class TLSRoute implements Editable<TLSRouteBuilder>, HasMetadata, Namespa
     }
 
     /**
-     * The TLSRoute resource is similar to TCPRoute, but can be configured to match against TLS-specific metadata. This allows more flexibility in matching streams for a given TLS listener.<br><p> <br><p> If you need to forward traffic to a single target for a TLS listener, you could choose to use a TCPRoute with a TLS listener.
+     * The TLSRoute resource is similar to TCPRoute, but can be configured to match against TLS-specific metadata. This allows more flexibility in matching streams for a given TLS listener.
      */
     @JsonProperty("metadata")
     public ObjectMeta getMetadata() {
@@ -148,7 +148,7 @@ public class TLSRoute implements Editable<TLSRouteBuilder>, HasMetadata, Namespa
     }
 
     /**
-     * The TLSRoute resource is similar to TCPRoute, but can be configured to match against TLS-specific metadata. This allows more flexibility in matching streams for a given TLS listener.<br><p> <br><p> If you need to forward traffic to a single target for a TLS listener, you could choose to use a TCPRoute with a TLS listener.
+     * The TLSRoute resource is similar to TCPRoute, but can be configured to match against TLS-specific metadata. This allows more flexibility in matching streams for a given TLS listener.
      */
     @JsonProperty("metadata")
     public void setMetadata(ObjectMeta metadata) {
@@ -156,7 +156,7 @@ public class TLSRoute implements Editable<TLSRouteBuilder>, HasMetadata, Namespa
     }
 
     /**
-     * The TLSRoute resource is similar to TCPRoute, but can be configured to match against TLS-specific metadata. This allows more flexibility in matching streams for a given TLS listener.<br><p> <br><p> If you need to forward traffic to a single target for a TLS listener, you could choose to use a TCPRoute with a TLS listener.
+     * The TLSRoute resource is similar to TCPRoute, but can be configured to match against TLS-specific metadata. This allows more flexibility in matching streams for a given TLS listener.
      */
     @JsonProperty("spec")
     public TLSRouteSpec getSpec() {
@@ -164,7 +164,7 @@ public class TLSRoute implements Editable<TLSRouteBuilder>, HasMetadata, Namespa
     }
 
     /**
-     * The TLSRoute resource is similar to TCPRoute, but can be configured to match against TLS-specific metadata. This allows more flexibility in matching streams for a given TLS listener.<br><p> <br><p> If you need to forward traffic to a single target for a TLS listener, you could choose to use a TCPRoute with a TLS listener.
+     * The TLSRoute resource is similar to TCPRoute, but can be configured to match against TLS-specific metadata. This allows more flexibility in matching streams for a given TLS listener.
      */
     @JsonProperty("spec")
     public void setSpec(TLSRouteSpec spec) {
@@ -172,7 +172,7 @@ public class TLSRoute implements Editable<TLSRouteBuilder>, HasMetadata, Namespa
     }
 
     /**
-     * The TLSRoute resource is similar to TCPRoute, but can be configured to match against TLS-specific metadata. This allows more flexibility in matching streams for a given TLS listener.<br><p> <br><p> If you need to forward traffic to a single target for a TLS listener, you could choose to use a TCPRoute with a TLS listener.
+     * The TLSRoute resource is similar to TCPRoute, but can be configured to match against TLS-specific metadata. This allows more flexibility in matching streams for a given TLS listener.
      */
     @JsonProperty("status")
     public TLSRouteStatus getStatus() {
@@ -180,7 +180,7 @@ public class TLSRoute implements Editable<TLSRouteBuilder>, HasMetadata, Namespa
     }
 
     /**
-     * The TLSRoute resource is similar to TCPRoute, but can be configured to match against TLS-specific metadata. This allows more flexibility in matching streams for a given TLS listener.<br><p> <br><p> If you need to forward traffic to a single target for a TLS listener, you could choose to use a TCPRoute with a TLS listener.
+     * The TLSRoute resource is similar to TCPRoute, but can be configured to match against TLS-specific metadata. This allows more flexibility in matching streams for a given TLS listener.
      */
     @JsonProperty("status")
     public void setStatus(TLSRouteStatus status) {
