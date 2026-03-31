@@ -39,7 +39,7 @@ public class Types {
     throw new IllegalStateException("Utility class");
   }
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(Types.class);
+  private static final Logger logger = LoggerFactory.getLogger(Types.class);
   private static final String NAMESPACED = Namespaced.class.getName();
   public static final String JAVA_LANG_VOID = "java.lang.Void";
   public static final AdapterContext REFLECTION_CONTEXT = AdapterContext.create(DefinitionRepository.getRepository());
@@ -133,7 +133,7 @@ public class Types {
   public static void output(TypeDef def) {
     final StringBuilder builder = new StringBuilder(300);
     Types.describeType(def, "", new HashSet<>(), builder);
-    LOGGER.debug("\n{}", builder);
+    logger.debug("\n{}", builder);
   }
 
   public static void describeType(TypeDef def, String indent, Set<String> visited, StringBuilder builder) {

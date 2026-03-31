@@ -130,7 +130,7 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 @Plugin(name = "k8s", category = StrLookup.CATEGORY)
 public class KubernetesLookup extends AbstractLookup {
 
-  private static final Logger LOGGER = StatusLogger.getLogger();
+  private static final Logger logger = StatusLogger.getLogger();
   private static final String HOSTNAME = "HOSTNAME";
   private static final String SPRING_ENVIRONMENT_KEY = "SpringEnvironment";
 
@@ -247,7 +247,7 @@ public class KubernetesLookup extends AbstractLookup {
         lookup.masterUrl = client.getMasterUrl();
       }
     } else {
-      LOGGER.warn("Kubernetes is not available for access");
+      logger.warn("Kubernetes is not available for access");
     }
   }
 
@@ -270,7 +270,7 @@ public class KubernetesLookup extends AbstractLookup {
         return kubernetesClient.pods().withName(hostName).get();
       }
     } catch (Exception e) {
-      LOGGER.debug("Unable to locate pod with name {}.", hostName, e);
+      logger.debug("Unable to locate pod with name {}.", hostName, e);
     }
     return null;
   }

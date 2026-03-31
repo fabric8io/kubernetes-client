@@ -126,7 +126,7 @@ public class PlacementStatus implements Editable<PlacementStatusBuilder>, Kubern
     }
 
     /**
-     * NumberOfSelectedClusters represents the number of selected ManagedClusters
+     * numberOfSelectedClusters represents the number of selected ManagedClusters
      */
     @JsonProperty("numberOfSelectedClusters")
     public Integer getNumberOfSelectedClusters() {
@@ -134,7 +134,7 @@ public class PlacementStatus implements Editable<PlacementStatusBuilder>, Kubern
     }
 
     /**
-     * NumberOfSelectedClusters represents the number of selected ManagedClusters
+     * numberOfSelectedClusters represents the number of selected ManagedClusters
      */
     @JsonProperty("numberOfSelectedClusters")
     public void setNumberOfSelectedClusters(Integer numberOfSelectedClusters) {

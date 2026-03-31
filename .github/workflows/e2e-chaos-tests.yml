@@ -42,13 +42,13 @@ jobs:
       matrix:
         kubernetes: [v1.34.2]
         java-version: [11,17]
-        http-client: [okhttp,jdk,jetty,vertx]
+        http-client: [okhttp,jdk,jetty,vertx,vertx-5]
         chaos-test: ["network-delay.yaml", "network-loss.yaml", "network-duplicate.yaml"]
     steps:
       - name: Checkout
         uses: actions/checkout@v6
       - name: Setup Minikube-Kubernetes
-        uses: manusa/actions-setup-minikube@v2.14.0
+        uses: manusa/actions-setup-minikube@v2.16.1
         with:
           minikube version: v1.37.0
           kubernetes version: ${{ matrix.kubernetes }}
@@ -60,7 +60,7 @@ jobs:
           distribution: "temurin"
           cache: maven
       - name: Setup Kubectl # Chaos-Mesh setup requires a functional kubectl version for all cluster versiones
-        uses: azure/setup-kubectl@v4
+        uses: azure/setup-kubectl@v5
         with:
           version: ${{ matrix.kubernetes }}
       - name: Install Chaos Mesh

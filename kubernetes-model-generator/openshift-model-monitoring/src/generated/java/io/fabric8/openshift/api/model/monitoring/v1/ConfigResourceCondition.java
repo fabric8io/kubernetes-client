@@ -32,7 +32,7 @@ import lombok.ToString;
 import lombok.experimental.Accessors;
 
 /**
- * ConfigResourceCondition describes the status of configuration resources linked to Prometheus, PrometheusAgent, Alertmanager, or ThanosRuler.
+ * ConfigResourceCondition describes the status of configuration resources linked to Prometheus, PrometheusAgent, Alertmanager or ThanosRuler.
  */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -101,7 +101,7 @@ public class ConfigResourceCondition implements Editable<ConfigResourceCondition
     }
 
     /**
-     * ConfigResourceCondition describes the status of configuration resources linked to Prometheus, PrometheusAgent, Alertmanager, or ThanosRuler.
+     * ConfigResourceCondition describes the status of configuration resources linked to Prometheus, PrometheusAgent, Alertmanager or ThanosRuler.
      */
     @JsonProperty("lastTransitionTime")
     public String getLastTransitionTime() {
@@ -109,7 +109,7 @@ public class ConfigResourceCondition implements Editable<ConfigResourceCondition
     }
 
     /**
-     * ConfigResourceCondition describes the status of configuration resources linked to Prometheus, PrometheusAgent, Alertmanager, or ThanosRuler.
+     * ConfigResourceCondition describes the status of configuration resources linked to Prometheus, PrometheusAgent, Alertmanager or ThanosRuler.
      */
     @JsonProperty("lastTransitionTime")
     public void setLastTransitionTime(String lastTransitionTime) {
@@ -117,7 +117,7 @@ public class ConfigResourceCondition implements Editable<ConfigResourceCondition
     }
 
     /**
-     * Human-readable message indicating details for the condition's last transition.
+     * message defines the human-readable message indicating details for the condition's last transition.
      */
     @JsonProperty("message")
     public String getMessage() {
@@ -125,7 +125,7 @@ public class ConfigResourceCondition implements Editable<ConfigResourceCondition
     }
 
     /**
-     * Human-readable message indicating details for the condition's last transition.
+     * message defines the human-readable message indicating details for the condition's last transition.
      */
     @JsonProperty("message")
     public void setMessage(String message) {
@@ -133,7 +133,7 @@ public class ConfigResourceCondition implements Editable<ConfigResourceCondition
     }
 
     /**
-     * ObservedGeneration represents the .metadata.generation that the condition was set based upon. For instance, if `.metadata.generation` is currently 12, but the `.status.conditions[].observedGeneration` is 9, the condition is out of date with respect to the current state of the object.
+     * observedGeneration defines the .metadata.generation that the condition was set based upon. For instance, if `.metadata.generation` is currently 12, but the `.status.conditions[].observedGeneration` is 9, the condition is out of date with respect to the current state of the object.
      */
     @JsonProperty("observedGeneration")
     public Long getObservedGeneration() {
@@ -141,7 +141,7 @@ public class ConfigResourceCondition implements Editable<ConfigResourceCondition
     }
 
     /**
-     * ObservedGeneration represents the .metadata.generation that the condition was set based upon. For instance, if `.metadata.generation` is currently 12, but the `.status.conditions[].observedGeneration` is 9, the condition is out of date with respect to the current state of the object.
+     * observedGeneration defines the .metadata.generation that the condition was set based upon. For instance, if `.metadata.generation` is currently 12, but the `.status.conditions[].observedGeneration` is 9, the condition is out of date with respect to the current state of the object.
      */
     @JsonProperty("observedGeneration")
     public void setObservedGeneration(Long observedGeneration) {
@@ -149,7 +149,7 @@ public class ConfigResourceCondition implements Editable<ConfigResourceCondition
     }
 
     /**
-     * Reason for the condition's last transition.
+     * reason for the condition's last transition.
      */
     @JsonProperty("reason")
     public String getReason() {
@@ -157,7 +157,7 @@ public class ConfigResourceCondition implements Editable<ConfigResourceCondition
     }
 
     /**
-     * Reason for the condition's last transition.
+     * reason for the condition's last transition.
      */
     @JsonProperty("reason")
     public void setReason(String reason) {
@@ -165,7 +165,7 @@ public class ConfigResourceCondition implements Editable<ConfigResourceCondition
     }
 
     /**
-     * Status of the condition.
+     * status of the condition.
      */
     @JsonProperty("status")
     public String getStatus() {
@@ -173,7 +173,7 @@ public class ConfigResourceCondition implements Editable<ConfigResourceCondition
     }
 
     /**
-     * Status of the condition.
+     * status of the condition.
      */
     @JsonProperty("status")
     public void setStatus(String status) {
@@ -181,7 +181,7 @@ public class ConfigResourceCondition implements Editable<ConfigResourceCondition
     }
 
     /**
-     * Type of the condition being reported. Currently, only "Accepted" is supported.
+     * type of the condition being reported. Currently, only "Accepted" is supported.
      */
     @JsonProperty("type")
     public String getType() {
@@ -189,7 +189,7 @@ public class ConfigResourceCondition implements Editable<ConfigResourceCondition
     }
 
     /**
-     * Type of the condition being reported. Currently, only "Accepted" is supported.
+     * type of the condition being reported. Currently, only "Accepted" is supported.
      */
     @JsonProperty("type")
     public void setType(String type) {

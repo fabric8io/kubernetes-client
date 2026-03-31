@@ -86,7 +86,7 @@ public class AddOnPlacementScoreItem implements Editable<AddOnPlacementScoreItem
     }
 
     /**
-     * Name is the name of the score
+     * name is the name of the score
      */
     @JsonProperty("name")
     public String getName() {
@@ -94,7 +94,7 @@ public class AddOnPlacementScoreItem implements Editable<AddOnPlacementScoreItem
     }
 
     /**
-     * Name is the name of the score
+     * name is the name of the score
      */
     @JsonProperty("name")
     public void setName(String name) {
@@ -102,7 +102,7 @@ public class AddOnPlacementScoreItem implements Editable<AddOnPlacementScoreItem
     }
 
     /**
-     * Value is the value of the score. The score range is from -100 to 100.
+     * value is the value of the score. The score range is from -100 to 100.
      */
     @JsonProperty("value")
     public Integer getValue() {
@@ -110,7 +110,7 @@ public class AddOnPlacementScoreItem implements Editable<AddOnPlacementScoreItem
     }
 
     /**
-     * Value is the value of the score. The score range is from -100 to 100.
+     * value is the value of the score. The score range is from -100 to 100.
      */
     @JsonProperty("value")
     public void setValue(Integer value) {

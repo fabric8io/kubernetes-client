@@ -45,7 +45,8 @@ import lombok.experimental.Accessors;
     "apiVersion",
     "kind",
     "metadata",
-    "spec"
+    "spec",
+    "status"
 })
 @ToString
 @EqualsAndHashCode
@@ -85,6 +86,8 @@ public class DeviceTaintRule implements Editable<DeviceTaintRuleBuilder>, HasMet
     private ObjectMeta metadata;
     @JsonProperty("spec")
     private DeviceTaintRuleSpec spec;
+    @JsonProperty("status")
+    private DeviceTaintRuleStatus status;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -94,12 +97,13 @@ public class DeviceTaintRule implements Editable<DeviceTaintRuleBuilder>, HasMet
     public DeviceTaintRule() {
     }
 
-    public DeviceTaintRule(String apiVersion, String kind, ObjectMeta metadata, DeviceTaintRuleSpec spec) {
+    public DeviceTaintRule(String apiVersion, String kind, ObjectMeta metadata, DeviceTaintRuleSpec spec, DeviceTaintRuleStatus status) {
         super();
         this.apiVersion = apiVersion;
         this.kind = kind;
         this.metadata = metadata;
         this.spec = spec;
+        this.status = status;
     }
 
     /**
@@ -164,6 +168,22 @@ public class DeviceTaintRule implements Editable<DeviceTaintRuleBuilder>, HasMet
     @JsonProperty("spec")
     public void setSpec(DeviceTaintRuleSpec spec) {
         this.spec = spec;
+    }
+
+    /**
+     * DeviceTaintRule adds one taint to all devices which match the selector. This has the same effect as if the taint was specified directly in the ResourceSlice by the DRA driver.
+     */
+    @JsonProperty("status")
+    public DeviceTaintRuleStatus getStatus() {
+        return status;
+    }
+
+    /**
+     * DeviceTaintRule adds one taint to all devices which match the selector. This has the same effect as if the taint was specified directly in the ResourceSlice by the DRA driver.
+     */
+    @JsonProperty("status")
+    public void setStatus(DeviceTaintRuleStatus status) {
+        this.status = status;
     }
 
     @JsonIgnore

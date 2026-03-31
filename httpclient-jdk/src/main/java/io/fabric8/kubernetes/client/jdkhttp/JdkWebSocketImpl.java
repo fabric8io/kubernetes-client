@@ -33,7 +33,7 @@ import java.util.concurrent.atomic.AtomicLong;
 
 class JdkWebSocketImpl implements WebSocket, java.net.http.WebSocket.Listener {
 
-  private static final Logger LOG = LoggerFactory.getLogger(JdkWebSocketImpl.class);
+  private static final Logger logger = LoggerFactory.getLogger(JdkWebSocketImpl.class);
 
   private volatile java.net.http.WebSocket webSocket;
   private final AtomicLong queueSize = new AtomicLong();
@@ -109,7 +109,7 @@ class JdkWebSocketImpl implements WebSocket, java.net.http.WebSocket.Listener {
     }
     cf.whenComplete((b, t) -> {
       if (t != null) {
-        LOG.warn("Queued write did not succeed", t);
+        logger.warn("Queued write did not succeed", t);
         abort();
       }
       queueSize.addAndGet(-size);
@@ -125,7 +125,7 @@ class JdkWebSocketImpl implements WebSocket, java.net.http.WebSocket.Listener {
     CompletableFuture<java.net.http.WebSocket> cf = webSocket.sendClose(code, reason == null ? "Closing" : reason);
     cf = cf.whenComplete((w, t) -> {
       if (t != null) {
-        LOG.warn("Queued close did not succeed", t);
+        logger.warn("Queued close did not succeed", t);
         abort();
       } else if (w != null) {
         webSocket.request(1); // there may not be demand, so request more
@@ -138,7 +138,7 @@ class JdkWebSocketImpl implements WebSocket, java.net.http.WebSocket.Listener {
 
   private void abort() {
     if (!webSocket.isOutputClosed() || !webSocket.isInputClosed()) {
-      LOG.warn("Aborting WebSocket due to a write error or failure with sendClose");
+      logger.warn("Aborting WebSocket due to a write error or failure with sendClose");
       webSocket.abort();
       if (terminated.complete(null)) {
         listener.onClose(this, 1006, "Aborted the WebSocket");

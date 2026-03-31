@@ -31,7 +31,7 @@ import java.util.List;
 
 public class KubeAPIServerProcess {
 
-  private static final Logger log = LoggerFactory.getLogger(KubeAPIServerProcess.class);
+  private static final Logger logger = LoggerFactory.getLogger(KubeAPIServerProcess.class);
   private static final Logger apiLog = LoggerFactory.getLogger(KubeAPIServerProcess.class
       .getName() + ".APIServerProcessLogs");
   public static final String KUBE_API_SERVER = "Kube API Server";
@@ -69,12 +69,12 @@ public class KubeAPIServerProcess {
       apiServerProcess.onExit().thenApply(p -> {
         if (!stopped) {
           stopped = true;
-          log.error("API Server process stopped unexpectedly");
+          logger.error("API Server process stopped unexpectedly");
           this.processStopHandler.processStopped(p);
         }
         return null;
       });
-      log.debug("Kube API Server started on port: {} using binaries: {}", apiServerPort,
+      logger.debug("Kube API Server started on port: {} using binaries: {}", apiServerPort,
           apiServerBinary);
       return apiServerPort;
     } catch (IOException e) {
@@ -125,7 +125,7 @@ public class KubeAPIServerProcess {
         throw new KubeAPITestException(e);
       }
     }
-    log.debug("API Server stopped");
+    logger.debug("API Server stopped");
   }
 
   public int getApiServerPort() {

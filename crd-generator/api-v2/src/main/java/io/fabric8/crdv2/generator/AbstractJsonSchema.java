@@ -99,7 +99,7 @@ import static java.util.Optional.ofNullable;
  */
 public abstract class AbstractJsonSchema<T extends KubernetesJSONSchemaProps, V extends KubernetesValidationRule> {
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(AbstractJsonSchema.class);
+  private static final Logger logger = LoggerFactory.getLogger(AbstractJsonSchema.class);
 
   private final ResolvingContext resolvingContext;
   private final T root;
@@ -333,7 +333,7 @@ public abstract class AbstractJsonSchema<T extends KubernetesJSONSchemaProps, V 
         return resolvingContext.kubernetesSerialization.convertValue(typedValue, JsonNode.class);
       } catch (Exception e) {
         if (defaultAnnotationValue.isEmpty()) {
-          LOGGER.warn("Cannot parse default value: '" + value
+          logger.warn("Cannot parse default value: '" + value
               + "' from JsonProperty annotation as valid YAML or JSON, no default value will be used.");
           return null;
         }
@@ -612,7 +612,7 @@ public abstract class AbstractJsonSchema<T extends KubernetesJSONSchemaProps, V 
       final JavaType valueType = type.getContentType();
 
       if (keyType.getRawClass() != String.class) {
-        LOGGER.warn("Property '{}' with '{}' key type is mapped to 'string' because of CRD schemas limitations", name, keyType);
+        logger.warn("Property '{}' with '{}' key type is mapped to 'string' because of CRD schemas limitations", name, keyType);
       }
 
       JsonSchema mapValueSchema = ((SchemaAdditionalProperties) ((ObjectSchema) jacksonSchema).getAdditionalProperties())

@@ -91,7 +91,7 @@ public class AkkaMicroserviceSpec implements io.fabric8.kubernetes.api.model.Kub
     @com.fasterxml.jackson.annotation.JsonProperty("deploymentStrategy")
     @com.fasterxml.jackson.annotation.JsonPropertyDescription("The deployment strategy to use to replace existing pods with new ones.\nFor more information see https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#strategy")
     @com.fasterxml.jackson.annotation.JsonSetter(nulls = com.fasterxml.jackson.annotation.Nulls.SKIP)
-    private org.test.v1.akkamicroservicespec.DeploymentStrategy deploymentStrategy = io.fabric8.kubernetes.client.utils.Serialization.unmarshal("{\"type\":\"RollingUpdate\",\"rollingUpdate\":{\"maxSurge\":\"25%\",\"maxUnavailable\":\"25%\"}}", org.test.v1.akkamicroservicespec.DeploymentStrategy.class);
+    private org.test.v1.akkamicroservicespec.DeploymentStrategy deploymentStrategy = io.fabric8.kubernetes.client.utils.Serialization.unmarshal("{\"type\":\"RollingUpdate\",\"rollingUpdate\":{\"maxSurge\":\"25%\",\"maxUnavailable\":\"25%\"}}", new com.fasterxml.jackson.core.type.TypeReference<org.test.v1.akkamicroservicespec.DeploymentStrategy>() {});
 
     public org.test.v1.akkamicroservicespec.DeploymentStrategy getDeploymentStrategy() {
         return deploymentStrategy;
@@ -155,7 +155,7 @@ public class AkkaMicroserviceSpec implements io.fabric8.kubernetes.api.model.Kub
     @com.fasterxml.jackson.annotation.JsonProperty("extraVolumeMounts")
     @com.fasterxml.jackson.annotation.JsonPropertyDescription("List of extra volume mounts to be provided to the main container.")
     @com.fasterxml.jackson.annotation.JsonSetter(nulls = com.fasterxml.jackson.annotation.Nulls.SKIP)
-    private java.util.List<org.test.v1.akkamicroservicespec.ExtraVolumeMounts> extraVolumeMounts = io.fabric8.kubernetes.client.utils.Serialization.unmarshal("[]", java.util.List.class);
+    private java.util.List<org.test.v1.akkamicroservicespec.ExtraVolumeMounts> extraVolumeMounts = io.fabric8.kubernetes.client.utils.Serialization.unmarshal("[]", new com.fasterxml.jackson.core.type.TypeReference<java.util.List<org.test.v1.akkamicroservicespec.ExtraVolumeMounts>>() {});
 
     public java.util.List<org.test.v1.akkamicroservicespec.ExtraVolumeMounts> getExtraVolumeMounts() {
         return extraVolumeMounts;
@@ -271,7 +271,7 @@ public class AkkaMicroserviceSpec implements io.fabric8.kubernetes.api.model.Kub
     @com.fasterxml.jackson.annotation.JsonProperty("imagePullSecrets")
     @com.fasterxml.jackson.annotation.JsonPropertyDescription("List of the image pull secrets to be used. More info: https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/#create-a-pod-that-uses-your-secret")
     @com.fasterxml.jackson.annotation.JsonSetter(nulls = com.fasterxml.jackson.annotation.Nulls.SKIP)
-    private java.util.List<String> imagePullSecrets = io.fabric8.kubernetes.client.utils.Serialization.unmarshal("[]", java.util.List.class);
+    private java.util.List<String> imagePullSecrets = io.fabric8.kubernetes.client.utils.Serialization.unmarshal("[]", new com.fasterxml.jackson.core.type.TypeReference<java.util.List<String>>() {});
 
     public java.util.List<String> getImagePullSecrets() {
         return imagePullSecrets;
@@ -351,7 +351,7 @@ public class AkkaMicroserviceSpec implements io.fabric8.kubernetes.api.model.Kub
     @com.fasterxml.jackson.annotation.JsonProperty("livenessProbe")
     @com.fasterxml.jackson.annotation.JsonPropertyDescription("The liveness probe, can be configured as any standard probe or disabled by using an empty object. More info: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes")
     @com.fasterxml.jackson.annotation.JsonSetter(nulls = com.fasterxml.jackson.annotation.Nulls.SKIP)
-    private org.test.v1.akkamicroservicespec.LivenessProbe livenessProbe = io.fabric8.kubernetes.client.utils.Serialization.unmarshal("{\"httpGet\":{\"port\":\"management\",\"path\":\"/alive\"},\"periodSeconds\":10,\"initialDelaySeconds\":20,\"failureThreshold\":10}", org.test.v1.akkamicroservicespec.LivenessProbe.class);
+    private org.test.v1.akkamicroservicespec.LivenessProbe livenessProbe = io.fabric8.kubernetes.client.utils.Serialization.unmarshal("{\"httpGet\":{\"port\":\"management\",\"path\":\"/alive\"},\"periodSeconds\":10,\"initialDelaySeconds\":20,\"failureThreshold\":10}", new com.fasterxml.jackson.core.type.TypeReference<org.test.v1.akkamicroservicespec.LivenessProbe>() {});
 
     public org.test.v1.akkamicroservicespec.LivenessProbe getLivenessProbe() {
         return livenessProbe;
@@ -416,7 +416,7 @@ public class AkkaMicroserviceSpec implements io.fabric8.kubernetes.api.model.Kub
     @com.fasterxml.jackson.annotation.JsonProperty("readinessProbe")
     @com.fasterxml.jackson.annotation.JsonPropertyDescription("The readiness probe, can be configured as any standard probe or disabled by using an empty object. More info: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes")
     @com.fasterxml.jackson.annotation.JsonSetter(nulls = com.fasterxml.jackson.annotation.Nulls.SKIP)
-    private org.test.v1.akkamicroservicespec.ReadinessProbe readinessProbe = io.fabric8.kubernetes.client.utils.Serialization.unmarshal("{\"httpGet\":{\"port\":\"management\",\"path\":\"/ready\"},\"periodSeconds\":10,\"initialDelaySeconds\":20,\"failureThreshold\":10}", org.test.v1.akkamicroservicespec.ReadinessProbe.class);
+    private org.test.v1.akkamicroservicespec.ReadinessProbe readinessProbe = io.fabric8.kubernetes.client.utils.Serialization.unmarshal("{\"httpGet\":{\"port\":\"management\",\"path\":\"/ready\"},\"periodSeconds\":10,\"initialDelaySeconds\":20,\"failureThreshold\":10}", new com.fasterxml.jackson.core.type.TypeReference<org.test.v1.akkamicroservicespec.ReadinessProbe>() {});
 
     public org.test.v1.akkamicroservicespec.ReadinessProbe getReadinessProbe() {
         return readinessProbe;
@@ -450,7 +450,7 @@ public class AkkaMicroserviceSpec implements io.fabric8.kubernetes.api.model.Kub
     @com.fasterxml.jackson.annotation.JsonProperty("resources")
     @com.fasterxml.jackson.annotation.JsonPropertyDescription("ResourceRequirements describes the compute resource requirements.")
     @com.fasterxml.jackson.annotation.JsonSetter(nulls = com.fasterxml.jackson.annotation.Nulls.SKIP)
-    private org.test.v1.akkamicroservicespec.Resources resources = io.fabric8.kubernetes.client.utils.Serialization.unmarshal("{\"limits\":{\"memory\":\"1024Mi\",\"cpu\":\"\"},\"requests\":{\"memory\":\"1024Mi\",\"cpu\":\"1\"}}", org.test.v1.akkamicroservicespec.Resources.class);
+    private org.test.v1.akkamicroservicespec.Resources resources = io.fabric8.kubernetes.client.utils.Serialization.unmarshal("{\"limits\":{\"memory\":\"1024Mi\",\"cpu\":\"\"},\"requests\":{\"memory\":\"1024Mi\",\"cpu\":\"1\"}}", new com.fasterxml.jackson.core.type.TypeReference<org.test.v1.akkamicroservicespec.Resources>() {});
 
     public org.test.v1.akkamicroservicespec.Resources getResources() {
         return resources;
@@ -466,7 +466,7 @@ public class AkkaMicroserviceSpec implements io.fabric8.kubernetes.api.model.Kub
     @com.fasterxml.jackson.annotation.JsonProperty("roles")
     @com.fasterxml.jackson.annotation.JsonPropertyDescription("Scale by Akka Cluster node role. https://doc.akka.io/docs/akka/current/typed/cluster.html#node-roles")
     @com.fasterxml.jackson.annotation.JsonSetter(nulls = com.fasterxml.jackson.annotation.Nulls.SKIP)
-    private java.util.List<org.test.v1.akkamicroservicespec.Roles> roles = io.fabric8.kubernetes.client.utils.Serialization.unmarshal("[]", java.util.List.class);
+    private java.util.List<org.test.v1.akkamicroservicespec.Roles> roles = io.fabric8.kubernetes.client.utils.Serialization.unmarshal("[]", new com.fasterxml.jackson.core.type.TypeReference<java.util.List<org.test.v1.akkamicroservicespec.Roles>>() {});
 
     public java.util.List<org.test.v1.akkamicroservicespec.Roles> getRoles() {
         return roles;
@@ -482,7 +482,7 @@ public class AkkaMicroserviceSpec implements io.fabric8.kubernetes.api.model.Kub
     @com.fasterxml.jackson.annotation.JsonProperty("secretVolumes")
     @com.fasterxml.jackson.annotation.JsonPropertyDescription("List of Secrets with entries that will be mounted as files in the mountPath directory.")
     @com.fasterxml.jackson.annotation.JsonSetter(nulls = com.fasterxml.jackson.annotation.Nulls.SKIP)
-    private java.util.List<org.test.v1.akkamicroservicespec.SecretVolumes> secretVolumes = io.fabric8.kubernetes.client.utils.Serialization.unmarshal("[]", java.util.List.class);
+    private java.util.List<org.test.v1.akkamicroservicespec.SecretVolumes> secretVolumes = io.fabric8.kubernetes.client.utils.Serialization.unmarshal("[]", new com.fasterxml.jackson.core.type.TypeReference<java.util.List<org.test.v1.akkamicroservicespec.SecretVolumes>>() {});
 
     public java.util.List<org.test.v1.akkamicroservicespec.SecretVolumes> getSecretVolumes() {
         return secretVolumes;

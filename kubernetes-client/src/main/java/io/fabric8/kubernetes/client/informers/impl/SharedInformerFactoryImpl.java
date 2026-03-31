@@ -43,7 +43,7 @@ import java.util.concurrent.Future;
  * which is ported from official go client https://github.com/kubernetes/client-go/blob/master/informers/factory.go
  */
 public class SharedInformerFactoryImpl implements SharedInformerFactory {
-  private static final Logger log = LoggerFactory.getLogger(SharedInformerFactoryImpl.class);
+  private static final Logger logger = LoggerFactory.getLogger(SharedInformerFactoryImpl.class);
 
   private final List<SharedIndexInformer<?>> informers = new ArrayList<>();
 
@@ -115,7 +115,7 @@ public class SharedInformerFactoryImpl implements SharedInformerFactory {
         future.whenComplete((v, t) -> {
           if (t != null) {
             if (this.eventListeners.isEmpty()) {
-              log.warn("Failed to start informer {}", informer, t);
+              logger.warn("Failed to start informer {}", informer, t);
             } else {
               this.eventListeners
                   .forEach(listener -> listener.onException(informer, KubernetesClientException.launderThrowable(t)));

@@ -97,7 +97,7 @@ public class DNSSDConfig implements Editable<DNSSDConfigBuilder>, KubernetesReso
     }
 
     /**
-     * A list of DNS domain names to be queried.
+     * names defines a list of DNS domain names to be queried.
      */
     @JsonProperty("names")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -106,7 +106,7 @@ public class DNSSDConfig implements Editable<DNSSDConfigBuilder>, KubernetesReso
     }
 
     /**
-     * A list of DNS domain names to be queried.
+     * names defines a list of DNS domain names to be queried.
      */
     @JsonProperty("names")
     public void setNames(List<String> names) {
@@ -114,7 +114,7 @@ public class DNSSDConfig implements Editable<DNSSDConfigBuilder>, KubernetesReso
     }
 
     /**
-     * The port number used if the query type is not SRV Ignored for SRV records
+     * port defines the port to scrape metrics from. If using the public IP address, this must Ignored for SRV records
      */
     @JsonProperty("port")
     public Integer getPort() {
@@ -122,7 +122,7 @@ public class DNSSDConfig implements Editable<DNSSDConfigBuilder>, KubernetesReso
     }
 
     /**
-     * The port number used if the query type is not SRV Ignored for SRV records
+     * port defines the port to scrape metrics from. If using the public IP address, this must Ignored for SRV records
      */
     @JsonProperty("port")
     public void setPort(Integer port) {
@@ -130,7 +130,7 @@ public class DNSSDConfig implements Editable<DNSSDConfigBuilder>, KubernetesReso
     }
 
     /**
-     * RefreshInterval configures the time after which the provided names are refreshed. If not set, Prometheus uses its default value.
+     * refreshInterval defines the time after which the provided names are refreshed. If not set, Prometheus uses its default value.
      */
     @JsonProperty("refreshInterval")
     public String getRefreshInterval() {
@@ -138,7 +138,7 @@ public class DNSSDConfig implements Editable<DNSSDConfigBuilder>, KubernetesReso
     }
 
     /**
-     * RefreshInterval configures the time after which the provided names are refreshed. If not set, Prometheus uses its default value.
+     * refreshInterval defines the time after which the provided names are refreshed. If not set, Prometheus uses its default value.
      */
     @JsonProperty("refreshInterval")
     public void setRefreshInterval(String refreshInterval) {
@@ -146,7 +146,7 @@ public class DNSSDConfig implements Editable<DNSSDConfigBuilder>, KubernetesReso
     }
 
     /**
-     * The type of DNS query to perform. One of SRV, A, AAAA, MX or NS. If not set, Prometheus uses its default value.<br><p> <br><p> When set to NS, it requires Prometheus &gt;= v2.49.0. When set to MX, it requires Prometheus &gt;= v2.38.0
+     * type defines the type of DNS query to perform. One of SRV, A, AAAA, MX or NS. If not set, Prometheus uses its default value.<br><p> <br><p> When set to NS, it requires Prometheus &gt;= v2.49.0. When set to MX, it requires Prometheus &gt;= v2.38.0
      */
     @JsonProperty("type")
     public String getType() {
@@ -154,7 +154,7 @@ public class DNSSDConfig implements Editable<DNSSDConfigBuilder>, KubernetesReso
     }
 
     /**
-     * The type of DNS query to perform. One of SRV, A, AAAA, MX or NS. If not set, Prometheus uses its default value.<br><p> <br><p> When set to NS, it requires Prometheus &gt;= v2.49.0. When set to MX, it requires Prometheus &gt;= v2.38.0
+     * type defines the type of DNS query to perform. One of SRV, A, AAAA, MX or NS. If not set, Prometheus uses its default value.<br><p> <br><p> When set to NS, it requires Prometheus &gt;= v2.49.0. When set to MX, it requires Prometheus &gt;= v2.38.0
      */
     @JsonProperty("type")
     public void setType(String type) {

@@ -29,6 +29,7 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.fabric8.kubernetes.model.annotation.Group;
 import io.fabric8.kubernetes.model.annotation.Version;
+import io.fabric8.openshift.api.model.monitoring.v1.ConfigResourceStatus;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
 import io.sundr.transform.annotations.TemplateTransformation;
@@ -46,7 +47,8 @@ import lombok.experimental.Accessors;
     "apiVersion",
     "kind",
     "metadata",
-    "spec"
+    "spec",
+    "status"
 })
 @ToString
 @EqualsAndHashCode
@@ -86,6 +88,8 @@ public class AlertmanagerConfig implements Editable<AlertmanagerConfigBuilder>, 
     private ObjectMeta metadata;
     @JsonProperty("spec")
     private AlertmanagerConfigSpec spec;
+    @JsonProperty("status")
+    private ConfigResourceStatus status;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -95,12 +99,13 @@ public class AlertmanagerConfig implements Editable<AlertmanagerConfigBuilder>, 
     public AlertmanagerConfig() {
     }
 
-    public AlertmanagerConfig(String apiVersion, String kind, ObjectMeta metadata, AlertmanagerConfigSpec spec) {
+    public AlertmanagerConfig(String apiVersion, String kind, ObjectMeta metadata, AlertmanagerConfigSpec spec, ConfigResourceStatus status) {
         super();
         this.apiVersion = apiVersion;
         this.kind = kind;
         this.metadata = metadata;
         this.spec = spec;
+        this.status = status;
     }
 
     /**
@@ -165,6 +170,22 @@ public class AlertmanagerConfig implements Editable<AlertmanagerConfigBuilder>, 
     @JsonProperty("spec")
     public void setSpec(AlertmanagerConfigSpec spec) {
         this.spec = spec;
+    }
+
+    /**
+     * The `AlertmanagerConfig` custom resource definition (CRD) defines how `Alertmanager` objects process Prometheus alerts. It allows to specify alert grouping and routing, notification receivers and inhibition rules.<br><p> <br><p> `Alertmanager` objects select `AlertmanagerConfig` objects using label and namespace selectors.
+     */
+    @JsonProperty("status")
+    public ConfigResourceStatus getStatus() {
+        return status;
+    }
+
+    /**
+     * The `AlertmanagerConfig` custom resource definition (CRD) defines how `Alertmanager` objects process Prometheus alerts. It allows to specify alert grouping and routing, notification receivers and inhibition rules.<br><p> <br><p> `Alertmanager` objects select `AlertmanagerConfig` objects using label and namespace selectors.
+     */
+    @JsonProperty("status")
+    public void setStatus(ConfigResourceStatus status) {
+        this.status = status;
     }
 
     @JsonIgnore

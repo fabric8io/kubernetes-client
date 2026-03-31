@@ -43,7 +43,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class PodOperationUtil {
-  private static final Logger LOG = LoggerFactory.getLogger(PodOperationUtil.class);
+  private static final Logger logger = LoggerFactory.getLogger(PodOperationUtil.class);
 
   private PodOperationUtil() {
   }
@@ -96,7 +96,7 @@ public class PodOperationUtil {
   private static Optional<PodResource> findFirstPodResource(List<PodResource> podResources) {
     if (!podResources.isEmpty()) {
       if (podResources.size() > 1) {
-        LOG.debug("Found {} pods, Using first one to get log", podResources.size());
+        logger.debug("Found {} pods, Using first one to get log", podResources.size());
       }
       return Optional.ofNullable(podResources.get(0));
     }
@@ -129,9 +129,9 @@ public class PodOperationUtil {
           logWaitTimeoutMs,
           TimeUnit.MILLISECONDS);
     } catch (KubernetesClientTimeoutException timeout) {
-      LOG.debug("Timed out waiting for Pod to become Ready: {}, will still proceed", timeout.getMessage());
+      logger.debug("Timed out waiting for Pod to become Ready: {}, will still proceed", timeout.getMessage());
     } catch (Exception otherException) {
-      LOG.warn("Error while waiting for Pod to become Ready", otherException);
+      logger.warn("Error while waiting for Pod to become Ready", otherException);
     }
     return podRef.get();
   }

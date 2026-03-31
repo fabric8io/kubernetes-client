@@ -20,6 +20,7 @@ import io.fabric8.mockwebserver.DefaultMockServer;
 import io.fabric8.mockwebserver.utils.ResponseProviders;
 import org.assertj.core.api.InstanceOfAssertFactories;
 import org.eclipse.jetty.client.HttpClient;
+import org.eclipse.jetty.util.ssl.SslContextFactory;
 import org.eclipse.jetty.websocket.client.WebSocketClient;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -154,6 +155,32 @@ class JettyHttpClientBuilderTest {
       assertThat(server.getLastRequest())
           .isNotNull()
           .hasFieldOrPropertyWithValue("requestLine", "GET /http-1-1 HTTP/1.1");
+    }
+  }
+
+  @Test
+  @DisplayName("tlsServerName, configures SNI provider on SSL context factory")
+  void tlsServerNameConfiguresSniProvider() {
+    try (var client = factory.newBuilder()
+        .sslContext(null, null)
+        .tlsServerName("api.example.cluster.local")
+        .build()) {
+      // Verify the client was built successfully with tlsServerName
+      assertThat(client).isNotNull();
+      SslContextFactory.Client sslContextFactory = client.getJetty().getSslContextFactory();
+      assertThat(sslContextFactory).isNotNull();
+      // The SNI provider is set internally, we can verify the factory is properly configured
+      assertThat(sslContextFactory.getSNIProvider()).isNotNull();
+    }
+  }
+
+  @Test
+  @DisplayName("build without tlsServerName, uses default SNI provider")
+  void buildWithoutTlsServerNameUsesDefaultSniProvider() {
+    try (var client = factory.newBuilder().build()) {
+      assertThat(client).isNotNull();
+      SslContextFactory.Client sslContextFactory = client.getJetty().getSslContextFactory();
+      assertThat(sslContextFactory).isNotNull();
     }
   }
 }

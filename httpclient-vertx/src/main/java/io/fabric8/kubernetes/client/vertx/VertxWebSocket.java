@@ -31,7 +31,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 class VertxWebSocket implements WebSocket {
 
-  private static final Logger LOG = LoggerFactory.getLogger(VertxWebSocket.class);
+  private static final Logger logger = LoggerFactory.getLogger(VertxWebSocket.class);
 
   private final io.vertx.core.http.WebSocket ws;
   private final AtomicInteger pending = new AtomicInteger();
@@ -88,7 +88,7 @@ class VertxWebSocket implements WebSocket {
     }
     res.onComplete(result -> {
       if (result.cause() != null) {
-        LOG.error("Queued write did not succeed", result.cause());
+        logger.error("Queued write did not succeed", result.cause());
       }
       pending.addAndGet(-len);
     });
@@ -104,7 +104,7 @@ class VertxWebSocket implements WebSocket {
     res.onComplete(result -> {
       ws.fetch(1);
       if (result.cause() != null) {
-        LOG.error("Queued close did not succeed", result.cause());
+        logger.error("Queued close did not succeed", result.cause());
       }
     });
     return true;

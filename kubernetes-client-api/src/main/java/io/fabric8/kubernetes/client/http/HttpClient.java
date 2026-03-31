@@ -119,6 +119,8 @@ public interface HttpClient extends AutoCloseable {
 
     Builder tlsVersions(TlsVersion... tlsVersions);
 
+    Builder tlsServerName(String tlsServerName);
+
     Builder preferHttp11();
 
     Builder proxyType(ProxyType type);

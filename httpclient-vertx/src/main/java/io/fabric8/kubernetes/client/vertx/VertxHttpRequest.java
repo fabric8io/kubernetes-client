@@ -25,9 +25,11 @@ import io.vertx.core.Vertx;
 import io.vertx.core.buffer.Buffer;
 import io.vertx.core.http.HttpClient;
 import io.vertx.core.http.HttpClientResponse;
+import io.vertx.core.http.HttpClosedException;
 import io.vertx.core.http.RequestOptions;
 import io.vertx.core.streams.ReadStream;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.util.LinkedHashMap;
@@ -108,7 +110,10 @@ class VertxHttpRequest {
         fut = request.send();
       }
       return fut.map(responseHandler);
-    }).toCompletionStage().toCompletableFuture();
+    }).recover(t -> t instanceof HttpClosedException
+        ? Future.failedFuture(new IOException(t.getMessage(), t))
+        : Future.failedFuture(t))
+        .toCompletionStage().toCompletableFuture();
   }
 
   static Map<String, List<String>> toHeadersMap(MultiMap multiMap) {

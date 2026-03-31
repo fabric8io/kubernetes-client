@@ -23,6 +23,8 @@ import io.fabric8.kubernetes.api.model.storage.StorageClass;
 import io.fabric8.kubernetes.api.model.storage.StorageClassList;
 import io.fabric8.kubernetes.api.model.storage.VolumeAttachment;
 import io.fabric8.kubernetes.api.model.storage.VolumeAttachmentList;
+import io.fabric8.kubernetes.api.model.storage.VolumeAttributesClass;
+import io.fabric8.kubernetes.api.model.storage.VolumeAttributesClassList;
 import io.fabric8.kubernetes.api.model.storage.v1beta1.CSIStorageCapacity;
 import io.fabric8.kubernetes.api.model.storage.v1beta1.CSIStorageCapacityList;
 import io.fabric8.kubernetes.client.Client;
@@ -73,6 +75,15 @@ public interface StorageAPIGroupDSL extends Client {
    */
   @Deprecated
   NonNamespaceOperation<VolumeAttachment, VolumeAttachmentList, Resource<VolumeAttachment>> volumeAttachments();
+
+  /**
+   * DSL entrypoint for storage.k8s.io/v1 VolumeAttributesClass
+   *
+   * @deprecated Use <code>client.storage().v1().volumeAttributesClasses()</code> instead
+   * @return {@link NonNamespaceOperation} for VolumeAttributesClass resource
+   */
+  @Deprecated
+  NonNamespaceOperation<VolumeAttributesClass, VolumeAttributesClassList, Resource<VolumeAttributesClass>> volumeAttributesClasses();
 
   /**
    * DSL entrypoint for resources in storage.k8s.io/v1 apiGroup

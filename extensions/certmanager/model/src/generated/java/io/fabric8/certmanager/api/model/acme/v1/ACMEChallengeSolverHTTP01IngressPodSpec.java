@@ -43,6 +43,7 @@ import lombok.experimental.Accessors;
     "imagePullSecrets",
     "nodeSelector",
     "priorityClassName",
+    "resources",
     "securityContext",
     "serviceAccountName",
     "tolerations"
@@ -82,6 +83,8 @@ public class ACMEChallengeSolverHTTP01IngressPodSpec implements Editable<ACMECha
     private Map<String, String> nodeSelector = new LinkedHashMap<>();
     @JsonProperty("priorityClassName")
     private String priorityClassName;
+    @JsonProperty("resources")
+    private ACMEChallengeSolverHTTP01IngressPodResources resources;
     @JsonProperty("securityContext")
     private ACMEChallengeSolverHTTP01IngressPodSecurityContext securityContext;
     @JsonProperty("serviceAccountName")
@@ -98,12 +101,13 @@ public class ACMEChallengeSolverHTTP01IngressPodSpec implements Editable<ACMECha
     public ACMEChallengeSolverHTTP01IngressPodSpec() {
     }
 
-    public ACMEChallengeSolverHTTP01IngressPodSpec(Affinity affinity, List<LocalObjectReference> imagePullSecrets, Map<String, String> nodeSelector, String priorityClassName, ACMEChallengeSolverHTTP01IngressPodSecurityContext securityContext, String serviceAccountName, List<Toleration> tolerations) {
+    public ACMEChallengeSolverHTTP01IngressPodSpec(Affinity affinity, List<LocalObjectReference> imagePullSecrets, Map<String, String> nodeSelector, String priorityClassName, ACMEChallengeSolverHTTP01IngressPodResources resources, ACMEChallengeSolverHTTP01IngressPodSecurityContext securityContext, String serviceAccountName, List<Toleration> tolerations) {
         super();
         this.affinity = affinity;
         this.imagePullSecrets = imagePullSecrets;
         this.nodeSelector = nodeSelector;
         this.priorityClassName = priorityClassName;
+        this.resources = resources;
         this.securityContext = securityContext;
         this.serviceAccountName = serviceAccountName;
         this.tolerations = tolerations;
@@ -167,6 +171,16 @@ public class ACMEChallengeSolverHTTP01IngressPodSpec implements Editable<ACMECha
     @JsonProperty("priorityClassName")
     public void setPriorityClassName(String priorityClassName) {
         this.priorityClassName = priorityClassName;
+    }
+
+    @JsonProperty("resources")
+    public ACMEChallengeSolverHTTP01IngressPodResources getResources() {
+        return resources;
+    }
+
+    @JsonProperty("resources")
+    public void setResources(ACMEChallengeSolverHTTP01IngressPodResources resources) {
+        this.resources = resources;
     }
 
     @JsonProperty("securityContext")

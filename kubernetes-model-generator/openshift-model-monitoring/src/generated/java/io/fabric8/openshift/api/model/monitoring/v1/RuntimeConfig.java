@@ -81,7 +81,7 @@ public class RuntimeConfig implements Editable<RuntimeConfigBuilder>, Kubernetes
     }
 
     /**
-     * The Go garbage collection target percentage. Lowering this number may increase the CPU usage. See: https://tip.golang.org/doc/gc-guide#GOGC
+     * goGC defines the Go garbage collection target percentage. Lowering this number may increase the CPU usage. See: https://tip.golang.org/doc/gc-guide#GOGC
      */
     @JsonProperty("goGC")
     public Integer getGoGC() {
@@ -89,7 +89,7 @@ public class RuntimeConfig implements Editable<RuntimeConfigBuilder>, Kubernetes
     }
 
     /**
-     * The Go garbage collection target percentage. Lowering this number may increase the CPU usage. See: https://tip.golang.org/doc/gc-guide#GOGC
+     * goGC defines the Go garbage collection target percentage. Lowering this number may increase the CPU usage. See: https://tip.golang.org/doc/gc-guide#GOGC
      */
     @JsonProperty("goGC")
     public void setGoGC(Integer goGC) {

@@ -1,17 +1,126 @@
 ## CHANGELOG
 
-### 7.6-SNAPSHOT
+### 7.7-SNAPSHOT
 
 #### Bugs
+* Fix #7543: fix processInlineDuplicateFields to recursively resolve nested inline embeds
+* Fix #7450: StandardHttpClient.shouldRetry() does not retry on Vert.x HttpClosedException
+* Fix #7350: Improper callback timing in leaderelection leads to the dual-leader
 
 #### Improvements
+* Fix #7522: improve dependency management for kubernetes-httpclient-okhttp
+* Fix #7550: add a ResourceEventHandler onList method and deprecated onNothing
+* Fix #3396: (mockwebserver) Enhance self-signed certificate generation to include Subject Alternative Names (SANs) for proper TLS verification by modern clients
 
 #### Dependency Upgrade
+* Fix #7579: bump istio.io/client-go from 1.28.0 to 1.29.1
+* Fix #7551: bump jackson-bom from 2.20.0 to 2.21.1
+* Fix #7580: bump kustomize/api from 0.20.1 to 0.21.1
+* Fix #7552: bump tektoncd/triggers from 0.33.0 to 0.35.0
+* Fix #7556: bump eventing-kafka-broker from 0.46.2 to 0.48.1
+* Fix #7553: bump cert-manager from 1.19.4 to 1.20.0
+* Fix #7557: bump baremetal-operator/apis from 0.9.2 to 0.12.2
+* Fix #7544: bump cluster-api-provider-metal3 from 1.9.3 to 1.12.2
+* Fix #7543: bump prometheus-operator from 0.85.0 to 0.89.0
+* Fix #7542: bump open-cluster-management.io/api from 0.16.2 to 1.2.0
+* Fix #7541: bump gateway-api from 1.4.0 to 1.5.0
+* Fix #7538: bump cert-manager from 1.18.2 to 1.19.4
+* Fix #7583: bump operator-framework/api from 0.33.0 to 0.41.0
+* Fix #7589: bump prometheus-operator from 0.89.0 to 0.90.0
+* Fix #7578: bump tektoncd/pipeline from 1.9.0 to 1.10.2
+* Fix #7582: bump vertical-pod-autoscaler from 1.4.1 to 1.6.0
 
 #### New Features
 * Fix #5495: Add more support for subresource operations with enhanced documentation and examples for the generic `subresource()` method
 
 #### _**Note**_: Breaking changes
+* Fix #7544: cluster-api model classes moved from package `io.fabric8.kubernetes.api.model.clusterapi.v1beta1` to `io.fabric8.kubernetes.api.model.clusterapi.core.v1beta1` (following upstream cluster-api v1.11+ API reorganization)
+* Fix #7538: cert-manager model `ObjectReference` renamed to `IssuerReference` (following upstream rename in cert-manager v1.19.0)
+* Fix #7541: gateway-api model `v1beta1.ReferenceGrantFrom`, `v1beta1.ReferenceGrantSpec`, and `v1beta1.ReferenceGrantTo` removed (ReferenceGrant graduated to v1 upstream)
+* Fix #7580: kustomize model `Patch.options` field type changed from `Map<String, Boolean>` to `PatchArgs` (following upstream kustomize v0.21.0 PatchArgs API type addition)
+* Fix #7543: monitoring model `v1.AuthorizationValidationError`, `v1.OAuth2ValidationError`, `v1.ProbeTargetsValidationError`, and `v1.PrometheusTracingConfig` removed
+* Fix #7542: open-cluster-management model `operator.v1.WebhookConfiguration` removed (replaced by `DefaultWebhookConfiguration` and `HostedWebhookConfiguration` upstream)
+
+### 7.4.1 (2026-03-10)
+
+#### Dependency Upgrade
+* Fix #7408: bump vertx.version to 4.5.25
+* Fix #7107: bump Jackson version to 2.19.4
+
+### 7.6.1 (2026-03-05)
+
+#### Bugs
+* Fix #7460: Add explicit Automatic-Module-Name to all httpclient modules to fix invalid auto-derived JPMS module names and vertx/vertx-5 collision
+
+### 7.6.0 (2026-03-02)
+
+#### Bugs
+* Fix #5292: Cluster() configuration should use tlsServerName
+* Fix #7174: (httpclient) Fix HTTP client factory priority - VertxHttpClientFactory (default) now has priority -1, OkHttpClientFactory restored to priority 0
+* Fix #7174: (httpclient-vertx-5) Add runtime check for Vert.x 5 classes to provide clear error when Vert.x 4/5 conflict occurs
+* Fix #7174: (chaos-tests) Fix classpath conflict when testing with Vert.x 5 HTTP client
+* Fix #7415: (java-generator) Fix generic type erasure for array of enums with default values
+* Fix #7422: (okhttp) Remove internal API usage and fix deprecated OkHttp 5 calls
+* Fix #7446: making the timeout of BaseOperation.createOrReplace() configurable
+
+#### Improvements
+* Fix #1105: Add javadoc cross-linking for Fabric8 modules and external dependencies
+* Fix #5756: Use Editable interface instead of reflection to instantiate resource builders
+* Fix #7422: bump okhttp from 4.12.0 to 5.3.2
+* Fix #7252: call additionalConfig when building Vert.x HTTP clients with VertxHttpClientFactory
+
+#### Dependency Upgrade
+* Fix #7374: bump snakeyaml-engine from 2.10 to 3.0.1
+
+#### New Features
+* Fix #7385: Support for Kubernetes v1.35 (Timbernetes)
+* Fix #7174: Added Vert.x 5 HTTP client implementation with improved async handling and WebSocket separation
+* Fix #7402: Added Byte code level semver API compatibility report generation using Revapi
+
+#### _**Note**_: Breaking changes
+* Fix #5756: Resources edited with visitors must now implement `io.fabric8.kubernetes.api.builder.Editable`. All model classes provided by the client already implement this interface. User-provided custom resources that use visitor-based editing will need to implement `Editable` (trivial when a builder already exists).
+* Fix #7422: bump okhttp from 4.12.0 to 5.3.2. The versions are binary compatible, but the major version upgrade might cause side effects.
+
+#### _**Note**_: Vert.x HTTP Client Compatibility (Issue #7174)
+
+The `kubernetes-httpclient-vertx` (Vert.x 4.x) and `kubernetes-httpclient-vertx-5` (Vert.x 5.x) modules are **mutually exclusive**.
+They must not be included together in your project dependencies.
+Both modules provide an implementation of `HttpClient.Factory` and use the same `io.vertx` artifact coordinates but with incompatible major versions.
+
+**Problem**: If both modules are present on the classpath, Maven's dependency resolution may pick Vert.x 4.x JARs while the `Vertx5HttpClientFactory` is selected at runtime.
+This causes `NoClassDefFoundError` for Vert.x 5-specific classes like `io.vertx.core.impl.SysProps`.
+
+**Solution**: Ensure your project includes only ONE of these modules:
+- `kubernetes-httpclient-vertx` (default, uses Vert.x 4.x) - included transitively via `kubernetes-client`
+- `kubernetes-httpclient-vertx-5` (optional, uses Vert.x 5.x) - requires explicit dependency and exclusion of vertx-4
+
+When using Vert.x 5, exclude the default Vert.x 4 client and set the `vertx.version` property:
+```xml
+<properties>
+  <vertx.version>${vertx5.version}</vertx.version> <!-- or explicit 5.0.7 -->
+</properties>
+<dependencies>
+  <dependency>
+    <groupId>io.fabric8</groupId>
+    <artifactId>kubernetes-client</artifactId>
+    <exclusions>
+      <exclusion>
+        <groupId>io.fabric8</groupId>
+        <artifactId>kubernetes-httpclient-vertx</artifactId>
+      </exclusion>
+    </exclusions>
+  </dependency>
+  <dependency>
+    <groupId>io.fabric8</groupId>
+    <artifactId>kubernetes-httpclient-vertx-5</artifactId>
+  </dependency>
+</dependencies>
+```
+
+### 7.5.2 (2026-01-22)
+
+#### Dependency Upgrade
+* Fix #7408: bump vertx.version from 4.5.21 to 4.5.24
 
 ### 7.5.1 (2026-01-15)
 

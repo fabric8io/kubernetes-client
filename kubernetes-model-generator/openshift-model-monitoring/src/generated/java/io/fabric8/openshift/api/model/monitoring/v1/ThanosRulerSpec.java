@@ -77,6 +77,7 @@ import lombok.experimental.Accessors;
     "objectStorageConfig",
     "objectStorageConfigFile",
     "paused",
+    "podManagementPolicy",
     "podMetadata",
     "portName",
     "priorityClassName",
@@ -95,6 +96,7 @@ import lombok.experimental.Accessors;
     "ruleOutageTolerance",
     "ruleQueryOffset",
     "ruleSelector",
+    "schedulerName",
     "securityContext",
     "serviceAccountName",
     "serviceName",
@@ -104,6 +106,7 @@ import lombok.experimental.Accessors;
     "topologySpreadConstraints",
     "tracingConfig",
     "tracingConfigFile",
+    "updateStrategy",
     "version",
     "volumeMounts",
     "volumes",
@@ -211,6 +214,8 @@ public class ThanosRulerSpec implements Editable<ThanosRulerSpecBuilder>, Kubern
     private String objectStorageConfigFile;
     @JsonProperty("paused")
     private Boolean paused;
+    @JsonProperty("podManagementPolicy")
+    private String podManagementPolicy;
     @JsonProperty("podMetadata")
     private EmbeddedObjectMetadata podMetadata;
     @JsonProperty("portName")
@@ -250,6 +255,8 @@ public class ThanosRulerSpec implements Editable<ThanosRulerSpecBuilder>, Kubern
     private String ruleQueryOffset;
     @JsonProperty("ruleSelector")
     private LabelSelector ruleSelector;
+    @JsonProperty("schedulerName")
+    private String schedulerName;
     @JsonProperty("securityContext")
     private PodSecurityContext securityContext;
     @JsonProperty("serviceAccountName")
@@ -270,6 +277,8 @@ public class ThanosRulerSpec implements Editable<ThanosRulerSpecBuilder>, Kubern
     private SecretKeySelector tracingConfig;
     @JsonProperty("tracingConfigFile")
     private String tracingConfigFile;
+    @JsonProperty("updateStrategy")
+    private StatefulSetUpdateStrategy updateStrategy;
     @JsonProperty("version")
     private String version;
     @JsonProperty("volumeMounts")
@@ -289,7 +298,7 @@ public class ThanosRulerSpec implements Editable<ThanosRulerSpecBuilder>, Kubern
     public ThanosRulerSpec() {
     }
 
-    public ThanosRulerSpec(List<Argument> additionalArgs, Affinity affinity, List<String> alertDropLabels, String alertQueryUrl, String alertRelabelConfigFile, SecretKeySelector alertRelabelConfigs, SecretKeySelector alertmanagersConfig, List<String> alertmanagersUrl, List<Container> containers, PodDNSConfig dnsConfig, String dnsPolicy, List<String> enableFeatures, Boolean enableServiceLinks, String enforcedNamespaceLabel, String evaluationInterval, List<ObjectReference> excludedFromEnforcement, String externalPrefix, TLSConfig grpcServerTlsConfig, List<HostAlias> hostAliases, Boolean hostUsers, String image, String imagePullPolicy, List<LocalObjectReference> imagePullSecrets, List<Container> initContainers, Map<String, String> labels, Boolean listenLocal, String logFormat, String logLevel, Integer minReadySeconds, Map<String, String> nodeSelector, SecretKeySelector objectStorageConfig, String objectStorageConfigFile, Boolean paused, EmbeddedObjectMetadata podMetadata, String portName, String priorityClassName, List<PrometheusRuleExcludeConfig> prometheusRulesExcludedFromEnforce, SecretKeySelector queryConfig, List<String> queryEndpoints, List<RemoteWriteSpec> remoteWrite, Integer replicas, String resendDelay, ResourceRequirements resources, String retention, String routePrefix, Integer ruleConcurrentEval, String ruleGracePeriod, LabelSelector ruleNamespaceSelector, String ruleOutageTolerance, String ruleQueryOffset, LabelSelector ruleSelector, PodSecurityContext securityContext, String serviceAccountName, String serviceName, StorageSpec storage, Long terminationGracePeriodSeconds, List<Toleration> tolerations, List<TopologySpreadConstraint> topologySpreadConstraints, SecretKeySelector tracingConfig, String tracingConfigFile, String version, List<VolumeMount> volumeMounts, List<Volume> volumes, ThanosRulerWebSpec web) {
+    public ThanosRulerSpec(List<Argument> additionalArgs, Affinity affinity, List<String> alertDropLabels, String alertQueryUrl, String alertRelabelConfigFile, SecretKeySelector alertRelabelConfigs, SecretKeySelector alertmanagersConfig, List<String> alertmanagersUrl, List<Container> containers, PodDNSConfig dnsConfig, String dnsPolicy, List<String> enableFeatures, Boolean enableServiceLinks, String enforcedNamespaceLabel, String evaluationInterval, List<ObjectReference> excludedFromEnforcement, String externalPrefix, TLSConfig grpcServerTlsConfig, List<HostAlias> hostAliases, Boolean hostUsers, String image, String imagePullPolicy, List<LocalObjectReference> imagePullSecrets, List<Container> initContainers, Map<String, String> labels, Boolean listenLocal, String logFormat, String logLevel, Integer minReadySeconds, Map<String, String> nodeSelector, SecretKeySelector objectStorageConfig, String objectStorageConfigFile, Boolean paused, String podManagementPolicy, EmbeddedObjectMetadata podMetadata, String portName, String priorityClassName, List<PrometheusRuleExcludeConfig> prometheusRulesExcludedFromEnforce, SecretKeySelector queryConfig, List<String> queryEndpoints, List<RemoteWriteSpec> remoteWrite, Integer replicas, String resendDelay, ResourceRequirements resources, String retention, String routePrefix, Integer ruleConcurrentEval, String ruleGracePeriod, LabelSelector ruleNamespaceSelector, String ruleOutageTolerance, String ruleQueryOffset, LabelSelector ruleSelector, String schedulerName, PodSecurityContext securityContext, String serviceAccountName, String serviceName, StorageSpec storage, Long terminationGracePeriodSeconds, List<Toleration> tolerations, List<TopologySpreadConstraint> topologySpreadConstraints, SecretKeySelector tracingConfig, String tracingConfigFile, StatefulSetUpdateStrategy updateStrategy, String version, List<VolumeMount> volumeMounts, List<Volume> volumes, ThanosRulerWebSpec web) {
         super();
         this.additionalArgs = additionalArgs;
         this.affinity = affinity;
@@ -324,6 +333,7 @@ public class ThanosRulerSpec implements Editable<ThanosRulerSpecBuilder>, Kubern
         this.objectStorageConfig = objectStorageConfig;
         this.objectStorageConfigFile = objectStorageConfigFile;
         this.paused = paused;
+        this.podManagementPolicy = podManagementPolicy;
         this.podMetadata = podMetadata;
         this.portName = portName;
         this.priorityClassName = priorityClassName;
@@ -342,6 +352,7 @@ public class ThanosRulerSpec implements Editable<ThanosRulerSpecBuilder>, Kubern
         this.ruleOutageTolerance = ruleOutageTolerance;
         this.ruleQueryOffset = ruleQueryOffset;
         this.ruleSelector = ruleSelector;
+        this.schedulerName = schedulerName;
         this.securityContext = securityContext;
         this.serviceAccountName = serviceAccountName;
         this.serviceName = serviceName;
@@ -351,6 +362,7 @@ public class ThanosRulerSpec implements Editable<ThanosRulerSpecBuilder>, Kubern
         this.topologySpreadConstraints = topologySpreadConstraints;
         this.tracingConfig = tracingConfig;
         this.tracingConfigFile = tracingConfigFile;
+        this.updateStrategy = updateStrategy;
         this.version = version;
         this.volumeMounts = volumeMounts;
         this.volumes = volumes;
@@ -358,7 +370,7 @@ public class ThanosRulerSpec implements Editable<ThanosRulerSpecBuilder>, Kubern
     }
 
     /**
-     * AdditionalArgs allows setting additional arguments for the ThanosRuler container. It is intended for e.g. activating hidden flags which are not supported by the dedicated configuration options yet. The arguments are passed as-is to the ThanosRuler container which may cause issues if they are invalid or not supported by the given ThanosRuler version. In case of an argument conflict (e.g. an argument which is already set by the operator itself) or when providing an invalid argument the reconciliation will fail and an error will be logged.
+     * additionalArgs defines how to add additional arguments for the ThanosRuler container. It is intended for e.g. activating hidden flags which are not supported by the dedicated configuration options yet. The arguments are passed as-is to the ThanosRuler container which may cause issues if they are invalid or not supported by the given ThanosRuler version. In case of an argument conflict (e.g. an argument which is already set by the operator itself) or when providing an invalid argument the reconciliation will fail and an error will be logged.
      */
     @JsonProperty("additionalArgs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -367,7 +379,7 @@ public class ThanosRulerSpec implements Editable<ThanosRulerSpecBuilder>, Kubern
     }
 
     /**
-     * AdditionalArgs allows setting additional arguments for the ThanosRuler container. It is intended for e.g. activating hidden flags which are not supported by the dedicated configuration options yet. The arguments are passed as-is to the ThanosRuler container which may cause issues if they are invalid or not supported by the given ThanosRuler version. In case of an argument conflict (e.g. an argument which is already set by the operator itself) or when providing an invalid argument the reconciliation will fail and an error will be logged.
+     * additionalArgs defines how to add additional arguments for the ThanosRuler container. It is intended for e.g. activating hidden flags which are not supported by the dedicated configuration options yet. The arguments are passed as-is to the ThanosRuler container which may cause issues if they are invalid or not supported by the given ThanosRuler version. In case of an argument conflict (e.g. an argument which is already set by the operator itself) or when providing an invalid argument the reconciliation will fail and an error will be logged.
      */
     @JsonProperty("additionalArgs")
     public void setAdditionalArgs(List<Argument> additionalArgs) {
@@ -391,7 +403,7 @@ public class ThanosRulerSpec implements Editable<ThanosRulerSpecBuilder>, Kubern
     }
 
     /**
-     * Configures the label names which should be dropped in Thanos Ruler alerts.<br><p> <br><p> The replica label `thanos_ruler_replica` will always be dropped from the alerts.
+     * alertDropLabels defines the label names which should be dropped in Thanos Ruler alerts.<br><p> <br><p> The replica label `thanos_ruler_replica` will always be dropped from the alerts.
      */
     @JsonProperty("alertDropLabels")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -400,7 +412,7 @@ public class ThanosRulerSpec implements Editable<ThanosRulerSpecBuilder>, Kubern
     }
 
     /**
-     * Configures the label names which should be dropped in Thanos Ruler alerts.<br><p> <br><p> The replica label `thanos_ruler_replica` will always be dropped from the alerts.
+     * alertDropLabels defines the label names which should be dropped in Thanos Ruler alerts.<br><p> <br><p> The replica label `thanos_ruler_replica` will always be dropped from the alerts.
      */
     @JsonProperty("alertDropLabels")
     public void setAlertDropLabels(List<String> alertDropLabels) {
@@ -408,7 +420,7 @@ public class ThanosRulerSpec implements Editable<ThanosRulerSpecBuilder>, Kubern
     }
 
     /**
-     * The external Query URL the Thanos Ruler will set in the 'Source' field of all alerts. Maps to the '--alert.query-url' CLI arg.
+     * alertQueryUrl defines how Thanos Ruler will set in the 'Source' field of all alerts. Maps to the '--alert.query-url' CLI arg.
      */
     @JsonProperty("alertQueryUrl")
     public String getAlertQueryUrl() {
@@ -416,7 +428,7 @@ public class ThanosRulerSpec implements Editable<ThanosRulerSpecBuilder>, Kubern
     }
 
     /**
-     * The external Query URL the Thanos Ruler will set in the 'Source' field of all alerts. Maps to the '--alert.query-url' CLI arg.
+     * alertQueryUrl defines how Thanos Ruler will set in the 'Source' field of all alerts. Maps to the '--alert.query-url' CLI arg.
      */
     @JsonProperty("alertQueryUrl")
     public void setAlertQueryUrl(String alertQueryUrl) {
@@ -424,7 +436,7 @@ public class ThanosRulerSpec implements Editable<ThanosRulerSpecBuilder>, Kubern
     }
 
     /**
-     * Configures the path to the alert relabeling configuration file.<br><p> <br><p> Alert relabel configuration must have the form as specified in the official Prometheus documentation: https://prometheus.io/docs/prometheus/latest/configuration/configuration/#alert_relabel_configs<br><p> <br><p> The operator performs no validation of the configuration file.<br><p> <br><p> This field takes precedence over `alertRelabelConfig`.
+     * alertRelabelConfigFile defines the path to the alert relabeling configuration file.<br><p> <br><p> Alert relabel configuration must have the form as specified in the official Prometheus documentation: https://prometheus.io/docs/prometheus/latest/configuration/configuration/#alert_relabel_configs<br><p> <br><p> The operator performs no validation of the configuration file.<br><p> <br><p> This field takes precedence over `alertRelabelConfig`.
      */
     @JsonProperty("alertRelabelConfigFile")
     public String getAlertRelabelConfigFile() {
@@ -432,7 +444,7 @@ public class ThanosRulerSpec implements Editable<ThanosRulerSpecBuilder>, Kubern
     }
 
     /**
-     * Configures the path to the alert relabeling configuration file.<br><p> <br><p> Alert relabel configuration must have the form as specified in the official Prometheus documentation: https://prometheus.io/docs/prometheus/latest/configuration/configuration/#alert_relabel_configs<br><p> <br><p> The operator performs no validation of the configuration file.<br><p> <br><p> This field takes precedence over `alertRelabelConfig`.
+     * alertRelabelConfigFile defines the path to the alert relabeling configuration file.<br><p> <br><p> Alert relabel configuration must have the form as specified in the official Prometheus documentation: https://prometheus.io/docs/prometheus/latest/configuration/configuration/#alert_relabel_configs<br><p> <br><p> The operator performs no validation of the configuration file.<br><p> <br><p> This field takes precedence over `alertRelabelConfig`.
      */
     @JsonProperty("alertRelabelConfigFile")
     public void setAlertRelabelConfigFile(String alertRelabelConfigFile) {
@@ -472,7 +484,7 @@ public class ThanosRulerSpec implements Editable<ThanosRulerSpecBuilder>, Kubern
     }
 
     /**
-     * Configures the list of Alertmanager endpoints to send alerts to.<br><p> <br><p> For Thanos &gt;= v0.10.0, it is recommended to use `alertmanagersConfig` instead.<br><p> <br><p> `alertmanagersConfig` takes precedence over this field.
+     * alertmanagersUrl defines the list of Alertmanager endpoints to send alerts to.<br><p> <br><p> For Thanos &gt;= v0.10.0, it is recommended to use `alertmanagersConfig` instead.<br><p> <br><p> `alertmanagersConfig` takes precedence over this field.
      */
     @JsonProperty("alertmanagersUrl")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -481,7 +493,7 @@ public class ThanosRulerSpec implements Editable<ThanosRulerSpecBuilder>, Kubern
     }
 
     /**
-     * Configures the list of Alertmanager endpoints to send alerts to.<br><p> <br><p> For Thanos &gt;= v0.10.0, it is recommended to use `alertmanagersConfig` instead.<br><p> <br><p> `alertmanagersConfig` takes precedence over this field.
+     * alertmanagersUrl defines the list of Alertmanager endpoints to send alerts to.<br><p> <br><p> For Thanos &gt;= v0.10.0, it is recommended to use `alertmanagersConfig` instead.<br><p> <br><p> `alertmanagersConfig` takes precedence over this field.
      */
     @JsonProperty("alertmanagersUrl")
     public void setAlertmanagersUrl(List<String> alertmanagersUrl) {
@@ -489,7 +501,7 @@ public class ThanosRulerSpec implements Editable<ThanosRulerSpecBuilder>, Kubern
     }
 
     /**
-     * Containers allows injecting additional containers or modifying operator generated containers. This can be used to allow adding an authentication proxy to a ThanosRuler pod or to change the behavior of an operator generated container. Containers described here modify an operator generated container if they share the same name and modifications are done via a strategic merge patch. The current container names are: `thanos-ruler` and `config-reloader`. Overriding containers is entirely outside the scope of what the maintainers will support and by doing so, you accept that this behaviour may break at any time without notice.
+     * containers allows injecting additional containers or modifying operator generated containers. This can be used to allow adding an authentication proxy to the Pods or to change the behavior of an operator generated container. Containers described here modify an operator generated container if they share the same name and modifications are done via a strategic merge patch.<br><p> <br><p> The names of containers managed by the operator are: &#42; `thanos-ruler` &#42; `config-reloader`<br><p> <br><p> Overriding containers which are managed by the operator require careful testing, especially when upgrading to a new version of the operator.
      */
     @JsonProperty("containers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -498,7 +510,7 @@ public class ThanosRulerSpec implements Editable<ThanosRulerSpecBuilder>, Kubern
     }
 
     /**
-     * Containers allows injecting additional containers or modifying operator generated containers. This can be used to allow adding an authentication proxy to a ThanosRuler pod or to change the behavior of an operator generated container. Containers described here modify an operator generated container if they share the same name and modifications are done via a strategic merge patch. The current container names are: `thanos-ruler` and `config-reloader`. Overriding containers is entirely outside the scope of what the maintainers will support and by doing so, you accept that this behaviour may break at any time without notice.
+     * containers allows injecting additional containers or modifying operator generated containers. This can be used to allow adding an authentication proxy to the Pods or to change the behavior of an operator generated container. Containers described here modify an operator generated container if they share the same name and modifications are done via a strategic merge patch.<br><p> <br><p> The names of containers managed by the operator are: &#42; `thanos-ruler` &#42; `config-reloader`<br><p> <br><p> Overriding containers which are managed by the operator require careful testing, especially when upgrading to a new version of the operator.
      */
     @JsonProperty("containers")
     public void setContainers(List<Container> containers) {
@@ -522,7 +534,7 @@ public class ThanosRulerSpec implements Editable<ThanosRulerSpecBuilder>, Kubern
     }
 
     /**
-     * Defines the DNS policy for the pods.
+     * dnsPolicy defines the DNS policy for the pods.
      */
     @JsonProperty("dnsPolicy")
     public String getDnsPolicy() {
@@ -530,7 +542,7 @@ public class ThanosRulerSpec implements Editable<ThanosRulerSpecBuilder>, Kubern
     }
 
     /**
-     * Defines the DNS policy for the pods.
+     * dnsPolicy defines the DNS policy for the pods.
      */
     @JsonProperty("dnsPolicy")
     public void setDnsPolicy(String dnsPolicy) {
@@ -538,7 +550,7 @@ public class ThanosRulerSpec implements Editable<ThanosRulerSpecBuilder>, Kubern
     }
 
     /**
-     * Enable access to Thanos Ruler feature flags. By default, no features are enabled.<br><p> <br><p> Enabling features which are disabled by default is entirely outside the scope of what the maintainers will support and by doing so, you accept that this behaviour may break at any time without notice.<br><p> <br><p> For more information see https://thanos.io/tip/components/rule.md/<br><p> <br><p> It requires Thanos &gt;= 0.39.0.
+     * enableFeatures defines how to setup Thanos Ruler feature flags. By default, no features are enabled.<br><p> <br><p> Enabling features which are disabled by default is entirely outside the scope of what the maintainers will support and by doing so, you accept that this behaviour may break at any time without notice.<br><p> <br><p> For more information see https://thanos.io/tip/components/rule.md/<br><p> <br><p> It requires Thanos &gt;= 0.39.0.
      */
     @JsonProperty("enableFeatures")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -547,7 +559,7 @@ public class ThanosRulerSpec implements Editable<ThanosRulerSpecBuilder>, Kubern
     }
 
     /**
-     * Enable access to Thanos Ruler feature flags. By default, no features are enabled.<br><p> <br><p> Enabling features which are disabled by default is entirely outside the scope of what the maintainers will support and by doing so, you accept that this behaviour may break at any time without notice.<br><p> <br><p> For more information see https://thanos.io/tip/components/rule.md/<br><p> <br><p> It requires Thanos &gt;= 0.39.0.
+     * enableFeatures defines how to setup Thanos Ruler feature flags. By default, no features are enabled.<br><p> <br><p> Enabling features which are disabled by default is entirely outside the scope of what the maintainers will support and by doing so, you accept that this behaviour may break at any time without notice.<br><p> <br><p> For more information see https://thanos.io/tip/components/rule.md/<br><p> <br><p> It requires Thanos &gt;= 0.39.0.
      */
     @JsonProperty("enableFeatures")
     public void setEnableFeatures(List<String> enableFeatures) {
@@ -555,7 +567,7 @@ public class ThanosRulerSpec implements Editable<ThanosRulerSpecBuilder>, Kubern
     }
 
     /**
-     * Indicates whether information about services should be injected into pod's environment variables
+     * enableServiceLinks defines whether information about services should be injected into pod's environment variables
      */
     @JsonProperty("enableServiceLinks")
     public Boolean getEnableServiceLinks() {
@@ -563,7 +575,7 @@ public class ThanosRulerSpec implements Editable<ThanosRulerSpecBuilder>, Kubern
     }
 
     /**
-     * Indicates whether information about services should be injected into pod's environment variables
+     * enableServiceLinks defines whether information about services should be injected into pod's environment variables
      */
     @JsonProperty("enableServiceLinks")
     public void setEnableServiceLinks(Boolean enableServiceLinks) {
@@ -571,7 +583,7 @@ public class ThanosRulerSpec implements Editable<ThanosRulerSpecBuilder>, Kubern
     }
 
     /**
-     * EnforcedNamespaceLabel enforces adding a namespace label of origin for each alert and metric that is user created. The label value will always be the namespace of the object that is being created.
+     * enforcedNamespaceLabel enforces adding a namespace label of origin for each alert and metric that is user created. The label value will always be the namespace of the object that is being created.
      */
     @JsonProperty("enforcedNamespaceLabel")
     public String getEnforcedNamespaceLabel() {
@@ -579,7 +591,7 @@ public class ThanosRulerSpec implements Editable<ThanosRulerSpecBuilder>, Kubern
     }
 
     /**
-     * EnforcedNamespaceLabel enforces adding a namespace label of origin for each alert and metric that is user created. The label value will always be the namespace of the object that is being created.
+     * enforcedNamespaceLabel enforces adding a namespace label of origin for each alert and metric that is user created. The label value will always be the namespace of the object that is being created.
      */
     @JsonProperty("enforcedNamespaceLabel")
     public void setEnforcedNamespaceLabel(String enforcedNamespaceLabel) {
@@ -587,7 +599,7 @@ public class ThanosRulerSpec implements Editable<ThanosRulerSpecBuilder>, Kubern
     }
 
     /**
-     * Interval between consecutive evaluations.
+     * evaluationInterval defines the interval between consecutive evaluations.
      */
     @JsonProperty("evaluationInterval")
     public String getEvaluationInterval() {
@@ -595,7 +607,7 @@ public class ThanosRulerSpec implements Editable<ThanosRulerSpecBuilder>, Kubern
     }
 
     /**
-     * Interval between consecutive evaluations.
+     * evaluationInterval defines the interval between consecutive evaluations.
      */
     @JsonProperty("evaluationInterval")
     public void setEvaluationInterval(String evaluationInterval) {
@@ -603,7 +615,7 @@ public class ThanosRulerSpec implements Editable<ThanosRulerSpecBuilder>, Kubern
     }
 
     /**
-     * List of references to PrometheusRule objects to be excluded from enforcing a namespace label of origin. Applies only if enforcedNamespaceLabel set to true.
+     * excludedFromEnforcement defines the list of references to PrometheusRule objects to be excluded from enforcing a namespace label of origin. Applies only if enforcedNamespaceLabel set to true.
      */
     @JsonProperty("excludedFromEnforcement")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -612,7 +624,7 @@ public class ThanosRulerSpec implements Editable<ThanosRulerSpecBuilder>, Kubern
     }
 
     /**
-     * List of references to PrometheusRule objects to be excluded from enforcing a namespace label of origin. Applies only if enforcedNamespaceLabel set to true.
+     * excludedFromEnforcement defines the list of references to PrometheusRule objects to be excluded from enforcing a namespace label of origin. Applies only if enforcedNamespaceLabel set to true.
      */
     @JsonProperty("excludedFromEnforcement")
     public void setExcludedFromEnforcement(List<ObjectReference> excludedFromEnforcement) {
@@ -620,7 +632,7 @@ public class ThanosRulerSpec implements Editable<ThanosRulerSpecBuilder>, Kubern
     }
 
     /**
-     * The external URL the Thanos Ruler instances will be available under. This is necessary to generate correct URLs. This is necessary if Thanos Ruler is not served from root of a DNS name.
+     * externalPrefix defines the Thanos Ruler instances will be available under. This is necessary to generate correct URLs. This is necessary if Thanos Ruler is not served from root of a DNS name.
      */
     @JsonProperty("externalPrefix")
     public String getExternalPrefix() {
@@ -628,7 +640,7 @@ public class ThanosRulerSpec implements Editable<ThanosRulerSpecBuilder>, Kubern
     }
 
     /**
-     * The external URL the Thanos Ruler instances will be available under. This is necessary to generate correct URLs. This is necessary if Thanos Ruler is not served from root of a DNS name.
+     * externalPrefix defines the Thanos Ruler instances will be available under. This is necessary to generate correct URLs. This is necessary if Thanos Ruler is not served from root of a DNS name.
      */
     @JsonProperty("externalPrefix")
     public void setExternalPrefix(String externalPrefix) {
@@ -652,7 +664,7 @@ public class ThanosRulerSpec implements Editable<ThanosRulerSpecBuilder>, Kubern
     }
 
     /**
-     * Pods' hostAliases configuration
+     * hostAliases defines pods' hostAliases configuration
      */
     @JsonProperty("hostAliases")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -661,7 +673,7 @@ public class ThanosRulerSpec implements Editable<ThanosRulerSpecBuilder>, Kubern
     }
 
     /**
-     * Pods' hostAliases configuration
+     * hostAliases defines pods' hostAliases configuration
      */
     @JsonProperty("hostAliases")
     public void setHostAliases(List<HostAlias> hostAliases) {
@@ -669,7 +681,7 @@ public class ThanosRulerSpec implements Editable<ThanosRulerSpecBuilder>, Kubern
     }
 
     /**
-     * HostUsers supports the user space in Kubernetes.<br><p> <br><p> More info: https://kubernetes.io/docs/tasks/configure-pod-container/user-namespaces/<br><p> <br><p> The feature requires at least Kubernetes 1.28 with the `UserNamespacesSupport` feature gate enabled. Starting Kubernetes 1.33, the feature is enabled by default.
+     * hostUsers supports the user space in Kubernetes.<br><p> <br><p> More info: https://kubernetes.io/docs/tasks/configure-pod-container/user-namespaces/<br><p> <br><p> The feature requires at least Kubernetes 1.28 with the `UserNamespacesSupport` feature gate enabled. Starting Kubernetes 1.33, the feature is enabled by default.
      */
     @JsonProperty("hostUsers")
     public Boolean getHostUsers() {
@@ -677,7 +689,7 @@ public class ThanosRulerSpec implements Editable<ThanosRulerSpecBuilder>, Kubern
     }
 
     /**
-     * HostUsers supports the user space in Kubernetes.<br><p> <br><p> More info: https://kubernetes.io/docs/tasks/configure-pod-container/user-namespaces/<br><p> <br><p> The feature requires at least Kubernetes 1.28 with the `UserNamespacesSupport` feature gate enabled. Starting Kubernetes 1.33, the feature is enabled by default.
+     * hostUsers supports the user space in Kubernetes.<br><p> <br><p> More info: https://kubernetes.io/docs/tasks/configure-pod-container/user-namespaces/<br><p> <br><p> The feature requires at least Kubernetes 1.28 with the `UserNamespacesSupport` feature gate enabled. Starting Kubernetes 1.33, the feature is enabled by default.
      */
     @JsonProperty("hostUsers")
     public void setHostUsers(Boolean hostUsers) {
@@ -685,7 +697,7 @@ public class ThanosRulerSpec implements Editable<ThanosRulerSpecBuilder>, Kubern
     }
 
     /**
-     * Thanos container image URL.
+     * image defines Thanos container image URL.
      */
     @JsonProperty("image")
     public String getImage() {
@@ -693,7 +705,7 @@ public class ThanosRulerSpec implements Editable<ThanosRulerSpecBuilder>, Kubern
     }
 
     /**
-     * Thanos container image URL.
+     * image defines Thanos container image URL.
      */
     @JsonProperty("image")
     public void setImage(String image) {
@@ -701,7 +713,7 @@ public class ThanosRulerSpec implements Editable<ThanosRulerSpecBuilder>, Kubern
     }
 
     /**
-     * Image pull policy for the 'thanos', 'init-config-reloader' and 'config-reloader' containers. See https://kubernetes.io/docs/concepts/containers/images/#image-pull-policy for more details.<br><p> <br><p> Possible enum values:<br><p>  - `"Always"` means that kubelet always attempts to pull the latest image. Container will fail If the pull fails.<br><p>  - `"IfNotPresent"` means that kubelet pulls if the image isn't present on disk. Container will fail if the image isn't present and the pull fails.<br><p>  - `"Never"` means that kubelet never pulls an image, but only uses a local image. Container will fail if the image isn't present
+     * imagePullPolicy defines for the 'thanos', 'init-config-reloader' and 'config-reloader' containers. See https://kubernetes.io/docs/concepts/containers/images/#image-pull-policy for more details.<br><p> <br><p> Possible enum values:<br><p>  - `"Always"` means that kubelet always attempts to pull the latest image. Container will fail If the pull fails.<br><p>  - `"IfNotPresent"` means that kubelet pulls if the image isn't present on disk. Container will fail if the image isn't present and the pull fails.<br><p>  - `"Never"` means that kubelet never pulls an image, but only uses a local image. Container will fail if the image isn't present
      */
     @JsonProperty("imagePullPolicy")
     public String getImagePullPolicy() {
@@ -709,7 +721,7 @@ public class ThanosRulerSpec implements Editable<ThanosRulerSpecBuilder>, Kubern
     }
 
     /**
-     * Image pull policy for the 'thanos', 'init-config-reloader' and 'config-reloader' containers. See https://kubernetes.io/docs/concepts/containers/images/#image-pull-policy for more details.<br><p> <br><p> Possible enum values:<br><p>  - `"Always"` means that kubelet always attempts to pull the latest image. Container will fail If the pull fails.<br><p>  - `"IfNotPresent"` means that kubelet pulls if the image isn't present on disk. Container will fail if the image isn't present and the pull fails.<br><p>  - `"Never"` means that kubelet never pulls an image, but only uses a local image. Container will fail if the image isn't present
+     * imagePullPolicy defines for the 'thanos', 'init-config-reloader' and 'config-reloader' containers. See https://kubernetes.io/docs/concepts/containers/images/#image-pull-policy for more details.<br><p> <br><p> Possible enum values:<br><p>  - `"Always"` means that kubelet always attempts to pull the latest image. Container will fail If the pull fails.<br><p>  - `"IfNotPresent"` means that kubelet pulls if the image isn't present on disk. Container will fail if the image isn't present and the pull fails.<br><p>  - `"Never"` means that kubelet never pulls an image, but only uses a local image. Container will fail if the image isn't present
      */
     @JsonProperty("imagePullPolicy")
     public void setImagePullPolicy(String imagePullPolicy) {
@@ -717,7 +729,7 @@ public class ThanosRulerSpec implements Editable<ThanosRulerSpecBuilder>, Kubern
     }
 
     /**
-     * An optional list of references to secrets in the same namespace to use for pulling thanos images from registries see http://kubernetes.io/docs/user-guide/images#specifying-imagepullsecrets-on-a-pod
+     * imagePullSecrets defines an optional list of references to secrets in the same namespace to use for pulling thanos images from registries see http://kubernetes.io/docs/user-guide/images#specifying-imagepullsecrets-on-a-pod
      */
     @JsonProperty("imagePullSecrets")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -726,7 +738,7 @@ public class ThanosRulerSpec implements Editable<ThanosRulerSpecBuilder>, Kubern
     }
 
     /**
-     * An optional list of references to secrets in the same namespace to use for pulling thanos images from registries see http://kubernetes.io/docs/user-guide/images#specifying-imagepullsecrets-on-a-pod
+     * imagePullSecrets defines an optional list of references to secrets in the same namespace to use for pulling thanos images from registries see http://kubernetes.io/docs/user-guide/images#specifying-imagepullsecrets-on-a-pod
      */
     @JsonProperty("imagePullSecrets")
     public void setImagePullSecrets(List<LocalObjectReference> imagePullSecrets) {
@@ -734,7 +746,7 @@ public class ThanosRulerSpec implements Editable<ThanosRulerSpecBuilder>, Kubern
     }
 
     /**
-     * InitContainers allows adding initContainers to the pod definition. Those can be used to e.g. fetch secrets for injection into the ThanosRuler configuration from external sources. Any errors during the execution of an initContainer will lead to a restart of the Pod. More info: https://kubernetes.io/docs/concepts/workloads/pods/init-containers/ Using initContainers for any use case other then secret fetching is entirely outside the scope of what the maintainers will support and by doing so, you accept that this behaviour may break at any time without notice.
+     * initContainers allows injecting initContainers to the Pod definition. Those can be used to e.g. fetch secrets for injection into the configuration from external sources. Any errors during the execution of an initContainer will lead to a restart of the Pod. More info: https://kubernetes.io/docs/concepts/workloads/pods/init-containers/
      */
     @JsonProperty("initContainers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -743,7 +755,7 @@ public class ThanosRulerSpec implements Editable<ThanosRulerSpecBuilder>, Kubern
     }
 
     /**
-     * InitContainers allows adding initContainers to the pod definition. Those can be used to e.g. fetch secrets for injection into the ThanosRuler configuration from external sources. Any errors during the execution of an initContainer will lead to a restart of the Pod. More info: https://kubernetes.io/docs/concepts/workloads/pods/init-containers/ Using initContainers for any use case other then secret fetching is entirely outside the scope of what the maintainers will support and by doing so, you accept that this behaviour may break at any time without notice.
+     * initContainers allows injecting initContainers to the Pod definition. Those can be used to e.g. fetch secrets for injection into the configuration from external sources. Any errors during the execution of an initContainer will lead to a restart of the Pod. More info: https://kubernetes.io/docs/concepts/workloads/pods/init-containers/
      */
     @JsonProperty("initContainers")
     public void setInitContainers(List<Container> initContainers) {
@@ -751,7 +763,7 @@ public class ThanosRulerSpec implements Editable<ThanosRulerSpecBuilder>, Kubern
     }
 
     /**
-     * Configures the external label pairs of the ThanosRuler resource.<br><p> <br><p> A default replica label `thanos_ruler_replica` will be always added as a label with the value of the pod's name.
+     * labels defines the external label pairs of the ThanosRuler resource.<br><p> <br><p> A default replica label `thanos_ruler_replica` will be always added as a label with the value of the pod's name.
      */
     @JsonProperty("labels")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -760,7 +772,7 @@ public class ThanosRulerSpec implements Editable<ThanosRulerSpecBuilder>, Kubern
     }
 
     /**
-     * Configures the external label pairs of the ThanosRuler resource.<br><p> <br><p> A default replica label `thanos_ruler_replica` will be always added as a label with the value of the pod's name.
+     * labels defines the external label pairs of the ThanosRuler resource.<br><p> <br><p> A default replica label `thanos_ruler_replica` will be always added as a label with the value of the pod's name.
      */
     @JsonProperty("labels")
     public void setLabels(Map<String, String> labels) {
@@ -768,7 +780,7 @@ public class ThanosRulerSpec implements Editable<ThanosRulerSpecBuilder>, Kubern
     }
 
     /**
-     * ListenLocal makes the Thanos ruler listen on loopback, so that it does not bind against the Pod IP.
+     * listenLocal defines the Thanos ruler listen on loopback, so that it does not bind against the Pod IP.
      */
     @JsonProperty("listenLocal")
     public Boolean getListenLocal() {
@@ -776,7 +788,7 @@ public class ThanosRulerSpec implements Editable<ThanosRulerSpecBuilder>, Kubern
     }
 
     /**
-     * ListenLocal makes the Thanos ruler listen on loopback, so that it does not bind against the Pod IP.
+     * listenLocal defines the Thanos ruler listen on loopback, so that it does not bind against the Pod IP.
      */
     @JsonProperty("listenLocal")
     public void setListenLocal(Boolean listenLocal) {
@@ -784,7 +796,7 @@ public class ThanosRulerSpec implements Editable<ThanosRulerSpecBuilder>, Kubern
     }
 
     /**
-     * Log format for ThanosRuler to be configured with.
+     * logFormat for ThanosRuler to be configured with.
      */
     @JsonProperty("logFormat")
     public String getLogFormat() {
@@ -792,7 +804,7 @@ public class ThanosRulerSpec implements Editable<ThanosRulerSpecBuilder>, Kubern
     }
 
     /**
-     * Log format for ThanosRuler to be configured with.
+     * logFormat for ThanosRuler to be configured with.
      */
     @JsonProperty("logFormat")
     public void setLogFormat(String logFormat) {
@@ -800,7 +812,7 @@ public class ThanosRulerSpec implements Editable<ThanosRulerSpecBuilder>, Kubern
     }
 
     /**
-     * Log level for ThanosRuler to be configured with.
+     * logLevel for ThanosRuler to be configured with.
      */
     @JsonProperty("logLevel")
     public String getLogLevel() {
@@ -808,7 +820,7 @@ public class ThanosRulerSpec implements Editable<ThanosRulerSpecBuilder>, Kubern
     }
 
     /**
-     * Log level for ThanosRuler to be configured with.
+     * logLevel for ThanosRuler to be configured with.
      */
     @JsonProperty("logLevel")
     public void setLogLevel(String logLevel) {
@@ -816,7 +828,7 @@ public class ThanosRulerSpec implements Editable<ThanosRulerSpecBuilder>, Kubern
     }
 
     /**
-     * Minimum number of seconds for which a newly created pod should be ready without any of its container crashing for it to be considered available.<br><p> <br><p> If unset, pods will be considered available as soon as they are ready.
+     * minReadySeconds defines the minimum number of seconds for which a newly created pod should be ready without any of its container crashing for it to be considered available.<br><p> <br><p> If unset, pods will be considered available as soon as they are ready.
      */
     @JsonProperty("minReadySeconds")
     public Integer getMinReadySeconds() {
@@ -824,7 +836,7 @@ public class ThanosRulerSpec implements Editable<ThanosRulerSpecBuilder>, Kubern
     }
 
     /**
-     * Minimum number of seconds for which a newly created pod should be ready without any of its container crashing for it to be considered available.<br><p> <br><p> If unset, pods will be considered available as soon as they are ready.
+     * minReadySeconds defines the minimum number of seconds for which a newly created pod should be ready without any of its container crashing for it to be considered available.<br><p> <br><p> If unset, pods will be considered available as soon as they are ready.
      */
     @JsonProperty("minReadySeconds")
     public void setMinReadySeconds(Integer minReadySeconds) {
@@ -832,7 +844,7 @@ public class ThanosRulerSpec implements Editable<ThanosRulerSpecBuilder>, Kubern
     }
 
     /**
-     * Define which Nodes the Pods are scheduled on.
+     * nodeSelector defines which Nodes the Pods are scheduled on.
      */
     @JsonProperty("nodeSelector")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -841,7 +853,7 @@ public class ThanosRulerSpec implements Editable<ThanosRulerSpecBuilder>, Kubern
     }
 
     /**
-     * Define which Nodes the Pods are scheduled on.
+     * nodeSelector defines which Nodes the Pods are scheduled on.
      */
     @JsonProperty("nodeSelector")
     public void setNodeSelector(Map<String, String> nodeSelector) {
@@ -865,7 +877,7 @@ public class ThanosRulerSpec implements Editable<ThanosRulerSpecBuilder>, Kubern
     }
 
     /**
-     * Configures the path of the object storage configuration file.<br><p> <br><p> The configuration format is defined at https://thanos.io/tip/thanos/storage.md/#configuring-access-to-object-storage<br><p> <br><p> The operator performs no validation of the configuration file.<br><p> <br><p> This field takes precedence over `objectStorageConfig`.
+     * objectStorageConfigFile defines the path of the object storage configuration file.<br><p> <br><p> The configuration format is defined at https://thanos.io/tip/thanos/storage.md/#configuring-access-to-object-storage<br><p> <br><p> The operator performs no validation of the configuration file.<br><p> <br><p> This field takes precedence over `objectStorageConfig`.
      */
     @JsonProperty("objectStorageConfigFile")
     public String getObjectStorageConfigFile() {
@@ -873,7 +885,7 @@ public class ThanosRulerSpec implements Editable<ThanosRulerSpecBuilder>, Kubern
     }
 
     /**
-     * Configures the path of the object storage configuration file.<br><p> <br><p> The configuration format is defined at https://thanos.io/tip/thanos/storage.md/#configuring-access-to-object-storage<br><p> <br><p> The operator performs no validation of the configuration file.<br><p> <br><p> This field takes precedence over `objectStorageConfig`.
+     * objectStorageConfigFile defines the path of the object storage configuration file.<br><p> <br><p> The configuration format is defined at https://thanos.io/tip/thanos/storage.md/#configuring-access-to-object-storage<br><p> <br><p> The operator performs no validation of the configuration file.<br><p> <br><p> This field takes precedence over `objectStorageConfig`.
      */
     @JsonProperty("objectStorageConfigFile")
     public void setObjectStorageConfigFile(String objectStorageConfigFile) {
@@ -881,7 +893,7 @@ public class ThanosRulerSpec implements Editable<ThanosRulerSpecBuilder>, Kubern
     }
 
     /**
-     * When a ThanosRuler deployment is paused, no actions except for deletion will be performed on the underlying objects.
+     * paused defines when a ThanosRuler deployment is paused, no actions except for deletion will be performed on the underlying objects.
      */
     @JsonProperty("paused")
     public Boolean getPaused() {
@@ -889,11 +901,27 @@ public class ThanosRulerSpec implements Editable<ThanosRulerSpecBuilder>, Kubern
     }
 
     /**
-     * When a ThanosRuler deployment is paused, no actions except for deletion will be performed on the underlying objects.
+     * paused defines when a ThanosRuler deployment is paused, no actions except for deletion will be performed on the underlying objects.
      */
     @JsonProperty("paused")
     public void setPaused(Boolean paused) {
         this.paused = paused;
+    }
+
+    /**
+     * podManagementPolicy defines the policy for creating/deleting pods when scaling up and down.<br><p> <br><p> Unlike the default StatefulSet behavior, the default policy is `Parallel` to avoid manual intervention in case a pod gets stuck during a rollout.<br><p> <br><p> Note that updating this value implies the recreation of the StatefulSet which incurs a service outage.
+     */
+    @JsonProperty("podManagementPolicy")
+    public String getPodManagementPolicy() {
+        return podManagementPolicy;
+    }
+
+    /**
+     * podManagementPolicy defines the policy for creating/deleting pods when scaling up and down.<br><p> <br><p> Unlike the default StatefulSet behavior, the default policy is `Parallel` to avoid manual intervention in case a pod gets stuck during a rollout.<br><p> <br><p> Note that updating this value implies the recreation of the StatefulSet which incurs a service outage.
+     */
+    @JsonProperty("podManagementPolicy")
+    public void setPodManagementPolicy(String podManagementPolicy) {
+        this.podManagementPolicy = podManagementPolicy;
     }
 
     /**
@@ -913,7 +941,7 @@ public class ThanosRulerSpec implements Editable<ThanosRulerSpecBuilder>, Kubern
     }
 
     /**
-     * Port name used for the pods and governing service. Defaults to `web`.
+     * portName defines the port name used for the pods and governing service. Defaults to `web`.
      */
     @JsonProperty("portName")
     public String getPortName() {
@@ -921,7 +949,7 @@ public class ThanosRulerSpec implements Editable<ThanosRulerSpecBuilder>, Kubern
     }
 
     /**
-     * Port name used for the pods and governing service. Defaults to `web`.
+     * portName defines the port name used for the pods and governing service. Defaults to `web`.
      */
     @JsonProperty("portName")
     public void setPortName(String portName) {
@@ -929,7 +957,7 @@ public class ThanosRulerSpec implements Editable<ThanosRulerSpecBuilder>, Kubern
     }
 
     /**
-     * Priority class assigned to the Pods
+     * priorityClassName defines the priority class assigned to the Pods
      */
     @JsonProperty("priorityClassName")
     public String getPriorityClassName() {
@@ -937,7 +965,7 @@ public class ThanosRulerSpec implements Editable<ThanosRulerSpecBuilder>, Kubern
     }
 
     /**
-     * Priority class assigned to the Pods
+     * priorityClassName defines the priority class assigned to the Pods
      */
     @JsonProperty("priorityClassName")
     public void setPriorityClassName(String priorityClassName) {
@@ -945,7 +973,7 @@ public class ThanosRulerSpec implements Editable<ThanosRulerSpecBuilder>, Kubern
     }
 
     /**
-     * PrometheusRulesExcludedFromEnforce - list of Prometheus rules to be excluded from enforcing of adding namespace labels. Works only if enforcedNamespaceLabel set to true. Make sure both ruleNamespace and ruleName are set for each pair Deprecated: use excludedFromEnforcement instead.
+     * prometheusRulesExcludedFromEnforce defines a list of Prometheus rules to be excluded from enforcing of adding namespace labels. Works only if enforcedNamespaceLabel set to true. Make sure both ruleNamespace and ruleName are set for each pair Deprecated: use excludedFromEnforcement instead.
      */
     @JsonProperty("prometheusRulesExcludedFromEnforce")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -954,7 +982,7 @@ public class ThanosRulerSpec implements Editable<ThanosRulerSpecBuilder>, Kubern
     }
 
     /**
-     * PrometheusRulesExcludedFromEnforce - list of Prometheus rules to be excluded from enforcing of adding namespace labels. Works only if enforcedNamespaceLabel set to true. Make sure both ruleNamespace and ruleName are set for each pair Deprecated: use excludedFromEnforcement instead.
+     * prometheusRulesExcludedFromEnforce defines a list of Prometheus rules to be excluded from enforcing of adding namespace labels. Works only if enforcedNamespaceLabel set to true. Make sure both ruleNamespace and ruleName are set for each pair Deprecated: use excludedFromEnforcement instead.
      */
     @JsonProperty("prometheusRulesExcludedFromEnforce")
     public void setPrometheusRulesExcludedFromEnforce(List<PrometheusRuleExcludeConfig> prometheusRulesExcludedFromEnforce) {
@@ -978,7 +1006,7 @@ public class ThanosRulerSpec implements Editable<ThanosRulerSpecBuilder>, Kubern
     }
 
     /**
-     * Configures the list of Thanos Query endpoints from which to query metrics.<br><p> <br><p> For Thanos &gt;= v0.11.0, it is recommended to use `queryConfig` instead.<br><p> <br><p> `queryConfig` takes precedence over this field.
+     * queryEndpoints defines the list of Thanos Query endpoints from which to query metrics.<br><p> <br><p> For Thanos &gt;= v0.11.0, it is recommended to use `queryConfig` instead.<br><p> <br><p> `queryConfig` takes precedence over this field.
      */
     @JsonProperty("queryEndpoints")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -987,7 +1015,7 @@ public class ThanosRulerSpec implements Editable<ThanosRulerSpecBuilder>, Kubern
     }
 
     /**
-     * Configures the list of Thanos Query endpoints from which to query metrics.<br><p> <br><p> For Thanos &gt;= v0.11.0, it is recommended to use `queryConfig` instead.<br><p> <br><p> `queryConfig` takes precedence over this field.
+     * queryEndpoints defines the list of Thanos Query endpoints from which to query metrics.<br><p> <br><p> For Thanos &gt;= v0.11.0, it is recommended to use `queryConfig` instead.<br><p> <br><p> `queryConfig` takes precedence over this field.
      */
     @JsonProperty("queryEndpoints")
     public void setQueryEndpoints(List<String> queryEndpoints) {
@@ -995,7 +1023,7 @@ public class ThanosRulerSpec implements Editable<ThanosRulerSpecBuilder>, Kubern
     }
 
     /**
-     * Defines the list of remote write configurations.<br><p> <br><p> When the list isn't empty, the ruler is configured with stateless mode.<br><p> <br><p> It requires Thanos &gt;= 0.24.0.
+     * remoteWrite defines the list of remote write configurations.<br><p> <br><p> When the list isn't empty, the ruler is configured with stateless mode.<br><p> <br><p> It requires Thanos &gt;= 0.24.0.
      */
     @JsonProperty("remoteWrite")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -1004,7 +1032,7 @@ public class ThanosRulerSpec implements Editable<ThanosRulerSpecBuilder>, Kubern
     }
 
     /**
-     * Defines the list of remote write configurations.<br><p> <br><p> When the list isn't empty, the ruler is configured with stateless mode.<br><p> <br><p> It requires Thanos &gt;= 0.24.0.
+     * remoteWrite defines the list of remote write configurations.<br><p> <br><p> When the list isn't empty, the ruler is configured with stateless mode.<br><p> <br><p> It requires Thanos &gt;= 0.24.0.
      */
     @JsonProperty("remoteWrite")
     public void setRemoteWrite(List<RemoteWriteSpec> remoteWrite) {
@@ -1012,7 +1040,7 @@ public class ThanosRulerSpec implements Editable<ThanosRulerSpecBuilder>, Kubern
     }
 
     /**
-     * Number of thanos ruler instances to deploy.
+     * replicas defines the number of thanos ruler instances to deploy.
      */
     @JsonProperty("replicas")
     public Integer getReplicas() {
@@ -1020,7 +1048,7 @@ public class ThanosRulerSpec implements Editable<ThanosRulerSpecBuilder>, Kubern
     }
 
     /**
-     * Number of thanos ruler instances to deploy.
+     * replicas defines the number of thanos ruler instances to deploy.
      */
     @JsonProperty("replicas")
     public void setReplicas(Integer replicas) {
@@ -1028,7 +1056,7 @@ public class ThanosRulerSpec implements Editable<ThanosRulerSpecBuilder>, Kubern
     }
 
     /**
-     * Minimum amount of time to wait before resending an alert to Alertmanager.
+     * resendDelay defines the minimum amount of time to wait before resending an alert to Alertmanager.
      */
     @JsonProperty("resendDelay")
     public String getResendDelay() {
@@ -1036,7 +1064,7 @@ public class ThanosRulerSpec implements Editable<ThanosRulerSpecBuilder>, Kubern
     }
 
     /**
-     * Minimum amount of time to wait before resending an alert to Alertmanager.
+     * resendDelay defines the minimum amount of time to wait before resending an alert to Alertmanager.
      */
     @JsonProperty("resendDelay")
     public void setResendDelay(String resendDelay) {
@@ -1060,7 +1088,7 @@ public class ThanosRulerSpec implements Editable<ThanosRulerSpecBuilder>, Kubern
     }
 
     /**
-     * Time duration ThanosRuler shall retain data for. Default is '24h', and must match the regular expression `[0-9]+(ms|s|m|h|d|w|y)` (milliseconds seconds minutes hours days weeks years).<br><p> <br><p> The field has no effect when remote-write is configured since the Ruler operates in stateless mode.
+     * retention defines the time duration ThanosRuler shall retain data for. Default is '24h', and must match the regular expression `[0-9]+(ms|s|m|h|d|w|y)` (milliseconds seconds minutes hours days weeks years).<br><p> <br><p> The field has no effect when remote-write is configured since the Ruler operates in stateless mode.
      */
     @JsonProperty("retention")
     public String getRetention() {
@@ -1068,7 +1096,7 @@ public class ThanosRulerSpec implements Editable<ThanosRulerSpecBuilder>, Kubern
     }
 
     /**
-     * Time duration ThanosRuler shall retain data for. Default is '24h', and must match the regular expression `[0-9]+(ms|s|m|h|d|w|y)` (milliseconds seconds minutes hours days weeks years).<br><p> <br><p> The field has no effect when remote-write is configured since the Ruler operates in stateless mode.
+     * retention defines the time duration ThanosRuler shall retain data for. Default is '24h', and must match the regular expression `[0-9]+(ms|s|m|h|d|w|y)` (milliseconds seconds minutes hours days weeks years).<br><p> <br><p> The field has no effect when remote-write is configured since the Ruler operates in stateless mode.
      */
     @JsonProperty("retention")
     public void setRetention(String retention) {
@@ -1076,7 +1104,7 @@ public class ThanosRulerSpec implements Editable<ThanosRulerSpecBuilder>, Kubern
     }
 
     /**
-     * The route prefix ThanosRuler registers HTTP handlers for. This allows thanos UI to be served on a sub-path.
+     * routePrefix defines the route prefix ThanosRuler registers HTTP handlers for. This allows thanos UI to be served on a sub-path.
      */
     @JsonProperty("routePrefix")
     public String getRoutePrefix() {
@@ -1084,7 +1112,7 @@ public class ThanosRulerSpec implements Editable<ThanosRulerSpecBuilder>, Kubern
     }
 
     /**
-     * The route prefix ThanosRuler registers HTTP handlers for. This allows thanos UI to be served on a sub-path.
+     * routePrefix defines the route prefix ThanosRuler registers HTTP handlers for. This allows thanos UI to be served on a sub-path.
      */
     @JsonProperty("routePrefix")
     public void setRoutePrefix(String routePrefix) {
@@ -1092,7 +1120,7 @@ public class ThanosRulerSpec implements Editable<ThanosRulerSpecBuilder>, Kubern
     }
 
     /**
-     * How many rules can be evaluated concurrently. It requires Thanos &gt;= v0.37.0.
+     * ruleConcurrentEval defines how many rules can be evaluated concurrently. It requires Thanos &gt;= v0.37.0.
      */
     @JsonProperty("ruleConcurrentEval")
     public Integer getRuleConcurrentEval() {
@@ -1100,7 +1128,7 @@ public class ThanosRulerSpec implements Editable<ThanosRulerSpecBuilder>, Kubern
     }
 
     /**
-     * How many rules can be evaluated concurrently. It requires Thanos &gt;= v0.37.0.
+     * ruleConcurrentEval defines how many rules can be evaluated concurrently. It requires Thanos &gt;= v0.37.0.
      */
     @JsonProperty("ruleConcurrentEval")
     public void setRuleConcurrentEval(Integer ruleConcurrentEval) {
@@ -1108,7 +1136,7 @@ public class ThanosRulerSpec implements Editable<ThanosRulerSpecBuilder>, Kubern
     }
 
     /**
-     * Minimum duration between alert and restored "for" state. This is maintained only for alerts with configured "for" time greater than grace period. It requires Thanos &gt;= v0.30.0.
+     * ruleGracePeriod defines the minimum duration between alert and restored "for" state. This is maintained only for alerts with configured "for" time greater than grace period. It requires Thanos &gt;= v0.30.0.
      */
     @JsonProperty("ruleGracePeriod")
     public String getRuleGracePeriod() {
@@ -1116,7 +1144,7 @@ public class ThanosRulerSpec implements Editable<ThanosRulerSpecBuilder>, Kubern
     }
 
     /**
-     * Minimum duration between alert and restored "for" state. This is maintained only for alerts with configured "for" time greater than grace period. It requires Thanos &gt;= v0.30.0.
+     * ruleGracePeriod defines the minimum duration between alert and restored "for" state. This is maintained only for alerts with configured "for" time greater than grace period. It requires Thanos &gt;= v0.30.0.
      */
     @JsonProperty("ruleGracePeriod")
     public void setRuleGracePeriod(String ruleGracePeriod) {
@@ -1140,7 +1168,7 @@ public class ThanosRulerSpec implements Editable<ThanosRulerSpecBuilder>, Kubern
     }
 
     /**
-     * Max time to tolerate prometheus outage for restoring "for" state of alert. It requires Thanos &gt;= v0.30.0.
+     * ruleOutageTolerance defines the max time to tolerate prometheus outage for restoring "for" state of alert. It requires Thanos &gt;= v0.30.0.
      */
     @JsonProperty("ruleOutageTolerance")
     public String getRuleOutageTolerance() {
@@ -1148,7 +1176,7 @@ public class ThanosRulerSpec implements Editable<ThanosRulerSpecBuilder>, Kubern
     }
 
     /**
-     * Max time to tolerate prometheus outage for restoring "for" state of alert. It requires Thanos &gt;= v0.30.0.
+     * ruleOutageTolerance defines the max time to tolerate prometheus outage for restoring "for" state of alert. It requires Thanos &gt;= v0.30.0.
      */
     @JsonProperty("ruleOutageTolerance")
     public void setRuleOutageTolerance(String ruleOutageTolerance) {
@@ -1156,7 +1184,7 @@ public class ThanosRulerSpec implements Editable<ThanosRulerSpecBuilder>, Kubern
     }
 
     /**
-     * The default rule group's query offset duration to use. It requires Thanos &gt;= v0.38.0.
+     * ruleQueryOffset defines the default rule group's query offset duration to use. It requires Thanos &gt;= v0.38.0.
      */
     @JsonProperty("ruleQueryOffset")
     public String getRuleQueryOffset() {
@@ -1164,7 +1192,7 @@ public class ThanosRulerSpec implements Editable<ThanosRulerSpecBuilder>, Kubern
     }
 
     /**
-     * The default rule group's query offset duration to use. It requires Thanos &gt;= v0.38.0.
+     * ruleQueryOffset defines the default rule group's query offset duration to use. It requires Thanos &gt;= v0.38.0.
      */
     @JsonProperty("ruleQueryOffset")
     public void setRuleQueryOffset(String ruleQueryOffset) {
@@ -1188,6 +1216,22 @@ public class ThanosRulerSpec implements Editable<ThanosRulerSpecBuilder>, Kubern
     }
 
     /**
+     * schedulerName defines the scheduler to use for Pod scheduling. If not specified, the default scheduler is used.
+     */
+    @JsonProperty("schedulerName")
+    public String getSchedulerName() {
+        return schedulerName;
+    }
+
+    /**
+     * schedulerName defines the scheduler to use for Pod scheduling. If not specified, the default scheduler is used.
+     */
+    @JsonProperty("schedulerName")
+    public void setSchedulerName(String schedulerName) {
+        this.schedulerName = schedulerName;
+    }
+
+    /**
      * ThanosRulerSpec is a specification of the desired behavior of the ThanosRuler. More info: https://github.com/kubernetes/community/blob/master/contributors/devel/sig-architecture/api-conventions.md#spec-and-status
      */
     @JsonProperty("securityContext")
@@ -1204,7 +1248,7 @@ public class ThanosRulerSpec implements Editable<ThanosRulerSpecBuilder>, Kubern
     }
 
     /**
-     * ServiceAccountName is the name of the ServiceAccount to use to run the Thanos Ruler Pods.
+     * serviceAccountName defines the name of the ServiceAccount to use to run the Thanos Ruler Pods.
      */
     @JsonProperty("serviceAccountName")
     public String getServiceAccountName() {
@@ -1212,7 +1256,7 @@ public class ThanosRulerSpec implements Editable<ThanosRulerSpecBuilder>, Kubern
     }
 
     /**
-     * ServiceAccountName is the name of the ServiceAccount to use to run the Thanos Ruler Pods.
+     * serviceAccountName defines the name of the ServiceAccount to use to run the Thanos Ruler Pods.
      */
     @JsonProperty("serviceAccountName")
     public void setServiceAccountName(String serviceAccountName) {
@@ -1220,7 +1264,7 @@ public class ThanosRulerSpec implements Editable<ThanosRulerSpecBuilder>, Kubern
     }
 
     /**
-     * The name of the service name used by the underlying StatefulSet(s) as the governing service. If defined, the Service  must be created before the ThanosRuler resource in the same namespace and it must define a selector that matches the pod labels. If empty, the operator will create and manage a headless service named `thanos-ruler-operated` for ThanosRuler resources. When deploying multiple ThanosRuler resources in the same namespace, it is recommended to specify a different value for each. See https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/#stable-network-id for more details.
+     * serviceName defines the name of the service name used by the underlying StatefulSet(s) as the governing service. If defined, the Service  must be created before the ThanosRuler resource in the same namespace and it must define a selector that matches the pod labels. If empty, the operator will create and manage a headless service named `thanos-ruler-operated` for ThanosRuler resources. When deploying multiple ThanosRuler resources in the same namespace, it is recommended to specify a different value for each. See https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/#stable-network-id for more details.
      */
     @JsonProperty("serviceName")
     public String getServiceName() {
@@ -1228,7 +1272,7 @@ public class ThanosRulerSpec implements Editable<ThanosRulerSpecBuilder>, Kubern
     }
 
     /**
-     * The name of the service name used by the underlying StatefulSet(s) as the governing service. If defined, the Service  must be created before the ThanosRuler resource in the same namespace and it must define a selector that matches the pod labels. If empty, the operator will create and manage a headless service named `thanos-ruler-operated` for ThanosRuler resources. When deploying multiple ThanosRuler resources in the same namespace, it is recommended to specify a different value for each. See https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/#stable-network-id for more details.
+     * serviceName defines the name of the service name used by the underlying StatefulSet(s) as the governing service. If defined, the Service  must be created before the ThanosRuler resource in the same namespace and it must define a selector that matches the pod labels. If empty, the operator will create and manage a headless service named `thanos-ruler-operated` for ThanosRuler resources. When deploying multiple ThanosRuler resources in the same namespace, it is recommended to specify a different value for each. See https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/#stable-network-id for more details.
      */
     @JsonProperty("serviceName")
     public void setServiceName(String serviceName) {
@@ -1252,7 +1296,7 @@ public class ThanosRulerSpec implements Editable<ThanosRulerSpecBuilder>, Kubern
     }
 
     /**
-     * Optional duration in seconds the pod needs to terminate gracefully. Value must be non-negative integer. The value zero indicates stop immediately via the kill signal (no opportunity to shut down) which may lead to data corruption.<br><p> <br><p> Defaults to 120 seconds.
+     * terminationGracePeriodSeconds defines the optional duration in seconds the pod needs to terminate gracefully. Value must be non-negative integer. The value zero indicates stop immediately via the kill signal (no opportunity to shut down) which may lead to data corruption.<br><p> <br><p> Defaults to 120 seconds.
      */
     @JsonProperty("terminationGracePeriodSeconds")
     public Long getTerminationGracePeriodSeconds() {
@@ -1260,7 +1304,7 @@ public class ThanosRulerSpec implements Editable<ThanosRulerSpecBuilder>, Kubern
     }
 
     /**
-     * Optional duration in seconds the pod needs to terminate gracefully. Value must be non-negative integer. The value zero indicates stop immediately via the kill signal (no opportunity to shut down) which may lead to data corruption.<br><p> <br><p> Defaults to 120 seconds.
+     * terminationGracePeriodSeconds defines the optional duration in seconds the pod needs to terminate gracefully. Value must be non-negative integer. The value zero indicates stop immediately via the kill signal (no opportunity to shut down) which may lead to data corruption.<br><p> <br><p> Defaults to 120 seconds.
      */
     @JsonProperty("terminationGracePeriodSeconds")
     public void setTerminationGracePeriodSeconds(Long terminationGracePeriodSeconds) {
@@ -1268,7 +1312,7 @@ public class ThanosRulerSpec implements Editable<ThanosRulerSpecBuilder>, Kubern
     }
 
     /**
-     * If specified, the pod's tolerations.
+     * tolerations defines when specified, the pod's tolerations.
      */
     @JsonProperty("tolerations")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -1277,7 +1321,7 @@ public class ThanosRulerSpec implements Editable<ThanosRulerSpecBuilder>, Kubern
     }
 
     /**
-     * If specified, the pod's tolerations.
+     * tolerations defines when specified, the pod's tolerations.
      */
     @JsonProperty("tolerations")
     public void setTolerations(List<Toleration> tolerations) {
@@ -1285,7 +1329,7 @@ public class ThanosRulerSpec implements Editable<ThanosRulerSpecBuilder>, Kubern
     }
 
     /**
-     * If specified, the pod's topology spread constraints.
+     * topologySpreadConstraints defines the pod's topology spread constraints.
      */
     @JsonProperty("topologySpreadConstraints")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -1294,7 +1338,7 @@ public class ThanosRulerSpec implements Editable<ThanosRulerSpecBuilder>, Kubern
     }
 
     /**
-     * If specified, the pod's topology spread constraints.
+     * topologySpreadConstraints defines the pod's topology spread constraints.
      */
     @JsonProperty("topologySpreadConstraints")
     public void setTopologySpreadConstraints(List<TopologySpreadConstraint> topologySpreadConstraints) {
@@ -1318,7 +1362,7 @@ public class ThanosRulerSpec implements Editable<ThanosRulerSpecBuilder>, Kubern
     }
 
     /**
-     * Configures the path of the tracing configuration file.<br><p> <br><p> The configuration format is defined at https://thanos.io/tip/thanos/tracing.md/#configuration<br><p> <br><p> This is an &#42;experimental feature&#42;, it may change in any upcoming release in a breaking way.<br><p> <br><p> The operator performs no validation of the configuration file.<br><p> <br><p> This field takes precedence over `tracingConfig`.
+     * tracingConfigFile defines the path of the tracing configuration file.<br><p> <br><p> The configuration format is defined at https://thanos.io/tip/thanos/tracing.md/#configuration<br><p> <br><p> This is an &#42;experimental feature&#42;, it may change in any upcoming release in a breaking way.<br><p> <br><p> The operator performs no validation of the configuration file.<br><p> <br><p> This field takes precedence over `tracingConfig`.
      */
     @JsonProperty("tracingConfigFile")
     public String getTracingConfigFile() {
@@ -1326,7 +1370,7 @@ public class ThanosRulerSpec implements Editable<ThanosRulerSpecBuilder>, Kubern
     }
 
     /**
-     * Configures the path of the tracing configuration file.<br><p> <br><p> The configuration format is defined at https://thanos.io/tip/thanos/tracing.md/#configuration<br><p> <br><p> This is an &#42;experimental feature&#42;, it may change in any upcoming release in a breaking way.<br><p> <br><p> The operator performs no validation of the configuration file.<br><p> <br><p> This field takes precedence over `tracingConfig`.
+     * tracingConfigFile defines the path of the tracing configuration file.<br><p> <br><p> The configuration format is defined at https://thanos.io/tip/thanos/tracing.md/#configuration<br><p> <br><p> This is an &#42;experimental feature&#42;, it may change in any upcoming release in a breaking way.<br><p> <br><p> The operator performs no validation of the configuration file.<br><p> <br><p> This field takes precedence over `tracingConfig`.
      */
     @JsonProperty("tracingConfigFile")
     public void setTracingConfigFile(String tracingConfigFile) {
@@ -1334,7 +1378,23 @@ public class ThanosRulerSpec implements Editable<ThanosRulerSpecBuilder>, Kubern
     }
 
     /**
-     * Version of Thanos to be deployed.
+     * ThanosRulerSpec is a specification of the desired behavior of the ThanosRuler. More info: https://github.com/kubernetes/community/blob/master/contributors/devel/sig-architecture/api-conventions.md#spec-and-status
+     */
+    @JsonProperty("updateStrategy")
+    public StatefulSetUpdateStrategy getUpdateStrategy() {
+        return updateStrategy;
+    }
+
+    /**
+     * ThanosRulerSpec is a specification of the desired behavior of the ThanosRuler. More info: https://github.com/kubernetes/community/blob/master/contributors/devel/sig-architecture/api-conventions.md#spec-and-status
+     */
+    @JsonProperty("updateStrategy")
+    public void setUpdateStrategy(StatefulSetUpdateStrategy updateStrategy) {
+        this.updateStrategy = updateStrategy;
+    }
+
+    /**
+     * version of Thanos to be deployed.
      */
     @JsonProperty("version")
     public String getVersion() {
@@ -1342,7 +1402,7 @@ public class ThanosRulerSpec implements Editable<ThanosRulerSpecBuilder>, Kubern
     }
 
     /**
-     * Version of Thanos to be deployed.
+     * version of Thanos to be deployed.
      */
     @JsonProperty("version")
     public void setVersion(String version) {
@@ -1350,7 +1410,7 @@ public class ThanosRulerSpec implements Editable<ThanosRulerSpecBuilder>, Kubern
     }
 
     /**
-     * VolumeMounts allows configuration of additional VolumeMounts on the output StatefulSet definition. VolumeMounts specified will be appended to other VolumeMounts in the ruler container, that are generated as a result of StorageSpec objects.
+     * volumeMounts defines how the configuration of additional VolumeMounts on the output StatefulSet definition. VolumeMounts specified will be appended to other VolumeMounts in the ruler container, that are generated as a result of StorageSpec objects.
      */
     @JsonProperty("volumeMounts")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -1359,7 +1419,7 @@ public class ThanosRulerSpec implements Editable<ThanosRulerSpecBuilder>, Kubern
     }
 
     /**
-     * VolumeMounts allows configuration of additional VolumeMounts on the output StatefulSet definition. VolumeMounts specified will be appended to other VolumeMounts in the ruler container, that are generated as a result of StorageSpec objects.
+     * volumeMounts defines how the configuration of additional VolumeMounts on the output StatefulSet definition. VolumeMounts specified will be appended to other VolumeMounts in the ruler container, that are generated as a result of StorageSpec objects.
      */
     @JsonProperty("volumeMounts")
     public void setVolumeMounts(List<VolumeMount> volumeMounts) {
@@ -1367,7 +1427,7 @@ public class ThanosRulerSpec implements Editable<ThanosRulerSpecBuilder>, Kubern
     }
 
     /**
-     * Volumes allows configuration of additional volumes on the output StatefulSet definition. Volumes specified will be appended to other volumes that are generated as a result of StorageSpec objects.
+     * volumes defines how configuration of additional volumes on the output StatefulSet definition. Volumes specified will be appended to other volumes that are generated as a result of StorageSpec objects.
      */
     @JsonProperty("volumes")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -1376,7 +1436,7 @@ public class ThanosRulerSpec implements Editable<ThanosRulerSpecBuilder>, Kubern
     }
 
     /**
-     * Volumes allows configuration of additional volumes on the output StatefulSet definition. Volumes specified will be appended to other volumes that are generated as a result of StorageSpec objects.
+     * volumes defines how configuration of additional volumes on the output StatefulSet definition. Volumes specified will be appended to other volumes that are generated as a result of StorageSpec objects.
      */
     @JsonProperty("volumes")
     public void setVolumes(List<Volume> volumes) {

@@ -57,7 +57,7 @@ import java.util.function.Supplier;
 
 public class KubernetesCrudDispatcher extends CrudDispatcher implements KubernetesCrudPersistence, CustomResourceAware {
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(KubernetesCrudDispatcher.class);
+  private static final Logger logger = LoggerFactory.getLogger(KubernetesCrudDispatcher.class);
   private final Set<WatchEventsListener> watchEventListeners;
   private final CustomResourceDefinitionProcessor crdProcessor;
   private final KubernetesAttributesExtractor kubernetesAttributesExtractor;
@@ -147,7 +147,7 @@ public class KubernetesCrudDispatcher extends CrudDispatcher implements Kubernet
     new ArrayList<>(map.entrySet()).stream()
         .filter(entry -> entry.getKey().matches(query))
         .forEach(entry -> {
-          LOGGER.debug("Entry found for query {} : {}", query, entry);
+          logger.debug("Entry found for query {} : {}", query, entry);
           items.add(entry.getValue());
           if (eventProcessor != null) {
             eventProcessor.processEvent(path, query, entry.getKey());
@@ -290,7 +290,7 @@ public class KubernetesCrudDispatcher extends CrudDispatcher implements Kubernet
     if (resourceName != null) {
       query = query.add(new Attribute("name", resourceName));
     }
-    WatchEventsListener watchEventListener = new WatchEventsListener(context, query, watchEventListeners, LOGGER,
+    WatchEventsListener watchEventListener = new WatchEventsListener(context, query, watchEventListeners, logger,
         watch -> withLock(lock.readLock(), () -> map.entrySet().stream()
             .filter(entry -> watch.attributeMatches(entry.getKey()))
             .forEach(entry -> watch.sendWebSocketResponse(entry.getValue(), Action.ADDED))));
@@ -303,7 +303,7 @@ public class KubernetesCrudDispatcher extends CrudDispatcher implements Kubernet
     try {
       queryString = new URI(path).getQuery();
     } catch (URISyntaxException e) {
-      LOGGER.debug("incorrect URI string: [{}]", path);
+      logger.debug("incorrect URI string: [{}]", path);
       return false;
     }
     if (queryString != null && !queryString.isEmpty()) {
@@ -317,7 +317,7 @@ public class KubernetesCrudDispatcher extends CrudDispatcher implements Kubernet
     try {
       queryString = new URI(path).getQuery();
     } catch (URISyntaxException e) {
-      LOGGER.debug("Incorrect URI string: [{}]", path);
+      logger.debug("Incorrect URI string: [{}]", path);
       return null;
     }
 

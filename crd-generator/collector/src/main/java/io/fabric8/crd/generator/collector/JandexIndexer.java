@@ -43,7 +43,7 @@ import java.util.stream.Stream;
  */
 class JandexIndexer {
 
-  private static final Logger log = LoggerFactory.getLogger(JandexIndexer.class);
+  private static final Logger logger = LoggerFactory.getLogger(JandexIndexer.class);
 
   private static final String CLASS_FILE_SUFFIX = ".class";
   private static final String JAR_FILE_SUFFIX = ".jar";
@@ -177,7 +177,7 @@ class JandexIndexer {
     try (BoundedInputStream boundedInputStream = new BoundedInputStream(inputStream, maxClassFileSize);
         BufferedInputStream bufferedInputStream = new BufferedInputStream(boundedInputStream)) {
       ClassSummary info = indexer.indexWithSummary(bufferedInputStream);
-      log.debug("Indexed: {} ({} Annotations)", info.name(), info.annotationsCount());
+      logger.debug("Indexed: {} ({} Annotations)", info.name(), info.annotationsCount());
       return boundedInputStream.getBytesRead();
     }
   }

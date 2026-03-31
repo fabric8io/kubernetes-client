@@ -98,7 +98,7 @@ public class WebexConfig implements Editable<WebexConfigBuilder>, KubernetesReso
     }
 
     /**
-     * The Webex Teams API URL i.e. https://webexapis.com/v1/messages Provide if different from the default API URL.
+     * apiURL defines the Webex Teams API URL i.e. https://webexapis.com/v1/messages
      */
     @JsonProperty("apiURL")
     public String getApiURL() {
@@ -106,7 +106,7 @@ public class WebexConfig implements Editable<WebexConfigBuilder>, KubernetesReso
     }
 
     /**
-     * The Webex Teams API URL i.e. https://webexapis.com/v1/messages Provide if different from the default API URL.
+     * apiURL defines the Webex Teams API URL i.e. https://webexapis.com/v1/messages
      */
     @JsonProperty("apiURL")
     public void setApiURL(String apiURL) {
@@ -130,7 +130,7 @@ public class WebexConfig implements Editable<WebexConfigBuilder>, KubernetesReso
     }
 
     /**
-     * Message template
+     * message defines the message template
      */
     @JsonProperty("message")
     public String getMessage() {
@@ -138,7 +138,7 @@ public class WebexConfig implements Editable<WebexConfigBuilder>, KubernetesReso
     }
 
     /**
-     * Message template
+     * message defines the message template
      */
     @JsonProperty("message")
     public void setMessage(String message) {
@@ -146,7 +146,7 @@ public class WebexConfig implements Editable<WebexConfigBuilder>, KubernetesReso
     }
 
     /**
-     * ID of the Webex Teams room where to send the messages.
+     * roomID defines the ID of the Webex Teams room where to send the messages.
      */
     @JsonProperty("roomID")
     public String getRoomID() {
@@ -154,7 +154,7 @@ public class WebexConfig implements Editable<WebexConfigBuilder>, KubernetesReso
     }
 
     /**
-     * ID of the Webex Teams room where to send the messages.
+     * roomID defines the ID of the Webex Teams room where to send the messages.
      */
     @JsonProperty("roomID")
     public void setRoomID(String roomID) {
@@ -162,7 +162,7 @@ public class WebexConfig implements Editable<WebexConfigBuilder>, KubernetesReso
     }
 
     /**
-     * Whether to notify about resolved alerts.
+     * sendResolved defines whether or not to notify about resolved alerts.
      */
     @JsonProperty("sendResolved")
     public Boolean getSendResolved() {
@@ -170,7 +170,7 @@ public class WebexConfig implements Editable<WebexConfigBuilder>, KubernetesReso
     }
 
     /**
-     * Whether to notify about resolved alerts.
+     * sendResolved defines whether or not to notify about resolved alerts.
      */
     @JsonProperty("sendResolved")
     public void setSendResolved(Boolean sendResolved) {

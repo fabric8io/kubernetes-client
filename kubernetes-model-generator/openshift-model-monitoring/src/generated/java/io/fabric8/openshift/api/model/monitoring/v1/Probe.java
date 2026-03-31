@@ -45,7 +45,8 @@ import lombok.experimental.Accessors;
     "apiVersion",
     "kind",
     "metadata",
-    "spec"
+    "spec",
+    "status"
 })
 @ToString
 @EqualsAndHashCode
@@ -85,6 +86,8 @@ public class Probe implements Editable<ProbeBuilder>, HasMetadata, Namespaced
     private ObjectMeta metadata;
     @JsonProperty("spec")
     private ProbeSpec spec;
+    @JsonProperty("status")
+    private ConfigResourceStatus status;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -94,12 +97,13 @@ public class Probe implements Editable<ProbeBuilder>, HasMetadata, Namespaced
     public Probe() {
     }
 
-    public Probe(String apiVersion, String kind, ObjectMeta metadata, ProbeSpec spec) {
+    public Probe(String apiVersion, String kind, ObjectMeta metadata, ProbeSpec spec, ConfigResourceStatus status) {
         super();
         this.apiVersion = apiVersion;
         this.kind = kind;
         this.metadata = metadata;
         this.spec = spec;
+        this.status = status;
     }
 
     /**
@@ -164,6 +168,22 @@ public class Probe implements Editable<ProbeBuilder>, HasMetadata, Namespaced
     @JsonProperty("spec")
     public void setSpec(ProbeSpec spec) {
         this.spec = spec;
+    }
+
+    /**
+     * The `Probe` custom resource definition (CRD) defines how to scrape metrics from prober exporters such as the [blackbox exporter](https://github.com/prometheus/blackbox_exporter).<br><p> <br><p> The `Probe` resource needs 2 pieces of information: &#42; The list of probed addresses which can be defined statically or by discovering Kubernetes Ingress objects. &#42; The prober which exposes the availability of probed endpoints (over various protocols such HTTP, TCP, ICMP, ...) as Prometheus metrics.<br><p> <br><p> `Prometheus` and `PrometheusAgent` objects select `Probe` objects using label and namespace selectors.
+     */
+    @JsonProperty("status")
+    public ConfigResourceStatus getStatus() {
+        return status;
+    }
+
+    /**
+     * The `Probe` custom resource definition (CRD) defines how to scrape metrics from prober exporters such as the [blackbox exporter](https://github.com/prometheus/blackbox_exporter).<br><p> <br><p> The `Probe` resource needs 2 pieces of information: &#42; The list of probed addresses which can be defined statically or by discovering Kubernetes Ingress objects. &#42; The prober which exposes the availability of probed endpoints (over various protocols such HTTP, TCP, ICMP, ...) as Prometheus metrics.<br><p> <br><p> `Prometheus` and `PrometheusAgent` objects select `Probe` objects using label and namespace selectors.
+     */
+    @JsonProperty("status")
+    public void setStatus(ConfigResourceStatus status) {
+        this.status = status;
     }
 
     @JsonIgnore

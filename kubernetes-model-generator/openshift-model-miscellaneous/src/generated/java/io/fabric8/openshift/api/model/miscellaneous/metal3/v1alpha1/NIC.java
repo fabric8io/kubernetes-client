@@ -41,6 +41,7 @@ import lombok.experimental.Accessors;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "ip",
+    "lldp",
     "mac",
     "model",
     "name",
@@ -76,6 +77,8 @@ public class NIC implements Editable<NICBuilder>, KubernetesResource
 
     @JsonProperty("ip")
     private String ip;
+    @JsonProperty("lldp")
+    private LLDP lldp;
     @JsonProperty("mac")
     private String mac;
     @JsonProperty("model")
@@ -100,9 +103,10 @@ public class NIC implements Editable<NICBuilder>, KubernetesResource
     public NIC() {
     }
 
-    public NIC(String ip, String mac, String model, String name, Boolean pxe, Integer speedGbps, Integer vlanId, List<VLAN> vlans) {
+    public NIC(String ip, LLDP lldp, String mac, String model, String name, Boolean pxe, Integer speedGbps, Integer vlanId, List<VLAN> vlans) {
         super();
         this.ip = ip;
+        this.lldp = lldp;
         this.mac = mac;
         this.model = model;
         this.name = name;
@@ -126,6 +130,22 @@ public class NIC implements Editable<NICBuilder>, KubernetesResource
     @JsonProperty("ip")
     public void setIp(String ip) {
         this.ip = ip;
+    }
+
+    /**
+     * NIC describes one network interface on the host.
+     */
+    @JsonProperty("lldp")
+    public LLDP getLldp() {
+        return lldp;
+    }
+
+    /**
+     * NIC describes one network interface on the host.
+     */
+    @JsonProperty("lldp")
+    public void setLldp(LLDP lldp) {
+        this.lldp = lldp;
     }
 
     /**

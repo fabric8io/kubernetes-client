@@ -77,7 +77,7 @@ import static io.sundr.model.utils.Types.VOID;
  */
 public abstract class AbstractJsonSchema<T, B> {
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(AbstractJsonSchema.class);
+  private static final Logger logger = LoggerFactory.getLogger(AbstractJsonSchema.class);
 
   protected static final TypeDef OBJECT = TypeDef.forName(Object.class.getName());
   protected static final TypeDef QUANTITY = TypeDef.forName(Quantity.class.getName());
@@ -341,7 +341,7 @@ public abstract class AbstractJsonSchema<T, B> {
       }
       String name = property.getName();
       if (property.isStatic() || ignores.contains(name)) {
-        LOGGER.debug("Ignoring property {}", name);
+        logger.debug("Ignoring property {}", name);
         continue;
       }
 
@@ -622,7 +622,7 @@ public abstract class AbstractJsonSchema<T, B> {
             renamedTo = p.getRenamedTo();
             this.nameContributedBy = contributorName;
           } else {
-            LOGGER.debug("Property {} has already been renamed to {} by {}", name, renamedTo, nameContributedBy);
+            logger.debug("Property {} has already been renamed to {} by {}", name, renamedTo, nameContributedBy);
           }
         }
 
@@ -631,7 +631,7 @@ public abstract class AbstractJsonSchema<T, B> {
             description = p.getDescription();
             descriptionContributedBy = contributorName;
           } else {
-            LOGGER.debug("Description for property {} has already been contributed by: {}", name, descriptionContributedBy);
+            logger.debug("Description for property {} has already been contributed by: {}", name, descriptionContributedBy);
           }
         }
         defaultValue = p.getDefault().orElse(defaultValue);
@@ -831,13 +831,13 @@ public abstract class AbstractJsonSchema<T, B> {
       final TypeRef keyType = TypeAs.UNWRAP_MAP_KEY_OF.apply(typeRef);
 
       if (!(keyType instanceof ClassRef && ((ClassRef) keyType).getFullyQualifiedName().equals("java.lang.String"))) {
-        LOGGER.warn("Property '{}' with '{}' key type is mapped to 'string' because of CRD schemas limitations", name, typeRef);
+        logger.warn("Property '{}' with '{}' key type is mapped to 'string' because of CRD schemas limitations", name, typeRef);
       }
 
       final TypeRef valueType = TypeAs.UNWRAP_MAP_VALUE_OF.apply(typeRef);
       T schema = internalFromImpl(name, valueType, visited, schemaSwaps);
       if (schema == null) {
-        LOGGER.warn(
+        logger.warn(
             "Property '{}' with '{}' value type is mapped to 'object' because its CRD representation cannot be extracted.",
             name, typeRef);
         schema = internalFromImpl(name, OBJECT_REF, visited, schemaSwaps);
@@ -925,7 +925,7 @@ public abstract class AbstractJsonSchema<T, B> {
         mapping = STRING_MARKER;
       }
     } catch (Exception e) {
-      LOGGER.debug(
+      logger.debug(
           "Something went wrong with detecting java type schema for {}, will use full introspection instead",
           fullyQualifiedName, e);
     }

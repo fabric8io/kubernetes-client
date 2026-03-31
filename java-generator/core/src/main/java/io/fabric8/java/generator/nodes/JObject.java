@@ -300,7 +300,9 @@ public class JObject extends AbstractJSONSchema2Pojo implements JObjectExtraAnno
                     "io.fabric8.kubernetes.client.utils.Serialization.unmarshal("
                         + "\"" + StringEscapeUtils.escapeJava(Serialization.asJson(prop.getDefaultValue())) + "\""
                         + ", "
-                        + prop.getClassType() + ".class"
+                        + "new com.fasterxml.jackson.core.type.TypeReference<"
+                        + prop.getType()
+                        + ">() {}"
                         + ")"));
           }
         }

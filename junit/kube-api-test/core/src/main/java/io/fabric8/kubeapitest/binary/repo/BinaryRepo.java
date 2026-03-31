@@ -34,7 +34,7 @@ import java.util.stream.Stream;
 
 public class BinaryRepo {
 
-  private static final Logger log = LoggerFactory.getLogger(BinaryRepo.class);
+  private static final Logger logger = LoggerFactory.getLogger(BinaryRepo.class);
 
   private static final String BINARY_INDEX_URL = "https://raw.githubusercontent.com/kubernetes-sigs/controller-tools/HEAD/envtest-releases.yaml";
   private static final ObjectMapper MAPPER = new ObjectMapper(new YAMLFactory());
@@ -77,7 +77,7 @@ public class BinaryRepo {
           "/envtest-v" + version + "-" + osInfo.getOSName() + "-" + osInfo.getOSArch() + TAR_GZ_SUFFIX;
 
       File tempFile = File.createTempFile("kubebuilder-tools-" + version, TAR_GZ_SUFFIX);
-      log.debug("Downloading binary from url: {} to Temp file: {}", url, tempFile.getPath());
+      logger.debug("Downloading binary from url: {} to Temp file: {}", url, tempFile.getPath());
       copyURLToFile(url, tempFile);
       return tempFile;
     } catch (IOException e) {

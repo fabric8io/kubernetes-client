@@ -32,7 +32,7 @@ import java.util.List;
 
 public class KubeConfig {
 
-  private static final Logger log = LoggerFactory.getLogger(KubeConfig.class);
+  private static final Logger logger = LoggerFactory.getLogger(KubeConfig.class);
   public static final String KUBE_API_TEST = "kubeapitest";
 
   private final CertManager certManager;
@@ -45,7 +45,7 @@ public class KubeConfig {
   }
 
   public void updateKubeConfig(int apiServerPort) {
-    log.debug("Updating kubeconfig");
+    logger.debug("Updating kubeconfig");
     previousCurrentContext = execWithKubectlConfigAndWait("current-context").trim();
     execWithKubectlConfigAndWait("set-cluster", KUBE_API_TEST,
         "--server=https://127.0.0.1:" + apiServerPort,
@@ -59,7 +59,7 @@ public class KubeConfig {
   }
 
   public void restoreKubeConfig() {
-    log.debug("Cleanig up kubeconfig");
+    logger.debug("Cleanig up kubeconfig");
     unset("contexts." + KUBE_API_TEST);
     unset("clusters." + KUBE_API_TEST);
     unset("users." + KUBE_API_TEST);

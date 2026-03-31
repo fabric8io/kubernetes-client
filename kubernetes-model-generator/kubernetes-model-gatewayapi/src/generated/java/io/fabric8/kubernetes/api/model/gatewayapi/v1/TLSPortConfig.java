@@ -81,7 +81,7 @@ public class TLSPortConfig implements Editable<TLSPortConfigBuilder>, Kubernetes
     }
 
     /**
-     * The Port indicates the Port Number to which the TLS configuration will be applied. This configuration will be applied to all Listeners handling HTTPS traffic that match this port.<br><p> <br><p> Support: Core<br><p> <br><p> &lt;gateway:experimental&gt;
+     * The Port indicates the Port Number to which the TLS configuration will be applied. This configuration will be applied to all Listeners handling HTTPS traffic that match this port.<br><p> <br><p> Support: Core
      */
     @JsonProperty("port")
     public Integer getPort() {
@@ -89,7 +89,7 @@ public class TLSPortConfig implements Editable<TLSPortConfigBuilder>, Kubernetes
     }
 
     /**
-     * The Port indicates the Port Number to which the TLS configuration will be applied. This configuration will be applied to all Listeners handling HTTPS traffic that match this port.<br><p> <br><p> Support: Core<br><p> <br><p> &lt;gateway:experimental&gt;
+     * The Port indicates the Port Number to which the TLS configuration will be applied. This configuration will be applied to all Listeners handling HTTPS traffic that match this port.<br><p> <br><p> Support: Core
      */
     @JsonProperty("port")
     public void setPort(Integer port) {

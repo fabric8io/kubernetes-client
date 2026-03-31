@@ -45,7 +45,7 @@ import java.util.stream.Stream;
 
 public class DefaultSharedIndexInformer<T extends HasMetadata, L extends KubernetesResourceList<T>>
     implements SharedIndexInformer<T> {
-  private static final Logger log = LoggerFactory.getLogger(DefaultSharedIndexInformer.class);
+  private static final Logger logger = LoggerFactory.getLogger(DefaultSharedIndexInformer.class);
 
   private static final long MINIMUM_RESYNC_PERIOD_MILLIS = 1000L;
 
@@ -120,20 +120,21 @@ public class DefaultSharedIndexInformer<T extends HasMetadata, L extends Kuberne
   public SharedIndexInformer<T> addEventHandlerWithResyncPeriod(ResourceEventHandler<? super T> handler,
       long resyncPeriodMillis) {
     if (stopped) {
-      log.info("DefaultSharedIndexInformer#Handler was not added to {} because it has stopped already", this);
+      logger.info("DefaultSharedIndexInformer#Handler was not added to {} because it has stopped already", this);
       return this;
     }
 
     if (resyncPeriodMillis > 0) {
       if (resyncPeriodMillis < MINIMUM_RESYNC_PERIOD_MILLIS) {
-        log.warn("DefaultSharedIndexInformer#resyncPeriod {} is too small for {}. Changing it to minimal allowed value of {}",
+        logger.warn(
+            "DefaultSharedIndexInformer#resyncPeriod {} is too small for {}. Changing it to minimal allowed value of {}",
             resyncPeriodMillis, this, MINIMUM_RESYNC_PERIOD_MILLIS);
         resyncPeriodMillis = MINIMUM_RESYNC_PERIOD_MILLIS;
       }
 
       if (resyncPeriodMillis < this.resyncCheckPeriodMillis) {
         if (started.get()) {
-          log.warn(
+          logger.warn(
               "DefaultSharedIndexInformer#resyncPeriod {} is smaller than resyncCheckPeriod {} and the {} informer has already started. Changing it to {}",
               resyncPeriodMillis, resyncCheckPeriodMillis, this, resyncCheckPeriodMillis);
           resyncPeriodMillis = resyncCheckPeriodMillis;
@@ -173,7 +174,7 @@ public class DefaultSharedIndexInformer<T extends HasMetadata, L extends Kuberne
       }
     }
 
-    log.debug("Ready to run resync and reflector for {} with resync {}", this, resyncCheckPeriodMillis);
+    logger.debug("Ready to run resync and reflector for {} with resync {}", this, resyncCheckPeriodMillis);
 
     scheduleResync(processor::shouldResync);
 
@@ -246,17 +247,17 @@ public class DefaultSharedIndexInformer<T extends HasMetadata, L extends Kuberne
     // schedule the resync runnable
     if (resyncCheckPeriodMillis > 0) {
       resyncFuture = Utils.scheduleAtFixedRate(informerExecutor, () -> {
-        if (log.isDebugEnabled()) {
-          log.debug("Checking for resync at interval for {}", this);
+        if (logger.isDebugEnabled()) {
+          logger.debug("Checking for resync at interval for {}", this);
         }
         if (resyncFunc.getAsBoolean()) {
-          log.debug("Resync running for {}", this);
+          logger.debug("Resync running for {}", this);
           processorStore.resync();
         }
       }, resyncCheckPeriodMillis,
           resyncCheckPeriodMillis, TimeUnit.MILLISECONDS);
     } else {
-      log.debug("Resync skipped due to 0 full resync period for {}", this);
+      logger.debug("Resync skipped due to 0 full resync period for {}", this);
     }
   }
 

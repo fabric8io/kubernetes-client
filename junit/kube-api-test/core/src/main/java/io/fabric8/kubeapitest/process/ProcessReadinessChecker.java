@@ -49,7 +49,7 @@ import static io.fabric8.kubeapitest.process.KubeAPIServerProcess.KUBE_API_SERVE
 
 public class ProcessReadinessChecker {
 
-  private static final Logger log = LoggerFactory.getLogger(ProcessReadinessChecker.class);
+  private static final Logger logger = LoggerFactory.getLogger(ProcessReadinessChecker.class);
 
   public static final int POLLING_INTERVAL = 200;
 
@@ -120,7 +120,7 @@ public class ProcessReadinessChecker {
   private boolean ready(HttpClient client, HttpRequest request, String processName, int port) {
     try {
       HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-      log.debug("Ready Response message:{} code: {} for {} on Port: {}", response.body(),
+      logger.debug("Ready Response message:{} code: {} for {} on Port: {}", response.body(),
           response.statusCode(), processName,
           port);
       return response.statusCode() == 200;
@@ -129,7 +129,7 @@ public class ProcessReadinessChecker {
       // in that case we still want to retry, assuming this error goes away.
     } catch (ConnectException | SSLException e) {
       // still want to retry
-      log.debug("Cannot connect to the server", e);
+      logger.debug("Cannot connect to the server", e);
       return false;
     } catch (IOException e) {
       throw new KubeAPITestException(e);

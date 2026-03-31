@@ -195,6 +195,7 @@ public class KubeConfigUtils {
           : currentCluster.getCertificateAuthority();
       clientConfig.setCaCertFile(caCertFile);
       clientConfig.setCaCertData(currentCluster.getCertificateAuthorityData());
+      clientConfig.setTlsServerName(currentCluster.getTlsServerName());
       String proxyUrl = currentCluster.getProxyUrl();
       if (Utils.isNotNullOrEmpty(proxyUrl)) {
         if (proxyUrl.startsWith(SOCKS5_PROTOCOL_PREFIX) && clientConfig.getMasterUrl().startsWith(HTTPS_PROTOCOL_PREFIX)) {

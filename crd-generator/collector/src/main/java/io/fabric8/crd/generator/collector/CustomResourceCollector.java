@@ -39,7 +39,7 @@ import static java.util.Optional.ofNullable;
  */
 public class CustomResourceCollector {
 
-  private static final Logger log = LoggerFactory.getLogger(CustomResourceCollector.class);
+  private static final Logger logger = LoggerFactory.getLogger(CustomResourceCollector.class);
 
   private final CustomResourceClassLoader customResourceClassLoader;
   private final JandexCustomResourceClassScanner jandexCustomResourceClassScanner;
@@ -168,9 +168,9 @@ public class CustomResourceCollector {
     if (forceScan || customResourcesClassNames.isEmpty()) {
       // search only if custom resource class names are not explicitly given
       customResourcesClassNames.addAll(jandexCustomResourceClassScanner.findCustomResourceClasses());
-      log.debug("Found {} custom resource classes", customResourcesClassNames.size());
+      logger.debug("Found {} custom resource classes", customResourcesClassNames.size());
     } else {
-      log.debug("Using explicit {} custom resource classes and skip scanning", customResourcesClassNames.size());
+      logger.debug("Using explicit {} custom resource classes and skip scanning", customResourcesClassNames.size());
     }
 
     Predicate<String> classNamePredicate = classNamePredicates.stream()
@@ -182,7 +182,7 @@ public class CustomResourceCollector {
         .map(customResourceClassLoader::loadCustomResourceClass)
         .collect(Collectors.toList());
 
-    log.debug("Retained {} custom resource classes after filtering", customResourceClasses.size());
+    logger.debug("Retained {} custom resource classes after filtering", customResourceClasses.size());
     return customResourceClasses;
   }
 

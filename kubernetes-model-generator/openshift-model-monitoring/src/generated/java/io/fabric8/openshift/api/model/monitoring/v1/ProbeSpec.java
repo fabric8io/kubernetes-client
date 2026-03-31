@@ -45,7 +45,9 @@ import lombok.experimental.Accessors;
     "basicAuth",
     "bearerTokenSecret",
     "convertClassicHistogramsToNHCB",
+    "enableHttp2",
     "fallbackScrapeProtocol",
+    "followRedirects",
     "interval",
     "jobName",
     "keepDroppedTargets",
@@ -62,6 +64,7 @@ import lombok.experimental.Accessors;
     "sampleLimit",
     "scrapeClass",
     "scrapeClassicHistograms",
+    "scrapeNativeHistograms",
     "scrapeProtocols",
     "scrapeTimeout",
     "targetLimit",
@@ -101,8 +104,12 @@ public class ProbeSpec implements Editable<ProbeSpecBuilder>, KubernetesResource
     private SecretKeySelector bearerTokenSecret;
     @JsonProperty("convertClassicHistogramsToNHCB")
     private Boolean convertClassicHistogramsToNHCB;
+    @JsonProperty("enableHttp2")
+    private Boolean enableHttp2;
     @JsonProperty("fallbackScrapeProtocol")
     private String fallbackScrapeProtocol;
+    @JsonProperty("followRedirects")
+    private Boolean followRedirects;
     @JsonProperty("interval")
     private String interval;
     @JsonProperty("jobName")
@@ -137,6 +144,8 @@ public class ProbeSpec implements Editable<ProbeSpecBuilder>, KubernetesResource
     private String scrapeClass;
     @JsonProperty("scrapeClassicHistograms")
     private Boolean scrapeClassicHistograms;
+    @JsonProperty("scrapeNativeHistograms")
+    private Boolean scrapeNativeHistograms;
     @JsonProperty("scrapeProtocols")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> scrapeProtocols = new ArrayList<>();
@@ -157,13 +166,15 @@ public class ProbeSpec implements Editable<ProbeSpecBuilder>, KubernetesResource
     public ProbeSpec() {
     }
 
-    public ProbeSpec(SafeAuthorization authorization, BasicAuth basicAuth, SecretKeySelector bearerTokenSecret, Boolean convertClassicHistogramsToNHCB, String fallbackScrapeProtocol, String interval, String jobName, Long keepDroppedTargets, Long labelLimit, Long labelNameLengthLimit, Long labelValueLengthLimit, List<RelabelConfig> metricRelabelings, String module, Long nativeHistogramBucketLimit, Quantity nativeHistogramMinBucketFactor, OAuth2 oauth2, List<ProbeParam> params, ProberSpec prober, Long sampleLimit, String scrapeClass, Boolean scrapeClassicHistograms, List<String> scrapeProtocols, String scrapeTimeout, Long targetLimit, ProbeTargets targets, SafeTLSConfig tlsConfig) {
+    public ProbeSpec(SafeAuthorization authorization, BasicAuth basicAuth, SecretKeySelector bearerTokenSecret, Boolean convertClassicHistogramsToNHCB, Boolean enableHttp2, String fallbackScrapeProtocol, Boolean followRedirects, String interval, String jobName, Long keepDroppedTargets, Long labelLimit, Long labelNameLengthLimit, Long labelValueLengthLimit, List<RelabelConfig> metricRelabelings, String module, Long nativeHistogramBucketLimit, Quantity nativeHistogramMinBucketFactor, OAuth2 oauth2, List<ProbeParam> params, ProberSpec prober, Long sampleLimit, String scrapeClass, Boolean scrapeClassicHistograms, Boolean scrapeNativeHistograms, List<String> scrapeProtocols, String scrapeTimeout, Long targetLimit, ProbeTargets targets, SafeTLSConfig tlsConfig) {
         super();
         this.authorization = authorization;
         this.basicAuth = basicAuth;
         this.bearerTokenSecret = bearerTokenSecret;
         this.convertClassicHistogramsToNHCB = convertClassicHistogramsToNHCB;
+        this.enableHttp2 = enableHttp2;
         this.fallbackScrapeProtocol = fallbackScrapeProtocol;
+        this.followRedirects = followRedirects;
         this.interval = interval;
         this.jobName = jobName;
         this.keepDroppedTargets = keepDroppedTargets;
@@ -180,6 +191,7 @@ public class ProbeSpec implements Editable<ProbeSpecBuilder>, KubernetesResource
         this.sampleLimit = sampleLimit;
         this.scrapeClass = scrapeClass;
         this.scrapeClassicHistograms = scrapeClassicHistograms;
+        this.scrapeNativeHistograms = scrapeNativeHistograms;
         this.scrapeProtocols = scrapeProtocols;
         this.scrapeTimeout = scrapeTimeout;
         this.targetLimit = targetLimit;
@@ -236,7 +248,7 @@ public class ProbeSpec implements Editable<ProbeSpecBuilder>, KubernetesResource
     }
 
     /**
-     * Whether to convert all scraped classic histograms into a native histogram with custom buckets. It requires Prometheus &gt;= v3.0.0.
+     * convertClassicHistogramsToNHCB defines whether to convert all scraped classic histograms into a native histogram with custom buckets. It requires Prometheus &gt;= v3.0.0.
      */
     @JsonProperty("convertClassicHistogramsToNHCB")
     public Boolean getConvertClassicHistogramsToNHCB() {
@@ -244,7 +256,7 @@ public class ProbeSpec implements Editable<ProbeSpecBuilder>, KubernetesResource
     }
 
     /**
-     * Whether to convert all scraped classic histograms into a native histogram with custom buckets. It requires Prometheus &gt;= v3.0.0.
+     * convertClassicHistogramsToNHCB defines whether to convert all scraped classic histograms into a native histogram with custom buckets. It requires Prometheus &gt;= v3.0.0.
      */
     @JsonProperty("convertClassicHistogramsToNHCB")
     public void setConvertClassicHistogramsToNHCB(Boolean convertClassicHistogramsToNHCB) {
@@ -252,7 +264,23 @@ public class ProbeSpec implements Editable<ProbeSpecBuilder>, KubernetesResource
     }
 
     /**
-     * The protocol to use if a scrape returns blank, unparseable, or otherwise invalid Content-Type.<br><p> <br><p> It requires Prometheus &gt;= v3.0.0.
+     * enableHttp2 can be used to disable HTTP2.
+     */
+    @JsonProperty("enableHttp2")
+    public Boolean getEnableHttp2() {
+        return enableHttp2;
+    }
+
+    /**
+     * enableHttp2 can be used to disable HTTP2.
+     */
+    @JsonProperty("enableHttp2")
+    public void setEnableHttp2(Boolean enableHttp2) {
+        this.enableHttp2 = enableHttp2;
+    }
+
+    /**
+     * fallbackScrapeProtocol defines the protocol to use if a scrape returns blank, unparseable, or otherwise invalid Content-Type.<br><p> <br><p> It requires Prometheus &gt;= v3.0.0.
      */
     @JsonProperty("fallbackScrapeProtocol")
     public String getFallbackScrapeProtocol() {
@@ -260,7 +288,7 @@ public class ProbeSpec implements Editable<ProbeSpecBuilder>, KubernetesResource
     }
 
     /**
-     * The protocol to use if a scrape returns blank, unparseable, or otherwise invalid Content-Type.<br><p> <br><p> It requires Prometheus &gt;= v3.0.0.
+     * fallbackScrapeProtocol defines the protocol to use if a scrape returns blank, unparseable, or otherwise invalid Content-Type.<br><p> <br><p> It requires Prometheus &gt;= v3.0.0.
      */
     @JsonProperty("fallbackScrapeProtocol")
     public void setFallbackScrapeProtocol(String fallbackScrapeProtocol) {
@@ -268,7 +296,23 @@ public class ProbeSpec implements Editable<ProbeSpecBuilder>, KubernetesResource
     }
 
     /**
-     * Interval at which targets are probed using the configured prober. If not specified Prometheus' global scrape interval is used.
+     * followRedirects defines whether the client should follow HTTP 3xx redirects.
+     */
+    @JsonProperty("followRedirects")
+    public Boolean getFollowRedirects() {
+        return followRedirects;
+    }
+
+    /**
+     * followRedirects defines whether the client should follow HTTP 3xx redirects.
+     */
+    @JsonProperty("followRedirects")
+    public void setFollowRedirects(Boolean followRedirects) {
+        this.followRedirects = followRedirects;
+    }
+
+    /**
+     * interval at which targets are probed using the configured prober. If not specified Prometheus' global scrape interval is used.
      */
     @JsonProperty("interval")
     public String getInterval() {
@@ -276,7 +320,7 @@ public class ProbeSpec implements Editable<ProbeSpecBuilder>, KubernetesResource
     }
 
     /**
-     * Interval at which targets are probed using the configured prober. If not specified Prometheus' global scrape interval is used.
+     * interval at which targets are probed using the configured prober. If not specified Prometheus' global scrape interval is used.
      */
     @JsonProperty("interval")
     public void setInterval(String interval) {
@@ -284,7 +328,7 @@ public class ProbeSpec implements Editable<ProbeSpecBuilder>, KubernetesResource
     }
 
     /**
-     * The job name assigned to scraped metrics by default.
+     * jobName assigned to scraped metrics by default.
      */
     @JsonProperty("jobName")
     public String getJobName() {
@@ -292,7 +336,7 @@ public class ProbeSpec implements Editable<ProbeSpecBuilder>, KubernetesResource
     }
 
     /**
-     * The job name assigned to scraped metrics by default.
+     * jobName assigned to scraped metrics by default.
      */
     @JsonProperty("jobName")
     public void setJobName(String jobName) {
@@ -300,7 +344,7 @@ public class ProbeSpec implements Editable<ProbeSpecBuilder>, KubernetesResource
     }
 
     /**
-     * Per-scrape limit on the number of targets dropped by relabeling that will be kept in memory. 0 means no limit.<br><p> <br><p> It requires Prometheus &gt;= v2.47.0.
+     * keepDroppedTargets defines the per-scrape limit on the number of targets dropped by relabeling that will be kept in memory. 0 means no limit.<br><p> <br><p> It requires Prometheus &gt;= v2.47.0.
      */
     @JsonProperty("keepDroppedTargets")
     public Long getKeepDroppedTargets() {
@@ -308,7 +352,7 @@ public class ProbeSpec implements Editable<ProbeSpecBuilder>, KubernetesResource
     }
 
     /**
-     * Per-scrape limit on the number of targets dropped by relabeling that will be kept in memory. 0 means no limit.<br><p> <br><p> It requires Prometheus &gt;= v2.47.0.
+     * keepDroppedTargets defines the per-scrape limit on the number of targets dropped by relabeling that will be kept in memory. 0 means no limit.<br><p> <br><p> It requires Prometheus &gt;= v2.47.0.
      */
     @JsonProperty("keepDroppedTargets")
     public void setKeepDroppedTargets(Long keepDroppedTargets) {
@@ -316,7 +360,7 @@ public class ProbeSpec implements Editable<ProbeSpecBuilder>, KubernetesResource
     }
 
     /**
-     * Per-scrape limit on number of labels that will be accepted for a sample. Only valid in Prometheus versions 2.27.0 and newer.
+     * labelLimit defines the per-scrape limit on number of labels that will be accepted for a sample. Only valid in Prometheus versions 2.27.0 and newer.
      */
     @JsonProperty("labelLimit")
     public Long getLabelLimit() {
@@ -324,7 +368,7 @@ public class ProbeSpec implements Editable<ProbeSpecBuilder>, KubernetesResource
     }
 
     /**
-     * Per-scrape limit on number of labels that will be accepted for a sample. Only valid in Prometheus versions 2.27.0 and newer.
+     * labelLimit defines the per-scrape limit on number of labels that will be accepted for a sample. Only valid in Prometheus versions 2.27.0 and newer.
      */
     @JsonProperty("labelLimit")
     public void setLabelLimit(Long labelLimit) {
@@ -332,7 +376,7 @@ public class ProbeSpec implements Editable<ProbeSpecBuilder>, KubernetesResource
     }
 
     /**
-     * Per-scrape limit on length of labels name that will be accepted for a sample. Only valid in Prometheus versions 2.27.0 and newer.
+     * labelNameLengthLimit defines the per-scrape limit on length of labels name that will be accepted for a sample. Only valid in Prometheus versions 2.27.0 and newer.
      */
     @JsonProperty("labelNameLengthLimit")
     public Long getLabelNameLengthLimit() {
@@ -340,7 +384,7 @@ public class ProbeSpec implements Editable<ProbeSpecBuilder>, KubernetesResource
     }
 
     /**
-     * Per-scrape limit on length of labels name that will be accepted for a sample. Only valid in Prometheus versions 2.27.0 and newer.
+     * labelNameLengthLimit defines the per-scrape limit on length of labels name that will be accepted for a sample. Only valid in Prometheus versions 2.27.0 and newer.
      */
     @JsonProperty("labelNameLengthLimit")
     public void setLabelNameLengthLimit(Long labelNameLengthLimit) {
@@ -348,7 +392,7 @@ public class ProbeSpec implements Editable<ProbeSpecBuilder>, KubernetesResource
     }
 
     /**
-     * Per-scrape limit on length of labels value that will be accepted for a sample. Only valid in Prometheus versions 2.27.0 and newer.
+     * labelValueLengthLimit defines the per-scrape limit on length of labels value that will be accepted for a sample. Only valid in Prometheus versions 2.27.0 and newer.
      */
     @JsonProperty("labelValueLengthLimit")
     public Long getLabelValueLengthLimit() {
@@ -356,7 +400,7 @@ public class ProbeSpec implements Editable<ProbeSpecBuilder>, KubernetesResource
     }
 
     /**
-     * Per-scrape limit on length of labels value that will be accepted for a sample. Only valid in Prometheus versions 2.27.0 and newer.
+     * labelValueLengthLimit defines the per-scrape limit on length of labels value that will be accepted for a sample. Only valid in Prometheus versions 2.27.0 and newer.
      */
     @JsonProperty("labelValueLengthLimit")
     public void setLabelValueLengthLimit(Long labelValueLengthLimit) {
@@ -364,7 +408,7 @@ public class ProbeSpec implements Editable<ProbeSpecBuilder>, KubernetesResource
     }
 
     /**
-     * MetricRelabelConfigs to apply to samples before ingestion.
+     * metricRelabelings defines the RelabelConfig to apply to samples before ingestion.
      */
     @JsonProperty("metricRelabelings")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -373,7 +417,7 @@ public class ProbeSpec implements Editable<ProbeSpecBuilder>, KubernetesResource
     }
 
     /**
-     * MetricRelabelConfigs to apply to samples before ingestion.
+     * metricRelabelings defines the RelabelConfig to apply to samples before ingestion.
      */
     @JsonProperty("metricRelabelings")
     public void setMetricRelabelings(List<RelabelConfig> metricRelabelings) {
@@ -381,7 +425,7 @@ public class ProbeSpec implements Editable<ProbeSpecBuilder>, KubernetesResource
     }
 
     /**
-     * The module to use for probing specifying how to probe the target. Example module configuring in the blackbox exporter: https://github.com/prometheus/blackbox_exporter/blob/master/example.yml
+     * module to use for probing specifying how to probe the target. Example module configuring in the blackbox exporter: https://github.com/prometheus/blackbox_exporter/blob/master/example.yml
      */
     @JsonProperty("module")
     public String getModule() {
@@ -389,7 +433,7 @@ public class ProbeSpec implements Editable<ProbeSpecBuilder>, KubernetesResource
     }
 
     /**
-     * The module to use for probing specifying how to probe the target. Example module configuring in the blackbox exporter: https://github.com/prometheus/blackbox_exporter/blob/master/example.yml
+     * module to use for probing specifying how to probe the target. Example module configuring in the blackbox exporter: https://github.com/prometheus/blackbox_exporter/blob/master/example.yml
      */
     @JsonProperty("module")
     public void setModule(String module) {
@@ -397,7 +441,7 @@ public class ProbeSpec implements Editable<ProbeSpecBuilder>, KubernetesResource
     }
 
     /**
-     * If there are more than this many buckets in a native histogram, buckets will be merged to stay within the limit. It requires Prometheus &gt;= v2.45.0.
+     * nativeHistogramBucketLimit defines ff there are more than this many buckets in a native histogram, buckets will be merged to stay within the limit. It requires Prometheus &gt;= v2.45.0.
      */
     @JsonProperty("nativeHistogramBucketLimit")
     public Long getNativeHistogramBucketLimit() {
@@ -405,7 +449,7 @@ public class ProbeSpec implements Editable<ProbeSpecBuilder>, KubernetesResource
     }
 
     /**
-     * If there are more than this many buckets in a native histogram, buckets will be merged to stay within the limit. It requires Prometheus &gt;= v2.45.0.
+     * nativeHistogramBucketLimit defines ff there are more than this many buckets in a native histogram, buckets will be merged to stay within the limit. It requires Prometheus &gt;= v2.45.0.
      */
     @JsonProperty("nativeHistogramBucketLimit")
     public void setNativeHistogramBucketLimit(Long nativeHistogramBucketLimit) {
@@ -445,7 +489,7 @@ public class ProbeSpec implements Editable<ProbeSpecBuilder>, KubernetesResource
     }
 
     /**
-     * The list of HTTP query parameters for the scrape. Please note that the `.spec.module` field takes precedence over the `module` parameter from this list when both are defined. The module name must be added using Module under ProbeSpec.
+     * params defines the list of HTTP query parameters for the scrape. Please note that the `.spec.module` field takes precedence over the `module` parameter from this list when both are defined. The module name must be added using Module under ProbeSpec.
      */
     @JsonProperty("params")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -454,7 +498,7 @@ public class ProbeSpec implements Editable<ProbeSpecBuilder>, KubernetesResource
     }
 
     /**
-     * The list of HTTP query parameters for the scrape. Please note that the `.spec.module` field takes precedence over the `module` parameter from this list when both are defined. The module name must be added using Module under ProbeSpec.
+     * params defines the list of HTTP query parameters for the scrape. Please note that the `.spec.module` field takes precedence over the `module` parameter from this list when both are defined. The module name must be added using Module under ProbeSpec.
      */
     @JsonProperty("params")
     public void setParams(List<ProbeParam> params) {
@@ -478,7 +522,7 @@ public class ProbeSpec implements Editable<ProbeSpecBuilder>, KubernetesResource
     }
 
     /**
-     * SampleLimit defines per-scrape limit on number of scraped samples that will be accepted.
+     * sampleLimit defines per-scrape limit on number of scraped samples that will be accepted.
      */
     @JsonProperty("sampleLimit")
     public Long getSampleLimit() {
@@ -486,7 +530,7 @@ public class ProbeSpec implements Editable<ProbeSpecBuilder>, KubernetesResource
     }
 
     /**
-     * SampleLimit defines per-scrape limit on number of scraped samples that will be accepted.
+     * sampleLimit defines per-scrape limit on number of scraped samples that will be accepted.
      */
     @JsonProperty("sampleLimit")
     public void setSampleLimit(Long sampleLimit) {
@@ -494,7 +538,7 @@ public class ProbeSpec implements Editable<ProbeSpecBuilder>, KubernetesResource
     }
 
     /**
-     * The scrape class to apply.
+     * scrapeClass defines the scrape class to apply.
      */
     @JsonProperty("scrapeClass")
     public String getScrapeClass() {
@@ -502,7 +546,7 @@ public class ProbeSpec implements Editable<ProbeSpecBuilder>, KubernetesResource
     }
 
     /**
-     * The scrape class to apply.
+     * scrapeClass defines the scrape class to apply.
      */
     @JsonProperty("scrapeClass")
     public void setScrapeClass(String scrapeClass) {
@@ -510,7 +554,7 @@ public class ProbeSpec implements Editable<ProbeSpecBuilder>, KubernetesResource
     }
 
     /**
-     * Whether to scrape a classic histogram that is also exposed as a native histogram. It requires Prometheus &gt;= v2.45.0.<br><p> <br><p> Notice: `scrapeClassicHistograms` corresponds to the `always_scrape_classic_histograms` field in the Prometheus configuration.
+     * scrapeClassicHistograms defines whether to scrape a classic histogram that is also exposed as a native histogram. It requires Prometheus &gt;= v2.45.0.<br><p> <br><p> Notice: `scrapeClassicHistograms` corresponds to the `always_scrape_classic_histograms` field in the Prometheus configuration.
      */
     @JsonProperty("scrapeClassicHistograms")
     public Boolean getScrapeClassicHistograms() {
@@ -518,7 +562,7 @@ public class ProbeSpec implements Editable<ProbeSpecBuilder>, KubernetesResource
     }
 
     /**
-     * Whether to scrape a classic histogram that is also exposed as a native histogram. It requires Prometheus &gt;= v2.45.0.<br><p> <br><p> Notice: `scrapeClassicHistograms` corresponds to the `always_scrape_classic_histograms` field in the Prometheus configuration.
+     * scrapeClassicHistograms defines whether to scrape a classic histogram that is also exposed as a native histogram. It requires Prometheus &gt;= v2.45.0.<br><p> <br><p> Notice: `scrapeClassicHistograms` corresponds to the `always_scrape_classic_histograms` field in the Prometheus configuration.
      */
     @JsonProperty("scrapeClassicHistograms")
     public void setScrapeClassicHistograms(Boolean scrapeClassicHistograms) {
@@ -526,7 +570,23 @@ public class ProbeSpec implements Editable<ProbeSpecBuilder>, KubernetesResource
     }
 
     /**
-     * `scrapeProtocols` defines the protocols to negotiate during a scrape. It tells clients the protocols supported by Prometheus in order of preference (from most to least preferred).<br><p> <br><p> If unset, Prometheus uses its default value.<br><p> <br><p> It requires Prometheus &gt;= v2.49.0.
+     * scrapeNativeHistograms defines whether to enable scraping of native histograms. It requires Prometheus &gt;= v3.8.0.
+     */
+    @JsonProperty("scrapeNativeHistograms")
+    public Boolean getScrapeNativeHistograms() {
+        return scrapeNativeHistograms;
+    }
+
+    /**
+     * scrapeNativeHistograms defines whether to enable scraping of native histograms. It requires Prometheus &gt;= v3.8.0.
+     */
+    @JsonProperty("scrapeNativeHistograms")
+    public void setScrapeNativeHistograms(Boolean scrapeNativeHistograms) {
+        this.scrapeNativeHistograms = scrapeNativeHistograms;
+    }
+
+    /**
+     * scrapeProtocols defines the protocols to negotiate during a scrape. It tells clients the protocols supported by Prometheus in order of preference (from most to least preferred).<br><p> <br><p> If unset, Prometheus uses its default value.<br><p> <br><p> It requires Prometheus &gt;= v2.49.0.
      */
     @JsonProperty("scrapeProtocols")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -535,7 +595,7 @@ public class ProbeSpec implements Editable<ProbeSpecBuilder>, KubernetesResource
     }
 
     /**
-     * `scrapeProtocols` defines the protocols to negotiate during a scrape. It tells clients the protocols supported by Prometheus in order of preference (from most to least preferred).<br><p> <br><p> If unset, Prometheus uses its default value.<br><p> <br><p> It requires Prometheus &gt;= v2.49.0.
+     * scrapeProtocols defines the protocols to negotiate during a scrape. It tells clients the protocols supported by Prometheus in order of preference (from most to least preferred).<br><p> <br><p> If unset, Prometheus uses its default value.<br><p> <br><p> It requires Prometheus &gt;= v2.49.0.
      */
     @JsonProperty("scrapeProtocols")
     public void setScrapeProtocols(List<String> scrapeProtocols) {
@@ -543,7 +603,7 @@ public class ProbeSpec implements Editable<ProbeSpecBuilder>, KubernetesResource
     }
 
     /**
-     * Timeout for scraping metrics from the Prometheus exporter. If not specified, the Prometheus global scrape timeout is used. The value cannot be greater than the scrape interval otherwise the operator will reject the resource.
+     * scrapeTimeout defines the timeout for scraping metrics from the Prometheus exporter. If not specified, the Prometheus global scrape timeout is used. The value cannot be greater than the scrape interval otherwise the operator will reject the resource.
      */
     @JsonProperty("scrapeTimeout")
     public String getScrapeTimeout() {
@@ -551,7 +611,7 @@ public class ProbeSpec implements Editable<ProbeSpecBuilder>, KubernetesResource
     }
 
     /**
-     * Timeout for scraping metrics from the Prometheus exporter. If not specified, the Prometheus global scrape timeout is used. The value cannot be greater than the scrape interval otherwise the operator will reject the resource.
+     * scrapeTimeout defines the timeout for scraping metrics from the Prometheus exporter. If not specified, the Prometheus global scrape timeout is used. The value cannot be greater than the scrape interval otherwise the operator will reject the resource.
      */
     @JsonProperty("scrapeTimeout")
     public void setScrapeTimeout(String scrapeTimeout) {
@@ -559,7 +619,7 @@ public class ProbeSpec implements Editable<ProbeSpecBuilder>, KubernetesResource
     }
 
     /**
-     * TargetLimit defines a limit on the number of scraped targets that will be accepted.
+     * targetLimit defines a limit on the number of scraped targets that will be accepted.
      */
     @JsonProperty("targetLimit")
     public Long getTargetLimit() {
@@ -567,7 +627,7 @@ public class ProbeSpec implements Editable<ProbeSpecBuilder>, KubernetesResource
     }
 
     /**
-     * TargetLimit defines a limit on the number of scraped targets that will be accepted.
+     * targetLimit defines a limit on the number of scraped targets that will be accepted.
      */
     @JsonProperty("targetLimit")
     public void setTargetLimit(Long targetLimit) {

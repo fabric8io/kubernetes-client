@@ -89,7 +89,7 @@ public class NamespaceDiscovery implements Editable<NamespaceDiscoveryBuilder>, 
     }
 
     /**
-     * List of namespaces where to watch for resources. If empty and `ownNamespace` isn't true, Prometheus watches for resources in all namespaces.
+     * names defines a list of namespaces where to watch for resources. If empty and `ownNamespace` isn't true, Prometheus watches for resources in all namespaces.
      */
     @JsonProperty("names")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -98,7 +98,7 @@ public class NamespaceDiscovery implements Editable<NamespaceDiscoveryBuilder>, 
     }
 
     /**
-     * List of namespaces where to watch for resources. If empty and `ownNamespace` isn't true, Prometheus watches for resources in all namespaces.
+     * names defines a list of namespaces where to watch for resources. If empty and `ownNamespace` isn't true, Prometheus watches for resources in all namespaces.
      */
     @JsonProperty("names")
     public void setNames(List<String> names) {
@@ -106,7 +106,7 @@ public class NamespaceDiscovery implements Editable<NamespaceDiscoveryBuilder>, 
     }
 
     /**
-     * Includes the namespace in which the Prometheus pod runs to the list of watched namespaces.
+     * ownNamespace includes the namespace in which the Prometheus pod runs to the list of watched namespaces.
      */
     @JsonProperty("ownNamespace")
     public Boolean getOwnNamespace() {
@@ -114,7 +114,7 @@ public class NamespaceDiscovery implements Editable<NamespaceDiscoveryBuilder>, 
     }
 
     /**
-     * Includes the namespace in which the Prometheus pod runs to the list of watched namespaces.
+     * ownNamespace includes the namespace in which the Prometheus pod runs to the list of watched namespaces.
      */
     @JsonProperty("ownNamespace")
     public void setOwnNamespace(Boolean ownNamespace) {

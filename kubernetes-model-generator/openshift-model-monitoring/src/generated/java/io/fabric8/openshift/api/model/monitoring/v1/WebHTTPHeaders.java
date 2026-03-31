@@ -97,7 +97,7 @@ public class WebHTTPHeaders implements Editable<WebHTTPHeadersBuilder>, Kubernet
     }
 
     /**
-     * Set the Content-Security-Policy header to HTTP responses. Unset if blank.
+     * contentSecurityPolicy defines the Content-Security-Policy header to HTTP responses. Unset if blank.
      */
     @JsonProperty("contentSecurityPolicy")
     public String getContentSecurityPolicy() {
@@ -105,7 +105,7 @@ public class WebHTTPHeaders implements Editable<WebHTTPHeadersBuilder>, Kubernet
     }
 
     /**
-     * Set the Content-Security-Policy header to HTTP responses. Unset if blank.
+     * contentSecurityPolicy defines the Content-Security-Policy header to HTTP responses. Unset if blank.
      */
     @JsonProperty("contentSecurityPolicy")
     public void setContentSecurityPolicy(String contentSecurityPolicy) {
@@ -113,7 +113,7 @@ public class WebHTTPHeaders implements Editable<WebHTTPHeadersBuilder>, Kubernet
     }
 
     /**
-     * Set the Strict-Transport-Security header to HTTP responses. Unset if blank. Please make sure that you use this with care as this header might force browsers to load Prometheus and the other applications hosted on the same domain and subdomains over HTTPS. https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Strict-Transport-Security
+     * strictTransportSecurity defines the Strict-Transport-Security header to HTTP responses. Unset if blank. Please make sure that you use this with care as this header might force browsers to load Prometheus and the other applications hosted on the same domain and subdomains over HTTPS. https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Strict-Transport-Security
      */
     @JsonProperty("strictTransportSecurity")
     public String getStrictTransportSecurity() {
@@ -121,7 +121,7 @@ public class WebHTTPHeaders implements Editable<WebHTTPHeadersBuilder>, Kubernet
     }
 
     /**
-     * Set the Strict-Transport-Security header to HTTP responses. Unset if blank. Please make sure that you use this with care as this header might force browsers to load Prometheus and the other applications hosted on the same domain and subdomains over HTTPS. https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Strict-Transport-Security
+     * strictTransportSecurity defines the Strict-Transport-Security header to HTTP responses. Unset if blank. Please make sure that you use this with care as this header might force browsers to load Prometheus and the other applications hosted on the same domain and subdomains over HTTPS. https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Strict-Transport-Security
      */
     @JsonProperty("strictTransportSecurity")
     public void setStrictTransportSecurity(String strictTransportSecurity) {
@@ -129,7 +129,7 @@ public class WebHTTPHeaders implements Editable<WebHTTPHeadersBuilder>, Kubernet
     }
 
     /**
-     * Set the X-Content-Type-Options header to HTTP responses. Unset if blank. Accepted value is nosniff. https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Content-Type-Options
+     * xContentTypeOptions defines the X-Content-Type-Options header to HTTP responses. Unset if blank. Accepted value is nosniff. https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Content-Type-Options
      */
     @JsonProperty("xContentTypeOptions")
     public String getXContentTypeOptions() {
@@ -137,7 +137,7 @@ public class WebHTTPHeaders implements Editable<WebHTTPHeadersBuilder>, Kubernet
     }
 
     /**
-     * Set the X-Content-Type-Options header to HTTP responses. Unset if blank. Accepted value is nosniff. https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Content-Type-Options
+     * xContentTypeOptions defines the X-Content-Type-Options header to HTTP responses. Unset if blank. Accepted value is nosniff. https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Content-Type-Options
      */
     @JsonProperty("xContentTypeOptions")
     public void setXContentTypeOptions(String xContentTypeOptions) {
@@ -145,7 +145,7 @@ public class WebHTTPHeaders implements Editable<WebHTTPHeadersBuilder>, Kubernet
     }
 
     /**
-     * Set the X-Frame-Options header to HTTP responses. Unset if blank. Accepted values are deny and sameorigin. https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Frame-Options
+     * xFrameOptions defines the X-Frame-Options header to HTTP responses. Unset if blank. Accepted values are deny and sameorigin. https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Frame-Options
      */
     @JsonProperty("xFrameOptions")
     public String getXFrameOptions() {
@@ -153,7 +153,7 @@ public class WebHTTPHeaders implements Editable<WebHTTPHeadersBuilder>, Kubernet
     }
 
     /**
-     * Set the X-Frame-Options header to HTTP responses. Unset if blank. Accepted values are deny and sameorigin. https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Frame-Options
+     * xFrameOptions defines the X-Frame-Options header to HTTP responses. Unset if blank. Accepted values are deny and sameorigin. https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Frame-Options
      */
     @JsonProperty("xFrameOptions")
     public void setXFrameOptions(String xFrameOptions) {
@@ -161,7 +161,7 @@ public class WebHTTPHeaders implements Editable<WebHTTPHeadersBuilder>, Kubernet
     }
 
     /**
-     * Set the X-XSS-Protection header to all responses. Unset if blank. https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-XSS-Protection
+     * xXSSProtection defines the X-XSS-Protection header to all responses. Unset if blank. https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-XSS-Protection
      */
     @JsonProperty("xXSSProtection")
     public String getXXSSProtection() {
@@ -169,7 +169,7 @@ public class WebHTTPHeaders implements Editable<WebHTTPHeadersBuilder>, Kubernet
     }
 
     /**
-     * Set the X-XSS-Protection header to all responses. Unset if blank. https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-XSS-Protection
+     * xXSSProtection defines the X-XSS-Protection header to all responses. Unset if blank. https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-XSS-Protection
      */
     @JsonProperty("xXSSProtection")
     public void setXXSSProtection(String xXSSProtection) {

@@ -34,7 +34,7 @@ import java.util.stream.Stream;
  */
 public abstract class AbstractCustomResourceHandler {
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(AbstractJsonSchema.class);
+  private static final Logger logger = LoggerFactory.getLogger(AbstractJsonSchema.class);
 
   public abstract void handle(CustomResourceInfo config, ResolvingContext resolvingContext);
 
@@ -66,7 +66,7 @@ public abstract class AbstractCustomResourceHandler {
         String format = printerColumn.format().getValue();
         String type = property.schema.getType();
         if ("object".equals(type) || "array".equals(type)) {
-          LOGGER.warn("Printer column '{}' has a type '{}' that is not allowed, will use string intead", column, type);
+          logger.warn("Printer column '{}' has a type '{}' that is not allowed, will use string instead", column, type);
           type = "string";
         } else if ("string".equals(type) && "date".equals(property.schema.getFormat())) {
           type = "date";

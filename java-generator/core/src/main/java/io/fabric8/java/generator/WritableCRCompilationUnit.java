@@ -31,7 +31,7 @@ import java.util.Optional;
 
 public class WritableCRCompilationUnit {
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(WritableCRCompilationUnit.class);
+  private static final Logger logger = LoggerFactory.getLogger(WritableCRCompilationUnit.class);
 
   private final List<GeneratorResult.ClassResult> classResults;
   private final String basePackage;
@@ -65,7 +65,7 @@ public class WritableCRCompilationUnit {
 
   private void writeToFile(File file, String str) throws IOException {
     if (file.exists()) {
-      LOGGER.warn("File {} already exists, overwriting", file.getAbsolutePath());
+      logger.warn("File {} already exists, overwriting", file.getAbsolutePath());
     }
     try (FileWriter fileWriter = new FileWriter(file);
         PrintWriter printWriter = new PrintWriter(fileWriter)) {

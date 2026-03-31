@@ -102,7 +102,7 @@ public class GCESDConfig implements Editable<GCESDConfigBuilder>, KubernetesReso
     }
 
     /**
-     * Filter can be used optionally to filter the instance list by other criteria Syntax of this filter is described in the filter query parameter section: https://cloud.google.com/compute/docs/reference/latest/instances/list
+     * filter defines the filter that can be used optionally to filter the instance list by other criteria Syntax of this filter is described in the filter query parameter section: https://cloud.google.com/compute/docs/reference/latest/instances/list
      */
     @JsonProperty("filter")
     public String getFilter() {
@@ -110,7 +110,7 @@ public class GCESDConfig implements Editable<GCESDConfigBuilder>, KubernetesReso
     }
 
     /**
-     * Filter can be used optionally to filter the instance list by other criteria Syntax of this filter is described in the filter query parameter section: https://cloud.google.com/compute/docs/reference/latest/instances/list
+     * filter defines the filter that can be used optionally to filter the instance list by other criteria Syntax of this filter is described in the filter query parameter section: https://cloud.google.com/compute/docs/reference/latest/instances/list
      */
     @JsonProperty("filter")
     public void setFilter(String filter) {
@@ -118,7 +118,7 @@ public class GCESDConfig implements Editable<GCESDConfigBuilder>, KubernetesReso
     }
 
     /**
-     * The port to scrape metrics from. If using the public IP address, this must instead be specified in the relabeling rule.
+     * port defines the port to scrape metrics from. If using the public IP address, this must instead be specified in the relabeling rule.
      */
     @JsonProperty("port")
     public Integer getPort() {
@@ -126,7 +126,7 @@ public class GCESDConfig implements Editable<GCESDConfigBuilder>, KubernetesReso
     }
 
     /**
-     * The port to scrape metrics from. If using the public IP address, this must instead be specified in the relabeling rule.
+     * port defines the port to scrape metrics from. If using the public IP address, this must instead be specified in the relabeling rule.
      */
     @JsonProperty("port")
     public void setPort(Integer port) {
@@ -134,7 +134,7 @@ public class GCESDConfig implements Editable<GCESDConfigBuilder>, KubernetesReso
     }
 
     /**
-     * The Google Cloud Project ID
+     * project defines the Google Cloud Project ID
      */
     @JsonProperty("project")
     public String getProject() {
@@ -142,7 +142,7 @@ public class GCESDConfig implements Editable<GCESDConfigBuilder>, KubernetesReso
     }
 
     /**
-     * The Google Cloud Project ID
+     * project defines the Google Cloud Project ID
      */
     @JsonProperty("project")
     public void setProject(String project) {
@@ -150,7 +150,7 @@ public class GCESDConfig implements Editable<GCESDConfigBuilder>, KubernetesReso
     }
 
     /**
-     * RefreshInterval configures the refresh interval at which Prometheus will re-read the instance list.
+     * refreshInterval defines the time after which the provided names are refreshed. If not set, Prometheus uses its default value.
      */
     @JsonProperty("refreshInterval")
     public String getRefreshInterval() {
@@ -158,7 +158,7 @@ public class GCESDConfig implements Editable<GCESDConfigBuilder>, KubernetesReso
     }
 
     /**
-     * RefreshInterval configures the refresh interval at which Prometheus will re-read the instance list.
+     * refreshInterval defines the time after which the provided names are refreshed. If not set, Prometheus uses its default value.
      */
     @JsonProperty("refreshInterval")
     public void setRefreshInterval(String refreshInterval) {
@@ -166,7 +166,7 @@ public class GCESDConfig implements Editable<GCESDConfigBuilder>, KubernetesReso
     }
 
     /**
-     * The tag separator is used to separate the tags on concatenation
+     * tagSeparator defines the tag separator is used to separate the tags on concatenation
      */
     @JsonProperty("tagSeparator")
     public String getTagSeparator() {
@@ -174,7 +174,7 @@ public class GCESDConfig implements Editable<GCESDConfigBuilder>, KubernetesReso
     }
 
     /**
-     * The tag separator is used to separate the tags on concatenation
+     * tagSeparator defines the tag separator is used to separate the tags on concatenation
      */
     @JsonProperty("tagSeparator")
     public void setTagSeparator(String tagSeparator) {
@@ -182,7 +182,7 @@ public class GCESDConfig implements Editable<GCESDConfigBuilder>, KubernetesReso
     }
 
     /**
-     * The zone of the scrape targets. If you need multiple zones use multiple GCESDConfigs.
+     * zone defines the zone of the scrape targets. If you need multiple zones use multiple GCESDConfigs.
      */
     @JsonProperty("zone")
     public String getZone() {
@@ -190,7 +190,7 @@ public class GCESDConfig implements Editable<GCESDConfigBuilder>, KubernetesReso
     }
 
     /**
-     * The zone of the scrape targets. If you need multiple zones use multiple GCESDConfigs.
+     * zone defines the zone of the scrape targets. If you need multiple zones use multiple GCESDConfigs.
      */
     @JsonProperty("zone")
     public void setZone(String zone) {

@@ -186,7 +186,7 @@ public class RemoteReadSpec implements Editable<RemoteReadSpecBuilder>, Kubernet
     }
 
     /**
-     * &#42;Warning: this field shouldn't be used because the token value appears in clear-text. Prefer using `authorization`.&#42;<br><p> <br><p> Deprecated: this will be removed in a future release.
+     * bearerToken is deprecated: this will be removed in a future release. &#42;Warning: this field shouldn't be used because the token value appears in clear-text. Prefer using `authorization`.&#42;
      */
     @JsonProperty("bearerToken")
     public String getBearerToken() {
@@ -194,7 +194,7 @@ public class RemoteReadSpec implements Editable<RemoteReadSpecBuilder>, Kubernet
     }
 
     /**
-     * &#42;Warning: this field shouldn't be used because the token value appears in clear-text. Prefer using `authorization`.&#42;<br><p> <br><p> Deprecated: this will be removed in a future release.
+     * bearerToken is deprecated: this will be removed in a future release. &#42;Warning: this field shouldn't be used because the token value appears in clear-text. Prefer using `authorization`.&#42;
      */
     @JsonProperty("bearerToken")
     public void setBearerToken(String bearerToken) {
@@ -202,7 +202,7 @@ public class RemoteReadSpec implements Editable<RemoteReadSpecBuilder>, Kubernet
     }
 
     /**
-     * File from which to read the bearer token for the URL.<br><p> <br><p> Deprecated: this will be removed in a future release. Prefer using `authorization`.
+     * bearerTokenFile defines the file from which to read the bearer token for the URL.<br><p> <br><p> Deprecated: this will be removed in a future release. Prefer using `authorization`.
      */
     @JsonProperty("bearerTokenFile")
     public String getBearerTokenFile() {
@@ -210,7 +210,7 @@ public class RemoteReadSpec implements Editable<RemoteReadSpecBuilder>, Kubernet
     }
 
     /**
-     * File from which to read the bearer token for the URL.<br><p> <br><p> Deprecated: this will be removed in a future release. Prefer using `authorization`.
+     * bearerTokenFile defines the file from which to read the bearer token for the URL.<br><p> <br><p> Deprecated: this will be removed in a future release. Prefer using `authorization`.
      */
     @JsonProperty("bearerTokenFile")
     public void setBearerTokenFile(String bearerTokenFile) {
@@ -218,7 +218,7 @@ public class RemoteReadSpec implements Editable<RemoteReadSpecBuilder>, Kubernet
     }
 
     /**
-     * Whether to use the external labels as selectors for the remote read endpoint.<br><p> <br><p> It requires Prometheus &gt;= v2.34.0.
+     * filterExternalLabels defines whether to use the external labels as selectors for the remote read endpoint.<br><p> <br><p> It requires Prometheus &gt;= v2.34.0.
      */
     @JsonProperty("filterExternalLabels")
     public Boolean getFilterExternalLabels() {
@@ -226,7 +226,7 @@ public class RemoteReadSpec implements Editable<RemoteReadSpecBuilder>, Kubernet
     }
 
     /**
-     * Whether to use the external labels as selectors for the remote read endpoint.<br><p> <br><p> It requires Prometheus &gt;= v2.34.0.
+     * filterExternalLabels defines whether to use the external labels as selectors for the remote read endpoint.<br><p> <br><p> It requires Prometheus &gt;= v2.34.0.
      */
     @JsonProperty("filterExternalLabels")
     public void setFilterExternalLabels(Boolean filterExternalLabels) {
@@ -234,7 +234,7 @@ public class RemoteReadSpec implements Editable<RemoteReadSpecBuilder>, Kubernet
     }
 
     /**
-     * Configure whether HTTP requests follow HTTP 3xx redirects.<br><p> <br><p> It requires Prometheus &gt;= v2.26.0.
+     * followRedirects defines whether HTTP requests follow HTTP 3xx redirects.<br><p> <br><p> It requires Prometheus &gt;= v2.26.0.
      */
     @JsonProperty("followRedirects")
     public Boolean getFollowRedirects() {
@@ -242,7 +242,7 @@ public class RemoteReadSpec implements Editable<RemoteReadSpecBuilder>, Kubernet
     }
 
     /**
-     * Configure whether HTTP requests follow HTTP 3xx redirects.<br><p> <br><p> It requires Prometheus &gt;= v2.26.0.
+     * followRedirects defines whether HTTP requests follow HTTP 3xx redirects.<br><p> <br><p> It requires Prometheus &gt;= v2.26.0.
      */
     @JsonProperty("followRedirects")
     public void setFollowRedirects(Boolean followRedirects) {
@@ -250,7 +250,7 @@ public class RemoteReadSpec implements Editable<RemoteReadSpecBuilder>, Kubernet
     }
 
     /**
-     * Custom HTTP headers to be sent along with each remote read request. Be aware that headers that are set by Prometheus itself can't be overwritten. Only valid in Prometheus versions 2.26.0 and newer.
+     * headers defines the custom HTTP headers to be sent along with each remote read request. Be aware that headers that are set by Prometheus itself can't be overwritten. Only valid in Prometheus versions 2.26.0 and newer.
      */
     @JsonProperty("headers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -259,7 +259,7 @@ public class RemoteReadSpec implements Editable<RemoteReadSpecBuilder>, Kubernet
     }
 
     /**
-     * Custom HTTP headers to be sent along with each remote read request. Be aware that headers that are set by Prometheus itself can't be overwritten. Only valid in Prometheus versions 2.26.0 and newer.
+     * headers defines the custom HTTP headers to be sent along with each remote read request. Be aware that headers that are set by Prometheus itself can't be overwritten. Only valid in Prometheus versions 2.26.0 and newer.
      */
     @JsonProperty("headers")
     public void setHeaders(Map<String, String> headers) {
@@ -267,7 +267,7 @@ public class RemoteReadSpec implements Editable<RemoteReadSpecBuilder>, Kubernet
     }
 
     /**
-     * The name of the remote read queue, it must be unique if specified. The name is used in metrics and logging in order to differentiate read configurations.<br><p> <br><p> It requires Prometheus &gt;= v2.15.0.
+     * name of the remote read queue, it must be unique if specified. The name is used in metrics and logging in order to differentiate read configurations.<br><p> <br><p> It requires Prometheus &gt;= v2.15.0.
      */
     @JsonProperty("name")
     public String getName() {
@@ -275,7 +275,7 @@ public class RemoteReadSpec implements Editable<RemoteReadSpecBuilder>, Kubernet
     }
 
     /**
-     * The name of the remote read queue, it must be unique if specified. The name is used in metrics and logging in order to differentiate read configurations.<br><p> <br><p> It requires Prometheus &gt;= v2.15.0.
+     * name of the remote read queue, it must be unique if specified. The name is used in metrics and logging in order to differentiate read configurations.<br><p> <br><p> It requires Prometheus &gt;= v2.15.0.
      */
     @JsonProperty("name")
     public void setName(String name) {
@@ -283,7 +283,7 @@ public class RemoteReadSpec implements Editable<RemoteReadSpecBuilder>, Kubernet
     }
 
     /**
-     * `noProxy` is a comma-separated string that can contain IPs, CIDR notation, domain names that should be excluded from proxying. IP and domain names can contain port numbers.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
+     * noProxy defines a comma-separated string that can contain IPs, CIDR notation, domain names that should be excluded from proxying. IP and domain names can contain port numbers.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
      */
     @JsonProperty("noProxy")
     public String getNoProxy() {
@@ -291,7 +291,7 @@ public class RemoteReadSpec implements Editable<RemoteReadSpecBuilder>, Kubernet
     }
 
     /**
-     * `noProxy` is a comma-separated string that can contain IPs, CIDR notation, domain names that should be excluded from proxying. IP and domain names can contain port numbers.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
+     * noProxy defines a comma-separated string that can contain IPs, CIDR notation, domain names that should be excluded from proxying. IP and domain names can contain port numbers.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
      */
     @JsonProperty("noProxy")
     public void setNoProxy(String noProxy) {
@@ -315,7 +315,7 @@ public class RemoteReadSpec implements Editable<RemoteReadSpecBuilder>, Kubernet
     }
 
     /**
-     * ProxyConnectHeader optionally specifies headers to send to proxies during CONNECT requests.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
+     * proxyConnectHeader optionally specifies headers to send to proxies during CONNECT requests.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
      */
     @JsonProperty("proxyConnectHeader")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -324,7 +324,7 @@ public class RemoteReadSpec implements Editable<RemoteReadSpecBuilder>, Kubernet
     }
 
     /**
-     * ProxyConnectHeader optionally specifies headers to send to proxies during CONNECT requests.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
+     * proxyConnectHeader optionally specifies headers to send to proxies during CONNECT requests.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
      */
     @JsonProperty("proxyConnectHeader")
     public void setProxyConnectHeader(Map<String, List<SecretKeySelector>> proxyConnectHeader) {
@@ -332,7 +332,7 @@ public class RemoteReadSpec implements Editable<RemoteReadSpecBuilder>, Kubernet
     }
 
     /**
-     * Whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
+     * proxyFromEnvironment defines whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
      */
     @JsonProperty("proxyFromEnvironment")
     public Boolean getProxyFromEnvironment() {
@@ -340,7 +340,7 @@ public class RemoteReadSpec implements Editable<RemoteReadSpecBuilder>, Kubernet
     }
 
     /**
-     * Whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
+     * proxyFromEnvironment defines whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
      */
     @JsonProperty("proxyFromEnvironment")
     public void setProxyFromEnvironment(Boolean proxyFromEnvironment) {
@@ -348,7 +348,7 @@ public class RemoteReadSpec implements Editable<RemoteReadSpecBuilder>, Kubernet
     }
 
     /**
-     * `proxyURL` defines the HTTP proxy server to use.
+     * proxyUrl defines the HTTP proxy server to use.
      */
     @JsonProperty("proxyUrl")
     public String getProxyUrl() {
@@ -356,7 +356,7 @@ public class RemoteReadSpec implements Editable<RemoteReadSpecBuilder>, Kubernet
     }
 
     /**
-     * `proxyURL` defines the HTTP proxy server to use.
+     * proxyUrl defines the HTTP proxy server to use.
      */
     @JsonProperty("proxyUrl")
     public void setProxyUrl(String proxyUrl) {
@@ -364,7 +364,7 @@ public class RemoteReadSpec implements Editable<RemoteReadSpecBuilder>, Kubernet
     }
 
     /**
-     * Whether reads should be made for queries for time ranges that the local storage should have complete data for.
+     * readRecent defines whether reads should be made for queries for time ranges that the local storage should have complete data for.
      */
     @JsonProperty("readRecent")
     public Boolean getReadRecent() {
@@ -372,7 +372,7 @@ public class RemoteReadSpec implements Editable<RemoteReadSpecBuilder>, Kubernet
     }
 
     /**
-     * Whether reads should be made for queries for time ranges that the local storage should have complete data for.
+     * readRecent defines whether reads should be made for queries for time ranges that the local storage should have complete data for.
      */
     @JsonProperty("readRecent")
     public void setReadRecent(Boolean readRecent) {
@@ -380,7 +380,7 @@ public class RemoteReadSpec implements Editable<RemoteReadSpecBuilder>, Kubernet
     }
 
     /**
-     * Timeout for requests to the remote read endpoint.
+     * remoteTimeout defines the timeout for requests to the remote read endpoint.
      */
     @JsonProperty("remoteTimeout")
     public String getRemoteTimeout() {
@@ -388,7 +388,7 @@ public class RemoteReadSpec implements Editable<RemoteReadSpecBuilder>, Kubernet
     }
 
     /**
-     * Timeout for requests to the remote read endpoint.
+     * remoteTimeout defines the timeout for requests to the remote read endpoint.
      */
     @JsonProperty("remoteTimeout")
     public void setRemoteTimeout(String remoteTimeout) {
@@ -396,7 +396,7 @@ public class RemoteReadSpec implements Editable<RemoteReadSpecBuilder>, Kubernet
     }
 
     /**
-     * An optional list of equality matchers which have to be present in a selector to query the remote read endpoint.
+     * requiredMatchers defines an optional list of equality matchers which have to be present in a selector to query the remote read endpoint.
      */
     @JsonProperty("requiredMatchers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -405,7 +405,7 @@ public class RemoteReadSpec implements Editable<RemoteReadSpecBuilder>, Kubernet
     }
 
     /**
-     * An optional list of equality matchers which have to be present in a selector to query the remote read endpoint.
+     * requiredMatchers defines an optional list of equality matchers which have to be present in a selector to query the remote read endpoint.
      */
     @JsonProperty("requiredMatchers")
     public void setRequiredMatchers(Map<String, String> requiredMatchers) {
@@ -429,7 +429,7 @@ public class RemoteReadSpec implements Editable<RemoteReadSpecBuilder>, Kubernet
     }
 
     /**
-     * The URL of the endpoint to query from.
+     * url defines the URL of the endpoint to query from.
      */
     @JsonProperty("url")
     public String getUrl() {
@@ -437,7 +437,7 @@ public class RemoteReadSpec implements Editable<RemoteReadSpecBuilder>, Kubernet
     }
 
     /**
-     * The URL of the endpoint to query from.
+     * url defines the URL of the endpoint to query from.
      */
     @JsonProperty("url")
     public void setUrl(String url) {

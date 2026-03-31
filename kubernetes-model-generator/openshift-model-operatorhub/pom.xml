@@ -23,7 +23,7 @@
   <parent>
     <groupId>io.fabric8</groupId>
     <artifactId>kubernetes-model-generator</artifactId>
-    <version>7.6-SNAPSHOT</version>
+    <version>7.7-SNAPSHOT</version>
   </parent>
 
   <artifactId>openshift-model-operatorhub</artifactId>
@@ -73,6 +73,16 @@
                 <packageMappings combine.self="append">
                   <com.coreos.operators>io.fabric8.openshift.api.model.operatorhub</com.coreos.operators>
                 </packageMappings>
+                <refToJavaTypeMappings>
+                  <property>
+                    <name>#/components/schemas/com.github.operator-framework.api.pkg.lib.release.OperatorRelease</name>
+                    <value>java.lang.String</value>
+                  </property>
+                  <property>
+                    <name>#/components/schemas/com.github.operator-framework.api.pkg.lib.version.OperatorVersion</name>
+                    <value>java.lang.String</value>
+                  </property>
+                </refToJavaTypeMappings>
                 <includeGenerationRegexes>
                   <includeGenerationRegex>^com\.coreos\.operators\..*$</includeGenerationRegex>
                 </includeGenerationRegexes>

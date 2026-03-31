@@ -15,7 +15,6 @@
  */
 package io.fabric8.kubernetes.client.utils;
 
-import io.fabric8.kubernetes.api.builder.VisitableBuilder;
 import io.fabric8.kubernetes.api.model.ConfigMap;
 import io.fabric8.kubernetes.api.model.ConfigMapBuilder;
 import io.fabric8.kubernetes.api.model.DefaultKubernetesResourceList;
@@ -478,10 +477,6 @@ public class KubernetesResourceUtil {
 
   public static <T extends HasMetadata> Class<? extends KubernetesResourceList> inferListType(Class<T> type) {
     return (Class<? extends KubernetesResourceList>) loadRelated(type, "List", DefaultKubernetesResourceList.class);
-  }
-
-  public static <T extends HasMetadata, V extends VisitableBuilder<T, V>> Class<V> inferBuilderType(Class<T> type) {
-    return (Class<V>) loadRelated(type, "Builder", null);
   }
 
   private static Class<?> loadRelated(Class<?> type, String suffix, Class<?> defaultClass) {

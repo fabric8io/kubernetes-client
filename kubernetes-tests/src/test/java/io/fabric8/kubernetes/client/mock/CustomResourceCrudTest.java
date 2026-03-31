@@ -15,6 +15,9 @@
  */
 package io.fabric8.kubernetes.client.mock;
 
+import io.fabric8.kubernetes.api.builder.Visitor;
+import io.fabric8.kubernetes.api.model.GenericKubernetesResource;
+import io.fabric8.kubernetes.api.model.GenericKubernetesResourceBuilder;
 import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 import io.fabric8.kubernetes.api.model.ObjectMetaBuilder;
 import io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceDefinition;
@@ -22,6 +25,7 @@ import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.NonNamespaceOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
+import io.fabric8.kubernetes.client.dsl.base.CustomResourceDefinitionContext;
 import io.fabric8.kubernetes.client.mock.crd.CronTab;
 import io.fabric8.kubernetes.client.mock.crd.CronTabSpec;
 import io.fabric8.kubernetes.client.mock.crd.CronTabStatus;
@@ -278,6 +282,41 @@ class CustomResourceCrudTest {
 
     assertNotNull(result.getStatus());
     assertEquals(7, result.getStatus().getReplicas());
+  }
+    
+  void testGenericKubernetesResourceEditWithVisitor() {
+    // Given
+    CustomResourceDefinitionContext crdContext = new CustomResourceDefinitionContext.Builder()
+        .withGroup("stable.example.com")
+        .withVersion("v1")
+        .withPlural("crontabs")
+        .withScope("Namespaced")
+        .build();
+
+    GenericKubernetesResource gkr = new GenericKubernetesResource();
+    gkr.setApiVersion("stable.example.com/v1");
+    gkr.setKind("CronTab");
+    gkr.setMetadata(new ObjectMetaBuilder().withName("my-cron").withNamespace("test-ns").build());
+    client.genericKubernetesResources(crdContext).inNamespace("test-ns").create(gkr);
+
+    // When
+    GenericKubernetesResource edited = client.genericKubernetesResources(crdContext)
+        .inNamespace("test-ns").withName("my-cron")
+        .edit(new Visitor<GenericKubernetesResourceBuilder>() {
+          @Override
+          public void visit(GenericKubernetesResourceBuilder builder) {
+            builder.editMetadata().addToLabels("edited", "true").endMetadata();
+          }
+        });
+
+    // Then
+    assertNotNull(edited);
+    assertEquals("true", edited.getMetadata().getLabels().get("edited"));
+
+    GenericKubernetesResource fromServer = client.genericKubernetesResources(crdContext)
+        .inNamespace("test-ns").withName("my-cron").get();
+    assertNotNull(fromServer);
+    assertEquals("true", fromServer.getMetadata().getLabels().get("edited"));
   }
 
   void assertCronTab(CronTab cronTab, String name, String cronTabSpec, int replicas, String image) {
