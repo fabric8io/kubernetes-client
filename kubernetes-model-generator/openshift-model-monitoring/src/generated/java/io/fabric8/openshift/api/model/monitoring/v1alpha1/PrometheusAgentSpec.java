@@ -133,6 +133,7 @@ import lombok.experimental.Accessors;
     "routePrefix",
     "runtime",
     "sampleLimit",
+    "schedulerName",
     "scrapeClasses",
     "scrapeClassicHistograms",
     "scrapeConfigNamespaceSelector",
@@ -346,6 +347,8 @@ public class PrometheusAgentSpec implements Editable<PrometheusAgentSpecBuilder>
     private RuntimeConfig runtime;
     @JsonProperty("sampleLimit")
     private Long sampleLimit;
+    @JsonProperty("schedulerName")
+    private String schedulerName;
     @JsonProperty("scrapeClasses")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<ScrapeClass> scrapeClasses = new ArrayList<>();
@@ -422,7 +425,7 @@ public class PrometheusAgentSpec implements Editable<PrometheusAgentSpecBuilder>
     public PrometheusAgentSpec() {
     }
 
-    public PrometheusAgentSpec(List<Argument> additionalArgs, SecretKeySelector additionalScrapeConfigs, Affinity affinity, APIServerConfig apiserverConfig, ArbitraryFSAccessThroughSMsConfig arbitraryFSAccessThroughSMs, Boolean automountServiceAccountToken, String bodySizeLimit, List<String> configMaps, List<Container> containers, Boolean convertClassicHistogramsToNHCB, PodDNSConfig dnsConfig, String dnsPolicy, List<String> enableFeatures, Boolean enableOTLPReceiver, Boolean enableRemoteWriteReceiver, Boolean enableServiceLinks, String enforcedBodySizeLimit, Long enforcedKeepDroppedTargets, Long enforcedLabelLimit, Long enforcedLabelNameLengthLimit, Long enforcedLabelValueLengthLimit, String enforcedNamespaceLabel, Long enforcedSampleLimit, Long enforcedTargetLimit, List<ObjectReference> excludedFromEnforcement, Map<String, String> externalLabels, String externalUrl, List<HostAlias> hostAliases, Boolean hostNetwork, Boolean hostUsers, Boolean ignoreNamespaceSelectors, String image, String imagePullPolicy, List<LocalObjectReference> imagePullSecrets, List<Container> initContainers, Long keepDroppedTargets, Long labelLimit, Long labelNameLengthLimit, Long labelValueLengthLimit, Boolean listenLocal, String logFormat, String logLevel, Integer maximumStartupDurationSeconds, Integer minReadySeconds, String mode, String nameEscapingScheme, String nameValidationScheme, Map<String, String> nodeSelector, OTLPConfig otlp, Boolean overrideHonorLabels, Boolean overrideHonorTimestamps, Boolean paused, StatefulSetPersistentVolumeClaimRetentionPolicy persistentVolumeClaimRetentionPolicy, String podManagementPolicy, EmbeddedObjectMetadata podMetadata, LabelSelector podMonitorNamespaceSelector, LabelSelector podMonitorSelector, List<String> podTargetLabels, String portName, String priorityClassName, LabelSelector probeNamespaceSelector, LabelSelector probeSelector, String prometheusExternalLabelName, String reloadStrategy, List<RemoteWriteSpec> remoteWrite, List<String> remoteWriteReceiverMessageVersions, String replicaExternalLabelName, Integer replicas, ResourceRequirements resources, String routePrefix, RuntimeConfig runtime, Long sampleLimit, List<ScrapeClass> scrapeClasses, Boolean scrapeClassicHistograms, LabelSelector scrapeConfigNamespaceSelector, LabelSelector scrapeConfigSelector, String scrapeFailureLogFile, String scrapeInterval, Boolean scrapeNativeHistograms, List<String> scrapeProtocols, String scrapeTimeout, List<String> secrets, PodSecurityContext securityContext, String serviceAccountName, String serviceDiscoveryRole, LabelSelector serviceMonitorNamespaceSelector, LabelSelector serviceMonitorSelector, String serviceName, Integer shards, StorageSpec storage, Long targetLimit, Long terminationGracePeriodSeconds, List<Toleration> tolerations, List<TopologySpreadConstraint> topologySpreadConstraints, TracingConfig tracingConfig, TSDBSpec tsdb, StatefulSetUpdateStrategy updateStrategy, String version, List<VolumeMount> volumeMounts, List<Volume> volumes, Boolean walCompression, PrometheusWebSpec web) {
+    public PrometheusAgentSpec(List<Argument> additionalArgs, SecretKeySelector additionalScrapeConfigs, Affinity affinity, APIServerConfig apiserverConfig, ArbitraryFSAccessThroughSMsConfig arbitraryFSAccessThroughSMs, Boolean automountServiceAccountToken, String bodySizeLimit, List<String> configMaps, List<Container> containers, Boolean convertClassicHistogramsToNHCB, PodDNSConfig dnsConfig, String dnsPolicy, List<String> enableFeatures, Boolean enableOTLPReceiver, Boolean enableRemoteWriteReceiver, Boolean enableServiceLinks, String enforcedBodySizeLimit, Long enforcedKeepDroppedTargets, Long enforcedLabelLimit, Long enforcedLabelNameLengthLimit, Long enforcedLabelValueLengthLimit, String enforcedNamespaceLabel, Long enforcedSampleLimit, Long enforcedTargetLimit, List<ObjectReference> excludedFromEnforcement, Map<String, String> externalLabels, String externalUrl, List<HostAlias> hostAliases, Boolean hostNetwork, Boolean hostUsers, Boolean ignoreNamespaceSelectors, String image, String imagePullPolicy, List<LocalObjectReference> imagePullSecrets, List<Container> initContainers, Long keepDroppedTargets, Long labelLimit, Long labelNameLengthLimit, Long labelValueLengthLimit, Boolean listenLocal, String logFormat, String logLevel, Integer maximumStartupDurationSeconds, Integer minReadySeconds, String mode, String nameEscapingScheme, String nameValidationScheme, Map<String, String> nodeSelector, OTLPConfig otlp, Boolean overrideHonorLabels, Boolean overrideHonorTimestamps, Boolean paused, StatefulSetPersistentVolumeClaimRetentionPolicy persistentVolumeClaimRetentionPolicy, String podManagementPolicy, EmbeddedObjectMetadata podMetadata, LabelSelector podMonitorNamespaceSelector, LabelSelector podMonitorSelector, List<String> podTargetLabels, String portName, String priorityClassName, LabelSelector probeNamespaceSelector, LabelSelector probeSelector, String prometheusExternalLabelName, String reloadStrategy, List<RemoteWriteSpec> remoteWrite, List<String> remoteWriteReceiverMessageVersions, String replicaExternalLabelName, Integer replicas, ResourceRequirements resources, String routePrefix, RuntimeConfig runtime, Long sampleLimit, String schedulerName, List<ScrapeClass> scrapeClasses, Boolean scrapeClassicHistograms, LabelSelector scrapeConfigNamespaceSelector, LabelSelector scrapeConfigSelector, String scrapeFailureLogFile, String scrapeInterval, Boolean scrapeNativeHistograms, List<String> scrapeProtocols, String scrapeTimeout, List<String> secrets, PodSecurityContext securityContext, String serviceAccountName, String serviceDiscoveryRole, LabelSelector serviceMonitorNamespaceSelector, LabelSelector serviceMonitorSelector, String serviceName, Integer shards, StorageSpec storage, Long targetLimit, Long terminationGracePeriodSeconds, List<Toleration> tolerations, List<TopologySpreadConstraint> topologySpreadConstraints, TracingConfig tracingConfig, TSDBSpec tsdb, StatefulSetUpdateStrategy updateStrategy, String version, List<VolumeMount> volumeMounts, List<Volume> volumes, Boolean walCompression, PrometheusWebSpec web) {
         super();
         this.additionalArgs = additionalArgs;
         this.additionalScrapeConfigs = additionalScrapeConfigs;
@@ -496,6 +499,7 @@ public class PrometheusAgentSpec implements Editable<PrometheusAgentSpecBuilder>
         this.routePrefix = routePrefix;
         this.runtime = runtime;
         this.sampleLimit = sampleLimit;
+        this.schedulerName = schedulerName;
         this.scrapeClasses = scrapeClasses;
         this.scrapeClassicHistograms = scrapeClassicHistograms;
         this.scrapeConfigNamespaceSelector = scrapeConfigNamespaceSelector;
@@ -659,7 +663,7 @@ public class PrometheusAgentSpec implements Editable<PrometheusAgentSpecBuilder>
     }
 
     /**
-     * containers allows injecting additional containers or modifying operator generated containers. This can be used to allow adding an authentication proxy to the Pods or to change the behavior of an operator generated container. Containers described here modify an operator generated container if they share the same name and modifications are done via a strategic merge patch.<br><p> <br><p> The names of containers managed by the operator are: &#42; `prometheus` &#42; `config-reloader` &#42; `thanos-sidecar`<br><p> <br><p> Overriding containers is entirely outside the scope of what the maintainers will support and by doing so, you accept that this behaviour may break at any time without notice.
+     * containers allows injecting additional containers or modifying operator generated containers. This can be used to allow adding an authentication proxy to the Pods or to change the behavior of an operator generated container. Containers described here modify an operator generated container if they share the same name and modifications are done via a strategic merge patch.<br><p> <br><p> The names of containers managed by the operator are: &#42; `prometheus` &#42; `config-reloader` &#42; `thanos-sidecar`<br><p> <br><p> Overriding containers which are managed by the operator require careful testing, especially when upgrading to a new version of the operator.
      */
     @JsonProperty("containers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -668,7 +672,7 @@ public class PrometheusAgentSpec implements Editable<PrometheusAgentSpecBuilder>
     }
 
     /**
-     * containers allows injecting additional containers or modifying operator generated containers. This can be used to allow adding an authentication proxy to the Pods or to change the behavior of an operator generated container. Containers described here modify an operator generated container if they share the same name and modifications are done via a strategic merge patch.<br><p> <br><p> The names of containers managed by the operator are: &#42; `prometheus` &#42; `config-reloader` &#42; `thanos-sidecar`<br><p> <br><p> Overriding containers is entirely outside the scope of what the maintainers will support and by doing so, you accept that this behaviour may break at any time without notice.
+     * containers allows injecting additional containers or modifying operator generated containers. This can be used to allow adding an authentication proxy to the Pods or to change the behavior of an operator generated container. Containers described here modify an operator generated container if they share the same name and modifications are done via a strategic merge patch.<br><p> <br><p> The names of containers managed by the operator are: &#42; `prometheus` &#42; `config-reloader` &#42; `thanos-sidecar`<br><p> <br><p> Overriding containers which are managed by the operator require careful testing, especially when upgrading to a new version of the operator.
      */
     @JsonProperty("containers")
     public void setContainers(List<Container> containers) {
@@ -1081,7 +1085,7 @@ public class PrometheusAgentSpec implements Editable<PrometheusAgentSpecBuilder>
     }
 
     /**
-     * initContainers allows injecting initContainers to the Pod definition. Those can be used to e.g.  fetch secrets for injection into the Prometheus configuration from external sources. Any errors during the execution of an initContainer will lead to a restart of the Pod. More info: https://kubernetes.io/docs/concepts/workloads/pods/init-containers/ InitContainers described here modify an operator generated init containers if they share the same name and modifications are done via a strategic merge patch.<br><p> <br><p> The names of init container name managed by the operator are: &#42; `init-config-reloader`.<br><p> <br><p> Overriding init containers is entirely outside the scope of what the maintainers will support and by doing so, you accept that this behaviour may break at any time without notice.
+     * initContainers allows injecting initContainers to the Pod definition. Those can be used to e.g. fetch secrets for injection into the Prometheus configuration from external sources. Any errors during the execution of an initContainer will lead to a restart of the Pod. More info: https://kubernetes.io/docs/concepts/workloads/pods/init-containers/ InitContainers described here modify an operator generated init containers if they share the same name and modifications are done via a strategic merge patch.<br><p> <br><p> The names of init container name managed by the operator are: &#42; `init-config-reloader`.<br><p> <br><p> Overriding init containers which are managed by the operator require careful testing, especially when upgrading to a new version of the operator.
      */
     @JsonProperty("initContainers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -1090,7 +1094,7 @@ public class PrometheusAgentSpec implements Editable<PrometheusAgentSpecBuilder>
     }
 
     /**
-     * initContainers allows injecting initContainers to the Pod definition. Those can be used to e.g.  fetch secrets for injection into the Prometheus configuration from external sources. Any errors during the execution of an initContainer will lead to a restart of the Pod. More info: https://kubernetes.io/docs/concepts/workloads/pods/init-containers/ InitContainers described here modify an operator generated init containers if they share the same name and modifications are done via a strategic merge patch.<br><p> <br><p> The names of init container name managed by the operator are: &#42; `init-config-reloader`.<br><p> <br><p> Overriding init containers is entirely outside the scope of what the maintainers will support and by doing so, you accept that this behaviour may break at any time without notice.
+     * initContainers allows injecting initContainers to the Pod definition. Those can be used to e.g. fetch secrets for injection into the Prometheus configuration from external sources. Any errors during the execution of an initContainer will lead to a restart of the Pod. More info: https://kubernetes.io/docs/concepts/workloads/pods/init-containers/ InitContainers described here modify an operator generated init containers if they share the same name and modifications are done via a strategic merge patch.<br><p> <br><p> The names of init container name managed by the operator are: &#42; `init-config-reloader`.<br><p> <br><p> Overriding init containers which are managed by the operator require careful testing, especially when upgrading to a new version of the operator.
      */
     @JsonProperty("initContainers")
     public void setInitContainers(List<Container> initContainers) {
@@ -1691,6 +1695,22 @@ public class PrometheusAgentSpec implements Editable<PrometheusAgentSpecBuilder>
     @JsonProperty("sampleLimit")
     public void setSampleLimit(Long sampleLimit) {
         this.sampleLimit = sampleLimit;
+    }
+
+    /**
+     * schedulerName defines the scheduler to use for Pod scheduling. If not specified, the default scheduler is used.
+     */
+    @JsonProperty("schedulerName")
+    public String getSchedulerName() {
+        return schedulerName;
+    }
+
+    /**
+     * schedulerName defines the scheduler to use for Pod scheduling. If not specified, the default scheduler is used.
+     */
+    @JsonProperty("schedulerName")
+    public void setSchedulerName(String schedulerName) {
+        this.schedulerName = schedulerName;
     }
 
     /**

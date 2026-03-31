@@ -232,11 +232,13 @@ public class LeaderElector {
       updateObserved(newLeaderElectionRecord);
       return true;
     }
-    updateObserved(oldLeaderElectionRecord);
     final boolean isLeader = isLeader(oldLeaderElectionRecord);
-    if (!isLeader && !canBecomeLeader(oldLeaderElectionRecord)) {
-      logger.debug("Lock is held by {} and has not yet expired", oldLeaderElectionRecord.getHolderIdentity());
-      return false;
+    if (!isLeader) {
+      updateObserved(oldLeaderElectionRecord);
+      if (!canBecomeLeader(oldLeaderElectionRecord)) {
+        logger.debug("Lock is held by {} and has not yet expired", oldLeaderElectionRecord.getHolderIdentity());
+        return false;
+      }
     }
     final LeaderElectionRecord newLeaderElectionRecord = new LeaderElectionRecord(
         lock.identity(),

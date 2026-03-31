@@ -59,6 +59,7 @@ import lombok.experimental.Accessors;
     "nativeAPIs",
     "provider",
     "relatedImages",
+    "release",
     "replaces",
     "selector",
     "skips",
@@ -135,6 +136,8 @@ public class ClusterServiceVersionSpec implements Editable<ClusterServiceVersion
     @JsonProperty("relatedImages")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<RelatedImage> relatedImages = new ArrayList<>();
+    @JsonProperty("release")
+    private String release;
     @JsonProperty("replaces")
     private String replaces;
     @JsonProperty("selector")
@@ -156,7 +159,7 @@ public class ClusterServiceVersionSpec implements Editable<ClusterServiceVersion
     public ClusterServiceVersionSpec() {
     }
 
-    public ClusterServiceVersionSpec(Map<String, String> annotations, APIServiceDefinitions apiservicedefinitions, CleanupSpec cleanup, CustomResourceDefinitions customresourcedefinitions, String description, String displayName, List<Icon> icon, NamedInstallStrategy install, List<InstallMode> installModes, List<String> keywords, Map<String, String> labels, List<AppLink> links, List<Maintainer> maintainers, String maturity, String minKubeVersion, List<GroupVersionKind> nativeAPIs, AppLink provider, List<RelatedImage> relatedImages, String replaces, LabelSelector selector, List<String> skips, String version, List<WebhookDescription> webhookdefinitions) {
+    public ClusterServiceVersionSpec(Map<String, String> annotations, APIServiceDefinitions apiservicedefinitions, CleanupSpec cleanup, CustomResourceDefinitions customresourcedefinitions, String description, String displayName, List<Icon> icon, NamedInstallStrategy install, List<InstallMode> installModes, List<String> keywords, Map<String, String> labels, List<AppLink> links, List<Maintainer> maintainers, String maturity, String minKubeVersion, List<GroupVersionKind> nativeAPIs, AppLink provider, List<RelatedImage> relatedImages, String release, String replaces, LabelSelector selector, List<String> skips, String version, List<WebhookDescription> webhookdefinitions) {
         super();
         this.annotations = annotations;
         this.apiservicedefinitions = apiservicedefinitions;
@@ -176,6 +179,7 @@ public class ClusterServiceVersionSpec implements Editable<ClusterServiceVersion
         this.nativeAPIs = nativeAPIs;
         this.provider = provider;
         this.relatedImages = relatedImages;
+        this.release = release;
         this.replaces = replaces;
         this.selector = selector;
         this.skips = skips;
@@ -478,6 +482,22 @@ public class ClusterServiceVersionSpec implements Editable<ClusterServiceVersion
     @JsonProperty("relatedImages")
     public void setRelatedImages(List<RelatedImage> relatedImages) {
         this.relatedImages = relatedImages;
+    }
+
+    /**
+     * ClusterServiceVersionSpec declarations tell OLM how to install an operator that can manage apps for a given version.
+     */
+    @JsonProperty("release")
+    public String getRelease() {
+        return release;
+    }
+
+    /**
+     * ClusterServiceVersionSpec declarations tell OLM how to install an operator that can manage apps for a given version.
+     */
+    @JsonProperty("release")
+    public void setRelease(String release) {
+        this.release = release;
     }
 
     /**

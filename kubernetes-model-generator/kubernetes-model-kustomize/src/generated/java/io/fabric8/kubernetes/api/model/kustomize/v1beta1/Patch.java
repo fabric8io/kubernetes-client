@@ -66,8 +66,7 @@ public class Patch implements Editable<PatchBuilder>, KubernetesResource
 {
 
     @JsonProperty("options")
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, Boolean> options = new LinkedHashMap<>();
+    private PatchArgs options;
     @JsonProperty("patch")
     private String patch;
     @JsonProperty("path")
@@ -83,7 +82,7 @@ public class Patch implements Editable<PatchBuilder>, KubernetesResource
     public Patch() {
     }
 
-    public Patch(Map<String, Boolean> options, String patch, String path, Selector target) {
+    public Patch(PatchArgs options, String patch, String path, Selector target) {
         super();
         this.options = options;
         this.patch = patch;
@@ -92,13 +91,12 @@ public class Patch implements Editable<PatchBuilder>, KubernetesResource
     }
 
     @JsonProperty("options")
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public Map<String, Boolean> getOptions() {
+    public PatchArgs getOptions() {
         return options;
     }
 
     @JsonProperty("options")
-    public void setOptions(Map<String, Boolean> options) {
+    public void setOptions(PatchArgs options) {
         this.options = options;
     }
 

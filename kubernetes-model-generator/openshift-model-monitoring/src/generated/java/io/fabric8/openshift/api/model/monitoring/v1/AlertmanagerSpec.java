@@ -91,6 +91,7 @@ import lombok.experimental.Accessors;
     "resources",
     "retention",
     "routePrefix",
+    "schedulerName",
     "secrets",
     "securityContext",
     "serviceAccountName",
@@ -235,6 +236,8 @@ public class AlertmanagerSpec implements Editable<AlertmanagerSpecBuilder>, Kube
     private String retention;
     @JsonProperty("routePrefix")
     private String routePrefix;
+    @JsonProperty("schedulerName")
+    private String schedulerName;
     @JsonProperty("secrets")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> secrets = new ArrayList<>();
@@ -279,7 +282,7 @@ public class AlertmanagerSpec implements Editable<AlertmanagerSpecBuilder>, Kube
     public AlertmanagerSpec() {
     }
 
-    public AlertmanagerSpec(List<Argument> additionalArgs, List<String> additionalPeers, Affinity affinity, AlertmanagerConfigMatcherStrategy alertmanagerConfigMatcherStrategy, LabelSelector alertmanagerConfigNamespaceSelector, LabelSelector alertmanagerConfigSelector, AlertmanagerConfiguration alertmanagerConfiguration, Boolean automountServiceAccountToken, String baseImage, String clusterAdvertiseAddress, String clusterGossipInterval, String clusterLabel, String clusterPeerTimeout, String clusterPushpullInterval, ClusterTLSConfig clusterTLS, List<String> configMaps, String configSecret, List<Container> containers, PodDNSConfig dnsConfig, String dnsPolicy, List<String> enableFeatures, Boolean enableServiceLinks, String externalUrl, Boolean forceEnableClusterMode, List<HostAlias> hostAliases, Boolean hostNetwork, Boolean hostUsers, String image, String imagePullPolicy, List<LocalObjectReference> imagePullSecrets, List<Container> initContainers, AlertmanagerLimitsSpec limits, Boolean listenLocal, String logFormat, String logLevel, Integer minReadySeconds, Map<String, String> nodeSelector, Boolean paused, StatefulSetPersistentVolumeClaimRetentionPolicy persistentVolumeClaimRetentionPolicy, String podManagementPolicy, EmbeddedObjectMetadata podMetadata, String portName, String priorityClassName, Integer replicas, ResourceRequirements resources, String retention, String routePrefix, List<String> secrets, PodSecurityContext securityContext, String serviceAccountName, String serviceName, String sha, StorageSpec storage, String tag, Long terminationGracePeriodSeconds, List<Toleration> tolerations, List<TopologySpreadConstraint> topologySpreadConstraints, StatefulSetUpdateStrategy updateStrategy, String version, List<VolumeMount> volumeMounts, List<Volume> volumes, AlertmanagerWebSpec web) {
+    public AlertmanagerSpec(List<Argument> additionalArgs, List<String> additionalPeers, Affinity affinity, AlertmanagerConfigMatcherStrategy alertmanagerConfigMatcherStrategy, LabelSelector alertmanagerConfigNamespaceSelector, LabelSelector alertmanagerConfigSelector, AlertmanagerConfiguration alertmanagerConfiguration, Boolean automountServiceAccountToken, String baseImage, String clusterAdvertiseAddress, String clusterGossipInterval, String clusterLabel, String clusterPeerTimeout, String clusterPushpullInterval, ClusterTLSConfig clusterTLS, List<String> configMaps, String configSecret, List<Container> containers, PodDNSConfig dnsConfig, String dnsPolicy, List<String> enableFeatures, Boolean enableServiceLinks, String externalUrl, Boolean forceEnableClusterMode, List<HostAlias> hostAliases, Boolean hostNetwork, Boolean hostUsers, String image, String imagePullPolicy, List<LocalObjectReference> imagePullSecrets, List<Container> initContainers, AlertmanagerLimitsSpec limits, Boolean listenLocal, String logFormat, String logLevel, Integer minReadySeconds, Map<String, String> nodeSelector, Boolean paused, StatefulSetPersistentVolumeClaimRetentionPolicy persistentVolumeClaimRetentionPolicy, String podManagementPolicy, EmbeddedObjectMetadata podMetadata, String portName, String priorityClassName, Integer replicas, ResourceRequirements resources, String retention, String routePrefix, String schedulerName, List<String> secrets, PodSecurityContext securityContext, String serviceAccountName, String serviceName, String sha, StorageSpec storage, String tag, Long terminationGracePeriodSeconds, List<Toleration> tolerations, List<TopologySpreadConstraint> topologySpreadConstraints, StatefulSetUpdateStrategy updateStrategy, String version, List<VolumeMount> volumeMounts, List<Volume> volumes, AlertmanagerWebSpec web) {
         super();
         this.additionalArgs = additionalArgs;
         this.additionalPeers = additionalPeers;
@@ -328,6 +331,7 @@ public class AlertmanagerSpec implements Editable<AlertmanagerSpecBuilder>, Kube
         this.resources = resources;
         this.retention = retention;
         this.routePrefix = routePrefix;
+        this.schedulerName = schedulerName;
         this.secrets = secrets;
         this.securityContext = securityContext;
         this.serviceAccountName = serviceAccountName;
@@ -621,7 +625,7 @@ public class AlertmanagerSpec implements Editable<AlertmanagerSpecBuilder>, Kube
     }
 
     /**
-     * containers allows injecting additional containers. This is meant to allow adding an authentication proxy to an Alertmanager pod. Containers described here modify an operator generated container if they share the same name and modifications are done via a strategic merge patch. The current container names are: `alertmanager` and `config-reloader`. Overriding containers is entirely outside the scope of what the maintainers will support and by doing so, you accept that this behaviour may break at any time without notice.
+     * containers allows injecting additional containers or modifying operator generated containers. This can be used to allow adding an authentication proxy to the Pods or to change the behavior of an operator generated container. Containers described here modify an operator generated container if they share the same name and modifications are done via a strategic merge patch.<br><p> <br><p> The names of containers managed by the operator are: &#42; `alertmanager` &#42; `config-reloader` &#42; `thanos-sidecar`<br><p> <br><p> Overriding containers which are managed by the operator require careful testing, especially when upgrading to a new version of the operator.
      */
     @JsonProperty("containers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -630,7 +634,7 @@ public class AlertmanagerSpec implements Editable<AlertmanagerSpecBuilder>, Kube
     }
 
     /**
-     * containers allows injecting additional containers. This is meant to allow adding an authentication proxy to an Alertmanager pod. Containers described here modify an operator generated container if they share the same name and modifications are done via a strategic merge patch. The current container names are: `alertmanager` and `config-reloader`. Overriding containers is entirely outside the scope of what the maintainers will support and by doing so, you accept that this behaviour may break at any time without notice.
+     * containers allows injecting additional containers or modifying operator generated containers. This can be used to allow adding an authentication proxy to the Pods or to change the behavior of an operator generated container. Containers described here modify an operator generated container if they share the same name and modifications are done via a strategic merge patch.<br><p> <br><p> The names of containers managed by the operator are: &#42; `alertmanager` &#42; `config-reloader` &#42; `thanos-sidecar`<br><p> <br><p> Overriding containers which are managed by the operator require careful testing, especially when upgrading to a new version of the operator.
      */
     @JsonProperty("containers")
     public void setContainers(List<Container> containers) {
@@ -833,7 +837,7 @@ public class AlertmanagerSpec implements Editable<AlertmanagerSpecBuilder>, Kube
     }
 
     /**
-     * initContainers allows adding initContainers to the pod definition. Those can be used to e.g. fetch secrets for injection into the Alertmanager configuration from external sources. Any errors during the execution of an initContainer will lead to a restart of the Pod. More info: https://kubernetes.io/docs/concepts/workloads/pods/init-containers/ InitContainers described here modify an operator generated init containers if they share the same name and modifications are done via a strategic merge patch. The current init container name is: `init-config-reloader`. Overriding init containers is entirely outside the scope of what the maintainers will support and by doing so, you accept that this behaviour may break at any time without notice.
+     * initContainers allows injecting initContainers to the Pod definition. Those can be used to e.g.  fetch secrets for injection into the Prometheus configuration from external sources. Any errors during the execution of an initContainer will lead to a restart of the Pod. More info: https://kubernetes.io/docs/concepts/workloads/pods/init-containers/ InitContainers described here modify an operator generated init containers if they share the same name and modifications are done via a strategic merge patch.<br><p> <br><p> The names of init container name managed by the operator are: &#42; `init-config-reloader`.<br><p> <br><p> Overriding init containers which are managed by the operator require careful testing, especially when upgrading to a new version of the operator.
      */
     @JsonProperty("initContainers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -842,7 +846,7 @@ public class AlertmanagerSpec implements Editable<AlertmanagerSpecBuilder>, Kube
     }
 
     /**
-     * initContainers allows adding initContainers to the pod definition. Those can be used to e.g. fetch secrets for injection into the Alertmanager configuration from external sources. Any errors during the execution of an initContainer will lead to a restart of the Pod. More info: https://kubernetes.io/docs/concepts/workloads/pods/init-containers/ InitContainers described here modify an operator generated init containers if they share the same name and modifications are done via a strategic merge patch. The current init container name is: `init-config-reloader`. Overriding init containers is entirely outside the scope of what the maintainers will support and by doing so, you accept that this behaviour may break at any time without notice.
+     * initContainers allows injecting initContainers to the Pod definition. Those can be used to e.g.  fetch secrets for injection into the Prometheus configuration from external sources. Any errors during the execution of an initContainer will lead to a restart of the Pod. More info: https://kubernetes.io/docs/concepts/workloads/pods/init-containers/ InitContainers described here modify an operator generated init containers if they share the same name and modifications are done via a strategic merge patch.<br><p> <br><p> The names of init container name managed by the operator are: &#42; `init-config-reloader`.<br><p> <br><p> Overriding init containers which are managed by the operator require careful testing, especially when upgrading to a new version of the operator.
      */
     @JsonProperty("initContainers")
     public void setInitContainers(List<Container> initContainers) {
@@ -1104,6 +1108,22 @@ public class AlertmanagerSpec implements Editable<AlertmanagerSpecBuilder>, Kube
     @JsonProperty("routePrefix")
     public void setRoutePrefix(String routePrefix) {
         this.routePrefix = routePrefix;
+    }
+
+    /**
+     * schedulerName defines the scheduler to use for Pod scheduling. If not specified, the default scheduler is used.
+     */
+    @JsonProperty("schedulerName")
+    public String getSchedulerName() {
+        return schedulerName;
+    }
+
+    /**
+     * schedulerName defines the scheduler to use for Pod scheduling. If not specified, the default scheduler is used.
+     */
+    @JsonProperty("schedulerName")
+    public void setSchedulerName(String schedulerName) {
+        this.schedulerName = schedulerName;
     }
 
     /**
