@@ -3,8 +3,9 @@
 ### 7.7-SNAPSHOT
 
 #### Bugs
-* Fix #7265: (informer) use ReadWriteLock in CacheImpl to prevent index read inconsistency during concurrent updates
 * Fix #7543: fix processInlineDuplicateFields to recursively resolve nested inline embeds
+* Fix #7450: StandardHttpClient.shouldRetry() does not retry on Vert.x HttpClosedException
+* Fix #7350: Improper callback timing in leaderelection leads to the dual-leader
 
 #### Improvements
 * Fix #7522: improve dependency management for kubernetes-httpclient-okhttp
@@ -12,7 +13,9 @@
 * Fix #3396: (mockwebserver) Enhance self-signed certificate generation to include Subject Alternative Names (SANs) for proper TLS verification by modern clients
 
 #### Dependency Upgrade
+* Fix #7579: bump istio.io/client-go from 1.28.0 to 1.29.1
 * Fix #7551: bump jackson-bom from 2.20.0 to 2.21.1
+* Fix #7580: bump kustomize/api from 0.20.1 to 0.21.1
 * Fix #7552: bump tektoncd/triggers from 0.33.0 to 0.35.0
 * Fix #7556: bump eventing-kafka-broker from 0.46.2 to 0.48.1
 * Fix #7553: bump cert-manager from 1.19.4 to 1.20.0
@@ -22,15 +25,20 @@
 * Fix #7542: bump open-cluster-management.io/api from 0.16.2 to 1.2.0
 * Fix #7541: bump gateway-api from 1.4.0 to 1.5.0
 * Fix #7538: bump cert-manager from 1.18.2 to 1.19.4
+* Fix #7583: bump operator-framework/api from 0.33.0 to 0.41.0
+* Fix #7589: bump prometheus-operator from 0.89.0 to 0.90.0
+* Fix #7578: bump tektoncd/pipeline from 1.9.0 to 1.10.2
+* Fix #7582: bump vertical-pod-autoscaler from 1.4.1 to 1.6.0
 
 #### New Features
 
 #### _**Note**_: Breaking changes
 * Fix #7544: cluster-api model classes moved from package `io.fabric8.kubernetes.api.model.clusterapi.v1beta1` to `io.fabric8.kubernetes.api.model.clusterapi.core.v1beta1` (following upstream cluster-api v1.11+ API reorganization)
+* Fix #7538: cert-manager model `ObjectReference` renamed to `IssuerReference` (following upstream rename in cert-manager v1.19.0)
+* Fix #7541: gateway-api model `v1beta1.ReferenceGrantFrom`, `v1beta1.ReferenceGrantSpec`, and `v1beta1.ReferenceGrantTo` removed (ReferenceGrant graduated to v1 upstream)
+* Fix #7580: kustomize model `Patch.options` field type changed from `Map<String, Boolean>` to `PatchArgs` (following upstream kustomize v0.21.0 PatchArgs API type addition)
 * Fix #7543: monitoring model `v1.AuthorizationValidationError`, `v1.OAuth2ValidationError`, `v1.ProbeTargetsValidationError`, and `v1.PrometheusTracingConfig` removed
 * Fix #7542: open-cluster-management model `operator.v1.WebhookConfiguration` removed (replaced by `DefaultWebhookConfiguration` and `HostedWebhookConfiguration` upstream)
-* Fix #7541: gateway-api model `v1beta1.ReferenceGrantFrom`, `v1beta1.ReferenceGrantSpec`, and `v1beta1.ReferenceGrantTo` removed (ReferenceGrant graduated to v1 upstream)
-* Fix #7538: cert-manager model `ObjectReference` renamed to `IssuerReference` (following upstream rename in cert-manager v1.19.0)
 
 ### 7.4.1 (2026-03-10)
 

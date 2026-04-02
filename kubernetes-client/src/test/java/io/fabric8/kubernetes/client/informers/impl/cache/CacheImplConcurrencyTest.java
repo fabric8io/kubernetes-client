@@ -18,6 +18,7 @@ package io.fabric8.kubernetes.client.informers.impl.cache;
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodBuilder;
 import io.fabric8.kubernetes.client.informers.cache.Cache;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
@@ -37,6 +38,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  *
  * @see <a href="https://github.com/fabric8io/kubernetes-client/issues/7265">Issue 7265</a>
  */
+@Disabled("https://github.com/fabric8io/kubernetes-client/issues/7265")
 class CacheImplConcurrencyTest {
 
   private static final String LABEL_INDEX = "label-index";

@@ -139,12 +139,9 @@ public class ProcessorStore<T extends HasMetadata> {
 
   public void resync() {
     // lock to ensure the ordering wrt other events
-    cache.getLock().writeLock().lock();
-    try {
+    synchronized (cache.getLockObject()) {
       this.cache.list()
           .forEach(i -> this.processor.distribute(new ProcessorListener.UpdateNotification<>(i, i), true));
-    } finally {
-      cache.getLock().writeLock().unlock();
     }
   }
 
