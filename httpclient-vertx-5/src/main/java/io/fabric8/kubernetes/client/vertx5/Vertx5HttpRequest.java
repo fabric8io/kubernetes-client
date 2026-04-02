@@ -26,9 +26,11 @@ import io.vertx.core.buffer.Buffer;
 import io.vertx.core.http.HttpClient;
 import io.vertx.core.http.HttpClientRequest;
 import io.vertx.core.http.HttpClientResponse;
+import io.vertx.core.http.HttpClosedException;
 import io.vertx.core.http.RequestOptions;
 import io.vertx.core.streams.ReadStream;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.util.LinkedHashMap;
@@ -103,6 +105,9 @@ class Vertx5HttpRequest {
 
           return promise.future();
         })
+        .recover(t -> t instanceof HttpClosedException
+            ? io.vertx.core.Future.failedFuture(new IOException(t.getMessage(), t))
+            : io.vertx.core.Future.failedFuture(t))
         .toCompletionStage()
         .toCompletableFuture();
   }

@@ -96,6 +96,7 @@ import lombok.experimental.Accessors;
     "ruleOutageTolerance",
     "ruleQueryOffset",
     "ruleSelector",
+    "schedulerName",
     "securityContext",
     "serviceAccountName",
     "serviceName",
@@ -254,6 +255,8 @@ public class ThanosRulerSpec implements Editable<ThanosRulerSpecBuilder>, Kubern
     private String ruleQueryOffset;
     @JsonProperty("ruleSelector")
     private LabelSelector ruleSelector;
+    @JsonProperty("schedulerName")
+    private String schedulerName;
     @JsonProperty("securityContext")
     private PodSecurityContext securityContext;
     @JsonProperty("serviceAccountName")
@@ -295,7 +298,7 @@ public class ThanosRulerSpec implements Editable<ThanosRulerSpecBuilder>, Kubern
     public ThanosRulerSpec() {
     }
 
-    public ThanosRulerSpec(List<Argument> additionalArgs, Affinity affinity, List<String> alertDropLabels, String alertQueryUrl, String alertRelabelConfigFile, SecretKeySelector alertRelabelConfigs, SecretKeySelector alertmanagersConfig, List<String> alertmanagersUrl, List<Container> containers, PodDNSConfig dnsConfig, String dnsPolicy, List<String> enableFeatures, Boolean enableServiceLinks, String enforcedNamespaceLabel, String evaluationInterval, List<ObjectReference> excludedFromEnforcement, String externalPrefix, TLSConfig grpcServerTlsConfig, List<HostAlias> hostAliases, Boolean hostUsers, String image, String imagePullPolicy, List<LocalObjectReference> imagePullSecrets, List<Container> initContainers, Map<String, String> labels, Boolean listenLocal, String logFormat, String logLevel, Integer minReadySeconds, Map<String, String> nodeSelector, SecretKeySelector objectStorageConfig, String objectStorageConfigFile, Boolean paused, String podManagementPolicy, EmbeddedObjectMetadata podMetadata, String portName, String priorityClassName, List<PrometheusRuleExcludeConfig> prometheusRulesExcludedFromEnforce, SecretKeySelector queryConfig, List<String> queryEndpoints, List<RemoteWriteSpec> remoteWrite, Integer replicas, String resendDelay, ResourceRequirements resources, String retention, String routePrefix, Integer ruleConcurrentEval, String ruleGracePeriod, LabelSelector ruleNamespaceSelector, String ruleOutageTolerance, String ruleQueryOffset, LabelSelector ruleSelector, PodSecurityContext securityContext, String serviceAccountName, String serviceName, StorageSpec storage, Long terminationGracePeriodSeconds, List<Toleration> tolerations, List<TopologySpreadConstraint> topologySpreadConstraints, SecretKeySelector tracingConfig, String tracingConfigFile, StatefulSetUpdateStrategy updateStrategy, String version, List<VolumeMount> volumeMounts, List<Volume> volumes, ThanosRulerWebSpec web) {
+    public ThanosRulerSpec(List<Argument> additionalArgs, Affinity affinity, List<String> alertDropLabels, String alertQueryUrl, String alertRelabelConfigFile, SecretKeySelector alertRelabelConfigs, SecretKeySelector alertmanagersConfig, List<String> alertmanagersUrl, List<Container> containers, PodDNSConfig dnsConfig, String dnsPolicy, List<String> enableFeatures, Boolean enableServiceLinks, String enforcedNamespaceLabel, String evaluationInterval, List<ObjectReference> excludedFromEnforcement, String externalPrefix, TLSConfig grpcServerTlsConfig, List<HostAlias> hostAliases, Boolean hostUsers, String image, String imagePullPolicy, List<LocalObjectReference> imagePullSecrets, List<Container> initContainers, Map<String, String> labels, Boolean listenLocal, String logFormat, String logLevel, Integer minReadySeconds, Map<String, String> nodeSelector, SecretKeySelector objectStorageConfig, String objectStorageConfigFile, Boolean paused, String podManagementPolicy, EmbeddedObjectMetadata podMetadata, String portName, String priorityClassName, List<PrometheusRuleExcludeConfig> prometheusRulesExcludedFromEnforce, SecretKeySelector queryConfig, List<String> queryEndpoints, List<RemoteWriteSpec> remoteWrite, Integer replicas, String resendDelay, ResourceRequirements resources, String retention, String routePrefix, Integer ruleConcurrentEval, String ruleGracePeriod, LabelSelector ruleNamespaceSelector, String ruleOutageTolerance, String ruleQueryOffset, LabelSelector ruleSelector, String schedulerName, PodSecurityContext securityContext, String serviceAccountName, String serviceName, StorageSpec storage, Long terminationGracePeriodSeconds, List<Toleration> tolerations, List<TopologySpreadConstraint> topologySpreadConstraints, SecretKeySelector tracingConfig, String tracingConfigFile, StatefulSetUpdateStrategy updateStrategy, String version, List<VolumeMount> volumeMounts, List<Volume> volumes, ThanosRulerWebSpec web) {
         super();
         this.additionalArgs = additionalArgs;
         this.affinity = affinity;
@@ -349,6 +352,7 @@ public class ThanosRulerSpec implements Editable<ThanosRulerSpecBuilder>, Kubern
         this.ruleOutageTolerance = ruleOutageTolerance;
         this.ruleQueryOffset = ruleQueryOffset;
         this.ruleSelector = ruleSelector;
+        this.schedulerName = schedulerName;
         this.securityContext = securityContext;
         this.serviceAccountName = serviceAccountName;
         this.serviceName = serviceName;
@@ -497,7 +501,7 @@ public class ThanosRulerSpec implements Editable<ThanosRulerSpecBuilder>, Kubern
     }
 
     /**
-     * containers allows injecting additional containers or modifying operator generated containers. This can be used to allow adding an authentication proxy to a ThanosRuler pod or to change the behavior of an operator generated container. Containers described here modify an operator generated container if they share the same name and modifications are done via a strategic merge patch. The current container names are: `thanos-ruler` and `config-reloader`. Overriding containers is entirely outside the scope of what the maintainers will support and by doing so, you accept that this behaviour may break at any time without notice.
+     * containers allows injecting additional containers or modifying operator generated containers. This can be used to allow adding an authentication proxy to the Pods or to change the behavior of an operator generated container. Containers described here modify an operator generated container if they share the same name and modifications are done via a strategic merge patch.<br><p> <br><p> The names of containers managed by the operator are: &#42; `thanos-ruler` &#42; `config-reloader`<br><p> <br><p> Overriding containers which are managed by the operator require careful testing, especially when upgrading to a new version of the operator.
      */
     @JsonProperty("containers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -506,7 +510,7 @@ public class ThanosRulerSpec implements Editable<ThanosRulerSpecBuilder>, Kubern
     }
 
     /**
-     * containers allows injecting additional containers or modifying operator generated containers. This can be used to allow adding an authentication proxy to a ThanosRuler pod or to change the behavior of an operator generated container. Containers described here modify an operator generated container if they share the same name and modifications are done via a strategic merge patch. The current container names are: `thanos-ruler` and `config-reloader`. Overriding containers is entirely outside the scope of what the maintainers will support and by doing so, you accept that this behaviour may break at any time without notice.
+     * containers allows injecting additional containers or modifying operator generated containers. This can be used to allow adding an authentication proxy to the Pods or to change the behavior of an operator generated container. Containers described here modify an operator generated container if they share the same name and modifications are done via a strategic merge patch.<br><p> <br><p> The names of containers managed by the operator are: &#42; `thanos-ruler` &#42; `config-reloader`<br><p> <br><p> Overriding containers which are managed by the operator require careful testing, especially when upgrading to a new version of the operator.
      */
     @JsonProperty("containers")
     public void setContainers(List<Container> containers) {
@@ -742,7 +746,7 @@ public class ThanosRulerSpec implements Editable<ThanosRulerSpecBuilder>, Kubern
     }
 
     /**
-     * initContainers allows adding initContainers to the pod definition. Those can be used to e.g. fetch secrets for injection into the ThanosRuler configuration from external sources. Any errors during the execution of an initContainer will lead to a restart of the Pod. More info: https://kubernetes.io/docs/concepts/workloads/pods/init-containers/ Using initContainers for any use case other then secret fetching is entirely outside the scope of what the maintainers will support and by doing so, you accept that this behaviour may break at any time without notice.
+     * initContainers allows injecting initContainers to the Pod definition. Those can be used to e.g. fetch secrets for injection into the configuration from external sources. Any errors during the execution of an initContainer will lead to a restart of the Pod. More info: https://kubernetes.io/docs/concepts/workloads/pods/init-containers/
      */
     @JsonProperty("initContainers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -751,7 +755,7 @@ public class ThanosRulerSpec implements Editable<ThanosRulerSpecBuilder>, Kubern
     }
 
     /**
-     * initContainers allows adding initContainers to the pod definition. Those can be used to e.g. fetch secrets for injection into the ThanosRuler configuration from external sources. Any errors during the execution of an initContainer will lead to a restart of the Pod. More info: https://kubernetes.io/docs/concepts/workloads/pods/init-containers/ Using initContainers for any use case other then secret fetching is entirely outside the scope of what the maintainers will support and by doing so, you accept that this behaviour may break at any time without notice.
+     * initContainers allows injecting initContainers to the Pod definition. Those can be used to e.g. fetch secrets for injection into the configuration from external sources. Any errors during the execution of an initContainer will lead to a restart of the Pod. More info: https://kubernetes.io/docs/concepts/workloads/pods/init-containers/
      */
     @JsonProperty("initContainers")
     public void setInitContainers(List<Container> initContainers) {
@@ -1209,6 +1213,22 @@ public class ThanosRulerSpec implements Editable<ThanosRulerSpecBuilder>, Kubern
     @JsonProperty("ruleSelector")
     public void setRuleSelector(LabelSelector ruleSelector) {
         this.ruleSelector = ruleSelector;
+    }
+
+    /**
+     * schedulerName defines the scheduler to use for Pod scheduling. If not specified, the default scheduler is used.
+     */
+    @JsonProperty("schedulerName")
+    public String getSchedulerName() {
+        return schedulerName;
+    }
+
+    /**
+     * schedulerName defines the scheduler to use for Pod scheduling. If not specified, the default scheduler is used.
+     */
+    @JsonProperty("schedulerName")
+    public void setSchedulerName(String schedulerName) {
+        this.schedulerName = schedulerName;
     }
 
     /**

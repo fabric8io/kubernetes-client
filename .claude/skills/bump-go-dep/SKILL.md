@@ -9,7 +9,7 @@ allowed-tools: Read, Edit, Write, Grep, Glob, Bash, AskUserQuestion, Agent
 # Go Dependency Bump
 
 You are performing a Go dependency bump for the Fabric8 Kubernetes Client project.
-The user provides a Dependabot PR number. Your job is to bump the dependency on a new branch, regenerate models, fix any issues, and create a clean PR that closes the Dependabot one.
+The user provides a Dependabot PR number. Your job is to bump the dependency, regenerate models, fix any issues, and create a clean PR that closes the Dependabot one. The user may already be on a dedicated branch (e.g., in a git worktree) — detect this and skip branch creation if so.
 
 ultrathink
 
@@ -34,10 +34,18 @@ Classify the failure:
 
 Present your analysis and the plan to the user. Wait for confirmation via `AskUserQuestion` before proceeding.
 
-## Step 2: Create Working Branch
+## Step 2: Prepare Working Branch
+
+First, check the current branch:
 
 ```bash
-git checkout main
+git branch --show-current
+```
+
+- **If already on a non-main branch** (e.g., in a git worktree prepared for this task): use the current branch as-is. Do NOT create a new branch or switch to main.
+- **If on `main`**: create a new branch:
+
+```bash
 git pull --rebase origin main
 git checkout -b chore/bump-<short-dep-name>-<new-version>
 ```
@@ -159,19 +167,23 @@ mvn clean install -pl <failing-module> -am -DskipTests -T 1C
 
 Edit `CHANGELOG.md` and add entries under the `### 7.7-SNAPSHOT` section (or whatever the current SNAPSHOT version is).
 
+**IMPORTANT — Alphabetical ordering**: Insert all entries in **alphabetical order by dependency/topic name** within each section. This is critical for avoiding merge conflicts when multiple dependency bumps run in parallel — each entry lands at a deterministic position, allowing Git to auto-merge.
+
+Use `PLACEHOLDER` — the real PR number is not known yet.
+
 ### Dependency Upgrade entry (always)
 
-Under `#### Dependency Upgrade`, add:
+Under `#### Dependency Upgrade`, insert in alphabetical order by the readable dependency name:
 
 ```
 * Fix #PLACEHOLDER: bump <readable-dep-name> from <old-version> to <new-version>
 ```
 
-Use `PLACEHOLDER` — the real PR number is not known yet.
+For example, "bump cert-manager..." goes before "bump gateway-api..." which goes before "bump tekton...".
 
 ### Bug fix entry (if generator code was fixed)
 
-Under `#### Bugs`, add an entry describing the fix:
+Under `#### Bugs`, insert in alphabetical order by topic:
 
 ```
 * Fix #PLACEHOLDER: <description of what was fixed in the generator>
@@ -179,7 +191,7 @@ Under `#### Bugs`, add an entry describing the fix:
 
 ### Breaking changes entry (if applicable)
 
-Under `#### _**Note**_: Breaking changes`, add entries for:
+Under `#### _**Note**_: Breaking changes`, insert in alphabetical order by module/topic. Add entries for:
 - Removed model classes
 - Renamed/moved packages
 - Changed type hierarchies

@@ -288,6 +288,58 @@ class StandardHttpClientTest {
   }
 
   @Test
+  void runtimeExceptionIsNotRetried() {
+    client = client.newBuilder().tag(new RequestConfigBuilder()
+        .withRequestRetryBackoffLimit(3)
+        .withRequestRetryBackoffInterval(50).build())
+        .build();
+
+    client.expect(".*", new RuntimeException("connection closed"));
+    client.expect(".*", new TestHttpResponse<AsyncBody>().withCode(200));
+
+    CompletableFuture<HttpResponse<AsyncBody>> consumeFuture = client.consumeBytes(
+        client.newHttpRequestBuilder().uri("http://localhost").build(),
+        (value, asyncBody) -> {
+        });
+
+    assertThatThrownBy(() -> consumeFuture.get(10, TimeUnit.SECONDS))
+        .isInstanceOf(ExecutionException.class)
+        .cause()
+        .isInstanceOf(RuntimeException.class)
+        .hasMessage("connection closed");
+    // No retry should occur for a plain RuntimeException
+    assertThat(client.getRecordedConsumeBytesDirects()).hasSize(1);
+  }
+
+  @Test
+  void iOExceptionIsRetried() throws Exception {
+    client = client.newBuilder().tag(new RequestConfigBuilder()
+        .withRequestRetryBackoffLimit(3)
+        .withRequestRetryBackoffInterval(50).build())
+        .build();
+
+    client.expect(".*", new IOException("connection closed"));
+    client.expect(".*", new TestHttpResponse<AsyncBody>().withCode(200));
+
+    CompletableFuture<HttpResponse<AsyncBody>> consumeFuture = client.consumeBytes(
+        client.newHttpRequestBuilder().uri("http://localhost").build(),
+        (value, asyncBody) -> {
+        });
+
+    assertEquals(200, consumeFuture.get(10, TimeUnit.SECONDS).code());
+    // Retry should occur: 1 failed attempt + 1 successful retry
+    assertThat(client.getRecordedConsumeBytesDirects()).hasSize(2);
+  }
+
+  @Test
+  void shouldRetryReturnsMinus1ForRuntimeException() {
+    final long result = client.shouldRetry(
+        (StandardHttpRequest) client.newHttpRequestBuilder().uri("http://localhost").build(),
+        r -> null, null, new RuntimeException("connection closed"), 1000);
+    assertThat(result).isEqualTo(-1);
+  }
+
+  @Test
   void testIsClosed() {
     client.close();
     assertTrue(client.isClosed());
