@@ -116,9 +116,13 @@ class CacheImplConcurrencyTest {
 
     // Start all threads simultaneously
     startLatch.countDown();
-    doneLatch.await(30, TimeUnit.SECONDS);
+    assertThat(doneLatch.await(30, TimeUnit.SECONDS))
+        .as("All threads should complete within timeout")
+        .isTrue();
     executor.shutdown();
-    executor.awaitTermination(5, TimeUnit.SECONDS);
+    assertThat(executor.awaitTermination(5, TimeUnit.SECONDS))
+        .as("Executor should terminate within timeout")
+        .isTrue();
 
     assertThat(missDetected.get())
         .as("%s() should never return empty during concurrent updates, but missed %d times", readMethod, missCount.get())
