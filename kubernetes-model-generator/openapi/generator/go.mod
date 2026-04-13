@@ -19,7 +19,7 @@ require (
 	github.com/openshift/hive/apis v0.0.0-20240930213556-2d25383963db
 	github.com/openshift/installer v0.0.0-00010101000000-000000000000
 	github.com/operator-framework/api v0.42.0
-	github.com/operator-framework/operator-lifecycle-manager v0.41.0
+	github.com/operator-framework/operator-lifecycle-manager v0.42.0
 	github.com/ovn-org/ovn-kubernetes/go-controller v0.0.0-20241030140127-a68ef49d9441
 	github.com/prometheus-operator/prometheus-operator/pkg/apis/monitoring v0.90.1
 	github.com/spf13/cobra v1.10.2
@@ -182,7 +182,7 @@ require (
 	github.com/onsi/gomega v1.39.1 // indirect
 	github.com/opencontainers/go-digest v1.0.0 // indirect
 	github.com/openshift/custom-resource-status v1.1.3-0.20220503160415-f2fdb4999d87 // indirect
-	github.com/operator-framework/operator-registry v1.64.0 // indirect
+	github.com/operator-framework/operator-registry v1.65.0 // indirect
 	github.com/perimeterx/marshmallow v1.1.5 // indirect
 	github.com/pkg/errors v0.9.1 // indirect
 	github.com/pmezard/go-difflib v1.0.1-0.20181226105442-5d4384ee4fb2 // indirect
@@ -229,7 +229,7 @@ require (
 	golang.org/x/sys v0.42.0 // indirect
 	golang.org/x/term v0.41.0 // indirect
 	golang.org/x/text v0.35.0 // indirect
-	golang.org/x/time v0.14.0 // indirect
+	golang.org/x/time v0.15.0 // indirect
 	golang.org/x/tools v0.43.0 // indirect
 	gomodules.xyz/jsonpatch/v2 v2.5.0 // indirect
 	google.golang.org/genproto/googleapis/api v0.0.0-20260401024825-9d38bb4040a9 // indirect
