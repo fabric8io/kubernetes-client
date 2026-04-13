@@ -3,7 +3,7 @@ module github.com/fabric8io/kubernetes-client/kubernetes-model-generator/openapi
 go 1.25.7
 
 require (
-	github.com/cert-manager/cert-manager v1.20.1
+	github.com/cert-manager/cert-manager v1.20.2
 	github.com/chaos-mesh/chaos-mesh/api v0.0.0-20250513055240-4db47f53978c
 	github.com/getkin/kin-openapi v0.134.0
 	github.com/k8snetworkplumbingwg/network-attachment-definition-client v1.7.7
