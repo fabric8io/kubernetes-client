@@ -1096,6 +1096,76 @@ class GeneratorTest {
   }
 
   @Test
+  void testFieldDescriptionWithHtmlTagsIsEscapedInJavadoc() {
+    // Arrange
+    Map<String, JSONSchemaProps> props = new HashMap<>();
+    JSONSchemaProps field = new JSONSchemaProps();
+    field.setType("string");
+    field.setDescription("Use <foo> or <bar> as placeholder values");
+    props.put("myField", field);
+
+    JObject obj = new JObject(null, "t", props, null, false, defaultConfig, null, Boolean.FALSE, null);
+
+    // Act
+    GeneratorResult res = obj.generateJava();
+
+    // Assert
+    Optional<ClassOrInterfaceDeclaration> clzT = res.getTopLevelClasses().get(0).getClassByName("T");
+    assertTrue(clzT.isPresent());
+    FieldDeclaration fieldDecl = clzT.get().getFieldByName("myField").get();
+    String javadoc = fieldDecl.getJavadocComment().get().getContent();
+    assertThat(javadoc).contains("&lt;foo&gt;");
+    assertThat(javadoc).contains("&lt;bar&gt;");
+    assertThat(javadoc).doesNotContain("<foo>");
+    assertThat(javadoc).doesNotContain("<bar>");
+  }
+
+  @Test
+  void testFieldDescriptionWithAmpersandIsEscapedInJavadoc() {
+    // Arrange
+    Map<String, JSONSchemaProps> props = new HashMap<>();
+    JSONSchemaProps field = new JSONSchemaProps();
+    field.setType("string");
+    field.setDescription("Use A & B together");
+    props.put("myField", field);
+
+    JObject obj = new JObject(null, "t", props, null, false, defaultConfig, null, Boolean.FALSE, null);
+
+    // Act
+    GeneratorResult res = obj.generateJava();
+
+    // Assert
+    Optional<ClassOrInterfaceDeclaration> clzT = res.getTopLevelClasses().get(0).getClassByName("T");
+    assertTrue(clzT.isPresent());
+    FieldDeclaration fieldDecl = clzT.get().getFieldByName("myField").get();
+    String javadoc = fieldDecl.getJavadocComment().get().getContent();
+    assertThat(javadoc).contains("&amp;");
+    assertThat(javadoc).doesNotContain(" & ");
+  }
+
+  @Test
+  void testFieldDescriptionWithCommentTerminatorIsEscapedInJavadoc() {
+    // Arrange
+    Map<String, JSONSchemaProps> props = new HashMap<>();
+    JSONSchemaProps field = new JSONSchemaProps();
+    field.setType("string");
+    field.setDescription("Ends with */ and more text");
+    props.put("myField", field);
+
+    JObject obj = new JObject(null, "t", props, null, false, defaultConfig, null, Boolean.FALSE, null);
+
+    // Act
+    GeneratorResult res = obj.generateJava();
+
+    // Assert
+    Optional<ClassOrInterfaceDeclaration> clzT = res.getTopLevelClasses().get(0).getClassByName("T");
+    assertTrue(clzT.isPresent());
+    FieldDeclaration fieldDecl = clzT.get().getFieldByName("myField").get();
+    String javadoc = fieldDecl.getJavadocComment().get().getContent();
+    assertThat(javadoc).doesNotContain("*/");
+  }
+
+  @Test
   void testExistingJavaTypeObject() {
     // Arrange
     Config config = Config.builder()
