@@ -3,6 +3,7 @@
 ### 7.7-SNAPSHOT
 
 #### Bugs
+* Fix #7632: java-generator now HTML-escapes `<`, `>`, and `&` in CRD descriptions to produce valid Javadoc
 * Fix #7543: fix processInlineDuplicateFields to recursively resolve nested inline embeds
 * Fix #7450: StandardHttpClient.shouldRetry() does not retry on Vert.x HttpClosedException
 * Fix #7350: Improper callback timing in leaderelection leads to the dual-leader
