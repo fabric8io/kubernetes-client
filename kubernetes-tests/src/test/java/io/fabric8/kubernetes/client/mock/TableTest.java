@@ -23,6 +23,7 @@ import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
 import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
 import io.fabric8.kubernetes.client.utils.Utils;
+import io.fabric8.mockwebserver.http.RecordedRequest;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
@@ -41,7 +42,7 @@ class TableTest {
   KubernetesClient client;
 
   @Test
-  void getAsTableReturnsSingleRowWithColumnDefinitions() {
+  void getAsTableReturnsSingleRowWithColumnDefinitions() throws InterruptedException {
     Table table = table(
         List.of(columnDef("Name", "string"), columnDef("Ready", "string"), columnDef("Status", "string")),
         List.of(row("my-pod", "1/1", "Running")));
@@ -62,10 +63,14 @@ class TableTest {
     assertThat(result.getRows()).hasSize(1);
     assertThat(result.getRows().get(0).getCells())
         .containsExactly("my-pod", "1/1", "Running");
+
+    RecordedRequest request = server.getLastRequest();
+    assertThat(request.getHeader("Accept"))
+        .isEqualTo("application/json;as=Table;v=v1;g=meta.k8s.io");
   }
 
   @Test
-  void listAsTableReturnsRowsForAllResourcesInNamespace() {
+  void listAsTableReturnsRowsForAllResourcesInNamespace() throws InterruptedException {
     Table table = table(
         List.of(columnDef("Name", "string"), columnDef("Status", "string")),
         List.of(
@@ -86,6 +91,10 @@ class TableTest {
         .hasSize(3)
         .extracting(r -> r.getCells().get(0))
         .containsExactly("pod-1", "pod-2", "pod-3");
+
+    RecordedRequest request = server.getLastRequest();
+    assertThat(request.getHeader("Accept"))
+        .isEqualTo("application/json;as=Table;v=v1;g=meta.k8s.io");
   }
 
   @Test

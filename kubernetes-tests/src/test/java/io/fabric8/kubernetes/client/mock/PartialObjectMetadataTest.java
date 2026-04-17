@@ -23,6 +23,7 @@ import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
 import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
 import io.fabric8.kubernetes.client.utils.Utils;
+import io.fabric8.mockwebserver.http.RecordedRequest;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
@@ -40,7 +41,7 @@ class PartialObjectMetadataTest {
   KubernetesClient client;
 
   @Test
-  void getPartialMetadataOfPodReturnsOnlyMetadataFields() {
+  void getPartialMetadataOfPodReturnsOnlyMetadataFields() throws InterruptedException {
     server.expect().get()
         .withPath("/api/v1/namespaces/default/pods/my-pod")
         .andReturn(200, podPartialMetadata("my-pod", "default", "app", "backend", "version", "v1"))
@@ -57,10 +58,14 @@ class PartialObjectMetadataTest {
     assertThat(result.getMetadata().getLabels())
         .containsEntry("app", "backend")
         .containsEntry("version", "v1");
+
+    RecordedRequest request = server.getLastRequest();
+    assertThat(request.getHeader("Accept"))
+        .isEqualTo("application/json;as=PartialObjectMetadata;g=meta.k8s.io;v=v1");
   }
 
   @Test
-  void listPartialMetadataOfPodsInNamespaceReturnsAllItems() {
+  void listPartialMetadataOfPodsInNamespaceReturnsAllItems() throws InterruptedException {
     PartialObjectMetadataList podList = partialMetadataList(
         podPartialMetadata("pod-1", "production"),
         podPartialMetadata("pod-2", "production"),
@@ -79,6 +84,10 @@ class PartialObjectMetadataTest {
         .hasSize(3)
         .extracting("metadata.name")
         .containsExactly("pod-1", "pod-2", "pod-3");
+
+    RecordedRequest request = server.getLastRequest();
+    assertThat(request.getHeader("Accept"))
+        .isEqualTo("application/json;as=PartialObjectMetadataList;g=meta.k8s.io;v=v1");
   }
 
   @Test
