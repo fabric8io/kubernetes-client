@@ -86,7 +86,7 @@
     <maven.deploy.skip>false</maven.deploy.skip>
 
     <!-- Core versions -->
-    <sundrio.version>0.230.2</sundrio.version>
+    <sundrio.version>0.300.0</sundrio.version>
     <okhttp.version>5.3.2</okhttp.version>
     <jackson.version>2.21.2</jackson.version>
     <jackson.bundle.version>${jackson.version}</jackson.bundle.version>
