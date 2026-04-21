@@ -1,0 +1,56 @@
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  name: widgets.example.com
+spec:
+  group: example.com
+  names:
+    kind: Widget
+    listKind: WidgetList
+    plural: widgets
+    singular: widget
+  scope: Namespaced
+  versions:
+    - name: v1
+      served: true
+      storage: true
+      schema:
+        openAPIV3Schema:
+          type: object
+          description: "Widget is a test resource for verifying Javadoc HTML escaping."
+          properties:
+            apiVersion:
+              type: string
+            kind:
+              type: string
+            metadata:
+              type: object
+            spec:
+              type: object
+              description: "WidgetSpec defines the desired state of Widget."
+              properties:
+                simpleName:
+                  type: string
+                  description: "A simple name with no special characters."
+                angleBracketField:
+                  type: string
+                  description: "The format is <DatabaseName> where <DatabaseName> is the name of the database."
+                ampersandField:
+                  type: string
+                  description: "This field supports A & B operations."
+                mixedHtmlChars:
+                  type: string
+                  description: "Threshold must be <100 & >0, expressed as <min> & <max>."
+                commentTerminator:
+                  type: string
+                  description: "Pattern must not contain */ or similar sequences."
+                urlFormat:
+                  type: string
+                  description: "Format: <protocol>://<host>:<port>/<path>?key1=val1&key2=val2"
+            status:
+              type: object
+              description: "WidgetStatus defines the observed state of Widget."
+              properties:
+                phase:
+                  type: string
+                  description: "Current phase - one of: <Pending>, <Running>, <Failed>."
