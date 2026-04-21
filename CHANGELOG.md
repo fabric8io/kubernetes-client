@@ -12,6 +12,7 @@
 * Fix #7522: improve dependency management for kubernetes-httpclient-okhttp
 * Fix #7550: add a ResourceEventHandler onList method and deprecated onNothing
 * Fix #3396: (mockwebserver) Enhance self-signed certificate generation to include Subject Alternative Names (SANs) for proper TLS verification by modern clients
+* Fix #6923: Make the crd-generator-maven-plugin be toolchain aware
 
 #### Dependency Upgrade
 * Fix #7579: bump istio.io/client-go from 1.28.0 to 1.29.1
