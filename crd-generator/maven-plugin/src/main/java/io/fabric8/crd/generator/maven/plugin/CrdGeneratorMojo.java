@@ -333,18 +333,18 @@ public class CrdGeneratorMojo extends AbstractMojo {
     }
 
     // Sources (positional parameters): directories/JARs to scan and explicit class names
-    if (classesToScan.exists()) {
-      cmd.add(classesToScan.getAbsolutePath());
-    }
-    for (File archive : getDependencyArchives()) {
-      cmd.add(archive.getAbsolutePath());
-    }
-    cmd.addAll(customResourceClasses);
-
-    if (!classesToScan.exists() && getDependencyArchives().isEmpty() && customResourceClasses.isEmpty()) {
+    List<File> dependencyArchives = getDependencyArchives();
+    if (!classesToScan.exists() && dependencyArchives.isEmpty() && customResourceClasses.isEmpty()) {
       getLog().warn("CRD-Generator: no sources to scan, skipping forked generation");
       return;
     }
+    if (classesToScan.exists()) {
+      cmd.add(classesToScan.getAbsolutePath());
+    }
+    for (File archive : dependencyArchives) {
+      cmd.add(archive.getAbsolutePath());
+    }
+    cmd.addAll(customResourceClasses);
 
     getLog().debug("CRD-Generator forked command: " + String.join(" ", cmd));
 
