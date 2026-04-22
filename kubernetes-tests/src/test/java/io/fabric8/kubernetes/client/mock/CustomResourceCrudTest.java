@@ -284,6 +284,7 @@ class CustomResourceCrudTest {
     assertEquals(7, result.getStatus().getReplicas());
   }
 
+  @Test
   void testGenericKubernetesResourceEditWithVisitor() {
     // Given
     CustomResourceDefinitionContext crdContext = new CustomResourceDefinitionContext.Builder()

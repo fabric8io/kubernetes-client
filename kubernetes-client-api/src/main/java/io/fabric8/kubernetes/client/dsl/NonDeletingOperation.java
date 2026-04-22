@@ -82,7 +82,7 @@ public interface NonDeletingOperation<T> extends
    * <li><b>scale</b> - Manages replica counts for scalable resources (Deployment, ReplicaSet, StatefulSet, etc.)</li>
    * <li><b>ephemeralcontainers</b> - Manages ephemeral containers for debugging Pods</li>
    * <li><b>binding</b> - Binds Pods to Nodes (typically handled by the Kubernetes scheduler)</li>
-   * <li><b>approval</b> - Approves CertificateSigningRequests (use {@link #approval()} convenience method)</li>
+   * <li><b>approval</b> - Approves CertificateSigningRequests</li>
    * <li><b>token</b> - Requests bound service account tokens (use ServiceAccountResource#requestToken())</li>
    * <li><b>Custom subresources</b> - Defined by CustomResourceDefinitions (CRDs)</li>
    * </ul>
@@ -113,13 +113,12 @@ public interface NonDeletingOperation<T> extends
    *   .patch(PatchContext.of(PatchType.JSON_MERGE),
    *     "{\"spec\":{\"replicas\":5}}");
    *
-   * // 3. Get current scale information
+   * // 3. Replace a subresource
    * Deployment deployment = client.apps().deployments()
    *   .inNamespace("default")
    *   .withName("my-deployment")
    *   .subresource("scale")
-   *   .get();
-   * Integer currentReplicas = deployment.getSpec().getReplicas();
+   *   .replace(updatedDeployment);
    *
    * // 4. Update status subresource (prefer using status() method)
    * client.pods().resource(myPod)
@@ -143,13 +142,12 @@ public interface NonDeletingOperation<T> extends
    * <li>For status updates, use {@link #status()}, {@link #editStatus(UnaryOperator)}, or {@link #patchStatus()}</li>
    * <li>For scaling operations, use {@link io.fabric8.kubernetes.client.dsl.Scalable} interface methods</li>
    * <li>For Pod ephemeral containers, use {@link io.fabric8.kubernetes.client.dsl.PodResource#ephemeralContainers()}</li>
-   * <li>For CertificateSigningRequest approval/denial, use {@link #approval()}</li>
+   * <li>For CertificateSigningRequest approval/denial, use {@code subresource("approval")}</li>
    * </ul>
    *
    * @param subresource the name of the subresource (e.g., "status", "scale", "ephemeralcontainers", "binding", "approval")
    * @return an operation context for the specified subresource that supports edit, patch, and replace operations
    * @see #status()
-   * @see #approval()
    * @see io.fabric8.kubernetes.client.dsl.Scalable
    * @see <a href="https://kubernetes.io/docs/reference/using-api/api-concepts/#resource-uris">Kubernetes API Concepts -
    *      Subresources</a>
@@ -191,57 +189,6 @@ public interface NonDeletingOperation<T> extends
    */
   default EditReplacePatchable<T> status() {
     return subresource("status");
-  }
-
-  /**
-   * Provides edit, patch, and replace methods for the approval subresource.
-   * <p>
-   * This is a convenience method equivalent to {@code subresource("approval")}.
-   * The approval subresource is primarily used with CertificateSigningRequests to approve
-   * or deny certificate requests. When you update the approval subresource, you modify the
-   * conditions in the status to indicate whether the request is approved or denied.
-   * <p>
-   * Example usage:
-   *
-   * <pre>
-   * {@code
-   * // Approve a CertificateSigningRequest
-   * client.certificates().v1().certificateSigningRequests()
-   *   .withName("my-csr")
-   *   .approval()
-   *   .edit(csr -> new CertificateSigningRequestBuilder(csr)
-   *     .editStatus()
-   *       .addNewCondition()
-   *         .withType("Approved")
-   *         .withStatus("True")
-   *         .withReason("ApprovedByAdmin")
-   *         .withMessage("This certificate was approved by administrator")
-   *       .endCondition()
-   *     .endStatus()
-   *     .build());
-   *
-   * // Deny a CertificateSigningRequest
-   * client.certificates().v1().certificateSigningRequests()
-   *   .withName("my-csr")
-   *   .approval()
-   *   .edit(csr -> new CertificateSigningRequestBuilder(csr)
-   *     .editStatus()
-   *       .addNewCondition()
-   *         .withType("Denied")
-   *         .withStatus("True")
-   *         .withReason("DeniedByPolicy")
-   *         .withMessage("Certificate request does not meet security policy")
-   *       .endCondition()
-   *     .endStatus()
-   *     .build());
-   * }
-   * </pre>
-   *
-   * @return an operation context for the approval subresource
-   * @see #subresource(String)
-   */
-  default EditReplacePatchable<T> approval() {
-    return subresource("approval");
   }
 
 }

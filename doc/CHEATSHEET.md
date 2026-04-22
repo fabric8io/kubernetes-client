@@ -1905,12 +1905,12 @@ cronTabClient.inNamespace("default").withName("my-cron").status().edit(cronTab -
 // Replace status using the status() convenience method
 cronTabClient.inNamespace("default").resource(updatedCronTab).status().replace();
 ```
-- Using `approval()` convenience method for CertificateSigningRequests (equivalent to `subresource("approval")`):
+- Using `subresource("approval")` for CertificateSigningRequests:
 ```java
 // Approve a CertificateSigningRequest
 client.certificates().v1().certificateSigningRequests()
   .withName("my-csr")
-  .approval()
+  .subresource("approval")
   .edit(csr -> new CertificateSigningRequestBuilder(csr)
     .editStatus()
       .addNewCondition()
@@ -1925,7 +1925,7 @@ client.certificates().v1().certificateSigningRequests()
 // Deny a CertificateSigningRequest
 client.certificates().v1().certificateSigningRequests()
   .withName("my-csr")
-  .approval()
+  .subresource("approval")
   .edit(csr -> new CertificateSigningRequestBuilder(csr)
     .editStatus()
       .addNewCondition()
@@ -1946,7 +1946,7 @@ The `subresource(String)` method provides a generic way to access any Kubernetes
 - **scale** - Manages replica counts for scalable resources (Deployment, ReplicaSet, StatefulSet, etc.)
 - **ephemeralcontainers** - Manages ephemeral containers for debugging Pods
 - **binding** - Binds Pods to Nodes (typically handled by the Kubernetes scheduler)
-- **approval** - Approves CertificateSigningRequests (use `approval()` convenience method)
+- **approval** - Approves CertificateSigningRequests (use `subresource("approval")`)
 - **token** - Requests bound service account tokens (use ServiceAccountResource#requestToken())
 - **Custom subresources** - Defined by CustomResourceDefinitions (CRDs)
 

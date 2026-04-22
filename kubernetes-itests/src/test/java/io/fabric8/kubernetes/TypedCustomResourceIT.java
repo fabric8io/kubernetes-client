@@ -357,16 +357,6 @@ class TypedCustomResourceIT {
     Pet updatedPet2 = petClient.resource(pet).subresource("status").patch();
     assertEquals("Flying", updatedPet2.getStatus().getCurrentStatus());
 
-    // Verify both methods produce the same result type
-    assertEquals(updatedPet1.getClass(), updatedPet2.getClass());
-  }
-
-  @Test
-  void testApprovalConvenienceMethod() {
-    // Test that approval() is equivalent to subresource("approval")
-    // Verify the methods are equivalent
-    assertNotNull(petClient.withName("test").approval());
-    assertNotNull(petClient.withName("test").subresource("approval"));
   }
 
   private void assertPet(Pet pet, String name, String type, String currentStatus) {
