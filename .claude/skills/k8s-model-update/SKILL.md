@@ -27,6 +27,16 @@ Collect these from the user before starting:
 
 ---
 
+## Prerequisites
+
+- **Minimum Java 11** — required to build and run the project.
+- **Java 11 is the preferred JDK for model generation** (`make generate-model`). JDK 25 is NOT supported.
+- **`make format` requires minimum Java 17** — the Spotless formatter and license-header tooling need JDK 17+.
+
+Before starting, verify the active JDK version (`java -version`). Switch JDK versions between steps as needed (e.g., JDK 11 for generation, JDK 17+ for formatting).
+
+---
+
 ## Phase 1: Setup and Model Generation
 
 ### 1. Create a working branch
@@ -65,13 +75,38 @@ make generate-model
 
 This runs the Go-based OpenAPI generator and Maven code-generation plugin across all `kubernetes-model-*` modules. Takes several minutes.
 
+**When `make generate-model` fails with unknown types or unresolved imports:**
+
+Do **NOT** modify Go code, update Go dependencies, or change anything in the generator project itself. Instead, fix the issue in the failing model module's `pom.xml` by adding a `refToJavaTypeMappings` entry that maps the unresolved schema reference to a Java type.
+
+For example, in `kubernetes-model-generator/openshift-model-installer/pom.xml`:
+
+```xml
+<refToJavaTypeMappings>
+  <property>
+    <name>#/components/schemas/com.github.openshift.installer.pkg.ipnet.IPNet</name>
+    <value>java.lang.String</value>
+  </property>
+  <property>
+    <name>#/components/schemas/com.github.openshift.installer.pkg.types.azure.MachinePool</name>
+    <value>java.lang.Object</value>
+  </property>
+</refToJavaTypeMappings>
+```
+
+Map to `java.lang.String` for simple value types (IPs, names) and `java.lang.Object` for complex types that don't have a corresponding model in the client. Find the failing module, locate its `pom.xml`, and identify the mapping needed.
+
+**Always present the proposed `refToJavaTypeMappings` changes to the user and get explicit approval before modifying any `pom.xml`.** Show which module, which schema refs, and which Java types you plan to map them to.
+
+After fixing, re-run `make generate-model` until it succeeds.
+
 ### 6. Verify the build compiles
 
 ```
 make quickly
 ```
 
-Model generation can produce code that doesn't compile (new imports, removed types). If the build fails, investigate and fix before continuing.
+If the build fails, investigate and fix before continuing.
 
 ---
 
