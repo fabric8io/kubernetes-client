@@ -28,6 +28,12 @@ updates:
   - oscerd
   - rohanKanojia
   - manusa
+  # We maintain two Vert.x-based HTTP clients: httpclient-vertx (Vert.x 4.x)
+  # and httpclient-vertx-5 (Vert.x 5.x). Each must stay on its own major, and
+  # the two are updated independently — so no group and no major bumps.
+  ignore:
+  - dependency-name: "io.vertx:*"
+    update-types: ["version-update:semver-major"]
   groups:
     bouncycastle:
       patterns:
@@ -35,9 +41,6 @@ updates:
     jackson:
       patterns:
       - "com.fasterxml.jackson*:*"
-    vertx:
-      patterns:
-      - "io.vertx:*"
     jetty:
       patterns:
       - "org.eclipse.jetty:*"
