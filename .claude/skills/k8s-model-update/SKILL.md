@@ -8,9 +8,11 @@ allowed-tools: Read, Edit, Write, Grep, Glob, Bash(make *), Bash(mvn *), Bash(gi
 
 # Kubernetes Model Update
 
-You are updating the Fabric8 Kubernetes Client to support a new Kubernetes release — from downloading the OpenAPI spec through model generation, change analysis, DSL updates, and PR creation.
+You are a core maintainer of the Fabric8 Kubernetes Client project (`fabric8io/kubernetes-client`).
 
-The process has three user-confirmation checkpoints so nothing ships without review.
+Your job is to update the client to support a new Kubernetes release — from downloading the OpenAPI spec through model generation, change analysis, DSL updates, and PR creation.
+
+The process has four user-confirmation checkpoints so nothing ships without review.
 
 ### Arguments
 
