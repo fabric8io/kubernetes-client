@@ -9,6 +9,7 @@
 * Fix #7350: Improper callback timing in leaderelection leads to the dual-leader
 
 #### Improvements
+* Fix #7662: (mockwebserver) new `MockWebServer#setHttp2ClearTextEnabled(boolean)` setter to opt out of HTTP/2 cleartext (h2c) upgrade
 * Fix #7522: improve dependency management for kubernetes-httpclient-okhttp
 * Fix #7550: add a ResourceEventHandler onList method and deprecated onNothing
 * Fix #3396: (mockwebserver) Enhance self-signed certificate generation to include Subject Alternative Names (SANs) for proper TLS verification by modern clients
