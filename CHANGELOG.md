@@ -15,6 +15,7 @@
 * Fix #6923: Make the crd-generator-maven-plugin be toolchain aware
 
 #### Dependency Upgrade
+* Fix #7651: bump k8s.io/apimachinery from 0.35.4 to 0.36.0
 * Fix #7579: bump istio.io/client-go from 1.28.0 to 1.29.1
 * Fix #7551: bump jackson-bom from 2.20.0 to 2.21.1
 * Fix #7580: bump kustomize/api from 0.20.1 to 0.21.1
