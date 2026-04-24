@@ -1,29 +1,27 @@
 ---
 name: k8s-model-update
 description: Updates Fabric8 Kubernetes Client models and DSL when a new Kubernetes version is released. Handles downloading the OpenAPI spec, regenerating Java models, analyzing API changes (new GA resources, graduations, deprecations, removals), updating the client DSL, and raising a PR. Use this skill whenever the user mentions updating Kubernetes models, bumping a K8s version, generating models from an OpenAPI spec, supporting a new Kubernetes release, or downloading swagger.json for a new K8s version — even if they don't say "skill" or "model update" explicitly.
-argument-hint: <k8s-version> <github-issue-number>
-allowed-tools:
-  - Bash
-  - Read
-  - Edit
-  - Write
-  - WebFetch
-  - WebSearch
-  - Agent
+argument-hint: "<k8s-version> <github-issue-number>"
+disable-model-invocation: true
+allowed-tools: Read, Edit, Write, Grep, Glob, Bash(make *), Bash(mvn *), Bash(git *), Bash(gh *), Bash(java *), Bash(${CLAUDE_SKILL_DIR}/scripts/*), Bash(du *), Bash(find *), WebSearch, WebFetch, AskUserQuestion
 ---
 
 # Kubernetes Model Update
 
-This skill walks through updating the Fabric8 Kubernetes Client to support a new Kubernetes release — from downloading the OpenAPI spec through model generation, change analysis, DSL updates, and PR creation.
+You are updating the Fabric8 Kubernetes Client to support a new Kubernetes release — from downloading the OpenAPI spec through model generation, change analysis, DSL updates, and PR creation.
 
 The process has three user-confirmation checkpoints so nothing ships without review.
 
-## Inputs
+### Arguments
 
-Collect these from the user before starting:
+- `$0` — The Kubernetes version (e.g., `1.36.0`) **(required)**
+- `$1` — The GitHub issue number for this update (e.g., `7500`) **(required)**
 
-1. **Kubernetes version** — e.g., `1.36.0`
-2. **GitHub issue number** — the tracking issue for this update (e.g., `#7500`)
+### Pre-fetched Context
+
+```
+!`${CLAUDE_SKILL_DIR}/scripts/get-update-context.sh $0 $1`
+```
 
 ---
 
@@ -42,7 +40,7 @@ Before starting, verify the active JDK version (`java -version`). Switch JDK ver
 ### 1. Create a working branch
 
 ```
-git checkout -b k8s-releases/k8s-<version>
+git checkout -b k8s-releases/k8s-$0
 ```
 
 ### 2. Build the base project
@@ -53,18 +51,18 @@ Run `make quickly` to confirm a clean starting state (~3-5 minutes). Fix any fai
 
 Use the bundled download script:
 
-```bash
-bash <skill-dir>/scripts/download-k8s-schema.sh <version>
+```
+!`${CLAUDE_SKILL_DIR}/scripts/download-k8s-schema.sh $0`
 ```
 
-The script auto-detects the project root and saves the spec as `kubernetes-model-generator/openapi/schemas/kubernetes-<version>.json`.
+The script auto-detects the project root and saves the spec as `kubernetes-model-generator/openapi/schemas/kubernetes-$0.json`.
 
 ### 4. Update the schema path
 
-In `kubernetes-model-generator/pom.xml`, update the `<openapi.schema.kubernetes-latest>` property (around line 83) to point to the new file:
+In `kubernetes-model-generator/pom.xml`, update the `<openapi.schema.kubernetes-latest>` property in the `<properties>` section to point to the new file:
 
 ```xml
-<openapi.schema.kubernetes-latest>${project.parent.basedir}/openapi/schemas/kubernetes-<version>.json</openapi.schema.kubernetes-latest>
+<openapi.schema.kubernetes-latest>${project.parent.basedir}/openapi/schemas/kubernetes-$0.json</openapi.schema.kubernetes-latest>
 ```
 
 ### 5. Generate updated models
@@ -138,7 +136,7 @@ Search for the official release blog at `https://kubernetes.io/blog/` for the ta
 
 ### 9. Write the investigation report
 
-Create a detailed markdown file at `<project-root>/k8s-<version>-investigation.md`. This file is for local reference only — **do not commit it**.
+Create a detailed markdown file at `k8s-$0-investigation.md` in the project root. This file is for local reference only — **do not commit it**.
 
 Structure:
 
@@ -170,19 +168,17 @@ Key themes and features from the official blog.
 APIs that graduated to GA and likely need DSL additions in the client.
 ```
 
-### 10. Post summary to the GitHub issue
-
-Post a concise comment to the tracking issue using `gh issue comment`. **Keep it under 30 lines** — link to the release blog and highlight only the most impactful changes.
-
-```bash
-gh issue comment <issue-number> --body "..."
-```
-
 ---
 
 ### CHECKPOINT 1
 
 Present the investigation findings to the user. Show the categorized changes and the DSL candidates list. Confirm accuracy before proceeding.
+
+Also present a preview of the GitHub issue comment (under 30 lines, linking the release blog and highlighting the most impactful changes). **Get explicit approval before posting** to issue #$1, since this is publicly visible.
+
+```bash
+gh issue comment $1 --body "..."
+```
 
 ---
 
@@ -250,6 +246,8 @@ More files involved — use a recently added API group as a template. The patter
 
 Look at the `VolumeAttributesClass` addition in `V1StorageAPIGroupDSL` / `V1StorageAPIGroupClient` (K8s 1.35) or `V1FlowControlAPIGroupDSL` as recent reference implementations.
 
+**OpenShift client**: Also check whether any graduated API is re-exposed through the OpenShift client. If so, the corresponding DSL changes may be needed in `openshift-client-api/` and `openshift-client/` as well.
+
 ---
 
 ## Phase 4: Finalize
@@ -259,28 +257,36 @@ Look at the `VolumeAttributesClass` addition in `V1StorageAPIGroupDSL` / `V1Stor
 Add under the current SNAPSHOT version, in the **New Features** section:
 
 ```
-* Fix #<issue>: Support for Kubernetes v<version> (<Release Name>)
+* Fix #$1: Support for Kubernetes v$0 (<Release Name>)
 ```
 
 If there are breaking changes from API removals, add those to the **Breaking changes** section too.
 
-### 14. Format and verify
+### 14. Regenerate javadoc links
+
+```bash
+make generate-javadoc-links
+```
+
+A Kubernetes version bump adds/removes packages, so the javadoc element-list files need regenerating for cross-module linking.
+
+### 15. Format and verify
 
 ```bash
 make format
 make quickly
 ```
 
-Formatting applies license headers and spotless Java formatting. The build verifies everything compiles cleanly.
+Formatting applies license headers and spotless Java formatting (requires JDK 17+). The build verifies everything compiles cleanly.
 
-### 15. Commit
+### 16. Commit
 
 Stage all generated model changes, DSL additions, pom.xml update, and CHANGELOG. **Do not stage** the investigation markdown file.
 
 Commit message pattern:
 
 ```
-feat(openapi): support for Kubernetes v<version> (<Release Name>) (#<issue>)
+feat(openapi): support for Kubernetes v$0 (<Release Name>) (#$1)
 ```
 
 ---
@@ -291,13 +297,13 @@ Show the user a summary of all changes: files modified, new DSL methods added, c
 
 ---
 
-### 16. Push and create PR
+### 17. Push and create PR
 
 ```bash
-git push -u origin k8s-releases/k8s-<version>
+git push -u origin k8s-releases/k8s-$0
 ```
 
-PR title: `feat(openapi): support for Kubernetes v<version> (<Release Name>)`
+PR title: `feat(openapi): support for Kubernetes v$0 (<Release Name>)`
 
 PR body should include:
 - Summary of changes (model updates, new DSL methods)

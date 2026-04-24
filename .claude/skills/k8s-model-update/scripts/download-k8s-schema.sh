@@ -13,6 +13,11 @@ if [ -z "$VERSION" ]; then
     exit 1
 fi
 
+if ! [[ "$VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+    echo "ERROR: Invalid version format '${VERSION}'. Expected format: X.Y.Z (e.g., 1.36.0)"
+    exit 1
+fi
+
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_ROOT="${2:-$(cd "${SCRIPT_DIR}/../../../.." && pwd)}"
 SCHEMAS_DIR="${PROJECT_ROOT}/kubernetes-model-generator/openapi/schemas"
@@ -34,15 +39,7 @@ echo "Downloading Kubernetes v${VERSION} OpenAPI spec..."
 echo "  URL:    ${URL}"
 echo "  Output: ${OUTPUT_FILE}"
 
-HTTP_CODE=$(curl -fSL --progress-bar -w "%{http_code}" "${URL}" -o "${OUTPUT_FILE}")
+curl -fSL --progress-bar "${URL}" -o "${OUTPUT_FILE}"
 
-if [ "$HTTP_CODE" -eq 200 ]; then
-    FILE_SIZE=$(du -h "${OUTPUT_FILE}" | cut -f1)
-    echo "Downloaded successfully (${FILE_SIZE})"
-else
-    rm -f "${OUTPUT_FILE}"
-    echo "ERROR: Download failed with HTTP ${HTTP_CODE}."
-    echo "Verify that tag v${VERSION} exists:"
-    echo "  https://github.com/kubernetes/kubernetes/tree/v${VERSION}/api/openapi-spec"
-    exit 1
-fi
+FILE_SIZE=$(du -h "${OUTPUT_FILE}" | cut -f1)
+echo "Downloaded successfully (${FILE_SIZE})"
