@@ -22,9 +22,21 @@ ultrathink
 ## Step 1: Analyze the Dependabot PR
 
 From the context above, extract:
-- **Go module path** (e.g., `sigs.k8s.io/kustomize/api`)
-- **Old version** and **new version**
+- **Single-dep or grouped PR?** — see below.
+- **Go module path(s)** (e.g., `sigs.k8s.io/kustomize/api`)
+- **Old version** and **new version** for each dep
 - **CI failure details** — understand what failed and why
+
+### Single-dep vs grouped PR
+
+Dependabot groups are configured in `.github/dependabot.yml` (e.g., `kubernetes`, `openshift`, `knative`, `opentelemetry`, `golang-x`, `operator-framework`, etc.). When a group has multiple eligible updates, Dependabot opens a single PR for the whole group.
+
+Signals of a grouped PR:
+- Title like `chore(deps): bump the <group-name> group in /... with N updates`
+- Branch like `dependabot/go_modules/.../<group-name>-<hash>`
+- PR body lists multiple `Updates ...` blocks
+
+Extract the **group name** and the **full list of (module, old, new)** tuples from the PR body. All subsequent steps (branch, CHANGELOG, commit, PR) must reflect every dep in the group.
 
 Classify the failure:
 1. **Model drift** — `make generate-model` produces different output than what's committed (most common, the "Check No Schema file modified" step fails)
@@ -52,6 +64,8 @@ git checkout -b chore/bump-<short-dep-name>-<new-version>
 
 Use a short, readable name for the dependency (e.g., `kustomize-api-0.21.1`, `gateway-api-1.5.0`, `cert-manager-1.20.0`).
 
+**For grouped PRs**, name the branch after the group and the shared target version when there is one (e.g., `chore/bump-kubernetes-0.36.0`, `chore/bump-opentelemetry-1.43.0`). If there is no single shared version, just use the group name (e.g., `chore/bump-knative-group`).
+
 ## Step 3: Bump the Dependency
 
 ### 3a. Update go.mod
@@ -60,6 +74,8 @@ Use a short, readable name for the dependency (e.g., `kustomize-api-0.21.1`, `ga
 cd kubernetes-model-generator/openapi/generator
 go get <module-path>@v<new-version>
 ```
+
+**For grouped PRs**, run `go get` for **every** module in the group, each at its target version. Do this in one invocation when possible (`go get foo@v1 bar@v2 baz@v3`) so the solver resolves them together.
 
 ### 3b. Check for related dependencies that may need bumping
 
@@ -181,6 +197,8 @@ Under `#### Dependency Upgrade`, insert in alphabetical order by the readable de
 
 For example, "bump cert-manager..." goes before "bump gateway-api..." which goes before "bump tekton...".
 
+**For grouped PRs**, emit **one entry per dep in the group**, each in its own alphabetical position. Use the same `#PLACEHOLDER` for all of them — they all resolve to the single fix PR number in Step 10.
+
 ### Bug fix entry (if generator code was fixed)
 
 Under `#### Bugs`, insert in alphabetical order by topic:
@@ -230,6 +248,18 @@ Closes #<dependabot-pr-number>
 
 **IMPORTANT**: Include `Closes #<dependabot-pr-number>` to auto-close the Dependabot PR.
 
+**For grouped PRs**, use a group-level subject and list each dep in the body:
+
+```
+chore(deps): bump the <group-name> group
+
+- <module-path> from <old> to <new>
+- <module-path> from <old> to <new>
+- ...
+
+Closes #<dependabot-pr-number>
+```
+
 ## Step 9: Push and Create PR
 
 Push the branch and create the PR:
@@ -249,6 +279,8 @@ Closes #<dependabot-pr-number>
 EOF
 )"
 ```
+
+**For grouped PRs**, mirror the commit style — title `chore(deps): bump the <group-name> group`, body `## Summary` lists each `<module-path> from <old> to <new>` as bullets, and closes the single Dependabot group PR.
 
 **IMPORTANT**: Do NOT include a "Test plan" section or "Generated with Claude Code" footer in the PR body.
 
