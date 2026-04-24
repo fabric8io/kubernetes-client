@@ -52,6 +52,13 @@ jobs:
         with:
           java-version: ${{ matrix.java }}
           distribution: 'temurin'
+          cache: 'maven'
       - name: Build Project
         run: ./mvnw clean install
+      - name: Drop in-repo artifacts before cache save
+        # Don't let io.fabric8:* jars installed by this run leak into the cache that future
+        # runs restore. Only third-party dependencies should be cached.
+        if: always()
+        shell: pwsh
+        run: Remove-Item -Recurse -Force -ErrorAction SilentlyContinue "$env:USERPROFILE\.m2\repository\io\fabric8"
 
