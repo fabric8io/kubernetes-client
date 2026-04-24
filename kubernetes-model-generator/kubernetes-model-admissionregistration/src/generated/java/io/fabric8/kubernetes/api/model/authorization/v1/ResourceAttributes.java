@@ -130,7 +130,7 @@ public class ResourceAttributes implements Editable<ResourceAttributesBuilder>, 
     }
 
     /**
-     * Group is the API Group of the Resource.  "&#42;" means all.
+     * group is the API Group of the Resource.  "&#42;" means all.
      */
     @JsonProperty("group")
     public String getGroup() {
@@ -138,7 +138,7 @@ public class ResourceAttributes implements Editable<ResourceAttributesBuilder>, 
     }
 
     /**
-     * Group is the API Group of the Resource.  "&#42;" means all.
+     * group is the API Group of the Resource.  "&#42;" means all.
      */
     @JsonProperty("group")
     public void setGroup(String group) {
@@ -162,7 +162,7 @@ public class ResourceAttributes implements Editable<ResourceAttributesBuilder>, 
     }
 
     /**
-     * Name is the name of the resource being requested for a "get" or deleted for a "delete". "" (empty) means all.
+     * name is the name of the resource being requested for a "get" or deleted for a "delete". "" (empty) means all.
      */
     @JsonProperty("name")
     public String getName() {
@@ -170,7 +170,7 @@ public class ResourceAttributes implements Editable<ResourceAttributesBuilder>, 
     }
 
     /**
-     * Name is the name of the resource being requested for a "get" or deleted for a "delete". "" (empty) means all.
+     * name is the name of the resource being requested for a "get" or deleted for a "delete". "" (empty) means all.
      */
     @JsonProperty("name")
     public void setName(String name) {
@@ -178,7 +178,7 @@ public class ResourceAttributes implements Editable<ResourceAttributesBuilder>, 
     }
 
     /**
-     * Namespace is the namespace of the action being requested.  Currently, there is no distinction between no namespace and all namespaces "" (empty) is defaulted for LocalSubjectAccessReviews "" (empty) is empty for cluster-scoped resources "" (empty) means "all" for namespace scoped resources from a SubjectAccessReview or SelfSubjectAccessReview
+     * namespace is the namespace of the action being requested.  Currently, there is no distinction between no namespace and all namespaces "" (empty) is defaulted for LocalSubjectAccessReviews "" (empty) is empty for cluster-scoped resources "" (empty) means "all" for namespace scoped resources from a SubjectAccessReview or SelfSubjectAccessReview
      */
     @JsonProperty("namespace")
     public String getNamespace() {
@@ -186,7 +186,7 @@ public class ResourceAttributes implements Editable<ResourceAttributesBuilder>, 
     }
 
     /**
-     * Namespace is the namespace of the action being requested.  Currently, there is no distinction between no namespace and all namespaces "" (empty) is defaulted for LocalSubjectAccessReviews "" (empty) is empty for cluster-scoped resources "" (empty) means "all" for namespace scoped resources from a SubjectAccessReview or SelfSubjectAccessReview
+     * namespace is the namespace of the action being requested.  Currently, there is no distinction between no namespace and all namespaces "" (empty) is defaulted for LocalSubjectAccessReviews "" (empty) is empty for cluster-scoped resources "" (empty) means "all" for namespace scoped resources from a SubjectAccessReview or SelfSubjectAccessReview
      */
     @JsonProperty("namespace")
     public void setNamespace(String namespace) {
@@ -194,7 +194,7 @@ public class ResourceAttributes implements Editable<ResourceAttributesBuilder>, 
     }
 
     /**
-     * Resource is one of the existing resource types.  "&#42;" means all.
+     * resource is one of the existing resource types.  "&#42;" means all.
      */
     @JsonProperty("resource")
     public String getResource() {
@@ -202,7 +202,7 @@ public class ResourceAttributes implements Editable<ResourceAttributesBuilder>, 
     }
 
     /**
-     * Resource is one of the existing resource types.  "&#42;" means all.
+     * resource is one of the existing resource types.  "&#42;" means all.
      */
     @JsonProperty("resource")
     public void setResource(String resource) {
@@ -210,7 +210,7 @@ public class ResourceAttributes implements Editable<ResourceAttributesBuilder>, 
     }
 
     /**
-     * Subresource is one of the existing resource types.  "" means none.
+     * subresource is one of the existing resource types.  "" means none.
      */
     @JsonProperty("subresource")
     public String getSubresource() {
@@ -218,7 +218,7 @@ public class ResourceAttributes implements Editable<ResourceAttributesBuilder>, 
     }
 
     /**
-     * Subresource is one of the existing resource types.  "" means none.
+     * subresource is one of the existing resource types.  "" means none.
      */
     @JsonProperty("subresource")
     public void setSubresource(String subresource) {
@@ -226,7 +226,7 @@ public class ResourceAttributes implements Editable<ResourceAttributesBuilder>, 
     }
 
     /**
-     * Verb is a kubernetes resource API verb, like: get, list, watch, create, update, delete, proxy.  "&#42;" means all.
+     * verb is a kubernetes resource API verb, like: get, list, watch, create, update, delete, proxy.  "&#42;" means all.
      */
     @JsonProperty("verb")
     public String getVerb() {
@@ -234,7 +234,7 @@ public class ResourceAttributes implements Editable<ResourceAttributesBuilder>, 
     }
 
     /**
-     * Verb is a kubernetes resource API verb, like: get, list, watch, create, update, delete, proxy.  "&#42;" means all.
+     * verb is a kubernetes resource API verb, like: get, list, watch, create, update, delete, proxy.  "&#42;" means all.
      */
     @JsonProperty("verb")
     public void setVerb(String verb) {
@@ -242,7 +242,7 @@ public class ResourceAttributes implements Editable<ResourceAttributesBuilder>, 
     }
 
     /**
-     * Version is the API Version of the Resource.  "&#42;" means all.
+     * version is the API Version of the Resource.  "&#42;" means all.
      */
     @JsonProperty("version")
     public String getVersion() {
@@ -250,7 +250,7 @@ public class ResourceAttributes implements Editable<ResourceAttributesBuilder>, 
     }
 
     /**
-     * Version is the API Version of the Resource.  "&#42;" means all.
+     * version is the API Version of the Resource.  "&#42;" means all.
      */
     @JsonProperty("version")
     public void setVersion(String version) {

@@ -127,7 +127,7 @@ public class ValidatingWebhook implements Editable<ValidatingWebhookBuilder>, Ku
     }
 
     /**
-     * AdmissionReviewVersions is an ordered list of preferred `AdmissionReview` versions the Webhook expects. API server will try to use first version in the list which it supports. If none of the versions specified in this list supported by API server, validation will fail for this object. If a persisted webhook configuration specifies allowed versions and does not include any versions known to the API Server, calls to the webhook will fail and be subject to the failure policy.
+     * admissionReviewVersions is an ordered list of preferred `AdmissionReview` versions the Webhook expects. API server will try to use first version in the list which it supports. If none of the versions specified in this list supported by API server, validation will fail for this object. If a persisted webhook configuration specifies allowed versions and does not include any versions known to the API Server, calls to the webhook will fail and be subject to the failure policy.
      */
     @JsonProperty("admissionReviewVersions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -136,7 +136,7 @@ public class ValidatingWebhook implements Editable<ValidatingWebhookBuilder>, Ku
     }
 
     /**
-     * AdmissionReviewVersions is an ordered list of preferred `AdmissionReview` versions the Webhook expects. API server will try to use first version in the list which it supports. If none of the versions specified in this list supported by API server, validation will fail for this object. If a persisted webhook configuration specifies allowed versions and does not include any versions known to the API Server, calls to the webhook will fail and be subject to the failure policy.
+     * admissionReviewVersions is an ordered list of preferred `AdmissionReview` versions the Webhook expects. API server will try to use first version in the list which it supports. If none of the versions specified in this list supported by API server, validation will fail for this object. If a persisted webhook configuration specifies allowed versions and does not include any versions known to the API Server, calls to the webhook will fail and be subject to the failure policy.
      */
     @JsonProperty("admissionReviewVersions")
     public void setAdmissionReviewVersions(List<String> admissionReviewVersions) {
@@ -160,7 +160,7 @@ public class ValidatingWebhook implements Editable<ValidatingWebhookBuilder>, Ku
     }
 
     /**
-     * FailurePolicy defines how unrecognized errors from the admission endpoint are handled - allowed values are Ignore or Fail. Defaults to Fail.
+     * failurePolicy defines how unrecognized errors from the admission endpoint are handled - allowed values are Ignore or Fail. Defaults to Fail.
      */
     @JsonProperty("failurePolicy")
     public String getFailurePolicy() {
@@ -168,7 +168,7 @@ public class ValidatingWebhook implements Editable<ValidatingWebhookBuilder>, Ku
     }
 
     /**
-     * FailurePolicy defines how unrecognized errors from the admission endpoint are handled - allowed values are Ignore or Fail. Defaults to Fail.
+     * failurePolicy defines how unrecognized errors from the admission endpoint are handled - allowed values are Ignore or Fail. Defaults to Fail.
      */
     @JsonProperty("failurePolicy")
     public void setFailurePolicy(String failurePolicy) {
@@ -176,7 +176,7 @@ public class ValidatingWebhook implements Editable<ValidatingWebhookBuilder>, Ku
     }
 
     /**
-     * MatchConditions is a list of conditions that must be met for a request to be sent to this webhook. Match conditions filter requests that have already been matched by the rules, namespaceSelector, and objectSelector. An empty list of matchConditions matches all requests. There are a maximum of 64 match conditions allowed.<br><p> <br><p> The exact matching logic is (in order):<br><p>   1. If ANY matchCondition evaluates to FALSE, the webhook is skipped.<br><p>   2. If ALL matchConditions evaluate to TRUE, the webhook is called.<br><p>   3. If any matchCondition evaluates to an error (but none are FALSE):<br><p>      - If failurePolicy=Fail, reject the request<br><p>      - If failurePolicy=Ignore, the error is ignored and the webhook is skipped
+     * matchConditions is a list of conditions that must be met for a request to be sent to this webhook. Match conditions filter requests that have already been matched by the rules, namespaceSelector, and objectSelector. An empty list of matchConditions matches all requests. There are a maximum of 64 match conditions allowed.<br><p> <br><p> The exact matching logic is (in order):<br><p>   1. If ANY matchCondition evaluates to FALSE, the webhook is skipped.<br><p>   2. If ALL matchConditions evaluate to TRUE, the webhook is called.<br><p>   3. If any matchCondition evaluates to an error (but none are FALSE):<br><p>      - If failurePolicy=Fail, reject the request<br><p>      - If failurePolicy=Ignore, the error is ignored and the webhook is skipped
      */
     @JsonProperty("matchConditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -185,7 +185,7 @@ public class ValidatingWebhook implements Editable<ValidatingWebhookBuilder>, Ku
     }
 
     /**
-     * MatchConditions is a list of conditions that must be met for a request to be sent to this webhook. Match conditions filter requests that have already been matched by the rules, namespaceSelector, and objectSelector. An empty list of matchConditions matches all requests. There are a maximum of 64 match conditions allowed.<br><p> <br><p> The exact matching logic is (in order):<br><p>   1. If ANY matchCondition evaluates to FALSE, the webhook is skipped.<br><p>   2. If ALL matchConditions evaluate to TRUE, the webhook is called.<br><p>   3. If any matchCondition evaluates to an error (but none are FALSE):<br><p>      - If failurePolicy=Fail, reject the request<br><p>      - If failurePolicy=Ignore, the error is ignored and the webhook is skipped
+     * matchConditions is a list of conditions that must be met for a request to be sent to this webhook. Match conditions filter requests that have already been matched by the rules, namespaceSelector, and objectSelector. An empty list of matchConditions matches all requests. There are a maximum of 64 match conditions allowed.<br><p> <br><p> The exact matching logic is (in order):<br><p>   1. If ANY matchCondition evaluates to FALSE, the webhook is skipped.<br><p>   2. If ALL matchConditions evaluate to TRUE, the webhook is called.<br><p>   3. If any matchCondition evaluates to an error (but none are FALSE):<br><p>      - If failurePolicy=Fail, reject the request<br><p>      - If failurePolicy=Ignore, the error is ignored and the webhook is skipped
      */
     @JsonProperty("matchConditions")
     public void setMatchConditions(List<MatchCondition> matchConditions) {
@@ -209,7 +209,7 @@ public class ValidatingWebhook implements Editable<ValidatingWebhookBuilder>, Ku
     }
 
     /**
-     * The name of the admission webhook. Name should be fully qualified, e.g., imagepolicy.kubernetes.io, where "imagepolicy" is the name of the webhook, and kubernetes.io is the name of the organization. Required.
+     * name is the name of the admission webhook. Name should be fully qualified, e.g., imagepolicy.kubernetes.io, where "imagepolicy" is the name of the webhook, and kubernetes.io is the name of the organization. Required.
      */
     @JsonProperty("name")
     public String getName() {
@@ -217,7 +217,7 @@ public class ValidatingWebhook implements Editable<ValidatingWebhookBuilder>, Ku
     }
 
     /**
-     * The name of the admission webhook. Name should be fully qualified, e.g., imagepolicy.kubernetes.io, where "imagepolicy" is the name of the webhook, and kubernetes.io is the name of the organization. Required.
+     * name is the name of the admission webhook. Name should be fully qualified, e.g., imagepolicy.kubernetes.io, where "imagepolicy" is the name of the webhook, and kubernetes.io is the name of the organization. Required.
      */
     @JsonProperty("name")
     public void setName(String name) {
@@ -257,7 +257,7 @@ public class ValidatingWebhook implements Editable<ValidatingWebhookBuilder>, Ku
     }
 
     /**
-     * Rules describes what operations on what resources/subresources the webhook cares about. The webhook cares about an operation if it matches _any_ Rule. However, in order to prevent ValidatingAdmissionWebhooks and MutatingAdmissionWebhooks from putting the cluster in a state which cannot be recovered from without completely disabling the plugin, ValidatingAdmissionWebhooks and MutatingAdmissionWebhooks are never called on admission requests for ValidatingWebhookConfiguration and MutatingWebhookConfiguration objects.
+     * rules describes what operations on what resources/subresources the webhook cares about. The webhook cares about an operation if it matches _any_ Rule. However, in order to prevent ValidatingAdmissionWebhooks and MutatingAdmissionWebhooks from putting the cluster in a state which cannot be recovered from without completely disabling the plugin, ValidatingAdmissionWebhooks and MutatingAdmissionWebhooks are never called on admission requests for ValidatingWebhookConfiguration and MutatingWebhookConfiguration objects.
      */
     @JsonProperty("rules")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -266,7 +266,7 @@ public class ValidatingWebhook implements Editable<ValidatingWebhookBuilder>, Ku
     }
 
     /**
-     * Rules describes what operations on what resources/subresources the webhook cares about. The webhook cares about an operation if it matches _any_ Rule. However, in order to prevent ValidatingAdmissionWebhooks and MutatingAdmissionWebhooks from putting the cluster in a state which cannot be recovered from without completely disabling the plugin, ValidatingAdmissionWebhooks and MutatingAdmissionWebhooks are never called on admission requests for ValidatingWebhookConfiguration and MutatingWebhookConfiguration objects.
+     * rules describes what operations on what resources/subresources the webhook cares about. The webhook cares about an operation if it matches _any_ Rule. However, in order to prevent ValidatingAdmissionWebhooks and MutatingAdmissionWebhooks from putting the cluster in a state which cannot be recovered from without completely disabling the plugin, ValidatingAdmissionWebhooks and MutatingAdmissionWebhooks are never called on admission requests for ValidatingWebhookConfiguration and MutatingWebhookConfiguration objects.
      */
     @JsonProperty("rules")
     public void setRules(List<RuleWithOperations> rules) {
@@ -274,7 +274,7 @@ public class ValidatingWebhook implements Editable<ValidatingWebhookBuilder>, Ku
     }
 
     /**
-     * SideEffects states whether this webhook has side effects. Acceptable values are: None, NoneOnDryRun (webhooks created via v1beta1 may also specify Some or Unknown). Webhooks with side effects MUST implement a reconciliation system, since a request may be rejected by a future step in the admission chain and the side effects therefore need to be undone. Requests with the dryRun attribute will be auto-rejected if they match a webhook with sideEffects == Unknown or Some.
+     * sideEffects states whether this webhook has side effects. Acceptable values are: None, NoneOnDryRun (webhooks created via v1beta1 may also specify Some or Unknown). Webhooks with side effects MUST implement a reconciliation system, since a request may be rejected by a future step in the admission chain and the side effects therefore need to be undone. Requests with the dryRun attribute will be auto-rejected if they match a webhook with sideEffects == Unknown or Some.
      */
     @JsonProperty("sideEffects")
     public String getSideEffects() {
@@ -282,7 +282,7 @@ public class ValidatingWebhook implements Editable<ValidatingWebhookBuilder>, Ku
     }
 
     /**
-     * SideEffects states whether this webhook has side effects. Acceptable values are: None, NoneOnDryRun (webhooks created via v1beta1 may also specify Some or Unknown). Webhooks with side effects MUST implement a reconciliation system, since a request may be rejected by a future step in the admission chain and the side effects therefore need to be undone. Requests with the dryRun attribute will be auto-rejected if they match a webhook with sideEffects == Unknown or Some.
+     * sideEffects states whether this webhook has side effects. Acceptable values are: None, NoneOnDryRun (webhooks created via v1beta1 may also specify Some or Unknown). Webhooks with side effects MUST implement a reconciliation system, since a request may be rejected by a future step in the admission chain and the side effects therefore need to be undone. Requests with the dryRun attribute will be auto-rejected if they match a webhook with sideEffects == Unknown or Some.
      */
     @JsonProperty("sideEffects")
     public void setSideEffects(String sideEffects) {
@@ -290,7 +290,7 @@ public class ValidatingWebhook implements Editable<ValidatingWebhookBuilder>, Ku
     }
 
     /**
-     * TimeoutSeconds specifies the timeout for this webhook. After the timeout passes, the webhook call will be ignored or the API call will fail based on the failure policy. The timeout value must be between 1 and 30 seconds. Default to 10 seconds.
+     * timeoutSeconds specifies the timeout for this webhook. After the timeout passes, the webhook call will be ignored or the API call will fail based on the failure policy. The timeout value must be between 1 and 30 seconds. Default to 10 seconds.
      */
     @JsonProperty("timeoutSeconds")
     public Integer getTimeoutSeconds() {
@@ -298,7 +298,7 @@ public class ValidatingWebhook implements Editable<ValidatingWebhookBuilder>, Ku
     }
 
     /**
-     * TimeoutSeconds specifies the timeout for this webhook. After the timeout passes, the webhook call will be ignored or the API call will fail based on the failure policy. The timeout value must be between 1 and 30 seconds. Default to 10 seconds.
+     * timeoutSeconds specifies the timeout for this webhook. After the timeout passes, the webhook call will be ignored or the API call will fail based on the failure policy. The timeout value must be between 1 and 30 seconds. Default to 10 seconds.
      */
     @JsonProperty("timeoutSeconds")
     public void setTimeoutSeconds(Integer timeoutSeconds) {

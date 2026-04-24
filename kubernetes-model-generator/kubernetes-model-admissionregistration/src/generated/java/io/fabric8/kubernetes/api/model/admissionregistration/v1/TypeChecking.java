@@ -85,7 +85,7 @@ public class TypeChecking implements Editable<TypeCheckingBuilder>, KubernetesRe
     }
 
     /**
-     * The type checking warnings for each expression.
+     * expressionWarnings contains the type checking warnings for each expression.
      */
     @JsonProperty("expressionWarnings")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -94,7 +94,7 @@ public class TypeChecking implements Editable<TypeCheckingBuilder>, KubernetesRe
     }
 
     /**
-     * The type checking warnings for each expression.
+     * expressionWarnings contains the type checking warnings for each expression.
      */
     @JsonProperty("expressionWarnings")
     public void setExpressionWarnings(List<ExpressionWarning> expressionWarnings) {

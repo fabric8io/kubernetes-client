@@ -98,7 +98,7 @@ public class SubjectRulesReviewStatus implements Editable<SubjectRulesReviewStat
     }
 
     /**
-     * EvaluationError can appear in combination with Rules. It indicates an error occurred during rule evaluation, such as an authorizer that doesn't support rule evaluation, and that ResourceRules and/or NonResourceRules may be incomplete.
+     * evaluationError can appear in combination with Rules. It indicates an error occurred during rule evaluation, such as an authorizer that doesn't support rule evaluation, and that ResourceRules and/or NonResourceRules may be incomplete.
      */
     @JsonProperty("evaluationError")
     public String getEvaluationError() {
@@ -106,7 +106,7 @@ public class SubjectRulesReviewStatus implements Editable<SubjectRulesReviewStat
     }
 
     /**
-     * EvaluationError can appear in combination with Rules. It indicates an error occurred during rule evaluation, such as an authorizer that doesn't support rule evaluation, and that ResourceRules and/or NonResourceRules may be incomplete.
+     * evaluationError can appear in combination with Rules. It indicates an error occurred during rule evaluation, such as an authorizer that doesn't support rule evaluation, and that ResourceRules and/or NonResourceRules may be incomplete.
      */
     @JsonProperty("evaluationError")
     public void setEvaluationError(String evaluationError) {
@@ -114,7 +114,7 @@ public class SubjectRulesReviewStatus implements Editable<SubjectRulesReviewStat
     }
 
     /**
-     * Incomplete is true when the rules returned by this call are incomplete. This is most commonly encountered when an authorizer, such as an external authorizer, doesn't support rules evaluation.
+     * incomplete is true when the rules returned by this call are incomplete. This is most commonly encountered when an authorizer, such as an external authorizer, doesn't support rules evaluation.
      */
     @JsonProperty("incomplete")
     public Boolean getIncomplete() {
@@ -122,7 +122,7 @@ public class SubjectRulesReviewStatus implements Editable<SubjectRulesReviewStat
     }
 
     /**
-     * Incomplete is true when the rules returned by this call are incomplete. This is most commonly encountered when an authorizer, such as an external authorizer, doesn't support rules evaluation.
+     * incomplete is true when the rules returned by this call are incomplete. This is most commonly encountered when an authorizer, such as an external authorizer, doesn't support rules evaluation.
      */
     @JsonProperty("incomplete")
     public void setIncomplete(Boolean incomplete) {
@@ -130,7 +130,7 @@ public class SubjectRulesReviewStatus implements Editable<SubjectRulesReviewStat
     }
 
     /**
-     * NonResourceRules is the list of actions the subject is allowed to perform on non-resources. The list ordering isn't significant, may contain duplicates, and possibly be incomplete.
+     * nonResourceRules is the list of actions the subject is allowed to perform on non-resources. The list ordering isn't significant, may contain duplicates, and possibly be incomplete.
      */
     @JsonProperty("nonResourceRules")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -139,7 +139,7 @@ public class SubjectRulesReviewStatus implements Editable<SubjectRulesReviewStat
     }
 
     /**
-     * NonResourceRules is the list of actions the subject is allowed to perform on non-resources. The list ordering isn't significant, may contain duplicates, and possibly be incomplete.
+     * nonResourceRules is the list of actions the subject is allowed to perform on non-resources. The list ordering isn't significant, may contain duplicates, and possibly be incomplete.
      */
     @JsonProperty("nonResourceRules")
     public void setNonResourceRules(List<NonResourceRule> nonResourceRules) {
@@ -147,7 +147,7 @@ public class SubjectRulesReviewStatus implements Editable<SubjectRulesReviewStat
     }
 
     /**
-     * ResourceRules is the list of actions the subject is allowed to perform on resources. The list ordering isn't significant, may contain duplicates, and possibly be incomplete.
+     * resourceRules is the list of actions the subject is allowed to perform on resources. The list ordering isn't significant, may contain duplicates, and possibly be incomplete.
      */
     @JsonProperty("resourceRules")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -156,7 +156,7 @@ public class SubjectRulesReviewStatus implements Editable<SubjectRulesReviewStat
     }
 
     /**
-     * ResourceRules is the list of actions the subject is allowed to perform on resources. The list ordering isn't significant, may contain duplicates, and possibly be incomplete.
+     * resourceRules is the list of actions the subject is allowed to perform on resources. The list ordering isn't significant, may contain duplicates, and possibly be incomplete.
      */
     @JsonProperty("resourceRules")
     public void setResourceRules(List<ResourceRule> resourceRules) {

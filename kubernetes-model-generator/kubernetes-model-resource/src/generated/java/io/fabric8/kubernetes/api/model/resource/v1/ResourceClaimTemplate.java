@@ -38,7 +38,7 @@ import lombok.ToString;
 import lombok.experimental.Accessors;
 
 /**
- * ResourceClaimTemplate is used to produce ResourceClaim objects.<br><p> <br><p> This is an alpha type and requires enabling the DynamicResourceAllocation feature gate.
+ * ResourceClaimTemplate is used to produce ResourceClaim objects.
  */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -136,7 +136,7 @@ public class ResourceClaimTemplate implements Editable<ResourceClaimTemplateBuil
     }
 
     /**
-     * ResourceClaimTemplate is used to produce ResourceClaim objects.<br><p> <br><p> This is an alpha type and requires enabling the DynamicResourceAllocation feature gate.
+     * ResourceClaimTemplate is used to produce ResourceClaim objects.
      */
     @JsonProperty("metadata")
     public ObjectMeta getMetadata() {
@@ -144,7 +144,7 @@ public class ResourceClaimTemplate implements Editable<ResourceClaimTemplateBuil
     }
 
     /**
-     * ResourceClaimTemplate is used to produce ResourceClaim objects.<br><p> <br><p> This is an alpha type and requires enabling the DynamicResourceAllocation feature gate.
+     * ResourceClaimTemplate is used to produce ResourceClaim objects.
      */
     @JsonProperty("metadata")
     public void setMetadata(ObjectMeta metadata) {
@@ -152,7 +152,7 @@ public class ResourceClaimTemplate implements Editable<ResourceClaimTemplateBuil
     }
 
     /**
-     * ResourceClaimTemplate is used to produce ResourceClaim objects.<br><p> <br><p> This is an alpha type and requires enabling the DynamicResourceAllocation feature gate.
+     * ResourceClaimTemplate is used to produce ResourceClaim objects.
      */
     @JsonProperty("spec")
     public ResourceClaimTemplateSpec getSpec() {
@@ -160,7 +160,7 @@ public class ResourceClaimTemplate implements Editable<ResourceClaimTemplateBuil
     }
 
     /**
-     * ResourceClaimTemplate is used to produce ResourceClaim objects.<br><p> <br><p> This is an alpha type and requires enabling the DynamicResourceAllocation feature gate.
+     * ResourceClaimTemplate is used to produce ResourceClaim objects.
      */
     @JsonProperty("spec")
     public void setSpec(ResourceClaimTemplateSpec spec) {

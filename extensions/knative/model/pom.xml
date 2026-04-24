@@ -82,6 +82,10 @@
                     <name>#/components/schemas/dev.knative.pkg.apis.VolatileTime</name>
                     <value>java.lang.String</value>
                   </property>
+                  <property>
+                    <name>#/components/schemas/io.k8s.api.core.v1.WorkloadReference</name>
+                    <value>java.lang.Object</value>
+                  </property>
                 </refToJavaTypeMappings>
               </settings>
             </configuration>

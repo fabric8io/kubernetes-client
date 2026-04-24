@@ -44,6 +44,7 @@ import lombok.experimental.Accessors;
     "fsGroupPolicy",
     "nodeAllocatableUpdatePeriodSeconds",
     "podInfoOnMount",
+    "preventPodSchedulingIfMissing",
     "requiresRepublish",
     "seLinuxMount",
     "serviceAccountTokenInSecrets",
@@ -84,6 +85,8 @@ public class CSIDriverSpec implements Editable<CSIDriverSpecBuilder>, Kubernetes
     private Long nodeAllocatableUpdatePeriodSeconds;
     @JsonProperty("podInfoOnMount")
     private Boolean podInfoOnMount;
+    @JsonProperty("preventPodSchedulingIfMissing")
+    private Boolean preventPodSchedulingIfMissing;
     @JsonProperty("requiresRepublish")
     private Boolean requiresRepublish;
     @JsonProperty("seLinuxMount")
@@ -107,12 +110,13 @@ public class CSIDriverSpec implements Editable<CSIDriverSpecBuilder>, Kubernetes
     public CSIDriverSpec() {
     }
 
-    public CSIDriverSpec(Boolean attachRequired, String fsGroupPolicy, Long nodeAllocatableUpdatePeriodSeconds, Boolean podInfoOnMount, Boolean requiresRepublish, Boolean seLinuxMount, Boolean serviceAccountTokenInSecrets, Boolean storageCapacity, List<TokenRequest> tokenRequests, List<String> volumeLifecycleModes) {
+    public CSIDriverSpec(Boolean attachRequired, String fsGroupPolicy, Long nodeAllocatableUpdatePeriodSeconds, Boolean podInfoOnMount, Boolean preventPodSchedulingIfMissing, Boolean requiresRepublish, Boolean seLinuxMount, Boolean serviceAccountTokenInSecrets, Boolean storageCapacity, List<TokenRequest> tokenRequests, List<String> volumeLifecycleModes) {
         super();
         this.attachRequired = attachRequired;
         this.fsGroupPolicy = fsGroupPolicy;
         this.nodeAllocatableUpdatePeriodSeconds = nodeAllocatableUpdatePeriodSeconds;
         this.podInfoOnMount = podInfoOnMount;
+        this.preventPodSchedulingIfMissing = preventPodSchedulingIfMissing;
         this.requiresRepublish = requiresRepublish;
         this.seLinuxMount = seLinuxMount;
         this.serviceAccountTokenInSecrets = serviceAccountTokenInSecrets;
@@ -154,7 +158,7 @@ public class CSIDriverSpec implements Editable<CSIDriverSpecBuilder>, Kubernetes
     }
 
     /**
-     * nodeAllocatableUpdatePeriodSeconds specifies the interval between periodic updates of the CSINode allocatable capacity for this driver. When set, both periodic updates and updates triggered by capacity-related failures are enabled. If not set, no updates occur (neither periodic nor upon detecting capacity-related failures), and the allocatable.count remains static. The minimum allowed value for this field is 10 seconds.<br><p> <br><p> This is a beta feature and requires the MutableCSINodeAllocatableCount feature gate to be enabled.<br><p> <br><p> This field is mutable.
+     * nodeAllocatableUpdatePeriodSeconds specifies the interval between periodic updates of the CSINode allocatable capacity for this driver. When set, both periodic updates and updates triggered by capacity-related failures are enabled. If not set, no updates occur (neither periodic nor upon detecting capacity-related failures), and the allocatable.count remains static. The minimum allowed value for this field is 10 seconds.<br><p> <br><p> This feature requires the MutableCSINodeAllocatableCount feature gate to be enabled.<br><p> <br><p> This field is mutable.
      */
     @JsonProperty("nodeAllocatableUpdatePeriodSeconds")
     public Long getNodeAllocatableUpdatePeriodSeconds() {
@@ -162,7 +166,7 @@ public class CSIDriverSpec implements Editable<CSIDriverSpecBuilder>, Kubernetes
     }
 
     /**
-     * nodeAllocatableUpdatePeriodSeconds specifies the interval between periodic updates of the CSINode allocatable capacity for this driver. When set, both periodic updates and updates triggered by capacity-related failures are enabled. If not set, no updates occur (neither periodic nor upon detecting capacity-related failures), and the allocatable.count remains static. The minimum allowed value for this field is 10 seconds.<br><p> <br><p> This is a beta feature and requires the MutableCSINodeAllocatableCount feature gate to be enabled.<br><p> <br><p> This field is mutable.
+     * nodeAllocatableUpdatePeriodSeconds specifies the interval between periodic updates of the CSINode allocatable capacity for this driver. When set, both periodic updates and updates triggered by capacity-related failures are enabled. If not set, no updates occur (neither periodic nor upon detecting capacity-related failures), and the allocatable.count remains static. The minimum allowed value for this field is 10 seconds.<br><p> <br><p> This feature requires the MutableCSINodeAllocatableCount feature gate to be enabled.<br><p> <br><p> This field is mutable.
      */
     @JsonProperty("nodeAllocatableUpdatePeriodSeconds")
     public void setNodeAllocatableUpdatePeriodSeconds(Long nodeAllocatableUpdatePeriodSeconds) {
@@ -183,6 +187,22 @@ public class CSIDriverSpec implements Editable<CSIDriverSpecBuilder>, Kubernetes
     @JsonProperty("podInfoOnMount")
     public void setPodInfoOnMount(Boolean podInfoOnMount) {
         this.podInfoOnMount = podInfoOnMount;
+    }
+
+    /**
+     * PreventPodSchedulingIfMissing indicates that the CSI driver wants to prevent pod scheduling if the CSI driver on the node is missing.<br><p> <br><p> Enabling this option will prevent the scheduler (or any other component which embeds default scheduler such as cluster-autoscaler) from scheduling pods to nodes where CSI driver is not installed.<br><p> <br><p> For components(such as cluster-autoscaler) that embed the scheduler and run pod placement simulations using scheduler plugins, they MUST be aware of CSI driver registration information via CSINode object. They must create simulated CSINode objects in addition to Node objects during scheduling simulation, otherwise if PreventPodSchedulingIfMissing is enabled globally for CSIDriver object, any newly created node may be rejected by the scheduler because of missing CSI driver information from the node.<br><p> <br><p> This is an alpha feature and requires the VolumeLimitScaling feature gate to be enabled. Default is "false".
+     */
+    @JsonProperty("preventPodSchedulingIfMissing")
+    public Boolean getPreventPodSchedulingIfMissing() {
+        return preventPodSchedulingIfMissing;
+    }
+
+    /**
+     * PreventPodSchedulingIfMissing indicates that the CSI driver wants to prevent pod scheduling if the CSI driver on the node is missing.<br><p> <br><p> Enabling this option will prevent the scheduler (or any other component which embeds default scheduler such as cluster-autoscaler) from scheduling pods to nodes where CSI driver is not installed.<br><p> <br><p> For components(such as cluster-autoscaler) that embed the scheduler and run pod placement simulations using scheduler plugins, they MUST be aware of CSI driver registration information via CSINode object. They must create simulated CSINode objects in addition to Node objects during scheduling simulation, otherwise if PreventPodSchedulingIfMissing is enabled globally for CSIDriver object, any newly created node may be rejected by the scheduler because of missing CSI driver information from the node.<br><p> <br><p> This is an alpha feature and requires the VolumeLimitScaling feature gate to be enabled. Default is "false".
+     */
+    @JsonProperty("preventPodSchedulingIfMissing")
+    public void setPreventPodSchedulingIfMissing(Boolean preventPodSchedulingIfMissing) {
+        this.preventPodSchedulingIfMissing = preventPodSchedulingIfMissing;
     }
 
     /**

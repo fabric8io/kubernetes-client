@@ -34,6 +34,7 @@ import lombok.experimental.Accessors;
     "hostIPs",
     "initContainerStatuses",
     "message",
+    "nodeAllocatableResourceClaimStatuses",
     "nominatedNodeName",
     "observedGeneration",
     "phase",
@@ -81,6 +82,9 @@ public class PodStatus implements Editable<PodStatusBuilder>, KubernetesResource
     private List<ContainerStatus> initContainerStatuses = new ArrayList<>();
     @JsonProperty("message")
     private String message;
+    @JsonProperty("nodeAllocatableResourceClaimStatuses")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<NodeAllocatableResourceClaimStatus> nodeAllocatableResourceClaimStatuses = new ArrayList<>();
     @JsonProperty("nominatedNodeName")
     private String nominatedNodeName;
     @JsonProperty("observedGeneration")
@@ -114,7 +118,7 @@ public class PodStatus implements Editable<PodStatusBuilder>, KubernetesResource
     public PodStatus() {
     }
 
-    public PodStatus(Map<String, Quantity> allocatedResources, List<PodCondition> conditions, List<ContainerStatus> containerStatuses, List<ContainerStatus> ephemeralContainerStatuses, PodExtendedResourceClaimStatus extendedResourceClaimStatus, String hostIP, List<HostIP> hostIPs, List<ContainerStatus> initContainerStatuses, String message, String nominatedNodeName, Long observedGeneration, String phase, String podIP, List<PodIP> podIPs, String qosClass, String reason, String resize, List<PodResourceClaimStatus> resourceClaimStatuses, ResourceRequirements resources, String startTime) {
+    public PodStatus(Map<String, Quantity> allocatedResources, List<PodCondition> conditions, List<ContainerStatus> containerStatuses, List<ContainerStatus> ephemeralContainerStatuses, PodExtendedResourceClaimStatus extendedResourceClaimStatus, String hostIP, List<HostIP> hostIPs, List<ContainerStatus> initContainerStatuses, String message, List<NodeAllocatableResourceClaimStatus> nodeAllocatableResourceClaimStatuses, String nominatedNodeName, Long observedGeneration, String phase, String podIP, List<PodIP> podIPs, String qosClass, String reason, String resize, List<PodResourceClaimStatus> resourceClaimStatuses, ResourceRequirements resources, String startTime) {
         super();
         this.allocatedResources = allocatedResources;
         this.conditions = conditions;
@@ -125,6 +129,7 @@ public class PodStatus implements Editable<PodStatusBuilder>, KubernetesResource
         this.hostIPs = hostIPs;
         this.initContainerStatuses = initContainerStatuses;
         this.message = message;
+        this.nodeAllocatableResourceClaimStatuses = nodeAllocatableResourceClaimStatuses;
         this.nominatedNodeName = nominatedNodeName;
         this.observedGeneration = observedGeneration;
         this.phase = phase;
@@ -286,6 +291,23 @@ public class PodStatus implements Editable<PodStatusBuilder>, KubernetesResource
     @JsonProperty("message")
     public void setMessage(String message) {
         this.message = message;
+    }
+
+    /**
+     * NodeAllocatableResourceClaimStatuses contains the status of node-allocatable resources that were allocated for this pod through DRA claims. This includes resources currently reported in v1.Node `status.allocatable` that are not extended resources (see https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/#extended-resources). Examples include "cpu", "memory", "ephemeral-storage", and hugepages.
+     */
+    @JsonProperty("nodeAllocatableResourceClaimStatuses")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public List<NodeAllocatableResourceClaimStatus> getNodeAllocatableResourceClaimStatuses() {
+        return nodeAllocatableResourceClaimStatuses;
+    }
+
+    /**
+     * NodeAllocatableResourceClaimStatuses contains the status of node-allocatable resources that were allocated for this pod through DRA claims. This includes resources currently reported in v1.Node `status.allocatable` that are not extended resources (see https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/#extended-resources). Examples include "cpu", "memory", "ephemeral-storage", and hugepages.
+     */
+    @JsonProperty("nodeAllocatableResourceClaimStatuses")
+    public void setNodeAllocatableResourceClaimStatuses(List<NodeAllocatableResourceClaimStatus> nodeAllocatableResourceClaimStatuses) {
+        this.nodeAllocatableResourceClaimStatuses = nodeAllocatableResourceClaimStatuses;
     }
 
     /**

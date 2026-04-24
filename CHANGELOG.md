@@ -34,8 +34,11 @@
 * Fix #7582: bump vertical-pod-autoscaler from 1.4.1 to 1.6.0
 
 #### New Features
+* Fix #7417: Support for Kubernetes v1.36.0 (ハル / Haru)
 
 #### _**Note**_: Breaking changes
+* Fix #7417: `scheduling.k8s.io/v1alpha1` model classes removed (`Workload`, `WorkloadList`, `WorkloadSpec`, `PodGroup`, `PodGroupPolicy`, `BasicSchedulingPolicy`, `GangSchedulingPolicy`, `TypedLocalObjectReference`) — upstream rearchitected workload scheduling via KEP-5832
+* Fix #7417: `WorkloadReference` removed from core v1 models and `PodSpec.workloadRef` field removed — replaced by `PodSpec.schedulingGroup` (`PodSchedulingGroup`)
 * Fix #7544: cluster-api model classes moved from package `io.fabric8.kubernetes.api.model.clusterapi.v1beta1` to `io.fabric8.kubernetes.api.model.clusterapi.core.v1beta1` (following upstream cluster-api v1.11+ API reorganization)
 * Fix #7538: cert-manager model `ObjectReference` renamed to `IssuerReference` (following upstream rename in cert-manager v1.19.0)
 * Fix #7541: gateway-api model `v1beta1.ReferenceGrantFrom`, `v1beta1.ReferenceGrantSpec`, and `v1beta1.ReferenceGrantTo` removed (ReferenceGrant graduated to v1 upstream)

@@ -86,7 +86,7 @@ public class ExpressionWarning implements Editable<ExpressionWarningBuilder>, Ku
     }
 
     /**
-     * The path to the field that refers the expression. For example, the reference to the expression of the first item of validations is "spec.validations[0].expression"
+     * fieldRef is the path to the field that refers to the expression. For example, the reference to the expression of the first item of validations is "spec.validations[0].expression"
      */
     @JsonProperty("fieldRef")
     public String getFieldRef() {
@@ -94,7 +94,7 @@ public class ExpressionWarning implements Editable<ExpressionWarningBuilder>, Ku
     }
 
     /**
-     * The path to the field that refers the expression. For example, the reference to the expression of the first item of validations is "spec.validations[0].expression"
+     * fieldRef is the path to the field that refers to the expression. For example, the reference to the expression of the first item of validations is "spec.validations[0].expression"
      */
     @JsonProperty("fieldRef")
     public void setFieldRef(String fieldRef) {
@@ -102,7 +102,7 @@ public class ExpressionWarning implements Editable<ExpressionWarningBuilder>, Ku
     }
 
     /**
-     * The content of type checking information in a human-readable form. Each line of the warning contains the type that the expression is checked against, followed by the type check error from the compiler.
+     * warning contains the content of type checking information in a human-readable form. Each line of the warning contains the type that the expression is checked against, followed by the type check error from the compiler.
      */
     @JsonProperty("warning")
     public String getWarning() {
@@ -110,7 +110,7 @@ public class ExpressionWarning implements Editable<ExpressionWarningBuilder>, Ku
     }
 
     /**
-     * The content of type checking information in a human-readable form. Each line of the warning contains the type that the expression is checked against, followed by the type check error from the compiler.
+     * warning contains the content of type checking information in a human-readable form. Each line of the warning contains the type that the expression is checked against, followed by the type check error from the compiler.
      */
     @JsonProperty("warning")
     public void setWarning(String warning) {

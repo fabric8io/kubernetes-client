@@ -1,5 +1,5 @@
 
-package io.fabric8.kubernetes.api.model.scheduling.v1alpha1;
+package io.fabric8.kubernetes.api.model.scheduling.v1alpha2;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -41,7 +41,7 @@ import lombok.ToString;
 import lombok.experimental.Accessors;
 
 /**
- * WorkloadList contains a list of Workload resources.
+ * PodGroupList contains a list of PodGroup resources.
  */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -75,19 +75,19 @@ import lombok.experimental.Accessors;
 @TemplateTransformations({
     @TemplateTransformation(value = "/manifest.vm", outputPath = "META-INF/services/io.fabric8.kubernetes.api.model.KubernetesResource", gather = true)
 })
-@Version("v1alpha1")
+@Version("v1alpha2")
 @Group("scheduling.k8s.io")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class WorkloadList implements Editable<WorkloadListBuilder>, KubernetesResource, KubernetesResourceList<io.fabric8.kubernetes.api.model.scheduling.v1alpha1.Workload>
+public class PodGroupList implements Editable<PodGroupListBuilder>, KubernetesResource, KubernetesResourceList<io.fabric8.kubernetes.api.model.scheduling.v1alpha2.PodGroup>
 {
 
     @JsonProperty("apiVersion")
-    private String apiVersion = "scheduling.k8s.io/v1alpha1";
+    private String apiVersion = "scheduling.k8s.io/v1alpha2";
     @JsonProperty("items")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<io.fabric8.kubernetes.api.model.scheduling.v1alpha1.Workload> items = new ArrayList<>();
+    private List<io.fabric8.kubernetes.api.model.scheduling.v1alpha2.PodGroup> items = new ArrayList<>();
     @JsonProperty("kind")
-    private String kind = "WorkloadList";
+    private String kind = "PodGroupList";
     @JsonProperty("metadata")
     private ListMeta metadata;
     @JsonIgnore
@@ -96,10 +96,10 @@ public class WorkloadList implements Editable<WorkloadListBuilder>, KubernetesRe
     /**
      * No args constructor for use in serialization
      */
-    public WorkloadList() {
+    public PodGroupList() {
     }
 
-    public WorkloadList(String apiVersion, List<io.fabric8.kubernetes.api.model.scheduling.v1alpha1.Workload> items, String kind, ListMeta metadata) {
+    public PodGroupList(String apiVersion, List<io.fabric8.kubernetes.api.model.scheduling.v1alpha2.PodGroup> items, String kind, ListMeta metadata) {
         super();
         this.apiVersion = apiVersion;
         this.items = items;
@@ -124,19 +124,19 @@ public class WorkloadList implements Editable<WorkloadListBuilder>, KubernetesRe
     }
 
     /**
-     * Items is the list of Workloads.
+     * Items is the list of PodGroups.
      */
     @JsonProperty("items")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<io.fabric8.kubernetes.api.model.scheduling.v1alpha1.Workload> getItems() {
+    public List<io.fabric8.kubernetes.api.model.scheduling.v1alpha2.PodGroup> getItems() {
         return items;
     }
 
     /**
-     * Items is the list of Workloads.
+     * Items is the list of PodGroups.
      */
     @JsonProperty("items")
-    public void setItems(List<io.fabric8.kubernetes.api.model.scheduling.v1alpha1.Workload> items) {
+    public void setItems(List<io.fabric8.kubernetes.api.model.scheduling.v1alpha2.PodGroup> items) {
         this.items = items;
     }
 
@@ -157,7 +157,7 @@ public class WorkloadList implements Editable<WorkloadListBuilder>, KubernetesRe
     }
 
     /**
-     * WorkloadList contains a list of Workload resources.
+     * PodGroupList contains a list of PodGroup resources.
      */
     @JsonProperty("metadata")
     public ListMeta getMetadata() {
@@ -165,7 +165,7 @@ public class WorkloadList implements Editable<WorkloadListBuilder>, KubernetesRe
     }
 
     /**
-     * WorkloadList contains a list of Workload resources.
+     * PodGroupList contains a list of PodGroup resources.
      */
     @JsonProperty("metadata")
     public void setMetadata(ListMeta metadata) {
@@ -173,12 +173,12 @@ public class WorkloadList implements Editable<WorkloadListBuilder>, KubernetesRe
     }
 
     @JsonIgnore
-    public WorkloadListBuilder edit() {
-        return new WorkloadListBuilder(this);
+    public PodGroupListBuilder edit() {
+        return new PodGroupListBuilder(this);
     }
 
     @JsonIgnore
-    public WorkloadListBuilder toBuilder() {
+    public PodGroupListBuilder toBuilder() {
         return edit();
     }
 
