@@ -45,7 +45,7 @@ require (
 	knative.dev/eventing-couchdb v0.28.0
 	knative.dev/eventing-github v0.48.0
 	knative.dev/eventing-gitlab v0.48.0
-	knative.dev/eventing-kafka-broker v0.48.2
+	knative.dev/eventing-kafka-broker v0.48.3
 	knative.dev/eventing-prometheus v0.28.0
 	knative.dev/networking v0.0.0-20260120131110-a7cdca238a0d
 	knative.dev/serving v0.48.2
