@@ -41,6 +41,8 @@ public class UntrustedCertTest {
       //We override the config to create a client that doesn't trust all certs.
       Config override = new ConfigBuilder(client.getConfiguration())
           .withTrustCerts(false)
+          .withConnectionTimeout(1000)
+          .withRequestRetryBackoffLimit(0)
           .build();
 
       KubernetesClient client = new DefaultKubernetesClient(override);
@@ -56,6 +58,8 @@ public class UntrustedCertTest {
       Config override = new ConfigBuilder(client.getConfiguration())
           .withTrustCerts(false)
           .withCaCertData(CA_CERT_DATA)
+          .withConnectionTimeout(1000)
+          .withRequestRetryBackoffLimit(0)
           .build();
 
       KubernetesClient client = new DefaultKubernetesClient(override);
