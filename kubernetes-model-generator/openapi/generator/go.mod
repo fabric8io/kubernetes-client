@@ -9,8 +9,8 @@ require (
 	github.com/k8snetworkplumbingwg/network-attachment-definition-client v1.7.7
 	github.com/kubernetes-csi/external-snapshotter/client/v8 v8.4.0
 	github.com/metal3-io/baremetal-operator/apis v0.12.4
-	github.com/metal3-io/cluster-api-provider-metal3/api v1.12.3
-	github.com/metal3-io/ip-address-manager/api v1.12.3 // indirect
+	github.com/metal3-io/cluster-api-provider-metal3/api v1.12.4
+	github.com/metal3-io/ip-address-manager/api v1.12.4 // indirect
 	// Match latest commit in the version branch (e.g. release-4.17)
 	github.com/openshift/api v3.9.0+incompatible
 	github.com/openshift/cloud-credential-operator v0.0.0-20251126011841-0e03b7a0fa39
@@ -31,21 +31,21 @@ require (
 	github.com/tektoncd/pipeline v1.11.1
 	github.com/tektoncd/triggers v0.35.0
 	istio.io/client-go v1.29.2
-	k8s.io/api v0.35.4
-	k8s.io/apiextensions-apiserver v0.35.4
+	k8s.io/api v0.36.0
+	k8s.io/apiextensions-apiserver v0.36.0
 	k8s.io/apimachinery v0.36.0
 	k8s.io/autoscaler/vertical-pod-autoscaler v1.6.0
 	k8s.io/client-go v12.0.0+incompatible
 	k8s.io/gengo/v2 v2.0.0-20251215205346-5ee0d033ba5b
 	k8s.io/kube-openapi v0.0.0-20260319004828-5883c5ee87b9
-	k8s.io/metrics v0.35.4
+	k8s.io/metrics v0.36.0
 	knative.dev/caching v0.0.0-20260120130310-f1fc03b7f5ee
 	knative.dev/eventing v0.48.2
 	knative.dev/eventing-awssqs v0.29.0
 	knative.dev/eventing-couchdb v0.28.0
 	knative.dev/eventing-github v0.48.0
 	knative.dev/eventing-gitlab v0.48.0
-	knative.dev/eventing-kafka-broker v0.48.2
+	knative.dev/eventing-kafka-broker v0.48.3
 	knative.dev/eventing-prometheus v0.28.0
 	knative.dev/networking v0.0.0-20260120131110-a7cdca238a0d
 	knative.dev/serving v0.48.2
@@ -53,7 +53,7 @@ require (
 	open-cluster-management.io/governance-policy-propagator v0.18.0
 	open-cluster-management.io/multicloud-operators-channel v0.16.0
 	open-cluster-management.io/multicloud-operators-subscription v0.16.0
-	sigs.k8s.io/cluster-api v1.12.4
+	sigs.k8s.io/cluster-api v1.12.7
 	sigs.k8s.io/gateway-api v1.5.1
 	sigs.k8s.io/kustomize/api v0.21.1
 	// This version is older than v1.10.0 see replacements below
@@ -239,7 +239,7 @@ require (
 	gopkg.in/evanphx/json-patch.v4 v4.13.0 // indirect
 	gopkg.in/inf.v0 v0.9.1 // indirect
 	istio.io/api v1.29.2-0.20260408155000-a0e4e1cbfcc5 // indirect
-	k8s.io/component-base v0.35.4 // indirect
+	k8s.io/component-base v0.36.0 // indirect
 	k8s.io/klog/v2 v2.140.0 // indirect
 	k8s.io/utils v0.0.0-20260210185600-b8788abfbbc2 // indirect
 	knative.dev/pkg v0.0.0-20260319144603-18c5d580ae64 // indirect
