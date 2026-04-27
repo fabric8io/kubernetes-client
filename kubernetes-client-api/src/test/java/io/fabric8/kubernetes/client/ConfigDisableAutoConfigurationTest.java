@@ -255,6 +255,7 @@ class ConfigDisableAutoConfigurationTest {
       @AfterEach
       void tearDown() {
         System.clearProperty("kubernetes.master");
+        System.clearProperty("kubernetes.namespace");
       }
     }
 
