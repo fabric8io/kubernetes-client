@@ -34,7 +34,7 @@
 * Fix #7582: bump vertical-pod-autoscaler from 1.4.1 to 1.6.0
 
 #### New Features
-* Fix #7417: Support for Kubernetes v1.36.0 (ハル / Haru)
+* Fix #7417: Support for Kubernetes v1.36 (ハル / Haru)
 
 #### _**Note**_: Breaking changes
 * Fix #7417: `scheduling.k8s.io/v1alpha1` model classes removed (`Workload`, `WorkloadList`, `WorkloadSpec`, `PodGroup`, `PodGroupPolicy`, `BasicSchedulingPolicy`, `GangSchedulingPolicy`, `TypedLocalObjectReference`) — upstream rearchitected workload scheduling via KEP-5832
