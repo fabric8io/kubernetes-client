@@ -93,7 +93,7 @@
     <!-- fix as jackson-annotations version 2.20 was released, Refer: https://github.com/FasterXML/jackson-bom/blob/54f854ba1ce69c5827f8acf6d08ba2d7ce36233c/pom.xml#L53-L62 -->
     <jackson.bundle.version.annotations>2.21</jackson.bundle.version.annotations>
     <jetty.version>11.0.26</jetty.version>
-    <maven-core.version>3.9.14</maven-core.version>
+    <maven-core.version>3.9.15</maven-core.version>
     <maven-plugin-annotations.version>3.15.2</maven-plugin-annotations.version>
     <vertx.version>4.5.24</vertx.version>
     <vertx5.version>5.0.7</vertx5.version>
@@ -114,7 +114,7 @@
     <approvaltests.version>30.1.0</approvaltests.version>
     <bouncycastle.version>1.84</bouncycastle.version>
     <bc-fips.version>2.1.2</bc-fips.version>
-    <bcpkix-fips.version>2.1.10</bcpkix-fips.version>
+    <bcpkix-fips.version>2.1.11</bcpkix-fips.version>
     <keycloak.version>26.6.1</keycloak.version><!-- Used by CRD Generator integration tests for verifications -->
     <mockito.version>5.23.0</mockito.version>
     <mockito-inline.version>5.2.0</mockito-inline.version>
@@ -126,9 +126,9 @@
     <asm.bundle.version>8.0.1</asm.bundle.version>
     <slf4j.version>2.0.17</slf4j.version>
     <log4j.version>2.25.4</log4j.version>
-    <lombok.version>1.18.44</lombok.version>
+    <lombok.version>1.18.46</lombok.version>
     <commons-compress.version>1.28.0</commons-compress.version>
-    <commons-io.version>2.21.0</commons-io.version> <!-- Required by Gradle Testing Toolkit -->
+    <commons-io.version>2.22.0</commons-io.version> <!-- Required by Gradle Testing Toolkit -->
     <guava.version>33.6.0-jre</guava.version> <!-- Required by Gradle Testing Toolkit -->
     <osgi.annotations.version>1.5.1</osgi.annotations.version>
     <felix.scr.version>2.0.6</felix.scr.version>
@@ -162,7 +162,7 @@
     <gradle-api-maven-plugin.version>0.0.7</gradle-api-maven-plugin.version>
     <jacoco-maven-plugin.version>0.8.14</jacoco-maven-plugin.version>
     <jkube.version>1.19.0</jkube.version>
-    <sonar-maven-plugin.version>5.5.0.6356</sonar-maven-plugin.version>
+    <sonar-maven-plugin.version>5.6.0.6792</sonar-maven-plugin.version>
     <central-publishing-maven-plugin>0.10.0</central-publishing-maven-plugin>
     <properties.maven.plugin.version>1.0.0</properties.maven.plugin.version>
     <spotless-maven-plugin.version>3.4.0</spotless-maven-plugin.version>
@@ -272,6 +272,11 @@
       <dependency>
         <groupId>io.fabric8</groupId>
         <artifactId>crd-generator-collector</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>io.fabric8</groupId>
+        <artifactId>crd-generator-cli</artifactId>
         <version>${project.version}</version>
       </dependency>
       <dependency>
@@ -1171,7 +1176,6 @@
             <ENV_VAR_EXISTS>value</ENV_VAR_EXISTS>
             <ENV_VAR_EXISTS_BOOLEAN>true</ENV_VAR_EXISTS_BOOLEAN>
           </environmentVariables>
-          <parallel>suitesAndClasses</parallel>
         </configuration>
       </plugin>
 

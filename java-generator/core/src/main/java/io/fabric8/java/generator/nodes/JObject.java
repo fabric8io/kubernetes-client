@@ -260,7 +260,11 @@ public class JObject extends AbstractJSONSchema2Pojo implements JObjectExtraAnno
         }
 
         if (Utils.isNotNullOrEmpty(prop.getDescription())) {
-          objField.setJavadocComment(prop.getDescription().replace("*/", "&#042;&#047;"));
+          objField.setJavadocComment(prop.getDescription()
+              .replace("&", "&amp;")
+              .replace("<", "&lt;")
+              .replace(">", "&gt;")
+              .replace("*/", "&#042;&#047;"));
 
           objField.addAnnotation(
               new SingleMemberAnnotationExpr(

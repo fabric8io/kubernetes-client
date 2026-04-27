@@ -56,42 +56,42 @@
       <dependency>
         <groupId>io.vertx</groupId>
         <artifactId>vertx-core</artifactId>
-        <version>${vertx.version}</version>
+        <version>${vertx5.version}</version>
       </dependency>
       <dependency>
         <groupId>io.vertx</groupId>
         <artifactId>vertx-web-client</artifactId>
-        <version>${vertx.version}</version>
+        <version>${vertx5.version}</version>
       </dependency>
       <dependency>
         <groupId>io.vertx</groupId>
         <artifactId>vertx-web-common</artifactId>
-        <version>${vertx.version}</version>
+        <version>${vertx5.version}</version>
       </dependency>
       <dependency>
         <groupId>io.vertx</groupId>
         <artifactId>vertx-auth-common</artifactId>
-        <version>${vertx.version}</version>
+        <version>${vertx5.version}</version>
       </dependency>
       <dependency>
         <groupId>io.vertx</groupId>
         <artifactId>vertx-core-logging</artifactId>
-        <version>${vertx.version}</version>
+        <version>${vertx5.version}</version>
       </dependency>
       <dependency>
         <groupId>io.vertx</groupId>
         <artifactId>vertx-web</artifactId>
-        <version>${vertx.version}</version>
+        <version>${vertx5.version}</version>
       </dependency>
       <dependency>
         <groupId>io.vertx</groupId>
         <artifactId>vertx-bridge-common</artifactId>
-        <version>${vertx.version}</version>
+        <version>${vertx5.version}</version>
       </dependency>
       <dependency>
         <groupId>io.vertx</groupId>
         <artifactId>vertx-uri-template</artifactId>
-        <version>${vertx.version}</version>
+        <version>${vertx5.version}</version>
       </dependency>
     </dependencies>
   </dependencyManagement>
@@ -104,12 +104,12 @@
     <dependency>
       <groupId>io.vertx</groupId>
       <artifactId>vertx-core</artifactId>
-      <version>${vertx.version}</version>
+      <version>${vertx5.version}</version>
     </dependency>
     <dependency>
       <groupId>io.vertx</groupId>
       <artifactId>vertx-web-client</artifactId>
-      <version>${vertx.version}</version>
+      <version>${vertx5.version}</version>
     </dependency>
     <dependency>
       <groupId>io.fabric8</groupId>

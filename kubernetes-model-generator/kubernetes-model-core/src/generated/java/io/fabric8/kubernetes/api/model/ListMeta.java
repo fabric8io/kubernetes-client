@@ -23,7 +23,8 @@ import lombok.experimental.Accessors;
     "continue",
     "remainingItemCount",
     "resourceVersion",
-    "selfLink"
+    "selfLink",
+    "shardInfo"
 })
 @ToString
 @EqualsAndHashCode
@@ -44,6 +45,8 @@ public class ListMeta implements Editable<ListMetaBuilder>, KubernetesResource
     private String resourceVersion;
     @JsonProperty("selfLink")
     private String selfLink;
+    @JsonProperty("shardInfo")
+    private ShardInfo shardInfo;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -53,12 +56,13 @@ public class ListMeta implements Editable<ListMetaBuilder>, KubernetesResource
     public ListMeta() {
     }
 
-    public ListMeta(String _continue, Long remainingItemCount, String resourceVersion, String selfLink) {
+    public ListMeta(String _continue, Long remainingItemCount, String resourceVersion, String selfLink, ShardInfo shardInfo) {
         super();
         this._continue = _continue;
         this.remainingItemCount = remainingItemCount;
         this.resourceVersion = resourceVersion;
         this.selfLink = selfLink;
+        this.shardInfo = shardInfo;
     }
 
     @JsonProperty("continue")
@@ -99,6 +103,16 @@ public class ListMeta implements Editable<ListMetaBuilder>, KubernetesResource
     @JsonProperty("selfLink")
     public void setSelfLink(String selfLink) {
         this.selfLink = selfLink;
+    }
+
+    @JsonProperty("shardInfo")
+    public ShardInfo getShardInfo() {
+        return shardInfo;
+    }
+
+    @JsonProperty("shardInfo")
+    public void setShardInfo(ShardInfo shardInfo) {
+        this.shardInfo = shardInfo;
     }
 
     @JsonIgnore
