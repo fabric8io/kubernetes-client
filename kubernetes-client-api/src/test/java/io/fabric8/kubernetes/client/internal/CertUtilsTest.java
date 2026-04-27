@@ -35,8 +35,9 @@ import java.security.cert.CertificateException;
 import java.security.spec.InvalidKeySpecException;
 import java.util.Base64;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
-import java.util.Properties;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
@@ -49,28 +50,33 @@ class CertUtilsTest {
 
   private static final String FABRIC8_STORE_PATH = Utils.filePath(CertUtilsTest.class.getResource("/ssl-test/fabric8-store"));
   private static final String FABRIC8_STORE_PASSPHRASE = "fabric8";
-  private Properties systemProperties;
+  private static final String[] MANAGED_SSL_PROPERTIES = {
+      "javax.net.ssl.trustStore",
+      "javax.net.ssl.trustStorePassword",
+      "javax.net.ssl.trustStoreType",
+      "javax.net.ssl.keyStore",
+      "javax.net.ssl.keyStorePassword"
+  };
+  private Map<String, String> originalSslProperties;
 
   @BeforeEach
   public void storeSystemProperties() {
-    systemProperties = new Properties();
-    storeSystemProperty("javax.net.ssl.trustStore");
-    storeSystemProperty("javax.net.ssl.trustStorePassword");
-    storeSystemProperty("javax.net.ssl.trustStoreType");
-    storeSystemProperty("javax.net.ssl.keyStore");
-    storeSystemProperty("javax.net.ssl.keyStorePassword");
-  }
-
-  private void storeSystemProperty(String systemProperty) {
-    String value = System.getProperty(systemProperty);
-    if (Utils.isNotNullOrEmpty(value)) {
-      systemProperties.put(systemProperty, value);
+    originalSslProperties = new HashMap<>();
+    for (String property : MANAGED_SSL_PROPERTIES) {
+      originalSslProperties.put(property, System.getProperty(property));
     }
   }
 
   @AfterEach
   public void resetSystemPropertiesBack() {
-    System.setProperties(systemProperties);
+    for (String property : MANAGED_SSL_PROPERTIES) {
+      String original = originalSslProperties.get(property);
+      if (original == null) {
+        System.clearProperty(property);
+      } else {
+        System.setProperty(property, original);
+      }
+    }
   }
 
   @Test
