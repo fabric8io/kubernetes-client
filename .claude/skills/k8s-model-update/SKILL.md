@@ -138,7 +138,7 @@ Search for the official release blog at `https://kubernetes.io/blog/` for the ta
 
 ### 9. Write the investigation report
 
-Create a detailed markdown file at `k8s-$0-investigation.md` in the project root. This file is for local reference only — **do not commit it**.
+Create a detailed markdown file at `/tmp/k8s-$0-investigation.md`. This file is for local reference only and lives outside the repo to avoid accidental commits.
 
 Structure:
 
@@ -186,7 +186,7 @@ gh issue comment $1 --body "..."
 
 ## Phase 3: DSL Updates
 
-### 11. Present DSL candidates
+### 10. Present DSL candidates
 
 From the investigation, list every API that graduated to GA and could benefit from a dedicated DSL method. For each candidate, note:
 
@@ -202,7 +202,7 @@ Present the candidates and let the user decide which ones to implement. Do not p
 
 ---
 
-### 12. Implement DSL changes
+### 11. Implement DSL changes
 
 For each user-approved API, follow the established pattern in the codebase. The exact files depend on whether the resource belongs to an existing API group or a new one.
 
@@ -254,7 +254,7 @@ Look at the `VolumeAttributesClass` addition in `V1StorageAPIGroupDSL` / `V1Stor
 
 ## Phase 4: Finalize
 
-### 13. Update CHANGELOG.md
+### 12. Update CHANGELOG.md
 
 Add under the current SNAPSHOT version, in the **New Features** section:
 
@@ -264,7 +264,7 @@ Add under the current SNAPSHOT version, in the **New Features** section:
 
 If there are breaking changes from API removals, add those to the **Breaking changes** section too.
 
-### 14. Regenerate javadoc links
+### 13. Regenerate javadoc links
 
 ```bash
 make generate-javadoc-links
@@ -272,7 +272,7 @@ make generate-javadoc-links
 
 A Kubernetes version bump adds/removes packages, so the javadoc element-list files need regenerating for cross-module linking.
 
-### 15. Format and verify
+### 14. Format and verify
 
 ```bash
 make format
@@ -281,15 +281,17 @@ make quickly
 
 Formatting applies license headers and spotless Java formatting (requires JDK 17+). The build verifies everything compiles cleanly.
 
-### 16. Commit
+### 15. Commit
 
-Stage all generated model changes, DSL additions, pom.xml update, and CHANGELOG. **Do not stage** the investigation markdown file.
+Stage all generated model changes, DSL additions, pom.xml update, and CHANGELOG.
 
 Commit message pattern:
 
 ```
-feat(openapi): support for Kubernetes v$0 (<Release Name>) (#$1)
+feat(openapi): support for Kubernetes v<major>.<minor> (<Release Name>) (#$1)
 ```
+
+where `<major>.<minor>` is derived from `$0` by dropping the patch version (e.g., `1.36.0` → `1.36`).
 
 ---
 
@@ -299,13 +301,13 @@ Show the user a summary of all changes: files modified, new DSL methods added, c
 
 ---
 
-### 17. Push and create PR
+### 16. Push and create PR
 
 ```bash
 git push -u origin k8s-releases/k8s-$0
 ```
 
-PR title: `feat(openapi): support for Kubernetes v$0 (<Release Name>)`
+PR title: `feat(openapi): support for Kubernetes v<major>.<minor> (<Release Name>)`
 
 PR body should include:
 - Summary of changes (model updates, new DSL methods)
