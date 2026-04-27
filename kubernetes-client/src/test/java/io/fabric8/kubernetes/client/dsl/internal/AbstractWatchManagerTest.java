@@ -139,18 +139,19 @@ class AbstractWatchManagerTest {
     // Given
     final CompletableFuture<?> cf = mock(CompletableFuture.class);
     ExecutorService executor = CommonThreadPool.get();
-    final MockedStatic<Utils> utils = mockStatic(Utils.class);
-    utils.when(() -> Utils.schedule(any(), any(), anyLong(), any())).thenReturn(cf);
-    final WatcherAdapter<HasMetadata> watcher = new WatcherAdapter<>();
-    final WatchManager<HasMetadata> awm = withDefaultWatchManager(watcher);
-    awm.baseOperation.context = Mockito.mock(OperationContext.class);
-    Mockito.when(awm.baseOperation.context.getExecutor()).thenReturn(executor);
+    try (MockedStatic<Utils> utils = mockStatic(Utils.class)) {
+      utils.when(() -> Utils.schedule(any(), any(), anyLong(), any())).thenReturn(cf);
+      final WatcherAdapter<HasMetadata> watcher = new WatcherAdapter<>();
+      final WatchManager<HasMetadata> awm = withDefaultWatchManager(watcher);
+      awm.baseOperation.context = Mockito.mock(OperationContext.class);
+      Mockito.when(awm.baseOperation.context.getExecutor()).thenReturn(executor);
 
-    awm.scheduleReconnect(new WatchRequestState());
-    // When
-    awm.cancelReconnect();
-    // Then
-    verify(cf, times(1)).cancel(true);
+      awm.scheduleReconnect(new WatchRequestState());
+      // When
+      awm.cancelReconnect();
+      // Then
+      verify(cf, times(1)).cancel(true);
+    }
   }
 
   @Test
