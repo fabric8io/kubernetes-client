@@ -16,7 +16,6 @@
 package io.fabric8.kubernetes.client.mock;
 
 import io.fabric8.kubernetes.api.model.HasMetadata;
-import io.fabric8.kubernetes.api.model.admissionregistration.v1.JSONPatch;
 import io.fabric8.kubernetes.api.model.admissionregistration.v1.MutatingAdmissionPolicy;
 import io.fabric8.kubernetes.api.model.admissionregistration.v1.MutatingAdmissionPolicyBuilder;
 import io.fabric8.kubernetes.api.model.admissionregistration.v1.MutatingAdmissionPolicyList;
@@ -45,7 +44,14 @@ class V1MutatingAdmissionPolicyTest {
     assertThat(items).isNotNull().hasSize(1);
     AssertionsForClassTypes.assertThat(items.get(0))
         .isInstanceOf(MutatingAdmissionPolicy.class)
-        .hasFieldOrPropertyWithValue("metadata.name", "sidecar-policy.example.com");
+        .hasFieldOrPropertyWithValue("metadata.name", "sidecar-policy.example.com")
+        .hasFieldOrPropertyWithValue("spec.paramKind.kind", "Sidecar")
+        .hasFieldOrPropertyWithValue("spec.failurePolicy", "Fail")
+        .hasFieldOrPropertyWithValue("spec.reinvocationPolicy", "IfNeeded");
+    MutatingAdmissionPolicy policy = (MutatingAdmissionPolicy) items.get(0);
+    assertThat(policy.getSpec().getMutations()).hasSize(1);
+    AssertionsForClassTypes.assertThat(policy.getSpec().getMutations().get(0))
+        .hasFieldOrPropertyWithValue("patchType", "JSONPatch");
   }
 
   @Test
@@ -124,8 +130,8 @@ class V1MutatingAdmissionPolicyTest {
     return new MutatingAdmissionPolicyBuilder()
         .withNewMetadata().withName("sidecar-policy.example.com").endMetadata()
         .withNewSpec()
-        .addNewMutation().withNewApplyConfiguration("newExpression").withJsonPatch(new JSONPatch("someValue"))
-        .withPatchType("someType").endMutation()
+        .addNewMutation().withNewJsonPatch("someExpression")
+        .withPatchType("JSONPatch").endMutation()
         .withNewMatchConstraints()
         .addNewResourceRule()
         .addToApiGroups("apps")

@@ -40,6 +40,7 @@ import io.fabric8.kubernetes.api.model.Toleration;
 import io.fabric8.kubernetes.api.model.TopologySpreadConstraint;
 import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
+import io.fabric8.kubernetes.api.model.WorkloadReference;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
@@ -228,8 +229,7 @@ public class RevisionSpec implements Editable<RevisionSpecBuilder>, KubernetesRe
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<Volume> volumes = new ArrayList<>();
     @JsonProperty("workloadRef")
-    @JsonDeserialize(using = io.fabric8.kubernetes.internal.KubernetesDeserializer.class)
-    private Object workloadRef;
+    private WorkloadReference workloadRef;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -239,7 +239,7 @@ public class RevisionSpec implements Editable<RevisionSpecBuilder>, KubernetesRe
     public RevisionSpec() {
     }
 
-    public RevisionSpec(Long activeDeadlineSeconds, Affinity affinity, Boolean automountServiceAccountToken, Long containerConcurrency, List<Container> containers, PodDNSConfig dnsConfig, String dnsPolicy, Boolean enableServiceLinks, List<EphemeralContainer> ephemeralContainers, List<HostAlias> hostAliases, Boolean hostIPC, Boolean hostNetwork, Boolean hostPID, Boolean hostUsers, String hostname, String hostnameOverride, Long idleTimeoutSeconds, List<LocalObjectReference> imagePullSecrets, List<Container> initContainers, String nodeName, Map<String, String> nodeSelector, PodOS os, Map<String, Quantity> overhead, String preemptionPolicy, Integer priority, String priorityClassName, List<PodReadinessGate> readinessGates, List<PodResourceClaim> resourceClaims, ResourceRequirements resources, Long responseStartTimeoutSeconds, String restartPolicy, String runtimeClassName, String schedulerName, List<PodSchedulingGate> schedulingGates, PodSecurityContext securityContext, String serviceAccount, String serviceAccountName, Boolean setHostnameAsFQDN, Boolean shareProcessNamespace, String subdomain, Long terminationGracePeriodSeconds, Long timeoutSeconds, List<Toleration> tolerations, List<TopologySpreadConstraint> topologySpreadConstraints, List<Volume> volumes, Object workloadRef) {
+    public RevisionSpec(Long activeDeadlineSeconds, Affinity affinity, Boolean automountServiceAccountToken, Long containerConcurrency, List<Container> containers, PodDNSConfig dnsConfig, String dnsPolicy, Boolean enableServiceLinks, List<EphemeralContainer> ephemeralContainers, List<HostAlias> hostAliases, Boolean hostIPC, Boolean hostNetwork, Boolean hostPID, Boolean hostUsers, String hostname, String hostnameOverride, Long idleTimeoutSeconds, List<LocalObjectReference> imagePullSecrets, List<Container> initContainers, String nodeName, Map<String, String> nodeSelector, PodOS os, Map<String, Quantity> overhead, String preemptionPolicy, Integer priority, String priorityClassName, List<PodReadinessGate> readinessGates, List<PodResourceClaim> resourceClaims, ResourceRequirements resources, Long responseStartTimeoutSeconds, String restartPolicy, String runtimeClassName, String schedulerName, List<PodSchedulingGate> schedulingGates, PodSecurityContext securityContext, String serviceAccount, String serviceAccountName, Boolean setHostnameAsFQDN, Boolean shareProcessNamespace, String subdomain, Long terminationGracePeriodSeconds, Long timeoutSeconds, List<Toleration> tolerations, List<TopologySpreadConstraint> topologySpreadConstraints, List<Volume> volumes, WorkloadReference workloadRef) {
         super();
         this.activeDeadlineSeconds = activeDeadlineSeconds;
         this.affinity = affinity;
@@ -1026,7 +1026,7 @@ public class RevisionSpec implements Editable<RevisionSpecBuilder>, KubernetesRe
      * RevisionSpec holds the desired state of the Revision (from the client).
      */
     @JsonProperty("workloadRef")
-    public Object getWorkloadRef() {
+    public WorkloadReference getWorkloadRef() {
         return workloadRef;
     }
 
@@ -1034,8 +1034,7 @@ public class RevisionSpec implements Editable<RevisionSpecBuilder>, KubernetesRe
      * RevisionSpec holds the desired state of the Revision (from the client).
      */
     @JsonProperty("workloadRef")
-    @JsonDeserialize(using = io.fabric8.kubernetes.internal.KubernetesDeserializer.class)
-    public void setWorkloadRef(Object workloadRef) {
+    public void setWorkloadRef(WorkloadReference workloadRef) {
         this.workloadRef = workloadRef;
     }
 
