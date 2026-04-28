@@ -734,7 +734,7 @@ class ResourceTest {
         .open()
         .immediately()
         .andEmit(new WatchEvent(conditionNotMetPod, "MODIFIED"))
-        .waitFor(10)
+        .waitFor(50)
         .andEmit(new WatchEvent(conditionMetPod, "MODIFIED"))
         .done()
         .once();
