@@ -97,8 +97,8 @@ class DefaultSharedIndexInformerTest {
   static final WatchEvent outdatedEvent = new WatchEventBuilder().withType(Watcher.Action.ERROR.name())
       .withObject(outdatedStatus)
       .build();
-  static final Long WATCH_EVENT_EMIT_TIME = 1L;
-  static final Long OUTDATED_WATCH_EVENT_EMIT_TIME = 1L;
+  static final Long WATCH_EVENT_EMIT_TIME = 50L;
+  static final Long OUTDATED_WATCH_EVENT_EMIT_TIME = 50L;
   static final long RESYNC_PERIOD = 5L;
   static final int LATCH_AWAIT_PERIOD_IN_SECONDS = 10;
   private static final CustomResourceDefinitionContext animalContext = new CustomResourceDefinitionContext.Builder()

@@ -21,6 +21,7 @@ import io.fabric8.kubernetes.api.model.StatusBuilder;
 import io.fabric8.kubernetes.client.Watcher;
 import io.fabric8.kubernetes.client.WatcherException;
 import io.fabric8.kubernetes.client.dsl.internal.AbstractWatchManager.WatchRequestState;
+import io.fabric8.kubernetes.client.http.TestStandardHttpClientFactory;
 import io.fabric8.kubernetes.client.utils.CommonThreadPool;
 import io.fabric8.kubernetes.client.utils.KubernetesSerialization;
 import io.fabric8.kubernetes.client.utils.Utils;
@@ -262,8 +263,11 @@ class AbstractWatchManagerTest {
 
   private static <T extends HasMetadata> WatchManager<T> withDefaultWatchManager(Watcher<T> watcher)
       throws MalformedURLException {
+    // Use a non-zero reconnect interval so that the reconnect task scheduled on
+    // SHARED_SCHEDULER cannot fire mid-test and replace latestRequestState before
+    // assertions on its `reconnected` flag run.
     return new WatchManager<>(
-        watcher, mock(ListOptions.class, RETURNS_DEEP_STUBS), 1, 0);
+        watcher, mock(ListOptions.class, RETURNS_DEEP_STUBS), 1, 60_000);
   }
 
   private static class WatcherAdapter<T> implements Watcher<T> {
@@ -298,7 +302,8 @@ class AbstractWatchManagerTest {
 
     public WatchManager(Watcher<T> watcher, ListOptions listOptions, int reconnectLimit, int reconnectInterval)
         throws MalformedURLException {
-      super(watcher, mockOperation(), listOptions, reconnectLimit, reconnectInterval, null);
+      super(watcher, mockOperation(), listOptions, reconnectLimit, reconnectInterval,
+          new TestStandardHttpClientFactory().newBuilder().build());
     }
 
     @Override
