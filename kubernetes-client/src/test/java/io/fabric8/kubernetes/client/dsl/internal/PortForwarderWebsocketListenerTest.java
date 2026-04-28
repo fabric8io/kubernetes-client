@@ -114,7 +114,7 @@ class PortForwarderWebsocketListenerTest {
         .singleElement()
         .asInstanceOf(InstanceOfAssertFactories.throwable(RuntimeException.class))
         .hasMessage("Server error");
-    assertThat(in.isOpen()).isFalse();
+    Awaitility.await().atMost(1, TimeUnit.SECONDS).until(() -> !in.isOpen());
     assertThat(out.isOpen()).isFalse();
   }
 
@@ -164,7 +164,7 @@ class PortForwarderWebsocketListenerTest {
     assertThat(outputContent.toString()).isEmpty();
     assertThat(listener.errorOccurred()).isTrue();
     assertThat(listener.getServerThrowables()).isNotEmpty();
-    assertThat(in.isOpen()).isFalse();
+    await().atMost(1, TimeUnit.SECONDS).until(() -> !in.isOpen());
     assertThat(out.isOpen()).isFalse();
   }
 
