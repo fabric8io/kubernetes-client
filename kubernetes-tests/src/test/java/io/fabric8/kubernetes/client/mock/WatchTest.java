@@ -77,14 +77,18 @@ class WatchTest {
   @DisplayName("TryWithResources, connects and receives event then receives GONE, should receive first event and then close")
   void testTryWithResourcesConnectsThenReceivesEvent() throws InterruptedException {
     // Given
+    // Use a longer emit window than the file-wide EVENT_WAIT_PERIOD_MS (10 ms): the test
+    // depends on the DELETED event being delivered and processed before the 410 GONE
+    // arrives so that onClose fires with isHttpGone()==true.
+    final long emitWindowMs = 50L;
     server.expect()
         .withPath(
             "/api/v1/namespaces/test/pods?allowWatchBookmarks=true&fieldSelector=metadata.name%3Dpod1&resourceVersion=1&watch=true")
         .andUpgradeToWebSocket()
         .open()
-        .waitFor(EVENT_WAIT_PERIOD_MS)
+        .waitFor(emitWindowMs)
         .andEmit(new WatchEvent(pod1, "DELETED"))
-        .waitFor(EVENT_WAIT_PERIOD_MS)
+        .waitFor(emitWindowMs)
         .andEmit(outdatedEvent())
         .done()
         .once();
@@ -334,14 +338,18 @@ class WatchTest {
   @DisplayName("TryWithResources, connects and receives event then receives GONE, should receive first event and then close")
   void testTryWithResourcesConnectsThenReceivesEventBookmark() throws InterruptedException {
     // Given
+    // Use a longer emit window than the file-wide EVENT_WAIT_PERIOD_MS (10 ms): the test
+    // depends on the BOOKMARK event being delivered and processed before the 410 GONE
+    // arrives so that onClose fires with isHttpGone()==true.
+    final long emitWindowMs = 50L;
     server.expect()
         .withPath(
             "/api/v1/namespaces/test/pods?allowWatchBookmarks=true&fieldSelector=metadata.name%3Dpod1&resourceVersion=1&watch=true")
         .andUpgradeToWebSocket()
         .open()
-        .waitFor(EVENT_WAIT_PERIOD_MS)
+        .waitFor(emitWindowMs)
         .andEmit(new WatchEvent(pod1, "BOOKMARK"))
-        .waitFor(EVENT_WAIT_PERIOD_MS)
+        .waitFor(emitWindowMs)
         .andEmit(outdatedEvent())
         .done()
         .once();
