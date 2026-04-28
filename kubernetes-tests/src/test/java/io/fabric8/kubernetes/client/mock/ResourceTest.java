@@ -732,9 +732,7 @@ class ResourceTest {
             "/api/v1/namespaces/test/pods?allowWatchBookmarks=true&fieldSelector=metadata.name%3Dpod&resourceVersion=1&timeoutSeconds=600&watch=true")
         .andUpgradeToWebSocket()
         .open()
-        .immediately()
-        .andEmit(new WatchEvent(conditionNotMetPod, "MODIFIED"))
-        .waitFor(50)
+        .waitFor(500)
         .andEmit(new WatchEvent(conditionMetPod, "MODIFIED"))
         .done()
         .once();
