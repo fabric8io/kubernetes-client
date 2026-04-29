@@ -39,16 +39,16 @@ require (
 	k8s.io/gengo/v2 v2.0.0-20251215205346-5ee0d033ba5b
 	k8s.io/kube-openapi v0.0.0-20260319004828-5883c5ee87b9
 	k8s.io/metrics v0.36.0
-	knative.dev/caching v0.0.0-20260120130310-f1fc03b7f5ee
-	knative.dev/eventing v0.48.2
+	knative.dev/caching v0.0.0-20260422140616-453ad996bbe2
+	knative.dev/eventing v0.49.0
 	knative.dev/eventing-awssqs v0.29.0
 	knative.dev/eventing-couchdb v0.28.0
 	knative.dev/eventing-github v0.48.0
 	knative.dev/eventing-gitlab v0.48.0
 	knative.dev/eventing-kafka-broker v0.48.3
 	knative.dev/eventing-prometheus v0.28.0
-	knative.dev/networking v0.0.0-20260120131110-a7cdca238a0d
-	knative.dev/serving v0.48.2
+	knative.dev/networking v0.0.0-20260422140718-e9578ef11562
+	knative.dev/serving v0.49.0
 	open-cluster-management.io/api v1.2.0
 	open-cluster-management.io/governance-policy-propagator v0.18.0
 	open-cluster-management.io/multicloud-operators-channel v0.16.0
@@ -190,7 +190,7 @@ require (
 	github.com/prometheus/client_model v0.6.2 // indirect
 	github.com/prometheus/common v0.67.5 // indirect
 	github.com/prometheus/otlptranslator v1.0.0 // indirect
-	github.com/prometheus/procfs v0.19.2 // indirect
+	github.com/prometheus/procfs v0.20.1 // indirect
 	github.com/rickb777/date v1.14.1 // indirect
 	github.com/rickb777/plural v1.2.2 // indirect
 	github.com/robfig/cron/v3 v3.0.1 // indirect
@@ -204,13 +204,13 @@ require (
 	go.mongodb.org/mongo-driver v1.17.4 // indirect
 	go.opentelemetry.io/auto/sdk v1.2.1 // indirect
 	go.opentelemetry.io/otel v1.43.0 // indirect
-	go.opentelemetry.io/otel/exporters/otlp/otlpmetric/otlpmetricgrpc v1.42.0 // indirect
+	go.opentelemetry.io/otel/exporters/otlp/otlpmetric/otlpmetricgrpc v1.43.0 // indirect
 	go.opentelemetry.io/otel/exporters/otlp/otlpmetric/otlpmetrichttp v1.43.0 // indirect
 	go.opentelemetry.io/otel/exporters/otlp/otlptrace v1.43.0 // indirect
-	go.opentelemetry.io/otel/exporters/otlp/otlptrace/otlptracegrpc v1.42.0 // indirect
+	go.opentelemetry.io/otel/exporters/otlp/otlptrace/otlptracegrpc v1.43.0 // indirect
 	go.opentelemetry.io/otel/exporters/otlp/otlptrace/otlptracehttp v1.43.0 // indirect
-	go.opentelemetry.io/otel/exporters/prometheus v0.64.0 // indirect
-	go.opentelemetry.io/otel/exporters/stdout/stdouttrace v1.42.0 // indirect
+	go.opentelemetry.io/otel/exporters/prometheus v0.65.0 // indirect
+	go.opentelemetry.io/otel/exporters/stdout/stdouttrace v1.43.0 // indirect
 	go.opentelemetry.io/otel/metric v1.43.0 // indirect
 	go.opentelemetry.io/otel/sdk v1.43.0 // indirect
 	go.opentelemetry.io/otel/sdk/metric v1.43.0 // indirect
@@ -220,17 +220,17 @@ require (
 	go.uber.org/zap v1.27.1 // indirect
 	go.yaml.in/yaml/v2 v2.4.4 // indirect
 	go.yaml.in/yaml/v3 v3.0.4 // indirect
-	golang.org/x/crypto v0.49.0 // indirect
+	golang.org/x/crypto v0.50.0 // indirect
 	golang.org/x/exp v0.0.0-20260112195511-716be5621a96 // indirect
-	golang.org/x/mod v0.34.0 // indirect
-	golang.org/x/net v0.52.0 // indirect
+	golang.org/x/mod v0.35.0 // indirect
+	golang.org/x/net v0.53.0 // indirect
 	golang.org/x/oauth2 v0.36.0 // indirect
 	golang.org/x/sync v0.20.0 // indirect
-	golang.org/x/sys v0.42.0 // indirect
-	golang.org/x/term v0.41.0 // indirect
-	golang.org/x/text v0.35.0 // indirect
+	golang.org/x/sys v0.43.0 // indirect
+	golang.org/x/term v0.42.0 // indirect
+	golang.org/x/text v0.36.0 // indirect
 	golang.org/x/time v0.15.0 // indirect
-	golang.org/x/tools v0.43.0 // indirect
+	golang.org/x/tools v0.44.0 // indirect
 	gomodules.xyz/jsonpatch/v2 v2.5.0 // indirect
 	google.golang.org/genproto/googleapis/api v0.0.0-20260401024825-9d38bb4040a9 // indirect
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20260401024825-9d38bb4040a9 // indirect
@@ -242,7 +242,7 @@ require (
 	k8s.io/component-base v0.36.0 // indirect
 	k8s.io/klog/v2 v2.140.0 // indirect
 	k8s.io/utils v0.0.0-20260210185600-b8788abfbbc2 // indirect
-	knative.dev/pkg v0.0.0-20260319144603-18c5d580ae64 // indirect
+	knative.dev/pkg v0.0.0-20260422015212-ec452872dcc1 // indirect
 	sigs.k8s.io/cluster-api-provider-azure v1.22.1 // indirect
 	sigs.k8s.io/controller-runtime v0.23.3 // indirect
 	sigs.k8s.io/json v0.0.0-20250730193827-2d320260d730 // indirect
