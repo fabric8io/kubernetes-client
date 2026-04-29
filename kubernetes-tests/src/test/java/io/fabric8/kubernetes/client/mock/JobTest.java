@@ -41,7 +41,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@EnableKubernetesMockClient
+@EnableKubernetesMockClient(https = false)
 public class JobTest {
 
   KubernetesMockServer server;
@@ -169,10 +169,10 @@ public class JobTest {
         .endStatus()
         .build()).times(5);
 
-    boolean deleted = client.batch().v1().jobs().withName("job1").delete().size() == 1;
+    boolean deleted = client.batch().v1().jobs().withName("job1").withGracePeriod(0).delete().size() == 1;
     assertTrue(deleted);
 
-    deleted = client.batch().v1().jobs().withName("job2").delete().size() == 1;
+    deleted = client.batch().v1().jobs().withName("job2").withGracePeriod(0).delete().size() == 1;
     assertTrue(deleted);
   }
 

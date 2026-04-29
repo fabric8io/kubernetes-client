@@ -44,7 +44,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
-@EnableKubernetesMockClient
+@EnableKubernetesMockClient(https = false)
 class BuildConfigTest {
 
   KubernetesMockServer server;
@@ -196,12 +196,12 @@ class BuildConfigTest {
         .withPath("/apis/build.openshift.io/v1/namespaces/ns1/builds?labelSelector=openshift.io%2Fbuild-config.name%3Dbc2")
         .andReturn(200, new BuildListBuilder().build()).once();
 
-    boolean deleted = client.buildConfigs().withName("bc1").delete().size() == 1;
+    boolean deleted = client.buildConfigs().withName("bc1").withGracePeriod(0).delete().size() == 1;
 
-    deleted = client.buildConfigs().withName("bc2").delete().size() == 1;
+    deleted = client.buildConfigs().withName("bc2").withGracePeriod(0).delete().size() == 1;
     assertFalse(deleted);
 
-    deleted = client.buildConfigs().inNamespace("ns1").withName("bc2").delete().size() == 1;
+    deleted = client.buildConfigs().inNamespace("ns1").withName("bc2").withGracePeriod(0).delete().size() == 1;
     assertTrue(deleted);
   }
 

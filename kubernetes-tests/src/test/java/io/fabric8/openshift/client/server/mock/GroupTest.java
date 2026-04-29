@@ -32,7 +32,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@EnableKubernetesMockClient
+@EnableKubernetesMockClient(https = false)
 class GroupTest {
 
   KubernetesMockServer server;
@@ -92,12 +92,12 @@ class GroupTest {
     server.expect().withPath("/apis/user.openshift.io/v1/groups/group1").andReturn(200, new GroupBuilder().build()).once();
     server.expect().withPath("/apis/user.openshift.io/v1/groups/Group2").andReturn(200, new GroupBuilder().build()).once();
 
-    boolean deleted = client.groups().withName("group1").delete().size() == 1;
+    boolean deleted = client.groups().withName("group1").withGracePeriod(0).delete().size() == 1;
 
-    deleted = client.groups().withName("Group2").delete().size() == 1;
+    deleted = client.groups().withName("Group2").withGracePeriod(0).delete().size() == 1;
     assertTrue(deleted);
 
-    deleted = client.groups().withName("Group3").delete().size() == 1;
+    deleted = client.groups().withName("Group3").withGracePeriod(0).delete().size() == 1;
     assertFalse(deleted);
   }
 
@@ -109,10 +109,12 @@ class GroupTest {
     boolean deleted = client.groups().withName("group1").withPropagationPolicy(DeletionPropagation.FOREGROUND).delete()
         .size() == 1;
 
-    deleted = client.groups().withName("Group2").withPropagationPolicy(DeletionPropagation.FOREGROUND).delete().size() == 1;
+    deleted = client.groups().withName("Group2").withPropagationPolicy(DeletionPropagation.FOREGROUND).withGracePeriod(0)
+        .delete().size() == 1;
     assertTrue(deleted);
 
-    deleted = client.groups().withName("Group3").withPropagationPolicy(DeletionPropagation.FOREGROUND).delete().size() == 1;
+    deleted = client.groups().withName("Group3").withPropagationPolicy(DeletionPropagation.FOREGROUND).withGracePeriod(0)
+        .delete().size() == 1;
     assertFalse(deleted);
   }
 }

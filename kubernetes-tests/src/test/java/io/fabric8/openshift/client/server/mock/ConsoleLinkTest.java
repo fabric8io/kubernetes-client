@@ -30,7 +30,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@EnableKubernetesMockClient
+@EnableKubernetesMockClient(https = false)
 class ConsoleLinkTest {
 
   KubernetesMockServer server;
@@ -95,7 +95,7 @@ class ConsoleLinkTest {
         .once();
 
     // When
-    boolean deleted = client.console().consoleLinks().withName("foo").delete().size() == 1;
+    boolean deleted = client.console().consoleLinks().withName("foo").withGracePeriod(0).delete().size() == 1;
 
     // Then
     assertTrue(deleted);

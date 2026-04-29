@@ -24,7 +24,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-@EnableKubernetesMockClient
+@EnableKubernetesMockClient(https = false)
 class AdaptTest {
 
   KubernetesMockServer server;

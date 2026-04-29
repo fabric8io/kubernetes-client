@@ -25,7 +25,7 @@ import org.junit.jupiter.api.Test;
 import static java.net.HttpURLConnection.HTTP_CREATED;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-@EnableKubernetesMockClient
+@EnableKubernetesMockClient(https = false)
 class UserIdentityMappingTest {
   private OpenShiftClient client;
   KubernetesMockServer server;

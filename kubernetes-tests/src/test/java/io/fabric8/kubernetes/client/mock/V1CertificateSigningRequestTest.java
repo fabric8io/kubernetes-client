@@ -35,7 +35,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-@EnableKubernetesMockClient
+@EnableKubernetesMockClient(https = false)
 class V1CertificateSigningRequestTest {
 
   KubernetesMockServer server;
@@ -125,7 +125,8 @@ class V1CertificateSigningRequestTest {
         .once();
 
     // When
-    boolean isDeleted = client.certificates().v1().certificateSigningRequests().withName(name).delete().size() == 1;
+    boolean isDeleted = client.certificates().v1().certificateSigningRequests().withName(name).withGracePeriod(0).delete()
+        .size() == 1;
 
     // Then
     assertThat(isDeleted).isTrue();

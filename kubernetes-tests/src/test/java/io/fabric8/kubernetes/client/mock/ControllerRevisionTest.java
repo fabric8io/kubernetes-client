@@ -32,7 +32,7 @@ import java.util.List;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 
-@EnableKubernetesMockClient
+@EnableKubernetesMockClient(https = false)
 class ControllerRevisionTest {
   KubernetesMockServer server;
   private KubernetesClient client;
@@ -100,7 +100,8 @@ class ControllerRevisionTest {
         .once();
 
     // When
-    boolean isDeleted = client.apps().controllerRevisions().inNamespace("default").withName("cr1").delete().size() == 1;
+    boolean isDeleted = client.apps().controllerRevisions().inNamespace("default").withName("cr1").withGracePeriod(0).delete()
+        .size() == 1;
 
     // Then
     assertThat(isDeleted).isTrue();

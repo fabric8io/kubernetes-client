@@ -28,7 +28,7 @@ import java.util.List;
 import static java.net.HttpURLConnection.HTTP_CREATED;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
-@EnableKubernetesMockClient
+@EnableKubernetesMockClient(https = false)
 class V1SelfSubjectReviewTest {
   private KubernetesClient client;
   KubernetesMockServer server;

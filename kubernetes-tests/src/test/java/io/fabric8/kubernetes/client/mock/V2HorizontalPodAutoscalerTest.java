@@ -36,7 +36,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 
-@EnableKubernetesMockClient
+@EnableKubernetesMockClient(https = false)
 class V2HorizontalPodAutoscalerTest {
 
   KubernetesMockServer server;
@@ -157,14 +157,15 @@ class V2HorizontalPodAutoscalerTest {
         .andReturn(200, new HorizontalPodAutoscalerBuilder().build()).once();
 
     Boolean deleted = client.autoscaling().v2().horizontalPodAutoscalers().inNamespace("test")
-        .withName("horizontalpodautoscaler1").delete().size() == 1;
+        .withName("horizontalpodautoscaler1").withGracePeriod(0).delete().size() == 1;
     assertThat(deleted).isTrue();
 
-    deleted = client.autoscaling().v2().horizontalPodAutoscalers().withName("horizontalpodautoscaler2").delete().size() == 1;
+    deleted = client.autoscaling().v2().horizontalPodAutoscalers().withName("horizontalpodautoscaler2").withGracePeriod(0)
+        .delete().size() == 1;
     assertThat(deleted).isFalse();
 
     deleted = client.autoscaling().v2().horizontalPodAutoscalers().inNamespace("ns1").withName("horizontalpodautoscaler2")
-        .delete().size() == 1;
+        .withGracePeriod(0).delete().size() == 1;
     assertThat(deleted).isTrue();
   }
 

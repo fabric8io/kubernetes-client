@@ -28,7 +28,7 @@ import java.util.List;
 
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 
-@EnableKubernetesMockClient
+@EnableKubernetesMockClient(https = false)
 class V1beta1MutatingAdmissionPolicyTest {
 
   KubernetesMockServer server;
@@ -110,7 +110,7 @@ class V1beta1MutatingAdmissionPolicyTest {
 
     // When
     boolean isDeleted = client.admissionRegistration().v1beta1().mutatingAdmissionPolicies()
-        .withName("sidecar-policy.example.com").delete().size() == 1;
+        .withName("sidecar-policy.example.com").withGracePeriod(0).delete().size() == 1;
 
     // Then
     AssertionsForClassTypes.assertThat(isDeleted).isTrue();

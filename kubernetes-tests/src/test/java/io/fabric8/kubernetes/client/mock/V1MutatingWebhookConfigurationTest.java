@@ -30,7 +30,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@EnableKubernetesMockClient
+@EnableKubernetesMockClient(https = false)
 public class V1MutatingWebhookConfigurationTest {
 
   KubernetesMockServer server;
@@ -103,7 +103,7 @@ public class V1MutatingWebhookConfigurationTest {
 
     // When
     Boolean isDeleted = client.admissionRegistration().v1().mutatingWebhookConfigurations()
-        .withName("mutatingWebhookConfiguration1").delete().size() == 1;
+        .withName("mutatingWebhookConfiguration1").withGracePeriod(0).delete().size() == 1;
 
     // Then
     assertTrue(isDeleted);

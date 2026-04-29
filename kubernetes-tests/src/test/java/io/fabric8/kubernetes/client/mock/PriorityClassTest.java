@@ -31,7 +31,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@EnableKubernetesMockClient
+@EnableKubernetesMockClient(https = false)
 public class PriorityClassTest {
 
   KubernetesMockServer server;
@@ -106,7 +106,8 @@ public class PriorityClassTest {
             .build())
         .once();
 
-    boolean deleted = client.scheduling().v1beta1().priorityClasses().withName("priorityclass1").delete().size() == 1;
+    boolean deleted = client.scheduling().v1beta1().priorityClasses().withName("priorityclass1").withGracePeriod(0).delete()
+        .size() == 1;
     assertTrue(deleted);
   }
 

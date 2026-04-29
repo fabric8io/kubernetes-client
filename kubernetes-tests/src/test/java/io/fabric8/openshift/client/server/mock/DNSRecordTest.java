@@ -30,7 +30,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@EnableKubernetesMockClient
+@EnableKubernetesMockClient(https = false)
 class DNSRecordTest {
 
   KubernetesMockServer server;
@@ -95,7 +95,7 @@ class DNSRecordTest {
         .once();
 
     // When
-    boolean deleted = client.operator().dnsRecords().inNamespace("ns1").withName("foo").delete().size() == 1;
+    boolean deleted = client.operator().dnsRecords().inNamespace("ns1").withName("foo").withGracePeriod(0).delete().size() == 1;
 
     // Then
     assertTrue(deleted);

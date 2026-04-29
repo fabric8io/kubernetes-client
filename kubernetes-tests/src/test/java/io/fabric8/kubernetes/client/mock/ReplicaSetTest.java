@@ -43,7 +43,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@EnableKubernetesMockClient
+@EnableKubernetesMockClient(https = false)
 class ReplicaSetTest {
 
   KubernetesMockServer server;
@@ -142,13 +142,13 @@ class ReplicaSetTest {
             .build())
         .times(5);
 
-    boolean deleted = client.apps().replicaSets().withName("repl1").delete().size() == 1;
+    boolean deleted = client.apps().replicaSets().withName("repl1").withGracePeriod(0).delete().size() == 1;
     assertTrue(deleted);
 
-    deleted = client.apps().replicaSets().withName("repl2").delete().size() == 1;
+    deleted = client.apps().replicaSets().withName("repl2").withGracePeriod(0).delete().size() == 1;
     assertFalse(deleted);
 
-    deleted = client.apps().replicaSets().inNamespace("ns1").withName("repl2").delete().size() == 1;
+    deleted = client.apps().replicaSets().inNamespace("ns1").withName("repl2").withGracePeriod(0).delete().size() == 1;
     assertTrue(deleted);
   }
 

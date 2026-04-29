@@ -28,7 +28,7 @@ import java.net.HttpURLConnection;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@EnableKubernetesMockClient
+@EnableKubernetesMockClient(https = false)
 class PodSchedulingContextTest {
   private KubernetesClient client;
   KubernetesMockServer server;
@@ -81,7 +81,7 @@ class PodSchedulingContextTest {
 
     // When
     boolean isDeleted = client.dynamicResourceAllocation().v1alpha2().podSchedulings().inNamespace("test").withName("cluster")
-        .delete().size() == 1;
+        .withGracePeriod(0).delete().size() == 1;
 
     // Then
     assertThat(isDeleted).isTrue();

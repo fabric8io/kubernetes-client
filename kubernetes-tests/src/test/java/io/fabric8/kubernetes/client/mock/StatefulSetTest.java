@@ -52,7 +52,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@EnableKubernetesMockClient
+@EnableKubernetesMockClient(https = false)
 public class StatefulSetTest {
 
   KubernetesMockServer server;
@@ -166,13 +166,13 @@ public class StatefulSetTest {
             .build())
         .times(5);
 
-    boolean deleted = client.apps().statefulSets().withName("repl1").delete().size() == 1;
+    boolean deleted = client.apps().statefulSets().withName("repl1").withGracePeriod(0).delete().size() == 1;
     assertTrue(deleted);
 
-    deleted = client.apps().statefulSets().withName("repl2").delete().size() == 1;
+    deleted = client.apps().statefulSets().withName("repl2").withGracePeriod(0).delete().size() == 1;
     assertFalse(deleted);
 
-    deleted = client.apps().statefulSets().inNamespace("ns1").withName("repl2").delete().size() == 1;
+    deleted = client.apps().statefulSets().inNamespace("ns1").withName("repl2").withGracePeriod(0).delete().size() == 1;
     assertTrue(deleted);
   }
 
