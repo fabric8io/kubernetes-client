@@ -69,8 +69,12 @@ class VertxHttpRequest {
 
         @Override
         public void cancel() {
+          // The exception handler must be cleared before calling reset(), otherwise
+          // the reset triggers a StreamResetException that completes the future
+          // exceptionally before done.cancel() can run.
           resp.handler(null);
           resp.endHandler(null);
+          resp.exceptionHandler(null);
           resp.request().reset();
           done.cancel(false);
         }
