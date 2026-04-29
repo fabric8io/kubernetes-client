@@ -90,7 +90,7 @@
     <!-- Core versions -->
     <sundrio.version>0.230.2</sundrio.version>
     <okhttp.version>5.3.2</okhttp.version>
-    <jackson.version>2.21.2</jackson.version>
+    <jackson.version>2.21.3</jackson.version>
     <jackson.bundle.version>${jackson.version}</jackson.bundle.version>
     <!-- fix as jackson-annotations version 2.20 was released, Refer: https://github.com/FasterXML/jackson-bom/blob/54f854ba1ce69c5827f8acf6d08ba2d7ce36233c/pom.xml#L53-L62 -->
     <jackson.bundle.version.annotations>2.21</jackson.bundle.version.annotations>
