@@ -4,6 +4,7 @@
 
 #### Bugs
 * Fix #7696: (httpclient-vertx) clear response exception handler before reset in cancel() to prevent StreamResetException from racing with future cancellation
+* Fix #XXXX: ExecWebSocketListener now defers exitCode completion through the SerialExecutor so pending stdout/stderr async writes are flushed before exit signals (ref #7685)
 * Fix #7632: java-generator now HTML-escapes `<`, `>`, and `&` in CRD descriptions to produce valid Javadoc
 * Fix #7543: fix processInlineDuplicateFields to recursively resolve nested inline embeds
 * Fix #7450: StandardHttpClient.shouldRetry() does not retry on Vert.x HttpClosedException
