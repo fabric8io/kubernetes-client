@@ -315,7 +315,9 @@ public class ExecWebSocketListener implements ExecWatch, AutoCloseable, WebSocke
         case 2:
           if (terminateOnError) {
             String stringValue = toString(bytes);
-            exitCode.completeExceptionally(new KubernetesClientException(stringValue));
+            // Defer through serialExecutor so any pending channel 1 async writes
+            // are flushed before the exitCode future completes exceptionally.
+            serialExecutor.execute(() -> exitCode.completeExceptionally(new KubernetesClientException(stringValue)));
             close = true;
           } else {
             error.handle(byteString, webSocket);
@@ -326,7 +328,9 @@ public class ExecWebSocketListener implements ExecWatch, AutoCloseable, WebSocke
           try {
             errorChannel.handle(bytes, webSocket);
           } finally {
-            handleExitStatus(byteString);
+            // Defer through serialExecutor so any pending async writes (channel 1/2/errorChannel)
+            // are flushed before the exitCode future completes.
+            serialExecutor.execute(() -> handleExitStatus(byteString));
           }
           break;
         default:
