@@ -39,6 +39,8 @@ Do all your development or fixing work here.
 
 After all your development/fixing work is done, do not forget to add `Unit Test` and `Regression Test` around that. It will be nice if you can add an example of the new feature you have added.
 
+For new mock-mode tests, prefer `@EnableKubernetesMockClient(https = false)` unless TLS itself is under test — see the "Mock Server Testing" section of [AGENTS.md](AGENTS.md) for the rationale and exceptions.
+
 #### Check your work after running all Unit and Regression Tests
 
 You should run all the unit tests by hitting the following command
