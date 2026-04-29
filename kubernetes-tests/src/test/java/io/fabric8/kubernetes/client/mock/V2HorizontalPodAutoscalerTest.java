@@ -160,7 +160,8 @@ class V2HorizontalPodAutoscalerTest {
         .withName("horizontalpodautoscaler1").withGracePeriod(0).delete().size() == 1;
     assertThat(deleted).isTrue();
 
-    deleted = client.autoscaling().v2().horizontalPodAutoscalers().withName("horizontalpodautoscaler2").withGracePeriod(0).delete().size() == 1;
+    deleted = client.autoscaling().v2().horizontalPodAutoscalers().withName("horizontalpodautoscaler2").withGracePeriod(0)
+        .delete().size() == 1;
     assertThat(deleted).isFalse();
 
     deleted = client.autoscaling().v2().horizontalPodAutoscalers().inNamespace("ns1").withName("horizontalpodautoscaler2")

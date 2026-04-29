@@ -96,7 +96,8 @@ class Metal3RemediationTest {
         .once();
 
     // When
-    boolean deleted = client.metal3Remediations().inNamespace("ns1").withName("test-remediation").withGracePeriod(0).delete().size() == 1;
+    boolean deleted = client.metal3Remediations().inNamespace("ns1").withName("test-remediation").withGracePeriod(0).delete()
+        .size() == 1;
 
     // Then
     assertTrue(deleted);

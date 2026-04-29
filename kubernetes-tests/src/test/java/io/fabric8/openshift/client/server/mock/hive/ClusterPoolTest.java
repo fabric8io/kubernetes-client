@@ -76,7 +76,8 @@ class ClusterPoolTest {
         .once();
 
     // When
-    boolean isDeleted = client.hive().clusterPools().inNamespace("ns1").withName("clusterpool1").withGracePeriod(0).delete().size() == 1;
+    boolean isDeleted = client.hive().clusterPools().inNamespace("ns1").withName("clusterpool1").withGracePeriod(0).delete()
+        .size() == 1;
 
     // Then
     assertThat(isDeleted).isTrue();

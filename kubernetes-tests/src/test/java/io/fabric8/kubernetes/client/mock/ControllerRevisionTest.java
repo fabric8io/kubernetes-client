@@ -100,7 +100,8 @@ class ControllerRevisionTest {
         .once();
 
     // When
-    boolean isDeleted = client.apps().controllerRevisions().inNamespace("default").withName("cr1").withGracePeriod(0).delete().size() == 1;
+    boolean isDeleted = client.apps().controllerRevisions().inNamespace("default").withName("cr1").withGracePeriod(0).delete()
+        .size() == 1;
 
     // Then
     assertThat(isDeleted).isTrue();

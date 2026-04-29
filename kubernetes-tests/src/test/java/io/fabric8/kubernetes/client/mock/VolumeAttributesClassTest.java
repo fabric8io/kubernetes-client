@@ -87,7 +87,8 @@ class VolumeAttributesClassTest {
         .once();
 
     // When
-    boolean isDeleted = client.storage().v1().volumeAttributesClasses().withName("gold").withGracePeriod(0).delete().size() == 1;
+    boolean isDeleted = client.storage().v1().volumeAttributesClasses().withName("gold").withGracePeriod(0).delete()
+        .size() == 1;
 
     // Then
     assertThat(isDeleted).isTrue();

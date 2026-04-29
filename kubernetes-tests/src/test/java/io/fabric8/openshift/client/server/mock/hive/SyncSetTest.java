@@ -76,7 +76,8 @@ class SyncSetTest {
         .once();
 
     // When
-    boolean isDeleted = client.hive().syncSets().inNamespace("ns1").withName("syncset1").withGracePeriod(0).delete().size() == 1;
+    boolean isDeleted = client.hive().syncSets().inNamespace("ns1").withName("syncset1").withGracePeriod(0).delete()
+        .size() == 1;
 
     // Then
     assertThat(isDeleted).isTrue();

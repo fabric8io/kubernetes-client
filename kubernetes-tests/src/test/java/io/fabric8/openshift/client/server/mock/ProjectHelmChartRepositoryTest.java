@@ -98,7 +98,8 @@ class ProjectHelmChartRepositoryTest {
         .once();
 
     // When
-    boolean deleted = client.projectHelmChartRepositories().inNamespace("ns1").withName("foo").withGracePeriod(0).delete().size() == 1;
+    boolean deleted = client.projectHelmChartRepositories().inNamespace("ns1").withName("foo").withGracePeriod(0).delete()
+        .size() == 1;
 
     // Then
     assertTrue(deleted);

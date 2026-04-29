@@ -78,7 +78,8 @@ class StorageVersionMigrationTest {
         .once();
 
     // When
-    boolean isDeleted = client.kubeStorageVersionMigrator().storageVersionMigrations().withName("cluster").withGracePeriod(0).delete().size() == 1;
+    boolean isDeleted = client.kubeStorageVersionMigrator().storageVersionMigrations().withName("cluster").withGracePeriod(0)
+        .delete().size() == 1;
 
     // Then
     assertThat(isDeleted).isTrue();

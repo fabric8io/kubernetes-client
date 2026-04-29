@@ -77,7 +77,8 @@ class IPPoolTest {
         .once();
 
     // When
-    boolean isDeleted = client.whereabouts().ippools().inNamespace("ns1").withName("ippool1").withGracePeriod(0).delete().size() == 1;
+    boolean isDeleted = client.whereabouts().ippools().inNamespace("ns1").withName("ippool1").withGracePeriod(0).delete()
+        .size() == 1;
 
     // Then
     assertThat(isDeleted).isTrue();

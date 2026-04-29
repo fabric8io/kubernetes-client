@@ -76,7 +76,8 @@ class ProbeTest {
         .once();
 
     // When
-    boolean isDeleted = client.monitoring().probes().inNamespace("ns1").withName("test-delete").withGracePeriod(0).delete().size() == 1;
+    boolean isDeleted = client.monitoring().probes().inNamespace("ns1").withName("test-delete").withGracePeriod(0).delete()
+        .size() == 1;
 
     // Then
     assertThat(isDeleted).isTrue();

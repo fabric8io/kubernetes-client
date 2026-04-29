@@ -136,7 +136,8 @@ public class PodDisruptionBudgetTest {
             .build())
         .once();
 
-    boolean deleted = client.policy().podDisruptionBudget().withName("poddisruptionbudget1").withGracePeriod(0).delete().size() == 1;
+    boolean deleted = client.policy().podDisruptionBudget().withName("poddisruptionbudget1").withGracePeriod(0).delete()
+        .size() == 1;
     assertTrue(deleted);
   }
 

@@ -112,7 +112,8 @@ class PrometheusTest {
         .once();
 
     // When
-    boolean deleted = client.monitoring().prometheuses().inNamespace("ns1").withName("foo").withGracePeriod(0).delete().size() == 1;
+    boolean deleted = client.monitoring().prometheuses().inNamespace("ns1").withName("foo").withGracePeriod(0).delete()
+        .size() == 1;
 
     // Then
     assertTrue(deleted);

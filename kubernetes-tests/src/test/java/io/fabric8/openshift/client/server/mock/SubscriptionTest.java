@@ -95,7 +95,8 @@ class SubscriptionTest {
         .once();
 
     // When
-    boolean deleted = client.operatorHub().subscriptions().inNamespace("ns1").withName("foo").withGracePeriod(0).delete().size() == 1;
+    boolean deleted = client.operatorHub().subscriptions().inNamespace("ns1").withName("foo").withGracePeriod(0).delete()
+        .size() == 1;
 
     // Then
     assertTrue(deleted);

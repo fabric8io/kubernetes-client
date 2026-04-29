@@ -98,7 +98,8 @@ class ControlPlaneMachineSetTest {
         .once();
 
     // When
-    boolean deleted = client.machine().controlPlaneMachineSets().inNamespace("ns1").withName("cluster").withGracePeriod(0).delete().size() == 1;
+    boolean deleted = client.machine().controlPlaneMachineSets().inNamespace("ns1").withName("cluster").withGracePeriod(0)
+        .delete().size() == 1;
 
     // Then
     assertTrue(deleted);

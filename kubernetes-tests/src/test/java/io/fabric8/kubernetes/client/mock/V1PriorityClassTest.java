@@ -123,7 +123,8 @@ class V1PriorityClassTest {
         .once();
 
     // When
-    boolean deleted = client.scheduling().v1().priorityClasses().withName("priorityclass1").withGracePeriod(0).delete().size() == 1;
+    boolean deleted = client.scheduling().v1().priorityClasses().withName("priorityclass1").withGracePeriod(0).delete()
+        .size() == 1;
 
     // Then
     assertTrue(deleted);

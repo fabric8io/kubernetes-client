@@ -76,7 +76,8 @@ class DNSZoneTest {
         .once();
 
     // When
-    boolean isDeleted = client.hive().dnsZones().inNamespace("ns1").withName("dnszone1").withGracePeriod(0).delete().size() == 1;
+    boolean isDeleted = client.hive().dnsZones().inNamespace("ns1").withName("dnszone1").withGracePeriod(0).delete()
+        .size() == 1;
 
     // Then
     assertThat(isDeleted).isTrue();

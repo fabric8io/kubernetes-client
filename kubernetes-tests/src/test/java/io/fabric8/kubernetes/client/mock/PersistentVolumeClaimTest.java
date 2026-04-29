@@ -141,7 +141,8 @@ class PersistentVolumeClaimTest {
     deleted = client.persistentVolumeClaims().withName("persistentvolumeclaim2").withGracePeriod(0).delete().size() == 1;
     assertFalse(deleted);
 
-    deleted = client.persistentVolumeClaims().inNamespace("ns1").withName("persistentvolumeclaim2").withGracePeriod(0).delete().size() == 1;
+    deleted = client.persistentVolumeClaims().inNamespace("ns1").withName("persistentvolumeclaim2").withGracePeriod(0).delete()
+        .size() == 1;
     assertTrue(deleted);
   }
 
