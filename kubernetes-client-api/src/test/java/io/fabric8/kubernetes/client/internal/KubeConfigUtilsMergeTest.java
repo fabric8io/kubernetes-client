@@ -293,7 +293,7 @@ class KubeConfigUtilsMergeTest {
 
     @BeforeEach
     void setUp() {
-      result = new ConfigBuilder()
+      result = new ConfigBuilder(Config.empty())
           .addToContexts(new NamedContextBuilder()
               .withName("context-in-original-config")
               .withNewContext()
