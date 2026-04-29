@@ -35,6 +35,7 @@ import java.net.ProtocolException;
 import java.net.URL;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.ScheduledFuture;
@@ -159,8 +160,9 @@ class AbstractWatchManagerTest {
   void reconnectRace() throws Exception {
     // Given
     final WatcherAdapter<HasMetadata> watcher = new WatcherAdapter<>();
-    CompletableFuture<Void> done = new CompletableFuture<Void>();
-    final WatchManager<HasMetadata> awm = new WatchManager<HasMetadata>(
+    CompletableFuture<Void> done = new CompletableFuture<>();
+    CountDownLatch scheduleReconnectDone = new CountDownLatch(1);
+    final WatchManager<HasMetadata> awm = new WatchManager<>(
         watcher, mock(ListOptions.class, RETURNS_DEEP_STUBS), 1, 0) {
 
       boolean first = true;
@@ -170,9 +172,15 @@ class AbstractWatchManagerTest {
         if (first) {
           first = false;
           // simulate failing before the call to startWatch finishes
-          ForkJoinPool.commonPool().execute(() -> scheduleReconnect(new WatchRequestState()));
+          ForkJoinPool.commonPool().execute(() -> {
+            scheduleReconnect(new WatchRequestState());
+            scheduleReconnectDone.countDown(); // signal that scheduleReconnect has completed
+          });
           try {
-            Thread.sleep(100);
+            // block until scheduleReconnect runs, keeping startWatch on the stack to reproduce the race
+            if (!scheduleReconnectDone.await(5, TimeUnit.SECONDS)) {
+              throw new AssertionError("scheduleReconnect did not complete in time");
+            }
           } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
             throw new AssertionError(e);
