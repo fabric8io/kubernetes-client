@@ -60,7 +60,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@EnableKubernetesMockClient
+@EnableKubernetesMockClient(https = false)
 class ResourceTest {
 
   KubernetesMockServer server;
@@ -244,12 +244,12 @@ class ResourceTest {
     server.expect().withPath("/api/v1/namespaces/test/pods/pod1").andReturn(200, pod1).once();
     server.expect().withPath("/api/v1/namespaces/ns1/pods/pod2").andReturn(200, pod2).once();
 
-    Boolean deleted = client.resource(pod1).delete().size() == 1;
+    Boolean deleted = client.resource(pod1).withGracePeriod(0).delete().size() == 1;
     assertTrue(deleted);
-    deleted = client.resource(pod2).delete().size() == 1;
+    deleted = client.resource(pod2).withGracePeriod(0).delete().size() == 1;
     assertTrue(deleted);
 
-    deleted = client.resource(pod3).delete().size() == 1;
+    deleted = client.resource(pod3).withGracePeriod(0).delete().size() == 1;
     assertFalse(deleted);
   }
 

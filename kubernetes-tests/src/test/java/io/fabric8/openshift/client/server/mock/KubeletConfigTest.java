@@ -29,7 +29,7 @@ import java.util.Collections;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@EnableKubernetesMockClient
+@EnableKubernetesMockClient(https = false)
 class KubeletConfigTest {
   private OpenShiftClient client;
   KubernetesMockServer server;
@@ -77,7 +77,7 @@ class KubeletConfigTest {
         .once();
 
     // When
-    boolean isDeleted = client.machineConfigurations().kubeletConfigs().withName("cluster").delete().size() == 1;
+    boolean isDeleted = client.machineConfigurations().kubeletConfigs().withName("cluster").withGracePeriod(0).delete().size() == 1;
 
     // Then
     assertThat(isDeleted).isTrue();

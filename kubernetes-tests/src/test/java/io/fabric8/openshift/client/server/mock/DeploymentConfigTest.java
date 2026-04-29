@@ -51,7 +51,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@EnableKubernetesMockClient
+@EnableKubernetesMockClient(https = false)
 class DeploymentConfigTest {
 
   KubernetesMockServer server;
@@ -166,7 +166,7 @@ class DeploymentConfigTest {
     server.expect().withPath("/apis/apps.openshift.io/v1/namespaces/test/deploymentconfigs/dc1").andReturn(200, dc1).times(2);
     server.expect().withPath("/apis/apps.openshift.io/v1/namespaces/ns1/deploymentconfigs/dc2").andReturn(200, dc2).times(5);
 
-    boolean deleted = client.deploymentConfigs().withName("dc1").delete().size() == 1;
+    boolean deleted = client.deploymentConfigs().withName("dc1").withGracePeriod(0).delete().size() == 1;
     deleted = client.deploymentConfigs().withName("dc2").delete().size() == 1;
     assertFalse(deleted);
 

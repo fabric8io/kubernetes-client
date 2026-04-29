@@ -29,7 +29,7 @@ import java.net.HttpURLConnection;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@EnableKubernetesMockClient
+@EnableKubernetesMockClient(https = false)
 class V1beta1EventsTest {
   private KubernetesClient client;
   KubernetesMockServer server;
@@ -78,7 +78,7 @@ class V1beta1EventsTest {
         .once();
 
     // When
-    boolean isDeleted = client.events().v1beta1().events().inNamespace("default").withName("e1").delete().size() == 1;
+    boolean isDeleted = client.events().v1beta1().events().inNamespace("default").withName("e1").withGracePeriod(0).delete().size() == 1;
 
     // Then
     assertThat(isDeleted).isTrue();

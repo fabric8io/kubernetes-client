@@ -28,7 +28,7 @@ import java.net.HttpURLConnection;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@EnableKubernetesMockClient
+@EnableKubernetesMockClient(https = false)
 class StorageVersionMigrationTest {
   private OpenShiftClient client;
   KubernetesMockServer server;
@@ -78,7 +78,7 @@ class StorageVersionMigrationTest {
         .once();
 
     // When
-    boolean isDeleted = client.kubeStorageVersionMigrator().storageVersionMigrations().withName("cluster").delete().size() == 1;
+    boolean isDeleted = client.kubeStorageVersionMigrator().storageVersionMigrations().withName("cluster").withGracePeriod(0).delete().size() == 1;
 
     // Then
     assertThat(isDeleted).isTrue();

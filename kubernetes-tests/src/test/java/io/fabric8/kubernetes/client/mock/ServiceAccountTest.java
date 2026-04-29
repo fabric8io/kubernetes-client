@@ -31,7 +31,7 @@ import static java.net.HttpURLConnection.HTTP_CREATED;
 import static java.net.HttpURLConnection.HTTP_OK;
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 
-@EnableKubernetesMockClient
+@EnableKubernetesMockClient(https = false)
 class ServiceAccountTest {
 
   KubernetesMockServer server;

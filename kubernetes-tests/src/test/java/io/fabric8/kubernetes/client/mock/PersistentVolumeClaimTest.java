@@ -40,7 +40,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@EnableKubernetesMockClient
+@EnableKubernetesMockClient(https = false)
 class PersistentVolumeClaimTest {
 
   KubernetesMockServer server;
@@ -138,10 +138,10 @@ class PersistentVolumeClaimTest {
         .size() == 1;
     assertTrue(deleted);
 
-    deleted = client.persistentVolumeClaims().withName("persistentvolumeclaim2").delete().size() == 1;
+    deleted = client.persistentVolumeClaims().withName("persistentvolumeclaim2").withGracePeriod(0).delete().size() == 1;
     assertFalse(deleted);
 
-    deleted = client.persistentVolumeClaims().inNamespace("ns1").withName("persistentvolumeclaim2").delete().size() == 1;
+    deleted = client.persistentVolumeClaims().inNamespace("ns1").withName("persistentvolumeclaim2").withGracePeriod(0).delete().size() == 1;
     assertTrue(deleted);
   }
 

@@ -31,7 +31,7 @@ import java.util.List;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 
-@EnableKubernetesMockClient
+@EnableKubernetesMockClient(https = false)
 class CSIDriverTest {
   KubernetesMockServer server;
   private KubernetesClient client;
@@ -85,7 +85,7 @@ class CSIDriverTest {
         .once();
 
     // When
-    boolean isDeleted = client.storage().csiDrivers().withName("c1").delete().size() == 1;
+    boolean isDeleted = client.storage().csiDrivers().withName("c1").withGracePeriod(0).delete().size() == 1;
 
     // Then
     assertThat(isDeleted).isTrue();

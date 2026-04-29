@@ -24,7 +24,7 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
-@EnableKubernetesMockClient(crud = true)
+@EnableKubernetesMockClient(crud = true, https = false)
 class GenerationTest {
 
   private final static String NAMESPACE = "test-namespace";

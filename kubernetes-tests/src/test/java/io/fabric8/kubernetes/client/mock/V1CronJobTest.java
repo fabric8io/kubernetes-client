@@ -38,7 +38,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@EnableKubernetesMockClient
+@EnableKubernetesMockClient(https = false)
 class V1CronJobTest {
   KubernetesMockServer server;
   private KubernetesClient client;
@@ -188,10 +188,10 @@ class V1CronJobTest {
             .build())
         .once();
 
-    boolean deleted = client.batch().v1().cronjobs().withName("cronJob1").delete().size() == 1;
+    boolean deleted = client.batch().v1().cronjobs().withName("cronJob1").withGracePeriod(0).delete().size() == 1;
     assertTrue(deleted);
 
-    deleted = client.batch().v1().cronjobs().withName("cronJob2").delete().size() == 1;
+    deleted = client.batch().v1().cronjobs().withName("cronJob2").withGracePeriod(0).delete().size() == 1;
     assertTrue(deleted);
   }
 

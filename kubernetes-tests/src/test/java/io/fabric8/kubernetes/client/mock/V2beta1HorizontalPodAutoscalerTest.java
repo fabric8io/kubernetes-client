@@ -33,7 +33,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@EnableKubernetesMockClient
+@EnableKubernetesMockClient(https = false)
 public class V2beta1HorizontalPodAutoscalerTest {
 
   KubernetesMockServer server;
@@ -132,7 +132,7 @@ public class V2beta1HorizontalPodAutoscalerTest {
         .andReturn(200, new HorizontalPodAutoscalerBuilder().build()).once();
 
     boolean deleted = client.autoscaling().v2beta1().horizontalPodAutoscalers().inNamespace("test")
-        .withName("horizontalpodautoscaler1").delete().size() == 1;
+        .withName("horizontalpodautoscaler1").withGracePeriod(0).delete().size() == 1;
     assertTrue(deleted);
 
     deleted = client.autoscaling().v2beta1().horizontalPodAutoscalers().withName("horizontalpodautoscaler2").delete()
@@ -140,7 +140,7 @@ public class V2beta1HorizontalPodAutoscalerTest {
     assertFalse(deleted);
 
     deleted = client.autoscaling().v2beta1().horizontalPodAutoscalers().inNamespace("ns1").withName("horizontalpodautoscaler2")
-        .delete().size() == 1;
+        .withGracePeriod(0).delete().size() == 1;
     assertTrue(deleted);
   }
 

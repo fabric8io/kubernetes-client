@@ -31,7 +31,7 @@ import java.util.List;
 
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 
-@EnableKubernetesMockClient
+@EnableKubernetesMockClient(https = false)
 class V1beta2FlowSchemaTest {
   KubernetesMockServer server;
   private KubernetesClient client;
@@ -106,7 +106,7 @@ class V1beta2FlowSchemaTest {
         .once();
 
     // When
-    boolean isDeleted = client.flowControl().v1beta2().flowSchema().withName("flowschema1").delete().size() == 1;
+    boolean isDeleted = client.flowControl().v1beta2().flowSchema().withName("flowschema1").withGracePeriod(0).delete().size() == 1;
 
     // Then
     AssertionsForClassTypes.assertThat(isDeleted).isTrue();

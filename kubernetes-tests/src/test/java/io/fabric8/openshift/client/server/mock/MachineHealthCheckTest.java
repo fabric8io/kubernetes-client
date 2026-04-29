@@ -30,7 +30,7 @@ import java.text.ParseException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@EnableKubernetesMockClient
+@EnableKubernetesMockClient(https = false)
 class MachineHealthCheckTest {
   private OpenShiftClient client;
   KubernetesMockServer server;
@@ -79,7 +79,7 @@ class MachineHealthCheckTest {
         .once();
 
     // When
-    boolean isDeleted = client.machine().machineHealthChecks().inNamespace("ns1").withName("cluster").delete().size() == 1;
+    boolean isDeleted = client.machine().machineHealthChecks().inNamespace("ns1").withName("cluster").withGracePeriod(0).delete().size() == 1;
 
     // Then
     assertThat(isDeleted).isTrue();

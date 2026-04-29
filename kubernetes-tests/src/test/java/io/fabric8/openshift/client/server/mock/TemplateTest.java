@@ -55,7 +55,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@EnableKubernetesMockClient
+@EnableKubernetesMockClient(https = false)
 class TemplateTest {
 
   KubernetesMockServer server;
@@ -172,12 +172,12 @@ class TemplateTest {
         .andReturn(200, new TemplateBuilder().build())
         .once();
 
-    boolean deleted = client.templates().withName("tmpl1").delete().size() == 1;
+    boolean deleted = client.templates().withName("tmpl1").withGracePeriod(0).delete().size() == 1;
 
-    deleted = client.templates().withName("tmpl2").delete().size() == 1;
+    deleted = client.templates().withName("tmpl2").withGracePeriod(0).delete().size() == 1;
     assertFalse(deleted);
 
-    deleted = client.templates().inNamespace("ns1").withName("tmpl2").delete().size() == 1;
+    deleted = client.templates().inNamespace("ns1").withName("tmpl2").withGracePeriod(0).delete().size() == 1;
     assertTrue(deleted);
   }
 

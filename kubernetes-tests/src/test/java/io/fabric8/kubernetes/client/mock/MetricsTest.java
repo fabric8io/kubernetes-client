@@ -39,7 +39,7 @@ import java.util.Map;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@EnableKubernetesMockClient
+@EnableKubernetesMockClient(https = false)
 class MetricsTest {
 
   KubernetesMockServer server;

@@ -30,7 +30,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@EnableKubernetesMockClient
+@EnableKubernetesMockClient(https = false)
 class ControlPlaneMachineSetTest {
   KubernetesMockServer server;
   OpenShiftClient client;
@@ -98,7 +98,7 @@ class ControlPlaneMachineSetTest {
         .once();
 
     // When
-    boolean deleted = client.machine().controlPlaneMachineSets().inNamespace("ns1").withName("cluster").delete().size() == 1;
+    boolean deleted = client.machine().controlPlaneMachineSets().inNamespace("ns1").withName("cluster").withGracePeriod(0).delete().size() == 1;
 
     // Then
     assertTrue(deleted);

@@ -29,7 +29,7 @@ import java.text.ParseException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@EnableKubernetesMockClient
+@EnableKubernetesMockClient(https = false)
 class ImageRegistryOperatorConfigTest {
   private OpenShiftClient client;
   KubernetesMockServer server;
@@ -77,7 +77,7 @@ class ImageRegistryOperatorConfigTest {
         .once();
 
     // When
-    boolean isDeleted = client.imageRegistryOperatorConfigs().withName("cluster").delete().size() == 1;
+    boolean isDeleted = client.imageRegistryOperatorConfigs().withName("cluster").withGracePeriod(0).delete().size() == 1;
 
     // Then
     assertThat(isDeleted).isTrue();

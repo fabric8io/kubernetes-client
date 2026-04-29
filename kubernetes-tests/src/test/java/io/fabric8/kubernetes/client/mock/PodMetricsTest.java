@@ -29,7 +29,7 @@ import org.junit.jupiter.api.Test;
 import static java.net.HttpURLConnection.HTTP_OK;
 import static org.assertj.core.api.Assertions.assertThat;
 
-@EnableKubernetesMockClient
+@EnableKubernetesMockClient(https = false)
 class PodMetricsTest {
 
   KubernetesMockServer server;
