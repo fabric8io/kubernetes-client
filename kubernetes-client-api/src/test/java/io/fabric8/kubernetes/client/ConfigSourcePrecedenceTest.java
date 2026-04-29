@@ -34,6 +34,11 @@ class ConfigSourcePrecedenceTest {
           Utils.filePath(ConfigSourcePrecedenceTest.class.getResource("/config-source-precedence/kube-config")));
     }
 
+    @AfterEach
+    void tearDown() {
+      System.clearProperty("kubeconfig");
+    }
+
     @Test
     @DisplayName("then use kubeconfig attributes in Config")
     void whenNoOtherSourceProvided_thenUseKubeConfig() {
