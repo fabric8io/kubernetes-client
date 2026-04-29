@@ -171,9 +171,11 @@ class ExecWebSocketListenerTest {
       assertTrue(writeStarted.await(2, TimeUnit.SECONDS), "expected the channel 1 async write to start");
 
       // Channel 3 (exit-success) message fires while the previous write is still in flight
-      final String successJson = new KubernetesSerialization().asJson(new StatusBuilder().withStatus("Success").build());
-      final byte[] channel3 = ("" + successJson).getBytes(StandardCharsets.UTF_8);
-      listener.onMessage(mockedWebSocket, ByteBuffer.wrap(channel3));
+      final byte[] successJson = new KubernetesSerialization().asJson(new StatusBuilder().withStatus("Success").build())
+          .getBytes(StandardCharsets.UTF_8);
+      final ByteBuffer channel3 = ByteBuffer.allocate(successJson.length + 1).put((byte) 3).put(successJson);
+      channel3.flip();
+      listener.onMessage(mockedWebSocket, channel3);
 
       // The exitCode must NOT complete before the pending channel 1 write has been processed.
       // Without the fix, exitCode is completed synchronously inside onMessage and this assertion fails.
