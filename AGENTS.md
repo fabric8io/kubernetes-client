@@ -207,6 +207,13 @@ mvn spotless:check
 
 Two modes available via `@EnableKubernetesMockClient`:
 
+**Default to plain HTTP** (`https = false`) for new mock-mode tests. The first HTTPS call in each surefire fork pays a ~7–8 s TLS/Vert.x cold-start cost, which compounds under `forkCount=1C`. Only enable HTTPS when TLS itself is the unit under test (current exceptions: `UntrustedCertTest` and `KeyLoadTests`).
+
+```java
+@EnableKubernetesMockClient(https = false, crud = true)
+class MyTest { /* ... */ }
+```
+
 **CRUD Mode** (recommended for most tests):
 ```java
 @EnableKubernetesMockClient(crud = true)
