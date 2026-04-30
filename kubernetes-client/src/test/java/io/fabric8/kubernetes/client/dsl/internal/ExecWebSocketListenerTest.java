@@ -38,6 +38,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
+import java.util.concurrent.atomic.AtomicReference;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -239,8 +240,8 @@ class ExecWebSocketListenerTest {
   void onErrorWithExecListenerInvokesOnFailureWithThrowable() {
     final Queue<Runnable> manualQueue = new ArrayDeque<>();
     final Executor manualExecutor = manualQueue::offer;
-    final java.util.concurrent.atomic.AtomicReference<Throwable> capturedThrowable = new java.util.concurrent.atomic.AtomicReference<>();
-    final java.util.concurrent.atomic.AtomicReference<ExecListener.Response> capturedResponse = new java.util.concurrent.atomic.AtomicReference<>();
+    final AtomicReference<Throwable> capturedThrowable = new AtomicReference<>();
+    final AtomicReference<ExecListener.Response> capturedResponse = new AtomicReference<>();
     final ExecListener execListener = new ExecListener() {
       @Override
       public void onFailure(Throwable t, Response failureResponse) {
