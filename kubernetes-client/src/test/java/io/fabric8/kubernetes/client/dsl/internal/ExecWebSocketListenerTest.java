@@ -18,6 +18,7 @@ package io.fabric8.kubernetes.client.dsl.internal;
 import io.fabric8.kubernetes.api.model.StatusBuilder;
 import io.fabric8.kubernetes.api.model.StatusCause;
 import io.fabric8.kubernetes.client.KubernetesClientException;
+import io.fabric8.kubernetes.client.dsl.ExecListener;
 import io.fabric8.kubernetes.client.dsl.internal.PodOperationContext.StreamContext;
 import io.fabric8.kubernetes.client.http.WebSocket;
 import io.fabric8.kubernetes.client.utils.KubernetesSerialization;
@@ -28,8 +29,11 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayDeque;
+import java.util.Queue;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -187,6 +191,104 @@ class ExecWebSocketListenerTest {
     } finally {
       asyncExecutor.shutdownNow();
     }
+  }
+
+  @Test
+  void onErrorAfterChannel3StatusPrefersParsedExitCodeOverConnectionClose() throws Exception {
+    // Reproduces the race in PodTest.testExecWithExitCode: channel-3 status frame is
+    // received and queues handleExitStatus through the SerialExecutor; the peer then
+    // closes the connection and onError fires before the deferred task runs.
+    final Queue<Runnable> manualQueue = new ArrayDeque<>();
+    final Executor manualExecutor = manualQueue::offer;
+
+    final ExecWebSocketListener listener = new ExecWebSocketListener(new PodOperationContext(), manualExecutor,
+        new KubernetesSerialization());
+    final WebSocket mockedWebSocket = Mockito.mock(WebSocket.class);
+    listener.onOpen(mockedWebSocket);
+
+    // Channel 3: NonZeroExitCode=1 status frame
+    final byte[] failureJson = new KubernetesSerialization().asJson(new StatusBuilder()
+        .withStatus("Failure")
+        .withReason("NonZeroExitCode")
+        .withNewDetails().withCauses(new StatusCause("ExitCode", "1", "ExitCode")).endDetails()
+        .build()).getBytes(StandardCharsets.UTF_8);
+    final ByteBuffer channel3 = ByteBuffer.allocate(failureJson.length + 1)
+        .put((byte) 3).put(failureJson);
+    channel3.flip();
+    listener.onMessage(mockedWebSocket, channel3);
+    assertFalse(listener.exitCode().isDone(),
+        "exitCode must remain pending while handleExitStatus is queued in the executor");
+
+    // The connection closes before the deferred handleExitStatus has a chance to run
+    listener.onError(mockedWebSocket, new IOException("Connection was closed"));
+    assertFalse(listener.exitCode().isDone(),
+        "exitCode must not be completed exceptionally while the queued handleExitStatus is still pending");
+
+    // Drain: handleExitStatus must run first (parsed exit code), then the failure task
+    // observes exitCode is already done and only logs.
+    Runnable next;
+    while ((next = manualQueue.poll()) != null) {
+      next.run();
+    }
+
+    assertEquals(1, listener.exitCode().get(2, TimeUnit.SECONDS),
+        "exitCode must resolve to the parsed value, not the connection-close exception");
+  }
+
+  @Test
+  void onErrorWithExecListenerInvokesOnFailureWithThrowable() {
+    final Queue<Runnable> manualQueue = new ArrayDeque<>();
+    final Executor manualExecutor = manualQueue::offer;
+    final java.util.concurrent.atomic.AtomicReference<Throwable> capturedThrowable = new java.util.concurrent.atomic.AtomicReference<>();
+    final java.util.concurrent.atomic.AtomicReference<ExecListener.Response> capturedResponse = new java.util.concurrent.atomic.AtomicReference<>();
+    final ExecListener execListener = new ExecListener() {
+      @Override
+      public void onFailure(Throwable t, Response failureResponse) {
+        capturedThrowable.set(t);
+        capturedResponse.set(failureResponse);
+      }
+
+      @Override
+      public void onClose(int code, String reason) {
+      }
+    };
+    final PodOperationContext context = new PodOperationContext().toBuilder()
+        .execListener(execListener)
+        .build();
+    final ExecWebSocketListener listener = new ExecWebSocketListener(context, manualExecutor, new KubernetesSerialization());
+    listener.onOpen(Mockito.mock(WebSocket.class));
+
+    final IOException boom = new IOException("boom");
+    listener.onError(null, boom);
+
+    Runnable next;
+    while ((next = manualQueue.poll()) != null) {
+      next.run();
+    }
+
+    assertThat(capturedThrowable.get()).isSameAs(boom);
+    assertNull(capturedResponse.get(), "non-handshake errors must not provide a SimpleResponse");
+    assertThrows(KubernetesClientException.class, listener::checkError);
+  }
+
+  @Test
+  void onErrorWithoutPendingExitStatusCompletesExitExceptionally() {
+    final Queue<Runnable> manualQueue = new ArrayDeque<>();
+    final Executor manualExecutor = manualQueue::offer;
+    final ExecWebSocketListener listener = new ExecWebSocketListener(new PodOperationContext(), manualExecutor,
+        new KubernetesSerialization());
+    listener.onOpen(Mockito.mock(WebSocket.class));
+
+    listener.onError(null, new IOException("boom"));
+    assertFalse(listener.exitCode().isDone(),
+        "exitCode completion is deferred through the SerialExecutor on error");
+
+    Runnable next;
+    while ((next = manualQueue.poll()) != null) {
+      next.run();
+    }
+
+    assertThrows(KubernetesClientException.class, listener::checkError);
   }
 
   @Test
