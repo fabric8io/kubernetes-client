@@ -20,6 +20,7 @@ import io.fabric8.kubernetes.api.model.StatusCause;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.dsl.ExecListener;
 import io.fabric8.kubernetes.client.dsl.internal.PodOperationContext.StreamContext;
+import io.fabric8.kubernetes.client.http.StandardHttpRequest;
 import io.fabric8.kubernetes.client.http.WebSocket;
 import io.fabric8.kubernetes.client.http.WebSocketHandshakeException;
 import io.fabric8.kubernetes.client.http.WebSocketUpgradeResponse;
@@ -301,7 +302,9 @@ class ExecWebSocketListenerTest {
     final ExecWebSocketListener listener = new ExecWebSocketListener(context, manualExecutor, new KubernetesSerialization());
     listener.onOpen(Mockito.mock(WebSocket.class));
 
-    final WebSocketUpgradeResponse upgradeResponse = new WebSocketUpgradeResponse(null, 403);
+    final WebSocketUpgradeResponse upgradeResponse = new WebSocketUpgradeResponse(
+        new StandardHttpRequest.Builder().uri("https://localhost:8443/api/v1/namespaces/ns/pods/mypod").build(),
+        403);
     final WebSocketHandshakeException handshakeException = new WebSocketHandshakeException(upgradeResponse);
     listener.onError(null, handshakeException);
 
@@ -313,7 +316,10 @@ class ExecWebSocketListenerTest {
     assertThat(capturedThrowable.get())
         .isInstanceOf(KubernetesClientException.class)
         .hasCause(handshakeException);
-    assertThat(((KubernetesClientException) capturedThrowable.get()).getCode()).isEqualTo(403);
+    final KubernetesClientException kce = (KubernetesClientException) capturedThrowable.get();
+    assertThat(kce.getCode()).isEqualTo(403);
+    assertThat(kce.getNamespace()).isEqualTo("ns");
+    assertThat(kce.getName()).isEqualTo("mypod");
     assertThat(capturedResponse.get()).isNotNull();
     assertThrows(KubernetesClientException.class, listener::checkError);
   }
