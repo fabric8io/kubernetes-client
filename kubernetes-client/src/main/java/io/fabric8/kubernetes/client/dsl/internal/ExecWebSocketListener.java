@@ -22,6 +22,7 @@ import io.fabric8.kubernetes.client.dsl.ExecListener;
 import io.fabric8.kubernetes.client.dsl.ExecListener.Response;
 import io.fabric8.kubernetes.client.dsl.ExecWatch;
 import io.fabric8.kubernetes.client.dsl.internal.PodOperationContext.StreamContext;
+import io.fabric8.kubernetes.client.http.HttpRequest;
 import io.fabric8.kubernetes.client.http.HttpResponse;
 import io.fabric8.kubernetes.client.http.WebSocket;
 import io.fabric8.kubernetes.client.http.WebSocketHandshakeException;
@@ -265,7 +266,7 @@ public class ExecWebSocketListener implements ExecWatch, AutoCloseable, WebSocke
       if (response != null) {
         Status status = OperationSupport.createStatus(response, serialization);
         status.setMessage(t.getMessage());
-        t = new KubernetesClientException(status).initCause(t);
+        t = new KubernetesClientException(status.getMessage(), t, status.getCode(), status, (HttpRequest) null);
       }
     }
     executorService.shutdownNow();
