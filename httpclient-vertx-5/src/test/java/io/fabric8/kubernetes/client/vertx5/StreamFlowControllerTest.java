@@ -191,6 +191,52 @@ class StreamFlowControllerTest {
   }
 
   @Test
+  @DisplayName("Should fire endHandler registered after end sentinel was delivered")
+  void shouldFireEndHandlerRegisteredAfterEndSentinel() throws Exception {
+    AtomicBoolean endHandlerCalled = new AtomicBoolean(false);
+    CountDownLatch latch = new CountDownLatch(1);
+
+    vertx.runOnContext(v -> {
+      controller.initialize(context, () -> {
+      });
+      controller.configureDataHandler(buffer -> {
+      });
+
+      // End sentinel arrives BEFORE endHandler is registered (the race this fixes).
+      controller.writeEndSentinel();
+
+      controller.setEndHandler(h -> {
+        endHandlerCalled.set(true);
+        latch.countDown();
+      });
+    });
+
+    assertThat(latch.await(5, TimeUnit.SECONDS)).isTrue();
+    assertThat(endHandlerCalled.get()).isTrue();
+  }
+
+  @Test
+  @DisplayName("Should not fail when endHandler is set to null after end was delivered")
+  void shouldHandleNullEndHandlerAfterEndDelivered() throws Exception {
+    CountDownLatch latch = new CountDownLatch(1);
+
+    vertx.runOnContext(v -> {
+      controller.initialize(context, () -> {
+      });
+      controller.configureDataHandler(buffer -> {
+      });
+
+      controller.writeEndSentinel();
+      // Setting null after end must not throw nor fire anything.
+      controller.setEndHandler(null);
+
+      latch.countDown();
+    });
+
+    assertThat(latch.await(5, TimeUnit.SECONDS)).isTrue();
+  }
+
+  @Test
   @DisplayName("Should properly separate end sentinel from data")
   void shouldProperlySeparateEndSentinelFromData() throws Exception {
     List<Buffer> receivedBuffers = new ArrayList<>();

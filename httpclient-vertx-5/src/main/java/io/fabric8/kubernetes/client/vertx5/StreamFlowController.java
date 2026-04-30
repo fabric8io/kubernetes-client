@@ -23,8 +23,11 @@ import io.vertx.core.streams.impl.InboundBuffer;
 class StreamFlowController {
 
   private final Buffer endSentinel;
+  private final Object endLock = new Object();
   private InboundBuffer<Buffer> inboundBuffer;
   private Handler<Void> endHandler;
+  private boolean ended;
+  private boolean endDelivered;
 
   StreamFlowController() {
     this.endSentinel = Buffer.buffer();
@@ -43,9 +46,7 @@ class StreamFlowController {
     if (dataHandler != null) {
       inboundBuffer.handler(buffer -> {
         if (buffer == endSentinel) {
-          if (endHandler != null) {
-            endHandler.handle(null);
-          }
+          dispatchEnd();
         } else {
           dataHandler.handle(buffer);
         }
@@ -55,8 +56,35 @@ class StreamFlowController {
     }
   }
 
+  private void dispatchEnd() {
+    final Handler<Void> toFire;
+    synchronized (endLock) {
+      ended = true;
+      if (endDelivered) {
+        return;
+      }
+      toFire = endHandler;
+      if (toFire != null) {
+        endDelivered = true;
+      }
+    }
+    if (toFire != null) {
+      toFire.handle(null);
+    }
+  }
+
   void setEndHandler(final Handler<Void> handler) {
-    this.endHandler = handler;
+    final boolean fireNow;
+    synchronized (endLock) {
+      this.endHandler = handler;
+      fireNow = ended && !endDelivered && handler != null;
+      if (fireNow) {
+        endDelivered = true;
+      }
+    }
+    if (fireNow) {
+      handler.handle(null);
+    }
   }
 
   boolean writeChunk(final Buffer chunk) {
