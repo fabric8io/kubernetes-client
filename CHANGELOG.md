@@ -3,6 +3,7 @@
 ### 7.7-SNAPSHOT
 
 #### Bugs
+* Fix #7700: ExecWebSocketListener.onError now defers failure handling through the SerialExecutor so a pending channel-3 exit-status task runs first and the parsed exit code is preserved instead of being overwritten by a peer-close exception
 * Fix #7696: (httpclient-vertx) clear response exception handler before reset in cancel() to prevent StreamResetException from racing with future cancellation
 * Fix #7695: ExecWebSocketListener now defers exitCode completion through the SerialExecutor so pending stdout/stderr async writes are flushed before exit signals
 * Fix #7632: java-generator now HTML-escapes `<`, `>`, and `&` in CRD descriptions to produce valid Javadoc
