@@ -265,7 +265,7 @@ public class ExecWebSocketListener implements ExecWatch, AutoCloseable, WebSocke
       if (response != null) {
         Status status = OperationSupport.createStatus(response, serialization);
         status.setMessage(t.getMessage());
-        t = new KubernetesClientException(status).initCause(t);
+        t = new KubernetesClientException(status.getMessage(), t, status.getCode(), status, response.request());
       }
     }
     executorService.shutdownNow();

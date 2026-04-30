@@ -20,7 +20,10 @@ import io.fabric8.kubernetes.api.model.StatusCause;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.dsl.ExecListener;
 import io.fabric8.kubernetes.client.dsl.internal.PodOperationContext.StreamContext;
+import io.fabric8.kubernetes.client.http.StandardHttpRequest;
 import io.fabric8.kubernetes.client.http.WebSocket;
+import io.fabric8.kubernetes.client.http.WebSocketHandshakeException;
+import io.fabric8.kubernetes.client.http.WebSocketUpgradeResponse;
 import io.fabric8.kubernetes.client.utils.KubernetesSerialization;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -269,6 +272,55 @@ class ExecWebSocketListenerTest {
 
     assertThat(capturedThrowable.get()).isSameAs(boom);
     assertNull(capturedResponse.get(), "non-handshake errors must not provide a SimpleResponse");
+    assertThrows(KubernetesClientException.class, listener::checkError);
+  }
+
+  @Test
+  void onErrorWithWebSocketHandshakeExceptionWrapsCauseWithoutThrowing() {
+    // Reproduces the IllegalStateException reported in #7702: KubernetesClientException(Status)
+    // chains down to super(message, null) which sets cause to null (not the self-reference
+    // sentinel), so a follow-up initCause(t) blows up. The handshake response details must
+    // reach the ExecListener.onFailure callback instead.
+    final Queue<Runnable> manualQueue = new ArrayDeque<>();
+    final Executor manualExecutor = manualQueue::offer;
+    final AtomicReference<Throwable> capturedThrowable = new AtomicReference<>();
+    final AtomicReference<ExecListener.Response> capturedResponse = new AtomicReference<>();
+    final ExecListener execListener = new ExecListener() {
+      @Override
+      public void onFailure(Throwable t, Response failureResponse) {
+        capturedThrowable.set(t);
+        capturedResponse.set(failureResponse);
+      }
+
+      @Override
+      public void onClose(int code, String reason) {
+      }
+    };
+    final PodOperationContext context = new PodOperationContext().toBuilder()
+        .execListener(execListener)
+        .build();
+    final ExecWebSocketListener listener = new ExecWebSocketListener(context, manualExecutor, new KubernetesSerialization());
+    listener.onOpen(Mockito.mock(WebSocket.class));
+
+    final WebSocketUpgradeResponse upgradeResponse = new WebSocketUpgradeResponse(
+        new StandardHttpRequest.Builder().uri("https://localhost:8443/api/v1/namespaces/ns/pods/mypod").build(),
+        403);
+    final WebSocketHandshakeException handshakeException = new WebSocketHandshakeException(upgradeResponse);
+    listener.onError(null, handshakeException);
+
+    Runnable next;
+    while ((next = manualQueue.poll()) != null) {
+      next.run();
+    }
+
+    assertThat(capturedThrowable.get())
+        .isInstanceOf(KubernetesClientException.class)
+        .hasCause(handshakeException);
+    final KubernetesClientException kce = (KubernetesClientException) capturedThrowable.get();
+    assertThat(kce.getCode()).isEqualTo(403);
+    assertThat(kce.getNamespace()).isEqualTo("ns");
+    assertThat(kce.getName()).isEqualTo("mypod");
+    assertThat(capturedResponse.get()).isNotNull();
     assertThrows(KubernetesClientException.class, listener::checkError);
   }
 
