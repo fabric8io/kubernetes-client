@@ -61,12 +61,14 @@ class SerialExecutorTest {
     try {
       final StringBuffer sb = new StringBuffer();
       final SerialExecutor se = new SerialExecutor(es);
-      final CountDownLatch latch = new CountDownLatch(1);
+      final CountDownLatch start = new CountDownLatch(1);
+      final CountDownLatch done = new CountDownLatch(1);
       se.execute(() -> {
         sb.append("1");
         try {
-          Thread.sleep(100L);
+          start.await();
         } catch (InterruptedException e) {
+          Thread.currentThread().interrupt();
           throw new RuntimeException(e);
         }
       });
@@ -74,8 +76,9 @@ class SerialExecutorTest {
       se.execute(() -> sb.append("3"));
       se.execute(() -> sb.append("4"));
       se.execute(() -> sb.append("5"));
-      se.execute(latch::countDown);
-      assertThat(latch.await(500L, TimeUnit.MILLISECONDS)).isTrue();
+      se.execute(done::countDown);
+      start.countDown();
+      assertThat(done.await(5L, TimeUnit.SECONDS)).isTrue();
       assertThat(sb).hasToString("12345");
     } finally {
       es.shutdownNow();
