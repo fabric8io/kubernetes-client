@@ -67,7 +67,11 @@ class StackBasedRecursionGuard {
    *         {@code false} if recursion depth is too high and caller should use async scheduling
    */
   boolean enter() {
-    return depth++ < MAX_RECURSION_DEPTH;
+    if (depth >= MAX_RECURSION_DEPTH) {
+      return false;
+    }
+    depth++;
+    return true;
   }
 
   /**
