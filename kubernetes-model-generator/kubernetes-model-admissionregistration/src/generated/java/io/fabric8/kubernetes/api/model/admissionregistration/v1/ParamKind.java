@@ -86,7 +86,7 @@ public class ParamKind implements Editable<ParamKindBuilder>, KubernetesResource
     }
 
     /**
-     * APIVersion is the API group version the resources belong to. In format of "group/version". Required.
+     * apiVersion is the API group version the resources belong to. In format of "group/version". Required.
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -94,7 +94,7 @@ public class ParamKind implements Editable<ParamKindBuilder>, KubernetesResource
     }
 
     /**
-     * APIVersion is the API group version the resources belong to. In format of "group/version". Required.
+     * apiVersion is the API group version the resources belong to. In format of "group/version". Required.
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -102,7 +102,7 @@ public class ParamKind implements Editable<ParamKindBuilder>, KubernetesResource
     }
 
     /**
-     * Kind is the API kind the resources belong to. Required.
+     * kind is the API kind the resources belong to. Required.
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -110,7 +110,7 @@ public class ParamKind implements Editable<ParamKindBuilder>, KubernetesResource
     }
 
     /**
-     * Kind is the API kind the resources belong to. Required.
+     * kind is the API kind the resources belong to. Required.
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

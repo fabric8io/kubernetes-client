@@ -1,5 +1,5 @@
 
-package io.fabric8.kubernetes.api.model.scheduling.v1alpha1;
+package io.fabric8.kubernetes.api.model.admissionregistration.v1;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -19,7 +19,6 @@ import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.LabelSelector;
 import io.fabric8.kubernetes.api.model.LocalObjectReference;
-import io.fabric8.kubernetes.api.model.Namespaced;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
@@ -38,7 +37,7 @@ import lombok.ToString;
 import lombok.experimental.Accessors;
 
 /**
- * Workload allows for expressing scheduling constraints that should be used when managing lifecycle of workloads from scheduling perspective, including scheduling, preemption, eviction and other phases.
+ * MutatingAdmissionPolicy describes the definition of an admission mutation policy that mutates the object coming into admission chain.
  */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -72,30 +71,30 @@ import lombok.experimental.Accessors;
 @TemplateTransformations({
     @TemplateTransformation(value = "/manifest.vm", outputPath = "META-INF/services/io.fabric8.kubernetes.api.model.KubernetesResource", gather = true)
 })
-@Version("v1alpha1")
-@Group("scheduling.k8s.io")
+@Version("v1")
+@Group("admissionregistration.k8s.io")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class Workload implements Editable<WorkloadBuilder>, HasMetadata, Namespaced
+public class MutatingAdmissionPolicy implements Editable<MutatingAdmissionPolicyBuilder>, HasMetadata
 {
 
     @JsonProperty("apiVersion")
-    private String apiVersion = "scheduling.k8s.io/v1alpha1";
+    private String apiVersion = "admissionregistration.k8s.io/v1";
     @JsonProperty("kind")
-    private String kind = "Workload";
+    private String kind = "MutatingAdmissionPolicy";
     @JsonProperty("metadata")
     private ObjectMeta metadata;
     @JsonProperty("spec")
-    private WorkloadSpec spec;
+    private MutatingAdmissionPolicySpec spec;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
      */
-    public Workload() {
+    public MutatingAdmissionPolicy() {
     }
 
-    public Workload(String apiVersion, String kind, ObjectMeta metadata, WorkloadSpec spec) {
+    public MutatingAdmissionPolicy(String apiVersion, String kind, ObjectMeta metadata, MutatingAdmissionPolicySpec spec) {
         super();
         this.apiVersion = apiVersion;
         this.kind = kind;
@@ -136,7 +135,7 @@ public class Workload implements Editable<WorkloadBuilder>, HasMetadata, Namespa
     }
 
     /**
-     * Workload allows for expressing scheduling constraints that should be used when managing lifecycle of workloads from scheduling perspective, including scheduling, preemption, eviction and other phases.
+     * MutatingAdmissionPolicy describes the definition of an admission mutation policy that mutates the object coming into admission chain.
      */
     @JsonProperty("metadata")
     public ObjectMeta getMetadata() {
@@ -144,7 +143,7 @@ public class Workload implements Editable<WorkloadBuilder>, HasMetadata, Namespa
     }
 
     /**
-     * Workload allows for expressing scheduling constraints that should be used when managing lifecycle of workloads from scheduling perspective, including scheduling, preemption, eviction and other phases.
+     * MutatingAdmissionPolicy describes the definition of an admission mutation policy that mutates the object coming into admission chain.
      */
     @JsonProperty("metadata")
     public void setMetadata(ObjectMeta metadata) {
@@ -152,28 +151,28 @@ public class Workload implements Editable<WorkloadBuilder>, HasMetadata, Namespa
     }
 
     /**
-     * Workload allows for expressing scheduling constraints that should be used when managing lifecycle of workloads from scheduling perspective, including scheduling, preemption, eviction and other phases.
+     * MutatingAdmissionPolicy describes the definition of an admission mutation policy that mutates the object coming into admission chain.
      */
     @JsonProperty("spec")
-    public WorkloadSpec getSpec() {
+    public MutatingAdmissionPolicySpec getSpec() {
         return spec;
     }
 
     /**
-     * Workload allows for expressing scheduling constraints that should be used when managing lifecycle of workloads from scheduling perspective, including scheduling, preemption, eviction and other phases.
+     * MutatingAdmissionPolicy describes the definition of an admission mutation policy that mutates the object coming into admission chain.
      */
     @JsonProperty("spec")
-    public void setSpec(WorkloadSpec spec) {
+    public void setSpec(MutatingAdmissionPolicySpec spec) {
         this.spec = spec;
     }
 
     @JsonIgnore
-    public WorkloadBuilder edit() {
-        return new WorkloadBuilder(this);
+    public MutatingAdmissionPolicyBuilder edit() {
+        return new MutatingAdmissionPolicyBuilder(this);
     }
 
     @JsonIgnore
-    public WorkloadBuilder toBuilder() {
+    public MutatingAdmissionPolicyBuilder toBuilder() {
         return edit();
     }
 

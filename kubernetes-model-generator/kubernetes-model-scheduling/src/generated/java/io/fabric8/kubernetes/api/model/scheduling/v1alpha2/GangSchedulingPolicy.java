@@ -1,5 +1,5 @@
 
-package io.fabric8.kubernetes.api.model.scheduling.v1alpha1;
+package io.fabric8.kubernetes.api.model.scheduling.v1alpha2;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -33,14 +33,12 @@ import lombok.ToString;
 import lombok.experimental.Accessors;
 
 /**
- * TypedLocalObjectReference allows to reference typed object inside the same namespace.
+ * GangSchedulingPolicy defines the parameters for gang scheduling.
  */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "kind",
-    "apiGroup",
-    "name"
+    "minCount"
 })
 @ToString
 @EqualsAndHashCode
@@ -64,86 +62,48 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class TypedLocalObjectReference implements Editable<TypedLocalObjectReferenceBuilder>, KubernetesResource
+public class GangSchedulingPolicy implements Editable<GangSchedulingPolicyBuilder>, KubernetesResource
 {
 
-    @JsonProperty("apiGroup")
-    private String apiGroup;
-    @JsonProperty("kind")
-    private String kind;
-    @JsonProperty("name")
-    private String name;
+    @JsonProperty("minCount")
+    private Integer minCount;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
      */
-    public TypedLocalObjectReference() {
+    public GangSchedulingPolicy() {
     }
 
-    public TypedLocalObjectReference(String apiGroup, String kind, String name) {
+    public GangSchedulingPolicy(Integer minCount) {
         super();
-        this.apiGroup = apiGroup;
-        this.kind = kind;
-        this.name = name;
+        this.minCount = minCount;
     }
 
     /**
-     * APIGroup is the group for the resource being referenced. If APIGroup is empty, the specified Kind must be in the core API group. For any other third-party types, setting APIGroup is required. It must be a DNS subdomain.
+     * MinCount is the minimum number of pods that must be schedulable or scheduled at the same time for the scheduler to admit the entire group. It must be a positive integer.
      */
-    @JsonProperty("apiGroup")
-    public String getApiGroup() {
-        return apiGroup;
+    @JsonProperty("minCount")
+    public Integer getMinCount() {
+        return minCount;
     }
 
     /**
-     * APIGroup is the group for the resource being referenced. If APIGroup is empty, the specified Kind must be in the core API group. For any other third-party types, setting APIGroup is required. It must be a DNS subdomain.
+     * MinCount is the minimum number of pods that must be schedulable or scheduled at the same time for the scheduler to admit the entire group. It must be a positive integer.
      */
-    @JsonProperty("apiGroup")
-    public void setApiGroup(String apiGroup) {
-        this.apiGroup = apiGroup;
-    }
-
-    /**
-     * Kind is the type of resource being referenced. It must be a path segment name.
-     */
-    @JsonProperty("kind")
-    public String getKind() {
-        return kind;
-    }
-
-    /**
-     * Kind is the type of resource being referenced. It must be a path segment name.
-     */
-    @JsonProperty("kind")
-    public void setKind(String kind) {
-        this.kind = kind;
-    }
-
-    /**
-     * Name is the name of resource being referenced. It must be a path segment name.
-     */
-    @JsonProperty("name")
-    public String getName() {
-        return name;
-    }
-
-    /**
-     * Name is the name of resource being referenced. It must be a path segment name.
-     */
-    @JsonProperty("name")
-    public void setName(String name) {
-        this.name = name;
+    @JsonProperty("minCount")
+    public void setMinCount(Integer minCount) {
+        this.minCount = minCount;
     }
 
     @JsonIgnore
-    public TypedLocalObjectReferenceBuilder edit() {
-        return new TypedLocalObjectReferenceBuilder(this);
+    public GangSchedulingPolicyBuilder edit() {
+        return new GangSchedulingPolicyBuilder(this);
     }
 
     @JsonIgnore
-    public TypedLocalObjectReferenceBuilder toBuilder() {
+    public GangSchedulingPolicyBuilder toBuilder() {
         return edit();
     }
 

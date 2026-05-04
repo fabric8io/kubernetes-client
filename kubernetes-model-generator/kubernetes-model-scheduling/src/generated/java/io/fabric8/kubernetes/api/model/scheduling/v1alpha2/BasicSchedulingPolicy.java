@@ -1,5 +1,5 @@
 
-package io.fabric8.kubernetes.api.model.scheduling.v1alpha1;
+package io.fabric8.kubernetes.api.model.scheduling.v1alpha2;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -8,7 +8,6 @@ import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
@@ -33,12 +32,12 @@ import lombok.ToString;
 import lombok.experimental.Accessors;
 
 /**
- * GangSchedulingPolicy defines the parameters for gang scheduling.
+ * BasicSchedulingPolicy indicates that standard Kubernetes scheduling behavior should be used.
  */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "minCount"
+
 })
 @ToString
 @EqualsAndHashCode
@@ -62,48 +61,19 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class GangSchedulingPolicy implements Editable<GangSchedulingPolicyBuilder>, KubernetesResource
+public class BasicSchedulingPolicy implements Editable<BasicSchedulingPolicyBuilder>, KubernetesResource
 {
 
-    @JsonProperty("minCount")
-    private Integer minCount;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
-    /**
-     * No args constructor for use in serialization
-     */
-    public GangSchedulingPolicy() {
-    }
-
-    public GangSchedulingPolicy(Integer minCount) {
-        super();
-        this.minCount = minCount;
-    }
-
-    /**
-     * MinCount is the minimum number of pods that must be schedulable or scheduled at the same time for the scheduler to admit the entire group. It must be a positive integer.
-     */
-    @JsonProperty("minCount")
-    public Integer getMinCount() {
-        return minCount;
-    }
-
-    /**
-     * MinCount is the minimum number of pods that must be schedulable or scheduled at the same time for the scheduler to admit the entire group. It must be a positive integer.
-     */
-    @JsonProperty("minCount")
-    public void setMinCount(Integer minCount) {
-        this.minCount = minCount;
+    @JsonIgnore
+    public BasicSchedulingPolicyBuilder edit() {
+        return new BasicSchedulingPolicyBuilder(this);
     }
 
     @JsonIgnore
-    public GangSchedulingPolicyBuilder edit() {
-        return new GangSchedulingPolicyBuilder(this);
-    }
-
-    @JsonIgnore
-    public GangSchedulingPolicyBuilder toBuilder() {
+    public BasicSchedulingPolicyBuilder toBuilder() {
         return edit();
     }
 

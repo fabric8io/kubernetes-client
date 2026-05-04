@@ -44,7 +44,9 @@ class V1ValidatingAdmissionPolicyBindingTest {
     assertThat(items).isNotNull().hasSize(1);
     AssertionsForClassTypes.assertThat(items.get(0))
         .isInstanceOf(ValidatingAdmissionPolicyBinding.class)
-        .hasFieldOrPropertyWithValue("metadata.name", "demo-binding-test.example.com");
+        .hasFieldOrPropertyWithValue("metadata.name", "demo-binding-test.example.com")
+        .hasFieldOrPropertyWithValue("spec.policyName", "demo-policy.example.com")
+        .hasFieldOrPropertyWithValue("spec.validationActions", List.of("Deny"));
   }
 
   @Test

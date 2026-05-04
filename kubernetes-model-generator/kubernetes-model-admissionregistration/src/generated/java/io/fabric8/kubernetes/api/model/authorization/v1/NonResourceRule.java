@@ -90,7 +90,7 @@ public class NonResourceRule implements Editable<NonResourceRuleBuilder>, Kubern
     }
 
     /**
-     * NonResourceURLs is a set of partial urls that a user should have access to.  &#42;s are allowed, but only as the full, final step in the path.  "&#42;" means all.
+     * nonResourceURLs is a set of partial urls that a user should have access to.  &#42;s are allowed, but only as the full, final step in the path.  "&#42;" means all.
      */
     @JsonProperty("nonResourceURLs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -99,7 +99,7 @@ public class NonResourceRule implements Editable<NonResourceRuleBuilder>, Kubern
     }
 
     /**
-     * NonResourceURLs is a set of partial urls that a user should have access to.  &#42;s are allowed, but only as the full, final step in the path.  "&#42;" means all.
+     * nonResourceURLs is a set of partial urls that a user should have access to.  &#42;s are allowed, but only as the full, final step in the path.  "&#42;" means all.
      */
     @JsonProperty("nonResourceURLs")
     public void setNonResourceURLs(List<String> nonResourceURLs) {
@@ -107,7 +107,7 @@ public class NonResourceRule implements Editable<NonResourceRuleBuilder>, Kubern
     }
 
     /**
-     * Verb is a list of kubernetes non-resource API verbs, like: get, post, put, delete, patch, head, options.  "&#42;" means all.
+     * verbs is a list of kubernetes non-resource API verbs, like: get, post, put, delete, patch, head, options.  "&#42;" means all.
      */
     @JsonProperty("verbs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -116,7 +116,7 @@ public class NonResourceRule implements Editable<NonResourceRuleBuilder>, Kubern
     }
 
     /**
-     * Verb is a list of kubernetes non-resource API verbs, like: get, post, put, delete, patch, head, options.  "&#42;" means all.
+     * verbs is a list of kubernetes non-resource API verbs, like: get, post, put, delete, patch, head, options.  "&#42;" means all.
      */
     @JsonProperty("verbs")
     public void setVerbs(List<String> verbs) {

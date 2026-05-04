@@ -86,7 +86,7 @@ public class NonResourceAttributes implements Editable<NonResourceAttributesBuil
     }
 
     /**
-     * Path is the URL path of the request
+     * path is the URL path of the request
      */
     @JsonProperty("path")
     public String getPath() {
@@ -94,7 +94,7 @@ public class NonResourceAttributes implements Editable<NonResourceAttributesBuil
     }
 
     /**
-     * Path is the URL path of the request
+     * path is the URL path of the request
      */
     @JsonProperty("path")
     public void setPath(String path) {
@@ -102,7 +102,7 @@ public class NonResourceAttributes implements Editable<NonResourceAttributesBuil
     }
 
     /**
-     * Verb is the standard HTTP verb
+     * verb is the standard HTTP verb
      */
     @JsonProperty("verb")
     public String getVerb() {
@@ -110,7 +110,7 @@ public class NonResourceAttributes implements Editable<NonResourceAttributesBuil
     }
 
     /**
-     * Verb is the standard HTTP verb
+     * verb is the standard HTTP verb
      */
     @JsonProperty("verb")
     public void setVerb(String verb) {

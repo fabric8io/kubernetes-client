@@ -89,7 +89,7 @@ public class TokenReviewSpec implements Editable<TokenReviewSpecBuilder>, Kubern
     }
 
     /**
-     * Audiences is a list of the identifiers that the resource server presented with the token identifies as. Audience-aware token authenticators will verify that the token was intended for at least one of the audiences in this list. If no audiences are provided, the audience will default to the audience of the Kubernetes apiserver.
+     * audiences is a list of the identifiers that the resource server presented with the token identifies as. Audience-aware token authenticators will verify that the token was intended for at least one of the audiences in this list. If no audiences are provided, the audience will default to the audience of the Kubernetes apiserver.
      */
     @JsonProperty("audiences")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -98,7 +98,7 @@ public class TokenReviewSpec implements Editable<TokenReviewSpecBuilder>, Kubern
     }
 
     /**
-     * Audiences is a list of the identifiers that the resource server presented with the token identifies as. Audience-aware token authenticators will verify that the token was intended for at least one of the audiences in this list. If no audiences are provided, the audience will default to the audience of the Kubernetes apiserver.
+     * audiences is a list of the identifiers that the resource server presented with the token identifies as. Audience-aware token authenticators will verify that the token was intended for at least one of the audiences in this list. If no audiences are provided, the audience will default to the audience of the Kubernetes apiserver.
      */
     @JsonProperty("audiences")
     public void setAudiences(List<String> audiences) {
@@ -106,7 +106,7 @@ public class TokenReviewSpec implements Editable<TokenReviewSpecBuilder>, Kubern
     }
 
     /**
-     * Token is the opaque bearer token.
+     * token is the opaque bearer token.
      */
     @JsonProperty("token")
     public String getToken() {
@@ -114,7 +114,7 @@ public class TokenReviewSpec implements Editable<TokenReviewSpecBuilder>, Kubern
     }
 
     /**
-     * Token is the opaque bearer token.
+     * token is the opaque bearer token.
      */
     @JsonProperty("token")
     public void setToken(String token) {

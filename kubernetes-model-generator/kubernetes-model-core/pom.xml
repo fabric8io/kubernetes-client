@@ -138,6 +138,7 @@
                 <addBuildableReferences>false</addBuildableReferences>
                 <schemas>
                   <schema>${project.basedir}/../openapi/schemas/cluster-api.json</schema>
+                  <schema>${project.basedir}/../openapi/schemas/kubernetes-1.35.0.json</schema>
                   <schema>${openapi.schema.kubernetes-latest}</schema>
                   <schema>${project.basedir}/../openapi/schemas/admission-registration.json</schema>
                   <schema>${project.basedir}/../openapi/schemas/api-machinery-extra.json</schema>

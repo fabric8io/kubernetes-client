@@ -94,7 +94,7 @@ public class BoundObjectReference implements Editable<BoundObjectReferenceBuilde
     }
 
     /**
-     * API version of the referent.
+     * apiVersion is API version of the referent.
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -102,7 +102,7 @@ public class BoundObjectReference implements Editable<BoundObjectReferenceBuilde
     }
 
     /**
-     * API version of the referent.
+     * apiVersion is API version of the referent.
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -110,7 +110,7 @@ public class BoundObjectReference implements Editable<BoundObjectReferenceBuilde
     }
 
     /**
-     * Kind of the referent. Valid kinds are 'Pod' and 'Secret'.
+     * kind of the referent. Valid kinds are 'Pod' and 'Secret'.
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -118,7 +118,7 @@ public class BoundObjectReference implements Editable<BoundObjectReferenceBuilde
     }
 
     /**
-     * Kind of the referent. Valid kinds are 'Pod' and 'Secret'.
+     * kind of the referent. Valid kinds are 'Pod' and 'Secret'.
      */
     @JsonProperty("kind")
     public void setKind(String kind) {
@@ -126,7 +126,7 @@ public class BoundObjectReference implements Editable<BoundObjectReferenceBuilde
     }
 
     /**
-     * Name of the referent.
+     * name of the referent.
      */
     @JsonProperty("name")
     public String getName() {
@@ -134,7 +134,7 @@ public class BoundObjectReference implements Editable<BoundObjectReferenceBuilde
     }
 
     /**
-     * Name of the referent.
+     * name of the referent.
      */
     @JsonProperty("name")
     public void setName(String name) {
@@ -142,7 +142,7 @@ public class BoundObjectReference implements Editable<BoundObjectReferenceBuilde
     }
 
     /**
-     * UID of the referent.
+     * uid of the referent.
      */
     @JsonProperty("uid")
     public String getUid() {
@@ -150,7 +150,7 @@ public class BoundObjectReference implements Editable<BoundObjectReferenceBuilde
     }
 
     /**
-     * UID of the referent.
+     * uid of the referent.
      */
     @JsonProperty("uid")
     public void setUid(String uid) {

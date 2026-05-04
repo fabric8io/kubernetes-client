@@ -44,7 +44,8 @@ class V1ValidatingAdmissionPolicyTest {
     assertThat(items).isNotNull().hasSize(1);
     AssertionsForClassTypes.assertThat(items.get(0))
         .isInstanceOf(ValidatingAdmissionPolicy.class)
-        .hasFieldOrPropertyWithValue("metadata.name", "demo-policy.example.com");
+        .hasFieldOrPropertyWithValue("metadata.name", "demo-policy.example.com")
+        .hasFieldOrPropertyWithValue("spec.failurePolicy", "Fail");
   }
 
   @Test

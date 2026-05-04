@@ -102,7 +102,7 @@ public class TokenRequestStatus implements Editable<TokenRequestStatusBuilder>, 
     }
 
     /**
-     * Token is the opaque bearer token.
+     * token is the opaque bearer token.
      */
     @JsonProperty("token")
     public String getToken() {
@@ -110,7 +110,7 @@ public class TokenRequestStatus implements Editable<TokenRequestStatusBuilder>, 
     }
 
     /**
-     * Token is the opaque bearer token.
+     * token is the opaque bearer token.
      */
     @JsonProperty("token")
     public void setToken(String token) {

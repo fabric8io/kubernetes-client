@@ -154,7 +154,7 @@ public class MutatingWebhookConfiguration implements Editable<MutatingWebhookCon
     }
 
     /**
-     * Webhooks is a list of webhooks and the affected resources and operations.
+     * webhooks is a list of webhooks and the affected resources and operations.
      */
     @JsonProperty("webhooks")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -163,7 +163,7 @@ public class MutatingWebhookConfiguration implements Editable<MutatingWebhookCon
     }
 
     /**
-     * Webhooks is a list of webhooks and the affected resources and operations.
+     * webhooks is a list of webhooks and the affected resources and operations.
      */
     @JsonProperty("webhooks")
     public void setWebhooks(List<MutatingWebhook> webhooks) {

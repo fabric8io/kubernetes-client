@@ -145,7 +145,7 @@ public class ValidatingAdmissionPolicySpec implements Editable<ValidatingAdmissi
     }
 
     /**
-     * MatchConditions is a list of conditions that must be met for a request to be validated. Match conditions filter requests that have already been matched by the rules, namespaceSelector, and objectSelector. An empty list of matchConditions matches all requests. There are a maximum of 64 match conditions allowed.<br><p> <br><p> If a parameter object is provided, it can be accessed via the `params` handle in the same manner as validation expressions.<br><p> <br><p> The exact matching logic is (in order):<br><p>   1. If ANY matchCondition evaluates to FALSE, the policy is skipped.<br><p>   2. If ALL matchConditions evaluate to TRUE, the policy is evaluated.<br><p>   3. If any matchCondition evaluates to an error (but none are FALSE):<br><p>      - If failurePolicy=Fail, reject the request<br><p>      - If failurePolicy=Ignore, the policy is skipped
+     * matchConditions is a list of conditions that must be met for a request to be validated. Match conditions filter requests that have already been matched by the rules, namespaceSelector, and objectSelector. An empty list of matchConditions matches all requests. There are a maximum of 64 match conditions allowed.<br><p> <br><p> If a parameter object is provided, it can be accessed via the `params` handle in the same manner as validation expressions.<br><p> <br><p> The exact matching logic is (in order):<br><p>   1. If ANY matchCondition evaluates to FALSE, the policy is skipped.<br><p>   2. If ALL matchConditions evaluate to TRUE, the policy is evaluated.<br><p>   3. If any matchCondition evaluates to an error (but none are FALSE):<br><p>      - If failurePolicy=Fail, reject the request<br><p>      - If failurePolicy=Ignore, the policy is skipped
      */
     @JsonProperty("matchConditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -154,7 +154,7 @@ public class ValidatingAdmissionPolicySpec implements Editable<ValidatingAdmissi
     }
 
     /**
-     * MatchConditions is a list of conditions that must be met for a request to be validated. Match conditions filter requests that have already been matched by the rules, namespaceSelector, and objectSelector. An empty list of matchConditions matches all requests. There are a maximum of 64 match conditions allowed.<br><p> <br><p> If a parameter object is provided, it can be accessed via the `params` handle in the same manner as validation expressions.<br><p> <br><p> The exact matching logic is (in order):<br><p>   1. If ANY matchCondition evaluates to FALSE, the policy is skipped.<br><p>   2. If ALL matchConditions evaluate to TRUE, the policy is evaluated.<br><p>   3. If any matchCondition evaluates to an error (but none are FALSE):<br><p>      - If failurePolicy=Fail, reject the request<br><p>      - If failurePolicy=Ignore, the policy is skipped
+     * matchConditions is a list of conditions that must be met for a request to be validated. Match conditions filter requests that have already been matched by the rules, namespaceSelector, and objectSelector. An empty list of matchConditions matches all requests. There are a maximum of 64 match conditions allowed.<br><p> <br><p> If a parameter object is provided, it can be accessed via the `params` handle in the same manner as validation expressions.<br><p> <br><p> The exact matching logic is (in order):<br><p>   1. If ANY matchCondition evaluates to FALSE, the policy is skipped.<br><p>   2. If ALL matchConditions evaluate to TRUE, the policy is evaluated.<br><p>   3. If any matchCondition evaluates to an error (but none are FALSE):<br><p>      - If failurePolicy=Fail, reject the request<br><p>      - If failurePolicy=Ignore, the policy is skipped
      */
     @JsonProperty("matchConditions")
     public void setMatchConditions(List<MatchCondition> matchConditions) {
@@ -194,7 +194,7 @@ public class ValidatingAdmissionPolicySpec implements Editable<ValidatingAdmissi
     }
 
     /**
-     * Validations contain CEL expressions which is used to apply the validation. Validations and AuditAnnotations may not both be empty; a minimum of one Validations or AuditAnnotations is required.
+     * validations contain CEL expressions which is used to apply the validation. Validations and AuditAnnotations may not both be empty; a minimum of one Validations or AuditAnnotations is required.
      */
     @JsonProperty("validations")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -203,7 +203,7 @@ public class ValidatingAdmissionPolicySpec implements Editable<ValidatingAdmissi
     }
 
     /**
-     * Validations contain CEL expressions which is used to apply the validation. Validations and AuditAnnotations may not both be empty; a minimum of one Validations or AuditAnnotations is required.
+     * validations contain CEL expressions which is used to apply the validation. Validations and AuditAnnotations may not both be empty; a minimum of one Validations or AuditAnnotations is required.
      */
     @JsonProperty("validations")
     public void setValidations(List<Validation> validations) {
@@ -211,7 +211,7 @@ public class ValidatingAdmissionPolicySpec implements Editable<ValidatingAdmissi
     }
 
     /**
-     * Variables contain definitions of variables that can be used in composition of other expressions. Each variable is defined as a named CEL expression. The variables defined here will be available under `variables` in other expressions of the policy except MatchConditions because MatchConditions are evaluated before the rest of the policy.<br><p> <br><p> The expression of a variable can refer to other variables defined earlier in the list but not those after. Thus, Variables must be sorted by the order of first appearance and acyclic.
+     * variables contain definitions of variables that can be used in composition of other expressions. Each variable is defined as a named CEL expression. The variables defined here will be available under `variables` in other expressions of the policy except MatchConditions because MatchConditions are evaluated before the rest of the policy.<br><p> <br><p> The expression of a variable can refer to other variables defined earlier in the list but not those after. Thus, Variables must be sorted by the order of first appearance and acyclic.
      */
     @JsonProperty("variables")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -220,7 +220,7 @@ public class ValidatingAdmissionPolicySpec implements Editable<ValidatingAdmissi
     }
 
     /**
-     * Variables contain definitions of variables that can be used in composition of other expressions. Each variable is defined as a named CEL expression. The variables defined here will be available under `variables` in other expressions of the policy except MatchConditions because MatchConditions are evaluated before the rest of the policy.<br><p> <br><p> The expression of a variable can refer to other variables defined earlier in the list but not those after. Thus, Variables must be sorted by the order of first appearance and acyclic.
+     * variables contain definitions of variables that can be used in composition of other expressions. Each variable is defined as a named CEL expression. The variables defined here will be available under `variables` in other expressions of the policy except MatchConditions because MatchConditions are evaluated before the rest of the policy.<br><p> <br><p> The expression of a variable can refer to other variables defined earlier in the list but not those after. Thus, Variables must be sorted by the order of first appearance and acyclic.
      */
     @JsonProperty("variables")
     public void setVariables(List<Variable> variables) {

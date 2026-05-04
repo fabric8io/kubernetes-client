@@ -24,6 +24,7 @@ import lombok.experimental.Accessors;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "health",
+    "message",
     "resourceID"
 })
 @ToString
@@ -39,6 +40,8 @@ public class ResourceHealth implements Editable<ResourceHealthBuilder>, Kubernet
 
     @JsonProperty("health")
     private String health;
+    @JsonProperty("message")
+    private String message;
     @JsonProperty("resourceID")
     private String resourceID;
     @JsonIgnore
@@ -50,9 +53,10 @@ public class ResourceHealth implements Editable<ResourceHealthBuilder>, Kubernet
     public ResourceHealth() {
     }
 
-    public ResourceHealth(String health, String resourceID) {
+    public ResourceHealth(String health, String message, String resourceID) {
         super();
         this.health = health;
+        this.message = message;
         this.resourceID = resourceID;
     }
 
@@ -70,6 +74,22 @@ public class ResourceHealth implements Editable<ResourceHealthBuilder>, Kubernet
     @JsonProperty("health")
     public void setHealth(String health) {
         this.health = health;
+    }
+
+    /**
+     * Message provides human-readable context for Health (e.g. "ECC error count exceeded threshold"). This field is populated by the kubelet when ResourceHealthStatusMessage is enabled if the DRA plugin returns a message, and is null otherwise.
+     */
+    @JsonProperty("message")
+    public String getMessage() {
+        return message;
+    }
+
+    /**
+     * Message provides human-readable context for Health (e.g. "ECC error count exceeded threshold"). This field is populated by the kubelet when ResourceHealthStatusMessage is enabled if the DRA plugin returns a message, and is null otherwise.
+     */
+    @JsonProperty("message")
+    public void setMessage(String message) {
+        this.message = message;
     }
 
     /**

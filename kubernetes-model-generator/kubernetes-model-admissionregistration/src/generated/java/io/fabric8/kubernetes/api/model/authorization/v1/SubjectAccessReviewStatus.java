@@ -94,7 +94,7 @@ public class SubjectAccessReviewStatus implements Editable<SubjectAccessReviewSt
     }
 
     /**
-     * Allowed is required. True if the action would be allowed, false otherwise.
+     * allowed is required. True if the action would be allowed, false otherwise.
      */
     @JsonProperty("allowed")
     public Boolean getAllowed() {
@@ -102,7 +102,7 @@ public class SubjectAccessReviewStatus implements Editable<SubjectAccessReviewSt
     }
 
     /**
-     * Allowed is required. True if the action would be allowed, false otherwise.
+     * allowed is required. True if the action would be allowed, false otherwise.
      */
     @JsonProperty("allowed")
     public void setAllowed(Boolean allowed) {
@@ -110,7 +110,7 @@ public class SubjectAccessReviewStatus implements Editable<SubjectAccessReviewSt
     }
 
     /**
-     * Denied is optional. True if the action would be denied, otherwise false. If both allowed is false and denied is false, then the authorizer has no opinion on whether to authorize the action. Denied may not be true if Allowed is true.
+     * denied is optional. True if the action would be denied, otherwise false. If both allowed is false and denied is false, then the authorizer has no opinion on whether to authorize the action. Denied may not be true if Allowed is true.
      */
     @JsonProperty("denied")
     public Boolean getDenied() {
@@ -118,7 +118,7 @@ public class SubjectAccessReviewStatus implements Editable<SubjectAccessReviewSt
     }
 
     /**
-     * Denied is optional. True if the action would be denied, otherwise false. If both allowed is false and denied is false, then the authorizer has no opinion on whether to authorize the action. Denied may not be true if Allowed is true.
+     * denied is optional. True if the action would be denied, otherwise false. If both allowed is false and denied is false, then the authorizer has no opinion on whether to authorize the action. Denied may not be true if Allowed is true.
      */
     @JsonProperty("denied")
     public void setDenied(Boolean denied) {
@@ -126,7 +126,7 @@ public class SubjectAccessReviewStatus implements Editable<SubjectAccessReviewSt
     }
 
     /**
-     * EvaluationError is an indication that some error occurred during the authorization check. It is entirely possible to get an error and be able to continue determine authorization status in spite of it. For instance, RBAC can be missing a role, but enough roles are still present and bound to reason about the request.
+     * evaluationError is an indication that some error occurred during the authorization check. It is entirely possible to get an error and be able to continue determine authorization status in spite of it. For instance, RBAC can be missing a role, but enough roles are still present and bound to reason about the request.
      */
     @JsonProperty("evaluationError")
     public String getEvaluationError() {
@@ -134,7 +134,7 @@ public class SubjectAccessReviewStatus implements Editable<SubjectAccessReviewSt
     }
 
     /**
-     * EvaluationError is an indication that some error occurred during the authorization check. It is entirely possible to get an error and be able to continue determine authorization status in spite of it. For instance, RBAC can be missing a role, but enough roles are still present and bound to reason about the request.
+     * evaluationError is an indication that some error occurred during the authorization check. It is entirely possible to get an error and be able to continue determine authorization status in spite of it. For instance, RBAC can be missing a role, but enough roles are still present and bound to reason about the request.
      */
     @JsonProperty("evaluationError")
     public void setEvaluationError(String evaluationError) {
@@ -142,7 +142,7 @@ public class SubjectAccessReviewStatus implements Editable<SubjectAccessReviewSt
     }
 
     /**
-     * Reason is optional.  It indicates why a request was allowed or denied.
+     * reason is optional.  It indicates why a request was allowed or denied.
      */
     @JsonProperty("reason")
     public String getReason() {
@@ -150,7 +150,7 @@ public class SubjectAccessReviewStatus implements Editable<SubjectAccessReviewSt
     }
 
     /**
-     * Reason is optional.  It indicates why a request was allowed or denied.
+     * reason is optional.  It indicates why a request was allowed or denied.
      */
     @JsonProperty("reason")
     public void setReason(String reason) {

@@ -102,7 +102,7 @@ public class MatchResources implements Editable<MatchResourcesBuilder>, Kubernet
     }
 
     /**
-     * ExcludeResourceRules describes what operations on what resources/subresources the policy should not care about. The exclude rules take precedence over include rules (if a resource matches both, it is excluded)
+     * excludeResourceRules describes what operations on what resources/subresources the policy should not care about. The exclude rules take precedence over include rules (if a resource matches both, it is excluded)
      */
     @JsonProperty("excludeResourceRules")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -111,7 +111,7 @@ public class MatchResources implements Editable<MatchResourcesBuilder>, Kubernet
     }
 
     /**
-     * ExcludeResourceRules describes what operations on what resources/subresources the policy should not care about. The exclude rules take precedence over include rules (if a resource matches both, it is excluded)
+     * excludeResourceRules describes what operations on what resources/subresources the policy should not care about. The exclude rules take precedence over include rules (if a resource matches both, it is excluded)
      */
     @JsonProperty("excludeResourceRules")
     public void setExcludeResourceRules(List<NamedRuleWithOperations> excludeResourceRules) {
@@ -167,7 +167,7 @@ public class MatchResources implements Editable<MatchResourcesBuilder>, Kubernet
     }
 
     /**
-     * ResourceRules describes what operations on what resources/subresources the admission policy matches. The policy cares about an operation if it matches _any_ Rule.
+     * resourceRules describes what operations on what resources/subresources the admission policy matches. The policy cares about an operation if it matches _any_ Rule.
      */
     @JsonProperty("resourceRules")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -176,7 +176,7 @@ public class MatchResources implements Editable<MatchResourcesBuilder>, Kubernet
     }
 
     /**
-     * ResourceRules describes what operations on what resources/subresources the admission policy matches. The policy cares about an operation if it matches _any_ Rule.
+     * resourceRules describes what operations on what resources/subresources the admission policy matches. The policy cares about an operation if it matches _any_ Rule.
      */
     @JsonProperty("resourceRules")
     public void setResourceRules(List<NamedRuleWithOperations> resourceRules) {

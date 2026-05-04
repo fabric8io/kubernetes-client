@@ -1,13 +1,16 @@
 
-package io.fabric8.kubernetes.api.model.scheduling.v1alpha1;
+package io.fabric8.kubernetes.api.model.scheduling.v1alpha2;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import javax.annotation.processing.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
@@ -32,12 +35,13 @@ import lombok.ToString;
 import lombok.experimental.Accessors;
 
 /**
- * BasicSchedulingPolicy indicates that standard Kubernetes scheduling behavior should be used.
+ * WorkloadSpec defines the desired state of a Workload.
  */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-
+    "controllerRef",
+    "podGroupTemplates"
 })
 @ToString
 @EqualsAndHashCode
@@ -61,19 +65,69 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class BasicSchedulingPolicy implements Editable<BasicSchedulingPolicyBuilder>, KubernetesResource
+public class WorkloadSpec implements Editable<WorkloadSpecBuilder>, KubernetesResource
 {
 
+    @JsonProperty("controllerRef")
+    private TypedLocalObjectReference controllerRef;
+    @JsonProperty("podGroupTemplates")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<PodGroupTemplate> podGroupTemplates = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
-    @JsonIgnore
-    public BasicSchedulingPolicyBuilder edit() {
-        return new BasicSchedulingPolicyBuilder(this);
+    /**
+     * No args constructor for use in serialization
+     */
+    public WorkloadSpec() {
+    }
+
+    public WorkloadSpec(TypedLocalObjectReference controllerRef, List<PodGroupTemplate> podGroupTemplates) {
+        super();
+        this.controllerRef = controllerRef;
+        this.podGroupTemplates = podGroupTemplates;
+    }
+
+    /**
+     * WorkloadSpec defines the desired state of a Workload.
+     */
+    @JsonProperty("controllerRef")
+    public TypedLocalObjectReference getControllerRef() {
+        return controllerRef;
+    }
+
+    /**
+     * WorkloadSpec defines the desired state of a Workload.
+     */
+    @JsonProperty("controllerRef")
+    public void setControllerRef(TypedLocalObjectReference controllerRef) {
+        this.controllerRef = controllerRef;
+    }
+
+    /**
+     * PodGroupTemplates is the list of templates that make up the Workload. The maximum number of templates is 8. This field is immutable.
+     */
+    @JsonProperty("podGroupTemplates")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public List<PodGroupTemplate> getPodGroupTemplates() {
+        return podGroupTemplates;
+    }
+
+    /**
+     * PodGroupTemplates is the list of templates that make up the Workload. The maximum number of templates is 8. This field is immutable.
+     */
+    @JsonProperty("podGroupTemplates")
+    public void setPodGroupTemplates(List<PodGroupTemplate> podGroupTemplates) {
+        this.podGroupTemplates = podGroupTemplates;
     }
 
     @JsonIgnore
-    public BasicSchedulingPolicyBuilder toBuilder() {
+    public WorkloadSpecBuilder edit() {
+        return new WorkloadSpecBuilder(this);
+    }
+
+    @JsonIgnore
+    public WorkloadSpecBuilder toBuilder() {
         return edit();
     }
 
