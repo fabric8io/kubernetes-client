@@ -53,8 +53,8 @@ class StackBasedRecursionGuardTest {
     assertThat(guard.enter()).isFalse();
     hitFalse.set(true);
 
-    // Clean up all levels (including the failed one)
-    for (int i = 0; i < 9; i++) {
+    // Clean up the 8 successful levels
+    for (int i = 0; i < 8; i++) {
       guard.exit();
     }
 
@@ -116,8 +116,8 @@ class StackBasedRecursionGuardTest {
   }
 
   @Test
-  @DisplayName("resets depth after failed enter")
-  void resetsAfterFailedEnter() {
+  @DisplayName("does not increment depth on failed enter")
+  void doesNotIncrementOnFailedEnter() {
     StackBasedRecursionGuard guard = new StackBasedRecursionGuard();
 
     // Fill up to the limit
@@ -126,12 +126,15 @@ class StackBasedRecursionGuardTest {
     }
     assertThat(guard.getCurrentDepth()).isEqualTo(8);
 
-    // Next enter should fail but still increment depth internally
+    // Repeated failed enters must not climb the depth — otherwise readChunk's
+    // runOnContext fallback (which does not call exit()) would loop forever.
     assertThat(guard.enter()).isFalse();
-    assertThat(guard.getCurrentDepth()).isEqualTo(9);
+    assertThat(guard.getCurrentDepth()).isEqualTo(8);
+    assertThat(guard.enter()).isFalse();
+    assertThat(guard.getCurrentDepth()).isEqualTo(8);
 
-    // Exit all levels
-    for (int i = 0; i < 9; i++) {
+    // Exit the 8 successful levels
+    for (int i = 0; i < 8; i++) {
       guard.exit();
     }
     assertThat(guard.getCurrentDepth()).isZero();
