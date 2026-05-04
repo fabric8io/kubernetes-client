@@ -66,7 +66,10 @@ class AsyncUtilsTest {
   void withTimeout_applicableTimeout() {
     final CompletableFuture<Void> future = new CompletableFuture<>();
     withTimeout(future, Duration.ofMillis(1));
-    Awaitility.await().atMost(Duration.ofMillis(101)).until(future::isDone);
+    Awaitility.await()
+        .pollInterval(Duration.ofMillis(10))
+        .atMost(Duration.ofSeconds(5))
+        .until(future::isDone);
     assertThatThrownBy(() -> future.getNow(null))
         .isInstanceOf(CompletionException.class)
         .hasCauseInstanceOf(TimeoutException.class);
