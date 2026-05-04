@@ -29,9 +29,12 @@ import io.fabric8.kubernetes.api.model.ListOptions;
 import io.fabric8.kubernetes.api.model.ListOptionsBuilder;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.ObjectReference;
+import io.fabric8.kubernetes.api.model.PartialObjectMetadata;
+import io.fabric8.kubernetes.api.model.PartialObjectMetadataList;
 import io.fabric8.kubernetes.api.model.Status;
 import io.fabric8.kubernetes.api.model.StatusDetails;
 import io.fabric8.kubernetes.api.model.StatusDetailsBuilder;
+import io.fabric8.kubernetes.api.model.Table;
 import io.fabric8.kubernetes.api.model.autoscaling.v1.Scale;
 import io.fabric8.kubernetes.api.model.extensions.DeploymentRollback;
 import io.fabric8.kubernetes.client.Client;
@@ -110,6 +113,9 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
   private static final String READ_ONLY_EDIT_EXCEPTION_MESSAGE = "Cannot edit read-only resources";
   private static final long CREATE_OR_REPLACE_DEFAULT_TIMEOUT = 1;
   private static final TimeUnit CREATE_OR_REPLACE_DEFAULT_TIMEOUT_UNIT = TimeUnit.SECONDS;
+  private static final String ACCEPT_PARTIAL_METADATA_LIST_V1 = "application/json;as=PartialObjectMetadataList;g=meta.k8s.io;v=v1";
+  private static final String ACCEPT_PARTIAL_METADATA_V1 = "application/json;as=PartialObjectMetadata;g=meta.k8s.io;v=v1";
+  private static final String ACCEPT_TABLE_V1 = "application/json;as=Table;v=v1;g=meta.k8s.io";
 
   private final T item;
 
@@ -463,6 +469,80 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
       return waitForResult(submitList(listOptions));
     } catch (IOException e) {
       throw KubernetesClientException.launderThrowable(forOperationType("list"), e);
+    }
+  }
+
+  @Override
+  public PartialObjectMetadataList listAsPartialObjectMetadata() {
+    return listAsPartialObjectMetadata(new ListOptions());
+  }
+
+  @Override
+  public PartialObjectMetadataList listAsPartialObjectMetadata(ListOptions listOptions) {
+    try {
+      URL fetchListUrl = fetchListUrl(getNamespacedUrl(), defaultListOptions(listOptions, null));
+      HttpRequest.Builder requestBuilder = withRequestTimeout(httpClient.newHttpRequestBuilder()
+          .url(fetchListUrl)
+          .setHeader("Accept", ACCEPT_PARTIAL_METADATA_LIST_V1));
+      return waitForResult(handleResponse(httpClient, requestBuilder, new TypeReference<>() {
+      }));
+    } catch (IOException e) {
+      throw KubernetesClientException.launderThrowable(forOperationType("list"), e);
+    }
+  }
+
+  @Override
+  public PartialObjectMetadata getAsPartialObjectMetadata() {
+    try {
+      URL requestUrl = getCompleteResourceUrl();
+      HttpRequest.Builder requestBuilder = httpClient.newHttpRequestBuilder()
+          .url(requestUrl)
+          .setHeader("Accept", ACCEPT_PARTIAL_METADATA_V1);
+      return handleResponse(requestBuilder, PartialObjectMetadata.class);
+    } catch (KubernetesClientException e) {
+      if (e.getCode() != HttpURLConnection.HTTP_NOT_FOUND) {
+        throw e;
+      }
+      return null;
+    } catch (IOException e) {
+      throw KubernetesClientException.launderThrowable(forOperationType("get"), e);
+    }
+  }
+
+  @Override
+  public Table listAsTable() {
+    return listAsTable(new ListOptions());
+  }
+
+  @Override
+  public Table listAsTable(ListOptions listOptions) {
+    try {
+      URL fetchListUrl = fetchListUrl(getNamespacedUrl(), defaultListOptions(listOptions, null));
+      HttpRequest.Builder requestBuilder = withRequestTimeout(httpClient.newHttpRequestBuilder()
+          .url(fetchListUrl)
+          .setHeader("Accept", ACCEPT_TABLE_V1));
+      return waitForResult(handleResponse(httpClient, requestBuilder, new TypeReference<>() {
+      }));
+    } catch (IOException e) {
+      throw KubernetesClientException.launderThrowable(forOperationType("list"), e);
+    }
+  }
+
+  @Override
+  public Table getAsTable() {
+    try {
+      URL requestUrl = getCompleteResourceUrl();
+      HttpRequest.Builder requestBuilder = httpClient.newHttpRequestBuilder()
+          .url(requestUrl)
+          .setHeader("Accept", ACCEPT_TABLE_V1);
+      return handleResponse(requestBuilder, Table.class);
+    } catch (KubernetesClientException e) {
+      if (e.getCode() != HttpURLConnection.HTTP_NOT_FOUND) {
+        throw e;
+      }
+      return null;
+    } catch (IOException e) {
+      throw KubernetesClientException.launderThrowable(forOperationType("get"), e);
     }
   }
 

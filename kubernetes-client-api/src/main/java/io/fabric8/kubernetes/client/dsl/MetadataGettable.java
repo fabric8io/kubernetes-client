@@ -15,28 +15,20 @@
  */
 package io.fabric8.kubernetes.client.dsl;
 
-import java.util.stream.Stream;
+import io.fabric8.kubernetes.api.model.PartialObjectMetadata;
 
-public interface FilterWatchListDeletable<T, L, R>
-    extends Filterable<FilterWatchListDeletable<T, L, R>>, Listable<L>,
-    WatchAndWaitable<T>,
-    DeletableWithOptions,
-    Informable<T>,
-    MetadataListable,
-    TableListable {
+/**
+ * Provides an operation to get a single resource with server-side content negotiation returning
+ * only resource metadata (omitting spec and status).
+ */
+public interface MetadataGettable {
 
   /**
-   * Accumulate a filter on the context, when done {@link FilterNested#endFilter()} or and must be called
+   * Get a resource returning only its metadata (no spec or status).
+   * Uses {@code Accept: application/json;as=PartialObjectMetadata;g=meta.k8s.io;v=v1}.
    *
-   * @return a {@link FilterNested}
+   * @return a {@link PartialObjectMetadata} containing only the resource metadata, or null if not found
    */
-  FilterNested<FilterWatchListDeletable<T, L, R>> withNewFilter();
-
-  /**
-   * Perform a list operation and return the items as a stream of {@link Resource}s
-   *
-   * @return the {@link Resource} steam
-   */
-  Stream<R> resources();
+  PartialObjectMetadata getAsPartialObjectMetadata();
 
 }
