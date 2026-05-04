@@ -31,7 +31,7 @@ import java.util.List;
 
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 
-@EnableKubernetesMockClient
+@EnableKubernetesMockClient(https = false)
 class V1MutatingAdmissionPolicyTest {
 
   KubernetesMockServer server;
@@ -107,6 +107,35 @@ class V1MutatingAdmissionPolicyTest {
     AssertionsForClassTypes.assertThat(mutatingAdmissionPolicy).isNotNull();
     AssertionsForClassTypes.assertThat(mutatingAdmissionPolicy)
         .hasFieldOrPropertyWithValue("metadata.name", "sidecar-policy.example.com");
+  }
+
+  @Test
+  void update() {
+    // Given
+    MutatingAdmissionPolicy admissionPolicy = createMutatingAdmissionPolicy();
+    server.expect().get()
+        .withPath("/apis/admissionregistration.k8s.io/v1/mutatingadmissionpolicies/sidecar-policy.example.com")
+        .andReturn(HttpURLConnection.HTTP_OK, admissionPolicy)
+        .once();
+    server.expect().patch()
+        .withPath("/apis/admissionregistration.k8s.io/v1/mutatingadmissionpolicies/sidecar-policy.example.com")
+        .andReturn(HttpURLConnection.HTTP_OK, new MutatingAdmissionPolicyBuilder(admissionPolicy)
+            .editMetadata().addToLabels("updated", "true").endMetadata()
+            .build())
+        .once();
+
+    // When
+    MutatingAdmissionPolicy updated = client.admissionRegistration().v1()
+        .mutatingAdmissionPolicies().withName("sidecar-policy.example.com")
+        .edit(p -> new MutatingAdmissionPolicyBuilder(p)
+            .editMetadata().addToLabels("updated", "true").endMetadata()
+            .build());
+
+    // Then
+    AssertionsForClassTypes.assertThat(updated)
+        .isNotNull()
+        .hasFieldOrPropertyWithValue("metadata.name", "sidecar-policy.example.com");
+    assertThat(updated.getMetadata().getLabels()).containsEntry("updated", "true");
   }
 
   @Test

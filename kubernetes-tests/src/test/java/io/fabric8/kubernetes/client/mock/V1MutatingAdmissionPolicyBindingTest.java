@@ -31,7 +31,7 @@ import java.util.List;
 
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 
-@EnableKubernetesMockClient
+@EnableKubernetesMockClient(https = false)
 class V1MutatingAdmissionPolicyBindingTest {
 
   KubernetesMockServer server;
@@ -102,6 +102,35 @@ class V1MutatingAdmissionPolicyBindingTest {
     AssertionsForClassTypes.assertThat(mutatingAdmissionPolicyBinding).isNotNull();
     AssertionsForClassTypes.assertThat(mutatingAdmissionPolicyBinding)
         .hasFieldOrPropertyWithValue("metadata.name", "demo-binding-test.example.com");
+  }
+
+  @Test
+  void update() {
+    // Given
+    MutatingAdmissionPolicyBinding binding = createMutatingAdmissionPolicyBinding();
+    server.expect().get()
+        .withPath("/apis/admissionregistration.k8s.io/v1/mutatingadmissionpolicybindings/demo-binding-test.example.com")
+        .andReturn(HttpURLConnection.HTTP_OK, binding)
+        .once();
+    server.expect().patch()
+        .withPath("/apis/admissionregistration.k8s.io/v1/mutatingadmissionpolicybindings/demo-binding-test.example.com")
+        .andReturn(HttpURLConnection.HTTP_OK, new MutatingAdmissionPolicyBindingBuilder(binding)
+            .editMetadata().addToLabels("updated", "true").endMetadata()
+            .build())
+        .once();
+
+    // When
+    MutatingAdmissionPolicyBinding updated = client.admissionRegistration().v1()
+        .mutatingAdmissionPolicyBindings().withName("demo-binding-test.example.com")
+        .edit(b -> new MutatingAdmissionPolicyBindingBuilder(b)
+            .editMetadata().addToLabels("updated", "true").endMetadata()
+            .build());
+
+    // Then
+    AssertionsForClassTypes.assertThat(updated)
+        .isNotNull()
+        .hasFieldOrPropertyWithValue("metadata.name", "demo-binding-test.example.com");
+    assertThat(updated.getMetadata().getLabels()).containsEntry("updated", "true");
   }
 
   @Test
