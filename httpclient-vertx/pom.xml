@@ -114,6 +114,30 @@
         <configuration>
           <rerunFailingTestsCount>1</rerunFailingTestsCount>
         </configuration>
+        <executions>
+          <execution>
+            <id>default-test</id>
+            <goals>
+              <goal>test</goal>
+            </goals>
+            <configuration>
+              <excludedGroups>simultaneous-connections</excludedGroups>
+              <failIfNoSpecifiedTests>false</failIfNoSpecifiedTests>
+            </configuration>
+          </execution>
+          <execution>
+            <id>simultaneous-connections-test</id>
+            <goals>
+              <goal>test</goal>
+            </goals>
+            <configuration>
+              <groups>simultaneous-connections</groups>
+              <forkCount>1</forkCount>
+              <reuseForks>false</reuseForks>
+              <failIfNoSpecifiedTests>false</failIfNoSpecifiedTests>
+            </configuration>
+          </execution>
+        </executions>
       </plugin>
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
