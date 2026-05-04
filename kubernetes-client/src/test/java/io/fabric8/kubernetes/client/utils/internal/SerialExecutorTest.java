@@ -22,6 +22,7 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -53,6 +54,20 @@ class SerialExecutorTest {
     Thread t = future.join();
     t.interrupt(); // interrupt the first task
     assertFalse(interrupted.join()); // make sure the second is not interrrupted
+  }
+
+  @Test
+  void executeAfterShutdownDoesNothing() {
+    final AtomicInteger underlyingExecutions = new AtomicInteger();
+    final AtomicInteger taskRuns = new AtomicInteger();
+    final SerialExecutor se = new SerialExecutor(r -> {
+      underlyingExecutions.incrementAndGet();
+      r.run();
+    });
+    se.shutdownNow();
+    se.execute(taskRuns::incrementAndGet);
+    assertThat(taskRuns).hasValue(0);
+    assertThat(underlyingExecutions).hasValue(0);
   }
 
   @Test
