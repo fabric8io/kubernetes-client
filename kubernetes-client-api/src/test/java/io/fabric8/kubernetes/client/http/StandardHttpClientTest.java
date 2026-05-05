@@ -137,16 +137,15 @@ class StandardHttpClientTest {
     IntStream.range(0, 3).forEach(i -> client.expect(".*", new IOException("Unreachable!")));
     client.expect(".*", new TestHttpResponse<AsyncBody>().withCode(403));
 
+    long start = System.currentTimeMillis();
     CompletableFuture<HttpResponse<AsyncBody>> consumeFuture = client.consumeBytes(
         client.newHttpRequestBuilder().uri("http://localhost").build(),
         (value, asyncBody) -> {
 
         });
 
-    long start = System.currentTimeMillis();
-
     // should ultimately error with the final 500
-    assertEquals(403, consumeFuture.get().code());
+    assertEquals(403, consumeFuture.get(2, TimeUnit.MINUTES).code());
     long stop = System.currentTimeMillis();
 
     // should take longer than the delay
