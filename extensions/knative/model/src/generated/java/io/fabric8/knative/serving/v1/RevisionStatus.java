@@ -167,7 +167,7 @@ public class RevisionStatus implements Editable<RevisionStatusBuilder>, Kubernet
     }
 
     /**
-     * ContainerStatuses is a slice of images present in .Spec.Container[&#42;].Image to their respective digests and their container name. The digests are resolved during the creation of Revision. ContainerStatuses holds the container name and image digests for both serving and non serving containers. ref: http://bit.ly/image-digests
+     * ContainerStatuses is a slice of images present in .Spec.Container[&#42;].Image to their respective digests and their container name. The digests are resolved during the creation of Revision. ContainerStatuses holds the container name and image digests for both serving and non serving containers. ref: https://bit.ly/image-digests
      */
     @JsonProperty("containerStatuses")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -176,7 +176,7 @@ public class RevisionStatus implements Editable<RevisionStatusBuilder>, Kubernet
     }
 
     /**
-     * ContainerStatuses is a slice of images present in .Spec.Container[&#42;].Image to their respective digests and their container name. The digests are resolved during the creation of Revision. ContainerStatuses holds the container name and image digests for both serving and non serving containers. ref: http://bit.ly/image-digests
+     * ContainerStatuses is a slice of images present in .Spec.Container[&#42;].Image to their respective digests and their container name. The digests are resolved during the creation of Revision. ContainerStatuses holds the container name and image digests for both serving and non serving containers. ref: https://bit.ly/image-digests
      */
     @JsonProperty("containerStatuses")
     public void setContainerStatuses(List<ContainerStatus> containerStatuses) {
@@ -200,7 +200,7 @@ public class RevisionStatus implements Editable<RevisionStatusBuilder>, Kubernet
     }
 
     /**
-     * InitContainerStatuses is a slice of images present in .Spec.InitContainer[&#42;].Image to their respective digests and their container name. The digests are resolved during the creation of Revision. ContainerStatuses holds the container name and image digests for both serving and non serving containers. ref: http://bit.ly/image-digests
+     * InitContainerStatuses is a slice of images present in .Spec.InitContainer[&#42;].Image to their respective digests and their container name. The digests are resolved during the creation of Revision. ContainerStatuses holds the container name and image digests for both serving and non serving containers. ref: https://bit.ly/image-digests
      */
     @JsonProperty("initContainerStatuses")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -209,7 +209,7 @@ public class RevisionStatus implements Editable<RevisionStatusBuilder>, Kubernet
     }
 
     /**
-     * InitContainerStatuses is a slice of images present in .Spec.InitContainer[&#42;].Image to their respective digests and their container name. The digests are resolved during the creation of Revision. ContainerStatuses holds the container name and image digests for both serving and non serving containers. ref: http://bit.ly/image-digests
+     * InitContainerStatuses is a slice of images present in .Spec.InitContainer[&#42;].Image to their respective digests and their container name. The digests are resolved during the creation of Revision. ContainerStatuses holds the container name and image digests for both serving and non serving containers. ref: https://bit.ly/image-digests
      */
     @JsonProperty("initContainerStatuses")
     public void setInitContainerStatuses(List<ContainerStatus> initContainerStatuses) {

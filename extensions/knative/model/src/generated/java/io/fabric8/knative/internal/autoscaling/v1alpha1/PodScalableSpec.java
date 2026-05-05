@@ -39,8 +39,7 @@ import lombok.experimental.Accessors;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "replicas",
-    "selector",
-    "template"
+    "selector"
 })
 @ToString
 @EqualsAndHashCode
@@ -71,8 +70,6 @@ public class PodScalableSpec implements Editable<PodScalableSpecBuilder>, Kubern
     private Integer replicas;
     @JsonProperty("selector")
     private LabelSelector selector;
-    @JsonProperty("template")
-    private PodTemplateSpec template;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -82,11 +79,10 @@ public class PodScalableSpec implements Editable<PodScalableSpecBuilder>, Kubern
     public PodScalableSpec() {
     }
 
-    public PodScalableSpec(Integer replicas, LabelSelector selector, PodTemplateSpec template) {
+    public PodScalableSpec(Integer replicas, LabelSelector selector) {
         super();
         this.replicas = replicas;
         this.selector = selector;
-        this.template = template;
     }
 
     /**
@@ -119,22 +115,6 @@ public class PodScalableSpec implements Editable<PodScalableSpecBuilder>, Kubern
     @JsonProperty("selector")
     public void setSelector(LabelSelector selector) {
         this.selector = selector;
-    }
-
-    /**
-     * PodScalableSpec is the specification for the desired state of a PodScalable (or at least our shared portion).
-     */
-    @JsonProperty("template")
-    public PodTemplateSpec getTemplate() {
-        return template;
-    }
-
-    /**
-     * PodScalableSpec is the specification for the desired state of a PodScalable (or at least our shared portion).
-     */
-    @JsonProperty("template")
-    public void setTemplate(PodTemplateSpec template) {
-        this.template = template;
     }
 
     @JsonIgnore
