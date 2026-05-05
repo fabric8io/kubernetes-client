@@ -23,9 +23,6 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
-import org.mockito.MockedStatic;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -45,7 +42,6 @@ import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.mockStatic;
 import static org.mockito.Mockito.timeout;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -193,29 +189,24 @@ class PortForwarderWebsocketListenerTest {
 
   @Test
   void onMessage_withWrongChannel_shouldLogAndEndWithError() {
-    try (MockedStatic<LoggerFactory> loggerFactory = mockStatic(LoggerFactory.class)) {
-      final Logger logger = mock(Logger.class);
-      loggerFactory.when(() -> LoggerFactory.getLogger(PortForwarderWebsocketListener.class)).thenReturn(logger);
-      listener = new PortForwarderWebsocketListener(in, out, CommonThreadPool.get());
-      doAnswer(i -> {
-        listener.onMessage(webSocket, "SKIP 2");
-        return true;
-      }).doAnswer(i -> {
-        listener.onMessage(webSocket, ByteBuffer.wrap(
-            ByteBuffer.allocate(18).put((byte) 5).put("WRONG CHANNEL".getBytes(StandardCharsets.UTF_8)).array()));
-        return true;
-      })
-          .doNothing()
-          .when(webSocket).request();
-      listener.onMessage(webSocket, "SKIP 1");
-      // Then
-      verify(webSocket, timeout(10_000)).sendClose(1002, "Protocol error");
-      await().atMost(10, TimeUnit.SECONDS).until(() -> !listener.isAlive());
-      assertThat(outputContent.toString()).isEmpty();
-      assertThat(listener.errorOccurred()).isTrue();
-      assertThat(listener.getServerThrowables().iterator().next().getMessage())
-          .isEqualTo("Received a wrong channel from the remote socket: 5");
-    }
-
+    listener = new PortForwarderWebsocketListener(in, out, CommonThreadPool.get());
+    doAnswer(i -> {
+      listener.onMessage(webSocket, "SKIP 2");
+      return true;
+    }).doAnswer(i -> {
+      listener.onMessage(webSocket, ByteBuffer.wrap(
+          ByteBuffer.allocate(18).put((byte) 5).put("WRONG CHANNEL".getBytes(StandardCharsets.UTF_8)).array()));
+      return true;
+    })
+        .doNothing()
+        .when(webSocket).request();
+    listener.onMessage(webSocket, "SKIP 1");
+    // Then
+    verify(webSocket, timeout(10_000)).sendClose(1002, "Protocol error");
+    await().atMost(10, TimeUnit.SECONDS).until(() -> !listener.isAlive());
+    assertThat(outputContent.toString()).isEmpty();
+    assertThat(listener.errorOccurred()).isTrue();
+    assertThat(listener.getServerThrowables().iterator().next().getMessage())
+        .isEqualTo("Received a wrong channel from the remote socket: 5");
   }
 }
