@@ -25,12 +25,12 @@
 * Fix #7579: bump istio.io/client-go from 1.28.0 to 1.29.1
 * Fix #7551: bump jackson-bom from 2.20.0 to 2.21.1
 * Fix #7718: bump kin-openapi from 0.135.0 to 0.137.0
-* Fix #PLACEHOLDER: bump knative.dev/eventing from 0.48.2 to 0.49.0
-* Fix #PLACEHOLDER: bump knative.dev/eventing-github from 0.48.0 to 0.49.0
-* Fix #PLACEHOLDER: bump knative.dev/eventing-gitlab from 0.48.0 to 0.49.0
-* Fix #PLACEHOLDER: bump knative.dev/eventing-kafka-broker from 0.48.3 to 0.49.0
-* Fix #PLACEHOLDER: bump knative.dev/networking from 0.0.0-20260120131110-a7cdca238a0d to 0.0.0-20260422140718-e9578ef11562
-* Fix #PLACEHOLDER: bump knative.dev/serving from 0.48.2 to 0.49.0
+* Fix #7723: bump knative.dev/eventing from 0.48.2 to 0.49.0
+* Fix #7723: bump knative.dev/eventing-github from 0.48.0 to 0.49.0
+* Fix #7723: bump knative.dev/eventing-gitlab from 0.48.0 to 0.49.0
+* Fix #7723: bump knative.dev/eventing-kafka-broker from 0.48.3 to 0.49.0
+* Fix #7723: bump knative.dev/networking from 0.0.0-20260120131110-a7cdca238a0d to 0.0.0-20260422140718-e9578ef11562
+* Fix #7723: bump knative.dev/serving from 0.48.2 to 0.49.0
 * Fix #7580: bump kustomize/api from 0.20.1 to 0.21.1
 * Fix #7552: bump tektoncd/triggers from 0.33.0 to 0.35.0
 * Fix #7556: bump eventing-kafka-broker from 0.46.2 to 0.48.1
@@ -54,7 +54,7 @@
 * Fix #7544: cluster-api model classes moved from package `io.fabric8.kubernetes.api.model.clusterapi.v1beta1` to `io.fabric8.kubernetes.api.model.clusterapi.core.v1beta1` (following upstream cluster-api v1.11+ API reorganization)
 * Fix #7538: cert-manager model `ObjectReference` renamed to `IssuerReference` (following upstream rename in cert-manager v1.19.0)
 * Fix #7541: gateway-api model `v1beta1.ReferenceGrantFrom`, `v1beta1.ReferenceGrantSpec`, and `v1beta1.ReferenceGrantTo` removed (ReferenceGrant graduated to v1 upstream)
-* Fix #PLACEHOLDER: knative model `internal.autoscaling.v1alpha1.PodScalableSpec.template` field removed (upstream removed the field in autoscaling.internal.knative.dev v1alpha1)
+* Fix #7723: knative model `internal.autoscaling.v1alpha1.PodScalableSpec.template` field removed (upstream removed the field in autoscaling.internal.knative.dev v1alpha1)
 * Fix #7580: kustomize model `Patch.options` field type changed from `Map<String, Boolean>` to `PatchArgs` (following upstream kustomize v0.21.0 PatchArgs API type addition)
 * Fix #7543: monitoring model `v1.AuthorizationValidationError`, `v1.OAuth2ValidationError`, `v1.ProbeTargetsValidationError`, and `v1.PrometheusTracingConfig` removed
 * Fix #7542: open-cluster-management model `operator.v1.WebhookConfiguration` removed (replaced by `DefaultWebhookConfiguration` and `HostedWebhookConfiguration` upstream)
