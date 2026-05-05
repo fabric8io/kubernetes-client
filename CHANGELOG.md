@@ -32,7 +32,7 @@
 * Fix #7723: bump knative.dev/networking from 0.0.0-20260120131110-a7cdca238a0d to 0.0.0-20260422140718-e9578ef11562
 * Fix #7723: bump knative.dev/serving from 0.48.2 to 0.49.0
 * Fix #7580: bump kustomize/api from 0.20.1 to 0.21.1
-* Fix #PLACEHOLDER: bump tektoncd/pipeline from 1.11.1 to 1.12.0
+* Fix #7726: bump tektoncd/pipeline from 1.11.1 to 1.12.0
 * Fix #7552: bump tektoncd/triggers from 0.33.0 to 0.35.0
 * Fix #7556: bump eventing-kafka-broker from 0.46.2 to 0.48.1
 * Fix #7553: bump cert-manager from 1.19.4 to 1.20.0
