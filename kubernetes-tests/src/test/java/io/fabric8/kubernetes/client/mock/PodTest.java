@@ -562,11 +562,11 @@ class PodTest {
   }
 
   @Test
-  void testExecExplicitDefaultContainerMissing() {
+  void testExecExplicitDefaultContainerMissing() throws InterruptedException {
     server.expect()
         .withPath("/api/v1/namespaces/test/pods/pod1/exec?command=ls&container=first&stderr=true")
         .andUpgradeToWebSocket()
-        .open()
+        .open(new ErrorStreamMessage("err"))
         .done()
         .always();
 
@@ -585,11 +585,14 @@ class PodTest {
         .once();
 
     // When
+    final CountDownLatch execLatch = new CountDownLatch(1);
     ExecWatch watch = client.pods()
         .withName("pod1")
         .terminateOnError()
+        .usingListener(createCountDownLatchListener(execLatch))
         .exec("ls");
 
+    assertTrue(execLatch.await(1, TimeUnit.MINUTES));
     watch.close();
   }
 
