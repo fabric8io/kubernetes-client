@@ -17,6 +17,7 @@
 * Fix #7662: (mockwebserver) new `MockWebServer#setHttp2ClearTextEnabled(boolean)` setter to opt out of HTTP/2 cleartext (h2c) upgrade
 * Fix #7522: improve dependency management for kubernetes-httpclient-okhttp
 * Fix #7550: add a ResourceEventHandler onList method and deprecated onNothing
+* Fix #6922: add addOwnerReference variant to set controller and blockOwnerDeletion fields
 * Fix #3396: (mockwebserver) Enhance self-signed certificate generation to include Subject Alternative Names (SANs) for proper TLS verification by modern clients
 * Fix #6923: Make the crd-generator-maven-plugin be toolchain aware
 

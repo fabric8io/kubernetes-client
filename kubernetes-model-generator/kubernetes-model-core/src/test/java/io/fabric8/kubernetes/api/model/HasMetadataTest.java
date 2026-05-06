@@ -171,15 +171,18 @@ class HasMetadataTest {
     assertEquals(0, hasMetadata.getMetadata().getOwnerReferences().size());
     assertFalse(hasMetadata.hasOwnerReferenceFor(owner));
 
-    OwnerReference ownerReference = hasMetadata.addOwnerReference(owner);
+    OwnerReference ownerReference = hasMetadata.addOwnerReference(owner, true, true);
     assertEquals(1, hasMetadata.getMetadata().getOwnerReferences().size());
     assertTrue(hasMetadata.hasOwnerReferenceFor(owner));
     assertTrue(hasMetadata.hasOwnerReferenceFor(Owner.uid));
 
-    final Optional<OwnerReference> retrieved = hasMetadata.getOwnerReferenceFor(owner);
-    assertTrue(retrieved.isPresent());
-    assertEquals(ownerReference, retrieved.get());
-    assertEquals(retrieved, hasMetadata.getOwnerReferenceFor(Owner.uid));
+    final Optional<OwnerReference> maybeOwnerRef = hasMetadata.getOwnerReferenceFor(owner);
+    assertTrue(maybeOwnerRef.isPresent());
+    final var actualOwnerRef = maybeOwnerRef.get();
+    assertEquals(ownerReference, actualOwnerRef);
+    assertEquals(maybeOwnerRef, hasMetadata.getOwnerReferenceFor(Owner.uid));
+    assertTrue(actualOwnerRef.getBlockOwnerDeletion());
+    assertTrue(actualOwnerRef.getController());
 
     assertEquals(Owner.uid, ownerReference.getUid());
     assertEquals(Owner.apiVersion, ownerReference.getApiVersion());
