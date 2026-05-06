@@ -683,12 +683,10 @@ Secret secret = client.secrets().inNamespace("default").withName("secret1").get(
 ```
 - Create a `Secret`:
 ```java
-Function<String, String> encodeBase64 = val -> Base64.getEncoder().encodeToString(val.getBytes(StandardCharsets.UTF_8));
-
 Secret secret1 = new SecretBuilder()
       .withNewMetadata().withName("secret1").endMetadata()
-      .addToData("username",  encodeBase64.apply("guccifer"))
-      .addToData("password",  encodeBase64.apply("shadowgovernment"))
+      .addToStringData("username", "guccifer")
+      .addToStringData("password", "shadowgovernment")
       .build();
 Secret secretCreated = client.secrets().inNamespace("default").resource(secret1).create();
 ```
