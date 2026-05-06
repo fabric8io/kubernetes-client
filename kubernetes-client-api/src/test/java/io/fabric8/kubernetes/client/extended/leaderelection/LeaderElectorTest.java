@@ -44,6 +44,7 @@ import java.util.concurrent.atomic.AtomicReference;
 import static io.fabric8.kubernetes.client.extended.leaderelection.LeaderElector.jitter;
 import static io.fabric8.kubernetes.client.extended.leaderelection.LeaderElector.loop;
 import static io.fabric8.kubernetes.client.extended.leaderelection.LeaderElector.now;
+import static org.awaitility.Awaitility.await;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -68,9 +69,9 @@ class LeaderElectorTest {
     final LeaderElectionConfig lec = mockLeaderElectionConfiguration();
     when(lec.getRenewDeadline()).thenReturn(Duration.ofMillis(renewDeadlineMillis));
     final Lock mockedLock = lec.getLock();
+    final CountDownLatch latch = new CountDownLatch(1);
     doNothing().doAnswer(invocation -> {
-      // Sleep so that RENEW DEADLINE is reached
-      Thread.sleep(renewDeadlineMillis * 2);
+      latch.await(5, TimeUnit.SECONDS);
       throw new KubernetesClientException("");
     }).when(mockedLock).update(any(), any());
     // When
@@ -140,7 +141,7 @@ class LeaderElectorTest {
     started.cancel(true);
 
     // Then
-    Awaitility.await().atMost(10, TimeUnit.SECONDS).until(() -> Utils.isNullOrEmpty(activeLer.get().getHolderIdentity()));
+    await().atMost(10, TimeUnit.SECONDS).until(() -> Utils.isNullOrEmpty(activeLer.get().getHolderIdentity()));
     assertEquals(0, activeLer.get().getLeaderTransitions());
     assertNull(activeLer.get().getHolderIdentity());
 
@@ -207,13 +208,13 @@ class LeaderElectorTest {
     leaderElector.release();
 
     // ensure that release cause us to stop leading
-    Awaitility.await().atMost(10, TimeUnit.SECONDS).until(() -> {
+    await().atMost(10, TimeUnit.SECONDS).until(() -> {
       Mockito.verify(lec.getLeaderCallbacks()).onStopLeading();
       return true;
     });
 
     // we haven't stopped, so we'll re-acquire
-    Awaitility.await().atMost(10, TimeUnit.SECONDS).until(() -> {
+    await().atMost(10, TimeUnit.SECONDS).until(() -> {
       Mockito.verify(lec.getLeaderCallbacks(), times(2)).onStartLeading();
       return true;
     });
@@ -320,7 +321,7 @@ class LeaderElectorTest {
     AtomicInteger count = new AtomicInteger();
     CompletableFuture<?> cf = loop(completion -> count.getAndIncrement(), () -> 10L, CommonThreadPool.get());
     // When
-    Awaitility.await().atMost(1, TimeUnit.SECONDS).until(() -> count.get() >= 1);
+    await().atMost(1, TimeUnit.SECONDS).until(() -> count.get() >= 1);
 
     cf.cancel(true);
 
