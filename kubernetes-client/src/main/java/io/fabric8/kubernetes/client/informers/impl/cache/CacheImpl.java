@@ -23,11 +23,13 @@ import io.fabric8.kubernetes.client.informers.cache.ItemStore;
 import io.fabric8.kubernetes.client.utils.Utils;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
@@ -45,36 +47,40 @@ import java.util.stream.Collectors;
  */
 public class CacheImpl<T extends HasMetadata> implements Cache<T> {
 
-  private static class Index {
-    private Map<Object, Set<String>> values = new ConcurrentHashMap<Object, Set<String>>();
+  private static class Index<T extends HasMetadata> {
 
-    public void update(String indexKey, String key, boolean remove) {
+    private final Function<T, List<String>> indexer;
+    private final Map<Object, Map<String, String>> values = new ConcurrentHashMap<Object, Map<String, String>>();
+
+    public Index(Function<T, List<String>> indexer) {
+      this.indexer = indexer;
+    }
+
+    public void update(String indexKey, String key, String resourceVersion, boolean remove) {
       if (remove) {
         values.computeIfPresent(indexKey == null ? this : indexKey, (k, v) -> {
           v.remove(key);
           return v.isEmpty() ? null : v;
         });
       } else {
-        values.computeIfAbsent(indexKey == null ? this : indexKey, k -> ConcurrentHashMap.newKeySet()).add(key);
+        values.compute(indexKey == null ? this : indexKey, (k, v) -> v == null ? new ConcurrentHashMap<>() : v).put(key,
+            nullAsEmpty(resourceVersion));
       }
     }
 
-    public Set<String> get(String indexKey) {
-      return values.getOrDefault(indexKey == null ? this : indexKey, Collections.emptySet());
+    public Map<String, String> get(String indexKey) {
+      return values.getOrDefault(indexKey == null ? this : indexKey, Map.of());
     }
   }
 
   // NAMESPACE_INDEX is the default index function for caching objects
   public static final String NAMESPACE_INDEX = "namespace";
 
-  // indexers stores index functions by their names
-  private final Map<String, Function<T, List<String>>> indexers = Collections.synchronizedMap(new HashMap<>());
-
   // items stores object instances
   private ItemStore<T> items;
 
   // indices stores objects' key by their indices
-  private final ConcurrentMap<String, Index> indices = new ConcurrentHashMap<>();
+  private final ConcurrentMap<String, Index<T>> indices = new ConcurrentHashMap<>();
 
   public CacheImpl() {
     this(NAMESPACE_INDEX, Cache::metaNamespaceIndexFunc, Cache::metaNamespaceKeyFunc);
@@ -95,15 +101,14 @@ public class CacheImpl<T extends HasMetadata> implements Cache<T> {
    * @return registered indexers
    */
   @Override
-  public Map<String, Function<T, List<String>>> getIndexers() {
-    synchronized (indexers) {
-      return Collections.unmodifiableMap(indexers);
-    }
+  public synchronized Map<String, Function<T, List<String>>> getIndexers() {
+    return Collections
+        .unmodifiableMap(indices.entrySet().stream().collect(Collectors.toMap(e -> e.getKey(), e -> e.getValue().indexer)));
   }
 
   @Override
   public synchronized void addIndexers(Map<String, Function<T, List<String>>> indexersNew) {
-    Set<String> intersection = new HashSet<>(indexers.keySet());
+    Set<String> intersection = new HashSet<>(indices.keySet());
     intersection.retainAll(indexersNew.keySet());
     if (!intersection.isEmpty()) {
       throw new IllegalArgumentException("Indexer conflict: " + intersection);
@@ -173,6 +178,10 @@ public class CacheImpl<T extends HasMetadata> implements Cache<T> {
   @Override
   public String getKey(T obj) {
     String result = this.items.getKey(obj);
+    return nullAsEmpty(result);
+  }
+
+  private static String nullAsEmpty(String result) {
     return result == null ? "" : result;
   }
 
@@ -206,29 +215,21 @@ public class CacheImpl<T extends HasMetadata> implements Cache<T> {
    */
   @Override
   public List<T> index(String indexName, T obj) {
-    Function<T, List<String>> indexFunc = this.indexers.get(indexName);
-    if (indexFunc == null) {
-      throw new IllegalArgumentException(String.format("index %s doesn't exist!", indexName));
+    Index<T> index = getIndex(indexName);
+    List<String> indexKeys = index.indexer.apply(obj);
+    if (indexKeys == null || indexKeys.isEmpty()) {
+      return List.of();
     }
-    Index index = getIndex(indexName);
-    List<String> indexKeys = indexFunc.apply(obj);
-    Set<String> returnKeySet = new HashSet<>();
+    List<T> result = new ArrayList<>();
+    Set<String> keys = new HashSet<String>();
     for (String indexKey : indexKeys) {
-      returnKeySet.addAll(index.get(indexKey));
+      byIndex(index, indexKey, result, keys);
     }
 
-    return getItems(returnKeySet);
+    return result;
   }
 
-  private List<T> getItems(Set<String> returnKeySet) {
-    List<T> items = new ArrayList<>(returnKeySet.size());
-    for (String absoluteKey : returnKeySet) {
-      Optional.ofNullable(this.items.get(absoluteKey)).ifPresent(items::add);
-    }
-    return items;
-  }
-
-  private Index getIndex(String indexName) {
+  private Index<T> getIndex(String indexName) {
     return Optional.ofNullable(this.indices.get(indexName))
         .orElseThrow(() -> new IllegalArgumentException(String.format("index %s doesn't exist!", indexName)));
   }
@@ -242,8 +243,7 @@ public class CacheImpl<T extends HasMetadata> implements Cache<T> {
    */
   @Override
   public List<String> indexKeys(String indexName, String indexKey) {
-    Index index = getIndex(indexName);
-    return new ArrayList<>(index.get(indexKey));
+    return byIndex(indexName, indexKey).stream().map(this::getKey).collect(Collectors.toList());
   }
 
   /**
@@ -255,8 +255,28 @@ public class CacheImpl<T extends HasMetadata> implements Cache<T> {
    */
   @Override
   public List<T> byIndex(String indexName, String indexKey) {
-    Index index = getIndex(indexName);
-    return getItems(index.get(indexKey));
+    List<T> result = new ArrayList<>();
+    byIndex(getIndex(indexName), indexKey, result, null);
+    return result;
+  }
+
+  private void byIndex(Index<T> index, String indexKey, List<T> result, Set<String> visitedKeys) {
+    Map<String, String> objs = index.get(indexKey);
+    for (Map.Entry<String, String> entry : objs.entrySet()) {
+      if (visitedKeys != null && !visitedKeys.add(entry.getKey())) {
+        continue;
+      }
+      T item = this.items.get(entry.getKey());
+      if (item != null) {
+        if (!Objects.equals(nullAsEmpty(item.getMetadata().getResourceVersion()), entry.getValue())) {
+          List<String> values = index.indexer.apply(item);
+          if (values == null || !values.contains(indexKey)) {
+            continue; // out-of-date
+          }
+        }
+        result.add(item);
+      }
+    }
   }
 
   /**
@@ -269,29 +289,30 @@ public class CacheImpl<T extends HasMetadata> implements Cache<T> {
    * @param key the key
    */
   private void updateIndices(T oldObj, T newObj, String key) {
-    for (Map.Entry<String, Function<T, List<String>>> indexEntry : indexers.entrySet()) {
-      String indexName = indexEntry.getKey();
-      Function<T, List<String>> indexFunc = indexEntry.getValue();
-      Index index = this.indices.get(indexName);
-      if (index != null) {
-        if (oldObj != null) {
-          updateIndex(key, oldObj, indexFunc, index, true);
-        }
-        if (newObj != null) {
-          updateIndex(key, newObj, indexFunc, index, false);
-        }
+    indices.values().forEach(i -> updateIndex(key, oldObj, newObj, i));
+  }
+
+  private void updateIndex(String key, T oldObj, T newObj, Index<T> index) {
+    List<String> oldValues = getIndexValues(oldObj, index.indexer);
+    Collection<String> newIndexValues = new LinkedHashSet<>(getIndexValues(newObj, index.indexer));
+    for (String indexValue : oldValues) {
+      if (!newIndexValues.contains(indexValue)) {
+        index.update(indexValue, key, null, true);
       }
+    }
+    for (String indexValue : newIndexValues) {
+      index.update(indexValue, key, newObj.getMetadata().getResourceVersion(), false);
     }
   }
 
-  private void updateIndex(String key, T obj, Function<T, List<String>> indexFunc, Index index,
-      boolean remove) {
-    List<String> indexValues = indexFunc.apply(obj);
-    if (indexValues != null && !indexValues.isEmpty()) {
-      for (String indexValue : indexValues) {
-        index.update(indexValue, key, remove);
+  private List<String> getIndexValues(T obj, Function<T, List<String>> indexFunc) {
+    if (obj != null) {
+      List<String> values = indexFunc.apply(obj);
+      if (values != null) {
+        return values;
       }
     }
+    return List.of();
   }
 
   /**
@@ -304,11 +325,10 @@ public class CacheImpl<T extends HasMetadata> implements Cache<T> {
     if (this.indices.containsKey(indexName)) {
       throw new IllegalArgumentException("Indexer conflict: " + indexName);
     }
-    Index index = new Index();
+    Index<T> index = new Index<>(indexFunc);
     this.indices.put(indexName, index);
-    this.indexers.put(indexName, indexFunc);
 
-    items.values().forEach(v -> updateIndex(getKey(v), v, indexFunc, index, false));
+    items.values().forEach(v -> updateIndex(getKey(v), null, v, index));
     return this;
   }
 
@@ -372,7 +392,6 @@ public class CacheImpl<T extends HasMetadata> implements Cache<T> {
   @Override
   public synchronized void removeIndexer(String name) {
     this.indices.remove(name);
-    this.indexers.remove(name);
   }
 
   public boolean isFullState() {
