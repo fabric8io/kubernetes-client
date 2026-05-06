@@ -325,10 +325,10 @@ class LeaderElectorTest {
     cf.cancel(true);
 
     // make sure that the task is no longer running
-    Thread.sleep(100);
     int sample = count.get();
-    Thread.sleep(100);
-    assertEquals(sample, count.get());
+    Awaitility.await().timeout(Duration.ofMillis(200))
+        .pollInterval(Duration.ofMillis(25))
+        .untilAsserted(() -> assertEquals(sample, count.get(), "Count should not increment after cancellation"));
   }
 
   @Test
