@@ -178,7 +178,7 @@ public class ThanosRulerSpec implements Editable<ThanosRulerSpecBuilder>, Kubern
     @JsonProperty("externalPrefix")
     private String externalPrefix;
     @JsonProperty("grpcServerTlsConfig")
-    private TLSConfig grpcServerTlsConfig;
+    private GRPCServerTLSConfig grpcServerTlsConfig;
     @JsonProperty("hostAliases")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<HostAlias> hostAliases = new ArrayList<>();
@@ -298,7 +298,7 @@ public class ThanosRulerSpec implements Editable<ThanosRulerSpecBuilder>, Kubern
     public ThanosRulerSpec() {
     }
 
-    public ThanosRulerSpec(List<Argument> additionalArgs, Affinity affinity, List<String> alertDropLabels, String alertQueryUrl, String alertRelabelConfigFile, SecretKeySelector alertRelabelConfigs, SecretKeySelector alertmanagersConfig, List<String> alertmanagersUrl, List<Container> containers, PodDNSConfig dnsConfig, String dnsPolicy, List<String> enableFeatures, Boolean enableServiceLinks, String enforcedNamespaceLabel, String evaluationInterval, List<ObjectReference> excludedFromEnforcement, String externalPrefix, TLSConfig grpcServerTlsConfig, List<HostAlias> hostAliases, Boolean hostUsers, String image, String imagePullPolicy, List<LocalObjectReference> imagePullSecrets, List<Container> initContainers, Map<String, String> labels, Boolean listenLocal, String logFormat, String logLevel, Integer minReadySeconds, Map<String, String> nodeSelector, SecretKeySelector objectStorageConfig, String objectStorageConfigFile, Boolean paused, String podManagementPolicy, EmbeddedObjectMetadata podMetadata, String portName, String priorityClassName, List<PrometheusRuleExcludeConfig> prometheusRulesExcludedFromEnforce, SecretKeySelector queryConfig, List<String> queryEndpoints, List<RemoteWriteSpec> remoteWrite, Integer replicas, String resendDelay, ResourceRequirements resources, String retention, String routePrefix, Integer ruleConcurrentEval, String ruleGracePeriod, LabelSelector ruleNamespaceSelector, String ruleOutageTolerance, String ruleQueryOffset, LabelSelector ruleSelector, String schedulerName, PodSecurityContext securityContext, String serviceAccountName, String serviceName, StorageSpec storage, Long terminationGracePeriodSeconds, List<Toleration> tolerations, List<TopologySpreadConstraint> topologySpreadConstraints, SecretKeySelector tracingConfig, String tracingConfigFile, StatefulSetUpdateStrategy updateStrategy, String version, List<VolumeMount> volumeMounts, List<Volume> volumes, ThanosRulerWebSpec web) {
+    public ThanosRulerSpec(List<Argument> additionalArgs, Affinity affinity, List<String> alertDropLabels, String alertQueryUrl, String alertRelabelConfigFile, SecretKeySelector alertRelabelConfigs, SecretKeySelector alertmanagersConfig, List<String> alertmanagersUrl, List<Container> containers, PodDNSConfig dnsConfig, String dnsPolicy, List<String> enableFeatures, Boolean enableServiceLinks, String enforcedNamespaceLabel, String evaluationInterval, List<ObjectReference> excludedFromEnforcement, String externalPrefix, GRPCServerTLSConfig grpcServerTlsConfig, List<HostAlias> hostAliases, Boolean hostUsers, String image, String imagePullPolicy, List<LocalObjectReference> imagePullSecrets, List<Container> initContainers, Map<String, String> labels, Boolean listenLocal, String logFormat, String logLevel, Integer minReadySeconds, Map<String, String> nodeSelector, SecretKeySelector objectStorageConfig, String objectStorageConfigFile, Boolean paused, String podManagementPolicy, EmbeddedObjectMetadata podMetadata, String portName, String priorityClassName, List<PrometheusRuleExcludeConfig> prometheusRulesExcludedFromEnforce, SecretKeySelector queryConfig, List<String> queryEndpoints, List<RemoteWriteSpec> remoteWrite, Integer replicas, String resendDelay, ResourceRequirements resources, String retention, String routePrefix, Integer ruleConcurrentEval, String ruleGracePeriod, LabelSelector ruleNamespaceSelector, String ruleOutageTolerance, String ruleQueryOffset, LabelSelector ruleSelector, String schedulerName, PodSecurityContext securityContext, String serviceAccountName, String serviceName, StorageSpec storage, Long terminationGracePeriodSeconds, List<Toleration> tolerations, List<TopologySpreadConstraint> topologySpreadConstraints, SecretKeySelector tracingConfig, String tracingConfigFile, StatefulSetUpdateStrategy updateStrategy, String version, List<VolumeMount> volumeMounts, List<Volume> volumes, ThanosRulerWebSpec web) {
         super();
         this.additionalArgs = additionalArgs;
         this.affinity = affinity;
@@ -651,7 +651,7 @@ public class ThanosRulerSpec implements Editable<ThanosRulerSpecBuilder>, Kubern
      * ThanosRulerSpec is a specification of the desired behavior of the ThanosRuler. More info: https://github.com/kubernetes/community/blob/master/contributors/devel/sig-architecture/api-conventions.md#spec-and-status
      */
     @JsonProperty("grpcServerTlsConfig")
-    public TLSConfig getGrpcServerTlsConfig() {
+    public GRPCServerTLSConfig getGrpcServerTlsConfig() {
         return grpcServerTlsConfig;
     }
 
@@ -659,7 +659,7 @@ public class ThanosRulerSpec implements Editable<ThanosRulerSpecBuilder>, Kubern
      * ThanosRulerSpec is a specification of the desired behavior of the ThanosRuler. More info: https://github.com/kubernetes/community/blob/master/contributors/devel/sig-architecture/api-conventions.md#spec-and-status
      */
     @JsonProperty("grpcServerTlsConfig")
-    public void setGrpcServerTlsConfig(TLSConfig grpcServerTlsConfig) {
+    public void setGrpcServerTlsConfig(GRPCServerTLSConfig grpcServerTlsConfig) {
         this.grpcServerTlsConfig = grpcServerTlsConfig;
     }
 

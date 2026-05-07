@@ -153,6 +153,7 @@ import lombok.experimental.Accessors;
     "serviceName",
     "sha",
     "shardRetentionPolicy",
+    "shardingStrategy",
     "shards",
     "storage",
     "tag",
@@ -431,6 +432,8 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder>, Kubernet
     private String sha;
     @JsonProperty("shardRetentionPolicy")
     private ShardRetentionPolicy shardRetentionPolicy;
+    @JsonProperty("shardingStrategy")
+    private ShardingStrategy shardingStrategy;
     @JsonProperty("shards")
     private Integer shards;
     @JsonProperty("storage")
@@ -476,7 +479,7 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder>, Kubernet
     public PrometheusSpec() {
     }
 
-    public PrometheusSpec(SecretKeySelector additionalAlertManagerConfigs, SecretKeySelector additionalAlertRelabelConfigs, List<Argument> additionalArgs, SecretKeySelector additionalScrapeConfigs, Affinity affinity, AlertingSpec alerting, Boolean allowOverlappingBlocks, APIServerConfig apiserverConfig, ArbitraryFSAccessThroughSMsConfig arbitraryFSAccessThroughSMs, Boolean automountServiceAccountToken, String baseImage, String bodySizeLimit, List<String> configMaps, List<Container> containers, Boolean convertClassicHistogramsToNHCB, Boolean disableCompaction, PodDNSConfig dnsConfig, String dnsPolicy, Boolean enableAdminAPI, List<String> enableFeatures, Boolean enableOTLPReceiver, Boolean enableRemoteWriteReceiver, Boolean enableServiceLinks, String enforcedBodySizeLimit, Long enforcedKeepDroppedTargets, Long enforcedLabelLimit, Long enforcedLabelNameLengthLimit, Long enforcedLabelValueLengthLimit, String enforcedNamespaceLabel, Long enforcedSampleLimit, Long enforcedTargetLimit, String evaluationInterval, List<ObjectReference> excludedFromEnforcement, Exemplars exemplars, Map<String, String> externalLabels, String externalUrl, List<HostAlias> hostAliases, Boolean hostNetwork, Boolean hostUsers, Boolean ignoreNamespaceSelectors, String image, String imagePullPolicy, List<LocalObjectReference> imagePullSecrets, List<Container> initContainers, Long keepDroppedTargets, Long labelLimit, Long labelNameLengthLimit, Long labelValueLengthLimit, Boolean listenLocal, String logFormat, String logLevel, Integer maximumStartupDurationSeconds, Integer minReadySeconds, String nameEscapingScheme, String nameValidationScheme, Map<String, String> nodeSelector, OTLPConfig otlp, Boolean overrideHonorLabels, Boolean overrideHonorTimestamps, Boolean paused, StatefulSetPersistentVolumeClaimRetentionPolicy persistentVolumeClaimRetentionPolicy, String podManagementPolicy, EmbeddedObjectMetadata podMetadata, LabelSelector podMonitorNamespaceSelector, LabelSelector podMonitorSelector, List<String> podTargetLabels, String portName, String priorityClassName, LabelSelector probeNamespaceSelector, LabelSelector probeSelector, String prometheusExternalLabelName, List<PrometheusRuleExcludeConfig> prometheusRulesExcludedFromEnforce, QuerySpec query, String queryLogFile, String reloadStrategy, List<RemoteReadSpec> remoteRead, List<RemoteWriteSpec> remoteWrite, List<String> remoteWriteReceiverMessageVersions, String replicaExternalLabelName, Integer replicas, ResourceRequirements resources, String retention, String retentionSize, String routePrefix, LabelSelector ruleNamespaceSelector, String ruleQueryOffset, LabelSelector ruleSelector, Rules rules, RuntimeConfig runtime, Long sampleLimit, String schedulerName, List<ScrapeClass> scrapeClasses, Boolean scrapeClassicHistograms, LabelSelector scrapeConfigNamespaceSelector, LabelSelector scrapeConfigSelector, String scrapeFailureLogFile, String scrapeInterval, Boolean scrapeNativeHistograms, List<String> scrapeProtocols, String scrapeTimeout, List<String> secrets, PodSecurityContext securityContext, String serviceAccountName, String serviceDiscoveryRole, LabelSelector serviceMonitorNamespaceSelector, LabelSelector serviceMonitorSelector, String serviceName, String sha, ShardRetentionPolicy shardRetentionPolicy, Integer shards, StorageSpec storage, String tag, Long targetLimit, Long terminationGracePeriodSeconds, ThanosSpec thanos, List<Toleration> tolerations, List<TopologySpreadConstraint> topologySpreadConstraints, TracingConfig tracingConfig, TSDBSpec tsdb, StatefulSetUpdateStrategy updateStrategy, String version, List<VolumeMount> volumeMounts, List<Volume> volumes, Boolean walCompression, PrometheusWebSpec web) {
+    public PrometheusSpec(SecretKeySelector additionalAlertManagerConfigs, SecretKeySelector additionalAlertRelabelConfigs, List<Argument> additionalArgs, SecretKeySelector additionalScrapeConfigs, Affinity affinity, AlertingSpec alerting, Boolean allowOverlappingBlocks, APIServerConfig apiserverConfig, ArbitraryFSAccessThroughSMsConfig arbitraryFSAccessThroughSMs, Boolean automountServiceAccountToken, String baseImage, String bodySizeLimit, List<String> configMaps, List<Container> containers, Boolean convertClassicHistogramsToNHCB, Boolean disableCompaction, PodDNSConfig dnsConfig, String dnsPolicy, Boolean enableAdminAPI, List<String> enableFeatures, Boolean enableOTLPReceiver, Boolean enableRemoteWriteReceiver, Boolean enableServiceLinks, String enforcedBodySizeLimit, Long enforcedKeepDroppedTargets, Long enforcedLabelLimit, Long enforcedLabelNameLengthLimit, Long enforcedLabelValueLengthLimit, String enforcedNamespaceLabel, Long enforcedSampleLimit, Long enforcedTargetLimit, String evaluationInterval, List<ObjectReference> excludedFromEnforcement, Exemplars exemplars, Map<String, String> externalLabels, String externalUrl, List<HostAlias> hostAliases, Boolean hostNetwork, Boolean hostUsers, Boolean ignoreNamespaceSelectors, String image, String imagePullPolicy, List<LocalObjectReference> imagePullSecrets, List<Container> initContainers, Long keepDroppedTargets, Long labelLimit, Long labelNameLengthLimit, Long labelValueLengthLimit, Boolean listenLocal, String logFormat, String logLevel, Integer maximumStartupDurationSeconds, Integer minReadySeconds, String nameEscapingScheme, String nameValidationScheme, Map<String, String> nodeSelector, OTLPConfig otlp, Boolean overrideHonorLabels, Boolean overrideHonorTimestamps, Boolean paused, StatefulSetPersistentVolumeClaimRetentionPolicy persistentVolumeClaimRetentionPolicy, String podManagementPolicy, EmbeddedObjectMetadata podMetadata, LabelSelector podMonitorNamespaceSelector, LabelSelector podMonitorSelector, List<String> podTargetLabels, String portName, String priorityClassName, LabelSelector probeNamespaceSelector, LabelSelector probeSelector, String prometheusExternalLabelName, List<PrometheusRuleExcludeConfig> prometheusRulesExcludedFromEnforce, QuerySpec query, String queryLogFile, String reloadStrategy, List<RemoteReadSpec> remoteRead, List<RemoteWriteSpec> remoteWrite, List<String> remoteWriteReceiverMessageVersions, String replicaExternalLabelName, Integer replicas, ResourceRequirements resources, String retention, String retentionSize, String routePrefix, LabelSelector ruleNamespaceSelector, String ruleQueryOffset, LabelSelector ruleSelector, Rules rules, RuntimeConfig runtime, Long sampleLimit, String schedulerName, List<ScrapeClass> scrapeClasses, Boolean scrapeClassicHistograms, LabelSelector scrapeConfigNamespaceSelector, LabelSelector scrapeConfigSelector, String scrapeFailureLogFile, String scrapeInterval, Boolean scrapeNativeHistograms, List<String> scrapeProtocols, String scrapeTimeout, List<String> secrets, PodSecurityContext securityContext, String serviceAccountName, String serviceDiscoveryRole, LabelSelector serviceMonitorNamespaceSelector, LabelSelector serviceMonitorSelector, String serviceName, String sha, ShardRetentionPolicy shardRetentionPolicy, ShardingStrategy shardingStrategy, Integer shards, StorageSpec storage, String tag, Long targetLimit, Long terminationGracePeriodSeconds, ThanosSpec thanos, List<Toleration> tolerations, List<TopologySpreadConstraint> topologySpreadConstraints, TracingConfig tracingConfig, TSDBSpec tsdb, StatefulSetUpdateStrategy updateStrategy, String version, List<VolumeMount> volumeMounts, List<Volume> volumes, Boolean walCompression, PrometheusWebSpec web) {
         super();
         this.additionalAlertManagerConfigs = additionalAlertManagerConfigs;
         this.additionalAlertRelabelConfigs = additionalAlertRelabelConfigs;
@@ -587,6 +590,7 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder>, Kubernet
         this.serviceName = serviceName;
         this.sha = sha;
         this.shardRetentionPolicy = shardRetentionPolicy;
+        this.shardingStrategy = shardingStrategy;
         this.shards = shards;
         this.storage = storage;
         this.tag = tag;
@@ -2365,6 +2369,22 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder>, Kubernet
     @JsonProperty("shardRetentionPolicy")
     public void setShardRetentionPolicy(ShardRetentionPolicy shardRetentionPolicy) {
         this.shardRetentionPolicy = shardRetentionPolicy;
+    }
+
+    /**
+     * PrometheusSpec is a specification of the desired behavior of the Prometheus cluster. More info: https://github.com/kubernetes/community/blob/master/contributors/devel/sig-architecture/api-conventions.md#spec-and-status
+     */
+    @JsonProperty("shardingStrategy")
+    public ShardingStrategy getShardingStrategy() {
+        return shardingStrategy;
+    }
+
+    /**
+     * PrometheusSpec is a specification of the desired behavior of the Prometheus cluster. More info: https://github.com/kubernetes/community/blob/master/contributors/devel/sig-architecture/api-conventions.md#spec-and-status
+     */
+    @JsonProperty("shardingStrategy")
+    public void setShardingStrategy(ShardingStrategy shardingStrategy) {
+        this.shardingStrategy = shardingStrategy;
     }
 
     /**
