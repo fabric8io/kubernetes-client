@@ -44,7 +44,7 @@
 * Fix #7538: bump cert-manager from 1.18.2 to 1.19.4
 * Fix #7583: bump operator-framework/api from 0.33.0 to 0.41.0
 * Fix #7589: bump prometheus-operator from 0.89.0 to 0.90.0
-* Fix #PLACEHOLDER: bump prometheus-operator from 0.90.1 to 0.91.0
+* Fix #7736: bump prometheus-operator from 0.90.1 to 0.91.0
 * Fix #7578: bump tektoncd/pipeline from 1.9.0 to 1.10.2
 * Fix #7582: bump vertical-pod-autoscaler from 1.4.1 to 1.6.0
 
@@ -59,7 +59,7 @@
 * Fix #7723: knative model `internal.autoscaling.v1alpha1.PodScalableSpec.template` field removed (upstream removed the field in autoscaling.internal.knative.dev v1alpha1)
 * Fix #7580: kustomize model `Patch.options` field type changed from `Map<String, Boolean>` to `PatchArgs` (following upstream kustomize v0.21.0 PatchArgs API type addition)
 * Fix #7543: monitoring model `v1.AuthorizationValidationError`, `v1.OAuth2ValidationError`, `v1.ProbeTargetsValidationError`, and `v1.PrometheusTracingConfig` removed
-* Fix #PLACEHOLDER: monitoring model `v1.ThanosSpec.grpcServerTlsConfig` and `v1.ThanosRulerSpec.grpcServerTlsConfig` field type changed from `TLSConfig` to the new `GRPCServerTLSConfig` (following upstream prometheus-operator v0.91.0)
+* Fix #7736: monitoring model `v1.ThanosSpec.grpcServerTlsConfig` and `v1.ThanosRulerSpec.grpcServerTlsConfig` field type changed from `TLSConfig` to the new `GRPCServerTLSConfig` (following upstream prometheus-operator v0.91.0)
 * Fix #7542: open-cluster-management model `operator.v1.WebhookConfiguration` removed (replaced by `DefaultWebhookConfiguration` and `HostedWebhookConfiguration` upstream)
 
 ### 7.4.1 (2026-03-10)
