@@ -31,6 +31,7 @@ public abstract class HttpServerRequestHandler implements Handler<HttpServerRequ
 
   private static final String CONTENT_LENGTH = "Content-Length";
   private static final String CONTENT_TYPE = "Content-Type";
+  private static final String TRANSFER_ENCODING = "Transfer-Encoding";
 
   private final Vertx vertx;
 
@@ -75,7 +76,9 @@ public abstract class HttpServerRequestHandler implements Handler<HttpServerRequ
       vertxResponse.setStatusCode(mockResponse.code());
       mockResponse.getHeaders().toMultimap().forEach((key, values) -> vertxResponse.headers().add(key, values));
       if (mockResponse.getBody() != null && mockResponse.getBody().size() > 0) {
-        vertxResponse.headers().add(CONTENT_LENGTH, String.valueOf(mockResponse.getBody().size()));
+        if (!vertxResponse.headers().contains(TRANSFER_ENCODING)) {
+          vertxResponse.headers().add(CONTENT_LENGTH, String.valueOf(mockResponse.getBody().size()));
+        }
         final io.vertx.core.buffer.Buffer toSend = io.vertx.core.buffer.Buffer.buffer(mockResponse.getBody().getBytes());
         if (mockResponse.getBodyDelay() != null) {
           vertx.setTimer(mockResponse.getBodyDelay().toMillis(), timerId -> vertxResponse.send(toSend));
