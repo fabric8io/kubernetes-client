@@ -15,6 +15,7 @@
 * Fix #7350: Improper callback timing in leaderelection leads to the dual-leader
 
 #### Improvements
+* Fix #7741: PodOperationUtil.waitUntilReadyOrTerminal short-circuits when readyWaitTimeout=0 (the default) instead of starting a doomed informer LIST that races with the follow-up call (e.g. exec WebSocket upgrade) and produces 404 ERROR log noise
 * Fix #7662: (mockwebserver) new `MockWebServer#setHttp2ClearTextEnabled(boolean)` setter to opt out of HTTP/2 cleartext (h2c) upgrade
 * Fix #7522: improve dependency management for kubernetes-httpclient-okhttp
 * Fix #7550: add a ResourceEventHandler onList method and deprecated onNothing

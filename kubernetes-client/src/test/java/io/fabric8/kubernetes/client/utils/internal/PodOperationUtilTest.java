@@ -99,6 +99,25 @@ class PodOperationUtilTest {
   }
 
   @Test
+  void waitUntilReadyOrTerminalWithZeroTimeoutShortCircuits() {
+    // When
+    Pod result = PodOperationUtil.waitUntilReadyOrTerminal(podOperations, 0);
+    // Then
+    assertThat(result).isNull();
+    verify(podOperations, Mockito.never()).waitUntilCondition(any(), Mockito.anyLong(), any(TimeUnit.class));
+  }
+
+  @Test
+  void waitUntilReadyOrTerminalWithNegativeTimeoutDelegatesToWaitUntilCondition() {
+    // Negative values are documented by Utils.waitUntilReady as "wait indefinitely";
+    // do not short-circuit them.
+    // When
+    PodOperationUtil.waitUntilReadyOrTerminal(podOperations, -1);
+    // Then
+    verify(podOperations, times(1)).waitUntilCondition(any(), eq(-1L), eq(TimeUnit.MILLISECONDS));
+  }
+
+  @Test
   void testIsReadyOrTerminal() {
     assertTrue(PodOperationUtil.isReadyOrTerminal(null));
     assertFalse(PodOperationUtil.isReadyOrTerminal(new Pod()));

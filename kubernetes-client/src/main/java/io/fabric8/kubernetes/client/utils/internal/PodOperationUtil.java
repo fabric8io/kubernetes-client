@@ -119,6 +119,16 @@ public class PodOperationUtil {
   }
 
   public static Pod waitUntilReadyOrTerminal(PodResource podOperation, int logWaitTimeoutMs) {
+    if (logWaitTimeoutMs == 0) {
+      // Caller does not want to wait (the default since DEFAULT_POD_READY_WAIT_TIMEOUT_MS=0):
+      // starting an informer would issue a list/watch whose predicate cannot fire in zero
+      // time, produce log noise on a failed list, and contend with subsequent calls (e.g.
+      // the exec WebSocket upgrade) on the shared HttpClient/event loop for nothing. Skip
+      // and let the caller fall back to getItemOrRequireFromServer().
+      // Negative values are passed through and interpreted by Utils.waitUntilReady as
+      // "wait indefinitely".
+      return null;
+    }
     AtomicReference<Pod> podRef = new AtomicReference<>();
     try {
       // Wait for Pod to become ready or succeeded
