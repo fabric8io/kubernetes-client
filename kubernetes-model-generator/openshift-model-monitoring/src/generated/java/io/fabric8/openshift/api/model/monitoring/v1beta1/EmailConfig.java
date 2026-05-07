@@ -54,6 +54,7 @@ import lombok.experimental.Accessors;
     "sendResolved",
     "smarthost",
     "text",
+    "threading",
     "tlsConfig",
     "to"
 })
@@ -109,6 +110,8 @@ public class EmailConfig implements Editable<EmailConfigBuilder>, KubernetesReso
     private String smarthost;
     @JsonProperty("text")
     private String text;
+    @JsonProperty("threading")
+    private EmailThreadingConfig threading;
     @JsonProperty("tlsConfig")
     private SafeTLSConfig tlsConfig;
     @JsonProperty("to")
@@ -122,7 +125,7 @@ public class EmailConfig implements Editable<EmailConfigBuilder>, KubernetesReso
     public EmailConfig() {
     }
 
-    public EmailConfig(String authIdentity, SecretKeySelector authPassword, SecretKeySelector authSecret, String authUsername, Boolean forceImplicitTLS, String from, List<KeyValue> headers, String hello, String html, Boolean requireTLS, Boolean sendResolved, String smarthost, String text, SafeTLSConfig tlsConfig, String to) {
+    public EmailConfig(String authIdentity, SecretKeySelector authPassword, SecretKeySelector authSecret, String authUsername, Boolean forceImplicitTLS, String from, List<KeyValue> headers, String hello, String html, Boolean requireTLS, Boolean sendResolved, String smarthost, String text, EmailThreadingConfig threading, SafeTLSConfig tlsConfig, String to) {
         super();
         this.authIdentity = authIdentity;
         this.authPassword = authPassword;
@@ -137,6 +140,7 @@ public class EmailConfig implements Editable<EmailConfigBuilder>, KubernetesReso
         this.sendResolved = sendResolved;
         this.smarthost = smarthost;
         this.text = text;
+        this.threading = threading;
         this.tlsConfig = tlsConfig;
         this.to = to;
     }
@@ -348,6 +352,22 @@ public class EmailConfig implements Editable<EmailConfigBuilder>, KubernetesReso
     @JsonProperty("text")
     public void setText(String text) {
         this.text = text;
+    }
+
+    /**
+     * EmailConfig configures notifications via Email.
+     */
+    @JsonProperty("threading")
+    public EmailThreadingConfig getThreading() {
+        return threading;
+    }
+
+    /**
+     * EmailConfig configures notifications via Email.
+     */
+    @JsonProperty("threading")
+    public void setThreading(EmailThreadingConfig threading) {
+        this.threading = threading;
     }
 
     /**

@@ -37,7 +37,7 @@ import lombok.ToString;
 import lombok.experimental.Accessors;
 
 /**
- * ScalewaySDConfig configurations allow retrieving scrape targets from Scaleway instances and baremetal services. See https://prometheus.io/docs/prometheus/latest/configuration/configuration/#scaleway_sd_config
+ * ScalewaySDConfig configurations allow retrieving scrape targets from Scaleway instances and baremetal services. See https://prometheus.io/docs/prometheus/latest/configuration/configuration/#scaleway_sd_config<br><p> <br><p> Note: The `_file` variants of credential fields (e.g. `secret_key_file`) from the Prometheus configuration are not supported. Use Kubernetes secrets via `secretKey` instead.
  */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -361,7 +361,7 @@ public class ScalewaySDConfig implements Editable<ScalewaySDConfigBuilder>, Kube
     }
 
     /**
-     * ScalewaySDConfig configurations allow retrieving scrape targets from Scaleway instances and baremetal services. See https://prometheus.io/docs/prometheus/latest/configuration/configuration/#scaleway_sd_config
+     * ScalewaySDConfig configurations allow retrieving scrape targets from Scaleway instances and baremetal services. See https://prometheus.io/docs/prometheus/latest/configuration/configuration/#scaleway_sd_config<br><p> <br><p> Note: The `_file` variants of credential fields (e.g. `secret_key_file`) from the Prometheus configuration are not supported. Use Kubernetes secrets via `secretKey` instead.
      */
     @JsonProperty("secretKey")
     public SecretKeySelector getSecretKey() {
@@ -369,7 +369,7 @@ public class ScalewaySDConfig implements Editable<ScalewaySDConfigBuilder>, Kube
     }
 
     /**
-     * ScalewaySDConfig configurations allow retrieving scrape targets from Scaleway instances and baremetal services. See https://prometheus.io/docs/prometheus/latest/configuration/configuration/#scaleway_sd_config
+     * ScalewaySDConfig configurations allow retrieving scrape targets from Scaleway instances and baremetal services. See https://prometheus.io/docs/prometheus/latest/configuration/configuration/#scaleway_sd_config<br><p> <br><p> Note: The `_file` variants of credential fields (e.g. `secret_key_file`) from the Prometheus configuration are not supported. Use Kubernetes secrets via `secretKey` instead.
      */
     @JsonProperty("secretKey")
     public void setSecretKey(SecretKeySelector secretKey) {
@@ -394,7 +394,7 @@ public class ScalewaySDConfig implements Editable<ScalewaySDConfigBuilder>, Kube
     }
 
     /**
-     * ScalewaySDConfig configurations allow retrieving scrape targets from Scaleway instances and baremetal services. See https://prometheus.io/docs/prometheus/latest/configuration/configuration/#scaleway_sd_config
+     * ScalewaySDConfig configurations allow retrieving scrape targets from Scaleway instances and baremetal services. See https://prometheus.io/docs/prometheus/latest/configuration/configuration/#scaleway_sd_config<br><p> <br><p> Note: The `_file` variants of credential fields (e.g. `secret_key_file`) from the Prometheus configuration are not supported. Use Kubernetes secrets via `secretKey` instead.
      */
     @JsonProperty("tlsConfig")
     public SafeTLSConfig getTlsConfig() {
@@ -402,7 +402,7 @@ public class ScalewaySDConfig implements Editable<ScalewaySDConfigBuilder>, Kube
     }
 
     /**
-     * ScalewaySDConfig configurations allow retrieving scrape targets from Scaleway instances and baremetal services. See https://prometheus.io/docs/prometheus/latest/configuration/configuration/#scaleway_sd_config
+     * ScalewaySDConfig configurations allow retrieving scrape targets from Scaleway instances and baremetal services. See https://prometheus.io/docs/prometheus/latest/configuration/configuration/#scaleway_sd_config<br><p> <br><p> Note: The `_file` variants of credential fields (e.g. `secret_key_file`) from the Prometheus configuration are not supported. Use Kubernetes secrets via `secretKey` instead.
      */
     @JsonProperty("tlsConfig")
     public void setTlsConfig(SafeTLSConfig tlsConfig) {
