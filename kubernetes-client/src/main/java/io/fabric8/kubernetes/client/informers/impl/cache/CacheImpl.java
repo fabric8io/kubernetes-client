@@ -50,7 +50,7 @@ public class CacheImpl<T extends HasMetadata> implements Cache<T> {
   private static class Index<T extends HasMetadata> {
 
     private final Function<T, List<String>> indexer;
-    private final Map<Object, Map<String, String>> values = new ConcurrentHashMap<Object, Map<String, String>>();
+    private final Map<Object, Map<String, String>> values = new ConcurrentHashMap<>();
 
     public Index(Function<T, List<String>> indexer) {
       this.indexer = indexer;
@@ -63,8 +63,8 @@ public class CacheImpl<T extends HasMetadata> implements Cache<T> {
           return v.isEmpty() ? null : v;
         });
       } else {
-        values.compute(indexKey == null ? this : indexKey, (k, v) -> v == null ? new ConcurrentHashMap<>() : v).put(key,
-            nullAsEmpty(resourceVersion));
+        values.computeIfAbsent(indexKey == null ? this : indexKey, k -> new ConcurrentHashMap<>())
+            .put(key, nullAsEmpty(resourceVersion));
       }
     }
 
@@ -103,7 +103,7 @@ public class CacheImpl<T extends HasMetadata> implements Cache<T> {
   @Override
   public synchronized Map<String, Function<T, List<String>>> getIndexers() {
     return Collections
-        .unmodifiableMap(indices.entrySet().stream().collect(Collectors.toMap(e -> e.getKey(), e -> e.getValue().indexer)));
+        .unmodifiableMap(indices.entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey, e -> e.getValue().indexer)));
   }
 
   @Override
@@ -221,7 +221,7 @@ public class CacheImpl<T extends HasMetadata> implements Cache<T> {
       return List.of();
     }
     List<T> result = new ArrayList<>();
-    Set<String> keys = new HashSet<String>();
+    Set<String> keys = new HashSet<>();
     for (String indexKey : indexKeys) {
       byIndex(index, indexKey, result, keys);
     }
@@ -263,19 +263,23 @@ public class CacheImpl<T extends HasMetadata> implements Cache<T> {
   private void byIndex(Index<T> index, String indexKey, List<T> result, Set<String> visitedKeys) {
     Map<String, String> objs = index.get(indexKey);
     for (Map.Entry<String, String> entry : objs.entrySet()) {
+      T item = this.items.get(entry.getKey());
+      if (item == null) {
+        continue;
+      }
+      if (!Objects.equals(nullAsEmpty(item.getMetadata().getResourceVersion()), entry.getValue())) {
+        List<String> values = index.indexer.apply(item);
+        if (values == null || !values.contains(indexKey)) {
+          continue; // out-of-date
+        }
+      }
+      // Dedup only after the entry is accepted: a stale entry that fails the
+      // consistency check above must not block a legitimate match in another
+      // bucket from being recorded under the same key.
       if (visitedKeys != null && !visitedKeys.add(entry.getKey())) {
         continue;
       }
-      T item = this.items.get(entry.getKey());
-      if (item != null) {
-        if (!Objects.equals(nullAsEmpty(item.getMetadata().getResourceVersion()), entry.getValue())) {
-          List<String> values = index.indexer.apply(item);
-          if (values == null || !values.contains(indexKey)) {
-            continue; // out-of-date
-          }
-        }
-        result.add(item);
-      }
+      result.add(item);
     }
   }
 
