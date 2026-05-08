@@ -98,6 +98,7 @@ public class MockWebServer implements Closeable {
   private List<Protocol> protocols;
   private boolean http2ClearTextEnabled;
   private boolean started;
+  private boolean shutdown;
 
   public MockWebServer() {
     vertx = Vertx.vertx();
@@ -174,12 +175,13 @@ public class MockWebServer implements Closeable {
   }
 
   public synchronized void shutdown() {
-    if (!started) {
+    if (!started || shutdown) {
       return;
     }
     if (httpServer == null) {
       throw new IllegalStateException("shutdown() before start()");
     }
+    shutdown = true;
     dispatcher.shutdown();
     await(httpServer.close(), "Unable to close MockWebServer");
     info("done accepting connections");
