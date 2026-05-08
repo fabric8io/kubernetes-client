@@ -77,7 +77,8 @@ class GenerateAllGraalvmMetadata {
       System.out.println("Found " + modules.size() + " Maven modules");
       System.out.println();
 
-      var processedCount = 0;
+      var wroteCount = 0;
+      var emptyCount = 0;
       var skippedCount = 0;
       var failedCount = 0;
 
@@ -95,15 +96,23 @@ class GenerateAllGraalvmMetadata {
 
         if (config.dryRun) {
           System.out.println("  Would generate metadata from: " + jandexIndex);
-          processedCount++;
+          wroteCount++;
         } else {
-          var success = generateMetadata(jandexIndex, config.strategy);
-          if (success) {
-            System.out.println("  ✓ Successfully generated metadata");
-            processedCount++;
-          } else {
-            System.err.println("  ✗ Failed to generate metadata");
-            failedCount++;
+          var result = generateMetadata(jandexIndex, config.strategy);
+          switch (result) {
+            case WROTE:
+              System.out.println("  ✓ Successfully generated metadata");
+              wroteCount++;
+              break;
+            case EMPTY:
+              System.out.println("  ⊘ No classes matched; nothing written");
+              emptyCount++;
+              break;
+            case ERROR:
+            default:
+              System.err.println("  ✗ Failed to generate metadata");
+              failedCount++;
+              break;
           }
         }
         System.out.println();
@@ -112,16 +121,21 @@ class GenerateAllGraalvmMetadata {
       // Print summary
       System.out.println("=".repeat(80));
       System.out.println("Summary:");
-      System.out.println("  Total modules: " + modules.size());
-      System.out.println("  Processed: " + processedCount);
-      System.out.println("  Skipped: " + skippedCount);
-      System.out.println("  Failed: " + failedCount);
+      System.out.println("  Total modules:  " + modules.size());
+      System.out.println((config.dryRun ? "  Would write:    " : "  Wrote metadata: ") + wroteCount);
+      System.out.println("  No matches:     " + emptyCount);
+      System.out.println("  Skipped:        " + skippedCount);
+      System.out.println("  Failed:         " + failedCount);
       System.out.println("=".repeat(80));
 
       if (failedCount > 0) {
         System.exit(1);
       }
 
+    } catch (IllegalArgumentException e) {
+      System.err.println("ERROR: " + e.getMessage());
+      showHelp();
+      System.exit(1);
     } catch (Exception e) {
       System.err.println("ERROR: " + e.getMessage());
       e.printStackTrace();
@@ -191,7 +205,7 @@ class GenerateAllGraalvmMetadata {
     return relativePath.toString().isEmpty() ? "." : relativePath.toString();
   }
 
-  static boolean generateMetadata(File jandexIndex, String strategy) {
+  static GenerateGraalvmMetadata.Result generateMetadata(File jandexIndex, String strategy) {
     try {
       // Call GenerateGraalvmMetadata directly using jbang SOURCES directive
       var args = new String[] {
@@ -200,12 +214,11 @@ class GenerateAllGraalvmMetadata {
         strategy
       };
 
-      var exitCode = GenerateGraalvmMetadata.generate(args);
-      return exitCode == 0;
+      return GenerateGraalvmMetadata.generate(args);
 
     } catch (Exception e) {
       System.err.println("  ERROR: " + e.getMessage());
-      return false;
+      return GenerateGraalvmMetadata.Result.ERROR;
     }
   }
 
@@ -240,9 +253,7 @@ class GenerateAllGraalvmMetadata {
           showHelp();
           return null;
         default:
-          System.err.println("Unknown option: " + arg);
-          showHelp();
-          System.exit(1);
+          throw new IllegalArgumentException("Unknown option: " + arg);
       }
     }
 
