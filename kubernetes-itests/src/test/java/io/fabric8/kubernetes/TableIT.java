@@ -15,79 +15,123 @@
  */
 package io.fabric8.kubernetes;
 
-import io.fabric8.junit.jupiter.api.LoadKubernetesManifests;
+import io.fabric8.kubeapitest.junit.EnableKubeAPIServer;
+import io.fabric8.kubernetes.api.model.ConfigMapBuilder;
 import io.fabric8.kubernetes.api.model.ListOptionsBuilder;
-import io.fabric8.kubernetes.api.model.Namespace;
+import io.fabric8.kubernetes.api.model.NamespaceBuilder;
 import io.fabric8.kubernetes.api.model.Table;
 import io.fabric8.kubernetes.client.KubernetesClient;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+
+import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@LoadKubernetesManifests("/table-it.yml")
+@EnableKubeAPIServer
 class TableIT {
 
-  KubernetesClient client;
+  static KubernetesClient client;
 
-  @Test
-  void get() {
-    assertThat(client.configMaps().withName("table-cm-one").getAsTable())
-        .isNotNull()
-        .returns("Table", Table::getKind)
-        .returns("meta.k8s.io/v1", Table::getApiVersion)
-        .satisfies(t -> {
-          assertThat(t.getColumnDefinitions()).isNotEmpty();
-          assertThat(t.getRows()).hasSize(1);
-        });
+  private static final String TEST_NAMESPACE = "table-test";
+
+  @BeforeAll
+  static void setUp() {
+    client.resource(new NamespaceBuilder()
+        .withNewMetadata().withName(TEST_NAMESPACE).endMetadata()
+        .build()).create();
+
+    client.configMaps().inNamespace(TEST_NAMESPACE).resource(new ConfigMapBuilder()
+        .withNewMetadata()
+        .withName("cm-one")
+        .withLabels(Map.of("app", "test"))
+        .endMetadata()
+        .addToData("key1", "value1")
+        .build()).create();
+
+    client.configMaps().inNamespace(TEST_NAMESPACE).resource(new ConfigMapBuilder()
+        .withNewMetadata()
+        .withName("cm-two")
+        .withLabels(Map.of("app", "test"))
+        .endMetadata()
+        .addToData("key2", "value2")
+        .build()).create();
+  }
+
+  @AfterAll
+  static void tearDown() {
+    client.namespaces().withName(TEST_NAMESPACE).delete();
   }
 
   @Test
-  void getReturnsNullForMissingResource() {
-    assertThat(client.configMaps().withName("nonexistent").getAsTable())
-        .isNull();
+  void getAsTableReturnsSingleResourceAsTable() {
+    Table result = client.configMaps()
+        .inNamespace(TEST_NAMESPACE)
+        .withName("cm-one")
+        .getAsTable();
+
+    assertThat(result).isNotNull();
+    assertThat(result.getKind()).isEqualTo("Table");
+    assertThat(result.getApiVersion()).isEqualTo("meta.k8s.io/v1");
+    assertThat(result.getColumnDefinitions()).isNotEmpty();
+    assertThat(result.getRows()).hasSize(1);
   }
 
   @Test
-  void list() {
-    assertThat(client.configMaps().listAsTable())
-        .isNotNull()
-        .returns("Table", Table::getKind)
-        .returns("meta.k8s.io/v1", Table::getApiVersion)
-        .satisfies(t -> {
-          assertThat(t.getColumnDefinitions()).isNotEmpty();
-          assertThat(t.getRows().size()).isGreaterThanOrEqualTo(2);
-        });
+  void getAsTableReturnsNullForMissingResource() {
+    Table result = client.configMaps()
+        .inNamespace(TEST_NAMESPACE)
+        .withName("nonexistent")
+        .getAsTable();
+
+    assertThat(result).isNull();
   }
 
   @Test
-  void listWithLimitRespectsLimit() {
-    assertThat(client.configMaps().listAsTable(new ListOptionsBuilder().withLimit(1L).build()))
-        .returns("Table", Table::getKind)
-        .returns("meta.k8s.io/v1", Table::getApiVersion)
-        .extracting(Table::getRows)
-        .asList()
-        .hasSize(1);
+  void listAsTableReturnsAllResourcesAsTableRows() {
+    Table result = client.configMaps()
+        .inNamespace(TEST_NAMESPACE)
+        .listAsTable();
+
+    assertThat(result).isNotNull();
+    assertThat(result.getKind()).isEqualTo("Table");
+    assertThat(result.getApiVersion()).isEqualTo("meta.k8s.io/v1");
+    assertThat(result.getColumnDefinitions()).isNotEmpty();
+    assertThat(result.getRows().size()).isGreaterThanOrEqualTo(2);
   }
 
   @Test
-  void getWorksForClusterScopedResource() {
-    Namespace ns = client.namespaces().list().getItems().stream().findFirst().orElseThrow();
+  void listAsTableWithListOptionsRespectsLimit() {
+    Table result = client.configMaps()
+        .inNamespace(TEST_NAMESPACE)
+        .listAsTable(new ListOptionsBuilder().withLimit(1L).build());
 
-    assertThat(client.namespaces().withName(ns.getMetadata().getName()).getAsTable())
-        .isNotNull()
-        .returns("Table", Table::getKind)
-        .returns("meta.k8s.io/v1", Table::getApiVersion)
-        .extracting(Table::getRows)
-        .asList()
-        .hasSize(1);
+    assertThat(result.getKind()).isEqualTo("Table");
+    assertThat(result.getApiVersion()).isEqualTo("meta.k8s.io/v1");
+    assertThat(result.getRows()).hasSize(1);
   }
 
   @Test
-  void listWithLabelSelectorFiltersResults() {
-    assertThat(client.configMaps().withLabel("app", "table-test").listAsTable())
-        .returns("Table", Table::getKind)
-        .extracting(Table::getRows)
-        .asList()
-        .hasSizeGreaterThanOrEqualTo(2);
+  void getAsTableWorksForClusterScopedResource() {
+    Table result = client.namespaces()
+        .withName(TEST_NAMESPACE)
+        .getAsTable();
+
+    assertThat(result).isNotNull();
+    assertThat(result.getKind()).isEqualTo("Table");
+    assertThat(result.getApiVersion()).isEqualTo("meta.k8s.io/v1");
+    assertThat(result.getRows()).hasSize(1);
+  }
+
+  @Test
+  void listAsTableWithLabelSelectorFiltersResults() {
+    Table result = client.configMaps()
+        .inNamespace(TEST_NAMESPACE)
+        .withLabel("app", "test")
+        .listAsTable();
+
+    assertThat(result.getKind()).isEqualTo("Table");
+    assertThat(result.getRows()).hasSizeGreaterThanOrEqualTo(2);
   }
 }

@@ -15,75 +15,140 @@
  */
 package io.fabric8.kubernetes;
 
-import io.fabric8.junit.jupiter.api.LoadKubernetesManifests;
+import io.fabric8.kubeapitest.junit.EnableKubeAPIServer;
+import io.fabric8.kubernetes.api.model.ConfigMapBuilder;
 import io.fabric8.kubernetes.api.model.ListOptionsBuilder;
-import io.fabric8.kubernetes.api.model.Namespace;
+import io.fabric8.kubernetes.api.model.NamespaceBuilder;
 import io.fabric8.kubernetes.api.model.PartialObjectMetadata;
 import io.fabric8.kubernetes.api.model.PartialObjectMetadataList;
 import io.fabric8.kubernetes.client.KubernetesClient;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.InstanceOfAssertFactories.MAP;
+import java.util.Map;
 
-@LoadKubernetesManifests("/partial-object-metadata-it.yml")
+import static org.assertj.core.api.Assertions.assertThat;
+
+@EnableKubeAPIServer
 class PartialObjectMetadataIT {
 
-  KubernetesClient client;
+  static KubernetesClient client;
+
+  private static final String TEST_NAMESPACE = "partial-metadata-test";
+
+  @BeforeAll
+  static void setUp() {
+    client.resource(new NamespaceBuilder()
+        .withNewMetadata().withName(TEST_NAMESPACE).endMetadata()
+        .build()).create();
+
+    client.configMaps().inNamespace(TEST_NAMESPACE).resource(new ConfigMapBuilder()
+        .withNewMetadata()
+        .withName("cm-one")
+        .withLabels(Map.of("app", "test", "tier", "frontend"))
+        .withAnnotations(Map.of("note", "first"))
+        .endMetadata()
+        .addToData("key1", "value1")
+        .build()).create();
+
+    client.configMaps().inNamespace(TEST_NAMESPACE).resource(new ConfigMapBuilder()
+        .withNewMetadata()
+        .withName("cm-two")
+        .withLabels(Map.of("app", "test", "tier", "backend"))
+        .endMetadata()
+        .addToData("key2", "value2")
+        .build()).create();
+  }
+
+  @AfterAll
+  static void tearDown() {
+    client.namespaces().withName(TEST_NAMESPACE).delete();
+  }
 
   @Test
-  void get() {
-    assertThat(client.configMaps().withName("partial-metadata-cm-one").getAsPartialObjectMetadata())
-        .isNotNull()
-        .returns("PartialObjectMetadata", PartialObjectMetadata::getKind)
-        .returns("meta.k8s.io/v1", PartialObjectMetadata::getApiVersion)
-        .extracting(PartialObjectMetadata::getMetadata)
-        .returns("partial-metadata-cm-one", m -> m.getName())
-        .extracting("labels", MAP)
+  void getAsPartialObjectMetadataReturnsPartialMetadataKind() {
+    PartialObjectMetadata result = client.configMaps()
+        .inNamespace(TEST_NAMESPACE)
+        .withName("cm-one")
+        .getAsPartialObjectMetadata();
+
+    assertThat(result).isNotNull();
+    assertThat(result.getKind()).isEqualTo("PartialObjectMetadata");
+    assertThat(result.getApiVersion()).isEqualTo("meta.k8s.io/v1");
+    assertThat(result.getMetadata().getName()).isEqualTo("cm-one");
+    assertThat(result.getMetadata().getNamespace()).isEqualTo(TEST_NAMESPACE);
+    assertThat(result.getMetadata().getLabels())
         .containsEntry("app", "test")
         .containsEntry("tier", "frontend");
+    assertThat(result.getMetadata().getAnnotations()).containsEntry("note", "first");
+    assertThat(result.getMetadata().getUid()).isNotBlank();
+    assertThat(result.getMetadata().getResourceVersion()).isNotBlank();
   }
 
   @Test
-  void getReturnsNullForMissingResource() {
-    assertThat(client.configMaps().withName("nonexistent").getAsPartialObjectMetadata())
-        .isNull();
+  void getAsPartialObjectMetadataReturnsNullForMissingResource() {
+    PartialObjectMetadata result = client.configMaps()
+        .inNamespace(TEST_NAMESPACE)
+        .withName("nonexistent")
+        .getAsPartialObjectMetadata();
+
+    assertThat(result).isNull();
   }
 
   @Test
-  void list() {
-    assertThat(client.configMaps().listAsPartialObjectMetadata())
-        .returns("PartialObjectMetadataList", PartialObjectMetadataList::getKind)
-        .returns("meta.k8s.io/v1", PartialObjectMetadataList::getApiVersion)
-        .extracting(PartialObjectMetadataList::getItems)
-        .asList()
+  void listAsPartialObjectMetadataReturnsPartialMetadataListKind() {
+    PartialObjectMetadataList result = client.configMaps()
+        .inNamespace(TEST_NAMESPACE)
+        .listAsPartialObjectMetadata();
+
+    assertThat(result.getKind()).isEqualTo("PartialObjectMetadataList");
+    assertThat(result.getApiVersion()).isEqualTo("meta.k8s.io/v1");
+    assertThat(result.getItems())
         .extracting("metadata.name")
-        .contains("partial-metadata-cm-one", "partial-metadata-cm-two");
+        .contains("cm-one", "cm-two");
+    assertThat(result.getItems()).allSatisfy(item -> {
+      assertThat(item.getKind()).isEqualTo("PartialObjectMetadata");
+      assertThat(item.getApiVersion()).isEqualTo("meta.k8s.io/v1");
+    });
   }
 
   @Test
-  void listWithLabelSelectorFiltersResults() {
-    assertThat(client.configMaps().withLabel("tier", "backend").listAsPartialObjectMetadata().getItems())
+  void listAsPartialObjectMetadataWithLabelSelectorFiltersResults() {
+    PartialObjectMetadataList result = client.configMaps()
+        .inNamespace(TEST_NAMESPACE)
+        .withLabel("tier", "backend")
+        .listAsPartialObjectMetadata();
+
+    assertThat(result.getKind()).isEqualTo("PartialObjectMetadataList");
+    assertThat(result.getItems())
         .hasSize(1)
         .extracting("metadata.name")
-        .containsExactly("partial-metadata-cm-two");
+        .containsExactly("cm-two");
   }
 
   @Test
-  void getWorksForClusterScopedResource() {
-    Namespace ns = client.namespaces().list().getItems().stream().findFirst().orElseThrow();
+  void getAsPartialObjectMetadataWorksForClusterScopedResource() {
+    PartialObjectMetadata result = client.namespaces()
+        .withName(TEST_NAMESPACE)
+        .getAsPartialObjectMetadata();
 
-    assertThat(client.namespaces().withName(ns.getMetadata().getName()).getAsPartialObjectMetadata())
-        .isNotNull()
-        .returns("PartialObjectMetadata", PartialObjectMetadata::getKind)
-        .returns("meta.k8s.io/v1", PartialObjectMetadata::getApiVersion);
+    assertThat(result).isNotNull();
+    assertThat(result.getKind()).isEqualTo("PartialObjectMetadata");
+    assertThat(result.getApiVersion()).isEqualTo("meta.k8s.io/v1");
+    assertThat(result.getMetadata().getName()).isEqualTo(TEST_NAMESPACE);
+    assertThat(result.getMetadata().getUid()).isNotBlank();
   }
 
   @Test
-  void listWithLimitRespectsLimit() {
-    assertThat(client.configMaps().listAsPartialObjectMetadata(new ListOptionsBuilder().withLimit(1L).build()).getItems())
-        .hasSize(1)
-        .first()
-        .returns("PartialObjectMetadata", PartialObjectMetadata::getKind);
+  void listAsPartialObjectMetadataWithListOptionsRespectsLimit() {
+    PartialObjectMetadataList result = client.configMaps()
+        .inNamespace(TEST_NAMESPACE)
+        .listAsPartialObjectMetadata(new ListOptionsBuilder().withLimit(1L).build());
+
+    assertThat(result.getKind()).isEqualTo("PartialObjectMetadataList");
+    assertThat(result.getApiVersion()).isEqualTo("meta.k8s.io/v1");
+    assertThat(result.getItems()).hasSize(1);
+    assertThat(result.getItems().get(0).getKind()).isEqualTo("PartialObjectMetadata");
   }
 }
