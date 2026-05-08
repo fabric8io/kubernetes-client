@@ -3,6 +3,7 @@
 ### 7.7-SNAPSHOT
 
 #### Bugs
+* Fix #7747: (mockwebserver) avoid RejectedExecutionException race in MockWebServer#shutdown() between the httpClose listener and await
 * Fix #7734: (mockwebserver) avoid sending Content-Length together with Transfer-Encoding for chunked responses
 * Fix #7686: (httpclient-vertx-5) StackBasedRecursionGuard.enter() no longer increments depth when refusing entry, fixing an infinite runOnContext loop that stalled InputStreamReadStream uploads under CPU contention
 * Fix #7700: ExecWebSocketListener.onError now defers failure handling through the SerialExecutor so a pending channel-3 exit-status task runs first and the parsed exit code is preserved instead of being overwritten by a peer-close exception

@@ -24,9 +24,7 @@ import io.fabric8.mockwebserver.http.RecordedRequest;
 import io.fabric8.mockwebserver.vertx.HttpServerRequestHandler;
 import io.fabric8.mockwebserver.vertx.Protocol;
 import io.netty.handler.ssl.ClientAuth;
-import io.vertx.core.AsyncResult;
 import io.vertx.core.Future;
-import io.vertx.core.Handler;
 import io.vertx.core.Vertx;
 import io.vertx.core.http.HttpServer;
 import io.vertx.core.http.HttpServerOptions;
@@ -183,17 +181,8 @@ public class MockWebServer implements Closeable {
       throw new IllegalStateException("shutdown() before start()");
     }
     dispatcher.shutdown();
-    final Future<Void> httpClose = httpServer.close();
-    Handler<AsyncResult<Void>> onComplete = v -> {
-      vertx.close();
-      info("done accepting connections");
-    };
-    if (httpClose.isComplete()) {
-      onComplete.handle(httpClose);
-    } else {
-      httpClose.onComplete(onComplete);
-      await(httpClose, "Unable to close MockWebServer");
-    }
+    await(httpServer.close(), "Unable to close MockWebServer");
+    info("done accepting connections");
     await(vertx.close(), "Unable to close Vertx");
   }
 
