@@ -56,7 +56,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@EnableKubernetesMockClient
+@EnableKubernetesMockClient(https = false)
 class CustomResourceTest {
   private static final Long WATCH_EVENT_PERIOD = 5L;
 
@@ -225,7 +225,7 @@ class CustomResourceTest {
 
     // When
     boolean result = client.genericKubernetesResources(customResourceDefinitionContext).inNamespace("ns1")
-        .withName("example-hello").delete().size() == 1;
+        .withName("example-hello").withGracePeriod(0).delete().size() == 1;
 
     // Then
     assertTrue(result);
@@ -342,7 +342,7 @@ class CustomResourceTest {
   @Test
   void testDeleteWithNonExistentResource() throws IOException {
     assertThat(client.genericKubernetesResources(customResourceDefinitionContext).inNamespace("ns2").withName("example-hello")
-        .delete().size() == 1)
+        .withGracePeriod(0).delete().size() == 1)
         .isFalse();
   }
 

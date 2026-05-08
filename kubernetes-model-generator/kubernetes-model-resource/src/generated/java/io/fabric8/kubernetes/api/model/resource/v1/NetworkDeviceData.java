@@ -93,7 +93,7 @@ public class NetworkDeviceData implements Editable<NetworkDeviceDataBuilder>, Ku
     }
 
     /**
-     * HardwareAddress represents the hardware address (e.g. MAC Address) of the device's network interface.<br><p> <br><p> Must not be longer than 128 characters.
+     * HardwareAddress represents the hardware address (e.g. MAC Address) of the device's network interface.<br><p> <br><p> Must not be longer than 128 bytes.
      */
     @JsonProperty("hardwareAddress")
     public String getHardwareAddress() {
@@ -101,7 +101,7 @@ public class NetworkDeviceData implements Editable<NetworkDeviceDataBuilder>, Ku
     }
 
     /**
-     * HardwareAddress represents the hardware address (e.g. MAC Address) of the device's network interface.<br><p> <br><p> Must not be longer than 128 characters.
+     * HardwareAddress represents the hardware address (e.g. MAC Address) of the device's network interface.<br><p> <br><p> Must not be longer than 128 bytes.
      */
     @JsonProperty("hardwareAddress")
     public void setHardwareAddress(String hardwareAddress) {
@@ -109,7 +109,7 @@ public class NetworkDeviceData implements Editable<NetworkDeviceDataBuilder>, Ku
     }
 
     /**
-     * InterfaceName specifies the name of the network interface associated with the allocated device. This might be the name of a physical or virtual network interface being configured in the pod.<br><p> <br><p> Must not be longer than 256 characters.
+     * InterfaceName specifies the name of the network interface associated with the allocated device. This might be the name of a physical or virtual network interface being configured in the pod.<br><p> <br><p> Must not be longer than 256 bytes.
      */
     @JsonProperty("interfaceName")
     public String getInterfaceName() {
@@ -117,7 +117,7 @@ public class NetworkDeviceData implements Editable<NetworkDeviceDataBuilder>, Ku
     }
 
     /**
-     * InterfaceName specifies the name of the network interface associated with the allocated device. This might be the name of a physical or virtual network interface being configured in the pod.<br><p> <br><p> Must not be longer than 256 characters.
+     * InterfaceName specifies the name of the network interface associated with the allocated device. This might be the name of a physical or virtual network interface being configured in the pod.<br><p> <br><p> Must not be longer than 256 bytes.
      */
     @JsonProperty("interfaceName")
     public void setInterfaceName(String interfaceName) {

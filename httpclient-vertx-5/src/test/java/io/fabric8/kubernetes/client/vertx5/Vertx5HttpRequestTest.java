@@ -29,6 +29,7 @@ import io.vertx.core.buffer.Buffer;
 import io.vertx.core.http.HttpClient;
 import io.vertx.core.http.HttpClientRequest;
 import io.vertx.core.http.HttpClientResponse;
+import io.vertx.core.http.HttpClosedException;
 import io.vertx.core.http.RequestOptions;
 import io.vertx.core.streams.ReadStream;
 import org.junit.jupiter.api.BeforeEach;
@@ -39,6 +40,7 @@ import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.util.List;
 import java.util.Map;
@@ -284,6 +286,22 @@ class Vertx5HttpRequestTest {
 
     assertThat(result).hasSize(1);
     assertThat(result.get("Accept")).containsExactly("application/json", "text/plain", "*/*");
+  }
+
+  @Test
+  @DisplayName("HttpClosedException should be wrapped as IOException")
+  void consumeBytes_httpClosedExceptionIsWrappedAsIOException() {
+    when(httpClient.request(options)).thenReturn(Future.failedFuture(new HttpClosedException("connection closed")));
+    when(request.body()).thenReturn(null);
+
+    CompletableFuture<HttpResponse<AsyncBody>> result = vertxHttpRequest.consumeBytes(httpClient, consumer);
+
+    assertThatThrownBy(() -> result.get(1, TimeUnit.SECONDS))
+        .isInstanceOf(ExecutionException.class)
+        .cause()
+        .isInstanceOf(IOException.class)
+        .hasCauseInstanceOf(HttpClosedException.class)
+        .hasMessage("connection closed");
   }
 
   @Test

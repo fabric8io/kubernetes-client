@@ -232,7 +232,7 @@ public class DockerSDConfig implements Editable<DockerSDConfigBuilder>, Kubernet
     }
 
     /**
-     * host defines the address of the docker daemon
+     * host defines the address of the docker daemon.
      */
     @JsonProperty("host")
     public String getHost() {
@@ -240,7 +240,7 @@ public class DockerSDConfig implements Editable<DockerSDConfigBuilder>, Kubernet
     }
 
     /**
-     * host defines the address of the docker daemon
+     * host defines the address of the docker daemon.
      */
     @JsonProperty("host")
     public void setHost(String host) {

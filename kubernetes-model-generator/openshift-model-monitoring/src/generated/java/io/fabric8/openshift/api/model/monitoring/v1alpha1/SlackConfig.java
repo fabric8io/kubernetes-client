@@ -54,6 +54,7 @@ import lombok.experimental.Accessors;
     "iconURL",
     "imageURL",
     "linkNames",
+    "messageText",
     "mrkdwnIn",
     "pretext",
     "sendResolved",
@@ -118,6 +119,8 @@ public class SlackConfig implements Editable<SlackConfigBuilder>, KubernetesReso
     private String imageURL;
     @JsonProperty("linkNames")
     private Boolean linkNames;
+    @JsonProperty("messageText")
+    private String messageText;
     @JsonProperty("mrkdwnIn")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> mrkdwnIn = new ArrayList<>();
@@ -148,7 +151,7 @@ public class SlackConfig implements Editable<SlackConfigBuilder>, KubernetesReso
     public SlackConfig() {
     }
 
-    public SlackConfig(List<SlackAction> actions, SecretKeySelector apiURL, String callbackId, String channel, String color, String fallback, List<SlackField> fields, String footer, HTTPConfig httpConfig, String iconEmoji, String iconURL, String imageURL, Boolean linkNames, List<String> mrkdwnIn, String pretext, Boolean sendResolved, Boolean shortFields, String text, String thumbURL, String timeout, String title, String titleLink, String username) {
+    public SlackConfig(List<SlackAction> actions, SecretKeySelector apiURL, String callbackId, String channel, String color, String fallback, List<SlackField> fields, String footer, HTTPConfig httpConfig, String iconEmoji, String iconURL, String imageURL, Boolean linkNames, String messageText, List<String> mrkdwnIn, String pretext, Boolean sendResolved, Boolean shortFields, String text, String thumbURL, String timeout, String title, String titleLink, String username) {
         super();
         this.actions = actions;
         this.apiURL = apiURL;
@@ -163,6 +166,7 @@ public class SlackConfig implements Editable<SlackConfigBuilder>, KubernetesReso
         this.iconURL = iconURL;
         this.imageURL = imageURL;
         this.linkNames = linkNames;
+        this.messageText = messageText;
         this.mrkdwnIn = mrkdwnIn;
         this.pretext = pretext;
         this.sendResolved = sendResolved;
@@ -383,6 +387,22 @@ public class SlackConfig implements Editable<SlackConfigBuilder>, KubernetesReso
     @JsonProperty("linkNames")
     public void setLinkNames(Boolean linkNames) {
         this.linkNames = linkNames;
+    }
+
+    /**
+     * messageText defines text content of the Slack message. If set, this is sent as the top-level 'text' field in the Slack payload. It requires Alertmanager &gt;= v0.31.0.
+     */
+    @JsonProperty("messageText")
+    public String getMessageText() {
+        return messageText;
+    }
+
+    /**
+     * messageText defines text content of the Slack message. If set, this is sent as the top-level 'text' field in the Slack payload. It requires Alertmanager &gt;= v0.31.0.
+     */
+    @JsonProperty("messageText")
+    public void setMessageText(String messageText) {
+        this.messageText = messageText;
     }
 
     /**

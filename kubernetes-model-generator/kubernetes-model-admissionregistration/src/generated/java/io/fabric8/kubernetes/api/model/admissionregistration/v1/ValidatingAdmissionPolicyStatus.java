@@ -94,7 +94,7 @@ public class ValidatingAdmissionPolicyStatus implements Editable<ValidatingAdmis
     }
 
     /**
-     * The conditions represent the latest available observations of a policy's current state.
+     * conditions represent the latest available observations of a policy's current state.
      */
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -103,7 +103,7 @@ public class ValidatingAdmissionPolicyStatus implements Editable<ValidatingAdmis
     }
 
     /**
-     * The conditions represent the latest available observations of a policy's current state.
+     * conditions represent the latest available observations of a policy's current state.
      */
     @JsonProperty("conditions")
     public void setConditions(List<Condition> conditions) {
@@ -111,7 +111,7 @@ public class ValidatingAdmissionPolicyStatus implements Editable<ValidatingAdmis
     }
 
     /**
-     * The generation observed by the controller.
+     * observedGeneration is the generation observed by the controller.
      */
     @JsonProperty("observedGeneration")
     public Long getObservedGeneration() {
@@ -119,7 +119,7 @@ public class ValidatingAdmissionPolicyStatus implements Editable<ValidatingAdmis
     }
 
     /**
-     * The generation observed by the controller.
+     * observedGeneration is the generation observed by the controller.
      */
     @JsonProperty("observedGeneration")
     public void setObservedGeneration(Long observedGeneration) {

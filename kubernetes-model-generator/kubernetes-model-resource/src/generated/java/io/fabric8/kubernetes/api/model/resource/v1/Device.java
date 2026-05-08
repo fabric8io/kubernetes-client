@@ -50,6 +50,7 @@ import lombok.experimental.Accessors;
     "capacity",
     "consumesCounters",
     "name",
+    "nodeAllocatableResourceMappings",
     "nodeName",
     "nodeSelector",
     "taints"
@@ -102,6 +103,9 @@ public class Device implements Editable<DeviceBuilder>, KubernetesResource
     private List<DeviceCounterConsumption> consumesCounters = new ArrayList<>();
     @JsonProperty("name")
     private String name;
+    @JsonProperty("nodeAllocatableResourceMappings")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private Map<String, NodeAllocatableResourceMapping> nodeAllocatableResourceMappings = new LinkedHashMap<>();
     @JsonProperty("nodeName")
     private String nodeName;
     @JsonProperty("nodeSelector")
@@ -118,7 +122,7 @@ public class Device implements Editable<DeviceBuilder>, KubernetesResource
     public Device() {
     }
 
-    public Device(Boolean allNodes, Boolean allowMultipleAllocations, Map<String, DeviceAttribute> attributes, List<String> bindingConditions, List<String> bindingFailureConditions, Boolean bindsToNode, Map<String, DeviceCapacity> capacity, List<DeviceCounterConsumption> consumesCounters, String name, String nodeName, NodeSelector nodeSelector, List<DeviceTaint> taints) {
+    public Device(Boolean allNodes, Boolean allowMultipleAllocations, Map<String, DeviceAttribute> attributes, List<String> bindingConditions, List<String> bindingFailureConditions, Boolean bindsToNode, Map<String, DeviceCapacity> capacity, List<DeviceCounterConsumption> consumesCounters, String name, Map<String, NodeAllocatableResourceMapping> nodeAllocatableResourceMappings, String nodeName, NodeSelector nodeSelector, List<DeviceTaint> taints) {
         super();
         this.allNodes = allNodes;
         this.allowMultipleAllocations = allowMultipleAllocations;
@@ -129,6 +133,7 @@ public class Device implements Editable<DeviceBuilder>, KubernetesResource
         this.capacity = capacity;
         this.consumesCounters = consumesCounters;
         this.name = name;
+        this.nodeAllocatableResourceMappings = nodeAllocatableResourceMappings;
         this.nodeName = nodeName;
         this.nodeSelector = nodeSelector;
         this.taints = taints;
@@ -184,7 +189,7 @@ public class Device implements Editable<DeviceBuilder>, KubernetesResource
     }
 
     /**
-     * BindingConditions defines the conditions for proceeding with binding. All of these conditions must be set in the per-device status conditions with a value of True to proceed with binding the pod to the node while scheduling the pod.<br><p> <br><p> The maximum number of binding conditions is 4.<br><p> <br><p> The conditions must be a valid condition type string.<br><p> <br><p> This is an alpha field and requires enabling the DRADeviceBindingConditions and DRAResourceClaimDeviceStatus feature gates.
+     * BindingConditions defines the conditions for proceeding with binding. All of these conditions must be set in the per-device status conditions with a value of True to proceed with binding the pod to the node while scheduling the pod.<br><p> <br><p> The maximum number of binding conditions is 4.<br><p> <br><p> The conditions must be a valid condition type string.<br><p> <br><p> This is a beta field and requires enabling the DRADeviceBindingConditions and DRAResourceClaimDeviceStatus feature gates.
      */
     @JsonProperty("bindingConditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -193,7 +198,7 @@ public class Device implements Editable<DeviceBuilder>, KubernetesResource
     }
 
     /**
-     * BindingConditions defines the conditions for proceeding with binding. All of these conditions must be set in the per-device status conditions with a value of True to proceed with binding the pod to the node while scheduling the pod.<br><p> <br><p> The maximum number of binding conditions is 4.<br><p> <br><p> The conditions must be a valid condition type string.<br><p> <br><p> This is an alpha field and requires enabling the DRADeviceBindingConditions and DRAResourceClaimDeviceStatus feature gates.
+     * BindingConditions defines the conditions for proceeding with binding. All of these conditions must be set in the per-device status conditions with a value of True to proceed with binding the pod to the node while scheduling the pod.<br><p> <br><p> The maximum number of binding conditions is 4.<br><p> <br><p> The conditions must be a valid condition type string.<br><p> <br><p> This is a beta field and requires enabling the DRADeviceBindingConditions and DRAResourceClaimDeviceStatus feature gates.
      */
     @JsonProperty("bindingConditions")
     public void setBindingConditions(List<String> bindingConditions) {
@@ -201,7 +206,7 @@ public class Device implements Editable<DeviceBuilder>, KubernetesResource
     }
 
     /**
-     * BindingFailureConditions defines the conditions for binding failure. They may be set in the per-device status conditions. If any is set to "True", a binding failure occurred.<br><p> <br><p> The maximum number of binding failure conditions is 4.<br><p> <br><p> The conditions must be a valid condition type string.<br><p> <br><p> This is an alpha field and requires enabling the DRADeviceBindingConditions and DRAResourceClaimDeviceStatus feature gates.
+     * BindingFailureConditions defines the conditions for binding failure. They may be set in the per-device status conditions. If any is set to "True", a binding failure occurred.<br><p> <br><p> The maximum number of binding failure conditions is 4.<br><p> <br><p> The conditions must be a valid condition type string.<br><p> <br><p> This is a beta field and requires enabling the DRADeviceBindingConditions and DRAResourceClaimDeviceStatus feature gates.
      */
     @JsonProperty("bindingFailureConditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -210,7 +215,7 @@ public class Device implements Editable<DeviceBuilder>, KubernetesResource
     }
 
     /**
-     * BindingFailureConditions defines the conditions for binding failure. They may be set in the per-device status conditions. If any is set to "True", a binding failure occurred.<br><p> <br><p> The maximum number of binding failure conditions is 4.<br><p> <br><p> The conditions must be a valid condition type string.<br><p> <br><p> This is an alpha field and requires enabling the DRADeviceBindingConditions and DRAResourceClaimDeviceStatus feature gates.
+     * BindingFailureConditions defines the conditions for binding failure. They may be set in the per-device status conditions. If any is set to "True", a binding failure occurred.<br><p> <br><p> The maximum number of binding failure conditions is 4.<br><p> <br><p> The conditions must be a valid condition type string.<br><p> <br><p> This is a beta field and requires enabling the DRADeviceBindingConditions and DRAResourceClaimDeviceStatus feature gates.
      */
     @JsonProperty("bindingFailureConditions")
     public void setBindingFailureConditions(List<String> bindingFailureConditions) {
@@ -218,7 +223,7 @@ public class Device implements Editable<DeviceBuilder>, KubernetesResource
     }
 
     /**
-     * BindsToNode indicates if the usage of an allocation involving this device has to be limited to exactly the node that was chosen when allocating the claim. If set to true, the scheduler will set the ResourceClaim.Status.Allocation.NodeSelector to match the node where the allocation was made.<br><p> <br><p> This is an alpha field and requires enabling the DRADeviceBindingConditions and DRAResourceClaimDeviceStatus feature gates.
+     * BindsToNode indicates if the usage of an allocation involving this device has to be limited to exactly the node that was chosen when allocating the claim. If set to true, the scheduler will set the ResourceClaim.Status.Allocation.NodeSelector to match the node where the allocation was made.<br><p> <br><p> This is a beta field and requires enabling the DRADeviceBindingConditions and DRAResourceClaimDeviceStatus feature gates.
      */
     @JsonProperty("bindsToNode")
     public Boolean getBindsToNode() {
@@ -226,7 +231,7 @@ public class Device implements Editable<DeviceBuilder>, KubernetesResource
     }
 
     /**
-     * BindsToNode indicates if the usage of an allocation involving this device has to be limited to exactly the node that was chosen when allocating the claim. If set to true, the scheduler will set the ResourceClaim.Status.Allocation.NodeSelector to match the node where the allocation was made.<br><p> <br><p> This is an alpha field and requires enabling the DRADeviceBindingConditions and DRAResourceClaimDeviceStatus feature gates.
+     * BindsToNode indicates if the usage of an allocation involving this device has to be limited to exactly the node that was chosen when allocating the claim. If set to true, the scheduler will set the ResourceClaim.Status.Allocation.NodeSelector to match the node where the allocation was made.<br><p> <br><p> This is a beta field and requires enabling the DRADeviceBindingConditions and DRAResourceClaimDeviceStatus feature gates.
      */
     @JsonProperty("bindsToNode")
     public void setBindsToNode(Boolean bindsToNode) {
@@ -284,6 +289,23 @@ public class Device implements Editable<DeviceBuilder>, KubernetesResource
     }
 
     /**
+     * NodeAllocatableResourceMappings defines the mapping of node resources that are managed by the DRA driver exposing this device. This includes resources currently reported in v1.Node `status.allocatable` that are not extended resources (see https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/#extended-resources). Examples include "cpu", "memory", "ephemeral-storage", and hugepages. In addition to standard requests made through the Pod `spec`, these resources can also be requested through claims and allocated by the DRA driver. For example, a CPU DRA driver might allocate exclusive CPUs or auxiliary node memory dependencies of an accelerator device. The keys of this map are the node-allocatable resource names (e.g., "cpu", "memory"). Extended resource names are not permitted as keys.
+     */
+    @JsonProperty("nodeAllocatableResourceMappings")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public Map<String, NodeAllocatableResourceMapping> getNodeAllocatableResourceMappings() {
+        return nodeAllocatableResourceMappings;
+    }
+
+    /**
+     * NodeAllocatableResourceMappings defines the mapping of node resources that are managed by the DRA driver exposing this device. This includes resources currently reported in v1.Node `status.allocatable` that are not extended resources (see https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/#extended-resources). Examples include "cpu", "memory", "ephemeral-storage", and hugepages. In addition to standard requests made through the Pod `spec`, these resources can also be requested through claims and allocated by the DRA driver. For example, a CPU DRA driver might allocate exclusive CPUs or auxiliary node memory dependencies of an accelerator device. The keys of this map are the node-allocatable resource names (e.g., "cpu", "memory"). Extended resource names are not permitted as keys.
+     */
+    @JsonProperty("nodeAllocatableResourceMappings")
+    public void setNodeAllocatableResourceMappings(Map<String, NodeAllocatableResourceMapping> nodeAllocatableResourceMappings) {
+        this.nodeAllocatableResourceMappings = nodeAllocatableResourceMappings;
+    }
+
+    /**
      * NodeName identifies the node where the device is available.<br><p> <br><p> Must only be set if Spec.PerDeviceNodeSelection is set to true. At most one of NodeName, NodeSelector and AllNodes can be set.
      */
     @JsonProperty("nodeName")
@@ -316,7 +338,7 @@ public class Device implements Editable<DeviceBuilder>, KubernetesResource
     }
 
     /**
-     * If specified, these are the driver-defined taints.<br><p> <br><p> The maximum number of taints is 16. If taints are set for any device in a ResourceSlice, then the maximum number of allowed devices per ResourceSlice is 64 instead of 128.<br><p> <br><p> This is an alpha field and requires enabling the DRADeviceTaints feature gate.
+     * If specified, these are the driver-defined taints.<br><p> <br><p> The maximum number of taints is 16. If taints are set for any device in a ResourceSlice, then the maximum number of allowed devices per ResourceSlice is 64 instead of 128.<br><p> <br><p> This is a beta field and requires enabling the DRADeviceTaints feature gate.
      */
     @JsonProperty("taints")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -325,7 +347,7 @@ public class Device implements Editable<DeviceBuilder>, KubernetesResource
     }
 
     /**
-     * If specified, these are the driver-defined taints.<br><p> <br><p> The maximum number of taints is 16. If taints are set for any device in a ResourceSlice, then the maximum number of allowed devices per ResourceSlice is 64 instead of 128.<br><p> <br><p> This is an alpha field and requires enabling the DRADeviceTaints feature gate.
+     * If specified, these are the driver-defined taints.<br><p> <br><p> The maximum number of taints is 16. If taints are set for any device in a ResourceSlice, then the maximum number of allowed devices per ResourceSlice is 64 instead of 128.<br><p> <br><p> This is a beta field and requires enabling the DRADeviceTaints feature gate.
      */
     @JsonProperty("taints")
     public void setTaints(List<DeviceTaint> taints) {

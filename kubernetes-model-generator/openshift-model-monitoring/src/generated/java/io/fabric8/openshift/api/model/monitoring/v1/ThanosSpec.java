@@ -103,7 +103,7 @@ public class ThanosSpec implements Editable<ThanosSpecBuilder>, KubernetesResour
     @JsonProperty("grpcListenLocal")
     private Boolean grpcListenLocal;
     @JsonProperty("grpcServerTlsConfig")
-    private TLSConfig grpcServerTlsConfig;
+    private GRPCServerTLSConfig grpcServerTlsConfig;
     @JsonProperty("httpListenLocal")
     private Boolean httpListenLocal;
     @JsonProperty("image")
@@ -146,7 +146,7 @@ public class ThanosSpec implements Editable<ThanosSpecBuilder>, KubernetesResour
     public ThanosSpec() {
     }
 
-    public ThanosSpec(List<Argument> additionalArgs, String baseImage, String blockSize, String getConfigInterval, String getConfigTimeout, Boolean grpcListenLocal, TLSConfig grpcServerTlsConfig, Boolean httpListenLocal, String image, Boolean listenLocal, String logFormat, String logLevel, String minTime, SecretKeySelector objectStorageConfig, String objectStorageConfigFile, String readyTimeout, ResourceRequirements resources, String sha, String tag, SecretKeySelector tracingConfig, String tracingConfigFile, String version, List<VolumeMount> volumeMounts) {
+    public ThanosSpec(List<Argument> additionalArgs, String baseImage, String blockSize, String getConfigInterval, String getConfigTimeout, Boolean grpcListenLocal, GRPCServerTLSConfig grpcServerTlsConfig, Boolean httpListenLocal, String image, Boolean listenLocal, String logFormat, String logLevel, String minTime, SecretKeySelector objectStorageConfig, String objectStorageConfigFile, String readyTimeout, ResourceRequirements resources, String sha, String tag, SecretKeySelector tracingConfig, String tracingConfigFile, String version, List<VolumeMount> volumeMounts) {
         super();
         this.additionalArgs = additionalArgs;
         this.baseImage = baseImage;
@@ -274,7 +274,7 @@ public class ThanosSpec implements Editable<ThanosSpecBuilder>, KubernetesResour
      * ThanosSpec defines the configuration of the Thanos sidecar.
      */
     @JsonProperty("grpcServerTlsConfig")
-    public TLSConfig getGrpcServerTlsConfig() {
+    public GRPCServerTLSConfig getGrpcServerTlsConfig() {
         return grpcServerTlsConfig;
     }
 
@@ -282,7 +282,7 @@ public class ThanosSpec implements Editable<ThanosSpecBuilder>, KubernetesResour
      * ThanosSpec defines the configuration of the Thanos sidecar.
      */
     @JsonProperty("grpcServerTlsConfig")
-    public void setGrpcServerTlsConfig(TLSConfig grpcServerTlsConfig) {
+    public void setGrpcServerTlsConfig(GRPCServerTLSConfig grpcServerTlsConfig) {
         this.grpcServerTlsConfig = grpcServerTlsConfig;
     }
 

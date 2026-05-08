@@ -26,7 +26,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@EnableKubernetesMockClient
+@EnableKubernetesMockClient(https = false)
 class KubernetesOperationTest {
 
   KubernetesMockServer server;
@@ -38,10 +38,10 @@ class KubernetesOperationTest {
         .andReturn(200, new ReplicationControllerBuilder().build()).once();
     server.expect().withPath("/api/v1/namespaces/test/pods/pod1").andReturn(200, new PodBuilder().build()).once();
 
-    boolean deleted = client.replicationControllers().withName("rc1").cascading(false).delete().size() == 1;
+    boolean deleted = client.replicationControllers().withName("rc1").cascading(false).withGracePeriod(0).delete().size() == 1;
     assertTrue(deleted);
 
-    deleted = client.pods().withName("pod1").cascading(false).delete().size() == 1;
+    deleted = client.pods().withName("pod1").cascading(false).withGracePeriod(0).delete().size() == 1;
     assertTrue(deleted);
   }
 
@@ -64,18 +64,18 @@ class KubernetesOperationTest {
         .andReturn(200, new BuildConfigBuilder().build()).once();
     server.expect().withPath("/api/v1/namespaces/test/pods/pod1").andReturn(200, new PodBuilder().build()).once();
 
-    boolean deleted = client.replicationControllers().withName("rc1").cascading(false).delete().size() == 1;
+    boolean deleted = client.replicationControllers().withName("rc1").cascading(false).withGracePeriod(0).delete().size() == 1;
     assertTrue(deleted);
 
-    deleted = client.pods().withName("pod1").cascading(false).delete().size() == 1;
+    deleted = client.pods().withName("pod1").cascading(false).withGracePeriod(0).delete().size() == 1;
     assertTrue(deleted);
 
     OpenShiftClient oclient = client.adapt(OpenShiftClient.class);
 
-    deleted = oclient.buildConfigs().withName("bc1").cascading(false).delete().size() == 1;
+    deleted = oclient.buildConfigs().withName("bc1").cascading(false).withGracePeriod(0).delete().size() == 1;
     assertTrue(deleted);
 
-    deleted = oclient.pods().withName("pod1").cascading(false).delete().size() == 1;
+    deleted = oclient.pods().withName("pod1").cascading(false).withGracePeriod(0).delete().size() == 1;
     assertTrue(deleted);
   }
 

@@ -78,7 +78,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
-@EnableKubernetesMockClient
+@EnableKubernetesMockClient(https = false)
 class PodTest {
 
   KubernetesMockServer server;
@@ -212,13 +212,13 @@ class PodTest {
     server.expect().withPath("/api/v1/namespaces/test/pods/pod1").andReturn(200, new PodBuilder().build()).once();
     server.expect().withPath("/api/v1/namespaces/ns1/pods/pod2").andReturn(200, new PodBuilder().build()).once();
 
-    boolean deleted = client.pods().withName("pod1").delete().size() == 1;
+    boolean deleted = client.pods().withName("pod1").withGracePeriod(0).delete().size() == 1;
     assertTrue(deleted);
 
-    deleted = client.pods().withName("pod2").delete().size() == 1;
+    deleted = client.pods().withName("pod2").withGracePeriod(0).delete().size() == 1;
     assertFalse(deleted);
 
-    deleted = client.pods().inNamespace("ns1").withName("pod2").cascading(false).delete().size() == 1;
+    deleted = client.pods().inNamespace("ns1").withName("pod2").cascading(false).withGracePeriod(0).delete().size() == 1;
     assertTrue(deleted);
   }
 
@@ -562,11 +562,11 @@ class PodTest {
   }
 
   @Test
-  void testExecExplicitDefaultContainerMissing() {
+  void testExecExplicitDefaultContainerMissing() throws InterruptedException {
     server.expect()
         .withPath("/api/v1/namespaces/test/pods/pod1/exec?command=ls&container=first&stderr=true")
         .andUpgradeToWebSocket()
-        .open()
+        .open(new ErrorStreamMessage("err"))
         .done()
         .always();
 
@@ -585,11 +585,14 @@ class PodTest {
         .once();
 
     // When
+    final CountDownLatch execLatch = new CountDownLatch(1);
     ExecWatch watch = client.pods()
         .withName("pod1")
         .terminateOnError()
+        .usingListener(createCountDownLatchListener(execLatch))
         .exec("ls");
 
+    assertTrue(execLatch.await(1, TimeUnit.MINUTES));
     watch.close();
   }
 

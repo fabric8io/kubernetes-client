@@ -685,8 +685,8 @@ Secret secret = client.secrets().inNamespace("default").withName("secret1").get(
 ```java
 Secret secret1 = new SecretBuilder()
       .withNewMetadata().withName("secret1").endMetadata()
-      .addToData("username", "guccifer")
-      .addToData("password", "shadowgovernment")
+      .addToStringData("username", "guccifer")
+      .addToStringData("password", "shadowgovernment")
       .build();
 Secret secretCreated = client.secrets().inNamespace("default").resource(secret1).create();
 ```

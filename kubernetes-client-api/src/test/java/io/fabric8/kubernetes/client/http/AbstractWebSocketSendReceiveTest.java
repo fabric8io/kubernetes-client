@@ -26,6 +26,7 @@ import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -104,7 +105,9 @@ public abstract class AbstractWebSocketSendReceiveTest {
           .andEmit(multiframe)
           .done()
           .always();
-      final BlockingQueue<String> receivedText = new ArrayBlockingQueue<>(1);
+      // Unbounded: both emits are scheduled at open+5ms by the mock server (see #7665),
+      // so the 2nd message may arrive before the main thread polls the 1st.
+      final BlockingQueue<String> receivedText = new LinkedBlockingQueue<>();
       // TODO: JDK HttpClient implementation doesn't work with ws URIs
       // - Currently we are using an HttpRequest.Builder which is then
       //   mapped to a WebSocket.Builder. We should probably use the WebSocket.Builder
@@ -115,7 +118,7 @@ public abstract class AbstractWebSocketSendReceiveTest {
           .buildAsync(new WebSocket.Listener() {
             @Override
             public void onMessage(WebSocket webSocket, String text) {
-              assertTrue(receivedText.offer(text));
+              receivedText.add(text);
               webSocket.request();
             }
           }).get(10L, TimeUnit.SECONDS);

@@ -126,7 +126,7 @@ public class PodUpdatePolicy implements Editable<PodUpdatePolicyBuilder>, Kubern
     }
 
     /**
-     * Controls when autoscaler applies changes to the pod resources. The default is 'Auto'.
+     * Controls when autoscaler applies changes to the pod resources. The default is 'Recreate'.
      */
     @JsonProperty("updateMode")
     public String getUpdateMode() {
@@ -134,7 +134,7 @@ public class PodUpdatePolicy implements Editable<PodUpdatePolicyBuilder>, Kubern
     }
 
     /**
-     * Controls when autoscaler applies changes to the pod resources. The default is 'Auto'.
+     * Controls when autoscaler applies changes to the pod resources. The default is 'Recreate'.
      */
     @JsonProperty("updateMode")
     public void setUpdateMode(String updateMode) {

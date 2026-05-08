@@ -28,7 +28,7 @@ import java.net.HttpURLConnection;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@EnableKubernetesMockClient
+@EnableKubernetesMockClient(https = false)
 class IdentityTest {
   private OpenShiftClient client;
   KubernetesMockServer server;
@@ -76,7 +76,7 @@ class IdentityTest {
         .once();
 
     // When
-    boolean isDeleted = client.identities().withName("developer:developer").delete().size() == 1;
+    boolean isDeleted = client.identities().withName("developer:developer").withGracePeriod(0).delete().size() == 1;
 
     // Then
     assertThat(isDeleted).isTrue();

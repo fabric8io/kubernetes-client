@@ -24,9 +24,7 @@ import io.fabric8.mockwebserver.http.RecordedRequest;
 import io.fabric8.mockwebserver.vertx.HttpServerRequestHandler;
 import io.fabric8.mockwebserver.vertx.Protocol;
 import io.netty.handler.ssl.ClientAuth;
-import io.vertx.core.AsyncResult;
 import io.vertx.core.Future;
-import io.vertx.core.Handler;
 import io.vertx.core.Vertx;
 import io.vertx.core.http.HttpServer;
 import io.vertx.core.http.HttpServerOptions;
@@ -98,7 +96,9 @@ public class MockWebServer implements Closeable {
   private InetAddress inetAddress;
   private String hostName;
   private List<Protocol> protocols;
+  private boolean http2ClearTextEnabled;
   private boolean started;
+  private boolean shutdown;
 
   public MockWebServer() {
     vertx = Vertx.vertx();
@@ -110,6 +110,7 @@ public class MockWebServer implements Closeable {
     enabledSecuredTransportProtocols = new ArrayList<>();
     enabledSecuredTransportProtocols.addAll(DEFAULT_ENABLED_SECURE_TRANSPORT_PROTOCOLS);
     protocols = Arrays.asList(Protocol.HTTP_2, Protocol.HTTP_1_1);
+    http2ClearTextEnabled = true;
   }
 
   private void before() {
@@ -148,6 +149,8 @@ public class MockWebServer implements Closeable {
       options
           .setTrustOptions(selfSignedCertificate.trustOptions())
           .setKeyCertOptions(selfSignedCertificate.keyCertOptions());
+    } else {
+      options.setHttp2ClearTextEnabled(http2ClearTextEnabled);
     }
     httpServer = vertx.createHttpServer(options);
     httpServer.connectionHandler(event -> {
@@ -172,24 +175,16 @@ public class MockWebServer implements Closeable {
   }
 
   public synchronized void shutdown() {
-    if (!started) {
+    if (!started || shutdown) {
       return;
     }
     if (httpServer == null) {
       throw new IllegalStateException("shutdown() before start()");
     }
+    shutdown = true;
     dispatcher.shutdown();
-    final Future<Void> httpClose = httpServer.close();
-    Handler<AsyncResult<Void>> onComplete = v -> {
-      vertx.close();
-      info("done accepting connections");
-    };
-    if (httpClose.isComplete()) {
-      onComplete.handle(httpClose);
-    } else {
-      httpClose.onComplete(onComplete);
-      await(httpClose, "Unable to close MockWebServer");
-    }
+    await(httpServer.close(), "Unable to close MockWebServer");
+    info("done accepting connections");
     await(vertx.close(), "Unable to close Vertx");
   }
 
@@ -260,6 +255,16 @@ public class MockWebServer implements Closeable {
 
   public void setProtocols(List<Protocol> protocols) {
     this.protocols = protocols;
+  }
+
+  /**
+   * Enables or disables HTTP/2 over cleartext (h2c). Enabled by default, matching Vert.x's
+   * own default. Set to {@code false} for tests that use HTTP clients (such as the JDK
+   * HttpClient) which probe for {@code Upgrade: h2c} — accepting the upgrade can lead to
+   * non-deterministic HTTP/2 framing behaviour on large responses.
+   */
+  public void setHttp2ClearTextEnabled(boolean http2ClearTextEnabled) {
+    this.http2ClearTextEnabled = http2ClearTextEnabled;
   }
 
   /**

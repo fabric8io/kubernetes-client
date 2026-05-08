@@ -42,6 +42,7 @@ import lombok.experimental.Accessors;
     "authPassword",
     "authSecret",
     "authUsername",
+    "forceImplicitTLS",
     "from",
     "hello",
     "requireTLS",
@@ -81,6 +82,8 @@ public class GlobalSMTPConfig implements Editable<GlobalSMTPConfigBuilder>, Kube
     private SecretKeySelector authSecret;
     @JsonProperty("authUsername")
     private String authUsername;
+    @JsonProperty("forceImplicitTLS")
+    private Boolean forceImplicitTLS;
     @JsonProperty("from")
     private String from;
     @JsonProperty("hello")
@@ -100,12 +103,13 @@ public class GlobalSMTPConfig implements Editable<GlobalSMTPConfigBuilder>, Kube
     public GlobalSMTPConfig() {
     }
 
-    public GlobalSMTPConfig(String authIdentity, SecretKeySelector authPassword, SecretKeySelector authSecret, String authUsername, String from, String hello, Boolean requireTLS, HostPort smartHost, SafeTLSConfig tlsConfig) {
+    public GlobalSMTPConfig(String authIdentity, SecretKeySelector authPassword, SecretKeySelector authSecret, String authUsername, Boolean forceImplicitTLS, String from, String hello, Boolean requireTLS, HostPort smartHost, SafeTLSConfig tlsConfig) {
         super();
         this.authIdentity = authIdentity;
         this.authPassword = authPassword;
         this.authSecret = authSecret;
         this.authUsername = authUsername;
+        this.forceImplicitTLS = forceImplicitTLS;
         this.from = from;
         this.hello = hello;
         this.requireTLS = requireTLS;
@@ -175,6 +179,22 @@ public class GlobalSMTPConfig implements Editable<GlobalSMTPConfigBuilder>, Kube
     @JsonProperty("authUsername")
     public void setAuthUsername(String authUsername) {
         this.authUsername = authUsername;
+    }
+
+    /**
+     * forceImplicitTLS defines whether to force use of implicit TLS (direct TLS connection) for better security. true: force use of implicit TLS (direct TLS connection on any port) false: force disable implicit TLS (use explicit TLS/STARTTLS if required) nil (default): auto-detect based on port (465=implicit, other=explicit) for backward compatibility It requires Alertmanager &gt;= v0.31.0.
+     */
+    @JsonProperty("forceImplicitTLS")
+    public Boolean getForceImplicitTLS() {
+        return forceImplicitTLS;
+    }
+
+    /**
+     * forceImplicitTLS defines whether to force use of implicit TLS (direct TLS connection) for better security. true: force use of implicit TLS (direct TLS connection on any port) false: force disable implicit TLS (use explicit TLS/STARTTLS if required) nil (default): auto-detect based on port (465=implicit, other=explicit) for backward compatibility It requires Alertmanager &gt;= v0.31.0.
+     */
+    @JsonProperty("forceImplicitTLS")
+    public void setForceImplicitTLS(Boolean forceImplicitTLS) {
+        this.forceImplicitTLS = forceImplicitTLS;
     }
 
     /**

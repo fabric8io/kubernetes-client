@@ -35,7 +35,7 @@ import lombok.ToString;
 import lombok.experimental.Accessors;
 
 /**
- * SubjectAccessReviewSpec is a description of the access request.  Exactly one of ResourceAuthorizationAttributes and NonResourceAuthorizationAttributes must be set
+ * SubjectAccessReviewSpec is a description of the access request.  Exactly one of resourceAttributes and nonResourceAttributes must be set
  */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -106,7 +106,7 @@ public class SubjectAccessReviewSpec implements Editable<SubjectAccessReviewSpec
     }
 
     /**
-     * Extra corresponds to the user.Info.GetExtra() method from the authenticator.  Since that is input to the authorizer it needs a reflection here.
+     * extra corresponds to the user.Info.GetExtra() method from the authenticator.  Since that is input to the authorizer it needs a reflection here.
      */
     @JsonProperty("extra")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -115,7 +115,7 @@ public class SubjectAccessReviewSpec implements Editable<SubjectAccessReviewSpec
     }
 
     /**
-     * Extra corresponds to the user.Info.GetExtra() method from the authenticator.  Since that is input to the authorizer it needs a reflection here.
+     * extra corresponds to the user.Info.GetExtra() method from the authenticator.  Since that is input to the authorizer it needs a reflection here.
      */
     @JsonProperty("extra")
     public void setExtra(Map<String, List<String>> extra) {
@@ -123,7 +123,7 @@ public class SubjectAccessReviewSpec implements Editable<SubjectAccessReviewSpec
     }
 
     /**
-     * Groups is the groups you're testing for.
+     * groups is the groups you're testing for.
      */
     @JsonProperty("groups")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -132,7 +132,7 @@ public class SubjectAccessReviewSpec implements Editable<SubjectAccessReviewSpec
     }
 
     /**
-     * Groups is the groups you're testing for.
+     * groups is the groups you're testing for.
      */
     @JsonProperty("groups")
     public void setGroups(List<String> groups) {
@@ -140,7 +140,7 @@ public class SubjectAccessReviewSpec implements Editable<SubjectAccessReviewSpec
     }
 
     /**
-     * SubjectAccessReviewSpec is a description of the access request.  Exactly one of ResourceAuthorizationAttributes and NonResourceAuthorizationAttributes must be set
+     * SubjectAccessReviewSpec is a description of the access request.  Exactly one of resourceAttributes and nonResourceAttributes must be set
      */
     @JsonProperty("nonResourceAttributes")
     public NonResourceAttributes getNonResourceAttributes() {
@@ -148,7 +148,7 @@ public class SubjectAccessReviewSpec implements Editable<SubjectAccessReviewSpec
     }
 
     /**
-     * SubjectAccessReviewSpec is a description of the access request.  Exactly one of ResourceAuthorizationAttributes and NonResourceAuthorizationAttributes must be set
+     * SubjectAccessReviewSpec is a description of the access request.  Exactly one of resourceAttributes and nonResourceAttributes must be set
      */
     @JsonProperty("nonResourceAttributes")
     public void setNonResourceAttributes(NonResourceAttributes nonResourceAttributes) {
@@ -156,7 +156,7 @@ public class SubjectAccessReviewSpec implements Editable<SubjectAccessReviewSpec
     }
 
     /**
-     * SubjectAccessReviewSpec is a description of the access request.  Exactly one of ResourceAuthorizationAttributes and NonResourceAuthorizationAttributes must be set
+     * SubjectAccessReviewSpec is a description of the access request.  Exactly one of resourceAttributes and nonResourceAttributes must be set
      */
     @JsonProperty("resourceAttributes")
     public ResourceAttributes getResourceAttributes() {
@@ -164,7 +164,7 @@ public class SubjectAccessReviewSpec implements Editable<SubjectAccessReviewSpec
     }
 
     /**
-     * SubjectAccessReviewSpec is a description of the access request.  Exactly one of ResourceAuthorizationAttributes and NonResourceAuthorizationAttributes must be set
+     * SubjectAccessReviewSpec is a description of the access request.  Exactly one of resourceAttributes and nonResourceAttributes must be set
      */
     @JsonProperty("resourceAttributes")
     public void setResourceAttributes(ResourceAttributes resourceAttributes) {
@@ -172,7 +172,7 @@ public class SubjectAccessReviewSpec implements Editable<SubjectAccessReviewSpec
     }
 
     /**
-     * UID information about the requesting user.
+     * uid information about the requesting user.
      */
     @JsonProperty("uid")
     public String getUid() {
@@ -180,7 +180,7 @@ public class SubjectAccessReviewSpec implements Editable<SubjectAccessReviewSpec
     }
 
     /**
-     * UID information about the requesting user.
+     * uid information about the requesting user.
      */
     @JsonProperty("uid")
     public void setUid(String uid) {
@@ -188,7 +188,7 @@ public class SubjectAccessReviewSpec implements Editable<SubjectAccessReviewSpec
     }
 
     /**
-     * User is the user you're testing for. If you specify "User" but not "Groups", then is it interpreted as "What if User were not a member of any groups
+     * user is the user you're testing for. If you specify "User" but not "Groups", then is it interpreted as "What if User were not a member of any groups
      */
     @JsonProperty("user")
     public String getUser() {
@@ -196,7 +196,7 @@ public class SubjectAccessReviewSpec implements Editable<SubjectAccessReviewSpec
     }
 
     /**
-     * User is the user you're testing for. If you specify "User" but not "Groups", then is it interpreted as "What if User were not a member of any groups
+     * user is the user you're testing for. If you specify "User" but not "Groups", then is it interpreted as "What if User were not a member of any groups
      */
     @JsonProperty("user")
     public void setUser(String user) {

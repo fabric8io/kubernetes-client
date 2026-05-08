@@ -28,7 +28,7 @@ import java.net.HttpURLConnection;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@EnableKubernetesMockClient
+@EnableKubernetesMockClient(https = false)
 class ClusterCSIDriverTest {
   private OpenShiftClient client;
   KubernetesMockServer server;
@@ -76,7 +76,7 @@ class ClusterCSIDriverTest {
         .once();
 
     // When
-    boolean isDeleted = client.operator().clusterCSIDrivers().withName("cluster").delete().size() == 1;
+    boolean isDeleted = client.operator().clusterCSIDrivers().withName("cluster").withGracePeriod(0).delete().size() == 1;
 
     // Then
     assertThat(isDeleted).isTrue();

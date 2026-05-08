@@ -100,7 +100,7 @@ public class ResourceRule implements Editable<ResourceRuleBuilder>, KubernetesRe
     }
 
     /**
-     * APIGroups is the name of the APIGroup that contains the resources.  If multiple API groups are specified, any action requested against one of the enumerated resources in any API group will be allowed.  "&#42;" means all.
+     * apiGroups is the name of the APIGroup that contains the resources.  If multiple API groups are specified, any action requested against one of the enumerated resources in any API group will be allowed.  "&#42;" means all.
      */
     @JsonProperty("apiGroups")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -109,7 +109,7 @@ public class ResourceRule implements Editable<ResourceRuleBuilder>, KubernetesRe
     }
 
     /**
-     * APIGroups is the name of the APIGroup that contains the resources.  If multiple API groups are specified, any action requested against one of the enumerated resources in any API group will be allowed.  "&#42;" means all.
+     * apiGroups is the name of the APIGroup that contains the resources.  If multiple API groups are specified, any action requested against one of the enumerated resources in any API group will be allowed.  "&#42;" means all.
      */
     @JsonProperty("apiGroups")
     public void setApiGroups(List<String> apiGroups) {
@@ -117,7 +117,7 @@ public class ResourceRule implements Editable<ResourceRuleBuilder>, KubernetesRe
     }
 
     /**
-     * ResourceNames is an optional white list of names that the rule applies to.  An empty set means that everything is allowed.  "&#42;" means all.
+     * resourceNames is an optional white list of names that the rule applies to.  An empty set means that everything is allowed.  "&#42;" means all.
      */
     @JsonProperty("resourceNames")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -126,7 +126,7 @@ public class ResourceRule implements Editable<ResourceRuleBuilder>, KubernetesRe
     }
 
     /**
-     * ResourceNames is an optional white list of names that the rule applies to.  An empty set means that everything is allowed.  "&#42;" means all.
+     * resourceNames is an optional white list of names that the rule applies to.  An empty set means that everything is allowed.  "&#42;" means all.
      */
     @JsonProperty("resourceNames")
     public void setResourceNames(List<String> resourceNames) {
@@ -134,7 +134,7 @@ public class ResourceRule implements Editable<ResourceRuleBuilder>, KubernetesRe
     }
 
     /**
-     * Resources is a list of resources this rule applies to.  "&#42;" means all in the specified apiGroups.<br><p>  "&#42;/foo" represents the subresource 'foo' for all resources in the specified apiGroups.
+     * resources is a list of resources this rule applies to.  "&#42;" means all in the specified apiGroups.<br><p>  "&#42;/foo" represents the subresource 'foo' for all resources in the specified apiGroups.
      */
     @JsonProperty("resources")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -143,7 +143,7 @@ public class ResourceRule implements Editable<ResourceRuleBuilder>, KubernetesRe
     }
 
     /**
-     * Resources is a list of resources this rule applies to.  "&#42;" means all in the specified apiGroups.<br><p>  "&#42;/foo" represents the subresource 'foo' for all resources in the specified apiGroups.
+     * resources is a list of resources this rule applies to.  "&#42;" means all in the specified apiGroups.<br><p>  "&#42;/foo" represents the subresource 'foo' for all resources in the specified apiGroups.
      */
     @JsonProperty("resources")
     public void setResources(List<String> resources) {
@@ -151,7 +151,7 @@ public class ResourceRule implements Editable<ResourceRuleBuilder>, KubernetesRe
     }
 
     /**
-     * Verb is a list of kubernetes resource API verbs, like: get, list, watch, create, update, delete, proxy.  "&#42;" means all.
+     * verbs is a list of kubernetes resource API verbs, like: get, list, watch, create, update, delete, proxy.  "&#42;" means all.
      */
     @JsonProperty("verbs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -160,7 +160,7 @@ public class ResourceRule implements Editable<ResourceRuleBuilder>, KubernetesRe
     }
 
     /**
-     * Verb is a list of kubernetes resource API verbs, like: get, list, watch, create, update, delete, proxy.  "&#42;" means all.
+     * verbs is a list of kubernetes resource API verbs, like: get, list, watch, create, update, delete, proxy.  "&#42;" means all.
      */
     @JsonProperty("verbs")
     public void setVerbs(List<String> verbs) {

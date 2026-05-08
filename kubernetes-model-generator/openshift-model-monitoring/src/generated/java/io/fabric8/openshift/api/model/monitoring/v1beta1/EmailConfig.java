@@ -45,6 +45,7 @@ import lombok.experimental.Accessors;
     "authPassword",
     "authSecret",
     "authUsername",
+    "forceImplicitTLS",
     "from",
     "headers",
     "hello",
@@ -53,6 +54,7 @@ import lombok.experimental.Accessors;
     "sendResolved",
     "smarthost",
     "text",
+    "threading",
     "tlsConfig",
     "to"
 })
@@ -89,6 +91,8 @@ public class EmailConfig implements Editable<EmailConfigBuilder>, KubernetesReso
     private SecretKeySelector authSecret;
     @JsonProperty("authUsername")
     private String authUsername;
+    @JsonProperty("forceImplicitTLS")
+    private Boolean forceImplicitTLS;
     @JsonProperty("from")
     private String from;
     @JsonProperty("headers")
@@ -106,6 +110,8 @@ public class EmailConfig implements Editable<EmailConfigBuilder>, KubernetesReso
     private String smarthost;
     @JsonProperty("text")
     private String text;
+    @JsonProperty("threading")
+    private EmailThreadingConfig threading;
     @JsonProperty("tlsConfig")
     private SafeTLSConfig tlsConfig;
     @JsonProperty("to")
@@ -119,12 +125,13 @@ public class EmailConfig implements Editable<EmailConfigBuilder>, KubernetesReso
     public EmailConfig() {
     }
 
-    public EmailConfig(String authIdentity, SecretKeySelector authPassword, SecretKeySelector authSecret, String authUsername, String from, List<KeyValue> headers, String hello, String html, Boolean requireTLS, Boolean sendResolved, String smarthost, String text, SafeTLSConfig tlsConfig, String to) {
+    public EmailConfig(String authIdentity, SecretKeySelector authPassword, SecretKeySelector authSecret, String authUsername, Boolean forceImplicitTLS, String from, List<KeyValue> headers, String hello, String html, Boolean requireTLS, Boolean sendResolved, String smarthost, String text, EmailThreadingConfig threading, SafeTLSConfig tlsConfig, String to) {
         super();
         this.authIdentity = authIdentity;
         this.authPassword = authPassword;
         this.authSecret = authSecret;
         this.authUsername = authUsername;
+        this.forceImplicitTLS = forceImplicitTLS;
         this.from = from;
         this.headers = headers;
         this.hello = hello;
@@ -133,6 +140,7 @@ public class EmailConfig implements Editable<EmailConfigBuilder>, KubernetesReso
         this.sendResolved = sendResolved;
         this.smarthost = smarthost;
         this.text = text;
+        this.threading = threading;
         this.tlsConfig = tlsConfig;
         this.to = to;
     }
@@ -199,6 +207,22 @@ public class EmailConfig implements Editable<EmailConfigBuilder>, KubernetesReso
     @JsonProperty("authUsername")
     public void setAuthUsername(String authUsername) {
         this.authUsername = authUsername;
+    }
+
+    /**
+     * forceImplicitTLS defines whether to force use of implicit TLS (direct TLS connection) for better security. true: force use of implicit TLS (direct TLS connection on any port) false: force disable implicit TLS (use explicit TLS/STARTTLS if required) nil (default): auto-detect based on port (465=implicit, other=explicit) for backward compatibility It requires Alertmanager &gt;= v0.31.0.
+     */
+    @JsonProperty("forceImplicitTLS")
+    public Boolean getForceImplicitTLS() {
+        return forceImplicitTLS;
+    }
+
+    /**
+     * forceImplicitTLS defines whether to force use of implicit TLS (direct TLS connection) for better security. true: force use of implicit TLS (direct TLS connection on any port) false: force disable implicit TLS (use explicit TLS/STARTTLS if required) nil (default): auto-detect based on port (465=implicit, other=explicit) for backward compatibility It requires Alertmanager &gt;= v0.31.0.
+     */
+    @JsonProperty("forceImplicitTLS")
+    public void setForceImplicitTLS(Boolean forceImplicitTLS) {
+        this.forceImplicitTLS = forceImplicitTLS;
     }
 
     /**
@@ -328,6 +352,22 @@ public class EmailConfig implements Editable<EmailConfigBuilder>, KubernetesReso
     @JsonProperty("text")
     public void setText(String text) {
         this.text = text;
+    }
+
+    /**
+     * EmailConfig configures notifications via Email.
+     */
+    @JsonProperty("threading")
+    public EmailThreadingConfig getThreading() {
+        return threading;
+    }
+
+    /**
+     * EmailConfig configures notifications via Email.
+     */
+    @JsonProperty("threading")
+    public void setThreading(EmailThreadingConfig threading) {
+        this.threading = threading;
     }
 
     /**

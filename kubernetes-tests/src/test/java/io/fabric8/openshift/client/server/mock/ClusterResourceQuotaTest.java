@@ -34,7 +34,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@EnableKubernetesMockClient
+@EnableKubernetesMockClient(https = false)
 class ClusterResourceQuotaTest {
 
   KubernetesMockServer server;
@@ -100,7 +100,7 @@ class ClusterResourceQuotaTest {
         .once();
 
     // When
-    boolean deleted = client.quotas().clusterResourceQuotas().withName("foo").delete().size() == 1;
+    boolean deleted = client.quotas().clusterResourceQuotas().withName("foo").withGracePeriod(0).delete().size() == 1;
 
     // Then
     assertTrue(deleted);

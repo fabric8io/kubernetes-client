@@ -36,7 +36,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@EnableKubernetesMockClient
+@EnableKubernetesMockClient(https = false)
 class V1IngressClassTest {
 
   KubernetesMockServer server;
@@ -149,8 +149,8 @@ class V1IngressClassTest {
         .andReturn(HttpURLConnection.HTTP_OK, new IngressClassBuilder().build()).once();
 
     // When
-    boolean result1 = client.network().v1().ingressClasses().withName("ingressClass1").delete().size() == 1;
-    boolean result2 = client.network().v1().ingressClasses().withName("ingressClass2").delete().size() == 1;
+    boolean result1 = client.network().v1().ingressClasses().withName("ingressClass1").withGracePeriod(0).delete().size() == 1;
+    boolean result2 = client.network().v1().ingressClasses().withName("ingressClass2").withGracePeriod(0).delete().size() == 1;
 
     // Then
     assertTrue(result1);

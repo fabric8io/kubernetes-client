@@ -29,7 +29,7 @@ import java.net.HttpURLConnection;
 
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 
-@EnableKubernetesMockClient
+@EnableKubernetesMockClient(https = false)
 class V1CSIStorageCapacityTest {
   KubernetesMockServer server;
   private KubernetesClient client;
@@ -76,7 +76,8 @@ class V1CSIStorageCapacityTest {
         .once();
 
     // When
-    boolean isDeleted = client.storage().v1().csiStorageCapacities().inNamespace("default").withName("c1").delete().size() == 1;
+    boolean isDeleted = client.storage().v1().csiStorageCapacities().inNamespace("default").withName("c1").withGracePeriod(0)
+        .delete().size() == 1;
 
     // Then
     AssertionsForClassTypes.assertThat(isDeleted).isTrue();

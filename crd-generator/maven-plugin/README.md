@@ -175,4 +175,101 @@ this pre-existing index will be used instead of generating an own index and will
 
 To always create an own index, set `forceIndex` to `true`.
 
+## Cross-JDK version builds (forked JVM)
 
+By default, CRD generation runs in-process within the JVM that executes Maven. If the project is
+compiled with a newer JDK than the one running Maven (e.g. Maven on JDK 11, project compiled for
+JDK 17), the plugin will fail with `UnsupportedClassVersionError` when it tries to load the
+compiled class files.
+
+To fix this, configure the plugin to fork a separate JVM process using a compatible JDK. There are
+two ways to do this.
+
+### Option 1: Explicit `javaExecutable`
+
+Set `javaExecutable` to the path of a Java binary that is compatible with the compiled class files.
+This can be configured in the plugin `<configuration>` or passed on the command line via
+`-Dfabric8.crd-generator.javaExecutable=...`.
+
+```xml
+<plugin>
+  <groupId>io.fabric8</groupId>
+  <artifactId>crd-generator-maven-plugin</artifactId>
+  <executions>
+    <execution>
+      <goals>
+        <goal>generate</goal>
+      </goals>
+      <configuration>
+        <javaExecutable>/path/to/jdk17/bin/java</javaExecutable>
+      </configuration>
+    </execution>
+  </executions>
+</plugin>
+```
+
+### Option 2: Maven Toolchains
+
+Use [Maven Toolchains](https://maven.apache.org/guides/mini/guide-using-toolchains.html) to let
+Maven resolve the JDK automatically without hardcoding a path. The plugin picks up whichever JDK
+toolchain is active in the build — no extra `<configuration>` needed in the plugin itself.
+
+**1. Declare your JDK installations in `~/.m2/toolchains.xml`:**
+
+```xml
+<toolchains>
+  <toolchain>
+    <type>jdk</type>
+    <provides>
+      <version>17</version>
+    </provides>
+    <configuration>
+      <jdkHome>/path/to/jdk17</jdkHome>
+    </configuration>
+  </toolchain>
+</toolchains>
+```
+
+**2. Activate the toolchain in your `pom.xml`:**
+
+```xml
+<plugin>
+  <groupId>org.apache.maven.plugins</groupId>
+  <artifactId>maven-toolchains-plugin</artifactId>
+  <executions>
+    <execution>
+      <goals>
+        <goal>toolchain</goal>
+      </goals>
+    </execution>
+  </executions>
+  <configuration>
+    <toolchains>
+      <jdk>
+        <version>17</version>
+      </jdk>
+    </toolchains>
+  </configuration>
+</plugin>
+
+<plugin>
+  <groupId>io.fabric8</groupId>
+  <artifactId>crd-generator-maven-plugin</artifactId>
+  <executions>
+    <execution>
+      <goals>
+        <goal>generate</goal>
+      </goals>
+    </execution>
+  </executions>
+</plugin>
+```
+
+**3. Run the build with the toolchains file:**
+
+```bash
+mvn -t toolchains.xml package
+```
+
+> **Resolution order:** If `javaExecutable` is set, it takes priority over the toolchain. If
+> neither is configured, CRD generation runs in-process (default behaviour).

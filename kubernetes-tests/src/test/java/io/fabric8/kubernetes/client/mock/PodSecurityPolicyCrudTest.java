@@ -30,7 +30,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@EnableKubernetesMockClient(crud = true)
+@EnableKubernetesMockClient(crud = true, https = false)
 public class PodSecurityPolicyCrudTest {
 
   private static final Logger logger = LoggerFactory.getLogger(PodSecurityPolicyCrudTest.class);

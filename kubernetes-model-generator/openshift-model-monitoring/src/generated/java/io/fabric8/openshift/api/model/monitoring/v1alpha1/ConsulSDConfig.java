@@ -52,6 +52,7 @@ import lombok.experimental.Accessors;
     "enableHTTP2",
     "filter",
     "followRedirects",
+    "healthFilter",
     "namespace",
     "noProxy",
     "nodeMeta",
@@ -109,6 +110,8 @@ public class ConsulSDConfig implements Editable<ConsulSDConfigBuilder>, Kubernet
     private String filter;
     @JsonProperty("followRedirects")
     private Boolean followRedirects;
+    @JsonProperty("healthFilter")
+    private String healthFilter;
     @JsonProperty("namespace")
     private String namespace;
     @JsonProperty("noProxy")
@@ -156,7 +159,7 @@ public class ConsulSDConfig implements Editable<ConsulSDConfigBuilder>, Kubernet
     public ConsulSDConfig() {
     }
 
-    public ConsulSDConfig(Boolean allowStale, SafeAuthorization authorization, BasicAuth basicAuth, String datacenter, Boolean enableHTTP2, String filter, Boolean followRedirects, String namespace, String noProxy, Map<String, String> nodeMeta, OAuth2 oauth2, String partition, String pathPrefix, Map<String, List<SecretKeySelector>> proxyConnectHeader, Boolean proxyFromEnvironment, String proxyUrl, String refreshInterval, String scheme, String server, List<String> services, String tagSeparator, List<String> tags, SafeTLSConfig tlsConfig, SecretKeySelector tokenRef) {
+    public ConsulSDConfig(Boolean allowStale, SafeAuthorization authorization, BasicAuth basicAuth, String datacenter, Boolean enableHTTP2, String filter, Boolean followRedirects, String healthFilter, String namespace, String noProxy, Map<String, String> nodeMeta, OAuth2 oauth2, String partition, String pathPrefix, Map<String, List<SecretKeySelector>> proxyConnectHeader, Boolean proxyFromEnvironment, String proxyUrl, String refreshInterval, String scheme, String server, List<String> services, String tagSeparator, List<String> tags, SafeTLSConfig tlsConfig, SecretKeySelector tokenRef) {
         super();
         this.allowStale = allowStale;
         this.authorization = authorization;
@@ -165,6 +168,7 @@ public class ConsulSDConfig implements Editable<ConsulSDConfigBuilder>, Kubernet
         this.enableHTTP2 = enableHTTP2;
         this.filter = filter;
         this.followRedirects = followRedirects;
+        this.healthFilter = healthFilter;
         this.namespace = namespace;
         this.noProxy = noProxy;
         this.nodeMeta = nodeMeta;
@@ -265,7 +269,7 @@ public class ConsulSDConfig implements Editable<ConsulSDConfigBuilder>, Kubernet
     }
 
     /**
-     * filter defines the filter expression used to filter the catalog results. See https://www.consul.io/api-docs/catalog#list-services It requires Prometheus &gt;= 3.0.0.
+     * filter defines the filter expression used to filter the catalog results. See https://developer.hashicorp.com/consul/api-docs/catalog#filtering It requires Prometheus &gt;= 3.0.0.
      */
     @JsonProperty("filter")
     public String getFilter() {
@@ -273,7 +277,7 @@ public class ConsulSDConfig implements Editable<ConsulSDConfigBuilder>, Kubernet
     }
 
     /**
-     * filter defines the filter expression used to filter the catalog results. See https://www.consul.io/api-docs/catalog#list-services It requires Prometheus &gt;= 3.0.0.
+     * filter defines the filter expression used to filter the catalog results. See https://developer.hashicorp.com/consul/api-docs/catalog#filtering It requires Prometheus &gt;= 3.0.0.
      */
     @JsonProperty("filter")
     public void setFilter(String filter) {
@@ -294,6 +298,22 @@ public class ConsulSDConfig implements Editable<ConsulSDConfigBuilder>, Kubernet
     @JsonProperty("followRedirects")
     public void setFollowRedirects(Boolean followRedirects) {
         this.followRedirects = followRedirects;
+    }
+
+    /**
+     * healthFilter defines the filter expression used to filter the health results. See https://developer.hashicorp.com/consul/api-docs/health#filtering It requires Prometheus &gt;= 3.11.2.
+     */
+    @JsonProperty("healthFilter")
+    public String getHealthFilter() {
+        return healthFilter;
+    }
+
+    /**
+     * healthFilter defines the filter expression used to filter the health results. See https://developer.hashicorp.com/consul/api-docs/health#filtering It requires Prometheus &gt;= 3.11.2.
+     */
+    @JsonProperty("healthFilter")
+    public void setHealthFilter(String healthFilter) {
+        this.healthFilter = healthFilter;
     }
 
     /**

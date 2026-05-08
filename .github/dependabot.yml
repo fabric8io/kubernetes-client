@@ -28,13 +28,110 @@ updates:
   - oscerd
   - rohanKanojia
   - manusa
+  # We maintain two Vert.x-based HTTP clients: httpclient-vertx (Vert.x 4.x)
+  # and httpclient-vertx-5 (Vert.x 5.x). Each must stay on its own major, and
+  # the two are updated independently — so no group and no major bumps.
+  ignore:
+  - dependency-name: "io.vertx:*"
+    update-types: ["version-update:semver-major"]
+  groups:
+    bouncycastle:
+      patterns:
+      - "org.bouncycastle:*"
+    jackson:
+      patterns:
+      - "com.fasterxml.jackson*:*"
+    jetty:
+      patterns:
+      - "org.eclipse.jetty:*"
+      - "org.eclipse.jetty.*:*"
+    keycloak:
+      patterns:
+      - "org.keycloak:*"
+    okhttp:
+      patterns:
+      - "com.squareup.okhttp3:*"
+    maven-plugins:
+      patterns:
+      - "org.apache.maven.plugins:*"
+      - "org.apache.maven:*"
+      - "org.codehaus.mojo:*"
+    testing:
+      patterns:
+      - "org.junit*:*"
+      - "org.mockito:*"
+      - "org.assertj:*"
+      - "org.awaitility:*"
+      - "com.approvaltests:*"
+      - "org.spockframework:*"
+    logging:
+      patterns:
+      - "org.apache.logging.log4j:*"
+      - "org.slf4j:*"
+      - "ch.qos.logback*:*"
 - package-ecosystem: "github-actions"
   directory: "/"
   schedule:
     interval: daily
     time: "11:00"
+  groups:
+    github-actions:
+      patterns:
+      - "*"
 - package-ecosystem: "gomod"
   directory: "/kubernetes-model-generator/openapi/generator"
   schedule:
     interval: "daily"
     time: "11:00"
+  groups:
+    kubernetes:
+      patterns:
+      - "k8s.io/*"
+      - "sigs.k8s.io/*"
+    openshift:
+      patterns:
+      - "github.com/openshift/*"
+    knative:
+      patterns:
+      - "knative.dev/*"
+    opentelemetry:
+      patterns:
+      - "go.opentelemetry.io/*"
+    golang-x:
+      patterns:
+      - "golang.org/x/*"
+    google-apis:
+      patterns:
+      - "google.golang.org/*"
+      - "github.com/google/*"
+    go-openapi:
+      patterns:
+      - "github.com/go-openapi/*"
+    operator-framework:
+      patterns:
+      - "github.com/operator-framework/*"
+    tektoncd:
+      patterns:
+      - "github.com/tektoncd/*"
+    metal3-io:
+      patterns:
+      - "github.com/metal3-io/*"
+    stolostron:
+      patterns:
+      - "github.com/stolostron/*"
+    open-cluster-management:
+      patterns:
+      - "open-cluster-management.io/*"
+    prometheus:
+      patterns:
+      - "github.com/prometheus/*"
+      - "github.com/prometheus-operator/*"
+    cloudevents:
+      patterns:
+      - "github.com/cloudevents/*"
+    azure:
+      patterns:
+      - "github.com/Azure/*"
+    go-uber:
+      patterns:
+      - "go.uber.org/*"

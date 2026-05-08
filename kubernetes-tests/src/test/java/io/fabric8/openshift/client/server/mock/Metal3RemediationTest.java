@@ -31,7 +31,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@EnableKubernetesMockClient
+@EnableKubernetesMockClient(https = false)
 class Metal3RemediationTest {
   KubernetesMockServer server;
   OpenShiftClient client;
@@ -96,7 +96,8 @@ class Metal3RemediationTest {
         .once();
 
     // When
-    boolean deleted = client.metal3Remediations().inNamespace("ns1").withName("test-remediation").delete().size() == 1;
+    boolean deleted = client.metal3Remediations().inNamespace("ns1").withName("test-remediation").withGracePeriod(0).delete()
+        .size() == 1;
 
     // Then
     assertTrue(deleted);

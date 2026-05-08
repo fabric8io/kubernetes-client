@@ -36,7 +36,7 @@ import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-@EnableKubernetesMockClient
+@EnableKubernetesMockClient(https = false)
 class SecurityContextConstraintsTest {
 
   KubernetesMockServer server;

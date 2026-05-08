@@ -39,7 +39,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@EnableKubernetesMockClient
+@EnableKubernetesMockClient(https = false)
 public class V1CustomResourceDefinitionTest {
 
   KubernetesMockServer server;
@@ -123,7 +123,7 @@ public class V1CustomResourceDefinitionTest {
         .andReturn(HttpURLConnection.HTTP_OK, customResourceDefinition).once();
 
     Boolean deleted = client.apiextensions().v1().customResourceDefinitions().withName("sparkclusters.radanalytics.io")
-        .delete().size() == 1;
+        .withGracePeriod(0).delete().size() == 1;
     assertTrue(deleted);
   }
 

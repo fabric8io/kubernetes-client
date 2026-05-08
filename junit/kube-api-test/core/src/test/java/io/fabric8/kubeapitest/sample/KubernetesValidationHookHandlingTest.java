@@ -41,12 +41,15 @@ import io.fabric8.mockwebserver.MockWebServer;
 import io.fabric8.mockwebserver.http.Dispatcher;
 import io.fabric8.mockwebserver.http.MockResponse;
 import io.fabric8.mockwebserver.http.RecordedRequest;
+import org.awaitility.Awaitility;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.time.Duration;
+import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -102,10 +105,23 @@ class KubernetesValidationHookHandlingTest {
     KubernetesClient client = new KubernetesClientBuilder().withConfig(Config.fromKubeconfig(kubeConfig)).build();
     applyConfig(client);
 
-    NamespaceableResource<Ingress> ingressResource = client.resource(invalidIngress());
-    assertThatThrownBy(ingressResource::create)
-        .isInstanceOf(KubernetesClientException.class)
-        .hasMessageContaining("Ingress with annotation 'reject=true' is not allowed");
+    // Webhook activation has a brief propagation delay after applyConfig; poll with a fresh
+    // resource name each attempt so a slipped-through create on an early poll does not
+    // shadow later attempts via AlreadyExists.
+    Awaitility.await()
+        .atMost(Duration.ofSeconds(30))
+        .pollInterval(Duration.ofMillis(200))
+        .untilAsserted(() -> {
+          Ingress invalid = invalidIngress("invalid-ingress-" + UUID.randomUUID());
+          NamespaceableResource<Ingress> ingressResource = client.resource(invalid);
+          try {
+            assertThatThrownBy(ingressResource::create)
+                .isInstanceOf(KubernetesClientException.class)
+                .hasMessageContaining("Ingress with annotation 'reject=true' is not allowed");
+          } finally {
+            client.resource(invalid).delete();
+          }
+        });
   }
 
   static MockResponse handleValidatingWebhook(RecordedRequest request) {
@@ -183,10 +199,10 @@ class KubernetesValidationHookHandlingTest {
         .build();
   }
 
-  public static Ingress invalidIngress() {
+  public static Ingress invalidIngress(String name) {
     return new IngressBuilder()
         .withNewMetadata()
-        .withName("invalid-ingress")
+        .withName(name)
         .addToAnnotations("reject", "true")
         .endMetadata()
         .withSpec(new IngressSpecBuilder()

@@ -94,7 +94,7 @@ public class ServiceReference implements Editable<ServiceReferenceBuilder>, Kube
     }
 
     /**
-     * `name` is the name of the service. Required
+     * name is the name of the service. Required
      */
     @JsonProperty("name")
     public String getName() {
@@ -102,7 +102,7 @@ public class ServiceReference implements Editable<ServiceReferenceBuilder>, Kube
     }
 
     /**
-     * `name` is the name of the service. Required
+     * name is the name of the service. Required
      */
     @JsonProperty("name")
     public void setName(String name) {
@@ -110,7 +110,7 @@ public class ServiceReference implements Editable<ServiceReferenceBuilder>, Kube
     }
 
     /**
-     * `namespace` is the namespace of the service. Required
+     * namespace is the namespace of the service. Required
      */
     @JsonProperty("namespace")
     public String getNamespace() {
@@ -118,7 +118,7 @@ public class ServiceReference implements Editable<ServiceReferenceBuilder>, Kube
     }
 
     /**
-     * `namespace` is the namespace of the service. Required
+     * namespace is the namespace of the service. Required
      */
     @JsonProperty("namespace")
     public void setNamespace(String namespace) {
@@ -126,7 +126,7 @@ public class ServiceReference implements Editable<ServiceReferenceBuilder>, Kube
     }
 
     /**
-     * `path` is an optional URL path which will be sent in any request to this service.
+     * path is an optional URL path which will be sent in any request to this service.
      */
     @JsonProperty("path")
     public String getPath() {
@@ -134,7 +134,7 @@ public class ServiceReference implements Editable<ServiceReferenceBuilder>, Kube
     }
 
     /**
-     * `path` is an optional URL path which will be sent in any request to this service.
+     * path is an optional URL path which will be sent in any request to this service.
      */
     @JsonProperty("path")
     public void setPath(String path) {
@@ -142,7 +142,7 @@ public class ServiceReference implements Editable<ServiceReferenceBuilder>, Kube
     }
 
     /**
-     * If specified, the port on the service that hosting webhook. Default to 443 for backward compatibility. `port` should be a valid port number (1-65535, inclusive).
+     * port is the port on the service that hosts the webhook. Default to 443 for backward compatibility. `port` should be a valid port number (1-65535, inclusive).
      */
     @JsonProperty("port")
     public Integer getPort() {
@@ -150,7 +150,7 @@ public class ServiceReference implements Editable<ServiceReferenceBuilder>, Kube
     }
 
     /**
-     * If specified, the port on the service that hosting webhook. Default to 443 for backward compatibility. `port` should be a valid port number (1-65535, inclusive).
+     * port is the port on the service that hosts the webhook. Default to 443 for backward compatibility. `port` should be a valid port number (1-65535, inclusive).
      */
     @JsonProperty("port")
     public void setPort(Integer port) {

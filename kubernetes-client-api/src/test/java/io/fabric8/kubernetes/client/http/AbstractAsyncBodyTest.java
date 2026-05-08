@@ -16,6 +16,7 @@
 package io.fabric8.kubernetes.client.http;
 
 import io.fabric8.mockwebserver.DefaultMockServer;
+import io.fabric8.mockwebserver.MockWebServer;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
@@ -23,6 +24,7 @@ import org.junit.jupiter.api.Test;
 
 import java.nio.CharBuffer;
 import java.nio.charset.StandardCharsets;
+import java.util.HashMap;
 import java.util.concurrent.CancellationException;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
@@ -37,7 +39,16 @@ public abstract class AbstractAsyncBodyTest {
 
   @BeforeAll
   static void beforeAll() {
-    server = new DefaultMockServer(false);
+    // Disable h2c on the mock server. The JDK HttpClient defaults to HTTP/2 and, on some
+    // Java 11 updates, sends an Upgrade: h2c header on plain-HTTP requests. With h2c
+    // accepted by the mock server, the upgraded HTTP/2 framing has intermittently failed
+    // on the 1 MiB response in consumeBytesProcessesLargeBodies with:
+    //   java.net.ProtocolException: protocol error: zero streamId for DataFrame
+    // These tests cover async body consumption, not HTTP/2 negotiation, so pinning the
+    // transport to HTTP/1.1 is the right scope.
+    final MockWebServer mockWebServer = new MockWebServer();
+    mockWebServer.setHttp2ClearTextEnabled(false);
+    server = new DefaultMockServer(mockWebServer, new HashMap<>(), false);
     server.start();
   }
 

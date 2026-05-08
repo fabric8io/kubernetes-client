@@ -63,6 +63,7 @@ jobs:
         with:
           java-version: ${{ matrix.environment.java  }}
           distribution: 'temurin'
+          cache: 'maven'
       - name: Build Project
         #run: make install MAVEN_ARGS="${MAVEN_ARGS}"
         run: mvn ${MAVEN_ARGS} install
@@ -70,3 +71,8 @@ jobs:
         run: |
           chmod a+x java-generator/cli/target/java-gen
           java-generator/cli/target/java-gen --source=java-generator/core/src/test/resources/crontab-crd.yml --target=./tmp
+      - name: Drop in-repo artifacts before cache save
+        # Don't let io.fabric8:* jars installed by this run leak into the cache that future
+        # runs restore. Only third-party dependencies should be cached.
+        if: always()
+        run: rm -rf ~/.m2/repository/io/fabric8

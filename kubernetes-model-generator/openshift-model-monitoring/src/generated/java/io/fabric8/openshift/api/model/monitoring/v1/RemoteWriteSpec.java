@@ -553,7 +553,7 @@ public class RemoteWriteSpec implements Editable<RemoteWriteSpecBuilder>, Kubern
     }
 
     /**
-     * url defines the URL of the endpoint to send samples to.
+     * url defines the URL of the endpoint to send samples to.<br><p> <br><p> It must use the HTTP or HTTPS scheme.
      */
     @JsonProperty("url")
     public String getUrl() {
@@ -561,7 +561,7 @@ public class RemoteWriteSpec implements Editable<RemoteWriteSpecBuilder>, Kubern
     }
 
     /**
-     * url defines the URL of the endpoint to send samples to.
+     * url defines the URL of the endpoint to send samples to.<br><p> <br><p> It must use the HTTP or HTTPS scheme.
      */
     @JsonProperty("url")
     public void setUrl(String url) {

@@ -38,7 +38,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@EnableKubernetesMockClient
+@EnableKubernetesMockClient(https = false)
 class V1PodDisruptionBudgetTest {
   KubernetesMockServer server;
   private KubernetesClient client;
@@ -136,7 +136,8 @@ class V1PodDisruptionBudgetTest {
             .build())
         .once();
 
-    boolean deleted = client.policy().v1().podDisruptionBudget().withName("poddisruptionbudget1").delete().size() == 1;
+    boolean deleted = client.policy().v1().podDisruptionBudget().withName("poddisruptionbudget1").withGracePeriod(0).delete()
+        .size() == 1;
     assertTrue(deleted);
   }
 

@@ -26,7 +26,8 @@ import lombok.experimental.Accessors;
     "mountPath",
     "name",
     "readOnly",
-    "recursiveReadOnly"
+    "recursiveReadOnly",
+    "volumeStatus"
 })
 @ToString
 @EqualsAndHashCode
@@ -47,6 +48,8 @@ public class VolumeMountStatus implements Editable<VolumeMountStatusBuilder>, Ku
     private Boolean readOnly;
     @JsonProperty("recursiveReadOnly")
     private String recursiveReadOnly;
+    @JsonProperty("volumeStatus")
+    private VolumeStatus volumeStatus;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -56,12 +59,13 @@ public class VolumeMountStatus implements Editable<VolumeMountStatusBuilder>, Ku
     public VolumeMountStatus() {
     }
 
-    public VolumeMountStatus(String mountPath, String name, Boolean readOnly, String recursiveReadOnly) {
+    public VolumeMountStatus(String mountPath, String name, Boolean readOnly, String recursiveReadOnly, VolumeStatus volumeStatus) {
         super();
         this.mountPath = mountPath;
         this.name = name;
         this.readOnly = readOnly;
         this.recursiveReadOnly = recursiveReadOnly;
+        this.volumeStatus = volumeStatus;
     }
 
     /**
@@ -126,6 +130,22 @@ public class VolumeMountStatus implements Editable<VolumeMountStatusBuilder>, Ku
     @JsonProperty("recursiveReadOnly")
     public void setRecursiveReadOnly(String recursiveReadOnly) {
         this.recursiveReadOnly = recursiveReadOnly;
+    }
+
+    /**
+     * VolumeMountStatus shows status of volume mounts.
+     */
+    @JsonProperty("volumeStatus")
+    public VolumeStatus getVolumeStatus() {
+        return volumeStatus;
+    }
+
+    /**
+     * VolumeMountStatus shows status of volume mounts.
+     */
+    @JsonProperty("volumeStatus")
+    public void setVolumeStatus(VolumeStatus volumeStatus) {
+        this.volumeStatus = volumeStatus;
     }
 
     @JsonIgnore

@@ -161,7 +161,7 @@ public class SecurityContext implements Editable<SecurityContextBuilder>, Kubern
     }
 
     /**
-     * procMount denotes the type of proc mount to use for the containers. The default value is Default which uses the container runtime defaults for readonly paths and masked paths. This requires the ProcMountType feature flag to be enabled. Note that this field cannot be set when spec.os.name is windows.
+     * procMount denotes the type of proc mount to use for the containers. The default value is Default which uses the container runtime defaults for readonly paths and masked paths. Note that this field cannot be set when spec.os.name is windows.
      */
     @JsonProperty("procMount")
     public String getProcMount() {
@@ -169,7 +169,7 @@ public class SecurityContext implements Editable<SecurityContextBuilder>, Kubern
     }
 
     /**
-     * procMount denotes the type of proc mount to use for the containers. The default value is Default which uses the container runtime defaults for readonly paths and masked paths. This requires the ProcMountType feature flag to be enabled. Note that this field cannot be set when spec.os.name is windows.
+     * procMount denotes the type of proc mount to use for the containers. The default value is Default which uses the container runtime defaults for readonly paths and masked paths. Note that this field cannot be set when spec.os.name is windows.
      */
     @JsonProperty("procMount")
     public void setProcMount(String procMount) {

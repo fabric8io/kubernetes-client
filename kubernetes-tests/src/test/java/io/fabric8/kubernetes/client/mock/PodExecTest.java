@@ -40,7 +40,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @SuppressWarnings("unused")
-@EnableKubernetesMockClient(crud = true)
+@EnableKubernetesMockClient(crud = true, https = false)
 class PodExecTest {
 
   private static PodStatus READY = new PodStatusBuilder().addNewCondition().withType("Ready").withStatus("True").endCondition()
