@@ -1947,7 +1947,7 @@ The `subresource(String)` method provides a generic way to access any Kubernetes
 - **ephemeralcontainers** - Manages ephemeral containers for debugging Pods
 - **binding** - Binds Pods to Nodes (typically handled by the Kubernetes scheduler)
 - **approval** - Approves CertificateSigningRequests (use `subresource("approval")`)
-- **token** - Requests bound service account tokens (use ServiceAccountResource#requestToken())
+- **token** - Requests bound service account tokens (use ServiceAccountResource#tokenRequest())
 - **Custom subresources** - Defined by CustomResourceDefinitions (CRDs)
 
 **Examples:**
@@ -1996,7 +1996,7 @@ client.resources(MyCustomResource.class)
   .subresource("my-custom-subresource")
   .patch();
 
-// 6. Using approval subresource (prefer approval() convenience method)
+// 6. Using approval subresource on CertificateSigningRequest
 client.certificates().v1().certificateSigningRequests()
   .withName("my-csr")
   .subresource("approval")
@@ -2015,9 +2015,9 @@ client.certificates().v1().certificateSigningRequests()
 - For status updates, use `status()`, `editStatus()`, or `patchStatus()`
 - For scaling operations, use `Scalable` interface methods like `scale(int count)`
 - For Pod ephemeral containers, use `podResource.ephemeralContainers()`
-- For CertificateSigningRequest approval/denial, use `approval()`
-- For ServiceAccount token requests, use `serviceAccountResource.requestToken()`
-```
+- For CertificateSigningRequest approval/denial, use `subresource("approval")`
+- For ServiceAccount token requests, use `serviceAccountResource.tokenRequest()`
+
 - Watch `CustomResource`:
 ```java
 cronTabClient.inNamespace("default").watch(new Watcher<>() {

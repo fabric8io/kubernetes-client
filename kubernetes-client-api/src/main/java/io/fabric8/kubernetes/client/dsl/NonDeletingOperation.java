@@ -83,7 +83,7 @@ public interface NonDeletingOperation<T> extends
    * <li><b>ephemeralcontainers</b> - Manages ephemeral containers for debugging Pods</li>
    * <li><b>binding</b> - Binds Pods to Nodes (typically handled by the Kubernetes scheduler)</li>
    * <li><b>approval</b> - Approves CertificateSigningRequests</li>
-   * <li><b>token</b> - Requests bound service account tokens (use ServiceAccountResource#requestToken())</li>
+   * <li><b>token</b> - Requests bound service account tokens (use ServiceAccountResource#tokenRequest())</li>
    * <li><b>Custom subresources</b> - Defined by CustomResourceDefinitions (CRDs)</li>
    * </ul>
    * <p>
@@ -113,27 +113,17 @@ public interface NonDeletingOperation<T> extends
    *   .patch(PatchContext.of(PatchType.JSON_MERGE),
    *     "{\"spec\":{\"replicas\":5}}");
    *
-   * // 3. Replace a subresource
-   * Deployment deployment = client.apps().deployments()
-   *   .inNamespace("default")
-   *   .withName("my-deployment")
-   *   .subresource("scale")
-   *   .replace(updatedDeployment);
-   *
-   * // 4. Update status subresource (prefer using status() method)
+   * // 3. Update status subresource (prefer using status() method)
    * client.pods().resource(myPod)
    *   .subresource("status")
    *   .patch();
    *
-   * // 5. Work with custom subresources on CRDs
+   * // 4. Work with custom subresources on CRDs
    * client.resources(MyCustomResource.class)
    *   .inNamespace("default")
    *   .withName("my-resource")
    *   .subresource("my-custom-subresource")
-   *   .edit(resource -> {
-   *     // Modify the custom subresource
-   *     return updatedResource;
-   *   });
+   *   .patch();
    * }
    * </pre>
    * <p>

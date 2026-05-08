@@ -83,4 +83,5 @@ class ScaleIT {
     scale = resource.scale();
     assertEquals(1, scale.getSpec().getReplicas());
   }
+
 }

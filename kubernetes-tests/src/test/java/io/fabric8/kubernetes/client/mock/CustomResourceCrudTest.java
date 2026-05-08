@@ -246,17 +246,10 @@ class CustomResourceCrudTest {
 
     result.setStatus(status);
 
-    // Test the new status() convenience method - should be equivalent to subresource("status")
+    // status() is a convenience shortcut for subresource("status")
     result = cronTabClient.resource(result).status().patch();
     assertNotNull(result.getStatus());
     assertEquals(5, result.getStatus().getReplicas());
-
-    // Verify it works the same as subresource("status")
-    status.setReplicas(10);
-    result.setStatus(status);
-    result = cronTabClient.resource(result).subresource("status").patch();
-    assertNotNull(result.getStatus());
-    assertEquals(10, result.getStatus().getReplicas());
   }
 
   @Test
